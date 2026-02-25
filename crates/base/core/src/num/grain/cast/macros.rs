@@ -39,49 +39,52 @@ macro_rules! _cast {
     (
     /* cast */
 
-    checked $from:expr => $P:ident) => { $crate::paste! {
+    checked $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast($from).[<checked_cast_to_$P>]()
     }};
-    (checked? $from:expr => $P:ident) => {
+    (checked? $from:expr => $P:ty) => {
         $crate::unwrap![ok? $crate::cast![checked $from => $P]]
     };
-    (checked_unwrap $from:expr => $P:ident) => {
+    (checked_unwrap $from:expr => $P:ty) => {
         $crate::unwrap![ok $crate::cast![checked $from => $P]]
     };
-    (saturating $from:expr => $P:ident) => { $crate::paste! {
+    (checked_expect $from:expr => $P:ty, $expect_msg:expr) => {
+        $crate::unwrap![ok_expect $crate::cast![checked $from => $P], $expect_msg]
+    };
+    (saturating $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast($from).[<saturating_cast_to_$P>]()
     }};
-    (wrapping $from:expr => $P:ident) => { $crate::paste! {
+    (wrapping $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast($from).[<wrapping_cast_to_$P>]()
     }};
     (
     /* join */
 
-    join [$F:ident] $from:expr => $P:ident) => { $crate::paste! {
+    join [$F:ty] $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast::<$P>::[<from_$F _ne>]($from)
     }};
-    (join be [$F:ident] $from:expr => $P:ident) => { $crate::paste! {
+    (join be [$F:ty] $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast::<$P>::[<from_$F _be>]($from)
     }};
-    (join le [$F:ident] $from:expr => $P:ident) => { $crate::paste! {
+    (join le [$F:ty] $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast::<$P>::[<from_$F _le>]($from)
     }};
-    (join ne [$F:ident] $from:expr => $P:ident) => { $crate::paste! {
+    (join ne [$F:ty] $from:expr => $P:ty) => { $crate::paste! {
         $crate::Cast::<$P>::[<from_$F _ne>]($from)
     }};
     (
     /* split */
 
-    split $from:expr => [$P:ident]) => { $crate::paste! {
+    split $from:expr => [$P:ty]) => { $crate::paste! {
         $crate::Cast($from).[<into_$P _ne>]()
     }};
-    (split be $from:expr => [$P:ident]) => { $crate::paste! {
+    (split be $from:expr => [$P:ty]) => { $crate::paste! {
         $crate::Cast($from).[<into_$P _be>]()
     }};
-    (split le $from:expr => [$P:ident]) => { $crate::paste! {
+    (split le $from:expr => [$P:ty]) => { $crate::paste! {
         $crate::Cast($from).[<into_$P _le>]()
     }};
-    (split ne $from:expr => [$P:ident]) => { $crate::paste! {
+    (split ne $from:expr => [$P:ty]) => { $crate::paste! {
         $crate::Cast($from).[<into_$P _ne>]()
     }};
 }

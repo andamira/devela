@@ -61,7 +61,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps `Some` value, or panics with a message if it's `None`.
-      some_expect $T:expr, $message:literal) => {
+      some_expect $T:expr, $message:expr) => {
         match $T {
             Some(v) => v,
             None => ::core::panic!["{}", $message],
@@ -93,7 +93,7 @@ macro_rules! unwrap {
     };
     (
       // Maps `Some` value or panics with a message if it's `None`.
-      some_map_expect $T:expr, |$v:ident| $some_map:expr, $message:literal) => {
+      some_map_expect $T:expr, |$v:ident| $some_map:expr, $message:expr) => {
         match $T {
             Some($v) => Some($some_map),
             None => ::core::panic!["{}", $message],
@@ -109,7 +109,7 @@ macro_rules! unwrap {
     };
     (
       // Maps and unwraps `Some` value or panics with a message if it's `None`.
-      some_map_into_expect $T:expr, |$v:ident| $some_map:expr, $message:literal) => {
+      some_map_into_expect $T:expr, |$v:ident| $some_map:expr, $message:expr) => {
         match $T {
             Some($v) => $some_map,
             None => ::core::panic!["{}", $message],
@@ -204,7 +204,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps the `Ok` value, or panics with a message if it's `Err`.
-      ok_expect $T:expr, $message:literal) => {
+      ok_expect $T:expr, $message:expr) => {
         match $T {
             Ok(v) => v,
             Err(_) => ::core::panic!["{}", $message],
@@ -228,7 +228,7 @@ macro_rules! unwrap {
     };
     (
       // Maps the `Ok` value or panics with a message if it's `Err`.
-      ok_map_expect $T:expr, |$v:ident| $ok_map:expr, $message:literal) => {
+      ok_map_expect $T:expr, |$v:ident| $ok_map:expr, $message:expr) => {
         match $T {
             Ok($v) => Ok($ok_map),
             Err(_) => ::core::panic!["{}", $message],
@@ -252,7 +252,7 @@ macro_rules! unwrap {
     };
     (
       // Maps and unwraps the `Ok` value or panics with a message if it's `Err`.
-      ok_map_into_expect $T:expr, |$v:ident| $ok_map:expr, $message:literal) => {
+      ok_map_into_expect $T:expr, |$v:ident| $ok_map:expr, $message:expr) => {
         match $T {
             Ok($v) => $ok_map,
             Err(_) => ::core::panic!["{}", $message],
@@ -396,7 +396,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps the `Err` value, or panics with a message if it's `Ok`.
-      err_expect $T:expr, $message:literal) => {
+      err_expect $T:expr, $message:expr) => {
         match $T {
             Ok(_) => ::core::panic!["{}", $message],
             Err(e) => e,
@@ -420,7 +420,7 @@ macro_rules! unwrap {
     };
     (
       // Maps the `Err` value or panics with a message if it's `Ok`.
-      err_map_expect $T:expr, |$e:ident| $err_map:expr, $message:literal) => {
+      err_map_expect $T:expr, |$e:ident| $err_map:expr, $message:expr) => {
         match $T {
             Ok(_) => ::core::panic!["{}", $message],
             Err($e) => Err($err_map),
@@ -475,7 +475,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps `Some(Ok)` value, or panics with a message if it's `Some(Err)` or `None`.
-      sok_expect $T:expr, $message:literal) => {
+      sok_expect $T:expr, $message:expr) => {
         match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => ::core::panic!["{}", $message],
@@ -513,7 +513,7 @@ macro_rules! unwrap {
     };
     (
       // Unwraps `Some(Err)` value, or panics with a message if it's `Some(Ok)` or `None`.
-      serr_expect $T:expr, $message:literal) => {
+      serr_expect $T:expr, $message:expr) => {
         match $T {
             Some(Ok(_)) => ::core::panic!["{}", $message],
             Some(Err(v)) => v,

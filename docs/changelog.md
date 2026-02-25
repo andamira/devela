@@ -200,6 +200,7 @@ Many feature gates are removed in order to make most features make always availa
   - `ExtResult` to `ResultExt`.
 - update `unwrap!`:
   - add arms: `err?`, `err_map*`, `ok_err_map`, `ok_if*`, `ok_map*`, `ok_some_map`, `some_if*`, `some_map*`, `some_ok_map*`.
+  - receive expect `$msg` args as `expr` instead of `literal`, to be compatible with `concat!`.
   - make *const* the arms that call `unreachable`.
   - rename arms:
     - `ok_map_err`? to `ok_err_map?`.
