@@ -3,7 +3,7 @@
 //! [dependencies]
 //! devela = { path = "../..", features = ["linux", "unsafe_syscall"] }
 //! ```
-// devela::examples::ui::term::linux
+// devela::examples::sys::term::linux
 
 use devela::{Linux, LinuxResult};
 

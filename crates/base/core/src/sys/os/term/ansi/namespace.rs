@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi::namespace
+// devela_base_core::sys::os::term::ansi::namespace
 //
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
@@ -7,7 +7,7 @@ use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 
 #[doc = crate::_tags!(term namespace)]
 /// ANSI escape codes.
-#[doc = crate::_doc_location!("ui/front/term")]
+#[doc = crate::_doc_location!("sys/os/term")]
 ///
 /// # Return type
 /// Constants ending with `_B` return a byte array. Those without it return a string slice.
@@ -46,7 +46,7 @@ use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 ///
 /// # Related Items
 /// See also the [`ansi!`] macro.
-#[doc = crate::doclink!(custom devela "[`ansi!`]" "ui/front/term/macro.ansi.html")]
+#[doc = crate::doclink!(custom devela "[`ansi!`]" "sys/os/term/macro.ansi.html")]
 #[derive(Debug)]
 pub struct Ansi;
 

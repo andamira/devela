@@ -658,6 +658,27 @@ Many feature gates are removed in order to make most features make always availa
   - add saturating methods to convert from/to `Duration`.
   - add corresponding conversions and methods from/to `TimeDelta`.
 
+#### term
+- new module `sys::os::term`.
+- feature-gate with `term`.
+- rename `AnsiColor3b` to `AnsiColor3` and `AnsiColor8b` `AnsiColor8`.
+- move to [base]:
+  - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.
+- change `Ansi::print*` methods to `ansi_print*` functions.
+- new type: `AnsiColor`.
+- update `Ansi:`
+  - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
+  - add methods: `COLOR_[BG|FG]_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_[BG|FG]`, `MOUSE_X10_[ENABLE|DISABLE]`, `MOUSE_[NORMAL|TRACKING|UTF8]`, `MOUSE_SGR[_PIXELS]`, `strip_codes`.
+  - rename current associated const items with a `_B` suffix.
+  - add duplicated items with the old name returning a string slice or a `StringNonul`.
+  - update digits formatting methods to use `Digits::write_digits10`.
+  - modify `CURSOR_*` methods taking `u32` to take `u16`.
+  - make all escape-sequence methods *const*.
+  - fix codes related to alternate screen.
+- update `ansi!`:
+  - add new arms `p!` and `@p!` that auto-unwrap.
+  - fix macro visibility.
+
 ---
 ## text
 - new struct: `TextLut`.
@@ -786,6 +807,8 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## ui
+- remove module `ui::front`.
+
 ### event
 - new types: `DeviceId`, `Event`, `EventKind`, `EventQueue`, `EventTag`, `EventTarget`, `EventTimestampMode`, `EventWindow`, `KeyDead`, `WindowId`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
@@ -829,27 +852,6 @@ Many feature gates are removed in order to make most features make always availa
   - integrate `KeyAlpha`'s variants.
   - add new punctuation variants.
   - add new `Scancode(u16)` variant.
-
-### front
-#### term
-- feature-gate with `term`.
-- rename `AnsiColor3b` to `AnsiColor3` and `AnsiColor8b` `AnsiColor8`.
-- move to [base]:
-  - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.
-- change `Ansi::print*` methods to `ansi_print*` functions.
-- new type: `AnsiColor`.
-- update `Ansi:`
-  - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
-  - add methods: `COLOR_[BG|FG]_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_[BG|FG]`, `MOUSE_X10_[ENABLE|DISABLE]`, `MOUSE_[NORMAL|TRACKING|UTF8]`, `MOUSE_SGR[_PIXELS]`, `strip_codes`.
-  - rename current associated const items with a `_B` suffix.
-  - add duplicated items with the old name returning a string slice or a `StringNonul`.
-  - update digits formatting methods to use `Digits::write_digits10`.
-  - modify `CURSOR_*` methods taking `u32` to take `u16`.
-  - make all escape-sequence methods *const*.
-  - fix codes related to alternate screen.
-- update `ansi!`:
-  - add new arms `p!` and `@p!` that auto-unwrap.
-  - fix macro visibility.
 
 ---
 ## vita

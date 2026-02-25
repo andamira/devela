@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi::color
+// devela_base_core::sys::os::term::ansi::color
 //
 //! ANSI codes related to 3bit color.
 //
@@ -8,7 +8,7 @@ use crate::{_ansi_consts, Ansi, Digits};
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 3-bit color codes, 8 colors.
-#[doc = crate::_doc_location!("ui/front/term")]
+#[doc = crate::_doc_location!("sys/os/term")]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum AnsiColor3 {

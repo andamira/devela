@@ -1,11 +1,11 @@
-// devela_base_core::ui::front::term::size
+// devela_base_core::sys::os::term::size
 //
 //! Defines [`TermSize`].
 //
 
 #[doc = crate::_tags!(term layout ffi)]
 /// The size of the terminal.
-#[doc = crate::_doc_location!("ui/front/term")]
+#[doc = crate::_doc_location!("sys/os/term")]
 ///
 /// ## Used by
 /// - `LinuxTermios` and `WindowsConsole`.

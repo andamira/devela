@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi::namespace
+// devela_base_core::sys::os::term::ansi::namespace
 //
 //! Implements the internal [`_ansi_consts!`] macro.
 //

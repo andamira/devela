@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi
+// devela_base_core::sys::os::term::ansi
 //
 //! ANSI escape codes.
 //!

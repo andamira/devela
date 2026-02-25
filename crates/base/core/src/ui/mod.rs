@@ -9,23 +9,29 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
-    crate::_doc!(modules: crate; ui: front); // back, layout
+    crate::_doc!(modules: crate; ui); // event, layout, view
 }
 
-pub mod front;
+// mod view; // stateful interactive projections WIP
+
+// pub mod event; // WIP
 // pub mod layout; // WIP
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+    _mods {
+        // pub use super::{
+        //     view::_all::*,
+        // };
+    }
     _pub_mods {
-        pub use super::{
-            front::_all::*,
-            // layout::_all::*, // WIP
-        };
+        // pub use super::{
+        //     event::_all::*, // WIP
+        //     layout::_all::*, // WIP
+        // };
     }
     _crate_internals {
         pub(crate) use super::{
             _DOC_UI_MODULES,
-            front::_crate_internals::*,
         };
     }
 }

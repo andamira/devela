@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
-    crate::_doc!(modules: crate; ui: event, front); // layout, view
+    crate::_doc!(modules: crate; ui: event); // layout, view
 }
 
 mod back; // UiService*
@@ -22,7 +22,6 @@ mod view; // stateful interactive projections WIP
 
 #[cfg(feature = "event")]
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
-pub mod front;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -35,9 +34,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub use super::error::*; // RETHINK
     }
     _pub_mods {
-        pub use super::{
-            front::_all::*,
-        };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;
         #[cfg(feature = "layout")]

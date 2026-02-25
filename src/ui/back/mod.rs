@@ -1,4 +1,4 @@
-// revela::ui::back
+// devela::ui::back
 //
 #![doc = crate::_DOC_UI_BACK!()] // private
 #![doc = crate::_doc!(modules: crate::ui; back)]

@@ -313,7 +313,7 @@ mod reflection {
         ref_flags: &["sys··"],
         features: &["sys", "io",
             "mem", "bit",
-            /* os: */ "linux", "windows"]
+            /* os: */ "linux", "term", "windows"]
     };
         // RETHINK:
         pub const MEM: FlagsFeatures = FlagsFeatures {
@@ -328,7 +328,6 @@ mod reflection {
         ref_flags: &["ui··"],
         features: &[
             "ui", "event", "layout",
-            /* front: */ "term", // "web",
         ]
     };
     pub const WORK: FlagsFeatures = FlagsFeatures {

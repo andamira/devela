@@ -1,8 +1,8 @@
-// devela_base_core::ui::front::term
+// devela_base_core::sys::os::term
 //
-#![doc = crate::_DOC_UI_FRONT_TERM!()] // public
-#![doc = crate::_doc!(modules: crate::ui; front)]
-#![doc = crate::_doc!(flat:"ui")]
+#![doc = crate::_DOC_SYS_OS_TERM!()] // public
+#![doc = crate::_doc!(modules: crate::sys::os; term)]
+#![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
 

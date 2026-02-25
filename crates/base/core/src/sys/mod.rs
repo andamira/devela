@@ -45,7 +45,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
         };
     }
     _crate_internals {
-        pub(crate) use super::_DOC_SYS_MODULES;
+        pub(crate) use super::{
+            _DOC_SYS_MODULES,
+            os::_crate_internals::*,
+        };
     }
     _hidden {
         use super::mem::_hidden::*;

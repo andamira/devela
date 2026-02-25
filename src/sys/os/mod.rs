@@ -1,7 +1,7 @@
 // devela::sys::os
 //
 #![doc = crate::_DOC_SYS_OS!()] // public
-#![doc = crate::_doc!(modules: crate::sys; os: browser, fd, linux)] // windows
+#![doc = crate::_doc!(modules: crate::sys; os: browser, fd, term, linux)] // windows
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: os)]
 //!
@@ -31,6 +31,8 @@ pub mod linux;
 // #[cfg(feature = "windows")]
 // pub mod windows;
 
+pub mod term; // Ansi*
+
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         #[cfg(feature = "unsafe_syscall")]
@@ -42,6 +44,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             browser::_all::*,
             fd::_all::*,
+            term::_all::*,
         };
         #[cfg(feature = "linux")]
         pub use super::linux::_all::*;

@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi::color
+// devela_base_core::sys::os::term::ansi::color
 //
 //! ANSI codes related to color.
 //
@@ -21,7 +21,7 @@ pub use {bit3::*, bit8::*};
 
 #[doc = crate::_tags!(term color)]
 /// Complete ANSI color selection
-#[doc = crate::_doc_location!("ui/front/term")]
+#[doc = crate::_doc_location!("sys/os/term")]
 /// Covers all terminal color modes:
 /// - no color / default
 /// - 3-bit (dark / bright)

@@ -249,6 +249,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_BROWSER_WEB  = "Web APIs interfacing.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
+    _DOC_SYS_OS_TERM     = "UI terminal functionality.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 11 (symbolic sequences with cultural weight)
@@ -268,8 +269,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_UI              = "> How humans interact with what exists.";
     _DOC_UI_BACK         = "User interface backends.";
     _DOC_UI_EVENT        = "User interface events-related functionality.";
-    _DOC_UI_FRONT        = "User interface frontends.";
-    _DOC_UI_FRONT_TERM   = "UI terminal functionality.";
     _DOC_UI_LAYOUT       = "Spatial negotiation vocabulary for arranging content.";
 
     // 13 (practices, capacities, and meanings of lived life)

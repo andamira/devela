@@ -292,21 +292,17 @@ sys = ["io", "mem"]
 	mem = ["bit"]
 		bit = [] # BitSize
 	# os
+		# browser
 		linux = []
+		term = ["devela_base_core/term"] # media::image::sixel
 		windows = []
 text = ["grapheme", "translit"]
 	grapheme = ["devela_base_core/grapheme"]
 	translit = ["devela_base_core/translit"]
 vita = []
-ui = ["event", "layout", "term"]
+ui = ["event", "layout"]
 	event = []
 	layout = []
-	# back
-	# front
-		# desk = []
-		# mobi = []
-		term = ["devela_base_core/term"] # media::image::sixel
-		# web = []
 work = [
 	"process", "sync", "thread",
 	"bytemuck?/zeroable_atomics",
@@ -1072,7 +1068,7 @@ path = "examples/data/id_seq.rs"
 # term
 [[example]]
 name = "term_linux"
-path = "examples/ui/term/linux.rs"
+path = "examples/sys/term/linux.rs"
 required-features = ["linux", "unsafe_syscall"]
 
 # work

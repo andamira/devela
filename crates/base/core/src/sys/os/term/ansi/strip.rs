@@ -1,4 +1,4 @@
-// devela_base_core::ui::front::term::ansi::strip
+// devela_base_core::sys::os::term::ansi::strip
 //
 //! Defines the [`Ansi::strip_codes`] method.
 //

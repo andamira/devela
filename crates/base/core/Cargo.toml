@@ -63,13 +63,14 @@ num = ["int", "lin", "rand"]
 	lin = [] # linear algebra
 	# prob
 		rand = []
+sys = ["term"]
+	# os
+		term = [] # media::image::sixel
 text = ["grapheme", "translit"]
 	grapheme = []
 	translit = []
-ui = ["term"]
+ui = []
 	# layout = []
-	# front
-		term = [] # media::image::sixel
 
 #* Safety features *#
 
