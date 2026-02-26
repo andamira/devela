@@ -9,7 +9,7 @@ use crate::{_TAG_CODE, _TAG_TEXT, _reexport, _tags};
 
 #[doc = crate::_tags!(code procedural_macro)]
 #[rustfmt::skip]
-pub use devela_base_macros::{
+pub use devela_base_core::_dep::base_macros::{
     cif, compile, compile_attr,
     ident_total, ident_total_unique, ident_unique,
     coalesce, field_of,

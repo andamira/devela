@@ -25,3 +25,7 @@ _reexport! { optional_crate (unsafe) "dep_simdutf8", "simdutf8", simdutf8,
 _reexport! { optional_crate (unsafe) "dep_wide", "wide", wide,
     doc: "SIMD-compatible data types."
 }
+
+/* workspace.dependencies */
+
+pub use devela_base_macros as base_macros;

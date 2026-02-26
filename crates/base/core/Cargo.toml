@@ -76,7 +76,8 @@ ui = []
 
 safest = ["safe"]
 safe = [
-	"devela_base_macros/safe", "safe_build",
+	# "devela_base_macros/safe",
+	"safe_build",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
 	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
 ]
@@ -104,7 +105,7 @@ safe = [
 	safe_work = []
 
 unsafe = [
-	"devela_base_macros/unsafe",
+	# "devela_base_macros/unsafe",
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",

@@ -621,7 +621,6 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 # 2. Add a new entry below and in ./src/_deps.rs.
 
 #* workspace internal libraries (2req + 3opt) *#
-devela_base_macros = { workspace = true }
 devela_base_core   = { workspace = true }
 #
 devela_base_alloc  = { workspace = true, optional = true }
