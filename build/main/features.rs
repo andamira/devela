@@ -234,7 +234,9 @@ mod reflection {
             "safe_geom",
             "safe_lang",
             "safe_media",
-                "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
+                "safe_audio",
+                "safe_font",
+                "safe_visual", "safe_color", "safe_draw", "safe_image",
             "safe_num",
             "safe_org",
             "safe_phys",
@@ -287,15 +289,19 @@ mod reflection {
         };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         ref_flags: &["media··"],
-        features: &["media", "audio", "color", "draw", "font", "image"]
+        features: &["media",
+            "audio",
+            "font",
+            "visual", "color", "draw", "image",
+        ]
     };
+        pub const VISUAL: FlagsFeatures = FlagsFeatures {
+            ref_flags: &["visual··"],
+            features: &["visual", "color", "draw", "image"]
+        };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
-        features: &["num",
-            "lin",
-            "int",
-            "rand",
-        ]
+        features: &["num", "lin", "int", "rand"]
     };
     pub const ORG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["org··"],
@@ -396,7 +402,7 @@ mod reflection {
             DATA,
             GEOM,
             LANG, FFI,
-            MEDIA,
+            MEDIA, VISUAL,
             NUM,
             ORG,
             PHYS,

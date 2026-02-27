@@ -10,15 +10,15 @@
 #![cfg_attr(feature = "safe_lang", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media); // audio, color, draw, font, image, video
+    crate::_doc!(modules: crate; media); // audio, compo, doc, font, visual
 }
 
-// pub mod image;
+// pub mod visual;
 
 crate::structural_mods! { // _crate_internals
     // _pub_mods {
     //     pub use super::{
-    //         image::_all::*,
+    //         visual::_all::*,
     //     };
     // }
     _crate_internals {

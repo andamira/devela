@@ -371,14 +371,10 @@ Many feature gates are removed in order to make most features make always availa
 
 ---
 ## media
+- new modules: `compo`, `doc`, `visual`.
+
 ### audio
 - new types: `AudioChannel`, `AudioChannels`.
-
-### color
-- move to [base]:
-  - types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
-  - aliases: `Lightness`, `LinearLightness`, `Luma`, `Luminance`, `Rgb8`, `Rgba8`, `RgbaPre8`, `Rgb16`, `Rgba16`, `RgbaPre16`, `RgbF32`, `RgbaF32`, `RgbaPreF32`, `RgbF64`, `RgbaF64`, `RgbaPreF64`, `RgbLinF32`, `RgbaLinF32`, `RgbaLinPreF32`, `RgbLinF64`, `RgbaLinF64`, `RgbaLinPreF64`.
-- new type `GammaConst`.
 
 ### font
 - new type: `FontArt`.
@@ -389,7 +385,14 @@ Many feature gates are removed in order to make most features make always availa
   - `FONT_3_5` to `FONT_BIT_3_5`.
   - `FONT_5_6` to `FONT_BIT_5_6`.
 
-### image
+### visual
+#### color
+- move to [base]:
+  - types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
+  - aliases: `Lightness`, `LinearLightness`, `Luma`, `Luminance`, `Rgb8`, `Rgba8`, `RgbaPre8`, `Rgb16`, `Rgba16`, `RgbaPre16`, `RgbF32`, `RgbaF32`, `RgbaPreF32`, `RgbF64`, `RgbaF64`, `RgbaPreF64`, `RgbLinF32`, `RgbaLinF32`, `RgbaLinPreF32`, `RgbLinF64`, `RgbaLinF64`, `RgbaLinPreF64`.
+- new type `GammaConst`.
+
+#### image
 - add a new sixel implementation:
   - new types: `SixelChar`, `SixelColor`, `SixelEncoder`, `SixelPalette`, `SixelPaletteIter`.
 - remove legacy vendored sixel implementation.

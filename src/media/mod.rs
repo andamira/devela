@@ -9,37 +9,31 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media: audio, color, font, image); // draw, plate, video
+    crate::_doc!(modules: crate; media: audio, font, visual); // compo, doc, motion
 }
-
-#[cfg(feature = "draw")]
-mod draw;
 
 #[cfg(feature = "audio")]
 pub mod audio;
-#[cfg(feature = "color")]
-pub mod color;
+// pub mod compo; // WIP
+// pub mod doc; // WIP
 #[cfg(feature = "font")]
 pub mod font;
-#[cfg(feature = "image")]
-pub mod image;
-// #[cfg(feature = "video")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "video")))]
-// pub mod video;
+// pub mod motion; // WIP
+pub mod visual;
 
 crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         #[cfg(feature = "audio")] pub use super::audio::_all::*;
-        #[cfg(feature = "color")] pub use super::color::_all::*;
-        #[cfg(feature = "draw")]  pub use super::draw::_all::*;
+        // pub use super::compo::_all::*;
+        // pub use super::doc::_all::*;
         #[cfg(feature = "font")]  pub use super::font::_all::*;
-        #[cfg(feature = "image")] pub use super::image::_all::*;
-        // #[cfg(feature = "video")] pub use super::video::_all::*;
+        // pub use super::motion::_all::*;
+        pub use super::visual::_all::*;
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;
     }
     _hidden {
-        #[cfg(feature = "image")] pub use super::image::_hidden::*;
+        pub use super::visual::_hidden::*;
     }
 }

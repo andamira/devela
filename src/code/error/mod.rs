@@ -35,7 +35,7 @@ crate::structural_mods! { // _reexports
 
         #[doc(inline)]
         #[cfg(feature = "image")]
-        pub use crate::media::image::{ImageError, ImageResult};
+        pub use crate::media::visual::image::{ImageError, ImageResult};
 
         /* num */
         #[doc(inline)]

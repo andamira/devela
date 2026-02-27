@@ -1,0 +1,25 @@
+// devela_base_core::media::visual::color::rgb::impls::f32
+//
+//!
+//
+
+#![expect(unused)]
+
+use super::*;
+use crate::{Rgb8, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
+
+#[allow(missing_docs)]
+#[rustfmt::skip]
+impl RgbF32 {
+    /// New `RgbF32`.
+    pub const fn new(r: f32, g: f32, b: f32) -> RgbF32 { Self { c: [r, g, b] } }
+    /// The red component.
+    pub const fn red(self) -> f32 { self.c[0] }
+    pub const fn r(self) -> f32 { self.c[0] }
+    /// The green component.
+    pub const fn green(self) -> f32 { self.c[1] }
+    pub const fn g(self) -> f32 { self.c[1] }
+    /// The blue component.
+    pub const fn blue(self) -> f32 { self.c[2] }
+    pub const fn b(self) -> f32 { self.c[2] }
+}

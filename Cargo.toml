@@ -154,7 +154,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 159/300 (141 remaining), 104 visible, 55 hidden
+[features] # 160/300 (140 remaining), 105 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -253,13 +253,14 @@ lang = ["glsl", "js"]
 		# ffi = []
 			glsl = []
 			js = []
-media = ["audio", "color", "draw", "font", "image", "video"]
+media = ["audio", "font", "visual"]
 	audio = ["devela_base_core/audio"]
-	color = ["devela_base_core/color", "devela_base_alloc?/color", "devela_base_std?/color"]
-	draw = ["devela_base_core/draw"]
+	# doc = []
 	font = ["devela_base_core/font"]
-	image = ["devela_base_core/image"]
-	video = []
+	visual = ["color", "draw", "image"]
+		color = ["devela_base_core/color", "devela_base_alloc?/color", "devela_base_std?/color"]
+		draw = ["devela_base_core/draw"]
+		image = ["devela_base_core/image"]
 num = ["int", "lin", "rand"]
 	# dom
 		int = ["devela_base_core/int", "devela_base_alloc?/int"] # Int TEMP
@@ -349,11 +350,12 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
 		safe_audio = ["devela_base_core/safe_audio"]
-		safe_color = ["devela_base_core/safe_color",
-			"devela_base_alloc?/safe_color", "devela_base_std?/safe_color"]
-		safe_draw = ["devela_base_core/safe_draw"]
-		safe_font = ["devela_base_core/safe_font"]
-		safe_image = ["devela_base_core/safe_image"]
+		safe_visual = ["safe_color", "safe_draw", "safe_image"]
+			safe_color = ["devela_base_core/safe_color",
+				"devela_base_alloc?/safe_color", "devela_base_std?/safe_color"]
+			safe_draw = ["devela_base_core/safe_draw"]
+			safe_font = ["devela_base_core/safe_font"]
+			safe_image = ["devela_base_core/safe_image"]
 	safe_num = []
 	safe_org = []
 	safe_phys = ["safe_time"]
@@ -608,7 +610,7 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-[dependencies] # 19 (2 required, 17 optional)
+[dependencies] # 18 (1 required, 17 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -981,7 +983,7 @@ check-cfg = [ # Allowed configuration flags:
 	# lang: (2)
 	'cfg(lang··, ffi··)',
 	# media: (1)
-	'cfg(media··)',
+	'cfg(media··, visual··)',
 	# num: (1)
 	'cfg(num··)',
 	# org: (1)

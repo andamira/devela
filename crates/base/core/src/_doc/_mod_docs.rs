@@ -143,14 +143,17 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 5 (artifacts meant to be perceived)
     _DOC_MEDIA              = "Media representation, processing, and synthesis.";
     _DOC_MEDIA_AUDIO        = "Audio signal representation and processing.";
-    _DOC_MEDIA_COLOR        = "Color models and chromatic systems.";
-    _DOC_MEDIA_DRAW         = "Geometric drawing primitives and composition.";
+    _DOC_MEDIA_COMPO        = "Spatial and temporal composition of media elements.";
+    _DOC_MEDIA_COMPO_PLOT   = "Structured plotting of data into visual form.";
+    _DOC_MEDIA_DOC          = "Structured document layout and generation.";
+    _DOC_MEDIA_DOC_PDF      = "PDF document generation.";
     _DOC_MEDIA_FONT         = "Font data, metrics, and shaping systems.";
-    _DOC_MEDIA_IMAGE        = "Raster image representation and processing.";
     _DOC_MEDIA_MOTION       = "Perceptual motion and temporal sequencing.";
-    _DOC_MEDIA_PLATE        = "Retained, page-based document surfaces.";
-    _DOC_MEDIA_PLATE_PDF    = "PDF document generation.";
-    _DOC_MEDIA_VIDEO        = "Video stream representation and processing.";
+    _DOC_MEDIA_VISUAL       = "Visual media representation and processing.";
+    _DOC_MEDIA_VISUAL_COLOR = "Color models and chromatic systems.";
+    _DOC_MEDIA_VISUAL_DRAW  = "Geometric drawing primitives and composition.";
+    _DOC_MEDIA_VISUAL_IMAGE = "Raster image representation and processing.";
+    _DOC_MEDIA_VISUAL_VIDEO = "Video stream representation and processing.";
 
     // 6 (formal systems of magnitude, order, and uncertainty)
     _DOC_NUM             = "Numerical types, structures, and operations.";

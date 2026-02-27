@@ -13,7 +13,7 @@ mod no;
 // mod ops;
 
 #[cfg(feature = "num")]
-mod traits; // Num, NumRef, (NumConst)
+mod traits; // Num, NumRef
 
 pub mod int; // NumInt[Ref], prime_number_theorem, (Divisor, GcdReturn, Int[Alloc], [i|u]size_[down|up])
 pub mod real; // Real-valued numeric domains and representations.
@@ -40,6 +40,8 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
         };
     }
     _reexports {
-        pub use devela_base_core::num::dom::NoNum;
+        pub use devela_base_core::num::dom::{
+            NoNum, NumConst,
+        };
     }
 }

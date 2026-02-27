@@ -11,39 +11,18 @@
 #![cfg_attr(doc, allow(rustdoc::broken_intra_doc_links))]
 // docs
 crate::CONST! { pub(crate) _DOC_MEDIA_MODULES =
-    crate::_doc!(modules: crate; media: color); // audio, draw, font, image, video
+    crate::_doc!(modules: crate; media: visual); // audio, compo, doc, font, video
 }
 
 // #[cfg(feature = "audio")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "audio")))]
 // pub mod audio;
-
-#[cfg(feature = "color")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "color")))]
-pub mod color;
-
-// #[cfg(feature = "draw")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "draw")))]
-// pub mod draw;
-
-// #[cfg(feature = "image")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
-// pub mod image;
+pub mod visual;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         // #[cfg(feature = "audio")]
         // pub use super::audio::_all::*;
-
-        #[cfg(feature = "color")]
-        pub use super::color::_all::*;
-
-        // #[cfg(feature = "draw")]
-        // pub use super::draw::_all::*;
-
-        // #[cfg(feature = "image")]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = "image")))]
-        // pub use super::image::_all::*;
+        pub use super::visual::_all::*;
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;
