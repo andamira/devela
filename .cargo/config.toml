@@ -38,20 +38,20 @@
 # unstable-options = true
 # mtime-on-use = true
 
+[resolver]
+# ==============================================================================
+# https://doc.rust-lang.org/stable/cargo/guide/build-performance.html#resolve-features-for-the-whole-workspace
+# FIX: warning: ignoring `resolver.feature-unification` without `-Zfeature-unification`
+##feature-unification = "workspace" # MAYBE
 
 [build]
 # ==============================================================================
 # - https://doc.rust-lang.org/cargo/reference/config.html#build
+# https://doc.rust-lang.org/stable/cargo/guide/build-performance.html#enable-the-experimental-parallel-frontend
+# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 
-# In sync with ./nightly.toml & ../tools/cargo-native
-rustdocflags = [
-	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
-	"--html-in-header", "./src/_doc/header.html",
-	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
-]
-rustflags = [
-	# "-Ctarget-cpu=native", # see instead: ../tools/cargo-native
-]
+# [build.analysis]
+# enabled = true
 
 [env]
 # ==============================================================================

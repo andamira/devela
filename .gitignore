@@ -1,4 +1,6 @@
 /target
 Cargo.lock
 /examples/lang/*/public_html/*
+/tools/x-env-local.sh
+/tools/x-env-local-nightly.sh
 /_info

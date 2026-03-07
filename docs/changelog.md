@@ -138,9 +138,12 @@ Many feature gates are removed in order to make most features make always availa
   - switch rust-script for cargo-script.
   - simplify and homogenize toolchain selection syntax.
   - configure the exact nightly version to install and use.
-- move `config/rustdoc-header.html` to `src/_doc/header.html`.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
+- move `config/rustdoc-header.html` to `src/_doc/header.html`.
 - update `src/_doc/header.html` to support multiple crates with custom whitelists.
+- remove `./cargo/nightly.toml`.
+- new `x` workspace command wrapper.
+- new files in `tools`: `x.fish`, `x.sh`, `x-env-common.sh`, `x-env-native.sh`, `x-env-nightly.sh`.
 - add flat re-exports of root modules to `zall_` & re-export hidden as `all_`.
 - rename all `lib.rs` to `index.rs`.
 - rename `_info` to `_doc`
