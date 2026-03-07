@@ -6,7 +6,7 @@
 #![doc = crate::_QUO_DATA_ACCESS!()]
 //
 
-// mod cursor;
+// mod cursor; // WIP
 // mod address;
 
 pub mod iter;
@@ -15,7 +15,7 @@ crate::structural_mods! { // _mods, _pub_mods
     _mods {
         // pub use super::{
         //     // address::_all::*,
-        //     // cursor::_all::*,
+        //     cursor::_all::*,
         // };
     }
     _pub_mods {

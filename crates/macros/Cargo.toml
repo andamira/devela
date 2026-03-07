@@ -82,7 +82,7 @@ devela_base_std   = { workspace = true, optional = true }
 #* required external dependencies *#
 
 proc-macro2 = "1.0.106" # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
-quote = "1.0.44"
+quote = "1.0.45"
 
 [badges]
 maintenance.status = "experimental"

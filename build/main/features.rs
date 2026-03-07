@@ -336,6 +336,10 @@ mod reflection {
             "ui", "event", "layout",
         ]
     };
+    pub const VITA: FlagsFeatures = FlagsFeatures {
+        ref_flags: &["vita··"],
+        features: &["vita"]
+    };
     pub const WORK: FlagsFeatures = FlagsFeatures {
         ref_flags: &["work··"],
         features: &["work", "process", "sync", "thread"]
@@ -410,6 +414,7 @@ mod reflection {
             SYS, MEM,
             TEXT,
             UI,
+            VITA,
             WORK,
 
             /* capabilities */

@@ -24,9 +24,9 @@ See also
 
 
 # 1.94 will be stable on [2026-03-05](https://releases.rs/docs/1.94.0/) `nightly_stable_1_94`
-<!-- > - <https://github.com/rust-lang/rust/milestone/139> -->
-<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.94.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.94.0> -->
+> - <https://github.com/rust-lang/rust/milestone/139>
+> - <https://blog.rust-lang.org/2026/03/05/Rust-1.94.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.94.0>
 
 - 1.94: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
 - 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
@@ -38,8 +38,8 @@ See also
 - 1.94: ` `[-Zconfig-include](https://github.com/rust-lang/cargo/pull/16284)
 
 # 1.95 will be stable on [2026-04-16](https://releases.rs/docs/1.95.0/) `nightly_stable_1_95`
-<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
-<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.95.0> -->
+> - <https://github.com/rust-lang/rust/milestone/140>
+<!-- > - <https://blog.rust-lang.org/2026/04/16/Rust-1.95.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.95.0> -->
 
 - 1.95: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487)
@@ -57,9 +57,13 @@ See also
 - 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
 
 # 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
-<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
-<!-- > - <https://blog.rust-lang.org/2026/01/22/Rust-1.96.0> -->
+> - <https://github.com/rust-lang/rust/milestone/142>
+<!-- > - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.96.0> -->
+
+- 1.96: `·`[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
+- 1.96: `·`[new_range_to_inclusive_api](https://github.com/rust-lang/rust/pull/152304)
+- 1.96: `·`[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
 
 # 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
 <!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
@@ -76,7 +80,6 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
-- 1.??: `·`[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
@@ -97,7 +100,7 @@ See also
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/issues/125687)
-- 1.??: `·`[RangeToInclusive](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
+- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/pull/152304)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)

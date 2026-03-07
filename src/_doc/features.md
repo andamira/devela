@@ -68,17 +68,18 @@ Root modules & public sub-modules features:
   - [`affine`]:
   - [`dir`]:
   - [`fig`]:
-  - [`metric`]:
-  - [`rel`]:
-  - [`space`]:
+  - `metric`:
+  - `rel`:
+  - `space`:
 - [`lang`]:
   - `ffi`: glsl, js.
 - [`media`]
   - [`audio`]:
-  - [`color`]:
-  - [`draw`]:
   - [`font`]:
-  - [`image`]:
+  - [`visual`]:
+    - [`color`]:
+    - `draw`:
+    - [`image`]:
 - [`num`]:
   - [`dom`]:
   - [`fin`]:
@@ -86,7 +87,7 @@ Root modules & public sub-modules features:
   - [`lin`]:
   - [`prob`]:
   - [`quant`]:
-  - [`symb`]:
+  - `symb`:
 - [`phys`]:
   - `bio`:
   - `chem`:
@@ -107,7 +108,8 @@ Root modules & public sub-modules features:
     - `windows`
 - [`text`]
 - [`ui`]
-  - [`layout`]
+  - [`event`]
+  - `layout`
 - [`work`]
   - `future`:
   - `process`:
@@ -121,16 +123,17 @@ Root modules & public sub-modules features:
   [`affine`]:     crate::geom::affine
   [`dir`]:        crate::geom::dir
   [`fig`]:        crate::geom::fig
-  [`metric`]:     crate::geom::metric
-  [`rel`]:        crate::geom::rel
-  [`space`]:      crate::geom::space
+  <!-- [`metric`]:     crate::geom::metric -->
+  <!-- [`rel`]:        crate::geom::rel -->
+  <!-- [`space`]:      crate::geom::space -->
 [`lang`]:         crate::lang
 [`media`]:        crate::media
   [`audio`]:      crate::media::audio
-  [`color`]:      crate::media::color
-  [`draw`]:       crate::media::draw
   [`font`]:       crate::media::font
-  [`image`]:      crate::media::image
+  [`visual`]:     crate::media::visual
+  [`color`]:      crate::media::visual::color
+  <!-- [`draw`]:       crate::media::visual::draw -->
+  [`image`]:      crate::media::visual::image
 [`num`]:          crate::num
   [`dom`]:        crate::num::dom
   [`fin`]:        crate::num::fin
@@ -138,7 +141,7 @@ Root modules & public sub-modules features:
   [`lin`]:        crate::num::lin
   [`prob`]:       crate::num::prob
   [`quant`]:      crate::num::quant
-  [`symb`]:       crate::num::symb
+  <!-- [`symb`]:       crate::num::symb -->
 [`phys`]:         crate::phys
   [`time`]:       crate::phys::time
 [`run`]:          crate::run
@@ -151,7 +154,8 @@ Root modules & public sub-modules features:
 [`text`]:         crate::text
   [`str`]:        mod@crate::text::str
 [`ui`]:           crate::ui
-  [`layout`]:     crate::ui::layout
+  [`event`]:      crate::ui::event
+  <!-- [`layout`]:     crate::ui::layout -->
 [`work`]:         crate::work
   [`future`]:     crate::work::future
   [`process`]:    crate::work::process
@@ -233,8 +237,7 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 
 [`Destaque`]: crate::data::Destaque
 [`Stack`]: crate::data::Stack
-[`Sort`]: crate::data::Sort
-[`Tuple`]: crate::data::Tuple
+[`Tuple`]: crate::data::value::Tuple
 
 
 ### Dependency features

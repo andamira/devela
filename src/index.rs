@@ -73,7 +73,7 @@
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_96`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_96, feature())]
+#![cfg_attr(nightly_stable_1_96, feature(control_flow_ok, new_range_to_inclusive_api))]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
 // ----------------------------
@@ -88,7 +88,6 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
-        control_flow_ok,
         debug_closure_helpers,
         derive_coerce_pointee,
         fn_align,

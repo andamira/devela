@@ -59,7 +59,7 @@ Many feature gates are removed in order to make most features make always availa
   - `rand_core` to 0.10.
   - [macros]
     - `proc-macro2` to 1.0.101.
-    - `quote` to 1.0.40.
+    - `quote` to 1.0.45.
 - remove dependencies:
   - `const-str`, and related `str!` macro.
   - `crossterm` and `miniquad`; move to revela.
@@ -121,7 +121,7 @@ Many feature gates are removed in order to make most features make always availa
 ## manifest
 - add workspace hierarchy diagram.
 - add *binaries* and *metrics* sections.
-- add lint `missing_debug_implementations`.
+- add lints: `missing_debug_implementations`, `unused_features`.
 - make keys parts of the workspace: edition, version, authors, license, documentation.
 - simplify debugging info in `dev` profile.
 - add `debugging` profile.

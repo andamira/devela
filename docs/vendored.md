@@ -30,7 +30,7 @@ See the linked modifications for detailed changes.
 - <i id="quickdiv"></i>[quickdiv] by Darko Trifunovski,
   as the [`define_divisor!`] macro ([*modifications*][M_quickdiv]).
 - <i id="stack_dst"></i>[stack_dst] by John Hodge,
-  as the [`data::dst`] module ([*modifications*][M_stack_dst]).
+  as the [`data::layout::dst`] module ([*modifications*][M_stack_dst]).
 - <i id="stated-scope-guard"></i>[stated-scope-guard] by EvianZhang,
   as part the [`ScopeGuard`] struct ([*modifications*][M_stated-scope-guard]).
 - <i id="static_assertions"></i>[static_assertions] by Nikolai Vazquez,
@@ -81,7 +81,7 @@ See the linked modifications for detailed changes.
   [`define_divisor!`]: https://andamira.github.io/devela/latest/devela/num/macro.define_divisor.html
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
   [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stack_dst.md
-  [`data::dst`]: https://andamira.github.io/devela/latest/devela/data/dst/index.html
+  [`data::layout::dst`]: https://andamira.github.io/devela/latest/devela/data/layout/dst/index.html
 [stated-scope-guard]: https://crates.io/crates/stated-scope-guard/0.1.0
   [M_stated-scope-guard]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stated-scope-guard.md
   [`ScopeGuard`]: https://andamira.github.io/devela/latest/devela/code/struct.ScopeGuard.html

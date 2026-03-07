@@ -831,6 +831,7 @@ missing_docs = "warn" # missing docs for public items
 #
 # https://doc.rust-lang.org/rustc/lints/listing/allowed-by-default.html
 stable_features = "allow" # a feature attribute that has since been made stable
+unused_features = "allow" # unused crate-level features (1.96)
 unknown_lints = "allow" # unrecognized lint attributes
 
 [workspace.lints.rustdoc]
@@ -998,6 +999,8 @@ check-cfg = [ # Allowed configuration flags:
     'cfg(text··)',
 	# ui: (1)
 	'cfg(ui··)',
+	# vita: (1)
+	'cfg(vita··)',
 	# work: (1)
 	'cfg(work··)',
 ]

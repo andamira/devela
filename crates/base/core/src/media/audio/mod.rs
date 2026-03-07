@@ -10,6 +10,7 @@
 
 // mod codec; // …
 mod layout; // AudioChannel, AudioChannels
+// mod music; //
 // mod pcm; // PcmBuffer, PcmPlanar, PcmRaw, PcmWav, PcmSample, PcmSpec, …
 // mod spatial; // …
 // mod synth; // …
@@ -19,6 +20,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             // codec::*,
             layout::*,
+            // music::*,
             // pcm::*,
             // spatial::*,
             // synth::*,

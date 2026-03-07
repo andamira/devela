@@ -9,7 +9,7 @@
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
   [M_cfg-if]: crate::_doc::vendored::cfg_if
   [`cfg-if!`]: crate::code::util::cfg_if
-  [`ConstList`]: crate::data::layout::ConstList
+  [`ConstList`]: crate::data::topol::ConstList
   [M_crossbeam-utils]: crate::_doc::vendored::crossbeam_utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_doc::vendored::etcetera
@@ -28,7 +28,7 @@
   [M_quickdiv]: crate::_doc::vendored::quickdiv
   [`define_divisor`]: crate::num::define_divisor
   [M_stack_dst]: crate::_doc::vendored::stack_dst
-  [`data::dst`]: crate::data::codec::dst
+  [`data::layout::dst`]: crate::data::layout::dst
   [M_stated-scope-guard]: crate::_doc::vendored::stated_scope_guard
   [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_doc::vendored::static_assertions
