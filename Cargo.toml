@@ -119,7 +119,6 @@ include = [
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 	## programs
-	"/programs/croot.rs",
 ]
 
 [package.metadata.docs.rs]
@@ -1028,11 +1027,6 @@ harness = false
 # ==============================================================================
 # To install a binary:
 # cargo install --path . --bin NAME -F std
-
-[[bin]]
-name = "croot" # Get the path to your Cargo project root
-path = "programs/croot.rs"
-required-features = ["std", "linux"]
 
 # num
 # [[bin]]

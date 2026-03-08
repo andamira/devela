@@ -57,7 +57,7 @@ Many feature gates are removed in order to make most features make always availa
 - simplify debugging info in `dev` profile.
 - add `debugging` profile.
 
-### tools & misc. files
+### tools
 - new `x` workspace command wrapper.
 - new files in `tools`: `x.fish`, `x.sh`, `x-env-common.sh`, `x-env-native.sh`, `x-env-nightly.sh`.
 - update `tools/check.rs`:
@@ -67,7 +67,6 @@ Many feature gates are removed in order to make most features make always availa
   - switch rust-script for cargo-script.
   - simplify and homogenize toolchain selection syntax.
   - configure the exact nightly version to install and use.
-- add new program: `croot`.
 
 ### CI
 - bump `actions/checkout` to v5.
