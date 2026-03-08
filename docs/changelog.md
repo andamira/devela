@@ -21,13 +21,12 @@ Many feature gates are removed in order to make most features make always availa
 - error system refinement: updated error macros and type organization.
 - msrv bump: minimum supported rust version increased to 1.93.0.
 
-<!-- **Legend:** ⚠️ Breaking Change | 🆕 New Addition | ✨ Enhancement | 🐛 Bug Fix -->
+ ------------------------------------------------------------------------------
 
------------
-> *Project* :
------------
+# Project
 
-## build
+## infra
+### build
 - define `CRATE_NAME` constant.
 - move `/meta/build` to `/build/main`.
 - move build fn utils as `Build` methods.
@@ -39,12 +38,79 @@ Many feature gates are removed in order to make most features make always availa
 - add new `devela_postbuild` crate to `build/post`.
 - add build config flag aliases: `any_target_arch_linux`, `any_target_arch_riscv`.
 - add [base] symlinks to `devela/main/[alias|environment|features].rs`.
+- move `/config/dep_all.rs` to `/build/main/dep_all`.
 
-## cargo
+### cargo
 - bump MSRV to 1.93.0.
-- add cargo aliases: `L0r`, `w*` (workspace).
 - add new cargo env var `CARGO_WORKSPACE_DIR`.
 - fix updated syntax for unstable cargo-include in `.cargo/config.toml`.
+
+#### config
+- remove `./cargo/nightly.toml`.
+- add cargo aliases: `L0r`, `w*` (workspace).
+
+#### manifest
+- add workspace hierarchy diagram.
+- add *binaries* and *metrics* sections.
+- add lints: `missing_debug_implementations`, `unused_features`.
+- make keys parts of the workspace: edition, version, authors, license, documentation.
+- simplify debugging info in `dev` profile.
+- add `debugging` profile.
+
+### tools & misc. files
+- new `x` workspace command wrapper.
+- new files in `tools`: `x.fish`, `x.sh`, `x-env-common.sh`, `x-env-native.sh`, `x-env-nightly.sh`.
+- update `tools/check.rs`:
+  - bump `devela` to 0.24.0.
+  - test all workspace crates.
+  - start testing without dependencies.
+  - switch rust-script for cargo-script.
+  - simplify and homogenize toolchain selection syntax.
+  - configure the exact nightly version to install and use.
+- add new program: `croot`.
+
+### CI
+- bump `actions/checkout` to v5.
+- add more `no_std` targets, retry downloads and disable fail-fast.
+
+## workspace
+- new `/crates/` directory.
+- add `devela_sentinel` crate.
+- remove the `game` root module.
+- declare the `std` external crate.
+- add `_reexports` structural modules.
+- remove `_always` structural modules.
+- add new root modules: `org`, `vita`.
+- refactor all structural access modules.
+- enable `_docsrs` for workspace dependencies.
+- support having external optional dependencies.
+- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_std`.
+- prepare future workspace library crates related to root modules.
+- use a single version, changelog and readme for all workspace libs.
+  - move `devela_macros` changelog into `devela` archived changelog history.
+  - replace `paste` dependency with `pastey` and move to [base].
+- add flat re-exports of root modules to `zall_` & re-export hidden as `all_`.
+- rename `all` to `zall` & re-export hidden as `all`.
+- rename all `lib.rs` to `index.rs`.
+- rename `_info` to `_doc`.
+  - move `config/rustdoc-header.html` to `src/_doc/header.html`.
+  - update `src/_doc/header.html` to support multiple crates with custom whitelists.
+
+### [base]
+- add `_workspace_internal` structural module (replacing `_internal`).
+
+#### `devela_base_macros`
+- move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
+- new macro: `repeat!`.
+- new compiler predicates: `env`, `env_eq`, `env_ne`, `env_empty`, `env_nonempty`, `nota`.
+
+### `devela_macros`
+- use workspace's crate version.
+- make it an optional dependency.
+- add `devela_base_core` as a dependency.
+- enable `doc_cfg` via `nightly_doc` flag.
+- remove dependency `hashbrown`.
+- remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
 
 ## dependencies
 - make all optional external optional dependencies part of the workspace.
@@ -57,7 +123,7 @@ Many feature gates are removed in order to make most features make always availa
   - `hashbrown` to 0.16.
   - `memchr` to 2.8.
   - `rand_core` to 0.10.
-  - [macros]
+  - [macros]:
     - `proc-macro2` to 1.0.101.
     - `quote` to 1.0.45.
 - remove dependencies:
@@ -82,80 +148,12 @@ Many feature gates are removed in order to make most features make always availa
 - add default feature `alloc` to [base_alloc].
 - add default feature `std` to [base_std].
 
-## workspace
-- new `/crates/` directory.
-- add `devela_sentinel` crate.
-- remove the `game` root module.
-- declare the `std` external crate.
-- add `_reexports` structural modules.
-- remove `_always` structural modules.
-- add new root modules: `org`, `vita`.
-- refactor all structural access modules.
-- enable `_docsrs` for workspace dependencies.
-- support having external optional dependencies.
-- new workspace library crates: `devela_base_alloc`, `devela_base_core`, `devela_base_macros`, `devela_base_std`.
-- prepare future workspace library crates related to root modules.
-- use a single version, changelog and readme for all workspace libs.
-  - move `devela_macros` changelog into `devela` archived changelog history.
-  - replace `paste` dependency with `pastey` and move to [base].
-
-### [base]
-- add `_workspace_internal` structural module (replacing `_internal`).
-
-### [base_macros]
-- move devela_macros macros: `devela_macros`: `cif!`, `compile!`, `compile_attr!`, `ident_total!`, `ident_total_unique!`, `ident_unique!`, `coalesce!`, `field_of!`.
-- new macro: `repeat!`.
-- new compiler predicates: `env`, `env_eq`, `env_ne`, `env_empty`, `env_nonempty`, `nota`.
-
-### [macros]
-- use workspace's crate version.
-- make it an optional dependency.
-- add `devela_base_core` as a dependency.
-- enable `doc_cfg` via `nightly_doc` flag.
-- remove dependency `hashbrown`.
-- remove features: `alloc`, `std`, `nightly`, `nightly_doc`.
-
-### [postbuild]
-- add feature `__dbg`.
-
-## manifest
-- add workspace hierarchy diagram.
-- add *binaries* and *metrics* sections.
-- add lints: `missing_debug_implementations`, `unused_features`.
-- make keys parts of the workspace: edition, version, authors, license, documentation.
-- simplify debugging info in `dev` profile.
-- add `debugging` profile.
-
 ## metrics
 - rename directory `/benches` to `/metrics`.
 
-## tools & misc. files
-- add new binary: `croot`.
-- update `tools/check.rs`:
-  - bump `devela` to 0.24.0.
-  - test all workspace crates.
-  - start testing without dependencies.
-  - switch rust-script for cargo-script.
-  - simplify and homogenize toolchain selection syntax.
-  - configure the exact nightly version to install and use.
-- move `/config/dep_all.rs` to `/build/main/dep_all`.
-- move `config/rustdoc-header.html` to `src/_doc/header.html`.
-- update `src/_doc/header.html` to support multiple crates with custom whitelists.
-- remove `./cargo/nightly.toml`.
-- new `x` workspace command wrapper.
-- new files in `tools`: `x.fish`, `x.sh`, `x-env-common.sh`, `x-env-native.sh`, `x-env-nightly.sh`.
-- add flat re-exports of root modules to `zall_` & re-export hidden as `all_`.
-- rename all `lib.rs` to `index.rs`.
-- rename `_info` to `_doc`
-- rename `all` to `zall` & re-export hidden as `all`.
-- update github CI workflows
-  - bump `actions/checkout` to v5.
-  - add more `no_std` targets, retry downloads and disable fail-fast.
+---
 
-
------------
-> *Modules* :
------------
+# Modules
 
 ## code
 - rename `ExtAny` to `AnyExt`.
@@ -168,7 +166,7 @@ Many feature gates are removed in order to make most features make always availa
     - modify it to receive the trait as an argument.
 - move `ScopeGuard` to [base_core].
 
-### error
+### code::error
 - update `define_error!` macro.
   - move to `code::error`.
   - update docs, add example.
@@ -178,22 +176,22 @@ Many feature gates are removed in order to make most features make always availa
 - remove items: `AllError`, `AllResult`, `DataError`, `DataResult`, `ExtError`.
 - update `ArrayFmt` to support the rest of the core formatting traits.
 
-### marker
+### code::marker
 - make `TypeResource` and `type_marker!` constructors *const*.
 - new traits: `Prim`, `PrimFitPtr`, `PrimIndex`.
 
-### ops
+### code::ops
 - new macro: `punroll!`.
 - new types: `CallSemantics`, `CallBindTime`, `CallContext`, `CallDispatch`, `CallOpenness`, `CallStorage`.
 
-### panic
+### code::panic
 - move to [base]: `Panic`.
 
-### result
+### code::result
 - move to [base]:
   - functions: `serr`, `sok`.
   - macros: `unwrap!`.
-  - traits: `Morph`, `Hook`, `OptionExt`, `OptResExt`, `ResultExt`
+  - traits: `Morph`, `Hook`, `OptionExt`, `OptResExt`, `ResultExt`.
   - types: `Mismatch`, `OptRes`, `OptionFmt`, `OptionFmtOr`, `OptionFmtOrElse`, `Own`.
 - new macros: `hook!`, `morph!`.
 - rename:
@@ -209,7 +207,7 @@ Many feature gates are removed in order to make most features make always availa
     - `ok_map_err`? to `ok_err_map?`.
     - `ok_if_map_err`? to `ok_if_err_map?`.
 
-### utils
+### code::utils
 - new macros: `compile_warn!`, `doc_location!`, `doclink!`, `fn_name!`, `lets!`, `mod_path!`, `repeat!`, `type_count!`, `whilst!`, `write_at!`.
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
@@ -222,7 +220,7 @@ Many feature gates are removed in order to make most features make always availa
   - mark as `doc(no_inline)`.
   - allow accepting multiple tags.
   - fix rendering of std path links.
-- prefix internal constants `TAG_*` & `EMOJI_*` with `_`
+- prefix internal constants `TAG_*` & `EMOJI_*` with `_`.
 - define `_std_core` separately and privately per crate.
 - update `CONST!` macro with new arms: `hidden macro_export`, `inline macro_export`.
 - update `impl_traits!` macro:
@@ -237,7 +235,6 @@ Many feature gates are removed in order to make most features make always availa
 - remove vendored macro `cfor!`, replace with `whilst!`.
 - remove deprecated `iif!` macro.
 
----
 ## data
 - move to [base]:
   - macros: `bitfield!`, `init_array!`.
@@ -250,58 +247,58 @@ Many feature gates are removed in order to make most features make always availa
 - make `Sort` methods take `&mut self` instead of `self`.
 - make `Sort` public `quick_*` methods take `&mut self` as well.
 
-### access
+### data::access
 - new module `data::access`.
 - move here `address` & `iter`.
 
-#### iter
+#### data::access::iter
 - new traits: `IteratorLending`, `IteratorLendingDoubleEnded`, `IteratorLendingExactSize`, `IteratorLendingPeek`, `IteratorLendingPeekDoubleEnded`.
 - new macro: `iter_strided!`.
 - new types: `StridedIter`, `StridedIterMut`.
 
-### codec
+### data::codec
 - move here: `bit/`.
 - rename `serde/` to `deser/`.
 
-#### bit
+#### data::codec::bit
 - move `BitOps` & `Bitwise` to `num::bit`.
 - make all `bitfield!` methods consts.
 - make the module private.
 
-#### hash
+#### data::codec::hash
   - move to [base]: `HasherFx`, `HasherBuildFx`.
   - new module `data::codec::hash::check`.
   - new type `Adler32`.
 
-#### radix
+#### data::codec::radix
 - move `Base` to [base].
 - remove methods that allocate.
 
-### error
+### data::error
 - recreate the type `MismatchedCapacity`.
 - remove type: `DataOverflow`.
 - update `MismatchedBounds`.
 
-### id
+### data::id
 - new module `data::id`.
 - move here `key/` and `uid/`.
 
-#### key
+#### data::id::key
 - update `define_static_map!`:
   - support custom attributes and visibility.
   - add example items: `StaticMapConstU8Example`, `StaticMapTypeIdExample`, `StaticMapU16Example`.
   - improve docs.
 
-#### uid
+#### data::id::uid
 - move `IdPin` to [base].
 - new type `IdRegistry`.
 
-### layout
+### data::layout
 - new module `data::layout`.
 - move here: `DataCollection`, `dst/`, `pool/`, `sort/`, `table/`.
 - move here: `list/` submodules: `array/`, `buf/`→`buffer/`, `queue/`, `stack/`.
 
-#### array
+#### data::layout::array
 - move to [base]:
   - traits: `ArrayExt`.
   - types: `ArrayFmt`, `ConstList`.
@@ -314,33 +311,32 @@ Many feature gates are removed in order to make most features make always availa
   - rename `const_init` arm related to traits to `INIT in`.
   - rename `const_init*` arms unrelated to traits to `const_fn*`.
 
-#### buffer
+#### data::layout::buffer
 - new macros: `buffer_linear!`.
 - new example types: `BufferExample`, `BuffeAllocExample`, `BufferViewExample`.
 
-### topol
+### data::topol
 - new module `data::topol`.
 - move here: `listlink/`→`linked/`.
 
-### value
+### data::value
 - move here: `NoData`, `of/`, `tuple/`.
 - update `Oneof`:
   - new methods: `copy_*`.
   - remove methods: `variant_name`, `is_variant_name`, `first_non_unit`.
   - make methods const: `as_mut_*`, `as_ref_*`, `as_tuple_ref_options`.
 
----
 ## geom
 - make `num::geom` a new `geom` root module.
 - new modules: `affine/`, `rel/`, `space/`.
 - rename `shape` to `fig`, as well as the related feature.
 
-### dir
+### geom::dir
 - new module.
 - move here `Orientation`, `Angle`, `AngleDirection` & `AngleKind`.
 - new types: `Boundary1d`, `Boundary2d`, `Boundary3d`.
 
-### metric
+### geom::metric
 - move to [base]:
   - internal macro `_impl_metric!`.
   - types: `Distance`, `Extent`, `Orientation`, `Position`, `Region`, `RegionStrided`, `Stride`.
@@ -352,7 +348,6 @@ Many feature gates are removed in order to make most features make always availa
   - add methods for 2|3d: `length[_ref|_mut]`, `width[_ref|_mut]`, `height[_ref|_mut]`, `depth[_ref|_mut]`, `breadth[_ref|_mut]`.
 - remove `c_` prefix from int methods.
 
----
 ## lang
 - rename `lang::ling` to `lang::hum`.
 - rename `lang::ling::grammar` to `lang::hum::gram`.
@@ -360,26 +355,25 @@ Many feature gates are removed in order to make most features make always availa
 - new modules: `disc`, `gram`, `prog`, `repr`, `sem`.
 - move `ffi` to `prog::ffi`.
 
-### prog
+### lang::prog
 - new module: `dsl`.
 
-#### ffi
-##### c
+#### lang::prog::ffi
+##### lang::prg::ffi::c
 - new type aliases: `c_mode_t`, `c_off_t`.
 
-##### js
+##### lang::prg::ffi::js
 - update `JsInstant`:
   - make method const: `delta_since`.
   - remove methods: `const_delta_since`.
 
----
 ## media
 - new modules: `compo`, `doc`, `visual`.
 
-### audio
+### media::audio
 - new types: `AudioChannel`, `AudioChannels`.
 
-### font
+### media::font
 - new type: `FontArt`.
 - new const: `FONT_ART_3_4`.
 - rename:
@@ -388,19 +382,18 @@ Many feature gates are removed in order to make most features make always availa
   - `FONT_3_5` to `FONT_BIT_3_5`.
   - `FONT_5_6` to `FONT_BIT_5_6`.
 
-### visual
-#### color
+### media::visual
+#### media::visual::color
 - move to [base]:
   - types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
   - aliases: `Lightness`, `LinearLightness`, `Luma`, `Luminance`, `Rgb8`, `Rgba8`, `RgbaPre8`, `Rgb16`, `Rgba16`, `RgbaPre16`, `RgbF32`, `RgbaF32`, `RgbaPreF32`, `RgbF64`, `RgbaF64`, `RgbaPreF64`, `RgbLinF32`, `RgbaLinF32`, `RgbaLinPreF32`, `RgbLinF64`, `RgbaLinF64`, `RgbaLinPreF64`.
 - new type `GammaConst`.
 
-#### image
+#### media::visual::image
 - add a new sixel implementation:
   - new types: `SixelChar`, `SixelColor`, `SixelEncoder`, `SixelPalette`, `SixelPaletteIter`.
 - remove legacy vendored sixel implementation.
 
----
 ## num
 - move to [base]:
   - all data, numeric, text & time error types.
@@ -410,27 +403,27 @@ Many feature gates are removed in order to make most features make always availa
 - move `num::unit` to `phys::unit`.
 - make `num::error` public.
 
-### dom
+### num::dom
 - new module `num::dom`.
 - move here `num::float`, `num::frac`, `num::int`, `num::traits`.
 
-#### real
-##### float
+#### num::dom::real
+##### num::dom::real::float
 - rename: `ExtFloat` to `FloatExt`.
 - new types: `f32bits`, `f32bits_niche`, `f64bits`, `f64bits_niche`.
-- update `Float`
+- update `Float`:
   - new methods: `poly_eval_const`, `sin_minimax`, `cos_minimax`, `sin_cos_minimax`.
   - remove deprecated methods: `const_signum`, `const_copysign`, `const_clamp`, `const_max`, `const_min`.
   - make std methods *const*: `fract`, `normalize`, `set_normalized`, `split`, `trunc`.
   - split out std-enabled implementation as internal `FloatStd`.
 - Change `ExtFloat` to use `*_minimax` methods by default.
-- move to [base]
+- move to [base]:
   - aliases: `fsize`.
   - traits: `FloatConst`.
   - types: `Float`.
   - float shared docs prefixed with `_FLOAT_`.
 
-#### int
+#### num::dom::int
 - move to [base]: `Int`, `[iu]size_*`.
 - prefix int shared docs with `_INT_`.
 - new macros: `define_divisor!`.
@@ -438,21 +431,21 @@ Many feature gates are removed in order to make most features make always availa
 - remove type: `Divisor`.
 - make all `Int` methods *const*.
 
-### fin
+### num::fin
 - new module `num::fin`.
 - move here `num::bit`, `num::logic` and `num::ord`.
 
-#### bit
+#### num::fin::bit
 - new module `num::bit`.
 - update `BitOps` & `Bitwise`.
   - rearrange methods in thematic impl blocks.
   - new methods: `[is_][un]set[_checked][_range]`, `[un]set_all`, `flip[_checked]`, `flip[_checked]_range_if`, `[is_][un]set_mask`.
 - separate documentations for `BitOps` and `Bitwise` as individual constants.
 
-#### logic
+#### num::fin::logic
 - move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `[iu]size_*`.
 
-#### ord
+#### num::fin::ord
 - rename `Compare` to `Cmp`.
 - new macro `cmp!`.
 - update `Cmp`:
@@ -461,22 +454,20 @@ Many feature gates are removed in order to make most features make always availa
   - new methods: `minmax`, `pminmax`, `total_cmp`.
   - un-gate impls and many dependent const methods.
 
-### grain
+### num::grain
 - new module `num::grain`.
 - new macro `cast!`.
 - new traits `PrimScalar`, `PrimInt`, `PrimSint`, `PrimUint`, `PrimFloat`.
 - move inside: `num::cast`, `num::niche`, `num::wide`.
-
-#### cast
 - fix `Cast` wrapping methods performance, and correctness for negative integers.
 
-#### niche
+#### num::grain::niche
 - new macros: `niche_prim!`, `nv!`.
 - new types: `MaybeNiche`, `NonNiche`, `NicheValueError`.
 - move to [base]: `NonExtreme*`, `NonValue*`, `ne!`, `nz!`.
 - update macros: `ne`, `nv`, `nz`, adding lossy constructors.
 
-#### wide
+#### num::grain::wide
 - new module `num::grain::wide`.
 - new macro: `define_lane!`.
 - new internal helper macros.
@@ -484,15 +475,15 @@ Many feature gates are removed in order to make most features make always availa
 - support `nightly_simd` & `dep_wide` in [base_core].
 - re-export some of `core::simd` types and traits.
 
-### lin
+### num::lin
 - new module: `num::lin`.
 - move here `geom::linear::{matrix, vector}`.
 
-### prob
+### num::prob
 - new module `num::prob`.
 - move here `num::rand`.
 
-#### rand
+#### num::prob::rand
 - move `num::prob::rand` to [base].
 - rename `Lgc16` to `Lcg16`.
 - rename `xorshift_custom!` to `define_xorshift!`.
@@ -500,30 +491,27 @@ Many feature gates are removed in order to make most features make always availa
 - new traits: `Rand`, `RandAlloc`, `RandStd`.
 - new type: `Pcg32`.
 
-### quant
+### num::quant
 - move to [base]: `Cycle`, `CycleCount`, `Interval`,  `Sign`.
 - update `Interval`:
   - use individual `IncompatibleBounds` error.
   - add methods: `bound`, `bound_mut`, `bound_as_ref`.
-- update `Sign`
+- update `Sign`:
   - make part of `quant`.
   - rename variant `None` to `Zero`.
   - add methods: `eq`, `is_negative`, `is_positive`, `is_zero`, `is_nonzero`, `invert`, `same_direction`, `combine`, `pow`, `abs`, `neg_abs`, `fold`, `fold_slice`.
 - move `ValueQuant` from `code::result` to `num::quant`.
 
-### symb
-- new modules `num::symb`.
+### num::symb
+- new module `num::symb`.
 
----
 ## org
 - new `org` module.
 
----
 ## phys
-### astro
-- new `phys::astro` module.
+- new modules: `phys::astro`
 
-### time
+### phys::time
 - new public module: `phys::time::source`.
 - new types: `TimeFake`, `TimeFakeRef`.
 - remove `TimeError` alias.
@@ -542,61 +530,59 @@ Many feature gates are removed in order to make most features make always availa
 - update `TimeDelta`:
   - make method const: `from_js`, `[div|mul]_f[32|64]`, `[try_]from_[millis|secs]_f[32|64]`.
   - remove methods: `const_from_js`, const_try_from_millis_f64.
-- update `TimeSplitMilliNanoNorm`
+- update `TimeSplitMilliNanoNorm`:
   - add method `from_duration`.
   - rename `from_duration` method to `from_duration_subsec`.
 - update `WeekDay`: make all methods const.
 - rename `UnixTimeI64` to `TimeUnixI64`, `UnixTimeU32` to `TimeUnixU32`.
   - make their `new` method const.
 
----
 ## run
 - new `run` root module.
 
-### regime
+### run::regime
 - renme `UiService` to `RunService` and move here.
 - move capabilities from `ui::back::cap` to `run::setup::cap`.
   - rename `UiCap*` to `RunCap*`.
 
-### time
+### run::time
 - new items: `RunTick`.
 
----
 ## sys
-### arch
+### sys::arch
 - new `Arch` methods: `cntvct`, `cycles`, `rdcycle`, `rdtsc`, `rdtscp`.
 - new internal macro `ARCH!`.
 
-### device
+### sys::device
 - new module: `sys::device`.
 - move `media::midi` to `sys::device::midi`.
 - move `sys::sound` to `sys::device::audio`.
 
-#### display
+#### sys::device::display
 - new module: `sys::device::display::x11`.
 - new types: `XDisplay`, `XError`, `XEvent`, `XWindow`.
 
-### env
+### sys::env
 - vendor `argv` as `IterArgSOsRef` struct and `Env` method `args_os_ref`.
 
-### fs
+### sys::fs
 - rename `ExtPath` to `PathExt`.
 
-### hw
+### sys::hw
 - new module `sys::hw`.
 
-### io
+### sys::io
 - new `IoDuplex` trait.
 - refactor the `sys::io` module.
 - update `Io`: add `pipe` method.
 - re-export `IoPipeReader`, `IoPipeWriter`.
 
-### log
+### sys::log
 - new type `LoggerStatic`.
 - new macro `slog!`.
 - rename `ExtLogger` to `LoggerExt`.
 
-### mem
+### sys::mem
 - new alias: `MaybeByte`.
 - new types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`.
 - new macros: `define_arena`.
@@ -610,17 +596,17 @@ Many feature gates are removed in order to make most features make always availa
   - traits: `MemAligned`.
   - types: `CacheAlign`, `Mem`, `Ptr`.
 - rename `ExtMem` to `MemExt`.
-- update `Mem`
+- update `Mem`:
   - rename method `bytes_from_bits` to `bytes_from_bits_saturating`.
   - new method: `bytes_from_bits` with a faster impl.
 
-#### cell
+#### sys::mem::cell
 - rename `ExtCellOption` to `CellOptionExt`.
 
-#### size
+#### sys::mem::size
 - move `ByteSized` and `size_of_expr!` to [base].
 
-#### slice
+#### sys::mem::slice
 - new macro `slice!`.
 - new types: `SliceIter`, `SliceIterMut`.
 - move to [base]:
@@ -632,7 +618,7 @@ Many feature gates are removed in order to make most features make always availa
 - update `Slice`:
   - rename methods:
     - `copy_from_slice` to `copy`.
-    - `trim_leading_bytes` to `trim_leading`
+    - `trim_leading_bytes` to `trim_leading`.
     - `replace_leading_bytes` to `replace_leading`.
   - add new methods:
     - `range_to_inclusive*`.
@@ -641,16 +627,16 @@ Many feature gates are removed in order to make most features make always availa
     - `trim_leading_keep`, `trim_leading_min_len`, `trim_trailing`, `trim_trailing_keep`, `trim_trailing_min_len`, `trim_edges_keep`, `trim_edges_min_len_left`, `trim_edges_min_len_right`.
   - add new `eq` methods for slices of slices of primitives and string slices.
 
-### os
+### sys::os
 - repurpose module to include operating supervisors.
 - new `Libc` namespace.
 - new modules: `sys::os::browser`, `sys::os::fd`.
 
-#### browser
+#### sys::os::browser
 - move `lang::ffi::js::web` to `sys::os::browser::web`.
 - move `examples::lang::js_web*` to `examples::sys::web*`.
 
-#### linux
+#### sys::os::linux
 - new types `LinuxClock`, `LinuxTime`, `LinuxInstant`.
 - new `Linux` methods: `clock_getres`, `clock_gettime`, `exit`.
 - new `Linux` syscalls: `sys_clock_getres`, `sys_clock_gettime`.
@@ -660,13 +646,13 @@ Many feature gates are removed in order to make most features make always availa
   - new `Other` variant.
   - impl `Error`.
 - improve `LinuxTimespec`.
-  - impl `Display` and `ConstInit`
+  - impl `Display` and `ConstInit`.
   - rename method `with` to `try_with_duration` and make fallible.
   - add corresponding method `try_to_duration`.
   - add saturating methods to convert from/to `Duration`.
   - add corresponding conversions and methods from/to `TimeDelta`.
 
-#### term
+#### sys::os::term
 - new module `sys::os::term`.
 - feature-gate with `term`.
 - rename `AnsiColor3b` to `AnsiColor3` and `AnsiColor8b` `AnsiColor8`.
@@ -674,7 +660,7 @@ Many feature gates are removed in order to make most features make always availa
   - types: `Ansi`, `AnsiColor3`, `AnsiColor8`, `TermSize`.
 - change `Ansi::print*` methods to `ansi_print*` functions.
 - new type: `AnsiColor`.
-- update `Ansi:`
+- update `Ansi`:
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
   - add methods: `COLOR_[BG|FG]_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_[BG|FG]`, `MOUSE_X10_[ENABLE|DISABLE]`, `MOUSE_[NORMAL|TRACKING|UTF8]`, `MOUSE_SGR[_PIXELS]`, `strip_codes`.
   - rename current associated const items with a `_B` suffix.
@@ -687,14 +673,13 @@ Many feature gates are removed in order to make most features make always availa
   - add new arms `p!` and `@p!` that auto-unwrap.
   - fix macro visibility.
 
----
 ## text
 - new struct: `TextLut`.
 - move to [base]:
   - traits: `NumToStr`.
   - types: `ByteSearch`, `Digits`, `GraphemeNonul`, `GraphemeU*`, `Str`, `StringNonul`, `StringU*`, `char7`, `char8`, `char16`.
 
-### char
+### text::char
 - new macro: `ch!`.
 - new fn: `scalar_as_ascii_translit`.
 - new types: `CharIter`, `charu`, `charu_niche`.
@@ -723,7 +708,7 @@ Many feature gates are removed in order to make most features make always availa
     - `to_code*` to `to_scalar*`.
     - `utf8_len` to `len_utf8_unchecked`.
     - `utf8_len_checked` to `len_utf8`.
-  - remove `utf8_bytes_` prefix from `Char<&[u8]>` methods…
+  - remove `utf8_bytes_` prefix from `Char<&[u8]>` methods.
   - add private consts: `CONT_MASK` `UTF8_CHAR_LEN`.
   - remove `code_` prefix from `Char<u32>` methods.
   - rename method `byte_len` to `len_bytes`.
@@ -734,7 +719,7 @@ Many feature gates are removed in order to make most features make always availa
   - rename method `byte_len` to `len_bytes`.
   - reorder methods.
 
-#### ascii
+#### text::char::ascii
 - rename `ASCII_TABLE` to `LUT_ASCII_CHARS` and make it a public *const*.
 - rename `Ascii` to `Digits`.
 - update `Digits`:
@@ -748,10 +733,10 @@ Many feature gates are removed in order to make most features make always availa
     - `digits_*` to `digits10_*`.
     - `digits` to `digits10`.
 
-### error
+### text::error
 - re-export std's `FromUtf8Error`.
 
-### fmt
+### text::fmt
 - new macro: `fmtcat`.
 - new trait: `DebugExt`.
 - new types: `FmtNum`, `FmtNumConf`, `FmtNumGroup`, `FmtNumShape`, `FmtNumSign`, `FmtWriter`.
@@ -761,7 +746,7 @@ Many feature gates are removed in order to make most features make always availa
 - remove vendored `numtoa` crate, `NumToStr` trait replaced with `Digits` struct.
 - add method `Fmt::from_fn`.
 
-### grapheme
+### text::grapheme
 - new types: `GraphemeKind`, `GraphemeScanner`.
 - feature-bound all grapheme-related items.
 - vendor `grapheme_machine` as items: `GraphemeBoundary`, `GraphemeMachine`, `GraphemePropCb`, `GraphemePropInCb`, `GraphemeProps`.
@@ -770,22 +755,22 @@ Many feature gates are removed in order to make most features make always availa
   - add new methods: `grapheme_chars`, `grapheme_is_kind`, `grapheme_kind`, `grapheme_len_bytes`, `grapheme_len_chars`, `grapheme_len_utf8`.
 - update `Grapheme[Nonul|U*]`:
   - remove methods: `to_cstring`.
-  - make `new` method panic
+  - make `new` method panic.
   - add new methods: `eq`, `[as|into]_string_[nonul|u8]`, `from_charu[_unchecked]`, `from_str`, `new_checked`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - implement `PartialEq` and `Hash` manually.
   - implement `PartialEq` between string and grapheme types.
   - make all methods *const*.
 
-### layout
+### text::layout
 - new module `text::layout`.
 - new types: `TextCohesion`, `TextCursor`, `TextFit`,  `TextIndex`, `TextLayout`, `TextLayoutStep`, `TextSpan`, `TextSymbol`, `TextUnit`.
 
-### str
+### text::str
 - remove methods: `to_cstring`, from `String*`.
 - make `chars` methods *const* when possible.
 - add more impls of `PartialEq` against string slices.
-- update `Str:`
+- update `Str`:
   - add methods for returning substrings in compile time: `range*` `take*`, `*split*`.
   - remove method `from_boxed_utf8_unchecked`.
 - common updates for `StringNonul` and `StringU`:
@@ -813,12 +798,11 @@ Many feature gates are removed in order to make most features make always availa
 - improve method `repeat_into` for `Str` & `StrExt`.
 - improve method `new_counter` for `Str`, `StrExt` & `StringExt`.
 
----
 ## ui
 - remove modules: `ui::back`, `ui::front`.
 - new modules: `ui::intent`, `ui::view`.
 
-### event
+### ui::event
 - new types: `DeviceId`, `Event`, `EventKind`, `EventQueue`, `EventTag`, `EventTarget`, `EventTimestampMode`, `EventWindow`, `KeyDead`, `WindowId`.
 - change `EventPointer.pressure` field to be `f32bits_niche`.
 - rename `time_stamp` fields to `timestamp`.
@@ -839,12 +823,12 @@ Many feature gates are removed in order to make most features make always availa
   - add methods: `as_millis_f32_to_u32`, `as_millis_u32`, `from_millis_u32_as_f32`.
   - remove methods: `try_from_js`, `try_from_millis_f32`,  `try_from_millis_u32`, `try_from_secs_f32`.
 - change `EventKeyFfi.timestamp` field to be `f32bits`.
-- update `EventWindow`
+- update `EventWindow`:
   - fix `Moved` variant to use `i32`.
   - new methods `is_[geometry|resize|move|focus|close|redraw|visibility|pointer_crossing|text_input|stream_signal]`, `[resize|move]_coords`.
   - new variants: `Entered`, `Left`, `Minimized`, `Maximized`, `Restored`, `FullscreenEntered`, `FullscreenExited`.
 
-#### key
+#### ui::event::key
 - update `KeyPad`, add variant `Comma`.
 - update `KeyMod`:
   - rename variant `IsoLevel3Shift` to `AltGr`.
@@ -862,28 +846,25 @@ Many feature gates are removed in order to make most features make always availa
   - add new punctuation variants.
   - add new `Scancode(u16)` variant.
 
----
 ## vita
 - new `vita` module.
 
----
 ## work
-### future
+### work::future
 - rename:
   - `ExtFuture` to `FutureExt`.
   - `ExtProcess` to `ProcessExt`.
     - `ProcessExt::id` to `self_pid`.
 
-### process
+### work::process
 - new macro: `cmd!`.
 - new trait: `OutputExt`.
 - new types: `CommandFlow`, `ExitStatusError`.
 - rename re-exported types back by removing the `Process` prefix, except for `Child*`→`Process*` renames and `ProcessTermination`.
 
-### sync
+### work::sync
 - move `portable-atomic-util` dependent re-exports to [base_alloc]: `Arc`, `ArkWeak`.
 
----
 ## yard
 - new internal root module `yard`.
 - new workspace-internal macro `_devela_policy!`.
