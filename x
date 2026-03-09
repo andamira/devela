@@ -51,24 +51,32 @@ done
 # Load environment configuration
 #------------------------------------------------------------------------------
 
-root="$(pwd)"
+x_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+crate_cargo_toml=$(cargo locate-project --message-format plain 2>/dev/null)
+crate_dir=$(dirname $crate_cargo_toml)
+if [[ "${X_DEBUG:-0}" == 1 ]]; then
+	echo "workspace dir: $x_script_dir";
+	echo "crate dir:     $crate_dir";
+	echo "current dir:   $(pwd)";
+fi
+workspace="$(cd -- "$x_script_dir" && pwd)"
 
-source "$root/tools/x-env-common.sh"
+source "$workspace/tools/x-env-common.sh"
 
 if [[ "$toolchain" == "+nightly" ]]; then
-    source "$root/tools/x-env-nightly.sh"
+    source "$workspace/tools/x-env-nightly.sh"
 fi
 
 if [[ "$native" -eq 1 ]]; then
-    source "$root/tools/x-env-native.sh"
+    source "$workspace/tools/x-env-native.sh"
 fi
 
-if [[ -f "$root/tools/x-env-local.sh" ]]; then
-    source "$root/tools/x-env-local.sh"
+if [[ -f "$workspace/tools/x-env-local.sh" ]]; then
+    source "$workspace/tools/x-env-local.sh"
 fi
 
-if [[ "$toolchain" == "+nightly" && -f "$root/tools/x-env-local-nightly.sh" ]]; then
-    source "$root/tools/x-env-local-nightly.sh"
+if [[ "$toolchain" == "+nightly" && -f "$workspace/tools/x-env-local-nightly.sh" ]]; then
+    source "$workspace/tools/x-env-local-nightly.sh"
 fi
 
 
@@ -88,11 +96,11 @@ export RUSTFLAGS
 #------------------------------------------------------------------------------
 
 if [[ "${X_DEBUG:-0}" == 1 ]]; then
-    echo "toolchain: ${toolchain:-default}"
-    echo "native: $native"
-    echo "cfg: ${cfg_flags[*]}"
-    echo "RUSTFLAGS=$RUSTFLAGS"
-    echo "RUSTDOCFLAGS=$RUSTDOCFLAGS"
+    echo "toolchain:     ${toolchain:-stable}"
+    echo "cargo-native:  $native"
+    echo "custom flags:  ${cfg_flags[*]}"
+    echo "RUSTFLAGS=\"$RUSTFLAGS\""
+    echo "RUSTDOCFLAGS=\"$RUSTDOCFLAGS\""
 fi
 
 
