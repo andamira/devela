@@ -8,14 +8,14 @@
 /// Custom domain used for the [`doclink!`] macro.
 macro_rules! _DOCLINK_CUSTOM_DOMAIN {
     () => {
-        "https://andamira.github.io/"
+        "https://docs.rs/"
+        // "https://andamira.github.io/"
     };
 }
-pub(crate) use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
+pub(crate) use _DOCLINK_CUSTOM_DOMAIN;
 
 /// Helps doc-linking items in downstream crates.
 /// <!-- (*internet* version) -->
-#[doc = crate::_doc_location!("code/util")]
 #[cfg(feature = "__publish")]
 #[allow(clippy::crate_in_macro_def, reason = "crate::__crate_name! is intended")]
 macro_rules! _doclink {
@@ -24,85 +24,99 @@ macro_rules! _doclink {
 
      // [anchor]: https://…/crate/item_path
      // [anchor]: file://…/current_crate/item_path/index.html
-     custom crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ",
-        $crate::doclink![custom crate $item_path $(@mod$($_m)?)?]]
+     custom crate $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![custom crate $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // https://…/crate/item_path
       // file://…/current_crate/item_path/index.html
-     custom crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
+     custom crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat![crate::_DOCLINK_CUSTOM_DOMAIN!(),
         crate::__crate_name!(), env!("CARGO_CRATE_NAME"),
-        "/latest/", crate::__crate_name!(), "/", $item_path]
+        "/latest/", crate::__crate_name!(), "/", $item_path $(, $jump_link)?]
     };
     (
      // [anchor]: https://…/crate_name/item_path
      // [anchor]: file://…/crate_name/item_path/index.html
-     custom $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ",
-        $crate::doclink![custom $crate_name $item_path $(@mod$($_m)?)?]]
+     custom $crate_name:ident $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![custom $crate_name $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // https://…/crate_name/item_path
       // file://…/crate_name/item_path/index.html
-     custom $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]
+     custom $crate_name:ident $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat![crate::_DOCLINK_CUSTOM_DOMAIN!(), ::core::stringify!($crate_name),
+        "/latest/", ::core::stringify!($crate_name), "/", $item_path $(, $jump_link)?]
     };
     ( // https://…/{crate::__crate_name!()}/item_path
       // file://…/{crate::__crate_name!()}/item_path/index.html
-     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        crate::__crate_name!(),"/latest/", crate::__crate_name!(), "/", $item_path]
+     custom_current_crate $item_path:expr,
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat![crate::_DOCLINK_CUSTOM_DOMAIN!(), crate::__crate_name!(),
+        "/latest/", crate::__crate_name!(), "/", $item_path $(, $jump_link)?]
     };
     ( // https://…/{crate::__crate_name!()}/
       // file://…/{crate::__crate_name!()}/index.html
-     custom_current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        crate::__crate_name!(),"/latest/", crate::__crate_name!(), "/"]
+     custom_current_proc_crate
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        concat![crate::_DOCLINK_CUSTOM_DOMAIN!(), crate::__crate_name!(),
+        "/latest/", crate::__crate_name!(), "/" $(, $jump_link)?]
     };
     (
      /* links to either docs.rs or a local URL */
 
      // [anchor]: https://…/crate/item_path
      // [anchor]: file://…/current_crate/item_path/index.html
-     crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::doclink![crate $item_path $(@mod$($_m)?)?]]
+     crate $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![crate $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // https://…/crate/item_path
       // file://…/current_crate/item_path/index.html
-     crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["https://docs.rs/", crate::__crate_name!(), env!("CARGO_CRATE_NAME"),
-        "/latest/", crate::__crate_name!(), "/", $item_path]
+     crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["https://docs.rs/",
+        crate::__crate_name!(), env!("CARGO_CRATE_NAME"),
+        "/latest/", crate::__crate_name!(), "/", $item_path $(, $jump_link)?]
     };
     (
      // [anchor]: https://…/crate_name/item_path
      // [anchor]: file://…/crate_name/item_path/index.html
-     $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::doclink![$crate_name $item_path $(@mod$($_m)?)?]]
+     $crate_name:ident $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![$crate_name $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // https://…/crate_name/item_path
       // file://…/crate_name/item_path/index.html
-     $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["https://docs.rs/",
-        stringify!($crate_name), "/latest/", stringify!($crate_name), "/", $item_path]
+     $crate_name:ident $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["https://docs.rs/", ::core::stringify!($crate_name),
+        "/latest/", ::core::stringify!($crate_name), "/", $item_path $(, $jump_link)?]
     };
     ( // https://…/{crate::__crate_name!()}/item_path
       // file://…/{crate::__crate_name!()}/item_path/index.html
-     current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["https://docs.rs/",
-        crate::__crate_name!(),"/latest/", crate::__crate_name!(), "/", $item_path]
+     current_crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["https://docs.rs/", crate::__crate_name!(),
+        "/latest/", crate::__crate_name!(), "/", $item_path $(, $jump_link)?]
     };
     ( // https://…/{crate::__crate_name!()}/
       // file://…/{crate::__crate_name!()}/index.html
-     current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        concat!["https://docs.rs/",
-        crate::__crate_name!(),"/latest/", crate::__crate_name!(), "/"]
+     current_proc_crate
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        concat!["https://docs.rs/", crate::__crate_name!(),
+        "/latest/", crate::__crate_name!(), "/" $(, $jump_link)?]
     };
 }
 
 /// Helps doc-linking items in downstream crates.
 /// (*local* version)
-#[doc = crate::_doc_location!("code/util")]
 #[cfg(not(feature = "__publish"))]
 #[allow(clippy::crate_in_macro_def, reason = "crate::__crate_name! is intended")]
 macro_rules! _doclink {
@@ -110,67 +124,83 @@ macro_rules! _doclink {
      /* links to either a custom domain or a local URL */
 
      // [anchor]: file://…/current_crate/item_path/index.html
-     custom crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ",
-        $crate::doclink![custom crate $item_path $(@mod$($_m)?)?]]
+     custom crate $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![custom crate $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // file://…/current_crate/item_path/index.html
-     custom crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        env!("CARGO_CRATE_NAME"), "/", $item_path $(, "/index.html"$($_m)?)?]
+     custom crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        env!("CARGO_CRATE_NAME"), "/", $item_path $(, "/index.html"$($_m)?)? $(, $jump_link)?]
     };
     (
      // [anchor]: file://…/crate_name/item_path/index.html
-     custom $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ",
-        $crate::doclink![custom $crate_name $item_path $(@mod$($_m)?)?]]
+     custom $crate_name:ident $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![custom $crate_name $item_path $(@mod$($_m)?)? $(, $jump_link)?]]
     };
     ( // file://…/crate_name/item_path/index.html
-     custom $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
+     custom $crate_name:ident $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        ::core::stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?
+            $(, $jump_link)?]
     };
     ( // file://…/{crate::__crate_name!()}/item_path/index.html
-     custom_current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
+     custom_current_crate $item_path:expr,
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)? $(, $jump_link)?]
     };
     ( // file://…/{crate::__crate_name!()}/index.html
-     custom_current_proc_crate $(@mod$($_m:lifetime)?)?) => {
+     custom_current_proc_crate
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
         concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), $("/index.html"$($_m)?)?]
+        crate::__crate_name!(), $("/index.html"$($_m)?)? $(, $jump_link)?]
     };
     (
      /* links to either docs.rs or a local URL */
 
      // [anchor]: file://…/current_crate/item_path/index.html
-     crate $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::doclink![crate $item_path $(@mod$($_m)?)?]]
+     crate $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![crate $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // file://…/current_crate/item_path/index.html
-     crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        env!("CARGO_CRATE_NAME"), "/", $item_path $(, "/index.html"$($_m)?)?]
+     crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        env!("CARGO_CRATE_NAME"), "/", $item_path $(, "/index.html"$($_m)?)? $(, $jump_link)?]
     };
     (
      // [anchor]: file://…/crate_name/item_path/index.html
-     $crate_name:ident $anchor:literal $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["\n\n", $anchor, ": ", $crate::doclink![$crate_name $item_path $(@mod$($_m)?)?]]
+     $crate_name:ident $anchor:literal $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["\n\n", $anchor, ": ",
+        $crate::doclink![$crate_name $item_path $(@mod$($_m)?)? $($jump_link)?]]
     };
     ( // file://…/crate_name/item_path/index.html
-     $crate_name:ident $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?]
+     $crate_name:ident $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        ::core::stringify!($crate_name), "/", $item_path $(, "/index.html"$($_m)?)?
+            $(, $jump_link)?]
     };
     ( // file://…/{crate::__crate_name!()}/item_path/index.html
-     current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
+     current_crate $item_path:literal
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
+        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
+        crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)? $(, $jump_link)?]
     };
     ( // file://…/{crate::__crate_name!()}/index.html
-     current_proc_crate $(@mod$($_m:lifetime)?)?) => {
+     current_proc_crate
+     $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
         concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), $("/index.html"$($_m)?)?]
+        crate::__crate_name!(), $("/index.html"$($_m)?)? $(, $jump_link)? $(, $jump_link)?]
     };
 }
 

@@ -68,7 +68,7 @@ structural::structural_mods! { // _mods, _reexports, _workspace_internals
     }
     _workspace_internals {
         pub use super::{
-            doclink::DOCLINK_CUSTOM_DOMAIN,
+            doclink::_DOCLINK_CUSTOM_DOMAIN,
             paste::__paste,
         };
     }
