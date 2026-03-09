@@ -10,9 +10,15 @@
 // WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 
 /// Custom domain used for the [`doclink!`] macro.
-#[doc(hidden)] #[macro_export] #[rustfmt::skip]
-macro_rules! _DOCLINK_CUSTOM_DOMAIN { () => { "https://andamira.github.io/" }; }
-#[doc(hidden)] #[rustfmt::skip] pub use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
+#[doc(hidden)]
+#[macro_export]
+macro_rules! _DOCLINK_CUSTOM_DOMAIN {
+    () => {
+        "https://andamira.github.io/"
+    };
+}
+#[doc(hidden)]
+pub use _DOCLINK_CUSTOM_DOMAIN as DOCLINK_CUSTOM_DOMAIN;
 
 crate::CONST! { hidden macro_export,
     // DOCLINK_CUSTOM_DOMAIN = "https://andamira.github.io"; // doesn't work
@@ -74,8 +80,8 @@ macro_rules! _doclink {
       // file://…/current_crate/item_path/index.html
      custom crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         ::core::concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        ::core::stringify!($crate_name),env! ("CARGO_CRATE_NAME"),
-        "/latest/", ::core::stringify!($crate_name), "/", $item_path]
+        ::core::stringify!(crate::__crate_name!()), env!("CARGO_CRATE_NAME"),
+        "/latest/", ::core::stringify!(crate::__crate_name!()), "/", $item_path]
     };
     (
      // [anchor]: https://…/crate_name/item_path
@@ -94,13 +100,7 @@ macro_rules! _doclink {
       // file://…/{crate::__crate_name!()}/item_path/index.html
      custom_current_crate $item_path:expr, $(@mod$($_m:lifetime)?)?) => {
         ::core::concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        crate::__crate_name!(),"/latest/", ::core::stringify!($crate_name), "/", $item_path]
-    };
-    ( // https://…/{crate::__crate_name!()}/
-      // file://…/{crate::__crate_name!()}/index.html
-     custom_current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        ::core::concat![crate::DOCLINK_CUSTOM_DOMAIN!(),
-        crate::__crate_name!(),"/latest/", ::core::stringify!($crate_name), "/"]
+        crate::__crate_name!(),"/latest/", ::core::stringify!(crate::__crate_name!()), "/", $item_path]
     };
     (
      /* links to either docs.rs or a local URL */
@@ -115,8 +115,8 @@ macro_rules! _doclink {
       // file://…/current_crate/item_path/index.html
      crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         ::core::concat!["https://docs.rs/",
-        ::core::stringify!($crate_name),env! ("CARGO_CRATE_NAME"),
-        "/latest/", ::core::stringify!($crate_name), "/", $item_path]
+        ::core::stringify!(crate::__crate_name!()),env!("CARGO_CRATE_NAME"),
+        "/latest/", ::core::stringify!(crate::__crate_name!()), "/", $item_path]
     };
     (
      // [anchor]: https://…/crate_name/item_path
@@ -134,14 +134,8 @@ macro_rules! _doclink {
     ( // https://…/{crate::__crate_name!()}/item_path
       // file://…/{crate::__crate_name!()}/item_path/index.html
      current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
-        ::core::concat!["https://docs.rs/",
-        crate::__crate_name!(),"/latest/", ::core::stringify!($crate_name), "/", $item_path]
-    };
-    ( // https://…/{crate::__crate_name!()}/
-      // file://…/{crate::__crate_name!()}/index.html
-     current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        ::core::concat!["https://docs.rs/",
-        crate::__crate_name!(),"/latest/", ::core::stringify!($crate_name), "/"]
+        ::core::concat!["https://docs.rs/", crate::__crate_name!(),"/latest/",
+        ::core::stringify!(crate::__crate_name!()), "/", $item_path]
     };
 }
 
@@ -184,11 +178,6 @@ macro_rules! _doclink {
         ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
         crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
     };
-    ( // file://…/{crate::__crate_name!()}/index.html
-     custom_current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), $("/index.html"$($_m)?)?]
-    };
     (
      /* links to either docs.rs or a local URL */
 
@@ -217,11 +206,6 @@ macro_rules! _doclink {
      current_crate $item_path:literal $(@mod$($_m:lifetime)?)?) => {
         ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
         crate::__crate_name!(), "/", $item_path $(, "/index.html"$($_m)?)?]
-    };
-    ( // file://…/{crate::__crate_name!()}/index.html
-     current_proc_crate $(@mod$($_m:lifetime)?)?) => {
-        ::core::concat!["file://", env!("CARGO_TARGET_DIR"), "doc/",
-        crate::__crate_name!(), $("/index.html"$($_m)?)?]
     };
 }
 

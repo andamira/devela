@@ -229,9 +229,9 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # In sync with ./tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 13 modules (and their submodules)
-	"code", "data", "geom", "lang",
-	"media", "num", "org", "phys",
-	"run", "sys", "text", "ui", "work",
+	"code", "data", "geom", "lang", "media",
+	"num", "org", "phys", "run", "sys",
+	"text", "ui", "vita", "work",
 ]
 code = []
 data = ["hash"]
@@ -276,7 +276,7 @@ phys = ["time", "unit", "wave"]
 	unit = []
 	wave = [] # wavelets
 run = []
-sys = ["io", "mem"]
+sys = ["io", "mem", "term"]
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -285,7 +285,7 @@ sys = ["io", "mem"]
 		# display
 			# cocoa = []
 			# gdi = []
-			x11 = []
+			x11 = [] #
 		# midi = []
 	# fs
 	io = []
@@ -293,7 +293,7 @@ sys = ["io", "mem"]
 		bit = [] # BitSize
 	# os
 		# browser
-		linux = []
+		linux = [] #
 		term = ["devela_base_core/term"] # media::image::sixel
 		windows = []
 text = ["grapheme", "translit"]
@@ -482,8 +482,10 @@ _docs_min = [ # the minimum capabilities to document every item independent of a
 	"devela_macros",
 	# modules:
 	"all",
-		"linux",
-		"x11",
+		# device
+			"x11",
+		# sys
+			"linux",
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 ]
@@ -651,12 +653,12 @@ wide = { workspace = true, optional = true }
 # Can be used by any member of the workspace.
 # ------------------------------------------------------------------------------
 # publish (crates.io valid):
-# devela_base_macros = { version = "0.25.0-wip" } #
+# devela_base_macros = { version = "0.25.0-wip" } # "0.25.0-wip.1" # 2025-09-18
 # devela_base_core   = { version = "0.25.0-wip" } # "0.25.0-wip.0" # 2025-09-18
 # devela_base_alloc  = { version = "0.25.0-wip" } #
 # devela_base_std    = { version = "0.25.0-wip" } #
-# devela_macros      = { version = "0.25.0-wip" } # "0.25.0-wip.1" # 2025-09-18
-# devela_buildpost   = { version = "0.25.0-wip" } #
+# devela_macros      = { version = "0.25.0-wip" } #
+# #devela_buildpost   = { version = "0.25.0-wip" } #
 
 # dev (local override):
 devela_base_macros = { version = "0.25.0-wip", path = "./crates/base/macros" }
@@ -664,7 +666,7 @@ devela_base_core   = { version = "0.25.0-wip", path = "./crates/base/core" }
 devela_base_alloc  = { version = "0.25.0-wip", path = "./crates/base/alloc" }
 devela_base_std    = { version = "0.25.0-wip", path = "./crates/base/std" }
 devela_macros      = { version = "0.25.0-wip", path = "./crates/macros" }
-# devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
+# #devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
 

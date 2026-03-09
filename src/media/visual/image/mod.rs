@@ -14,7 +14,6 @@ mod error;
 mod pnm;
 
 #[cfg(feature = "term")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 pub mod sixel;
 
 crate::structural_mods! { // _mods, _pub_mods, _hidden

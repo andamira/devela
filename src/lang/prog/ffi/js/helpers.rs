@@ -152,7 +152,7 @@ macro_rules! _js_method_str_alloc {
         $(#[$fn_attrs])*
         #[cfg(feature = "alloc")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-        pub fn [<$method_name _alloc>]() -> String {
+        pub fn [<$method_name _alloc>]() -> $crate::String {
             $crate::Js::read_string(|ptr, len| unsafe { $call_fn(ptr, len) })
         }
     }};

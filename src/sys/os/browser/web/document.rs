@@ -3,8 +3,8 @@
 //! Defines [`WebDocument`].
 //
 
-#[cfg(feature = "alloc")]
-use devela::String;
+// #[cfg(feature = "alloc")]
+// use devela::String;
 // #[allow(unused_imports, reason = "not(windows)")]
 use devela::_js_extern;
 #[cfg(feature = "unsafe_ffi")]

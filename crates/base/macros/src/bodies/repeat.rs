@@ -1,6 +1,6 @@
 // devela_macros::bodies::repeat
 //
-//! Body of [`repeat!`] and required functions.
+//! Body of [`repeat!`][crate::repeat] and required functions.
 //
 // TOC
 // * repeat
