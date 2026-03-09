@@ -78,9 +78,9 @@ members = [ # In sync with ./build/main/environment.rs
 [workspace.package]
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
-version = "0.25.0-wip" # In sync with ./docs/changelog.md
+version = "0.25.0-wip.2" # In sync with ./docs/changelog.md
 rust-version = "1.93.0" # In sync with ./README.md && ./.github/workflows/check.yml
-documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
+documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
 edition = "2024"
@@ -110,8 +110,8 @@ publish = true
 include = [
 	"/Cargo.toml",
 	## source code
-	"/build/main/**/*.rs", "/build/main/**/*.md",
-	"/src/**/*.rs", "/src/**/*.md", "!/src/base/**",
+	"/build/main/**/*.rs", "/build/main/**/*.md", "/build/main/dep_all",
+	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html",
 	## documentation
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
 	## examples shown from /src/_doc
@@ -132,11 +132,10 @@ no-default-features = true
 features = ["_docs", "__publish"]
 rustc-args = [
 	"--cfg", "nightly",
-	"-Ctarget-cpu=native", # see also ./tools/cargo-native
+	"-Ctarget-cpu=native",
 ]
 rustdoc-args = [
-	"--no-deps", # WAIT: https://github.com/rust-lang/rust/issues/126638
-	"-Ctarget-cpu=native", # see ./tools/cargo-native for local docs
+	"-Ctarget-cpu=native",
 	"--generate-link-to-definition",
 	"--html-in-header", "./src/_doc/header.html",
 	"--cfg", "nightly",
@@ -655,20 +654,20 @@ wide = { workspace = true, optional = true }
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
 # publish (crates.io valid):
-# devela_base_macros = { version = "0.25.0-wip" } # "0.25.0-wip.1" # 2025-09-18
-# devela_base_core   = { version = "0.25.0-wip" } # "0.25.0-wip.0" # 2025-09-18
-# devela_base_alloc  = { version = "0.25.0-wip" } #
-# devela_base_std    = { version = "0.25.0-wip" } #
-# devela_macros      = { version = "0.25.0-wip" } #
-# #devela_buildpost   = { version = "0.25.0-wip" } #
+# devela_base_macros = { version = "0.25.0-wip.2" }
+# devela_base_core   = { version = "0.25.0-wip.2" }
+# devela_base_alloc  = { version = "0.25.0-wip.3" }
+# devela_base_std    = { version = "0.25.0-wip.3" }
+# devela_macros      = { version = "0.25.0-wip.1" }
+# #devela_buildpost   = { version = "0.25.0-wip" }
 
 # dev (local override):
-devela_base_macros = { version = "0.25.0-wip", path = "./crates/base/macros" }
-devela_base_core   = { version = "0.25.0-wip", path = "./crates/base/core" }
-devela_base_alloc  = { version = "0.25.0-wip", path = "./crates/base/alloc" }
-devela_base_std    = { version = "0.25.0-wip", path = "./crates/base/std" }
-devela_macros      = { version = "0.25.0-wip", path = "./crates/macros" }
-# #devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
+devela_base_macros = { version = "0.25.0-wip.2", path = "./crates/base/macros" }
+devela_base_core   = { version = "0.25.0-wip.2", path = "./crates/base/core" }
+devela_base_alloc  = { version = "0.25.0-wip.3", path = "./crates/base/alloc" }
+devela_base_std    = { version = "0.25.0-wip.3", path = "./crates/base/std" }
+devela_macros      = { version = "0.25.0-wip.1", path = "./crates/macros" }
+#devela_buildpost   = { version = "0.25.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
 

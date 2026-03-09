@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: any)]
 //
 
-mod _reexport_core; // SYMLINK TO /src/base/core/src/code/any/_reexport.rs
+mod _reexport_core; // SYMLINK TO /crates/base/core/src/code/any/_reexport.rs
 
 mod ext;
 

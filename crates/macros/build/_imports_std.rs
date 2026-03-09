@@ -1,0 +1,1 @@
+../../base/std/src/build/namespace.rs

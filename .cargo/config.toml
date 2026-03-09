@@ -150,6 +150,7 @@ rrb = "run --release --bin"
 rre = "run --release --example"
 
 # DOC
+# WAIT: [cargo doc fails](https://github.com/rust-lang/rust/issues/126638#issuecomment-2268565349)
 d = "doc --no-deps" #+w
 do = "doc --no-deps --open" #+w
 dp = "doc --no-deps --document-private-items" #+w

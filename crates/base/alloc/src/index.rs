@@ -39,16 +39,22 @@ pub(crate) use __crate_name;
 
 #[cfg(feature = "alloc")]
 items! {
+    #[doc(hidden)]
     pub mod code;
     pub mod data;
+    #[doc(hidden)]
     pub mod geom;
     pub mod lang;
+    #[doc(hidden)]
     pub mod media;
     pub mod num;
+    #[doc(hidden)]
     pub mod phys;
+    #[doc(hidden)]
     pub mod run;
     pub mod sys;
     pub mod text;
+    #[doc(hidden)]
     pub mod ui;
     pub mod work;
 }

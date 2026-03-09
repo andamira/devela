@@ -39,14 +39,18 @@ items! {
     pub mod build;
     pub mod code;
     pub mod data;
+    #[doc(hidden)]
     pub mod geom;
+    #[doc(hidden)]
     pub mod lang;
     pub mod media;
     pub mod num;
     pub mod phys;
+    #[doc(hidden)]
     pub mod run;
     pub mod sys;
     pub mod text;
+    #[doc(hidden)]
     pub mod ui;
     pub mod work;
 }

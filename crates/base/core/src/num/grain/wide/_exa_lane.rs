@@ -9,7 +9,7 @@
 //! wide = ["devela_base_core/dep_wide"]
 //!
 //! [dependencies.devela_base_core]
-//! path = "../../.."
+//! path = "../../../.."
 //! ```
 //
 // To enable portable_simd API run:

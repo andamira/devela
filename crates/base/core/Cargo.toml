@@ -2,17 +2,18 @@
 name = "devela_base_core"
 description = "base shared functionality for devela"
 repository = "https://github.com/andamira/devela/tree/main/crates/base/core"
+documentation = "https://docs.rs/devela_base_core"
+version = "0.25.0-wip.2" # 2026-03-09
 # version = "0.25.0-wip.0" # 2025-09-18
-version.workspace = true
+# version.workspace = true
 rust-version.workspace = true
 edition.workspace = true
-documentation.workspace = true
 authors.workspace = true
 license.workspace = true
 include = [
 	"/Cargo.toml",
 	## source code
-	"/src/**/*.rs", "/src/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html",
 	"/build/**/*",
 	## documentation
 	"/LICENSE*",
@@ -22,7 +23,25 @@ keywords = ["dev", "extension"]
 build = "build/mod.rs"
 autoexamples = false
 publish = true
-metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
+
+[package.metadata.docs.rs]
+# ==============================================================================
+# https://docs.rs/about/metadata
+# https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
+# [maximum build limits](https://docs.rs/crate/devela/latest/builds)
+no-default-features = true
+features = ["_docs", "__publish"]
+rustc-args = [
+	"--cfg", "nightly",
+	"-Ctarget-cpu=native",
+]
+rustdoc-args = [
+	"-Ctarget-cpu=native",
+	"--generate-link-to-definition",
+	"--html-in-header", "./src/_doc/header.html",
+	"--cfg", "nightly",
+]
+# targets = []
 
 [lib]
 path = "src/index.rs"

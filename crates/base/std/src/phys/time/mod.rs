@@ -17,7 +17,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
         pub use super::error::*;
     }
     _pub_mods {
-        pub use super::source::*;
+        pub use super::source::_all::*;
     }
     _reexports {
         pub use super::_reexport::*;

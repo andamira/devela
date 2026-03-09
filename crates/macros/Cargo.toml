@@ -2,11 +2,11 @@
 name = "devela_macros"
 description = "procedural macros for devela"
 repository = "https://github.com/andamira/devela/tree/main/crates/macros"
-# version.workspace = "0.25.0-wip" #
-version.workspace = true
+documentation = "https://docs.rs/devela_macros"
+version = "0.25.0-wip.1" # 2026-03-09
+# version.workspace = true
 rust-version.workspace = true
 edition.workspace = true
-documentation.workspace = true
 authors.workspace = true
 license.workspace = true
 include = [

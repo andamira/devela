@@ -19,8 +19,9 @@ const CRATE_NAME: &str = "devela_base";
 #[cfg(feature = "__dbg")]
 items! {
     macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
-    #[path = "../../std/src/build/namespace.rs"] #[allow(unused)]
-    mod imports; use imports::Build;
+    #[allow(unused)]
+    mod _imports_std; // SYMLINK TO /crates/base/std/src/build/namespace.rs
+    #[allow(unused_imports)] use _imports_std::Build;
 }
 
 /* build modules */

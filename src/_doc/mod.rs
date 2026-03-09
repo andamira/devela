@@ -14,11 +14,7 @@ pub mod build; // Build-time configuration and code generation.
 #[cfg(feature = "_docs_examples")]
 pub mod examples; // Documented examples
 
-pub mod macros {
-    #![doc = crate::_tags!(procedural_macro)]
-    //!Procedural macros.
-    #![doc = include_str!("../../crates/base/macros/src/Index.md")]
-}
+pub mod macros;
 
 #[cfg(doc)]
 crate::items! {

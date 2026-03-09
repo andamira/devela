@@ -2,11 +2,11 @@
 name = "devela_base_std"
 description = "base std shared functionality for devela"
 repository = "https://github.com/andamira/devela/tree/main/crates/base/std"
-# version = "0.25.0-wip" #
-version.workspace = true
+documentation = "https://docs.rs/devela_base_std"
+version = "0.25.0-wip.3" # 2026-03-09
+# version.workspace = true
 rust-version.workspace = true
 edition.workspace = true
-documentation.workspace = true
 authors.workspace = true
 license.workspace = true
 include = [
@@ -98,6 +98,7 @@ _docs_examples = [ # document examples and example generated items
 	"devela_base_alloc/_docs_examples",
 ]
 _docs_min = [ # the minimum capabilities to document every item
+	"std",
 	"_docs_examples",
 	# modules
 	"all",

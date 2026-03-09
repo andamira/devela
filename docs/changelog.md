@@ -60,6 +60,7 @@ Many feature gates are removed in order to make most features make always availa
 ### tools
 - new `x` workspace command wrapper.
 - new files in `tools`: `x.fish`, `x.sh`, `x-env-common.sh`, `x-env-native.sh`, `x-env-nightly.sh`.
+- remove `tools/cargo-native`.
 - update `tools/check.rs`:
   - bump `devela` to 0.24.0.
   - test all workspace crates.

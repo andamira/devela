@@ -1,0 +1,1 @@
+../../crates/base/std/src/build/namespace.rs
