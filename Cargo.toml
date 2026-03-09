@@ -76,6 +76,8 @@ members = [ # In sync with ./build/main/environment.rs
 ]
 
 [workspace.package]
+# Centralizes member-package metadata.
+# ------------------------------------------------------------------------------
 version = "0.25.0-wip" # In sync with ./docs/changelog.md
 rust-version = "1.93.0" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://andamira.github.io/devela/0.25.0-wip/devela/"
@@ -650,7 +652,7 @@ wide = { workspace = true, optional = true }
 
 
 [workspace.dependencies]
-# Can be used by any member of the workspace.
+# Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
 # publish (crates.io valid):
 # devela_base_macros = { version = "0.25.0-wip" } # "0.25.0-wip.1" # 2025-09-18
