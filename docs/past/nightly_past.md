@@ -8,6 +8,20 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.94 became stable on [2026-03-05](https://releases.rs/docs/1.94.0/)
+> - <https://github.com/rust-lang/rust/milestone/139>
+> - <https://blog.rust-lang.org/2026/03/05/Rust-1.94.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.94.0>
+
+- 1.94: ` `[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
+- 1.94: ` `[array_windows](https://github.com/rust-lang/rust/pull/148814)
+- 1.94: `→`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: ` `[euler_gamma_golden_ratio](https://github.com/rust-lang/rust/pull/151164)
+- 1.94: ` `[lazy_get](https://github.com/rust-lang/rust/pull/150016)
+- 1.94: ` `[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
+- 1.94: ` `[slice::element_offset (substr_range)](https://github.com/rust-lang/rust/pull/150777)
+- 1.94: ` `[-Zconfig-include](https://github.com/rust-lang/cargo/pull/16284)
+
 # 1.93 became stable on [2026-01-22](https://releases.rs/docs/1.93.0/)
 > - <https://github.com/rust-lang/rust/milestone/137>
 > - <https://blog.rust-lang.org/2026/01/22/Rust-1.93.0>

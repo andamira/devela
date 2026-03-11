@@ -43,20 +43,6 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_94`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_94,
-    feature(
-        alloc_layout_extra,
-        array_windows,
-        euler_gamma_golden_ratio,
-        lazy_get,
-        peekable_next_if_map,
-    )
-)]
-// #![cfg_attr(all(nightly_stable_1_94, feature = "alloc"), feature())]
-#![cfg_attr(all(nightly_stable_1_94, feature = "std"), feature(const_mul_add))]
-// ----------------------------
 // `nightly_stable_1_95`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_95,
@@ -76,6 +62,11 @@
 #![cfg_attr(nightly_stable_1_96, feature(control_flow_ok, new_range_to_inclusive_api))]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_97`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_97, feature())]
+// #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

@@ -7,9 +7,7 @@ itertools = "0.14"
 lexopt = "0.3"
 toml_edit = "0.25"
 [dependencies.devela]
-version = "0.25.0-wip"
-git = "https://github.com/andamira/devela/"
-rev = "b7365a29d228236236227ae2610eedb8a923b183" # 20260204
+version = "0.25.0"
 features = ["std"]
 ---
 // devela::tools::check
@@ -238,7 +236,7 @@ type Result<T> = core::result::Result<T, Box<dyn core::error::Error>>;
 /// Main logic.
 fn main() -> Result<()> {
     let args = get_args()?;
-    let msrv = is![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
+    let msrv = is![args.no_msrv, "".into(), get_msrv().unwrap_or("".into())];
 
     let cmd = "check";
 
@@ -573,7 +571,7 @@ fn get_args() -> Result<Args> {
     let mut parser = lexopt::Parser::from_env();
 
     // if there are no arguments, print help an exit
-    is![env::args_os().len() == 1; {print_help(&parser); exit(0); }];
+    is![env::args_os().len() == 1, {print_help(&parser); exit(0); }];
 
     sf! { while let Some(arg) = parser.next()? {
         match arg {

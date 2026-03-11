@@ -14,10 +14,17 @@
 # Project
 
 ## infra
+### cargo
+- bump MSRV to 1.94.0.
+
 ### CI
 - bump `actions/checkout` to v6.
 - bump `upload-artifact` to v7.
 - bump `docker/setup-qemu-action` to v4.
+
+### tools
+- update `tools/check.rs`:
+  - bump `devela` to 0.25.0.
 
 ---
 

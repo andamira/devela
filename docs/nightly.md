@@ -22,21 +22,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/alloc/src/lib.rs>
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
-
-# 1.94 will be stable on [2026-03-05](https://releases.rs/docs/1.94.0/) `nightly_stable_1_94`
-> - <https://github.com/rust-lang/rust/milestone/139>
-> - <https://blog.rust-lang.org/2026/03/05/Rust-1.94.0>
-> - <https://github.com/rust-lang/rust/releases/tag/1.94.0>
-
-- 1.94: `·`[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
-- 1.94: `·`[array_windows](https://github.com/rust-lang/rust/pull/148814)
-- 1.94: `s`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
-- 1.94: `·`[euler_gamma_golden_ratio](https://github.com/rust-lang/rust/pull/151164)
-- 1.94: `·`[lazy_get](https://github.com/rust-lang/rust/pull/150016)
-- 1.94: `·`[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
-- 1.94: ` `[slice::element_offset (substr_range)](https://github.com/rust-lang/rust/pull/150777)
-- 1.94: ` `[-Zconfig-include](https://github.com/rust-lang/cargo/pull/16284)
-
 # 1.95 will be stable on [2026-04-16](https://releases.rs/docs/1.95.0/) `nightly_stable_1_95`
 > - <https://github.com/rust-lang/rust/milestone/140>
 <!-- > - <https://blog.rust-lang.org/2026/04/16/Rust-1.95.0> -->
