@@ -10,13 +10,13 @@
 #![cfg_attr(feature = "safe_run", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_RUN_MODULES =
-    crate::_doc!(modules: crate; run: regime, state, time); // cycle
+    crate::_doc!(modules: crate; run: regime, time); // cycle, state
 }
 
 // mod cycle; // WIP
 
 pub mod regime; // RunCap*, RunService
-pub mod state;
+mod state; // WIP
 pub mod time;
 
 crate::structural_mods! { // _pub_mods, _crate_internals

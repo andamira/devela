@@ -22,7 +22,7 @@ impl<T> Slice<T> {
         (full, Slice::range_from(slice, rem_start))
     }
 
-    /// Mutable counterpart to [`chunks_exact`].
+    /// Mutable counterpart to [`chunks_exact`][Self::chunks_exact].
     ///
     /// Returns the number of complete `N`-sized chunks and a mutable remainder slice.
     /// The caller performs any iteration or stepping logic.
@@ -49,7 +49,7 @@ impl<T> Slice<T> {
         is![end <= slice.len(), Some(Slice::range(slice, start, end)), None]
     }
 
-    /// Mutable counterpart to [`chunk`].
+    /// Mutable counterpart to [`chunk`][Self::chunk].
     ///
     /// Returns the `idx`-th complete chunk of size `N` as a mutable subslice,
     /// or `None` if the chunk is incomplete.

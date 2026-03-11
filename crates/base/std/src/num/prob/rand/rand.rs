@@ -9,6 +9,7 @@ use crate::{Hasher, HasherBuild, Rand, RandomState};
 #[doc = crate::_tags!(rand)]
 /// Randomness extensions that require the standard library.
 #[doc = crate::_doc_location!("num/prob/rand")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub trait RandStd: Rand {
     /// Seeds a new generator using operating system entropy.
     ///

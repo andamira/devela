@@ -14,8 +14,8 @@ pub mod color;
 pub mod image;
 // pub mod video;
 
-crate::structural_mods! { // _mods, _crate_internasl
-    _mods {
+crate::structural_mods! { // _pub_mods, _crate_internasl
+    _pub_mods {
         #[cfg(feature = "color")] pub use super::color::_all::*;
         // #[cfg(feature = "draw")] pub use super::draw::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;

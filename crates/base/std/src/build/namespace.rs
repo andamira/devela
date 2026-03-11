@@ -10,10 +10,8 @@
 use std::{env, fmt, path::PathBuf};
 
 #[doc = crate::_TAG_NAMESPACE!()] // NOTE: use tag directly to work from /build
-/// Memory-related operations.
-///
-/// See also: [`MemExt`][crate::MemExt], [`MemAligned`][crate::MemAligned]
-/// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
+/// Build-related operations.
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[derive(Debug)]
 pub struct Build;
 

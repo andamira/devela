@@ -22,7 +22,7 @@
 ///
 /// Notes:
 /// - `minmax` / `pminmax` return `(min, max)`.
-/// - `total x y` returns an [`Ordering`] using total ordering (floats included).
+/// - `total x y` returns an [`Ordering`][crate::Ordering] using total ordering (floats included).
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! _cmp {

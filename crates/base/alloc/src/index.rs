@@ -1,6 +1,8 @@
 // devela_base_alloc::index
 //
+//! A development substrate of coherence.
 //!
+//! Base library built on Rust's `alloc`.
 //
 
 /* crate configuration */
@@ -22,6 +24,10 @@
 // #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
 // #![cfg_attr(nightly_float, feature(f16, f128))]
 // #![cfg_attr(nightly_simd, feature(portable_simd))]
+//
+// documentation
+//
+// #![cfg_attr(nightly_doc, doc(auto_cfg = true))]
 
 extern crate alloc;
 // NOTE: for testing purposes only

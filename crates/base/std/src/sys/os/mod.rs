@@ -10,6 +10,6 @@ pub mod fd;
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
-        pub use super::fd::*;
+        pub use super::fd::_all::*;
     }
 }

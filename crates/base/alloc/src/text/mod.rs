@@ -18,6 +18,7 @@ pub mod str;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
+        #[doc(inline)]
         pub use super::{
             fmt::_all::*,
             grapheme::GraphemeString,

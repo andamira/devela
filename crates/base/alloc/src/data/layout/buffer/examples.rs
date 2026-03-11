@@ -49,6 +49,8 @@ buffer_linear!(
     ///   - Visitation:
     ///     [`visit_each`](#method.visit_each) *([_mut](#method.visit_each_mut))*,
     ///     [`visit_slice`](#method.visit_slice) *([_mut](#method.visit_mut_slice))*.
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "_docs_examples")))]
     pub struct BufferAllocExample: alloc (crate::NonValueU8<{u8::MAX}>);
     vec,
 );

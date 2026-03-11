@@ -14,8 +14,8 @@ crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
 
 pub mod time;
 
-crate::structural_mods! { // _mods, _crate_internals
-    _mods {
+crate::structural_mods! { // _pub_mods, _crate_internals
+    _pub_mods {
         pub use super::time::_all::*;
     }
     _crate_internals {

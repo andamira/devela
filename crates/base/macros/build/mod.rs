@@ -2,6 +2,11 @@
 //
 //! Build-time code generation and configuration.
 //
+// lints
+#![allow(unexpected_cfgs)]
+//
+// nightly (flags)
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 
 /* helpers */
 
@@ -16,13 +21,13 @@ const CRATE_NAME: &str = "devela_base_macros";
 /* imports */
 
 // NOTE: manually imports the Build namespace from devela_base_std
-// #[cfg(feature = "__dbg")]
-// items! {
-//     macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
-//     #[allow(unused)]
-//     mod _imports_std; // SYMLINK TO /crates/base/std/src/build/namespace.rs
-//     #[allow(unused_imports)] use _imports_std::Build;
-// }
+#[cfg(feature = "__dbg")]
+items! {
+    macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
+    #[allow(unused)]
+    mod _imports_std; // SYMLINK TO /crates/base/std/src/build/namespace.rs
+    #[allow(unused_imports)] use _imports_std::Build;
+}
 
 /* build modules */
 

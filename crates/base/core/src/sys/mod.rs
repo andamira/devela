@@ -23,7 +23,7 @@ rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_SYS_MODULES =
-    crate::_doc!(modules: crate; sys: arch, env, log, mem, net); // device, fs, hw, io, os
+    crate::_doc!(modules: crate; sys: arch, env, log, mem, net, os); // device, fs, hw, io
 }
 
 pub mod arch;

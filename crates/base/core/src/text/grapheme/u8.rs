@@ -23,8 +23,8 @@ use crate::{
 ///   [`new`][Self::new],
 ///     *([_checked][Self::new_checked])*.
 ///   [`from_str`][Self::from_str],
-///     *([_truncate][Self::from_str_truncate],
-///       [_unchecked][Self::from_str_unchecked])*,
+//     *([_truncate][Self::from_str_truncate],
+//       [_unchecked][Self::from_str_unchecked])*,
 ///   [`from_char`][Self::from_char]
 ///     *([7][Self::from_char7],
 ///       [8][Self::from_char8],
@@ -117,9 +117,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > 255
-    /// or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+    /// or < `c.`[`len_utf8()`]
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
+    #[doc = crate::doclink!(devela "[`len_utf8()`]"
+        "text/char/trait.UnicodeScalar.html#method.len_utf8")]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }

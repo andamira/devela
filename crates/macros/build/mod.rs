@@ -2,6 +2,11 @@
 //
 //! Build-time code generation and configuration.
 //
+// lints
+#![allow(unexpected_cfgs)]
+//
+// nightly (flags)
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 
 /* helpers */
 

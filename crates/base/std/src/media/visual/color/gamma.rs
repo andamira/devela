@@ -12,6 +12,7 @@ use crate::is;
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
 /// via power-law transformations (e.g. $v^γ$ and $v^{(1/γ)}$).
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Gamma<T> {

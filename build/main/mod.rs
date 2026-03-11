@@ -19,8 +19,12 @@
 // WAIT: [reduce need for build scrips](https://github.com/rust-lang/cargo/issues/14948)
 // WAIT: [sandbox/jail build scripts](https://github.com/rust-lang/cargo/issues/5720)
 // WAIT: [post-build execution](https://github.com/rust-lang/cargo/issues/545)
-#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+//
+// lints
 #![cfg_attr(test, allow(dead_code))]
+//
+// nightly (flags)
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 
 /* helpers */
 

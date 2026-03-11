@@ -190,6 +190,8 @@ See also
 - [MaybeUninit methods for arrays](https://github.com/rust-lang/rust/issues/96097)
 - [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
 - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
+- [User control over cargo warnings](https://github.com/rust-lang/cargo/issues/12235)
+- [doc_cfg](https://github.com/rust-lang/rust/issues?q=state%3Aopen%20label%3A%22F-doc_cfg%22)
 
 # Rust project Goals:
 - <https://rust-lang.github.io/rust-project-goals/>

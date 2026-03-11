@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_phys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
-    crate::_doc!(modules: crate; phys: time, wave); // atro, bio, chem, elec, geo, mech, time, unit
+    crate::_doc!(modules: crate; phys: time); // atro, bio, chem, elec, geo, mech, time, unit, wave
 }
 
 // pub mod astro;

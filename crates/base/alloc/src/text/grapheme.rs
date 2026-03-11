@@ -17,6 +17,7 @@ use crate::{CharIter, String};
 #[doc = crate::_tags!(text)]
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[doc = crate::_doc_location!("text/grapheme")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct GraphemeString(String);

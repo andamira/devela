@@ -1,6 +1,11 @@
 // devela_base_macros::index
 //
 // NOTE: proc. macro crates can only export procedural macros.
+//
+//! A development substrate of coherence.
+//!
+//! Base library procedural macros.
+//!
 #![doc = include_str!("./Index.md")]
 //!
 //

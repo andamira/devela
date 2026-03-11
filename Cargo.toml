@@ -78,7 +78,7 @@ members = [ # In sync with ./build/main/environment.rs
 [workspace.package]
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
-version = "0.25.0-wip.2" # In sync with ./docs/changelog.md
+version = "0.25.0-wip.3" # In sync with ./docs/changelog.md
 rust-version = "1.93.0" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -93,7 +93,7 @@ bench = false
 # ==============================================================================
 name = "devela"
 build = "build/main/mod.rs"
-description = "A development layer rooting in Rust."
+description = "A development layer of coherence."
 readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
@@ -105,6 +105,7 @@ categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
 repository = "https://github.com/andamira/devela"
 autoexamples = false
+autobenches = false
 autobins = false
 publish = true
 include = [
@@ -142,9 +143,9 @@ rustdoc-args = [
 ]
 default-target = "x86_64-unknown-linux-gnu"
 targets = [ ## +std:
-	"x86_64-apple-darwin", "x86_64-pc-windows-msvc",
-	"armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
-	"riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
+	"aarch64-apple-darwin", "x86_64-pc-windows-msvc",
+	# "armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
+	# "riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
 	# "wasm32-wasip1",
 	## no_std:
 	# "i686-unknown-uefi", "x86_64-unknown-none",
@@ -1040,12 +1041,14 @@ harness = false
 
 # examples
 # ==============================================================================
+# https://docs.rs/open-editor/latest/scrape-examples-help.html
 
 # code
 [[example]]
 name = "cargo_script"
 path = "examples/code/cargo_script.rs"
 required-features = ["__exclude_test"]
+doc-scrape-examples = false
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
@@ -1062,18 +1065,20 @@ path = "examples/data/bitfield.rs"
 name = "id_pin"
 path = "examples/data/id_pin.rs"
 required-features = [] # optional: "alloc"
+doc-scrape-examples = false
 [[example]]
 name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
 
-# term
+# sys::os::term
 [[example]]
 name = "term_linux"
 path = "examples/sys/term/linux.rs"
 required-features = ["linux", "unsafe_syscall"]
+doc-scrape-examples = false
 
 # work
 [[example]]
-name = "coro_manager" # in crate docs
+name = "coro_manager" # NOTE: in docs
 path = "examples/work/coro_manager.rs"
 required-features = ["alloc"]

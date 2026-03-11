@@ -1,6 +1,8 @@
 // devela_base_std::index
 //
+//! A development substrate of coherence.
 //!
+//! Base library built on Rust's `std`.
 //
 
 /* crate configuration */

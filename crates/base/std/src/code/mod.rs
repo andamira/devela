@@ -15,7 +15,7 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
 
 pub mod error;
 pub mod panic;
-pub mod result; // only tests for now
+mod result; // only tests for now
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {

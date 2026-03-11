@@ -213,7 +213,7 @@ impl Str {
     /// stopping early if it does not fit,
     /// and returns the written prefix as `&str`.
     ///
-    /// Like [`repeat_into`], but accepts a dynamically sized buffer.
+    /// Like [`repeat_into`][Self::repeat_into], but accepts a dynamically sized buffer.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.

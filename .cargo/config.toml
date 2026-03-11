@@ -97,11 +97,16 @@ wr = "run --workspace"
 wt = "test --workspace"
 wtd = "test --doc --workspace"
 wm = "miri test --workspace"
+# workspace docs
 wd = "doc --no-deps --workspace"
 wdo = "doc --no-deps --open --workspace"
 wdp = "doc --no-deps --workspace --document-private-items"
 wdpo = "doc --no-deps --open --workspace --document-private-items"
-
+# workspace publish
+wp = "publish --workspace --dry-run -F __publish"
+wpa = "publish --workspace --dry-run -F __publish --allow-dirty"
+wPUBLISH = "publish --workspace -F __publish"
+wPUBLISHa = "publish --workspace -F __publish --allow-dirty"
 
 # CHECK
 c = "check" #+w

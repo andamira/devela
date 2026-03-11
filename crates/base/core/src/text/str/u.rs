@@ -855,8 +855,8 @@ macro_rules! impl_str_u {
             #[doc = "Tries to create a new `String" $t:camel "` from the given slice of` bytes`."]
             ///
             /// # Errors
-            #[doc = "Returns [`InvalidText::Capacity`] if `CAP > `[`" $t "::MAX`], or if "]
-            /// `CAP < bytes.len()`, and [`InvalidText::Utf8`] if the `bytes` are not valid UTF-8.
+            #[doc = "Returns [`InvalidText::MismatchedCapacity`] if `CAP > `[`" $t "::MAX`],"]
+            /// or if `CAP < bytes.len()`, and [`InvalidText::Utf8`] if `bytes` are not valid UTF-8.
             fn try_from(bytes: &[u8]) -> Result<Self, InvalidText> {
                 let bytes_len = bytes.len();
                 if CAP < bytes_len { Err(MismatchedCapacity::too_small(CAP, bytes_len).into()) }

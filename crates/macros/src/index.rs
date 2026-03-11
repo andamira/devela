@@ -1,7 +1,10 @@
 // devela_macros::index
 //
 // NOTE: proc. macro crates can only export procedural macros.
+//
+//! A development substrate of coherence.
 //!
+//! Procedural macros, built on Rust's `core`.
 //
 
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]

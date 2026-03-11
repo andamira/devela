@@ -28,6 +28,7 @@ use crate::Sort;
 /// SortAlloc::new(&mut arr[..]).bubble();
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
+#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[repr(transparent)]
 #[derive(Debug)]
 pub struct SortAlloc<T>(pub Sort<T>);

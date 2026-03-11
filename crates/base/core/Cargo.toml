@@ -61,7 +61,7 @@ __docs_internal = [ # enables documentation for internal items
 #* Module features *#
 
 all = [ # enables all the 12 modules (and their submodules)
-	"geom","media","num","text","ui", # "code","data","lang","org","phys","run","sys","vita","work",
+	"geom","media","num","sys","text","ui", # "code","data","lang","org","phys","run","vita","work",
 ]
 # data = ["hash"]
 	# codec

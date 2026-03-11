@@ -160,7 +160,7 @@ mod _std {
                 }
                 /// The nearest integer to itself, default rounding
                 ///
-                /// This is the default [`round_ties_away`] implementation.
+                /// This is equivalent to [`round_ties_away`][Self::round_ties_away].
                 pub const fn round(self) -> Float<$f> { Float(self.0.round()) }
 
                 /// The integral part of `x`.
