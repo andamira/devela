@@ -25,10 +25,10 @@ jobs:
           - {target: riscv64gc-unknown-linux-gnu, docker_image: riscv64/ubuntu}
     steps:
       - name: "checkout repo"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "Set up QEMU"
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: "get errno.h values"
         run: |
@@ -37,7 +37,7 @@ jobs:
               ./tools/get_errno.sh ${{ matrix.config.target }}
             "
       - name: "Upload errno files"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: "exported_errno_rust_consts"
           path: errno_${{ matrix.config.target }}.rs

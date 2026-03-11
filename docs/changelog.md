@@ -13,6 +13,11 @@
 
 # Project
 
+## infra
+### CI
+- bump `actions/checkout` to v6.
+- bump `upload-artifact` to v7.
+- bump `docker/setup-qemu-action` to v4.
 
 ---
 

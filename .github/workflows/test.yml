@@ -20,7 +20,7 @@ jobs:
         # toolchain: [stable, beta]
     steps:
       - name: "checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
             submodules: true
 
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
             submodules: true
 
@@ -86,7 +86,7 @@ jobs:
         os: [macos-latest, windows-latest]
     steps:
       - name: "checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
             submodules: true
 
