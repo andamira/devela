@@ -30,5 +30,9 @@
 
 # Modules
 
+## lang
+### lang::disc
+- new sub-modules: `move`, `narr`.
+
 
 [0.26.0]: https://github.com/andamira/devela/releases/tag/v0.26.0

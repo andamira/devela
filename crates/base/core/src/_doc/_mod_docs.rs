@@ -127,6 +127,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 4 (structures of meaning, expression, and interpretation across domains)
     _DOC_LANG               = "Language structure and meaning across domains.";
     _DOC_LANG_DISC          = "Discourse and expression.";
+    _DOC_LANG_DISC_MOVE     = "Discourse moves, intents, prompts, replies.";
+    _DOC_LANG_DISC_NARR     = "Narrative structure.";
     _DOC_LANG_DISC_RETHORIC = "Rethorical structures and stylistic devices.";
     _DOC_LANG_HUM           = "Human linguistics and language theory.";
     _DOC_LANG_HUM_ART       = "Artificial human languages.";
