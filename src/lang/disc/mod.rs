@@ -11,7 +11,7 @@
 // mod argument; // argumentative structure, persuasion, fallacies
 // mod lyric;    // lyric expression, voice, felt experience
 // mod move;     // discourse moves, intents, prompts, replies
-mod narr;        // narrative structure, scenes, routes
+mod narr; // narrative structure, scenes, routes
 // mod plot;     // causal progression, tension, revelation
 // mod rhetoric; // rhetorical devices, tropes, figures
 // mod style;    // stylistic patterns, tone, register

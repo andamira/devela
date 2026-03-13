@@ -32,7 +32,13 @@
 
 ## lang
 ### lang::disc
-- new sub-modules: `move`, `narr`.
+- new submodules: `move`, `narr`.
 
+## vita
+### vita::play
+- new submodule: `game`.
+
+### vita::play::game
+- new structs: `GameAction`, `GameCycle`, `GameLegacy`, `GameOutcome`, `GamePhase`, `GameRole`, `GameSession`, `GameTurn`.
 
 [0.26.0]: https://github.com/andamira/devela/releases/tag/v0.26.0

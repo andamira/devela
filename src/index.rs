@@ -216,9 +216,6 @@ pub mod zall_ {
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
     #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-    #[doc = crate::_tags!(wip)]
-    #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
     #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), COMMON_DOC!("vita")]]
     pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]

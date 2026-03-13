@@ -286,6 +286,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_VITA_LOVE  = "Relational life, from kinship and care to intimacy and community.";
     _DOC_VITA_MIND  = "Cognition, memory, meaning, and inner orientation of lived experience.";
     _DOC_VITA_PLAY  = "Expression, play, and shared enjoyment beyond necessity or survival.";
+    _DOC_VITA_PLAY_GAME = "Games across cultures.";
 
     // 14 (effort structured over time)
     _DOC_WORK             = "Computational work and its execution mechanics.";
