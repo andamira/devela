@@ -1,4 +1,4 @@
-// devela::run::time::tick
+// devela_base_core::run::time::tick
 //
 //! Defines [`RuntimeTick`].
 //
@@ -22,7 +22,7 @@ use crate::Ordering;
 /// - Advancement is explicit and deterministic.
 ///
 /// For sampled or system-backed time, use a [`TimeSource`][crate::TimeSource] instead.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RuntimeTick {
     ticks: u64,
 }
@@ -61,7 +61,7 @@ impl RuntimeTick {
     pub const fn eq(self, other: Self) -> bool { self.ticks == other.ticks }
 
     /// Compares two tick times.
-    pub const fn cmp(self, other: Self) -> core::cmp::Ordering {
+    pub const fn cmp(self, other: Self) -> Ordering {
         if self.ticks < other.ticks { Ordering::Less }
         else if self.ticks > other.ticks { Ordering::Greater }
         else { Ordering::Equal }

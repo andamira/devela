@@ -69,7 +69,6 @@ pub mod media;
 pub mod num;
 pub mod org;
 pub mod phys;
-#[doc(hidden)]
 pub mod run;
 pub mod sys;
 pub mod text;

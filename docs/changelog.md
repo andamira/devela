@@ -34,6 +34,16 @@
 ### lang::disc
 - new submodules: `move`, `narr`.
 
+## run
+- new item: `RunApp`.
+
+### run::cycle
+- new items `RunControl`, `RunCycle`, `RunPhase`.
+
+### run::time
+- move `RuntimeTick` to [base].
+- new items `FramePacer`, `RunStep`, `Runtime`.
+
 ## vita
 ### vita::play
 - new submodule: `game`.
