@@ -35,14 +35,14 @@
 - new submodules: `move`, `narr`.
 
 ## run
-- new item: `RunApp`.
+- new traits: `RunApp`, `RunRender`, `RunPresent`.
 
 ### run::cycle
-- new items `RunControl`, `RunCycle`, `RunPhase`.
+- new items: `RunControl`, `RunCycle`, `RunPhase`.
 
 ### run::time
 - move `RuntimeTick` to [base].
-- new items `FramePacer`, `RunStep`, `Runtime`.
+- new items: `RunPacer`, `RunStep`, `Runtime`.
 
 ## vita
 ### vita::play

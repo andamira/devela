@@ -28,7 +28,9 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use devela_base_core::run::RunApp;
+        pub use devela_base_core::run::{
+            RunApp, RunPresent, RunRender,
+        };
     }
     _crate_internals {
         pub(crate) use super::_DOC_RUN_MODULES;
