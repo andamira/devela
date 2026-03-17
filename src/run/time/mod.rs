@@ -8,8 +8,7 @@
 crate::structural_mods! { // _mods, _reexports
     _reexports {
         pub use devela_base_core::run::time::{
-            FramePacer, RunStep,
-            Runtime, RuntimeTick,
+            RunPacer, RunStep, Runtime, RuntimeTick,
         };
     }
 }

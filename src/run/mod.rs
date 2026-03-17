@@ -13,10 +13,10 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: cycle, regime, time); // state
 }
 
-pub mod cycle;
+pub mod cycle; // RunCycle, RunControl, RunPhase
 pub mod regime; // RunCap*, RunService
 // pub mod state;
-pub mod time;
+pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
 
 crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {

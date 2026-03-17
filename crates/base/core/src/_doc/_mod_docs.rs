@@ -213,7 +213,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _QUO_RUN               = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_CYCLE         = "Phases and transitions of a running system.";
     _DOC_RUN_TIME          = "Temporal structure and progression within a run.";
-    _DOC_RUN_TIME_FRAME    = "The per-step temporal envelope and state snapshot.";
     _DOC_RUN_TIME_LOOP     = "Composed policies for advancing time within a run.";
     _DOC_RUN_REGIME        = "The committed configuration of a running environment.";
     _DOC_RUN_REGIME_CAP    = "Declared runtime capabilities available to a running system.";

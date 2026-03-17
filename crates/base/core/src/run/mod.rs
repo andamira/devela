@@ -12,17 +12,17 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: cycle, time); // regime, state,
 }
 
-mod app;
+mod iface; // RunApp
 
-pub mod cycle;
+pub mod cycle; // RunCycle, RunControl, RunPhase
 // mod regime;
 // mod state;
-pub mod time;
+pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            app::*,
+            iface::*,
         };
     }
     _pub_mods {

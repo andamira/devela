@@ -1,6 +1,6 @@
-// devela_base_core::run::time::frame::pacer
+// devela_base_core::run::time::pacer
 //
-//! Defines [`FramePacer`].
+//! Defines [`RunPacer`].
 //
 
 use crate::Duration;
@@ -9,14 +9,14 @@ use crate::Duration;
 /// Controls presentation cadence independently of simulation.
 #[doc = crate::_doc_location!("run/time")]
 ///
-/// `FramePacer` accumulates real time and decides when a new frame should be presented.
+/// `RunPacer` accumulates real time and decides when a new frame should be presented.
 #[derive(Debug)]
-pub struct FramePacer {
+pub struct RunPacer {
     interval: Duration,
     accum: Duration,
 }
 
-impl FramePacer {
+impl RunPacer {
     /// Creates a pacer targeting a fixed presentation rate.
     pub const fn new(interval: Duration) -> Self {
         Self { interval, accum: Duration::ZERO }

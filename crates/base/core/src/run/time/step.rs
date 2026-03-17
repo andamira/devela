@@ -1,4 +1,4 @@
-// devela_base_core::run::time::frame::step
+// devela_base_core::run::time::step
 //
 //! Defines [`RunStep`].
 //
@@ -18,18 +18,18 @@ use crate::{RunPhase, RuntimeTick};
 ///
 /// It does not own the runtime, control pacing, or store long-lived state.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct RunStep<'a, E = ()> {
+pub struct RunStep<'a, E = (), C = ()> {
     tick: RuntimeTick,
     phase: RunPhase,
     // real_dt: Option<Duration>,
     events: &'a [E],
-    // context: C,
+    context: C,
 }
 
-impl<'a, E> RunStep<'a, E> {
+impl<'a, E, C> RunStep<'a, E, C> {
     /// Creates a new step snapshot.
-    pub const fn new(tick: RuntimeTick, phase: RunPhase, events: &'a [E]) -> Self {
-        Self { tick, phase, events }
+    pub const fn new(tick: RuntimeTick, phase: RunPhase, events: &'a [E], context: C) -> Self {
+        Self { tick, phase, events, context }
     }
 
     /// Returns the logical tick of this step.
