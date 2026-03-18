@@ -24,9 +24,10 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use super::_reexport_core::*;
 
-        pub use devela_base_core::code::ops::{ // call
-            CallSemantics,
-            CallBindTime, CallContext, CallDispatch, CallOpenness, CallStorage,
+        #[doc(inline)]
+        pub use devela_base_core::code::ops::{
+            CallSemantics, CallBindTime, CallContext, CallDispatch, CallOpenness, CallStorage,
+            punroll,
         };
     }
 }

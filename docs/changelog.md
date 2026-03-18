@@ -30,6 +30,10 @@
 
 # Modules
 
+## code
+### code::ops
+- re-export `punroll!` from devela.
+
 ## data
 ### data::access
 #### data::access::iter
