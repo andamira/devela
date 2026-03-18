@@ -271,6 +271,7 @@ pub use __doc_availability as _doc_availability;
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
+#[allow(clippy::crate_in_macro_def, reason = "to invoke __crate_name from crate of invocation")]
 macro_rules! _doc_location {
     // for items defined in a workspace crate and aggregated in devela.
     ($path:literal) => {

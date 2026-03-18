@@ -234,6 +234,11 @@ macro_rules! iter_strided {
             /// Will only panic if the value can't fit in a `usize`.
             pub const fn len_usize(&self) -> usize { self.len() as usize }
 
+            /// Returns `true` if there are no remaining elements.
+            pub const fn is_empty(&self) -> bool {
+                self.len() == 0
+            }
+
             /* state */
 
             /// Advances the iterator
@@ -428,6 +433,11 @@ macro_rules! iter_strided {
             /// # Panics
             /// Will only panic if the value can't fit in a `usize`.
             pub const fn len_usize(&self) -> usize { self.len() as usize }
+
+            /// Returns `true` if there are no remaining elements.
+            pub const fn is_empty(&self) -> bool {
+                self.len() == 0
+            }
 
             /* state */
 

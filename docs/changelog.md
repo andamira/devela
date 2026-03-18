@@ -30,6 +30,11 @@
 
 # Modules
 
+## data
+## data::access
+## data::access::iter
+- add `is_empty` methods to `iter_strided!` items.
+
 ## lang
 ### lang::disc
 - new submodules: `move`, `narr`.

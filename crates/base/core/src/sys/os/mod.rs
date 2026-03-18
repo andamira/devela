@@ -7,7 +7,7 @@
 //
 
 pub mod fd; // FdRaw
-pub mod term;
+pub mod term; // Ansi, AnsiColor[3|8], Term[Renderer|Size]
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
