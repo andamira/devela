@@ -25,6 +25,8 @@ buffer_linear!(
     ///     [`is_empty`](#method.is_empty),
     ///   - Capacity:
     ///     [`capacity`](#method.capacity) *([_prim](#method.capacity_prim))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity)
+    ///       *([_prim](#method.remaining_capacity_prim))*,
     ///     [`is_full`](#method.is_full).
     ///   - Logical range control:
     ///     [`clear`](#method.clear),

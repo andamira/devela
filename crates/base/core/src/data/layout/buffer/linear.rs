@@ -348,6 +348,7 @@ macro_rules! buffer_linear {
 
         /// Returns the given primitive value as an index type.
         #[inline(always)]
+        // IMPROVE:MAYBE make an unchecked version leveraging unsafe_niche.
         const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
             $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
         }
@@ -483,6 +484,14 @@ macro_rules! buffer_linear {
         pub const fn capacity(&self) -> $I { Self::CAP }
         /// Returns the fixed capacity of the buffer.
         pub const fn capacity_prim(&self) -> $P { Self::CAP_PRIM }
+        /// Returns the number of additional elements that fit within the current capacity.
+        pub const fn remaining_capacity(&self) -> $I {
+            $crate::unwrap![ok_guaranteed_or_ub Self::_prim_to_idx(self.remaining_capacity_prim())]
+        }
+        /// Returns the number of additional elements that fit within the current capacity.
+        pub const fn remaining_capacity_prim(&self) -> $P {
+            self.capacity_prim() - self.len_prim()
+        }
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }
     };
@@ -497,11 +506,19 @@ macro_rules! buffer_linear {
                 "buffer_linear! index type must be contiguous");
         };
 
-        /// Returns the capacity of the underlying slice.
+        /// Returns the capacity of the underlying slice storage.
         pub const fn capacity(&self) -> $I { Self::_usize_to_idx(self.storage.len()).repr() }
-        /// Returns the capacity of the underlying slice.
+        /// Returns the capacity of the underlying slice storage.
         pub const fn capacity_prim(&self) -> $P {
             Self::_usize_to_idx(self.storage.len()).prim()
+        }
+        /// Returns the number of additional elements that fit within the current capacity.
+        pub const fn remaining_capacity(&self) -> $I {
+            $crate::unwrap![ok_guaranteed_or_ub Self::_prim_to_idx(self.remaining_capacity_prim())]
+        }
+        /// Returns the number of additional elements that fit within the current capacity.
+        pub const fn remaining_capacity_prim(&self) -> $P {
+            self.capacity_prim() - self.len_prim()
         }
         /// Returns `true` if the buffer has reached its capacity.
         pub const fn is_full(&self) -> bool { Self::_idx_eq(self.len(), self.capacity()) }

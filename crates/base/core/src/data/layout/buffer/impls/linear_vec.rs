@@ -31,7 +31,7 @@ macro_rules! __buffer_linear_impl_vec {
 
             /// Returns the number of elements currently stored in the buffer.
             pub const fn len(&self) -> $I {
-                Self::_usize_to_idx_sat(self.storage.capacity()).repr()
+                Self::_usize_to_idx_sat(self.storage.len()).repr()
             }
             /// Returns the number of elements currently stored in the buffer.
             pub const fn len_prim(&self) -> $P { self.storage.len() as $P }
@@ -44,8 +44,19 @@ macro_rules! __buffer_linear_impl_vec {
             }
             /// Returns the capacity of the underlying `Vec`.
             pub const fn capacity_prim(&self) -> $P { self.storage.capacity() as $P }
-            /// Always returns `false`, since it can never be full.
-            pub const fn is_full(&self) -> bool { false }
+
+            /// Returns the additional elements that can be pushed without reallocating.
+            pub const fn remaining_capacity(&self) -> $I {
+                Self::_usize_to_idx_sat(self.storage.capacity() - self.storage.len()).repr()
+            }
+            /// Returns the additional elements that can be pushed without reallocating.
+            pub const fn remaining_capacity_prim(&self) -> $P {
+                (self.storage.capacity() - self.storage.len()) as $P
+            }
+            /// Returns `true` if the current allocation has no remaining capacity.
+            ///
+            /// Pushing another element may reallocate.
+            pub const fn is_full(&self) -> bool { self.storage.len() == self.storage.capacity() }
 
             /* logical range control */
 

@@ -36,6 +36,8 @@ buffer_linear!(
     ///   - Capacity:
     ///     [`CAP`](#associatedconstant.CAP) *([_PRIM](#associatedconstant.CAP_PRIM))*,
     ///     [`capacity`](#method.capacity) *([_prim](#method.capacity_prim))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity)
+    ///       *([_prim](#method.remaining_capacity_prim))*,
     ///     [`is_full`](#method.is_full).
     //
     ///   - Logical range control:
@@ -78,6 +80,8 @@ buffer_linear!(
     ///   - Capacity:
     ///     [`CAP`](#associatedconstant.CAP-1) *([_PRIM](#associatedconstant.CAP_PRIM-1))*,
     ///     [`capacity`](#method.capacity-1) *([_prim](#method.capacity_prim-1))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity-1)
+    ///       *([_prim](#method.remaining_capacity_prim-1))*,
     ///     [`is_full`](#method.is_full-1).
     //
     ///   - Logical range control:
@@ -121,6 +125,8 @@ buffer_linear!(
     ///   - Capacity:
     ///     [`CAP`](#associatedconstant.CAP-2) *([_PRIM](#associatedconstant.CAP_PRIM-2))*,
     ///     [`capacity`](#method.capacity-2) *([_prim](#method.capacity_prim-2))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity-2)
+    ///       *([_prim](#method.remaining_capacity_prim-2))*,
     ///     [`is_full`](#method.is_full-2).
     //
     ///   - Logical range control:
@@ -173,6 +179,8 @@ buffer_linear!(
     // %common_view:
     ///   - Capacity:
     ///     [`capacity`](#method.capacity) *([_prim](#method.capacity_prim))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity)
+    ///       *([_prim](#method.remaining_capacity_prim))*,
     ///     [`is_full`](#method.is_full).
     //
     ///   - Logical range control:
@@ -205,6 +213,8 @@ buffer_linear!(
     // %common_view:
     ///   - Capacity:
     ///     [`capacity`](#method.capacity-1) *([_prim](#method.capacity_prim-1))*,
+    ///     [`remaining_capacity`](#method.remaining_capacity-1)
+    ///       *([_prim](#method.remaining_capacity_prim-1))*,
     ///     [`is_full`](#method.is_full-1).
     //
     ///   - Peek:

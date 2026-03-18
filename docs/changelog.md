@@ -35,6 +35,13 @@
 #### data::access::iter
 - add `is_empty` methods to `iter_strided!` items.
 
+### data::layout
+- update `buffer_linear!`:
+  - new methods: `remaining_capacity`, `remaining_capacity_prim`.
+  - update `vec` backend methods:
+    - update `is_full` semantics.
+    - fix `len` implementation.
+
 ## lang
 ### lang::disc
 - new submodules: `move`, `narr`.
