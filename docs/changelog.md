@@ -37,7 +37,8 @@
 
 ### data::layout
 - update `buffer_linear!`:
-  - new methods: `remaining_capacity`, `remaining_capacity_prim`.
+  - new methods: `push_slice`, `remaining_capacity`, `remaining_capacity_prim`.
+  - new methods for non-alloc backends: `push_slice_copy`, `push_slice_copy_exact`.
   - update `vec` backend methods:
     - update `is_full` semantics.
     - fix `len` implementation.

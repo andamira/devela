@@ -32,7 +32,8 @@ buffer_linear!(
     ///     [`clear`](#method.clear),
     ///     [`truncate`](#method.truncate), *([_prim](#method.truncate_prim))*.
     ///   - Push:
-    ///     [`push_back`](#method.push_back).
+    ///     [`push_back`](#method.push_back),
+    ///     [`push_slice`](#method.push_slice).
     ///   - Pop:
     ///     [`pop_back`](#method.pop_back).
     ///   - Peek:

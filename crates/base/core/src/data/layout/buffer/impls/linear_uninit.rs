@@ -149,6 +149,48 @@ macro_rules! __buffer_linear_impl_uninit {
                 Ok(())
             }
 
+            /// Appends as many elements cloned from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub fn push_slice(&mut self, src: &[T]) -> usize where T: Clone {
+                let len = self._len_usize();
+                let count = $crate::cmp!(min src.len(), CAP - len);
+                $crate::whilst! { i in 0..count; {
+                    self.storage[len + i].write(src[i].clone());
+                }}
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+
+            /// Appends as many copied elements from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub const fn push_slice_copy(&mut self, src: &[T]) -> usize where T: Copy {
+                let len = self._len_usize();
+                let count = $crate::cmp!(min src.len(), CAP - len);
+                // SAFETY:
+                // - `len..len+count` is within storage
+                // - these slots are currently uninitialized
+                // - after copying from `src[..count]`, they become initialized
+                let dst = unsafe { $crate::Slice::from_raw_parts_mut(
+                        self.storage.as_mut_ptr().add(len) as *mut T, count) };
+                let src = $crate::Slice::range_to(src, count);
+                dst.copy_from_slice(src);
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+
+            /// Appends all copied elements from `src`, or none if insufficient capacity.
+            ///
+            /// Returns `Err(remaining_capacity)` if not enough space is available.
+            pub const fn push_slice_copy_exact(&mut self, src: &[T]) -> Result<(), usize>
+            where T: Copy {
+                let rem = CAP - self._len_usize();
+                if src.len() > rem { return Err(rem); }
+                let _ = self.push_slice_copy(src);
+                Ok(())
+            }
+
             /* pop */
 
             /// Removes and returns the last element.
@@ -169,7 +211,7 @@ macro_rules! __buffer_linear_impl_uninit {
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.
                 Some(unsafe { &*self.storage[self._len_dec().to_usize_saturating()].as_ptr() })
             }
-            /// Returns a reference to the last element without removing it.
+            /// Returns an exclusive reference to the last element without removing it.
             pub const fn peek_mut_back(&mut self) -> Option<&mut T> {
                 if self.is_empty() { return None; }
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.

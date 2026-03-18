@@ -152,6 +152,43 @@ macro_rules! __buffer_linear_impl_option {
                 Ok(())
             }
 
+            /// Appends as many elements cloned from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub fn push_slice(&mut self, src: &[T]) -> usize where T: Clone {
+                let len = self._len_usize();
+                let count = $crate::cmp!(min src.len(), CAP - len);
+                $crate::whilst! { i in 0..count; {
+                    self.storage[len + i] = Some(src[i].clone());
+                }}
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+
+            /// Appends as many copied elements from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub const fn push_slice_copy(&mut self, src: &[T]) -> usize where T: Copy {
+                let len = self._len_usize();
+                let count = $crate::cmp!(min src.len(), CAP - len);
+                $crate::whilst! { i in 0..count; {
+                    self.storage[len + i] = Some(src[i]);
+                }}
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+
+            /// Appends all copied elements from `src`, or none if insufficient capacity.
+            ///
+            /// Returns `Err(remaining_capacity)` if not enough space is available.
+            pub const fn push_slice_copy_exact(&mut self, src: &[T]) -> Result<(), usize>
+            where T: Copy {
+                let rem = CAP - self._len_usize();
+                if src.len() > rem { return Err(rem); }
+                let _ = self.push_slice_copy(src);
+                Ok(())
+            }
+
             /* pop */
 
             /// Removes and returns a value from the back of the buffer.

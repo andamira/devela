@@ -45,6 +45,8 @@ buffer_linear!(
     ///     [`truncate`](#method.truncate), *([_prim](#method.truncate_prim))*.
     ///   - Push:
     ///     [`push_back`](#method.push_back) *([_copy](#method.push_back_copy))*.
+    ///     [`push_slice`](#method.push_slice)
+    ///       *([_copy](#method.push_slice_copy), [_copy_exact](#method.push_slice_copy_exact))*.
     ///   - Pop:
     ///     [`pop_back_clone`](#method.pop_back_clone),
     ///     [`pop_back_copy`](#method.pop_back_copy).
@@ -89,7 +91,9 @@ buffer_linear!(
     ///     [`drop_back`](#method.drop_back),
     ///     [`truncate`](#method.truncate-1), *([_prim](#method.truncate_prim-1))*.
     ///   - Push:
-    ///     [`push_back`](#method.push_back-1).
+    ///     [`push_back`](#method.push_back-1),
+    ///     [`push_slice`](#method.push_slice)
+    ///       *([_copy](#method.push_slice_copy), [_copy_exact](#method.push_slice_copy_exact))*.
     ///   - Pop:
     ///     [`pop_back`](#method.pop_back).
     ///   - Peek:
@@ -133,7 +137,9 @@ buffer_linear!(
     ///     [`clear`](#method.clear-2),
     ///     [`truncate`](#method.truncate-2).
     ///   - Push:
-    ///     [`push_back`](#method.push_back-2) *([_copy](#method.push_back_copy-1))*.
+    ///     [`push_back`](#method.push_back-2) *([_copy](#method.push_back_copy-1))*,
+    ///     [`push_slice`](#method.push_slice)
+    ///       *([_copy](#method.push_slice_copy), [_copy_exact](#method.push_slice_copy_exact))*.
     ///   - Pop:
     ///     [`pop_back`](#method.pop_back-1).
     ///   - Peek:
@@ -187,7 +193,9 @@ buffer_linear!(
     ///     [`clear`](#method.clear),
     ///     [`truncate`](#method.truncate), *([_prim](#method.truncate_prim))*.
     ///   - Push:
-    ///     [`push_back`](#method.push_back) *([_copy](#method.push_back_copy))*.
+    ///     [`push_back`](#method.push_back) *([_copy](#method.push_back_copy))*,
+    ///     [`push_slice`](#method.push_slice)
+    ///       *([_copy](#method.push_slice_copy), [_copy_exact](#method.push_slice_copy_exact))*.
     ///   - Pop:
     ///     [`pop_back_clone`](#method.pop_back_clone),
     ///     [`pop_back_copy`](#method.pop_back_copy).

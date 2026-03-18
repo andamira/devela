@@ -123,6 +123,38 @@ macro_rules! __buffer_linear_impl_array {
                 Ok(())
             }
 
+            /// Appends as many cloned elements from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub fn push_slice(&mut self, src: &[T]) -> usize where T: Clone {
+                let len = self._len_usize();
+                let count = usize::min(src.len(), CAP - len);
+                self.storage[len..len + count].clone_from_slice(&src[..count]);
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+            /// Appends as many copied elements from `src` as fit.
+            ///
+            /// Returns the number of elements appended.
+            pub const fn push_slice_copy(&mut self, src: &[T]) -> usize where T: Copy {
+                let len = self._len_usize();
+                let count = $crate::cmp!(min src.len(), CAP - len);
+                let dst_slice = $crate::Slice::range_mut(&mut self.storage, len, len + count);
+                let src_slice = $crate::Slice::range_to(&src, count);
+                dst_slice.copy_from_slice(src_slice);
+                self.len = Self::_usize_to_idx(len + count);
+                count
+            }
+            /// Appends all copied elements from `src`,
+            /// or returns the number appended before running out of space.
+            pub const fn push_slice_copy_exact(&mut self, src: &[T]) -> Result<(), usize>
+            where T: Copy {
+                let rem = CAP - self._len_usize();
+                if src.len() > rem { return Err(rem); }
+                let _ = self.push_slice_copy(src);
+                Ok(())
+            }
+
             /* pop */
 
             /// Removes and returns a cloned value from the back of the buffer.

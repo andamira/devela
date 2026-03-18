@@ -82,6 +82,16 @@ macro_rules! __buffer_linear_impl_vec {
             /// Removes and returns a value from the back of the buffer.
             pub fn push_back(&mut self, value: T) { self.storage.push(value); }
 
+            /// Appends elements cloned from `src` to the back of the buffer.
+            ///
+            /// Returns the number of elements appended, which is always `src.len()`.
+            ///
+            /// This may reallocate the underlying storage.
+            pub fn push_slice(&mut self, src: &[T]) -> usize where T: Clone {
+                self.storage.extend_from_slice(src);
+                src.len()
+            }
+
             /* pop */
 
             /// Removes and returns a value from the back of the buffer.
