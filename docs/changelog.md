@@ -31,13 +31,20 @@
 # Modules
 
 ## data
-## data::access
-## data::access::iter
+### data::access
+#### data::access::iter
 - add `is_empty` methods to `iter_strided!` items.
 
 ## lang
 ### lang::disc
 - new submodules: `move`, `narr`.
+
+## num
+### num::dom
+#### num::dom::int
+- update `Int`:
+  - use rust's implementations in `midpoint` methods.
+  - rename old signed `midpoint` method to `midpoint_floor`.
 
 ## run
 - new traits: `RunApp`, `RunRender`, `RunPresent`.

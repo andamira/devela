@@ -324,18 +324,38 @@ macro_rules! impl_elem {
 
             /// Calculates the middle point of `self` and `other`.
             ///
-            /// The result is always rounded towards negative infinity.
+            /// The result is always rounded toward zero.
+            ///
+            /// Equivalent to `(self + other) / 2` in a sufficiently large signed integer type,
+            /// without overflow.
             ///
             /// # Examples
             /// ```
             /// # use devela_base_core::Int;
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
-            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-1), -1];")]
-            #[doc = concat!("assert_eq![Int(-1_", stringify!($t), ").midpoint(0), -1];")]
+            #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-1), 0];")]
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-7), -3];")]
             /// ```
-            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
-            // NOTE: based on Rust's std implementation.
             pub const fn midpoint(self, other: $t) -> Int<$t> {
+                Int(self.0.midpoint(other))
+            }
+
+            /// Calculates the middle point of `self` and `other`.
+            ///
+            /// The result is always rounded toward negative infinity.
+            ///
+            /// Equivalent to the mathematical floor of the exact average, without overflow.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela_base_core::Int;
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint_floor(4), 2];")]
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint_floor(-1), -1];")]
+            #[doc = concat!("assert_eq![Int(-1_", stringify!($t), ").midpoint_floor(0), -1];")]
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint_floor(-7), -4];")]
+            /// ```
+            pub const fn midpoint_floor(self, other: $t) -> Int<$t> {
                 const U: $ut = <$t>::MIN.unsigned_abs();
 
                 // Map a $t to a $ut
@@ -623,7 +643,7 @@ macro_rules! impl_elem {
 
             /// Calculates the middle point of `self` and `other`.
             ///
-            /// The result is always rounded towards negative infinity.
+            /// The result is always rounded toward zero.
             ///
             /// # Examples
             /// ```
@@ -631,12 +651,8 @@ macro_rules! impl_elem {
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
             /// ```
-            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/pull/131784)
-            // NOTE: based on Rust's std implementation.
             pub const fn midpoint(self, other: $t) -> Int<$t> {
-                // Use the well known branchless algorithm from Hacker's Delight to compute
-                // `(a + b) / 2` without overflowing: `((a ^ b) >> 1) + (a & b)`.
-                Int(((self.0 ^ other) >> 1) + (self.0 & other))
+                Int(self.0.midpoint(other))
             }
         }
     }};
