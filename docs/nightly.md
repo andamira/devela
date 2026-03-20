@@ -70,7 +70,8 @@ See also
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
         = `nightly_doc` flag
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
-- 1.??: ` `[fn_align](https://github.com/rust-lang/rust/pull/140261)
+- 1.??: `·`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
+- 1.??: `·`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)

@@ -81,6 +81,7 @@
         const_str_split_at,
         debug_closure_helpers,
         derive_coerce_pointee,
+        float_bits_const,
         fn_align,
         frontmatter,
         int_format_into,
