@@ -155,16 +155,6 @@ impl XDisplay {
     }
     // fn window_ids(&self) -> impl Iterator<Item = u32> { todo![] }
 
-    /// Registers a window.
-    pub(crate) fn register_window(&mut self, window_id: u32, state: XWindowState) {
-        debug_assert!(!self.has_window(window_id), "window already registered: {window_id}");
-        self.windows.push((window_id, state));
-    }
-    /// Unregisters a window.
-    fn unregister_window(&mut self, window_id: u32) -> Option<XWindowState> {
-        let index = self.windows.iter().position(|&(id, _)| id == window_id)?;
-        Some(self.windows.swap_remove(index).1)
-    }
     /// Returns a shared reference to the requested inner window state.
     fn window_state(&self, window_id: u32) -> Option<&XWindowState> {
         self.windows.iter().find(|&&(id, _)| id == window_id).map(|(_, state)| state)
@@ -172,6 +162,35 @@ impl XDisplay {
     /// Returns an exclusive reference to the requested inner window state.
     fn window_state_mut(&mut self, window_id: u32) -> Option<&mut XWindowState> {
         self.windows.iter_mut().find(|(id, _)| *id == window_id).map(|(_, state)| state)
+    }
+
+    /// Registers a window.
+    pub(crate) fn window_register(&mut self, window_id: u32, state: XWindowState) {
+        debug_assert!(!self.has_window(window_id), "window already registered: {window_id}");
+        self.windows.push((window_id, state));
+    }
+    /// Unregisters a window.
+    fn window_unregister(&mut self, window_id: u32) -> Option<XWindowState> {
+        let index = self.windows.iter().position(|&(id, _)| id == window_id)?;
+        Some(self.windows.swap_remove(index).1)
+    }
+    /// Destroys a registered window and removes its cached state.
+    ///
+    /// This sends a destroy request to the X server, frees the associated
+    /// graphics context, unregisters the window from this display, and flushes
+    /// the connection.
+    ///
+    /// Returns `true` if the window was registered and a destroy request was sent.
+    pub(crate) fn window_destroy(&mut self, window_id: u32, gc: u32) -> bool {
+        let Some(_) = self.window_unregister(window_id) else {
+            return false;
+        };
+        unsafe {
+            raw::xcb_free_gc(self.conn, gc);
+            raw::xcb_destroy_window(self.conn, window_id);
+        }
+        self.flush();
+        true
     }
 
     /// Returns the dimensions of the window `(width, height)`.
@@ -197,7 +216,7 @@ impl XDisplay {
     /// Marks the requested window as needing redraw.
     ///
     /// Returns `true` if the window was found and updated.
-    fn mark_window_redraw(&mut self, window_id: u32) -> bool {
+    fn window_mark_redraw(&mut self, window_id: u32) -> bool {
         if let Some(state) = self.window_state_mut(window_id) {
             state.needs_redraw = true;
             true
@@ -208,7 +227,7 @@ impl XDisplay {
     /// Clears the redraw flag of the requested window.
     ///
     /// Returns `true` if the window was found and updated.
-    fn clear_window_redraw(&mut self, window_id: u32) -> bool {
+    pub(crate) fn window_clear_redraw(&mut self, window_id: u32) -> bool {
         if let Some(state) = self.window_state_mut(window_id) {
             state.needs_redraw = false;
             true
@@ -218,7 +237,7 @@ impl XDisplay {
     }
 
     /// Updates the requested window size and/or position and returns its delta.
-    fn update_window_configure(
+    fn window_update_configure(
         &mut self,
         window_id: u32,
         x: i16,
@@ -307,7 +326,7 @@ impl XDisplay {
         } else if let Some(ev) = xev.as_raw_leave() {
             return Event::from_window(ev.event, Kind::Window(Win::Left), xev.timestamp());
         } else if let Some(ev) = xev.as_raw_expose() {
-            self.mark_window_redraw(ev.window);
+            self.window_mark_redraw(ev.window);
             return Event::from_window(
                 ev.window,
                 Kind::Window(Win::RedrawRequested),
@@ -317,7 +336,7 @@ impl XDisplay {
             let window_id = ev.window;
             let (x, y, w, h) = (ev.x, ev.y, ev.width, ev.height);
             let ts = xev.timestamp();
-            if let Some(delta) = self.update_window_configure(window_id, x, y, w, h) {
+            if let Some(delta) = self.window_update_configure(window_id, x, y, w, h) {
                 if delta.moved {
                     let position = Position::<i32, 2>::new([x as i32, y as i32]);
                     self.queue.push(Event::from_window(

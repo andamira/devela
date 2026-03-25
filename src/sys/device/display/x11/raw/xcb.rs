@@ -27,7 +27,9 @@
 //   - xcb_setup_roots_iterator()
 // * window/gc
 //   - xcb_create_gc()
+//   - xcb_free_gc()
 //   - xcb_create_window()
+//   - xcb_destroy_window()
 //   - xcb_map_window()
 //   - xcb_change_property()
 // * image/rectangle
@@ -191,6 +193,12 @@ unsafe extern "C" {
         value_list: *const u32,
     );
 
+    /// Destroys a graphics context.
+    ///
+    /// Destroys the specified gc and all associated storage.
+    /// - https://www.x.org/releases/current/doc/man/man3/xcb_free_gc.3.xhtml
+    pub(crate) fn xcb_free_gc(conn: *mut xcb_connection_t, gc: xcb_gcontext_t);
+
     /// Creates a window.
     /// - <https://www.x.org/releases/current/doc/man/man3/xcb_create_window.3.xhtml>
     pub(crate) fn xcb_create_window(
@@ -208,6 +216,15 @@ unsafe extern "C" {
         value_mask: u32,
         value_list: *const u32,
     );
+
+    /// Destroys the specified window and all of its subwindows.
+    ///
+    /// A DestroyNotify event is generated for each destroyed window
+    /// (a DestroyNotify event is first generated for any given window’s inferiors).
+    /// If the window was mapped, it will be automatically unmapped before destroying.
+    ///
+    /// - <https://www.x.org/releases/current/doc/man/man3/xcb_destroy_window.3.xhtml>
+    pub(crate) fn xcb_destroy_window(conn: *mut xcb_connection_t, window: xcb_window_t);
 
     /// Makes a window visible.
     /// - <https://www.x.org/releases/current/doc/man/man3/xcb_map_window.3.xhtml>

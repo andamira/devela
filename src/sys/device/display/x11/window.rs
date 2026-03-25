@@ -84,12 +84,20 @@ impl XWindow {
             display.atoms.wm_protocols, display.atoms.wm_delete_window);
 
         let state = XWindowState { x, y, width, height, needs_redraw: false };
-        display.register_window(win, state);
+        display.window_register(win, state);
 
         // let window = Self { display: conn, win, gc, x, y, width, height, needs_redraw: false };
         let window = Self { display: conn, win, gc };
         display.flush();
         Ok(window)
+    }
+
+    /// Destroys this window and unregisters it from the display.
+    ///
+    /// Returns `true` if the window was still registered and a destroy request
+    /// was sent to the X server.
+    pub fn destroy(&self, display: &mut XDisplay) -> bool {
+        display.window_destroy(self.id(), self.gc)
     }
 
     /* geometry queries */
@@ -108,6 +116,10 @@ impl XWindow {
     /// Returns whether this window is currently marked for redraw.
     pub fn needs_redraw(&self, display: &XDisplay) -> bool {
         display.window_needs_redraw(self.id())
+    }
+    /// Clears the redraw flag.
+    pub fn clear_redraw(&self, display: &mut XDisplay) {
+        display.window_needs_redraw(self.id());
     }
 
     /* */

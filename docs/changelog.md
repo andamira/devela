@@ -71,7 +71,7 @@
 ##### sys::device::display::x11
 - change `unsafe_syscall` feature-gate to `unsafe_ffi`.
 - update `XWindow`:
-  - new methods: `extent`, `position`, `needs_redraw`.
+  - new methods: `destroy`, `extent`, `position`, `clear_redraw`, `needs_redraw`.
   - remove method `size`.
   - method `new` now requires an exclusive reference to `XDisplay`.
   - move the inner state to a new `XDisplay`'s window registry.
@@ -79,6 +79,7 @@
   - only emit window move and resize events when they're actually different.
   - emit events with the right window target.
   - add a managed window registry.
+- new raw fns: `xcb_free_gc`, `xcb_destroy_window`.
 
 #### sys::os::c
 - change `unsafe_syscall` feature-gate to `unsafe_ffi`.
