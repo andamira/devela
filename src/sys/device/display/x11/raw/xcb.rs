@@ -585,9 +585,9 @@ pub(crate) struct xcb_configure_notify_event_t {
     /// relative to the parent window's origin.
     pub y: i16,
     /// The inside width of window, not including the border.
-    pub width: i16,
+    pub width: u16,
     /// The inside height of window, not including the border.
-    pub height: i16,
+    pub height: u16,
     /// The border width of window.
     pub border_width: u16,
     /// Window managers should ignore this window if override_redirect is 1.

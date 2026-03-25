@@ -18,7 +18,7 @@
 
 mod print; // os_[e]print[ln]!
 
-#[cfg(feature = "unsafe_syscall")]
+#[cfg(feature = "unsafe_ffi")]
 mod c; // Libc
 
 pub mod browser; // Web*
@@ -35,7 +35,7 @@ pub mod term; // Ansi*
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        #[cfg(feature = "unsafe_syscall")]
+        #[cfg(feature = "unsafe_ffi")]
         pub use super::c::*;
 
         pub use super::print::*;

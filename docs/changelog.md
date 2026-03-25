@@ -26,16 +26,16 @@
 - update `tools/check.rs`:
   - bump `devela` to 0.25.0.
 
+## features & flags
+- make `x11` feature auto-enable: `alloc` and `event`.
+
 ---
 
 # Modules
 
-## code
 ### code::ops
 - re-export `punroll!` from devela.
 
-## data
-### data::access
 #### data::access::iter
 - add `is_empty` methods to `iter_strided!` items.
 
@@ -47,17 +47,12 @@
     - update `is_full` semantics.
     - fix `len` implementation.
 
-## lang
 ### lang::disc
 - new submodules: `move`, `narr`.
 
-## media
-### media::visual
 #### media::visual::draw
 - new traits: `Canvas`, `CanvasRead`, `CanvasTextel`.
 
-## num
-### num::dom
 #### num::dom::int
 - update `Int`:
   - use rust's implementations in `midpoint` methods.
@@ -73,17 +68,33 @@
 - move `RuntimeTick` to [base].
 - new items: `RunPacer`, `RunStep`, `Runtime`.
 
-## ui
+##### sys::device::display::x11
+- change `unsafe_syscall` feature-gate to `unsafe_ffi`.
+- update `XWindow`:
+  - new methods: `extent`, `position`, `needs_redraw`.
+  - remove method `size`.
+  - method `new` now requires an exclusive reference to `XDisplay`.
+  - move the inner state to a new `XDisplay`'s window registry.
+- update `XDisplay`:
+  - only emit window move and resize events when they're actually different.
+  - emit events with the right window target.
+  - add a managed window registry.
+
+#### sys::os::c
+- change `unsafe_syscall` feature-gate to `unsafe_ffi`.
+
 ### ui::event
 - update `EventWindow` variants:
   - `Resized` now contains `Extent`.
   - `Moved` now contains `Position`.
-
-## vita
-### vita::play
-- new submodule: `game`.
+- update `Event`:
+  - new methods: `from_window`, `from_device`.
+- update `EventTarget`:
+  - new methods: `some_window`, `some_device`.
+- impl `From<u32>` for `WindowId` and `DeviceId`.
 
 ### vita::play::game
+- new submodule.
 - new structs: `GameAction`, `GameCycle`, `GameLegacy`, `GameOutcome`, `GamePhase`, `GameRole`, `GameSession`, `GameTurn`.
 
 [0.26.0]: https://github.com/andamira/devela/releases/tag/v0.26.0

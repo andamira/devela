@@ -3,9 +3,10 @@
 //! Defines [`Event`].
 //
 
+use crate::{ConstInit, NonZeroU64};
 use crate::{
-    ConstInit, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTarget,
-    EventTimestamp, EventWindow, NonZeroU64,
+    DeviceId, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTarget, EventTimestamp,
+    EventWindow, WindowId,
 };
 
 #[doc = crate::_tags!(event)]
@@ -68,7 +69,7 @@ impl Event {
         count: None,
     };
 
-    /// Creates a new event with a `kind` and an optional backend `emitted` timestamp.
+    /// Creates a new global event with a `kind` and an optional backend `emitted` timestamp.
     ///
     /// The `target` is set to [`Global`][EventTarget::Global],
     /// while `processed` and `count` are left unset and should be filled by the engine.
@@ -85,6 +86,26 @@ impl Event {
     pub const fn new_with(target: EventTarget, kind: EventKind, emitted: Option<EventTimestamp>)
         -> Event {
         Self { kind, target, emitted, processed: None, count: None }
+    }
+
+    /// Creates a new window event with a `kind` and an optional backend `emitted` timestamp.
+    ///
+    /// The `target` is set to [`Window`][EventTarget::Window],
+    /// while `processed` and `count` are left unset and should be filled by the engine.
+    #[inline(always)]
+    pub fn from_window(id: impl Into<WindowId>,
+        kind: EventKind, emitted: Option<EventTimestamp>) -> Event {
+        Self { kind, target: EventTarget::Window(id.into()), emitted, processed: None, count: None }
+    }
+
+    /// Creates a new device event with a `kind` and an optional backend `emitted` timestamp.
+    ///
+    /// The `target` is set to [`Device`][EventTarget::Device],
+    /// while `processed` and `count` are left unset and should be filled by the engine.
+    #[inline(always)]
+    pub fn from_device(id: impl Into<DeviceId>,
+        kind: EventKind, emitted: Option<EventTimestamp>) -> Event {
+        Self { kind, target: EventTarget::Device(id.into()), emitted, processed: None, count: None }
     }
 
     /* setters */

@@ -24,6 +24,11 @@ crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
 /// data structures, and it has no arithmetic meaning.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WindowId(pub u32);
+impl From<u32> for WindowId {
+    fn from(id: u32) -> Self {
+        Self(id)
+    }
+}
 
 #[doc = crate::_tags!(interaction uid)]
 /// A backend-agnostic identifier for an input device.
@@ -38,6 +43,11 @@ pub struct WindowId(pub u32);
 /// data structures, and it has no arithmetic meaning.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct DeviceId(pub u32);
+impl From<u32> for DeviceId {
+    fn from(id: u32) -> Self {
+        Self(id)
+    }
+}
 
 // /// Maps backend-native window handles to stable [`WindowId`]s.
 // pub type WindowRegistry<const MAX: usize> = IdRegistry<WindowId, MAX>;

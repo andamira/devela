@@ -57,3 +57,16 @@ pub enum EventTarget {
     #[default]
     Global,
 }
+
+#[rustfmt::skip]
+impl EventTarget {
+    /// Returns the `WindowId` if there's some.
+    pub fn some_window(&self) -> Option<WindowId> {
+        match self { Self::Window(id) => Some(*id), _ => None }
+    }
+
+    /// Returns the `DeviceId` if there's some.
+    pub fn some_device(&self) -> Option<DeviceId> {
+        match self { Self::Device(id) => Some(*id), _ => None }
+    }
+}

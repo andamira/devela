@@ -6,6 +6,16 @@
 use super::raw;
 use crate::{Extent, Position, XDisplay, XError, lets};
 
+/// The inner state for [`XWindow`], stored in [`XDisplay`].
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub(crate) struct XWindowState {
+    pub(crate) x: i16,
+    pub(crate) y: i16,
+    pub(crate) width: u16,
+    pub(crate) height: u16,
+    pub(crate) needs_redraw: bool,
+}
+
 #[doc = crate::_tags!(unix uid guard)]
 /// X11 top-level drawable host and presentation target.
 #[doc = crate::_doc_location!("sys/device/display/x11")]
@@ -17,15 +27,12 @@ pub struct XWindow {
     pub(super) display: *mut raw::xcb_connection_t,
     pub(super) win: u32,
     pub(super) gc: u32,
-    pub(super) width: u16,
-    pub(super) height: u16,
-    // pub(super) depth: u8,
 }
 
 #[rustfmt::skip]
 impl XWindow {
     /// Creates a new window on the given display.
-    pub fn new(display: &XDisplay, x: i16, y: i16, width: u16, height: u16, border_width: u16)
+    pub fn new(display: &mut XDisplay, x: i16, y: i16, width: u16, height: u16, border_width: u16)
         -> Result<Self, XError> {
         let conn = display.conn;
         let win: u32 = unsafe { raw::xcb_generate_id(conn) }; // generate window ID
@@ -76,17 +83,34 @@ impl XWindow {
         display.atoms.set_property_atom(conn, win,
             display.atoms.wm_protocols, display.atoms.wm_delete_window);
 
-        // let window = Self { display: conn, win, gc, width, height, depth: display.depth };
-        let window = Self { display: conn, win, gc, width, height };
+        let state = XWindowState { x, y, width, height, needs_redraw: false };
+        display.register_window(win, state);
+
+        // let window = Self { display: conn, win, gc, x, y, width, height, needs_redraw: false };
+        let window = Self { display: conn, win, gc };
         display.flush();
         Ok(window)
     }
 
+    /* geometry queries */
+
     /// Returns the X11 window ID.
-    pub fn id(&self) -> u32 { self.win }
+    pub const fn id(&self) -> u32 { self.win }
 
     /// Returns the dimensions of the window `(width, height)`.
-    pub fn size(&self) -> (u16, u16) { (self.width, self.height) }
+    pub fn extent(&self, display: &XDisplay) -> Extent<u16, 2> {
+        display.window_extent(self.id()).expect("current window ID is valid")
+    }
+    /// Returns the dimensions of the window.
+    pub fn position(&self, display: &XDisplay) -> Position<i16, 2> {
+        display.window_position(self.id()).expect("current window ID is valid")
+    }
+    /// Returns whether this window is currently marked for redraw.
+    pub fn needs_redraw(&self, display: &XDisplay) -> bool {
+        display.window_needs_redraw(self.id())
+    }
+
+    /* */
 
     /// Writes an rgba image from a byte buffer, into the window using XCB.
     pub fn put_image_bytes(&self, width: u16, height: u16, depth: u8, data: &[u8]) {

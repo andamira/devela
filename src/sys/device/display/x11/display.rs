@@ -5,11 +5,20 @@
 
 #![allow(unused)]
 
-use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XkbState, raw};
-use crate::{
-    ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventQueue,
-    EventWindow, Extent, Position, Ptr, c_int, is,
-};
+use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XWindowState, XkbState, raw};
+use crate::{ConstInit, Extent, Position, Ptr, Vec, c_int, is, lets, sf, vec_ as vec};
+use crate::{Event, EventButton, EventButtonState, EventKind, EventMouse, EventQueue, EventWindow};
+
+/// Describes which parts of a window configuration changed.
+///
+/// Produced when a `ConfigureNotify` event is applied to the cached state of a registered window.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub(crate) struct XWindowConfigureDelta {
+    /// Whether the window position changed.
+    pub(crate) moved: bool,
+    /// Whether the window size changed.
+    pub(crate) resized: bool,
+}
 
 #[doc = crate::_tags!(unix runtime guard)]
 /// A connection to an X11 display server.
@@ -28,18 +37,18 @@ pub struct XDisplay {
     /* repeat detection */
     pub(super) pending: Option<*mut raw::xcb_generic_event_t>,
     pub(super) repeat_filter: KeyRepeatFilter,
+    pub(super) windows: Vec<(u32, XWindowState)>,
     // custom synthetic event queue
     queue: EventQueue<2>,
 }
 
-#[rustfmt::skip]
 impl XDisplay {
     /// Opens the default X11 display and retrieves its first screen.
     pub fn open() -> Result<Self, XError> {
         // open connection
         let mut screen_num = 0;
         let conn = unsafe { raw::xcb_connect(Ptr::null(), &mut screen_num as *mut c_int) };
-        if conn.is_null() { return Err(XError::ConnectionFailed); }
+        is! { conn.is_null(), return Err(XError::ConnectionFailed) }
         if unsafe { raw::xcb_connection_has_error(conn) } != 0 {
             unsafe { raw::xcb_disconnect(conn) };
             return Err(XError::ConnectionFailed);
@@ -59,9 +68,12 @@ impl XDisplay {
         let depth = unsafe { (*screen).root_depth };
 
         // extension setup hand-shake
-        let mut major = 0u16; let mut minor = 0u16; let mut ev = 0u8; let mut err = 0u8;
-        let ok = unsafe { raw::xkb_x11_setup_xkb_extension(conn, 1, 0, 0,
-            &mut major, &mut minor, &mut ev, &mut err) };
+        lets![mut major = 0, mut minor = 0, mut ev = 0, mut err = 0];
+        let ok = unsafe {
+            raw::xkb_x11_setup_xkb_extension(
+                conn, 1, 0, 0, &mut major, &mut minor, &mut ev, &mut err,
+            )
+        };
         if ok <= 0 {
             unsafe { raw::xcb_disconnect(conn) };
             return Err(XError::ExtensionUnavailable("xkb-setup"));
@@ -73,16 +85,18 @@ impl XDisplay {
         let pending = None;
         let repeat_filter = KeyRepeatFilter::new();
 
+        let windows = vec![];
         let queue = EventQueue::new();
 
-        Ok(Self {
-            conn, screen, screen_num, depth, xkb,
-            pending, repeat_filter, atoms,
-            queue,
-        })
+        sf! { Ok(Self {
+            conn, screen, screen_num, depth, xkb, pending, repeat_filter, atoms, windows, queue
+        }) }
     }
+
     /// Returns the root depth of the default screen.
-    pub fn depth(&self) -> u8 { self.depth }
+    pub fn depth(&self) -> u8 {
+        self.depth
+    }
 
     /// Polls the next event without blocking.
     ///
@@ -114,15 +128,116 @@ impl XDisplay {
 
     /// Flushes pending XCB commands.
     #[inline(always)]
-    pub fn flush(&self) { unsafe { raw::xcb_flush(self.conn); } }
+    pub fn flush(&self) {
+        unsafe {
+            raw::xcb_flush(self.conn);
+        }
+    }
+}
 
-    /* internals */
-
+// Internal methods
+impl XDisplay {
     /// Returns the underlying XCB connection.
-    pub(crate) fn conn(&self) -> *mut raw::xcb_connection_t { self.conn }
+    pub(crate) fn conn(&self) -> *mut raw::xcb_connection_t {
+        self.conn
+    }
 
     /// Returns the default screen for this display.
-    pub(crate) fn screen(&self) -> &raw::xcb_screen_t { unsafe { &*self.screen } }
+    pub(crate) fn screen(&self) -> &raw::xcb_screen_t {
+        unsafe { &*self.screen }
+    }
+
+    /* windows */
+
+    /// Returns `true` if the requested window is registered.
+    fn has_window(&self, window_id: u32) -> bool {
+        self.windows.iter().any(|&(id, _)| id == window_id)
+    }
+    // fn window_ids(&self) -> impl Iterator<Item = u32> { todo![] }
+
+    /// Registers a window.
+    pub(crate) fn register_window(&mut self, window_id: u32, state: XWindowState) {
+        debug_assert!(!self.has_window(window_id), "window already registered: {window_id}");
+        self.windows.push((window_id, state));
+    }
+    /// Unregisters a window.
+    fn unregister_window(&mut self, window_id: u32) -> Option<XWindowState> {
+        let index = self.windows.iter().position(|&(id, _)| id == window_id)?;
+        Some(self.windows.swap_remove(index).1)
+    }
+    /// Returns a shared reference to the requested inner window state.
+    fn window_state(&self, window_id: u32) -> Option<&XWindowState> {
+        self.windows.iter().find(|&&(id, _)| id == window_id).map(|(_, state)| state)
+    }
+    /// Returns an exclusive reference to the requested inner window state.
+    fn window_state_mut(&mut self, window_id: u32) -> Option<&mut XWindowState> {
+        self.windows.iter_mut().find(|(id, _)| *id == window_id).map(|(_, state)| state)
+    }
+
+    /// Returns the dimensions of the window `(width, height)`.
+    pub(crate) fn window_extent(&self, window_id: u32) -> Option<Extent<u16, 2>> {
+        let state = self.window_state(window_id)?;
+        Some(Extent::new([state.width, state.height]))
+    }
+    /// Returns the dimensions of the window.
+    pub(crate) fn window_position(&self, window_id: u32) -> Option<Position<i16, 2>> {
+        let state = self.window_state(window_id)?;
+        Some(Position::new([state.x, state.y]))
+    }
+    /// Returns whether this window is currently marked for redraw.
+    ///
+    /// The flag is stored in [`XDisplay`] as part of the cached runtime state for this window.
+    pub(crate) fn window_needs_redraw(&self, window_id: u32) -> bool {
+        if let Some(state) = self.window_state(window_id) {
+            state.needs_redraw
+        } else {
+            false
+        }
+    }
+    /// Marks the requested window as needing redraw.
+    ///
+    /// Returns `true` if the window was found and updated.
+    fn mark_window_redraw(&mut self, window_id: u32) -> bool {
+        if let Some(state) = self.window_state_mut(window_id) {
+            state.needs_redraw = true;
+            true
+        } else {
+            false
+        }
+    }
+    /// Clears the redraw flag of the requested window.
+    ///
+    /// Returns `true` if the window was found and updated.
+    fn clear_window_redraw(&mut self, window_id: u32) -> bool {
+        if let Some(state) = self.window_state_mut(window_id) {
+            state.needs_redraw = false;
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Updates the requested window size and/or position and returns its delta.
+    fn update_window_configure(
+        &mut self,
+        window_id: u32,
+        x: i16,
+        y: i16,
+        width: u16,
+        height: u16,
+    ) -> Option<XWindowConfigureDelta> {
+        let state = self.window_state_mut(window_id)?;
+        let moved = state.x != x || state.y != y;
+        let resized = state.width != width || state.height != height;
+        state.x = x;
+        state.y = y;
+        state.width = width;
+        state.height = height;
+        is! { resized, state.needs_redraw = true }
+        Some(XWindowConfigureDelta { moved, resized })
+    }
+
+    /* events */
 
     /// Interprets a raw X11 event and converts it into a high-level [`Event`].
     ///
@@ -142,17 +257,17 @@ impl XDisplay {
             let time_ms = unsafe { ev.time };
             if xev.is_key_release() {
                 let real = self.classify_release(keycode, time_ms);
-                if !real { return Event::default(); } // skip fake release
+                is! { !real, return Event::default() } // skip fake release
             }
             if let Some(key) = xev.to_event_key(&self.xkb, &mut self.repeat_filter) {
-                return Event::new(Kind::Key(key), xev.timestamp());
+                return Event::from_window(ev.event, Kind::Key(key), xev.timestamp());
             }
-
         } else if let Some(ev) = xev.as_raw_button() {
             let buttons = XEvent::map_button_mask(ev.state);
             let button = XEvent::map_button(ev.detail);
-            let state  = xev.map_button_state();
-            return Event::new(
+            let state = xev.map_button_state();
+            return Event::from_window(
+                ev.event,
                 Kind::Mouse(EventMouse {
                     x: ev.event_x.into(),
                     y: ev.event_y.into(),
@@ -163,11 +278,11 @@ impl XDisplay {
                 }),
                 xev.timestamp(),
             );
-
         } else if let Some(ev) = xev.as_raw_motion() {
             let buttons = XEvent::map_button_mask(ev.state);
             let button = EventButton::primary_from_mask(buttons);
-            return Event::new(
+            return Event::from_window(
+                ev.event,
                 Kind::Mouse(EventMouse {
                     x: ev.event_x.into(),
                     y: ev.event_y.into(),
@@ -181,21 +296,45 @@ impl XDisplay {
         } else if let Some(cm) = xev.as_raw_client_message() {
             let proto = unsafe { cm.data.data32[0] };
             if proto == self.atoms.wm_delete_window {
-                return Event::new(Kind::Window(Win::CloseRequested), xev.timestamp());
+                return Event::from_window(
+                    cm.window,
+                    Kind::Window(Win::CloseRequested),
+                    xev.timestamp(),
+                );
             }
-        } else if xev.is_enter() {
-            return Event::new(Kind::Window(Win::Entered), xev.timestamp());
-        } else if xev.is_leave() {
-            return Event::new(Kind::Window(Win::Left), xev.timestamp());
-        } else if xev.is_expose() {
-            return Event::new(Kind::Window(Win::RedrawRequested), xev.timestamp());
+        } else if let Some(ev) = xev.as_raw_enter() {
+            return Event::from_window(ev.event, Kind::Window(Win::Entered), xev.timestamp());
+        } else if let Some(ev) = xev.as_raw_leave() {
+            return Event::from_window(ev.event, Kind::Window(Win::Left), xev.timestamp());
+        } else if let Some(ev) = xev.as_raw_expose() {
+            self.mark_window_redraw(ev.window);
+            return Event::from_window(
+                ev.window,
+                Kind::Window(Win::RedrawRequested),
+                xev.timestamp(),
+            );
         } else if let Some(ev) = xev.as_raw_configure() {
-            let extent = Extent::<u32, 2>::new([ev.width as u32, ev.height as u32]);
-            let position = Position::<i32, 2>::new([ev.x as i32, ev.y as i32]);
+            let window_id = ev.window;
+            let (x, y, w, h) = (ev.x, ev.y, ev.width, ev.height);
             let ts = xev.timestamp();
-            // queue both events in FIFO order
-            self.queue.push(Event::new(EventKind::Window(EventWindow::Moved(Some(position))), ts));
-            self.queue.push(Event::new(EventKind::Window(EventWindow::Resized(Some(extent))), ts));
+            if let Some(delta) = self.update_window_configure(window_id, x, y, w, h) {
+                if delta.moved {
+                    let position = Position::<i32, 2>::new([x as i32, y as i32]);
+                    self.queue.push(Event::from_window(
+                        window_id,
+                        EventKind::Window(EventWindow::Moved(Some(position))),
+                        ts,
+                    ));
+                }
+                if delta.resized {
+                    let extent = Extent::<u32, 2>::new([w as u32, h as u32]);
+                    self.queue.push(Event::from_window(
+                        window_id,
+                        EventKind::Window(EventWindow::Resized(Some(extent))),
+                        ts,
+                    ));
+                }
+            }
             return Event::None;
         } else {
             // eprintln!("(OTHER): {} {:?}", xev.response_type(), xev.timestamp());
@@ -209,7 +348,7 @@ impl XDisplay {
     /// the connection with `xcb_poll_for_event`. Returns `None` if no event
     /// is available at this time.
     fn next_raw_event(&mut self) -> Option<*mut raw::xcb_generic_event_t> {
-        if let Some(ev) = self.pending.take() { return Some(ev); }
+        is! { let Some(ev) = self.pending.take(), return Some(ev) }
         let ev = unsafe { raw::xcb_poll_for_event(self.conn) };
         if ev.is_null() { None } else { Some(ev) }
     }
@@ -222,7 +361,7 @@ impl XDisplay {
     fn peek_raw_event(&mut self) -> Option<*mut raw::xcb_generic_event_t> {
         if self.pending.is_none() {
             let ev = unsafe { raw::xcb_poll_for_event(self.conn) };
-            if !ev.is_null() { self.pending = Some(ev); }
+            is! { !ev.is_null(), self.pending = Some(ev) }
         }
         self.pending
     }
@@ -244,7 +383,7 @@ impl XDisplay {
     ///
     /// Only returns `None` if the connection is in an error state.
     fn wait_raw_event(&mut self) -> Option<XEvent> {
-        if let Some(ev) = self.pending.take() { return Some(XEvent { raw: ev }); }
+        is! { let Some(ev) = self.pending.take(), return Some(XEvent { raw: ev }) }
         let ev = unsafe { raw::xcb_wait_for_event(self.conn) };
         if ev.is_null() { None } else { Some(XEvent { raw: ev }) }
     }
@@ -263,7 +402,7 @@ impl XDisplay {
                 let ty = (*next).response_type & 0x7F;
                 if ty == raw::xcb_event_code::XCB_KEY_PRESS as u8 {
                     let kpev = next as *const raw::xcb_key_press_event_t;
-                    if (*kpev).detail == keycode && (*kpev).time == timestamp { return false; }
+                    is! { (*kpev).detail == keycode && (*kpev).time == timestamp, return false }
                 }
             }
         }
