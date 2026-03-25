@@ -73,6 +73,12 @@
 - move `RuntimeTick` to [base].
 - new items: `RunPacer`, `RunStep`, `Runtime`.
 
+## ui
+### ui::event
+- update `EventWindow` variants:
+  - `Resized` now contains `Extent`.
+  - `Moved` now contains `Position`.
+
 ## vita
 ### vita::play
 - new submodule: `game`.

@@ -7,7 +7,7 @@ use super::raw;
 use crate::{Extent, Position, XDisplay, XError, lets};
 
 #[doc = crate::_tags!(unix uid guard)]
-/// X11 window created through XCB.
+/// X11 top-level drawable host and presentation target.
 #[doc = crate::_doc_location!("sys/device/display/x11")]
 ///
 /// Represents a top-level window backed by an X11 drawable. Holds the XCB identifiers

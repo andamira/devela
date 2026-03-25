@@ -8,7 +8,7 @@
 use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XkbState, raw};
 use crate::{
     ConstInit, Event, EventButton, EventButtonState, EventKind, EventMouse, EventQueue,
-    EventWindow, Ptr, c_int, is,
+    EventWindow, Extent, Position, Ptr, c_int, is,
 };
 
 #[doc = crate::_tags!(unix runtime guard)]
@@ -190,12 +190,12 @@ impl XDisplay {
         } else if xev.is_expose() {
             return Event::new(Kind::Window(Win::RedrawRequested), xev.timestamp());
         } else if let Some(ev) = xev.as_raw_configure() {
-            let (w, h) = (ev.width as u32, ev.height as u32);
-            let (x, y) = (ev.x as i32, ev.y as i32);
+            let extent = Extent::<u32, 2>::new([ev.width as u32, ev.height as u32]);
+            let position = Position::<i32, 2>::new([ev.x as i32, ev.y as i32]);
             let ts = xev.timestamp();
             // queue both events in FIFO order
-            self.queue.push(Event::new(EventKind::Window(EventWindow::Moved(Some([x, y]))), ts));
-            self.queue.push(Event::new(EventKind::Window(EventWindow::Resized(Some([w, h]))), ts));
+            self.queue.push(Event::new(EventKind::Window(EventWindow::Moved(Some(position))), ts));
+            self.queue.push(Event::new(EventKind::Window(EventWindow::Resized(Some(extent))), ts));
             return Event::None;
         } else {
             // eprintln!("(OTHER): {} {:?}", xev.response_type(), xev.timestamp());

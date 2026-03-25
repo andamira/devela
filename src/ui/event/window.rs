@@ -4,7 +4,7 @@
 //
 
 use crate::{ConstInit, Event, EventKind};
-// use crate::{Extent, Position};
+use crate::{Extent, Position};
 
 #[cfg(feature = "alloc")]
 use crate::String;
@@ -27,13 +27,11 @@ pub enum EventWindow {
     /// Carries the new `[width, height]` when the backend provides it.
     // NOTE in SDL: https://stackoverflow.com/a/55076700/940200
     // SizeChanged(UiSize),
-    Resized(Option<[u32; 2]>),
-    // Resized(Option<Extent<u32, 2>>),
+    Resized(Option<Extent<u32, 2>>),
     /// The window's position changed.
     ///
     /// Carries the new `[x, y]` when available.
-    Moved(Option<[i32; 2]>),
-    // Moved(Option<Position<i32, 2>>),
+    Moved(Option<Position<i32, 2>>),
 
     /* focus*/
     /// The window gained keyboard focus.
@@ -119,8 +117,7 @@ impl EventWindow {
         matches!(self, Self::Resized(_))
     }
     /// Returns some resize event, if that's the kind.
-    pub const fn resize_coord(&self) -> Option<[u32; 2]> {
-        // pub const fn resize_coord(&self) -> Option<Extent<u32, 2>> {
+    pub const fn resize_coord(&self) -> Option<Extent<u32, 2>> {
         if let EventWindow::Resized(e) = self { *e } else { None }
     }
 
@@ -129,8 +126,7 @@ impl EventWindow {
         matches!(self, Self::Moved(_))
     }
     /// Returns some move event, if that's the kind.
-    pub const fn move_coords(&self) -> Option<[i32; 2]> {
-        // pub const fn move_coord(&self) -> Option<Position<i32, 2>> {
+    pub const fn move_coord(&self) -> Option<Position<i32, 2>> {
         if let EventWindow::Moved(e) = self { *e } else { None }
     }
 
