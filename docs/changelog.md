@@ -51,6 +51,11 @@
 ### lang::disc
 - new submodules: `move`, `narr`.
 
+## media
+### media::visual
+#### media::visual::draw
+- new traits: `Canvas`, `CanvasRead`, `CanvasTextel`.
+
 ## num
 ### num::dom
 #### num::dom::int

@@ -6,21 +6,18 @@
 #![doc = crate::_doc!(hr)]
 //
 
-#[cfg(feature = "draw")]
-mod draw;
-
 #[cfg(feature = "color")]
 pub mod color;
+#[cfg(feature = "draw")]
+pub mod draw;
 #[cfg(feature = "image")]
 pub mod image;
 // pub mod video;
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden
-    _mods {
-        #[cfg(feature = "draw")] pub use super::draw::_all::*;
-    }
+crate::structural_mods! { // _pub_mods, _hidden
     _pub_mods {
         #[cfg(feature = "color")] pub use super::color::_all::*;
+        #[cfg(feature = "draw")] pub use super::draw::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;
         // pub use super::video::_all::*;
     }
