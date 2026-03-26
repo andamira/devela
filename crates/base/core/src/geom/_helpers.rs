@@ -137,20 +137,6 @@ macro_rules! _impl_geom_dim {
             #[must_use]
             pub const fn y(self) -> T where T: Copy { self.dim[1] }
 
-            /// Returns a shared reference to the first dimension `x`.
-            #[must_use]
-            pub const fn x_ref(&self) -> &T { &self.dim[0] }
-            /// Returns a shared reference to the second dimension `y`.
-            #[must_use]
-            pub const fn y_ref(&self) -> &T { &self.dim[1] }
-
-            /// Returns an exclusive reference to the first dimension `x`.
-            #[must_use]
-            pub const fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
-            /// Returns an exclusive reference to the second dimension `y`.
-            #[must_use]
-            pub const fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
-
             /// Returns `true` if the 2 dimensions are equal.
             #[must_use]
             pub fn is_uniform(&self) -> bool where T: PartialEq {
@@ -170,26 +156,6 @@ macro_rules! _impl_geom_dim {
             /// Returns a copy of the third dimension `z`.
             #[must_use]
             pub const fn z(self) -> T where T: Copy { self.dim[2] }
-
-            /// Returns a shared reference to the first dimension `x`.
-            #[must_use]
-            pub const fn x_ref(&self) -> &T { &self.dim[0] }
-            /// Returns a shared reference to the second dimension `y`.
-            #[must_use]
-            pub const fn y_ref(&self) -> &T { &self.dim[1] }
-            /// Returns a shared reference to the third dimension `z`.
-            #[must_use]
-            pub const fn z_ref(&self) -> &T { &self.dim[2] }
-
-            /// Returns an exclusive reference to the first dimension `x`.
-            #[must_use]
-            pub const fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
-            /// Returns an exclusive reference to the second dimension `y`.
-            #[must_use]
-            pub const fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
-            /// Returns an exclusive reference to the third dimension `z`.
-            #[must_use]
-            pub const fn z_mut(&mut self) -> &mut T { &mut self.dim[2] }
 
             /// Returns `true` if the 3 dimensions are equal.
             #[must_use]

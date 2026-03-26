@@ -56,9 +56,8 @@ macro_rules! impl_extent {
     // $t: the inner integer primitive type
     (int $($t:ty),+) => { $( impl_extent![@int $t]; )+ };
     (@int $t:ty) => {
-        impl_extent![@accessors $t];
-
         impl<const D: usize> Extent<$t, D> {
+            #[must_use]
             /// Returns the internal measure, the product of the extents.
             ///
             /// It's equivalent to length, area, and volume in 1, 2 and 3 dimensions.
@@ -67,6 +66,7 @@ macro_rules! impl_extent {
                 whilst!(i in 0..D; measure *= self.dim[i]);
                 measure
             }
+            #[must_use]
             /// Returns the external boundary, the sum of the extents.
             ///
             /// It's equivalent to 2, perimeter and surface area in 1, 2 and 3 dimensions.
@@ -82,24 +82,22 @@ macro_rules! impl_extent {
         }
 
         // impl Extent<$t, 1> {}
-        impl Extent<$t, 2> {
+        impl Extent2<$t> {
+            #[must_use]
             /// The area of the 2d extent.
-            #[must_use]
             pub const fn area(self) -> $t { self.dim[0] * self.dim[1] }
-
-            /// The perimeter of the 2d extent.
             #[must_use]
+            /// The perimeter of the 2d extent.
             pub const fn perimeter(self) -> $t { 2 * (self.dim[0] + self.dim[1]) }
         }
-        impl Extent<$t, 3> {
-            /// The volume of the 3d extent.
+        impl Extent3<$t> {
             #[must_use]
+            /// The volume of the 3d extent.
             pub const fn volume(self) -> $t {
                 self.dim[0] * self.dim[1] * self.dim[2]
             }
-
-            /// The surface area of the 3d extent.
             #[must_use]
+            /// The surface area of the 3d extent.
             pub const fn surface_area(self) -> $t {
                 2 * (self.dim[0] * self.dim[1]
                     + self.dim[1] * self.dim[2]
@@ -120,22 +118,20 @@ macro_rules! impl_extent {
     // $f: the inner floating-point primitive type
     (float $($f:ty),+) => { $( impl_extent![@float $f]; )+ };
     (@float $f:ty) => {
-        impl_extent![@accessors $f];
-
         impl<const D: usize> Extent<$f, D> {
+            #[must_use]
             /// Returns the internal measure, the product of the extents.
             ///
             /// It's equivalent to length, area, and volume in 1, 2 and 3 dimensions.
-            #[must_use]
             pub const fn measure(self) -> $f {
                 let mut measure = 1.0;
                 whilst!(i in 0..D; measure *= self.dim[i]);
                 measure
             }
+            #[must_use]
             /// Returns the external boundary, the sum of the extents.
             ///
             /// It's equivalent to 2, perimeter and surface area in 1, 2 and 3 dimensions.
-            #[must_use]
             pub const fn boundary(self) -> $f {
                 let mut boundary = 0.0;
                 whilst!(i in 0..D; {
@@ -147,25 +143,22 @@ macro_rules! impl_extent {
             }
         }
 
-        // impl Extent<$f, 1> {}
-        impl Extent<$f, 2> {
+        impl Extent2<$f> {
             #[must_use]
             /// Returns the area of the 2d extent.
             pub const fn area(self) -> $f { self.dim[0] * self.dim[1] }
-
             #[must_use]
             /// Returns the perimeter of the 2d extent.
             pub const fn perimeter(self) -> $f { 2.0 * (self.dim[0] + self.dim[1]) }
         }
-        impl Extent<$f, 3> {
-            /// Returns the volume of the 3d extent.
+        impl Extent3<$f> {
             #[must_use]
+            /// Returns the volume of the 3d extent.
             pub const fn volume(self) -> $f {
                 self.dim[0] * self.dim[1] * self.dim[2]
             }
-
-            /// The surface area of the 3d extent.
             #[must_use]
+            /// The surface area of the 3d extent.
             pub const fn surface_area(self) -> $f {
                 2.0 * (self.dim[0] * self.dim[1]
                     + self.dim[1] * self.dim[2]
@@ -173,178 +166,68 @@ macro_rules! impl_extent {
             }
         }
     };
-    (@accessors $t:ty) => {
-        /// Accessors
-        impl Extent<$t, 1> {
-            #[must_use]
-            /// Returns a copy of the first dimension.
-            pub const fn length(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the first dimension.
-            pub const fn length_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the first dimension.
-            pub const fn length_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-        }
-        /// Accessor aliases
-        impl Extent<$t, 1> {
-            #[must_use]
-            /// Returns a copy of the first dimension.
-            pub const fn l(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the first dimension.
-            pub const fn l_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the first dimension.
-            pub const fn l_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-        }
-        /// Accessors
-        impl Extent<$t, 2> {
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis).
-            pub const fn width(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis).
-            pub const fn width_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis).
-            pub const fn width_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis).
-            pub const fn height(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis).
-            pub const fn height_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis).
-            pub const fn height_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis) (width).
-            pub const fn length(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis) (width).
-            pub const fn length_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis) (width).
-            pub const fn length_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis) (width).
-            pub const fn breadth(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis) (width).
-            pub const fn breadth_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis) (width).
-            pub const fn breadth_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-        }
-        /// Accessor aliases
-        impl Extent<$t, 2> {
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis).
-            pub const fn w(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis).
-            pub const fn w_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis).
-            pub const fn w_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis).
-            pub const fn h(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis).
-            pub const fn h_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis).
-            pub const fn h_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis) (width).
-            pub const fn l(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis) (width).
-            pub const fn l_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis) (width).
-            pub const fn l_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis) (width).
-            pub const fn b(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis) (width).
-            pub const fn b_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis) (width).
-            pub const fn b_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-        }
-
-        /// Accessors
-        impl Extent<$t, 3> {
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis) (width).
-            pub const fn width(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis) (width).
-            pub const fn width_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis) (width).
-            pub const fn width_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis).
-            pub const fn height(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis).
-            pub const fn height_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis).
-            pub const fn height_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-
-            #[must_use]
-            /// Returns a copy of the depth dimension (Z-axis).
-            pub const fn depth(self) -> $t { self.dim[2] }
-            #[must_use]
-            /// Returns a shared reference to the depth dimension (Z-axis).
-            pub const fn depth_ref(&self) -> &$t { &self.dim[2] }
-            #[must_use]
-            /// Returns an exclusive reference to the depth dimension (Z-axis).
-            pub const fn depth_mut(&mut self) -> &mut $t { &mut self.dim[2] }
-        }
-        /// Accessor aliases
-        impl Extent<$t, 3> {
-            #[must_use]
-            /// Returns a copy of the horizontal dimension (X-axis) (width).
-            pub const fn w(self) -> $t { self.dim[0] }
-            #[must_use]
-            /// Returns a shared reference to the horizontal dimension (X-axis) (width).
-            pub const fn w_ref(&self) -> &$t { &self.dim[0] }
-            #[must_use]
-            /// Returns an exclusive reference to the horizontal dimension (X-axis) (width).
-            pub const fn w_mut(&mut self) -> &mut $t { &mut self.dim[0] }
-
-            #[must_use]
-            /// Returns a copy of the vertical dimension (Y-axis).
-            pub const fn h(self) -> $t { self.dim[1] }
-            #[must_use]
-            /// Returns a shared reference to the vertical dimension (Y-axis).
-            pub const fn h_ref(&self) -> &$t { &self.dim[1] }
-            #[must_use]
-            /// Returns an exclusive reference to the vertical dimension (Y-axis).
-            pub const fn h_mut(&mut self) -> &mut $t { &mut self.dim[1] }
-
-            #[must_use]
-            /// Returns a copy of the depth dimension (Z-axis).
-            pub const fn d(self) -> $t { self.dim[2] }
-            #[must_use]
-            /// Returns a shared reference to the depth dimension (Z-axis).
-            pub const fn d_ref(&self) -> &$t { &self.dim[2] }
-            #[must_use]
-            /// Returns an exclusive reference to the depth dimension (Z-axis).
-            pub const fn d_mut(&mut self) -> &mut $t { &mut self.dim[2] }
-        }
-    };
 }
 impl_extent![];
+
+#[rustfmt::skip]
+/// 1D accessors
+impl<T: Copy> Extent1<T> {
+    #[must_use]
+    /// Returns a copy of the first dimension.
+    pub const fn length(self) -> T { self.dim[0] }
+    /// Returns a copy of the first dimension.
+    pub const fn l(self) -> T { self.dim[0] }
+}
+
+#[rustfmt::skip]
+/// 2D Accessors
+impl<T: Copy> Extent2<T> {
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis).
+    pub const fn width(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis).
+    pub const fn w(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis).
+    pub const fn height(self) -> T { self.dim[1] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis).
+    pub const fn h(self) -> T { self.dim[1] }
+
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis) (width).
+    pub const fn length(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis) (width).
+    pub const fn l(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis) (width).
+    pub const fn breadth(self) -> T { self.dim[1] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis) (width).
+    pub const fn b(self) -> T { self.dim[1] }
+}
+
+#[rustfmt::skip]
+/// 3D Accessors
+impl<T: Copy> Extent3<T> {
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis) (width).
+    pub const fn width(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the horizontal dimension (X-axis) (width).
+    pub const fn w(self) -> T { self.dim[0] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis).
+    pub const fn height(self) -> T { self.dim[1] }
+    #[must_use]
+    /// Returns a copy of the vertical dimension (Y-axis).
+    pub const fn h(self) -> T { self.dim[1] }
+    #[must_use]
+    /// Returns a copy of the depth dimension (Z-axis).
+    pub const fn depth(self) -> T { self.dim[2] }
+    #[must_use]
+    /// Returns a copy of the depth dimension (Z-axis).
+    pub const fn d(self) -> T { self.dim[2] }
+}

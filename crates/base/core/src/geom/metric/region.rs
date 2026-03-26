@@ -81,12 +81,18 @@ impl<P, E, const D: usize> Region<P, E, D> {
 }
 impl<P, E> From<((P, P), (E, E))> for Region<P, E, 2> {
     fn from(((x, y), (w, h)): ((P, P), (E, E))) -> Self {
-        Self { pos: Position::from((x, y)), ext: Extent::from((w, h)) }
+        Self {
+            pos: Position::from((x, y)),
+            ext: Extent::from((w, h)),
+        }
     }
 }
 impl<P, E> From<((P, P, P), (E, E, E))> for Region<P, E, 3> {
     fn from(((x, y, z), (w, h, d)): ((P, P, P), (E, E, E))) -> Self {
-        Self { pos: Position::from((x, y, z)), ext: Extent::from((w, h, d)) }
+        Self {
+            pos: Position::from((x, y, z)),
+            ext: Extent::from((w, h, d)),
+        }
     }
 }
 impl<P, E, const D: usize> From<(Position<P, D>, Extent<E, D>)> for Region<P, E, D> {
@@ -98,4 +104,46 @@ impl<P, E, const D: usize> From<(Extent<E, D>, Position<P, D>)> for Region<P, E,
     fn from(from: (Extent<E, D>, Position<P, D>)) -> Self {
         Self::new(from.1, from.0)
     }
+}
+
+/* impls: accessors */
+
+#[rustfmt::skip]
+impl<P: Copy, E: Copy> Region2<P, E> {
+    #[must_use]
+    /// Returns a copy of the first position dimension `x`.
+    pub const fn x(self) -> P { self.pos.x() }
+    #[must_use]
+    /// Returns a copy of the second position dimension `y`.
+    pub const fn y(self) -> P { self.pos.y() }
+
+    #[must_use]
+    /// Returns a copy of the first extent dimension `w`idth.
+    pub const fn w(self) -> E { self.ext.w() }
+    #[must_use]
+    /// Returns a copy of the second extent dimension `h`eight.
+    pub const fn h(self) -> E { self.ext.h() }
+}
+
+#[rustfmt::skip]
+impl<P: Copy, E: Copy> Region3<P, E> {
+    #[must_use]
+    /// Returns a copy of the first position dimension `x`.
+    pub const fn x(self) -> P { self.pos.x() }
+    #[must_use]
+    /// Returns a copy of the second position dimension `y`.
+    pub const fn y(self) -> P { self.pos.y() }
+    #[must_use]
+    /// Returns a copy of the third position dimension `z`.
+    pub const fn z(self) -> P { self.pos.z() }
+
+    #[must_use]
+    /// Returns a copy of the first extent dimension `w`idth.
+    pub const fn w(self) -> E { self.ext.w() }
+    #[must_use]
+    /// Returns a copy of the second extent dimension `h`eight.
+    pub const fn h(self) -> E { self.ext.h() }
+    #[must_use]
+    /// Returns a copy of the third extent dimension `d`epth.
+    pub const fn d(self) -> E { self.ext.d() }
 }

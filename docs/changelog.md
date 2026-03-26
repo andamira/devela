@@ -47,10 +47,17 @@
     - update `is_full` semantics.
     - fix `len` implementation.
 
+## geom
+- remove all `*_ref` and `*_mut` accessor methods for `dir` and `metric` types.
+
+### geom::dir
+- new aliases: `Orientation[1|2|3]`.
+
 ### geom::metric
-- new aliases: `Distance[1|2|3]`, `Extent[1|2|3]`, `Orientation[1|2|3]`, `Position[1|2|3]`, `Region[S][1|2|3]`.
-- add the doc-alias `Size` to `Extent`.
+- new aliases: `Distance[1|2|3]`, `Extent[1|2|3]`, `Position[1|2|3]`, `Region[S][1|2|3]`.
 - update `Extent`:
+  - move the accesor methods from being macro implemented to generic for `T: Copy`.
+  - add the doc-alias `Size`.
 - update `Region`:
   - change the single `T` generic into two `P` and `E` generics.
   - remove methods: `extent`, `position`.
