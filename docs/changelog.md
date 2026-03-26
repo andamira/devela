@@ -54,6 +54,8 @@
 - new aliases: `Orientation[1|2|3]`.
 
 ### geom::metric
+- make the module public.
+- fix re-export of `RegionStrided`.
 - new aliases: `Distance[1|2|3]`, `Extent[1|2|3]`, `Position[1|2|3]`, `Region[S][1|2|3]`.
 - update `Extent`:
   - move the accesor methods from being macro implemented to generic for `T: Copy`.

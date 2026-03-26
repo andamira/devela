@@ -7,10 +7,10 @@ use crate::{Extent, Position, Stride};
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`].
+#[doc = crate::_doc_location!("geom/metric")]
 ///
 /// See also: [`Region1`], [`Region2`], [`Region3`],
 /// [`RegionS`], [`RegionS1`], [`RegionS2`], [`RegionS3`].
-#[doc = crate::_doc_location!("geom/metric")]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Region<P, E, const D: usize> {
@@ -57,6 +57,7 @@ pub type RegionS3<T> = RegionS<T, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Stride`]d [`Region`] defining structured traversal.
+#[doc = crate::_doc_location!("geom/metric")]
 ///
 /// `RegionStrided` extends `Region` by adding a stride, allowing
 /// structured access to subregions or non-contiguous patterns.
