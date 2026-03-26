@@ -40,7 +40,7 @@ macro_rules! _impl_geom_dim {
 
         impl<T: Default, const D: usize> Default for $Name<T, D> {
             fn default() -> Self {
-                Self::new($crate::init_array![default [T; D], "safe_num", "unsafe_array"])
+                Self::new($crate::init_array![default [T; D], "safe_geom", "unsafe_array"])
             }
         }
         impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
@@ -103,7 +103,7 @@ macro_rules! _impl_geom_dim {
             }
             #[doc = "Returns an exclusive reference to the " $Name:lower " as a slice."]
             #[must_use]
-            pub fn as_slice_mut(&mut self) -> &mut [T] {
+            pub const fn as_slice_mut(&mut self) -> &mut [T] {
                 &mut self.dim
             }
 
@@ -146,10 +146,10 @@ macro_rules! _impl_geom_dim {
 
             /// Returns an exclusive reference to the first dimension `x`.
             #[must_use]
-            pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
+            pub const fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
             /// Returns an exclusive reference to the second dimension `y`.
             #[must_use]
-            pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
+            pub const fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
 
             /// Returns `true` if the 2 dimensions are equal.
             #[must_use]
@@ -183,13 +183,13 @@ macro_rules! _impl_geom_dim {
 
             /// Returns an exclusive reference to the first dimension `x`.
             #[must_use]
-            pub fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
+            pub const fn x_mut(&mut self) -> &mut T { &mut self.dim[0] }
             /// Returns an exclusive reference to the second dimension `y`.
             #[must_use]
-            pub fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
+            pub const fn y_mut(&mut self) -> &mut T { &mut self.dim[1] }
             /// Returns an exclusive reference to the third dimension `z`.
             #[must_use]
-            pub fn z_mut(&mut self) -> &mut T { &mut self.dim[2] }
+            pub const fn z_mut(&mut self) -> &mut T { &mut self.dim[2] }
 
             /// Returns `true` if the 3 dimensions are equal.
             #[must_use]

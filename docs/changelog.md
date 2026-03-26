@@ -47,6 +47,16 @@
     - update `is_full` semantics.
     - fix `len` implementation.
 
+### geom::metric
+- new aliases: `Distance[1|2|3]`, `Extent[1|2|3]`, `Orientation[1|2|3]`, `Position[1|2|3]`, `Region[S][1|2|3]`.
+- add the doc-alias `Size` to `Extent`.
+- update `Extent`:
+- update `Region`:
+  - change the single `T` generic into two `P` and `E` generics.
+  - remove methods: `extent`, `position`.
+  - rename `size` field to `ext`.
+  - add tuple constructors.
+
 ### lang::disc
 - new submodules: `move`, `narr`.
 

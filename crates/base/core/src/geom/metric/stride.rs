@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(geom)]
 /// A step size for traversing dimensions or repetitions.
-#[doc = crate::_doc_location!("num/geom/metric")]
+#[doc = crate::_doc_location!("geom/metric")]
 ///
 /// `Stride` defines the spacing between adjacent elements in a structured layout.
 /// It does not define structure itself, but rather **how elements are accessed within it**.
@@ -23,5 +23,21 @@ pub struct Stride<T, const D: usize> {
     /// The step sizes per dimension.
     pub dim: [T; D],
 }
+
+#[doc = crate::_tags!(geom)]
+/// A 1-dimensional [`Stride`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Stride1<T> = Stride<T, 1>;
+
+#[doc = crate::_tags!(geom)]
+/// A 2-dimensional [`Stride`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Stride2<T> = Stride<T, 2>;
+
+#[doc = crate::_tags!(geom)]
+/// A 3-dimensional [`Stride`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Stride3<T> = Stride<T, 3>;
+
 crate::_impl_geom_dim![common_methods: Stride];
 crate::_impl_geom_dim![common_traits: Stride];

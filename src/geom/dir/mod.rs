@@ -32,6 +32,8 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_base_core::{
             Boundary1d, Boundary2d, Boundary3d,
             Orientation,
+            // aliases
+            Orientation1, Orientation2, Orientation3,
         };
     }
 }

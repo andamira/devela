@@ -3,7 +3,7 @@
 //! Defines [`Canvas`], [`CanvasRead`], [`CanvasTextel`].
 //
 
-use crate::{Extent, Position, Region};
+use crate::{Extent, Position, RegionS2};
 
 #[doc = crate::_tags!(image)]
 /// A writable 2D drawing surface over abstract spatial units.
@@ -47,7 +47,7 @@ pub trait Canvas {
     /// Fills `region` with `color`.
     fn canvas_fill_region(
         &mut self,
-        rect: Region<Self::Unit, 2>,
+        rect: RegionS2<Self::Unit>,
         color: Self::Color,
     ) -> Result<(), Self::Error>;
 }

@@ -8,17 +8,38 @@ use crate::{_impl_geom_dim, is, whilst};
 
 #[doc = crate::_tags!(geom)]
 /// An orthogonal extension in `D`-space without a coordinate position.
-#[doc = crate::_doc_location!("num/geom/metric")]
+#[doc = crate::_doc_location!("geom/metric")]
 ///
 /// Represents the lengths of each dimension in a multi-dimensional space,
 /// providing an origin-agnostic shape with the implied form of an orthotope
 /// (generalized rectangle or box).
+///
+/// See also [`Extent1`], [`Extent2`], [`Extent3`].
 #[must_use]
 #[repr(transparent)]
+#[doc(alias = "Size")]
 pub struct Extent<T, const D: usize> {
     /// The size values in `D`-dimensional space.
     pub dim: [T; D],
 }
+
+#[doc = crate::_tags!(geom)]
+/// A 1-dimensional [`Extent`].
+#[doc = crate::_doc_location!("geom/metric")]
+#[doc(alias = "Size")]
+pub type Extent1<T> = Extent<T, 1>;
+
+#[doc = crate::_tags!(geom)]
+/// A 2-dimensional [`Extent`].
+#[doc = crate::_doc_location!("geom/metric")]
+#[doc(alias = "Size")]
+pub type Extent2<T> = Extent<T, 2>;
+
+#[doc = crate::_tags!(geom)]
+/// A 3-dimensional [`Extent`].
+#[doc = crate::_doc_location!("geom/metric")]
+#[doc(alias = "Size")]
+pub type Extent3<T> = Extent<T, 3>;
 
 _impl_geom_dim![common_methods: Extent];
 _impl_geom_dim![common_traits: Extent];

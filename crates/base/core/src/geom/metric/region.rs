@@ -7,15 +7,53 @@ use crate::{Extent, Position, Stride};
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`].
-#[doc = crate::_doc_location!("num/geom/metric")]
+///
+/// See also: [`Region1`], [`Region2`], [`Region3`],
+/// [`RegionS`], [`RegionS1`], [`RegionS2`], [`RegionS3`].
+#[doc = crate::_doc_location!("geom/metric")]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Region<T, const D: usize> {
+pub struct Region<P, E, const D: usize> {
     ///
-    pub pos: Position<T, D>,
+    pub pos: Position<P, D>,
     ///
-    pub size: Extent<T, D>,
+    pub ext: Extent<E, D>,
 }
+
+#[doc = crate::_tags!(geom)]
+/// A 1-dimensional [`Region`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Region1<P, E> = Region<P, E, 1>;
+
+#[doc = crate::_tags!(geom)]
+/// A 2-dimensional [`Region`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Region2<P, E> = Region<P, E, 2>;
+
+#[doc = crate::_tags!(geom)]
+/// A 3-dimensional [`Region`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type Region3<P, E> = Region<P, E, 3>;
+
+#[doc = crate::_tags!(geom)]
+/// A [`Position`]ed [`Extent`] sharing the **S**ame type.
+#[doc = crate::_doc_location!("geom/metric")]
+pub type RegionS<T, const D: usize> = Region<T, T, D>;
+
+#[doc = crate::_tags!(geom)]
+/// A 1-dimensional [`RegionS`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type RegionS1<T> = RegionS<T, 1>;
+
+#[doc = crate::_tags!(geom)]
+/// A 2-dimensional [`RegionS`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type RegionS2<T> = RegionS<T, 2>;
+
+#[doc = crate::_tags!(geom)]
+/// A 3-dimensional [`RegionS`].
+#[doc = crate::_doc_location!("geom/metric")]
+pub type RegionS3<T> = RegionS<T, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Stride`]d [`Region`] defining structured traversal.
@@ -27,32 +65,37 @@ pub struct Region<T, const D: usize> {
 /// - Supports **efficient structured stepping** (e.g. row-major iteration).
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct RegionStrided<T, const D: usize> {
+pub struct RegionStrided<P, E, const D: usize> {
     /// The positioned extent.
-    pub region: Region<T, D>,
+    pub region: Region<P, E, D>,
     /// The step size per dimension.
-    pub stride: Stride<T, D>,
+    pub stride: Stride<E, D>,
 }
 
-/* impls */
+/* impls: constructors */
 
 #[rustfmt::skip]
-impl<T, const D: usize> Region<T, D> {
-    /// Returns a new `Region` from a `pos`ition and a `size`.
-    pub const fn new(pos: Position<T, D>, size: Extent<T, D>) -> Self { Self { pos, size } }
-
-    ///
-    pub fn position(&self) -> Position<T, D> where T: Clone { self.pos.clone() }
-    ///
-    pub fn extent(&self) -> Extent<T, D> where T: Clone { self.size.clone() }
+impl<P, E, const D: usize> Region<P, E, D> {
+    /// Returns a new `Region` from a `pos`ition and an `ext`ent.
+    pub const fn new(pos: Position<P, D>, ext: Extent<E, D>) -> Self { Self { pos, ext } }
 }
-impl<T, const D: usize> From<(Position<T, D>, Extent<T, D>)> for Region<T, D> {
-    fn from(from: (Position<T, D>, Extent<T, D>)) -> Self {
+impl<P, E> From<((P, P), (E, E))> for Region<P, E, 2> {
+    fn from(((x, y), (w, h)): ((P, P), (E, E))) -> Self {
+        Self { pos: Position::from((x, y)), ext: Extent::from((w, h)) }
+    }
+}
+impl<P, E> From<((P, P, P), (E, E, E))> for Region<P, E, 3> {
+    fn from(((x, y, z), (w, h, d)): ((P, P, P), (E, E, E))) -> Self {
+        Self { pos: Position::from((x, y, z)), ext: Extent::from((w, h, d)) }
+    }
+}
+impl<P, E, const D: usize> From<(Position<P, D>, Extent<E, D>)> for Region<P, E, D> {
+    fn from(from: (Position<P, D>, Extent<E, D>)) -> Self {
         Self::new(from.0, from.1)
     }
 }
-impl<T, const D: usize> From<(Extent<T, D>, Position<T, D>)> for Region<T, D> {
-    fn from(from: (Extent<T, D>, Position<T, D>)) -> Self {
+impl<P, E, const D: usize> From<(Extent<E, D>, Position<P, D>)> for Region<P, E, D> {
+    fn from(from: (Extent<E, D>, Position<P, D>)) -> Self {
         Self::new(from.1, from.0)
     }
 }
