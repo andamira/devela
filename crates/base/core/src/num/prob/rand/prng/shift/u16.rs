@@ -182,7 +182,8 @@ mod impl_rand {
             Ok(self.rand_next_u64())
         }
         fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
-            Ok(self.rand_fill_bytes(dst))
+            self.rand_fill_bytes(dst);
+            Ok(())
         }
     }
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> SeedableRng

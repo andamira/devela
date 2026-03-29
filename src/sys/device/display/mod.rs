@@ -4,9 +4,9 @@
 #![doc = crate::_doc!(modules: crate::sys::device; display: x11)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
-///
-/// Unlike hosted environments (e.g. browsers),
-/// display backends expose process-owned windows and event loops.
+//!
+//! Unlike hosted environments (e.g. browsers),
+//! display backends expose process-owned windows and event loops.
 //
 
 // #[cfg(feature = "cocoa")]

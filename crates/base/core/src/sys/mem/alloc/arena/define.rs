@@ -1,4 +1,4 @@
-// devela_base_core::sys::mem::arena::arena::bytes
+// devela_base_core::sys::mem::alloc::arena::define
 //
 //! Defines [`define_arena`].
 //

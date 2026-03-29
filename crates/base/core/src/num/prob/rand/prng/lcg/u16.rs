@@ -158,7 +158,8 @@ mod impl_rand {
             Ok(self.rand_next_u64())
         }
         fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
-            Ok(self.rand_fill_bytes(dst))
+            self.rand_fill_bytes(dst);
+            Ok(())
         }
     }
     impl SeedableRng for Lcg16 {

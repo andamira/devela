@@ -48,7 +48,7 @@ pub(crate) fn generate() -> Result<(), Error> {
 
     // the generated file will be imported from /src/data/value/tuple/mod.rs
     #[cfg(feature = "__dbg")]
-    Build::println(&format!("generated: {}", path.display()));
+    Build::println(format!("generated: {}", path.display()));
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);

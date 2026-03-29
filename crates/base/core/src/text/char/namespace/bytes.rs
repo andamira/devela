@@ -302,11 +302,12 @@ impl Char<&[u8]> {
         if index + len > bytes.len() { return false; }
         let first = bytes[index];
         match len {
-            2 => { first == 0xC0 || first == 0xC1 } // should've been 1: C0, C1 are always overlong
-            3 => { // E0 80..9F are overlong (should be 1-2 bytes)
-                if first == 0xE0 { let second = bytes[index + 1]; second < 0xA0 } else { false } }
-            4 => { // F0 80..8F are overlong (should be 1-3 bytes)
-                if first == 0xF0 { let second = bytes[index + 1]; second < 0x90 } else { false } }
+            // should've been 1: C0, C1 are always overlong
+            2 => { first == 0xC0 || first == 0xC1 }
+            // E0 80..9F are overlong (should be 1-2 bytes)
+            3 if first == 0xE0 => { let second = bytes[index + 1]; second < 0xA0 }
+            // F0 80..8F are overlong (should be 1-3 bytes)
+            4 if first == 0xF0 => { let second = bytes[index + 1]; second < 0x90 }
             _ => false, // 1-byte sequences can't be overlong
         }
     }
