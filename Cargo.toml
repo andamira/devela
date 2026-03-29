@@ -701,7 +701,7 @@ features = ["fallback", "float"]
 # feature-gated: serde, require-cas(maybe)
 
 [workspace.dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util (unsafe)
-version = "0.2.5" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/portable-atomic-util/CHANGELOG.md
+version = "0.2.6" # ✓ https://github.com/taiki-e/portable-atomic-util/blob/main/CHANGELOG.md
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [workspace.dependencies.rand_core] # https://crates.io/crates/rand_core (safe)
@@ -728,7 +728,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
-version = "1.1" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
+version = "1.2" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 

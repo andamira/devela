@@ -26,6 +26,11 @@
 - update `tools/check.rs`:
   - bump `devela` to 0.25.0.
 
+## dependencies
+- bump dependencies:
+  - `portable-atomic-util` to 0.2.6.
+  - `wide` to 1.2.
+
 ## features & flags
 - make `x11` feature auto-enable: `alloc` and `event`.
 
