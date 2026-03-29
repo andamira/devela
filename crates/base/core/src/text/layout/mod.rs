@@ -9,20 +9,22 @@
 #[cfg(test)]
 mod tests;
 
+// mod config; // WIP: Text[Break|Width|Elide]Mode, TextSymbolConfig
 mod engine; // TextLayout
-// mod line; // WIP
+// mod line; // WIP: TextLineIter
 mod result; // TextFit, TextLayoutStep
-mod symbol; // TextCohesion, TextCursor, TextSpan, TextSymbol,
-mod unit; // TextUnit, TextIndex
+mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol,
+// mod wrap; // WIP: TextBreakKind, TextLine, TextSegment[Kind]
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            // config::*,
             engine::*,
             // line::*,
             result::*,
             symbol::*,
-            unit::*,
+            // wrap::*,
         };
     }
 }

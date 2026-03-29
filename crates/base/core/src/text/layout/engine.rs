@@ -6,8 +6,8 @@
 //
 
 use crate::{
-    _impl_init, CharIter, Slice, TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutStep,
-    TextSpan, TextSymbol, TextUnit, is, unwrap,
+    _impl_init, CharIter, Slice, TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutSpan,
+    TextLayoutStep, TextSymbol, TextUnit, is, unwrap,
 };
 
 #[doc = crate::_tags!(text layout namespace)]
@@ -41,7 +41,7 @@ impl TextLayout {
         symbols: &[TextSymbol],
         cursor: TextCursor,
         extent: Option<TextUnit>, // None = infinite
-        out_spans: &mut [TextSpan],
+        out_spans: &mut [TextLayoutSpan],
     ) -> TextLayoutStep {
         // Current position in the symbol stream (machine index for slicing).
         let mut index = cursor.index.as_usize();
@@ -97,7 +97,7 @@ impl TextLayout {
         if let Some(start) = span_start {
             // A partial break still covers the logical symbol range [i, i+1).
             let end = is![partial_break, (partial_index + 1) as u32, index as u32];
-            out_spans[0] = TextSpan::from_prim(start as u32, end, span_units);
+            out_spans[0] = TextLayoutSpan::from_prim(start as u32, end, span_units);
             span_count = 1;
         }
         // Fit classification is based on symbol exhaustion, not space exhaustion.

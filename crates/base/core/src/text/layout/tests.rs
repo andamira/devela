@@ -2,13 +2,18 @@
 
 use super::*;
 use crate::ConstInitCore;
+use crate::{TextCursor, TextIndex, TextUnit};
 
-type TextSpans = [TextSpan; 4];
+type TextLayoutSpans = [TextLayoutSpan; 4];
 
 // test helper
-fn run(symbols: &[TextSymbol], start: u32, extent: Option<u32>) -> (TextSpans, TextLayoutStep) {
+fn run(
+    symbols: &[TextSymbol],
+    start: u32,
+    extent: Option<u32>,
+) -> (TextLayoutSpans, TextLayoutStep) {
     let layout = TextLayout;
-    let mut spans: TextSpans = [TextSpan::INIT; 4];
+    let mut spans: TextLayoutSpans = [TextLayoutSpan::INIT; 4];
     let step = layout.step(
         symbols,
         TextCursor { index: TextIndex(start) },
@@ -27,8 +32,8 @@ fn atomic_full_fit() {
     ];
     let (spans, step) = run(&symbols, 0, Some(5));
     assert_eq!(step.span_count, 1);
-    assert_eq!(spans[0].start.0, 0);
-    assert_eq!(spans[0].end.0, 2);
+    assert_eq!(spans[0].start().0, 0);
+    assert_eq!(spans[0].end().0, 2);
     assert_eq!(spans[0].units, 5);
     assert_eq!(step.fit, TextFit::Full);
     assert!(step.carry.is_none());
@@ -43,8 +48,8 @@ fn atomic_partial_fit() {
     ];
     let (spans, step) = run(&symbols, 0, Some(4));
     assert_eq!(step.span_count, 1);
-    assert_eq!(spans[0].start.0, 0);
-    assert_eq!(spans[0].end.0, 1);
+    assert_eq!(spans[0].start().0, 0);
+    assert_eq!(spans[0].end().0, 1);
     assert_eq!(spans[0].units, 3);
     assert_eq!(step.fit, TextFit::Partial);
     assert_eq!(step.carry.unwrap().index.0, 1);
@@ -56,8 +61,8 @@ fn breakable_partial_consumption() {
     let symbols = [TextSymbol { units: 6, cohesion: TextCohesion::Breakable }];
     let (spans, step) = run(&symbols, 0, Some(4));
     assert_eq!(step.span_count, 1);
-    assert_eq!(spans[0].start.0, 0);
-    assert_eq!(spans[0].end.0, 1);
+    assert_eq!(spans[0].start().0, 0);
+    assert_eq!(spans[0].end().0, 1);
     assert_eq!(spans[0].units, 4);
     assert_eq!(step.fit, TextFit::Partial);
     assert_eq!(step.carry.unwrap().index.0, 0);
@@ -72,8 +77,8 @@ fn elidable_is_skipped() {
     ];
     let (spans, step) = run(&symbols, 0, Some(5));
     assert_eq!(step.span_count, 1);
-    assert_eq!(spans[0].start.0, 1);
-    assert_eq!(spans[0].end.0, 2);
+    assert_eq!(spans[0].start().0, 1);
+    assert_eq!(spans[0].end().0, 2);
     assert_eq!(spans[0].units, 5);
     assert_eq!(step.fit, TextFit::Full);
 }

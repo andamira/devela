@@ -266,7 +266,7 @@ impl Digits<u128> {
         const MAX: usize = Digits::<u128>::MAX_DIGITS_10 as usize;
         debug_assert!(offset + MAX <= buf.len(), "buffer < 39 bytes");
         let mut n = self.0;
-        is![n == 0, { buf[offset] = b'0'; return 1 }];
+        is![n == 0, { buf[offset] = b'0'; return 1; }];
         let mut pos = offset + MAX;
         while n >= 100 {
             pos -= 2;

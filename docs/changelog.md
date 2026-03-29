@@ -108,6 +108,16 @@
 #### sys::os::c
 - change `unsafe_syscall` feature-gate to `unsafe_ffi`.
 
+## text
+- new type `TextRange`.
+- new private module `text::unit`.
+- move `TextCursor`, `TextIndex` and `TextUnit` out of `text::layout`.
+
+### text::layout
+- rename `TextSpan` to `TextLayoutSpan`.
+  - refactor to include `TextRange`.
+  - new methods: `from_prim`, `with_range`, `start`, `end`.
+
 ### ui::event
 - update `EventWindow` variants:
   - `Resized` now contains `Extent`.

@@ -195,10 +195,12 @@ mod impl_devela_base_core {
         FmtNumConf, FmtNumSign,
         // text::layout
         TextFit, TextLayout, TextLayoutStep,
-        TextCohesion, TextCursor, TextSpan, TextSymbol,
-        TextIndex,
+        TextCohesion, TextLayoutSpan, TextSymbol,
         // text::str
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
+        // text::unit
+        TextCursor, TextIndex, TextRange,
+        // text::unit
         // ui
         // work
     };
@@ -255,8 +257,10 @@ mod impl_devela_base_core {
     // text::fmt
     _impl_init![%Sealed%: FmtNumConf, FmtNumSign];
     // text::layout
-    _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutStep,
-        TextCohesion, TextCursor, TextSpan, TextSymbol, TextIndex];
+    _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutSpan, TextLayoutStep,
+        TextCohesion, TextSymbol];
+    // text::unit
+    _impl_init![%Sealed%: TextCursor, TextIndex, TextRange];
     // text::str
     impl<const CAP: usize> Sealed for StringNonul<CAP> {}
     macro_rules! _stringu {

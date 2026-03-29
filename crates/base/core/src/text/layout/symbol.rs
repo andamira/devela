@@ -1,11 +1,11 @@
 // devela_base_core::text::layout::symbol
 //
-//! Defines [`TextCohesion`], [`TextCursor`], [`TextSpan`], [`TextSymbol`].
+//! Defines [`TextCohesion`], [`TextLayoutSpan`], [`TextSymbol`].
 //!
 //! > Everything that describes what is being laid out.
 //
 
-use crate::{_impl_init, Interval, TextIndex, TextUnit};
+use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit};
 
 #[doc = crate::_tags!(text layout)]
 /// Spatial cohesion rules for a text symbol during layout.
@@ -36,63 +36,52 @@ pub enum TextCohesion {
 }
 _impl_init![ConstInitCore: Self::Atomic => TextCohesion];
 
-#[doc = crate::_tags!(text layout)]
-/// Continuation point in a text symbol stream.
-#[doc = crate::_doc_location!("text/layout")]
-///
-/// A `TextCursor` identifies where layout should resume when text
-/// is processed incrementally across multiple layout steps.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)] // MAYBE Default
-pub struct TextCursor {
-    /// Index of the next symbol to be considered for layout.
-    pub index: TextIndex,
-}
-_impl_init![ConstInitCore: Self::new(0) => TextCursor];
-
-impl TextCursor {
-    /// Creates a new cursor at the given symbol index.
-    pub const fn new(index: u32) -> Self {
-        Self { index: TextIndex(index) }
-    }
-}
-
 #[doc = crate::_tags!(text layout quant)]
 /// Mapping between a contiguous text range and its consumed inline space.
 #[doc = crate::_doc_location!("text/layout")]
 ///
-/// A `TextSpan` records that a contiguous range of symbols contributed
+/// A `TextLayoutSpan` records that a contiguous range of symbols contributed
 /// a given amount of inline space during a layout step.
 ///
 /// It is the primary structural output of text layout
 /// and enables stable mapping between text indices and spatial occupation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct TextSpan {
-    /// Index of the first symbol included in this span.
-    pub start: TextIndex,
-    /// Index immediately after the last symbol included in this span.
-    pub end: TextIndex,
+pub struct TextLayoutSpan {
+    /// Range between the first and last symbols included in this span.
+    pub range: TextRange,
     /// Total inline space consumed by the symbols in this span.
     pub units: TextUnit,
 }
-_impl_init![ConstInitCore: Self::from_prim(0, 0, 0) => TextSpan];
+_impl_init![ConstInitCore: Self::from_prim(0, 0, 0) => TextLayoutSpan];
 
-impl TextSpan {
+impl TextLayoutSpan {
     /// Creates a span from symbol indices and consumed units.
     pub const fn new(start: TextIndex, end: TextIndex, units: TextUnit) -> Self {
-        Self { start, end, units }
+        Self { range: TextRange { start, end }, units }
     }
     /// Creates a span from symbol indices and consumed units.
-    pub const fn from_prim(start: u32, end: u32, units: TextUnit) -> Self {
-        Self {
-            start: TextIndex(start),
-            end: TextIndex(end),
-            units,
-        }
+    pub const fn with_range(range: TextRange, units: TextUnit) -> Self {
+        Self { range, units }
+    }
+
+    /// Creates a span from symbol indices and consumed units.
+    pub const fn from_prim(start: TextUnit, end: TextUnit, units: TextUnit) -> Self {
+        Self::new(TextIndex(start), TextIndex(end), units)
+    }
+
+    /// Returns the start index.
+    pub const fn start(self) -> TextIndex {
+        self.range.start
+    }
+
+    /// Returns the end index.
+    pub const fn end(self) -> TextIndex {
+        self.range.end
     }
 
     /// Returns the interval from `start` to `end`.
     pub const fn interval(self) -> Interval<TextIndex> {
-        Interval::closed_open(self.start, self.end)
+        Interval::closed_open(self.start(), self.end())
     }
 }
 

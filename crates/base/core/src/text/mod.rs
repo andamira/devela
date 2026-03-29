@@ -12,12 +12,11 @@ crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
     crate::_doc!(modules: crate; text: char, error, fmt, grapheme, parse, str);
 }
 
-// mod cell; // TextCell, TextCellGrid WIP
-// mod draw; // TextDraw WIP
-
-// mod draw; // WIP
+// mod cell; // WIP Textel, TextelGrid
+// mod draw; // WIP Drawing with unicode.
 mod lut; // TextLut
-// mod generate; // WIP RENAME
+// mod generate; // WIP Procedures that produce text.
+pub mod unit; // WIP TextUnit, TextIndex, TextCursor, TextRange
 
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod char; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8], transliterate
@@ -33,9 +32,10 @@ pub mod str; // Str, StringNonul, StringU*
 crate::structural_mods! { // mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
-            // cell::_all::*,
+            // cell::_all::*, // WIP
             // draw::_all::*, // WIP
             lut::*,
+            unit::*,
         };
     }
     _pub_mods {

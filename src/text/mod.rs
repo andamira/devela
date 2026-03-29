@@ -51,7 +51,10 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
     }
     _reexports {
         #[doc(inline)]
-        pub use devela_base_core::text::TextLut;
+        pub use devela_base_core::text::{
+            TextLut, // lut
+            TextCursor, TextIndex, TextRange, TextUnit, // unit
+        };
     }
     _crate_internals {
         pub(crate) use super::_DOC_TEXT_MODULES;
