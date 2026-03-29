@@ -160,6 +160,8 @@ d = "doc --no-deps" #+w
 do = "doc --no-deps --open" #+w
 dp = "doc --no-deps --document-private-items" #+w
 dpo = "doc --no-deps --open --document-private-items" #+w
+dE = "doc --no-deps -F _docs_examples"
+doE = "doc --no-deps --open -F _docs_examples"
 
 # TEST
 t = "test" #+w
