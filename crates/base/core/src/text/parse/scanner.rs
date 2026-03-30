@@ -128,6 +128,18 @@ impl<'a> TextScanner<'a> {
         let pos = self.cursor.index.as_usize();
         is! { pos < self.bytes.len(), Some(self.bytes[pos]), None }
     }
+    /// Returns the byte at `offset` from the current cursor, without advancing.
+    ///
+    /// `offset == 0` returns the same value as [`peek_byte`][Self::peek_byte].
+    #[must_use]
+    pub const fn peek_byte_at(&self, offset: TextUnit) -> Option<u8> {
+        let start = self.cursor.index.as_usize();
+        let off = offset as usize;
+        match start.checked_add(off) {
+            Some(pos) if pos < self.bytes.len() => Some(self.bytes[pos]),
+            _ => None,
+        }
+    }
 
     /// Returns `true` if the unread input starts with `bytes`.
     ///
@@ -232,6 +244,51 @@ impl<'a> TextScanner<'a> {
         self._cursor_bump(bytes.len() as u32);
         Ok(())
     }
+
+    /// Returns `range` trimmed of leading and trailing ASCII whitespace.
+    ///
+    /// Currently trims: space, tab, line feed, carriage return,
+    /// form feed, and vertical tab.
+    pub const fn trim_ascii_ws(&self, range: TextRange) -> TextRange {
+        let mut start = range.start.0;
+        let mut end = range.end.0;
+
+        whilst! { start < end; {
+            match self.bytes[start as usize] {
+                b' ' | b'\t' | b'\n' | b'\r' | 0x0C | 0x0B => start += 1,
+                _ => break,
+            }
+        }}
+        whilst! { start < end; {
+            match self.bytes[(end - 1) as usize] {
+                b' ' | b'\t' | b'\n' | b'\r' | 0x0C | 0x0B => end -= 1,
+                _ => break,
+            }
+        }}
+        TextRange::from_prim(start, end)
+    }
+
+    /// Returns `range` trimmed of leading and trailing ASCII horizontal whitespace.
+    ///
+    /// Currently trims: space, tab.
+    pub const fn trim_ascii_hws(&self, range: TextRange) -> TextRange {
+        let mut start = range.start.0;
+        let mut end = range.end.0;
+
+        whilst! { start < end; {
+            match self.bytes[start as usize] {
+                b' ' | b'\t' => start += 1,
+                _ => break,
+            }
+        }}
+        whilst! { start < end; {
+            match self.bytes[(end - 1) as usize] {
+                b' ' | b'\t' => end -= 1,
+                _ => break,
+            }
+        }}
+        TextRange::from_prim(start, end)
+    }
 }
 
 /// ASCII scanning and range-taking operations.
@@ -244,6 +301,17 @@ impl<'a> TextScanner<'a> {
         whilst! { let Some(byte) = self.peek_byte(); {
             match byte {
                 b' ' | b'\t' | b'\n' | b'\r' | 0x0C | 0x0B => self._cursor_bump(1),
+                _ => break,
+            }
+        }}
+    }
+    /// Skips ASCII horizontal whitespace.
+    ///
+    /// Currently skips: space, tab.
+    pub const fn skip_ascii_hws(&mut self) {
+        whilst! { let Some(byte) = self.peek_byte(); {
+            match byte {
+                b' ' | b'\t' => self._cursor_bump(1),
                 _ => break,
             }
         }}
@@ -402,7 +470,6 @@ impl<'a> TextScanner<'a> {
     /// Consumes and returns the remaining unread range.
     ///
     /// After this call, the scanner is at end of input.
-    #[must_use]
     pub const fn take_rest(&mut self) -> TextRange {
         let start = self.mark();
         self.advance(self.remaining_len());
