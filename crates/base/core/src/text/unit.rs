@@ -24,6 +24,7 @@ use crate::_impl_init;
 /// More specific wrappers such as [`TextIndex`] refine this primitive into a stricter role.
 pub type TextUnit = u32;
 
+#[must_use]
 #[doc = crate::_tags!(text layout)]
 /// Position within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_location!("text")]
@@ -58,6 +59,7 @@ impl TextIndex {
     pub const fn as_usize(self) -> usize { self.0 as usize }
 }
 
+#[must_use]
 #[doc = crate::_tags!(text)]
 /// Continuation point within a caller-defined text traversal.
 #[doc = crate::_doc_location!("text")]
@@ -71,15 +73,20 @@ pub struct TextCursor {
     /// Index of the next element in the traversal sequence.
     pub index: TextIndex,
 }
-_impl_init![ConstInitCore: Self::new(0) => TextCursor];
+_impl_init![ConstInitCore: Self::new_prim(0) => TextCursor];
 
 impl TextCursor {
     /// Creates a new cursor at the given index.
-    pub const fn new(index: u32) -> Self {
+    pub const fn new(index: TextIndex) -> Self {
+        Self { index }
+    }
+    /// Creates a new cursor at the given primitive index.
+    pub const fn new_prim(index: TextUnit) -> Self {
         Self { index: TextIndex(index) }
     }
 }
 
+#[must_use]
 #[doc = crate::_tags!(text)]
 /// A half-open range within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_location!("text")]

@@ -6,14 +6,21 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod tests;
+
 mod _reexport; // SYMLINK from /src/text/parse/_reexport_core.rs
 
 mod byte_search; // ByteSearch, dep_memchr fns alternatives
+mod error; // TextParseError[Kind]
+mod scanner; // TextScanner
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             byte_search::*,
+            error::*,
+            scanner::*,
         };
     }
     _reexports {

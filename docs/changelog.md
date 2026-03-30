@@ -118,6 +118,9 @@
   - refactor to include `TextRange`.
   - new methods: `from_prim`, `with_range`, `start`, `end`.
 
+### text::parse
+- new items: `TextParseError`, `TextParseErrorKind`, `TextScanner`.
+
 ### ui::event
 - update `EventWindow` variants:
   - `Resized` now contains `Extent`.

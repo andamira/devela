@@ -196,6 +196,8 @@ mod impl_devela_base_core {
         // text::layout
         TextFit, TextLayout, TextLayoutStep,
         TextCohesion, TextLayoutSpan, TextSymbol,
+        // text::parse
+        TextParseError, TextParseErrorKind, TextScanner,
         // text::str
         StringNonul, StringU8, StringU16, StringU32, StringUsize,
         // text::unit
@@ -259,6 +261,9 @@ mod impl_devela_base_core {
     // text::layout
     _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutSpan, TextLayoutStep,
         TextCohesion, TextSymbol];
+    // text::parse
+    _impl_init![%Sealed%: TextParseError, TextParseErrorKind];
+    _impl_init![%Sealed%: TextScanner<'_>];
     // text::unit
     _impl_init![%Sealed%: TextCursor, TextIndex, TextRange];
     // text::str
