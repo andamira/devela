@@ -1,4 +1,4 @@
-// devela_base_core::hum::i18n::tag
+// devela_base_core::lang::hum::i18n::tag
 //
 //! Language tags (BCP 47).
 //

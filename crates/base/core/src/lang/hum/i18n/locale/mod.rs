@@ -1,4 +1,4 @@
-// devela_base_core::hum::i18n::locale
+// devela_base_core::lang::hum::i18n::locale
 //
 //! Identifiers and properties that define a language–region context for localization.
 //!
