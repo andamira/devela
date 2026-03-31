@@ -136,11 +136,20 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_LANG_HUM_I18N      = "Internationalization and localization support.";
     _DOC_LANG_HUM_NAT       = "Natural human languages.";
     _DOC_LANG_PROG          = "Programming languages.";
+    _DOC_LANG_PROG_DSL      = "Embedded and domain-specific languages.";
+    _DOC_LANG_PROG_IR       = "Intermediate program representations.";
+    _DOC_LANG_PROG_SCRIPT   = "Command and scripting languages.";
+    _DOC_LANG_PROG_TEMPLATE = "Template and substitution languages.";
     _DOC_LANG_PROG_FFI      = concat![$crate::_ABBR_FFI!(), " bindings and interoperability."];
     _DOC_LANG_PROG_FFI_C    =
         "<a href='https://en.wikipedia.org/wiki/C_(programming_language)'>C</a> interfacing.";
-    _DOC_LANG_REPR          = "Representation languages.";
-    _DOC_LANG_SEM           = "Semantic relations, independent of form and execution.";
+    _DOC_LANG_REPR             = "Representation languages.";
+    _DOC_LANG_REPR_DATA        = "Structured data and configuration languages.";
+    _DOC_LANG_REPR_DATA_SCHEMA = "Schema and grammar languages.";
+    _DOC_LANG_REPR_MARKUP      = "Tagged document and markup languages.";
+    _DOC_LANG_REPR_STYLE       = "Stylesheet and presentation languages.";
+    _DOC_LANG_REPR_TEXT        = "Text-authored representation languages.";
+    _DOC_LANG_SEM              = "Semantic relations, independent of form and execution.";
 
     // 5 (artifacts meant to be perceived)
     _DOC_MEDIA              = "Media representation, processing, and synthesis.";
