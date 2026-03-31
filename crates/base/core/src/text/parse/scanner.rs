@@ -15,7 +15,7 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 ///
 /// `TextScanner` provides incremental, allocation-free traversal over a borrowed
 /// text source, exposing byte-oriented operations suitable for building parsers.
-#[derive(Clone, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TextScanner<'a> {
     bytes: &'a [u8],
     cursor: TextCursor,
@@ -494,7 +494,7 @@ impl<'a> TextScanner<'a> {
         let start = self.mark();
         loop {
             let Some(byte) = self.peek_byte() else {
-                return Err(TextParseError::unterminated_quoted(self.cursor));
+                return Err(TextParseError::unterminated_quote(self.cursor));
             };
             match byte {
                 b'"' => {
@@ -505,7 +505,7 @@ impl<'a> TextScanner<'a> {
                 b'\\' => {
                     self._cursor_bump(1);
                     let Some(esc) = self.peek_byte() else {
-                        return Err(TextParseError::unterminated_quoted(self.cursor));
+                        return Err(TextParseError::unterminated_quote(self.cursor));
                     };
                     match esc {
                         b'"' | b'\\' | b'n' | b'r' | b't' | b'0' => self._cursor_bump(1),
@@ -529,7 +529,7 @@ impl<'a> TextScanner<'a> {
         let start = self.mark();
         loop {
             let Some(byte) = self.peek_byte() else {
-                return Err(TextParseError::unterminated_quoted(self.cursor));
+                return Err(TextParseError::unterminated_quote(self.cursor));
             };
             match byte {
                 b'\'' => {
@@ -581,7 +581,7 @@ impl<'a> TextScanner<'a> {
             i += 1;
             if i >= src.len() {
                 let cursor = TextCursor::new_prim(range.start.0 + i as u32);
-                return Err(TextParseError::unterminated_quoted(cursor));
+                return Err(TextParseError::unterminated_quote(cursor));
             }
             let decoded = match src[i] {
                 b'"' => b'"',

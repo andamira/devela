@@ -105,6 +105,7 @@ pub struct TextRange {
     /// The first index excluded from the range.
     pub end: TextIndex,
 }
+_impl_init![ConstInitCore: Self::from_prim(0, 0) => TextRange];
 impl TextRange {
     /// Creates a new half-open range from text indices.
     /// # Panics

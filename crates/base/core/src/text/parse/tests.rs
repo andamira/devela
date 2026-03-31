@@ -242,7 +242,7 @@ fn quoted_decode_trailing_backslash() {
     let err = s.decode_quoted_basic_into(range, &mut out).unwrap_err();
 
     assert_eq!(err.at.index.as_usize(), 2);
-    assert!(matches!(err.kind, TextParseErrorKind::UnterminatedQuoted));
+    assert!(matches!(err.kind, TextParseErrorKind::UnterminatedQuote));
 }
 
 #[test]
