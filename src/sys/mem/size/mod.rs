@@ -5,6 +5,8 @@
 
 #[cfg(feature = "bit")]
 mod bit; // BitSized
+// #[cfg(feature = "alloc")]
+// mod heap; // WIP
 
 crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {

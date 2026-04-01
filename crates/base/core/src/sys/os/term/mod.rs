@@ -12,11 +12,17 @@ mod size; // TermSize
 #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 mod ansi; // Ansi, AnsiColor3, AnsiColor8
 
+// #[cfg(feature = "term")]
+// mod render; // TermRenderer WIP
+
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::size::*;
         #[cfg(feature = "term")]
-        pub use super::ansi::_all::*;
+        pub use super::{
+            ansi::_all::*,
+            // render::_all::*,
+        };
     }
     _crate_internals {
         #[cfg(feature = "term")]

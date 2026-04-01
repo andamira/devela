@@ -26,7 +26,7 @@ pub mod error; // Invalid[Char|Text|Utf8], TextError, TextResult
 pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
 pub mod layout; // TextLayout*, …
-pub mod parse; // ByteSearch
+pub mod parse; // ByteSearch, TextScanner, …
 pub mod str; // Str, StringNonul, StringU*
 
 crate::structural_mods! { // mods, _pub_mods, _crate_internals, _hidden

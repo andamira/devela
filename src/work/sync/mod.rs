@@ -17,13 +17,15 @@ mod spin_lock; // SpinLock, SpinLockGuard
 
 pub mod atomic; // core::sync::atomic::*
 pub mod mpsc; // Mpsc, std::sync::mpsc::*
-// mod counter;
+// mod counter; // WIP
+// mod queue; // WIP
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
         pub use super::spin_lock::*;
         // pub use super::counter::*;
+        // pub use super::queue::*;
     }
     _pub_mods {
         pub use super::{
