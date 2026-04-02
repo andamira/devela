@@ -85,7 +85,7 @@ mod _reexport_std; // SYMLINK to /crates/base/std/src/phys/time/source/_reexport
 mod impl_source;
 
 mod point; // TimePoint
-mod traits; // TimeSource, TimeSourceCfg
+mod source; // TimeSource, TimeSourceCfg
 // mod tsc; // TimeSourceTsc
 
 #[cfg(target_has_atomic = "64")]
@@ -95,7 +95,7 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             point::*,
-            traits::*,
+            source::*,
             // tsc::*,
         };
         #[cfg(target_has_atomic = "64")]

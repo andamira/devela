@@ -1,4 +1,4 @@
-// devela::phys::time::source::traittraits
+// devela::phys::time::source::source
 //
 //! Defines [`TimeSource`] and [`TimeSourceCfg`].
 //

@@ -8,7 +8,7 @@ use devela::{_js_doc, _js_extern};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
-#[doc = crate::_doc_location!("lang/ffi/js")]
+#[doc = crate::_doc_location!("lang/prog/ffi/js")]
 #[derive(Debug)]
 pub struct JsConsole;
 

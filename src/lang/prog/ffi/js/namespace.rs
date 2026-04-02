@@ -9,7 +9,7 @@ use devela::{String, Vec};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript-related operations.
-#[doc = crate::_doc_location!("lang/ffi/js")]
+#[doc = crate::_doc_location!("lang/prog/ffi/js")]
 ///
 /// See also: [`Web`][crate::Web].
 #[derive(Debug)]
