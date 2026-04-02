@@ -9,6 +9,7 @@
       import { initWasm } from "./web_api.js";
       window.addEventListener("DOMContentLoaded", async () => {
           window.wasmInstance = await initWasm("web_api.wasm");
+          console.log("WASM initialized:", window.wasmInstance);
       });
     </script>
     <style>

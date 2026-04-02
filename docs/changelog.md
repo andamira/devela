@@ -22,10 +22,14 @@
 - bump `upload-artifact` to v7.
 - bump `docker/setup-qemu-action` to v4.
 
+## workspace
+### examples
+- fix examples: `web_api`, `web_worker`.
+
 ### tools
 - update `tools/check.rs`:
   - bump `devela` to 0.25.0.
-- update `x` command wrapper to apply cfg flags to rustdoc.
+- update `x` command wrapper to apply cfg flags in rustdoc.
 
 ## dependencies
 - bump dependencies:

@@ -21,6 +21,7 @@ WEB_DIR="./public_html/"
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
 
+rustup target add wasm32-unknown-unknown
 
 # BUILD
 echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""
