@@ -52,6 +52,7 @@
         cfg_select,
         cold_path,
         if_let_guard,
+        new_range_inclusive_api,
         more_conversion_trait_impls,
     )
 )]
@@ -59,7 +60,10 @@
 // #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_96`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_96, feature(control_flow_ok, new_range_to_inclusive_api))]
+#![cfg_attr(
+    nightly_stable_1_96,
+    feature(control_flow_ok, new_range_api, new_range_from_api, new_range_to_inclusive_api,)
+)]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
 // ----------------------------
@@ -91,7 +95,6 @@
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
-        new_range_api,
         offset_of_enum,
         offset_of_slice,
         refcell_try_map,
