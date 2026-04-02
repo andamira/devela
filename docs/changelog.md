@@ -87,6 +87,20 @@
   - use rust's implementations in `midpoint` methods.
   - rename old signed `midpoint` method to `midpoint_floor`.
 
+#### phys::time::source
+- new trait: `TimePoint`.
+- update TimeSurce and TimeSourceCfg:
+  - make them generic over `TimePoint`.
+  - replace required `time_now_millis*` trait surface with: `time_now`, `time_point_value`, `time_elapsed_value`.
+  - add shared default helpers for point/elapsed conversion and elapsed-since queries.
+- rework source impls to typed point forms:
+  - `SystemTime`: `SystemTime`, `u64`, `u32`.
+  - `SystemInstant`: `SystemInstant`, `u64`, `u32`.
+  - `JsInstant`: `u64`, `u32`.
+  - `LinuxInstant`: `u64`, `u32`.
+  - `LinuxTime`: `TimeSourceCfg<u64>`.
+  - `TimeFakeRef`: `TimeSourceCfg<u64>`.
+
 ## run
 - new traits: `RunApp`, `RunRender`, `RunPresent`.
 
@@ -112,6 +126,9 @@
 
 #### sys::os::c
 - change `unsafe_syscall` feature-gate to `unsafe_ffi`.
+
+#### sys::os::linux
+- update `LinuxClock::is_monotonic` to include `ProcessCpuTimeId` and `ThreadCpuTimeId`.
 
 ## text
 - new type `TextRange`.

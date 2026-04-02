@@ -2,47 +2,77 @@
 //
 //! Time sources.
 //!
-//! Defines **numeric time sources** for profiling, instrumentation,
-//! and elapsed-time measurement.
+//! Defines time-source traits and supporting types for storing, comparing,
+//! and projecting time values across different timelines.
 //!
 //! ## Core model
 //!
-//! A [`TimeSource`] provides timestamps as numeric values (`u64`) on a
-//! well-defined timeline with a known scale. Returned values are suitable
-//! for computing time deltas by subtraction.
+//! A [`TimePoint`] defines how a concrete point representation is ordered
+//! and how to compute forward elapsed time between two such points.
 //!
-//! - Timelines may be **absolute** (e.g. Unix time),
-//!   **relative** (e.g. boot time, JS origin),
-//!   or **synthetic** (process-local).
-//! - Sources may be **monotonic** or **non-monotonic**.
+//! A [`TimeSource<P>`] produces current points of type `P` and also provides
+//! a canonical numeric projection of both points and elapsed values as `u64`
+//! together with a [`TimeScale`] describing their unit.
 //!
-//! ## Numeric vs opaque time
+//! This separates:
+//! - the **point representation** (`P`),
+//! - the **source timeline semantics**,
+//! - and the **canonical numeric view** used for diagnostics,
+//!   instrumentation, logging, and generic timestamp handling.
 //!
-//! Some APIs (such as `SystemInstant`) expose *opaque instants* that
-//! can only be compared by duration. To fit the numeric model,
-//! such sources use a synthetic, process-local origin.
+//! ## Timeline model
+//!
+//! Timelines may be:
+//! - **absolute** (for example, Unix time),
+//! - **relative** (for example, boot time or JS origin),
+//! - or **synthetic** (for example, process-local or user-defined).
+//!
+//! Sources may be **monotonic** or **non-monotonic**.
+//!
+//! ## Numeric vs opaque points
+//!
+//! Some APIs expose opaque points such as [`SystemInstant`] or [`SystemTime`].
+//! These can still participate in the model by implementing [`TimePoint`],
+//! while [`TimeSource`] supplies their canonical numeric projection.
+//!
+//! Other sources use numeric point types directly, such as `u64` or `u32`,
+//! typically paired with a chosen [`TimeScale`].
 //!
 //! ## Configurable sources
 //!
-//! [`TimeSourceCfg`] extends this model to families of clocks whose behavior
-//! depends on a runtime configuration (for example, Linux clock IDs).
+//! [`TimeSourceCfg<P>`] extends this model to source families whose behavior
+//! depends on a runtime configuration value, such as Linux clock IDs.
 //!
-//! Fixed sources automatically lift into `TimeSourceCfg` using
-//! a trivial `()` configuration.
+//! Fixed sources automatically lift into [`TimeSourceCfg`] through a trivial
+//! `()` configuration.
+//!
+//! ## Design posture
+//!
+//! The model keeps point ordering and elapsed semantics in [`TimePoint`],
+//! while source sampling, scale metadata, and canonical numeric projection
+//! remain in [`TimeSource`] and [`TimeSourceCfg`].
+//!
+//! This allows:
+//! - opaque and numeric point representations,
+//! - compact or wide projections,
+//! - configurable clock families,
+//! - and a stable `u64` + [`TimeScale`] numeric surface
+//!   without forcing every point type itself to be numeric.
 //!
 //! ## Source comparison
 //!
-//! | Source             | Monotonic | Timeline kind | Origin         |
-//! |--------------------|-----------|---------------|----------------|
-//! | [`SystemTime`]     | No        | Absolute      | UNIX time      |
-//! | [`SystemInstant`]  | Yes       | Synthetic     | Process-local  |
-//! | [`LinuxInstant`]   | Yes       | Relative      | Boot time      |
-//! | [`LinuxTime`]      | No        | Absolute      | UNIX time      |
-//! | [`JsInstant`]      | Yes       | Relative      | JS origin      |
-//! | [`TimeFakeRef`]    | No        | Synthetic     | User-defined   |
+//! | Source          | Monotonic | Timeline kind | Origin / base      | Canonical point forms                |
+//! | --------------- | --------- | ------------- | ------------------ | ------------------------------------ |
+//! | `SystemTime`    | No        | Absolute      | Unix epoch         | `SystemTime`, `u64`, `u32` seconds   |
+//! | `SystemInstant` | Yes       | Synthetic     | Process-local base | `SystemInstant`, `u64`, `u32` micros |
+//! | `LinuxInstant`  | Yes       | Relative      | `CLOCK_MONOTONIC`  | `u64`, `u32` micros                  |
+//! | `LinuxTime`     | Depends   | Depends       | Selected clock     | `u64`                                |
+//! | `JsInstant`     | Yes       | Relative      | JS time origin     | `u64`, `u32` millis                  |
+//! | `TimeFakeRef`   | No        | Synthetic     | User-defined       | `u64`                                |
 //!
 //! Properties shown are semantic, not API guarantees.
 //!
+//! [`TimeScale`]: crate::TimeScale
 #![cfg_attr(not(feature = "std"), doc = "[`SystemTime`]: #")]
 #![cfg_attr(not(feature = "std"), doc = "[`SystemInstant`]: #")]
 #![cfg_attr(not(all(feature = "linux", feature = "unsafe_syscall")), doc = "[`LinuxTime`]: #")]
@@ -52,8 +82,9 @@
 #[cfg(feature = "std")]
 mod _reexport_std; // SYMLINK to /crates/base/std/src/phys/time/source/_reexport.rs
 
-mod impls;
+mod impl_source;
 
+mod point; // TimePoint
 mod traits; // TimeSource, TimeSourceCfg
 // mod tsc; // TimeSourceTsc
 
@@ -63,6 +94,7 @@ mod fake; // TimeFake, TimeFakeRef
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
+            point::*,
             traits::*,
             // tsc::*,
         };

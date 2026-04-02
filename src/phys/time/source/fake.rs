@@ -122,7 +122,7 @@ impl TimeFake {
 /// let view = clock.view();
 ///
 /// // Read time through the generic time-source interface
-/// let t1 = <TimeFakeRef as TimeSourceCfg>::time_now_millis(view);
+/// let t1 = <TimeFakeRef as TimeSourceCfg<u64>>::time_now_millis(view);
 /// // or just:
 /// let t1 = TimeFakeRef::time_now_millis(view);
 /// // or:
@@ -147,7 +147,7 @@ impl<'a> TimeFakeRef<'a> {
     ///
     /// Equivalent to calling `TimeSourceCfg::time_now_millis`.
     pub fn now_millis(self) -> u64 {
-        <Self as TimeSourceCfg>::time_now_millis(self)
+        <Self as TimeSourceCfg<u64>>::time_now_millis(self)
     }
 }
 
@@ -156,18 +156,13 @@ impl<'a> TimeFakeRef<'a> {
 /// not ownership of the time source. This allows multiple independent fake
 /// clocks to coexist without relying on global state.
 #[rustfmt::skip]
-impl<'a> TimeSourceCfg for TimeFakeRef<'a> {
+impl<'a> TimeSourceCfg<u64> for TimeFakeRef<'a> {
     type Config = Self;
     fn time_is_monotonic(_: Self::Config) -> bool { false }
     fn time_is_absolute(_: Self::Config) -> bool { false }
     fn time_scale(cfg: Self::Config) -> TimeScale { cfg.src.scale }
-    fn time_now_millis(cfg: Self) -> u64 {
-        cfg.src.scale.convert_simulated(cfg.src.get_time(), TimeScale::Millis)
-    }
-    fn time_now_micros(cfg: Self) -> u64 {
-        cfg.src.scale.convert_simulated(cfg.src.get_time(), TimeScale::Micros)
-    }
-    fn time_now_nanos(cfg: Self) -> u64 {
-        cfg.src.scale.convert_simulated(cfg.src.get_time(), TimeScale::Nanos)
-    }
+
+    fn time_now(cfg: Self::Config) -> u64 { cfg.src.get_time() }
+    fn time_point_value(_: Self::Config, point: u64) -> u64 { point }
+    fn time_elapsed_value(_: Self::Config, elapsed: u64) -> u64 { elapsed }
 }

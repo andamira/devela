@@ -132,6 +132,8 @@ impl LinuxClock {
                 | Self::MonotonicCoarse
                 | Self::Boottime
                 | Self::BoottimeAlarm
+                | Self::ProcessCpuTimeId
+                | Self::ThreadCpuTimeId
         )
     }
 
