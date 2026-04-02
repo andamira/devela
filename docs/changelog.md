@@ -15,7 +15,7 @@
 
 ## infra
 ### cargo
-- bump MSRV to 1.94.0.
+- bump MSRV to 1.94.1.
 
 ### CI
 - bump `actions/checkout` to v6.

@@ -79,7 +79,7 @@ members = [ # In sync with ./build/main/environment.rs
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
 version = "0.26.0-wip" # In sync with ./docs/changelog.md
-rust-version = "1.94.0" # In sync with ./README.md && ./.github/workflows/check.yml
+rust-version = "1.94.1" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
