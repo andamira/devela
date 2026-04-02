@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# devela/x
 #
 # Devela workspace command wrapper
 #
@@ -8,7 +9,6 @@
 #   --cfg a,b,c         pass cfg flags
 #
 set -euo pipefail
-
 
 #------------------------------------------------------------------------------
 # Parse arguments
@@ -46,7 +46,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-
 #------------------------------------------------------------------------------
 # Load environment configuration
 #------------------------------------------------------------------------------
@@ -79,17 +78,16 @@ if [[ "$toolchain" == "+nightly" && -f "$workspace/tools/x-env-local-nightly.sh"
     source "$workspace/tools/x-env-local-nightly.sh"
 fi
 
-
 #------------------------------------------------------------------------------
 # Apply cfg flags
 #------------------------------------------------------------------------------
 
 for cfg in "${cfg_flags[@]}"; do
     RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }--cfg $cfg"
+    RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }--cfg $cfg"
 done
 
 export RUSTFLAGS
-
 
 #------------------------------------------------------------------------------
 # Debug
@@ -102,7 +100,6 @@ if [[ "${X_DEBUG:-0}" == 1 ]]; then
     echo "RUSTFLAGS=\"$RUSTFLAGS\""
     echo "RUSTDOCFLAGS=\"$RUSTDOCFLAGS\""
 fi
-
 
 #------------------------------------------------------------------------------
 # Execute cargo

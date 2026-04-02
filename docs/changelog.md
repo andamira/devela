@@ -25,6 +25,7 @@
 ### tools
 - update `tools/check.rs`:
   - bump `devela` to 0.25.0.
+- update `x` command wrapper to apply cfg flags to rustdoc.
 
 ## dependencies
 - bump dependencies:
