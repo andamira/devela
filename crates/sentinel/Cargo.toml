@@ -1,3 +1,5 @@
+# devela_sentinel manifest
+# ==============================================================================
 [workspace]
 [package]
 name = "devela_sentinel"

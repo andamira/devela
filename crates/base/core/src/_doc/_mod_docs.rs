@@ -86,7 +86,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_LAYOUT_STACK  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_LAYOUT_TABLE  = "Tabular and heterogeneous data processing.";
-    _DOC_DATA_SPACE         = "Spatial data structures.";
     _DOC_DATA_TOPOL         = "Relational topology over structured data.";
     _QUO_DATA_TOPOL         = "> Describes connectivity, adjacency, and ordered relations.";
     _DOC_DATA_TOPOL_LINKED  = "Homogeneous, sequentially accessed structures.";

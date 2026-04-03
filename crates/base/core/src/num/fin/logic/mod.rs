@@ -10,7 +10,7 @@ mod bool; // ConstBool, False, True
 // mod bops;
 // mod choice;
 // mod items;
-// mod linear;
+// mod linear; // WIP
 // mod trool;
 
 crate::structural_mods! { // _mods

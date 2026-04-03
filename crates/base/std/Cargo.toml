@@ -1,3 +1,5 @@
+# devela_base_std manifest
+# ==============================================================================
 [package]
 name = "devela_base_std"
 description = "base std shared functionality for devela"

@@ -11,7 +11,7 @@
 // #[cfg(feature = "alloc")]
 // mod buf; // WIP TEMP
 mod error;
-mod pnm;
+mod pnm; // WIP
 
 #[cfg(feature = "term")]
 pub mod sixel;

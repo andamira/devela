@@ -3,10 +3,7 @@
 //! Spanish language.
 //
 
-// WIPZONE
-
 crate::structural_mods! { // _mods
     _mods {
-        // WIPZONE:
     }
 }

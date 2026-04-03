@@ -3,12 +3,10 @@
 //! English language.
 //
 
-// WIPZONE
-// mod tense;
+// mod tense; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
-        // WIPZONE:
         // pub use super::tense::*;
     }
 }

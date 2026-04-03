@@ -11,11 +11,13 @@
 mod traits; // WIP Canvas
 
 // pub mod compose; // WIP
+// mod dpi; // WIP
 // pub mod line; // WIP
 
 crate::structural_mods! { // _pub_mods
     _mods {
         pub use super::{
+            // dpi::*,
             traits::*,
         };
     }

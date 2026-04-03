@@ -19,9 +19,8 @@ mod disc; //  discourse & expression WIP
 mod gram; // grammar machinery WIP
 mod hum; // human languages WIP
 mod repr; // representation languages WIP
-mod sem; // semantic relations WIP
-
 pub mod prog; // programming languages
+mod sem; // semantic relations WIP
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {

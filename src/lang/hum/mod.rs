@@ -9,16 +9,15 @@
 //! Structure and use of language as produced, interpreted, and shared by humans.
 //
 
+pub mod art; // artificial languages
 mod denote;
 mod form;
+pub mod i18n; // localization, translation
+pub mod nat; // natural languages
 mod prag;
 mod syntax;
 mod vocal;
 mod write;
-
-pub mod art; // artificial languages
-pub mod i18n; // localization, translation
-pub mod nat; // natural languages
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {

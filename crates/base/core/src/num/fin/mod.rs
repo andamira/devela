@@ -10,10 +10,9 @@
 mod bit; // BitOps, Bitwise
 // mod comb;
 // mod graph;
-// mod seq;
-
 pub mod logic; // ConstBool, False, True, const_bool!
 pub mod ord; // Cmp, cmp!, Order
+// mod seq;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {

@@ -1,4 +1,6 @@
 #!/usr/bin/env -S rust-script -t nightly -c
+//! devela_base_core::num::grain::wide::_exa_lane.rs
+//!
 //! ```cargo
 //! [package]
 //! name = "_exa_lane"
