@@ -4,6 +4,13 @@
 #[macro_export]
 macro_rules! __buffer_linear_impl_option {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
+
+        impl<T, const CAP: usize> Default for $name<T, [Option<T>; CAP]> {
+            fn default() -> Self {
+                Self::new()
+            }
+        }
+
         $(#[$impl_attr])*
         ///
         /// Fully initialized array using `Option<T>` as a drop boundary.

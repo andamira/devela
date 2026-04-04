@@ -12,6 +12,7 @@ mod helpers; // (Norm)
 
 mod gamma; // Gamma
 mod luminance; // Luma, Luminance
+mod palette; // WIP
 mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 
 crate::structural_mods! { // _mods, _crate_internals
@@ -19,6 +20,7 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::{
             gamma::*,
             luminance::*,
+            palette::_all::*,
             rgb::_all::*,
         };
     }

@@ -19,8 +19,7 @@ crate::structural_mods! { // _mods, _reexports
         #[doc(inline)]
         pub use devela_base_core::sys::os::term::TermSize;
 
-        #[doc(inline)]
-        #[cfg(feature = "term")]
+        #[doc(inline)] #[cfg(feature = "term")]
         pub use devela_base_core::sys::os::term::{
             Ansi, AnsiColor, AnsiColor3, AnsiColor8,
         };

@@ -51,6 +51,7 @@
 
 ### data::layout
 - update `buffer_linear!`:
+  - derive `Default` for impls: `option`, `uninit`.
   - new methods: `push_slice`, `remaining_capacity`, `remaining_capacity_prim`.
   - new methods for non-alloc backends: `push_slice_copy`, `push_slice_copy_exact`.
   - update `vec` backend methods:

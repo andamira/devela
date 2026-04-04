@@ -11,9 +11,9 @@
 /* image formats */
 
 // #[cfg(feature = "alloc"] // TEMP
-// mod png;
+// mod png; // WIP
 //
-// mod pnm;
+// mod pnm; // WIP
 
 #[cfg(feature = "term")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]

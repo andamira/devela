@@ -4,7 +4,14 @@
 #[macro_export]
 macro_rules! __buffer_linear_impl_uninit {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
-       $(#[$impl_attr])*
+
+        impl<T, const CAP: usize> Default for $name<T, [$crate::MaybeUninit<T>; CAP]> {
+            fn default() -> Self {
+                Self::_new([const { $crate::MaybeUninit::uninit() }; CAP], Self::_idx_zero())
+            }
+        }
+
+        $(#[$impl_attr])*
         ///
         /// Partially initialized array.
         ///
