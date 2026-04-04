@@ -57,6 +57,10 @@
     - update `is_full` semantics.
     - fix `len` implementation.
 
+### data::store
+- new module.
+- move `data::id::key` to `data::store::key`.
+
 ## geom
 - remove all `*_ref` and `*_mut` accessor methods for `dir` and `metric` types.
 

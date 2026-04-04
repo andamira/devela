@@ -9,23 +9,24 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, error, id, layout, topol, value);
+    crate::_doc!(modules: crate; data: access, codec, error, id, layout, store, topol, value);
 }
 
-pub mod access;
-pub mod codec;
+pub mod access; // Mechanisms of reachability and traversal
+pub mod codec; // Data encoding and decoding abstractions
 pub mod error {
     #![doc = crate::_DOC_DATA_ERROR!()] // public
     #![doc = crate::_doc!(modules: crate::data; error)]
     #![doc = crate::_doc!(flat:"data")]
     #![doc = crate::_doc!(hr)]
     #[doc(inline)]
-    pub use devela_base_core::data::error::*;
+    pub use devela_base_core::data::error::*; // Data-related error types
 }
-pub mod id;
-pub mod layout;
-pub mod topol;
-pub mod value;
+pub mod id; // Identity abstractions for stable and contextual distinction
+pub mod layout; // Structural arrangement of elements in memory or sequence
+pub mod store; // Retained data stores and retrieval semantics
+pub mod topol; // Relational topology over structured data
+pub mod value; // Enumerated data values and types, classified by size
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
@@ -36,6 +37,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             error::*,
             id::_all::*,
             layout::_all::*,
+            store::_all::*,
             topol::_all::*,
             value::_all::*,
         };

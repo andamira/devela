@@ -1,7 +1,7 @@
-// devela::data::id::key
+// devela::data::store::key
 //
-#![doc = crate::_DOC_DATA_ID_KEY!()] // public
-#![doc = crate::_doc!(modules: crate::data::id; key)]
+#![doc = crate::_DOC_DATA_STORE_KEY!()] // public
+#![doc = crate::_doc!(modules: crate::data::store; key)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
@@ -11,7 +11,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/id/key/_reexport.rs
+mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/store/key/_reexport.rs
 mod _reexport_dep;
 
 mod static_map; // define_static_map!

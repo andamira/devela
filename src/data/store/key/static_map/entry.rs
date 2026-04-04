@@ -1,4 +1,4 @@
-// devela::data::id::key::static_map::entry
+// devela::data::store::key::static_map::entry
 //
 //!
 //

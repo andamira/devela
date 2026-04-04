@@ -73,7 +73,6 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_ERROR         = "Data-related error types.";
     _DOC_DATA_ID            = "Identity abstractions for stable and contextual distinction.";
     _QUO_DATA_ID            = "> Distinction preserved across change.";
-    _DOC_DATA_ID_KEY        = "Key-based storage implementations.";
     _DOC_DATA_ID_UID        = "Abstractions for producing and stabilizing unique identities.";
     _QUO_DATA_ID_UID        = "> Defines identity kinds and generation tools.";
     _DOC_DATA_LAYOUT        = "Structural arrangement of elements in memory or sequence.";
@@ -86,6 +85,10 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_LAYOUT_STACK  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_LAYOUT_TABLE  = "Tabular and heterogeneous data processing.";
+    _DOC_DATA_STORE         = "Retained data stores and retrieval semantics.";
+    _DOC_DATA_STORE_DB      = "Persistent queryable stores with schema and transactional semantics.";
+    _DOC_DATA_STORE_CACHE   = "Stores that retain values to reduce recomputation or retrieval cost.";
+    _DOC_DATA_STORE_KEY     = "Keyed stores and lookup structures.";
     _DOC_DATA_TOPOL         = "Relational topology over structured data.";
     _QUO_DATA_TOPOL         = "> Describes connectivity, adjacency, and ordered relations.";
     _DOC_DATA_TOPOL_LINKED  = "Homogeneous, sequentially accessed structures.";

@@ -1,4 +1,4 @@
-// devela::data::id::key::_reexport_dep
+// devela::data::store::key::_reexport_dep
 
 #![allow(unused_imports, unused_macros, reason = "dep_hashbrown|std feature-gate")]
 

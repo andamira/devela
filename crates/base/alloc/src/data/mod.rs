@@ -12,16 +12,26 @@ crate::CONST! { pub(crate) _DOC_DATA_MODULES =
     crate::_doc!(modules: crate; data: id, layout, topol); // access, codec, error, value
 }
 
-pub mod id;
-pub mod layout;
-pub mod topol;
+// pub mod access; // Mechanisms of reachability and traversal
+// pub mod codec; // Data encoding and decoding abstractions
+pub mod id; // Identity abstractions for stable and contextual distinction
+pub mod layout; // Structural arrangement of elements in memory or sequence
+pub mod topol; // Relational topology over structured data
+pub mod store; // Retained data stores and retrieval semantics
+// pub mod topol; // Relational topology over structured data
+// pub mod value; // Enumerated data values and types, classified by size
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
+            // access::_all::*,
+            // codec::_all::*,
             id::_all::*,
             layout::_all::*,
             topol::_all::*,
+            store::_all::*,
+            // topol::_all::*,
+            // value::_all::*,
         };
     }
     _crate_internals {

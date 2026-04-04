@@ -1,4 +1,4 @@
-// devela::data::id::key::static_map::define
+// devela::data::store::key::static_map::define
 //
 //! Defines the [`define_static_map!`] macro.
 //

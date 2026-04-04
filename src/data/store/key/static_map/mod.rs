@@ -1,4 +1,4 @@
-// devela::data::id::key::static_map
+// devela::data::store::key::static_map
 //
 //! Defines the [`define_static_map!`] macro and the [`StaticEntry`] enum.
 //
