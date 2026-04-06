@@ -192,6 +192,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_NUM_QUANT       = "Quantification, measurement, and numerical relationships.";
     _DOC_NUM_QUANT_CONT  = "Continuity, calculus.";
     _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
+    _DOC_NUM_QUANT_POWER = "Exponentiation, roots, logarithms, and triadic power relations.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
     // 7 (patterns of agency beyond the individual)

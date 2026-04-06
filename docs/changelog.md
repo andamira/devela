@@ -92,6 +92,9 @@
   - use rust's implementations in `midpoint` methods.
   - rename old signed `midpoint` method to `midpoint_floor`.
 
+#### num::dom::real::float
+- fix `Float::ln_series` algorithm.
+
 #### phys::time::source
 - new trait: `TimePoint`.
 - update TimeSurce and TimeSourceCfg:

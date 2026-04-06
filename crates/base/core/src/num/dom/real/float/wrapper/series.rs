@@ -194,7 +194,7 @@ macro_rules! impl_float_shared_series {
                     #[expect(clippy::float_cmp, reason = "we've already checked it with a margin")]
                     { is![self.0 == 1.0, Self::NAN, Self::NEG_INFINITY] }
                 } else {
-                    Float(self.ln_series(terms).0 / base).ln_series(terms)
+                    Float(self.ln_series(terms).0 / Float(base).ln_series(terms).0)
                 }
             }
 

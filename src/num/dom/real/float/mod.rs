@@ -24,15 +24,10 @@ crate::structural_mods! { // _mods, _reexports
             FloatConst,
             f32bits, f32bits_niche, f64bits, f64bits_niche, fsize,
         };
-
         crate::cfg_if! { if #[cfg(feature = "std")] {
-            pub use devela_base_std::num::dom::{ // real
-                FloatStd as Float,
-            };
+            pub use devela_base_std::num::dom::real::FloatStd as Float;
         } else {
-            pub use devela_base_core::num::dom::{ // real
-                Float,
-            };
+            pub use devela_base_core::num::dom::real::Float;
         }}
     }
 }

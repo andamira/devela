@@ -3,6 +3,7 @@
 //! Floating-point wrapper struct (std version).
 //
 
+// NOTE: reimplements core's Float with additional methods
 mod definition; // FloatStd
 
 mod basic; // basic operations SYMLINK to /crates/base/core/src/num/dom/real/float/wrapper/basic.rs

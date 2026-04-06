@@ -47,7 +47,8 @@ all = [ # enables all the 12 modules (and their submodules)
 ]
 media = ["color"]
 	color = []
-num = ["rand"]
+num = ["int", "rand"]
+	int = []
 	rand = ["devela_base_alloc/rand"]
 
 #* Safety features *#

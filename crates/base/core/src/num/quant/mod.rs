@@ -24,7 +24,7 @@ mod cycle; // Cycle, CycleCount
 mod interval; // Interval, interval!
 // mod norm; // Norm
 // mod ratio; // Ratio
-// mod power; // Log, Power, Root, TriPow
+// mod power; // Log, Power, Root
 // mod scale; // Scale
 mod sign; // Sign
 mod value; // ValueQuant
@@ -37,6 +37,7 @@ crate::structural_mods! { // _mods
             cycle::*,
             interval::*,
             // norm::*,
+            // power::*,
             // scale::*,
             sign::*,
             value::*,
