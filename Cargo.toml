@@ -78,7 +78,7 @@ members = [ # In sync with ./build/main/environment.rs
 [workspace.package]
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
-version = "0.26.0-wip" # In sync with ./docs/changelog.md
+version = "0.26.0" # In sync with ./docs/changelog.md
 rust-version = "1.94.1" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -654,12 +654,12 @@ wide = { workspace = true, optional = true }
 [workspace.dependencies]
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
-devela_base_macros = { version = "0.26.0-wip", path = "./crates/base/macros" }
-devela_base_core   = { version = "0.26.0-wip", path = "./crates/base/core" }
-devela_base_alloc  = { version = "0.26.0-wip", path = "./crates/base/alloc" }
-devela_base_std    = { version = "0.26.0-wip", path = "./crates/base/std" }
-devela_macros      = { version = "0.26.0-wip", path = "./crates/macros" }
-#devela_buildpost   = { version = "0.26.0-wip", path = "./build/post" }
+devela_base_macros = { version = "0.26.0", path = "./crates/base/macros" }
+devela_base_core   = { version = "0.26.0", path = "./crates/base/core" }
+devela_base_alloc  = { version = "0.26.0", path = "./crates/base/alloc" }
+devela_base_std    = { version = "0.26.0", path = "./crates/base/std" }
+devela_macros      = { version = "0.26.0", path = "./crates/macros" }
+#devela_buildpost   = { version = "0.26.0", path = "./build/post" }
 
 #* optional external dependencies *#
 
