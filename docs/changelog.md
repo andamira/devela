@@ -123,7 +123,7 @@ and system interfaces toward clearer typed contracts and deeper coherence.
   - `TimeFakeRef`: `TimeSourceCfg<u64>`.
 
 ## run
-- new traits: `RunApp`, `RunRender`, `RunPresent`.
+- new traits: `RunApp`, `RunBackend`, `RunRender`, `RunPresent`.
 
 ### run::cycle
 - new items: `RunControl`, `RunCycle`, `RunPhase`.

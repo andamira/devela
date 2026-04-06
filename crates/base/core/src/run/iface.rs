@@ -5,7 +5,7 @@
 //! Runtime-facing interfaces for stepwise participants.
 //
 
-use crate::{RunControl, RunStep};
+use crate::{RunControl, RunFrame, RunPhase, RunStep, RuntimeTick};
 
 #[doc = crate::_tags!(runtime)]
 /// App logic driven step-by-step by a runtime.
@@ -32,6 +32,71 @@ pub trait RunApp {
 }
 
 #[doc = crate::_tags!(runtime)]
+/// Minimal backend contract for runtime-driven frontends.
+#[doc = crate::_doc_location!("run")]
+///
+/// A `RunBackend` does two things:
+/// - gathers normalized events for the next runtime iteration,
+/// - exposes a short-lived backend context for that iteration.
+///
+/// It does **not** own:
+/// - the runtime lifecycle,
+/// - logical ticking,
+/// - pacing,
+/// - or application state progression.
+///
+/// Those belong to the runtime and the app layer.
+///
+/// The associated `Context<'a>` is intentionally ephemeral.
+/// Typical examples include:
+/// - a borrowed terminal output surface,
+/// - a borrowed canvas handle,
+/// - a borrowed window/document pair,
+/// - or a lightweight host snapshot for the current frame.
+pub trait RunBackend {
+    /// The normalized event type collected by this backend.
+    type Event;
+
+    /// The error type returned by backend operations.
+    type Error;
+
+    /// The per-frame context exposed by this backend.
+    ///
+    /// This may borrow backend state and is expected to be short-lived.
+    type Context<'a>
+    where
+        Self: 'a;
+
+    /// Collects backend events into `out`.
+    ///
+    /// Returns the number of written events.
+    ///
+    /// Implementations may write fewer than `out.len()` events.
+    /// Excess pending events may remain buffered internally for later calls.
+    fn collect_events(&mut self, out: &mut [Self::Event]) -> Result<usize, Self::Error>;
+
+    /// Returns the backend context for the current frame.
+    ///
+    /// This should be cheap and non-owning whenever possible.
+    fn context(&mut self) -> Self::Context<'_>;
+
+    /// Builds a [`RunFrame`] from the supplied logical state and gathered events.
+    ///
+    /// This is a convenience helper built on top of [`context`][Self::context].
+    fn frame<'a>(
+        &'a mut self,
+        tick: RuntimeTick,
+        phase: RunPhase,
+        events: &'a [Self::Event],
+    ) -> RunFrame<'a, Self::Event, Self::Context<'a>>
+    where
+        Self: Sized,
+    {
+        RunFrame::from_parts(tick, phase, events, self.context())
+    }
+}
+
+#[doc = crate::_tags!(runtime)]
 /// Rendering logic driven by a runtime step.
 #[doc = crate::_doc_location!("run")]
 ///
@@ -40,7 +105,7 @@ pub trait RunApp {
 ///
 /// This trait defines rendering only.
 /// It does not define logical progression, pacing, or final presentation.
-pub trait RunRender<S, E = ()> {
+pub trait RunRender<S, E = (), C = ()> {
     /// The successful result of a render step.
     ///
     /// Use `()` when rendering only updates internal state or buffers.
@@ -51,7 +116,11 @@ pub trait RunRender<S, E = ()> {
     /// Renders `scene` for the current runtime step.
     ///
     /// Returns an implementation-defined output on success.
-    fn run_render(&mut self, step: RunStep<'_, E>, scene: &S) -> Result<Self::Output, Self::Error>;
+    fn run_render(
+        &mut self,
+        step: RunFrame<'_, E, C>,
+        scene: &S,
+    ) -> Result<Self::Output, Self::Error>;
 }
 
 #[doc = crate::_tags!(runtime)]

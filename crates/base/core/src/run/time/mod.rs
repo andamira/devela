@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(hr)]
 
 // mod loop;
+mod frame; // RunFrame
 mod pacer; // RunPacer
 mod run; // Runtime
 mod step; // RunStep
@@ -15,6 +16,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // loop::*,
+            frame::*,
             pacer::*,
             run::*,
             step::*,

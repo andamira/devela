@@ -18,18 +18,17 @@ use crate::{RunPhase, RuntimeTick};
 ///
 /// It does not own the runtime, control pacing, or store long-lived state.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct RunStep<'a, E = (), C = ()> {
+pub struct RunStep<'a, E = ()> {
     tick: RuntimeTick,
     phase: RunPhase,
     // real_dt: Option<Duration>,
     events: &'a [E],
-    context: C,
 }
 
-impl<'a, E, C> RunStep<'a, E, C> {
+impl<'a, E> RunStep<'a, E> {
     /// Creates a new step snapshot.
-    pub const fn new(tick: RuntimeTick, phase: RunPhase, events: &'a [E], context: C) -> Self {
-        Self { tick, phase, events, context }
+    pub const fn new(tick: RuntimeTick, phase: RunPhase, events: &'a [E]) -> Self {
+        Self { tick, phase, events }
     }
 
     /// Returns the logical tick of this step.
