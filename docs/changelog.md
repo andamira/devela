@@ -3,13 +3,26 @@
 [0.26.0-wip] unreleased
 =======================
 
-> The creation of a thousand forests is in one acorn.
-> — Emerson
+> Everything must ripen before it is ready.
+> — Rainer Maria Rilke
 
 ```
+This release expands devela's foundational surface with new runtime, time,
+parsing, storage, and drawing abstractions, while refining geometry, text,
+and system interfaces toward clearer typed contracts and deeper coherence.
 ```
 
- ------------------------------------------------------------------------------
+## Key changes:
+- runtime foundations: new runtime, cycle, pacing, and presentation abstractions.
+- typed time overhaul: reworked time sources around clearer point and elapsed models.
+- geometry refinement: clearer metric organization and a more expressive region model.
+- text parsing groundwork: new scanner, range, and reusable parsing error infrastructure.
+- storage and drawing expansion: new storage roots and canvas-oriented drawing traits.
+- system cleanup: improved X11 handling, refined FFI gating, and Linux clock fixes.
+- data layout improvements: expanded buffer utilities for alloc and non-alloc use.
+- msrv bump: minimum supported rust version increased to 1.94.1.
+
+------------------------------------------------------------------------------
 
 # Project
 

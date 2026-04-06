@@ -230,7 +230,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 #
 # In sync with ./tools/check.rs::SUB_MODULES
 
-all = [ # enables all the 13 modules (and their submodules)
+all = [ # enables all the 14 modules (and their submodules)
 	"code", "data", "geom", "lang", "media",
 	"num", "org", "phys", "run", "sys",
 	"text", "ui", "vita", "work",

@@ -23,5 +23,8 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_base_core::sys::os::term::{
             Ansi, AnsiColor, AnsiColor3, AnsiColor8,
         };
+        // WIP
+        // #[doc(inline)] #[cfg(feature = "term")] // #[cfg(feature = "draw")]
+        // pub use devela_base_core::sys::os::term::{term_renderer};
     }
 }
