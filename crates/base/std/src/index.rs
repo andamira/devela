@@ -39,7 +39,6 @@ pub(crate) use __crate_name;
 #[cfg(feature = "std")]
 items! {
     pub mod build;
-    pub mod code;
     pub mod data;
     #[doc(hidden)]
     pub mod geom;
@@ -78,7 +77,6 @@ pub mod zall {
     #[cfg(feature = "std")]
     pub use super::{
         build::_all::*,
-        code::_all::*,
         data::_all::*,
         geom::_all::*,
         lang::_all::*,
@@ -100,7 +98,6 @@ mod _crate_internals {
     #[rustfmt::skip]
     #[cfg(feature = "std")]
     pub(crate) use super::{
-        code::_crate_internals::*,
         data::_crate_internals::*,
         geom::_crate_internals::*,
         lang::_crate_internals::*,

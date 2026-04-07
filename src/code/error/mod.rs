@@ -10,14 +10,14 @@
 //
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/code/error/_reexport.rs
-mod _reexport_std; // SYMLINK TO /crates/base/std/src/code/error/_reexport.rs
+#[cfg(feature = "std")]
+mod _reexport_std;
 
 crate::structural_mods! { // _reexports
     _reexports {
-        pub use super::{
-            _reexport_core::*,
-            _reexport_std::*,
-        };
+        pub use super::_reexport_core::*;
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
 
         #[doc(inline)]
         pub use devela_base_core::{

@@ -7,18 +7,22 @@
 //
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/code/panic/_reexport.rs
-mod _reexport_std; // SYMLINK to /crates/base/std/src/code/panic/_reexport.rs
+#[cfg(feature = "std")]
+mod _reexport_std;
 
+#[cfg(feature = "std")]
+mod namespace; // Panic
 mod set; // set_panic_handler!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::set::*;
+        #[cfg(feature = "std")]
+        pub use super::namespace::Panic;
     }
     _reexports {
         pub use super::_reexport_core::*;
-        pub use super::_reexport_std::*;
         #[cfg(feature = "std")]
-        pub use devela_base_std::code::panic::Panic;
+        pub use super::_reexport_std::*;
     }
 }

@@ -1,4 +1,4 @@
-// devela_base_std::code::panic::namespace
+// devela::code::panic::namespace
 //
 //! Defines the [`Panic`] namespace.
 //
