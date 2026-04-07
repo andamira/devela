@@ -1,4 +1,4 @@
-// devela_base_std::num::prob::rand::rand
+// devela::num::prob::rand::rand_std
 //
 //! Defines [`RandStd`].
 //

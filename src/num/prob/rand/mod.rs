@@ -33,12 +33,17 @@
 // mod from_rand; // FromRand
 // mod noise; // Structured deterministic randomness
 
+#[cfg(feature = "std")]
+mod rand_std; // RandStd
+
 crate::structural_mods! { // _mods, _reexports
     _mods {
         // pub use super::{
         //     from_rand::*,
         //     noise::*,
         // };
+        #[cfg(feature = "std")]
+        pub use super::rand_std::RandStd;
     }
     _reexports {
         #[doc(inline)]
@@ -57,7 +62,5 @@ crate::structural_mods! { // _mods, _reexports
         };
         #[cfg(feature = "alloc")]
         pub use devela_base_alloc::num::prob::rand::RandAlloc;
-        #[cfg(feature = "std")]
-        pub use devela_base_std::num::prob::rand::RandStd;
     }
 }

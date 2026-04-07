@@ -9,6 +9,10 @@
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
 mod color; // Color
+
+#[cfg(feature = "std")]
+mod gamma; // Gamma
+
 // #[cfg(feature = "linear")]
 // mod xyz; // Xyz
 
@@ -17,6 +21,8 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::{
             color::*,
         };
+        #[cfg(feature = "std")]
+        pub use super::gamma::Gamma;
         // #[cfg(feature = "linear")]
         // pub use super::xyz::*;
     }
@@ -28,10 +34,6 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
             Rgb8, Rgba8, RgbaPre8, Rgb16, Rgba16, RgbaPre16,
             RgbF32, RgbaF32, RgbaPreF32, RgbF64, RgbaF64, RgbaPreF64,
             RgbLinF32, RgbaLinF32, RgbaLinPreF32, RgbLinF64, RgbaLinF64, RgbaLinPreF64,
-        };
-        #[cfg(feature = "std")]
-        pub use devela_base_std::media::visual::color::{
-            Gamma,
         };
     }
 }

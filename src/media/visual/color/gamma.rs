@@ -2,7 +2,7 @@
 //
 //! Defines [`Gamma`].
 //
-// WAIT: when required std operations are in core and const we willll rename GammaConst to Gamma.
+// TODO: merge with GammaConst
 
 use crate::is;
 

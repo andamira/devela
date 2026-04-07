@@ -1,1 +1,8 @@
-../../../../crates/base/std/src/data/codec/hash/_reexport.rs
+// devela::data::codec::hash::_reexport
+
+use crate::{_reexport, _tags};
+
+_reexport! { rust: std::hash, location: "data/hash", tag: _tags!(hash),
+    doc: "The default state for [`HashMapStd`][crate::HashMapStd].",
+    RandomState
+}

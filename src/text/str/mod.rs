@@ -7,7 +7,8 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/text/str/_reexport.rs
 mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/text/str/_reexport.rs
-mod _reexport_std; // SYMLINK to /crates/base/std/src/text/str/_reexport.rs
+#[cfg(feature = "std")]
+mod _reexport_std;
 
 mod ext_str; // StrExt
 
@@ -26,8 +27,10 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::{
             _reexport_core::*,
             _reexport_alloc::*,
-            _reexport_std::*,
         };
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
+
         #[doc(inline)]
         pub use devela_base_core::text::str::{
             Str, StringNonul, StringU8, StringU16, StringU32, StringUsize,
