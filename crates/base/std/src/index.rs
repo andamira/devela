@@ -40,27 +40,13 @@ pub(crate) use __crate_name;
 items! {
     pub mod build;
     pub mod data;
-    #[doc(hidden)]
-    pub mod geom;
-    #[doc(hidden)]
-    pub mod lang;
     pub mod media;
     pub mod num;
     pub mod phys;
-    #[doc(hidden)]
-    pub mod run;
     pub mod sys;
     pub mod text;
-    #[doc(hidden)]
-    pub mod ui;
     pub mod work;
 }
-// internal:
-pub mod yard;
-#[doc(hidden)]
-pub use yard::_dep;
-//
-// mod _doc;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -78,15 +64,11 @@ pub mod zall {
     pub use super::{
         build::_all::*,
         data::_all::*,
-        geom::_all::*,
-        lang::_all::*,
         media::_all::*,
         num::_all::*,
         phys::_all::*,
-        run::_all::*,
         sys::_all::*,
         text::_all::*,
-        ui::_all::*,
         work::_all::*,
     };
 }
@@ -99,15 +81,11 @@ mod _crate_internals {
     #[cfg(feature = "std")]
     pub(crate) use super::{
         data::_crate_internals::*,
-        geom::_crate_internals::*,
-        lang::_crate_internals::*,
         media::_crate_internals::*,
         num::_crate_internals::*,
         phys::_crate_internals::*,
-        run::_crate_internals::*,
         sys::_crate_internals::*,
         text::_crate_internals::*,
-        ui::_crate_internals::*,
         work::_crate_internals::*,
     };
 }

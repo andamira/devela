@@ -45,31 +45,17 @@ pub(crate) use __crate_name;
 
 #[cfg(feature = "alloc")]
 items! {
-    #[doc(hidden)]
-    pub mod code;
     pub mod data;
-    #[doc(hidden)]
-    pub mod geom;
     pub mod lang;
-    #[doc(hidden)]
-    pub mod media;
     pub mod num;
-    #[doc(hidden)]
-    pub mod phys;
-    #[doc(hidden)]
-    pub mod run;
     pub mod sys;
     pub mod text;
-    #[doc(hidden)]
-    pub mod ui;
     pub mod work;
 }
 // internal:
 pub mod yard;
 #[doc(hidden)]
 pub use yard::_dep;
-//
-// mod _doc;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -85,17 +71,11 @@ pub mod zall {
     #[doc(inline)]
     #[cfg(feature = "alloc")]
     pub use super::{
-        code::_all::*,
         data::_all::*,
-        geom::_all::*,
         lang::_all::*,
-        media::_all::*,
         num::_all::*,
-        phys::_all::*,
-        run::_all::*,
         sys::_all::*,
         text::_all::*,
-        ui::_all::*,
         work::_all::*,
     };
 }
@@ -107,17 +87,11 @@ mod _crate_internals {
     #[rustfmt::skip]
     #[cfg(feature = "alloc")]
     pub(crate) use super::{
-        code::_crate_internals::*,
         data::_crate_internals::*,
-        geom::_crate_internals::*,
         lang::_crate_internals::*,
-        media::_crate_internals::*,
         num::_crate_internals::*,
-        phys::_crate_internals::*,
-        run::_crate_internals::*,
         sys::_crate_internals::*,
         text::_crate_internals::*,
-        ui::_crate_internals::*,
         work::_crate_internals::*,
     };
 }

@@ -43,7 +43,7 @@ std = [] # to be disabled when testing workspace with no_std
 
 #* Module features *#
 all = [ # enables all the 12 modules (and their submodules)
-	"media","num", # "code","data","geom","lang","org","phys","run","sys","work","text","ui","vita",
+	"media","num",
 ]
 media = ["color"]
 	color = []
