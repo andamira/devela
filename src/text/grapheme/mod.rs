@@ -17,20 +17,23 @@ mod tests;
 mod grapheme; // Grapheme
 mod kind; // GraphemeKind
 
-crate::structural_mods! { // _mods
+#[cfg(feature = "alloc")]
+mod string; // GraphemeString
+
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             grapheme::*,
             kind::*,
         };
-
+        #[cfg(feature = "alloc")]
+        pub use super::string::GraphemeString;
+    }
+    _reexports {
         #[doc(inline)]
         pub use devela_base_core::{
             GraphemeNonul, GraphemeU8, GraphemeScanner,
             GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,
         };
-        #[doc(inline)]
-        #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::text::GraphemeString;
     }
 }

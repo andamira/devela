@@ -1,4 +1,4 @@
-// devela_base_alloc::num::prob::rand::rand
+// devela::num::prob::rand::rand_alloc
 //
 //! Defines [`RandAlloc`].
 //

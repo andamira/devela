@@ -8,7 +8,7 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/text/fmt/_reexport.rs
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/text/fmt/_reexport.rs
+mod _reexport_alloc;
 
 mod namespace; // Fmt
 

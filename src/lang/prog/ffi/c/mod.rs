@@ -13,7 +13,7 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/lang/prog/ffi/c/_reexport.rs
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/lang/prog/ffi/c/_reexport.rs
+mod _reexport_alloc;
 
 crate::structural_mods! { // _reexports
     _reexports {

@@ -1,4 +1,4 @@
-// devela_base_alloc::num::dom::int::wrapper::impl_factors
+// devela::num::dom::int::wrapper_alloc::impl_factors
 //
 //! Implements factors-related allocating methods for [`IntAlloc`].
 //
@@ -63,7 +63,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t
                 ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![IntAlloc::new(-24_" $t
@@ -97,7 +97,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t
                 ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![IntAlloc::new(-24_" $t
@@ -135,7 +135,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![IntAlloc::new(-24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert![IntAlloc::new(0_" $t ").factors_prime().is_empty()];"]
@@ -171,7 +171,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             #[doc = "assert_eq![IntAlloc::new(-24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
@@ -184,7 +184,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
                 #[doc = "assert_eq![IntAlloc::new(24_" $t
             ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![IntAlloc::new(-24_" $t
@@ -237,7 +237,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t
                 ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert![IntAlloc::new(0_" $t ").factors().is_empty()];"]
@@ -270,7 +270,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t
                 ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert![IntAlloc::new(0_" $t ").factors_proper().is_empty()];"]
@@ -305,7 +305,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert![IntAlloc::new(0_" $t ").factors_prime().is_empty()];"]
             #[doc = "assert![IntAlloc::new(1_" $t ").factors_prime().is_empty()];"]
@@ -340,7 +340,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
             #[must_use]
@@ -352,7 +352,7 @@ macro_rules! impl_factors {
             ///
             /// # Examples
             /// ```
-            /// # use devela_base_alloc::IntAlloc;
+            /// # use devela::IntAlloc;
             #[doc = "assert_eq![IntAlloc::new(24_" $t
                 ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert![IntAlloc::new(0_" $t ").factors_prime_unique_exp().is_empty()];"]

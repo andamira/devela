@@ -33,6 +33,8 @@
 // mod from_rand; // FromRand
 // mod noise; // Structured deterministic randomness
 
+#[cfg(feature = "alloc")]
+mod rand_alloc; // RandAlloc
 #[cfg(feature = "std")]
 mod rand_std; // RandStd
 
@@ -42,6 +44,8 @@ crate::structural_mods! { // _mods, _reexports
         //     from_rand::*,
         //     noise::*,
         // };
+        #[cfg(feature = "alloc")]
+        pub use super::rand_alloc::RandAlloc;
         #[cfg(feature = "std")]
         pub use super::rand_std::RandStd;
     }
@@ -60,7 +64,5 @@ crate::structural_mods! { // _mods, _reexports
             XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
             define_xorshift,
         };
-        #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::num::prob::rand::RandAlloc;
     }
 }

@@ -7,7 +7,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/work/sync/_reexport.rs
+mod _reexport_alloc;
 #[cfg(feature = "std")]
 mod _reexport_std;
 

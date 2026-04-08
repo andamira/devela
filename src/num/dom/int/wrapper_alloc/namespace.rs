@@ -1,4 +1,4 @@
-// devela_base_alloc::num::dom::int::wrapper::namespace
+// devela::num::dom::int::wrapper_alloc::namespace
 //
 //! Defines the [`IntAlloc`] namespace wrapper.
 //

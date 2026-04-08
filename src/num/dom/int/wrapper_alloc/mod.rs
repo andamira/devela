@@ -1,4 +1,4 @@
-// devela_base_alloc::num::dom::int::wrapper
+// devela::num::dom::int::wrapper_alloc
 //
 //! Integer wrapper struct.
 //

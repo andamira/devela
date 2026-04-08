@@ -6,7 +6,8 @@
 #![doc = crate::_doc!(extends: str, string)]
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/text/str/_reexport.rs
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/text/str/_reexport.rs
+#[cfg(feature = "alloc")]
+mod _reexport_alloc;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
@@ -24,10 +25,9 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::ext_string::*;
     }
     _reexports {
-        pub use super::{
-            _reexport_core::*,
-            _reexport_alloc::*,
-        };
+        pub use super::_reexport_core::*;
+        #[cfg(feature = "alloc")]
+        pub use super::_reexport_alloc::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
 

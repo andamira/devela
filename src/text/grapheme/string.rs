@@ -1,9 +1,6 @@
-// devela_base_alloc::text::grapheme
+// devela::text::grapheme::string
 //
-#![doc = crate::_DOC_TEXT_GRAPHEME!()] // public
-#![doc = crate::_doc!(modules: crate::text; grapheme)]
-#![doc = crate::_doc!(flat:"text")]
-#![doc = crate::_doc!(hr)]
+//! Defines [`GraphemeString`].
 //
 
 // #[cfg(feature = "dep_unicode_segmentation")]

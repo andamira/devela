@@ -43,19 +43,12 @@ macro_rules! __crate_name {
 #[allow(unused_imports)]
 pub(crate) use __crate_name;
 
+use alloc::boxed::Box; // TEMP
+
 #[cfg(feature = "alloc")]
 items! {
     pub mod data;
-    pub mod lang;
-    pub mod num;
-    pub mod sys;
-    pub mod text;
-    pub mod work;
 }
-// internal:
-pub mod yard;
-#[doc(hidden)]
-pub use yard::_dep;
 
 #[doc(hidden)]
 #[allow(unused_imports)]
@@ -72,11 +65,6 @@ pub mod zall {
     #[cfg(feature = "alloc")]
     pub use super::{
         data::_all::*,
-        lang::_all::*,
-        num::_all::*,
-        sys::_all::*,
-        text::_all::*,
-        work::_all::*,
     };
 }
 
@@ -88,11 +76,6 @@ mod _crate_internals {
     #[cfg(feature = "alloc")]
     pub(crate) use super::{
         data::_crate_internals::*,
-        lang::_crate_internals::*,
-        num::_crate_internals::*,
-        sys::_crate_internals::*,
-        text::_crate_internals::*,
-        work::_crate_internals::*,
     };
 }
 

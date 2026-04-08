@@ -8,6 +8,9 @@
 
 mod fns; // prime_number_teorem
 
+#[cfg(all(feature = "int", feature = "alloc"))]
+mod wrapper_alloc; // IntAlloc TEMP
+
 #[cfg(feature = "int")]
 mod num_trait; // NumInt, NumRefInt
 
@@ -17,7 +20,13 @@ crate::structural_mods! { // _mods, _reexports
             fns::*,
         };
         #[cfg(feature = "int")]
-        pub use super::num_trait::*;
+        pub use super::{
+            num_trait::*,
+        };
+        #[cfg(all(feature = "int", feature = "alloc"))]
+        pub use super::{
+            wrapper_alloc::*,
+        };
     }
     _reexports {
         #[doc(inline)]
@@ -33,11 +42,6 @@ crate::structural_mods! { // _mods, _reexports
         #[cfg(feature = "int")]
         pub use devela_base_core::num::dom::int::{
             Int,
-        };
-        #[cfg(feature = "int")]
-        #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::num::dom::int::{
-            IntAlloc,
         };
     }
 }

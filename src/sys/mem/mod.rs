@@ -10,7 +10,7 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/mem/_reexport.rs
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/sys/mem/_reexport.rs
+mod _reexport_alloc;
 
 mod ext; // MemExt
 #[cfg(feature = "std")]
