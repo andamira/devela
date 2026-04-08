@@ -1,4 +1,4 @@
-// devela_base_std::work::process::flow
+// devela::work::process::flow
 //
 //! Defines [`CommandFlow`].
 //

@@ -10,6 +10,9 @@ mod _reexport_core; // SYMLINK to /crates/base/core/src/num/dom/real/float/_reex
 
 mod ext_float; // FloatExt
 
+#[cfg(feature = "std")]
+mod wrapper_std; // TEMP FloatStd
+
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
@@ -25,7 +28,7 @@ crate::structural_mods! { // _mods, _reexports
             f32bits, f32bits_niche, f64bits, f64bits_niche, fsize,
         };
         crate::cfg_if! { if #[cfg(feature = "std")] {
-            pub use devela_base_std::num::dom::real::FloatStd as Float;
+            pub use super::wrapper_std::FloatStd as Float;
         } else {
             pub use devela_base_core::num::dom::real::Float;
         }}

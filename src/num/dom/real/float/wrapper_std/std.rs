@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::wrapper::std
+// devela::num::dom::real::float::wrapper_std::std
 //
 //! Methods depending on std, or its absence
 //

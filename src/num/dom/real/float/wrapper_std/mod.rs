@@ -1,4 +1,4 @@
-// devela_base_std::num::dom::real::float::wrapper
+// devela::num::dom::real::float::wrapper_std
 //
 //! Floating-point wrapper struct (std version).
 //

@@ -1,4 +1,4 @@
-// devela_base_std::work::process::cmd
+// devela::work::process::cmd
 //
 //! Defines [`cmd!`].
 //

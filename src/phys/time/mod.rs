@@ -10,7 +10,7 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/phys/time/_reexport.rs
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /crates/base/std/src/phys/time/_reexport.rs
+mod _reexport_std;
 
 pub mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 
@@ -22,6 +22,9 @@ mod fmt; // Timecode
 mod no; // NoTime
 mod scale; // TimeScale
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
+
+#[cfg(feature = "std")]
+mod error; // TEMP, RETHINK
 
 #[cfg(feature = "time")] // RECONSIDER
 crate::items! {
@@ -50,6 +53,9 @@ crate::structural_mods! { // _mods, _pub_mods
             calendar::*,
             unix::*,
         };
+        #[cfg(feature = "std")]
+        pub use super::error::*;
+
         // #[cfg(feature = "_destaque_u16")]
         // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
         // pub use super::looper::*;
@@ -66,10 +72,6 @@ crate::structural_mods! { // _mods, _pub_mods
 
         pub use devela_base_core::phys::time::{
             Timeout,
-        };
-        #[cfg(feature = "std")]
-        pub use devela_base_std::phys::time::{
-            StdSystemTimeError, SystemTimeError, TimeError,
         };
     }
 }

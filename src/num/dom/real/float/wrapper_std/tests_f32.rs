@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::wrapper::tests
+// devela::num::dom::real::float::wrapper_std::tests
 //
 //! Tests for `Float<f32>`.
 //

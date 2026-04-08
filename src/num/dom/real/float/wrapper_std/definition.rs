@@ -1,4 +1,4 @@
-// devela_base_std::num::dom::real::float::wrapper::definition
+// devela::num::dom::real::float::wrapper_std::definition
 //
 //! Defines [`Float`] ([`FloatStd`] outside of the current float module).
 //

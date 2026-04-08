@@ -1,4 +1,4 @@
-// devela_base_std::phys::time::errors
+// devela::phys::time::error
 //
 //! Time-related errors.
 //
