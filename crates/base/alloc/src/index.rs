@@ -43,42 +43,6 @@ macro_rules! __crate_name {
 #[allow(unused_imports)]
 pub(crate) use __crate_name;
 
-use alloc::boxed::Box; // TEMP
-
-#[cfg(feature = "alloc")]
-items! {
-    pub mod data;
-}
-
-#[doc(hidden)]
-#[allow(unused_imports)]
-pub use zall::*;
-pub mod zall {
-    //! All the crate's items flat re-exported.
-    //! <br/><hr>
-    //!
-    //! Note that these items are already re-exported (hidden) from the root,
-    //! as is every other public module's contents from their parent.
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
-    #[doc(inline)]
-    #[cfg(feature = "alloc")]
-    pub use super::{
-        data::_all::*,
-    };
-}
-
-// private, internal items
-#[allow(unused_imports)]
-pub(crate) use _crate_internals::*;
-mod _crate_internals {
-    #[rustfmt::skip]
-    #[cfg(feature = "alloc")]
-    pub(crate) use super::{
-        data::_crate_internals::*,
-    };
-}
-
 #[allow(unused_imports)]
 #[doc(hidden)] #[rustfmt::skip]
 pub use _workspace_internals::*;

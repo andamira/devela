@@ -1,4 +1,4 @@
-// devela_base_alloc::data::id::uid::pin_box
+// devela::data::id::uid::pin_box
 //
 //! Defines [`IdPinBox`].
 //

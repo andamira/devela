@@ -6,7 +6,7 @@
 //! homogeneous data structures.
 //
 
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/layout/array/vec/_reexport.rs
+mod _reexport_alloc;
 
 mod chunk; // VecChunk
 mod ext; // VecExt

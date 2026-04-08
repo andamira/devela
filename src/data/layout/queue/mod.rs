@@ -13,7 +13,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/layout/queue/_reexport.rs
+mod _reexport_alloc;
 
 mod adt;
 #[cfg(_destaque··)]

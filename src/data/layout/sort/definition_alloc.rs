@@ -1,4 +1,4 @@
-// devela_base_alloc::data::layout::sort::definition
+// devela::data::layout::sort::definition_alloc
 //
 //! Defines and documents [`SortAlloc`].
 //
@@ -14,7 +14,7 @@ use crate::Sort;
 /// # Examples
 /// Using allocating methods:
 /// ```
-/// # use devela_base_alloc::SortAlloc;
+/// # use devela::SortAlloc;
 /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
 /// let freq = SortAlloc::new(&mut data[..]).counting();
 /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
@@ -23,7 +23,7 @@ use crate::Sort;
 ///
 /// Using non-allocating methods through deref:
 /// ```
-/// # use devela_base_alloc::SortAlloc;
+/// # use devela::SortAlloc;
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// SortAlloc::new(&mut arr[..]).bubble();
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];

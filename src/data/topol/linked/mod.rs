@@ -10,7 +10,7 @@
 //
 
 #[cfg(feature = "alloc")]
-mod _reexport_alloc; // SYMLINK to /crates/base/alloc/src/data/topol/linked/_reexport.rs
+mod _reexport_alloc;
 
 // #[cfg(_list1··)]
 // mod l1;

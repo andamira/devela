@@ -1,4 +1,4 @@
-// devela_base_alloc::data::layout::sort::impl_generic
+// devela::data::layout::sort::impls_alloc
 //
 //! Implements sorting algorithms for exclusive generic arrays `[T: Ord; N]`.
 //
@@ -13,7 +13,7 @@ impl<T: Ord> SortAlloc<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela_base_alloc::SortAlloc;
+    /// # use devela::SortAlloc;
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
     /// let freq = SortAlloc::new(&mut data[..]).counting();
     /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
@@ -47,7 +47,7 @@ impl<T: Ord> SortAlloc<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela_base_alloc::SortAlloc;
+    /// # use devela::SortAlloc;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// SortAlloc::new(&mut arr[..]).merge();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];

@@ -1,4 +1,4 @@
-// devela_base_alloc::data::layout::buffer::examples
+// devela::data::layout::buffer::examples
 //
 // TOC
 // - BufferAllocExample

@@ -12,6 +12,9 @@
 
 mod seq; // id_seq!
 
+#[cfg(feature = "alloc")]
+mod pin_box; // IdPinBox
+
 // #[cfg(feature = "std")]
 // mod snowflake;
 
@@ -20,16 +23,14 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::{
             seq::*,
         };
+        #[cfg(feature = "alloc")]
+        pub use super::pin_box::*;
         // #[cfg(feature = "std")]
         // pub use super::snowflake::*;
     }
     _reexports {
         pub use devela_base_core::data::id::{ // uid
             IdPin, IdRegistry,
-        };
-        #[cfg(feature = "alloc")]
-        pub use devela_base_alloc::data::id::{ // uid
-            IdPinBox,
         };
     }
 }

@@ -7,8 +7,10 @@
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
+mod buffer; // buffer_linear!
 mod collection; // DataCollection
 mod queue;
+mod sort;
 mod stack;
 // mod view;
 
@@ -23,8 +25,10 @@ pub mod dst;
 crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
+            buffer::_all::*,
             collection::*,
             queue::_all::*,
+            sort::_all::*,
             stack::_all::*,
             // view::_all::*,
         };
@@ -42,23 +46,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
         pub use super::dst::_all::*;
     }
     _reexports {
-        // buffer
-        #[doc(inline)]
-        pub use devela_base_core::data::layout::buffer_linear;
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::layout::{
-            BufferStaticExample, BufferViewExample,
-        };
-        #[cfg(feature = "alloc")]
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_alloc::data::layout::BufferAllocExample;
-
         // sort
         #[doc(inline)]
         pub use devela_base_core::data::layout::Sort;
-        // #[doc(inline)]
-        // #[cfg(feature = "alloc")]
-        // pub use devela_base_alloc::SortAlloc;
     }
     _crate_internals {
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
