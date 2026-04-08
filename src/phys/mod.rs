@@ -18,6 +18,7 @@ crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
 // pub mod elec;
 // pub mod geo;
 // pub mod mech;
+// pub mod optic;
 pub mod time;
 
 #[cfg(feature = "unit")]
@@ -37,6 +38,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             // elec::_all::*,
             // geo::_all::*,
             // mech::_all::*,
+            // optic::_all::*,
             time::_all::*,
         };
         #[cfg(feature = "unit")]

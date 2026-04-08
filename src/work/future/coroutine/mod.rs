@@ -12,7 +12,7 @@ mod _reexport_core; // SYMLINK to /crates/base/core/src/work/future/coroutine/_r
 // #[cfg(feature = "alloc")]
 // mod tests;
 
-mod coro; // CoroManager, CoroWork, CoroWorker
+mod coro; // CoroManager, CoroWork, CoroWorker (IMPROVE do not depend on alloc)
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
@@ -21,7 +21,6 @@ crate::structural_mods! { // _mods, _reexports
     _reexports {
         pub use {
             super::_reexport_core::*,
-            // devela_base_core::work::future::{CoroWorker}, // TODO
         };
     }
 }

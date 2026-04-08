@@ -67,14 +67,8 @@ pub mod geom;
 pub mod lang;
 pub mod media;
 pub mod num;
-pub mod org;
-pub mod phys;
-pub mod run;
 pub mod sys;
 pub mod text;
-pub mod ui;
-pub mod vita;
-pub mod work;
 // internal:
 pub mod yard;
 #[doc(hidden)]
@@ -101,26 +95,11 @@ pub mod zall_ {
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
     #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), COMMON_DOC!("num")]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
-    #[doc = crate::_tags!(wip)]
-    #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
-    #[doc = concat![crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), COMMON_DOC!("org")]]
-    pub mod _org { #[allow(unused)] pub use super::super::org::_all::*; }
-    #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), COMMON_DOC!("phys")]]
-    pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
-    #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), COMMON_DOC!("run")]]
-    pub mod _run { #[allow(unused)] pub use super::super::run::_all::*; }
     #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), COMMON_DOC!("sys")]]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
     #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), COMMON_DOC!("text")]]
-    pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
-    #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
-    pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-    #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), COMMON_DOC!("vita")]]
-    pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
-    #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]
     /// <br/><hr>
-    pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
+    pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
 }
 
 // public items, feature-gated, visible at their origin and in `zall`:
@@ -139,14 +118,8 @@ pub mod zall {
         lang::_all::*,
         media::_all::*,
         num::_all::*,
-        org::_all::*,
-        phys::_all::*,
-        run::_all::*,
         sys::_all::*,
         text::_all::*,
-        ui::_all::*,
-        vita::_all::*,
-        work::_all::*,
     };
 }
 
@@ -164,14 +137,8 @@ mod _crate_internals {
         lang::_crate_internals::*,
         media::_crate_internals::*,
         num::_crate_internals::*,
-        org::_crate_internals::*,
-        phys::_crate_internals::*,
-        run::_crate_internals::*,
         sys::_crate_internals::*,
         text::_crate_internals::*,
-        ui::_crate_internals::*,
-        vita::_crate_internals::*,
-        work::_crate_internals::*,
         yard::_crate_internals::*,
     };
 }

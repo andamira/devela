@@ -8,13 +8,11 @@
 
 mod _reexport; // SYMLINK from /src/code/ops/_reexport_core.rs
 
-mod call; // Call[Semantics|BindTime|Context|Dispatch|Openness|Storage]
 mod punroll; // punroll!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            call::*,
             punroll::*,
         };
     }

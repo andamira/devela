@@ -13,12 +13,19 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: cycle, regime, time); // state
 }
 
+mod iface; // RunApp
+
 pub mod cycle; // RunCycle, RunControl, RunPhase
 pub mod regime; // RunCap*, RunService
 // pub mod state;
 pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
 
-crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
+    _mods {
+        pub use super::{
+            iface::*,
+        };
+    }
     _pub_mods {
         pub use super::{
             cycle::_all::*,
@@ -28,7 +35,7 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use devela_base_core::run::{
+        pub use devela::run::{
             RunApp, RunPresent, RunRender,
         };
     }

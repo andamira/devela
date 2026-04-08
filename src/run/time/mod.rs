@@ -5,10 +5,22 @@
 #![doc = crate::_doc!(flat:"run")]
 #![doc = crate::_doc!(hr)]
 
-crate::structural_mods! { // _mods, _reexports
-    _reexports {
-        pub use devela_base_core::run::time::{
-            RunPacer, RunStep, Runtime, RuntimeTick,
+// mod loop;
+mod frame; // RunFrame
+mod pacer; // RunPacer
+mod run; // Runtime
+mod step; // RunStep
+mod tick; // RuntimeTick
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            // loop::*,
+            frame::*,
+            pacer::*,
+            run::*,
+            step::*,
+            tick::*,
         };
     }
 }

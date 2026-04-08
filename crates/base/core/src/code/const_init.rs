@@ -210,7 +210,6 @@ mod impl_core {
     use crate::{
         NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
         NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
-        Duration,
         Cell, OnceCell, RefCell, UnsafeCell,
         PhantomData, PhantomPinned, ManuallyDrop,
         Reverse, Saturating, Wrapping,
@@ -218,6 +217,9 @@ mod impl_core {
         PanicAssertUnwindSafe,
         CStr,
     };
+    // TEMP during merge:
+    use ::core::time::Duration;
+
     // TODO: Types that don't implement `Default`:
     // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},
     // NOTE: atomic types are implemented in devela::work::sync::atomic

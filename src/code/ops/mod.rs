@@ -8,6 +8,8 @@
 
 mod _reexport_core; // SYMLINK to /crates/base/core/src/code/ops/_reexport.rs
 
+mod call; // Call[Semantics|BindTime|Context|Dispatch|Openness|Storage]
+
 // WIPZONE
 // #[cfg(feature = "std")]
 // pub mod _wip_fns;
@@ -15,6 +17,10 @@ mod _reexport_core; // SYMLINK to /crates/base/core/src/code/ops/_reexport.rs
 
 crate::structural_mods! { // _mods
     _mods {
+        pub use super::{
+            call::*,
+            // punroll::*,
+        };
         // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::_wip_fns::*;
@@ -23,11 +29,5 @@ crate::structural_mods! { // _mods
     _reexports {
         #[doc(inline)]
         pub use super::_reexport_core::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::code::ops::{
-            CallSemantics, CallBindTime, CallContext, CallDispatch, CallOpenness, CallStorage,
-            punroll,
-        };
     }
 }

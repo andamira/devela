@@ -23,8 +23,9 @@ mod no; // NoTime
 mod scale; // TimeScale
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
 
+mod error; // Timeout
 #[cfg(feature = "std")]
-mod error; // TEMP, RETHINK
+mod error_std; // TEMP, RETHINK
 
 #[cfg(feature = "time")] // RECONSIDER
 crate::items! {
@@ -40,6 +41,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             delta::*,
             // drop::*,
+            error::*,
             fmt::*,
             // frame::*,
             // freq::*;
@@ -54,7 +56,7 @@ crate::structural_mods! { // _mods, _pub_mods
             unix::*,
         };
         #[cfg(feature = "std")]
-        pub use super::error::*;
+        pub use super::error_std::*;
 
         // #[cfg(feature = "_destaque_u16")]
         // #[cfg_attr(nightly_doc, doc(cfg(feature = "_destaque_u16")))]
@@ -69,9 +71,5 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::_reexport_core::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
-
-        pub use devela_base_core::phys::time::{
-            Timeout,
-        };
     }
 }
