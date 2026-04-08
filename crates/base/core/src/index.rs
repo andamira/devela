@@ -65,7 +65,6 @@ pub mod code;
 pub mod data;
 pub mod geom;
 pub mod lang;
-pub mod media;
 pub mod num;
 pub mod sys;
 pub mod text;
@@ -91,8 +90,6 @@ pub mod zall_ {
     pub mod _geom { #[allow(unused)] pub use super::super::geom::_all::*; }
     #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), COMMON_DOC!("lang")]]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
-    #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), COMMON_DOC!("media")]]
-    pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
     #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), COMMON_DOC!("num")]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
     #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), COMMON_DOC!("sys")]]
@@ -116,7 +113,6 @@ pub mod zall {
         data::_all::*,
         geom::_all::*,
         lang::_all::*,
-        media::_all::*,
         num::_all::*,
         sys::_all::*,
         text::_all::*,
@@ -135,7 +131,6 @@ mod _crate_internals {
         data::_crate_internals::*,
         geom::_crate_internals::*,
         lang::_crate_internals::*,
-        media::_crate_internals::*,
         num::_crate_internals::*,
         sys::_crate_internals::*,
         text::_crate_internals::*,

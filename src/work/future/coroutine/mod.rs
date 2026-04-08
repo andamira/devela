@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/work/future/coroutine/_reexport.rs
+mod _reexport_core;
 
 // #[cfg(test)]
 // #[cfg(feature = "alloc")]

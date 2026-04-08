@@ -14,14 +14,14 @@ pub mod draw;
 pub mod image;
 // pub mod video;
 
-crate::structural_mods! { // _pub_mods, _hidden
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         #[cfg(feature = "color")] pub use super::color::_all::*;
         #[cfg(feature = "draw")] pub use super::draw::_all::*;
         #[cfg(feature = "image")] pub use super::image::_all::*;
         // pub use super::video::_all::*;
     }
-    _hidden {
-        #[cfg(feature = "image")] pub use super::image::_hidden::*;
+    _crate_internals {
+        #[cfg(feature = "color")] pub(crate) use super::color::_crate_internals::*;
     }
 }

@@ -8,16 +8,24 @@
 // safety
 #![cfg_attr(feature = "safe_audio", forbid(unsafe_code))]
 
+// mod codec; // …
 // mod drum_machine;
+mod layout; // AudioChannel, AudioChannels
+// mod music; //
+// mod pcm; // WIP: PcmBuffer, PcmPlanar, PcmRaw, PcmWav, PcmSample, PcmSpec, …
+// mod spatial; // …
+// mod synth; // …
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
-        // pub use super::drum_machine::*;
-    }
-    _reexports {
-        pub use devela_base_core::media::audio::{
-            AudioChannel, AudioChannels,
-            // PcmSample, PcmSpec, PcmRaw, PcmWav, PcmBuffer, PcmPlanar, WIP
+        pub use super::{
+            // codec::*,
+            // drum_machine::*,
+            layout::*,
+            // music::*,
+            // pcm::*,
+            // spatial::*,
+            // synth::*,
         };
     }
 }

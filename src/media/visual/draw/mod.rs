@@ -8,22 +8,33 @@
 // safety
 #![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]
 
+mod traits; // Canvas, CanvasRead, CanvasTextel
+
 // mod buffer;
+// pub mod compose; // WIP
+// mod dpi; // WIP
 // mod grid;
 // #[cfg(feature = "shape")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
-// mod line;
+// pub mod line; // WIP
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
+        pub use super::{
+            // buffer::*,
+            // dpi::*,
+            // grid::*,
+            traits::*,
+        };
         // pub use super::buffer::*;
         // pub use super::grid::*;
         // #[cfg(feature = "shape")]
         // pub use super::line::*;
     }
-    _reexports {
-        pub use devela_base_core::media::visual::draw::{
-            Canvas, CanvasRead, CanvasTextel,
-        };
+    _pub_mods {
+        // pub use super::{
+        //     compose::*,
+        //     line::*,
+        // };
     }
 }

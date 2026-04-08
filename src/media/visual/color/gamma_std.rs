@@ -1,25 +1,24 @@
-// devela::media::visual::color::gamma
+// devela::media::visual::color::gamma_std
 //
-//! Defines [`GammaConstConst`].
+//! Defines [`Gamma`].
 //
 
-use crate::{Float, is};
+use crate::is;
 
 #[doc = crate::_tags!(color)]
-/// GammaConst correction curves.
+/// Gamma correction curves.
 #[doc = crate::_doc_location!("media/visual/color")]
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
 /// via power-law transformations (e.g. $v^γ$ and $v^{(1/γ)}$).
-///
-/// This version has const methods using /
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-pub struct GammaConst<T> {
+pub struct Gamma<T> {
     /// The gamma exponent (`γ`) used in the encoding/decoding transform.
     pub exp: T,
 }
-impl<T> GammaConst<T> {
+impl<T> Gamma<T> {
     /// Constructs a new gamma curve with the given exponent.
     pub const fn new(gamma: T) -> Self {
         Self { exp: gamma }
@@ -31,25 +30,19 @@ macro_rules! impl_gamma {
     () => { impl_gamma![gamma f32, f64]; };
     ( gamma $($T:ty),+) => { $( impl_gamma![@gamma $T]; )+ };
     (@gamma   $T:ty) => {
-        /// GammaConst encoding, decoding, and sRGB transfer functions for floating-point values.
-        impl GammaConst<$T> {
+        /// Gamma encoding, decoding, and sRGB transfer functions for floating-point values.
+        impl Gamma<$T> {
             /* basic gamma */
 
             /// Encodes the given linear `v`alue using this gamma: $v^{(1/γ)}$.
             ///
             /// Performs basic gamma encoding (power-law).
-            pub const fn const_encode(self, v: $T) -> $T {
-                let terms = Float(v).exp_series_terms();
-                Float(v).powf_series(self.exp.recip(), terms).0
-            }
+            pub fn encode(self, v: $T) -> $T { v.powf(self.exp.recip()) }
 
             /// Decodes the given gamma-encoded `v`alue using this gamma: $v^γ$ .
             ///
             /// Performs basic gamma decoding (power-law inverse).
-            pub const fn const_decode(self, v: $T) -> $T {
-                let terms = Float(v).exp_series_terms();
-                Float(v).powf_series(self.exp, terms).0
-            }
+            pub fn decode(self, v: $T) -> $T { v.powf(self.exp) }
 
             /* srgb gamma */
 
@@ -64,12 +57,8 @@ macro_rules! impl_gamma {
             /// 1.055c^{1/\gamma} - 0.055, & \text{if } c > 0.0031308
             /// \end{cases}
             /// $$
-            pub const fn const_encode_srgb(self, v: $T) -> $T {
-                if v <= 0.003_130_8 { 12.92 * v }
-                else {
-                    let terms = Float(v).exp_series_terms();
-                    1.055 * Float(v).powf_series(self.exp.recip(), terms).0 - 0.055
-                }
+            pub fn encode_srgb(self, v: $T) -> $T {
+                is![v <= 0.003_130_8, 12.92 * v, 1.055 * v.powf(self.exp.recip()) - 0.055]
             }
 
             /// Decodes the given `v`alue using the sRGB inverse transfer function.
@@ -84,15 +73,12 @@ macro_rules! impl_gamma {
             ///   & \normalsize \text{if } c > 0.04045
             /// \end{cases}
             /// $$
-            pub const fn const_decode_srgb(self, v: $T) -> $T {
-                if v <= 0.040_45 { v / 12.92 } else {
-                    let terms = Float(v).exp_series_terms();
-                    Float((v + 0.055) / (1.055)).powf_series(self.exp, terms).0
-                }
+            pub fn decode_srgb(self, v: $T) -> $T {
+                is![v <= 0.040_45, v / 12.92, ((v + 0.055) / (1.055)).powf(self.exp)]
             }
         }
         /// Weighted RGB → luma conversion utilities using standard coefficients.
-        impl GammaConst<$T> {
+        impl Gamma<$T> {
             /// R′G′B′ coefficients for computing sRGB luma (same as Rec. 709).
             pub const SRGB: [$T; 3] = Self::REC_709;
 
@@ -157,14 +143,13 @@ macro_rules! impl_gamma {
             /* ... */
 
             /// Converts linear luminance to CIE lightness (L*)
-            pub const fn const_luminance_to_lightness(y: $T) -> $T {
-                is![y <= Self::CIE_E, Self::CIE_K * y, 116.0 * Float(y).cbrt_nr().0 - 16.0]
+            pub fn luminance_to_lightness(y: $T) -> $T {
+                is![y <= Self::CIE_E, Self::CIE_K * y, 116.0 * y.cbrt() - 16.0]
             }
 
             /// Converts CIE lightness (L*) to linear luminance
-            pub const fn const_lightness_to_luminance(l_star: $T) -> $T {
-                if l_star <= 8.0 { l_star / Self::CIE_K }
-                else { Float((l_star + 16.0) / 116.0).const_powi(3).0 }
+            pub fn lightness_to_luminance(l_star: $T) -> $T {
+                is![l_star <= 8.0, l_star / Self::CIE_K, ((l_star + 16.0) / 116.0).powi(3)]
             }
         }
     };

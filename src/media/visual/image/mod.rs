@@ -11,10 +11,13 @@
 // #[cfg(feature = "alloc")]
 // mod buf; // WIP TEMP
 mod error;
+
+// #[cfg(feature = "alloc"] // TEMP
+// mod png; // WIP
 mod pnm; // WIP
 
 #[cfg(feature = "term")]
-pub mod sixel;
+pub mod sixel; // SixelChar, SixelColor, SixelEncoder, SixelPalette
 
 crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
@@ -29,9 +32,5 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         #[doc(inline)]
         #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
-    }
-    _hidden {
-        #[cfg(feature = "term")]
-        pub use super::sixel::_hidden::*;
     }
 }
