@@ -1,4 +1,4 @@
-// devela_base_std::build::namespace
+// devela::build::namespace
 //
 //! Defines the [`Build`] namespace.
 //

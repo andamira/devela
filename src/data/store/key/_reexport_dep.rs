@@ -79,8 +79,6 @@ mod std_reexports {
     pub use std::collections::HashSet;
 }
 
-// IMPROVE: move to base_std:
-
 #[doc = crate::_tags!(hash data_structure)]
 /// The `HashMap` in the standard library.
 #[doc = crate::_doc_location!("data/id")]

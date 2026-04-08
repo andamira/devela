@@ -1,1 +1,1 @@
-../../std/src/build/namespace.rs
+../../../../src/build/namespace.rs

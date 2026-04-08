@@ -34,18 +34,17 @@ bench = false
 
 __dbg = [
 	"devela_base_core/__dbg",
-	"devela_base_std?/__dbg", "devela_base_alloc?/__dbg",
+	"devela_base_alloc?/__dbg",
 ]
 __publish = []
 __docs_internal = [ # enables documentation for internal items
 	"devela_base_core/__docs_internal",
-	"devela_base_alloc?/__docs_internal", "devela_base_std?/__docs_internal",
+	"devela_base_alloc?/__docs_internal",
 ]
 
 #* Environment features *#
 
 alloc = ["devela_base_alloc"]
-std = ["devela_base_std"]
 
 #* Safety features *#
 
@@ -78,7 +77,6 @@ devela_base_core.workspace = true
 #* optional external dependencies *#
 
 devela_base_alloc = { workspace = true, optional = true }
-devela_base_std   = { workspace = true, optional = true }
 
 #* required external dependencies *#
 

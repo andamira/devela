@@ -40,8 +40,6 @@ pub use devela_base_core as base_core;
 //
 #[cfg(feature = "alloc")]
 pub use devela_base_alloc as base_alloc;
-#[cfg(feature = "std")]
-pub use devela_base_std as base_std;
 //
 #[cfg(feature = "devela_macros")]
 pub use devela_macros as macros;

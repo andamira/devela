@@ -25,7 +25,7 @@ const CRATE_NAME: &str = "devela_macros";
 items! {
     macro_rules! _TAG_NAMESPACE {()=>{""}} use _TAG_NAMESPACE;
     #[allow(unused)]
-    mod _imports_std; // SYMLINK TO /crates/base/std/src/build/namespace.rs
+    mod _imports_std; // SYMLINK TO /src/build/namespace.rs
     #[allow(unused_imports)] use _imports_std::Build;
 }
 
