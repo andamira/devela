@@ -1,4 +1,4 @@
-// devela::hum::i18n
+// devela::lang::hum::i18n
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_I18N!()] // public
@@ -9,14 +9,19 @@
 //
 
 // mod data; // registries, tables, normative datasets
-// mod locale; // locale matching & fallback
-// mod msg; // message selection languages
-// mod tag; // language tags
-// mod select; // selection logic (plural, gender, variants, fallback)
+mod locale; // locale matching & fallback
+mod msg; // message selection languages
+mod select; // selection logic (plural, gender, variants, fallback)
+mod tag; // language tags
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
-    }
-    _reexports {
+        pub use super::{
+            // data::_all::*,
+            locale::_all::*,
+            msg::_all::*,
+            select::_all::*,
+            tag::_all::*,
+        };
     }
 }

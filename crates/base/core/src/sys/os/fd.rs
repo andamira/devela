@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: os)]
 //
 
-use crate::c_int;
+use core::ffi::c_int; // TEMP:merge
 
 #[doc = crate::_tags!(fs uid)]
 /// Raw file descriptors.

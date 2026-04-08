@@ -1,4 +1,4 @@
-// devela_vase_core::sys::mem::size::expr::test_coro
+// devela::sys::mem::size::expr::test_coro
 
 #[cfg(not(miri))]
 #[test]

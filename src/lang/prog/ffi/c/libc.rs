@@ -1,7 +1,4 @@
-// devela_base_core::lang::prog::ffi::c::libc
-//
-//!
-//
+// devela::lang::prog::ffi::c::libc
 
 #![allow(non_camel_case_types)]
 

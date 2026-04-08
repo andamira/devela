@@ -9,15 +9,18 @@
 //
 
 mod dsl; // embedded or domain-specific languages
-// mod ir; // intermediate representations
-
 pub mod ffi; // foreign language interfaces
+// mod ir; // Intermediate representations
+// mod script; // Command and scripting languages
+// mod template; // Template and substitution languages
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             dsl::_all::*,
             // ir::_all::*,
+            // script::_all::*,
+            // template::_all::*,
         };
     }
     _pub_mods {

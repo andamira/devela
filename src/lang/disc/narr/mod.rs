@@ -17,7 +17,7 @@
 // mod route;   // routes, paths, outcomes, and ending lines
 // mod scene;   // scenes, situations, and local narrative contexts
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     choice::_all::*,
@@ -28,10 +28,6 @@ crate::structural_mods! { // _mods, _reexports
         //     passage::_all::*,
         //     route::_all::*,
         //     scene::_all::*,
-        // };
-    }
-    _reexports {
-        // pub use devela_base_core::lang::disc::narr::{
         // };
     }
 }

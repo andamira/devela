@@ -1,4 +1,4 @@
-// devela_base_core::sys::mem::size::expr
+// devela::sys::mem::size::expr
 //
 // Original source code by Joshua Nelson, licensed as BSD-3,
 // https://crates.io/crates/size-of-trait/1.1.3
@@ -18,7 +18,7 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 ///
 /// # Example
 /// ```
-/// # use devela_base_core::size_of_expr;
+/// # use devela::size_of_expr;
 /// async fn f() {
 ///     let x = 1;
 ///     core::future::ready(()).await;

@@ -215,10 +215,10 @@ mod impl_core {
         Reverse, Saturating, Wrapping,
         Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         PanicAssertUnwindSafe,
-        CStr,
     };
     // TEMP during merge:
     use ::core::time::Duration;
+    use ::core::ffi::CStr;
 
     // TODO: Types that don't implement `Default`:
     // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},

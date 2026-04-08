@@ -11,18 +11,21 @@
 //! other C-based libraries.
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/lang/prog/ffi/c/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 
-crate::structural_mods! { // _reexports
+mod libc; // c_mode_t, c_off_t
+
+crate::structural_mods! { // _mods, _reexports
+    _mods {
+        pub use super::{
+            libc::*,
+        };
+    }
     _reexports {
         pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
-
-        pub use devela_base_core::lang::prog::ffi::c::{
-            c_mode_t, c_off_t,
-        };
     }
 }

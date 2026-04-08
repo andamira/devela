@@ -5,11 +5,16 @@
 
 #[cfg(feature = "bit")]
 mod bit; // BitSized
+mod expr; // size_of_expr!
 // #[cfg(feature = "alloc")]
 // mod heap; // WIP
 
 crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {
+        #[doc(inline)]
+        pub use super::{
+            expr::size_of_expr,
+        };
         #[doc(inline)]
         #[cfg(feature = "bit")]
         pub use super::bit::*;
@@ -17,12 +22,12 @@ crate::structural_mods! { // _mods, _reexports, _hidden
     _reexports {
         #[doc(inline)]
         pub use devela_base_core::sys::mem::{
-            ByteSized, size_of_expr
+            ByteSized,
         };
         #[doc(inline)]
         pub use crate::Sized;
     }
     _hidden {
-        pub use devela_base_core::sys::mem::__size_of_expr;
+        pub use super::expr::__size_of_expr;
     }
 }

@@ -7,13 +7,11 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// WIPZONE
-// pub mod en;
-// pub mod es;
+// pub mod en; // WIP
+// pub mod es; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
-        // WIPZONE:
         // pub use super::en::_all::*;
         // pub use super::es::_all::*;
     }

@@ -8,7 +8,8 @@
 #[doc = crate::_doc_location!("code/util")]
 /// # Examples
 /// ```
-/// # use devela_base_core::{type_count, Duration};
+/// # use devela_base_core::type_count;
+/// # use core::time::Duration;
 /// assert_eq![0, type_count!()];
 /// assert_eq![1, type_count!([f32; 4])];
 /// assert_eq![3, type_count!(u8, (), Duration)];
