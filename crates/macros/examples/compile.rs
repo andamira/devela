@@ -1,6 +1,6 @@
 //!
 
-use devela_base_macros::compile;
+use devela_macros::compile;
 
 /* unary */
 

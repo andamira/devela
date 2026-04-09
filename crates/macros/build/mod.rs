@@ -46,7 +46,6 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     Build::println_start_end("macros build script", true);
 
     alias::main()?;
-
     environment::main()?;
     features::main()?;
 

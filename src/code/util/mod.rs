@@ -92,19 +92,13 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
 
         #[doc = crate::_tags!(code procedural_macro)]
         #[rustfmt::skip]
-        pub use devela_base_macros::{
+        pub use devela_macros::{
             cif, compile, compile_attr,
+            enumint,
             ident_total, ident_total_unique, ident_unique,
             coalesce, field_of,
             compile_doc,
             repeat,
-        };
-        #[doc(inline)]
-        #[doc = crate::_tags!(code procedural_macro)]
-        #[cfg(feature = "devela_macros")]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "devela_macros")))]
-        pub use devela_macros::{
-            enumint,
         };
     }
     _crate_internals {

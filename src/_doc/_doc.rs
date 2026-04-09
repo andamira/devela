@@ -266,7 +266,7 @@ pub use __doc_availability as _doc_availability;
 /// - `path` marks items defined in another crate and re-exported by `devela`
 ///
 /// NOTE: It's important NOT to pass a leading slash in `$path` for the URL to work.
-// NOTE: duplicated (not symlinked) in devela_base_macros/src/core_bridge/)
+// NOTE: duplicated (not symlinked) in /crates/devela_macros/src/core_bridge/_doc_location.rs)
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

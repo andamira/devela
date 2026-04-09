@@ -1,4 +1,4 @@
-// devela_base_macros::core_bridge
+// devela_macros::core_bridge
 //
 //! Copied helpers from `devela_base_core`.
 //!

@@ -1,12 +1,11 @@
-// devela_macros::bodies::shared
+// devela_macros::bodies::shared::enumint
 //
 //! Shared functionality for procedural macros.
 //
 // TOC
-// - split_compile_doc_tuple
-// - deindent
-// - compile_eval
-// - parse_vis_ident
+// - expect_punct
+// - parse_int
+// - parse_visibility
 
 use proc_macro2::{TokenStream as TokenStream2, TokenTree};
 use std::iter::{Peekable, once};

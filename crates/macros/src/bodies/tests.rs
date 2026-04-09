@@ -114,7 +114,7 @@ fn test_compile_eval() {
 
     // env()
     assert_eq!(compile_eval("env(CARGO_PKG_NAME)".into()), true);
-    assert_eq!(compile_eval("env_eq(CARGO_PKG_NAME, devela_base_macros)".into()), true);
+    assert_eq!(compile_eval("env_eq(CARGO_PKG_NAME, devela_macros)".into()), true);
     assert_eq!(compile_eval("env_ne(CARGO_PKG_NAME, other_crate_name)".into()), true);
     assert_eq!(compile_eval("env_nonempty(CARGO_PKG_NAME)".into()), true);
     // assert_eq!(compile_eval("env_empty(TODO)".into()), true); //

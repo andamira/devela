@@ -3,7 +3,6 @@
 Features are grouped in the following categories:
 - [*Development*](#development-features) (`__*`)
 - [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
-- [*Workspace*](#workspace) (`devela_*`)
 - [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
 - [*Safety*](#safety-features) (`safe*`, `unsafe*`)
 - [*Capability*](#capability-features)  (`_*`)
@@ -39,14 +38,6 @@ By default the crate is `no_std` compatible without allocation.
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with or substitute of `std`.
-
-
-### Workspace features
-
-Enables optional workspace libraries.
-
-- `devela_macros`
-
 
 ### Module features
 

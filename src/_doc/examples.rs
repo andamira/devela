@@ -14,7 +14,6 @@
 
 #[path = "../../examples/code/enumset.rs"]
 pub mod enumset;
-#[cfg(feature = "devela_macros")]
 #[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
 

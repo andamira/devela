@@ -36,9 +36,6 @@ pub extern crate std as _std;
 
 /* workspace.dependencies */
 
-pub use devela_base_macros as base_macros;
-
-#[cfg(feature = "devela_macros")]
 pub use devela_macros as macros;
 
 /* 13 optional dependencies */

@@ -31,20 +31,15 @@ bench = false
 [features]
 
 #* Development features *#
-
-__dbg = [
-]
+__dbg = []
 __publish = []
-__docs_internal = [ # enables documentation for internal items
-]
+__docs_internal = [] # enables documentation for internal items
 
 #* Safety features *#
-
 safe = []
 unsafe = []
 
 #* Capability features *#
-
 _docs_nodep = [ # +unsafe
 	"unsafe"
 ]
@@ -76,6 +71,16 @@ maintenance.status = "experimental"
 [lints]
 workspace = true
 
+[[example]]
+name = "cif"
+[[example]]
+name = "coalesce"
+[[example]]
+name = "compile_attr"
+[[example]]
+name = "compile_doc"
+[[example]]
+name = "compile"
 [[example]]
 name = "enumint_macro"
 path = "examples/enumint.rs"

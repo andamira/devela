@@ -1,4 +1,3 @@
-Generates a unit-only enum with variants associated to a specified range.
 
 This macro generates an enum with integer variants named `P#` for positive
 vales and `N#` for negative values.

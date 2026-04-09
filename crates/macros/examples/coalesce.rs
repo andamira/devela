@@ -1,6 +1,6 @@
 //!
 
-use devela_base_macros::coalesce;
+use devela_macros::coalesce;
 
 fn main() {
     assert_eq!(1, coalesce!(1));

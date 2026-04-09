@@ -55,18 +55,13 @@
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
 resolver = "3"
 
-## Bottom-up hierarchical dependency flow of units of compilation (? = optional)
 # ·------------------------------------------------------------------------------
-#
-# ┌╼devela_base_macros        : base proc macros, zero-deps
-#  ╚═╗╼devela_macros?         : optional proc macros
-#    ║
-#    ╚═╦╼devela               : unified front, traits
-#      ║ ├╼build/main         : build, codegen, debug
-#      ║ └╼devela_postbuild   : post-build processing
-#      ╏
+# ┌╼devela_macros          : procedural macros
+# ╚═╦╼devela               : integrated library
+#   ║ ├╼build/main         : build, codegen, debug
+#   ║ └╼devela_postbuild   : post-build processing
+#   ╏
 members = [ # In sync with ./build/main/environment.rs
-	"crates/base/macros",
 	"crates/macros",
 	".", # ← root package
 	# "build/post",
@@ -152,7 +147,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 158/300 (142 remaining), 103 visible, 55 hidden
+[features] # 157/300 (143 remaining), 102 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -184,11 +179,11 @@ __std = [ # disables `no_std` in base crates for testing
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
-	"devela_macros?/__publish",
+	"devela_macros/__publish",
 ]
 
 __docs_internal = [ # enables documentation for internal items
-	"devela_macros?/__docs_internal",
+	"devela_macros/__docs_internal",
 ]
 __exclude_test = [] # excludes examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
@@ -319,7 +314,7 @@ work = [
 safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
-	"devela_macros?/safe",
+	"devela_macros/safe",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
 	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
 ] # List of safe thematic modules (orthogonal to unsafe purposes):
@@ -357,7 +352,7 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 		# safe_async
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
-	"devela_macros?/unsafe",
+	"devela_macros/unsafe",
 	#
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
@@ -426,8 +421,6 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 _docs_examples = [] # documents examples and generates example items
 _docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
-	# workspace
-	"devela_macros",
 	# modules:
 	"all",
 		# device
@@ -439,11 +432,11 @@ _docs_min = [ # the minimum capabilities to document every item independent of a
 ]
 _docs_nodep = [ # +std +unsafe +__dbg
 	"_docs_min", "std", "unsafe", "__dbg",
-	"devela_macros?/_docs_nodep",
+	"devela_macros/_docs_nodep",
 ]
 _docs = [ # +dep_all
 	"_docs_nodep", "dep_all",
-	"devela_macros?/_docs",
+	"devela_macros/_docs",
 ]
 _docs_max = [ # +max +__docs_internal
 	"_docs", "_max", "__docs_internal"
@@ -554,7 +547,7 @@ dep_wide = ["dep:wide"]                                                         
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-[dependencies] # 18 (1 required, 17 optional)
+[dependencies] # 16 (2 required, 14 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -566,10 +559,9 @@ dep_wide = ["dep:wide"]                                                         
 # 1. Update `dep_all` above and /build/main/dep_all.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-#* workspace internal libraries (1req + 1opt) *#
+#* workspace internal libraries (1req) *#
 
-devela_base_macros = { workspace = true }
-devela_macros      = { workspace = true, optional = true }
+devela_macros = { workspace = true }
 
 #* required external dependencies (1req) *#
 
@@ -596,7 +588,6 @@ wide = { workspace = true, optional = true }
 [workspace.dependencies]
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
-devela_base_macros = { version = "0.27.0-wip", path = "./crates/base/macros" }
 devela_macros      = { version = "0.27.0-wip", path = "./crates/macros" }
 #devela_buildpost   = { version = "0.27.0-wip", path = "./build/post" }
 
@@ -982,7 +973,6 @@ doc-scrape-examples = false
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
-required-features = ["devela_macros"]
 [[example]]
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"

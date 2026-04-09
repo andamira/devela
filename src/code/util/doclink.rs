@@ -6,7 +6,7 @@
 // - doclink! (*internet*)
 // - doclink! (*local*)
 //
-// NOTE: duplicated (not symlinked) in devela_base_macros/src/core_bridge/)
+// NOTE: duplicated (not symlinked) in /crates/macros/src/core_bridge/doclink.rs)
 // WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 
 /// Custom domain used for the [`doclink!`] macro.
