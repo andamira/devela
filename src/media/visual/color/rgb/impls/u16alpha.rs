@@ -3,6 +3,9 @@
 use super::*;
 use crate::{Norm, Rgb16, RgbF32, RgbF64, Rgba16, RgbaF32, RgbaF64};
 
+#[cfg(doc)]
+use crate::{Rgb, Rgba};
+
 #[allow(missing_docs)]
 #[rustfmt::skip]
 impl Rgba16 {

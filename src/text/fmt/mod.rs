@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: fmt)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/text/fmt/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 

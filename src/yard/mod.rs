@@ -18,11 +18,11 @@ mod _use; // _use!
 pub mod _dep;
 
 // documented internal re-exports RETHINK
-#[doc(inline)]
-pub use crate::{
-    _doc::_doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
-    yard::{_policy::_devela_policy, _reexport_macro::_reexport, _use::_use},
-};
+// #[doc(inline)]
+// pub use crate::{
+//     _doc::_doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
+//     yard::{_policy::_devela_policy, _reexport_macro::_reexport, _use::_use},
+// };
 
 crate::structural_mods! { // _crate_internals, _hidden
     _crate_internals {
@@ -33,6 +33,7 @@ crate::structural_mods! { // _crate_internals, _hidden
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             _policy::{_devela_policy, __devela_unreachable_unchecked},
         };

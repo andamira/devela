@@ -3,6 +3,9 @@
 //! Defines [`define_xorshift!`],  ([`xorshift_basis!`]).
 //
 
+#[cfg(doc)]
+use crate::{XorShift16, XorShift32, XorShift64};
+
 #[doc = crate::_tags!(construction rand)]
 /// Constructs a *XorShift* prng with custom bits, basis, triplet and seed.
 #[doc = crate::_doc_location!("num/prob/rand")]

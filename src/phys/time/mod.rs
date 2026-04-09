@@ -8,7 +8,7 @@
 // safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/phys/time/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 

@@ -14,7 +14,7 @@
 //! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/result/_reexport.rs
+mod _reexport_core;
 
 #[cfg(all(test, feature = "std"))]
 mod unwrap_tests_std;

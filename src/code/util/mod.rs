@@ -113,6 +113,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             paste::__paste,
         };

@@ -59,6 +59,6 @@ _reexport! { rust: std::process, location: "work/process", tag: _tags!(platform 
     Output
 }
 _reexport! { rust: std::process, location: "work/process", tag:  _tags!(platform runtime io),
-    doc: "Specifies how to handle standard I/O streams in [`ProcessCommand`].",
+    doc: "Specifies how to handle standard I/O streams in [`Command`].",
     Stdio
 }

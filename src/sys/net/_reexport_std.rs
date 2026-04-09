@@ -1,5 +1,7 @@
 // devela::sys::net::_reexport_std
 
+#[cfg(doc)]
+use crate::SocketAddr;
 #[allow(unused_imports)]
 use crate::{_reexport, _tags};
 

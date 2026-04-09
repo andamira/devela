@@ -12,7 +12,7 @@ use crate::{RunControl, RunFrame, RunPhase, RunStep, RuntimeTick};
 #[doc = crate::_doc_location!("run")]
 ///
 /// A runtime or driver gathers events, builds a [`RunStep`], and calls
-/// [`step`][Self::step] to let the app update its state.
+/// [`run_step`][Self::run_step] to let the app update its state.
 ///
 /// This trait only defines logical progression.
 /// It does not define rendering, pacing, or backend services.

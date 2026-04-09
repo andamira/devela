@@ -5,6 +5,8 @@
 
 #![allow(unused, missing_docs)]
 
+#[cfg(doc)]
+use crate::TextParseErrorKind;
 use crate::{_impl_init, ConstInitCore, Slice, Str, is, unwrap, whilst};
 use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextUnit};
 
@@ -555,7 +557,7 @@ impl<'a> TextScanner<'a> {
     /// # Errors
     /// Returns:
     /// - [`InvalidEscape`][TextParseErrorKind::InvalidEscape] for an unknown escape
-    /// - [`UnterminatedQuoted`][TextParseErrorKind::UnterminatedQuoted] if the range ends
+    /// - [`UnterminatedQuote`][TextParseErrorKind::UnterminatedQuote] if the range ends
     ///   with a trailing backslash
     /// - [`BufferTooSmall`][TextParseErrorKind::BufferTooSmall] if `out` is too small
     pub const fn decode_quoted_basic_into(

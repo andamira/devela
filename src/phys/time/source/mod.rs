@@ -80,7 +80,7 @@
 #![cfg_attr(not(all(feature = "js", not(windows))), doc = "[`JsInstant`]: #")]
 
 #[cfg(feature = "std")]
-mod _reexport_std; // SYMLINK to /crates/base/std/src/phys/time/source/_reexport.rs
+mod _reexport_std;
 
 mod impl_source;
 

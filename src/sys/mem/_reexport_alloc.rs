@@ -1,13 +1,15 @@
 // devela::sys::mem::_reexport_alloc
 
 use crate::{_reexport, _tags};
+#[cfg(doc)]
+use crate::{Bare, BareBox, Boxed, Storage};
 
 _reexport! { rust: alloc::boxed, location: "sys::mem", tag: _tags!(mem),
     doc: "A pointer type that uniquely owns a heap allocation of type `T`.",
-    +doc: "It is used as the underlying [`Storage`][super::Storage] for the [`Boxed`][crate::Boxed]
-    marker struct, just as a [`BareBox`][super::BareBox] is used as the storage for [`Bare`].
+    +doc: "It is used as the underlying [`Storage`] for the [`Boxed`] marker struct,
+    just as a [`BareBox`] is used as the storage for [`Bare`].
 
-A special magic property of `Box` is that it allows moving with [*boxed], unlike
+A special magic property of `Box` is that it allows moving with `*boxed`, unlike
 other `Deref` types. It is hoped that an eventual `DerefMove` trait will make it
 possible for other types to opt in to move-from-deref.
 ",

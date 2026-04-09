@@ -26,7 +26,7 @@ _reexport! { rust: std::env, location: "sys/env", tag: _tags!(iterator platform)
 }
 
 _reexport! { rust: std::env, location: "sys/env", tag: _tags!(error platform),
-    doc: "Returned from [[`Env::join_paths`]][crate::Env#method.join_paths].",
+    doc: "Returned from [`Env::join_paths`][crate::Env#method.join_paths].",
     JoinPathsError,
 }
 _reexport! { rust: std::env, location: "sys/env", tag: _tags!(error platform),

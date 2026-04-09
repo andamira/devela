@@ -3,7 +3,8 @@
 use super::*;
 use crate::{Norm, Rgb16, Rgba16};
 // use crate::{Rgb8, Rgba8};
-
+#[cfg(doc)]
+use crate::{Rgb, Rgba};
 use crate::{RgbF32, RgbF64, RgbaF32, RgbaF64};
 
 #[allow(missing_docs)]

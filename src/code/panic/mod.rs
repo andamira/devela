@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: panic)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/panic/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 

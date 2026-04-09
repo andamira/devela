@@ -69,7 +69,7 @@
 //! | No constraints needed     | Primitive / `NonNiche`    | Maximum simplicity             |
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/num/grain/niche/_reexport.rs
+mod _reexport_core;
 
 mod impls; // impl ConstInit, BitSized
 
