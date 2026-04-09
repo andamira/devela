@@ -23,8 +23,4 @@ crate::structural_mods! { // _mods
         //     share::_all::*,
         // };
     }
-    _reexports {
-        // pub use devela_base_core::geom::rel{
-        // };
-    }
 }

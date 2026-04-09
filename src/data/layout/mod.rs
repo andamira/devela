@@ -10,7 +10,7 @@
 mod buffer; // buffer_linear!
 mod collection; // DataCollection
 mod queue;
-mod sort;
+mod sort; // Sort
 mod stack;
 // mod view;
 
@@ -22,7 +22,7 @@ pub mod array;
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             buffer::_all::*,
@@ -44,11 +44,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
             feature = "unsafe_layout"
         ))]
         pub use super::dst::_all::*;
-    }
-    _reexports {
-        // sort
-        #[doc(inline)]
-        pub use devela_base_core::data::layout::Sort;
     }
     _crate_internals {
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]

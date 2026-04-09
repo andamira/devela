@@ -10,11 +10,31 @@
 #![doc = crate::_QUO_YARD!()]
 //
 
+mod _env; // __dbg!, __std!, _std_core!
+mod _policy; // _devela_policy!
+mod _reexport_macro; // _reexport!
+mod _use; // _use!
+
 pub mod _dep;
 
-crate::structural_mods! { // _reexports
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::yard::*;
+// documented internal re-exports RETHINK
+#[doc(inline)]
+pub use crate::{
+    _doc::_doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
+    yard::{_policy::_devela_policy, _reexport_macro::_reexport, _use::_use},
+};
+
+crate::structural_mods! { // _crate_internals, _hidden
+    _crate_internals {
+        pub(crate) use super::{
+            _env::*,
+            _reexport_macro::_reexport,
+            _use::_use,
+        };
+    }
+    _hidden {
+        pub use super::{
+            _policy::{_devela_policy, __devela_unreachable_unchecked},
+        };
     }
 }

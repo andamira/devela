@@ -32,37 +32,31 @@
 
 // mod from_rand; // FromRand
 // mod noise; // Structured deterministic randomness
+mod prng; // concrete PRNGs
+mod rand; // Rand
 
 #[cfg(feature = "alloc")]
 mod rand_alloc; // RandAlloc
 #[cfg(feature = "std")]
 mod rand_std; // RandStd
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
-        // pub use super::{
-        //     from_rand::*,
-        //     noise::*,
-        // };
+        pub use super::{
+            // from_rand::*,
+            // noise::*,
+            prng::_all::*,
+            rand::*,
+        };
         #[cfg(feature = "alloc")]
         pub use super::rand_alloc::RandAlloc;
         #[cfg(feature = "std")]
         pub use super::rand_std::RandStd;
     }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::num::prob::rand::{
-            Rand,
-            Pcg32, define_pcg,
-            XorShift128p,
-        };
-        #[doc(inline)]
-        #[cfg(feature = "rand")]
-        pub use devela_base_core::num::prob::rand::{
-            Lcg16,
-            Xabc, Xyza8a, Xyza8b, Xoroshiro128pp,
-            XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
-            define_xorshift,
-        };
+    _crate_internals {
+        pub(crate) use super::prng::_crate_internals::*;
+    }
+    _hidden {
+        pub(crate) use super::prng::_hidden::*;
     }
 }

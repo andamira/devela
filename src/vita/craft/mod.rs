@@ -13,7 +13,7 @@
 // pub mod tend;   // repair, maintenance, stewardship of things
 // pub mod wear;   // clothing, equipment, carried artifacts
 
-crate::structural_mods! { // _pub_mods, _reexports
+crate::structural_mods! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     field::_all::*,
@@ -22,8 +22,5 @@ crate::structural_mods! { // _pub_mods, _reexports
         //     tend::_all::*,
         //     wear::_all::*,
         // };
-    }
-    _reexports {
-        // pub use devela_base_core::vita::craft::*;
     }
 }

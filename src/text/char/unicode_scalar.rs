@@ -1,4 +1,4 @@
-// devela_base_core::text::char::unicode_scalar
+// devela::text::char::unicode_scalar
 //
 //! Define the [`UnicodeScalar`] trait.
 //

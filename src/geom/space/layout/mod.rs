@@ -12,7 +12,7 @@
 // mod rest; // overflow, slack
 // mod solve; // constraint solving helpers
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     align::_all::*,
@@ -21,7 +21,5 @@ crate::structural_mods! { // _mods, _reexports
         //     rest::_all::*,
         //     solve::_all::*,
         // };
-    }
-    _reexports {
     }
 }

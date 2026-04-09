@@ -3,8 +3,10 @@
 //! Allows the unit type [`()`] to represent the absence of a number.
 //
 
-#[allow(unused_imports)]
-use crate::NoNum;
+#[doc = crate::_tags!(no num)]
+/// Represents the absence of a number.
+#[doc = crate::_doc_location!("num")]
+pub type NoNum = ();
 
 #[cfg(feature = "num")]
 impl super::Num for NoNum {

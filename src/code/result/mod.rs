@@ -14,23 +14,35 @@
 //! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
 //
 
+mod _reexport_core; // SYMLINK to /crates/base/core/src/code/result/_reexport.rs
+
 #[cfg(all(test, feature = "std"))]
 mod unwrap_tests_std;
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/result/_reexport.rs
+// mod enumatch; // enumatch! WIP
+mod hook_morph; // Hook, Morph, hook!, morph!
+mod mismatch; // Mismatch
+mod opt_res; // OptRes, sok, serr
+mod own; // Own
 
-crate::structural_mods! { // _reexports
+// #[cfg(feature = "_tuple")]
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
+// mod menu; // WIP
+
+crate::structural_mods! { // _mods, _reexports
+    _mods {
+        pub use super::{
+            // enumatch::*,
+            hook_morph::*,
+            mismatch::*,
+            opt_res::_all::*,
+            own::*,
+        };
+        // #[cfg(feature = "_tuple")]
+        // pub use super::menu::*;
+    }
     _reexports {
         #[doc(inline)]
         pub use super::_reexport_core::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::code::result::{
-            Hook, Morph, hook, morph,
-            Mismatch,
-            OptRes, OptResExt, serr, sok,
-            OptionExt, OptionFmt, OptionFmtOr, OptionFmtOrElse,
-            Own, ResultExt, unwrap,
-        };
     }
 }

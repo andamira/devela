@@ -1,0 +1,246 @@
+// devela::text::char::digits::usize
+
+use super::*;
+use crate::{Cmp, StringU8, TextLut, is};
+
+impl Digits<usize> {
+    /// The maximum number of decimal digits a `usize` can represent in the current platform.
+    pub const MAX_DIGITS_10: u8 = Digits(usize::MAX).count_digits10();
+
+    /// The maximum number of hexadecimal digits a `usize` can represent in the current platform.
+    pub const MAX_DIGITS_16: u8 = Digits(usize::MAX).count_digits16();
+
+    #[doc = DOC_COUNT_DIGITS_10!()]
+    /// # Example
+    /// ```
+    /// # use devela::text::Digits;
+    /// assert_eq![1, Digits(0_usize).count_digits10()];
+    /// assert_eq![4, Digits(9876_usize).count_digits10()];
+    /// ```
+    #[must_use]
+    pub const fn count_digits10(self) -> u8 {
+        is![self.0 == 0, 1, self.0.ilog10() as u8 + 1]
+    }
+    #[doc = DOC_COUNT_DIGITS_16!()]
+    #[must_use]
+    pub const fn count_digits16(self) -> u8 {
+        is![self.0 == 0, 1, ((self.0.ilog2() + 4) / 4) as u8]
+    }
+
+    /* digit_at_ */
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `b'0'` if the index is beyond the number's decimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_at_index10(self, index: u8) -> u8 {
+        is![index >= self.count_digits10(), return b'0'];
+        let power = TextLut::POWERS10[index as usize] as usize;
+        (self.0 / power % 10) as u8 + b'0'
+    }
+
+    /// Returns the ASCII decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits10(), return None];
+        let power = TextLut::POWERS10[index as usize] as usize;
+        Some((self.0 / power % 10) as u8 + b'0')
+    }
+
+    /// Returns the ASCII hexadecimal digit at the specified index (0 = least significant digit).
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns the digit `b'0'`.
+    #[must_use]
+    pub const fn digit_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        let digit = self.0.unbounded_shr(shift) & 0xF;
+        TextLut::DIGITS_BASE36[digit]
+    }
+
+    /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
+    ///
+    /// For indices beyond the number's hexadecimal digits, returns `None`.
+    #[must_use]
+    pub const fn digit_at_index16_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits16(), return None];
+        let shift = index as u32 * 4;
+        let digit = self.0.unbounded_shr(shift) & 0xF;
+        Some(TextLut::DIGITS_BASE36[digit])
+    }
+
+    /* digit_value_at_ */
+
+    /// Returns the numeric value (0-9) of the decimal digit at the specified index.
+    ///
+    /// Returns `0` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index10(self, index: u8) -> u8 {
+        is![index >= self.count_digits10(), return 0];
+        let power = TextLut::POWERS10[index as usize] as usize;
+        (self.0 / power % 10) as u8
+    }
+    /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
+    ///
+    /// Returns `None` if the index is beyond the number's decimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
+        is![index >= self.count_digits10(), return None];
+        let power = TextLut::POWERS10[index as usize] as usize;
+        Some((self.0 / power % 10) as u8)
+    }
+
+    /// Returns the numeric value (0-15) of the hexadecimal digit at the specified index.
+    ///
+    /// Returns `0` if the index is beyond the number's hexadecimal digits.
+    #[must_use]
+    #[inline(always)]
+    pub const fn digit_value_at_index16(self, index: u8) -> u8 {
+        let shift = index as u32 * 4;
+        (self.0.unbounded_shr(shift) & 0xF) as u8
+    }
+    /// Returns `Some(numeric_value)` (0-15) if the index is within bounds.
+    ///
+    /// Returns `None` if the index is beyond the number's hexadecimal digits.
+    #[must_use]
+    pub const fn digit_value_at_index16_checked(self, index: u8) -> Option<u8> {
+        is![index < self.count_digits16(), Some(self.digit_value_at_index16(index)), None]
+    }
+
+    //
+
+    #[doc = DOC_DIGIT_AT_POWER_10!()]
+    #[must_use]
+    #[allow(dead_code)]
+    pub(crate) const fn digit_at_power10(self, divisor: usize) -> u8 {
+        (self.0 / divisor % 10) as u8 + b'0'
+    }
+    #[must_use]
+    #[cfg(target_pointer_width = "16")]
+    pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
+        Digits(self.0 as u16).digit_at_power16(divisor as u16)
+    }
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
+    pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
+        Digits(self.0 as u32).digit_at_power16(divisor as u32)
+    }
+    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    #[must_use]
+    #[allow(dead_code)]
+    #[cfg(target_pointer_width = "64")]
+    pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
+        Digits(self.0 as u64).digit_at_power16(divisor as u64)
+    }
+
+    /// Converts a `usize` into a byte array of `5` ascii digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
+    #[must_use]
+    #[cfg(target_pointer_width = "16")]
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
+        Digits(self.0 as u16).digits10()
+    }
+    #[must_use]
+    #[cfg(target_pointer_width = "16")]
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
+        Digits(self.0 as u16).digits16()
+    }
+
+    /// Converts a `usize` into a byte array of `10` ascii digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
+        Digits(self.0 as u32).digits10()
+    }
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
+        Digits(self.0 as u32).digits16()
+    }
+
+    /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
+        Digits(self.0 as u64).digits10()
+    }
+    /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
+        Digits(self.0 as u64).digits16()
+    }
+
+    #[doc = DOC_WRITE_DIGITS_10!(10)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits10(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10_FAST!(10)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "32")]
+    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits10_fast(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10!(20)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits10(buf, offset)
+    }
+    #[doc = DOC_WRITE_DIGITS_10_FAST!(20)]
+    #[must_use]
+    #[inline(always)]
+    #[cfg(target_pointer_width = "64")]
+    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits10_fast(buf, offset)
+    }
+
+    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
+
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        return crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright(self.digits10(), width)];
+
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+            ::from_array_nright_unchecked(self.digits10(), width) }
+    }
+    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
+        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
+
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        return crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright(self.digits16(), width)];
+
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+        // SAFETY: the bytes are valid UTF-8
+        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+            ::from_array_nright_unchecked(self.digits16(), width) }
+    }
+}

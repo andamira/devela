@@ -11,7 +11,7 @@
 // mod rect; // orthogonally constrained gons
 // mod star; // radially constrained gons
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     gon::_all::*,
@@ -19,7 +19,5 @@ crate::structural_mods! { // _mods, _reexports
         //     rect::_all::*,
         //     star::_all::*,
         // };
-    }
-    _reexports {
     }
 }

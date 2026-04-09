@@ -3,15 +3,24 @@
 //! String parsing without structured semantics.
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/text/parse/_reexport.rs
+#[cfg(test)]
+mod tests;
 
-crate::structural_mods! { // _reexports
+mod _reexport_core;
+
+mod byte_search; // ByteSearch, dep_memchr fns alternatives
+mod error; // TextParseError[Kind]
+mod scanner; // TextScanner
+
+crate::structural_mods! { // _mods, _reexports
+    _mods {
+        pub use super::{
+            byte_search::*,
+            error::*,
+            scanner::*,
+        };
+    }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::text::{
-            ByteSearch,
-            TextParseError, TextParseErrorKind, TextScanner,
-        };
     }
 }

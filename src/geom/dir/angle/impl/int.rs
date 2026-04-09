@@ -8,6 +8,7 @@
 // - maybe use NonExtreme for the signed representation.
 
 // IMPROVE: remove FloatExt, replace by Float, to simplify from_float_normalized
+#[allow(unused)]
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
 use crate::{Angle, AngleDirection, AngleKind};

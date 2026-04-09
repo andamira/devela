@@ -11,13 +11,13 @@
 // mod poly; // Polygonal and polyhedral geometric figures.
 // mod set; // Sets of geometric figures.
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
-        // };
-    }
-    _reexports {
-        // use devela_base_core::geom::fig::{
+        //     curve::_all::*,
+        //     line::_all::*,
+        //     poly::_all::*,
+        //     set::_all::*,
         // };
     }
 }

@@ -9,7 +9,7 @@ use crate::Sort;
 /// Provides allocating sorting methods for arrays and slices of `T`, extending [`Sort`].
 #[doc = crate::_doc_location!("data")]
 ///
-/// [`Sort`]: devela_base_core::Sort
+/// [`Sort`]: devela::Sort
 ///
 /// # Examples
 /// Using allocating methods:

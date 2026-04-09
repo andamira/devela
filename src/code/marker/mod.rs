@@ -6,20 +6,21 @@
 #![doc = crate::_doc!(extends: marker)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/marker/_reexport.rs
+mod _reexport_core;
 
+mod prim; // Prim, PrimFitPtr, PrimIndex
+mod type_marker; // zero-cost generic type markers
 mod type_resource; // zero-cost type-safe resource markers
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::type_resource::*;
+        pub use super::{
+            prim::*,
+            type_marker::*,
+            type_resource::*,
+        };
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::code::marker::{
-            Prim, PrimFitPtr, PrimIndex,
-            type_marker,
-        };
     }
 }

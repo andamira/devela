@@ -59,7 +59,6 @@ resolver = "3"
 # ·------------------------------------------------------------------------------
 #
 # ┌╼devela_base_macros        : base proc macros, zero-deps
-# └╥╼devela_base_core         : base  core-dependent items
 #  ╚═╗╼devela_macros?         : optional proc macros
 #    ║
 #    ╚═╦╼devela               : unified front, traits
@@ -67,7 +66,7 @@ resolver = "3"
 #      ║ └╼devela_postbuild   : post-build processing
 #      ╏
 members = [ # In sync with ./build/main/environment.rs
-	"crates/base/macros", "crates/base/core",
+	"crates/base/macros",
 	"crates/macros",
 	".", # ← root package
 	# "build/post",
@@ -153,7 +152,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 160/300 (140 remaining), 105 visible, 55 hidden
+[features] # 158/300 (142 remaining), 103 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -178,21 +177,18 @@ targets = [ ## +std:
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__dbg = [ # shows extra debugging information
-	"devela_base_core/__dbg",
-]
+__dbg = [] # shows extra debugging information
 __std = [ # disables `no_std` in base crates for testing
 	"std",
-	"devela_base_core/__std",
 ]
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
 __publish = [
-	"devela_base_core/__publish", "devela_macros?/__publish",
+	"devela_macros?/__publish",
 ]
 
 __docs_internal = [ # enables documentation for internal items
-	"devela_base_core/__docs_internal", "devela_macros?/__docs_internal",
+	"devela_macros?/__docs_internal",
 ]
 __exclude_test = [] # excludes examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
@@ -235,7 +231,7 @@ data = ["hash"]
 	# list = []
 geom = ["fig"]
 	# dir = []
-	fig = ["devela_base_core/fig"]
+	fig = []
 	# space
 lang = ["glsl", "js"]
 	# hum = []
@@ -247,21 +243,21 @@ lang = ["glsl", "js"]
 			glsl = []
 			js = []
 media = ["audio", "font", "visual"]
-	audio = ["devela_base_core/audio"]
+	audio = []
 	# doc = []
-	font = ["devela_base_core/font"]
+	font = []
 	visual = ["color", "draw", "image"]
-		color = ["devela_base_core/color"]
-		draw = ["devela_base_core/draw"]
-		image = ["devela_base_core/image"]
+		color = []
+		draw = []
+		image = []
 num = ["int", "lin", "rand"]
 	# dom
-		int = ["devela_base_core/int"] # Int TEMP
+		int = [] # Int TEMP
 		# real
 			# float
 	lin = [] # linear algebra
 	# prob
-		rand = ["devela_base_core/rand"]
+		rand = []
 	# symb = []
 org = []
 	#
@@ -288,11 +284,11 @@ sys = ["io", "mem", "term"]
 	# os
 		# browser
 		linux = [] #
-		term = ["devela_base_core/term"] # media::image::sixel
+		term = [] # media::image::sixel
 		windows = []
 text = ["grapheme", "translit"]
-	grapheme = ["devela_base_core/grapheme"]
-	translit = ["devela_base_core/translit"]
+	grapheme = []
+	translit = []
 vita = []
 ui = ["event", "layout"]
 	event = []
@@ -323,47 +319,45 @@ work = [
 safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
 safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
-	"devela_base_core/safe",
 	"devela_macros?/safe",
 	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
 	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
 ] # List of safe thematic modules (orthogonal to unsafe purposes):
 	# thematic [22]
 	safe_build = []
-	safe_code = ["devela_base_core/safe_code"]
-	safe_data = ["devela_base_core/safe_data"]
+	safe_code = []
+	safe_data = []
 	safe_geom = []
 	safe_lang = []
 		# safe_prog
 			# safe_ffi
 				# safe_js
 		# safe_repr
-	safe_media = [ # "devela_base_core/safe_media",
+	safe_media = [
 		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
 		]
-		safe_audio = ["devela_base_core/safe_audio"]
+		safe_audio = []
 		safe_visual = ["safe_color", "safe_draw", "safe_image"]
-			safe_color = ["devela_base_core/safe_color"]
-			safe_draw = ["devela_base_core/safe_draw"]
-			safe_font = ["devela_base_core/safe_font"]
-			safe_image = ["devela_base_core/safe_image"]
+			safe_color = []
+			safe_draw = []
+			safe_font = []
+			safe_image = []
 	safe_num = []
 	safe_org = []
 	safe_phys = ["safe_time"]
 		safe_time = []
-	safe_run = ["devela_base_core/safe_run"]
-	safe_sys = ["safe_io", "safe_mem", "devela_base_core/safe_sys"]
-		safe_io = ["devela_base_core/safe_io"]
-		safe_mem = ["devela_base_core/safe_mem"]
-	safe_text = ["devela_base_core/safe_text"]
+	safe_run = []
+	safe_sys = ["safe_io", "safe_mem"]
+		safe_io = []
+		safe_mem = []
+	safe_text = []
 	safe_ui = []
 	safe_vita = []
-	safe_work = ["devela_base_core/safe_work"]
+	safe_work = []
 		# safe_async
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	"devela_macros?/unsafe",
-	"devela_base_core/unsafe",
 	#
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
@@ -373,49 +367,27 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	# List of unsafe purposes (orthogonal to safe modules):
 
 	unsafe_array   = [ # faster array initialization, UninitArray
-		"devela_base_core/unsafe_array",
-		# "devela_macros?/unsafe_array",
 	]
 	# unsafe_async   = [] # MAYBE
 	unsafe_ffi     = [ # unsafe foreign function calls (WASM, OS, external C)
-		"devela_base_core/unsafe_ffi",
-		# "devela_macros?/unsafe_ffi",
 	]
 	unsafe_hint    = [ # arch instructions, unreachable_unchecked, unchecked arithmetic
-		"devela_base_core/unsafe_hint",
-		# "devela_macros?/unsafe_hint",
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, AnyExt::downcast*, Mem::*
-		"devela_base_core/unsafe_layout",
-		# "devela_macros?/unsafe_layout",
 	]
 	unsafe_niche   = [ # unchecked niche constructors
-		"devela_base_core/unsafe_niche",
-		# "devela_macros?/unsafe_niche",
 	]
 	unsafe_ptr     = [ # Pinned, pop methods without Clone, Ptr::*
-		"devela_base_core/unsafe_ptr",
-		# "devela_macros?/unsafe_ptr",
 	]
 	unsafe_slice   = [ # extra slice methods, avoid bound checks
-		"devela_base_core/unsafe_slice",
-		# "devela_macros?/unsafe_slice",
 	]
 	unsafe_str     = [ # unchecked utf-8 char and &str conversions
-		"devela_base_core/unsafe_str",
-		# "devela_macros?/unsafe_str",
 	]
 	unsafe_sync    = [ # SpinLock, Send and Sync impls
-		"devela_base_core/unsafe_sync",
-		# "devela_macros?/unsafe_sync",
 	]
 	unsafe_syscall = [ # os syscalls
-		"devela_base_core/unsafe_syscall",
-		# "devela_macros?/unsafe_syscall",
 	]
 	unsafe_thread  = [ # Logging::set_logger_racy, Env::{remove_var, set_var}
-		"devela_base_core/unsafe_thread",
-		# "devela_macros?/unsafe_thread",
 	]
 
 
@@ -451,13 +423,10 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
-_docs_examples = [ # documents examples and generates example items
-	"devela_base_core/_docs_examples",
-]
+_docs_examples = [] # documents examples and generates example items
 _docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# workspace
-	"devela_base_core/_docs_min",
 	"devela_macros",
 	# modules:
 	"all",
@@ -470,13 +439,10 @@ _docs_min = [ # the minimum capabilities to document every item independent of a
 ]
 _docs_nodep = [ # +std +unsafe +__dbg
 	"_docs_min", "std", "unsafe", "__dbg",
-	"devela_base_core/_docs_nodep",
 	"devela_macros?/_docs_nodep",
 ]
 _docs = [ # +dep_all
 	"_docs_nodep", "dep_all",
-	"devela_base_core/_docs",
-	"devela_base_core/_docs",
 	"devela_macros?/_docs",
 ]
 _docs_max = [ # +max +__docs_internal
@@ -575,16 +541,15 @@ dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									  # data::key
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
 dep_log = ["dep:log"]                                                             # sys::log
-dep_memchr = ["dep:memchr", "devela_base_core/dep_memchr"]                        # text:str
+dep_memchr = ["dep:memchr"]                                                       # text:str
 dep_portable_atomic = ["dep:portable-atomic"]                                     # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                           # work::sync
-dep_rand_core = ["dep:rand_core", "devela_base_core/dep_rand_core"]               # num::rand
+dep_rand_core = ["dep:rand_core"]                                                 # num::rand
 dep_raw_cpuid = ["dep:raw-cpuid"]                                                 # sys::arch
 dep_safe_arch = ["dep:safe_arch"]                                                 # sys::arch
 dep_serde = ["dep:serde", "portable-atomic?/serde", "wide?/serde"]  			  # data::codec::serde
-dep_simdutf8 = ["dep:simdutf8", "devela_base_core/dep_simdutf8"]                  # text::str
-dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                              # num::grain::wide
-
+dep_simdutf8 = ["dep:simdutf8"]                                                   # text::str
+dep_wide = ["dep:wide"]                                                           # num::grain::wide
 
 #* Workspace features *#
 # ------------------------------------------------------------------------------
@@ -601,10 +566,14 @@ dep_wide = ["dep:wide", "devela_base_core/dep_wide"]                            
 # 1. Update `dep_all` above and /build/main/dep_all.
 # 2. Add a new entry below and in ./src/_deps.rs.
 
-#* workspace internal libraries (2req + 3opt) *#
-devela_base_core   = { workspace = true }
-#
+#* workspace internal libraries (1req + 1opt) *#
+
+devela_base_macros = { workspace = true }
 devela_macros      = { workspace = true, optional = true }
+
+#* required external dependencies (1req) *#
+
+pastey = { workspace = true }
 
 #* optional external dependencies (14opt) *#
 
@@ -628,9 +597,14 @@ wide = { workspace = true, optional = true }
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
 devela_base_macros = { version = "0.27.0-wip", path = "./crates/base/macros" }
-devela_base_core   = { version = "0.27.0-wip", path = "./crates/base/core" }
 devela_macros      = { version = "0.27.0-wip", path = "./crates/macros" }
 #devela_buildpost   = { version = "0.27.0-wip", path = "./build/post" }
+
+#* required external dependencies *#
+
+[workspace.dependencies.pastey] # https://crates.io/crates/pastey
+version = "0.2.0" # ✓ https://github.com/AS1100K/pastey/blob/master/CHANGELOG.md
+package = "pastey" # safe
 
 #* optional external dependencies *#
 
@@ -712,11 +686,6 @@ default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 
 [build-dependencies]
-# Used for the main build script. They do NOT inherit from [dependencies].
-# ------------------------------------------------------------------------------
-# devela_base_core = { workspace = true }
-
-
 # patches
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/overriding-dependencies.html#the-patch-section

@@ -9,13 +9,11 @@
 // mod hull; // convex / concave hulls
 // mod points; //
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     hull::_all::*,
         //     points::_all::*,
         // };
-    }
-    _reexports {
     }
 }

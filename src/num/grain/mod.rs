@@ -6,15 +6,17 @@
 #![doc = crate::_doc!(extends: num)]
 //
 
-mod cast; // (Cast), PrimitiveCast, PrimitiveJoin, PrimitiveSplit
-pub mod niche; // (MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!)
-pub mod wide; // (define_lane!)
+mod cast; // Cast, PrimitiveCast, PrimitiveJoin, PrimitiveSplit, cast!
+pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
+mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
+pub mod wide; // define_lane!
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
             cast::_all::*,
+            prim::*,
         };
     }
     _pub_mods {
@@ -23,9 +25,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
             wide::_all::*,
         };
     }
-    _reexports {
-        pub use devela_base_core::num::grain::{
-            PrimScalar, PrimInt, PrimSint, PrimUint, PrimFloat,
+    _crate_internals {
+        pub use super::{
+            niche::_crate_internals::*,
         };
     }
     _hidden {

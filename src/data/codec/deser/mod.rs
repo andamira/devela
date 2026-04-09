@@ -4,12 +4,20 @@
 //! Structured serialization/deserialization.
 //
 
-// mod rle;
-// mod utils;
+// mod byte; // ByteSink, ByteSource WIP
+// mod macros; // WIP IDEA
+// mod rle; // WIP
+// mod traits; // Deserialize, Serialize… WIP
+// mod utils; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::rle::*;
-        // pub use super::utils::_all::*;
+        // pub use super::{
+        //     byte::*,
+        //     // macros::*,
+        //     // rle::*,
+        //     traits::*,
+        //     // utils::_all::*,
+        // };
     }
 }

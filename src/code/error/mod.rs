@@ -6,30 +6,28 @@
 #![doc = crate::_doc!(extends: backtrace, error)]
 //!
 //! Re-exports the error and result types defined in other modules and crates.
-//!
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/error/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-crate::structural_mods! { // _reexports
+// mod context; // ContextualError WIP
+mod define_error; // define_error!
+mod errors; // general errors
+
+crate::structural_mods! { // _mods, _reexports
+    _mods {
+        pub use super::{
+            // context::*,
+            define_error::*,
+            errors::*,
+        };
+    }
     _reexports {
         pub use super::_reexport_core::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::{
-            define_error,
-            // individual:
-            FailedErrorConversion,
-            InvalidValue,
-            NotImplemented,
-            NotSupported,
-            // composite:
-            NotAvailable,
-        };
 
         /* intra-crate */ // RETHINK
 
@@ -37,11 +35,9 @@ crate::structural_mods! { // _reexports
         #[cfg(feature = "image")]
         pub use crate::media::visual::image::{ImageError, ImageResult};
 
-        /* num */
         #[doc(inline)]
         pub use crate::num::{NumError, NumResult};
 
-        /* sys */
         #[doc(inline)]
         #[cfg(feature = "io")]
         pub use crate::sys::io::{IoError, IoErrorKind, IoResult};

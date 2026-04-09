@@ -1,4 +1,4 @@
-// devela_base_core::lang::hum::i18n::msg
+// devela::lang::hum::i18n::msg
 //
 //! All categorical dimensions used to choose message variants
 //

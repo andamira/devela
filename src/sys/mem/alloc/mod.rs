@@ -7,24 +7,20 @@
 //
 
 mod alloc; // Alloc, ::alloc::alloc::*
-// mod arena;
+mod arena; // define_arena!
 mod storage; // Bare, BareBox, Boxed, Storage
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             alloc::_all::*,
+            arena::_all::*,
             storage::*,
         };
     }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::sys::mem::alloc::{
-            define_arena,
-        };
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::sys::mem::alloc::{
-            ArenaExample, ArenaHandleExample, ArenaMarkExample,
+    _hidden {
+        pub use super::{
+            arena::_hidden::*,
         };
     }
 }

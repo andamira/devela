@@ -8,11 +8,14 @@
 //! They enable efficient iterable storage over a sequence of the same type.
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/data/layout/array/_reexport.rs
+mod _reexport_core;
 
 mod adt; // DataArray
 mod d1; // 1-dimensional Array
 mod d2; // 2-dimensional Array2d
+mod ext; // ArrayExt, ArrayFmt
+mod from; // ArrayFrom
+mod init; // init_array!
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -24,6 +27,9 @@ crate::structural_mods! { // _mods, _reexports
             adt::*,
             d1::_all::*,
             d2::_all::*,
+            ext::*,
+            from::*,
+            init::*,
         };
 
         #[cfg(feature = "alloc")]
@@ -31,9 +37,5 @@ crate::structural_mods! { // _mods, _reexports
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::data::layout::{
-            ArrayExt, ArrayFmt, ArrayFrom, init_array,
-        };
     }
 }

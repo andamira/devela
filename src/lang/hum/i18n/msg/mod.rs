@@ -1,4 +1,4 @@
-// devela_base_core::lang::hum::i18n::msg
+// devela::lang::hum::i18n::msg
 //
 //! Message selection languages.
 //!

@@ -9,11 +9,20 @@
 #[cfg(test)]
 mod tests;
 
-crate::structural_mods! { // _reexports
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::{
-            bitfield,
+// mod budget; // BitBudget
+mod field; // bitfield!
+// mod manifest; // BitManifest
+// mod recipe; // BitRecipe
+// mod view; // BitView // WIP
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            // budget::*,
+            field::_all::*,
+            // manifest::*,
+            // recipe::*,
+            // view::*,
         };
     }
 }

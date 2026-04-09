@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: borrow)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/mem/view/borrow/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 

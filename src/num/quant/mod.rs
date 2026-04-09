@@ -18,24 +18,31 @@
 // - Discrete counting and increments: [`Count`].
 //
 
-// mod cont; //
+// mod align; // Align
+// mod cont;
+mod cycle; // Cycle, CycleCount
+mod interval; // Interval, interval!
+// mod norm; // Norm
+// mod ratio; // Ratio
+// mod power; // Log, Power, Root
 mod ratio; // Ratio
+// mod scale; // Scale
+mod sign; // Sign
+mod value; // ValueQuant
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            // align::*,
             // cont::_all::*,
+            cycle::*,
+            interval::*,
+            // norm::*,
+            // power::*,
             ratio::*,
-        };
-    }
-    _reexports {
-        #[doc(inline)]
-        #[rustfmt::skip]
-        pub use devela_base_core::num::quant::{
-            Cycle, CycleCount,
-            Interval, interval,
-            Sign,
-            ValueQuant,
+            // scale::*,
+            sign::*,
+            value::*,
         };
     }
 }

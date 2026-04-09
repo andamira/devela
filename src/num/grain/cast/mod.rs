@@ -3,22 +3,20 @@
 //! Helpers for converting between primitives.
 //
 
-mod cast; // PrimitiveCast
-mod join; // PrimitiveJoin
-mod split; // PrimitiveSplit
+mod macros; // cast!
+mod namespace; // Cast
+mod traits; // PrimitiveCast, PrimitiveJoin, PrimitiveSplit
 
-crate::structural_mods! { // _mods, _reexports
+#[cfg(test)]
+mod tests;
+
+crate::structural_mods! { // _mods
     _mods {
-        pub use super::{
-            cast::*,
-            join::*,
-            split::*,
-        };
-    }
-    _reexports {
         #[doc(inline)]
-        pub use devela_base_core::num::grain::{ // cast
-            Cast, cast,
+        pub use super::{
+            macros::*,
+            namespace::*,
+            traits::_all::*,
         };
     }
 }

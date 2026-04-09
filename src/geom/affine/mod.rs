@@ -1,4 +1,4 @@
-// devela_base_core::geom::affine
+// devela::geom::affine
 //
 #![doc = crate::_DOC_GEOM_AFFINE!()] // public
 #![doc = crate::_doc!(modules: crate::geom; affine)]
@@ -19,9 +19,5 @@ crate::structural_mods! { // _mods
             point::*,
             // transform::_all::*,
         };
-    }
-    _reexports {
-        // use devela_base_core::geom::affine::{
-        // };
     }
 }

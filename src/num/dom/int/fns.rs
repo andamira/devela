@@ -1,5 +1,6 @@
 // devela::num::dom::int::fns
 
+#[allow(unused)]
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
 

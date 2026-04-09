@@ -7,19 +7,15 @@
 #![doc = crate::_QUO_DATA_ID!()]
 //
 
+mod handle; // define_handle!, HandleExample
 mod uid; // IdPin
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
+        #[doc(inline)]
         pub use super::{
+            handle::*,
             uid::_all::*,
         };
-    }
-    _reexports {
-        // handle
-        #[doc(inline)]
-        pub use devela_base_core::data::id::define_handle;
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::id::HandleExample;
     }
 }

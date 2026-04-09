@@ -10,30 +10,32 @@ mod _reexport_core; // SYMLINK to /crates/base/core/src/text/fmt/_reexport.rs
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 
+mod buf; // FmtWriter, format_buf!
+mod cat; // fmtcat!
+// mod case; // WIP
+mod debug; // DebugExt
 mod namespace; // Fmt
+mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, define_fmt_num!
+// mod table; // WIP
 
-// WIPZONE
-// mod case;
-// mod table;
-
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {
         pub use super::namespace::*;
-
-        // WIPZONE
-        // pub use super::case::*;
-        // pub use super::table::*;
+        pub use super::{
+            buf::*,
+            cat::*,
+            // case::*,
+            debug::*,
+            num::_all::*,
+            // table::*,
+        };
     }
     _reexports {
         pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::text::fmt::{
-            DebugExt,
-            FmtNum, FmtNumConf, FmtNumGroup, FmtNumShape, FmtNumSign,
-            FmtWriter, fmtcat, format_buf,
-        };
+    }
+    _hidden {
+        pub use super::num::_hidden::*;
     }
 }

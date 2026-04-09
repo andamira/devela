@@ -9,11 +9,17 @@
 #[cfg(test)]
 mod tests;
 
-crate::structural_mods! { // _reexports
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::{ // bit
-            BitOps, Bitwise
+// mod _benches;
+mod _docs;
+
+mod ops; // BitOps
+mod wise; // Bitwise
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            ops::*,
+            wise::*,
         };
     }
 }

@@ -5,22 +5,42 @@
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(extends: char)]
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/text/char/_reexport.rs
+mod _reexport_core;
 
+mod ascii; // CharAscii
+mod digits; // Digits
+mod iter; // CharIter
+mod namespace; // Char
+mod scalar; // ch!, char7, char8, char16, charu, charu_niche
+#[cfg(feature = "translit")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "translit")))]
+mod translit; // scalar_as_ascii_translit()
 mod unicode_scalar; // UnicodeScalar
+
+// no public re-exports
+mod luts;
+#[cfg(test)]
+mod tests;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::unicode_scalar::*;
+        pub use super::{
+            ascii::*,
+            digits::*,
+            iter::*,
+            namespace::*,
+            scalar::_all::*,
+            unicode_scalar::*,
+        };
+        #[cfg(feature = "translit")]
+        pub use super::translit::_all::*;
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::text::{
-            Char, CharAscii, CharIter, Digits, ch, char7, char8, char16, charu, charu_niche,
-        };
+    }
+    _crate_internals {
         #[cfg(feature = "translit")]
-        pub use devela_base_core::text::scalar_as_ascii_translit;
+        pub use super::translit::_crate_internals::*;
     }
 }
 

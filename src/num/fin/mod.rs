@@ -7,14 +7,14 @@
 //
 
 // mod auto;
-mod bit; // (BitOps, Bitwise)
+mod bit; // BitOps, Bitwise
 // mod comb;
 // mod graph;
 pub mod logic; // ConstBool, False, True, const_bool!
-pub mod ord; // (Cmp, cmp!, Order)
+pub mod ord; // Cmp, cmp!, Order
 // mod seq;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -30,6 +30,11 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             logic::_all::*,
             ord::_all::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            ord::_crate_internals::*,
         };
     }
 }

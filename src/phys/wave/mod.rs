@@ -15,17 +15,11 @@ mod shared; // WaveletHaar, WaveletUnitRole
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod alloc;
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::shared::*;
 
         #[cfg(feature = "alloc")]
         pub use super::alloc::*;
-    }
-    _reexports {
-        // #[doc(inline)]
-        // pub use devela_base_core::phys::wave::{
-        //     Freq, Phase,
-        // };
     }
 }

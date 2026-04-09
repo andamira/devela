@@ -21,7 +21,4 @@ crate::structural_mods! { // _pub_mods
         //     ritual::_all::*,
         // };
     }
-    _reexports {
-        // pub use devela_base_core::vita::mind::*;
-    }
 }

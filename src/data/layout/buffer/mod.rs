@@ -3,23 +3,19 @@
 //!
 //
 
-#[cfg(feature = "alloc")]
+mod linear; // buffer_linear!
+
+mod impls; // hidden macros for buffer variants
+
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples_alloc; // BufferAllocExample
+mod examples; // BufferStaticExample, BufferViewExample, BufferAllocExample
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
-        #[cfg(feature = "alloc")]
-        #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::examples_alloc::BufferAllocExample;
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::data::layout::buffer_linear;
-
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::data::layout::{
-            BufferStaticExample, BufferViewExample,
+        pub use super::{
+            linear::*,
         };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::examples::*;
     }
 }

@@ -20,7 +20,7 @@ pub mod regime; // RunCap*, RunService
 // pub mod state;
 pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             iface::*,
@@ -32,11 +32,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
             regime::_all::*,
             // state::_all::*,
             time::_all::*,
-        };
-    }
-    _reexports {
-        pub use devela::run::{
-            RunApp, RunPresent, RunRender,
         };
     }
     _crate_internals {

@@ -31,9 +31,9 @@ pub mod linux;
 // #[cfg(feature = "windows")]
 // pub mod windows;
 
-pub mod term; // Ansi*
+pub mod term; // Ansi* Term*
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(feature = "unsafe_ffi")]
         pub use super::c::*;
@@ -52,5 +52,8 @@ crate::structural_mods! { // _mods, _pub_mods
         // pub use super::macos::_all::*;
         // #[cfg(feature = "windows")]
         // pub use super::windows::_all::*;
+    }
+    _crate_internals {
+        pub use super::term::_crate_internals::*;
     }
 }

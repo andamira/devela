@@ -6,14 +6,22 @@
 #![doc = crate::_doc!(extends: cmp)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/num/fin/ord/_reexport.rs
+mod _reexport_core;
 
-crate::structural_mods! { // _reexports
+mod cmp; // Cmp, cmp!
+mod order; // Order
+
+crate::structural_mods! { // _mods, _reexports, _crate_internals
+    _mods {
+        pub use super::{
+            cmp::*,
+            order::_all::*,
+        };
+    }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::num::fin::{ // ord
-            Cmp, cmp, Order,
-        };
+    }
+    _crate_internals {
+        pub(crate) use super::order::_crate_internals::*;
     }
 }

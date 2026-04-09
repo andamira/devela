@@ -6,25 +6,26 @@
 #![doc = crate::_doc!(hr)]
 //
 
+mod size; // TermSize
+
 #[cfg(feature = "term")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
-mod ansi;
+mod ansi; // Ansi, AnsiColor3, AnsiColor8
 
-crate::structural_mods! { // _mods, _reexports
+// #[cfg(feature = "term")]
+// mod render; // TermRenderer WIP
+
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
+        pub use super::size::*;
         #[cfg(feature = "term")]
-        pub use super::ansi::_all::*;
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::sys::os::term::TermSize;
-
-        #[doc(inline)] #[cfg(feature = "term")]
-        pub use devela_base_core::sys::os::term::{
-            Ansi, AnsiColor, AnsiColor3, AnsiColor8,
+        pub use super::{
+            ansi::_all::*,
+            // render::_all::*,
         };
-        // WIP
-        // #[doc(inline)] #[cfg(feature = "term")] // #[cfg(feature = "draw")]
-        // pub use devela_base_core::sys::os::term::{term_renderer};
+    }
+    _crate_internals {
+        #[cfg(feature = "term")]
+        pub use super::ansi::_crate_internals::*;
     }
 }

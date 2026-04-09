@@ -33,11 +33,9 @@ bench = false
 #* Development features *#
 
 __dbg = [
-	"devela_base_core/__dbg",
 ]
 __publish = []
 __docs_internal = [ # enables documentation for internal items
-	"devela_base_core/__docs_internal",
 ]
 
 #* Safety features *#
@@ -66,7 +64,6 @@ dep_all = [ # enables all 0 external optional dependencies:
 ]
 
 [dependencies]
-devela_base_core.workspace = true
 
 #* required external dependencies *#
 

@@ -6,11 +6,22 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! { // _reexports
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::num::fin::logic::{
-            ConstBool, False, True, const_bool,
+mod bool; // ConstBool, False, True
+// mod bops;
+// mod choice;
+// mod items;
+// mod linear; // WIP
+// mod trool;
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            bool::*,
+            // bops::*;
+            // choice::*;
+            // items::*;
+            // linear::*;
+            // trool::*;
         };
     }
 }

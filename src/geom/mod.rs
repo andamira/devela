@@ -10,15 +10,16 @@
 #![cfg_attr(feature = "safe_geom", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
-    crate::_doc!(modules: crate; geom: affine, dir, fig); // metric, rel, space
+    crate::_doc!(modules: crate; geom: affine, dir, fig, metric); // rel, space
 }
 
-mod rel; // Spatial predicates and semantic relations between geometric entities. WIP
-mod space; // Global organization, decomposition, and structure of space. WIP
+mod _helpers;
 
 pub mod affine; // Structure of space under translation and linear combination.
 pub mod dir; // Spatial navigation and facing semantics.
 pub mod metric; // Measurement of space: distances, extents, and magnitudes.
+mod rel; // Spatial predicates and semantic relations between geometric entities. WIP
+mod space; // Global organization, decomposition, and structure of space. WIP
 
 #[cfg(feature = "fig")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "fig")))]
@@ -42,5 +43,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_GEOM_MODULES;
+        pub use super::_helpers::*;
     }
 }

@@ -6,21 +6,29 @@
 #![doc = crate::_doc!(extends: simd)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/num/grain/wide/_reexport.rs
+mod _reexport_core;
+
+mod _docs;
+mod _helpers; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
+
+#[cfg(test)]
+mod tests;
+
+mod lane; // define_lane!
 
 crate::structural_mods! { // _reexports, _hidden
+    _mods {
+        pub use super::{
+            lane::*,
+        };
+    }
     _reexports {
         pub use super::_reexport_core::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::num::grain::define_lane;
-        #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::num::grain::Lane4_i32Example;
     }
     _hidden {
-        // hidden re-exports
-        pub use devela_base_core::num::grain::{ // wide
-            _dep_wide_compile, _dep_wide_use
+        pub use super::{
+            _docs::*,
+            _helpers::*,
         };
     }
 }

@@ -13,11 +13,14 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
     crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
 }
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/_reexport.rs
+mod _reexport_core;
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit
+mod const_init_core; // ConstInitCore // TEMP:merge
+mod guard; // ScopeGuard
 mod intro; // Introspect
+mod site; // CodeLocation, CodeSpan
 
 pub mod error; // AllError, modular errors
 pub mod marker; // core::marker, TypeResource, TypeResourced, type_marker!, type_resource!
@@ -26,12 +29,15 @@ pub mod panic; // Panic, set_panic_handler!
 pub mod result; // AllError, Mismatch, OptRes, ValueQuant, serr, sok, …
 pub mod util; // (utility macros and functions)
 
-devela_base_core::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
+util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             any::_all::*,
-            const_init::ConstInit,
+            const_init::ConstInit, // TEMP:merge
+            const_init_core::ConstInitCore, // TEMP:merge
+            guard::*,
             intro::_all::*,
+            site::*,
         };
     }
     _pub_mods {
@@ -46,16 +52,14 @@ devela_base_core::structural_mods! { // _mods, _pub_mods, _reexports, _crate_int
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::code::{
-            CodeLocation, CodeSpan,
-            ConstInitCore,
-            ScopeGuard,
-        };
     }
     _crate_internals {
         pub(crate) use super::_DOC_CODE_MODULES;
         pub(crate) use super::util::_crate_internals::*;
-        pub(crate) use super::const_init::{Sealed as ConstInitSealed};
+        pub(crate) use super::const_init::Sealed as ConstInitSealed; //TEMP:merge
+        pub(crate) use super::const_init_core::_impl_init; // TEMP:merge
+    }
+    _hidden {
+        pub use super::util::_hidden::*;
     }
 }

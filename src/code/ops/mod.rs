@@ -6,22 +6,21 @@
 #![doc = crate::_doc!(extends: ops)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/code/ops/_reexport.rs
+mod _reexport_core;
 
 mod call; // Call[Semantics|BindTime|Context|Dispatch|Openness|Storage]
+mod punroll; // punroll!
 
-// WIPZONE
 // #[cfg(feature = "std")]
-// pub mod _wip_fns;
-// mod _wip_closure; // TODO
+// pub mod _wip_fns; // WIP
+// mod _wip_closure; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             call::*,
-            // punroll::*,
+            punroll::*,
         };
-        // WIPZONE
         // #[cfg(feature = "std")]
         // pub use super::_wip_fns::*;
         // pub use super::_wip_closure::*;

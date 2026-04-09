@@ -6,22 +6,22 @@
 #![doc = crate::_doc!(extends: ptr)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/mem/bound/ptr/_reexport.rs
+mod _reexport_core;
+
+mod namespace; // Ptr
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 mod fat;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
+        pub use super::namespace::Ptr;
+
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
         pub use super::fat::FatPtr;
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::sys::mem::{ // bound
-            Ptr,
-        };
     }
 }

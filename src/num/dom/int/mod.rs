@@ -8,40 +8,49 @@
 
 mod fns; // prime_number_teorem
 
+mod alias; // [i|u]size_[down|up]
+mod divisor; // define_divisor!, DivisorExample, (DivisorInner)
+mod gcd; // GcdReturn
+
+#[cfg(feature = "int")]
+mod int; // Int, define_int! WIP
+// mod prim; // i256, u256 WIP RENAME
+// mod primes; // WIP
+// mod recip; // DivRecip WIP
+
 #[cfg(all(feature = "int", feature = "alloc"))]
-mod wrapper_alloc; // IntAlloc TEMP
+mod wrapper_alloc; // IntAlloc TEMP:merge FIXME
 
 #[cfg(feature = "int")]
 mod num_trait; // NumInt, NumRefInt
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
+            alias::*,
+            divisor::define_divisor,
             fns::*,
+            gcd::*,
+            // prim::*,
+            // recip::*,
         };
         #[cfg(feature = "int")]
         pub use super::{
+            int::_all::*,
             num_trait::*,
         };
         #[cfg(all(feature = "int", feature = "alloc"))]
         pub use super::{
             wrapper_alloc::*,
         };
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::num::dom::{ // int
-            isize_down, isize_up, usize_down, usize_up,
-            define_divisor,
-            GcdReturn,
-        };
         #[cfg(feature = "_docs_examples")]
-        pub use devela_base_core::num::dom::int::{
-            DivisorExample,
-        };
+        pub use super::divisor::DivisorExample;
+    }
+    _crate_internals {
         #[cfg(feature = "int")]
-        pub use devela_base_core::num::dom::int::{
-            Int,
-        };
+        pub use super::int::_crate_internals::*;
+    }
+    _hidden {
+        pub use super::divisor::DivisorInner;
     }
 }

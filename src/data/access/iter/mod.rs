@@ -6,22 +6,23 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/data/access/iter/_reexport.rs
+mod _reexport_core;
 
+mod lending; // IteratorLending[DoubleEnded|ExactSize|Peek]
 mod namespace; // Iter
+mod strided; // StridedIter, StridedIterMut
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::namespace::*;
+        pub use super::{
+            lending::_all::*,
+            namespace::*,
+            strided::_all::*,
+        };
     }
     _reexports {
         pub use super::_reexport_core::*;
-        #[doc(inline)]
-        pub use devela_base_core::data::access::iter::{
-            IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize,
-            IteratorLendingPeek, IteratorLendingPeekDoubleEnded,
-            StridedIter, StridedIterMut, iter_strided,
-        };
-        pub use devela_base_core::sys::mem::{SliceIter, SliceIterMut};
+
+        pub use crate::sys::mem::{SliceIter, SliceIterMut};
     }
 }

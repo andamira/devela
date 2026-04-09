@@ -1,1 +1,64 @@
-../../../../crates/base/core/src/num/grain/wide/_reexport.rs
+// devela::num::grain::wide::_reexport_core
+//
+// DOCS: https://doc.rust-lang.org/stable/core/simd/
+// WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
+
+#[cfg(nightly_simd)]
+pub use nightly_simd::*;
+
+#[cfg(nightly_simd)]
+mod nightly_simd {
+    use crate::{_reexport, _tags};
+
+    /* structs */
+
+    // _reexport! { rust: core::simd, location: "num/grain",
+    //     tag: _tags!(num),
+    //     doc: "A SIMD vector mask for `N` elements of width specified by `Element`.",
+    //     Mask
+    // }
+    _reexport! { rust: core::simd, location: "num/grain", tag: _tags!(num),
+        doc: "A SIMD vector with the shape of `[T; N]` but the operations of `T`.",
+        Simd
+    }
+
+    /* traits */
+
+    // cmp
+    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num),
+        doc: "Parallel `Ord`.",
+        SimdOrd
+    }
+    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num),
+        doc: "Parallel `PartialEq`.",
+        SimdPartialEq
+    }
+    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num),
+        doc: "Parallel PartialOrd.",
+        SimdPartialOrd
+    }
+
+    // num
+    _reexport! { rust: core::simd::num, location: "num/grain", tag: _tags!(num),
+        doc: "Operations on SIMD vectors of floats.",
+        SimdFloat
+    }
+    _reexport! { rust: core::simd::num, location: "num/grain", tag: _tags!(num),
+        doc: "Operations on SIMD vectors of signed integers.",
+        SimdInt
+    }
+    _reexport! { rust: core::simd::num, location: "num/grain", tag: _tags!(num),
+        doc: "Operations on SIMD vectors of unsigned integers.",
+        SimdUint
+    }
+
+    // ptr
+    _reexport! { rust: core::simd::ptr, location: "num/grain", tag: _tags!(num lifetime),
+        doc: "Operations on SIMD vectors of constant pointers.",
+        SimdConstPtr
+    }
+    _reexport! { rust: core::simd::ptr, location: "num/grain", tag: _tags!(num lifetime),
+        doc: "Operations on SIMD vectors of mutable pointers.",
+        SimdMutPtr
+    }
+}

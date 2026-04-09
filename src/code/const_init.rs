@@ -65,7 +65,7 @@ mod impl_core {
         // Exclusive,
     };
 
-    /* sealed implementations (in sync with devela_base_core::code::default) */
+    /* sealed implementations (in sync with devela::code::const_init_core) */ //TEMP:merge
 
     _impl_init![%Sealed%ConstInitCore: tuples <T: ConstInitCore>];
     _impl_init![%Sealed%ConstInitCore: arrays <T: ConstInitCore>
@@ -165,7 +165,7 @@ mod impl_std {
 
 // implements Sealed for ConstInitCore impls
 #[rustfmt::skip]
-mod impl_devela_base_core {
+mod impl_devela {
     use super::{ConstInitCore, Sealed};
     use crate::{_impl_init, paste,
         // code

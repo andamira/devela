@@ -10,15 +10,25 @@
 //! and measurement in geometric spaces.
 //
 
-crate::structural_mods! { // _reexports
-    _reexports {
+// mod axes; // TODO
+// mod cycle; // CycleOffset, Spacing // MAYBE
+mod distance; // Distance[1|2|3]
+mod extent; // Extent[1|2|3]
+mod position; // Position[1|2|3]
+mod region; // Region[1|2|3], RegionS[1|2|3]
+mod stride; // Stride[1|2|3]
+
+crate::structural_mods! { // _mods
+    _mods {
         #[doc(inline)]
-        pub use devela_base_core::{
-            Distance, Extent, Position, Region, RegionStrided, Stride,
-            // aliases
-            Distance1, Distance2, Distance3, Extent1, Extent2, Extent3,
-            Position1, Position2, Position3, Region1, Region2, Region3,
-            RegionS, RegionS1, RegionS2, RegionS3, Stride1, Stride2, Stride3,
+        pub use super::{
+            // axes::*, // TODO
+            // cycle::*, // MAYBE
+            distance::*,
+            extent::*,
+            position::*,
+            region::*,
+            stride::*,
         };
     }
 }

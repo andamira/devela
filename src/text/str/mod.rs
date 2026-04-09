@@ -5,13 +5,17 @@
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(extends: str, string)]
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/text/str/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
 mod ext_str; // StrExt
+mod namespace; // Str
+mod nonul; // StringNonul
+// mod _wip_sixbit; WIP
+mod u; // StringU8, StringU16, StringU32, StringUsize
 
 #[cfg(feature = "alloc")]
 mod ext_string; // StringExt
@@ -20,6 +24,10 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             ext_str::*,
+            namespace::Str,
+            nonul::*,
+            // _wip_sixbit::*;
+            u::*,
         };
         #[cfg(feature = "alloc")]
         pub use super::ext_string::*;
@@ -31,10 +39,6 @@ crate::structural_mods! { // _mods, _reexports
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
 
-        #[doc(inline)]
-        pub use devela_base_core::text::str::{
-            Str, StringNonul, StringU8, StringU16, StringU32, StringUsize,
-        };
         // from other modules
         pub use crate::CStr;
         #[cfg(feature = "alloc")]

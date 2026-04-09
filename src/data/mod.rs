@@ -14,14 +14,7 @@ crate::CONST! { pub(crate) _DOC_DATA_MODULES =
 
 pub mod access; // Mechanisms of reachability and traversal
 pub mod codec; // Data encoding and decoding abstractions
-pub mod error {
-    #![doc = crate::_DOC_DATA_ERROR!()] // public
-    #![doc = crate::_doc!(modules: crate::data; error)]
-    #![doc = crate::_doc!(flat:"data")]
-    #![doc = crate::_doc!(hr)]
-    #[doc(inline)]
-    pub use devela_base_core::data::error::*; // Data-related error types
-}
+pub mod error; // Data-related error types
 pub mod id; // Identity abstractions for stable and contextual distinction
 pub mod layout; // Structural arrangement of elements in memory or sequence
 pub mod store; // Retained data stores and retrieval semantics

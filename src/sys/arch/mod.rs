@@ -20,7 +20,7 @@
 //
 
 mod _reexport_dep;
-mod _reexport_core; // SYMLINK to /crates/base/core/src/sys/arch/_reexport.rs
+mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 

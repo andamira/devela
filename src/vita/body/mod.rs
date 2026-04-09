@@ -13,7 +13,7 @@
 // pub mod motion; // locomotion, posture, biomechanics
 // pub mod train; // embodied training, technique
 
-crate::structural_mods! { // _pub_mods, _reexports
+crate::structural_mods! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     endure::_all::*,
@@ -22,8 +22,5 @@ crate::structural_mods! { // _pub_mods, _reexports
         //     motion::_all::*,
         //     train::_all::*,
         // };
-    }
-    _reexports {
-        // pub use devela_base_core::vita::body::*;
     }
 }

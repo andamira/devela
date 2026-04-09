@@ -12,6 +12,8 @@
 #[cfg(feature = "alloc")]
 mod _reexport_alloc;
 
+mod r#const; // ConstList[Iterator]
+
 // #[cfg(_list1··)]
 // mod l1;
 // #[cfg(_list2··)]
@@ -19,14 +21,12 @@ mod _reexport_alloc;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
+        pub use super::r#const::*;
         // pub use super::l1::*;
         // pub use super::l2::*;
     }
     _reexports {
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
-        pub use devela_base_core::data::topol::{
-            ConstList, ConstListIterator,
-        };
     }
 }

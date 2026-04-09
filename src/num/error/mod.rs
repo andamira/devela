@@ -6,28 +6,15 @@
 #![doc = crate::_doc!(hr)]
 //
 
+mod highest; // RETHINK
 mod definitions;
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
+            highest::*,
             definitions::*,
-        };
-    }
-    _reexports {
-        pub use devela_base_core::num::error::{
-            // individual errors:
-            IncompatibleBounds,
-            NoInverse,
-            MismatchedSizes,
-            NonNegativeRequired,
-            PositiveRequired,
-            NonZeroRequired,
-            Overflow,
-            // composite errors:
-            IntError, IntResult,
-            NicheValueError,
         };
     }
 }

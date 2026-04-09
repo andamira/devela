@@ -20,20 +20,21 @@
 //
 
 mod angle; // Angle, AngleDirection, AngleKind
+mod boundary; // Boundary[1|2|3]d
+// mod nav; // Spatial navigation and facing semantics.
+// mod octant; // WIP
+mod orientation; // Orientation[1|2|3]
+// mod radial_sectors;
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             angle::*,
-        };
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::{
-            Boundary1d, Boundary2d, Boundary3d,
-            Orientation,
-            // aliases
-            Orientation1, Orientation2, Orientation3,
+            boundary::*,
+            // nav::_all::*, // WIP
+            // octant::*, // WIP
+            orientation::*,
+            // radial_sectors::*;
         };
     }
 }

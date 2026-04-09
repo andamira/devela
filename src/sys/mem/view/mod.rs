@@ -7,19 +7,15 @@
 //
 
 mod borrow; // Borrowed data and ownership-relaxed views.
+mod byte; // MaybeByte
 mod slice; // Slice, SliceExt
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             borrow::_all::*,
+            byte::*,
             slice::_all::*,
-        };
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::sys::mem::{
-            MaybeByte,
         };
     }
 }

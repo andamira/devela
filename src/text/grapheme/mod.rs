@@ -16,24 +16,23 @@ mod tests;
 
 mod grapheme; // Grapheme
 mod kind; // GraphemeKind
+mod nonul; // GraphemeNonul
+mod scanner; // Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
+mod u8; // GraphemeU8
 
 #[cfg(feature = "alloc")]
 mod string; // GraphemeString
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             grapheme::*,
             kind::*,
+            nonul::*,
+            scanner::_all::*,
+            u8::*,
         };
         #[cfg(feature = "alloc")]
         pub use super::string::GraphemeString;
-    }
-    _reexports {
-        #[doc(inline)]
-        pub use devela_base_core::{
-            GraphemeNonul, GraphemeU8, GraphemeScanner,
-            GraphemeBoundary, GraphemeMachine, GraphemePropCb, GraphemePropInCb, GraphemeProps,
-        };
     }
 }

@@ -6,28 +6,29 @@
 #![doc = crate::_doc!(hr)]
 //
 
+mod _internals; // impl_ops!, upcasted_op! TODO:RENAME
+
 // mod complex;
 mod frac;
 // mod laws;
-mod no;
+mod no; // NoNum
 // mod ops;
 
-#[cfg(feature = "num")]
-mod traits; // Num, NumRef
+mod traits; // Num, NumRef, NumConst
 
-pub mod int; // NumInt[Ref], prime_number_theorem, (Divisor, GcdReturn, Int[Alloc], [i|u]size_[down|up])
+pub mod int; // Divisor, GcdReturn, Int[Alloc], [i|u]size_[down|up], NumInt[Ref], prime_number_theorem
 pub mod real; // Real-valued numeric domains and representations.
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
             // complex::_all::*,
             frac::_all::*,
             // laws::_all::*,
+            no::*,
             // ops::_all::*,
         };
-        #[cfg(feature = "num")]
         pub use super::{
             traits::_all::*,
         };
@@ -39,9 +40,14 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
             real::_all::*,
         };
     }
-    _reexports {
-        pub use devela_base_core::num::dom::{
-            NoNum, NumConst,
+    _crate_internals {
+        pub use super::{
+            _internals::*,
+            real::_crate_internals::*,
+            int::_crate_internals::*,
         };
+    }
+    _hidden {
+        pub use super::int::_hidden::*;
     }
 }

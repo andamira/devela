@@ -261,12 +261,9 @@ mod _crate_internals {
     //! Crate-internal, hidden items.
     #![allow(unused_imports)]
 
-    pub(crate) use devela_base_core::_workspace_internals::*;
-    // NOTE: do not re-export alloc|std _workspace_internals,
-    // it conflicts at least with alt. Float implementations.
-
     #[rustfmt::skip]
     pub(crate) use super::{
+        _doc::_crate_internals::*,
         code::_crate_internals::*,
         data::_crate_internals::*,
         geom::_crate_internals::*,
@@ -281,6 +278,7 @@ mod _crate_internals {
         ui::_crate_internals::*,
         vita::_crate_internals::*,
         work::_crate_internals::*,
+        yard::_crate_internals::*,
     };
 }
 
@@ -290,13 +288,15 @@ mod _hidden {
     //! Workspace-public, hidden items.
     #![allow(unused_imports)]
 
-    #[doc(hidden)]
-    pub use devela_base_core::_hidden::*;
     #[rustfmt::skip]
     #[doc(hidden)]
     pub use super::{
+        _doc::_hidden::*,
+        code::_hidden::*,
         media::_hidden::*,
         num::_hidden::*,
         sys::_hidden::*,
+        text::_hidden::*,
+        yard::_hidden::*,
     };
 }

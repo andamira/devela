@@ -14,7 +14,7 @@
 // pub mod part; // Spatial partitioning, subdivision, and tessellation.
 // pub mod topol; // Topological properties of space such as connectivity and boundaries.
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
         //     field::_all::*,
@@ -23,10 +23,6 @@ crate::structural_mods! { // _mods, _reexports
         //     motion::_all::*,
         //     part::_all::*,
         //     topol::_all::*,
-        // };
-    }
-    _reexports {
-        // use devela_base_core::geom::space::{
         // };
     }
 }

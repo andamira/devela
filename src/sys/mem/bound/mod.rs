@@ -6,19 +6,23 @@
 #![doc = crate::_doc!(extends: pin, ptr)]
 //
 
+mod align; // CacheAlign, MemAligned
+mod cswap; // cswap!
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // FatPtr, Ptr, ::core::ptr::*
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
+            align::_all::*,
+            cswap::*,
             pin::_all::*,
             ptr::_all::*,
         };
     }
     _reexports {
         #[doc(inline)]
-        pub use devela_base_core::sys::mem::bound::{
+        pub use devela::sys::mem::bound::{
             CacheAlign, MemAligned, cswap,
         };
     }

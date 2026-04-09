@@ -9,13 +9,15 @@
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-crate::structural_mods! { // _reexports
+pub mod raw; // FdRaw
+
+crate::structural_mods! { // _mods, _reexports
+    _mods {
+        #[doc(inline)]
+        pub use super::raw::FdRaw;
+    }
     _reexports {
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
-
-        pub use devela_base_core::sys::os::fd::{
-            FdRaw,
-        };
     }
 }

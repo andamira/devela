@@ -6,31 +6,36 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _reexport_core; // SYMLINK to /crates/base/core/src/num/dom/real/float/_reexport.rs
+mod _reexport_core;
 
+pub(crate) mod _consts; // PI, TAU, SQRT2, …
+pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
+mod _internals; // _FloatInternals
+
+mod alias; // fsize
+mod bits; // f[32|64]bits[_niche]
 mod ext_float; // FloatExt
+mod float_const; // FloatConst
+mod wrapper; // Float
 
-#[cfg(feature = "std")]
-mod wrapper_std; // TEMP FloatStd
-
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
+            alias::*,
+            bits::*,
             ext_float::*,
+            float_const::*,
+            wrapper::_all::*,
         };
     }
     _reexports {
         pub use super::_reexport_core::*;
-
-        #[doc(inline)]
-        pub use devela_base_core::num::dom::{ // real
-            FloatConst,
-            f32bits, f32bits_niche, f64bits, f64bits_niche, fsize,
+    }
+    _crate_internals {
+        pub use super::{
+            _consts::*,
+            _docs::*,
+            _internals::*,
         };
-        crate::cfg_if! { if #[cfg(feature = "std")] {
-            pub use super::wrapper_std::FloatStd as Float;
-        } else {
-            pub use devela_base_core::num::dom::real::Float;
-        }}
     }
 }

@@ -23,7 +23,4 @@ crate::structural_mods! { // _pub_mods
         //     tribe::_all::*,
         // };
     }
-    _reexports {
-        // pub use devela_base_core::vita::love::*;
-    }
 }

@@ -23,7 +23,7 @@ crate::CONST! { pub(crate) _DOC_ORG_MODULES =
 // pub mod norm; // Shared social norms and informal behavioral expectations.
 // pub mod role; // Roles, responsibilities, and positions within coordinated action.
 
-crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         // pub use super::{
         //     agent::_all::*,
@@ -35,11 +35,6 @@ crate::structural_mods! { // _pub_mods, _reexports, _crate_internals
         //     norm::_all::*,
         //     role::_all::*,
         // };
-    }
-    _reexports {
-        // pub use devela_base_core::org::{
-        //     *
-        // }
     }
     _crate_internals {
         pub(crate) use super::_DOC_ORG_MODULES;

@@ -73,19 +73,25 @@ mod _reexport_core; // SYMLINK to /crates/base/core/src/num/grain/niche/_reexpor
 
 mod impls; // impl ConstInit, BitSized
 
-crate::structural_mods! { // _mods, _reexports
+mod absence; // MaybeNiche, NonNiche
+mod macros; // niche_prim!, ne!, nv!, nz!, (NicheNew)
+mod mem; // NonExtreme*, NonValue*
+// mod norm; // Norm WIP
+
+crate::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
-        pub use devela_base_core::num::grain::niche::{
-            MaybeNiche, NonNiche,
-            NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
-            NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize,
-            NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128, NonExtremeUsize,
-            NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128, NonExtremeIsize,
-            ne, nv, nz,
+        pub use super::{
+            absence::*,
+            macros::*,
+            mem::*,
+            // norm::*,
         };
     }
     _reexports {
         pub use super::_reexport_core::*;
+    }
+    _crate_internals {
+        pub use super::macros::NicheNew;
     }
 }

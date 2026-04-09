@@ -9,15 +9,18 @@
 mod tests;
 
 mod ext; // SliceExt
+mod iter; // SliceIter. SliceIterMut
+mod join; // const_join!
+mod namespace; // Slice, slice!
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
-        pub use super::ext::*;
-    }
-    _reexports {
         #[doc(inline)]
-        pub use devela_base_core::sys::mem::{ // view::slice
-            Slice, const_join, slice,
+        pub use super::{
+            ext::*,
+            iter::*,
+            join::*,
+            namespace::*,
         };
     }
 }
