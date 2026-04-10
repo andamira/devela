@@ -4,6 +4,13 @@
 #[macro_export]
 macro_rules! __buffer_linear_impl_vec {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
+
+        impl<T> Default for $name<T, ::alloc::vec::Vec<T>> {
+            fn default() -> Self {
+                Self::new()
+            }
+        }
+
         $(#[$impl_attr])*
         ///
         /// Dynamically sized array.
