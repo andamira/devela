@@ -62,6 +62,7 @@ See also
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
+- 1.??: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
@@ -95,9 +96,11 @@ See also
 - 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_base_macros`
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
+- 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
+- 1.??: `·`[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
@@ -128,6 +131,7 @@ See also
 - 1.??: ` `[core_float_math](https://github.com/rust-lang/rust/issues/137578)
 - 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
+- 1.??: ` `[custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
         = `nightly_doc` flag
 - 1.??: `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)

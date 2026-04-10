@@ -77,6 +77,7 @@
     nightly_stable_later,
     feature(
         breakpoint,
+        cfg_target_has_atomic_equal_alignment,
         cfg_version,
         const_array_from_ref,
         const_char_classify,
@@ -101,6 +102,7 @@
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
+        tcp_deferaccept,
         unsafe_cell_from_mut,
     )
 )]
