@@ -100,7 +100,7 @@ See also
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
-- 1.??: `·`[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
+- 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)

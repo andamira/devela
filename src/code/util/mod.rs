@@ -91,15 +91,15 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::_reexport_core::*;
 
         #[doc = crate::_tags!(code procedural_macro)]
-        #[rustfmt::skip]
         pub use devela_macros::{
             cif, compile, compile_attr,
-            enumint,
             ident_total, ident_total_unique, ident_unique,
             coalesce, field_of,
             compile_doc,
             repeat,
         };
+        #[doc = crate::_tags!(construction code procedural_macro)]
+        pub use devela_macros::enumint;
     }
     _crate_internals {
         pub(crate) use super::{

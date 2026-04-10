@@ -599,7 +599,6 @@ to reach the most precise result for both `f32` and `f64`:
 ± 1000. →     1923   6639
 ± 10000. →   12578  59174
 ± 100000. →  81181 536609
-/// ```
 ```";
 TABLE_SIN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed

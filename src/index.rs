@@ -102,7 +102,6 @@
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
-        tcp_deferaccept,
         unsafe_cell_from_mut,
     )
 )]

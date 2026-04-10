@@ -275,14 +275,22 @@ pub use __doc_availability as _doc_availability;
 macro_rules! _doc_location {
     // for items defined in a workspace crate and aggregated in devela.
     ($path:literal) => {
+        // VERSION more useful for all definitions in a single crate
         concat!(
-            "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
-            // "🎅\n\n---\n\n<sup title='defined in `", crate::__crate_name!(), // DEBUG
-            "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
+            "\n\n---\n\n",
+            "<sup title='home in `devela`'><b>[`📍 ", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
             "\n\n---\n\n" // final horizontal line
         )
+        // VERSION more useful for definitions split between multiple workspace members
+        // concat!(
+        //     "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
+        //     // "🎅\n\n---\n\n<sup title='defined in `", crate::__crate_name!(), // DEBUG
+        //     "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
+        //     "<sup title='location in `devela`'><b>[`", $path,
+        //     "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+        //     "\n\n---\n\n" // final horizontal line
+        // )
     };
     // for items defined in a proc-macro workspace crate and aggregated in devela.
     // NOTE: this macro and doclink! has to be copied there without #[macro_export].

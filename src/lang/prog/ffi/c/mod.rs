@@ -27,5 +27,8 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
+
+        #[cfg(feature = "unsafe_ffi")]
+        pub use crate::Libc;
     }
 }
