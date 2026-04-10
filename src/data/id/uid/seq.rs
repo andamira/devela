@@ -50,8 +50,8 @@ macro_rules! id_seq {
 
     ($name:ident, $tname:ty, $static:ident, $prim:ty, $atomic:ident) => {
         /// A static atomic counter used to generate unique sequential identifiers of type `$prim`.
-        static $static: core::sync::atomic::$atomic =
-            core::sync::atomic::$atomic::new(<$prim>::MIN + 1);
+        static $static: ::core::sync::atomic::$atomic =
+            ::core::sync::atomic::$atomic::new(<$prim>::MIN + 1);
 
         #[doc = concat!("A unique sequential identifier `", stringify!($prim), "` generator.")]
         ///
@@ -103,7 +103,7 @@ macro_rules! id_seq {
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             #[must_use]
             pub fn new_strong() -> Option<Self> {
-                Self::new_custom(core::sync::atomic::Ordering::SeqCst)
+                Self::new_custom(::core::sync::atomic::Ordering::SeqCst)
             }
             #[doc = concat!(
                 "Generates a unique `", stringify!($name), "` ID with [`SeqCst`] ordering.")
@@ -117,7 +117,7 @@ macro_rules! id_seq {
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             pub fn new_strong_unchecked() -> Self {
-                Self::new_custom_unchecked(core::sync::atomic::Ordering::SeqCst)
+                Self::new_custom_unchecked(::core::sync::atomic::Ordering::SeqCst)
             }
 
             #[doc = concat!(
@@ -132,7 +132,7 @@ macro_rules! id_seq {
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
             #[must_use]
             pub fn new_balanced() -> Option<Self> {
-                Self::new_custom(core::sync::atomic::Ordering::AcqRel)
+                Self::new_custom(::core::sync::atomic::Ordering::AcqRel)
              }
             #[doc = concat!(
                 "Generates a unique `", stringify!($name), "` ID with [`AcqRel`] ordering.")
@@ -146,7 +146,7 @@ macro_rules! id_seq {
             ///
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
             pub fn new_balanced_unchecked() -> Self {
-                Self::new_custom_unchecked(core::sync::atomic::Ordering::AcqRel)
+                Self::new_custom_unchecked(::core::sync::atomic::Ordering::AcqRel)
             }
 
             #[doc = concat!(
@@ -161,7 +161,7 @@ macro_rules! id_seq {
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             #[must_use]
             pub fn new_fast() -> Option<Self> {
-                Self::new_custom(core::sync::atomic::Ordering::Relaxed)
+                Self::new_custom(::core::sync::atomic::Ordering::Relaxed)
              }
             #[doc = concat!(
                 "Generates a unique `", stringify!($name), "` ID with [`Relaxed`] ordering.")
@@ -175,7 +175,7 @@ macro_rules! id_seq {
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             pub fn new_fast_unchecked() -> Self {
-                Self::new_custom_unchecked(core::sync::atomic::Ordering::Relaxed)
+                Self::new_custom_unchecked(::core::sync::atomic::Ordering::Relaxed)
             }
 
             /* iterators */
@@ -187,7 +187,7 @@ macro_rules! id_seq {
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             pub fn iter_strong() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Self::new_strong())
+                ::core::iter::from_fn(|| Self::new_strong())
             }
             /// Iterator over generated IDs with `SeqCst` ordering.
             ///
@@ -199,7 +199,7 @@ macro_rules! id_seq {
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             pub fn iter_strong_unchecked() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Some(Self::new_strong_unchecked()))
+                ::core::iter::from_fn(|| Some(Self::new_strong_unchecked()))
             }
 
             /// Iterator over generated IDs with `AcqRel` ordering.
@@ -209,7 +209,7 @@ macro_rules! id_seq {
             ///
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
             pub fn iter_balanced() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Self::new_balanced())
+                ::core::iter::from_fn(|| Self::new_balanced())
             }
             /// Iterator over generated IDs with `AcqRel` ordering.
             ///
@@ -221,7 +221,7 @@ macro_rules! id_seq {
             ///
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
             pub fn iter_balanced_unchecked() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Some(Self::new_balanced_unchecked()))
+                ::core::iter::from_fn(|| Some(Self::new_balanced_unchecked()))
             }
 
             /// Iterator over generated IDs with `Relaxed` ordering.
@@ -231,7 +231,7 @@ macro_rules! id_seq {
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             pub fn iter_fast() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Self::new_fast())
+                ::core::iter::from_fn(|| Self::new_fast())
             }
             /// Iterator over generated IDs with `Relaxed` ordering.
             ///
@@ -243,7 +243,7 @@ macro_rules! id_seq {
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             pub fn iter_fast_unchecked() -> impl Iterator<Item = $name> {
-                core::iter::from_fn(|| Some(Self::new_fast_unchecked()))
+                ::core::iter::from_fn(|| Some(Self::new_fast_unchecked()))
             }
 
             /* queries */
@@ -272,7 +272,7 @@ macro_rules! id_seq {
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             #[must_use]
             pub fn generated_ids_strong() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::SeqCst);
+                let current_id = $static.load(::core::sync::atomic::Ordering::SeqCst);
                 current_id - 1
             }
             /// Returns the number of IDs generated so far with [`Acquire`] ordering.
@@ -283,7 +283,7 @@ macro_rules! id_seq {
             /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
             #[must_use]
             pub fn generated_ids_balanced() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::Acquire);
+                let current_id = $static.load(::core::sync::atomic::Ordering::Acquire);
                 current_id - 1
             }
             /// Returns the number of IDs generated so far with [`Relaxed`] ordering.
@@ -294,7 +294,7 @@ macro_rules! id_seq {
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             #[must_use]
             pub fn generated_ids_fast() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::Relaxed);
+                let current_id = $static.load(::core::sync::atomic::Ordering::Relaxed);
                 current_id - 1
             }
 
@@ -313,7 +313,7 @@ macro_rules! id_seq {
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
             #[must_use]
             pub fn remaining_ids_strong() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::SeqCst);
+                let current_id = $static.load(::core::sync::atomic::Ordering::SeqCst);
                 <$prim>::MAX - current_id
             }
             /// Returns the number of remaining IDs with [`Acquire`] ordering.
@@ -324,7 +324,7 @@ macro_rules! id_seq {
             /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
             #[must_use]
             pub fn remaining_ids_balanced() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::Acquire);
+                let current_id = $static.load(::core::sync::atomic::Ordering::Acquire);
                 <$prim>::MAX - current_id
             }
             /// Returns the number of remaining IDs with [`Relaxed`] ordering.
@@ -335,13 +335,13 @@ macro_rules! id_seq {
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
             #[must_use]
             pub fn remaining_ids_fast() -> $prim {
-                let current_id = $static.load(core::sync::atomic::Ordering::Relaxed);
+                let current_id = $static.load(::core::sync::atomic::Ordering::Relaxed);
                 <$prim>::MAX - current_id
             }
 
             /* private helpers */
 
-            fn new_custom(ordering: core::sync::atomic::Ordering) -> Option<Self> {
+            fn new_custom(ordering: ::core::sync::atomic::Ordering) -> Option<Self> {
                 let id = $static.fetch_add(1, ordering);
                 if id == <$prim>::MIN {
                     Self::none_on_overflow()
@@ -352,7 +352,7 @@ macro_rules! id_seq {
             #[cold] #[rustfmt::skip]
             fn none_on_overflow() -> Option<Self> { None }
 
-            fn new_custom_unchecked(ordering: core::sync::atomic::Ordering) -> Self {
+            fn new_custom_unchecked(ordering: ::core::sync::atomic::Ordering) -> Self {
                 let id = $static.fetch_add(1, ordering);
                 if id == <$prim>::MIN {
                     Self::panic_on_overflow();
@@ -371,8 +371,8 @@ macro_rules! id_seq {
             }
         }
 
-        impl core::hash::Hash for $name {
-            fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        impl ::core::hash::Hash for $name {
+            fn hash<H: ::core::hash::Hasher>(&self, state: &mut H) {
                 self.id.hash(state);
             }
         }
@@ -384,13 +384,14 @@ macro_rules! id_seq {
         }
         impl Eq for $name {}
 
+        #[allow(clippy::non_canonical_partial_ord_impl)]
         impl PartialOrd for $name {
-            fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+            fn partial_cmp(&self, other: &Self) -> Option<::core::cmp::Ordering> {
                 Some(self.id.cmp(&other.id))
             }
         }
         impl Ord for $name {
-            fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+            fn cmp(&self, other: &Self) -> ::core::cmp::Ordering {
                 self.id.cmp(&other.id)
             }
         }

@@ -16,6 +16,7 @@ use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name,
     define_static_map, transmute,
 };
+::devela::_use_or_shim![_doc_location, _tags];
 
 // Stores the current pointers for concrete types.
 define_static_map![typeid KeyCurrentMap];
@@ -24,9 +25,9 @@ thread_local! {
         = RefCell::new(KeyCurrentMap::new_cloned(PtrNonNull::<u8>::dangling()));
 }
 
-#[doc = crate::_tags!(guard)]
+#[doc = _tags!(guard)]
 /// A guard that temporarily sets a global current ptr for `T`, restoring the old one on drop.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = _doc_location!("sys/mem")]
 ///
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
@@ -82,9 +83,9 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
     }
 }
 
-#[doc = crate::_tags!(guard)]
+#[doc = _tags!(guard)]
 /// A marker object representing the current instance of a type `T`.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = _doc_location!("sys/mem")]
 ///
 /// This struct does not hold any actual value but instead allows access to
 /// a globally tracked instance of `T`, typically managed through `CurrentGuard`.

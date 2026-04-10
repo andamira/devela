@@ -36,6 +36,7 @@ crate::structural_mods! { // _crate_internals, _hidden
         #[doc(hidden)]
         pub use super::{
             _policy::{_devela_policy, __devela_unreachable_unchecked},
+            _use::_use_or_shim,
         };
     }
 }

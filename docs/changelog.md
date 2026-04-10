@@ -33,12 +33,18 @@ simplifying the workspace while preserving what was learned from the split.
 # Modules
 
 ## code
-- merge `ConstInitCore` and `ConstInit` into `ConstInit`. TODO
+- merge `ConstInitCore` and `ConstInit` into `ConstInit`.
 
 #### media::visual::color
 - merge `GammaConst` and `Gamma` into `Gamma`.
 
 #### num::real::float
 - remove `FloatStd`.
+
+### sys::mem
+- fix standalone `guard.rs` example.
+
+## yard
+- new workspace-internal macro: `_use_or_shim!`.
 
 [0.27.0]: https://github.com/andamira/devela/releases/tag/v0.27.0

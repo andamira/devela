@@ -1,6 +1,6 @@
 // devela::yard::_use
 //
-//! Defines the [`_use`] internal meta helper.
+//! Defines the internal meta helpers: [`_use`], [`_use_or_shim`].
 //
 
 #[doc = crate::_tags!(internal)]
@@ -57,3 +57,51 @@ macro_rules! __use {
 }
 #[doc(inline)]
 pub use __use as _use;
+
+#[doc = crate::_tags!(internal)]
+/// Imports known helpers or provides compatibility shims.
+#[doc = crate::_doc_location!("yard")]
+///
+/// Used by dual-purpose source files that must compile both inside devela
+/// and as standalone examples.
+///
+/// Inside devela, it imports the requested helpers.
+/// Outside devela, it defines inert stand-ins for a fixed whitelist.
+///
+/// Unsupported names are rejected at compile time.
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
+#[macro_export]
+// NOTE $_d: the dollar sign passed as a token, as a trick to be able to nest repetitions.
+macro_rules! __use_or_shim {
+    ($($name:ident),+ $(,)?) => {
+        $( $crate::__use_or_shim![%($) $name]; )+
+    };
+    (%($_d:tt) _tags) => {
+        $crate::__use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
+        $crate::__use_or_shim![%import _tags];
+    };
+    (%($_d:tt) _doc_location) => {
+        $crate::__use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
+        $crate::__use_or_shim![%import _doc_location];
+    };
+    (%import $name:ident) => {
+        #[$crate::compile(env(__DEVELA_MEMBER))]
+        #[allow(unused_imports)]
+        use ::devela::$name;
+    };
+    (%shim $name:ident => { $($rules:tt)* }) => {
+        #[$crate::compile(not(env(__DEVELA_MEMBER)))]
+        #[allow(unused_macros)]
+        macro_rules! $name { $($rules)* }
+    };
+    (% $name:ident) => {
+        compile_error!(concat!(
+            "Unsupported helper for `_use_or_shim!`: `", stringify!($name),
+            "`. Supported names: `_tags`, `_doc_location`."
+        ));
+    };
+}
+#[doc(inline)]
+pub use __use_or_shim as _use_or_shim;
