@@ -129,20 +129,11 @@ macro_rules! impl_non_value {
                     unsafe { return $ne::new_unchecked($IP::default()); }
                 }
             }
-            // ConstInit for NonExtreme* IMPROVE:
-            // - better unreachable
-            // - also implement for NonValue*: MAYBE
-            impl crate::ConstInit for $ne {
-                /// # Features
-                /// Makes use of the `unsafe_niche` feature if enabled.
-                const INIT: Self = {
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                    if let Some(v) = Self::new(<$IP>::INIT) { v } else { unreachable![] }
-
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                    // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                    unsafe { $ne::new_unchecked(<$IP>::INIT) }
-                };
+            // ConstInit for NonValue*
+            impl<const V: $IP> crate::ConstInit for $name<V> {
+                /// Initializes to `0` when allowed, or to `Self::MIN` when `V == 0`.
+                const INIT: Self = if V == 0 { Self::MIN } else {
+                    $crate::unwrap![some_guaranteed_or_ub Self::new(0)] };
             }
 
             impl<const V: $IP> $name<V> {

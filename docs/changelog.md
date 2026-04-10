@@ -41,7 +41,10 @@ simplifying the workspace while preserving what was learned from the split.
 #### media::visual::color
 - merge `GammaConst` and `Gamma` into `Gamma`.
 
-#### num::int
+#### num::grain::niche
+- impl `ConstInit` for `NonValue*` using `0` if allowed.
+
+### num::int
 - remove `IntAlloc`; merge its methods in `Int`.
 
 #### num::real::float
