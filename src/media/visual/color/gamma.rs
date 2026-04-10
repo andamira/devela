@@ -1,12 +1,16 @@
 // devela::media::visual::color::gamma
 //
-//! Defines [`GammaConstConst`].
+//! Defines [`Gamma`].
 //
+// TOC
+// - struct Gamma
+// - impls
+// - docs
 
 use crate::{Float, is};
 
 #[doc = crate::_tags!(color)]
-/// GammaConst correction curves.
+/// Gamma correction curves.
 #[doc = crate::_doc_location!("media/visual/color")]
 ///
 /// Used for encoding and decoding linear luminance or tristimulus values
@@ -15,11 +19,11 @@ use crate::{Float, is};
 /// This version has const methods using /
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-pub struct GammaConst<T> {
+pub struct Gamma<T> {
     /// The gamma exponent (`γ`) used in the encoding/decoding transform.
     pub exp: T,
 }
-impl<T> GammaConst<T> {
+impl<T> Gamma<T> {
     /// Constructs a new gamma curve with the given exponent.
     pub const fn new(gamma: T) -> Self {
         Self { exp: gamma }
@@ -31,21 +35,23 @@ macro_rules! impl_gamma {
     () => { impl_gamma![gamma f32, f64]; };
     ( gamma $($T:ty),+) => { $( impl_gamma![@gamma $T]; )+ };
     (@gamma   $T:ty) => {
-        /// GammaConst encoding, decoding, and sRGB transfer functions for floating-point values.
-        impl GammaConst<$T> {
+        /// Gamma encoding, decoding, and sRGB transfer functions for floating-point values.
+        impl Gamma<$T> {
             /* basic gamma */
 
-            /// Encodes the given linear `v`alue using this gamma: $v^{(1/γ)}$.
-            ///
-            /// Performs basic gamma encoding (power-law).
+            #[cfg(feature = "std")]
+            #[doc = _DOC_GAMMA_ENCODE!()]
+            pub fn encode(self, v: $T) -> $T { v.powf(self.exp.recip()) }
+            #[doc = _DOC_GAMMA_ENCODE!()]
             pub const fn const_encode(self, v: $T) -> $T {
                 let terms = Float(v).exp_series_terms();
                 Float(v).powf_series(self.exp.recip(), terms).0
             }
 
-            /// Decodes the given gamma-encoded `v`alue using this gamma: $v^γ$ .
-            ///
-            /// Performs basic gamma decoding (power-law inverse).
+            #[cfg(feature = "std")]
+            #[doc = _DOC_GAMMA_ENCODE!()]
+            pub fn decode(self, v: $T) -> $T { v.powf(self.exp) }
+            #[doc = _DOC_GAMMA_ENCODE!()]
             pub const fn const_decode(self, v: $T) -> $T {
                 let terms = Float(v).exp_series_terms();
                 Float(v).powf_series(self.exp, terms).0
@@ -53,17 +59,12 @@ macro_rules! impl_gamma {
 
             /* srgb gamma */
 
-            /// Encodes the given `v`alue using the sRGB transfer function.
-            ///
-            /// Applies a piecewise curve based on this gamma (typically 2.4).
-            ///
-            /// # Algorithm
-            /// $$
-            /// f_\text{encode}(c) = \begin{cases}
-            /// 12.92c, & \text{if } c <= 0.0031308 \cr
-            /// 1.055c^{1/\gamma} - 0.055, & \text{if } c > 0.0031308
-            /// \end{cases}
-            /// $$
+            #[cfg(feature = "std")]
+            #[doc = _DOC_GAMMA_ENCODE_SRGB!()]
+            pub fn encode_srgb(self, v: $T) -> $T {
+                is![v <= 0.003_130_8, 12.92 * v, 1.055 * v.powf(self.exp.recip()) - 0.055]
+            }
+            #[doc = _DOC_GAMMA_ENCODE_SRGB!()]
             pub const fn const_encode_srgb(self, v: $T) -> $T {
                 if v <= 0.003_130_8 { 12.92 * v }
                 else {
@@ -72,18 +73,12 @@ macro_rules! impl_gamma {
                 }
             }
 
-            /// Decodes the given `v`alue using the sRGB inverse transfer function.
-            ///
-            /// Applies the inverse piecewise curve based on this gamma (typically 2.4).
-            ///
-            /// # Algorithm
-            /// $$
-            /// \notag f_\text{decode}(c) = \begin{cases}
-            /// c / 12.92, & \normalsize\text{if } c <= 0.04045 \cr
-            /// \left(\Large\frac{c + 0.055}{1.055}\right)^\gamma
-            ///   & \normalsize \text{if } c > 0.04045
-            /// \end{cases}
-            /// $$
+            #[cfg(feature = "std")]
+            #[doc = _DOC_GAMMA_DECODE_SRGB!()]
+            pub fn decode_srgb(self, v: $T) -> $T {
+                is![v <= 0.040_45, v / 12.92, ((v + 0.055) / (1.055)).powf(self.exp)]
+            }
+            #[doc = _DOC_GAMMA_DECODE_SRGB!()]
             pub const fn const_decode_srgb(self, v: $T) -> $T {
                 if v <= 0.040_45 { v / 12.92 } else {
                     let terms = Float(v).exp_series_terms();
@@ -92,7 +87,7 @@ macro_rules! impl_gamma {
             }
         }
         /// Weighted RGB → luma conversion utilities using standard coefficients.
-        impl GammaConst<$T> {
+        impl Gamma<$T> {
             /// R′G′B′ coefficients for computing sRGB luma (same as Rec. 709).
             pub const SRGB: [$T; 3] = Self::REC_709;
 
@@ -170,3 +165,33 @@ macro_rules! impl_gamma {
     };
 }
 impl_gamma!();
+
+/* docs */
+
+crate::CONST! {
+    _DOC_GAMMA_ENCODE = "Encodes the given linear `v`alue using this gamma: $v^{(1/γ)}$.\n\n
+Performs basic gamma encoding (power-law).";
+    _DOC_GAMMA_DECODE = "Decodes the given gamma-encoded `v`alue using this gamma: $v^γ$.\n\n
+Performs basic gamma decoding (power-law inverse).";
+    _DOC_GAMMA_ENCODE_SRGB = r#"Encodes the given `v`alue using the sRGB transfer function.
+
+Applies a piecewise curve based on this gamma (typically 2.4).
+# Algorithm
+$$
+f_\text{encode}(c) = \begin{cases}
+12.92c, & \text{if } c <= 0.0031308 \cr
+1.055c^{1/\gamma} - 0.055, & \text{if } c > 0.0031308
+\end{cases}
+$$"#;
+    _DOC_GAMMA_DECODE_SRGB = r#"Decodes the given `v`alue using the sRGB inverse transfer function.
+
+Applies the inverse piecewise curve based on this gamma (typically 2.4).
+# Algorithm
+$$
+\notag f_\text{decode}(c) = \begin{cases}
+c / 12.92, & \normalsize\text{if } c <= 0.04045 \cr
+\left(\Large\frac{c + 0.055}{1.055}\right)^\gamma
+  & \normalsize \text{if } c > 0.04045
+\end{cases}
+$$"#;
+}

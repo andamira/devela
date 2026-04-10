@@ -19,6 +19,9 @@ simplifying the workspace while preserving what was learned from the split.
 
 # Modules
 
+#### media::visual::color
+- merge `GammaConst` and `Gamma` into `Gamma`.
+
 #### num::real::float
 - remove `FloatStd`.
 
