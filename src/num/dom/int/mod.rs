@@ -18,9 +18,6 @@ mod int; // Int, define_int! WIP
 // mod primes; // WIP
 // mod recip; // DivRecip WIP
 
-#[cfg(all(feature = "int", feature = "alloc"))]
-mod wrapper_alloc; // IntAlloc TEMP:merge FIXME
-
 #[cfg(feature = "int")]
 mod num_trait; // NumInt, NumRefInt
 
@@ -38,10 +35,6 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         pub use super::{
             int::_all::*,
             num_trait::*,
-        };
-        #[cfg(all(feature = "int", feature = "alloc"))]
-        pub use super::{
-            wrapper_alloc::*,
         };
         #[cfg(feature = "_docs_examples")]
         pub use super::divisor::DivisorExample;

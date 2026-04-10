@@ -10,12 +10,13 @@ mod impl_combinatorics;
 mod impl_div;
 mod impl_elem;
 mod impl_factors;
+#[cfg(feature = "alloc")]
+mod impl_factors_alloc;
 mod impl_modulo;
 mod impl_prime;
 mod impl_root;
 
-// WIPZONE
-// mod _wip_impl_stats;
+// mod _wip_impl_stats; // WIP
 
 crate::structural_mods! { // _mods
     _mods {

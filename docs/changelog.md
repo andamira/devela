@@ -38,8 +38,11 @@ simplifying the workspace while preserving what was learned from the split.
 #### media::visual::color
 - merge `GammaConst` and `Gamma` into `Gamma`.
 
+#### num::int
+- remove `IntAlloc`; merge its methods in `Int`.
+
 #### num::real::float
-- remove `FloatStd`.
+- remove `FloatStd`; merge its methods in `Float`.
 
 ### sys::mem
 - fix standalone `guard.rs` example.
