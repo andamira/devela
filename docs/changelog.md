@@ -35,6 +35,9 @@ simplifying the workspace while preserving what was learned from the split.
 ## code
 - merge `ConstInitCore` and `ConstInit` into `ConstInit`.
 
+### data::layout
+- remove `SortAlloc`; merge its methods in `Sort`.
+
 #### media::visual::color
 - merge `GammaConst` and `Gamma` into `Gamma`.
 

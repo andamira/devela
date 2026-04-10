@@ -3,9 +3,9 @@
 //! Implements sorting algorithms for exclusive generic arrays `[T: Ord; N]`.
 //
 
-use crate::{BTreeMap, SortAlloc, Vec};
+use crate::{BTreeMap, Sort, Vec};
 
-impl<T: Ord> SortAlloc<&mut [T]> {
+impl<T: Ord> Sort<&mut [T]> {
     /// Sorts a slice using counting sort, and returns the ordered frequencies.
     ///
     /// Counting sort is particularly efficient when the range of input values is
@@ -13,9 +13,9 @@ impl<T: Ord> SortAlloc<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::SortAlloc;
+    /// # use devela::Sort;
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
-    /// let freq = SortAlloc::new(&mut data[..]).counting();
+    /// let freq = Sort(&mut data[..]).counting();
     /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
     /// assert_eq![freq, [3, 7, 5, 2]];
     /// ```
@@ -25,7 +25,7 @@ impl<T: Ord> SortAlloc<&mut [T]> {
     {
         let mut counts = BTreeMap::new();
         // Calculate the frequencies and save them
-        for item in self.0.0.iter() {
+        for item in self.0.iter() {
             let count = counts.entry(item.clone()).or_insert(0);
             *count += 1;
         }
@@ -34,7 +34,7 @@ impl<T: Ord> SortAlloc<&mut [T]> {
         let mut i = 0;
         for (item, &count) in counts.iter() {
             for _ in 0..count {
-                self.0.0[i] = item.clone();
+                self.0[i] = item.clone();
                 i += 1;
             }
         }
@@ -47,19 +47,19 @@ impl<T: Ord> SortAlloc<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::SortAlloc;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
-    /// SortAlloc::new(&mut arr[..]).merge();
+    /// Sort(&mut arr[..]).merge();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
     pub fn merge(self)
     where
         T: Copy,
     {
-        let len = self.0.0.len();
+        let len = self.0.len();
         let mut buffer = Vec::with_capacity(len);
-        buffer.resize(len, self.0.0[0]);
-        helper::sort_merge_internal(self.0.0, &mut buffer);
+        buffer.resize(len, self.0[0]);
+        helper::sort_merge_internal(self.0, &mut buffer);
     }
 }
 

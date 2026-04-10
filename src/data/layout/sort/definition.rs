@@ -9,15 +9,17 @@
 ///
 /// It implements the following methods for sorting exclusive slices:
 /// [`bubble`][Sort#bubble],
-/// [`counting`][Sort#counting],
 /// [`counting_buf`][Sort#counting_buf],
 /// [`insertion`][Sort#insertion],
-/// [`merge`][Sort#merge],
 /// [`quick_lomuto`][Sort#quick_lomuto],
 /// [`quick_hoare`][Sort#quick_hoare],
 /// [`quick_3way`][Sort#quick_3way],
 /// [`quick_selection`][Sort#quick_selection],
 /// [`quick_shaker`][Sort#quick_shaker].
+///
+/// And the following allocating methods:
+/// [`counting`][Sort#counting],
+/// [`merge`][Sort#merge].
 ///
 /// # Examples
 /// Sort copied arrays of primitives:
@@ -41,6 +43,16 @@
 /// // compile-time friendly
 /// const SORTED: [f32; 6] = Sort([4.01f32, 7.9, -5.4, 1.0, 0.0, -0.0]).bubble_array();
 /// assert_eq![SORTED, [-5.4, -0.0, 0.0, 1.0, 4.01, 7.9]];
+/// ```
+///
+/// Allocating methods:
+/// ```
+/// # #[cfg(feature = "alloc")] { use devela::Sort;
+/// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
+/// let freq = Sort(&mut data[..]).counting();
+/// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
+/// assert_eq![freq, [3, 7, 5, 2]];
+/// # }
 /// ```
 ///
 /// # Performance
