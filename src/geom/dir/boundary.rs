@@ -17,7 +17,7 @@
 use crate::Extent;
 use crate::{_impl_init, Sign};
 
-_impl_init![ConstInitCore: Self::Left => Boundary1d, Boundary2d, Boundary3d];
+_impl_init![ConstInit: Self::Left => Boundary1d, Boundary2d, Boundary3d];
 
 #[doc = crate::_tags!(geom_dir)]
 /// Orientation relative to a one-dimensional boundary.

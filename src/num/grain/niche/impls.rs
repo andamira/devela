@@ -7,11 +7,6 @@
 use crate::MemPod;
 #[cfg(feature = "bit")]
 use crate::{BitSized, ByteSized};
-use crate::{
-    ConstInitSealed, NonExtremeI8, NonExtremeI16, NonExtremeI32, NonExtremeI64, NonExtremeI128,
-    NonExtremeIsize, NonExtremeU8, NonExtremeU16, NonExtremeU32, NonExtremeU64, NonExtremeU128,
-    NonExtremeUsize, paste,
-};
 #[allow(unused, reason = "±unsafe")]
 use crate::{
     NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize, NonValueU8,
@@ -25,7 +20,7 @@ macro_rules! impl_for_non_value {
             i8, i16, i32, i64, i128, isize,
         ];
     };
-    ($($IP:ty),+ $(,)?) => { paste! {
+    ($($IP:ty),+ $(,)?) => { crate::paste! {
         $(
             impl_for_non_value!(@
                 [<NonValue $IP:camel>],
@@ -39,9 +34,6 @@ macro_rules! impl_for_non_value {
         // BitSized for NonValue*
         #[cfg(feature = "bit")]
         impl<const V: $IP> BitSized<{<$IP>::BYTE_SIZE * 8}> for $nv<V> {}
-
-        // ConstInit for NonExtreme*
-        impl ConstInitSealed for $ne {}
 
         // MemPod for NonValue*
         #[cfg(feature = "unsafe_layout")]

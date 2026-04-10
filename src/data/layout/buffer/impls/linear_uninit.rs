@@ -92,7 +92,7 @@ macro_rules! __buffer_linear_impl_uninit {
             /// Creates a new buffer by moving all the possible elements from `src`,
             /// and replacing them with the initializing value.
             pub const fn from_slice_move_init(src: &mut [T]) -> Option<Self>
-            where T: $crate::ConstInitCore {
+            where T: $crate::ConstInit {
                 if src.len() > CAP { return None; }
                 let mut storage = [const { $crate::MaybeUninit::uninit() }; CAP];
                 $crate::whilst! { i in 0..src.len(); {
@@ -251,7 +251,7 @@ macro_rules! __buffer_linear_impl_uninit {
             }
             /// Takes the value at `index`, replacing it with `T::INIT`.
             pub const fn take_init(&mut self, index: $I) -> Option<T>
-            where T: $crate::ConstInitCore {
+            where T: $crate::ConstInit {
                 if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_idx_to_usize(index);
                 // SAFETY: `index < self.len`, so the slot is initialized per invariant.

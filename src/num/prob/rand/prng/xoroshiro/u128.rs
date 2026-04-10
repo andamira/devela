@@ -8,7 +8,7 @@
 //   - trait implementations
 //   - private items and helpers
 
-use crate::{Cast, ConstInitCore, Own, Rand, whilst};
+use crate::{Cast, ConstInit, Own, Rand, whilst};
 
 /* public definitions */
 
@@ -229,7 +229,7 @@ impl Default for Xoroshiro128pp {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for Xoroshiro128pp {
+impl ConstInit for Xoroshiro128pp {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 

@@ -256,7 +256,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 #[rustfmt::skip]
 mod trait_impls {
     use crate::{
-        ConstInitCore, Debug, Display, Formatter, FmtResult, GraphemeNonul, Hash, Hasher,
+        ConstInit, Debug, Display, Formatter, FmtResult, GraphemeNonul, Hash, Hasher,
         StringNonul,
     };
 
@@ -265,7 +265,7 @@ mod trait_impls {
         #[inline(always)]
         fn default() -> Self { Self::new() }
     }
-    impl<const CAP: usize> ConstInitCore for GraphemeNonul<CAP> {
+    impl<const CAP: usize> ConstInit for GraphemeNonul<CAP> {
         /// An empty extended grapheme character.
         const INIT: Self = Self::new();
     }

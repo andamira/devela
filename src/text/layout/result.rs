@@ -24,7 +24,7 @@ pub enum TextFit {
     #[default]
     None,
 }
-_impl_init![ConstInitCore: Self::None => TextFit];
+_impl_init![ConstInit: Self::None => TextFit];
 
 #[doc = crate::_tags!(text layout result)]
 /// Result of a single text layout step.
@@ -62,4 +62,4 @@ impl TextLayoutStep {
         TextLayoutStep { span_count, consumed, carry, fit }
     }
 }
-_impl_init![ConstInitCore: Self::new(0, TextUnit::INIT, None, TextFit::INIT) => TextLayoutStep];
+_impl_init![ConstInit: Self::new(0, TextUnit::INIT, None, TextFit::INIT) => TextLayoutStep];

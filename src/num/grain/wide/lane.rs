@@ -82,7 +82,7 @@ macro_rules! define_lane {
         $(#[$attr])*
         $vis struct $name<T>($vis_inner [T; $L]);
 
-        impl<T: $crate::ConstInitCore> $crate::ConstInitCore for $name<T> {
+        impl<T: $crate::ConstInit> $crate::ConstInit for $name<T> {
             const INIT: Self = Self([T::INIT; $L]);
         }
 

@@ -32,6 +32,9 @@ simplifying the workspace while preserving what was learned from the split.
 
 # Modules
 
+## code
+- merge `ConstInitCore` and `ConstInit` into `ConstInit`. TODO
+
 #### media::visual::color
 - merge `GammaConst` and `Gamma` into `Gamma`.
 

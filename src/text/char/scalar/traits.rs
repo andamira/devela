@@ -23,14 +23,14 @@ macro_rules! char_core_impls {
     };
     (@$name:ident + $default:expr) => { paste! {
         mod [< _impl_ $name >] {
-            use crate::{Binary, ConstInitCore, LowerHex, Octal, UpperHex, impl_trait};
+            use crate::{Binary, ConstInit, LowerHex, Octal, UpperHex, impl_trait};
             use super::*;
 
             impl Default for $name {
                 /// Returns the default value of `\x00` (nul character).
                 fn default() -> Self { $default }
             }
-            impl ConstInitCore for $name {
+            impl ConstInit for $name {
                 /// It has the initial value of `\x00` (nul character).
                 const INIT: Self = $default;
             }

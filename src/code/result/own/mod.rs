@@ -118,14 +118,14 @@ pub struct Own<S, V> {
 }
 
 mod core_impls {
-    use crate::{ConstInitCore, Debug, Display, FmtResult, Formatter, Ordering, Own};
+    use crate::{ConstInit, Debug, Display, FmtResult, Formatter, Ordering, Own};
 
     impl<S: Default, V: Default> Default for Own<S, V> {
         fn default() -> Self {
             Own::new(S::default(), V::default())
         }
     }
-    impl<S: ConstInitCore, V: ConstInitCore> ConstInitCore for Own<S, V> {
+    impl<S: ConstInit, V: ConstInit> ConstInit for Own<S, V> {
         const INIT: Self = Own::new(S::INIT, V::INIT);
     }
 

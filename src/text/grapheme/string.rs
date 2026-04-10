@@ -81,13 +81,13 @@ impl GraphemeString {
 #[rustfmt::skip]
 mod core_impls {
     use super::*;
-    use crate::{ConstInitCore, Formatter, FmtResult, Debug, Display};
+    use crate::{ConstInit, Formatter, FmtResult, Debug, Display};
 
     impl Default for GraphemeString {
         /// Returns a new empty extended grapheme cluster.
         fn default() -> Self { Self::new() }
     }
-    impl ConstInitCore for GraphemeString {
+    impl ConstInit for GraphemeString {
         /// An empty extended grapheme cluster.
         const INIT: Self = Self::new();
     }

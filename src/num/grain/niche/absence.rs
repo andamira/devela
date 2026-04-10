@@ -24,7 +24,7 @@
 // - tests
 
 use crate::{
-    Cast, ConstInitCore, InvalidValue, NicheValueError, NonValueI8, NonValueI16, NonValueI32,
+    Cast, ConstInit, InvalidValue, NicheValueError, NonValueI8, NonValueI16, NonValueI32,
     NonValueI64, NonValueI128, NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64,
     NonValueU128, NonValueUsize, NonZero, Overflow, unwrap,
 };
@@ -113,7 +113,7 @@ macro_rules! impl_maybe {
      $(, ^$new:ident)?  // for: from_prim, *_unchecked
      $(, @$non0:ident)? // identifies nonzero types, for: from_prim_lossy
     ) => {
-        impl $(<const $V: $v>)? ConstInitCore for MaybeNiche<$T> where $T: ConstInitCore {
+        impl $(<const $V: $v>)? ConstInit for MaybeNiche<$T> where $T: ConstInit {
             const INIT: Self = Self::new(<$T>::INIT);
         }
 
@@ -399,7 +399,7 @@ impl<T: Copy> From<T> for NonNiche<T> {
     fn from(value: T) -> Self { Self(value) }
 }
 
-impl<T: Copy + ConstInitCore> ConstInitCore for NonNiche<T> {
+impl<T: Copy + ConstInit> ConstInit for NonNiche<T> {
     const INIT: Self = Self(T::INIT);
 }
 

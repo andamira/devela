@@ -39,7 +39,7 @@ struct ConstListItem<'a, T: 'a> {
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ConstList<'a, T: 'a>(Option<ConstListItem<'a, T>>);
 
-crate::_impl_init![ConstInitCore: <T> Self::new() => ConstList<'_, T>];
+crate::_impl_init![ConstInit: <T> Self::new() => ConstList<'_, T>];
 
 impl<'a, T: 'a> ConstList<'a, T> {
     /// Creates a new, empty list.

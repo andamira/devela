@@ -3,9 +3,9 @@
 //! Define the [`Mismatch`] type.
 //
 
-use crate::{ConstInitCore, Interval};
+use crate::{ConstInit, Interval};
 
-impl<N: ConstInitCore, H: ConstInitCore> ConstInitCore for Mismatch<N, H> {
+impl<N: ConstInit, H: ConstInit> ConstInit for Mismatch<N, H> {
     /// Returns a *const* default `Mismatch`.
     const INIT: Self = Self::new(N::INIT, H::INIT);
 }
@@ -59,7 +59,7 @@ impl<N, H> Mismatch<Interval<N>, H> {
     /// but `have` was provided.
     #[must_use] #[rustfmt::skip]
     pub const fn in_empty_const_interval(have: H, info: &'static str) -> Self
-    where N: ConstInitCore {
+    where N: ConstInit {
         Self { need: Interval::empty_const(), have, info }
     }
     /// Creates a mismatch where `need` is an [`Interval::empty_with`],

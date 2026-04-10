@@ -3,7 +3,7 @@
 //! 16-bit Linear Congruential Generator
 //
 
-use crate::{Cast, ConstInitCore, Own, Rand};
+use crate::{Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 #[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
@@ -20,7 +20,7 @@ impl Default for Lcg16 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for Lcg16 {
+impl ConstInit for Lcg16 {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 

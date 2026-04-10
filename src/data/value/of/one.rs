@@ -25,13 +25,13 @@ macro_rules! impl_oneof {
         $crate::impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
 
-    // point of entry for implementing ConstInitCore
+    // point of entry for implementing ConstInit
     (impl_const_init) => {
         $crate::impl_oneof!(%canonical %map_ident impl_const_init:);
     };
-    // real ConstInitCore implementation
+    // real ConstInit implementation
     (impl_const_init: $_0:ident $(, $rest:ident)*) => {
-        impl<const LEN: usize, $_0: crate::ConstInitCore, $($rest),*> crate::ConstInitCore
+        impl<const LEN: usize, $_0: crate::ConstInit, $($rest),*> crate::ConstInit
             for Oneof<LEN, $_0, $($rest),*> {
             const INIT: Self = Oneof::$_0($_0::INIT);
         }

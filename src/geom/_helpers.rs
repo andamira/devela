@@ -13,7 +13,7 @@ use crate::{Distance, Extent, Orientation, Position, Stride};
 macro_rules! _impl_geom_dim {
     ( // implement common utility traits:
       // - conversion From arrays and tuples
-      // - Default, ConstInitCore
+      // - ConstInit, Default
       // - Clone, Copy, Hash
       // - Debug, Display
       // - PartialEq, Eq
@@ -34,15 +34,15 @@ macro_rules! _impl_geom_dim {
             fn from(dim: (T, T, T, T)) -> Self { Self { dim: [dim.0, dim.1, dim.2, dim.3] } }
         }
 
-        /* Default, ConstInitCore */
+        /* Default, ConstInit */
 
         impl<T: Default, const D: usize> Default for $Name<T, D> {
             fn default() -> Self {
                 Self::new($crate::init_array![default [T; D], "safe_geom", "unsafe_array"])
             }
         }
-        impl<T: $crate::ConstInitCore, const D: usize> $crate::ConstInitCore for $Name<T, D> {
-            const INIT: Self = Self::new($crate::init_array![INIT in $crate::ConstInitCore [T; D]]);
+        impl<T: $crate::ConstInit, const D: usize> $crate::ConstInit for $Name<T, D> {
+            const INIT: Self = Self::new($crate::init_array![INIT in $crate::ConstInit [T; D]]);
         }
 
         /* Clone, Copy, Hash */

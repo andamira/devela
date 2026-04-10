@@ -21,7 +21,7 @@ use crate::{
 /// Layout proceeds incrementally via repeated layout steps.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TextLayout;
-_impl_init![ConstInitCore: Self => TextLayout];
+_impl_init![ConstInit: Self => TextLayout];
 
 impl TextLayout {
     /// Performs a single inline layout step.

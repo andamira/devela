@@ -3,7 +3,7 @@
 //! 16-bit version of XorShift.
 //
 
-use crate::{Cast, ConstInitCore, Own, Rand, xorshift_basis};
+use crate::{Cast, ConstInit, Own, Rand, xorshift_basis};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift16` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -31,7 +31,7 @@ impl Default for XorShift16 {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for XorShift16 {
+impl ConstInit for XorShift16 {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 

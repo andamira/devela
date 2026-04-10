@@ -17,7 +17,6 @@ mod _reexport_core;
 
 mod any; // dynamic typing and reflection
 mod const_init; // ConstInit
-mod const_init_core; // ConstInitCore // TEMP:merge
 mod guard; // ScopeGuard
 mod intro; // Introspect
 mod site; // CodeLocation, CodeSpan
@@ -34,7 +33,6 @@ util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
         pub use super::{
             any::_all::*,
             const_init::ConstInit, // TEMP:merge
-            const_init_core::ConstInitCore, // TEMP:merge
             guard::*,
             intro::_all::*,
             site::*,
@@ -56,8 +54,7 @@ util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _crate_internals {
         pub(crate) use super::_DOC_CODE_MODULES;
         pub(crate) use super::util::_crate_internals::*;
-        pub(crate) use super::const_init::Sealed as ConstInitSealed; //TEMP:merge
-        pub(crate) use super::const_init_core::_impl_init; // TEMP:merge
+        pub(crate) use super::const_init::_impl_init;
     }
     _hidden {
         pub use super::util::_hidden::*;

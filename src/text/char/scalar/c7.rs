@@ -5,7 +5,7 @@
 
 use super::*;
 use crate::{
-    Char, CharAscii, ConstInitCore, MismatchedCapacity, NonExtremeU8, Str, TextLut, cmp, whilst,
+    Char, CharAscii, ConstInit, MismatchedCapacity, NonExtremeU8, Str, TextLut, cmp, whilst,
 };
 
 #[rustfmt::skip]

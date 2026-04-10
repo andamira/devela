@@ -113,7 +113,7 @@ macro_rules! impl_non_value {
             #[doc = crate::_doc_location!("num/grain/niche")]
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
-            /// the [`Default`] and [`ConstInitCore`][crate::ConstInitCore] traits.
+            /// the [`Default`] and [`ConstInit`][crate::ConstInit] traits.
             #[doc = crate::_DOCLINK_CONST_INIT!()]
             pub type $ne = $crate::$name <{$IP::$XTR}>;
 
@@ -129,8 +129,10 @@ macro_rules! impl_non_value {
                     unsafe { return $ne::new_unchecked($IP::default()); }
                 }
             }
-            // ConstInitCore for NonExtreme*
-            impl crate::ConstInitCore for $ne {
+            // ConstInit for NonExtreme* IMPROVE:
+            // - better unreachable
+            // - also implement for NonValue*: MAYBE
+            impl crate::ConstInit for $ne {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 const INIT: Self = {

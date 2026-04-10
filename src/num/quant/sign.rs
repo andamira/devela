@@ -8,7 +8,7 @@
 // - impl Into<Sign>
 // - impl From<Sign> TryFrom<Sign>
 
-use crate::{ConstInitCore, InvalidValue, is, whilst};
+use crate::{ConstInit, InvalidValue, is, whilst};
 
 #[doc = crate::_tags!(quant)]
 /// The three-valued sign of a number: negative (−1), zero (0), or positive (+1).
@@ -30,7 +30,7 @@ pub enum Sign {
     Positive = 1,
 }
 
-impl ConstInitCore for Sign {
+impl ConstInit for Sign {
     /// No sign.
     const INIT: Self = Sign::Zero;
 }

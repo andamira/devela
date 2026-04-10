@@ -1,32 +1,27 @@
 // devela::code::const_init
 //
 //! Defines the [`ConstInit`] trait and implements it for many types.
-// NOTE: many implementations are scattered around the codebase.
+// NOTE: most implementations are scattered around the codebase.
 //
 // TOC
 // - definitions:
 //   - trait ConstInit
+//   - macro _impl_init!
 // - implementations:
 //   - mod impl_core
+//   - mod impl_alloc
 //   - mod impl_std
-//   - mod impl_devela
-
-use crate::ConstInitCore;
 
 /* definitions */
 
 #[doc = crate::_tags!(init)]
-/// A trait for giving a type a useful const-friendly initial value *(higher-level)*.
+/// A trait for giving a type a useful const-friendly initial value.
 #[doc = crate::_doc_location!("code")]
-///
-/// Implemented by general types that can freely depend on higher-level traits.
-///
-/// It is automatically implemented for all **sealed** types that implement [`ConstInitCore`].
 ///
 /// # Comparison with `Default`
 ///
 /// `Default` represents the type's natural baseline, usually a neutral or zero-like state.
-/// `ConstInit` and `ConstInitCore` simply provide a valid const-time initializer,
+/// `ConstInit` and `ConstInit` simply provide a valid const-time initializer,
 /// without requiring that meaning.
 ///
 /// When a type has a clear `Default`, these traits should return the same value to keep behavior
@@ -34,75 +29,244 @@ use crate::ConstInitCore;
 /// still need a guaranteed const initializer.
 ///
 /// - Use `Default` for semantic baselines.
-/// - Use `ConstInit` or `ConstInitCore` for invariant-safe const initialization.
+/// - Use `ConstInit` or `ConstInit` for invariant-safe const initialization.
 pub trait ConstInit {
     /// Returns the compile-time "initial value" for a type.
     const INIT: Self;
 }
 
-#[doc = crate::_tags!(code init)]
-/// Marker trait to allow parameterized blanked implementation
-pub trait Sealed {}
-impl<T: ConstInitCore + Sealed> ConstInit for T {
-    const INIT: Self = <T as ConstInitCore>::INIT;
+#[doc(hidden)]
+/// A macro helper to implement [`ConstInit`]. Supports generics.
+#[macro_export]
+#[allow(clippy::crate_in_macro_def, reason = "uses $trait relative to the call-site crate")]
+// MAYBE:IMPROVE: make it no need to specify the trait
+macro_rules! _impl_init {
+    // <A> (e.g: pointers and reference)
+    ($trait:ident: <$A:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::_impl_init![$trait:@<$A> $def => $t]; )+
+    };
+    ($trait:ident: @<$A:ident> $def:expr => $t:ty) => {
+        impl<$A> crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const)]
+            const INIT: Self = $def;
+        }
+    };
+
+    // <A: A_> (bounded) (e.g. Option, Cell, Range…)
+    ($trait:ident: <$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::_impl_init![$trait:@<$A:$A_> $def => $t]; )+
+    };
+    ($trait:ident: @<$A:ident:$A_:ident> $def:expr => $t:ty) => {
+        impl<$A: crate::$trait> crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const, reason = "FIXME?")]
+            const INIT: Self = $def;
+        }
+    };
+
+    // <A, B>
+    ($trait:ident: <$A:ident, $B:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::_impl_init![$trait:@<$A, $B> $def => $t]; )+
+    };
+    ($trait:ident: @<$A:ident, $B:ident> $def:expr => $t:ty) => {
+        impl<$A, $B> crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const INIT: Self = $def;
+        }
+    };
+    // <A: A_, B: B_> (bounded) (e.g. CycleCount)
+    ($trait:ident: <$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::_impl_init![$trait:@<$A:$A_, $B:$B_> $def => $t]; )+ };
+    ($trait:ident: @<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
+        impl<$A:$A_, $B:$B_> crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const INIT: Self = $def;
+        }
+    };
+
+    // <A, B, C>
+    ($trait:ident: <$A:ident, $B:ident, $C:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::_impl_init![$trait:@<$A, $B, $C> $def => $t]; )+
+    };
+    ($trait:ident: @<$A:ident, $B:ident, $C:ident> $def:expr => $t:ty) => {
+        impl<$A, $B, $C> crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const INIT: Self = $def;
+        }
+    };
+    // <> (e.g.: bool, char, integers, floats, NonZero…) (supports attributes)
+    ($trait:ident: $def:expr => $( $(#[$attr:meta])* $t:ty ),+ $(,)?) => {
+        $( $crate::_impl_init![$trait:@$def => $(#[$attr])* $t]; )+
+    };
+    ($trait:ident: @$def:expr => $(#[$attr:meta])* $t:ty) => {
+        $(#[$attr])*
+        impl crate::$trait for $t {
+            #[allow(clippy::declare_interior_mutable_const)]
+            const INIT: Self = $def;
+        }
+    };
+
+    // impl for arrays of the given $LEN lenghts
+    ($trait:ident: arrays <$A:ident:$BOUND:ident> $($LEN:literal),+) => {
+        $( $crate::_impl_init![$trait:@array:$LEN <$A:$BOUND>]; )+
+    };
+    ($trait:ident: @array:$LEN:literal <$A:ident:$BOUND:ident>) => {
+        impl<$A: crate::$trait> crate::$trait for [$A; $LEN] {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const INIT: Self = [$A::INIT; $LEN];
+        }
+    };
+
+    // impl for tuples of lenghts from 1 to 12
+    ($trait:ident: tuples <$A:ident:$BOUND:ident>) => {
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,) => // 1
+            ($A::INIT,)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,) => // 2
+            ($A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A) => // 3
+            ($A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+        $crate::_impl_init![$trait:@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
+            ($A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT,
+             $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT, $A::INIT)];
+    };
+    ($trait:ident: @tuple <$A:ident:$BOUND:ident> $type:ty => $value:expr) => {
+        impl<$A: crate::$trait> crate::$trait for $type {
+            const INIT: Self = $value;
+        }
+    };
 }
+#[doc(hidden)]
+pub use _impl_init;
 
 /* implementations */
 
 #[rustfmt::skip]
 mod impl_core {
-    use super::{ConstInitCore, Sealed};
-    use crate::{_impl_init,
+    use super::ConstInit;
+    use crate::{
         NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
         NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
-        Duration,
         Cell, OnceCell, RefCell, UnsafeCell,
         PhantomData, PhantomPinned, ManuallyDrop,
         Reverse, Saturating, Wrapping,
         Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         PanicAssertUnwindSafe,
-        CStr,
-        // Exclusive,
     };
+    // TEMP during merge:
+    use ::core::time::Duration;
+    use ::core::ffi::CStr;
 
-    /* sealed implementations (in sync with devela::code::const_init_core) */ //TEMP:merge
+    // TODO: Types that don't implement `Default`:
+    // ops::{Bound, ControlFlow, CoroutineState, FpCategory, Ordering, Result},
+    // NOTE: atomic types are implemented in devela::work::sync::atomic
 
-    _impl_init![%Sealed%ConstInitCore: tuples <T: ConstInitCore>];
-    _impl_init![%Sealed%ConstInitCore: arrays <T: ConstInitCore>
+    /* tuples, arrays */
+
+    _impl_init![ConstInit: tuples <T: ConstInit>];
+    _impl_init![ConstInit: arrays <T: ConstInit>
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
         13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
-    _impl_init!(%Sealed%:
-        (), bool, char,
-        i8, i16, i32, i64, i128, isize,
-        u8, u16, u32, u64, u128, usize,
-        f32, f64,
-        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
-        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
-        Duration,
-        RangeFull,
-        PhantomPinned,
-        &CStr, &str, &mut str,
-    );
-    _impl_init![%Sealed%: <T> *const T, *mut T, &[T]];
-    _impl_init![%Sealed%: <T: ConstInitCore>
-        RangeFrom<T>, RangeTo<T>, RangeToInclusive<T>, Range<T>, RangeInclusive<T>,
-        OnceCell<T>, Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>,
-        PanicAssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>,
-        PhantomData<T>,
-        Option<T>,
+    /* non-generic */
+
+    _impl_init![ConstInit: () => ()];
+    _impl_init![ConstInit: false => bool];
+    _impl_init![ConstInit: '\x00' => char];
+
+    _impl_init![ConstInit: 0 =>
+        i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
+    _impl_init![ConstInit: 0.0 => f32, f64];
+
+    crate::CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
+    _impl_init![ConstInit: Self::MIN =>
+        #[doc=_NZ!()]NonZeroU8,  #[doc=_NZ!()]NonZeroU16,  #[doc=_NZ!()]NonZeroU32,
+        #[doc=_NZ!()]NonZeroU64, #[doc=_NZ!()]NonZeroU128, #[doc=_NZ!()]NonZeroUsize,
+        #[doc=_NZ!()]NonZeroI8,  #[doc=_NZ!()]NonZeroI16,  #[doc=_NZ!()]NonZeroI32,
+        #[doc=_NZ!()]NonZeroI64, #[doc=_NZ!()]NonZeroI128, #[doc=_NZ!()]NonZeroIsize
     ];
-    impl<T: ConstInitCore, E> Sealed for Result<T, E> {}
+    _impl_init![ConstInit: Duration::new(0, 0) => Duration];
+
+    _impl_init![ConstInit: Self => RangeFull];
+    _impl_init![ConstInit: Self => PhantomPinned];
+
+    impl ConstInit for &CStr {
+        const INIT: Self = {
+            if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; } }; }
+    _impl_init![ConstInit: "" => &str];
+
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    impl crate::ConstInit for &mut str {
+        // SAFETY: The empty string is valid UTF-8.
+        const INIT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) };
+    }
+
+    /* generic unbounded */
+
+    _impl_init![ConstInit: <T> core::ptr::null() => *const T];
+    _impl_init![ConstInit: <T> core::ptr::null_mut() => *mut T];
+    _impl_init![ConstInit: <T> &[] => &[T]]; // not allowed for &mut [T]
+
+    /* generic bounded */
+
+    _impl_init![ConstInit: <T: ConstInit>
+        Self { start: T::INIT } => RangeFrom<T>];
+    _impl_init![ConstInit: <T: ConstInit>
+        Self { end: T::INIT } => RangeTo<T>, RangeToInclusive<T>];
+    _impl_init![ConstInit: <T: ConstInit>
+        Self { start: T::INIT, end: T::INIT } => Range<T>];
+    _impl_init![ConstInit: <T: ConstInit>
+        Self::new(T::INIT, T::INIT) => RangeInclusive<T>]; // this one has private fields
+
+    _impl_init![ConstInit: <T: ConstInit> Self::new() => OnceCell<T>];
+    _impl_init![ConstInit: <T: ConstInit> Self::new(T::INIT) =>
+        Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>
+    ];
+
+    _impl_init![ConstInit: <T: ConstInit> Self(T::INIT) =>
+        PanicAssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>
+    ];
+
+    _impl_init![ConstInit: <T> Self => PhantomData<T>]; // no need for trait bound here
+    _impl_init![ConstInit: <T: ConstInit> Some(T::INIT) => Option<T>];
+    impl<T: ConstInit, E> ConstInit for Result<T, E> {
+        const INIT: Self = { Ok(T::INIT) };
+    }
+
+    // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
+    // _impl_init![ConstInit: <T: ConstInit> Self::new(T::INIT) => Exclusive<T>];
+    // WAIT: [sync_unsafe_cell](https://github.com/rust-lang/rust/issues/95439)
+    // _impl_init![ConstInit: <T> Self::new(|| T::INIT) => SyncUnsafeCell<T>];
+    // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
+    // _impl_init![ConstInit: <T> Self::MIN => Alignment];
 }
 
-// NOTE: we can't implement ConstInitCore for extern `alloc` items
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_alloc {
-    // use super::{ConstInitCore, Sealed};
     use super::ConstInit;
-    use crate::{_impl_init,
+    use crate::{
         // data
         BTreeSet, BTreeMap,
         LinkedList,
@@ -132,11 +296,9 @@ mod impl_alloc {
     // _impl_init![ConstInit: <K> Self::with_hasher(TODO) => HashSet<K>];
 }
 
-// NOTE: we can't implement ConstInitCore for extern `std` items
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod impl_std {
-    use crate::_impl_init;
     use std::{
         cell::LazyCell,
         // collections::hash_map::DefaultHasher
@@ -161,128 +323,4 @@ mod impl_std {
     // _impl_init![ConstInit: <K, V> Self::with_hasher(DefaulTHasher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
     // _impl_init![ConstInit: Self => Cursor, Empty, Sink];
-}
-
-// implements Sealed for ConstInitCore impls
-#[rustfmt::skip]
-mod impl_devela {
-    use super::{ConstInitCore, Sealed};
-    use crate::{_impl_init, paste,
-        // code
-        Mismatch,
-        // data
-        ConstList,
-        // data::codec
-        Base,
-        Adler32, HasherFx,
-        // geom::dir
-        Boundary1d, Boundary2d, Boundary3d, Orientation,
-        // geom::metric
-        Distance, Extent, Position, Stride,
-        // media
-        // num
-        // num::dom::real::float
-        f32bits, f32bits_niche, f64bits, f64bits_niche,
-        // num::fin::ord
-        Cast, Cmp,
-        // num::prob::rand
-        Pcg32, XorShift128p,
-        // num::quant
-        Cycle, CycleCount, Interval, Sign,
-        // text::char
-        CharAscii, char7, char8, char16, charu, charu_niche,
-        // text::fmt
-        FmtNumConf, FmtNumSign,
-        // text::layout
-        TextFit, TextLayout, TextLayoutStep,
-        TextCohesion, TextLayoutSpan, TextSymbol,
-        // text::parse
-        TextParseError, TextParseErrorKind, TextScanner,
-        // text::str
-        StringNonul, StringU8, StringU16, StringU32, StringUsize,
-        // text::unit
-        TextCursor, TextIndex, TextRange,
-        // text::unit
-        // ui
-        // work
-    };
-    // num::prob::rand
-    #[cfg(feature = "rand")]
-    pub use crate::{
-        Lcg16,
-        Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
-        XorShift8, XorShift16, XorShift32, XorShift64, XorShift128,
-    };
-    // text::grapheme
-    #[cfg(feature = "grapheme")]
-    pub use crate::{GraphemeNonul, GraphemeU8};
-    // -------------------------------------------------------------------------
-
-    // code
-    _impl_init![%Sealed%: <N: ConstInitCore, H: ConstInitCore> Mismatch<N, H>];
-
-    // data
-    _impl_init![%Sealed%: <T> ConstList<'_, T>];
-    // data::codec
-    impl<const RADIX: usize, const LUT: bool, const PAD: bool, const CASE: bool, CODE>
-        Sealed for Base<RADIX, LUT, PAD, CASE, CODE> {}
-    _impl_init![%Sealed%: Adler32];
-    _impl_init![%Sealed%: <T> HasherFx<T>];
-
-    // geom
-    // geom::dir
-    _impl_init![%Sealed%: Boundary1d, Boundary2d, Boundary3d];
-    impl<T: ConstInitCore, const D: usize> Sealed for Orientation<T, D> {}
-    // geom::metric
-    impl<T: ConstInitCore, const D: usize> Sealed for Distance<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Extent<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Position<T, D> {}
-    impl<T: ConstInitCore, const D: usize> Sealed for Stride<T, D> {}
-
-    // num
-    // num::dom::real::float
-    _impl_init![%Sealed%: f32bits, f32bits_niche, f64bits, f64bits_niche];
-    // num::quant
-    _impl_init![%Sealed%: Sign];
-    _impl_init![%Sealed%: <T> Cycle<T>, Interval<T>];
-    _impl_init![%Sealed%: <T: ConstInitCore, N: ConstInitCore> CycleCount<T, N>];
-    // num::fin::ord
-    _impl_init![%Sealed%: <T: ConstInitCore> Cast<T>, Cmp<T>];
-    // num::prob::rand::prng
-    _impl_init![%Sealed%: Pcg32, XorShift128p];
-    #[cfg(feature = "rand")]
-    _impl_init![%Sealed%: Lcg16, Xabc, Xoroshiro128pp, Xyza8a, Xyza8b,
-        XorShift8, XorShift16, XorShift32, XorShift64, XorShift128];
-
-    // text::char
-    _impl_init![%Sealed%: CharAscii, char7, char8, char16, charu, charu_niche];
-    // text::fmt
-    _impl_init![%Sealed%: FmtNumConf, FmtNumSign];
-    // text::layout
-    _impl_init![%Sealed%: TextFit, TextLayout, TextLayoutSpan, TextLayoutStep,
-        TextCohesion, TextSymbol];
-    // text::parse
-    _impl_init![%Sealed%: TextParseError, TextParseErrorKind];
-    _impl_init![%Sealed%: TextScanner<'_>];
-    // text::unit
-    _impl_init![%Sealed%: TextCursor, TextIndex, TextRange];
-    // text::str
-    impl<const CAP: usize> Sealed for StringNonul<CAP> {}
-    macro_rules! _stringu {
-        () => { _stringu![u8, u16, u32, usize]; };
-        ($($t:ty),+ $(,)?) => { $( paste! { _stringu![@[<String $t:camel>], $t]; } )+ };
-        (@$name:ident, $t:ty) => { impl<const CAP: usize> Sealed for $name<CAP> {} };
-    } _stringu!();
-    // text::grapheme
-    #[cfg(feature = "grapheme")]
-    impl<const CAP: usize> Sealed for GraphemeNonul<CAP> {}
-    #[cfg(feature = "grapheme")]
-    impl<const CAP: usize> Sealed for GraphemeU8<CAP> {}
-}
-#[rustfmt::skip]
-#[cfg(feature = "alloc")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-mod impl_devela_base_alloc {
-    #[cfg(feature = "grapheme")]
-    impl super::Sealed for crate::GraphemeString {}
 }

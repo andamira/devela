@@ -3,7 +3,7 @@
 //! Defines [`FmtNumGroup`].
 //
 
-use crate::{Boundary1d, Cmp, ConstInitCore, is};
+use crate::{Boundary1d, Cmp, ConstInit, is};
 
 #[doc = crate::_tags!(fmt num)]
 /// Numeric digit grouping configuration.
@@ -35,7 +35,7 @@ pub struct FmtNumGroup {
 }
 #[rustfmt::skip]
 impl Default for FmtNumGroup { fn default() -> Self { Self::INIT } }
-impl ConstInitCore for FmtNumGroup {
+impl ConstInit for FmtNumGroup {
     const INIT: Self = Self {
         left_len: 3,
         right_len: 0,

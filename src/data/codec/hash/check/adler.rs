@@ -3,7 +3,7 @@
 //! Defines [`Adler32`].
 //
 
-use crate::{ConstInitCore, Hasher, Slice, define_lane, unwrap, whilst};
+use crate::{ConstInit, Hasher, Slice, define_lane, unwrap, whilst};
 
 define_lane! {
     #[derive(Clone, Copy)]
@@ -36,7 +36,7 @@ pub struct Adler32 {
 }
 
 #[rustfmt::skip]
-impl ConstInitCore for Adler32 { const INIT: Self = Self::new(); }
+impl ConstInit for Adler32 { const INIT: Self = Self::new(); }
 #[rustfmt::skip]
 impl Default for Adler32 { fn default() -> Self { Self::new() } }
 #[rustfmt::skip]

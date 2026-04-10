@@ -3,7 +3,7 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{ConstInitCore, Own, Rand, xorshift_basis};
+use crate::{ConstInit, Own, Rand, xorshift_basis};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -22,7 +22,7 @@ impl<const A: usize, const B: usize, const C: usize> Default for XorShift8<A, B,
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl<const A: usize, const B: usize, const C: usize> ConstInitCore for XorShift8<A, B, C> {
+impl<const A: usize, const B: usize, const C: usize> ConstInit for XorShift8<A, B, C> {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 

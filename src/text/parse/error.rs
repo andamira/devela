@@ -42,7 +42,7 @@ pub enum TextParseErrorKind {
     UnexpectedAfterQuote,
 }
 
-_impl_init![ConstInitCore: Self::UnexpectedEof => TextParseErrorKind];
+_impl_init![ConstInit: Self::UnexpectedEof => TextParseErrorKind];
 impl_trait![fmt::Display for TextParseErrorKind |self, f| {
     use TextParseErrorKind as K;
     match self {
@@ -73,7 +73,7 @@ pub struct TextParseError {
     pub kind: TextParseErrorKind,
 }
 
-_impl_init![ConstInitCore:
+_impl_init![ConstInit:
     Self { at: TextCursor::INIT, kind: TextParseErrorKind::INIT } => TextParseError];
 impl_trait![fmt::Display+Error for TextParseError |self, f|
     write!(f, "text parse error at: {:?}, {}", self.at.index, self.kind)

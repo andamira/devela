@@ -10,7 +10,7 @@
 // - tests
 
 use crate::{
-    Bound, Boundary1d, ConstInitCore, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
+    Bound, Boundary1d, ConstInit, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
     RangeToInclusive, is,
 };
 
@@ -141,7 +141,7 @@ pub struct Interval<T> {
 /// Provides a *const* default value for `Interval`, the unbounded interval $(-\infty, \infty)$.
 ///
 /// See the [`default`][Self::default] implementation for more information.
-impl<T> ConstInitCore for Interval<T> {
+impl<T> ConstInit for Interval<T> {
     const INIT: Self = Self::unbounded();
 }
 
@@ -228,7 +228,7 @@ impl<T> Interval<T> {
     /// Creates a canonical empty interval,
     /// equivalent to [`open`][Interval::open]`(T::INIT, T::INIT)`.
     #[must_use] #[rustfmt::skip]
-    pub const fn empty_const() -> Self where T: ConstInitCore {
+    pub const fn empty_const() -> Self where T: ConstInit {
         Self::open(T::INIT, T::INIT)
     }
 

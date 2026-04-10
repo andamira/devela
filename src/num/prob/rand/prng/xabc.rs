@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{ConstInitCore, Own, Rand};
+use crate::{ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
@@ -54,7 +54,7 @@ impl Default for Xabc {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for Xabc {
+impl ConstInit for Xabc {
     const INIT: Self = Self::new(Self::DEFAULT_SEED);
 }
 

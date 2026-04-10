@@ -130,12 +130,12 @@ macro_rules! define_pcg {
         /// Creates a new PRNG initialized with the default fixed seed.
         impl Default for $name {
             fn default() -> Self {
-                use $crate::ConstInitCore;
+                use $crate::ConstInit;
                 Self::INIT
             }
         }
         /// Creates a new PRNG initialized with the default fixed seed.
-        impl $crate::ConstInitCore for $name {
+        impl $crate::ConstInit for $name {
             const INIT: Self = Self::new(Self::DEFAULT_SEED, Self::DEFAULT_INC);
         }
 

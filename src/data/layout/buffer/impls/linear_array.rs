@@ -26,7 +26,7 @@ macro_rules! __buffer_linear_impl_array {
                 Self::_new(array, Self::_idx_zero())
             }
             /// Creates a new fully initialized buffer with logical length 0.
-            pub const fn new_init() -> Self where T: $crate::ConstInitCore {
+            pub const fn new_init() -> Self where T: $crate::ConstInit {
                 Self::_new([T::INIT; CAP], Self::_idx_zero())
             }
 
@@ -209,7 +209,7 @@ macro_rules! __buffer_linear_impl_array {
             }
             /// Takes the value at `index`, replacing it with `T::INIT`.
             pub const fn take_init(&mut self, index: $I) -> Option<T>
-            where T: $crate::ConstInitCore {
+            where T: $crate::ConstInit {
                 if Self::_idx_ge(index, self.len()) { return None; }
                 let index_usize = Self::_idx_to_usize(index);
                 Some($crate::Mem::replace(&mut self.storage[index_usize], T::INIT))

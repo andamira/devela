@@ -5,7 +5,7 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{ConstInitCore, NonExtremeU32, NonExtremeU64, ne, paste};
+use crate::{ConstInit, NonExtremeU32, NonExtremeU64, ne, paste};
 
 // Macro helper to implement the types f32bits, f32bits_niche, ...
 macro_rules! impl_fbits {
@@ -49,7 +49,7 @@ macro_rules! impl_fbits {
             /// The default value is the bit pattern of `0.0`.
             fn default() -> Self { Self::new(0.0) }
         }
-        impl ConstInitCore for $non_niche {
+        impl ConstInit for $non_niche {
             /// The initialization value is the bit pattern of `0.0`.
             const INIT: Self = Self::new(0.0);
         }
@@ -117,7 +117,7 @@ macro_rules! impl_fbits {
             /// The default value is the bit pattern of `0.0`.
             fn default() -> Self { Self::new(0.0) }
         }
-        impl ConstInitCore for $niche {
+        impl ConstInit for $niche {
             /// The initialization value is the bit pattern of `0.0`.
             const INIT: Self = Self::new(0.0);
         }

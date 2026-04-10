@@ -32,7 +32,7 @@ pub enum AudioChannel {
     /// Right Back
     Rb,
 }
-_impl_init![ConstInitCore: Self::L => AudioChannel];
+_impl_init![ConstInit: Self::L => AudioChannel];
 impl_trait![fmt::Display for AudioChannel |self, f| f.write_str(self.as_code())];
 
 impl AudioChannel {
@@ -106,7 +106,7 @@ pub enum AudioChannels {
     Surround7_1,
 }
 
-_impl_init![ConstInitCore: Self::Stereo => AudioChannels];
+_impl_init![ConstInit: Self::Stereo => AudioChannels];
 impl_trait![fmt::Display for AudioChannels |self, f| f.write_str(self.as_x_y())];
 
 impl AudioChannels {

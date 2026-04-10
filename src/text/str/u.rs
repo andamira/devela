@@ -9,7 +9,7 @@
 // - tests
 
 use crate::{
-    CharIter, ConstInitCore, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
+    CharIter, ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
     Hasher, InvalidText, InvalidUtf8, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Str,
     is, paste, slice, text::char::*, whilst,
 };
@@ -760,7 +760,7 @@ macro_rules! impl_str_u {
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             fn default() -> Self { Self::new() }
         }
-        impl<const CAP: usize> ConstInitCore for $name<CAP> {
+        impl<const CAP: usize> ConstInit for $name<CAP> {
             /// Returns an empty string.
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]

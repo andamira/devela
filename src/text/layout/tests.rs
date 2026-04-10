@@ -1,7 +1,7 @@
 // devela::text::layout::tests
 
 use super::*;
-use crate::ConstInitCore;
+use crate::ConstInit;
 use crate::{TextCursor, TextIndex, TextUnit};
 
 type TextLayoutSpans = [TextLayoutSpan; 4];

@@ -3,7 +3,7 @@
 //! 128-bit + version of XorShift.
 //
 
-use crate::{Cast, ConstInitCore, Own, Rand};
+use crate::{Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift128+` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -24,7 +24,7 @@ impl Default for XorShift128p {
     }
 }
 /// Creates a new PRNG initialized with the default fixed seed.
-impl ConstInitCore for XorShift128p {
+impl ConstInit for XorShift128p {
     const INIT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 

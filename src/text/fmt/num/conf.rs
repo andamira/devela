@@ -6,7 +6,7 @@
 // struct FmtNumConf
 // enum FmtNumSign
 
-use crate::{ConstInitCore, Sign};
+use crate::{ConstInit, Sign};
 
 #[doc = crate::_tags!(fmt num)]
 /// Configuration for numeric formatting.
@@ -32,7 +32,7 @@ pub struct FmtNumConf {
     pub fract: u16,
 }
 
-impl ConstInitCore for FmtNumConf {
+impl ConstInit for FmtNumConf {
     const INIT: Self = FmtNumConf {
         sign: FmtNumSign::INIT,
         pad_sign: false,
@@ -137,7 +137,7 @@ pub enum FmtNumSign {
     PositiveOnly,
 }
 
-impl ConstInitCore for FmtNumSign {
+impl ConstInit for FmtNumSign {
     const INIT: Self = FmtNumSign::NegativeOnly;
 }
 

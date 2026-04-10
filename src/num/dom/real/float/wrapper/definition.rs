@@ -28,9 +28,9 @@ crate::impl_ops![Float: f16, f128];
 #[rustfmt::skip]
 mod core_impls {
     use super::Float;
-    use crate::{ConstInitCore, Debug, Display, FmtResult, Formatter, Ordering};
+    use crate::{ConstInit, Debug, Display, FmtResult, Formatter, Ordering};
 
-    impl<T: ConstInitCore> ConstInitCore for Float<T> {
+    impl<T: ConstInit> ConstInit for Float<T> {
         const INIT: Self = Float(T::INIT);
     }
 

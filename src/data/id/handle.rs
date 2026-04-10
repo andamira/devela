@@ -79,7 +79,7 @@ macro_rules! define_handle {
             len: $crate::MaybeNiche::<$T>,
         }
 
-        impl $crate::ConstInitCore for $Handle {
+        impl $crate::ConstInit for $Handle {
             const INIT: Self = Self::new(<$T>::INIT, <$T>::INIT);
         }
 

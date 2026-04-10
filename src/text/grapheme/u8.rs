@@ -243,7 +243,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 #[rustfmt::skip]
 mod trait_impls {
     use crate::{
-        Debug, ConstInitCore, Display, Formatter, FmtResult, GraphemeU8, Hash, Hasher, StringU8,
+        Debug, ConstInit, Display, Formatter, FmtResult, GraphemeU8, Hash, Hasher, StringU8,
     };
 
     impl<const CAP: usize> Default for GraphemeU8<CAP> {
@@ -254,7 +254,7 @@ mod trait_impls {
         #[inline(always)]
         fn default() -> Self { Self::new() }
     }
-    impl<const CAP: usize> ConstInitCore for GraphemeU8<CAP> {
+    impl<const CAP: usize> ConstInit for GraphemeU8<CAP> {
         /// An empty extended grapheme character.
         /// # Panics
         /// Panics if `CAP` > 255.

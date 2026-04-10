@@ -33,7 +33,7 @@ pub type TextUnit = u32;
 /// or other text-derived units chosen by the caller.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct TextIndex(pub u32);
-_impl_init![ConstInitCore: Self(0) => TextIndex];
+_impl_init![ConstInit: Self(0) => TextIndex];
 
 // pub struct TextOffset(pub i32); // MAYBE
 
@@ -73,7 +73,7 @@ pub struct TextCursor {
     /// Index of the next element in the traversal sequence.
     pub index: TextIndex,
 }
-_impl_init![ConstInitCore: Self::new_prim(0) => TextCursor];
+_impl_init![ConstInit: Self::new_prim(0) => TextCursor];
 
 impl TextCursor {
     /// Creates a new cursor at the given index.
@@ -105,7 +105,7 @@ pub struct TextRange {
     /// The first index excluded from the range.
     pub end: TextIndex,
 }
-_impl_init![ConstInitCore: Self::from_prim(0, 0) => TextRange];
+_impl_init![ConstInit: Self::from_prim(0, 0) => TextRange];
 impl TextRange {
     /// Creates a new half-open range from text indices.
     /// # Panics

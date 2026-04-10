@@ -131,7 +131,7 @@ macro_rules! __buffer_linear_impl_vec {
                 self.take_with(index, T::default())
             }
             /// Takes the value at `index`, replacing it with `T::INIT`.
-            pub fn take_init(&mut self, index: $I) -> Option<T> where T: $crate::ConstInitCore {
+            pub fn take_init(&mut self, index: $I) -> Option<T> where T: $crate::ConstInit {
                 self.take_with(index, T::INIT)
             }
 

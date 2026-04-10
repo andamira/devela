@@ -34,7 +34,7 @@ pub enum TextCohesion {
     /// if needed to achieve a fit.
     Elidable,
 }
-_impl_init![ConstInitCore: Self::Atomic => TextCohesion];
+_impl_init![ConstInit: Self::Atomic => TextCohesion];
 
 #[doc = crate::_tags!(text layout quant)]
 /// Mapping between a contiguous text range and its consumed inline space.
@@ -52,7 +52,7 @@ pub struct TextLayoutSpan {
     /// Total inline space consumed by the symbols in this span.
     pub units: TextUnit,
 }
-_impl_init![ConstInitCore: Self::from_prim(0, 0, 0) => TextLayoutSpan];
+_impl_init![ConstInit: Self::from_prim(0, 0, 0) => TextLayoutSpan];
 
 impl TextLayoutSpan {
     /// Creates a span from symbol indices and consumed units.
@@ -100,7 +100,7 @@ pub struct TextSymbol {
     /// Spatial cohesion rules applied to this symbol under limited space.
     pub cohesion: TextCohesion,
 }
-_impl_init![ConstInitCore: Self::new(TextUnit::INIT, TextCohesion::INIT) => TextSymbol];
+_impl_init![ConstInit: Self::new(TextUnit::INIT, TextCohesion::INIT) => TextSymbol];
 
 impl TextSymbol {
     /// Creates a span from symbol indices and consumed units.
