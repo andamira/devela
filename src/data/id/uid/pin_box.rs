@@ -14,7 +14,7 @@ use crate::{Box, Pin};
 ///
 /// See also [`IdPin`][crate::IdPin].
 ///
-#[doc = crate::_doc!(vendor: "object-id")]
+#[doc = crate::_doc_vendor!("object-id")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone)]
 pub struct IdPinBox {

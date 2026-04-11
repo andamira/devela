@@ -41,7 +41,7 @@ impl Mem {
     /// assert_eq!(Mem::align_down(13, 8), 8);
     /// assert_eq!(Mem::align_down(16, 8), 16);
     /// ```
-    #[doc = crate::_doc!(vendor: "mini-alloc")]
+    #[doc = crate::_doc_vendor!("mini-alloc")]
     #[must_use]
     #[inline(always)]
     pub const fn align_down(value: usize, align: usize) -> usize {
@@ -261,7 +261,7 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 4, 210]);
     /// }
     /// ```
-    #[doc = crate::_doc!(vendor: "rawbytes")]
+    #[doc = crate::_doc_vendor!("rawbytes")]
     #[must_use]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
         // SAFETY: `v` is valid; u8 has alignment 1, size_of_val(v) gives the exact byte length.
@@ -288,7 +288,7 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 0, 210] && data.0 == 210);
     /// }
     /// ```
-    #[doc = crate::_doc!(vendor: "rawbytes")]
+    #[doc = crate::_doc_vendor!("rawbytes")]
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
         // SAFETY: `v` is a valid, exclusive reference;

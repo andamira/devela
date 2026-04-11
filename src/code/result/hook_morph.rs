@@ -42,7 +42,7 @@
 /// `Hook` preserves value identity.
 /// For transformations that replace the value, see [`Morph`].
 #[rustfmt::skip]
-#[doc = crate::_doc!(vendor: "apply")]
+#[doc = crate::_doc_vendor!("apply")]
 pub trait Hook: Sized {
     /// Hooks a mutation step into the value and returns it.
     ///
@@ -151,7 +151,7 @@ pub use hook;
 /// let v: Vec<i32> = vec![3, 2, 1, 5].morph_mut(|it| it.sort());
 /// ```
 #[rustfmt::skip]
-#[doc = crate::_doc!(vendor: "apply")]
+#[doc = crate::_doc_vendor!("apply")]
 pub trait Morph<R> {
     /// Morphs the value into a new one and returns it.
     ///

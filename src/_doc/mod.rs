@@ -49,7 +49,9 @@ crate::structural_mods! { // _hidden
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
+            _doc::{_doc_vendor},
             _mod_docs::*,
             _tags::*,
         };

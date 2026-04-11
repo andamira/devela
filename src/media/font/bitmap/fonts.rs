@@ -57,7 +57,7 @@ const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
 #[doc = crate::_doc_location!("media/font")]
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
-#[doc = crate::_doc!(vendor: "blit-fonts")]
+#[doc = crate::_doc_vendor!("blit-fonts")]
 pub const FONT_BIT_3_5: FontBitmap<u16> = FontBitmap {
     glyphs: &FONT_BIT_3_5_GLYPHS,
     first_glyph: ' ',
@@ -96,7 +96,7 @@ const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
 #[doc = crate::_doc_location!("media/font")]
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
-#[doc = crate::_doc!(vendor: "blit-fonts")]
+#[doc = crate::_doc_vendor!("blit-fonts")]
 pub const FONT_BIT_5_6: FontBitmap<u32> = FontBitmap {
     glyphs: &FONT_BIT_5_6_GLYPHS,
     first_glyph: ' ',

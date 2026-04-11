@@ -26,7 +26,7 @@ pub trait Decodable<R: IoRead>: Sized {
 #[doc = crate::_doc_location!("data/codec")]
 ///
 /// See also [`Decodable`].
-#[doc = crate::_doc!(vendor: "encode")]
+#[doc = crate::_doc_vendor!("encode")]
 pub trait Encodable<W: IoWrite> {
     /// Encodes `self` into the given `writer`, returning the bytes written.
     ///
@@ -43,7 +43,7 @@ pub trait Encodable<W: IoWrite> {
 /// [`Encodable`] with [`CodecLen`].
 ///
 /// See [`CodecLen`] for details on length-based encoding.
-#[doc = crate::_doc!(vendor: "encode")]
+#[doc = crate::_doc_vendor!("encode")]
 pub trait EncodableLen: Encodable<CodecLen> {
     /// Computes the size of `self` when encoded.
     ///

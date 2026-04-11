@@ -15,7 +15,7 @@ use crate::ASCII_TRANSLIT_BLOCKS;
 /// - `'中'` → `"Zhong "`
 /// - `'🚀'` → `""`
 /// - ...
-#[doc = crate::_doc!(vendor: "transliteration")]
+#[doc = crate::_doc_vendor!("transliteration")]
 #[must_use]
 pub const fn scalar_as_ascii_translit(scalar: u32) -> &'static str {
     let block = (scalar >> 8) as usize;

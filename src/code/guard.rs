@@ -13,7 +13,7 @@
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
 use ::devela::{Deref, DerefMut};
-::devela::_use_or_shim![_doc, _doc_location, _tags];
+::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 #[doc = _tags!(guard)]
 /// A general-purpose RAII guard that executes a callback on drop.
@@ -25,7 +25,7 @@ use ::devela::{Deref, DerefMut};
 ///
 /// # Features
 /// Uses `unsafe_layout` to avoid redundant unwrapping checks.
-#[doc = _doc!(vendor: "stated-scope-guard")]
+#[doc = _doc_vendor!("stated-scope-guard")]
 #[derive(Debug)]
 pub struct ScopeGuard<T, F: FnOnce(T, &S), S> {
     /// The guarded value,
@@ -177,7 +177,7 @@ impl<T, F: FnOnce(T, &S), S> Drop for ScopeGuard<T, F, S> {
 }
 
 #[allow(unused, reason = "example script")]
-#[cfg(all(feature = "std", feature = "_docs_examples"))]
+#[cfg(feature = "std")]
 fn main() {
     use ::devela::{Cell, cdbg};
 

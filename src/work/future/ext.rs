@@ -38,7 +38,7 @@ See [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874).
 #[rustfmt::skip]
 pub trait FutureExt: Future {
     #[doc = DOC_BLOCK_ON!()]
-    #[doc = crate::_doc!(vendor: "pollster")]
+    #[doc = crate::_doc_vendor!("pollster")]
     #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     #[cfg(not(feature = "dep_portable_atomic_util"))]
@@ -46,7 +46,7 @@ pub trait FutureExt: Future {
     // WAIT: [arbitrary_self_types](https://github.com/rust-lang/rust/pull/135881)
     fn block_on(self) -> Self::Output where Self: Sized { future_block(self) }
     #[doc = DOC_BLOCK_ON!()]
-    #[doc = crate::_doc!(vendor: "pollster")]
+    #[doc = crate::_doc_vendor!("pollster")]
     #[cfg(all(feature = "std", feature = "dep_portable_atomic_util"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     #[cfg_attr(nightly_doc, doc(cfg(not(feature = "dep_portable_atomic_util"))))]

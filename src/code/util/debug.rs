@@ -33,7 +33,7 @@
 /// [`std::compile_error`]: https://doc.rust-lang.org/std/macro.compile_error.html
 /// [`proc_macro_diagnostics`]: https://github.com/rust-lang/rust/issues/54140
 /// [`unimplemented`]: https://doc.rust-lang.org/std/macro.unimplemented.html
-#[doc = crate::_doc!(vendor: "stdext")]
+#[doc = crate::_doc_vendor!("stdext")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! compile_warn {
@@ -64,7 +64,7 @@ pub use compile_warn;
 /// }
 /// bar::sample_function();
 /// ```
-#[doc = crate::_doc!(vendor: "stdext")]
+#[doc = crate::_doc_vendor!("stdext")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! fn_name {

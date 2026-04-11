@@ -15,7 +15,7 @@
 /// Represents a fat pointer with separate data and metadata pointers.
 #[doc = crate::_doc_location!("sys/mem")]
 ///
-#[doc = crate::_doc!(vendor: "unsized-stack")]
+#[doc = crate::_doc_vendor!("unsized-stack")]
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct FatPtr {

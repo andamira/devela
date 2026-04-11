@@ -68,7 +68,7 @@ let v: DstValue<dyn Any, DstArray<u128, 2>> =
 #![doc = crate::_doc_miri_warn!(body,
     url: "https://github.com/thepowersgang/stack_dst-rs/issues/14")]
 //!
-#![doc = crate::_doc!(vendor: "stack_dst")]
+#![doc = crate::_doc_vendor!("stack_dst")]
 //
 //
 #![allow(clippy::result_unit_err)] // IMPROVE

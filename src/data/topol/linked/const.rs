@@ -34,7 +34,7 @@ struct ConstListItem<'a, T: 'a> {
 ///
 /// assert_eq!(8, *MY_LIST.pop().0.unwrap());
 /// ```
-#[doc = crate::_doc!(vendor: "const_list")] // FIXME
+#[doc = crate::_doc_vendor!("const_list")]
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ConstList<'a, T: 'a>(Option<ConstListItem<'a, T>>);

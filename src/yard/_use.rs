@@ -82,19 +82,21 @@ macro_rules! __use_or_shim {
         $crate::__use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
         $crate::__use_or_shim![%import _tags];
     };
-    (%($_d:tt) _doc) => {
-        $crate::__use_or_shim![%shim _doc => { ($_d($tt:tt)*) => {""} } ];
-        $crate::__use_or_shim![%import _doc];
+    (%($_d:tt) _doc_vendor) => {
+        $crate::__use_or_shim![%shim _doc_vendor => { ($_d($tt:tt)*) => {""} } ];
+        $crate::__use_or_shim![%import _doc_vendor];
     };
     (%($_d:tt) _doc_location) => {
         $crate::__use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
         $crate::__use_or_shim![%import _doc_location];
     };
+    // imports the real macro
     (%import $name:ident) => {
         #[$crate::compile(env(__DEVELA_MEMBER))]
         #[allow(unused_imports)]
         use ::devela::$name;
     };
+    // creates a shim macro
     (%shim $name:ident => { $($rules:tt)* }) => {
         #[$crate::compile(not(env(__DEVELA_MEMBER)))]
         #[allow(unused_macros)]

@@ -17,7 +17,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 #[doc = crate::_doc_location!("sys/env")]
 ///
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].
-#[doc = crate::_doc!(vendor: "argv")]
+#[doc = crate::_doc_vendor!("argv")]
 #[derive(Debug)]
 pub struct IterArgsOsRef {
     platform_specific: r#impl::IterArgsOsRef,

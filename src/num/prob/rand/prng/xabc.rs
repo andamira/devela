@@ -37,7 +37,7 @@ use crate::{ConstInit, Own, Rand};
 ///
 /// It has a period of 487,780,609 from a zeroed state.
 ///
-#[doc = crate::_doc!(vendor: "Xabc")]
+#[doc = crate::_doc_vendor!("Xabc")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xabc {

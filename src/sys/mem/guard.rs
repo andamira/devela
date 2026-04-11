@@ -18,7 +18,7 @@ use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name,
     define_static_map, transmute,
 };
-::devela::_use_or_shim![_doc_location, _tags];
+::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 // Stores the current pointers for concrete types.
 define_static_map![typeid KeyCurrentMap];
@@ -34,7 +34,7 @@ thread_local! {
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
 /// This is useful for tracking the current instance of a type within a thread.
-#[cfg_attr(doc, doc = ::devela::_doc!(vendor: "current"))]
+#[doc = _doc_vendor!("current")]
 #[derive(Debug)]
 pub struct CurrentGuard<'a, T: Any> {
     /// The active instance of `T` for the duration of this guard.
@@ -97,7 +97,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 /// - Prevent direct global mutable access in safe code.
 ///
 /// Not a smart pointer; instead, it acts as a reference handle for thread-local state.
-#[cfg_attr(doc, doc = ::devela::_doc!(vendor: "current"))]
+#[doc = _doc_vendor!("current")]
 #[derive(Debug)]
 pub struct Current<T>(PhantomData<T>);
 
@@ -184,7 +184,6 @@ impl<T: Any> DerefMut for Current<T> {
 }
 
 #[allow(unused, reason = "example script")]
-#[cfg(all(feature = "_docs_examples"))]
 fn main() {
     struct State {
         text: String,

@@ -19,7 +19,7 @@ mod tests;
 #[doc = crate::_doc_location!("phys/time")]
 ///
 /// Supports negative values, allowing representation of both past and future offsets.
-#[doc = crate::_doc!(vendor: "jiff")]
+#[doc = crate::_doc_vendor!("jiff")]
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct TimeDelta {
     secs: i64,

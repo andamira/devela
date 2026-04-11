@@ -16,7 +16,7 @@ use crate::{ConstInit, Own, Rand};
 ///
 /// Its longest cycle is 4_261_412_736.
 // (== u32::MAX + u16::MAX * 512 + 639).
-#[doc = crate::_doc!(vendor: "8bit_rng")]
+#[doc = crate::_doc_vendor!("8bit_rng")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8a {
@@ -131,7 +131,7 @@ impl Xyza8a {
 /// random number tests.
 ///
 /// Its longest cycle is 4,294,967,294.
-#[doc = crate::_doc!(vendor: "8bit_rng")]
+#[doc = crate::_doc_vendor!("8bit_rng")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8b {
     x: u8,

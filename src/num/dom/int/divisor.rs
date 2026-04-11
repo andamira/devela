@@ -84,7 +84,7 @@ pub enum DivisorInner<T> {
 /// - Only supported integer primitives are accepted as targets.
 /// - Passing an unsupported type results in a compile-time error.
 /// - Division by zero is checked when constructing a divisor.
-#[doc = crate::_doc!(vendor: "quickdiv")]
+#[doc = crate::_doc_vendor!("quickdiv")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! define_divisor {

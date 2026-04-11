@@ -42,7 +42,7 @@ mod endian {
     /// assert_eq!(&buf, &[0, 1]);
     /// # }
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecBe<W> {
@@ -71,7 +71,7 @@ mod endian {
     /// assert_eq!(&buf, &[1, 0]);
     /// # }
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecLe<E> {
@@ -199,7 +199,7 @@ mod cond {
     /// let len = CodecIf::new(c"", non_empty).encode(&mut &mut buf[..]).unwrap();
     /// assert_eq!(&buf[..len], b"", "An empty CStr does not produce any output");
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecIf<E, F> { encodable: E, condition: F }
@@ -246,7 +246,7 @@ mod flags {
     /// assert_eq!(&buf, &[0b_1001_0000]);
     /// # }
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[repr(transparent)]
     #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -333,7 +333,7 @@ mod join {
     /// assert_eq!(&buf, b"hello/world/another");
     /// # }
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecJoin<E, S> {
@@ -396,7 +396,7 @@ mod len {
     /// encodable.encode(&mut encoder).unwrap();
     /// assert_eq!(encoder.size(), 14, "13 bytes from the ASCII string + 1 for the null terminator");
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
     pub struct CodecLen { size: usize, }
@@ -469,7 +469,7 @@ mod len {
     /// assert![CodecLenValue::<_, CodecLe<u16>>::new("*".repeat(451)).encode(&mut buf).is_ok()];
     /// # }
     /// ```
-    #[doc = crate::_doc!(vendor: "encode")]
+    #[doc = crate::_doc_vendor!("encode")]
     #[must_use]
     #[doc(alias("length", "prefix", "TLV"))]
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]

@@ -9,7 +9,7 @@
 //! reading, writing, and transforming data across abstract sources and sinks,
 //! independent of filesystems, networks, or specific hardware.
 //!
-#![doc = crate::_doc!(vendor: "no_std_io")]
+#![doc = crate::_doc_vendor!("no_std_io")]
 //
 // safety
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]

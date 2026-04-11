@@ -55,7 +55,7 @@
 ///     buffer: *mut T,
 /// }
 /// ```
-#[doc = crate::_doc!(vendor: "crossbeam-utils")]
+#[doc = crate::_doc_vendor!("crossbeam-utils")]
 //
 // Starting from Intel's Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache
 // lines at a time, so we have to align to 128 bytes rather than 64.

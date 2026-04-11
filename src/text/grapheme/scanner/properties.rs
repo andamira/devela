@@ -17,7 +17,7 @@ use crate::{Mem, charu, impl_trait};
 ///
 /// [0]: https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Break_Property_Values
 ///
-#[doc = crate::_doc!(vendor: "grapheme_machine")]
+#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[repr(u8)]
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, Eq)]
@@ -90,7 +90,7 @@ impl GraphemePropCb {
 ///
 /// Based on the **Indic_Conjunct_Break** property from Unicode.
 ///
-#[doc = crate::_doc!(vendor: "grapheme_machine")]
+#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[repr(u8)]
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, Eq)]
@@ -128,7 +128,7 @@ impl GraphemePropInCb {
 /// Packed representation of both [`GraphemePropCb`] and [`GraphemePropInCb`]
 /// properties used by Unicode grapheme cluster [boundary rules].
 ///
-#[doc = crate::_doc!(vendor: "grapheme_machine")]
+#[doc = crate::_doc_vendor!("grapheme_machine")]
 ///
 /// [boundary rules]: https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
 #[repr(transparent)]

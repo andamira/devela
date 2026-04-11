@@ -450,7 +450,7 @@ impl Env {
     #[doc = crate::_doc_miri_warn!(tag)]
     #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
     /// Command line arguments by reference: `Iterator<Item = &'static OsStr>`.
-    #[doc = crate::_doc!(vendor: "argv")]
+    #[doc = crate::_doc_vendor!("argv")]
     #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "std", feature = "unsafe_ffi"))))]
     pub fn args_os_ref() -> IterArgsOsRef {
