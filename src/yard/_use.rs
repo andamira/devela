@@ -82,6 +82,10 @@ macro_rules! __use_or_shim {
         $crate::__use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
         $crate::__use_or_shim![%import _tags];
     };
+    (%($_d:tt) _doc) => {
+        $crate::__use_or_shim![%shim _doc => { ($_d($tt:tt)*) => {""} } ];
+        $crate::__use_or_shim![%import _doc];
+    };
     (%($_d:tt) _doc_location) => {
         $crate::__use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
         $crate::__use_or_shim![%import _doc_location];
@@ -99,7 +103,7 @@ macro_rules! __use_or_shim {
     (% $name:ident) => {
         compile_error!(concat!(
             "Unsupported helper for `_use_or_shim!`: `", stringify!($name),
-            "`. Supported names: `_tags`, `_doc_location`."
+            "`. Supported names: `_doc`, `_doc_location`, `_tags`."
         ));
     };
 }
