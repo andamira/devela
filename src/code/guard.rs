@@ -1,13 +1,23 @@
+#!/usr/bin/env -S rust-script -c --debug
+//! ```cargo
+//! [dependencies]
+//! devela = { path = "../..", features = ["std", "_docs_examples"]}
+//! ```
+// WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
+//
 // devela::code::guard
 //
 //! Defines [`ScopeGuard`].
 //
 
-use crate::{Deref, DerefMut};
+#![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
-#[doc = crate::_tags!(guard)]
+use ::devela::{Deref, DerefMut};
+::devela::_use_or_shim![_doc, _doc_location, _tags];
+
+#[doc = _tags!(guard)]
 /// A general-purpose RAII guard that executes a callback on drop.
-#[doc = crate::_doc_location!("code")]
+#[doc = _doc_location!("code")]
 ///
 /// - The callback can take both a value and a state.
 /// - The state can be updated dynamically during the guard's lifetime.
@@ -15,7 +25,7 @@ use crate::{Deref, DerefMut};
 ///
 /// # Features
 /// Uses `unsafe_layout` to avoid redundant unwrapping checks.
-#[doc = crate::_doc!(vendor: "stated-scope-guard")]
+#[doc = _doc!(vendor: "stated-scope-guard")]
 #[derive(Debug)]
 pub struct ScopeGuard<T, F: FnOnce(T, &S), S> {
     /// The guarded value,
@@ -164,4 +174,20 @@ impl<T, F: FnOnce(T, &S), S> Drop for ScopeGuard<T, F, S> {
         };
         callback(value, &self.state);
     }
+}
+
+#[allow(unused, reason = "example script")]
+#[cfg(all(feature = "std", feature = "_docs_examples"))]
+fn main() {
+    use ::devela::{Cell, cdbg};
+
+    let result = Cell::new(0);
+    {
+        cdbg![3@ &result];
+        let _guard = ScopeGuard::new(10, |value| {
+            result.set(value + 5);
+        });
+    }
+    assert_eq!(result.get(), 15);
+    cdbg![3@ &result];
 }

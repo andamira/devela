@@ -1,11 +1,11 @@
 #!/usr/bin/env -S rust-script -c --debug
 //! ```cargo
 //! [dependencies]
-//! devela = { path = "../../../../devela", features = ["std"]}
+//! devela = { path = "../../..", features = ["std", "_docs_examples"]}
 //! ```
-// devela::sys::mem::guard
-//
 // WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
+//
+// devela::sys::mem::guard
 //
 //! Defines the [`Current`] and [`CurrentGuard`] structs.
 //
@@ -184,6 +184,7 @@ impl<T: Any> DerefMut for Current<T> {
 }
 
 #[allow(unused, reason = "example script")]
+#[cfg(all(feature = "_docs_examples"))]
 fn main() {
     struct State {
         text: String,

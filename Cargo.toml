@@ -418,7 +418,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
-_docs_examples = [] # documents examples and generates example items
+_docs_examples = [] # documents examples, generates example items, feature-gate in example scripts
 _docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# modules:
@@ -948,7 +948,7 @@ name = "char_utf8_custom"
 path = "metrics/char_utf8_custom.rs"
 harness = false
 
-# programs
+# programs inside /programs/*
 # ==============================================================================
 # To install a binary:
 # cargo install --path . --bin NAME -F std
@@ -960,7 +960,7 @@ harness = false
 # required-features = ["std", "rand"]
 
 
-# examples
+# examples inside /examples/*
 # ==============================================================================
 # https://docs.rs/open-editor/latest/scrape-examples-help.html
 
@@ -976,7 +976,6 @@ path = "examples/code/enumint.rs"
 [[example]]
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"
-
 # data
 [[example]]
 name = "bitfield" # NOTE: in docs
@@ -989,16 +988,25 @@ doc-scrape-examples = false
 [[example]]
 name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
-
-# sys::os::term
+# sys
 [[example]]
 name = "term_linux"
 path = "examples/sys/term/linux.rs"
 required-features = ["linux", "unsafe_syscall"]
 doc-scrape-examples = false
-
 # work
 [[example]]
 name = "coro_manager" # NOTE: in docs
 path = "examples/work/coro_manager.rs"
 required-features = ["alloc"]
+
+# example scripts inside /src/*
+# ==============================================================================
+[[example]]
+name = "scope_guard"
+path = "src/code/guard.rs"
+required-features = ["std"]
+[[example]]
+name = "current_guard"
+path = "src/sys/mem/guard.rs"
+required-features = ["std", "unsafe_layout"]

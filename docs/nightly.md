@@ -100,6 +100,7 @@ See also
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
+  - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
