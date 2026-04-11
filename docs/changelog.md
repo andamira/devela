@@ -28,5 +28,7 @@
 
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
+- split a new `_doc_vendor!` macro out of `_doc!`
+- update syntax of `_devela_policy`.rs
 
 [0.28.0]: https://github.com/andamira/devela/releases/tag/v0.28.0

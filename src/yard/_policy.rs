@@ -22,9 +22,9 @@
 /// ```
 ///
 /// # Used in
-/// - [`buffer_linear!`][crate::buffer_linear]
-/// - [`define_pcg!`][crate::define_pcg]
-/// - [`unwrap!`][crate::unwrap]
+/// - [`buffer_linear!`][crate::buffer_linear] (item_gate)
+/// - [`define_pcg!`][crate::define_pcg] (mod extern)
+/// - [`unwrap!`][crate::unwrap] (unreachable)
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
@@ -33,35 +33,33 @@ macro_rules! __devela_policy {
 
     // Defines one or more items whose availability differs between devela and external builds,
     // enforcing internal safety policies without affecting the public API.
-    (safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
+    (item_gate safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
         // external crates: emit item directly
         $(
             #[$crate::compile(not(env(__DEVELA_MEMBER)))]
             $item
         )+
-
         // devela only: delegate to internal arm
         #[$crate::compile(env(__DEVELA_MEMBER))]
-        $crate::_devela_policy!{%devela safe:$safe, unsafe:$unsafe, $($item)+}
+        $crate::_devela_policy!{%item_gate devela safe:$safe, unsafe:$unsafe, $($item)+}
     };
-    (%devela safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
+    (%item_gate devela safe:$safe:literal, unsafe:$unsafe:literal, $($item:item)+) => {
         $(
             #[cfg(all(not(feature = $safe), feature = $unsafe))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE
             $item
         )+
     };
-    (unsafe:$unsafe:literal, $($item:item)+) => {
+    (item_gate unsafe:$unsafe:literal, $($item:item)+) => {
         // external crates: emit item directly
         $(
             #[$crate::compile(not(env(__DEVELA_MEMBER)))]
             $item
         )+
-
         #[$crate::compile(env(__DEVELA_MEMBER))]
-        $crate::_devela_policy!{%devela unsafe:$unsafe, $($item)+}
+        $crate::_devela_policy!{%item_gate devela unsafe:$unsafe, $($item)+}
     };
-    (%devela unsafe:$unsafe:literal, $($item:item)+) => {
+    (%item_gate devela unsafe:$unsafe:literal, $($item:item)+) => {
         #[cfg(feature = $unsafe)]
         $(
             #[cfg_attr(nightly_doc, doc(cfg(feature = $unsafe)))] // NOTE

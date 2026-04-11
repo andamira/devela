@@ -52,7 +52,7 @@ macro_rules! __buffer_linear_impl_option {
                 Self::_new(storage, Self::_usize_to_idx(N))
             }
 
-            $crate::_devela_policy! { safe:"safe_data", unsafe:"unsafe_array",
+            $crate::_devela_policy! { item_gate safe:"safe_data", unsafe:"unsafe_array",
                 /// Creates a buffer from an array of options and an explicit logical length,
                 /// without validating the linear invariant.
                 ///

@@ -179,7 +179,8 @@ macro_rules! __buffer_linear_impl_uninit {
                 // - `len..len+count` is within storage
                 // - these slots are currently uninitialized
                 // - after copying from `src[..count]`, they become initialized
-                let dst = unsafe { $crate::Slice::from_raw_parts_mut(
+                let dst = unsafe { ::core::slice::from_raw_parts_mut(
+                // let dst = unsafe { $crate::Slice::from_raw_parts_mut( // FIX
                         self.storage.as_mut_ptr().add(len) as *mut T, count) };
                 let src = $crate::Slice::range_to(src, count);
                 dst.copy_from_slice(src);
