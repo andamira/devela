@@ -53,7 +53,9 @@
         cold_path,
         if_let_guard,
         new_range_inclusive_api,
+        min_const_control_flow,
         more_conversion_trait_impls,
+        ptr_as_ref_unchecked,
     )
 )]
 #![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
@@ -92,6 +94,7 @@
         int_format_into,
         impl_trait_in_assoc_type,
         isqrt,
+        isolate_most_least_significant_one,
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
@@ -102,6 +105,7 @@
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
+        uint_bit_width,
         unsafe_cell_from_mut,
     )
 )]

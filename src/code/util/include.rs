@@ -37,6 +37,7 @@
 /// include_from!(utils);
 /// ```
 /// [`cargo-script`]: https://github.com/rust-lang/cargo/issues/12207
+// WAIT: [cargo-script](https://github.com/rust-lang/cargo/pull/16569)
 ///
 /// See also [`mod_from!`].
 ///

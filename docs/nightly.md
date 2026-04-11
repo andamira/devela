@@ -34,10 +34,12 @@ See also
 - 1.95: `·`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.95: ` `[importing path-segment keyword with renaming](https://github.com/rust-lang/rust/pull/146972)
 - 1.95: ` `[improve pattern matching semantics](https://github.com/rust-lang/rust/pull/150681)
+- 1.96: `·`[min_const_control_flow](https://github.com/rust-lang/rust/pull/152253)
 - 1.95: `·`[more_conversion_trait_implsa](https://github.com/rust-lang/rust/pull/145504)
 - 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
 - 1.95: `a`[push_mut](https://github.com/rust-lang/rust/pull/151785)
 - 1.95: `·`[new_range_inclusive_api](https://github.com/rust-lang/rust/pull/150522) (new_range_api)
+- 1.95: `·`[ptr_as_ref_unchecked](https://github.com/rust-lang/rust/pull/151995)
 - 1.95: ` `[rustdoc: sort stable items first](https://github.com/rust-lang/rust/pull/149460)
 - 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
 
@@ -79,6 +81,7 @@ See also
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.??: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
@@ -101,6 +104,7 @@ See also
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
+- 1.??: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
@@ -109,8 +113,19 @@ See also
 
 - 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
         = `nightly_allocator` flag
+- 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
+        = `nightly_coro` flag
+- 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
+        = `nightly_doc` flag
+- 1.??: `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
+        = `nightly_float` flag
+- 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
+        = `nightly_simd` flag
+
 - 1.??: `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
+
+- 1.??: ` `[cargo-script](https://github.com/rust-lang/cargo/pull/16569)
 
 - 1.??: ` `[signed_bigint_helpers](https://github.com/rust-lang/rust/issues/151989)
 - 1.??: ` `[const bigint_helper_methods](https://github.com/rust-lang/rust/issues/152015)
@@ -129,21 +144,13 @@ See also
 - 1.??: ` `[const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.??: ` `[const_trait_impl](https://github.com/rust-lang/rust/issues/143874)
 - 1.??: ` `[core_float_math](https://github.com/rust-lang/rust/issues/137578)
-- 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
-        = `nightly_coro` flag
 - 1.??: ` `[custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
-- 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-        = `nightly_doc` flag
-- 1.??: `F`[f16|f128](https://github.com/rust-lang/rust/issues/116909)
-        = `nightly_float` flag
 - 1.??: ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
 - 1.??: ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.??: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.??: ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.??: ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
 - 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
-- 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
-        = `nightly_simd` flag
 - 1.??: ` `[thread_local](https://github.com/rust-lang/rust/issues/29594)
 
 # Experimental features:
@@ -192,7 +199,7 @@ See also
 - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
 - [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
 - [optimize clippy & linting](https://github.com/rust-lang/rust-project-goals/issues/114)
+- [reborrow traits](https://github.com/rust-lang/rust-project-goals/issues/106)
 - [reflection and comptime](https://github.com/rust-lang/rust-project-goals/issues/406)
 - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
 - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
-

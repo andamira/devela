@@ -7,7 +7,7 @@ devela = { path = "../..", features = [] }
 //
 //! A minimal standalone rust script.
 //
-// WAIT:[Tracking Issue](https://github.com/rust-lang/cargo/issues/12207)
+// WAIT:[cargo-script](https://github.com/rust-lang/cargo/pull/16569)
 
 use devela::{cdbg, mod_from};
 

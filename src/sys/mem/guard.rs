@@ -5,6 +5,8 @@
 //! ```
 // devela::sys::mem::guard
 //
+// WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
+//
 //! Defines the [`Current`] and [`CurrentGuard`] structs.
 //
 // TOC
