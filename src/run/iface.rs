@@ -1,6 +1,6 @@
 // devela::run::iface
 //
-//! Defines `RunApp`, `RunRender`, `RunPresent`.
+//! Defines [`RunApp`], [`RunRender`], [`RunPresent`].
 //!
 //! Runtime-facing interfaces for stepwise participants.
 //

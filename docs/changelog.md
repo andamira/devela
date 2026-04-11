@@ -26,6 +26,9 @@
 
 # Modules
 
+## run
+- new items: `RunDriver`, `RunDriverError`.
+
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
