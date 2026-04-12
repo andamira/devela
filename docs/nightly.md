@@ -61,6 +61,9 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
+- 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
+        = `nightly_doc` flag
+
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
 - 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
@@ -72,14 +75,14 @@ See also
         `·` `const_sockaddr_setters`
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
-        = `nightly_doc` flag
+- 1.??: `·`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `·`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `·`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
+- 1.??: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
