@@ -28,7 +28,7 @@ See the linked modifications for detailed changes.
 - <i id="pollster"></i>[pollster] by Joshua Barretto,
   as the `FutureExt::`[`block_on`] method ([*modifications*][M_pollster]).
 - <i id="quickdiv"></i>[quickdiv] by Darko Trifunovski,
-  as the [`define_divisor!`] macro ([*modifications*][M_quickdiv]).
+  as the [`divisor!`] macro ([*modifications*][M_quickdiv]).
 - <i id="stack_dst"></i>[stack_dst] by John Hodge,
   as the [`data::layout::dst`] module ([*modifications*][M_stack_dst]).
 - <i id="stated-scope-guard"></i>[stated-scope-guard] by EvianZhang,
@@ -78,7 +78,7 @@ See the linked modifications for detailed changes.
   [`block_on`]: https://andamira.github.io/devela/latest/devela/work/future/trait.FutureExt.html#method.block_on
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
   [M_quickdiv]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/quickdiv.md
-  [`define_divisor!`]: https://andamira.github.io/devela/latest/devela/num/macro.define_divisor.html
+  [`divisor!`]: https://andamira.github.io/devela/latest/devela/num/macro.divisor.html
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
   [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stack_dst.md
   [`data::layout::dst`]: https://andamira.github.io/devela/latest/devela/data/layout/dst/index.html

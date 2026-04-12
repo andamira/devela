@@ -38,7 +38,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         #[cfg(feature = "unsafe_ffi")]
         pub use super::c::*;
 
-        pub use super::print::*;
+        #[doc(inline)]
+        pub use super::print::{os_print, os_println, os_eprint, os_eprintln};
     }
     _pub_mods {
         pub use super::{

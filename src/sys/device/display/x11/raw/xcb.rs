@@ -220,7 +220,7 @@ unsafe extern "C" {
     /// Destroys the specified window and all of its subwindows.
     ///
     /// A DestroyNotify event is generated for each destroyed window
-    /// (a DestroyNotify event is first generated for any given window’s inferiors).
+    /// (a DestroyNotify event is first generated for any given window's inferiors).
     /// If the window was mapped, it will be automatically unmapped before destroying.
     ///
     /// - <https://www.x.org/releases/current/doc/man/man3/xcb_destroy_window.3.xhtml>
