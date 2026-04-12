@@ -611,7 +611,7 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
 
 [workspace.dependencies.hashbrown] # https://crates.io/crates/hashbrown (unsafe)
-version = "0.16" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
+version = "0.17" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
 default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 

@@ -19,6 +19,9 @@
 ### examples
 - new example scripts: `scope_guard`, `current_guard`.
 
+## dependencies
+- bump `hashbrown` to 0.17.
+
 ## features & flags
 - update the intended scope of the `_docs_examples` feature.
 
