@@ -9,7 +9,7 @@
 mod fns; // prime_number_teorem
 
 mod alias; // [i|u]size_[down|up]
-mod divisor; // define_divisor!, DivisorExample, (DivisorInner)
+mod divisor; // divisor!, DivisorExample, (DivisorInner)
 mod gcd; // GcdReturn
 
 #[cfg(feature = "int")]
@@ -25,7 +25,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             alias::*,
-            divisor::define_divisor,
+            divisor::divisor,
             fns::*,
             gcd::*,
             // prim::*,

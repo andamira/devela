@@ -29,6 +29,9 @@
 
 # Modules
 
+#### num::dom::int
+- rename `define_divisor!` to `divisor!`.
+
 ## run
 - new items: `RunDriver`, `RunDriverError`.
 
