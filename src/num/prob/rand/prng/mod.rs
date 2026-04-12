@@ -23,6 +23,7 @@ crate::items! {
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
+        #[doc(inline)]
         pub use super::{
             pcg::_all::*,
             shift::_all::*,

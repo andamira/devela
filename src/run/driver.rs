@@ -5,6 +5,8 @@
 
 use crate::is;
 use crate::{RunApp, RunBackend, RunControl, RunPhase, RunStep, Runtime, RuntimeTick};
+#[cfg(doc)]
+use crate::{RunFrame, RunPresent, RunRender};
 
 #[doc = crate::_tags!(runtime error)]
 /// Errors returned while driving a runtime step.

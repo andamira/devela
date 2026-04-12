@@ -196,9 +196,10 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 /// when the logging backend is not enabled.
 ///
 /// # Features
-/// Active with the `unsafe_sync` feature.
+/// Enable the real implementation with the `unsafe_sync` feature.
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
 #[cfg(not(feature = "unsafe_sync"))]
 #[macro_export]
 macro_rules! slog {
