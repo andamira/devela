@@ -11,9 +11,10 @@ mod wrapper; // Cmp
 
 crate::structural_mods! { // _mods
     _mods {
+        #[doc(inline)]
         pub use super::{
-            macros::*,
-            wrapper::*,
+            macros::cmp,
+            wrapper::Cmp,
         };
     }
 }

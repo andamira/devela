@@ -32,11 +32,12 @@ mod value; // ValueQuant
 
 crate::structural_mods! { // _mods
     _mods {
+        #[doc(inline)]
         pub use super::{
             // align::*,
             // cont::_all::*,
             cycle::*,
-            interval::*,
+            interval::{Interval, interval},
             // norm::*,
             // power::*,
             ratio::*,

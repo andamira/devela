@@ -14,8 +14,8 @@ crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            macros::*,
-            namespace::*,
+            macros::cast,
+            namespace::Cast,
             traits::_all::*,
         };
     }

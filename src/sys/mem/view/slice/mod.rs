@@ -19,8 +19,8 @@ crate::structural_mods! { // _mods
         pub use super::{
             ext::*,
             iter::*,
-            join::*,
-            namespace::*,
+            join::const_join,
+            namespace::{Slice, slice},
         };
     }
 }

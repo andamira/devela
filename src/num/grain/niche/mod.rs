@@ -78,12 +78,12 @@ mod macros; // niche_prim!, ne!, nv!, nz!, (NicheNew)
 mod mem; // NonExtreme*, NonValue*
 // mod norm; // Norm WIP
 
-crate::structural_mods! { // _mods, _reexports, _crate_internals
+crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
             absence::*,
-            macros::*,
+            macros::{niche_prim, ne, nv, nz},
             mem::*,
             // norm::*,
         };
@@ -91,7 +91,7 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
     _reexports {
         pub use super::_reexport_core::*;
     }
-    _crate_internals {
+    _hidden {
         pub use super::macros::NicheNew;
     }
 }

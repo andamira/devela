@@ -44,7 +44,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             _DOC_NUM_MODULES,
             dom::_crate_internals::*,
             fin::_crate_internals::*,
-            grain::_crate_internals::*,
             prob::_crate_internals::*,
         };
     }

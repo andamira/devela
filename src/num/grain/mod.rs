@@ -11,7 +11,7 @@ pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, n
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 pub mod wide; // define_lane!
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -25,13 +25,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             wide::_all::*,
         };
     }
-    _crate_internals {
-        pub use super::{
-            niche::_crate_internals::*,
-        };
-    }
     _hidden {
         pub use super::{
+            niche::_hidden::*,
             wide::_hidden::*,
         };
     }

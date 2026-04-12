@@ -18,9 +18,10 @@ mod errors; // general errors
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
+        #[doc(inline)]
         pub use super::{
             // context::*,
-            define_error::*,
+            define_error::define_error,
             errors::*,
         };
     }
