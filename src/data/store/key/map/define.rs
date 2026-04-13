@@ -1,20 +1,20 @@
-// devela::data::store::key::static_map::define
+// devela::data::store::key::map::define
 //
-//! Defines the [`define_static_map!`] macro.
+//! Defines the [`map!`] macro.
 //
 
 #[cfg(feature = "_docs_examples")]
-define_static_map! {
+map! {
     #[doc = crate::_tags!(example data_structure)]
     pub const MapStaticConstU8Example, KEY: u8
 }
 #[cfg(feature = "_docs_examples")]
-define_static_map! {
+map! {
     #[doc = crate::_tags!(example data_structure)]
     pub MapStaticU16Example, KEY: u16
 }
 #[cfg(feature = "_docs_examples")]
-define_static_map! {
+map! {
     #[doc = crate::_tags!(example data_structure)]
     pub typeid MapStaticTypeIdExample
 }
@@ -45,11 +45,11 @@ define_static_map! {
 ///
 /// | Kind | Invocation | Description |
 /// |------|-------------|--------------|
-#[doc = concat!["| **Const** | `define_static_map![const MyMap, KEY: u16]` |",
+#[doc = concat!["| **Const** | `map![const MyMap, KEY: u16]` |",
 "Generates a fully `const` hashmap with compile-time operations and const methods. |"]]
-#[doc = concat!["| **Runtime** | `define_static_map![MyMap, KEY: u16]` |",
+#[doc = concat!["| **Runtime** | `map![MyMap, KEY: u16]` |",
 "Generates a non-const variant storing markers as struct fields, suitable for runtime mutation. |"]]
-#[doc = concat!["| **TypeId-based** | `define_static_map![typeid MyMap]` |",
+#[doc = concat!["| **TypeId-based** | `map![typeid MyMap]` |",
 "Uses `TypeId` hashes as keys and provides type-oriented helper methods. |"]]
 ///
 /// # Examples
@@ -57,25 +57,25 @@ define_static_map! {
 ///
 /// Overview
 /// ```
-/// # use devela::define_static_map;
+/// # use devela::map;
 /// // 1. Const hashmap
-/// define_static_map![
+/// map![
 ///     #[doc(hidden)] // supports attributes
 ///     pub const MapConst, KEY: u16
 /// ];
 ///
 /// // 2. Runtime hashmap
-/// define_static_map![pub(crate) MapRuntime, KEY: u16];
+/// map![pub(crate) MapRuntime, KEY: u16];
 ///
 /// // 3. TypeId-keyed hashmap
-/// define_static_map![typeid MapTypeId];
+/// map![typeid MapTypeId];
 /// ```
 ///
 /// Basic usage
 /// ```
-/// # use devela::define_static_map;
+/// # use devela::map;
 /// // Define a static hashmap with `u16` keys and default hasher
-/// define_static_map![const ExampleMap, KEY: u16];
+/// map![const ExampleMap, KEY: u16];
 ///
 /// let mut map = ExampleMap::<u16, u32, 8>::new();
 ///
@@ -105,9 +105,9 @@ define_static_map! {
 ///
 /// Custom hashers
 /// ```
-/// # use devela::{define_static_map, HasherFx};
+/// # use devela::{map, HasherFx};
 /// // Define a static hashmap using `HasherFx` with a custom seed
-/// define_static_map![const ExampleMapFxSeeded, KEY: u16,
+/// map![const ExampleMapFxSeeded, KEY: u16,
 ///     HASHER: |b| HasherFx::<usize>::hash_bytes_with_seed(123, b)
 /// ];
 /// let mut map = ExampleMapFxSeeded::<u16, u32, 8>::new();
@@ -118,7 +118,7 @@ define_static_map! {
 /// # use devela::HasherPengy;
 /// // Define a static hashmap using a stateful pengy hasher
 /// # #[cfg(feature = "hash")]
-/// define_static_map![const ExampleMapPengy, KEY: u16,
+/// map![const ExampleMapPengy, KEY: u16,
 ///     HASHER: |b| {
 ///         let mut p = HasherPengy::new();
 ///         p.process(b);
@@ -132,7 +132,7 @@ define_static_map! {
 /// ```
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! define_static_map {
+macro_rules! map {
     (
     // Const variant
     // ----------------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ macro_rules! define_static_map {
         $(#[$attr:meta])*
         $vis:vis const $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
@@ -152,7 +152,7 @@ macro_rules! define_static_map {
         $vis:vis const $NAME:ident, KEY:$KEY:ty,
         EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
@@ -164,7 +164,7 @@ macro_rules! define_static_map {
         $vis:vis const $NAME:ident, KEY:$KEY:ty,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
@@ -193,7 +193,7 @@ macro_rules! define_static_map {
             values: [V; N],
         }
 
-        $crate::define_static_map![%shared $NAME, KEY:$KEY,
+        $crate::map![%shared $NAME, KEY:$KEY,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
 
@@ -506,7 +506,7 @@ macro_rules! define_static_map {
         $(#[$attr:meta])*
         $vis:vis $NAME:ident, KEY:$KEY:ty $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
@@ -517,7 +517,7 @@ macro_rules! define_static_map {
         $vis:vis $NAME:ident, KEY:$KEY:ty,
         EMPTY:$EMPTY:expr, TOMB:$TOMB:expr $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:$EMPTY, TOMB:$TOMB,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
@@ -528,7 +528,7 @@ macro_rules! define_static_map {
         $vis:vis $NAME:ident, KEY:$KEY:ty,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
@@ -557,7 +557,7 @@ macro_rules! define_static_map {
         }
 
         // implement shared methods
-        $crate::define_static_map![%shared $NAME, KEY:$KEY,
+        $crate::map![%shared $NAME, KEY:$KEY,
             HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
         ];
 
@@ -866,7 +866,7 @@ macro_rules! define_static_map {
     // Uses 64-bit hashes of `TypeId`s for the keys:
         $(#[$attr:meta])*
         $vis:vis typeid $NAME:ident $(,)?) => {
-        $crate::define_static_map![
+        $crate::map![
             $(#[$attr])*
             #[doc = "A `TypeId`-keyed static hashmap.\n\n\
             This variant uses 64-bit hashes of Rust `TypeId`s as keys and adds \
@@ -1028,4 +1028,4 @@ macro_rules! define_static_map {
     };
 }
 #[doc(inline)]
-pub use define_static_map;
+pub use map;

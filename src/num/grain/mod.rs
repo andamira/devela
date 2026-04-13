@@ -9,7 +9,7 @@
 mod cast; // Cast, PrimitiveCast, PrimitiveJoin, PrimitiveSplit, cast!
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
-pub mod wide; // define_lane!
+pub mod wide; // lane!
 
 crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {

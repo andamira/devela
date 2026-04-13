@@ -14,15 +14,17 @@
 mod _reexport_alloc;
 mod _reexport_dep;
 
-mod static_map; // define_static_map!
+mod map; // map!
 // mod set;
 // mod trie;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::static_map::*;
-        // pub use set::*;
-        // pub use trie::*;
+        pub use super::{
+            map::*,
+            // set::*,
+            // trie::*,
+        };
     }
     _reexports {
         #[cfg(feature = "alloc")]

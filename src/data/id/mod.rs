@@ -7,7 +7,7 @@
 #![doc = crate::_QUO_DATA_ID!()]
 //
 
-mod handle; // define_handle!, HandleExample
+mod handle; // handle!, HandleExample
 mod uid; // IdPin
 
 crate::structural_mods! { // _mods

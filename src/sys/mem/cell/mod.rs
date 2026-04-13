@@ -10,7 +10,7 @@ mod option; // CellOptionExt
 
 // WIPZONE
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
-// mod scell; // define_singleton!
+// mod scell; // singleton!
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 

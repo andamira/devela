@@ -13,7 +13,7 @@ mod _reexport_core;
 mod _reexport_std;
 
 // mod context; // ContextualError WIP
-mod define_error; // define_error!
+mod define; // define_error!
 mod errors; // general errors
 
 crate::structural_mods! { // _mods, _reexports
@@ -21,7 +21,7 @@ crate::structural_mods! { // _mods, _reexports
         #[doc(inline)]
         pub use super::{
             // context::*,
-            define_error::define_error,
+            define::define_error,
             errors::*,
         };
     }

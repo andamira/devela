@@ -1,11 +1,11 @@
 // devela::num::dom::int::int
 //
-//! Defines [`Int`], [`define_int!`]←WIP.
+//! Defines [`Int`], [`int!`]←WIP.
 //
 
 pub(crate) mod _docs; // _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 
-// mod define; // define_int! WIP
+// mod define; // int! WIP
 mod wrapper; // Int
 
 crate::structural_mods! { // _mods, _crate_internals

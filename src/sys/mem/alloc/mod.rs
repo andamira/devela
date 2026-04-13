@@ -7,7 +7,7 @@
 //
 
 mod alloc; // Alloc, ::alloc::alloc::*
-mod arena; // define_arena!
+mod arena; // arena!
 mod storage; // Bare, BareBox, Boxed, Storage
 
 crate::structural_mods! { // _mods, _hidden

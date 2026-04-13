@@ -1,18 +1,18 @@
-// devela::data::store::key::static_map::tests
+// devela::data::store::key::map::tests
 //
 //!
 //
 // IMPROVE: make copy methods const, use const_assert
 // IMPROVE: remove the need for allocation.
 
-use crate::define_static_map;
+use crate::map;
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod v_non_copy {
     use crate::{StaticMapEntry, String, ToString};
 
-    super::define_static_map![const TestMapU8, KEY: u8];
+    super::map![const TestMapU8, KEY: u8];
 
     #[test]
     fn get_ref() {
@@ -97,7 +97,7 @@ mod v_non_copy {
         struct Empty;
         struct Tomb;
 
-        super::define_static_map![TypeIdMapU8, KEY:u64,
+        super::map![TypeIdMapU8, KEY:u64,
             EMPTY:hash_type_id::<Empty>(),
             TOMB:hash_type_id::<Tomb>()];
         let mut map: TypeIdMapU8<u64, char, 4> = TypeIdMapU8::new();
@@ -120,11 +120,11 @@ mod v_non_copy {
 }
 
 mod k_u8 {
-    super::define_static_map![const TestMapU8, KEY:u8];
+    super::map![const TestMapU8, KEY:u8];
 
     #[test]
     const fn map_custom_empty_tomb() {
-        super::define_static_map![const TestMapU8Custom, KEY: u8, EMPTY: 1, TOMB: 66];
+        super::map![const TestMapU8Custom, KEY: u8, EMPTY: 1, TOMB: 66];
         let mut _map = TestMapU8Custom::<u8, u32, 4>::new();
     }
     #[test]
@@ -180,7 +180,7 @@ mod k_u8 {
 
 #[rustfmt::skip]
 mod k_u8_panicking {
-    super::define_static_map![const TestMapU8, KEY:u8];
+    super::map![const TestMapU8, KEY:u8];
 
     #[allow(unused)] type M = TestMapU8::<u8, u32, 4>;
     #[test] #[cfg(debug_assertions)] #[should_panic(expected = "Key cannot be `EMPTY` marker")]
@@ -198,11 +198,11 @@ mod k_u8_panicking {
 }
 
 mod k_f32 {
-    super::define_static_map![const TestMapF32, KEY:f32];
+    super::map![const TestMapF32, KEY:f32];
 
     #[test]
     fn map_custom_empty_tomb() {
-        super::define_static_map![const TestMapF32Custom,
+        super::map![const TestMapF32Custom,
             KEY: f32, EMPTY: f32::NEG_INFINITY, TOMB: f32::INFINITY];
         let mut _map = TestMapF32Custom::<f32, u32, 4>::new();
     }
@@ -240,11 +240,11 @@ mod k_f32 {
 }
 
 mod k_char {
-    super::define_static_map![const TestMapChar, KEY:char];
+    super::map![const TestMapChar, KEY:char];
 
     #[test]
     fn map_custom_empty_tomb() {
-        super::define_static_map![const TestMapCharCustom, KEY: char, EMPTY: '\0', TOMB: 'Ŧ'];
+        super::map![const TestMapCharCustom, KEY: char, EMPTY: '\0', TOMB: 'Ŧ'];
         let mut map = TestMapCharCustom::<char, u32, 4>::new();
         assert_eq!(map.insert('a', 100), Ok(()));
     }

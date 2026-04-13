@@ -1,12 +1,12 @@
-// devela::data::store::key::static_map
+// devela::data::store::key::map
 //
-//! Defines the [`define_static_map!`] macro and the [`StaticEntry`] enum.
+//! Defines the [`map!`] macro and the [`StaticEntry`] enum.
 //
 
 #[cfg(test)]
 mod tests;
 
-mod define; // define_static_map!
+mod define; // map!
 mod entry; // StaticEntry
 
 crate::structural_mods! { // _mods

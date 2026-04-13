@@ -1,4 +1,4 @@
-// devela::code::error::define_error
+// devela::code::error::define
 //
 //! Defines [`define_error!`].
 //
@@ -343,7 +343,7 @@ mod tests {
     use super::define_error;
 
     #[test]
-    fn define_error() {
+    fn error() {
         /* define individual errors */
 
         define_error! { individual: pub struct UnitStruct;

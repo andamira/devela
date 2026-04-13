@@ -1,4 +1,4 @@
-// devela::data::store::key::static_map::entry
+// devela::data::store::key::map::entry
 //
 //!
 //
@@ -7,7 +7,7 @@
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
 #[doc = crate::_doc_location!("data/id")]
 ///
-/// [static map]: crate::define_static_map
+/// [static map]: crate::map
 #[derive(Debug)]
 pub enum StaticMapEntry<'a, V> {
     /// An entry that contains a value.

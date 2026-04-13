@@ -1,6 +1,6 @@
-// devela::num::prob::rand::pcg::define
+// devela::num::prob::rand::pcg::generator
 //
-//! Defines [`define_pcg!`].
+//! Defines [`rand_pcg!`].
 //
 
 #[doc = crate::_tags!(construction rand)]
@@ -30,8 +30,8 @@ crate::_ABBR_PRNG!(), " type."]]
 /// ```
 // WAIT: [cfg(doctest)](https://github.com/rust-lang/rust/issues/67295)
 /// # #[macro_export]macro_rules!__crate_name{()=>{""};} // doctest stub for _doc_location
-/// # use devela::define_pcg;
-/// define_pcg! {
+/// # use devela::rand_pcg;
+/// rand_pcg! {
 ///     /// Custom attributes
 ///     pub(crate) Pcg8: (u8)
 /// }
@@ -42,23 +42,23 @@ crate::_ABBR_PRNG!(), " type."]]
 /// PCG family reference: <https://www.pcg-random.org>
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! define_pcg {
+macro_rules! rand_pcg {
     (
     /* public API */
 
       // Defines an 8-bit PCG PRNG (`u8` output, 16-bit state)
       $(#[$attrs:meta])* $vis:vis $name:ident : (u8)) => {
-        $crate::define_pcg!(% $(#[$attrs])* $vis $name, 32+u16, 8+u8, 1,
+        $crate::rand_pcg!(% $(#[$attrs])* $vis $name, 32+u16, 8+u8, 1,
             output_xsh_rr_16_8, 0xDEFA, 12829, 47989);
     };
     ( // Defines a 16-bit PCG PRNG (`u16` output, 32-bit state)
       $(#[$attrs:meta])* $vis:vis $name:ident : (u16)) => {
-        $crate::define_pcg!(% $(#[$attrs])* $vis $name, 64+u32, 16+u16, 2,
+        $crate::rand_pcg!(% $(#[$attrs])* $vis $name, 64+u32, 16+u16, 2,
             output_xsh_rr_32_16, 0xDEFA_0017, 747796405, 2891336453);
     };
     ( // Defines a 32-bit PCG PRNG (`u32` output, 64-bit state)
       $(#[$attrs:meta])* $vis:vis $name:ident : (u32)) => {
-        $crate::define_pcg!(% $(#[$attrs])* $vis $name, 128+u64, 32+u32, 4,
+        $crate::rand_pcg!(% $(#[$attrs])* $vis $name, 128+u64, 32+u32, 4,
             output_xsh_rr_64_32, 0xDEFA_0017_DEFA_0017, 6364136223846793005, 1442695040888963407);
     };
     ( // Defines a 64-bit PCG PRNG (`u64` output, 128-bit state)
@@ -66,7 +66,7 @@ macro_rules! define_pcg {
 
     /* internal arms */
     ) => {
-        $crate::define_pcg!(% $(#[$attrs])* $vis $name, 256+u128, 64+u64, 8,
+        $crate::rand_pcg!(% $(#[$attrs])* $vis $name, 256+u128, 64+u64, 8,
             output_xsl_rr_128_64, 0xDEFA_0017_DEFA_0017_DEFA_0017_DEFA_0017,
             47026247687942121848144207491837523525, 117397592171526113268558934119004209487);
     };
@@ -82,7 +82,7 @@ macro_rules! define_pcg {
      ) => { $crate::paste! {
         $crate::_devela_policy! { $vis mod [<__pcg_def_ $name >],
             // devela-specific doc conventions
-            devela { $crate::define_pcg!(%define
+            devela { $crate::rand_pcg!(%define
                 $(#[$attrs])*
                 #[doc = $crate::_tags!(rand)]
                 #[doc = concat!["A ", $obits, "-bit ", $crate::_ABBR_PCG!(), " ",
@@ -91,7 +91,7 @@ macro_rules! define_pcg {
                 $vis $name, $sbits+$state, $obits+$output, $obytes, $output_fn, $SEED, $MUL, $INC);
             }
             // simpler docs when invoked externally
-            extern { $crate::define_pcg!(%define
+            extern { $crate::rand_pcg!(%define
                 $(#[$attrs])*
                 #[doc = concat![
                 "A ", $obits, "-bit ", $crate::_ABBR_PCG!(), " ", $crate::_ABBR_PRNG!(), ".\n\n"]]
@@ -106,7 +106,7 @@ macro_rules! define_pcg {
      $obytes:literal, $output_fn:ident,
      $SEED:literal, $MUL:literal, $INC:literal
      ) => { $crate::paste! {
-        $crate::define_pcg!(%impls $output $name);
+        $crate::rand_pcg!(%impls $output $name);
 
         $(#[$attrs])*
         #[doc = "It uses a " $sbits
@@ -428,4 +428,4 @@ macro_rules! define_pcg {
     };
 }
 #[doc(inline)]
-pub use define_pcg;
+pub use rand_pcg;

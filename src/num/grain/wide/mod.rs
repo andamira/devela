@@ -14,7 +14,7 @@ mod _helpers; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
 #[cfg(test)]
 mod tests;
 
-mod lane; // define_lane!
+mod lane; // lane!
 
 crate::structural_mods! { // _reexports, _hidden
     _mods {

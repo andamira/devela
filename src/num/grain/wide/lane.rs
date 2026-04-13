@@ -1,20 +1,20 @@
 // devela::num::grain::wide::lane
 //
-//! Defines [`define_lane!`] macro.
+//! Defines [`lane!`] macro.
 //
 // TOC
 // - struct Lane4_i32Example
 // - consts for method's docs
-// - macro define_lane!
+// - macro lane!
 // - tests
 
 #[cfg(feature = "_docs_examples")]
-define_lane! {
+lane! {
     #[doc = crate::_tags!(example code num)]
     /// Example fixed-width pack of 4 × `i32` lanes.
     #[doc = crate::_doc_location!("num/grain")]
     ///
-    /// Generated with [`define_lane!`].
+    /// Generated with [`lane!`].
     #[derive(Clone, Copy, Debug)]
     #[allow(non_camel_case_types)]
     pub struct Lane4_i32Example pub lanes(4); unsigned(i32);
@@ -37,11 +37,11 @@ define_lane! {
 /// ```
 /// # #![cfg_attr(nightly_doc, feature(doc_cfg))]
 /// # #![cfg_attr(nightly_simd, feature(portable_simd))]
-/// # use devela::define_lane;
+/// # use devela::lane;
 /// // 1. Auto lane definition
-/// define_lane!(auto Lane4 lanes(4); signed(i32); float(f32););
+/// lane!(auto Lane4 lanes(4); signed(i32); float(f32););
 /// // 2. Custom lane definition
-/// define_lane! {
+/// lane! {
 ///     /// Doc comments.
 ///     #[repr(transparent)]
 ///     #[derive(Copy, Clone, Debug)]
@@ -50,20 +50,20 @@ define_lane! {
 /// }
 ///
 /// // 3. Implementation-only (attach new primitive impls to a previews definition)
-/// define_lane![impl Lane8 lanes(8); signed(i64);];
+/// lane![impl Lane8 lanes(8); signed(i64);];
 /// ```
 ///
 /// See also [`Lane4_i32Example`] for the exact methods implementations.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! define_lane {
+macro_rules! lane {
     (
     /* public macro arms */
 
         // 1. auto definition & impls
         auto $name:ident lanes($L:literal) ; $($rest:tt)*
     ) => {
-        $crate::define_lane! {
+        $crate::lane! {
             #[doc = concat!("A fixed-width pack of ", stringify!($L),
             " numeric lanes for parallel elementwise operations.")]
             #[repr(transparent)]
@@ -86,7 +86,7 @@ macro_rules! define_lane {
             const INIT: Self = Self([T::INIT; $L]);
         }
 
-        $crate::define_lane!(%impls $name : $L ; $($rest)*);
+        $crate::lane!(%impls $name : $L ; $($rest)*);
     };
     (
         // 3. only impls
@@ -95,39 +95,39 @@ macro_rules! define_lane {
     /* private macro arms */
 
     ) => {
-        $crate::define_lane!(%impls $name : $L ; $($rest)*);
+        $crate::lane!(%impls $name : $L ; $($rest)*);
     };
     //% impl group dispatch
     (%impls $name:ident : $L:literal ;) => {};
     (%impls $name:ident : $L:literal ; signed($($tys:ty),*); $($rest:tt)*) => {
-        $crate::define_lane!(%$name : $L signed($($tys),*));
-        $crate::define_lane!(%impls $name : $L ; $($rest)*);
+        $crate::lane!(%$name : $L signed($($tys),*));
+        $crate::lane!(%impls $name : $L ; $($rest)*);
     };
     (%impls $name:ident : $L:literal ; unsigned($($tys:ty),*); $($rest:tt)*) => {
-        $crate::define_lane!(%$name : $L unsigned($($tys),*));
-        $crate::define_lane!(%impls $name : $L ; $($rest)*);
+        $crate::lane!(%$name : $L unsigned($($tys),*));
+        $crate::lane!(%impls $name : $L ; $($rest)*);
     };
     (%impls $name:ident : $L:literal ; float($($tys:ty),*); $($rest:tt)*) => {
-        $crate::define_lane!(%$name : $L float($($tys),*));
-        $crate::define_lane!(%impls $name : $L ; $($rest)*);
+        $crate::lane!(%$name : $L float($($tys),*));
+        $crate::lane!(%impls $name : $L ; $($rest)*);
     };
     //% type category dispatch
     (%$name:ident : $L:literal signed($($t:ty),+)) => {
         $(
-            $crate::define_lane!(%impl_common $name : $L for $t);
-            $crate::define_lane!(%impl_int $name : $L for $t);
+            $crate::lane!(%impl_common $name : $L for $t);
+            $crate::lane!(%impl_int $name : $L for $t);
         )+
     };
     (%$name:ident : $L:literal unsigned($($t:ty),+)) => {
         $(
-            $crate::define_lane!(%impl_common $name : $L for $t);
-            $crate::define_lane!(%impl_int $name : $L for $t);
+            $crate::lane!(%impl_common $name : $L for $t);
+            $crate::lane!(%impl_int $name : $L for $t);
         )+
     };
     (%$name:ident : $L:literal float($($t:ty),+)) => {
         $(
-            $crate::define_lane!(%impl_common $name : $L for $t);
-            $crate::define_lane!(%impl_float $name : $L for $t);
+            $crate::lane!(%impl_common $name : $L for $t);
+            $crate::lane!(%impl_float $name : $L for $t);
         )+
     };
     //% impl blocks for single types
@@ -766,4 +766,4 @@ macro_rules! define_lane {
     }}; // %impl_float
 }
 #[doc(inline)]
-pub use define_lane;
+pub use lane;

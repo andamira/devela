@@ -3,9 +3,9 @@
 //! Defines [`Adler32`].
 //
 
-use crate::{ConstInit, Hasher, Slice, define_lane, unwrap, whilst};
+use crate::{ConstInit, Hasher, Slice, lane, unwrap, whilst};
 
-define_lane! {
+lane! {
     #[derive(Clone, Copy)]
     struct Lane4 lanes(4); unsigned(u32);
 }

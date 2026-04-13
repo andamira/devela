@@ -1,8 +1,8 @@
 // devela::num::grain::wide::tests
 
-use super::define_lane;
+use super::lane;
 
-define_lane! {
+lane! {
     #[doc = "doc"] #[derive(Copy, Debug, Clone)]
     pub struct TestLane4 pub lanes(4);
     signed(i32);
@@ -37,35 +37,35 @@ fn simd_portable() {
 }
 
 mod dep_wipe {
-    use super::{TestLane4, define_lane};
+    use super::{TestLane4, lane};
 
     /* implement the full subset supported by `dep_wide` */
-    define_lane! {
+    lane! {
         pub struct TestLane2 pub lanes(2);
         unsigned(u64);
         signed(i64);
         float(f64);
     }
     // add implementations to the definition above
-    define_lane! {
+    lane! {
         impl TestLane4 lanes(4);
         unsigned(u8, u16, u32, u64);
         signed(i8, i16, i64);
         float(f64);
     }
-    define_lane! {
+    lane! {
         pub struct TestLane8 pub lanes(8);
         unsigned(u16, u32, u64);
         signed(i16, i32, i64);
         float(f32, f64);
     }
-    define_lane! {
+    lane! {
         pub struct TestLane16 pub lanes(16);
         unsigned(u8, u16, u32);
         signed(i8, i16, i32);
         float(f32);
     }
-    define_lane! {
+    lane! {
         pub struct TestLane32 pub lanes(32);
         unsigned(u8, u16);
         signed(i8, i16);

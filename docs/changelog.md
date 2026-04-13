@@ -29,11 +29,24 @@
 
 # Modules
 
+### data::id
+- rename `define_handle!` to `handle!`
+
+#### data storage::key
+- rename `define_static_map!` to `map!`
+
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.
 
-## run
-- new items: `RunDriver`, `RunDriverError`.
+#### num::grain::wide
+- rename `define_lane!` to `lane!`
+
+#### num::prob::rand
+- rename `define_pcg!` to `rand_pcg!`
+- rename `define_xorshift!` to `rand_xorshift!`
+
+### sys::mem
+- rename `define_arena!` to `arena!`
 
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.

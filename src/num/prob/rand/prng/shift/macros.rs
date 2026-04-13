@@ -1,6 +1,6 @@
 // devela::num::prob::rand::prng::shift::macros
 //
-//! Defines [`define_xorshift!`],  ([`xorshift_basis!`]).
+//! Defines [`rand_xorshift!`],  ([`xorshift_basis!`]).
 //
 
 #[cfg(doc)]
@@ -37,7 +37,7 @@ use crate::{XorShift16, XorShift32, XorShift64};
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-macro_rules! _define_xorshift {
+macro_rules! _rand_xorshift {
     (bits:$bits:literal, basis:$basis:expr, triplet:$triplet:expr, seed:$seed:expr) => {{
         $crate::paste! {
             const T: (u8, u8, u8) = $crate::[<XOROSHIFT_ $bits _TRIPLETS>][{ $triplet }];
@@ -49,7 +49,7 @@ macro_rules! _define_xorshift {
 }
 #[doc = crate::_tags!(rand)]
 #[doc(inline)]
-pub use _define_xorshift as define_xorshift;
+pub use _rand_xorshift as rand_xorshift;
 
 #[doc = crate::_tags!(construction code rand)]
 /// Generates a XORSHIFT sequence using the given operation basis and shift triplet.

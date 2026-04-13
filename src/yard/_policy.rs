@@ -23,7 +23,7 @@
 ///
 /// # Used in
 /// - [`buffer_linear!`][crate::buffer_linear] (item_gate)
-/// - [`define_pcg!`][crate::define_pcg] (mod extern)
+/// - [`rand_pcg!`][crate::rand_pcg] (mod extern)
 /// - [`unwrap!`][crate::unwrap] (unreachable)
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

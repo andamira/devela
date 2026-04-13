@@ -40,7 +40,7 @@ mod _mod_docs; // _DOC_*!
 mod _tags; // EMOJI_*!, _TAG_*! _tags!
 pub(crate) mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
 
-// IMPROVE: some could be _crate_internals, currently blocked by define_error! and define_pcg!
+// IMPROVE: some could be _crate_internals, currently blocked by define_error! and rand_pcg!
 crate::structural_mods! { // _hidden
     _crate_internals {
         pub use super::{

@@ -107,7 +107,7 @@ Root modules & public sub-modules features:
   - `sync`:
 
 [`code`]:         crate::code
-  [`error`]:      crate::code::error
+  [`error`]:      mod@crate::code::error
 [`data`]:         crate::data
   [`hash`]:       crate::data::codec::hash
 [`geom`]:         crate::geom

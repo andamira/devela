@@ -15,13 +15,13 @@
 // - example main()
 
 use ::devela::{
-    Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name,
-    define_static_map, transmute,
+    Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name, map,
+    transmute,
 };
 ::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 // Stores the current pointers for concrete types.
-define_static_map![typeid KeyCurrentMap];
+map![typeid KeyCurrentMap];
 thread_local! {
     static CURRENT_PTR_MAP: RefCell<KeyCurrentMap<u64, PtrNonNull<u8>, 64>>
         = RefCell::new(KeyCurrentMap::new_cloned(PtrNonNull::<u8>::dangling()));

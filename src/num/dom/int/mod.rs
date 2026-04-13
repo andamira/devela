@@ -13,7 +13,7 @@ mod divisor; // divisor!, DivisorExample, (DivisorInner)
 mod gcd; // GcdReturn
 
 #[cfg(feature = "int")]
-mod int; // Int, define_int! WIP
+mod int; // Int, int! WIP
 // mod prim; // i256, u256 WIP RENAME
 // mod primes; // WIP
 // mod recip; // DivRecip WIP

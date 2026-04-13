@@ -1,27 +1,27 @@
 // devela::sys::mem::alloc::arena::define
 //
-//! Defines [`define_arena`].
+//! Defines [`arena`].
 //
 
 #[cfg(any(test, feature = "_docs_examples"))]
-define_arena! {
+arena! {
     // [ offset: u8+crate::NonExtremeU8; ] // WIP TODO
     [ offset: u8+u8; ]
 
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena.
     ///
-    /// Generated with [`define_arena!`].
+    /// Generated with [`arena!`].
     pub ArenaExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena handle.
     ///
-    /// Generated with [`define_arena!`].
+    /// Generated with [`arena!`].
     pub ArenaHandleExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena mark.
     ///
-    /// Generated with [`define_arena!`].
+    /// Generated with [`arena!`].
     pub ArenaMarkExample;
 }
 
@@ -37,7 +37,7 @@ define_arena! {
 /// See: [`ArenaExample`], [`ArenaHandleExample`], [`ArenaMarkExample`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! define_arena {
+macro_rules! arena {
     // point of entry
     (
      [ offset: $prim:ident+$T:ty; ]
@@ -49,10 +49,10 @@ macro_rules! define_arena {
      $(#[$mark_attr:meta])*
      $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::define_handle! {
+        $crate::handle! {
             [offset:$prim+$T;] $(#[$handle_attr])* $hvis $Handle
         }
-        $crate::define_arena![%arena
+        $crate::arena![%arena
             $(#[$arena_attr])* $vis $Arena<$T>,
             $Handle,
             $(#[$mark_attr])* $Mark,
@@ -68,17 +68,17 @@ macro_rules! define_arena {
      $Mark:ident,
      $_:ty
     ) => {
-        $crate::define_arena![%main
+        $crate::arena![%main
             $(#[$arena_attr])* $vis $Arena<$T>, // the arena type
             $Handle, // the handle type
             $Mark, // the mark type
             $_ // the internal ops arena namespace
         ];
-        $crate::define_arena![%prim $vis $Arena<$T>, $Handle, ($)];
-        $crate::define_arena![%mark $Arena<$T>, $(#[$mark_attr])* $vis $Mark];
+        $crate::arena![%prim $vis $Arena<$T>, $Handle, ($)];
+        $crate::arena![%mark $Arena<$T>, $(#[$mark_attr])* $vis $Mark];
         $crate::paste! {
             #[cfg(test)]
-            $crate::define_arena![%tests $Arena, [<test_ $Arena>]];
+            $crate::arena![%tests $Arena, [<test_ $Arena>]];
         }
     };
     // $Arena:   the name of the new generated arena.
@@ -543,4 +543,4 @@ macro_rules! define_arena {
     };
 }
 #[doc(inline)]
-pub use define_arena;
+pub use arena;

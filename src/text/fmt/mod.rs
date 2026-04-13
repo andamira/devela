@@ -15,7 +15,7 @@ mod cat; // fmtcat!
 // mod case; // WIP
 mod debug; // DebugExt
 mod namespace; // Fmt
-mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, define_fmt_num!
+mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, fmt_num! WIP
 // mod table; // WIP
 
 crate::structural_mods! { // _mods, _reexports, _hidden

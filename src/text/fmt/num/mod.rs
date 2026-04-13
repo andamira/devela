@@ -12,7 +12,7 @@ mod int; // _impl_fmt_num_int!
 
 // definitions
 mod conf; // FmtNumConf, FmtNumSign
-// mod define; // define_fmt_num! WIP
+// mod define; // fmt_num! WIP
 mod group; // FmtNumGroup,
 mod num; // FmtNum TTEM
 mod shape; // FmtNumShape

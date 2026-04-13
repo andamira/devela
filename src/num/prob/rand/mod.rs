@@ -13,7 +13,7 @@
 //!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
 //!     [`XorShift128`], [`XorShift128p`].
 //!   - [`Xoroshiro128pp`].
-//!   - [`define_xorshift!`].
+//!   - [`rand_xorshift!`].
 //! - *Permuted Congruential Generator* algorithms:
 //!     - [`Pcg32`].
 //!
