@@ -55,9 +55,11 @@ See also
 - 1.96: `·`[new_range_to_inclusive_api](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
 
 # 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
-<!-- > - <https://github.com/rust-lang/rust/milestone/???> -->
+> - <https://github.com/rust-lang/rust/milestone/144>
 <!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.97.0> -->
+> - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
+
+- 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -84,7 +86,6 @@ See also
 - 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
-- 1.??: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed

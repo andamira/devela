@@ -70,7 +70,7 @@
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_97`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_97, feature())]
+#![cfg_attr(nightly_stable_1_97, feature(isolate_most_least_significant_one,))]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
@@ -96,7 +96,6 @@
         int_lowest_highest_one,
         impl_trait_in_assoc_type,
         isqrt,
-        isolate_most_least_significant_one,
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
