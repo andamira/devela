@@ -86,7 +86,7 @@ mod impl_source;
 
 mod point; // TimePoint
 mod source; // TimeSource, TimeSourceCfg
-// mod tsc; // TimeSourceTsc
+mod span; // TimeSpan
 
 #[cfg(target_has_atomic = "64")]
 mod fake; // TimeFake, TimeFakeRef
@@ -96,7 +96,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::{
             point::*,
             source::*,
-            // tsc::*,
+            span::*,
         };
         #[cfg(target_has_atomic = "64")]
         pub use super::fake::*;

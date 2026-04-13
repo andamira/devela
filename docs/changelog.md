@@ -51,6 +51,22 @@
 ## phys
 - new module `phys::subs`.
 
+#### phys::time
+- update `NoTime`:
+  - implement `TimePoint`, `TimeSource` and `TimeSpan`.
+
+#### phys::time::source
+- update `TimePoint`:
+  - make `Elapsed` require `TimeSpan`.
+  - implement for `Duration`.
+- new trait `TimeSpan`.
+
+## run::time
+- update `RunPacer`:
+  - change requiring `Duration` for `T: TimeSpan`.
+  - make the constructor fallible.
+  - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
+
 ### sys::mem
 - rename `define_arena!` to `arena!`
 

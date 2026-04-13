@@ -5,8 +5,9 @@
 #![doc = crate::_doc!(flat:"run")]
 #![doc = crate::_doc!(hr)]
 
-// mod loop;
+// mod clock; // RunClock RunDelta
 mod frame; // RunFrame
+// mod loop;
 mod pacer; // RunPacer
 mod run; // Runtime
 mod step; // RunStep
@@ -15,8 +16,9 @@ mod tick; // RuntimeTick
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // loop::*,
+            // clock::*,
             frame::*,
+            // loop::*,
             pacer::*,
             run::*,
             step::*,
