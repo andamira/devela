@@ -61,6 +61,10 @@
   - implement for `Duration`.
 - new trait `TimeSpan`.
 
+## run
+- new items: `RunDriver`, `RunDriverError`, `RunDriverFrameError`.
+- update `RunRender` and `RunPresent` to support borrowed render artifacts with GATs.
+
 ## run::time
 - update `RunPacer`:
   - change requiring `Duration` for `T: TimeSpan`.

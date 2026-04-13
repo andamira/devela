@@ -97,30 +97,38 @@ pub trait RunBackend {
 }
 
 #[doc = crate::_tags!(runtime)]
-/// Rendering logic driven by a runtime step.
+/// Rendering logic driven by a runtime frame.
 #[doc = crate::_doc_location!("run")]
 ///
-/// A runtime or driver builds a [`RunStep`] and calls [`run_render`][Self::run_render]
-/// to let a renderer project a scene or app state into its output representation.
+/// A runtime or driver builds a [`RunFrame`] and calls [`run_render`][Self::run_render]
+/// to let a renderer project a scene or app state into a presentation artifact.
+///
+/// The output may borrow from the provided frame context and scene.
+/// This allows backends to avoid unnecessary copying when the presentation step
+/// can directly consume borrowed render artifacts.
 ///
 /// This trait defines rendering only.
-/// It does not define logical progression, pacing, or final presentation.
+/// It does not define logical progression or final presentation.
 pub trait RunRender<S, E = (), C = ()> {
-    /// The successful result of a render step.
+    /// The successful artifact produced for presentation.
     ///
-    /// Use `()` when rendering only updates internal state or buffers.
-    type Output;
+    /// This may borrow from the renderer, frame context, or scene.
+    type Output<'a>
+    where
+        Self: 'a,
+        S: 'a,
+        E: 'a,
+        C: 'a;
+
     /// The error type returned by rendering.
     type Error;
 
-    /// Renders `scene` for the current runtime step.
-    ///
-    /// Returns an implementation-defined output on success.
-    fn run_render(
-        &mut self,
-        step: RunFrame<'_, E, C>,
-        scene: &S,
-    ) -> Result<Self::Output, Self::Error>;
+    /// Renders `scene` for the current runtime frame.
+    fn run_render<'a>(
+        &'a mut self,
+        frame: RunFrame<'a, E, C>,
+        scene: &'a S,
+    ) -> Result<Self::Output<'a>, Self::Error>;
 }
 
 #[doc = crate::_tags!(runtime)]
@@ -130,23 +138,26 @@ pub trait RunRender<S, E = (), C = ()> {
 /// A runtime or driver calls [`run_present`][Self::run_present]
 /// after rendering to finalize or expose the prepared output.
 ///
-/// Typical examples include:
-/// - flushing a terminal buffer,
-/// - swapping a backbuffer,
-/// - submitting queued draw commands.
+/// The input may borrow from frame-local rendering state.
+/// This allows presentation to consume borrowed artifacts without forcing
+/// intermediate ownership.
 ///
 /// This trait defines presentation only.
 /// It does not define logical progression or rendering.
 pub trait RunPresent {
+    /// The input artifact consumed during presentation.
+    type Input<'a>
+    where
+        Self: 'a;
+
     /// The successful result of a presentation step.
     ///
     /// Use `()` when presentation only finalizes side effects.
     type Output;
+
     /// The error type returned by presentation.
     type Error;
 
-    /// Finalizes the prepared output for presentation.
-    ///
-    /// Returns an implementation-defined output on success.
-    fn run_present(&mut self) -> Result<Self::Output, Self::Error>;
+    /// Finalizes the prepared artifact for presentation.
+    fn run_present<'a>(&'a mut self, input: Self::Input<'a>) -> Result<Self::Output, Self::Error>;
 }
