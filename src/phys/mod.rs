@@ -9,25 +9,26 @@
 #![cfg_attr(feature = "safe_phys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
-    crate::_doc!(modules: crate; phys: time, unit, wave); // astro, bio, chem, elec, geo, mech
+    crate::_doc!(modules: crate; phys: time, unit, wave);
+    // astro, bio, chem, elec, geo, heat, mech, optic, subs
 }
 
-// pub mod astro;
-// pub mod bio;
-// pub mod chem;
-// pub mod elec;
-// pub mod geo;
-// pub mod mech;
-// pub mod optic;
-pub mod time;
-
+// pub mod astro; // Astronomy-related abstractions
+// pub mod bio; // Biology-related abstractions
+// pub mod chem; // Chemistry-related abstractions
+// pub mod elec; // Electromagnetic-related abstractions
+// pub mod geo; // Thermodynamics and heat transfer
+// pub mod heat; // thermodynamics and heat transfer
+// pub mod mech; // mechanics-related abstractions
+// pub mod optic; // Optics and light transport in piecewise media
+// pub mod subs; // Physical substrates, bodies, phases, and material response properties
+pub mod time; // Time and calendar types and operations
 #[cfg(feature = "unit")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
-pub mod unit;
-
+pub mod unit; // Physical units of measure and unit prefixes
 #[cfg(feature = "wave")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
-pub mod wave;
+pub mod wave; // Wave primitives, wavelets
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
@@ -37,8 +38,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             // chem::_all::*,
             // elec::_all::*,
             // geo::_all::*,
+            // heat::_all::*,
             // mech::_all::*,
             // optic::_all::*,
+            // subs::_all::*,
             time::_all::*,
         };
         #[cfg(feature = "unit")]

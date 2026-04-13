@@ -41,9 +41,15 @@
 #### num::grain::wide
 - rename `define_lane!` to `lane!`
 
+### num::prob
+- new module `phys::prob::markov`.
+
 #### num::prob::rand
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`
+
+## phys
+- new module `phys::subs`.
 
 ### sys::mem
 - rename `define_arena!` to `arena!`
