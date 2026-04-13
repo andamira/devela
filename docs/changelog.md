@@ -35,6 +35,9 @@
 ## run
 - new items: `RunDriver`, `RunDriverError`.
 
+### sys::os
+- remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.
+
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`

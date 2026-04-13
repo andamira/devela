@@ -16,8 +16,6 @@
 // - https://source.android.com/docs/security/features/trusty
 // - https://wasi.dev/ | https://github.com/WebAssembly/WASI
 
-mod print; // os_[e]print[ln]!
-
 #[cfg(feature = "unsafe_ffi")]
 mod c; // Libc
 
@@ -37,9 +35,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(feature = "unsafe_ffi")]
         pub use super::c::*;
-
-        #[doc(inline)]
-        pub use super::print::{os_print, os_println, os_eprint, os_eprintln};
     }
     _pub_mods {
         pub use super::{
