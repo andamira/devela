@@ -38,6 +38,9 @@
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.
 
+#### sys::os::linux
+- update `LinuxError` conversion to `IoError`.
+
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`

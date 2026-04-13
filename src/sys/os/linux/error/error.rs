@@ -84,8 +84,7 @@ macro_rules! match_linux_to_io {
                     ERRNO::EDOM => IoErrorKind::InvalidInput,
                     ERRNO::ERANGE => IoErrorKind::InvalidInput,
                     ERRNO::EDEADLK => IoErrorKind::Deadlock,
-                    // WAIT:1.87 [io_error_more](https://github.com/rust-lang/rust/pull/134076)
-                    // ERRNO::ENAMETOOLONG => IoErrorKind::InvalidFilename,
+                    ERRNO::ENAMETOOLONG => IoErrorKind::InvalidFilename,
                     ERRNO::ENOLCK => IoErrorKind::ResourceBusy,
                     ERRNO::ENOSYS => IoErrorKind::Unsupported,
                     ERRNO::ENOTEMPTY => IoErrorKind::DirectoryNotEmpty,
