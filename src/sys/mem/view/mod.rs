@@ -8,6 +8,7 @@
 
 mod borrow; // Borrowed data and ownership-relaxed views.
 mod byte; // MaybeByte
+mod replica; // MemReplica, MemReplicaError, MemReplicaSlice
 mod slice; // Slice, SliceExt
 
 crate::structural_mods! { // _mods
@@ -15,6 +16,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             borrow::_all::*,
             byte::*,
+            replica::_all::*,
             slice::_all::*,
         };
     }
