@@ -59,7 +59,9 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
 > - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
 
+- 1.97: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
+- 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -84,7 +86,6 @@ See also
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
-- 1.??: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
@@ -109,7 +110,6 @@ See also
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
-- 1.??: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)

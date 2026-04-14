@@ -70,7 +70,10 @@
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_97`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_97, feature(isolate_most_least_significant_one,))]
+#![cfg_attr(
+    nightly_stable_1_97,
+    feature(int_lowest_highest_one, isolate_most_least_significant_one, uint_bit_width,)
+)]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
@@ -93,7 +96,6 @@
         fn_align,
         frontmatter,
         int_format_into,
-        int_lowest_highest_one,
         impl_trait_in_assoc_type,
         isqrt,
         likely_unlikely,
@@ -106,7 +108,6 @@
         str_as_str,
         substr_range,
         supertrait_item_shadowing,
-        uint_bit_width,
         unsafe_cell_from_mut,
     )
 )]
