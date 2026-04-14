@@ -11,9 +11,6 @@ mod pod; // MemPod
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     _::_all::*,
-        // };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
         pub use super::pod::MemPod;

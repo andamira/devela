@@ -3,14 +3,14 @@
 //! Defines [`MemReplicaError`].
 //
 
-#[doc = crate::_tags!(error mem layout)]
+#[doc = crate::_tags!(error mem)]
 /// Errors produced by replicated layout construction and access.
-#[doc = crate::_doc_location!("sys/mem/layout")]
+#[doc = crate::_doc_location!("sys/mem/view")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum MemReplicaError {
     /// The requested replica count `N` is zero.
     ZeroReplicas,
-    /// The layout declares zero channels.
+    /// The number of declared channels is zero.
     ZeroChannels,
     /// The element type has zero size and cannot participate in byte-spaced layout.
     ZeroSizedType,

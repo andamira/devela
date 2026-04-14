@@ -1,6 +1,6 @@
 // devela::sys::mem::bound::align::cache
 //
-//! Defines the `CacheAlign` struct.
+//! Defines the [`CacheAlign`] struct.
 //
 
 #[doc = crate::_tags!(mem)]

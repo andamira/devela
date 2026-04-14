@@ -6,6 +6,9 @@
 #![doc = crate::_doc!(extends: cell)]
 //
 
+mod _reexport_core;
+
+mod hedge; // MemHedgeCtrl, MemHedgeError, MemHedgeRead, MemHedgeState
 mod option; // CellOptionExt
 
 // WIPZONE
@@ -14,11 +17,10 @@ mod option; // CellOptionExt
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 
-mod _reexport_core;
-
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
+            hedge::_all::*,
             option::*,
         };
         // WIPZONE

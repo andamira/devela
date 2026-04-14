@@ -74,6 +74,9 @@
 ### sys::mem
 - rename `define_arena!` to `arena!`
 
+### sys::mem::cell
+- new items: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
+
 ### sys::mem::view
 - update `Slice`: add methods: `get`, `get_mut`:
 - new items: `MemReplicaError`, `MemReplicaSlice`.
