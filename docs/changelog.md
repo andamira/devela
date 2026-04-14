@@ -73,6 +73,7 @@
 
 ### sys::mem
 - rename `define_arena!` to `arena!`
+- update `Slice`: add methods: `get`, `get_mut`:
 
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.

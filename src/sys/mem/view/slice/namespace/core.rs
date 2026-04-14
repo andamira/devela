@@ -1,6 +1,6 @@
 // devela::sys::mem::view::slice::namespace::core
 
-use crate::{Slice, is};
+use crate::{Slice, is, whilst};
 use ::core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use ::core::slice::{from_raw_parts, from_raw_parts_mut};
@@ -25,6 +25,27 @@ impl<T> Slice<T> {
     /// See `core::slice::`[`copy_from_slice`][slice#method.copy_from_slice].
     #[inline(always)]
     pub const fn copy(dst: &mut [T], src: &[T]) where T: Copy { dst.copy_from_slice(src); }
+
+    /// Returns a shared reference to the element at `index`, or `None` if out of bounds.
+    ///
+    /// This is a stable const analogue just for single-element checked access.
+    ///
+    /// See `core::slice::`[`get`][slice#method.get].
+    #[must_use]
+    #[inline(always)]
+    pub const fn get(slice: &[T], index: usize) -> Option<&T> {
+        is! { index < slice.len(), Some(&slice[index]), None }
+    }
+    /// Returns an exclusive reference to the element at `index`, or `None` if out of bounds.
+    ///
+    /// This is a stable const analogue just for single-element checked access.
+    ///
+    /// See `core::slice::`[`get_mut`][slice#method.get_mut].
+    #[must_use]
+    #[inline(always)]
+    pub const fn get_mut(slice: &mut [T], index: usize) -> Option<&mut T> {
+        is! { index < slice.len(), Some(&mut slice[index]), None }
+    }
 
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
@@ -88,11 +109,9 @@ macro_rules! impl_prim {
             #[must_use]
             pub const fn eq(a: &[$t], b: &[$t]) -> bool {
                 is! { a.len() != b.len(), return false }
-                let mut i = 0;
-                while i < a.len() {
+                whilst! { i in 0..a.len(); {
                     is! { a[i] != b[i], return false }
-                    i += 1;
-                }
+                }}
                 true
             }
         }
@@ -101,11 +120,9 @@ macro_rules! impl_prim {
             #[must_use]
             pub const fn eq(a: &[&[$t]], b: &[&[$t]]) -> bool {
                 is! { a.len() != b.len(), return false }
-                let mut i = 0;
-                while i < a.len() {
+                whilst! { i in 0..a.len(); {
                     is! { !Slice::<$t>::eq(a[i], b[i]), return false }
-                    i += 1;
-                }
+                }}
                 true
             }
         }
@@ -126,11 +143,9 @@ impl Slice<&[&str]> {
     #[must_use]
     pub const fn eq(a: &[&str], b: &[&str]) -> bool {
         is! { a.len() != b.len(), return false }
-        let mut i = 0;
-        while i < a.len() {
+        whilst! { i in 0..a.len(); {
             is! { !Slice::<&str>::eq(a[i], b[i]), return false }
-            i += 1;
-        }
+        }}
         true
     }
 }
