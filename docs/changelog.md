@@ -35,6 +35,10 @@
 #### data storage::key
 - rename `define_static_map!` to `map!`
 
+#### media::visual::image
+- new trait `RasterView`.
+- remove `image` feature-gate from the module.
+
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.
 

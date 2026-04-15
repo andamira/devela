@@ -16,6 +16,7 @@ mod error;
 // mod png; // WIP
 mod pnm; // WIP
 
+mod raster; // RasterView
 #[cfg(feature = "term")]
 pub mod sixel; // SixelChar, SixelColor, SixelEncoder, SixelPalette
 
@@ -23,6 +24,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::{
             error::*,
+            raster::*,
             pnm::*,
         };
         // #[cfg(feature = "alloc")]
