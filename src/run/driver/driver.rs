@@ -150,12 +150,12 @@ macro_rules! _step_frame_body {
         let step = RunStep::new($self.runtime.tick(), $self.runtime.phase(), $events);
         // 3. Advance app logic first, so rendering observes post-step state.
         let $control = $app.run_step(step).map_err(RunDriverFrameError::App)?;
-        // 4. Build the backend-facing frame snapshot.
-        let frame = $backend.frame($self.runtime.tick(), $self.runtime.phase(), $events);
+        // 4. Build one backend-facing frame snapshot shared by render and present.
+        let mut frame = $backend.frame($self.runtime.tick(), $self.runtime.phase(), $events);
         // 5. Render the current scene or app-facing projection.
-        let artifact = $renderer.run_render(frame, $scene).map_err(RunDriverFrameError::Render)?;
+        let artifact = $renderer.run_render(&mut frame, $scene).map_err(RunDriverFrameError::Render)?;
         // 6. Finalize or expose the rendered artifact.
-        $presenter.run_present(artifact).map_err(RunDriverFrameError::Present)?;
+        $presenter.run_present(&mut frame, artifact).map_err(RunDriverFrameError::Present)?;
         // 7. Update logical progression.
         match $control {
             RunControl::Continue => $self.runtime.tick_once(),
@@ -180,7 +180,7 @@ impl<T> RunDriver<T> {
     /// 7. update lifecycle and logical tick state.
     ///
     /// The rendered frame corresponds to the post-step application state.
-    pub fn step_frame<B, A, R, P, S, E>(
+    pub fn step_frame<B, A, R, P, S, RE, PE>(
         &mut self,
         backend: &mut B,
         app: &mut A,
@@ -188,13 +188,17 @@ impl<T> RunDriver<T> {
         presenter: &mut P,
         scene: &S,
         events: &mut [A::Event],
-    ) -> Result<RunControl, RunDriverFrameError<B::Error, A::Error, E, P::Error>>
+    ) -> Result<RunControl, RunDriverFrameError<B::Error, A::Error, RE, PE>>
     where
         B: RunBackend<Event = A::Event>,
         A: RunApp,
-        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = E>,
-        for<'a> P:
-            RunPresent<Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>>,
+        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = RE>,
+        for<'a> P: RunPresent<
+                A::Event,
+                B::Context<'a>,
+                Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>,
+                Error = PE,
+            >,
     {
         _step_frame_body!(@check self, backend, app, renderer, presenter, scene, events, control);
         Ok(control)
@@ -205,7 +209,7 @@ impl<T> RunDriver<T> {
     ///
     /// This method attempts to enter the [`Running`][RunPhase::Running] phase
     /// before the first frame step.
-    pub fn run_frame<B, A, R, P, S, E>(
+    pub fn run_frame<B, A, R, P, S, RE, PE>(
         &mut self,
         backend: &mut B,
         app: &mut A,
@@ -213,13 +217,17 @@ impl<T> RunDriver<T> {
         presenter: &mut P,
         scene: &S,
         events: &mut [A::Event],
-    ) -> Result<(), RunDriverFrameError<B::Error, A::Error, E, P::Error>>
+    ) -> Result<(), RunDriverFrameError<B::Error, A::Error, RE, PE>>
     where
         B: RunBackend<Event = A::Event>,
         A: RunApp,
-        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = E>,
-        for<'a> P:
-            RunPresent<Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>>,
+        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = RE>,
+        for<'a> P: RunPresent<
+                A::Event,
+                B::Context<'a>,
+                Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>,
+                Error = PE,
+            >,
     {
         self.start();
         while self.runtime.can_advance() {

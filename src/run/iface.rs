@@ -100,25 +100,22 @@ pub trait RunBackend {
 /// Rendering logic driven by a runtime frame.
 #[doc = crate::_doc_location!("run")]
 ///
-/// A runtime or driver builds a [`RunFrame`] and calls [`run_render`][Self::run_render]
-/// to let a renderer project a scene or app state into a presentation artifact.
+/// A runtime or driver builds a [`RunFrame`] and calls
+/// [`run_render`][Self::run_render] to let a renderer project a scene or app
+/// state into a presentation artifact.
 ///
-/// The output may borrow from the provided frame context and scene.
-/// This allows backends to avoid unnecessary copying when the presentation step
-/// can directly consume borrowed render artifacts.
+/// The output may borrow from the renderer or scene.
+/// It should not borrow from the backend frame context.
 ///
 /// This trait defines rendering only.
 /// It does not define logical progression or final presentation.
 pub trait RunRender<S, E = (), C = ()> {
     /// The successful artifact produced for presentation.
-    ///
-    /// This may borrow from the renderer, frame context, or scene.
     type Output<'a>
     where
         Self: 'a,
-        S: 'a,
         E: 'a,
-        C: 'a;
+        S: 'a;
 
     /// The error type returned by rendering.
     type Error;
@@ -126,7 +123,7 @@ pub trait RunRender<S, E = (), C = ()> {
     /// Renders `scene` for the current runtime frame.
     fn run_render<'a>(
         &'a mut self,
-        frame: RunFrame<'a, E, C>,
+        frame: &mut RunFrame<'a, E, C>,
         scene: &'a S,
     ) -> Result<Self::Output<'a>, Self::Error>;
 }
@@ -136,28 +133,30 @@ pub trait RunRender<S, E = (), C = ()> {
 #[doc = crate::_doc_location!("run")]
 ///
 /// A runtime or driver calls [`run_present`][Self::run_present]
-/// after rendering to finalize or expose the prepared output.
+/// after rendering to finalize or expose the prepared artifact.
 ///
-/// The input may borrow from frame-local rendering state.
-/// This allows presentation to consume borrowed artifacts without forcing
-/// intermediate ownership.
+/// The presentation input may borrow from renderer- or scene-local state,
+/// while backend access is provided through the current [`RunFrame`].
 ///
-/// This trait defines presentation only.
-/// It does not define logical progression or rendering.
-pub trait RunPresent {
-    /// The input artifact consumed during presentation.
+/// This keeps host access on the backend side and avoids coupling
+/// render artifacts to backend borrows.
+pub trait RunPresent<E = (), C = ()> {
+    /// The artifact consumed during presentation.
     type Input<'a>
     where
-        Self: 'a;
+        Self: 'a,
+        E: 'a;
 
     /// The successful result of a presentation step.
-    ///
-    /// Use `()` when presentation only finalizes side effects.
     type Output;
 
     /// The error type returned by presentation.
     type Error;
 
-    /// Finalizes the prepared artifact for presentation.
-    fn run_present<'a>(&'a mut self, input: Self::Input<'a>) -> Result<Self::Output, Self::Error>;
+    /// Finalizes the prepared artifact using the current runtime frame.
+    fn run_present<'a>(
+        &'a mut self,
+        frame: &mut RunFrame<'a, E, C>,
+        input: Self::Input<'a>,
+    ) -> Result<Self::Output, Self::Error>;
 }

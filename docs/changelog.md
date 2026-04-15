@@ -63,7 +63,9 @@
 
 ## run
 - new items: `RunDriver`, `RunDriverError`, `RunDriverFrameError`.
-- update `RunRender` and `RunPresent` to support borrowed render artifacts with GATs.
+- update `RunRender` and `RunPresent`:
+  - support borrowed render artifacts with GATs.
+  - make them use a borrowed `RunFrame`.
 
 ## run::time
 - update `RunPacer`:
