@@ -24,7 +24,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             iface::*,
-            driver::*,
+            driver::_all::*,
         };
     }
     _pub_mods {
@@ -36,6 +36,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
     }
     _crate_internals {
-        pub(crate) use super::_DOC_RUN_MODULES;
+        pub(crate) use super::{
+            _DOC_RUN_MODULES,
+            driver::_crate_internals::*,
+        };
     }
 }
