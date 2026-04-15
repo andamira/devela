@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::sys::web_api::build.sh
+# devela/examples/sys/web_api/build.sh
 #
 ## install required tools
 # $ apt install jq
