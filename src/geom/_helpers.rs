@@ -117,6 +117,51 @@ macro_rules! _impl_geom_dim {
                 }
                 true
             }
+
+            #[doc = "Returns a new " $Name " by applying `f` to each dimension."]
+            ///
+            /// This is a runtime, dimension-preserving transformation.
+            ///
+            /// It is useful for reshaping the inner scalar type without introducing
+            /// blanket `From`/`TryFrom` impl conflicts on the wrapper itself.
+            #[must_use]
+            pub fn map<U>(self, f: impl FnMut(T) -> U) -> $Name<U, D> {
+                $Name::new(self.dim.map(f))
+            }
+
+            #[doc = "Returns a new " $Name " by fallibly applying `f` to each dimension."]
+            ///
+            /// Stops at the first conversion error and returns it.
+            ///
+            /// This is the fallible counterpart to [`map`](Self::map), and is the
+            /// recommended runtime path for per-dimension checked conversion.
+            pub fn try_map<U, E>(self, mut f: impl FnMut(T) -> Result<U, E>)
+                -> Result<$Name<U, D>, E> {
+                let mut dim: [Option<U>; D] = core::array::from_fn(|_| None);
+                for (i, value) in self.dim.into_iter().enumerate() {
+                    dim[i] = Some(f(value)?);
+                }
+                Ok($Name::new(dim.map(|value| match value {
+                    Some(value) => value,
+                    None => unreachable!(),
+                })))
+            }
+
+            #[doc = "Converts this " $Name:lower " to another inner type `U` when `U` implements `From<T>`."]
+            ///
+            /// This is a convenience wrapper over [`map`](Self::map).
+            #[must_use]
+            pub fn map_into<U>(self) -> $Name<U, D> where U: From<T> {
+                self.map(U::from)
+            }
+
+            #[doc = "Tries to convert this " $Name:lower
+            " to another inner type `U` when `U` implements `TryFrom<T>`."]
+            ///
+            /// This is a convenience wrapper over [`try_map`](Self::try_map).
+            pub fn try_map_into<E, U>(self) -> Result<$Name<U, D>, E> where U: TryFrom<T, Error = E> {
+                self.try_map(U::try_from)
+            }
         }
 
         $crate::_impl_geom_dim![common_methods_2d: $Name];

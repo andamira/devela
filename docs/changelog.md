@@ -35,6 +35,9 @@
 #### data storage::key
 - rename `define_static_map!` to `map!`
 
+### geom::metric
+- new methods for `geom::metric` types: `map`, `map_into`, `try_map`, `try_map_into`.
+
 #### media::visual::image
 - new trait `RasterView`.
 - remove `image` feature-gate from the module.
