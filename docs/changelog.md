@@ -36,6 +36,7 @@
 - rename `define_static_map!` to `map!`
 
 ### geom::metric
+- new macros: `dis!`, `ext!`, `ori!`, `pos!`.
 - new methods for `geom::metric` types: `map`, `map_into`, `try_map`, `try_map_into`.
 
 #### media::visual::image

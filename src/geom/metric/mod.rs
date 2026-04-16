@@ -13,8 +13,8 @@
 // mod axes; // TODO
 // mod cycle; // CycleOffset, Spacing // MAYBE
 mod distance; // Distance[1|2|3]
-mod extent; // Extent[1|2|3]
-mod position; // Position[1|2|3]
+mod extent; // Extent[1|2|3], ext!
+mod position; // Position[1|2|3], pos!
 mod region; // Region[1|2|3], RegionS[1|2|3]
 mod stride; // Stride[1|2|3]
 

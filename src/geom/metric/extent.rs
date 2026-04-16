@@ -1,10 +1,16 @@
 // devela::geom::metric::extent
 //
-//! A geometrical extent.
+//! Defines [`Extent`][1|2|3], `ext!`.
+//!
+//! > A geometrical extent.
+//
+// TOC
+// - struct Extent, type aliases, macro ext!
+// - implementations
 //
 // IMPROVE: use TBD NumConst::ONE and unify methods for int and floats.
 
-use crate::{_impl_geom_dim, is, whilst};
+use crate::{is, whilst};
 
 #[doc = crate::_tags!(geom)]
 /// An orthogonal extension in `D`-space without a coordinate position.
@@ -14,7 +20,7 @@ use crate::{_impl_geom_dim, is, whilst};
 /// providing an origin-agnostic shape with the implied form of an orthotope
 /// (generalized rectangle or box).
 ///
-/// See also [`Extent1`], [`Extent2`], [`Extent3`].
+/// See also [`Extent1`], [`Extent2`], [`Extent3`], [`ext!`].
 #[must_use]
 #[repr(transparent)]
 #[doc(alias = "Size")]
@@ -41,8 +47,10 @@ pub type Extent2<T> = Extent<T, 2>;
 #[doc(alias = "Size")]
 pub type Extent3<T> = Extent<T, 3>;
 
-_impl_geom_dim![common_methods: Extent];
-_impl_geom_dim![common_traits: Extent];
+crate::_define_geom_dim_macro![($) ext, "an", Extent, geom, "geom/metric"];
+
+crate::_impl_geom_dim![common_methods: Extent];
+crate::_impl_geom_dim![common_traits: Extent];
 
 /// Implement `Extent` methods for all primitives.
 macro_rules! impl_extent {
@@ -230,4 +238,58 @@ impl<T: Copy> Extent3<T> {
     #[must_use]
     /// Returns a copy of the depth dimension (Z-axis).
     pub const fn d(self) -> T { self.dim[2] }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{Extent, Extent2, Extent3, ext};
+
+    #[test]
+    fn test_macro_constructors() {
+        let e = ext!([3; 8]);
+        assert_eq![e.dim, [3, 3, 3, 3, 3, 3, 3, 3]];
+
+        assert_eq![Extent::<i32, 1>::new([2]), ext!(2)];
+        assert_eq![Extent2::<i32>::new([2, 5]), ext!(2, 5)];
+        assert_eq![Extent3::<i32>::new([2, 5, 6]), ext!(2, 5, 6)];
+        assert_eq![Extent::<i32, 4>::new([2, 5, 6, 7]), ext!(2, 5, 6, 7)];
+    }
+
+    #[test]
+    fn test_macro_checked_casts() {
+        let a = ext!(2_i32, 5);
+
+        let b = ext!(checked => u8; a.x(), a.y());
+        assert_eq![b, Ok(Extent2::new([2_u8, 5]))];
+
+        let c = ext!(checked a => u8);
+        assert_eq![c, Ok(Extent2::new([2_u8, 5]))];
+    }
+
+    #[test]
+    fn test_macro_saturating_and_wrapping() {
+        let a = ext!(300_i32, -5_i32);
+
+        let s = ext!(saturating => u8; a.x(), a.y());
+        assert_eq![s, Extent2::new([255_u8, 0])];
+
+        let w = ext!(wrapping => u8; a.x(), a.y());
+        assert_eq![w, Extent2::new([44_u8, 251])];
+
+        let s2 = ext!(saturating a => u8);
+        assert_eq![s2, Extent2::new([255_u8, 0])];
+
+        let w2 = ext!(wrapping a => u8);
+        assert_eq![w2, Extent2::new([44_u8, 251])];
+    }
+
+    #[test]
+    fn test_runtime_conversion_methods() {
+        let a = ext!(300_u16, 40_u16);
+
+        let _b: Extent2<u32> = a.map_into();
+        let _c: Result<Extent2<u8>, _> = a.try_map_into();
+        let _d = a.map(|x| x as f32 * 0.5);
+        let _e: Result<Extent2<u8>, _> = a.try_map(u8::try_from);
+    }
 }

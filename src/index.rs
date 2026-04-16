@@ -300,6 +300,7 @@ mod _hidden {
     pub use super::{
         _doc::_hidden::*,
         code::_hidden::*,
+        geom::_hidden::*,
         media::_hidden::*,
         num::_hidden::*,
         sys::_hidden::*,

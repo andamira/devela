@@ -2,6 +2,10 @@
 //
 //! Defines helpers for implementing common methods on geometric types.
 //
+// TOC
+// - macro _impl_geom_dim!
+// - macro _geom_dim_cast_ctor!
+// - macro _define_geom_dim_macro!
 
 #[cfg(doc)]
 use crate::{Distance, Extent, Orientation, Position, Stride};
@@ -210,3 +214,218 @@ macro_rules! _impl_geom_dim {
 }
 #[doc(hidden)]
 pub(crate) use _impl_geom_dim;
+
+#[macro_export]
+#[doc(hidden)]
+macro_rules! _geom_dim_cast_ctor {
+    (@scalar checked    $x:expr => $P:ty) => { $crate::cast!(checked    $x => $P) };
+    (@scalar saturating $x:expr => $P:ty) => { $crate::cast!(saturating $x => $P) };
+    (@scalar wrapping   $x:expr => $P:ty) => { $crate::cast!(wrapping   $x => $P) };
+    (@plain $Wrap:ident; $op:ident => $P:ty; $($arg:expr),+ $(,)?) => {
+        $crate::$Wrap::new([
+            $($crate::_geom_dim_cast_ctor!(@scalar $op $arg => $P)),+
+        ])
+    };
+
+    ($Wrap:ident; saturating => $P:ty; $($arg:expr),+ $(,)?) => {
+        $crate::_geom_dim_cast_ctor!(@plain $Wrap; saturating => $P; $($arg),+)
+    };
+    ($Wrap:ident; wrapping => $P:ty; $($arg:expr),+ $(,)?) => {
+        $crate::_geom_dim_cast_ctor!(@plain $Wrap; wrapping => $P; $($arg),+)
+    };
+
+    ($Wrap:ident; saturating $from:expr => $P:ty) => {
+        $from.map(|x| $crate::cast!(saturating x => $P))
+    };
+    ($Wrap:ident; wrapping $from:expr => $P:ty) => {
+        $from.map(|x| $crate::cast!(wrapping x => $P))
+    };
+
+    // keep checked separate
+    ($Wrap:ident; checked => $P:ty; $x:expr) => {
+        match $crate::cast!(checked $x => $P) {
+            Ok(x) => Ok($crate::$Wrap::new([x])),
+            Err(e) => Err(e),
+        }
+    };
+    ($Wrap:ident; checked => $P:ty; $x:expr, $y:expr) => {
+        match (
+            $crate::cast!(checked $x => $P),
+            $crate::cast!(checked $y => $P),
+        ) {
+            (Ok(x), Ok(y)) => Ok($crate::$Wrap::new([x, y])),
+            (Err(e), _) => Err(e),
+            (_, Err(e)) => Err(e),
+        }
+    };
+    ($Wrap:ident; checked => $P:ty; $x:expr, $y:expr, $z:expr) => {
+        match (
+            $crate::cast!(checked $x => $P),
+            $crate::cast!(checked $y => $P),
+            $crate::cast!(checked $z => $P),
+        ) {
+            (Ok(x), Ok(y), Ok(z)) => Ok($crate::$Wrap::new([x, y, z])),
+            (Err(e), _, _) => Err(e),
+            (_, Err(e), _) => Err(e),
+            (_, _, Err(e)) => Err(e),
+        }
+    };
+    ($Wrap:ident; checked => $P:ty; $x:expr, $y:expr, $z:expr, $w:expr) => {
+        match (
+            $crate::cast!(checked $x => $P),
+            $crate::cast!(checked $y => $P),
+            $crate::cast!(checked $z => $P),
+            $crate::cast!(checked $w => $P),
+        ) {
+            (Ok(x), Ok(y), Ok(z), Ok(w)) => Ok($crate::$Wrap::new([x, y, z, w])),
+            (Err(e), _, _, _) => Err(e),
+            (_, Err(e), _, _) => Err(e),
+            (_, _, Err(e), _) => Err(e),
+            (_, _, _, Err(e)) => Err(e),
+        }
+    };
+
+    ($Wrap:ident; checked? => $P:ty; $($arg:expr),+ $(,)?) => {
+        $crate::unwrap![ok? $crate::_geom_dim_cast_ctor!($Wrap; checked => $P; $($arg),+)]
+    };
+    ($Wrap:ident; checked_unwrap => $P:ty; $($arg:expr),+ $(,)?) => {
+        $crate::unwrap![ok $crate::_geom_dim_cast_ctor!($Wrap; checked => $P; $($arg),+)]
+    };
+    ($Wrap:ident; checked_expect => $P:ty; $($arg:expr),+, $msg:expr) => {
+        $crate::unwrap![ok_expect
+            $crate::_geom_dim_cast_ctor!($Wrap; checked => $P; $($arg),+),
+            $msg
+        ]
+    };
+
+    ($Wrap:ident; checked $from:expr => $P:ty) => {
+        $from.try_map(|x| $crate::cast!(checked x => $P))
+    };
+    ($Wrap:ident; checked? $from:expr => $P:ty) => {
+        $crate::unwrap![ok? $crate::_geom_dim_cast_ctor!($Wrap; checked $from => $P)]
+    };
+    ($Wrap:ident; checked_unwrap $from:expr => $P:ty) => {
+        $crate::unwrap![ok $crate::_geom_dim_cast_ctor!($Wrap; checked $from => $P)]
+    };
+    ($Wrap:ident; checked_expect $from:expr => $P:ty, $msg:expr) => {
+        $crate::unwrap![ok_expect
+            $crate::_geom_dim_cast_ctor!($Wrap; checked $from => $P),
+            $msg
+        ]
+    };
+}
+#[doc(hidden)]
+pub use _geom_dim_cast_ctor;
+
+macro_rules! _define_geom_dim_macro {
+    // # Args
+    // $_d: the dollar sign passed as a token, as a trick to be able to nest repetitions.
+    // $name: the name of the macro. E.g. ext.
+    // $det: the determinant used to introduce a singular $Wrap. Either "a" or "an".
+    // $Wrap: the name of the wrapper type. E.g. Extent.
+    // $tag1: the first doc tag for _tag!. E.g. geom.
+    // $location: the location for _doc_location!. E.g. "geom/metric"
+    (($_d:tt) $name:ident, $det:literal, $Wrap:ident, $tag1:ident, $location:literal
+    ) => { $crate::paste! {
+        #[doc = crate::_tags!($tag1 construction)]
+        #[doc = "Constructs " $det " [`" $Wrap "`] with inferred dimensionality."]
+        #[doc = crate::_doc_location!($location)]
+        ///
+        /// Supports:
+        /// - positional construction for 1 to 4 dimensions,
+        /// - uniform repeated construction for any const dimension,
+        /// - cast-construction for primitive scalars.
+        ///
+        /// Notes:
+        /// - Cast forms delegate to [`Cast`][crate::Cast] and [`cast!`][crate::cast].
+        /// - Explicit cast-construction supports 1 to 4 dimensions and is const-friendly.
+        /// - Whole-value cast shorthand supports any dimension and is runtime-only.
+        ///
+        /// # Example
+        /// ```
+        #[doc = "# use devela::{" $Wrap ", " $Wrap "2, " $Wrap "3, " $name "};"]
+        #[doc = "// construct"]
+        #[doc = "let a = " $name "!(4, 7);"]
+        #[doc = "assert_eq![a.x(), 4_i32];"]
+        ///
+        #[doc = "const B: " $Wrap "3<i32> = " $name "!(1000, 3, 21);"]
+        #[doc = "const C: " $Wrap "<u64, 5> = " $name "!([u32::MAX as u64 + 2; 5]);"]
+        ///
+        #[doc = "// checked"]
+        #[doc = "let a2 = " $name "!(checked => i16; a.x(), a.y());"]
+        #[doc = "let a3 = " $name "!(checked a => i16); // runtime shorthand over the whole value"]
+        #[doc = "assert_eq![a2, Ok(" $Wrap "2::<i16>::new([4, 7]))];"]
+        #[doc = "assert_eq![a3, Ok(" $Wrap "2::<i16>::new([4, 7]))];"]
+        ///
+        #[doc = "// saturating"]
+        #[doc = "const B2: " $Wrap "3<u8> = " $name "!(saturating => u8; B.x(), B.y(), B.z());"]
+        #[doc = "assert_eq![B2, " $Wrap "3::<u8>::new([255, 3, 21])];"]
+        ///
+        #[doc = "// wrapping"]
+        #[doc = "const B3: " $Wrap "3<u8> = " $name "!(wrapping => u8; B.x(), B.y(), B.z());"]
+        #[doc = "assert_eq![B3, " $Wrap "3::<u8>::new([232, 3, 21])];"]
+        ///
+        #[doc = "let c2 = " $name "!(wrapping C => u32);"]
+        #[doc = "assert_eq![c2, " $Wrap "::<u32, 5>::new([1, 1, 1, 1, 1])];"]
+        /// ```
+        #[macro_export]
+        #[doc(hidden)]
+        macro_rules! [<_ $name>] {
+            (
+            // uniform repeated construction for any const dimension
+             [$v:expr; $n:expr]) => { $crate::$Wrap::new([$v; $n]) };
+
+            (
+            // positional construction for 1 to 4 dimensions
+             $x:expr $_d(,)?) => { $crate::$Wrap::new([$x]) };
+            ($x:expr, $y:expr $_d(,)?) => { $crate::$Wrap::new([$x, $y]) };
+            ($x:expr, $y:expr, $z:expr $_d(,)?) => { $crate::$Wrap::new([$x, $y, $z]) };
+            ($x:expr, $y:expr, $z:expr, $w:expr $_d(,)?) => { $crate::$Wrap::<_, 4>::new([$x, $y, $z, $w]) };
+
+            (
+             // explicit component cast-construction; const-friendly
+             checked => $P:ty; $_d($arg:expr),+ $_d(,)?) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked => $P; $_d($arg),+)
+            };
+            (checked? => $P:ty; $_d($arg:expr),+ $_d(,)?) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked? => $P; $_d($arg),+)
+            };
+            (checked_unwrap => $P:ty; $_d($arg:expr),+ $_d(,)?) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked_unwrap => $P; $_d($arg),+)
+            };
+            (checked_expect => $P:ty; $_d($arg:expr),+, $msg:expr) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked_expect => $P; $_d($arg),+, $msg)
+            };
+            (saturating => $P:ty; $_d($arg:expr),+ $_d(,)?) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; saturating => $P; $_d($arg),+)
+            };
+            (wrapping => $P:ty; $_d($arg:expr),+ $_d(,)?) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; wrapping => $P; $_d($arg),+)
+            };
+
+            (
+             // whole-value cast shorthand; runtime-only
+             checked $from:expr => $P:ty) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked $from => $P)
+            };
+            (checked? $from:expr => $P:ty) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked? $from => $P)
+            };
+            (checked_unwrap $from:expr => $P:ty) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked_unwrap $from => $P)
+            };
+            (checked_expect $from:expr => $P:ty, $msg:expr) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; checked_expect $from => $P, $msg)
+            };
+            (saturating $from:expr => $P:ty) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; saturating $from => $P)
+            };
+            (wrapping $from:expr => $P:ty) => {
+                $crate::_geom_dim_cast_ctor!($Wrap; wrapping $from => $P)
+            };
+        }
+        #[doc(inline)]
+        pub use [<_ $name>] as $name;
+    }};
+}
+pub(crate) use _define_geom_dim_macro;

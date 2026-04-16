@@ -13,7 +13,7 @@ crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
     crate::_doc!(modules: crate; geom: affine, dir, fig, metric); // rel, space
 }
 
-mod _helpers;
+mod _helpers; // _impl_geom_dim!, _geom_dim_cast_ctor!
 
 pub mod affine; // Structure of space under translation and linear combination.
 pub mod dir; // Spatial navigation and facing semantics.
@@ -25,7 +25,7 @@ mod space; // Global organization, decomposition, and structure of space. WIP
 #[cfg_attr(nightly_doc, doc(cfg(feature = "fig")))]
 pub mod fig; // Concrete geometric figures and objects.
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             rel::_all::*,
@@ -43,6 +43,11 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_GEOM_MODULES;
-        pub use super::_helpers::*;
+        pub(crate) use super::_helpers::{
+            _impl_geom_dim, _define_geom_dim_macro,
+        };
+    }
+    _hidden {
+        pub use super::_helpers::_geom_dim_cast_ctor;
     }
 }
