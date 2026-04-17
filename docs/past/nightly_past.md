@@ -8,6 +8,26 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.95 became be stable on [2026-04-16](https://releases.rs/docs/1.95.0/)
+> - <https://github.com/rust-lang/rust/milestone/140>
+> - <https://blog.rust-lang.org/2026/04/16/Rust-1.95.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.95.0>
+
+- 1.95: ` `[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
+- 1.95: `→`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
+- 1.95: `→`[cold_path](https://github.com/rust-lang/rust/pull/151576)
+- 1.95: `→`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
+- 1.95: ` `[importing path-segment keyword with renaming](https://github.com/rust-lang/rust/pull/146972)
+- 1.95: ` `[improve pattern matching semantics](https://github.com/rust-lang/rust/pull/150681)
+- 1.96: ` `[min_const_control_flow](https://github.com/rust-lang/rust/pull/152253)
+- 1.95: ` `[more_conversion_trait_impls](https://github.com/rust-lang/rust/pull/145504)
+- 1.95: ` `[rustdoc: hide deprecated items](https://github.com/rust-lang/rust/pull/151091)
+- 1.95: ` `[push_mut](https://github.com/rust-lang/rust/pull/151785)
+- 1.95: `…`[new_range_inclusive_api](https://github.com/rust-lang/rust/pull/150522) (new_range_api)
+- 1.95: ` `[ptr_as_ref_unchecked](https://github.com/rust-lang/rust/pull/151995)
+- 1.95: ` `[rustdoc: sort stable items first](https://github.com/rust-lang/rust/pull/149460)
+- 1.95: ` `[`TryFrom<integer>` for bool](https://github.com/rust-lang/rust/pull/147400)
+
 # 1.94 became stable on [2026-03-05](https://releases.rs/docs/1.94.0/)
 > - <https://github.com/rust-lang/rust/milestone/139>
 > - <https://blog.rust-lang.org/2026/03/05/Rust-1.94.0>

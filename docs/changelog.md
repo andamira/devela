@@ -15,6 +15,10 @@
 
 # Project
 
+## infra
+### cargo
+- bump MSRV to 1.95.0.
+
 ## workspace
 ### examples
 - new example scripts: `scope_guard`, `current_guard`.

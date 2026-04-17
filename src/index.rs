@@ -43,28 +43,16 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_95`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_95,
-    feature(
-        assert_matches,
-        atomic_try_update,
-        cfg_select,
-        cold_path,
-        if_let_guard,
-        new_range_inclusive_api,
-        min_const_control_flow,
-        more_conversion_trait_impls,
-        ptr_as_ref_unchecked,
-    )
-)]
-#![cfg_attr(all(nightly_stable_1_95, feature = "alloc"), feature(push_mut,))]
-// #![cfg_attr(all(nightly_stable_1_95, feature = "std"), feature())]
-// ----------------------------
 // `nightly_stable_1_96`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_96,
-    feature(control_flow_ok, new_range_api, new_range_from_api, new_range_to_inclusive_api,)
+    feature(
+        assert_matches,
+        control_flow_ok,
+        new_range_api,
+        new_range_from_api,
+        new_range_to_inclusive_api,
+    )
 )]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
@@ -76,6 +64,11 @@
 )]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
+// ----------------------------
+// `nightly_stable_1_98`: core, alloc, std…
+// #![cfg_attr(nightly_stable_1_98), feature())]
+// #![cfg_attr(all(nightly_stable_1_98, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(

@@ -71,7 +71,7 @@ members = [ # In sync with ./build/main/environment.rs
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
 version = "0.28.0-wip" # In sync with ./docs/changelog.md
-rust-version = "1.94.1" # In sync with ./README.md && ./.github/workflows/check.yml
+rust-version = "1.95.0" # In sync with ./README.md && ./.github/workflows/check.yml
 documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"
@@ -890,9 +890,9 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# nightly features expected to stabilize soon:
 		"cfg(nightly_stable)",
-			"cfg(nightly_stable_1_95)",
 			"cfg(nightly_stable_1_96)",
 			"cfg(nightly_stable_1_97)",
+			"cfg(nightly_stable_1_98)",
 			"cfg(nightly_stable_later)",
 	#
 	# Auto-enabled reflection flags from ./build/main/features.rs (22)
