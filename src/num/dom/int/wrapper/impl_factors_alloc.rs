@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper::impl_factors_alloc
+// devela::num::dom::int::wrapper::impl_factors_alloc
 //
 //! Implements factors-related allocating methods for [`Int`].
 //

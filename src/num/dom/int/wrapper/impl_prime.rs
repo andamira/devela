@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper::impl_prime
+// devela::num::dom::int::wrapper::impl_prime
 //
 //! Implements prime-related methods for [`Int`].
 //

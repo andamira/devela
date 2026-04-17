@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper
+// devela::num::dom::int::wrapper
 //
 //! Integer wrapper struct.
 //

@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper::impl_modulo
+// devela::num::dom::int::wrapper::impl_modulo
 //
 //! Implements modulo-related methods for [`Int`].
 //

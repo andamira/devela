@@ -6,20 +6,20 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod fns; // prime_number_teorem
+pub(crate) mod _docs; // _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 
 mod alias; // [i|u]size_[down|up]
 mod divisor; // divisor!, DivisorExample, (DivisorInner)
+mod fns; // prime_number_teorem()
 mod gcd; // GcdReturn
-
-#[cfg(feature = "int")]
-mod int; // Int, int! WIP
 // mod prim; // i256, u256 WIP RENAME
 // mod primes; // WIP
 // mod recip; // DivRecip WIP
 
 #[cfg(feature = "int")]
 mod num_trait; // NumInt, NumRefInt
+#[cfg(feature = "int")]
+mod wrapper; // Int, int! WIP
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
@@ -33,15 +33,15 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         };
         #[cfg(feature = "int")]
         pub use super::{
-            int::_all::*,
             num_trait::*,
+            wrapper::_all::*,
         };
         #[cfg(feature = "_docs_examples")]
         pub use super::divisor::DivisorExample;
     }
     _crate_internals {
         #[cfg(feature = "int")]
-        pub use super::int::_crate_internals::*;
+        pub use super::_docs::*;
     }
     _hidden {
         pub use super::divisor::DivisorInner;

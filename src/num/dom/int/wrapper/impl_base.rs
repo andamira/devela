@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper::impl_base
+// devela::num::dom::int::wrapper::impl_base
 //
 /// Implements base-related methods for [`Int`].
 //

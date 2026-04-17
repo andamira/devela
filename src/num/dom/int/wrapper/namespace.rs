@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::wrapper::namespace
+// devela::num::dom::int::wrapper::namespace
 //
 //! Defines the [`Int`] namespace wrapper.
 //
