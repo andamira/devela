@@ -49,8 +49,9 @@
 - rename `define_static_map!` to `map!`
 
 ### geom::metric
-- new macros: `dis!`, `ext!`, `ori!`, `pos!`.
-- new methods for `geom::metric` types: `map`, `map_into`, `try_map`, `try_map_into`.
+- new macros: `dis!`, `ext!`, `ori!`, `pos!`, `region!`.
+- new methods for `geom::metric` *dim* types: `map`, `map_into`, `try_map`, `try_map_into`.
+- new methods for `Region`: `map`, `map_ext`, `map_pos`, `try_map`, `try_map_ext`, `try_map_pos`.
 
 #### media::visual::image
 - new trait `RasterView`.

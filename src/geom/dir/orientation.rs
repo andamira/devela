@@ -1,6 +1,6 @@
 // devela::geom::dir::orientation
 //
-//! Defines [`Orientation`].
+//! Defines [`Orientation`][1|2|3], [`ori!`].
 //
 
 #[cfg(doc)]

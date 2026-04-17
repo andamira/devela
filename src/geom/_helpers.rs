@@ -6,6 +6,7 @@
 // - macro _impl_geom_dim!
 // - macro _geom_dim_cast_ctor!
 // - macro _define_geom_dim_macro!
+// - macro _geom_region_cast_ctor!
 
 #[cfg(doc)]
 use crate::{Distance, Extent, Orientation, Position, Stride};
@@ -337,8 +338,8 @@ macro_rules! _define_geom_dim_macro {
         /// - cast-construction for primitive scalars.
         ///
         /// Notes:
-        /// - Cast forms delegate to [`Cast`][crate::Cast] and [`cast!`][crate::cast].
         /// - Explicit cast-construction supports 1 to 4 dimensions and is const-friendly.
+        /// - Cast forms delegate to [`Cast`][crate::Cast] and [`cast!`][crate::cast].
         /// - Whole-value cast shorthand supports any dimension and is runtime-only.
         ///
         /// # Example
@@ -429,3 +430,98 @@ macro_rules! _define_geom_dim_macro {
     }};
 }
 pub(crate) use _define_geom_dim_macro;
+
+#[macro_export]
+#[doc(hidden)]
+macro_rules! _geom_region_cast_ctor {
+    (
+    // explicit component cast-construction; const-friendly
+     checked => $P:ty, $E:ty;
+     $($pos:expr),+ $(,)?;
+     $($ext:expr),+ $(,)?
+    ) => {
+        match (
+            $crate::pos!(checked => $P; $($pos),+),
+            $crate::ext!(checked => $E; $($ext),+),
+        ) {
+            (Ok(pos), Ok(ext)) => Ok($crate::Region::new(pos, ext)),
+            (Err(e), _) => Err(e),
+            (_, Err(e)) => Err(e),
+        }
+    };
+    (checked? => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
+        $crate::unwrap![ok?
+            $crate::_geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+)
+        ]
+    };
+    (checked_unwrap => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
+        $crate::unwrap![ok
+            $crate::_geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+)
+        ]
+    };
+    (checked_expect => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+, $msg:expr) => {
+        $crate::unwrap![ok_expect
+            $crate::_geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+),
+            $msg
+        ]
+    };
+
+    (
+    // explicit component cast-construction; const-friendly
+     saturating => $P:ty, $E:ty;
+     $($pos:expr),+ $(,)?;
+     $($ext:expr),+ $(,)?
+    ) => {
+        $crate::Region::new(
+            $crate::pos!(saturating => $P; $($pos),+),
+            $crate::ext!(saturating => $E; $($ext),+),
+        )
+    };
+    (wrapping => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
+        $crate::Region::new(
+            $crate::pos!(wrapping => $P; $($pos),+),
+            $crate::ext!(wrapping => $E; $($ext),+),
+        )
+    };
+
+    (
+    // whole-region cast shorthand; runtime-only
+     checked $from:expr => $P:ty, $E:ty
+    ) => {{
+        let from = $from;
+        match (
+            $crate::pos!(checked from.pos => $P),
+            $crate::ext!(checked from.ext => $E),
+        ) {
+            (Ok(pos), Ok(ext)) => Ok($crate::Region::new(pos, ext)),
+            (Err(e), _) => Err(e),
+            (_, Err(e)) => Err(e),
+        }
+    }};
+    (checked? $from:expr => $P:ty, $E:ty) => {
+        $crate::unwrap![ok? $crate::_geom_region_cast_ctor!(checked $from => $P, $E)]
+    };
+    (checked_unwrap $from:expr => $P:ty, $E:ty) => {
+        $crate::unwrap![ok $crate::_geom_region_cast_ctor!(checked $from => $P, $E)]
+    };
+    (checked_expect $from:expr => $P:ty, $E:ty, $msg:expr) => {
+        $crate::unwrap![ok_expect
+            $crate::_geom_region_cast_ctor!(checked $from => $P, $E), $msg
+        ]
+    };
+
+    (saturating $from:expr => $P:ty, $E:ty) => {{
+        let from = $from;
+        $crate::Region::new(
+            $crate::pos!(saturating from.pos => $P),
+            $crate::ext!(saturating from.ext => $E),
+        )
+    }};
+    (wrapping $from:expr => $P:ty, $E:ty) => {{
+        let from = $from;
+        $crate::Region::new(
+            $crate::pos!(wrapping from.pos => $P),
+            $crate::ext!(wrapping from.ext => $E),
+        )
+    }};
+}

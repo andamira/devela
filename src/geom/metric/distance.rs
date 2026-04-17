@@ -1,6 +1,6 @@
 // devela::geom::metric::distance
 //
-//! Defines [`Distance`].
+//! Defines [`Distance`][1|2|3], [`dis!`].
 //
 
 #[cfg(doc)]

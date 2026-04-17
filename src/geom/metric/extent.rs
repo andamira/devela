@@ -1,12 +1,13 @@
 // devela::geom::metric::extent
 //
-//! Defines [`Extent`][1|2|3], `ext!`.
+//! Defines [`Extent`][1|2|3], [`ext!`].
 //!
 //! > A geometrical extent.
 //
 // TOC
 // - struct Extent, type aliases, macro ext!
 // - implementations
+// - tests
 //
 // IMPROVE: use TBD NumConst::ONE and unify methods for int and floats.
 

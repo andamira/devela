@@ -1,6 +1,6 @@
 // devela::geom::metric::position
 //
-//! Defines [`Position`][1|2|3], `pos!`.
+//! Defines [`Position`][1|2|3], [`pos!`].
 //!
 //! > A geometrical position.
 //
