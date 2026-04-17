@@ -9,8 +9,6 @@ See the linked modifications for detailed changes.
   as the [`IterArgsOsRef`] struct and the [`Env::args_os_ref`] method ([*modifications*][M_argv]).
 - <i id="bytehound-preload"></i>[bytehound-preload] by Jan Bujak,
   as the [`SpinLock`] and [`SpinLockGuard`] structs ([*modifications*][M_bytehound-preload]).
-- <i id="cfg-if"></i>[cfg-if] by Alex Crichton,
-  as the [`cfg-if!`] macro ([*modifications*][M_cfg-if]).
 - <i id="const_list"></i>[const_list] by Douglas Dwyer,
   as the [`ConstList`] struct.
 - <i id="crossbeam-utils"></i>[crossbeam-utils] by The Crossbeam Project Developers,
@@ -49,9 +47,6 @@ See the linked modifications for detailed changes.
   [M_bytehound-preload]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/bytehound-preload.md
   [`SpinLock`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLock.html
   [`SpinLockGuard`]: https://andamira.github.io/devela/latest/devela/work/sync/struct.SpinLockGuard.html
-[cfg-if]: https://crates.io/crates/cfg-if/1.0.1
-  [M_cfg-if]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/cfg-if.md
-  [`cfg-if!`]: https://andamira.github.io/devela/latest/devela/code/util/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://andamira.github.io/devela/latest/devela/data/list/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.21

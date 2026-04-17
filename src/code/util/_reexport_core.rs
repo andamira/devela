@@ -51,6 +51,8 @@ doc: "Asserts that two expressions are not equal to each other.", debug_assert_n
 // cfg
 _reexport! { rust: core, location: "code/util",
 doc: "Evaluates boolean combinations of configuration flags at compile-time.", cfg }
+_reexport! { rust: core, location: "code/util",
+doc: "Selects code at compile-time based on cfg predicates.", cfg_select }
 
 // include
 _reexport! { rust: core, location: "code/util", tag: _tags!(code),

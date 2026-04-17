@@ -13,7 +13,6 @@
 // MIT OR Apache-2.0
 crate::_doc_vendor! { mod: "argv", argv }
 crate::_doc_vendor! { mod: "bytehound-preload", bytehound_preload }
-crate::_doc_vendor! { mod: "cfg-if", cfg_if}
 crate::_doc_vendor! { mod: "crossbeam-utils", crossbeam_utils }
 crate::_doc_vendor! { mod: "etcetera", etcetera}
 crate::_doc_vendor! { mod: "fxhash", fxhash }

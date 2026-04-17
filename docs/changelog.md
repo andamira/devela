@@ -38,6 +38,10 @@
 ## code
 - impl `ConstInit` for more types.
 
+### code::util
+- reexport `cfg_select!`.
+- remove `cfg_if!`, replace with `cfg_select!`.
+
 ### data::id
 - rename `define_handle!` to `handle!`
 

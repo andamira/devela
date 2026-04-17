@@ -10,11 +10,10 @@ mod consts; // constants
 mod minimax; // Horner-rel fns
 mod series; // Taylor-rel fns
 
-crate::cfg_if! { if #[cfg(feature = "std")] {
-    mod std;
-} else {
-    mod no_std; // no_std methods
-}}
+cfg_select! {
+    feature = "std" => { mod std; }
+                  _ => { mod no_std; } // no_std methods
+}
 
 #[cfg(test)]
 mod tests_f32;

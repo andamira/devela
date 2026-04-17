@@ -32,7 +32,6 @@ mod tests;
 mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!
 mod cdbg; // cdbg!
-mod cfg_if; // cfg_if!
 mod r#const; // CONST!
 mod debug; // , compile_warning!, fn_name!
 mod deprecate; // deprecate_feature!
@@ -63,7 +62,6 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             asserts::{assert_eq_all, assert_approx_eq_all, const_assert},
             capture::{capture_first, capture_last, capture_tail_tuple},
             cdbg::*,
-            cfg_if::cfg_if,
             r#const::CONST,
             debug::{compile_warn, fn_name},
             deprecate::deprecate_feature,
