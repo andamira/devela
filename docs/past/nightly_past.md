@@ -35,7 +35,7 @@ Legend:
 
 - 1.94: ` `[alloc_layout_extra](https://github.com/rust-lang/rust/pull/148769)
 - 1.94: ` `[array_windows](https://github.com/rust-lang/rust/pull/148814)
-- 1.94: `→`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
+- 1.94: `✓`[const_mul_add](https://github.com/rust-lang/rust/pull/148052)
 - 1.94: ` `[euler_gamma_golden_ratio](https://github.com/rust-lang/rust/pull/151164)
 - 1.94: ` `[lazy_get](https://github.com/rust-lang/rust/pull/150016)
 - 1.94: ` `[peekable_next_if_map](https://github.com/rust-lang/rust/pull/148941)
@@ -101,10 +101,10 @@ Legend:
 > - <https://blog.rust-lang.org/2025/09/18/Rust-1.90.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.90.0>
 
-- 1.90: `…`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
+- 1.90: `✓`[const_float_round_methods](https://github.com/rust-lang/rust/pull/143604)
 - 1.90: `…`[const_slice_reverse](https://github.com/rust-lang/rust/pull/143382)
 - 1.90: `…`[mixed_integer_ops_unsigned_sub](https://github.com/rust-lang/rust/pull/143236)
-- 1.90: `→`[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
+- 1.90: `✓`[Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
 
 # 1.89 became stable on [2025-08-07](https://releases.rs/docs/1.89.0/))
 > - <https://github.com/rust-lang/rust/milestone/133>
@@ -139,7 +139,7 @@ Legend:
 - 1.88: `→`[const_cell](https://github.com/rust-lang/rust/pull/137928)
 - 1.88: `✓`[const_swap_nonoverlapping](https://github.com/rust-lang/rust/pull/137280)
 - 1.88: `u`[exact_div](https://github.com/rust-lang/rust/pull/139163)
-- 1.88: `→`[let_chains](https://github.com/rust-lang/rust/pull/132833)
+- 1.88: `✓`[let_chains](https://github.com/rust-lang/rust/pull/132833)
 - 1.88: ` `[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 - 1.88: ` `[±proc_macro_span](https://github.com/rust-lang/rust/pull/139865)
 - 1.88: `→`[slice_as_chunks](https://github.com/rust-lang/rust/pull/139656)
@@ -182,7 +182,7 @@ Legend:
 > - <https://github.com/rust-lang/rust/milestone/128>
 
 - 1.86: `✓`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
-- 1.86: `→`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
+- 1.86: `✓`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         `→` `const_str_split_at`
 - 1.86: `→`[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
 - 1.86: ` `[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
