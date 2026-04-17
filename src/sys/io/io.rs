@@ -14,6 +14,7 @@ use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
 #[doc = crate::_tags!(io namespace)]
 /// I/O-related operations.
+#[doc = crate::_doc_location!("sys/io")]
 #[derive(Debug)]
 pub struct Io;
 

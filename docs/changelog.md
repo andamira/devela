@@ -101,6 +101,9 @@
   - make the constructor fallible.
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
+### sys::io
+- new traits `TextIn`, `TextOut`.
+
 ### sys::mem
 - rename `define_arena!` to `arena!`
 

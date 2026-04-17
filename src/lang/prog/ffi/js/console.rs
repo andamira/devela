@@ -2,7 +2,13 @@
 //
 //! Defines [`JsConsole`].
 //
+// TOC
+// - struct JsConsole
+// - impl methods
+// - extern impls
+// - impl traits
 
+use crate::{Infallible, TextOut};
 #[allow(unused_imports)]
 use devela::{_js_doc, _js_extern};
 
@@ -109,4 +115,21 @@ _js_extern! {
     unsafe fn console_time(str_ptr: *const u8, str_len: usize);
     unsafe fn console_time_end(str_ptr: *const u8, str_len: usize);
     unsafe fn console_time_log(str_ptr: *const u8, str_len: usize);
+}
+
+/// Emits UTF-8 text to the JavaScript console.
+///
+/// This is a convenience text-sink implementation over [`JsConsole`],
+/// forwarding plain text through the console's generic log channel.
+///
+/// For leveled diagnostic output, prefer [`DiagOut`].
+#[cfg(not(feature = "safe_lang"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+impl TextOut for JsConsole {
+    type Error = Infallible;
+
+    fn write_text(&mut self, text: &str) -> Result<(), Self::Error> {
+        Self::log(text);
+        Ok(())
+    }
 }
