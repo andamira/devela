@@ -8,9 +8,9 @@
 #[doc = crate::_doc_location!("sys/mem/cell")]
 ///
 /// The control object begins in [`Idle`](Self::Idle).
-/// A caller then [`arm`s][MemHedgeCtrl::arm] it with a logical index,
+/// A caller then [`arm`s][crate::MemHedgeCtrl::arm] it with a logical index,
 /// making it [`Armed`](Self::Armed).
-/// The first worker that successfully [`try_claim`s][MemHedgeCtrl::try_claim]
+/// The first worker that successfully [`try_claim`s][crate::MemHedgeCtrl::try_claim]
 /// the request transitions it to [`Claimed`](Self::Claimed).
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

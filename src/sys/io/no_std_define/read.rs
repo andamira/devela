@@ -20,8 +20,9 @@ use crate::Vec;
 use crate::{IoError, IoErrorKind, IoResult, OptRes, Slice, is, sf};
 use ::core::{cmp, fmt};
 
-#[doc = crate::_tags!(io)]
+#[doc = crate::_tags!(io maybe_std)]
 /// The `IoRead` trait allows for reading bytes from a source.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Read.html>.
 #[rustfmt::skip]
@@ -65,8 +66,9 @@ pub trait IoRead {
     fn take(self, limit: u64) -> IoTake<Self> where Self: Sized { IoTake::new(self, limit) }
 }
 
-/// A type of `IoRead`er with an internal buffer,
-/// allowing it to perform extra ways of reading.
+#[doc = crate::_tags!(io maybe_std)]
+/// A type of `IoRead`er with an internal buffer, allowing it to perform extra ways of reading.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.BufRead.html>.
 pub trait IoBufRead: IoRead {
@@ -99,7 +101,9 @@ pub trait IoBufRead: IoRead {
     // }
 }
 
+#[doc = crate::_tags!(io maybe_std)]
 /// An iterator over `u8` values of a reader.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Bytes.html>.
 #[derive(Debug)]
@@ -121,7 +125,9 @@ impl<R: IoRead> Iterator for IoBytes<R> {
     }
 }
 
+#[doc = crate::_tags!(io maybe_std)]
 /// Adaptor to chain together two readers.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// This struct is generally created by calling [`chain`][IoRead::chain] on a reader.
 ///
@@ -216,7 +222,9 @@ impl<T: IoBufRead, U: IoBufRead> IoBufRead for IoChain<T, U> {
 //     }
 // }
 
+#[doc = crate::_tags!(io maybe_std)]
 /// Reader adaptor which limits the bytes read from an underlying reader.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// This struct is generally created by calling [`take`][IoRead::take] on a reader.
 ///

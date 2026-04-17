@@ -10,8 +10,9 @@ use crate::{
 };
 use ::core::{cmp, fmt};
 
-#[doc = crate::_tags!(io)]
+#[doc = crate::_tags!(io maybe_std)]
 /// The `IoBufReader<R, S>` struct adds buffering to any reader.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html>.
 pub struct IoBufReader<R, const S: usize> {
@@ -135,8 +136,9 @@ impl<R: IoSeek, const S: usize> IoSeek for IoBufReader<R, S> {
     }
 }
 
-#[doc = crate::_tags!(io)]
+#[doc = crate::_tags!(io maybe_std)]
 /// Wraps a writer and buffers its output.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html>.
 pub struct IoBufWriter<W: IoWrite, const S: usize> {
@@ -149,8 +151,9 @@ pub struct IoBufWriter<W: IoWrite, const S: usize> {
     panicked: bool,
 }
 
-#[doc = crate::_tags!(io error)]
+#[doc = crate::_tags!(io error maybe_std)]
 /// An error returned by [`IoBufWriter::into_inner`]
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// It combines an error that happened while writing out the buffer,
 /// and the buffered writer object which may be used to recover from the condition.
@@ -557,8 +560,9 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     }
 }
 
-#[doc = crate::_tags!(io)]
+#[doc = crate::_tags!(io maybe_std)]
 /// Wraps a writer and buffers output to it, flushing whenever a newline is detected.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html>.
 pub struct IoLineWriter<W: IoWrite, const S: usize> {

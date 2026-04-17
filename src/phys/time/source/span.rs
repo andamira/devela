@@ -3,6 +3,9 @@
 //! Defines [`TimeSpan`].
 //
 
+#[cfg(doc)]
+use crate::TimePoint;
+
 #[doc = crate::_tags!(time)]
 /// /// A comparable span on a time-like timeline.
 #[doc = crate::_doc_location!("phys/time/source")]

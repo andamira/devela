@@ -3,6 +3,8 @@
 //! Defines [`TimePoint`].
 //
 
+#[cfg(doc)]
+use crate::TimeSource;
 use crate::{Duration, Ordering, TimeSpan};
 
 #[doc = crate::_tags!(time)]

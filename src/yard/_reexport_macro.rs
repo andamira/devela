@@ -159,6 +159,7 @@ macro_rules! __reexport {
       $(,)?
     ) => { $crate::paste! {
         #[doc(inline)]
+        // NOTE: In sync with _doc/_tags.rs::_TAG_MAYBE_STD
         $( $(#[doc = $tag])+ )? // tags
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>

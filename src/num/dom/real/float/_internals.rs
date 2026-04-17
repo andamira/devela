@@ -126,6 +126,7 @@ macro_rules! impl_float_internals {
     ($lm:literal, $mm:literal, $hm:literal)
     [$ebit:literal, $fisr:literal, $nrt:literal]
     { $deg:literal, [$($sin:expr),*], [$($cos:expr),*] } ) => {
+        #[allow(dead_code, reason = "not detected as used")]
         impl _FloatInternals<$f> {
             /// Low practical margin of error.
             pub const LOW_MARGIN: $f = $lm;

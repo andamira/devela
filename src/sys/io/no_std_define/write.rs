@@ -6,8 +6,9 @@
 use crate::{IoError, IoErrorKind, IoResult, Mem};
 use ::core::{cmp, fmt};
 
-#[doc = crate::_tags!(io)]
+#[doc = crate::_tags!(io maybe_std)]
 /// A trait for objects which are byte-oriented sinks.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Write.html>.
 #[rustfmt::skip]

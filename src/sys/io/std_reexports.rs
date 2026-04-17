@@ -46,7 +46,7 @@ _reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.",
     @Cursor as IoCursor
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "Ignores any data written via [`IoWrite`], and read via [`IoRead`].",
     @Empty as IoEmpty
 }
@@ -82,7 +82,7 @@ _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "An iterator over the lines of an instance of [`IoBufRead`].",
     @Lines as IoLines
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "A reader which yields one byte over and over and over and over and over and…",
     @Repeat as IoRepeat
 }

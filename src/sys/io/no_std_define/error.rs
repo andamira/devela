@@ -9,14 +9,16 @@ use crate::{Debug, From, Result, impl_trait};
 #[cfg(doc)]
 use crate::{IoRead, IoWrite};
 
-#[doc = crate::_tags!(io result)]
+#[doc = crate::_tags!(io result maybe_std)]
 /// A specialized [`Result`] type for I/O operations.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
 pub type IoResult<T> = Result<T, IoError>;
 
-#[doc = crate::_tags!(io error_composite)]
+#[doc = crate::_tags!(io error_composite maybe_std)]
 /// Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
 // #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…
@@ -49,8 +51,9 @@ struct Custom {
     error: &'static str,
 }
 
-#[doc = crate::_tags!(io error_composite)]
+#[doc = crate::_tags!(io error_composite maybe_std)]
 /// A list specifying general categories of I/O error.
+#[doc = crate::_doc_location!("sys/io")]
 ///
 /// This list is intended to grow over time and it is not recommended to
 /// exhaustively match against it.
