@@ -5,7 +5,9 @@
 
 RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }-Zunstable-options --cfg nightly_doc"
 
-RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options --cfg nightly_doc --generate-link-to-definition"
+# WAIT:BUGFIX https://github.com/rust-lang/rust/issues/149089
+# RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options --cfg nightly_doc --generate-link-to-definition"
+RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options --cfg nightly_doc"
 
 export RUSTFLAGS
 export RUSTDOCFLAGS

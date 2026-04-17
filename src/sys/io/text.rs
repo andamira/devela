@@ -63,12 +63,12 @@ pub trait TextOut {
     }
 
     /// Emits formatted text.
+    // WAIT:BUGFIX [generate-link-to-definition](https://github.com/rust-lang/rust/issues/149089)
     fn write_fmt(&mut self, args: FmtArguments<'_>) -> Result<(), Self::Error> {
         struct Adapter<'a, T: ?Sized + TextOut> {
             out: &'a mut T,
             err: Option<T::Error>,
         }
-
         impl<T: ?Sized + TextOut> FmtWrite for Adapter<'_, T> {
             fn write_str(&mut self, s: &str) -> FmtResult<()> {
                 match self.out.write_text(s) {

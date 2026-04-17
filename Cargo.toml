@@ -129,7 +129,8 @@ rustc-args = [
 ]
 rustdoc-args = [
 	"-Ctarget-cpu=native",
-	"--generate-link-to-definition",
+	# WAIT:BUGFIX https://github.com/rust-lang/rust/issues/149089
+	# "--generate-link-to-definition",
 	"--html-in-header", "./src/_doc/header.html",
 	"--cfg", "nightly",
 ]
