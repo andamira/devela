@@ -32,7 +32,7 @@ util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             any::_all::*,
-            const_init::ConstInit, // TEMP:merge
+            const_init::*,
             guard::*,
             intro::_all::*,
             site::*,

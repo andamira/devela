@@ -35,6 +35,9 @@
 
 # Modules
 
+## code
+- impl `ConstInit` for more types.
+
 ### data::id
 - rename `define_handle!` to `handle!`
 
