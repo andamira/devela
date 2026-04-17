@@ -1,11 +1,11 @@
 // devela::geom::metric::distance
 //
-//! Defines [`Region`], [`RegionStrided`], [`region!`].
+//! Defines [`Region`][S][1|2|3], [`RegionStrided`].
 //
 // TOC
 // - struct Region, type aliases
+// - struct RegionStrided
 // - implementations
-// - macro region!
 
 use crate::{Extent, Position, Stride};
 
@@ -234,149 +234,5 @@ impl<P, E, const D: usize> Region<P, E, D> {
         E2: TryFrom<E, Error = X>,
     {
         self.try_map(P2::try_from, E2::try_from)
-    }
-}
-
-#[doc = crate::_tags!(geom construction)]
-/// Constructs a [`Region`] from a [`Position`] and an [`Extent`].
-#[doc = crate::_doc_location!("geom/metric")]
-///
-/// Supports:
-/// - direct construction from position and extent expressions,
-/// - flat or grouped construction from raw components,
-/// - cast-construction for primitive position and extent scalars.
-///
-/// Notes:
-/// - Explicit cast-construction supports 1 to 4 dimensions and is const-friendly.
-/// - Cast forms delegate to [`pos!`][crate::pos] and [`ext!`][crate::ext].
-/// - Whole-region cast shorthand supports any dimension and is runtime-only.
-///
-/// # Example
-/// ```
-/// # use devela::{region, pos, ext, Region2, Region3};
-/// // construct
-/// let a = region!(1_i32, 2, 3_u32, 4);
-/// assert_eq![a, Region2::new(pos!(1, 2), ext!(3, 4))];
-///
-/// let b = region!((1, 2, 3), (4, 5, 6));
-/// assert_eq![b, Region3::new(pos!(1, 2, 3), ext!(4, 5, 6))];
-///
-/// let c = region!(pos!(7, 8), ext!(9, 10));
-/// assert_eq![c, Region2::new(pos!(7, 8), ext!(9, 10))];
-///
-/// // checked
-/// let a2 = region!(checked => i16, u8; 1_i32, 2_i32; 3_u16, 4_u16);
-/// assert_eq![a2, Ok(Region2::new(pos!(1_i16, 2_i16), ext!(3_u8, 4_u8)))];
-///
-/// // runtime shorthand over the whole region
-/// let a3 = region!(wrapping a => u8, u8);
-/// assert_eq![a3, Region2::new(pos!(1_u8, 2_u8), ext!(3_u8, 4_u8))];
-/// ```
-#[macro_export]
-#[doc(hidden)]
-macro_rules! region {
-    (
-    // flat 2D construction from raw components
-     $x:expr, $y:expr, $w:expr, $h:expr $(,)?) => {
-        $crate::Region::new($crate::pos!($x, $y), $crate::ext!($w, $h))
-    };
-    (
-    // flat 3D construction from raw components
-     $x:expr, $y:expr, $z:expr, $w:expr, $h:expr, $d:expr $(,)?) => {
-        $crate::Region::new($crate::pos!($x, $y, $z), $crate::ext!($w, $h, $d))
-    };
-    (
-    // grouped raw construction
-     ($($pos:expr),+ $(,)?), ($($ext:expr),+ $(,)?) $(,)?
-    ) => { $crate::Region::new( $crate::pos!($($pos),+), $crate::ext!($($ext),+), ) };
-    (
-    // direct construction from existing values
-     $pos:expr, $ext:expr $(,)?
-    ) => { $crate::Region::new($pos, $ext) };
-    (
-    // explicit component cast-construction; const-friendly
-     checked => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+)
-    };
-    (checked? => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked? => $P, $E; $($pos),+; $($ext),+)
-    };
-    (checked_unwrap => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked_unwrap => $P, $E; $($pos),+; $($ext),+)
-    };
-    (checked_expect => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+, $msg:expr) => {
-        $crate::_geom_region_cast_ctor!(checked_expect => $P, $E; $($pos),+; $($ext),+, $msg)
-    };
-    (saturating => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(saturating => $P, $E; $($pos),+; $($ext),+)
-    };
-    (wrapping => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(wrapping => $P, $E; $($pos),+; $($ext),+)
-    };
-
-    (
-    // whole-region cast shorthand; runtime-only
-     checked $from:expr => $P:ty, $E:ty
-    ) => {
-        $crate::_geom_region_cast_ctor!(checked $from => $P, $E)
-    };
-    (checked? $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(checked? $from => $P, $E)
-    };
-    (checked_unwrap $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(checked_unwrap $from => $P, $E)
-    };
-    (checked_expect $from:expr => $P:ty, $E:ty, $msg:expr) => {
-        $crate::_geom_region_cast_ctor!(checked_expect $from => $P, $E, $msg)
-    };
-    (saturating $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(saturating $from => $P, $E)
-    };
-    (wrapping $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(wrapping $from => $P, $E)
-    };
-}
-#[doc(inline)]
-pub use region;
-
-#[cfg(test)]
-mod tests {
-    use crate::{Region2, Region3, ext, pos};
-
-    #[test]
-    fn test_region_construction() {
-        // flat from raw components
-        let rf2 = region!(2, 5, 7, 9);
-        assert_eq![rf2, Region2::new(pos!(2, 5), ext!(7, 9))];
-        let rf3 = region!(2, 5, 3, 7, 9, 4);
-        assert_eq![rf3, Region3::new(pos!(2, 5, 3), ext!(7, 9, 4),)];
-
-        // grouped
-        let r2 = region!((2, 5), (7, 9));
-        assert_eq![r2, Region2::new(pos!(2, 5), ext!(7, 9))];
-
-        // direct
-        let r1 = region!(pos!(2, 5), ext!(7, 9));
-        assert_eq![r1, Region2::new(pos!(2, 5), ext!(7, 9))];
-    }
-    #[test]
-    fn test_region_checked_casts() {
-        let r = region!((2_i32, 5_i32), (7_u16, 9_u16));
-
-        let a = region!(checked => u8, u8; 2_i32, 5_i32; 7_u16, 9_u16);
-        assert_eq![a, Ok(Region2::new(pos!(2_u8, 5_u8), ext!(7_u8, 9_u8)))];
-
-        let b = region!(checked r => u8, u8);
-        assert_eq![b, Ok(Region2::new(pos!(2_u8, 5_u8), ext!(7_u8, 9_u8)))];
-    }
-    #[test]
-    fn test_region_plain_casts() {
-        let r = region!((300_i32, -5_i32), (260_i32, -1_i32));
-
-        let s = region!(saturating r => u8, u8);
-        assert_eq![s, Region2::new(pos!(255_u8, 0_u8), ext!(255_u8, 0_u8))];
-
-        let w = region!(wrapping r => u8, u8);
-        assert_eq![w, Region2::new(pos!(44_u8, 251_u8), ext!(4_u8, 255_u8))];
     }
 }
