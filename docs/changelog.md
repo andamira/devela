@@ -24,7 +24,9 @@
 - new example scripts: `scope_guard`, `current_guard`.
 
 ## dependencies
+- bump `portable-atomic-util` to 0.2.7.
 - bump `hashbrown` to 0.17.
+- bump `wide` to 1.3.
 
 ## features & flags
 - update the intended scope of the `_docs_examples` feature.
