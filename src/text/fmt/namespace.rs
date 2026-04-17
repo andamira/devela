@@ -70,7 +70,7 @@ impl Fmt {
 
     /// Creates a type whose [`Debug`][crate::Debug] and [`Display`][crate::Display]
     /// impls are provided with the function `f`.
-    pub fn from_fn<F: Fn(&mut Formatter<'_>) -> FmtResult<()>>(f: F) -> FmtFromFn<F> {
+    pub const fn from_fn<F: Fn(&mut Formatter<'_>) -> FmtResult<()>>(f: F) -> FmtFromFn<F> {
         from_fn(f)
     }
 }

@@ -101,6 +101,9 @@
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
 
+## text
+- make `Fmt::from_fn` const.
+
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
