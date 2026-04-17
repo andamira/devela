@@ -3,9 +3,10 @@
 //!
 //
 
-// use crate::Mismatch; use crate::IntErrorKind;
+// use crate::Mismatch;
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
 use crate::IoErrorKind;
+use crate::ParseIntErrorKind;
 
 #[doc = crate::_tags!(image result)]
 /// An image-related result.
@@ -15,7 +16,7 @@ pub type ImageResult<T> = crate::Result<T, ImageError>;
 #[doc = crate::_tags!(image error_composite)]
 /// An image-related error.
 #[doc = crate::_doc_location!("media/visual/image")]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ImageError {
     /// Invalid image size, with an optional width and height.
     // InvalidImageSize(Mismatch<SizeUsize, SizeUsize>), // TODO
@@ -29,9 +30,7 @@ pub enum ImageError {
 
     /* from std */
     ///
-    // WAIT: [Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
-    // InvalidParsedInteger(IntErrorKind), // Does not implement Copy
-    InvalidParsedInteger,
+    InvalidParsedInteger(ParseIntErrorKind),
 
     /// A `core::fmt::Error`.
     FmtError,
@@ -61,8 +60,7 @@ mod core_impls {
                 E::InvalidMagicNumber => write!(f, "Invalid magic number."),
                 E::InvalidPixel => write!(f, "Invalid pixel."),
                 //
-                // E::InvalidParsedInteger(k) => write!(f, "Invalid parsed integer: {k:?}."),
-                E::InvalidParsedInteger => write!(f, "Invalid parsed integer."),
+                E::InvalidParsedInteger(k) => write!(f, "Invalid parsed integer: {k:?}."),
                 E::FmtError => write!(f, "A core::fmt::Error."),
                 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
                 E::IoError(e) => write!(f, "An I/O Error: {e:?}"),
@@ -70,11 +68,9 @@ mod core_impls {
         }
     }
 
-    // IMPROVE
     impl From<crate::ParseIntError> for ImageError {
-        fn from(_: crate::ParseIntError) -> Self {
-            // Self::InvalidParsedInteger(e.kind().clone())
-            Self::InvalidParsedInteger
+        fn from(from: crate::ParseIntError) -> Self {
+            Self::InvalidParsedInteger(*from.kind())
         }
     }
     // IMPROVE

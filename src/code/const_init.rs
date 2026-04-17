@@ -185,6 +185,8 @@ mod impl_core {
         PanicAssertUnwindSafe,
         // range WAIT:1.96
         // RangeInclusive,
+        // text
+        ParseIntErrorKind,
         // time
         Duration,
     };
@@ -264,6 +266,9 @@ mod impl_core {
 
     // result
     impl<T: ConstInit, E> ConstInit for Result<T, E> { const INIT: Self = { Ok(T::INIT) }; }
+
+    // text
+    _impl_init![ConstInit: ParseIntErrorKind::Empty => ParseIntErrorKind];
 
     // time
     _impl_init![ConstInit: Duration::new(0, 0) => Duration];

@@ -55,6 +55,9 @@
 #### media::visual::image
 - new trait `RasterView`.
 - remove `image` feature-gate from the module.
+- update `ImageError`.
+  - make `InvalidParsedInteger` variant contain `ParseIntErrorKind`.
+  - derive `Hash`.
 
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.
