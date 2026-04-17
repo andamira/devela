@@ -19,34 +19,36 @@ macro_rules! impl_fp {
     (
         // Matches a wildcard floating-point type (f*).
         // Expands to specific floating-point types (f32, f64).
-        $lib:ident : f* : $($ops:tt)*
+        $lib:ident : f* : $($rest:tt)*
     ) => {
-        impl_fp![$lib : f32 : $($ops)*];
-        impl_fp![$lib : f64 : $($ops)*];
+        impl_fp![$lib : f32 : $($rest)*];
+        impl_fp![$lib : f64 : $($rest)*];
     };
     (
         // Matches a specific floating-point type and any number of operations.
         // Generates the impl block for Float<$f> and calls the matching implementation.
-        $lib:ident : $f:ty : $($ops:tt)*
+        $lib:ident : $f:ty : $($rest:tt)*
     ) => { $crate::paste! {
         impl Float<$f> {
-            impl_fp![@$lib : $f : $($ops)*];
+            impl_fp![@$lib : $f : $($rest)*];
         }
     }};
     (
         // Matches multiple operations and uses recursion to process each one.
-        @$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
+        @$lib:ident : $f:ty : $($doc:literal)? $(+const$($_c:lifetime)?)?
+        $opfn:ident = $op:ident : $($arg:ident),*
         ; $($rest:tt)*
     ) => {
-        impl_fp![@$lib : $f : $($doc)? $opfn = $op : $($arg),*];
+        impl_fp![@$lib : $f : $($doc)? $(+const$($_c)?)? $opfn = $op : $($arg),*];
         impl_fp![@$lib : $f : $($rest)*];
     };
     (
         // Matches a single operation and implements it using the `std` library.
-        @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),* $(;)?
+        @std : $f:ty : $($doc:literal)? $(+const$($_c:lifetime)?)?
+        $opfn:ident = $op:ident : $($arg:ident),* $(;)?
     ) => {
         $(#[doc = $doc])?
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+        pub $(const$($_c)?)? fn $op(self, $($arg: $f),*) -> Float<$f> {
             Float(<$f>::$opfn(self.0, $($arg),*))
         }
     };
@@ -59,14 +61,14 @@ mod _std {
     impl_fp![std:f*:
         r"The largest integer less than or equal to `x`.
         $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
-        floor = floor: ;
+        +const floor = floor: ;
         r"The smallest integer greater than or equal to `x`.
         $$ \lceil x \rceil = \min \{ n \in ℤ \,|\, n \geq x \} $$"
-        ceil = ceil: ;
+        +const ceil = ceil: ;
         "The nearest integer to `x`, rounding ties away from `0.0`."
-        round = round_ties_away: ;
+        +const round = round_ties_away: ;
         "The nearest integer to `x`, rounding ties to the nearest even integer."
-        round_ties_even = round_ties_even: ;
+        +const round_ties_even = round_ties_even: ;
         // trunc = trunc: ;
         // fract = fract: ;
         // split == modf
@@ -74,7 +76,7 @@ mod _std {
         // signum = signum: ;
         // copysign = copysign: sign;
         "Fused multiply-add. Computes (self * mul) + add with only one rounding error."
-        mul_add = mul_add: mul, add;
+        +const mul_add = mul_add: mul, add;
         // implemented manually for all:
         // div_euclid = div_euclid: other;
         // rem_euclid = rem_euclid: other;

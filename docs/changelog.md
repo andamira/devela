@@ -59,6 +59,9 @@
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.
 
+#### num::dom::real
+- make `Float`'s std methods const: `ceil`, `floor`, `mul_add`, `round_ties_away`, `round_ties_even`.
+
 #### num::grain::wide
 - rename `define_lane!` to `lane!`
 
