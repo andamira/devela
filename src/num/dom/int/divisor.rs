@@ -92,46 +92,55 @@ macro_rules! divisor {
     /* public macro arms */
 
         // new individual definition + impl
-        $(#[$attr:meta])* $vis:vis struct $Name:ident : ($T:ident) impl) => {
-        $(#[$attr])* #[must_use] #[derive(Clone, Copy)]
+        $(#[$attr:meta])*
+        $vis:vis struct $Name:ident : ($T:ident) impl
+    ) => {
+        $(#[$attr])* #[must_use]
+        #[derive(Clone, Copy)]
         $vis struct $Name { inner: $crate::DivisorInner<$T> }
-
         $crate::divisor!(impl $Name : ($T));
     };
     (
         // new generic definition + impl(s)
-        $(#[$attr:meta])* $vis:vis struct $Name:ident : <> impl ($($T:ident),+)) => {
-
-        $(#[$attr])* #[must_use] #[derive(Clone, Copy)]
+        $(#[$attr:meta])* $vis:vis struct $Name:ident : <> impl ($($T:ident),+)
+    ) => {
+        $(#[$attr])* #[must_use]
+        #[derive(Clone, Copy)]
         $vis struct $Name<T> { inner: $crate::DivisorInner<T> }
-
         $( $crate::divisor!(%impl $Name<$T>, $Name; $T); )+
     };
     (
         // new individual definition
-        $(#[$attr:meta])* $vis:vis struct $Name:ident : ($T:ident)) => {
-        $(#[$attr])* #[must_use] #[derive(Clone, Copy)]
+        $(#[$attr:meta])*
+        $vis:vis struct $Name:ident : ($T:ident)
+    ) => {
+        $(#[$attr])* #[must_use]
+        #[derive(Clone, Copy)]
         $vis struct $Name { inner: $crate::DivisorInner<$T> }
     };
     (
         // new generic definition
-        $(#[$attr:meta])* $vis:vis struct $Name:ident : <>) => {
-        $(#[$attr])* #[must_use] #[derive(Clone, Copy)]
+        $(#[$attr:meta])* $vis:vis struct $Name:ident : <>
+    ) => {
+        $(#[$attr])* #[must_use]
+        #[derive(Clone, Copy)]
         $vis struct $Name<T> { inner: $crate::DivisorInner<T> }
     };
     (
         // individual impl
-        impl $Name:ident : ($T:ident)) => {
+        impl $Name:ident : ($T:ident)
+    ) => {
         $crate::divisor!(%impl $Name, $Name; $T);
     };
     (
         // generic impl(s)
-        impl $Name:ident : <> ($($T:ident),+)) => {
+        impl $Name:ident : <> ($($T:ident),+)
+    ) => {
         $( $crate::divisor!(%impl $Name<$T>, $Name; $T); )+
     };
 
-    // $N: the full type
-    // $n: just the name
+    // $Type: the full type
+    // $Name: just the name
     (
     /* private API */
     // supported representations
@@ -163,10 +172,12 @@ macro_rules! divisor {
 
     // signed implementations
     // # Arguments:
-    // $t:     the type. E.g. i8.
-    // $un:    the unsigned type of the same size. E.g. u8. (only for signed)
-    // $up:    the upcasted type. E.g. i16.
-    // $unup:  the unsigned upcasted type. E.g. u16. (only for signed)
+    // $Type:  the full type of the wrapper
+    // $Name:  just the name of the wrapper
+    // $t:     the primitive type. E.g. i8.
+    // $un:    the primitive unsigned type of the same size. E.g. u8. (only for signed)
+    // $up:    the primitive upcasted type. E.g. i16.
+    // $unup:  the primitive unsigned upcasted type. E.g. u16. (only for signed)
     // $is_up: upcasted behavior. Y:upcasted | N:not upcasted | PW depends on pointer width == 64
     //
     (// specific implementations

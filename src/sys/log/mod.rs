@@ -8,8 +8,11 @@
 
 mod _reexport_dep; // ::log::*
 
+// mod bench; //
+// mod diag; // DiagLevel, DiagOut WIP
 // mod logger; // LogLevel, Logger, log_with WIP
 mod slog; // LoggerStatic, slog!
+// mod trace; //
 
 #[cfg(feature = "dep_log")]
 crate::items! {
@@ -21,6 +24,7 @@ crate::items! {
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
+            // diag::*,
             // logger::*, // WIP
             slog::*,
         };

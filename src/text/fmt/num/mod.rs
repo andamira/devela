@@ -7,27 +7,28 @@
 mod tests;
 
 // hidden implementation helpers
-mod float; // __impl_fmt_num_float!
-mod int; // _impl_fmt_num_int!
+mod float; // __impl_fmt_num_float! TEMP
+mod int; // _impl_fmt_num_int! TEMP
 
 // definitions
 mod conf; // FmtNumConf, FmtNumSign
 // mod define; // fmt_num! WIP
 mod group; // FmtNumGroup,
-mod num; // FmtNum TTEM
+mod num; // FmtNum TEMP
 mod shape; // FmtNumShape
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             conf::*,
-            // define::*, // WIP
+            // define::*,
             group::*,
-            num::*, // TEMP
+            num::*,
             shape::*,
         };
     }
     _hidden {
+        // TEMP
         pub use super::{
             float::__impl_fmt_num_float,
             int::__impl_fmt_num_int,

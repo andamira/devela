@@ -39,7 +39,7 @@
 - impl `ConstInit` for more types.
 
 ### code::util
-- reexport `cfg_select!`.
+- reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
 ### data::id
@@ -103,6 +103,9 @@
 
 ### sys::io
 - new traits `TextIn`, `TextOut`.
+
+### sys::log
+- new modules `sys::log::{bench, trace}`;
 
 ### sys::mem
 - rename `define_arena!` to `arena!`

@@ -13,19 +13,19 @@
 /// Specific implementations can vary between signed and signed numeric types,
 /// but documentation is the same for all bit sizes:
 /// - `i64` methods documentation related to:
-/// [base][Self#integer-base-related-methods-for-i64],
 /// [core][Self#integer-core-methods-for-i64],
 /// [combinatorics][Self#integer-combinatorics-related-methods-for-i64],
 /// [division][Self#integer-division-related-methods-for-i64],
+/// [elementary][Self#integer-elementary-related-methods-for-i64],
 /// [factors][Self#integer-factors-related-methods-for-i64],
 /// [modulo][Self#integer-modulo-related-methods-for-i64],
 /// [primes][Self#integer-prime-related-methods-for-i64],
 /// [root][Self#integer-root-related-methods-for-i64].
 /// - `u32` methods documentation related to:
-/// [base][Self#integer-base-related-methods-for-u32],
 /// [core][Self#integer-core-methods-for-u32],
 /// [combinatorics][Self#integer-combinatorics-related-methods-for-u32],
 /// [division][Self#integer-division-related-methods-for-u32],
+/// [elementary][Self#integer-elementary-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
 /// [modulo][Self#integer-modulo-related-methods-for-u32],
 /// [primes][Self#integer-prime-related-methods-for-u32],

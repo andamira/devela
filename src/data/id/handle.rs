@@ -22,7 +22,7 @@ handle! {
 /// A *handle* is a lightweight, copyable semantic reference that identifies
 /// an entry within a managed collection, such as an arena, list, or graph.
 ///
-/// Handles are plain data values — they contain only small scalar fields
+/// Handles are plain data values. They contain only small scalar fields
 /// (like offsets, lengths, or indices) and no lifetimes or ownership.
 ///
 /// Handles form the connective tissue of the data layer,
