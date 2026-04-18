@@ -15,7 +15,7 @@ Legend:
 
 - 1.95: ` `[atomic_try_update](https://github.com/rust-lang/rust/issues/135894)
 - 1.95: `✓`[cfg_select](https://github.com/rust-lang/rust/pull/149783)
-- 1.95: `→`[cold_path](https://github.com/rust-lang/rust/pull/151576)
+- 1.95: `✓`[cold_path](https://github.com/rust-lang/rust/pull/151576)
 - 1.95: `…`[if_let_guard](https://github.com/rust-lang/rust/pull/141295)
 - 1.95: ` `[importing path-segment keyword with renaming](https://github.com/rust-lang/rust/pull/146972)
 - 1.95: ` `[improve pattern matching semantics](https://github.com/rust-lang/rust/pull/150681)

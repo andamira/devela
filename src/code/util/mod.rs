@@ -43,12 +43,12 @@ mod include; // include_from!, mod_from!, mod_path!
 mod is; // is!
 mod items; // items!, sf!
 mod lets; // lets!
+mod likely; // likely, unlikely
 mod maybe; // maybe!
 mod methods; // methods_as_fns!
 mod paste; // paste!, (wrapped for docs)
 mod structural; // structural_mods!
 mod type_count; // type_count!
-mod unlikely; // cold_path, likely, unlikely
 mod whilst; // whilst!
 mod write; // write_at!
 
@@ -73,12 +73,12 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             is::is,
             items::{items, sf},
             lets::lets,
+            likely::{likely, unlikely},
             maybe::maybe,
             methods::methods_as_fns,
             paste::paste,
             structural::structural_mods,
             type_count::type_count,
-            unlikely::{cold_path, likely, unlikely},
             whilst::whilst,
             write::write_at,
         };
