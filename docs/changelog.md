@@ -39,6 +39,7 @@
 - impl `ConstInit` for more types.
 
 ### code::util
+- new macro `maybe_slot!`.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 

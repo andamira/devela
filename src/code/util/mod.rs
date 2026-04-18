@@ -44,7 +44,7 @@ mod is; // is!
 mod items; // items!, sf!
 mod lets; // lets!
 mod likely; // likely, unlikely
-mod maybe; // maybe!
+mod maybe; // maybe!, maybe_slot!
 mod methods; // methods_as_fns!
 mod paste; // paste!, (wrapped for docs)
 mod structural; // structural_mods!
@@ -74,7 +74,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             items::{items, sf},
             lets::lets,
             likely::{likely, unlikely},
-            maybe::maybe,
+            maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
             paste::paste,
             structural::structural_mods,

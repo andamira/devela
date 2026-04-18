@@ -137,7 +137,7 @@ define_symbol_tags! {
     _TAG_NUM, "Numeric structures and computation", "⅀";
     // Platform-dependent behavior or guarantees.
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
-    _TAG_PRIMITIVE, "Rust primitive", "⚙️";
+    _TAG_PRIMITIVE, "Related to Rust primitives", "⚙️";
     // Quantitative relations and measured magnitudes.
     // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";
