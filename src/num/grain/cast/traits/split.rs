@@ -3,7 +3,7 @@
 //! fns to split a primitive into an array of smaller primitives.
 //
 // TOC
-// - trait PrimitiveSplit
+// - trait PrimSplit
 // - macro impl_into_trait!
 
 use crate::Cast;
@@ -13,8 +13,9 @@ use crate::Cast;
 #[doc = crate::_doc_location!("num/grain")]
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods, and the
-/// [`PrimitiveJoin`][super::PrimitiveJoin] trait for the opposite operations.
-pub trait PrimitiveSplit<T, const LEN: usize> {
+/// [`PrimJoin`][super::PrimJoin] trait for the opposite operations.
+#[doc(alias = "PrimitiveSplit")]
+pub trait PrimSplit<T, const LEN: usize> {
     /// Splits `self` into an array of `T` in big-endian order.
     #[must_use]
     fn into_array_be(self) -> [T; LEN];
@@ -32,7 +33,7 @@ macro_rules! impl_into_trait {
         $( impl_into_trait![@$P, $T, $LEN]; )+
     };
     (@$P:ident, $T:ident, $LEN:literal) => { crate::paste! {
-        impl PrimitiveSplit<$T, $LEN> for $P {
+        impl PrimSplit<$T, $LEN> for $P {
             fn into_array_be(self) -> [$T; $LEN] { Cast(self).[<into_ $T _be>]() }
             fn into_array_le(self) -> [$T; $LEN] { Cast(self).[<into_ $T _le>]() }
             fn into_array_ne(self) -> [$T; $LEN] { Cast(self).[<into_ $T _ne>]() }

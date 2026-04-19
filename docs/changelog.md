@@ -67,7 +67,8 @@
 #### num::dom::real
 - make `Float`'s std methods const: `ceil`, `floor`, `mul_add`, `round_ties_away`, `round_ties_even`.
 
-#### num::grain::wide
+### num::grain
+- rename `Primitive*` traits to `Prim*`.
 - rename `define_lane!` to `lane!`
 
 ### num::prob

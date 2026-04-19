@@ -3,7 +3,7 @@
 //! construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //
 // TOC
-// - trait PrimitiveJoin
+// - trait PrimJoin
 // - macro impl_from_trait!
 
 use crate::Cast;
@@ -20,8 +20,9 @@ use crate::Cast;
 ///   ignore the extra elements.
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods, and the
-/// [`PrimitiveSplit`][super::PrimitiveSplit] trait for the opposite operations.
-pub trait PrimitiveJoin<T, U, const LEN: usize> {
+/// [`PrimSplit`][super::PrimSplit] trait for the opposite operations.
+#[doc(alias = "PrimitiveJoin")]
+pub trait PrimJoin<T, U, const LEN: usize> {
     /// Constructs a primitive `T` from an array of `U` in big-endian order.
     #[must_use]
     fn from_array_be(values: [U; LEN]) -> T;
@@ -49,7 +50,7 @@ macro_rules! impl_from_trait {
         $( impl_from_trait![@$T, $U, $LEN]; )+
     };
     (@$T:ident, $U:ident, $LEN:literal) => { crate::paste! {
-        impl PrimitiveJoin<$T, $U, $LEN> for $T {
+        impl PrimJoin<$T, $U, $LEN> for $T {
             fn from_array_be(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _be>](values) }
             fn from_array_le(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _le>](values) }
             fn from_array_ne(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _ne>](values) }

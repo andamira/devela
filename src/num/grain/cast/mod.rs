@@ -5,7 +5,7 @@
 
 mod macros; // cast!
 mod namespace; // Cast
-mod traits; // PrimitiveCast, PrimitiveJoin, PrimitiveSplit
+mod traits; // PrimCast, PrimJoin, PrimSplit
 
 #[cfg(test)]
 mod tests;

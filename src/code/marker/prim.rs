@@ -10,6 +10,9 @@
 
 #![expect(private_bounds, reason = "Sealed traits")]
 
+#[cfg(doc)]
+use crate::{PrimCast, PrimFloat, PrimInt, PrimJoin, PrimScalar, PrimSint, PrimSplit, PrimUint};
+
 macro_rules! impl_prim {
     ($trait:ident for $($P:ty),+ $(,)?) => { $( impl_prim![% $trait for $P]; )+ };
     (%$trait:ident for $P:ty) => { impl $trait for $P {} };
@@ -29,6 +32,13 @@ impl_prim![Sealed for
 #[doc = crate::_tags!(code)]
 /// Language primitive value types.
 #[doc = crate::_doc_location!("code/marker")]
+///
+/// See also the related traits:
+/// - markers: [`PrimFitPtr`], [`PrimIndex`],
+/// - casting: [`PrimCast`], [`PrimJoin`], [`PrimSplit`],
+/// - numeric: [`PrimScalar`], [`PrimFloat`], [`PrimInt`], [`PrimSint`], [`PrimUint`].
+///
+#[doc(alias = "Primitive")]
 pub trait Prim: Sealed + Copy + 'static {}
 impl_prim![Prim for
     (), bool, char,
@@ -42,6 +52,7 @@ impl_prim![Prim for
 #[doc = crate::_tags!(code mem)]
 /// Primitive value types that fit in pointer-width on supported Rust targets.
 #[doc = crate::_doc_location!("code/marker")]
+#[doc(alias = "PrimitiveFitPtr")]
 pub trait PrimFitPtr: Prim {}
 
 impl_prim![PrimFitPtr for (), bool, u8, i8, usize, isize];
@@ -55,6 +66,7 @@ impl_prim![PrimFitPtr for u16, u32, u64, i16, i32, i64, f32, f64];
 #[doc = crate::_tags!(code mem num)]
 /// Primitive types that can be used for indexing.
 #[doc = crate::_doc_location!("code/marker")]
+#[doc(alias = "PrimitiveIndex")]
 pub trait PrimIndex: crate::PrimUint + PrimFitPtr {}
 
 impl_prim![PrimIndex for u8, usize];

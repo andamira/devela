@@ -3,7 +3,7 @@
 //! fns to cast between primitives in a checked manner.
 //
 // TOC
-// - trait PrimitiveCast
+// - trait PrimCast
 // - macro impl_cast_methods!
 
 use crate::{Cast, Overflow, isize_down, isize_up, usize_down, usize_up};
@@ -18,7 +18,8 @@ type Result<T> = crate::Result<T, Overflow>;
 /// # Errors
 /// Checked methods will return [`Overflow`]
 /// if the original value can't fit in the returned type.
-pub trait PrimitiveCast {
+#[doc(alias = "PrimitiveCast")]
+pub trait PrimCast {
     /* checked */
 
     /// Casts `self` to `u8` with range check.
@@ -167,7 +168,7 @@ macro_rules! impl_cast_methods {
     };
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
     (@$t:ty) => { crate::paste! {
-        impl PrimitiveCast for $t {
+        impl PrimCast for $t {
             #[inline(always)]
             fn checked_cast_to_u8(self) -> Result<u8> { Cast(self).checked_cast_to_u8() }
             #[inline(always)]

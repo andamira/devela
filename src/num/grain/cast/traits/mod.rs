@@ -3,9 +3,9 @@
 //! Helpers for converting between primitives.
 //
 
-mod cast; // PrimitiveCast
-mod join; // PrimitiveJoin
-mod split; // PrimitiveSplit
+mod cast; // PrimCast
+mod join; // PrimJoin
+mod split; // PrimSplit
 
 crate::structural_mods! { // _mods
     _mods {

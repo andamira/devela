@@ -19,6 +19,7 @@ macro_rules! impl_prim {
 #[doc = crate::_tags!(code num)]
 /// Primitive scalars, both integers and floating-point numbers.
 #[doc = crate::_doc_location!("num/grain")]
+#[doc(alias = "PrimitiveScalar")]
 pub trait PrimScalar: crate::Prim {}
 impl_prim![PrimScalar for
     u8, u16, u32, u64, u128, usize,
@@ -32,6 +33,7 @@ impl_prim![PrimScalar for
 /// Primitive integer numbers.
 #[doc = crate::_doc_location!("num/grain")]
 #[doc(alias = "PrimInteger")]
+#[doc(alias = "PrimitiveInteger")]
 pub trait PrimInt: PrimScalar {}
 impl_prim![PrimInt for u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
@@ -39,6 +41,7 @@ impl_prim![PrimInt for u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, 
 /// Signed primitive integer numbers.
 #[doc = crate::_doc_location!("num/grain")]
 #[doc(alias = "PrimSignedInteger")]
+#[doc(alias = "PrimitiveSignedInteger")]
 pub trait PrimSint: PrimInt {}
 impl_prim![PrimSint for i8, i16, i32, i64, i128, isize];
 
@@ -46,6 +49,7 @@ impl_prim![PrimSint for i8, i16, i32, i64, i128, isize];
 /// Unsigned primitive integer numbers.
 #[doc = crate::_doc_location!("num/grain")]
 #[doc(alias = "PrimUnsignedInteger")]
+#[doc(alias = "PrimitiveUnsignedInteger")]
 pub trait PrimUint: PrimInt {}
 impl_prim![PrimUint for u8, u16, u32, u64, u128, usize];
 
@@ -54,5 +58,6 @@ impl_prim![PrimUint for u8, u16, u32, u64, u128, usize];
 #[doc = crate::_tags!(code num)]
 /// Primitive floating-point numbers.
 #[doc = crate::_doc_location!("num/grain")]
+#[doc(alias = "PrimitiveFloat")]
 pub trait PrimFloat: PrimScalar {}
 impl_prim![PrimFloat for f32, f64];

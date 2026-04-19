@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: num)]
 //
 
-mod cast; // Cast, PrimitiveCast, PrimitiveJoin, PrimitiveSplit, cast!
+mod cast; // Cast, PrimCast, PrimJoin, PrimSplit, cast!
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, NonValue*|NonExtreme*, ne!, nz!
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 pub mod wide; // lane!
