@@ -3,7 +3,7 @@
 //! Binary unit prefixes.
 //
 
-use super::_helpers::impl_try_from;
+use super::_helper::__phys_unit_impl_try_from;
 #[allow(unused_imports)]
 use crate::FloatExt;
 #[cfg(feature = "alloc")]
@@ -483,8 +483,8 @@ impl From<UnitBi> for i128 {
         from.factor_i128()
     }
 }
-impl_try_from![UnitBi, i64 => i32, i16, u64, u32, u16];
-impl_try_from![UnitBi, i128 => u128];
+__phys_unit_impl_try_from![UnitBi, i64 => i32, i16, u64, u32, u16];
+__phys_unit_impl_try_from![UnitBi, i128 => u128];
 
 #[cfg(test)]
 mod tests {

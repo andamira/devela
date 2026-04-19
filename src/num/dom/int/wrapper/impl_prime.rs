@@ -116,7 +116,7 @@ macro_rules! impl_prime {
 
             /// Counts the number of primes upto and including `n`.
             ///
-            #[doc = _INT_NOTATION_PI!()]
+            #[doc = _DOC_INT_NOTATION_PI!()]
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             /// # Panics
@@ -150,7 +150,7 @@ macro_rules! impl_prime {
             ///
             /// # Formulation
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_TOTIENT!()]
+            #[doc = _DOC_INT_ALGORITHM_TOTIENT!()]
             ///
             /// # Examples
             /// ```
@@ -242,7 +242,7 @@ macro_rules! impl_prime {
 
             /// Counts the number of primes upto and including `n`.
             ///
-            #[doc = _INT_NOTATION_PI!()]
+            #[doc = _DOC_INT_NOTATION_PI!()]
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             /// # Panics
@@ -272,7 +272,7 @@ macro_rules! impl_prime {
             ///
             /// # Formulation
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_TOTIENT!()]
+            #[doc = _DOC_INT_ALGORITHM_TOTIENT!()]
             ///
             /// # Examples
             /// ```

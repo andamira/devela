@@ -8,7 +8,7 @@
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
-mod helpers; // (TEMP Norm)
+mod _helper; // (TEMP Norm)
 
 mod color; // Color
 mod gamma; // Gamma
@@ -32,6 +32,6 @@ crate::structural_mods! { // _mods, _crate_internals
         // pub use super::xyz::*;
     }
     _crate_internals {
-        pub(crate) use super::helpers::*;
+        pub(crate) use super::_helper::*;
     }
 }

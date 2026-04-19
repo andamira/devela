@@ -21,9 +21,9 @@
 #[repr(transparent)]
 pub struct Float<T>(pub T);
 
-crate::impl_ops![Float: f32, f64];
+crate::_num_dom_impl_arith![Float: f32, f64];
 #[cfg(nightly_float)]
-crate::impl_ops![Float: f16, f128];
+crate::_num_dom_impl_arith![Float: f16, f128];
 
 #[rustfmt::skip]
 mod core_impls {

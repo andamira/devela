@@ -37,8 +37,8 @@
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
-crate::impl_ops![Int: i8, i16, i32, i64, i128, isize];
-crate::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
+crate::_num_dom_impl_arith![Int: i8, i16, i32, i64, i128, isize];
+crate::_num_dom_impl_arith![Int: (no_neg) u8, u16, u32, u64, u128, usize];
 #[rustfmt::skip]
 mod core_impls {
     use crate::{impl_trait, Int, Ordering, ValueQuant};

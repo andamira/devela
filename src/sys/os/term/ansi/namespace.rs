@@ -3,7 +3,7 @@
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //
 
-use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
+use crate::{__ansi_consts, Digits, StringNonul, slice, write_at};
 
 #[doc = crate::_tags!(term namespace)]
 /// ANSI escape codes.
@@ -51,7 +51,7 @@ use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 pub struct Ansi;
 
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Control Sequence Introducer (CSI).
         ///
         /// <https://en.wikipedia.org/wiki/ANSI_escape_code#Control_Sequence_Introducer_commands>
@@ -74,7 +74,7 @@ impl Ansi {
 
 /// # Screen escape codes
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to enable the alternative screen.
         pub const ENABLE_ALT_SCREEN: [u8; 8] = "\x1b[?1049h", *b"\x1b[?1049h";
         /// Code to disable the alternative screen.
@@ -84,7 +84,7 @@ impl Ansi {
 
 /// # Erase escape codes
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to erase from the cursor to the end of the line.
         pub const ERASE_LINE_END: [u8; 3] = "\x1b[K", *b"\x1b[K"; // also "\x1b[0K"
         /// Code to erase from the cursor to the start of the line.
@@ -102,7 +102,7 @@ impl Ansi {
 
 /// # Cursor escape codes
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to make the cursor invisible.
         pub const CURSOR_INVISIBLE: [u8; 6] = "\x1b[?25l", *b"\x1b[?25l";
         /// Code to make the cursor visible.
@@ -116,7 +116,7 @@ impl Ansi {
         /// Code to move the cursor to the home position (1, 1).
         pub const CURSOR_HOME: [u8; 3] = "\x1b[H", *b"\x1b[H";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor to the specified 1-digit position (col, row). (CUP)
         /// # Panics
         /// Panics in debug if either `row` or `col` > 9.
@@ -154,7 +154,7 @@ impl Ansi {
         let _ = Self::CURSOR_MOVE_N(&mut buf, col, row);
         StringNonul::<14>::_from_array_trusted(buf)
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor to the specified position (col, row).
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -172,11 +172,11 @@ impl Ansi {
             slice![buffer, ..=index]
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor up by one line. (CUU)
         pub const CURSOR_UP: [u8; 3] = "\x1b[A", *b"\x1b[A";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor up by 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -205,7 +205,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'A']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor up by `n` lines.
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -216,11 +216,11 @@ impl Ansi {
             Self::write_ansi_code_n(buffer, n, b'A')
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor down by one line. (CUD)
         pub const CURSOR_DOWN: [u8; 3] = "\x1b[B", *b"\x1b[B";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor down by 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -249,7 +249,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'B']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor down by `n` lines.
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -260,11 +260,11 @@ impl Ansi {
             Self::write_ansi_code_n(buffer, n, b'B')
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor right by one column. (CUF)
         pub const CURSOR_RIGHT: [u8; 3] = "\x1b[C", *b"\x1b[C";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor right by 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -293,7 +293,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'C']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor right by `n` lines.
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -304,11 +304,11 @@ impl Ansi {
             Self::write_ansi_code_n(buffer, n, b'C')
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor left by one column. (CUB)
         pub const CURSOR_LEFT: [u8; 3] = "\x1b[D", *b"\x1b[D";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor left by 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -337,7 +337,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor left by `n` lines.
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -348,11 +348,11 @@ impl Ansi {
             Self::write_ansi_code_n(buffer, n, b'D')
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor to the beginning of the next line. (CNL)
         pub const CURSOR_NEXT_LINE: [u8; 3] = "\x1b[E", *b"\x1b[E";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor to the beginning of the next 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -381,7 +381,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Returns a slice with the code to move the cursor to the beginning of the next `n` lines.
         ///
         /// It needs a `buffer` where to store the bytes.
@@ -393,11 +393,11 @@ impl Ansi {
         }
     }
 
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor to the beginning of the previous line. (CPL)
         pub const CURSOR_PREV_LINE: [u8; 3] = "\x1b[E", *b"\x1b[E";
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to move the cursor to the beginning of the previous 1-digit `n` lines.
         /// # Panics
         /// Panics in debug if `n` > 9.
@@ -426,7 +426,7 @@ impl Ansi {
             [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
     /// Returns a slice with the code to move the cursor to the beginning of the previous `n` lines.
     ///
     /// It needs a `buffer` where to store the bytes.
@@ -447,7 +447,7 @@ impl Ansi {
 /// - `10`: row
 /// -  `M`: press (`m` indicates release)
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to enable X10 compatibility mode for mouse click reporting.
         ///
         /// Response: `CSI M Cb Cx Cy` (fixed-length, byte-encoded).
@@ -472,7 +472,7 @@ impl Ansi {
 
 /// # Font effects escape codes
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to turn off all effects and colors.
         pub const RESET: [u8; 4] = "\x1b[0m", *b"\x1b[0m";
 
@@ -515,7 +515,7 @@ impl Ansi {
 
 // /// # Not very well supported font effects escape codes
 // impl Ansi {
-//     _ansi_consts! {
+//     __ansi_consts! {
 //         pub const UNDERLINE_DOUBLE: [u8; 5] = "\x1b[21m", *b"\x1b[21m"; // or bold_off
 //         pub const BLINK_FAST: &[u8] = "\x1b[6m", *b"\x1b[6m";
 //     }

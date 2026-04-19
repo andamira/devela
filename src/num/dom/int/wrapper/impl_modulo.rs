@@ -29,63 +29,6 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
-/// Helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
-///
-/// $op:  an overloadable operator (+, -, *, /)
-/// $fn:  the corresponding function (add, sub, mul, div)
-/// $lhs: the left hand side operator
-/// $rhs: the right hand side operator
-/// $is_up: whether we've upcasted (Y) or not (N), known at compile-time
-///
-/// # Features
-/// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
-#[rustfmt::skip] #[allow(unused_macros)]
-macro_rules! upcastop {
-    // this is used for checked versions
-    (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
-        if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
-
-        } else { // otherwise do the checked operation:
-            if let Some(result) = $lhs.[<checked_ $fn>]($rhs) {
-                result } else { return Err(Overflow(None));
-            }
-        }
-    }};
-    // this is used for checked versions that don't need to calculate cycles
-    (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
-        if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
-
-        } else { // otherwise reduce each operand before the checked operation:
-            if let Some(result) = ($lhs % $modulus).[<checked_ $fn>]($rhs % $modulus) {
-                result } else { return Err(Overflow(None));
-            }
-        }
-    }};
-    // this is used for unchecked versions that don't need to calculate cycles
-    (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
-        if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
-
-        } else { // otherwise reduce each operand before the unchecked operation:
-            ($lhs % $modulus) $op ($rhs % $modulus)
-        }
-    }};
-}
-
 /// Implements modulo-related methods for [`Int`].
 ///
 /// # Args
@@ -344,7 +287,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                    let sum = upcastop![reduce_err +add(a, b) % m, $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![reduce_err +add(a, b) % m, $is_up];
                     if let Some(v) = sum.checked_rem_euclid(m) { // TODO:TEST
                         Ok(Int(v as $t))
                     } else {
@@ -365,7 +308,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
             pub const fn modulo_add_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                let sum = upcastop![reduce +add(a, b) % m, $is_up];
+                let sum = $crate::_num_dom_upcast_arith![reduce +add(a, b) % m, $is_up];
                 Int(sum.rem_euclid(m) as $t)
             }
 
@@ -409,7 +352,7 @@ macro_rules! impl_modulo {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     // not reducing for i128 makes overflow more likely,
                     // but we can't if we want to calculate `times`.
-                    let sum = upcastop![err +add(a, b) $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![err +add(a, b) $is_up];
                     if let Some(v) = sum.checked_rem_euclid(m) {
                         let modulo = Int(v as $t);
                         let times = Int(((sum / m) as $t).abs());
@@ -530,7 +473,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                    let res = upcastop![reduce_err -sub(a, b) % m, $is_up];
+                    let res = $crate::_num_dom_upcast_arith![reduce_err -sub(a, b) % m, $is_up];
                     Ok(Int(res.rem_euclid(m) as $t))
                 }
             }
@@ -547,7 +490,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`.
             pub const fn modulo_sub_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                let res = upcastop![reduce -sub(a, b) % m, $is_up];
+                let res = $crate::_num_dom_upcast_arith![reduce -sub(a, b) % m, $is_up];
                 Int(res.rem_euclid(m) as $t)
             }
 
@@ -590,7 +533,7 @@ macro_rules! impl_modulo {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     // not reducing for i128 makes overflow more likely,
                     // but we can't if we want to calculate `times`.
-                    let res = upcastop![err -sub(a, b) $is_up];
+                    let res = $crate::_num_dom_upcast_arith![err -sub(a, b) $is_up];
                     let modulo = Int(res.rem_euclid(m) as $t);
                     let times = Int(((res / m) as $t).abs());
                     Ok(ValueQuant::new(modulo, times))
@@ -652,7 +595,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                    let sum = upcastop![reduce_err *mul(a, b) % m, $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![reduce_err *mul(a, b) % m, $is_up];
                     if let Some(v) = sum.checked_rem_euclid(m) { // TODO:TEST
                         Ok(Int(v as $t))
                     } else {
@@ -673,7 +616,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
             pub const fn modulo_mul_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                let sum = upcastop![reduce *mul(a, b) % m, $is_up];
+                let sum = $crate::_num_dom_upcast_arith![reduce *mul(a, b) % m, $is_up];
                 Int(sum.rem_euclid(m) as $t)
             }
 
@@ -717,7 +660,7 @@ macro_rules! impl_modulo {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     // not reducing for i128 makes overflow more likely,
                     // but we can't if we want to calculate `times`.
-                    let sum = upcastop![err *mul(a, b) $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![err *mul(a, b) $is_up];
                     if let Some(v) = sum.checked_rem_euclid(m) {
                         let modulo = Int(v as $t);
                         let times = Int(((sum / m) as $t).abs());
@@ -1030,7 +973,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                    let sum = upcastop![reduce_err +add(a, b) % m, $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![reduce_err +add(a, b) % m, $is_up];
                     Ok(Int((sum % m) as $t))
                 }
             }
@@ -1047,7 +990,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
             pub const fn modulo_add_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                let sum = upcastop![reduce +add(a, b) % m, $is_up];
+                let sum = $crate::_num_dom_upcast_arith![reduce +add(a, b) % m, $is_up];
                 Int((sum % m) as $t)
             }
 
@@ -1087,7 +1030,7 @@ macro_rules! impl_modulo {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     // not reducing for u128 makes overflow more likely,
                     // but we can't if we want to calculate `times`.
-                    let sum = upcastop![err +add(a, b) $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![err +add(a, b) $is_up];
                     let modulo = Int((sum % m) as $t);
                     let times = Int((sum / m) as $t);
                     Ok(ValueQuant::new(modulo, times))
@@ -1285,7 +1228,7 @@ macro_rules! impl_modulo {
                     cold_err_zero()
                 } else {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                    let sum = upcastop![reduce_err *mul(a, b) % m, $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![reduce_err *mul(a, b) % m, $is_up];
                     Ok(Int((sum % m) as $t))
                 }
             }
@@ -1302,7 +1245,7 @@ macro_rules! impl_modulo {
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
             pub const fn modulo_mul_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
-                let sum = upcastop![reduce *mul(a, b) % m, $is_up];
+                let sum = $crate::_num_dom_upcast_arith![reduce *mul(a, b) % m, $is_up];
                 Int((sum % m) as $t)
             }
 
@@ -1342,7 +1285,7 @@ macro_rules! impl_modulo {
                     let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                     // not reducing for u128 makes overflow more likely,
                     // but we can't if we want to calculate `times`.
-                    let sum = upcastop![err *mul(a, b) $is_up];
+                    let sum = $crate::_num_dom_upcast_arith![err *mul(a, b) $is_up];
                     let modulo = Int((sum % m) as $t);
                     let times = Int((sum / m) as $t);
                     Ok(ValueQuant::new(modulo, times))

@@ -270,7 +270,7 @@ macro_rules! impl_elem {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_SCALE!()]
+            #[doc = _DOC_INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -306,7 +306,7 @@ macro_rules! impl_elem {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_SCALE!()]
+            #[doc = _DOC_INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -590,7 +590,7 @@ macro_rules! impl_elem {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_SCALE!()]
+            #[doc = _DOC_INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -625,7 +625,7 @@ macro_rules! impl_elem {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_SCALE!()]
+            #[doc = _DOC_INT_FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```

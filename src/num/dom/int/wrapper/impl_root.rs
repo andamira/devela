@@ -16,7 +16,7 @@
 use super::super::_docs::*;
 #[allow(unused_imports, reason = "doc for Overflow")]
 use crate::IntError::{NonNegativeRequired, NonZeroRequired, Overflow};
-use crate::{Cmp, Int, IntResult as Result, is, isize_up, paste, upcasted_op, usize_up};
+use crate::{Cmp, Int, IntResult as Result, is, isize_up, paste, usize_up};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip]
@@ -74,7 +74,7 @@ macro_rules! impl_root {
             /// Returns `true` if it's a perfect square.
             ///
             /// Returns `false` otherwise, which includes all negative values.
-            #[doc = _INT_FORMULA_IS_SQUARE!()]
+            #[doc = _DOC_INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -95,7 +95,7 @@ macro_rules! impl_root {
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_CEIL!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, IntError::NonNegativeRequired};
@@ -121,7 +121,7 @@ macro_rules! impl_root {
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             ///
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_FLOOR!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, IntError::NonNegativeRequired};
@@ -159,7 +159,7 @@ macro_rules! impl_root {
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_ROUND!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, IntError::NonNegativeRequired};
@@ -178,15 +178,15 @@ macro_rules! impl_root {
                     Ok(self)
                 } else {
                     // sqrt_floor
-                    let sum = upcasted_op![add_err(a, a / a) $t => $up];
+                    let sum = $crate::_num_dom_upcasted_mul_add![add_err(a, a / a) $t => $up];
                     let (mut x, mut y) = (a, sum / 2);
                     while y < x {
                         x = y;
-                        let sum = upcasted_op![add_err(x, a / x) $t => $up];
+                        let sum = $crate::_num_dom_upcasted_mul_add![add_err(x, a / x) $t => $up];
                         y = sum / 2;
                     }
                     // do we have to round up?
-                    let mul = upcasted_op![mul_err(x, x) $t => $up];
+                    let mul = $crate::_num_dom_upcasted_mul_add![mul_err(x, x) $t => $up];
                     is![a - mul >= (x + 1) * (x + 1) - a, Ok(Int(x as $t + 1)), Ok(Int(x as $t))]
                 }
             }
@@ -195,7 +195,7 @@ macro_rules! impl_root {
 
             /// Returns the ceiled integer `nth` root.
             ///
-            #[doc = _INT_FORMULA_ROOT_CEIL_SIGNED!()]
+            #[doc = _DOC_INT_FORMULA_ROOT_CEIL_SIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
@@ -214,9 +214,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulation
             /// ## Piece-wise
-            #[doc = _INT_PIECEWISE_ROOT_CEIL_SIGNED!()]
+            #[doc = _DOC_INT_PIECEWISE_ROOT_CEIL_SIGNED!()]
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_ROOT_CEIL_SIGNED!()]
+            #[doc = _DOC_INT_ALGORITHM_ROOT_CEIL_SIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -245,7 +245,7 @@ macro_rules! impl_root {
 
             /// Returns the floored integer `nth` root.
             ///
-            #[doc = _INT_FORMULA_ROOT_FLOOR_SIGNED!()]
+            #[doc = _DOC_INT_FORMULA_ROOT_FLOOR_SIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
@@ -264,9 +264,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulations
             /// ## Piece-wise
-            #[doc = _INT_PIECEWISE_ROOT_FLOOR_SIGNED!()]
+            #[doc = _DOC_INT_PIECEWISE_ROOT_FLOOR_SIGNED!()]
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_ROOT_FLOOR_SIGNED!()]
+            #[doc = _DOC_INT_ALGORITHM_ROOT_FLOOR_SIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -306,7 +306,7 @@ macro_rules! impl_root {
 
             /// Returns `true` if it's a perfect square, false otherwise.
             /// # Formulation
-            #[doc = _INT_FORMULA_IS_SQUARE!()]
+            #[doc = _DOC_INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -326,7 +326,7 @@ macro_rules! impl_root {
             /// Returns the ceiled integer square root.
             ///
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_CEIL!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_CEIL!()]
             ///
             /// # Examples
             /// ```
@@ -345,7 +345,7 @@ macro_rules! impl_root {
             /// Returns the floored integer square root.
             ///
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_FLOOR!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_FLOOR!()]
             ///
             /// # Examples
             /// ```
@@ -382,7 +382,7 @@ macro_rules! impl_root {
             /// is close to its maximum.
             ///
             /// # Formulation
-            #[doc = _INT_ALGORITHM_SQRT_ROUND!()]
+            #[doc = _DOC_INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -398,15 +398,15 @@ macro_rules! impl_root {
                     Ok(self)
                 } else {
                     // sqrt_floor
-                    let sum = upcasted_op![add_err(a, a / a) $t => $up];
+                    let sum = $crate::_num_dom_upcasted_mul_add![add_err(a, a / a) $t => $up];
                     let (mut x, mut y) = (a, sum / 2);
                     while y < x {
                         x = y;
-                        let sum = upcasted_op![add_err(x, a / x) $t => $up];
+                        let sum = $crate::_num_dom_upcasted_mul_add![add_err(x, a / x) $t => $up];
                         y = sum / 2;
                     }
                     // do we have to round up?
-                    let mul = upcasted_op![mul_err(x, x) $t => $up];
+                    let mul = $crate::_num_dom_upcasted_mul_add![mul_err(x, x) $t => $up];
                     is![a - mul >= (x + 1) * (x + 1) - a, Ok(Int(x as $t + 1)), Ok(Int(x as $t))]
                 }
             }
@@ -415,7 +415,7 @@ macro_rules! impl_root {
 
             /// Returns the ceiled integer `nth` root.
             ///
-            #[doc = _INT_FORMULA_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _DOC_INT_FORMULA_ROOT_CEIL_UNSIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
@@ -432,9 +432,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulation
             /// ## Piece-wise
-            #[doc = _INT_PIECEWISE_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _DOC_INT_PIECEWISE_ROOT_CEIL_UNSIGNED!()]
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_ROOT_CEIL_UNSIGNED!()]
+            #[doc = _DOC_INT_ALGORITHM_ROOT_CEIL_UNSIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 match self.root_floor(nth) {
                     Ok(floor_root) => {
@@ -450,7 +450,7 @@ macro_rules! impl_root {
 
             /// Returns the floored integer `nth` root.
             ///
-            #[doc = _INT_FORMULA_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _DOC_INT_FORMULA_ROOT_FLOOR_UNSIGNED!()]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
@@ -467,9 +467,9 @@ macro_rules! impl_root {
             /// ```
             /// # Formulations
             /// ## Piece-wise
-            #[doc = _INT_PIECEWISE_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _DOC_INT_PIECEWISE_ROOT_FLOOR_UNSIGNED!()]
             /// ## Algorithm
-            #[doc = _INT_ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
+            #[doc = _DOC_INT_ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()

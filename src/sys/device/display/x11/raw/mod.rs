@@ -32,8 +32,8 @@ pub(crate) use {
     icccm::*,
 };
 
-mod helpers; // change_property_*
-pub(crate) use helpers::*;
+mod _helper; // change_property_*
+pub(crate) use _helper::*;
 
 mod lut; // LUT_SCANCODE_TO_KEY
 pub(crate) use lut::*;

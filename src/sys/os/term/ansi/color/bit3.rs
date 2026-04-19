@@ -4,7 +4,7 @@
 //
 
 use super::C;
-use crate::{_ansi_consts, Ansi, Digits};
+use crate::{__ansi_consts, Ansi, Digits};
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 3-bit color codes, 8 colors.
@@ -65,7 +65,7 @@ impl From<u8> for AnsiColor3 {
 /// # 3-bit Color escape codes
 #[rustfmt::skip]
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to set the the foreground `color`.
         pub const fn COLOR_FG(color: AnsiColor3) -> [u8; 5] {
             [b'\x1b', b'[', C::FG, color.to_ascii(), b'm']
@@ -115,7 +115,7 @@ impl Ansi {
 // # 3-bit Color escape codes constants
 #[rustfmt::skip]
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to set the foreground color to black.
         pub const BLACK: [u8; 5] = "\x1b[30m", *b"\x1b[30m";
         /// Code to set the foreground color to red.

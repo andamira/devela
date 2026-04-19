@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb::impl::helpers
+// devela::media::visual::color::rgb::impl::_helper
 
 /// Temporary helper for color channel normalization.
 pub(crate) struct Norm;

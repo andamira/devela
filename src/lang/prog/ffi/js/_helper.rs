@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::helpers
+// devela::lang::prog::ffi::js::_helper
 //
 //! Defines internal JS helpers: [`_js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
 //

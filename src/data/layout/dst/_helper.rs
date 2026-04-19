@@ -1,4 +1,7 @@
-// helper functions
+// devela::data::layout::dst::_helper
+//
+//! Helper functions.
+//
 
 use crate::{MaybeUninit, MemPod};
 use ::core::{ptr, slice};

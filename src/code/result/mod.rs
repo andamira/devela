@@ -16,9 +16,6 @@
 
 mod _reexport_core;
 
-#[cfg(all(test, feature = "std"))]
-mod unwrap_tests_std;
-
 // mod enumatch; // enumatch! WIP
 mod hook_morph; // Hook, Morph, hook!, morph!
 mod mismatch; // Mismatch

@@ -73,7 +73,7 @@ let v: DstValue<dyn Any, DstArray<u128, 2>> =
 //
 #![allow(clippy::result_unit_err)] // IMPROVE
 
-mod helpers;
+mod _helper;
 
 #[cfg(test)]
 mod tests;
@@ -88,7 +88,7 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::{buffer::*, queue::*, stack::*, value::*};
     }
     _crate_internals {
-        pub(super) use super::helpers::{
+        pub(super) use super::_helper::{
             check_fat_pointer, decompose_pointer, list_push_gen, make_fat_ptr,
             round_to_words, store_metadata,
         };

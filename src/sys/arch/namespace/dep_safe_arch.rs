@@ -1,12 +1,12 @@
 // devela::sys::arch::namespace::dep_safe_arch
 //
+//
 //! Implements [`Arch`] methods depending on `dep_safe_arch`.
 //
 // TOC
-// - macro helpers
-//   - arch_fn!
-//   - impl_arch!
-// - implementations
+// - macro __arch_fn!
+// - macro __impl_arch!
+// - implementations for Arch
 
 #![allow(clippy::too_many_arguments)]
 
@@ -15,7 +15,7 @@ use crate::{_dep::safe_arch::*, Arch};
 /* macro helpers */
 
 /// Helps to re-export standalone functions as namespaced methods of a struct.
-macro_rules! arch_fn {
+macro_rules! __arch_fn {
     () => {};
     (   // Function with return type
         $doc:literal,
@@ -49,7 +49,7 @@ macro_rules! arch_fn {
         $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
         ($($param:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?);+ $(;)?
     ) => {
-        $( arch_fn![
+        $( __arch_fn![
             $doc,
             $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) $(-> $ret)?
         ]; )+
@@ -57,7 +57,7 @@ macro_rules! arch_fn {
 }
 
 /// Generates an impl Arch block with optional conditional configurations and documentation.
-macro_rules! impl_arch {
+macro_rules! __impl_arch {
     (
         $( #[doc = $doc:literal] )*
         $( features = $( $feature:literal ),+ $(,)? )? // all
@@ -85,10 +85,10 @@ macro_rules! impl_arch {
 
 /* implementations */
 
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions not requiring any target feature.\n\n---"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64";
-    arch_fn! {
+    __arch_fn! {
         "Swap the bytes of the given 32-bit value.",
         byte_swap_i32(i: i32) -> i32;
         "Swap the bytes of the given 64-bit value.",
@@ -99,22 +99,22 @@ impl_arch! {
         read_timestamp_counter_p(aux: &mut u32) -> u64;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `adx` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/Intel_ADX>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "adx";
-    arch_fn! {
+    __arch_fn! {
         "Add two `u32` with a carry value.",
         add_carry_u32(c_in: u8, a: u32, b: u32, out: &mut u32) -> u8;
         "Add two `u64` with a carry value.",
         add_carry_u64(c_in: u8, a: u64, b: u64, out: &mut u64) -> u8;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `aes` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/AES_instruction_set>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "aes";
-    arch_fn! {
+    __arch_fn! {
         "Perform the last round of an AES decryption flow on `a` using the `round_key`.",
         aes_decrypt_last_m128i(a: m128i, round_key: m128i) -> m128i;
         "Perform one round of an AES decryption flow on `a` using the `round_key`.",
@@ -129,11 +129,11 @@ impl_arch! {
         aes_key_gen_assist_m128i<const IMM: i32>(a: m128i) -> m128i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `avx` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "avx";
-    arch_fn! {
+    __arch_fn! {
         "Add adjacent `f32` lanes.",
         add_horizontal_m256(a: m256, b: m256) -> m256;
         "Add adjacent `f64` lanes.",
@@ -503,11 +503,11 @@ impl_arch! {
         zeroed_m256i() -> m256i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `avx2` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "avx2";
-    arch_fn! {
+    __arch_fn! {
         "Absolute value of `i16` lanes.",
         abs_i16_m256i(a: m256i) -> m256i;
         "Absolute value of `i32` lanes.",
@@ -827,11 +827,11 @@ impl_arch! {
         unpack_low_i8_m256i(a: m256i, b: m256i) -> m256i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `bmi1` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI1_(Bit_Manipulation_Instruction_Set_1)>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "bmi1";
-    arch_fn! {
+    __arch_fn! {
         "Extract a span of bits from the `u32`, control value style.",
         bit_extract2_u32(a: u32, control: u32) -> u32;
         "Extract a span of bits from the `u64`, control value style.",
@@ -862,11 +862,11 @@ impl_arch! {
         trailing_zero_count_u64(a: u64) -> u64;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `bmi2` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI2_(Bit_Manipulation_Instruction_Set_2)>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "bmi2";
-    arch_fn! {
+    __arch_fn! {
         "Zero out all high bits in a `u32` starting at the index given.",
         bit_zero_high_index_u32(a: u32, index: u32) -> u32;
         "Zero out all high bits in a `u64` starting at the index given.",
@@ -885,11 +885,11 @@ impl_arch! {
         population_extract_u64(a: u64, index: u64) -> u64;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `fma` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/FMA_instruction_set>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "fma";
-    arch_fn! {
+    __arch_fn! {
         "Lanewise fused `(a * b) + c`",
         fused_mul_add_m128(a: m128, b: m128, c: m128) -> m128;
         "Low lane fused `(a * b) + c`, other lanes unchanged",
@@ -956,42 +956,42 @@ impl_arch! {
         fused_mul_subadd_m256d(a: m256d, b: m256d, c: m256d) -> m256d;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `lzcnt` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "lzcnt";
-    arch_fn! {
+    __arch_fn! {
         "Count the leading zeroes in a `u32`.",
         leading_zero_count_u32(a: u32) -> u32;
         "Count the leading zeroes in a `u64`.",
         leading_zero_count_u64(a: u64) -> u64;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `pclmulqdq` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/CLMUL_instruction_set>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "pclmulqdq";
-    arch_fn! {
+    __arch_fn! {
         "Performs a \"carryless\" multiplication of two `i64` values.",
         mul_i64_carryless_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `popcnt` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "popcnt";
-    arch_fn! {
+    __arch_fn! {
         "Count the number of bits set within an `i32`",
         population_count_i32(a: i32) -> i32;
         "Count the number of bits set within an `i64`",
         population_count_i64(a: i64) -> i32;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `rdrand` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/RDRAND>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "rdrand";
-    arch_fn! {
+    __arch_fn! {
         "Try to obtain a random `u16` from the hardware RNG.",
         rdrand_u16(out: &mut u16) -> i32;
         "Try to obtain a random `u32` from the hardware RNG.",
@@ -1000,11 +1000,11 @@ impl_arch! {
         rdrand_u64(out: &mut u64) -> i32;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `rdseed` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/RDRAND>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "rdseed";
-    arch_fn! {
+    __arch_fn! {
         "Try to obtain a random `u16` from the hardware RNG.",
         rdseed_u16(out: &mut u16) -> i32;
         "Try to obtain a random `u32` from the hardware RNG.",
@@ -1013,11 +1013,11 @@ impl_arch! {
         rdseed_u64(out: &mut u64) -> i32;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `sse` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse";
-    arch_fn! {
+    __arch_fn! {
         "Lanewise `a + b`.",
         add_m128(a: m128, b: m128) -> m128;
         "Low lane `a + b`, other lanes unchanged.",
@@ -1176,7 +1176,7 @@ impl_arch! {
         zeroed_m128() -> m128;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Generic functions requiring the `sse` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse";
@@ -1212,11 +1212,11 @@ impl_arch! {
         prefetch_t2(addr);
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `sse2` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/SSE2>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse2";
-    arch_fn! {
+    __arch_fn! {
         "Lanewise `a + b` with lanes as `i16`.",
         add_i16_m128i(a: m128i, b: m128i) -> m128i;
         "Lanewise `a + b` with lanes as `i32`.",
@@ -1609,11 +1609,11 @@ impl_arch! {
         zeroed_m128i() -> m128i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `sse3` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/SSE3>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse3";
-    arch_fn! {
+    __arch_fn! {
         "Add each lane horizontally, pack the outputs as `a` then `b`.",
         add_horizontal_m128(a: m128, b: m128) -> m128;
         "Add each lane horizontally, pack the outputs as `a` then `b`.",
@@ -1634,11 +1634,11 @@ impl_arch! {
         sub_horizontal_m128d(a: m128d, b: m128d) -> m128d;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `sse4.1` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/SSE4#SSE4.1>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse4.1";
-    arch_fn! {
+    __arch_fn! {
         "Blends the `i16` lanes according to the immediate mask.",
         blend_imm_i16_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
         "Blends the lanes according to the immediate mask.",
@@ -1761,11 +1761,11 @@ impl_arch! {
         testz_m128i(a: m128i, b: m128i) -> i32;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `sse4.2` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/SSE4#SSE4.2>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse4.2";
-    arch_fn! {
+    __arch_fn! {
         "Lanewise `a &gt; b` with lanes as `i64`.",
         cmp_gt_mask_i64_m128i(a: m128i, b: m128i) -> m128i;
         "Accumulates the `u16` into a running CRC32 value.",
@@ -1788,11 +1788,11 @@ impl_arch! {
         search_implicit_str_for_mask<const IMM: i32>(needle: m128i, haystack: m128i) -> m128i;
     }
 }
-impl_arch! {
+__impl_arch! {
     #[doc = "# Functions requiring the `ssse3` target feature.\n\n---"]
     #[doc = "See: <https://en.wikipedia.org/wiki/SSSE3>"]
     features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "ssse3";
-    arch_fn! {
+    __arch_fn! {
         "Lanewise absolute value with lanes as `i16`.",
         abs_i16_m128i(a: m128i) -> m128i;
         "Lanewise absolute value with lanes as `i32`.",

@@ -1,6 +1,6 @@
-// devela::sys::os::term::ansi::namespace
+// devela::sys::os::term::ansi::_helper
 //
-//! Implements the internal [`_ansi_consts!`] macro.
+//! Implements the internal [`__ansi_consts!`] macro.
 //
 // Note: to convert the syntax of old constants for this macro using Vim: s/\*b\(.*\);/\1, *b\1;
 
@@ -9,7 +9,7 @@
 /// Rules:
 /// - Use uppercase names.
 /// - Invoke from inside an `impl Ansi` block.
-macro_rules! _ansi_consts {
+macro_rules! __ansi_consts {
     (
     // const fn definition returning a byte slice
     $(
@@ -87,4 +87,4 @@ macro_rules! _ansi_consts {
         )*
     }};
 }
-pub(crate) use _ansi_consts;
+pub(crate) use __ansi_consts;

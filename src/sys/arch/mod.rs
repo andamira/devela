@@ -24,14 +24,14 @@ mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-mod helpers; // ARCH!
+mod _helper; // _ARCH!
+
 mod namespace; // Arch
 mod wasm; // Wasm
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
-            helpers::*,
             namespace::*,
             wasm::*,
         };
@@ -41,5 +41,8 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::_reexport_core::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
+    }
+    _crate_internals {
+        pub use super::_helper::*;
     }
 }

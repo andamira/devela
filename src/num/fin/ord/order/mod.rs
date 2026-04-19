@@ -3,7 +3,7 @@
 //! Algorithms and structures that depend on relative position rather than magnitude alone.
 //
 
-// mod _helpers; // _impl_order
+// mod _helper; // _impl_order
 
 mod namespace; // Order
 // impls:
@@ -18,6 +18,6 @@ crate::structural_mods! { // _mods
         pub use super::namespace::*;
     }
     _crate_internals {
-        // pub(crate) use super::_helpers::*;
+        // pub(crate) use super::_helper::*;
     }
 }

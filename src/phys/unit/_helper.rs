@@ -1,9 +1,9 @@
-// devela::phys::unit::_helpers
+// devela::phys::unit::_helper
 
 // Implements TryFrom for `$to_prim` from the `$unit` type `$from_prim` value
-macro_rules! impl_try_from {
+macro_rules! __phys_unit_impl_try_from {
     ($unit:ty, $from_prim:ty => $($to_prim:ty),+) => {
-        $( impl_try_from![@$unit, $from_prim => $to_prim]; )+
+        $( __phys_unit_impl_try_from![@$unit, $from_prim => $to_prim]; )+
     };
 
     (@$unit:ty, $from_prim:ty => $to_prim:ty) => {
@@ -15,4 +15,4 @@ macro_rules! impl_try_from {
         }
     };
 }
-pub(super) use impl_try_from;
+pub(super) use __phys_unit_impl_try_from;

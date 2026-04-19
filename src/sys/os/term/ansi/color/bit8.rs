@@ -4,7 +4,7 @@
 //
 
 use super::C;
-use crate::{_ansi_consts, Ansi, AnsiColor3, Cmp, Digits};
+use crate::{__ansi_consts, Ansi, AnsiColor3, Cmp, Digits};
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 8-bit color codes, 256 colors.
@@ -147,7 +147,7 @@ impl From<u8> for AnsiColor8 {
 /// # 8-bit Color escape codes
 #[rustfmt::skip]
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to set the foreground color to `fg` and the background to `bg`.
         pub const fn COLORS8(fg: AnsiColor8, bg: AnsiColor8) -> [u8; 19] {
             const X: [u8; 4] = C::C8;
@@ -180,7 +180,7 @@ impl Ansi {
 /// # 8-bit Grey escape codes
 #[rustfmt::skip]
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Code to set the foreground and background to 24-point grayscale.
         ///
         /// A value of 0 is almost black, and 24 (or more) is almost white.
@@ -202,7 +202,7 @@ impl Ansi {
 impl Ansi {
     // /// ANSI gray foreground 0/23 8-bit color (4% white, 96% black).
     // pub const bGRAY0: [u8; 11] = @ Ansi::bCOLOR8_FG(AnsiColor8::gray_wrap(0));
-    _ansi_consts! {
+    __ansi_consts! {
         /// ANSI gray foreground 0/23 8-bit color (4% white, 96% black).
         pub const GRAY0: [u8; 11] = Ansi::COLOR8_FG(AnsiColor8::gray_wrap(0));
         /// ANSI gray foreground 1/23 8-bit color (8% white, 92% black).
@@ -306,7 +306,7 @@ impl Ansi {
 /// # 8-bit palette colors
 #[rustfmt::skip]
 impl Ansi {
-    _ansi_consts! {
+    __ansi_consts! {
         /// Sets the given palette color. (OSC 4)
         // \x1b]4;{index};rgb:{rr:02x}/{gg:02x}/{bb:02x}\x07
         pub const fn SET_PALETTE(index: u8, color: [u8; 3]) -> [u8; 21] {
@@ -325,7 +325,7 @@ impl Ansi {
             [b'\x1b', b'[', b'1', b'0', b'4', b';', i[0], i[1], i[2], b'\x07']
         }
     }
-    _ansi_consts! {
+    __ansi_consts! {
         /// Resets all the palette colors to the default ones. (OSC 104)
         pub const RESET_PALETTE_ALL: [u8; 6] = "\x1b]104\x07", *b"\x1b]104\x07";
     }

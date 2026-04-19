@@ -1,4 +1,4 @@
-// devela::num::grain::wide::_dep_wide
+// devela::num::grain::wide::_helper
 //
 //! Defines [__lane_dispatch!], [`_dep_wide_compile!`], [`_dep_wide_use!`].
 //

@@ -8,7 +8,7 @@
 // - versions differ only in having support for printing, and in the Ansi print method called.
 
 crate::CONST! {
-    DOC_ANSI = r#"
+    _DOC_ANSI = r#"
 - the `b:` arm accepts only static arguments to commands and returns [`&[u8]`](slice).
 - the `s:` arm accepts only static arguments to commands and returns [`&str`].
 - the `p:` arm accepts only static arguments to commands and prints to stdout. `*`
@@ -60,7 +60,7 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("sys/os/term")]
-#[doc = DOC_ANSI!()]
+#[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(not(any(
@@ -103,7 +103,7 @@ macro_rules! ansi {
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("sys/os/term")]
-#[doc = DOC_ANSI!()]
+#[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "std")]
@@ -156,7 +156,7 @@ macro_rules! ansi {
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
 #[doc = crate::_doc_location!("sys/os/term")]
-#[doc = DOC_ANSI!()]
+#[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]

@@ -9,7 +9,7 @@
 mod _reexport_core;
 
 mod _docs;
-mod _helpers; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
+mod _helper; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
 
 #[cfg(test)]
 mod tests;
@@ -28,7 +28,7 @@ crate::structural_mods! { // _reexports, _hidden
     _hidden {
         pub use super::{
             _docs::*,
-            _helpers::*,
+            _helper::*,
         };
     }
 }

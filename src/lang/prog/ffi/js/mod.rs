@@ -42,27 +42,26 @@
 //!
 //! While Web Workers enable concurrency, they communicate via message passing
 //! and do not share memory except through `SharedArrayBuffer`.
+//
+
+mod _helper; // _js_doc!, _js_extern!, js_method_str_alloc!
 
 mod console; // JsConsole
+// mod error; // JsError WIP
 mod namespace; // Js
+// mod object; // JsObject WIP
 mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextMetrics, JsTextMetricsFull
 mod time; // JsInstant, JsTimeout
 mod value; // JsInstant, JsTimeout
 
-mod helpers; // _js_doc!, _js_extern!, js_method_str_alloc!
-
-// WIPZONE
-// mod error; // JsError
-// mod object; // JsObject
-
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             console::*,
-            // error::*, // WIP
+            // error::*,
             namespace::*,
-            // object::*, // WIP
+            // object::*,
             primitives::*,
             text::*,
             time::*,
@@ -70,6 +69,6 @@ crate::structural_mods! { // _mods, _crate_internals
         };
     }
     _crate_internals {
-        pub(crate) use super::helpers::*;
+        pub(crate) use super::_helper::*;
     }
 }

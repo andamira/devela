@@ -7,7 +7,7 @@
 
 #![expect(non_snake_case, reason = "uppercase const fns as related constants")]
 
-mod helper; // _ANSI_CONSTS
+mod _helper; // __ansi_consts!
 
 mod strip; // impl: Ansi:strip_codes
 
@@ -26,6 +26,6 @@ crate::structural_mods! { // _mods
         };
     }
     _crate_internals {
-        pub(crate) use super::helper::*;
+        pub(crate) use super::_helper::*;
     }
 }

@@ -52,6 +52,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::_DOC_SYS_MODULES;
         pub(crate) use super::{
+            arch::_crate_internals::*,
             device::_crate_internals::*,
             os::_crate_internals::*,
         };

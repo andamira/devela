@@ -13,7 +13,7 @@
 //   - 8-bit Palette escape codes
 //   - RGB Color escape codes
 
-use crate::{_ansi_consts, Ansi, Digits};
+use crate::{__ansi_consts, Ansi, Digits};
 
 mod bit3;
 mod bit8;
@@ -158,7 +158,7 @@ mod C {
 ///
 /// Resets foreground or background color to the terminal default.
 #[rustfmt::skip]
-impl Ansi { _ansi_consts! {
+impl Ansi { __ansi_consts! {
     /// Code to reset the background color to the terminal default.
     pub const DEFAULT_BG: [u8; 5] = "\x1b[49m", *b"\x1b[49m";
     /// Code to reset the foreground color to the terminal default.
@@ -167,7 +167,7 @@ impl Ansi { _ansi_consts! {
 
 /// # RGB Color escape codes
 #[rustfmt::skip]
-impl Ansi { _ansi_consts! {
+impl Ansi { __ansi_consts! {
     /// Code to set the foreground color to `fg: [r, g, b]` values,
     /// and the background to `bg: [r, g, b]`.
     // \x1b[38;2;R;G;B;48;2;R;G;Bm

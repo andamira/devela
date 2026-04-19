@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _internals; // impl_ops!, upcasted_op! TODO:RENAME
+mod _helper; // _num_dom_impl_arith!, _num_dom_upcast_arith!, _num_dom_upcasted_mul_add!
 
 // mod complex;
 mod frac;
@@ -42,12 +42,14 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     }
     _crate_internals {
         pub use super::{
-            _internals::*,
             real::_crate_internals::*,
             int::_crate_internals::*,
         };
     }
     _hidden {
-        pub use super::int::_hidden::*;
+        pub use super::{
+            _helper::*,
+            int::_hidden::*,
+        };
     }
 }

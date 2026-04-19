@@ -3,7 +3,7 @@
 //! Implements processor instructions for both x86 and x86_64.
 //
 
-use crate::{ARCH, Arch};
+use crate::{_ARCH, Arch};
 
 #[cfg(target_arch = "x86")]
 use ::core::arch::x86::{__rdtscp, _rdtsc};
@@ -14,7 +14,7 @@ use ::core::arch::x86_64::{__rdtscp, _rdtsc};
 impl Arch {
     /// Reads the current value of the processor's time-stamp counter.
     ///
-    #[doc = concat!("See `::core::arch::", ARCH!(), "::`[`_rdtsc()`].")]
+    #[doc = concat!("See `::core::arch::", _ARCH!(), "::`[`_rdtsc()`].")]
     #[must_use]
     #[inline(always)]
     pub fn rdtsc() -> u64 {
@@ -26,7 +26,7 @@ impl Arch {
     /// The processor ID:
     /// - is a CPU core identifier (logical/core number), not a process ID.
     /// - is tipically a small u32 (e.g., 0 to N-1 for N cores).
-    #[doc = concat!("See `::core::arch::", ARCH!(), "::`[`__rdtscp()`].")]
+    #[doc = concat!("See `::core::arch::", _ARCH!(), "::`[`__rdtscp()`].")]
     #[must_use]
     #[inline(always)]
     pub fn rdtscp() -> (u64, u32) {

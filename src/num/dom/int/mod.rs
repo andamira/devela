@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-pub(crate) mod _docs; // _INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
+pub(crate) mod _docs; // _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 
 mod alias; // [i|u]size_[down|up]
 mod divisor; // divisor!, DivisorExample, (DivisorInner)

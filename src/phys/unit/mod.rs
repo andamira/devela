@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _helpers; // impl_try_from!
+mod _helper; // __phys_unit_impl_try_from!
 
 mod bi; // UnitBi
 mod si; // UnitSi

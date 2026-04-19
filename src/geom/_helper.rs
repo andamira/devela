@@ -1,4 +1,4 @@
-// devela::geom::_helpers
+// devela::geom::_helper
 //
 //! Defines helpers for implementing common methods on geometric types.
 //

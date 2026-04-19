@@ -1,4 +1,4 @@
-// devela::code::result::unwrap_tests_std
+// devela::code::result::opt_res::tests_unwrap_std
 
 use crate::{OptRes, Panic, serr, sok, unwrap};
 

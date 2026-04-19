@@ -3,7 +3,7 @@
 //! SI unit prefixes.
 //
 
-use super::_helpers::impl_try_from;
+use super::_helper::__phys_unit_impl_try_from;
 #[allow(unused_imports)]
 use crate::FloatExt;
 #[allow(unused_imports)]
@@ -751,8 +751,8 @@ impl From<UnitSi> for i128 {
         from.factor_i128()
     }
 }
-impl_try_from![UnitSi, i64 => i32, i16, u64, u32, u16];
-impl_try_from![UnitSi, i128 => u128];
+__phys_unit_impl_try_from![UnitSi, i64 => i32, i16, u64, u32, u16];
+__phys_unit_impl_try_from![UnitSi, i128 => u128];
 
 #[cfg(test)]
 mod tests {

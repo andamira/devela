@@ -1,11 +1,11 @@
-// devela::num::dom::_internals
+// devela::num::dom::_helper
 //
-//! Workspace-internal numeric helpers: `impl_ops`, `upcasted_op`.
+//! Defines: `_num_dom_impl_arith`, `_num_dom_upcasted_mul_add`.
 //
 
 #![allow(unused, non_camel_case_types)]
 
-/// implement the arithmetic operators for a unit struct wrapper, based on the inner type
+/// Implement the arithmetic operators for a unit struct wrapper, based on the inner type.
 ///
 /// # Arguments:
 /// $W:   the outer wrapper
@@ -13,31 +13,31 @@
 /// $cap: the (optional) capability feature that enables the given implementation. E.g "_int_i8".
 ///
 /// # Invoked from:
-/// - int/wrapper/mod.rs
-/// - float/wrapper/mod.rs
+/// - int/wrapper/namespace.rs
+/// - real/float/wrapper/definition.rs
 #[doc(hidden)]
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "paste! must be in the root of invoking crate")]
-macro_rules! impl_ops {
+macro_rules! _num_dom_impl_arith· {
     ($W:ident: $($T:ty $( : $cap:literal)? ),+) => { $(
-        $crate::impl_ops![@common $W($T $(:$cap)? )];
-        $crate::impl_ops![@neg $W($T $(:$cap)? )];
+        $crate::_num_dom_impl_arith![@common $W($T $(:$cap)? )];
+        $crate::_num_dom_impl_arith![@neg $W($T $(:$cap)? )];
     )+ };
     ($W:ident: (no_neg) $($T:ty $(: $cap:literal)? ),+) => { $(
-        $crate::impl_ops![@common $W($T $(:$cap)? )];
+        $crate::_num_dom_impl_arith![@common $W($T $(:$cap)? )];
     )+ };
 
     (@common $W:ident($T:ty $(: $cap:literal)? )) => {
-        $crate::impl_ops![@op $W($T $(:$cap)? ), Add, add];
-        $crate::impl_ops![@op $W($T $(:$cap)? ), Sub, sub];
-        $crate::impl_ops![@op $W($T $(:$cap)? ), Mul, mul];
-        $crate::impl_ops![@op $W($T $(:$cap)? ), Div, div];
-        $crate::impl_ops![@op $W($T $(:$cap)? ), Rem, rem];
-        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), AddAssign, add_assign];
-        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), SubAssign, sub_assign];
-        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), MulAssign, mul_assign];
-        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), DivAssign, div_assign];
-        $crate::impl_ops![@op_assign $W($T $(:$cap)? ), RemAssign, rem_assign];
+        $crate::_num_dom_impl_arith![@op $W($T $(:$cap)? ), Add, add];
+        $crate::_num_dom_impl_arith![@op $W($T $(:$cap)? ), Sub, sub];
+        $crate::_num_dom_impl_arith![@op $W($T $(:$cap)? ), Mul, mul];
+        $crate::_num_dom_impl_arith![@op $W($T $(:$cap)? ), Div, div];
+        $crate::_num_dom_impl_arith![@op $W($T $(:$cap)? ), Rem, rem];
+        $crate::_num_dom_impl_arith![@op_assign $W($T $(:$cap)? ), AddAssign, add_assign];
+        $crate::_num_dom_impl_arith![@op_assign $W($T $(:$cap)? ), SubAssign, sub_assign];
+        $crate::_num_dom_impl_arith![@op_assign $W($T $(:$cap)? ), MulAssign, mul_assign];
+        $crate::_num_dom_impl_arith![@op_assign $W($T $(:$cap)? ), DivAssign, div_assign];
+        $crate::_num_dom_impl_arith![@op_assign $W($T $(:$cap)? ), RemAssign, rem_assign];
     };
     (@neg $W:ident($T:ty $(: $cap:literal)? )) => {
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
@@ -56,36 +56,36 @@ macro_rules! impl_ops {
         /* $W<$T> op $W<$T> -> $W<$T> */
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl core::ops::$trait for $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s> core::ops::$trait<$W<$T>> for &'s $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s, 'o> core::ops::$trait<&'o $W<$T>> for &'s $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, &'o $W<$T>, 0];
         }
         /* $W<$T> op $T -> $W<$T> */
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl core::ops::$trait<$T> for $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, $T];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s> core::ops::$trait<$T> for &'s $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, $T];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, &'o $T];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, &'o $T];
         }
         $( #[cfg(feature = $cap )] #[cfg_attr(nightly_doc, doc(cfg(feature = $cap)))] )?
         impl<'s, 'o> core::ops::$trait<&'o $T> for &'s $W<$T> {
-            $crate::impl_ops![@op_body $W($T), $fn, &'o $T];
+            $crate::_num_dom_impl_arith![@op_body $W($T), $fn, &'o $T];
         }
     };
     (@op_body $W:ident($T:ty), $fn:ident, $other:ty $(, $other_field:tt)?) => {
@@ -115,9 +115,74 @@ macro_rules! impl_ops {
     }};
 }
 #[doc(hidden)]
-pub use impl_ops;
+pub use _num_dom_impl_arith· as _num_dom_impl_arith;
 
-/// helper macro to only do checked operations when we can't upcast (i.e. for 128-bits).
+/// Helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
+///
+/// # Arguments
+/// $op:  an overloadable operator (+, -, *, /)
+/// $fn:  the corresponding function (add, sub, mul, div)
+/// $lhs: the left hand side operator
+/// $rhs: the right hand side operator
+/// $is_up: whether we've upcasted (Y) or not (N), known at compile-time
+///
+/// # Invoked from:
+/// - /src/num/dom/int/wrapper/impl_modulo.rs
+///
+/// # Features
+/// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
+#[doc(hidden)]
+#[macro_export]
+#[rustfmt::skip]
+macro_rules! _num_dom_upcast_arith· {
+    // this is used for checked versions
+    (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
+        if cif!(same($is_up, Y)) { // can't overflow if upcasted
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
+        } else { // otherwise do the checked operation:
+            if let Some(result) = $lhs.[<checked_ $fn>]($rhs) {
+                result } else { return Err(Overflow(None));
+            }
+        }
+    }};
+    // this is used for checked versions that don't need to calculate cycles
+    (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
+        if cif!(same($is_up, Y)) { // can't overflow if upcasted
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
+        } else { // otherwise reduce each operand before the checked operation:
+            if let Some(result) = ($lhs % $modulus).[<checked_ $fn>]($rhs % $modulus) {
+                result } else { return Err(Overflow(None));
+            }
+        }
+    }};
+    // this is used for unchecked versions that don't need to calculate cycles
+    (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
+        if cif!(same($is_up, Y)) { // can't overflow if upcasted
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
+        } else { // otherwise reduce each operand before the unchecked operation:
+            ($lhs % $modulus) $op ($rhs % $modulus)
+        }
+    }};
+}
+#[doc(hidden)]
+pub use _num_dom_upcast_arith· as _num_dom_upcast_arith;
+
+/// Helper macro to only do checked operations when we can't upcast (i.e. for 128-bits).
 ///
 /// Performs checked operations only if the upcasted type is the same
 /// as the non-upcasted one. It is compatible with const functions.
@@ -134,55 +199,42 @@ pub use impl_ops;
 ///
 /// # Examples
 /// ```ignore
-/// let sum = upcasted_op![add_err(v, m) i32 => i64];
-/// let sum = upcasted_op![reduced_add_err(v, m) % 40; i32 => i64];
+/// let sum = _num_dom_upcasted_mul_add![add_err(v, m) i32 => i64];
+/// let sum = _num_dom_upcasted_mul_add![reduced_add_err(v, m) % 40; i32 => i64];
 /// ```
 /// # Features
 /// It makes use of `unsafe_hint` to optimize arithmetic ops when able to upcast.
 //
-// TODO IMPROVE: try to unify with impl_modulo::upcastop
+// TODO IMPROVE: try to unify with _num_dom_upcast_arith!
 #[doc(hidden)]
 #[macro_export]
-macro_rules! upcasted_op {
+#[rustfmt::skip]
+macro_rules! _num_dom_upcasted_mul_add· {
     (
     /* basic arithmetic ops */
     // if we've not upcasted, do checked operation and return err on overflow
     add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs + $rhs
-            }
+            { $lhs + $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_add($rhs)
-            }
+            unsafe { $lhs.unchecked_add($rhs) }
         } else {
-            if let Some(sum) = $lhs.checked_add($rhs) {
-                sum
-            } else {
-                return Err($crate::IntError::Overflow(None));
-            }
+            if let Some(sum) = $lhs.checked_add($rhs) { sum }
+            else { return Err($crate::IntError::Overflow(None)); }
         }
     };
     (mul_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs * $rhs
-            }
+            { $lhs * $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_mul($rhs)
-            }
+            unsafe { $lhs.unchecked_mul($rhs) }
         } else {
-            if let Some(product) = $lhs.checked_mul($rhs) {
-                product
-            } else {
-                return Err($crate::IntError::Overflow(None));
-            }
+            if let Some(product) = $lhs.checked_mul($rhs) { product }
+            else { return Err($crate::IntError::Overflow(None)); }
         }
     };
     (
@@ -193,21 +245,14 @@ macro_rules! upcasted_op {
     reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs + $rhs
-            }
+            { $lhs + $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_add($rhs)
-            }
+            unsafe { $lhs.unchecked_add($rhs) }
         } else {
             // reduce each sumand before checked operation
-            if let Some(sum) = ($lhs % $modulus).checked_add($rhs % $modulus) {
-                sum
-            } else {
-                return Err($crate::IntError::Overflow(None));
-            }
+            if let Some(sum) = ($lhs % $modulus).checked_add($rhs % $modulus) { sum }
+            else { return Err($crate::IntError::Overflow(None)); }
         }
     };
     (
@@ -215,14 +260,10 @@ macro_rules! upcasted_op {
     reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs + $rhs
-            }
+            { $lhs + $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_add($rhs)
-            }
+            unsafe { $lhs.unchecked_add($rhs) }
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)
@@ -231,34 +272,23 @@ macro_rules! upcasted_op {
     (reduced_mul_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs * $rhs
-            }
+            { $lhs * $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_mul($rhs)
-            }
+            unsafe { $lhs.unchecked_mul($rhs) }
         } else {
             // reduce each factor before checked operation
-            if let Some(product) = ($lhs % $modulus).checked_mul($rhs % $modulus) {
-                product
-            } else {
-                return Err($crate::IntError::Overflow(None));
-            }
+            if let Some(product) = ($lhs % $modulus).checked_mul($rhs % $modulus) { product }
+            else { return Err($crate::IntError::Overflow(None)); }
         }
     };
     (reduced_mul($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            {
-                $lhs * $rhs
-            }
+            { $lhs * $rhs }
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
             // SAFETY: can't overflow if upcasted
-            unsafe {
-                $lhs.unchecked_mul($rhs)
-            }
+            unsafe { $lhs.unchecked_mul($rhs) }
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)
@@ -266,4 +296,4 @@ macro_rules! upcasted_op {
     };
 }
 #[doc(hidden)]
-pub use upcasted_op;
+pub use _num_dom_upcasted_mul_add· as _num_dom_upcasted_mul_add;

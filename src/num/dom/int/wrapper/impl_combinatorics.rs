@@ -66,7 +66,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_FACTORIAL!()]
+            #[doc = _DOC_INT_FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -108,15 +108,15 @@ macro_rules! impl_combinatorics {
             /// # Formulation
             /// ## Algorithm
             /// The current implementation uses the recursive definition:
-            #[doc = _INT_ALGORITHM_SUBFACTORIAL!()]
+            #[doc = _DOC_INT_ALGORITHM_SUBFACTORIAL!()]
             ///
             /// ## Closed-Form Formulas
             /// Other equivalent formulas for \( !n \) include:
             ///
             /// 1. **Summation Formula**:
-            #[doc = _INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
+            #[doc = _DOC_INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
             /// 2. **Approximation Formula**:
-            #[doc = _INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
+            #[doc = _DOC_INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
             ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
@@ -169,7 +169,7 @@ macro_rules! impl_combinatorics {
             /// Combinations of `n` items taken `r` at a time, ordered.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_COMBINE!()]
+            #[doc = _DOC_INT_FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -210,7 +210,7 @@ macro_rules! impl_combinatorics {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_COMBINE_REP!()]
+            #[doc = _DOC_INT_FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -252,7 +252,7 @@ macro_rules! impl_combinatorics {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_PERMUTE!()]
+            #[doc = _DOC_INT_FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -286,7 +286,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_PERMUTE_REP!()]
+            #[doc = _DOC_INT_FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -333,7 +333,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_FACTORIAL!()]
+            #[doc = _DOC_INT_FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -371,15 +371,15 @@ macro_rules! impl_combinatorics {
             /// # Formulation
             /// ## Algorithm
             /// The current implementation uses the recursive definition:
-            #[doc = _INT_ALGORITHM_SUBFACTORIAL!()]
+            #[doc = _DOC_INT_ALGORITHM_SUBFACTORIAL!()]
             ///
             /// ## Closed-Form Formulas
             /// Other equivalent formulas for \( !n \) include:
             ///
             /// 1. **Summation Formula**:
-            #[doc = _INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
+            #[doc = _DOC_INT_FORMULA_SUBFACTORIAL_SUMMATION!()]
             /// 2. **Approximation Formula**:
-            #[doc = _INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
+            #[doc = _DOC_INT_FORMULA_SUBFACTORIAL_APPROXIMATION!()]
             ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
@@ -429,7 +429,7 @@ macro_rules! impl_combinatorics {
             /// Combinations of `n` items taken `r` at a time, unordered.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_COMBINE!()]
+            #[doc = _DOC_INT_FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -467,7 +467,7 @@ macro_rules! impl_combinatorics {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_COMBINE_REP!()]
+            #[doc = _DOC_INT_FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.
@@ -505,7 +505,7 @@ macro_rules! impl_combinatorics {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_PERMUTE!()]
+            #[doc = _DOC_INT_FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -537,7 +537,7 @@ macro_rules! impl_combinatorics {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            #[doc = _INT_FORMULA_PERMUTE_REP!()]
+            #[doc = _DOC_INT_FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.
