@@ -9,7 +9,7 @@ impl<T> Slice<T> {
     ///
     /// This is the fixed-step primitive for const-friendly traversal.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let bytes = b"abcdefg";
@@ -36,7 +36,7 @@ impl<T> Slice<T> {
     /// This offers direct, index-based access to fixed-width records.
     /// Bounds are checked; no iteration policy is imposed.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let b = b"abcdefgh";
@@ -54,7 +54,7 @@ impl<T> Slice<T> {
     /// Returns the `idx`-th complete chunk of size `N` as a mutable subslice,
     /// or `None` if the chunk is incomplete.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut b = *b"abcdef";

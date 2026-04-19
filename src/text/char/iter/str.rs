@@ -44,7 +44,7 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// Returns `None` once there are no more characters left.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -77,7 +77,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns `None` once there are no more characters left,
     /// or if the next character is not ASCII.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -106,7 +106,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns `None` once there are no more characters left,
     /// or if the next character can't fit in 1 byte.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -132,7 +132,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns `None` once there are no more characters left,
     /// or if the next character can't fit in 2 bytes.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -160,7 +160,7 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// Returns `None` once there are no more characters left.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -205,7 +205,7 @@ impl<'a> CharIter<'a, &str> {
     /// Continues searching through the input until an ASCII character is found
     /// or the end is reached. Never returns `None` until the entire input is exhausted.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -230,7 +230,7 @@ impl<'a> CharIter<'a, &str> {
     /// Continues searching through the input until a scalar value ≤ 255 is found
     /// or the end is reached. Never returns `None` until the entire input is exhausted.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";
@@ -255,7 +255,7 @@ impl<'a> CharIter<'a, &str> {
     /// Continues searching through the input until a scalar value ≤ 65535 is found
     /// or the end is reached. Never returns `None` until the entire input is exhausted.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::CharIter;
     /// let input = "CÐ€𐌅G";

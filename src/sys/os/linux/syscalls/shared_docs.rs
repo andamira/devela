@@ -16,7 +16,7 @@ Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
 [read]: https://www.man7.org/linux/man-pages/man2/read.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_FILENO};
 let mut buf: [u8; 1024] = [0; 1024];
@@ -41,7 +41,7 @@ succeeds, and returns the number of bytes written.
 
 [write]: https://www.man7.org/linux/man-pages/man2/write.2.html
 
-# Example
+# Examples
 ```
 # use devela::{Linux, LINUX_FILENO};
 let buf = "Hello\n".as_bytes();
@@ -61,7 +61,7 @@ Opens the file specified by `path` with given `flags` and `mode`.
 
 [open]: https://www.man7.org/linux/man-pages/man2/open.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_FILENO, LINUX_O_FLAGS};
 let path = b"/tmp/test\0".as_ptr().cast();
@@ -82,7 +82,7 @@ Closes the file descriptor `fd`.
 
 [close]: https://www.man7.org/linux/man-pages/man2/close.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::Linux;
 let fd = 3; // Example descriptor
@@ -104,7 +104,7 @@ Repositions file offset for `fd` based on `whence`:
 
 [lseek]: https://www.man7.org/linux/man-pages/man2/lseek.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_SEEK};
 let fd = 3; // Example descriptor
@@ -123,7 +123,7 @@ Duplicates file descriptor `oldfd` to lowest-numbered available fd.
 
 [dup]: https://www.man7.org/linux/man-pages/man2/dup.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_FILENO};
 let new_fd = unsafe { Linux::sys_dup(LINUX_FILENO::STDOUT) };
@@ -140,7 +140,7 @@ Duplicates `oldfd` to specific `newfd`, closing `newfd` first if open.
 
 [dup2]: https://www.man7.org/linux/man-pages/man2/dup2.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_FILENO};
 let new_fd = unsafe {
@@ -160,7 +160,7 @@ Manipulates file descriptor properties (duplication, flags, locks).
 
 [fcntl]: https://www.man7.org/linux/man-pages/man2/fcntl.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_F_CMD, LINUX_FILENO};
 let fd = 3; // Example descriptor
@@ -181,7 +181,7 @@ Gets file status for `path` into `statbuf` (follows symlinks).
 
 [stat]: https://www.man7.org/linux/man-pages/man2/stat.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LinuxStat};
 let path = b"/etc/passwd\0".as_ptr().cast();
@@ -201,7 +201,7 @@ Gets file status for open descriptor `fd` into `statbuf`.
 
 [fstat]: https://www.man7.org/linux/man-pages/man2/fstat.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LinuxStat};
 let mut stat = LinuxStat::default();
@@ -221,7 +221,7 @@ Reads directory entries from `fd` into `dirp` buffer of size `count`.
 
 [getdents]: https://www.man7.org/linux/man-pages/man2/getdents.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::Linux;
 let mut buf: [u8; 2048] = [0; 2048];
@@ -261,7 +261,7 @@ Creates unidirectional pipe channel. Writes to `pipefd[1]`, reads from `pipefd[0
 
 [pipe]: https://www.man7.org/linux/man-pages/man2/pipe.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::Linux;
 let mut fds = [0; 2];
@@ -280,7 +280,7 @@ Creates pipe with flags (e.g. `LINUX_O_FLAGS::NONBLOCK`).
 
 [pipe2]: https://www.man7.org/linux/man-pages/man2/pipe2.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::{Linux, LINUX_O_FLAGS};
 let mut fds = [0; 2];
@@ -299,7 +299,7 @@ Terminate the process with an exit status.
 
 [exit]: https://www.man7.org/linux/man-pages/man2/exit.2.html
 
-# Example
+# Examples
 ```
 # use devela::Linux;
 # #[cfg(target_os = "linux")]
@@ -316,7 +316,7 @@ Get process identification.
 
 [getpid]: https://www.man7.org/linux/man-pages/man2/getpid.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::Linux;
 # #[cfg(target_os = "linux")]
@@ -333,7 +333,7 @@ Obtain a series of random bytes.
 
 [getrandom]: https://www.man7.org/linux/man-pages/man2/getrandom.2.html
 
-# Example
+# Examples
 ```no_run
 # use devela::Linux;
 let mut r = 0u8;
@@ -387,7 +387,7 @@ Returns the syscall return value (0 for success, -1 for error with errno set).
 
 [clock_gettime]: https://www.man7.org/linux/man-pages/man2/clock_gettime.2.html
 
-# Example
+# Examples
 ```
 # use devela::{Linux, LinuxTimespec, LinuxClock};
 let mut tp = LinuxTimespec::default();
@@ -411,7 +411,7 @@ Returns the syscall return value.
 
 [nanosleep]: https://www.man7.org/linux/man-pages/man2/nanosleep.2.html
 
-# Example
+# Examples
 ```
 # use devela::{Duration, Linux, LinuxTimespec};
 let mut req = LinuxTimespec::try_from(Duration::from_millis(99)).unwrap();

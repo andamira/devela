@@ -117,7 +117,7 @@ impl Char<&[u8]> {
     ///
     /// This is implemented via `Char::`[`to_scalar()`][Self::to_scalar].
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// // Valid UTF-8 sequence
@@ -167,7 +167,7 @@ impl Char<&[u8]> {
     /// Panics if the decoded value is not a valid Unicode scalar value,
     /// or if the `index` is out of bounds.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// // Valid UTF-8 sequence
@@ -222,7 +222,7 @@ impl Char<&[u8]> {
     /// - The bytes do not form a valid UTF-8 sequence.
     /// - The decoded value is not a valid Unicode scalar.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// assert_eq!(Char("Ħ".as_bytes()).to_scalar(0), Some((u32::from('Ħ'), 2)));
@@ -290,7 +290,7 @@ impl Char<&[u8]> {
     /// Overlong encodings use more bytes than necessary to represent a character,
     /// which is invalid in well-formed UTF-8.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// assert!(Char(b"\xE0\x80\x80").has_overlong_encoding(0, 3)); // overlong encoding
@@ -320,7 +320,7 @@ impl Char<&[u8]> {
     /// This method only verifies correct syntax, but not correct semantics.
     /// It does not check for overlong encodings nor invalid scalar values.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// assert!(Char(b"\xE2\x82\xAC").has_valid_continuation(0, 3)); // euro sign €

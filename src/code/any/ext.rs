@@ -29,7 +29,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Returns the `TypeId` of `Self`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::AnyExt;
     ///
@@ -41,7 +41,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Returns the `TypeId` of `self`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::AnyExt;
     ///
@@ -53,7 +53,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Returns the type name of `self`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::AnyExt;
     ///
@@ -67,7 +67,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Returns `true` if `Self` is of type `T`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::AnyExt;
     ///
@@ -100,7 +100,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Upcasts `&self` as `&dyn Any`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Any, AnyExt};
     ///
@@ -113,7 +113,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Upcasts `&mut self` as `&mut dyn Any`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Any, AnyExt};
     ///
@@ -126,7 +126,7 @@ pub trait AnyExt: Any + Sealed {
 
     /// Upcasts `Box<self>` as `Box<dyn Any>`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Any, AnyExt};
     ///
@@ -145,7 +145,7 @@ pub trait AnyExt: Any + Sealed {
     /// This method is only needed when not dealing directly with `dyn Any` trait objects,
     /// since it's [already implemented for `dyn Any`](Any#method.downcast_ref).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use core::fmt::Display;
     /// use devela::{Any, AnyExt};

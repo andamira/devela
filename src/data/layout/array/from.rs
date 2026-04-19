@@ -13,7 +13,7 @@
 /// # Panics
 /// When `N` does not match the actual length of the input.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::ArrayFrom;
 /// let arr = ArrayFrom("hello").to_array::<5>();

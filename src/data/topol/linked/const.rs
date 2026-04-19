@@ -24,7 +24,7 @@ struct ConstListItem<'a, T: 'a> {
 /// A safe, predictable, and lightweight structure, suitable where immutability
 /// is an asset and compile-time guarantees matter more than list manipulation.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::ConstList;
 /// const MY_LIST: ConstList<'static, i32> = ConstList::new()

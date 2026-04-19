@@ -38,7 +38,7 @@ pub trait ByteSized: Sized {
     /// (2, 1) if a pointer is double the byte size, and (1, 2) if a pointer is
     /// half the byte size.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::ByteSized;
     /// assert_eq![().ptr_size_ratio(), [1, 0]];

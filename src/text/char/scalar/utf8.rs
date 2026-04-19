@@ -105,7 +105,7 @@ macro_rules! impl_charu {
             ///
             /// Returns `None` if the string is empty.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// let c = charu::from_str("A").unwrap();
@@ -171,7 +171,7 @@ macro_rules! impl_charu {
             /// Returns `None` if the slice is empty or doesn't contain a valid UTF-8 sequence
             /// at the beginning.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// let ascii = charu::from_utf8_bytes(b"A").unwrap();
@@ -225,7 +225,7 @@ macro_rules! impl_charu {
             /// Returns `None` if the slice is empty
             /// or doesn't contain a valid UTF-8 sequence at the beginning.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// let (c, len) = charu::from_utf8_bytes_with_len(b"A").unwrap();
@@ -276,7 +276,7 @@ macro_rules! impl_charu {
             /// This method validates that the bytes form a valid UTF-8 sequence.
             /// represent a valid Unicode scalar value.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// assert!(charu::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
@@ -378,7 +378,7 @@ macro_rules! impl_charu {
 
             /// Writes the UTF-8 representation to a buffer and returns it as a string slice.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             #[doc = "# use devela::" $name ";"]
             #[doc = "let c = " $name "::from_char('A');"]
@@ -420,7 +420,7 @@ macro_rules! impl_charu {
             /// exactly matching how UTF-8 is stored in `&str` and `[u8]`.
             /// Unused bytes in the sequence are set to 0.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// let c = charu::from_char('A');
@@ -443,7 +443,7 @@ macro_rules! impl_charu {
 
             /// Returns the first byte of the UTF-8 representation.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::charu;
             /// let c = charu::from_char('A');

@@ -9,7 +9,7 @@
 ///
 /// Usage: `capture_first!(<category> <first>, <tail>*, <optional_comma>?);`
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::capture_first;
 /// assert_eq![5, capture_first!(expr 5, 6, 7)];

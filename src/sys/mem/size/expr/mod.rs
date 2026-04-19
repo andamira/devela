@@ -16,7 +16,7 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 /// - The expression will not be evaluated.
 /// - This can be used in `const` contexts.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::size_of_expr;
 /// async fn f() {

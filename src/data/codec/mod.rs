@@ -15,7 +15,7 @@
 //! - Using randomness during encoding or decoding.
 //! - Modifying or depending on global state.
 //!
-//! ## Example
+//! ## Examples
 //! ```
 //! use devela::{Encodable, CodecLenValue, IoWrite};
 //!

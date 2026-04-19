@@ -241,7 +241,7 @@ macro_rules! impl_float_basic {
             ///
             /// # Formulation
             #[doc = crate::_FLOAT_FORMULA_LERP!()]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
@@ -376,7 +376,7 @@ macro_rules! impl_float_basic {
 
             /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp(40., 80.), 50.];"]]
@@ -403,7 +403,7 @@ macro_rules! impl_float_basic {
 
             /// Returns itself clamped between `min` and `max`, using total order.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_total(40., 80.), 50.];"]]
@@ -431,7 +431,7 @@ macro_rules! impl_float_basic {
 
             /// Returns itself clamped between `min` and `max`, propagating `NaN`.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_nan(40., 80.), 50.];"]]
@@ -445,7 +445,7 @@ macro_rules! impl_float_basic {
 
             /// Returns the maximum between itself and `other`, propagating `Nan`.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").max_nan(80.), 80.];"]]
@@ -469,7 +469,7 @@ macro_rules! impl_float_basic {
 
             /// Returns the minimum between itself and `other`, propagating `Nan`.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").min_nan(80.), 50.];"]]

@@ -69,7 +69,7 @@ impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns `true` if the array contains `element`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Array;
     /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
@@ -121,7 +121,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
 
     /// Finds the index of the first occurrence of `element` in the array.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Array, ElementNotFound};
     /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);

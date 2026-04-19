@@ -27,7 +27,7 @@
 /// types with no data, `type_resource!` ties each type to an inner ID type
 /// for handling type-safe resources.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::type_resource;
 /// type_resource![Id0:u8]; // single definition and resource

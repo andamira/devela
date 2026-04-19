@@ -12,7 +12,7 @@
 /// Note that these operations are slow and should not be used for fast paths,
 /// but mostly for compile-time needs.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{const_assert, const_join};
 /// /* string slices */

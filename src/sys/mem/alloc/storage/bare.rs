@@ -50,7 +50,7 @@ impl<T> BareBox<T> {
 
     /// Returns the inner stored type.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// let b = BareBox::new(42);
@@ -62,7 +62,7 @@ impl<T> BareBox<T> {
 
     /// Returns a shared reference to the inner stored type, in compile-time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// const B: BareBox<char> = BareBox::new('a');
@@ -74,7 +74,7 @@ impl<T> BareBox<T> {
 
     /// Returns an exclusive reference to the inner stored type, in compile-time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// const fn modify_value(mut b: BareBox<char>) -> BareBox<char> {
@@ -90,7 +90,7 @@ impl<T> BareBox<T> {
 
     /// Replaces the stored value with a `new` one, returning the old value.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// let mut b = BareBox::new(42);
@@ -105,7 +105,7 @@ impl<T> BareBox<T> {
 
     /// Checks if the stored value is the default.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// let b = BareBox::new(0);
@@ -121,7 +121,7 @@ impl<T> BareBox<T> {
 impl<T: Copy> BareBox<T> {
     /// Returns the inner stored type in compile-time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// const B: BareBox<i32> = BareBox::new(42);
@@ -135,7 +135,7 @@ impl<T: Copy> BareBox<T> {
 
     /// Maps the inner value to another type using the provided function.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// let b = BareBox::new(2);
@@ -151,7 +151,7 @@ impl<T: Copy> BareBox<Option<T>> {
     /// Unwraps the inner `Option`, returning the contained value or a default,
     /// in compile time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// const B: BareBox<Option<char>> = BareBox::new(Some('a'));
@@ -170,7 +170,7 @@ impl<T: Copy, E: Copy> BareBox<Result<T, E>> {
     /// Unwraps the inner `Result`, returning the `Ok` value or a default,
     /// in compile time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::BareBox;
     /// const B: BareBox<Result<char, ()>> = BareBox::new(Ok('a'));

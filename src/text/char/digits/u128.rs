@@ -13,7 +13,7 @@ impl Digits<u128> {
     /* digit_at_ */
 
     #[doc = DOC_COUNT_DIGITS_10!()]
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::text::Digits;
     /// assert_eq![1, Digits(0_u128).count_digits10()];

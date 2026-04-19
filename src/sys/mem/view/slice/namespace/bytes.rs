@@ -12,7 +12,7 @@ impl Slice<u8> {
     ///
     /// Returns the number of bytes copied (possibly less than `src.len()` if truncated).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut buf = [0u8; 4];
@@ -34,7 +34,7 @@ impl Slice<u8> {
     ///
     /// Returns the number of bytes copied (never splits a character).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
@@ -61,7 +61,7 @@ impl Slice<u8> {
     ///
     /// Returns the number of bytes copied (never splits a UTF-8 sequence).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
@@ -165,7 +165,7 @@ impl Slice<u8> {
 
     /// Returns a subslice without the given leading `byte`s.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_leading(b"000123", b'0'), b"123");
@@ -179,7 +179,7 @@ impl Slice<u8> {
 
     /// Returns a subslice without the given leading `byte`s, except of `keep` number of them.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 0), b"123");
@@ -197,7 +197,7 @@ impl Slice<u8> {
     /// Returns a subslice without the given leading `byte`s,
     /// ensuring the result has at least `min_len` bytes (if possible).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_leading_min_len(b"000000", b'0', 1), b"0");
@@ -216,7 +216,7 @@ impl Slice<u8> {
 
     /// Returns a subslice without the given trailing `byte`s.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_trailing(b"123000", b'0'), b"123");
@@ -230,7 +230,7 @@ impl Slice<u8> {
 
     /// Returns a subslice without the given trailing `byte`s, except of `keep` number of them.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 0), b"123");
@@ -248,7 +248,7 @@ impl Slice<u8> {
     /// Returns a subslice without the given trailing `byte`s,
     /// ensuring the result has at least `min_len` bytes (if possible).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_trailing_min_len(b"000000", b'0', 1), b"0");
@@ -267,7 +267,7 @@ impl Slice<u8> {
 
     /// Returns a subslice without the given leading and trailing `byte`s.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_edges(b"000123000", b'0'), b"123");
@@ -280,7 +280,7 @@ impl Slice<u8> {
     /// Returns a subslice without the given leading and trailing `byte`s,
     /// except for `keep` number of them on each side.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 0), b"123");
@@ -296,7 +296,7 @@ impl Slice<u8> {
     /// Returns a subslice without the given leading and edges `byte`s,
     /// ensuring the result has at least `min_len` bytes (if possible), with a left bias.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 0), b"123");
@@ -327,7 +327,7 @@ impl Slice<u8> {
     /// Returns a subslice without the given leading and edges `byte`s,
     /// ensuring the result has at least `min_len` bytes (if possible), with a right bias.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 0), b"123");

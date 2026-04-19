@@ -20,7 +20,7 @@
 /// - No redirection, globbing, or quoting is performed.
 /// - Argument splitting only happens when a segment consists of a single string literal.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{cmd};
 /// # #[cfg(not(miri))] {

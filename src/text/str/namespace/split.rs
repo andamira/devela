@@ -19,7 +19,7 @@ impl Str {
     /// # Panics
     /// Panics if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hello world!";
@@ -36,7 +36,7 @@ impl Str {
     ///
     /// Returns `None` if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cmp, Str};
     /// let s = "Hellø wørld!";
@@ -57,7 +57,7 @@ impl Str {
     /// # Panics
     /// Panics if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hello world!").unwrap();
@@ -77,7 +77,7 @@ impl Str {
     ///
     /// Returns `None` if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cmp, Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
@@ -103,7 +103,7 @@ impl Str {
     /// # Panics
     /// Panics if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hello world!";
@@ -120,7 +120,7 @@ impl Str {
     ///
     /// Returns `None` if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cmp, Str};
     /// let s = "Hellø wørld!";
@@ -141,7 +141,7 @@ impl Str {
     /// # Panics
     /// Panics if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
@@ -161,7 +161,7 @@ impl Str {
     ///
     /// Returns `None` if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cmp, Str, StringU8};
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
@@ -189,7 +189,7 @@ impl Str {
     /// # Panics
     /// Panics if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hello world!";
@@ -218,7 +218,7 @@ impl Str {
     ///
     /// Returns `None` if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hellø wørld!";
@@ -250,7 +250,7 @@ impl Str {
     /// # Panics
     /// Panics if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
@@ -282,7 +282,7 @@ impl Str {
     ///
     /// Returns `None` if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
@@ -319,7 +319,7 @@ impl Str {
     /// # Panics
     /// Panics if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let s = "Hello world!";
@@ -348,7 +348,7 @@ impl Str {
     ///
     /// Returns `None` if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hellø wørld!";
@@ -382,7 +382,7 @@ impl Str {
     /// # Panics
     /// Panics if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
@@ -414,7 +414,7 @@ impl Str {
     ///
     /// Returns `None` if any split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Str, StringU8};
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();

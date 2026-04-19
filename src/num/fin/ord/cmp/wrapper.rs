@@ -136,7 +136,7 @@ impl<T: PartialOrd> Cmp<T> {
     /// Returns `None` if comparisons are indeterminate.
     ///
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Cmp;
     /// assert_eq![Some(0.2), Cmp(0.2).pmin(0.4)];
@@ -156,7 +156,7 @@ impl<T: PartialOrd> Cmp<T> {
     /// Compares, orders, and returns both (minimum, maximum) [`PartialOrd`]ered values.
     ///
     /// Returns `None` if comparisons are indeterminate.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Cmp;
     /// assert_eq![Some((0.2, 0.4)), Cmp(0.4).pminmax(0.2)];

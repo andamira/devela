@@ -112,7 +112,7 @@ impl TimeFake {
 /// - schedulers and timers
 /// - components that must not own the clock
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{TimeFake, TimeFakeRef, TimeSourceCfg};
 /// // Create a fake clock

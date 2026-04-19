@@ -227,7 +227,7 @@ macro_rules! slog {
 /// - `slog!(any_truncated [id:]CAP+LEN)` — check if any message was truncated.
 /// - `slog!(truncation_stats [id:]CAP+LEN)` — return truncation count and total lost bytes.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::slog;
 /// slog!(new 4+32);

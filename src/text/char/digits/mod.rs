@@ -69,7 +69,7 @@ mod usize;
 /// Exclusive for `u32`, `u64`, `u128` and `usize`:
 /// - [write_digits10_fast](#method.write_digits10_fast).
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{Digits, Slice};
 /// let dec = Digits(12345_u32);

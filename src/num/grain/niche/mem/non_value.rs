@@ -35,7 +35,7 @@ items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 /// - `B` represents the bit-size, from [8, 16, 32, 64, 128].
 /// - `V` is the prohibited value in the bit-sized range.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{NonValueI8, NonValueU8, NonExtremeI8};
 ///
@@ -188,7 +188,7 @@ macro_rules! impl_non_value {
                 /// # Features
                 /// - Can use the `unsafe_niche` feature internally.
                 ///
-                /// # Example
+                /// # Examples
                 /// ```
                 /// # use devela::{NonValueI8, NonValueU8};
                 /// let x = assert_eq![NonValueU8::<255>::new_lossy(255).get(), 254];

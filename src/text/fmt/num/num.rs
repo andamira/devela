@@ -10,7 +10,7 @@
 /// Provides a lightweight, allocation-free interface
 /// for writing numeric values into an existing byte buffer.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::FmtNum;
 /// let mut buf = [0u8; 8];

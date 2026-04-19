@@ -45,7 +45,7 @@ impl<'a> GraphemeScanner<'a, charu> {
     /// # Panics
     /// Panics if `CAP > 255.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{GraphemeMachine, GraphemeScanner, GraphemeU8, charu};
     /// let input = "H€🧑‍🌾";
@@ -78,7 +78,7 @@ impl<'a> GraphemeScanner<'a, charu> {
     /// Returns `None` when there are no more graphemes to process.
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{GraphemeMachine, GraphemeScanner, charu};
     /// let input = "H€🧑‍🌾";

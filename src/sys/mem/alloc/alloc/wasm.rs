@@ -19,7 +19,7 @@ use crate::{Mem, NonZeroUsize, Wasm};
 /// - This allocator is not thread-safe. The unsafe `Sync` implementation is only
 ///   valid in single-threaded WASM environments.
 ///
-/// # Example
+/// # Examples
 /// ```ignore
 /// # use devela::WasmAlloc;
 /// #[global_allocator]

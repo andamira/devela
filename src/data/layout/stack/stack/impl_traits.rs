@@ -119,7 +119,7 @@ macro_rules! impl_stack {
 
             /// Iterates over shared references.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::data::StackU8;
             /// let s = StackU8::<i32, 4>::from([1, 2]);

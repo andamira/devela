@@ -10,7 +10,7 @@ impl<T> Slice<T> {
     ///
     /// If `len > self.len()` it returns the full slice.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
@@ -28,7 +28,7 @@ impl<T> Slice<T> {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
@@ -49,7 +49,7 @@ impl<T> Slice<T> {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
@@ -68,7 +68,7 @@ impl<T> Slice<T> {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
@@ -92,7 +92,7 @@ impl<T> Slice<T> {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
@@ -123,7 +123,7 @@ impl<T> Slice<T> {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
@@ -155,7 +155,7 @@ impl<T> Slice<T> {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
@@ -185,7 +185,7 @@ impl<T> Slice<T> {
     /// In case of a non-perfect middle split, it will have one element more on the right.
     ///
     /// If `len > slice.len()` returns the full `slice`.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];

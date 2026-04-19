@@ -15,7 +15,7 @@ crate::CONST! {
     DOC_ANSI_PRINT = "
 It abstracts away specific backend implementations.
 
-# Example
+# Examples
 ```
 # use devela::{Ansi, AnsiColor3, ansi_print};
 ansi_print(&Ansi::ERASE_SCREEN_B);

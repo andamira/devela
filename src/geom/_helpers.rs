@@ -342,7 +342,7 @@ macro_rules! _define_geom_dim_macro {
         /// - Cast forms delegate to [`Cast`][crate::Cast] and [`cast!`][crate::cast].
         /// - Whole-value cast shorthand supports any dimension and is runtime-only.
         ///
-        /// # Example
+        /// # Examples
         /// ```
         #[doc = "# use devela::{" $Wrap ", " $Wrap "2, " $Wrap "3, " $name "};"]
         #[doc = "// construct"]

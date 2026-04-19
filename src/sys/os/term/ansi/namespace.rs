@@ -15,7 +15,7 @@ use crate::{_ansi_consts, Digits, StringNonul, slice, write_at};
 /// Functions ending with `_B` return either an array or a byte slice.
 /// Those without it return a [`StringNonul`] or a string slice, respectively.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// use devela::Ansi;
 /// assert_eq![Ansi::ITALIC_B, *b"\x1b[3m"];

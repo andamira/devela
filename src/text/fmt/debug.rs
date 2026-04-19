@@ -13,7 +13,7 @@ use crate::{FmtResult, Formatter};
 /// The context is defined per-type via the `Ctx` associated type, allowing each type
 /// to expose whatever formatting modes it needs without affecting other types.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{DebugExt, FmtResult, Formatter};
 /// enum Mode { Hex, Dec }

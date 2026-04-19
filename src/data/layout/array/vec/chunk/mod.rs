@@ -28,7 +28,7 @@ mod tests;
 /// - `Append`: Represents a single element appended to another chunk
 /// - `Concat`: Represents the concatenation of two chunks
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::VecChunk;
 /// let mut chunk = VecChunk::default();
@@ -77,7 +77,7 @@ impl<A> VecChunk<A> {
     /// # Arguments
     /// * `a` - The element to store in the chunk
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk: VecChunk<i32> = VecChunk::new(100);
@@ -89,7 +89,7 @@ impl<A> VecChunk<A> {
 
     /// Returns `true` if the chunk is empty.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk: VecChunk<i32> = VecChunk::default();
@@ -111,7 +111,7 @@ impl<A> VecChunk<A> {
     /// This operation has O(1) complexity as it creates a new `Append` variant
     /// that references the existing chunk through an [`Rc`].
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default().append(1).append(2);
@@ -126,7 +126,7 @@ impl<A> VecChunk<A> {
     /// This operation has O(1) complexity as it creates a new `Concat` variant
     /// that references the existing chunk through an [`Rc`].
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default().prepend(1).prepend(2);
@@ -145,7 +145,7 @@ impl<A> VecChunk<A> {
     /// If either chunk is empty, returns the other chunk instead of creating
     /// a new `Concat` variant.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk1 = VecChunk::default().append(1).append(2);
@@ -185,7 +185,7 @@ impl<A> VecChunk<A> {
     /// - Creating the transformation: O(1)
     /// - Executing the transformation (during [`as_vec`](VecChunk::as_vec)): O(n)
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default().append(1).append(2).append(3);
@@ -208,7 +208,7 @@ impl<A> VecChunk<A> {
     /// - Time complexity: O(n) where n is the number of elements
     /// - Space complexity: O(n) as it creates a new vector containing all elements
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default()
@@ -238,7 +238,7 @@ impl<A> VecChunk<A> {
     /// - Creating the transformation: O(1)
     /// - Executing the transformation (during [`as_vec`](VecChunk::as_vec)): O(n)
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default().append(1).append(2);
@@ -257,7 +257,7 @@ impl<A> VecChunk<A> {
     /// This operation has O(n) complexity where n is the number of elements
     /// in the chunk.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let chunk = VecChunk::default().append(1).append(2).append(3);
@@ -306,7 +306,7 @@ impl<A> VecChunk<A> {
 impl<A> FromIterator<A> for VecChunk<A> {
     /// Creates a chunk from an iterator.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::VecChunk;
     /// let vec = vec![1, 2, 3];

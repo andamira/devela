@@ -81,7 +81,7 @@ impl UnitBi {
 impl UnitBi {
     /// Returns the symbol of the prefix.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::UnitBi;
     /// assert_eq![UnitBi::Gibi.symbol(), "Gi"];

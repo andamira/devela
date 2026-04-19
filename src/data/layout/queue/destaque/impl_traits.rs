@@ -191,7 +191,7 @@ macro_rules! impl_destaque {
         impl<'s, T, const CAP: usize, S: Storage> Iterator for DestaqueIter<'s, T, CAP, $IDX, S> {
             type Item = &'s T;
             /// Iterates over shared references.
-            /// # Example
+            /// # Examples
             /// ```
             #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]
@@ -223,7 +223,7 @@ macro_rules! impl_destaque {
 
         impl<'s, T, const CAP: usize, S: Storage> DoubleEndedIterator for DestaqueIter<'s, T, CAP, $IDX, S> {
             /// Iterates over shared references.
-            /// # Example
+            /// # Examples
             /// ```
             #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]

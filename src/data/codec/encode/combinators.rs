@@ -28,7 +28,7 @@ mod endian {
     /// Encodes and decodes a number in big-endian order.
     #[doc = crate::_doc_location!("data/codec")]
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Encodable, CodecBe};
     ///
@@ -186,7 +186,7 @@ mod cond {
     /// Encodes and decodes conditionally.
     #[doc = crate::_doc_location!("data/codec")]
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Encodable, CodecIf, CStr};
     ///
@@ -312,7 +312,7 @@ mod join {
     /// Encodes and decodes an iterator as a sequence with an optional `separator`.
     #[doc = crate::_doc_location!("data/codec")]
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Encodable, CodecJoin};
     ///
@@ -387,7 +387,7 @@ mod len {
     /// so it will trigger the same side effects that other encoders would trigger
     /// (e.g Allocations).
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{IoWrite, Encodable, CodecLen};
     ///

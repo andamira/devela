@@ -191,7 +191,7 @@ impl SixelChar {
     /// - Binary bitmask representation
     ///
     /// Uses ANSI escape codes for coloring and resets formatting at the end.
-    /// # Example
+    /// # Examples
     /// ```ignore
     /// # use devela::{Ansi, SixelChar, write_at};
     /// let (mut offset, mut result) = (0, [0; 65]);
@@ -224,7 +224,7 @@ impl SixelChar {
     /// - `□` for empty/false pixels
     ///
     /// The output shows pixels from top to bottom.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::SixelChar;
     /// assert_eq![SixelChar::from_bitmask(0b111001).to_string_box(), "■□□■■■"];

@@ -76,7 +76,7 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 /// The returned references may outlive the iterator borrow taken by `next`
 /// and may coexist as long as the underlying slice is not accessed through other means.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{IteratorLending, SliceIterMut};
 /// let mut array = [0, 1, 2, 3];

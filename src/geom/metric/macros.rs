@@ -28,7 +28,7 @@ crate::_define_geom_dim_macro![($) pos, "a", Position, geom, "geom/metric"];
 /// - Cast forms delegate to [`pos!`][crate::pos] and [`ext!`][crate::ext].
 /// - Whole-region cast shorthand supports any dimension and is runtime-only.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{region, pos, ext, Region2, Region3};
 /// // construct

@@ -18,7 +18,7 @@ crate::_use! {compat::from_utf8}
 ///
 /// This is implemented via [`FmtWriter::format`] and [`format_args!`][crate::format_args].
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::format_buf;
 /// let mut buf = [0u8; 12];
@@ -92,7 +92,7 @@ impl<'a> FmtWriter<'a> {
     /// - `Ok(&str)` if all the formatted data fits into `buf`.
     /// - `Err(&str)` containing the valid partial result if truncation occurred.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::FmtWriter;
     /// let mut buf = [0u8; 32]; // Big enough to fit everything
@@ -115,7 +115,7 @@ impl<'a> FmtWriter<'a> {
     /// - `Ok(usize)` if all the formatted data fits into `buf`.
     /// - `Err(usize)` containing the number of valid UTF-8 written bytes if truncation ocurred,
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::FmtWriter;
     /// let mut buf = [0u8; 32];
@@ -141,7 +141,7 @@ impl<'a> FmtWriter<'a> {
     ///
     /// It copies as much of the string as will fit into the remaining buffer space.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::FmtWriter;
     /// const fn create_message(buf: &mut [u8]) -> &str {

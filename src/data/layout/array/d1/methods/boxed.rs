@@ -17,7 +17,7 @@ impl<T, const CAP: usize> Array<T, CAP, Boxed> {
 
     /// Returns an array, allocated in the heap, filled with `element`, cloned.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Array, Boxed};
     /// let mut a = Array::<_, 1_000, Boxed>::with_cloned(0);

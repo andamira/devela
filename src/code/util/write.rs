@@ -22,7 +22,7 @@
 /// - With `$offset` syntax, the offset expression is used as the starting position
 ///   and is not updated.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::write_at;
 /// let mut bytes = [0u8; 8];

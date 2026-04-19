@@ -26,7 +26,7 @@ impl<T> Sealed for Option<T> {}
 pub trait OptionExt<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value having the given value.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # extern crate devela as devela;
     /// use devela::OptionExt;
@@ -44,7 +44,7 @@ pub trait OptionExt<T>: Sealed {
     /// - `Some(x)` if either of the options is `Some(x)` and the other is `None`.
     /// - `None` if both options are `None`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # extern crate devela as devela;
     /// # use core::{cmp::min, ops::Add};
@@ -67,7 +67,7 @@ pub trait OptionExt<T>: Sealed {
     /// The alternative value must implement [`Display`]
     /// regardless of which formatting is used originally.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # extern crate devela as devela;
     /// use devela::OptionExt;
@@ -87,7 +87,7 @@ pub trait OptionExt<T>: Sealed {
     /// Therefore, using a single [`OptionFmtOrElse`] object for multiple
     /// formatting operations will run the closure multiple times.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # extern crate devela as devela;
     /// use devela::OptionExt;
@@ -99,7 +99,7 @@ pub trait OptionExt<T>: Sealed {
 
     /// Format some value, or display an empty string if it's `None`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::OptionExt;
     /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));

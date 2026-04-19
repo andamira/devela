@@ -17,7 +17,7 @@ impl<F: Future> FutureExt for F {}
 #[cfg(feature = "std")]
 crate::CONST! {
     DOC_BLOCK_ON = r#"Blocks the thread until the future is ready.
-# Example
+# Examples
 ```
 # #[cfg(not(feature = "dep_portable_atomic_util"))] {
 # use devela::FutureExt as _;

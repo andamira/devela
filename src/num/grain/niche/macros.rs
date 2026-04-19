@@ -51,7 +51,7 @@ macro_rules! generate_niche_prim {
         /// niche representations provided by this crate. User-defined wrappers or
         /// arbitrary nesting are not supported.
         ///
-        /// # Example
+        /// # Examples
         /// ```
         /// # use devela::{NonValueU8, niche_prim};
         /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
@@ -86,7 +86,7 @@ generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, 
 /// Creates a `NonExtreme*` niche instance with compile-time checking.
 #[doc = crate::_doc_location!("num/grain/niche")]
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::ne;
 /// let x = ne!(42_u32);  // NonExtremeU32
@@ -114,7 +114,7 @@ pub use ne;
 /// Creates a `NonValue*` niche value with compile-time checking.
 #[doc = crate::_doc_location!("num/grain/niche")]
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::nv;
 /// let x = nv!(3: 42_u8);  // NonValueU8<3>
@@ -144,7 +144,7 @@ pub use nv;
 /// Creates a `NonZero*` niche value with compile-time checking.
 #[doc = crate::_doc_location!("num/grain/niche")]
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::nz;
 /// let x = nz!(42u32);   // NonZeroU32

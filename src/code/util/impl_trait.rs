@@ -20,7 +20,7 @@
 /// - Comma between lifetimes and generics is optional but recommended for clarity.
 /// - Requires the same formatting trait (`fmt::<trait>`) to be implemented for all generics.
 ///
-/// ## Example
+/// ## Examples
 /// ```
 /// # use devela::impl_trait;
 /// struct S0(usize);

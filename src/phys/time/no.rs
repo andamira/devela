@@ -16,7 +16,7 @@ use crate::{Ordering, TimePoint, TimeScale, TimeSource, TimeSpan};
 /// - This is a type alias for `()`, so you cannot use `NoTime` as a constructor.
 ///   Instead, use the unit value directly (`()`).
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{NoTime, TimeSplit};
 /// let split = TimeSplit::new_hour_nano(12u8, 30u8, 45u8, 500u16, (), ());

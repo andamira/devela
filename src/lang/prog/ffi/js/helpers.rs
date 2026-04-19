@@ -30,7 +30,7 @@ pub(crate) use _js_doc;
 
 /// Helps re-exporting javascript functions.
 ///
-/// # Example
+/// # Examples
 /// ```ignore
 /// # use devela::_js_extern;
 /// _js_extern! {

@@ -41,7 +41,7 @@ impl Ansi {
     /// # Returns
     /// The number of bytes written to `dest`. This will always be ≤ the original text length.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Ansi;
     /// let input = b"Hello \x1B[32mWorld\x1B[0m!";

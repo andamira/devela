@@ -94,7 +94,7 @@ impl Ptr {
     ///
     /// If the address is close to a stack variable address it might be stack allocated.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Ptr;
     /// const STACK_SIZE: usize = 2 << 20; // assume a 2 MB stack size

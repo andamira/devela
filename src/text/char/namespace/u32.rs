@@ -98,7 +98,7 @@ impl Char<u32> {
     /// This includes surrogate code points (`U+D800` to `U+DFFF`), which are
     /// valid code points but cannot be represented as Unicode scalars.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// assert!(Char('A' as u32).is_valid_code()); // regular character
@@ -124,7 +124,7 @@ impl Char<u32> {
     /// This excludes surrogate code points (`U+D800` to `U+DFFF`), which are
     /// invalid in UTF-8 and cannot be represented as Unicode scalars.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Char;
     /// assert!(Char('A' as u32).is_valid_scalar()); // regular character

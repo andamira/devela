@@ -136,7 +136,7 @@ impl UnitSi {
 impl UnitSi {
     /// Returns the symbol of the prefix.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::UnitSi;
     /// assert_eq![UnitSi::Giga.symbol(), "G"];

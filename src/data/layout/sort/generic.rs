@@ -8,7 +8,7 @@ use crate::{Sort, is};
 impl<T: Ord> Sort<&mut [T]> {
     /// Sorts a slice using bubble sort.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut data = [4, 7, -5, 1, -13, 0];
@@ -39,7 +39,7 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Note that the frequencies in `freq` will be in the order of the sorted
     /// distinct elements in `values`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
@@ -78,7 +78,7 @@ impl<T: Ord> Sort<&mut [T]> {
 
     /// Sorts a slice using insertion sort.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
@@ -97,7 +97,7 @@ impl<T: Ord> Sort<&mut [T]> {
 
     /// Sorts a slice using selection sort.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
@@ -119,7 +119,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// Also known as cocktail sort and double quicksort.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
@@ -171,7 +171,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// - vs Hoare: More swaps, simpler logic.
     /// - vs 3-way: Less efficient with duplicates, simpler implementation.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
@@ -204,7 +204,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// - vs Lomuto: Much better with duplicates, slightly more complex.
     /// - vs Hoare: Superior duplicate handling, similar performance on unique data.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
@@ -241,7 +241,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// - vs Lomuto: Fewer swaps, better cache performance, more complex.
     /// - vs 3-way: Better for unique data, less efficient with many duplicates.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];

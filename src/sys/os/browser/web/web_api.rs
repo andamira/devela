@@ -146,7 +146,7 @@ impl Web {
     /// # Safety
     /// `callback_ptr` must be a valid function pointer.
     ///
-    /// # Example
+    /// # Examples
     /// ```ignore
     /// #[unsafe(no_mangle)]
     /// pub extern "C" fn my_callback() { Web::console_log("Button clicked!"); }

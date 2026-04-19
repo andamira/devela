@@ -107,7 +107,7 @@ macro_rules! impl_str_u {
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             ///
-            /// # Example
+            /// # Examples
             /// ```
             #[doc = "# use devela::" $name ";"]
             #[doc = "let mut s = " $name "::<10>::new();"]
@@ -141,7 +141,7 @@ macro_rules! impl_str_u {
             ///
             /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
@@ -187,7 +187,7 @@ macro_rules! impl_str_u {
             /// or if `CAP < c.`[`len_utf8()`].
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::{StringU8, char};
             /// assert_eq![StringU8::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
@@ -215,7 +215,7 @@ macro_rules! impl_str_u {
             /// or if `CAP < 1.
             ///
             #[doc = "Will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::{StringU8, char7};
             /// let s = StringU8::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
@@ -238,7 +238,7 @@ macro_rules! impl_str_u {
             /// or if `CAP < 2.
             ///
             #[doc = "Will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::{StringU8, char8};
             /// let s = StringU8::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
@@ -264,7 +264,7 @@ macro_rules! impl_str_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::{StringU8, char16};
             /// let s = StringU8::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
@@ -292,7 +292,7 @@ macro_rules! impl_str_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][charu#method.len_utf8]."]
             ///
             #[doc = "Will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::{StringU8, charu};
             /// let s = StringU8::<4>::from_charu(charu::from_char('🐛')).unwrap();
@@ -557,7 +557,7 @@ macro_rules! impl_str_u {
             /// Checks the equality of two strings, with the same capacity and length.
             ///
             /// It only checks the first `self.len()` bytes.
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let mut a = StringU8::<16>::from_str_unchecked("hello world!");
@@ -613,7 +613,7 @@ macro_rules! impl_str_u {
             /// # Panics
             /// Panics if the string is empty.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let mut s = StringU8::<16>::new();
@@ -695,7 +695,7 @@ macro_rules! impl_str_u {
             ///
             /// Returns the number of bytes written. UTF-8 characters are never split.
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let mut s = StringU8::<5>::new();
@@ -883,7 +883,7 @@ macro_rules! impl_str_u {
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let chars = ['a', 'b', 'c', '€', 'さ'];
@@ -903,7 +903,7 @@ macro_rules! impl_str_u {
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             ///
-            /// # Example
+            /// # Examples
             /// ```
             /// # use devela::StringU8;
             /// let chars = ['a', 'b', 'c', '€', 'さ'];

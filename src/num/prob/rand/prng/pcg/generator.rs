@@ -26,7 +26,7 @@ crate::_ABBR_PRNG!(), " type."]]
 /// - bounded generation helpers.
 /// - an implementation of [`Rand`][crate::Rand] for generic usage.
 ///
-/// # Example
+/// # Examples
 /// ```
 // WAIT: [cfg(doctest)](https://github.com/rust-lang/rust/issues/67295)
 /// # #[macro_export]macro_rules!__crate_name{()=>{""};} // doctest stub for _doc_location

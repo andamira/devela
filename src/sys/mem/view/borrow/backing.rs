@@ -17,7 +17,7 @@ use devela::RangeFull;
 /// Enables APIs to flexibly accept either caller-provided buffers or fall back to
 /// allocations (when `alloc` is enabled)
 ///
-/// # Example
+/// # Examples
 /// ```ignore
 /// # use devela::{Backing, MaybeOwned};
 /// fn process(mode: Backing<'_>) -> MaybeOwned<'_, str> {

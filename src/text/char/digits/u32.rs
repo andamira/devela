@@ -11,7 +11,7 @@ impl Digits<u32> {
     pub const MAX_DIGITS_16: u8 = 8;
 
     #[doc = DOC_COUNT_DIGITS_10!()]
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::text::Digits;
     /// assert_eq![1, Digits(0_u32).count_digits10()];

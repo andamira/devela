@@ -20,7 +20,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
 
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::data::Array;
     /// let a = Array::<_, 16>::with_cloned(0);
@@ -35,7 +35,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
 
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::data::Array;
     /// const A: Array<i32, 16> = Array::with_copied(0);
@@ -91,7 +91,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
     /// # Panics
     /// Panics if the `index` is out of bounds in a non-const context.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Array;
     /// const A: Array<i32, 4> = Array::new_bare([10, 20, 30, 40]);
@@ -109,7 +109,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
     /// # Panics
     /// Panics if the `index` is out of bounds in a non-const context.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Array;
     /// const fn modify_array() -> Array<i32, 4> {

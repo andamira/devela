@@ -33,7 +33,7 @@ lane! {
 // And the method without a suffix chooses from the available XXX
 // in the following order of preference, from highest to lowest: simd → wide → plain.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # #![cfg_attr(nightly_doc, feature(doc_cfg))]
 /// # #![cfg_attr(nightly_simd, feature(portable_simd))]

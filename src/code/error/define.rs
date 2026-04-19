@@ -17,7 +17,7 @@
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///
-/** # Example
+/** # Examples
 ```
 # use devela::define_error;
 // Define simple individual error types

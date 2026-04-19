@@ -47,7 +47,7 @@ use crate::{
 /// - Optional for literals/blocks: `interval![1..=3]` ≡ `interval![1, ..=3]`
 /// - `<..` indicates open-left bounds (non-standard Rust extension)
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::interval;
 /// # let (x, y) = (10, 20);
@@ -243,7 +243,7 @@ impl<T> Interval<T> {
 impl<T: Copy> Interval<T> {
     /// Returns a copy of both bounds as a tuple `(lower, upper)`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Interval;
     /// let r = Interval::from(1..3usize);

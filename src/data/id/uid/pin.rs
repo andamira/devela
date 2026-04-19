@@ -18,7 +18,7 @@ use crate::Pin;
 ///
 // #[cfg_attr(feature = "alloc", doc = "See also [`IdPinBox`].")]
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::IdPin;
 /// let mut data1: u8 = 0;

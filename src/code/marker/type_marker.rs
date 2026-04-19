@@ -22,7 +22,7 @@
 /// `type_marker!` generates purely zero-sized marker types.
 #[doc = crate::doclink!(custom devela "[`type_resource!`]" "code/marker/macro.type_resource.html")]
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::type_marker;
 /// type_marker![Id0];

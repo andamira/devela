@@ -43,7 +43,7 @@ impl<T> ScopeGuard<T, fn(T, &bool), bool> {
     ///
     /// The callback is executed on drop unless dismissed.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cell, ScopeGuard};
     /// let result = Cell::new(0);
@@ -67,7 +67,7 @@ impl<T, F: FnOnce(T, &bool)> ScopeGuard<T, F, bool> {
     ///
     /// Once dismissed, the callback won't be executed on drop.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cell, ScopeGuard};
     /// let result = Cell::new(0);
@@ -88,7 +88,7 @@ impl<T, F: FnOnce(T, &S), S> ScopeGuard<T, F, S> {
     ///
     /// The guarded value is accessible via `Deref` and `DerefMut`.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{Cell, ScopeGuard};
     /// // A simple resource that requires cleanup.

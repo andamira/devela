@@ -28,7 +28,7 @@ crate::CONST! {
 - the static arms make use of the [`const_join!`][crate::const_join] macro for concatenation.
 - the print arms calls the apropriate [`ansi_print`][crate::ansi_print] fn variant.
 
-# Example
+# Examples
 ```
 # use devela::{ansi, const_assert};
 assert_eq![&[27, 91, 49, 109], ansi![b: bold]];

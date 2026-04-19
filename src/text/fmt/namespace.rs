@@ -38,7 +38,7 @@ impl Fmt {
     /// - `Ok(&str)` if all the formatted data fits into `buf`.
     /// - `Err(&str)` containing the valid partial result if truncation occurred.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Fmt;
     /// let mut buf = [0u8; 32]; // Big enough to fit everything

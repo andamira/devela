@@ -82,7 +82,7 @@ impl<T: Sized> Hook for T {}
 ///
 /// All steps are applied in order to the same value.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{const_assert, is, hook};
 /// /* expression syntax */
@@ -193,7 +193,7 @@ impl<T: ?Sized, R> Morph<R> for T {}
 /// - a comma-separated list of expressions, or
 /// - a semicolon-separated list of expressions.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::{const_assert, is, morph};
 /// const S: &str = morph!(3u8, |v| v as usize, v * 2, v + 1, if v == 7 { "7" } else { "not7" });

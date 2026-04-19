@@ -18,7 +18,7 @@ impl Str {
     /// Panics if `n` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Str;
     /// let s = "Hello world!";

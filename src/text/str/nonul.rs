@@ -83,7 +83,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`].
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringNonul;
     /// let mut s = StringNonul::<10>::new();
@@ -113,7 +113,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringU8;
     /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
@@ -198,7 +198,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Checks the equality of two strings, with the same capacity and length.
     ///
     /// It only checks the first `self.len()` bytes.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringNonul;
     /// let mut a = StringNonul::<16>::from_str_unchecked("hello world!");
@@ -321,7 +321,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Panics
     /// Panics if the string is empty.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringNonul;
     /// let mut s = StringNonul::<16>::new();
@@ -354,7 +354,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// It will return 0 bytes if the given `character` doesn't fit in
     /// the remaining capacity, or if it is the nul character.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringNonul;
     /// let mut s = StringNonul::<16>::new();
@@ -437,7 +437,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns [`NotEnoughSpace`] if the capacity is not enough
     /// to hold not even the first non-nul character.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::StringNonul;
     /// let mut s = StringNonul::<8>::new();
@@ -500,7 +500,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or  if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{StringNonul, char};
     /// assert_eq![StringNonul::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
@@ -530,7 +530,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{StringNonul, char7};
     /// let s = StringNonul::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
@@ -558,7 +558,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{StringNonul, char8};
     /// let s = StringNonul::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
@@ -589,7 +589,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{StringNonul, char16};
     /// let s = StringNonul::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
@@ -621,7 +621,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// or if `CAP` < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{StringNonul, charu};
     /// let s = StringNonul::<4>::from_charu(charu::from_char('🐛')).unwrap();
@@ -868,7 +868,7 @@ mod trait_impls {
         /// # Panics
         /// Panics if `CAP > `[`u8::MAX`].
         ///
-        /// # Example
+        /// # Examples
         /// ```
         /// # use devela::StringNonul;
         /// let chars = ['a', 'b', 'c', '€', 'さ'];
@@ -890,7 +890,7 @@ mod trait_impls {
         /// # Panics
         /// Panics if `CAP > `[`u8::MAX`].
         ///
-        /// # Example
+        /// # Examples
         /// ```
         /// # use devela::StringNonul;
         /// let chars = ['a', 'b', 'c', '€', 'さ'];

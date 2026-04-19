@@ -20,7 +20,7 @@ use crate::{
 /// This allocator is thread-safe only when allocations are uncontended.
 /// For full thread safety, use a lock or atomic coordination externally.
 ///
-/// # Example
+/// # Examples
 /// ```ignore
 /// # use devela::BumpAlloc;
 /// #[global_allocator]

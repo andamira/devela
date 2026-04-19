@@ -52,7 +52,7 @@ impl<T: Any> CurrentGuard<'_, T> {
     /// - It ensures that only one mutable reference to a given `T` exists at a time.
     /// - Improper use may lead to stale pointers if lifetimes are not respected.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::{CurrentGuard};
     /// # struct MyType { data: u64} impl MyType { fn new() -> Self { Self { data:0 } }}
@@ -109,7 +109,7 @@ impl<T: Any> Current<T> {
     /// - Dereferencing without an active `CurrentGuard` leads to undefined behavior.
     /// - Ensure that `CurrentGuard` is properly managed before using this.
     ///
-    /// # Example
+    /// # Examples
     /// ```ignore
     /// let current = unsafe { Current::<MyType>::new() };
     /// ```
@@ -124,7 +124,7 @@ impl<T: Any> Current<T> {
     /// - The caller must ensure the reference is only used while the `CurrentGuard<T>` is alive.
     /// - If the same `T` is set multiple times, the reference may be stale.
     ///
-    /// # Example
+    /// # Examples
     /// ```ignore
     /// let mut my_value = MyType::new();
     /// let guard = CurrentGuard::new(&mut my_value);
@@ -146,7 +146,7 @@ impl<T: Any> Current<T> {
     /// # Panics
     /// Panics if no instance of `T` is currently set.
     ///
-    /// # Example
+    /// # Examples
     /// ```ignore
     /// let mut my_value = MyType::new();
     /// let guard = CurrentGuard::new(&mut my_value);

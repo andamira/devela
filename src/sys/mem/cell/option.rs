@@ -19,7 +19,7 @@ pub trait CellOptionExt<T>: Sealed {
     ///
     /// This method extracts the value, applies the function, and stores the result back.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Cell, CellOptionExt};
     ///
@@ -33,7 +33,7 @@ pub trait CellOptionExt<T>: Sealed {
     /// Modifies the value inside the `Cell<Option<T>>` by applying the provided function
     /// and returns the old contained value.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Cell, CellOptionExt};
     ///
@@ -51,7 +51,7 @@ pub trait CellOptionExt<T>: Sealed {
     ///
     /// This method allows in-place modification via a mutable reference, returning any value.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// use devela::{Cell, CellOptionExt};
     ///

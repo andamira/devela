@@ -91,7 +91,7 @@ impl Mem {
     /// It is useful when you want to pass a function pointer to a combinator,
     /// rather than defining a new closure.
     ///
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Mem;
     /// let result_from_ffi_fn: Result<(), &i32> = Err(&1);
@@ -246,7 +246,7 @@ impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
     ///
     /// This is a safer interface to `core::slice::`[`from_raw_parts`].
-    /// # Example
+    /// # Examples
     /// ```
     /// # use devela::Mem;
     /// #[repr(C)]
