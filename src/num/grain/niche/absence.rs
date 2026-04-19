@@ -212,10 +212,9 @@ macro_rules! impl_maybe {
                 const fn _lossy $(<const $V: $v>)? (v: $prim) -> $T {
                     if v == 0 { <$T>::MIN }
                     else {
-                        #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))] // safe
-                        { unwrap![some <$T>::new(v)] }
-                        #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))] // unsafe
-                        { unwrap![some_guaranteed_or_ub <$T>::new(v)] }
+                        cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
+                            unwrap![some_guaranteed_or_ub <$T>::new(v)]
+                        } _ => { unwrap![some <$T>::new(v)] }}
                     }
                 }
                 // NonNiche, NonValue (has its own rules)

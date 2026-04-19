@@ -2,7 +2,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{Char, Cmp, Slice};
+use crate::{Char, Cmp, Slice, whilst};
 
 /// # Methods for byte slices.
 // TODO: add index
@@ -89,11 +89,9 @@ impl Slice<u8> {
     /// # Features
     /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
     pub const fn copy_array<const N: usize>(dst: &mut [u8; N], src: &[u8; N]) {
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < N { dst[i] = src[i]; i += 1; } }
-
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
+        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+            unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
+        } _ => { whilst! { i in 0..N; { dst[i] = src[i]; }} }}
     }
 
     /// Copies all elements from `src` into a fixed-size array starting at `offset`.
@@ -106,13 +104,11 @@ impl Slice<u8> {
     /// - Falls back to safe element-wise copy otherwise.
     pub const fn copy_array_at<const LEN: usize>(dst: &mut [u8; LEN], src: &[u8], offset: usize) {
         assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
-
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { dst[offset + i] = src[i]; i += 1; } }
-
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
-        // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len()); }
+        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+            // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
+            unsafe {
+                Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len()); }
+        } _ => { whilst! { i in 0..src.len(); { dst[offset + i] = src[i]; }} }}
     }
 
     /// A convenience wrapper over [`Slice::copy_array_at`].
@@ -142,14 +138,10 @@ impl Slice<u8> {
     pub const fn to_array<const LEN: usize>(src: &[u8]) -> [u8; LEN] {
         assert!(src.len() == LEN, "source slice length must match destination array length");
         let mut buf = [0; LEN];
-
-        #[cfg(any(feature = "safe_mem", not(unsafe··)))]
-        { let mut i = 0; while i < src.len() { buf[i] = src[i]; i += 1; } }
-
-        #[cfg(all(not(feature = "safe_mem"), unsafe··))]
-        // SAFETY: Lengths are equal (checked by assert), u8 is Copy, entire range is bounds-checked
-        unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
-
+        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+            // SAFETY: Just checked lengths are equal, u8 is Copy, entire range is bounds-checked
+            unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
+        } _ => { whilst! { i in 0..src.len(); { buf[i] = src[i]; }} }}
         buf
     }
 

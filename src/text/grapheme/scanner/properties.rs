@@ -169,31 +169,30 @@ impl GraphemeProps {
     /// # Features
     /// Uses the `unsafe_layout` feature to transmute instead of match.
     pub const fn gcb_property(self) -> GraphemePropCb {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_layout")))]
-        match self.raw & 0xf {
-            0x00 => GraphemePropCb::None,
-            0x01 => GraphemePropCb::CR,
-            0x02 => GraphemePropCb::Control,
-            0x03 => GraphemePropCb::Extend,
-            0x04 => GraphemePropCb::ExtendedPictographic,
-            0x05 => GraphemePropCb::L,
-            0x06 => GraphemePropCb::LF,
-            0x07 => GraphemePropCb::LV,
-            0x08 => GraphemePropCb::LVT,
-            0x09 => GraphemePropCb::Prepend,
-            0x0a => GraphemePropCb::RegionalIndicator,
-            0x0b => GraphemePropCb::SpacingMark,
-            0x0c => GraphemePropCb::T,
-            0x0d => GraphemePropCb::V,
-            0x0e => GraphemePropCb::Zwj,
-            _ => unreachable!(), // mask ensures only 0x00-0x0E
-        }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
-        {
+        cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_text")) => {
             let raw = self.raw & 0xf;
             // SAFETY: The low nibble of raw repr matches the GraphemePropCb repr.
             unsafe { core::mem::transmute(raw) }
-        }
+        } _ => {
+            match self.raw & 0xf {
+                0x00 => GraphemePropCb::None,
+                0x01 => GraphemePropCb::CR,
+                0x02 => GraphemePropCb::Control,
+                0x03 => GraphemePropCb::Extend,
+                0x04 => GraphemePropCb::ExtendedPictographic,
+                0x05 => GraphemePropCb::L,
+                0x06 => GraphemePropCb::LF,
+                0x07 => GraphemePropCb::LV,
+                0x08 => GraphemePropCb::LVT,
+                0x09 => GraphemePropCb::Prepend,
+                0x0a => GraphemePropCb::RegionalIndicator,
+                0x0b => GraphemePropCb::SpacingMark,
+                0x0c => GraphemePropCb::T,
+                0x0d => GraphemePropCb::V,
+                0x0e => GraphemePropCb::Zwj,
+                _ => unreachable!(), // mask ensures only 0x00-0x0E
+            }
+        }}
     }
 
     /// Returns the Indic_Conjunct_Break property.
@@ -201,20 +200,19 @@ impl GraphemeProps {
     /// # Features
     /// Uses the `unsafe_layout` feature to transmute instead of match.
     pub const fn incb_property(self) -> GraphemePropInCb {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_layout")))]
-        match self.raw & 0x30 {
-            0x00 => GraphemePropInCb::None,
-            0x10 => GraphemePropInCb::Consonant,
-            0x20 => GraphemePropInCb::Extend,
-            0x30 => GraphemePropInCb::Linker,
-            _ => unreachable!(), // mask ensures only these values
-        }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
-        {
+        cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_text")) => {
             let raw = self.raw & 0x30;
             // SAFETY: The selected bits of raw repr matches ththe GraphemePropInCb repr.
             unsafe { core::mem::transmute(raw) }
-        }
+        } _ => {
+            match self.raw & 0x30 {
+                0x00 => GraphemePropInCb::None,
+                0x10 => GraphemePropInCb::Consonant,
+                0x20 => GraphemePropInCb::Extend,
+                0x30 => GraphemePropInCb::Linker,
+                _ => unreachable!(), // mask ensures only these values
+            }
+        }}
     }
 
     /// Returns `true` if this code point is a control code point.

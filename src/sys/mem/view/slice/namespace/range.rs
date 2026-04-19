@@ -272,12 +272,10 @@ impl<T> Slice<T> {
     #[inline(always)]
     pub const fn range_checked(slice: &[T], start: usize, end: usize) -> Option<&[T]> {
         if start <= end && end <= slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
-            return Some(slice.split_at(start).1.split_at(end - start).0);
-
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-            // SAFETY: `start` and `end` are checked to be within bounds and valid
-            Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start).0 })
+            cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
+                // SAFETY: `start` and `end` are checked to be within bounds and valid
+                Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start).0 })
+            } _ => { Some(slice.split_at(start).1.split_at(end - start).0) }}
         } else {
             None
         }
@@ -321,13 +319,12 @@ impl<T> Slice<T> {
     #[inline(always)]
     pub const fn range_mut_checked(slice: &mut [T], start: usize, end: usize) -> Option<&mut [T]> {
         if start <= end && end <= slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
-            return Some(slice.split_at_mut(start).1.split_at_mut(end - start).0);
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-            // SAFETY: `start` and `end` are checked to be within bounds and valid
-            Some(unsafe {
-                slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start).0
-            })
+            cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
+                // SAFETY: `start` and `end` are checked to be within bounds and valid
+                Some(unsafe {
+                    slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start).0
+                })
+            } _ => { Some(slice.split_at_mut(start).1.split_at_mut(end - start).0) }}
         } else {
             None
         }
@@ -373,12 +370,12 @@ impl<T> Slice<T> {
     #[inline(always)]
     pub const fn range_inclusive_checked(slice: &[T], start: usize, end: usize) -> Option<&[T]> {
         if start <= end && end < slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
-            return Some(slice.split_at(start).1.split_at(end - start + 1).0);
-
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-            // SAFETY: `start` and `end` are checked to be within bounds and valid
-            Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start + 1).0 })
+            cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
+                // SAFETY: `start` and `end` are checked to be within bounds and valid
+                Some(unsafe {
+                    slice.split_at_unchecked(start).1.split_at_unchecked(end - start + 1).0
+                })
+            } _ => { Some(slice.split_at(start).1.split_at(end - start + 1).0) }}
         } else {
             None
         }
@@ -426,14 +423,12 @@ impl<T> Slice<T> {
         end: usize,
     ) -> Option<&mut [T]> {
         if start <= end && end < slice.len() {
-            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
-            return Some(slice.split_at_mut(start).1.split_at_mut(end - start + 1).0);
-
-            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-            // SAFETY: `start` and `end` are checked to be within bounds and valid
-            Some(unsafe {
-                slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start + 1).0
-            })
+            cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
+                // SAFETY: `start` and `end` are checked to be within bounds and valid
+                Some(unsafe {
+                    slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start + 1).0
+                })
+            } _ => { Some(slice.split_at_mut(start).1.split_at_mut(end - start + 1).0) }}
         } else {
             None
         }

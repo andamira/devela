@@ -481,15 +481,9 @@ impl CharAscii {
     pub const fn digit(d: u8) -> Option<Self> {
         if d < 10 {
             let sum = {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_hint")))]
-                {
-                    b'0' + d
-                }
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_hint"))]
-                // SAFETY: we've checked d < 10
-                unsafe {
-                    b'0'.unchecked_add(d)
-                }
+                cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_text")) => {
+                    unsafe { b'0'.unchecked_add(d) } // SAFETY: we've checked d < 10
+                } _ => { b'0' + d }}
             };
             Self::from_u8(sum)
         } else {

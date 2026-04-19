@@ -126,12 +126,12 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
         let leftover = self.leftover[i];
         let msg = Slice::range_to(&self.buf[i], len);
 
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        let s = crate::unwrap![ok Str::from_utf8(msg)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: we ensure to always contain valid UTF-8
-        let s = unsafe { Str::from_utf8_unchecked(msg) };
-
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: we ensure to always contain valid UTF-8
+            let s = unsafe { Str::from_utf8_unchecked(msg) };
+        } _ => {
+            let s = crate::unwrap![ok Str::from_utf8(msg)];
+        }}
         guard![self leave];
         Some((s, leftover))
     }
@@ -151,12 +151,12 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
             let len = self.lens[i];
             let leftover = self.leftover[i];
 
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            let s = crate::unwrap![ok Str::from_utf8(&msg[..len])];
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            // SAFETY: we ensure to always contain valid UTF-8
-            let s = unsafe { Str::from_utf8_unchecked(&msg[..len]) };
-
+            cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                // SAFETY: we ensure to always contain valid UTF-8
+                let s = unsafe { Str::from_utf8_unchecked(&msg[..len]) };
+            } _ => {
+                let s = crate::unwrap![ok Str::from_utf8(&msg[..len])];
+            }}
             f(i, s, leftover);
         }
         guard![self leave];

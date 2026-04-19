@@ -62,12 +62,9 @@ impl<'a> CharIter<'a, &str> {
     pub const fn next_char(&mut self) -> Option<char> {
         is![self.pos >= self.bytes.len(), return None];
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
-        let ch = {
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            { crate::unwrap![some? char::from_u32(cp)] }
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            unsafe { char::from_u32_unchecked(cp) }
-        };
+        let ch = { cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            unsafe { char::from_u32_unchecked(cp) } // SAFETY: we come from &str so it's valid
+        } _ => { crate::unwrap![some? char::from_u32(cp)] }}};
         self.pos += len;
         Some(ch)
     }
@@ -87,18 +84,11 @@ impl<'a> CharIter<'a, &str> {
     /// ```
     /// # Features
     /// Uses the `unsafe_niche` feature to skip validation checks.
-    #[must_use]
+    #[must_use] #[rustfmt::skip]
     pub const fn next_char7(&mut self) -> Option<char7> {
         is![self.pos >= self.bytes.len(), return None];
         let byte = self.bytes[self.pos];
-        is![
-            byte.is_ascii(),
-            {
-                self.pos += 1;
-                Some(char7::new_unchecked(byte))
-            },
-            None
-        ]
+        is![byte.is_ascii(), { self.pos += 1; Some(char7::new_unchecked(byte)) }, None]
     }
 
     /// Returns the next 8-bit Unicode scalar.

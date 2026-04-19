@@ -40,12 +40,9 @@ macro_rules! size_of_expr {
             if true {
                 []
             } else {
-                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_hint")))]
-                loop {}
-                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_hint"))]
-                unsafe {
-                    $crate::unreachable_unchecked()
-                }
+                cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_mem")) => {
+                    unsafe { $crate::unreachable_unchecked() }
+                } _ => { loop {} }}
 
                 #[expect(unreachable_code, reason = "avoid evaluating this branch")]
                 {

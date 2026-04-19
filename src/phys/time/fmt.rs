@@ -93,7 +93,6 @@ impl Timecode {
         let m = Digits(m as u32).digits10_str(2);
         let s = Digits(s as u32).digits10_str(2);
         let ms = Digits(ms as u32).digits10_str(3);
-
         let mut buf = [0; 12];
         let mut buf_len = 12;
         if h > 0 {
@@ -103,15 +102,10 @@ impl Timecode {
             buf_len = 9;
             let _str = format_buf![&mut buf, "{m}:{s}.{ms}"];
         }
-
-        #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)];
-
-        #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
-        // SAFETY: the buffer contains only ASCII characters.
-        unsafe {
-            StringU8::<12>::from_array_nleft_unchecked(buf, buf_len)
-        }
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_time")) => {
+            // SAFETY: the buffer contains only ASCII characters.
+            unsafe { StringU8::<12>::from_array_nleft_unchecked(buf, buf_len) }
+        } _ => { crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)] }}
     }
 
     /// Returns the time code, up to seconds, as `001s 012ms 012µs 012ns`.
@@ -141,6 +135,9 @@ impl Timecode {
     /// Returns the time code, up to seconds, as `001s 012ms 012µs 012345ns`.
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     // -> 208 bits
     // TODO: make const, replace format_buf.
     // TODO: also make a version that writes bytes on provided buffer
@@ -150,7 +147,6 @@ impl Timecode {
         let ms_str = Digits(ms as u32).digits10_str(3);
         let us_str = Digits(us as u32).digits10_str(3);
         let ns_str = Digits(ns as u32).digits10_str(3);
-
         let mut buf = [0; 23];
         let mut buf_len = 23; // = 18 + 3digits + 1name(s) + 1space
         if s > 0 {
@@ -165,15 +161,10 @@ impl Timecode {
             buf_len = 5; // = 0 + 3digits + 2name(ns)
             let _ = format_buf![&mut buf, "{ns_str}ns"];
         }
-
-        #[cfg(any(feature = "safe_time", not(feature = "unsafe_str")))]
-        return crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)];
-
-        #[cfg(all(not(feature = "safe_time"), feature = "unsafe_str"))]
-        // SAFETY: the buffer contains only ASCII characters.
-        unsafe {
-            StringU8::<23>::from_array_nleft_unchecked(buf, buf_len)
-        }
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: the buffer contains only ASCII characters.
+            unsafe { StringU8::<23>::from_array_nleft_unchecked(buf, buf_len) }
+        } _ => { crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)] }}
     }
 }
 

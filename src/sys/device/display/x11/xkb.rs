@@ -266,11 +266,14 @@ impl XkbState {
         // try to get Unicode (ñ, ç, á, € …)
         let utf32 = unsafe { raw::xkb_state_key_get_utf32(self.state, keycode as u32) };
         if utf32 != 0 {
-            #[cfg(any(feature = "safe_sys", not(feature = "unsafe_str")))]
-            return Key::Char(char::from_u32(utf32).expect("valid unicode scalar"));
+            cfg_select! { all(feature = "unsafe_str", not(feature = "safe_sys")) => {
+                // SAFETY: we trust the fn raw::xkb_state_key_get_utf32
+                unsafe { return Key::Char(char::from_u32_unchecked(utf32)); }
+            } _ => {
+                Key::Char(char::from_u32(utf32).expect("valid unicode scalar"))
 
-            #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_str"))]
-            unsafe { return Key::Char(char::from_u32_unchecked(utf32)); }
+            }}
+
         }
         // fallback (dead keys etc.)
         Key::Unknown

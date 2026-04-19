@@ -144,13 +144,10 @@ impl Char<&[u8]> {
     /// Uses the `unsafe_str` feature to skip duplicated validation checks.
     #[must_use]
     pub const fn to_char(self, index: usize) -> Option<(char, usize)> {
-        let (cp, len) = unwrap![some? self.to_scalar(index)];
-
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return Some((unwrap![some? char::from_u32(cp)], len));
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        Some((unsafe { char::from_u32_unchecked(cp) }, len))
+        let (cp, len) = unwrap![some? self.to_scalar(index)]; // check cp is a valid scalar
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            Some((unsafe { char::from_u32_unchecked(cp) }, len)) // SAFETY: we just checked
+        } _ => { Some((unwrap![some? char::from_u32(cp)], len)) }}
     }
 
     /// Decodes a UTF-8 scalar leniently at `index`, validating only the final Unicode scalar.

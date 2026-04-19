@@ -181,23 +181,20 @@ macro_rules! impl_ext_slice {
 
             fn slice_into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
                 if self.len() >= N {
-                    #[cfg(any(feature = "safe_mem", not(feature = "unsafe_array")))]
-                    {
+                    cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {
+                        use crate::MaybeUninit;
+                        let mut array: [MaybeUninit<U>; N] =
+                            unsafe { MaybeUninit::uninit().assume_init() };
+                        for i in 0..N { array[i] = MaybeUninit::new(U::from(self[i].clone())); }
+                        // SAFETY: we just made sure to initialize every array element
+                        array.map(|x| unsafe { x.assume_init() })
+                    } _ => {
                         let mut array: [U; N] = crate::array_from_fn(|i| U::from(self[i].clone()));
                         for (i, item) in self.iter().take(N).enumerate() {
                             array[i] = U::from(item.clone());
                         }
                         array
-                    }
-                    // SAFETY: we make sure of initializing every array element
-                    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_array"))]
-                    {
-                        use crate::MaybeUninit;
-                        let mut array: [MaybeUninit<U>; N] =
-                            unsafe { MaybeUninit::uninit().assume_init() };
-                        for i in 0..N { array[i] = MaybeUninit::new(U::from(self[i].clone())); }
-                        array.map(|x| unsafe { x.assume_init() })
-                    }
+                    }}
                 } else {
                     panic!("Slice length is less than the requested array size")
                 }

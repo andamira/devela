@@ -121,12 +121,10 @@ macro_rules! impl_non_value {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn default() -> Self {
-                    #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                    return $ne::new($IP::default()).unwrap();
-
-                    #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                    // SAFETY: the default primitive value is always 0, and their MAX is never 0.
-                    unsafe { return $ne::new_unchecked($IP::default()); }
+                    cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
+                        // SAFETY: the default primitive value is always 0, and its MAX is never 0
+                        unsafe { return $ne::new_unchecked($IP::default()); }
+                    } _ => { $ne::new($IP::default()).unwrap() }}
                 }
             }
             // ConstInit for NonValue*
@@ -204,26 +202,21 @@ macro_rules! impl_non_value {
                             $crate::is![value == V, $crate::is![V == $IP::MIN, V + 1, V - 1], value];
                         transformed ^ V
                     };
-
-                    #[cfg(any(feature = "safe_num",
-                        not(feature = "unsafe_niche")))]
-                    { Self($crate::unwrap![some $crate::$n0::new(transformed)]) }
-
-                    #[cfg(all(not(feature = "safe_num"),
-                        feature = "unsafe_niche"))]
-                    // SAFETY: We make sure the transformed value != 0
-                    unsafe {
-                        const { // compile-time verification:
-                            if $IP::MIN == 0 && V == $IP::MAX {
-                                assert!(!(V - 1) != 0); // unsigned MAX case
-                            } else if V == $IP::MIN {
-                                assert!((V + 1) ^ V != 0); // signed MIN case
-                            } else {
-                                assert!((V - 1) ^ V != 0); // all others
+                    cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
+                        // SAFETY: We make sure the transformed value != 0
+                        unsafe {
+                            const { // compile-time verification:
+                                if $IP::MIN == 0 && V == $IP::MAX {
+                                    assert!(!(V - 1) != 0); // unsigned MAX case
+                                } else if V == $IP::MIN {
+                                    assert!((V + 1) ^ V != 0); // signed MIN case
+                                } else {
+                                    assert!((V - 1) ^ V != 0); // all others
+                                }
                             }
+                            Self($crate::$n0::new_unchecked(transformed))
                         }
-                        Self($crate::$n0::new_unchecked(transformed))
-                    }
+                    } _ => { Self($crate::unwrap![some $crate::$n0::new(transformed)]) }}
                 }
 
                 #[doc = "Returns a `" $name "` if the given `value`" " if it is not equal to `V`."]
@@ -370,14 +363,10 @@ macro_rules! impl_non_value {
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn try_from(value: $IP) -> Result<Self, Self::Error> {
                     // We generate a TryFromIntError by intentionally causing a failed conversion.
-                    #[cfg(any(feature = "safe_num",
-                        not(feature = "unsafe_niche")))]
-                    return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
-
-                    #[cfg(all(not(feature = "safe_num"),
-                        feature = "unsafe_niche"))]
-                    return Self::new(value)
-                        .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
+                    cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
+                    Self::new(value).ok_or_else(||
+                        unsafe { i8::try_from(255_u8).unwrap_err_unchecked() })
+                    } _ => { Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err()) }}
                 }
             }
         }

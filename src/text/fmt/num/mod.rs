@@ -7,6 +7,7 @@
 mod tests;
 
 // hidden implementation helpers
+// mod impls; // __fmt_num_impl_float, __fmt_num_impl_int WIP
 mod float; // __impl_fmt_num_float! TEMP
 mod int; // _impl_fmt_num_int! TEMP
 

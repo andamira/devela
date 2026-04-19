@@ -163,10 +163,9 @@ impl Str {
     /// [`join!`][crate::join].
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
-        #[cfg(any(feature = "safe_text", not(unsafe··)))]
-        { unwrap![ok ::core::str::from_utf8(bytes)] }
-        #[cfg(all(not(feature = "safe_text"), unsafe··))]
-        unsafe { ::core::str::from_utf8_unchecked(bytes) }
+        cfg_select! { all(unsafe··, not(feature = "safe_text")) => {
+            unsafe { ::core::str::from_utf8_unchecked(bytes) }
+        } _ => { unwrap![ok ::core::str::from_utf8(bytes)] }}
     }
 }
 
@@ -232,11 +231,10 @@ impl Str {
             slice![mut buffer, index, ..index + s_len].copy_from_slice(s_bytes);
             index += s_len;
         }}
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return unwrap![ok Str::from_utf8(slice![buffer, ..index])];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: since `string` is a valid &str, checks are unneeded.
-        sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }}
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: since `string` is a valid &str, checks are unneeded.
+            unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }
+        } _ => { unwrap![ok Str::from_utf8(slice![buffer, ..index])] }}
     }
 
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
@@ -286,11 +284,10 @@ impl Str {
                 is![index == 0, break, index -= 1];
                 separator_turn = !separator_turn;
             }
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return unwrap![ok Str::from_utf8(slice![buffer, ..length])];
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            // SAFETY: only ASCII bytes are written
-            sf! { unsafe { Str::from_utf8_unchecked(slice![buffer, ..length]) }}
+            cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                // SAFETY: only ASCII bytes are written
+                unsafe { Str::from_utf8_unchecked(slice![buffer, ..length]) }
+            } _ => { unwrap![ok Str::from_utf8(slice![buffer, ..length])] }}
         }
     }
 

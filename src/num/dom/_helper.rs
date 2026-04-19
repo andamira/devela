@@ -1,7 +1,8 @@
 // devela::num::dom::_helper
 //
-//! Defines: `_num_dom_impl_arith`, `_num_dom_upcasted_mul_add`.
+//! Defines: `_num_dom_impl_arith`, `_num_dom_upcast_arith`, `_num_dom_upcasted_mul_add`.
 //
+// IMPROVE:MAYBE try to unify _num_dom_upcast_arith! with _num_dom_upcasted_mul_add!.
 
 #![allow(unused, non_camel_case_types)]
 
@@ -138,11 +139,10 @@ macro_rules! _num_dom_upcast_arith· {
     // this is used for checked versions
     (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                // SAFETY: can't overflow if upcasted
+                unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+            } _ => { $lhs $op $rhs }}
 
         } else { // otherwise do the checked operation:
             if let Some(result) = $lhs.[<checked_ $fn>]($rhs) {
@@ -153,11 +153,10 @@ macro_rules! _num_dom_upcast_arith· {
     // this is used for checked versions that don't need to calculate cycles
     (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                // SAFETY: can't overflow if upcasted
+                unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+            } _ => { $lhs $op $rhs }}
 
         } else { // otherwise reduce each operand before the checked operation:
             if let Some(result) = ($lhs % $modulus).[<checked_ $fn>]($rhs % $modulus) {
@@ -168,12 +167,10 @@ macro_rules! _num_dom_upcast_arith· {
     // this is used for unchecked versions that don't need to calculate cycles
     (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs $op $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
-
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                // SAFETY: can't overflow if upcasted
+                unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+            } _ => { $lhs $op $rhs }}
         } else { // otherwise reduce each operand before the unchecked operation:
             ($lhs % $modulus) $op ($rhs % $modulus)
         }
@@ -205,7 +202,6 @@ pub use _num_dom_upcast_arith· as _num_dom_upcast_arith;
 /// # Features
 /// It makes use of `unsafe_hint` to optimize arithmetic ops when able to upcast.
 //
-// TODO IMPROVE: try to unify with _num_dom_upcast_arith!
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
@@ -215,11 +211,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     // if we've not upcasted, do checked operation and return err on overflow
     add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs + $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_add($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_add($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs + $rhs }}
         } else {
             if let Some(sum) = $lhs.checked_add($rhs) { sum }
             else { return Err($crate::IntError::Overflow(None)); }
@@ -227,11 +221,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     };
     (mul_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs * $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_mul($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_mul($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs * $rhs }}
         } else {
             if let Some(product) = $lhs.checked_mul($rhs) { product }
             else { return Err($crate::IntError::Overflow(None)); }
@@ -244,11 +236,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     // then do checked operation and return err on overflow
     reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs + $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_add($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_add($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs * $rhs }}
         } else {
             // reduce each sumand before checked operation
             if let Some(sum) = ($lhs % $modulus).checked_add($rhs % $modulus) { sum }
@@ -259,11 +249,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     // if we've not upcasted, just reduce the sumands with the given $modulus
     reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs + $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_add($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_add($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs + $rhs }}
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)
@@ -271,11 +259,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     };
     (reduced_mul_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs * $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_mul($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_mul($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs * $rhs }}
         } else {
             // reduce each factor before checked operation
             if let Some(product) = ($lhs % $modulus).checked_mul($rhs % $modulus) { product }
@@ -284,11 +270,9 @@ macro_rules! _num_dom_upcasted_mul_add· {
     };
     (reduced_mul($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
         if $crate::cif!(diff($ba, $up)) {
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
-            { $lhs * $rhs }
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
-            // SAFETY: can't overflow if upcasted
-            unsafe { $lhs.unchecked_mul($rhs) }
+            cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_num")) => {
+                unsafe { $lhs.unchecked_mul($rhs) } // SAFETY: can't overflow if upcasted
+            } _ => { $lhs * $rhs }}
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)

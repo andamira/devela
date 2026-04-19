@@ -254,12 +254,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-        return slice![mut &mut self.arr, ..len];
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-        // SAFETY: we ensure to uphold a valid length
-        unsafe { slice![mut_unchecked &mut self.arr, ..len] }
+        cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
+            // SAFETY: we ensure to uphold a valid length
+            unsafe { slice![mut_unchecked &mut self.arr, ..len] }
+        } _ => { slice![mut &mut self.arr, ..len] }}
     }
 
     /// Returns the inner string slice.
@@ -267,12 +265,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[must_use]
     pub const fn as_str(&self) -> &str {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-        return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-        // SAFETY: we ensure to contain only valid UTF-8
-        unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
+        cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
+            // SAFETY: we ensure to contain only valid UTF-8
+            unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
+        } _ => { unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"] }}
     }
 
     /// Returns the mutable inner string slice.

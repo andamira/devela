@@ -2,6 +2,12 @@
 //! ```cargo
 //! [dependencies]
 //! devela = { path = "../..", features = ["std", "_docs_examples"]}
+//! [features]
+//! default = ["std", "_docs_examples"]
+//! # default = ["std", "_docs_examples", "unsafe_layout"]
+//! _docs_examples = []
+//! unsafe_layout = []
+//! std = []
 //! ```
 // WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
 //
@@ -136,41 +142,36 @@ impl<T, F: FnOnce(T, &S), S> ScopeGuard<T, F, S> {
 impl<T, F: FnOnce(T, &S), S> Deref for ScopeGuard<T, F, S> {
     type Target = T;
     fn deref(&self) -> &Self::Target {
-        #[cfg(any(feature = "safe_code", not(feature = "unsafe_layout")))]
-        { self.value.as_ref().unwrap() }
-        #[cfg(all(not(feature = "safe_code"), feature = "unsafe_layout"))]
-        // SAFETY: `value` is always `Some` until dropped
-        unsafe { self.value.as_ref().unwrap_unchecked() }
+        cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
+            // SAFETY: `value` is always `Some` until dropped
+            unsafe { self.value.as_ref().unwrap_unchecked() }
+        } _ => { self.value.as_ref().unwrap() }}
     }
 }
 #[rustfmt::skip]
 impl<T, F: FnOnce(T, &S), S> DerefMut for ScopeGuard<T, F, S> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        #[cfg(any(feature = "safe_code", not(feature = "unsafe_layout")))]
-        { self.value.as_mut().unwrap() }
-        #[cfg(all(not(feature = "safe_code"), feature = "unsafe_layout"))]
-        // SAFETY: `value` is always `Some` until dropped
-        unsafe { self.value.as_mut().unwrap_unchecked() }
+        cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
+            // SAFETY: `value` is always `Some` until dropped
+            unsafe { self.value.as_mut().unwrap_unchecked() }
+        } _ => { self.value.as_mut().unwrap() }}
     }
 }
 impl<T, F: FnOnce(T, &S), S> Drop for ScopeGuard<T, F, S> {
     /// On drop, invokes the callback with the guarded value and a reference to the current state.
     fn drop(&mut self) {
         let (value, callback) = {
-            #[cfg(any(feature = "safe_code", not(feature = "unsafe_layout")))]
-            {
-                let value = self.value.take().unwrap();
-                let callback = self.callback.take().unwrap();
-                (value, callback)
-            }
-            #[cfg(all(not(feature = "safe_code"), feature = "unsafe_layout"))]
-            {
+            cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
                 // SAFETY: `value` is always `Some` until dropped
                 let value = unsafe { self.value.take().unwrap_unchecked() };
                 // SAFETY: `callback` is always `Some` until dropped
                 let callback = unsafe { self.callback.take().unwrap_unchecked() };
                 (value, callback)
-            }
+            } _ => {
+                let value = self.value.take().unwrap();
+                let callback = self.callback.take().unwrap();
+                (value, callback)
+            }}
         };
         callback(value, &self.state);
     }

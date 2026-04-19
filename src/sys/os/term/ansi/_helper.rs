@@ -27,12 +27,12 @@ macro_rules! __ansi_consts {
             $(#[$DOCS])*
             #[must_use]
             $vis const fn $fn($($param: $param_ty),*) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                { $crate::unwrap![ok ::core::str::from_utf8(Ansi::[<$fn _B>]($($param),*))] }
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-                // SAFETY: ANSI codes are all valid UTF-8
-                unsafe { $crate::Str::from_utf8_unchecked(Ansi::[<$fn _B>]($($param),*)) }
+                cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                    // SAFETY: ANSI codes are all valid UTF-8
+                    unsafe { $crate::Str::from_utf8_unchecked(Ansi::[<$fn _B>]($($param),*)) }
+                } _ => {
+                    $crate::unwrap![ok ::core::str::from_utf8(Ansi::[<$fn _B>]($($param),*))]
+                }}
             }
         )*
     }};
