@@ -2,7 +2,7 @@
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;
-use crate::{Char, Cmp, Slice, whilst};
+use crate::{Char, Cmp, Slice};
 
 /// # Methods for byte slices.
 // TODO: add index
@@ -91,7 +91,9 @@ impl Slice<u8> {
     pub const fn copy_array<const N: usize>(dst: &mut [u8; N], src: &[u8; N]) {
         cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
             unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
-        } _ => { whilst! { i in 0..N; { dst[i] = src[i]; }} }}
+        } _ => {
+            crate::whilst! { i in 0..N; { dst[i] = src[i]; }}
+        }}
     }
 
     /// Copies all elements from `src` into a fixed-size array starting at `offset`.
@@ -107,8 +109,11 @@ impl Slice<u8> {
         cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
             // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
             unsafe {
-                Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len()); }
-        } _ => { whilst! { i in 0..src.len(); { dst[offset + i] = src[i]; }} }}
+                Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len());
+            }
+        } _ => {
+            crate::whilst! { i in 0..src.len(); { dst[offset + i] = src[i]; }}
+        }}
     }
 
     /// A convenience wrapper over [`Slice::copy_array_at`].
@@ -141,7 +146,9 @@ impl Slice<u8> {
         cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
             // SAFETY: Just checked lengths are equal, u8 is Copy, entire range is bounds-checked
             unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
-        } _ => { whilst! { i in 0..src.len(); { buf[i] = src[i]; }} }}
+        } _ => {
+            crate::whilst! { i in 0..src.len(); { buf[i] = src[i]; }}
+        }}
         buf
     }
 

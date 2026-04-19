@@ -1200,25 +1200,24 @@ macro_rules! impl_destaque {
                 if self.is_empty() || LEN > self.len() as usize || LEN == 0 {
                     None
                 } else {
-                    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-                    let arr = {
-                        let mut unarr: [MaybeUninit<T>; LEN] =
-                            // SAFETY: we will initialize all the elements
-                            unsafe { MaybeUninit::uninit().assume_init() };
-                        for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
+                    cfg_select! { all(feature = "unsafe_array", not(feature = "safe_data")) => {
+                        let arr = {
+                            let mut unarr: [MaybeUninit<T>; LEN] =
+                                // SAFETY: we will initialize all the elements
+                                unsafe { MaybeUninit::uninit().assume_init() };
+                            for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
+                                let index = (self.front as usize + n) % CAP;
+                                let _ = i.write(self.data[index].clone());
+                            }
+                            // SAFETY: we've initialized all the elements
+                            unsafe { Mem::transmute_copy::<_, [T; LEN]>(&unarr) }
+                        };
+                    } _ => {
+                        let arr = array_from_fn(|n| {
                             let index = (self.front as usize + n) % CAP;
-                            let _ = i.write(self.data[index].clone());
-                        }
-                        // SAFETY: we've initialized all the elements
-                        unsafe { Mem::transmute_copy::<_, [T; LEN]>(&unarr) }
-                    };
-
-                    #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
-                    let arr = array_from_fn(|n| {
-                        let index = (self.front as usize + n) % CAP;
-                        self.data[index].clone()
-                    });
-
+                            self.data[index].clone()
+                        });
+                    }}
                     Some(arr)
                 }
             }

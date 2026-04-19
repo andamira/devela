@@ -116,7 +116,9 @@ impl<T> Slice<T> {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                     // SAFETY: `n` is checked to be within bounds and valid
                     return Some(unsafe { slice.split_at_unchecked(index).1 });
-                } _ => { Some(slice.split_at(index).1) }}
+                } _ => {
+                    Some(slice.split_at(index).1)
+                }}
             }
             None => None,
         }
@@ -164,7 +166,9 @@ impl<T> Slice<T> {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                     // SAFETY: `n` is checked to be within bounds and valid
                     Some(unsafe { slice.split_at_mut_unchecked(index).1 })
-                } _ => { Some(slice.split_at_mut(index).1) }}
+                } _ => {
+                    Some(slice.split_at_mut(index).1)
+                }}
             }
             None => None,
         }
@@ -214,7 +218,9 @@ impl<T> Slice<T> {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                     // SAFETY: `n` is checked to be within bounds and valid
                     Some(unsafe { slice.split_at_unchecked(index).0 })
-                } _ => { Some(slice.split_at(index).0) }}
+                } _ => {
+                    Some(slice.split_at(index).0)
+                }}
             }
             None => None,
         }
@@ -262,7 +268,9 @@ impl<T> Slice<T> {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                     // SAFETY: `n` is checked to be within bounds and valid
                     Some(unsafe { slice.split_at_mut_unchecked(index).0 })
-                } _ => { Some(slice.split_at_mut(index).0) }}
+                } _ => {
+                    Some(slice.split_at_mut(index).0)
+                }}
             }
             None => None,
         }

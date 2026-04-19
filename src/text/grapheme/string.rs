@@ -48,12 +48,10 @@ impl GraphemeString {
     // /// Makes use of the `unsafe_str` feature if enabled.
     // #[must_use]
     // pub fn from_char(c: char) -> GraphemeString {
-    //     #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-    //     return from_utf8(&crate::Char(c).to_utf8_bytes()).unwrap().into();
-    //     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    //     unsafe {
-    //         from_utf8_unchecked(&crate::Char(c).to_utf8_bytes()).into()
-    //     }
+    //     cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+    //         // SAFETY:
+    //         unsafe { from_utf8_unchecked(&crate::Char(c).to_utf8_bytes()).into() }
+    //     } _ => { from_utf8(&crate::Char(c).to_utf8_bytes()).unwrap().into() }}
     // }
 
     //

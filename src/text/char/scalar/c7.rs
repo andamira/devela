@@ -19,10 +19,11 @@ impl char7 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u8) -> char7 {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
-        if let Some(c) = NonExtremeU8::new(value) { char7(c) } else { unreachable![] }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-        unsafe { char7(NonExtremeU8::new_unchecked(value)) }
+        cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_text")) => {
+            unsafe { char7(NonExtremeU8::new_unchecked(value)) }
+        } _ => {
+            if let Some(c) = NonExtremeU8::new(value) { char7(c) } else { unreachable![] }
+        }}
     }
 
     /* constants */
@@ -89,10 +90,11 @@ impl char7 {
     /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
     pub const fn to_char_ascii(c: char7) -> CharAscii {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return if let Some(c) = CharAscii::from_u8(c.0.get()) { c } else { unreachable!() };
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        unsafe { CharAscii::from_u8_unchecked(c.0.get()) }
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            unsafe { CharAscii::from_u8_unchecked(c.0.get()) }
+        } _ => {
+            if let Some(c) = CharAscii::from_u8(c.0.get()) { c } else { unreachable!() }
+        }}
     }
 
     /// Converts this `char7` to `char8`.
@@ -242,12 +244,12 @@ impl char7 {
     pub const fn write_str<'s, const N: usize>(chars: &[char7; N], out: &'s mut [u8; N])
         -> &'s str {
         whilst! { i in 0..N; { out[i] = chars[i].to_byte(); }}
-
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return crate::unwrap![ok Str::from_utf8(out)];
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: all bytes are ASCII by construction
-        unsafe { Str::from_utf8_unchecked(out) }
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: all bytes are ASCII by construction
+            unsafe { Str::from_utf8_unchecked(out) }
+        } _ => {
+            crate::unwrap![ok Str::from_utf8(out)]
+        }}
     }
 
     /* ASCII normalization / comparison */

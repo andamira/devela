@@ -221,29 +221,26 @@ impl Digits<u16> {
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
         let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
-
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
-            ::from_array_nright(self.digits10(), width)];
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: the bytes are valid UTF-8
-        unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
-            ::from_array_nright_unchecked(self.digits10(), width)}
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: the bytes are valid UTF-8
+            unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
+                ::from_array_nright_unchecked(self.digits10(), width)}
+        } _ => {
+            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
+                ::from_array_nright(self.digits10(), width)]
+        }}
     }
     #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
         let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
-
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
-            ::from_array_nright(self.digits16(), width)];
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: the bytes are valid UTF-8
-        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
-            ::from_array_nright_unchecked(self.digits16(), width)
-        }
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: the bytes are valid UTF-8
+            unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+                ::from_array_nright_unchecked(self.digits16(), width) }
+        } _ => {
+            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
+                ::from_array_nright(self.digits16(), width)]
+        }}
     }
 
     /// Converts a three-digit decimal number to the corresponding `3` ASCII digits.

@@ -42,8 +42,9 @@ macro_rules! size_of_expr {
             } else {
                 cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_mem")) => {
                     unsafe { $crate::unreachable_unchecked() }
-                } _ => { loop {} }}
-
+                } _ => {
+                    loop {}
+                }}
                 #[expect(unreachable_code, reason = "avoid evaluating this branch")]
                 {
                     [|| [$expr; 0]; 0]

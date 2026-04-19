@@ -275,7 +275,9 @@ impl<T> Slice<T> {
             cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                 // SAFETY: `start` and `end` are checked to be within bounds and valid
                 Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start).0 })
-            } _ => { Some(slice.split_at(start).1.split_at(end - start).0) }}
+            } _ => {
+                Some(slice.split_at(start).1.split_at(end - start).0)
+            }}
         } else {
             None
         }
@@ -324,7 +326,9 @@ impl<T> Slice<T> {
                 Some(unsafe {
                     slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start).0
                 })
-            } _ => { Some(slice.split_at_mut(start).1.split_at_mut(end - start).0) }}
+            } _ => {
+                Some(slice.split_at_mut(start).1.split_at_mut(end - start).0)
+            }}
         } else {
             None
         }
@@ -375,7 +379,9 @@ impl<T> Slice<T> {
                 Some(unsafe {
                     slice.split_at_unchecked(start).1.split_at_unchecked(end - start + 1).0
                 })
-            } _ => { Some(slice.split_at(start).1.split_at(end - start + 1).0) }}
+            } _ => {
+                Some(slice.split_at(start).1.split_at(end - start + 1).0)
+            }}
         } else {
             None
         }
@@ -428,7 +434,9 @@ impl<T> Slice<T> {
                 Some(unsafe {
                     slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start + 1).0
                 })
-            } _ => { Some(slice.split_at_mut(start).1.split_at_mut(end - start + 1).0) }}
+            } _ => {
+                Some(slice.split_at_mut(start).1.split_at_mut(end - start + 1).0)
+            }}
         } else {
             None
         }

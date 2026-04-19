@@ -51,13 +51,11 @@ macro_rules! impl_charu {
             /* private helper fns */
 
             const fn new_unchecked(value: u32) -> $name {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
-                return $name(unwrap![some $inner::new(value)]);
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-                unsafe {
-                    $name($inner::new_unchecked(value))
-                }
+                cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_text")) => {
+                    unsafe { $name($inner::new_unchecked(value)) }
+                } _ => {
+                    $name(unwrap![some $inner::new(value)])
+                }}
             }
 
             /* constants */
@@ -333,14 +331,9 @@ macro_rules! impl_charu {
                        | ((bytes[1] as u32) << 16)
                        | ((bytes[2] as u32) <<  8)
                        |  (bytes[3] as u32),
-                    _ => {
-                        #[cfg(any(feature = "safe_text", not(feature = "unsafe_hint")))]
-                        unreachable!();
-                        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_hint"))]
-                        unsafe {
-                            ::core::hint::unreachable_unchecked()
-                        }
-                    }
+                    _ => cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_text")) => {
+                        unsafe { ::core::hint::unreachable_unchecked() } }
+                        _ => { unreachable!() }}
                 };
                 Self::new_unchecked(scalar)
             }
@@ -361,12 +354,13 @@ macro_rules! impl_charu {
             #[must_use]
             #[inline(always)]
             pub const fn to_char(self) -> char {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return unwrap![some char::from_u32(self.to_scalar())];
+                cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                    // SAFETY: charu* always has valid UTF-8 in 0..len.
+                    return unsafe { char::from_u32_unchecked(self.to_scalar()) };
+                } _ => {
+                    unwrap![some char::from_u32(self.to_scalar())]
+                }}
 
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-                // SAFETY: charu* always has valid UTF-8 in 0..len.
-                return unsafe { char::from_u32_unchecked(self.to_scalar()) };
             }
 
             #[doc = "Converts this `" $name "` to a `u32` Unicode scalar value."]
@@ -395,15 +389,12 @@ macro_rules! impl_charu {
             pub const fn as_str_into<'a>(&self, buf: &'a mut [u8; 4]) -> &'a str {
                 *buf = self.to_utf8_bytes();
                 let len = self.len_utf8();
-
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return unwrap![ok Str::from_utf8(slice![mut buf, ..len])];
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-                // SAFETY: charu always contains valid UTF-8
-                unsafe {
-                    Str::from_utf8_unchecked(slice![mut buf, ..len])
-                }
+                cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                    // SAFETY: charu always contains valid UTF-8
+                    unsafe { Str::from_utf8_unchecked(slice![mut buf, ..len]) }
+                } _ => {
+                    unwrap![ok Str::from_utf8(slice![mut buf, ..len])]
+                }}
             }
 
             /// Copy UTF-8 bytes into caller buffer and return a slice of the valid bytes.

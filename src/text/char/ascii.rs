@@ -483,7 +483,9 @@ impl CharAscii {
             let sum = {
                 cfg_select! { all(feature = "unsafe_hint", not(feature = "safe_text")) => {
                     unsafe { b'0'.unchecked_add(d) } // SAFETY: we've checked d < 10
-                } _ => { b'0' + d }}
+                } _ => {
+                    b'0' + d
+                }}
             };
             Self::from_u8(sum)
         } else {

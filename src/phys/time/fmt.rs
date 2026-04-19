@@ -105,7 +105,9 @@ impl Timecode {
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_time")) => {
             // SAFETY: the buffer contains only ASCII characters.
             unsafe { StringU8::<12>::from_array_nleft_unchecked(buf, buf_len) }
-        } _ => { crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)] }}
+        } _ => {
+            crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)]
+        }}
     }
 
     /// Returns the time code, up to seconds, as `001s 012ms 012µs 012ns`.
@@ -164,7 +166,9 @@ impl Timecode {
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
             // SAFETY: the buffer contains only ASCII characters.
             unsafe { StringU8::<23>::from_array_nleft_unchecked(buf, buf_len) }
-        } _ => { crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)] }}
+        } _ => {
+            crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)]
+        }}
     }
 }
 

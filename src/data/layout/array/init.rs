@@ -153,54 +153,59 @@ macro_rules! init_array {
 
     // initialize an array in the stack
     init [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init [$T; $LEN], $init] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init [$T; $LEN], $init] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init [$T; $LEN], $init]
+        } _ => {
+            $crate::init_array![safe_init [$T; $LEN], $init]
+        }}
     }};
     (
     // initialize an array the stack, compile-time friendly.
     // $copiable is only used by the safe version as temporary placeholder.
     const_fn
     [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $const_fn:expr, $copiable:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_const_fn [$T; $LEN], $const_fn, $copiable] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_const_fn [$T; $LEN], $const_fn ] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_const_fn [$T; $LEN], $const_fn ]
+        } _ => {
+            $crate::init_array![safe_const_fn [$T; $LEN], $const_fn, $copiable]
+        }}
     }};
     (
     // initialize an array in the heap
     init_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init_heap [$T; $LEN], $init] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init_heap [$T; $LEN], $init] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init_heap [$T; $LEN], $init]
+        } _ => {
+            $crate::init_array![safe_init_heap [$T; $LEN], $init]
+        }}
     }};
     (
 
     // initialize an array in the stack by cloning $clonable
     clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init [$T; $LEN], |_| $clonable.clone()] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init [$T; $LEN], |_| $clonable.clone()] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init [$T; $LEN], |_| $clonable.clone()]
+        } _ => {
+            $crate::init_array![safe_init [$T; $LEN], |_| $clonable.clone()]
+        }}
     }};
     (
     // initialize an array in the heap, by cloning $clonable
     clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init_heap [$T; $LEN], |_| $clonable.clone()] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()]
+        } _ => {
+            $crate::init_array![safe_init_heap [$T; $LEN], |_| $clonable.clone()]
+        }}
     }};
     (
     // initialize an array in the stack with $T: Default::default()
     default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
-
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init [$T; $LEN], |_| <$T>::default()] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init [$T; $LEN], |_| <$T>::default()] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init [$T; $LEN], |_| <$T>::default()]
+        } _ => {
+            $crate::init_array![safe_init [$T; $LEN], |_| <$T>::default()]
+        }}
     }};
     (
     // initialize an array in the stack with $T: $trait::INIT
@@ -210,10 +215,11 @@ macro_rules! init_array {
     (
     // initialize an array in the heap, with $T: Default::default()
     default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init_heap [$T; $LEN], |_| <$T>::default()]
+        } _ => {
+            $crate::init_array![safe_init_heap [$T; $LEN], |_| <$T>::default()]
+        }}
     }};
     (
 
@@ -224,10 +230,11 @@ macro_rules! init_array {
         let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init [$T; $LEN], init_closure] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init [$T; $LEN], init_closure] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init [$T; $LEN], init_closure]
+        } _ => {
+            $crate::init_array![safe_init [$T; $LEN], init_closure]
+        }}
     }};
     (
     // initialize an array in the heap with an IntoIterator<Item = $T> and with
@@ -238,37 +245,30 @@ macro_rules! init_array {
         let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { $crate::init_array![safe_init_heap [$T; $LEN], init_closure] }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { $crate::init_array![unsafe_init_heap [$T; $LEN], init_closure] }
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            $crate::init_array![unsafe_init_heap [$T; $LEN], init_closure]
+        } _ => {
+            $crate::init_array![safe_init_heap [$T; $LEN], init_closure]
+        }}
     }};
     (
 
     // initialize an array by applying $op (in safe mode it first clones $pre)
     // and propagates errors both from $pre and $op.
     preop [$T:ty; $LEN:expr]?, $fsafe:literal, $funsafe:literal, $pre:expr, $op:expr) => {{
-
-        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        {
-            let init_value = $pre?; // error prone initial value
-            let mut arr: [$T; $LEN] = ::core::array::from_fn(|_| init_value.clone());
-            for (i, data) in $op.enumerate() {
-                arr[i] = data?;
-            }
-            arr
-        }
-        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        {
+        cfg_select! { all(feature = $funsafe, not(feature = $fsafe)) => {
+            // SAFETY: array will be fully initialized in the subsequent loop
             let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
-                // SAFETY: array will be fully initialized in the subsequent loop
                 unsafe { $crate::MaybeUninit::uninit().assume_init() };
-            for (i, data) in $op.enumerate() {
-                arr[i].write(data?);
-            }
+            for (i, data) in $op.enumerate() { arr[i].write(data?); }
             // SAFETY: we've initialized all the elements
             unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
-        }
+        } _ => {
+            let init_value = $pre?; // error prone initial value
+            let mut arr: [$T; $LEN] = ::core::array::from_fn(|_| init_value.clone());
+            for (i, data) in $op.enumerate() { arr[i] = data?; }
+            arr
+        }}
     }};
 }
 #[doc(inline)]

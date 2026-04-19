@@ -72,16 +72,7 @@ impl StringExt for String {
     }
 
     fn new_counter(length: usize, separator: char) -> String {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        {
-            let mut buf = crate::vec_![0u8; length];
-            let s = Str::new_counter(&mut buf, length, separator);
-            let len = s.len();
-            buf.truncate(len);
-            String::from_utf8(buf).expect("counter string is guaranteed ASCII")
-        }
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        {
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
             let mut s = String::with_capacity(length);
             // SAFETY: only ASCII bytes are written and the str.len() is set to the written prefix
             unsafe {
@@ -92,6 +83,12 @@ impl StringExt for String {
                 buf.truncate(len);
             }
             s
-        }
+        } _ => {
+            let mut buf = crate::vec_![0u8; length];
+            let s = Str::new_counter(&mut buf, length, separator);
+            let len = s.len();
+            buf.truncate(len);
+            String::from_utf8(buf).expect("counter string is guaranteed ASCII")
+        }}
     }
 }

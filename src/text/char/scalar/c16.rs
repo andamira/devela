@@ -18,13 +18,11 @@ impl char16 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u16) -> char16 {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
-        return Self(crate::unwrap![some NonSurrogateU16::new(value)]);
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-        unsafe {
-            char16(NonSurrogateU16::new_unchecked(value))
-        }
+        cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_text")) => {
+            unsafe { char16(NonSurrogateU16::new_unchecked(value)) }
+        } _ => {
+            Self(crate::unwrap![some NonSurrogateU16::new(value)])
+        }}
     }
 
     /* constants */
@@ -91,18 +89,16 @@ impl char16 {
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_char_ascii(self) -> Result<CharAscii, MismatchedCapacity> {
         if Char(self.to_scalar()).is_ascii() {
-            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            if let Some(c) = CharAscii::from_u8(self.0.get() as u8) {
-                return Ok(c);
-            } else {
-                unreachable![]
-            }
-
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            // SAFETY: we've already checked it's in range.
-            return Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) });
+            cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                // SAFETY: we've already checked it's in range.
+                Ok(unsafe { CharAscii::from_u8_unchecked(self.0.get() as u8) })
+            } _ => {
+                if let Some(c) = CharAscii::from_u8(self.0.get() as u8) { Ok(c) }
+                else { unreachable![] }
+            }}
+        } else {
+            Err(MismatchedCapacity::too_large(self.to_scalar() as usize, 127))
         }
-        Err(MismatchedCapacity::too_large(self.to_scalar() as usize, 127))
     }
 
     /// Tries to convert this `char16` to `char7`.
@@ -130,12 +126,12 @@ impl char16 {
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        if let Some(c) = char::from_u32(self.to_scalar()) { c } else { unreachable![] }
-
-        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-        // SAFETY: we guarantee we contain a valid scalar value
-        return unsafe { char::from_u32_unchecked(self.to_scalar()) };
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: we guarantee we contain a valid scalar value
+            unsafe { char::from_u32_unchecked(self.to_scalar()) }
+        } _ => {
+            if let Some(c) = char::from_u32(self.to_scalar()) { c } else { unreachable![] }
+        }}
     }
     /// Converts this `char16` to a `u32` Unicode scalar value.
     #[must_use]

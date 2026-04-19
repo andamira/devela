@@ -145,7 +145,9 @@ impl<T, F: FnOnce(T, &S), S> Deref for ScopeGuard<T, F, S> {
         cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
             // SAFETY: `value` is always `Some` until dropped
             unsafe { self.value.as_ref().unwrap_unchecked() }
-        } _ => { self.value.as_ref().unwrap() }}
+        } _ => {
+            self.value.as_ref().unwrap()
+        }}
     }
 }
 #[rustfmt::skip]
@@ -154,7 +156,9 @@ impl<T, F: FnOnce(T, &S), S> DerefMut for ScopeGuard<T, F, S> {
         cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
             // SAFETY: `value` is always `Some` until dropped
             unsafe { self.value.as_mut().unwrap_unchecked() }
-        } _ => { self.value.as_mut().unwrap() }}
+        } _ => {
+            self.value.as_mut().unwrap()
+        }}
     }
 }
 impl<T, F: FnOnce(T, &S), S> Drop for ScopeGuard<T, F, S> {

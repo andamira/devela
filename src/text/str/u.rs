@@ -461,12 +461,10 @@ macro_rules! impl_str_u {
             /// Uses the `unsafe_slice` feature to skip validation checks.
             #[must_use] #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-                return slice![&self.arr, ..self.len as usize];
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-                // SAFETY: we ensure to contain a correct length
-                unsafe { slice![unchecked &self.arr, ..self.len as usize] }
+                cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
+                    // SAFETY: we ensure to contain a correct length
+                    unsafe { slice![unchecked &self.arr, ..self.len as usize] }
+                } _ => { slice![&self.arr, ..self.len as usize] }}
             }
 
             /// Returns an exclusive byte slice of the inner string slice.
@@ -481,12 +479,10 @@ macro_rules! impl_str_u {
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-                return slice![mut &mut self.arr, ..self.len as usize];
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-                // SAFETY: we ensure to contain a correct length
-                unsafe { slice![mut_unchecked &mut self.arr, ..self.len as usize] }
+                cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
+                    // SAFETY: we ensure to contain a correct length
+                    unsafe { slice![mut_unchecked &mut self.arr, ..self.len as usize] }
+                } _ => { slice![mut &mut self.arr, ..self.len as usize] }}
             }
 
             /// Returns a reference to the inner string slice.
@@ -496,12 +492,10 @@ macro_rules! impl_str_u {
             #[must_use]
             #[inline(always)]
             pub const fn as_str(&self) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-                // SAFETY: we ensure to contain only valid UTF-8
-                unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
+                cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                    // SAFETY: we ensure to contain only valid UTF-8
+                    unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
+                } _ => { unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"] }}
             }
 
             /// Returns an exclusive reference to the inner string slice.

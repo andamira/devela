@@ -88,7 +88,9 @@ macro_rules! impl_num {
                 cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
                     // SAFETY: we are using a constant
                     *self = unsafe { Self::new_unchecked(1) }; Ok(())
-                } _ => { *self = Self::new(1).unwrap(); Ok(()) }}
+                } _ => {
+                    *self = Self::new(1).unwrap(); Ok(())
+                }}
             }
 
             // ops
@@ -174,7 +176,9 @@ macro_rules! impl_num {
                 cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
                     // SAFETY: we are using a constant
                     *self = unsafe { Self::new_unchecked(1) }; Ok(())
-                } _ => { *self = Self::new(1).unwrap(); Ok(()) }}
+                } _ => {
+                    *self = Self::new(1).unwrap(); Ok(())
+                }}
             }
 
             // ops

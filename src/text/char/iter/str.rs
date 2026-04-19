@@ -64,7 +64,10 @@ impl<'a> CharIter<'a, &str> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         let ch = { cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
             unsafe { char::from_u32_unchecked(cp) } // SAFETY: we come from &str so it's valid
-        } _ => { crate::unwrap![some? char::from_u32(cp)] }}};
+            } _ => {
+                crate::unwrap![some? char::from_u32(cp)]
+            }}
+        };
         self.pos += len;
         Some(ch)
     }

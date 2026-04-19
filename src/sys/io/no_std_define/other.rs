@@ -40,7 +40,9 @@ where
             cfg_select! { all(feature = "unsafe_array", not(feature = "safe_io")) => {
                 // SAFETY: The read method will initialize the portion of the buffer it writes to.
                 unsafe { &mut *buf.as_mut_ptr() }
-            } _ => { &mut buf }}
+            } _ => {
+                &mut buf
+            }}
         }) {
             Ok(0) => return Ok(written),
             Ok(len) => len,
@@ -50,7 +52,9 @@ where
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_io")) => {
             // SAFETY: `buf` has been initialized up to `len` bytes by the `read` operation.
             writer.write_all(unsafe { &buf.assume_init_ref()[..len] })?;
-        } _ => { writer.write_all(&buf[..len])?; }}
+        } _ => {
+            writer.write_all(&buf[..len])?;
+        }}
 
         written += len as u64;
     }
