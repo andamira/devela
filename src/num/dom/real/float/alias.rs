@@ -5,14 +5,14 @@
 
 #![allow(non_camel_case_types)]
 
-macro_rules! impl_fsize {
+macro_rules! _num_dom_real_float_define_fsize {
     () => {
-        impl_fsize![f32, "32"];
-        impl_fsize![f64, "64"];
+        _num_dom_real_float_define_fsize![f32, "32"];
+        _num_dom_real_float_define_fsize![f64, "64"];
         #[cfg(nightly_float)]
-        impl_fsize![::core::f16, "16"];
+        _num_dom_real_float_define_fsize![::core::f16, "16"];
         #[cfg(nightly_float)]
-        impl_fsize![::core::f128, "128"];
+        _num_dom_real_float_define_fsize![::core::f128, "128"];
     };
     ($float:ty , $pointer_width:literal) => {
         #[doc = crate::_tags!(primitive num)]
@@ -33,4 +33,4 @@ macro_rules! impl_fsize {
         pub type fsize = $float;
     };
 }
-impl_fsize![];
+_num_dom_real_float_define_fsize![];

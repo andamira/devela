@@ -10,9 +10,9 @@
 #[cfg(doc)]
 use crate::{Distance, Extent, Position, Region};
 
-crate::_define_geom_dim_macro![($) dis, "a", Distance, geom, "geom/metric"];
-crate::_define_geom_dim_macro![($) ext, "an", Extent, geom, "geom/metric"];
-crate::_define_geom_dim_macro![($) pos, "a", Position, geom, "geom/metric"];
+crate::_geom_dim_define_macro![($) dis, "a", Distance, geom, "geom/metric"];
+crate::_geom_dim_define_macro![($) ext, "an", Extent, geom, "geom/metric"];
+crate::_geom_dim_define_macro![($) pos, "a", Position, geom, "geom/metric"];
 
 #[doc = crate::_tags!(geom construction)]
 /// Constructs a [`Region`] from a [`Position`] and an [`Extent`].

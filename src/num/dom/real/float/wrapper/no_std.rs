@@ -8,12 +8,12 @@ use crate::Float;
 /// $f:   the floating-point type.
 /// $uf:  unsigned int type with the same bit-size.
 /// $ie:  the integer type for integer exponentiation.
-macro_rules! impl_float_no_std {
+macro_rules! _num_dom_real_float_impl_no_std {
     () => {
-        impl_float_no_std![(f32, u32, i32), (f64, u64, i32)];
+        _num_dom_real_float_impl_no_std![(f32, u32, i32), (f64, u64, i32)];
     };
     ($( ($f:ty, $uf:ty, $ie:ty)),+) => {
-        $( impl_float_no_std![@$f, $uf, $ie]; )+
+        $( _num_dom_real_float_impl_no_std![@$f, $uf, $ie]; )+
     };
     (@$f:ty, $uf:ty, $ie:ty) => {
         /// # *Implementations without `std`
@@ -73,4 +73,4 @@ macro_rules! impl_float_no_std {
         }
     };
 }
-impl_float_no_std!();
+_num_dom_real_float_impl_no_std!();

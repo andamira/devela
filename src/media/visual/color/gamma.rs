@@ -31,9 +31,13 @@ impl<T> Gamma<T> {
 }
 
 // Implement gamma-related low-level methods. Directly operate over floating-points.
-macro_rules! impl_gamma {
-    () => { impl_gamma![gamma f32, f64]; };
-    ( gamma $($T:ty),+) => { $( impl_gamma![@gamma $T]; )+ };
+macro_rules! _media_visual_color_impl_gamma {
+    () => {
+        _media_visual_color_impl_gamma![gamma f32, f64];
+    };
+    ( gamma $($T:ty),+) => {
+        $( _media_visual_color_impl_gamma![@gamma $T]; )+
+    };
     (@gamma   $T:ty) => {
         /// Gamma encoding, decoding, and sRGB transfer functions for floating-point values.
         impl Gamma<$T> {
@@ -164,7 +168,7 @@ macro_rules! impl_gamma {
         }
     };
 }
-impl_gamma!();
+_media_visual_color_impl_gamma!();
 
 /* docs */
 

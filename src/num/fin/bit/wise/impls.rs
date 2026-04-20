@@ -11,11 +11,11 @@ use crate::{
     is,
 };
 
-macro_rules! impl_bits_wrapper {
-    () => { impl_bits_wrapper![
+macro_rules! _num_fin_bit_ops_wise_impl_prims {
+    () => { _num_fin_bit_ops_wise_impl_prims![
         u8, u16, u32, u64, u128, usize
     ]; };
-    ( $( $t:ty),+ ) => { $( impl_bits_wrapper![@$t]; )+ };
+    ( $( $t:ty),+ ) => { $( _num_fin_bit_ops_wise_impl_prims![@$t]; )+ };
 
     // `$t`: the primitive type
     (@$t:ty) => {
@@ -502,4 +502,4 @@ macro_rules! impl_bits_wrapper {
         }
     };
 }
-impl_bits_wrapper![];
+_num_fin_bit_ops_wise_impl_prims![];

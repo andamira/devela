@@ -4,15 +4,15 @@ use super::*;
 use crate::{Char, CharAscii, MismatchedCapacity, NonExtremeU32, NonNiche, Str, is, slice, unwrap};
 
 /// Implements methods for both `charu` and `charu_niche`.
-macro_rules! impl_charu {
+macro_rules! _text_char_scalar_charu_impls {
     //
     () => {
-        impl_charu![@non charu, NonNiche::<u32>, !charu_niche];
-        impl_charu![@niche charu_niche, NonExtremeU32, !charu];
+        _text_char_scalar_charu_impls![@non charu, NonNiche::<u32>, !charu_niche];
+        _text_char_scalar_charu_impls![@niche charu_niche, NonExtremeU32, !charu];
     };
     // specific implementations for the non-niche version
     (@non $name:ident, $inner:ty, !$other:ty) => { $crate::paste! {
-        impl_charu![@common $name, $inner, !$other];
+        _text_char_scalar_charu_impls![@common $name, $inner, !$other];
         impl $name {
             #[doc = "Tries to convert this `" $name "` to `char7`."]
             ///
@@ -42,7 +42,7 @@ macro_rules! impl_charu {
     }};
     // specific implementations for the niche version
     (@niche $name:ident, $inner:ty, !$other:ty) => { $crate::paste! {
-        impl_charu![@common $name, $inner, !$other];
+        _text_char_scalar_charu_impls![@common $name, $inner, !$other];
         // impl $name {}
     }};
     // common implementations for all versions
@@ -502,4 +502,4 @@ macro_rules! impl_charu {
         }
     }};
 }
-impl_charu!();
+_text_char_scalar_charu_impls!();

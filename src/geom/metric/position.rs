@@ -41,5 +41,5 @@ pub type Position2<T> = Position<T, 2>;
 #[doc = crate::_doc_location!("geom/metric")]
 pub type Position3<T> = Position<T, 3>;
 
-crate::_impl_geom_dim![common_methods: Position];
-crate::_impl_geom_dim![common_traits: Position];
+crate::_geom_dim_impl_common![common_methods: Position];
+crate::_geom_dim_impl_common![common_traits: Position];

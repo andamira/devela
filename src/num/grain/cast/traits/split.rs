@@ -4,7 +4,7 @@
 //
 // TOC
 // - trait PrimSplit
-// - macro impl_into_trait!
+// - macro _num_grain_cast_trait_split_impl_into!
 
 use crate::Cast;
 
@@ -28,9 +28,9 @@ pub trait PrimSplit<T, const LEN: usize> {
 }
 
 // Implements the trait methods
-macro_rules! impl_into_trait {
+macro_rules! _num_grain_cast_trait_split_impl_into {
     ( $( $P:ident, $T:ident, $LEN:literal );+ $(;)? ) => {
-        $( impl_into_trait![@$P, $T, $LEN]; )+
+        $( _num_grain_cast_trait_split_impl_into![@$P, $T, $LEN]; )+
     };
     (@$P:ident, $T:ident, $LEN:literal) => { crate::paste! {
         impl PrimSplit<$T, $LEN> for $P {
@@ -40,7 +40,7 @@ macro_rules! impl_into_trait {
         }
     }};
 }
-impl_into_trait![
+_num_grain_cast_trait_split_impl_into![
     u128, u64, 2; u128, u32, 4; u128, u16, 8; u128, u8, 16;
     u64, u32, 2; u64, u16, 4; u64, u8, 8;
     u32, u16, 2; u32, u8, 4;

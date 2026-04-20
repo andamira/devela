@@ -5,15 +5,19 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{ConstInit, NonExtremeU32, NonExtremeU64, ne, paste};
+use crate::{ConstInit, NonExtremeU32, NonExtremeU64, ne};
 
 // Macro helper to implement the types f32bits, f32bits_niche, ...
-macro_rules! impl_fbits {
-    () => { impl_fbits![f32+u32, f64+u64]; };
-    ($($float:ident + $bits:ident),+ $(,)? ) => { paste! { $( impl_fbits![
-        @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonExtreme $bits:upper>]
-    ]; )+ }};
-    (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { paste! {
+macro_rules! _num_dom_real_float_define_fbits {
+    () => {
+        _num_dom_real_float_define_fbits![f32+u32, f64+u64];
+    };
+    ($($float:ident + $bits:ident),+ $(,)?) => { $crate::paste! { $(
+        _num_dom_real_float_define_fbits![
+            @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonExtreme $bits:upper>]
+        ];
+    )+ }};
+    (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { $crate::paste! {
         /* non-niche */
 
         #[doc = crate::_tags!(num ffi)]
@@ -130,4 +134,4 @@ macro_rules! impl_fbits {
         }
     }};
 }
-impl_fbits!();
+_num_dom_real_float_define_fbits!();

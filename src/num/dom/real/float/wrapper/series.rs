@@ -3,7 +3,7 @@
 //! Shared methods implemented using Taylor Series.
 //
 // TOC
-// - impl_float_shared_series!
+// - _num_dom_real_float_impl_shared_series!
 // - CONST tables
 //
 // TODO: f16, 128
@@ -16,12 +16,12 @@ use crate::{is, paste, whilst};
 /// $f:   the floating-point type.
 /// $uf:  unsigned int type with the same bit-size.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-macro_rules! impl_float_shared_series {
+macro_rules! _num_dom_real_float_impl_shared_series {
     () => {
-        impl_float_shared_series![(f32:u32, u32), (f64:u64, u32)];
+        _num_dom_real_float_impl_shared_series![(f32:u32, u32), (f64:u64, u32)];
     };
     ($( ($f:ty:$uf:ty, $ue:ty)),+ $(,)?) => {
-        $( impl_float_shared_series![@$f:$uf, $ue]; )+
+        $( _num_dom_real_float_impl_shared_series![@$f:$uf, $ue]; )+
     };
     (@$f:ty:$uf:ty, $ue:ty) => {
         ///
@@ -542,7 +542,7 @@ macro_rules! impl_float_shared_series {
         }
     };
 }
-impl_float_shared_series!();
+_num_dom_real_float_impl_shared_series!();
 
 crate::CONST! { pub(crate),
 TABLE_EXP_SERIES_TERMS = "

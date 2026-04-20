@@ -4,7 +4,7 @@
 //
 // TOC
 // - trait FloatConst
-// - macro impl_float_const!
+// - macro _num_dom_real_float_const_impl!
 //
 // NOTE: In sync with float:wrapper::consts
 
@@ -251,8 +251,10 @@ pub trait FloatConst: Sized {
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.
-macro_rules! impl_float_const {
-    ($( $(#[$attrs:meta])* $f:ty ),+) => { $( impl_float_const![@$(#[$attrs])* $f]; )+ };
+macro_rules! _num_dom_real_float_const_impl {
+    ($( $(#[$attrs:meta])* $f:ty ),+) => {
+        $( _num_dom_real_float_const_impl![@$(#[$attrs])* $f]; )+
+    };
     (@$(#[$attrs:meta])* $f:ty) => {
         /// # *Mathematical constants*.
         $(#[$attrs])*
@@ -365,10 +367,10 @@ macro_rules! impl_float_const {
         }
     };
 }
-impl_float_const![f32, f64];
+_num_dom_real_float_const_impl![f32, f64];
 
 #[cfg(nightly_float)]
-impl_float_const![
+_num_dom_real_float_const_impl![
     #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]
     f16,
     #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]

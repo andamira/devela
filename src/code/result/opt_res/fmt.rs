@@ -43,7 +43,7 @@ impl<T, F: Clone> Clone for OptionFmtOrElse<'_, T, F> {
     }
 }
 
-macro_rules! impl_option_fmt {
+macro_rules! _option_fmt_impl_traits {
     ($($trait:ident),*$(,)?) => { $(
         impl<T: $trait> $trait for OptionFmt<'_, T> {
             fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
@@ -67,4 +67,6 @@ macro_rules! impl_option_fmt {
 
     )*}
 }
-impl_option_fmt!(Binary, Debug, Display, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex);
+_option_fmt_impl_traits!(
+    Binary, Debug, Display, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex,
+);

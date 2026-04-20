@@ -211,15 +211,15 @@ pub trait BitOps where Self: Sized {
         -> Result<Option<u32>, MismatchedBounds>;
 }
 
-macro_rules! impl_bit_ops {
+macro_rules! _num_fin_bit_ops_impl_fns {
     () => {
-        impl_bit_ops![
+        _num_fin_bit_ops_impl_fns![
             u8, u16, u32, u64, u128, usize
         ];
     };
 
     // `$t`: the type to implement the trait for.
-    ($($t:ty),+) => { $( impl_bit_ops![@$t]; )+ };
+    ($($t:ty),+) => { $( _num_fin_bit_ops_impl_fns![@$t]; )+ };
     (@$t:ty) => {
         impl BitOps for $t {
             type Inner = $t;
@@ -421,4 +421,4 @@ macro_rules! impl_bit_ops {
         }
     };
 }
-impl_bit_ops![];
+_num_fin_bit_ops_impl_fns![];

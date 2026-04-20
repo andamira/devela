@@ -81,16 +81,18 @@ mod endian {
         /// Creates a new [`CodecLe`] combinator.
         pub const fn new(num: W) -> Self { Self { num } }
     }
-    macro_rules! impl_endian {
+    macro_rules! _data_codec_encode_impl_endian {
         () => {
-            impl_endian![int: u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, isize];
-            impl_endian![prim: usize]; impl_endian![non0: usize];
-            impl_endian![float: f32, f64];
-            // impl_endian![float: f16, f128]; // TODO
+            _data_codec_encode_impl_endian![int:
+                u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, isize];
+            _data_codec_encode_impl_endian![prim: usize];
+            _data_codec_encode_impl_endian![non0: usize];
+            _data_codec_encode_impl_endian![float: f32, f64];
+            // _data_codec_encode_impl_endian![float: f16, f128]; // TODO
         };
         (int: $($T:ty),+) => {
-            impl_endian!(prim: $($T),+);
-            impl_endian!(non0: $($T),+);
+            _data_codec_encode_impl_endian!(prim: $($T),+);
+            _data_codec_encode_impl_endian!(non0: $($T),+);
             $(
                 impl TryFrom<usize> for CodecBe<$T> {
                     type Error = TryFromIntError;
@@ -107,7 +109,7 @@ mod endian {
             )+
         };
         (float: $($T:ty),+) => {
-            impl_endian!(prim: $($T),+);
+            _data_codec_encode_impl_endian!(prim: $($T),+);
         };
         (prim: $($T:ty),+) => {
             $(  // Be
@@ -176,7 +178,7 @@ mod endian {
             )+
         }
     }
-    impl_endian![];
+    _data_codec_encode_impl_endian![];
 }
 #[rustfmt::skip]
 mod cond {
@@ -555,10 +557,10 @@ mod len {
     /// - Prevents accidental misuse by requiring an explicit choice.
     /// - Keeps the API clean and avoids unnecessary complexity.
     trait CodecEndianLen { type Len: TryInto<usize> + TryFrom<usize>; }
-    macro_rules! impl_codec_endian_len { ($($T:ty),+) => { $(
+    macro_rules! _data_codec_encode_impl_endian_len { ($($T:ty),+) => { $(
         impl CodecEndianLen for CodecLe<$T> { type Len = $T; }
         impl CodecEndianLen for CodecBe<$T> { type Len = $T; }
     )+ }; }
-    impl_codec_endian_len![u8, u16, u32, usize];
+    _data_codec_encode_impl_endian_len![u8, u16, u32, usize];
     impl CodecEndianLen for u8 { type Len = u8; }
 }

@@ -48,8 +48,8 @@ pub type Extent2<T> = Extent<T, 2>;
 #[doc(alias = "Size")]
 pub type Extent3<T> = Extent<T, 3>;
 
-crate::_impl_geom_dim![common_methods: Extent];
-crate::_impl_geom_dim![common_traits: Extent];
+crate::_geom_dim_impl_common![common_methods: Extent];
+crate::_geom_dim_impl_common![common_traits: Extent];
 
 /// Implement `Extent` methods for all primitives.
 macro_rules! impl_extent {

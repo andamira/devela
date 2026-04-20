@@ -39,7 +39,7 @@ impl<T, const LEN: usize> ArrayExt for [T; LEN] {
     const LEN: usize = LEN;
 }
 
-macro_rules! _impl_fmt {
+macro_rules! _data_layout_array_ext_impl_fmt {
     ($fmt_trait:ident, $array_trait:ident, $array_method:ident) => {
         // Private trait for arrays with elements that implement the given fmt trait.
         trait $array_trait: ArrayExt {
@@ -63,14 +63,14 @@ macro_rules! _impl_fmt {
         }
     };
 }
-_impl_fmt![Display, ArrayDisplay, fmt_display];
-_impl_fmt![Pointer, ArrayPointer, fmt_pointer];
-_impl_fmt![Binary, ArrayBinary, fmt_binary];
-_impl_fmt![Octal, ArrayOctal, fmt_octal];
-_impl_fmt![LowerHex, ArrayLowerHex, fmt_lower_hex];
-_impl_fmt![UpperHex, ArrayUpperHex, fmt_upper_hex];
-_impl_fmt![LowerExp, ArrayLowerExp, fmt_lower_exp];
-_impl_fmt![UpperExp, ArrayUpperExp, fmt_upper_exp];
+_data_layout_array_ext_impl_fmt![Display, ArrayDisplay, fmt_display];
+_data_layout_array_ext_impl_fmt![Pointer, ArrayPointer, fmt_pointer];
+_data_layout_array_ext_impl_fmt![Binary, ArrayBinary, fmt_binary];
+_data_layout_array_ext_impl_fmt![Octal, ArrayOctal, fmt_octal];
+_data_layout_array_ext_impl_fmt![LowerHex, ArrayLowerHex, fmt_lower_hex];
+_data_layout_array_ext_impl_fmt![UpperHex, ArrayUpperHex, fmt_upper_hex];
+_data_layout_array_ext_impl_fmt![LowerExp, ArrayLowerExp, fmt_lower_exp];
+_data_layout_array_ext_impl_fmt![UpperExp, ArrayUpperExp, fmt_upper_exp];
 
 /// Technically this trait is redundant since arrays of any size can impl `Debug`,
 /// nevertheless it's better if we can offer the same api in both cases.

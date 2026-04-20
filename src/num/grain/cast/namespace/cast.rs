@@ -3,9 +3,9 @@
 //! fns to cast between primitives in a checked manner.
 //
 // TOC
-// - impl_cast_fns!
-// - impl_cast_aliases!
-// - impl_cast_methods!
+// - _num_grain_cast_impl_inner_fns!
+// - _num_grain_cast_impl_casting_fns!
+// - _num_grain_cast_impl_methods!
 
 use crate::{
     Cast, Overflow,
@@ -17,11 +17,11 @@ use crate::{
 ///
 /// `$f`:   the type to cast from
 /// `$t`:   the type to cast to
-macro_rules! impl_cast_fns {
+macro_rules! _num_grain_cast_impl_inner_fns {
     () => {
         /* independent of pointer width */
 
-        impl_cast_fns![can_overunderflow
+        _num_grain_cast_impl_inner_fns![can_overunderflow
             // from bigger signed to unsigned
             i16:u8, i32:u8, i64:u8, i128:u8,
             i32:u16, i64:u16, i128:u16,
@@ -33,7 +33,7 @@ macro_rules! impl_cast_fns {
             i64:i32, i128:i32,
             i128:i64
         ];
-        impl_cast_fns![can_overflow
+        _num_grain_cast_impl_inner_fns![can_overflow
             // from bigger unsigned to unsigned
             u16:u8, u32:u8, u64:u8, u128:u8,
             u32:u16, u64:u16, u128:u16,
@@ -47,7 +47,7 @@ macro_rules! impl_cast_fns {
             // from equalsized unsigned to signed
             u8:i8, u16:i16, u32:i32, u64:i64, u128:i128, usize:isize
         ];
-        impl_cast_fns![can_underflow
+        _num_grain_cast_impl_inner_fns![can_underflow
             // from smaller signed to unsigned
             i8:u16, i8:u32, i8:u64, i8:u128,
             i16:u32, i16:u64, i16:u128,
@@ -56,7 +56,7 @@ macro_rules! impl_cast_fns {
             // from equalsized signed to unsigned
             i8:u8, i16:u16, i32:u32, i64:u64, i128:u128, isize:usize
         ];
-        impl_cast_fns![cant_fail
+        _num_grain_cast_impl_inner_fns![cant_fail
             // from smaller unsigned to unsigned
             u8:u16, u8:u32, u8:u64, u8:u128,
             u16:u32, u16:u64, u16:u128,
@@ -81,7 +81,7 @@ macro_rules! impl_cast_fns {
         /* dependent on pointer width */
 
         #[cfg(target_pointer_width = "16")]
-        impl_cast_fns![can_overunderflow
+        _num_grain_cast_impl_inner_fns![can_overunderflow
             // from bigger signed to unsigned
             isize:u8,
             i32:usize, i64:usize, i128:usize,
@@ -90,7 +90,7 @@ macro_rules! impl_cast_fns {
             i32:isize, i64:isize, i128:isize
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_cast_fns![can_overunderflow
+        _num_grain_cast_impl_inner_fns![can_overunderflow
             // from bigger signed to unsigned
             isize:u8, isize:u16,
             i64:usize, i128:usize,
@@ -99,7 +99,7 @@ macro_rules! impl_cast_fns {
             i64:isize, i128:isize
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_overunderflow
+        _num_grain_cast_impl_inner_fns![can_overunderflow
             // from bigger signed to unsigned
             isize:u8, isize:u16, isize:u32,
             i128:usize,
@@ -109,7 +109,7 @@ macro_rules! impl_cast_fns {
         ];
 
         #[cfg(target_pointer_width = "16")]
-        impl_cast_fns![can_overflow
+        _num_grain_cast_impl_inner_fns![can_overflow
             // from bigger unsigned to unsigned
             usize:u8,
             u32:usize, u64:usize, u128:usize,
@@ -120,7 +120,7 @@ macro_rules! impl_cast_fns {
             u16:isize, usize:i16
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_cast_fns![can_overflow
+        _num_grain_cast_impl_inner_fns![can_overflow
             // from bigger unsigned to unsigned
             usize:u8, usize:u16,
             u64:usize, u128:usize,
@@ -131,7 +131,7 @@ macro_rules! impl_cast_fns {
             u32:isize, usize:i32
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_overflow
+        _num_grain_cast_impl_inner_fns![can_overflow
             // from bigger unsigned to unsigned
             usize:u8, usize:u16, usize:u32,
             u128:usize,
@@ -143,7 +143,7 @@ macro_rules! impl_cast_fns {
         ];
 
         #[cfg(target_pointer_width = "16")]
-        impl_cast_fns![can_underflow
+        _num_grain_cast_impl_inner_fns![can_underflow
             // from smaller signed to unsigned
             isize:u32, isize:u64, isize:u128,
             i8:usize,
@@ -151,7 +151,7 @@ macro_rules! impl_cast_fns {
             i16:usize, isize:u16
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_cast_fns![can_underflow
+        _num_grain_cast_impl_inner_fns![can_underflow
             // from smaller signed to unsigned
             isize:u64, isize:u128,
             i8:usize, i16:usize,
@@ -159,7 +159,7 @@ macro_rules! impl_cast_fns {
             i32:usize, isize:u32
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_underflow
+        _num_grain_cast_impl_inner_fns![can_underflow
             // from smaller signed to unsigned
             isize:u128,
             i8:usize, i16:usize, i32:usize,
@@ -168,7 +168,7 @@ macro_rules! impl_cast_fns {
         ];
 
         #[cfg(target_pointer_width = "16")]
-        impl_cast_fns![cant_fail ptr:16
+        _num_grain_cast_impl_inner_fns![cant_fail ptr:16
             // from smaller unsigned to unsigned
             usize:u32, usize:u64, usize:u128,
             u8:usize,
@@ -184,7 +184,7 @@ macro_rules! impl_cast_fns {
             isize:i16, i16:isize
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_cast_fns![cant_fail ptr:32
+        _num_grain_cast_impl_inner_fns![cant_fail ptr:32
             // from smaller unsigned to unsigned
             usize:u64, usize:u128,
             u8:usize, u16:usize,
@@ -200,7 +200,7 @@ macro_rules! impl_cast_fns {
             isize:i32, i32:isize
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![cant_fail ptr:64
+        _num_grain_cast_impl_inner_fns![cant_fail ptr:64
             // from smaller unsigned to unsigned
             usize:u128,
             u8:usize, u16:usize, u32:usize,
@@ -217,7 +217,7 @@ macro_rules! impl_cast_fns {
         ];
     };
     (can_overunderflow $( $f:ty : $t:ty ),+) => {
-        $( impl_cast_fns![@can_overunderflow $f:$t]; )+
+        $( _num_grain_cast_impl_inner_fns![@can_overunderflow $f:$t]; )+
     };
     (@can_overunderflow $f:ty : $t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
@@ -243,7 +243,9 @@ macro_rules! impl_cast_fns {
             p as $t
         }
     }};
-    (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
+    (can_overflow $( $f:ty:$t:ty ),+) => {
+        $( _num_grain_cast_impl_inner_fns![@can_overflow $f:$t]; )+
+    };
     (@can_overflow $f:ty:$t:ty) => { paste! {
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
             is![p > <$t>::MAX as $f, Err(Overflow(Some(Positive))), Ok(p as $t)]
@@ -256,7 +258,9 @@ macro_rules! impl_cast_fns {
             p as $t
         }
     }};
-    (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_underflow $f:$t]; )+ };
+    (can_underflow $( $f:ty:$t:ty ),+) => {
+        $( _num_grain_cast_impl_inner_fns![@can_underflow $f:$t]; )+
+    };
     (@can_underflow $f:ty:$t:ty) => { paste! {
         #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
@@ -271,7 +275,9 @@ macro_rules! impl_cast_fns {
             p as $t
         }
     }};
-    (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@cant_fail $f:$t]; )+ };
+    (cant_fail $( $f:ty:$t:ty ),+) => {
+        $( _num_grain_cast_impl_inner_fns![@cant_fail $f:$t]; )+
+    };
     (@cant_fail $f:ty:$t:ty) => { paste! {
         #[inline(always)]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t, Overflow> {
@@ -287,7 +293,7 @@ macro_rules! impl_cast_fns {
         }
     }};
     (cant_fail ptr:$ptr:literal $( $f:ty:$t:ty ),+) => {
-        $( impl_cast_fns![@cant_fail ptr:$ptr $f:$t]; )+
+        $( _num_grain_cast_impl_inner_fns![@cant_fail ptr:$ptr $f:$t]; )+
     };
     (@cant_fail ptr:$ptr:literal $f:ty:$t:ty) => { paste! {
         #[inline(always)]
@@ -304,35 +310,35 @@ macro_rules! impl_cast_fns {
         }
     }};
 }
-impl_cast_fns![];
+_num_grain_cast_impl_inner_fns![];
 
 /// implement the casting functions for the upcasted aliases
 ///
 /// `$f`: the type to cast from
 /// `$a`: the type to cast to (name alias)
 /// `$t`: the type to cast to (real type)
-macro_rules! impl_cast_fns_alias {
+macro_rules! _num_grain_cast_impl_casting_fns {
     () => {
-        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to isize_up|i32];
-        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to usize_up|u32];
-        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to isize_down|i8];
-        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to usize_down|u8];
+        #[cfg(target_pointer_width = "16")] _num_grain_cast_impl_casting_fns![@to isize_up|i32];
+        #[cfg(target_pointer_width = "16")] _num_grain_cast_impl_casting_fns![@to usize_up|u32];
+        #[cfg(target_pointer_width = "16")] _num_grain_cast_impl_casting_fns![@to isize_down|i8];
+        #[cfg(target_pointer_width = "16")] _num_grain_cast_impl_casting_fns![@to usize_down|u8];
         //
-        #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to isize_up|i64];
-        #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to usize_up|u64];
-        #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to isize_down|i16];
-        #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to usize_down|u16];
+        #[cfg(target_pointer_width = "32")] _num_grain_cast_impl_casting_fns![@to isize_up|i64];
+        #[cfg(target_pointer_width = "32")] _num_grain_cast_impl_casting_fns![@to usize_up|u64];
+        #[cfg(target_pointer_width = "32")] _num_grain_cast_impl_casting_fns![@to isize_down|i16];
+        #[cfg(target_pointer_width = "32")] _num_grain_cast_impl_casting_fns![@to usize_down|u16];
         //
-        #[cfg(target_pointer_width = "64")] impl_cast_fns_alias![@to isize_up|i128];
-        #[cfg(target_pointer_width = "64")] impl_cast_fns_alias![@to usize_up|u128];
-        #[cfg(target_pointer_width = "64")] impl_cast_fns_alias![@to isize_down|i32];
-        #[cfg(target_pointer_width = "64")] impl_cast_fns_alias![@to usize_down|u32];
+        #[cfg(target_pointer_width = "64")] _num_grain_cast_impl_casting_fns![@to isize_up|i128];
+        #[cfg(target_pointer_width = "64")] _num_grain_cast_impl_casting_fns![@to usize_up|u128];
+        #[cfg(target_pointer_width = "64")] _num_grain_cast_impl_casting_fns![@to isize_down|i32];
+        #[cfg(target_pointer_width = "64")] _num_grain_cast_impl_casting_fns![@to usize_down|u32];
     };
     (@to $a:ident|$t:ty) => {
-        impl_cast_fns_alias![@to $a|$t:
+        _num_grain_cast_impl_casting_fns![@to $a|$t:
             i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize];
     };
-    (@to $a:ident|$t:ty : $($f:ty),+) => { $( impl_cast_fns_alias!(@impl $f, $a, $t);)+ };
+    (@to $a:ident|$t:ty : $($f:ty),+) => { $( _num_grain_cast_impl_casting_fns!(@impl $f, $a, $t);)+ };
     (@impl $f:ty, $a:ty, $t:ty) => { paste! {
         #[inline(always)]
         const fn [<checked_cast_ $f _to_ $a>](p: $f) -> Result<$a, Overflow> {
@@ -348,14 +354,14 @@ macro_rules! impl_cast_fns_alias {
         }
     }};
 }
-impl_cast_fns_alias![];
+_num_grain_cast_impl_casting_fns![];
 
 /// Implements the public casting methods for the [`Cast`] namespace.
-macro_rules! impl_cast_methods {
+macro_rules! _num_grain_cast_impl_methods {
     () => {
-        impl_cast_methods![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+        _num_grain_cast_impl_methods![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
     };
-    ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
+    ($($t:ty),+) => { $( _num_grain_cast_impl_methods![@$t]; )+ };
     (@$t:ty) => { paste! {
         /// Checked casts and saturating casts.
         ///
@@ -648,4 +654,4 @@ macro_rules! impl_cast_methods {
         }
     }};
 }
-impl_cast_methods![];
+_num_grain_cast_impl_methods![];

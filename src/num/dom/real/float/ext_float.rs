@@ -425,9 +425,10 @@ pub trait FloatExt: FloatConst + Sized {
         F: Fn(Self, Self) -> Self;
 }
 
-macro_rules! impl_ext_float {
+// Implements ExtFloat for floating-point primitives
+macro_rules! _num_dom_real_float_ext_impl_prims {
     () => {
-        impl_ext_float![
+        _num_dom_real_float_ext_impl_prims![
             (f32, u32 | i32),
             (f64, u32 | i32),
         ];
@@ -437,7 +438,7 @@ macro_rules! impl_ext_float {
     // $ue:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
     ($( ($f:ty, $ue:ty|$ie:ty)),+ $(,)?) => {
-        $( impl_ext_float![@$f, $ue|$ie]; )+
+        $( _num_dom_real_float_ext_impl_prims![@$f, $ue|$ie]; )+
     };
     (@$f:ty, $ue:ty|$ie:ty) => {
         impl FloatExt for $f {
@@ -704,4 +705,4 @@ macro_rules! impl_ext_float {
         }
     }
 }
-impl_ext_float!();
+_num_dom_real_float_ext_impl_prims!();

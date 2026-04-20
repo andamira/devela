@@ -147,9 +147,9 @@ impl Sign {
 /* Into<Sign> */
 
 // helper macro to implement conversion from numbers to Sign
-macro_rules! impl_into_sign {
+macro_rules! _num_quant_sign_impl_into {
     // integer primitives
-    (int: $($int:ty),+) => { $( impl_into_sign![@int: $int]; )+ };
+    (int: $($int:ty),+) => { $( _num_quant_sign_impl_into![@int: $int]; )+ };
     (@int: $int:ty) => {
         impl From<$int> for Sign {
             /// Returns `Zero` if 0, `Positive` if > 0 and `Negative` if < 0.
@@ -164,7 +164,7 @@ macro_rules! impl_into_sign {
         }
     };
     // floating-point primitives
-    (float: $($float:ty),+) => { $( impl_into_sign![@float: $float]; )+ };
+    (float: $($float:ty),+) => { $( _num_quant_sign_impl_into![@float: $float]; )+ };
     (@float: $float:ty) => {
         impl From<$float> for Sign {
             /// Returns `Zero` if 0.0, `Positive` if > 0 and `Negative` if < 0.
@@ -190,16 +190,16 @@ macro_rules! impl_into_sign {
         }
     };
 }
-impl_into_sign![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-impl_into_sign![float: f32, f64];
-impl_into_sign![bool];
+_num_quant_sign_impl_into![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+_num_quant_sign_impl_into![float: f32, f64];
+_num_quant_sign_impl_into![bool];
 
 /* impl From<Sign> TryFrom<Sign> */
 
 // helper macro to implement conversion from Sign to numbers (1, 0, -1)
-macro_rules! impl_from_sign {
+macro_rules! _num_quant_sign_impl_from {
     // signed integer primitives
-    (sint: $($sint:ty),+) => { $( impl_from_sign![@sint: $sint]; )+ };
+    (sint: $($sint:ty),+) => { $( _num_quant_sign_impl_from![@sint: $sint]; )+ };
     (@sint: $sint:ty) => {
         impl From<Sign> for $sint {
             /// Returns 0 if `Zero`, 1 if `Positive` and -1 if `Negative`.
@@ -213,7 +213,7 @@ macro_rules! impl_from_sign {
         }
     };
     // unsigned integer primitives
-    (uint: $($uint:ty),+) => { $( impl_from_sign![@uint: $uint]; )+ };
+    (uint: $($uint:ty),+) => { $( _num_quant_sign_impl_from![@uint: $uint]; )+ };
     (@uint: $uint:ty) => {
         impl TryFrom<Sign> for $uint {
             type Error = InvalidValue;
@@ -232,7 +232,7 @@ macro_rules! impl_from_sign {
         }
     };
     // floating-point primitives
-    (float: $($float:ty),+) => { $( impl_from_sign![@float: $float]; )+ };
+    (float: $($float:ty),+) => { $( _num_quant_sign_impl_from![@float: $float]; )+ };
     (@float: $float:ty) => {
         impl From<Sign> for $float {
             /// Returns 0.0 if `Zero`, 1.0 if `Positive` and -1.0 if `Negative`.
@@ -264,7 +264,7 @@ macro_rules! impl_from_sign {
         }
     };
 }
-impl_from_sign![sint: i8, i16, i32, i64, i128, isize];
-impl_from_sign![uint: u8, u16, u32, u64, u128, usize];
-impl_from_sign![float: f32, f64];
-impl_from_sign![bool];
+_num_quant_sign_impl_from![sint: i8, i16, i32, i64, i128, isize];
+_num_quant_sign_impl_from![uint: u8, u16, u32, u64, u128, usize];
+_num_quant_sign_impl_from![float: f32, f64];
+_num_quant_sign_impl_from![bool];

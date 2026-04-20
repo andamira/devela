@@ -173,15 +173,15 @@ mod impls {
             T::TypeData: crate::BitSized<LEN>
         {}
 
-    macro_rules! impl_from {
-        ($($t:ty),+) => { $( impl_from![@$t]; )+ };
+    macro_rules! _code_marker_type_resource_impl_from {
+        ($($t:ty),+) => { $( _code_marker_type_resource_impl_from![@$t]; )+ };
         (@$t:ty) => {
             impl<T> From<$t> for TypeResource<T> where T: TypeResourced<TypeData = $t> {
                 fn from(value: $t) -> Self { TypeResource::new(value) }
             }
         };
     }
-    impl_from![
+    _code_marker_type_resource_impl_from![
         bool, char,
         u8, u16, u32, u64, u128, usize,
         i8, i16, i32, i64, i128, isize

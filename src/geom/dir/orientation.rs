@@ -43,5 +43,5 @@ pub type Orientation2<T> = Orientation<T, 2>;
 #[doc = crate::_doc_location!("geom/dir")]
 pub type Orientation3<T> = Orientation<T, 3>;
 
-crate::_impl_geom_dim![common_methods: Orientation];
-crate::_impl_geom_dim![common_traits: Orientation];
+crate::_geom_dim_impl_common![common_methods: Orientation];
+crate::_geom_dim_impl_common![common_traits: Orientation];

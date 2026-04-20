@@ -13,16 +13,16 @@ use crate::FloatConst;
 // #[cfg(nightly_float)]
 // use ::core::{f16, f128};
 
-/// impl mathematical constants
+/// Impl mathematical constants for the Float wrapper.
 ///
 /// $f: the floating-point type.
-macro_rules! _float_const_impls {
+macro_rules! _num_dom_real_float_impl_const {
     () => {
-        _float_const_impls![f32, f64];
+        _num_dom_real_float_impl_const![f32, f64];
         // #[cfg(nightly_float)]
-        // _float_const_impls![f16, f128];
+        // _num_dom_real_float_impl_const![f16, f128];
     };
-    ($( $f:ty),+) => { $( _float_const_impls![@$f]; )+ };
+    ($( $f:ty),+) => { $( _num_dom_real_float_impl_const![@$f]; )+ };
     (@$f:ty) => {
         /// # *Mathematical constants.*
         ///
@@ -224,4 +224,4 @@ macro_rules! _float_const_impls {
         }
     };
 }
-_float_const_impls!();
+_num_dom_real_float_impl_const!();

@@ -4,7 +4,7 @@
 //
 // TOC
 // - trait PrimCast
-// - macro impl_cast_methods!
+// - macro _num_grain_cast_trait_cast_impl_methods!
 
 use crate::{Cast, Overflow, isize_down, isize_up, usize_down, usize_up};
 
@@ -162,11 +162,15 @@ pub trait PrimCast {
 }
 
 /// Implements the public casting methods for the trait and [`Cast`] wrapper.
-macro_rules! impl_cast_methods {
+macro_rules! _num_grain_cast_trait_cast_impl_methods {
     () => {
-        impl_cast_methods![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+        _num_grain_cast_trait_cast_impl_methods![
+            u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize,
+        ];
     };
-    ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
+    ($($t:ty),+ $(,)?) => {
+        $( _num_grain_cast_trait_cast_impl_methods![@$t]; )+
+    };
     (@$t:ty) => { crate::paste! {
         impl PrimCast for $t {
             #[inline(always)]
@@ -285,4 +289,4 @@ macro_rules! impl_cast_methods {
         }
     }};
 }
-impl_cast_methods![];
+_num_grain_cast_trait_cast_impl_methods![];

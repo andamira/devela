@@ -6,12 +6,12 @@
 use crate::{Char, MaybeNiche, char7, char8, char16};
 
 /// Implements const fns for custom char types.
-macro_rules! impl_char {
+macro_rules! _text_char_scalar_impl_const_fns {
     () => {
-        impl_char![7, 8, 16];
+        _text_char_scalar_impl_const_fns![7, 8, 16];
     };
     ($( $bits:literal),+ ) => { $crate::paste! {
-        $( impl_char!(@[<char $bits>]); )+
+        $( _text_char_scalar_impl_const_fns!(@[<char $bits>]); )+
     }};
     (@$name:ident) => {
         impl $name {
@@ -66,4 +66,4 @@ macro_rules! impl_char {
         }
     };
 }
-impl_char!();
+_text_char_scalar_impl_const_fns!();

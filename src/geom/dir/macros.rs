@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::Orientation;
 
-crate::_define_geom_dim_macro![($) ori, "an", Orientation, geom_dir, "geom/dir"];
+crate::_geom_dim_define_macro![($) ori, "an", Orientation, geom_dir, "geom/dir"];
 
 #[cfg(test)]
 mod tests {

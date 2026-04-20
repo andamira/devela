@@ -22,10 +22,9 @@
 mod angle; // Angle, AngleDirection, AngleKind
 mod boundary; // Boundary[1|2|3]d
 mod macros; // dir!
-// mod nav; // Spatial navigation and facing semantics.
-// mod octant; // WIP
+// mod nav; // Spatial navigation and facing semantics. WIP
 mod orientation; // Orientation[1|2|3]
-// mod radial_sectors;
+// mod rot_sector; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
@@ -33,10 +32,9 @@ crate::structural_mods! { // _mods
             angle::*,
             boundary::*,
             macros::ori,
-            // nav::_all::*, // WIP
-            // octant::*, // WIP
+            // nav::_all::*,
             orientation::*,
-            // radial_sectors::*;
+            // rot_sector::*,
         };
     }
 }

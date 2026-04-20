@@ -344,9 +344,9 @@ mod std_impls {
 }
 
 // Implements From<primitive> for TimeUnix*
-macro_rules! impl_from_prim {
+macro_rules! _phys_time_unix_impl_from_prim {
     // for many
-    ($ut:ty, $($prim:ty),+) => { $( impl_from_prim![@ $ut, $prim]; )+ };
+    ($ut:ty, $($prim:ty),+) => { $( _phys_time_unix_impl_from_prim![@ $ut, $prim]; )+ };
     (@ $ut:ty, $prim:ty) => {
         impl From<$prim> for $ut {
             fn from(seconds: $prim) -> $ut {
@@ -355,12 +355,12 @@ macro_rules! impl_from_prim {
         }
     };
 }
-impl_from_prim![TimeUnixI64, i64, i32, i16, i8, u32, u16, u8];
-impl_from_prim![TimeUnixU32, u32, u16, u8];
+_phys_time_unix_impl_from_prim![TimeUnixI64, i64, i32, i16, i8, u32, u16, u8];
+_phys_time_unix_impl_from_prim![TimeUnixU32, u32, u16, u8];
 
 // Implements TryFrom<primitive> for TimeUnix*
-macro_rules! impl_try_from_prim {
-    ($ut:ty, $($prim:ty),+) => { $( impl_try_from_prim![@ $ut, $prim]; )+ };
+macro_rules! _phys_time_unix_impl_try_from_prim {
+    ($ut:ty, $($prim:ty),+) => { $( _phys_time_unix_impl_try_from_prim![@ $ut, $prim]; )+ };
     (@ $ut:ty, $prim:ty) => {
         impl TryFrom<$prim> for $ut {
             type Error = TryFromIntError;
@@ -370,6 +370,5 @@ macro_rules! impl_try_from_prim {
         }
     };
 }
-impl_try_from_prim![TimeUnixI64, u64, u128, usize, i128, isize];
-#[rustfmt::skip]
-impl_try_from_prim![TimeUnixU32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+_phys_time_unix_impl_try_from_prim![TimeUnixI64, u64, u128, usize, i128, isize];
+_phys_time_unix_impl_try_from_prim![TimeUnixU32, u64, u128, usize, i8, i16, i32, i64, i128, isize];

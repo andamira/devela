@@ -11,10 +11,10 @@ use crate::{
 };
 use ::core::fmt;
 
-// helper macro for implementing traits for a Stack depending on the custom index size.
-macro_rules! impl_destaque {
+// Helper macro for implementing traits for a Stack depending on the custom index size.
+macro_rules! _data_layout_queue_destaque_impl_traits {
     () => {
-        impl_destaque![
+        _data_layout_queue_destaque_impl_traits![
             u8:"_destaque_u8", u16:"_destaque_u16", u32:"_destaque_u32", usize:"_destaque_usize"];
     };
 
@@ -23,7 +23,7 @@ macro_rules! impl_destaque {
     ($( $IDX:ty: $cap:literal ),+) => {
         $(
             #[cfg(feature = $cap )]
-            impl_destaque![@$IDX:$cap];
+            _data_layout_queue_destaque_impl_traits![@$IDX:$cap];
         )+
     };
     (@$IDX:ty : $cap:literal) => { $crate::paste! {
@@ -276,7 +276,7 @@ macro_rules! impl_destaque {
         }
     }};
 }
-impl_destaque!();
+_data_layout_queue_destaque_impl_traits!();
 
 // T: Clone
 impl<T: Clone, const CAP: usize, IDX: Clone, S: Storage> Clone for Destaque<T, CAP, IDX, S>

@@ -15,15 +15,15 @@ use crate::{
 /// $uf:  unsigned int type with the same bit-size.
 /// $ie:  signed int type used for integer exponentiation.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-macro_rules! impl_float_basic {
+macro_rules! _num_dom_real_float_impl_basic {
     () => {
-        impl_float_basic![ (f32:u32, i32, u32), (f64:u64, i32, u32)];
+        _num_dom_real_float_impl_basic![ (f32:u32, i32, u32), (f64:u64, i32, u32)];
         // #[cfg(feature = "nightly_float")] // TODO
-        // impl_float_basic![ (f16:u16, u32), (f128:u128, u32)];
+        // _num_dom_real_float_impl_basic![ (f16:u16, u32), (f128:u128, u32)];
     };
 
     ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty)),+) => {
-        $( impl_float_basic![@$f:$uf, $ie, $ue]; )+
+        $( _num_dom_real_float_impl_basic![@$f:$uf, $ie, $ue]; )+
     };
     (@$f:ty:$uf:ty, $ie:ty, $ue:ty) => {
         /// # *Basic common methods*
@@ -630,4 +630,4 @@ macro_rules! impl_float_basic {
         }
     };
 }
-impl_float_basic!();
+_num_dom_real_float_impl_basic!();

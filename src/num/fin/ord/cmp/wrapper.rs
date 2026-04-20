@@ -174,19 +174,22 @@ impl<T: PartialOrd> Cmp<T> {
     }
 }
 
-/// Implement [`Comparing`] for primitives.
-macro_rules! impl_comparing {
+/// Implement [`Cmp`] for primitives.
+macro_rules! _num_fin_ord_cmp_impl_prims {
     () => {
-        impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-        impl_comparing![float: f32:32:31, f64:64:63];
+        _num_fin_ord_cmp_impl_prims![int:
+            u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+        _num_fin_ord_cmp_impl_prims![float: f32:32:31, f64:64:63];
         #[cfg(nightly_float)]
-        // impl_comparing![float: f16:16:15:"_cmp_f16", f128:128:127:"_cmp_f128"];
-        impl_comparing![float: f16:16:15, f128:128:127];
+        // _num_fin_ord_cmp_impl_prims![float: f16:16:15:"_cmp_f16", f128:128:127:"_cmp_f128"];
+        _num_fin_ord_cmp_impl_prims![float: f16:16:15, f128:128:127];
     };
     (
     // $p: the integer type
     // $cap: the optional capability feature associated with the `$p` type. E.g "_cmp_u8".
-    int: $($p:ty $(: $cap:literal)? ),+ $(,)?) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
+    int: $($p:ty $(: $cap:literal)? ),+ $(,)?) => {
+        $( _num_fin_ord_cmp_impl_prims![@int: $p $(:$cap)? ]; )+
+    };
     (@int: $p:ty $(: $cap:literal)? ) => {
         $( #[cfg(feature = $cap)] )?
         impl Cmp<$p> {
@@ -241,11 +244,13 @@ macro_rules! impl_comparing {
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
 
-    // int: $($p:ty $(: $cap:literal)? ),+) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
+    // int: $($p:ty $(: $cap:literal)? ),+) => {
+    //     $( _num_fin_ord_cmp_impl_prims![@int: $p $(:$cap)? ]; )+
+    // };
     // (@int: $p:ty $(: $cap:literal)? ) => {
     //     $( #[cfg(feature = $cap)] )?
     float: $($f:ty:$b:literal:$sh:literal $(:$fcap:literal )? ),+ $(,)?) => {
-        $( impl_comparing![@float: $f:$b:$sh $(:$fcap)?]; )+
+        $( _num_fin_ord_cmp_impl_prims![@float: $f:$b:$sh $(:$fcap)?]; )+
     };
     (@float: $f:ty:$b:literal:$sh:literal $( :$fcap:literal )?) => { paste! {
         $( #[cfg(feature = $fcap)] )?
@@ -358,7 +363,7 @@ macro_rules! impl_comparing {
         }
     }};
 }
-impl_comparing!();
+_num_fin_ord_cmp_impl_prims!();
 
 #[rustfmt::skip]
 impl Cmp<Ordering> {

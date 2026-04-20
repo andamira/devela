@@ -39,5 +39,5 @@ pub type Stride2<T> = Stride<T, 2>;
 #[doc = crate::_doc_location!("geom/metric")]
 pub type Stride3<T> = Stride<T, 3>;
 
-crate::_impl_geom_dim![common_methods: Stride];
-crate::_impl_geom_dim![common_traits: Stride];
+crate::_geom_dim_impl_common![common_methods: Stride];
+crate::_geom_dim_impl_common![common_traits: Stride];

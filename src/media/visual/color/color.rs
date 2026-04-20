@@ -4,8 +4,7 @@
 //
 // TOC
 // - trait Color
-// - macro impl_color!
-// - impl Color
+// - macro _media_visual_color_impl!
 
 use crate::{
     Rgb8, Rgb16, RgbF32, RgbF64, RgbLinF32, RgbLinF64, Rgba8, Rgba16, RgbaF32, RgbaF64, RgbaLinF32,
@@ -120,7 +119,7 @@ pub trait Color {
 /// Args
 /// - `$C` the number of components in the inner c array.
 /// - `$C` the numberof
-macro_rules! impl_color {
+macro_rules! _media_visual_color_impl {
     (
     // rgb colors (3 components)
     // - $Name   : the name of the rgb color type
@@ -243,25 +242,25 @@ macro_rules! impl_color {
 
 // impl Color trait
 // type, name, primitive, bits, integer, linear, premul
-impl_color![rgb: Rgb8, u8, 8, true, false];
-impl_color![rgba: Rgba8, u8, 8, true, false, false];
-impl_color![rgba: RgbaPre8, u8, 8, true, false, true];
-impl_color![rgb: Rgb16, u16, 16, true, false];
-impl_color![rgba: Rgba16, u16, 16, true, false, false];
-impl_color![rgba: RgbaPre16, u16, 16, true, false, true];
+_media_visual_color_impl![rgb: Rgb8, u8, 8, true, false];
+_media_visual_color_impl![rgba: Rgba8, u8, 8, true, false, false];
+_media_visual_color_impl![rgba: RgbaPre8, u8, 8, true, false, true];
+_media_visual_color_impl![rgb: Rgb16, u16, 16, true, false];
+_media_visual_color_impl![rgba: Rgba16, u16, 16, true, false, false];
+_media_visual_color_impl![rgba: RgbaPre16, u16, 16, true, false, true];
 crate::items! {
-    impl_color![rgb: RgbF32, f32, 32, false, false];
-    impl_color![rgba: RgbaF32, f32, 32, false, false, false];
-    impl_color![rgba: RgbaPreF32, f32, 32, false, false, true];
-    impl_color![rgb: RgbLinF32, f32, 32, false, true];
-    impl_color![rgba: RgbaLinF32, f32, 32, false, true, false];
-    impl_color![rgba: RgbaLinPreF32, f32, 32, false, true, true];
+    _media_visual_color_impl![rgb: RgbF32, f32, 32, false, false];
+    _media_visual_color_impl![rgba: RgbaF32, f32, 32, false, false, false];
+    _media_visual_color_impl![rgba: RgbaPreF32, f32, 32, false, false, true];
+    _media_visual_color_impl![rgb: RgbLinF32, f32, 32, false, true];
+    _media_visual_color_impl![rgba: RgbaLinF32, f32, 32, false, true, false];
+    _media_visual_color_impl![rgba: RgbaLinPreF32, f32, 32, false, true, true];
 }
 crate::items! {
-    impl_color![rgb: RgbF64, f64, 64, false, false];
-    impl_color![rgba: RgbaF64, f64, 64, false, false, false];
-    impl_color![rgba: RgbaPreF64, f64, 64, false, false, true];
-    impl_color![rgb: RgbLinF64, f64, 64, false, true];
-    impl_color![rgba: RgbaLinF64, f64, 64, false, true, false];
-    impl_color![rgba: RgbaLinPreF64, f64, 64, false, true, true];
+    _media_visual_color_impl![rgb: RgbF64, f64, 64, false, false];
+    _media_visual_color_impl![rgba: RgbaF64, f64, 64, false, false, false];
+    _media_visual_color_impl![rgba: RgbaPreF64, f64, 64, false, false, true];
+    _media_visual_color_impl![rgb: RgbLinF64, f64, 64, false, true];
+    _media_visual_color_impl![rgba: RgbaLinF64, f64, 64, false, true, false];
+    _media_visual_color_impl![rgba: RgbaLinPreF64, f64, 64, false, true, true];
 }

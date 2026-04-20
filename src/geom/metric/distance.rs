@@ -40,5 +40,5 @@ pub type Distance2<T> = Distance<T, 2>;
 #[doc = crate::_doc_location!("geom/metric")]
 pub type Distance3<T> = Distance<T, 3>;
 
-crate::_impl_geom_dim![common_methods: Distance];
-crate::_impl_geom_dim![common_traits: Distance];
+crate::_geom_dim_impl_common![common_methods: Distance];
+crate::_geom_dim_impl_common![common_traits: Distance];
