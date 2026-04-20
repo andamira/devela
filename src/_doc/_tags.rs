@@ -17,7 +17,7 @@ macro_rules! _tags {
 pub use _tags;
 
 // helper for defining doc tags with an associated symbol and title attribute
-macro_rules! define_symbol_tags {
+macro_rules! _define_symbol_tags {
     ($( $tag:ident, $title:literal, $symbol:literal;)+) => {
         $crate::CONST! { hidden macro_export, // pub(crate), // NOTE: needed by define_error!
             $( $tag = concat![$crate::SPAN_OPEN!(), "'", $title, "'>", $symbol, "</span>"];)+
@@ -29,7 +29,7 @@ macro_rules! define_symbol_tags {
 // - how it is realized      (MEM, LIFETIME, GUARD, NICHE)
 // - where it applies        (PLATFORM, RUNTIME, TERM, WEB)
 // - how it operates         (CODE, CONSTRUCTION, ITERATOR)
-define_symbol_tags! {
+_define_symbol_tags! {
     /* thematic */
 
     // Abstract algebraic structures and laws.

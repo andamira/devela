@@ -1,4 +1,4 @@
-// devela::geom::metric::angle
+// devela::geom::dir::angle
 //
 //! Defines [`Angle`], [`AngleDirection`], [`AngleKind`].
 //!

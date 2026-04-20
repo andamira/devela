@@ -15,8 +15,7 @@ mod impl_factors_alloc;
 mod impl_modulo;
 mod impl_prime;
 mod impl_root;
-
-// mod _wip_impl_stats; // WIP
+// mod impl_stats; // WIP
 
 crate::structural_mods! { // _mods
     _mods {

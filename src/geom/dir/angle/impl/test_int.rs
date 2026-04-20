@@ -1,4 +1,4 @@
-// devela::geom::metric:angle::impl::test_int
+// devela::geom::dir:angle::impl::test_int
 
 use crate::{Angle, AngleDirection, AngleKind, assert_approx_eq_all};
 

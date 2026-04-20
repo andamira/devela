@@ -19,9 +19,9 @@ use crate::{Int, IntError::Overflow, IntResult as Result, is, isize_up, paste, u
 /// $up:  the upcasted type to do the operations on (for prime_pi)
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_prime {
+macro_rules! __impl_int_prime {
     () => {
-        impl_prime![signed
+        __impl_int_prime![signed
             i8    |i16      | "",
             i16   |i32      | "-1",
             i32   |i64      | "-2",
@@ -29,7 +29,7 @@ macro_rules! impl_prime {
             i128  |i128     | "-4",
             isize |isize_up | "-5",
         ];
-        impl_prime![unsigned
+        __impl_int_prime![unsigned
             u8    |u16      | "-6",
             u16   |u32      | "-7",
             u32   |u64      | "-8",
@@ -39,10 +39,10 @@ macro_rules! impl_prime {
         ];
     };
     (signed $( $t:ty | $up:ty | $d:literal ),+ $(,)?) => {
-        $( impl_prime![@signed $t|$up | $d]; )+
+        $( __impl_int_prime![@signed $t|$up | $d]; )+
     };
     (unsigned $( $t:ty | $up:ty | $d:literal ),+ $(,)?) => {
-        $( impl_prime![@unsigned $t|$up | $d]; )+
+        $( __impl_int_prime![@unsigned $t|$up | $d]; )+
     };
     (
     // implements signed ops
@@ -298,4 +298,4 @@ macro_rules! impl_prime {
         }
     }};
 }
-impl_prime!();
+__impl_int_prime!();

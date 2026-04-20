@@ -32,9 +32,9 @@ const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 /// $up:  the upcasted input/output type. E.g. i16.
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_root {
+macro_rules! __impl_int_root {
     () => {
-        impl_root![signed
+        __impl_int_root![signed
             i8    |i16      | "",
             i16   |i32      | "-1",
             i32   |i64      | "-2",
@@ -42,7 +42,7 @@ macro_rules! impl_root {
             i128  |i128     | "-4",
             isize |isize_up | "-5"
         ];
-        impl_root![unsigned
+        __impl_int_root![unsigned
             u8    |u16      | "-6",
             u16   |u32      | "-7",
             u32   |u64      | "-8",
@@ -52,10 +52,10 @@ macro_rules! impl_root {
         ];
     };
     (signed $( $t:ty | $up:ty | $d:literal ),+) => {
-        $( impl_root![@signed $t|$up| $d]; )+
+        $( __impl_int_root![@signed $t|$up| $d]; )+
     };
     (unsigned $( $t:ty | $up:ty | $d:literal ),+) => {
-        $( impl_root![@unsigned $t|$up| $d]; )+
+        $( __impl_int_root![@unsigned $t|$up| $d]; )+
     };
     (
     // implements signed ops
@@ -491,4 +491,4 @@ macro_rules! impl_root {
         }
     }};
 }
-impl_root!();
+__impl_int_root!();

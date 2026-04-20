@@ -1,4 +1,4 @@
-// devela::geom::metric::angle::impl::int
+// devela::geom::dir::angle::impl::int
 //
 //!
 //
@@ -15,7 +15,7 @@ use crate::{Angle, AngleDirection, AngleKind};
 #[allow(unused_imports)]
 use crate::{FloatConst, fsize};
 
-/// impl `Angle` methods with an integer representation:
+/// Implement `Angle` methods with an integer representation:
 ///
 /// # TOC
 /// - integer common methods
@@ -25,15 +25,15 @@ use crate::{FloatConst, fsize};
 /// # Macro arguments
 /// $t: the inner integer primitive type
 /// $f: the associated floating point type
-macro_rules! impl_angle {
+macro_rules! _geom_dir_angle_impl_int {
     () => {
-        impl_angle![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64, isize:fsize];
-        impl_angle![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];
+        _geom_dir_angle_impl_int![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64, isize:fsize];
+        _geom_dir_angle_impl_int![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];
     };
 
     // integers common methods
     (int $($t:ty : $f:ty),+) => {
-        $( impl_angle![@int $t:$f]; )+
+        $( _geom_dir_angle_impl_int![@int $t:$f]; )+
     };
     (@int $t:ty : $f:ty) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`.")]
@@ -155,10 +155,10 @@ macro_rules! impl_angle {
 
     // signed integers specific methods
     (sint $($t:ty : $f:ty),+) => {
-        $( impl_angle![@sint $t:$f]; )+
+        $( _geom_dir_angle_impl_int![@sint $t:$f]; )+
     };
     (@sint $t:ty : $f:ty) => {
-        impl_angle![int $t:$f];
+        _geom_dir_angle_impl_int![int $t:$f];
 
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, signed.")]
         impl Angle<$t> {
@@ -221,10 +221,10 @@ macro_rules! impl_angle {
 
     // unsigned integers specific methods
     (uint $($t:ty : $f:ty),+) => {
-        $( impl_angle![@uint $t:$f]; )+
+        $( _geom_dir_angle_impl_int![@uint $t:$f]; )+
     };
     (@uint $t:ty : $f:ty) => {
-        impl_angle![int $t:$f];
+        _geom_dir_angle_impl_int![int $t:$f];
 
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, unsigned.")]
         impl Angle<$t> {
@@ -264,4 +264,4 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle!();
+_geom_dir_angle_impl_int!();

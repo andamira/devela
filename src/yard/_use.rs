@@ -16,7 +16,7 @@
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
-macro_rules! __use {
+macro_rules! _use· {
     /* to be used as imports */
     // (dep_simdutf8::compat::from_utf8) => { // MAYBE alternative syntax
     (compat::from_utf8) => {
@@ -56,7 +56,7 @@ macro_rules! __use {
     };
 }
 #[doc(inline)]
-pub use __use as _use;
+pub use _use· as _use;
 
 #[doc = crate::_tags!(internal)]
 /// Imports known helpers or provides compatibility shims.
@@ -74,21 +74,21 @@ pub use __use as _use;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
 // NOTE $_d: the dollar sign passed as a token, as a trick to be able to nest repetitions.
-macro_rules! __use_or_shim {
+macro_rules! _use_or_shim· {
     ($($name:ident),+ $(,)?) => {
-        $( $crate::__use_or_shim![%($) $name]; )+
+        $( $crate::_use_or_shim![%($) $name]; )+
     };
     (%($_d:tt) _tags) => {
-        $crate::__use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
-        $crate::__use_or_shim![%import _tags];
+        $crate::_use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
+        $crate::_use_or_shim![%import _tags];
     };
     (%($_d:tt) _doc_vendor) => {
-        $crate::__use_or_shim![%shim _doc_vendor => { ($_d($tt:tt)*) => {""} } ];
-        $crate::__use_or_shim![%import _doc_vendor];
+        $crate::_use_or_shim![%shim _doc_vendor => { ($_d($tt:tt)*) => {""} } ];
+        $crate::_use_or_shim![%import _doc_vendor];
     };
     (%($_d:tt) _doc_location) => {
-        $crate::__use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
-        $crate::__use_or_shim![%import _doc_location];
+        $crate::_use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
+        $crate::_use_or_shim![%import _doc_location];
     };
     // imports the real macro
     (%import $name:ident) => {
@@ -110,4 +110,4 @@ macro_rules! __use_or_shim {
     };
 }
 #[doc(inline)]
-pub use __use_or_shim as _use_or_shim;
+pub use _use_or_shim· as _use_or_shim;

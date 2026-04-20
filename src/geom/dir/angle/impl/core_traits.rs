@@ -1,7 +1,4 @@
-// devela::geom::metric::angle::impl::core_traits
-//
-//!
-//
+// devela::geom::dir::angle::impl::core_traits
 
 use crate::{Angle, ConstInit, Debug, FmtResult, Formatter, Ordering};
 

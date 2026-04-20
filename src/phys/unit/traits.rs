@@ -112,8 +112,8 @@ pub trait Unit: Sized {
 
 // -----------------------------------------------------------------------------
 
-macro_rules! impl_unit {
-    ($($t:ty),+) => { $( impl_unit![@$t]; )+ };
+macro_rules! _impl_unit {
+    ($($t:ty),+) => { $( _impl_unit![@$t]; )+ };
     (@$t:ty) => {
         impl Unit for $t {
             fn symbol(&self) -> &str { self.symbol() }
@@ -159,4 +159,4 @@ macro_rules! impl_unit {
         }
     };
 }
-impl_unit![UnitBi, UnitSi];
+_impl_unit![UnitBi, UnitSi];

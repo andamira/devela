@@ -10,7 +10,7 @@
 /// # Arms
 /// - all_sizes:
 /// - single_size:
-macro_rules! define_data_value_type_raw {
+macro_rules! _define_data_value_type_raw {
     (
     // Defines all sizes at the same time.
     //
@@ -379,7 +379,7 @@ macro_rules! define_data_value_type_raw {
     ) => {
         // 8-bit / 1-Byte
         #[cfg(feature = "_value8")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 8, feature: "_value8",
 
             copy:
@@ -425,7 +425,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 16-bit / 2-Byte
         #[cfg(feature = "_value16")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 16, feature: "_value16",
 
             copy:
@@ -500,7 +500,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 32-bit / 4-Byte
         #[cfg(feature = "_value32")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 32, feature: "_value32",
 
             copy:
@@ -605,7 +605,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 64-bit / 8-Byte
         #[cfg(feature = "_value64")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 64, feature: "_value64",
 
             copy:
@@ -741,7 +741,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 128-bit / 16-Byte
         #[cfg(feature = "_value128")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 128, feature: "_value128",
 
             copy:
@@ -906,7 +906,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 256-bit / 32-Byte
         #[cfg(feature = "_value256")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 256, feature: "_value256",
 
             copy:
@@ -1101,7 +1101,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 512-bit / 64-Byte
         #[cfg(feature = "_value512")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 512, feature: "_value512",
 
             copy:
@@ -1326,7 +1326,7 @@ macro_rules! define_data_value_type_raw {
         }
         // 1024-bit / 128-Byte
         #[cfg(feature = "_value1024")]
-        $crate::define_data_value_type_raw! {
+        $crate::_define_data_value_type_raw! {
             single_size: $Value, $Type, $Raw, size: 1024, feature: "_value1024",
 
             copy:
@@ -1585,7 +1585,7 @@ macro_rules! define_data_value_type_raw {
 
     // This arm defines in one pass a single size `DataValue*`, `DataType*`, `DataRaw*`.
     //
-    // It calls the macros: `define_data_value!`, `define_data_type!` and `define_data_raw!`.
+    // It calls the macros: `__define_data_value!`, `__define_data_type!` and `__define_data_raw!`.
     single_size: $Value:ident, $Type:ident, $Raw:ident,
     size: $b:literal,
     feature: $feature:literal,
@@ -1630,7 +1630,7 @@ macro_rules! define_data_value_type_raw {
            [def:$N_def_ptrdep:stmt]
         )* ;
     ) => {
-        $crate::define_data_value! {
+        $crate::__define_data_value! {
             v: $Value, t: $Type, r: $Raw,
             size: $b, feature: $feature,
 
@@ -1674,7 +1674,7 @@ macro_rules! define_data_value_type_raw {
                    [def:$N_def_ptrdep]
                 )* ;
         }
-        $crate::define_data_type! {
+        $crate::__define_data_type! {
             v: $Value, t: $Type, r: $Raw,
             size: $b, feature: $feature,
 
@@ -1718,7 +1718,7 @@ macro_rules! define_data_value_type_raw {
                    [def:$N_def_ptrdep]
                 )* ;
         }
-        $crate::define_data_raw! {
+        $crate::__define_data_raw! {
             v: $Value, t: $Type, r: $Raw,
             size: $b, feature: $feature,
 
@@ -1764,4 +1764,4 @@ macro_rules! define_data_value_type_raw {
         }
     };
 }
-pub(crate) use define_data_value_type_raw;
+pub(crate) use _define_data_value_type_raw;

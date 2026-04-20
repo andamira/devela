@@ -3,13 +3,13 @@
 //! Implements the traits: `DataValue`*, `DataType`*, `DataRaw`*.
 //
 // TOC
-// - impl_data_value!
-// - impl_data_type!
-// - impl_data_raw!
+// - __impl_data_value!
+// - __impl_data_type!
+// - __impl_data_raw!
 
 /// Implements the [`DataValue`] trait.
 #[allow(unused_macros)]
-macro_rules! impl_data_value {
+macro_rules! __impl_data_value {
     (
         v: $Vname:ident, $vbound:ident,
         t: $Tname:ident, $tbound:ident,
@@ -132,11 +132,11 @@ macro_rules! impl_data_value {
     }};
 }
 #[allow(unused_imports)]
-pub(crate) use impl_data_value;
+pub(crate) use __impl_data_value;
 
 /// Implements the [`DataType`] trait.
 #[allow(unused_macros)]
-macro_rules! impl_data_type {
+macro_rules! __impl_data_type {
     (
         v: $Vname:ident, $vbound:ident,
         t: $Tname:ident, $tbound:ident,
@@ -360,12 +360,12 @@ macro_rules! impl_data_type {
     }};
 }
 #[allow(unused_imports)]
-pub(crate) use impl_data_type;
+pub(crate) use __impl_data_type;
 
 /// Implements the [`DataRaw`] trait.
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 #[allow(unused_macros)]
-macro_rules! impl_data_raw {
+macro_rules! __impl_data_raw {
     (
       r: $Rname:ident,
     ) => {
@@ -374,4 +374,4 @@ macro_rules! impl_data_raw {
 }
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 #[allow(unused_imports)]
-pub(crate) use impl_data_raw;
+pub(crate) use __impl_data_raw;

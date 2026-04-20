@@ -1,4 +1,4 @@
-// devela::geom::metric::angle::kind
+// devela::geom::dir::angle::kind
 //
 //! Defines [`AngleKind`].
 //

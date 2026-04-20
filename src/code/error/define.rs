@@ -79,7 +79,7 @@ const CONST_ERROR: CompositeError = CompositeError::from_error_code(ErrorCode(99
 //   the same with `$(+const$($_c:lifetime)?)?` for the optional const fn implementation.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _define_error {
+macro_rules! define_error· {
     (
     // Defines a standalone error struct with optional tuple or field variants.
     //
@@ -336,7 +336,7 @@ macro_rules! _define_error {
     };
 }
 #[doc(inline)]
-pub use _define_error as define_error;
+pub use define_error· as define_error;
 
 #[cfg(test)]
 mod tests {

@@ -119,7 +119,7 @@ impl Slice<u8> {
     /// A convenience wrapper over [`Slice::copy_array_at`].
     // #[inline(always)] // MAYBE
     // // Auto-select best version
-    // macro_rules! copy_array { // IDEA
+    // macro_rules! _copy_array { // IDEA
     //     ($dst:expr, $src:expr, $at:expr) => {
     //         if $dst.len() <= 32 { copied_array_at($dst, $src, $at) }
     //         else { let mut tmp = $dst; copy_array_at(&mut tmp, $src, $at); tmp }

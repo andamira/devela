@@ -3,7 +3,7 @@
 //! Defines [`ne!`], [`nv!`] [`nz!`], and the [`NicheNew`] hidden helper.
 //
 // TOC
-// - macro niche_prim! (via generate_niche_prim!)
+// - macro niche_prim! (via _generate_niche_prim!)
 // - macro ne!
 // - macro nv!
 // - macro nz!
@@ -17,7 +17,7 @@
 /// About using $ as a token delimiter:
 ///   this part:  ($P $_d($_:tt)*) => { $P };
 ///   expands to: (u8 $($_:tt)*) => { u8 };
-macro_rules! generate_niche_prim {
+macro_rules! _generate_niche_prim {
     ($_d:tt $($P:ty),+ $(,)?) => { $crate::paste! {
         #[doc = crate::_tags!(niche)]
         /// Maps a niche representation type to its primitive carrier type.
@@ -58,7 +58,7 @@ macro_rules! generate_niche_prim {
         /// ```
         #[doc(hidden)]
         #[macro_export]
-        macro_rules! _niche_prim {
+        macro_rules! niche_prim· {
             // strip one leading path segment at a time
             ($head:ident :: $_d($rest:tt)+) => { $crate::niche_prim!($_d($rest)+) };
             $(
@@ -77,10 +77,10 @@ macro_rules! generate_niche_prim {
             )+
         }
         #[doc(inline)]
-        pub use _niche_prim as niche_prim;
+        pub use niche_prim· as niche_prim;
     }};
 }
-generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+_generate_niche_prim![$ u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 #[doc = crate::_tags!(num niche construction)]
 /// Creates a `NonExtreme*` niche instance with compile-time checking.
@@ -253,11 +253,11 @@ crate::items! {
 
         // NOTE: the following works because the macro matches on arbitrary tokens.
         // But it wouldn't compile if it'd match over $P:ty, for example.
-        macro_rules! example_macro {
+        macro_rules! _example_macro {
             // ($P:ty) => { const fn prim3() -> crate::niche_prim![$P] { 32 } }; // would fail
             ($($P:tt)+) => { const fn prim2() -> crate::niche_prim![$($P)+] { 32 } }; // works
         }
-        example_macro![NonValueU8<43>];
+        _example_macro![NonValueU8<43>];
     }
 
     #[test]

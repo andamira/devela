@@ -33,9 +33,9 @@ use crate::{IntError::Overflow, IntResult as Result};
 /// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16 (only for unsigned)
 ///
 /// $d:    the doclink suffix for the method name
-macro_rules! impl_elem {
+macro_rules! __impl_int_elem {
     () => {
-        impl_elem![signed
+        __impl_int_elem![signed
             // $t :$ut   |$up      |$d
             i8    :u8    |i16      |"",
             i16   :u16   |i32      |"-1",
@@ -44,7 +44,7 @@ macro_rules! impl_elem {
             i128  :u128  |i128     |"-4",
             isize :usize |isize_up |"-5"
         ];
-        impl_elem![unsigned
+        __impl_int_elem![unsigned
             // $t :$up      |$iup     |$d
             u8    :u16      |i16      |"-6",
             u16   :u32      |i32      |"-7",
@@ -54,15 +54,15 @@ macro_rules! impl_elem {
           //usize :usize_up |isize_up |"-11"]; // MAYBE
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_elem![unsigned usize  :usize_up |isize_up |"-11"];
+        __impl_int_elem![unsigned usize  :usize_up |isize_up |"-11"];
         #[cfg(target_pointer_width = "64")]
-        impl_elem![unsigned usize  :usize_up |isize_up |"-11"];
+        __impl_int_elem![unsigned usize  :usize_up |isize_up |"-11"];
     };
     (signed $( $t:ty : $ut:ty | $up:ty |$d:literal ),+) => {
-        $( impl_elem![@signed   $t :$ut :$up |$d]; )+
+        $( __impl_int_elem![@signed   $t :$ut :$up |$d]; )+
     };
     (unsigned $( $t:ty : $up:ty | $iup:ty |$d:literal ),+) => {
-        $( impl_elem![@unsigned $t :$up |$iup |$d]; )+
+        $( __impl_int_elem![@unsigned $t :$up |$iup |$d]; )+
     };
     (
     // implements signed ops
@@ -657,4 +657,4 @@ macro_rules! impl_elem {
         }
     }};
 }
-impl_elem!();
+__impl_int_elem!();

@@ -90,7 +90,7 @@
 // - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _CONST {
+macro_rules! CONST· {
     (
     // Either multiple `const fn`
     $(
@@ -185,11 +185,11 @@ macro_rules! _CONST {
             #[allow(unused_macro)]
             #[macro_export]
             #[doc(hidden)]
-            macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
+            macro_rules! [<$CONST_NAME _·>] { () => { $expr } }
 
             #[doc(hidden)]
             #[allow(unused_imports)]
-            pub use [< _ $CONST_NAME >] as $CONST_NAME;
+            pub use [<$CONST_NAME _·>] as $CONST_NAME;
         )*
     }};
     (
@@ -205,13 +205,13 @@ macro_rules! _CONST {
             #[allow(unused_macro)]
             #[macro_export]
             #[cfg_attr(cargo_primary_package, doc(hidden))]
-            macro_rules! [< _ $CONST_NAME >] { () => { $expr } }
+            macro_rules! [<$CONST_NAME _·>] { () => { $expr } }
 
             #[doc(inline)]
             #[allow(unused_imports)]
-            pub use [< _ $CONST_NAME >] as $CONST_NAME;
+            pub use [<$CONST_NAME _·>] as $CONST_NAME;
         )*
     }};
 }
 #[doc(inline)]
-pub use _CONST as CONST;
+pub use CONST· as CONST;

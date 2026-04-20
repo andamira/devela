@@ -3,7 +3,7 @@
 //! Methods depending on std, or its absence
 //
 // TOC
-// - macro impl_fp!
+// - macro _impl_float_std!
 // - impls for std
 
 use crate::Float;
@@ -15,14 +15,14 @@ use crate::Float;
 /// $doc: an optional documentation string.
 /// $opfn: the original operation function name.
 /// $op: the new operation function name in Float.
-macro_rules! impl_fp {
+macro_rules! _impl_float_std {
     (
         // Matches a wildcard floating-point type (f*).
         // Expands to specific floating-point types (f32, f64).
         $lib:ident : f* : $($rest:tt)*
     ) => {
-        impl_fp![$lib : f32 : $($rest)*];
-        impl_fp![$lib : f64 : $($rest)*];
+        _impl_float_std![$lib : f32 : $($rest)*];
+        _impl_float_std![$lib : f64 : $($rest)*];
     };
     (
         // Matches a specific floating-point type and any number of operations.
@@ -30,7 +30,7 @@ macro_rules! impl_fp {
         $lib:ident : $f:ty : $($rest:tt)*
     ) => { $crate::paste! {
         impl Float<$f> {
-            impl_fp![@$lib : $f : $($rest)*];
+            _impl_float_std![@$lib : $f : $($rest)*];
         }
     }};
     (
@@ -39,8 +39,8 @@ macro_rules! impl_fp {
         $opfn:ident = $op:ident : $($arg:ident),*
         ; $($rest:tt)*
     ) => {
-        impl_fp![@$lib : $f : $($doc)? $(+const$($_c)?)? $opfn = $op : $($arg),*];
-        impl_fp![@$lib : $f : $($rest)*];
+        _impl_float_std![@$lib : $f : $($doc)? $(+const$($_c)?)? $opfn = $op : $($arg),*];
+        _impl_float_std![@$lib : $f : $($rest)*];
     };
     (
         // Matches a single operation and implements it using the `std` library.
@@ -58,7 +58,7 @@ mod _std {
     use super::Float;
 
     // custom implementations are commented out:
-    impl_fp![std:f*:
+    _impl_float_std![std:f*:
         r"The largest integer less than or equal to `x`.
         $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
         +const floor = floor: ;
@@ -143,12 +143,12 @@ mod _std {
 
     /// $f:   the floating-point type.
     /// $e:   the integer type for integer exponentiation.
-    macro_rules! custom_impls {
+    macro_rules! _impl_float_std_custom {
         () => {
-            custom_impls![(f32, i32), (f64, i32)];
+            _impl_float_std_custom![(f32, i32), (f64, i32)];
         };
         ($( ($f:ty, $e:ty)),+) => {
-            $( custom_impls![@$f, $e]; )+
+            $( _impl_float_std_custom![@$f, $e]; )+
         };
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `std` feature*.
@@ -187,5 +187,5 @@ mod _std {
             }
         };
     }
-    custom_impls!();
+    _impl_float_std_custom!();
 }

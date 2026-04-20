@@ -33,16 +33,16 @@ const PRIME64: u64 = 0x0000_0100_0000_01B3;
 const BASIS128: u128 = 0x6c62_272e_07bb_0142_62b8_2175_6295_c58d;
 const PRIME128: u128 = 0x0000_0000_0100_0000_0000_0000_0000_013B;
 
-macro_rules! impl_fnv {
+macro_rules! _impl_hash_fnv {
     () => {
-        impl_fnv![u32:BASIS32:PRIME32, u64:BASIS64:PRIME64, u128:BASIS128:PRIME128];
+        _impl_hash_fnv![u32:BASIS32:PRIME32, u64:BASIS64:PRIME64, u128:BASIS128:PRIME128];
         #[cfg(target_pointer_width = "32")]
-        impl_fnv![usize:BASIS32:PRIME32];
+        _impl_hash_fnv![usize:BASIS32:PRIME32];
         #[cfg(target_pointer_width = "64")]
-        impl_fnv![usize:BASIS64:PRIME64];
+        _impl_hash_fnv![usize:BASIS64:PRIME64];
     };
 
-    ($($t:ty:$basis:ident:$prime:ident),+) =>  { $( impl_fnv![@$t:$basis:$prime]; )+ };
+    ($($t:ty:$basis:ident:$prime:ident),+) =>  { $( _impl_hash_fnv![@$t:$basis:$prime]; )+ };
     (@$t:ty:$basis:ident:$prime:ident) =>  {
 
         impl ConstInit for HasherFnv<$t> { const INIT: Self = Self { state: $basis as $t }; }
@@ -186,7 +186,7 @@ macro_rules! impl_fnv {
         }
     };
 }
-impl_fnv!();
+_impl_hash_fnv!();
 
 #[cfg(test)]
 mod tests {

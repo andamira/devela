@@ -1,7 +1,4 @@
-// devela::geom::metric::angle::impl
-//
-//!
-//
+// devela::geom::dir::angle::impl
 
 #[cfg(test)]
 mod test_int;

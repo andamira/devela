@@ -75,7 +75,7 @@
 // actually used, simply allowing us to detect the presence of the module during expansion.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _structural_mods {
+macro_rules! structural_mods· {
     (
         // Items inside should be pub.
         // Public items from non-public modules. They bubble up and show up in the current module.
@@ -161,4 +161,4 @@ macro_rules! _structural_mods {
     };
 }
 #[doc(inline)]
-pub use _structural_mods as structural_mods;
+pub use structural_mods· as structural_mods;

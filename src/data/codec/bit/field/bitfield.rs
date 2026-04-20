@@ -45,7 +45,7 @@
 #[doc = crate::doclink!(custom devela "[`enumset!`]" "code/util/macro.enumset.html")]
 #[doc(hidden)]
 #[macro_export]
-macro_rules! _bitfield {
+macro_rules! bitfield· {
     {
         /* full syntax */
 
@@ -891,4 +891,4 @@ macro_rules! _bitfield {
         $($tt:tt)+ } => { $crate::bitfield![ (custom:pub, extra:pub) $($tt)+ ]; };
 }
 #[doc(inline)]
-pub use _bitfield as bitfield; // see crate::code::utils::mod.rs
+pub use bitfield· as bitfield;

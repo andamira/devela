@@ -18,7 +18,7 @@
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _capture_first {
+macro_rules! capture_first· {
     (block $first:block $(, $tail:block)* $(,)?) => { $first };
     (expr $first:expr $(, $tail:expr)* $(,)?) => { $first };
     (ident $first:ident $(, $tail:ident)* $(,)?) => { $first };
@@ -30,7 +30,7 @@ macro_rules! _capture_first {
     (tt $first:tt $(, $tail:tt)* $(,)?) => { $first };
 }
 #[doc(inline)]
-pub use _capture_first as capture_first;
+pub use capture_first· as capture_first;
 
 #[doc = crate::_tags!(code)]
 /// Captures all the tokens except the first one, as a tuple.
@@ -38,7 +38,7 @@ pub use _capture_first as capture_first;
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _capture_tail_tuple {
+macro_rules! capture_tail_tuple· {
     (block $first:block, $($tail:block),* $(,)?) => { ($($tail),*) };
     (expr $first:expr, $($tail:expr),* $(,)?) => { ($($tail),*) };
     (ident $first:ident, $($tail:ident),* $(,)?) => { ($($tail),*) };
@@ -53,13 +53,13 @@ macro_rules! _capture_tail_tuple {
     ($cat:tt $first:tt) => { () };
 }
 #[doc(inline)]
-pub use _capture_tail_tuple as capture_tail_tuple;
+pub use capture_tail_tuple· as capture_tail_tuple;
 
 // #[doc = crate::_tags!(code)]
 // /// Captures all the tokens except the first one.
 // #[macro_export]
 // #[rustfmt::skip]
-// macro_rules! capture_tail {
+// macro_rules! capture_tail· {
 //     (block $first:block, $($tail:block),*) => { $($tail),* };
 //     (expr $first:expr, $($tail:expr),*) => { $($tail),* };
 //     (ident $first:ident, $($tail:ident),*) => { $($tail),* };
@@ -70,7 +70,7 @@ pub use _capture_tail_tuple as capture_tail_tuple;
 //     (tt $first:tt, $($tail:tt),*) => { $($tail),* };
 //     (ty $first:ty, $($tail:ty),*) => { $($tail),* };
 // }
-// pub use capture_tail;
+// pub use capture_tail· as capture_tail;
 
 #[doc = crate::_tags!(code)]
 /// Captures the last token from a list of inputs.
@@ -78,7 +78,7 @@ pub use _capture_tail_tuple as capture_tail_tuple;
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _capture_last {
+macro_rules! capture_last· {
     // Base case: when there is only one item left, return it
     (block $first:block) => { $first };
     (expr $first:expr) => { $first };
@@ -111,7 +111,7 @@ macro_rules! _capture_last {
         $crate::capture_last!(ty $($tail),*) };
 }
 #[doc(inline)]
-pub use _capture_last as capture_last;
+pub use capture_last· as capture_last;
 
 #[cfg(test)]
 mod tests {

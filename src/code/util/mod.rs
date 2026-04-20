@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: hint)]
 //
 // # Implementation notes
-// Several macros are defined hidden, prefixed with `_`, an publicly re-exported unprefixed.
+// Several macros are defined hidden, suffixed with `·`, an publicly re-exported unsuffixed.
 // This makes them able to be imported from the root. E.g.: bitfield, capture_last, enumset…
 // See: https://github.com/rust-lang/rust/pull/52234#issuecomment-976702997
 //

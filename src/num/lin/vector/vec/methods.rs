@@ -20,17 +20,17 @@ impl<T> VecVector<T> {
 /* compile-time ops for primitives */
 
 // helper for methods
-macro_rules! impl_vector {
-    (int $($t:ty),+) => { $( impl_vector![@int $t]; )+ };
+macro_rules! _impl_vector {
+    (int $($t:ty),+) => { $( _impl_vector![@int $t]; )+ };
     (@int $t:ty) => {
         impl VecVector<$t> {
         }
     };
-    (float $($t:ty),+) => { $( impl_vector![@float $t]; )+ };
+    (float $($t:ty),+) => { $( _impl_vector![@float $t]; )+ };
     (@float $t:ty) => {
         impl VecVector<$t> {
         }
     };
 }
-impl_vector![int u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-impl_vector![float f32, f64];
+_impl_vector![int u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+_impl_vector![float f32, f64];

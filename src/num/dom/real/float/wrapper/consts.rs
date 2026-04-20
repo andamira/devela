@@ -16,13 +16,13 @@ use crate::FloatConst;
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.
-macro_rules! float_const_impls {
+macro_rules! _float_const_impls {
     () => {
-        float_const_impls![f32, f64];
+        _float_const_impls![f32, f64];
         // #[cfg(nightly_float)]
-        // float_const_impls![f16, f128];
+        // _float_const_impls![f16, f128];
     };
-    ($( $f:ty),+) => { $( float_const_impls![@$f]; )+ };
+    ($( $f:ty),+) => { $( _float_const_impls![@$f]; )+ };
     (@$f:ty) => {
         /// # *Mathematical constants.*
         ///
@@ -224,4 +224,4 @@ macro_rules! float_const_impls {
         }
     };
 }
-float_const_impls!();
+_float_const_impls!();

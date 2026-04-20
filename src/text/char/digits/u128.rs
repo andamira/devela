@@ -12,7 +12,7 @@ impl Digits<u128> {
 
     /* digit_at_ */
 
-    #[doc = DOC_COUNT_DIGITS_10!()]
+    #[doc = _DOC_COUNT_DIGITS_10!()]
     /// # Examples
     /// ```
     /// # use devela::text::Digits;
@@ -24,7 +24,7 @@ impl Digits<u128> {
         is![self.0 == 0, 1, self.0.ilog10() as u8 + 1]
     }
 
-    #[doc = DOC_COUNT_DIGITS_16!()]
+    #[doc = _DOC_COUNT_DIGITS_16!()]
     pub const fn count_digits16(self) -> u8 {
         is![self.0 == 0, 1, ((self.0.ilog2() + 4) / 4) as u8]
     }
@@ -111,12 +111,12 @@ impl Digits<u128> {
 
     //
 
-    #[doc = DOC_DIGIT_AT_POWER_10!()]
+    #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
     pub(crate) const fn digit_at_power10(self, divisor: u128) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
     }
-    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    #[doc = _DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub(crate) const fn digit_at_power16(self, divisor: u128) -> u8 {
@@ -228,7 +228,7 @@ impl Digits<u128> {
         ]
     }
 
-    #[doc = DOC_WRITE_DIGITS_10!(39)]
+    #[doc = _DOC_WRITE_DIGITS_10!(39)]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
         let mut n = self.0;
         if n == 0 {
@@ -261,7 +261,7 @@ impl Digits<u128> {
         digits
     }
 
-    #[doc = DOC_WRITE_DIGITS_10_FAST!(39)]
+    #[doc = _DOC_WRITE_DIGITS_10_FAST!(39)]
     pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
         const MAX: usize = Digits::<u128>::MAX_DIGITS_10 as usize;
         debug_assert!(offset + MAX <= buf.len(), "buffer < 39 bytes");
@@ -292,7 +292,7 @@ impl Digits<u128> {
         written_len
     }
 
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
         let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -304,7 +304,7 @@ impl Digits<u128> {
                 ::from_array_nright(self.digits10(), width)]
         }}
     }
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
         let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {

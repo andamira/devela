@@ -28,7 +28,7 @@
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! __devela_policy {
+macro_rules! _devela_policy· {
     /* item-level safety policy */
 
     // Defines one or more items whose availability differs between devela and external builds,
@@ -92,7 +92,7 @@ macro_rules! __devela_policy {
     };
 }
 #[doc(inline)]
-pub use __devela_policy as _devela_policy;
+pub use _devela_policy· as _devela_policy;
 
 /// for devela safe
 #[crate::compile(env(__DEVELA_MEMBER))] #[cfg(not(unsafe··))]

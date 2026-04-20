@@ -18,9 +18,9 @@ use crate::{Int, is, paste};
 /// $t:   the integer primitive input/output type, and the niche inner type
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_base {
+macro_rules! __impl_int_base {
     () => {
-        impl_base![signed
+        __impl_int_base![signed
             i8    |"",
             i16   |"-1",
             i32   |"-2",
@@ -28,7 +28,7 @@ macro_rules! impl_base {
             i128  |"-4",
             isize |"-5"
         ];
-        impl_base![unsigned
+        __impl_int_base![unsigned
             u8    |"-6",
             u16   |"-7",
             u32   |"-8",
@@ -38,10 +38,10 @@ macro_rules! impl_base {
         ];
     };
     (signed $( $t:ty | $d:literal ),+) => {
-        $( impl_base![@signed $t| $d]; )+
+        $( __impl_int_base![@signed $t| $d]; )+
     };
     (unsigned $( $t:ty | $d:literal ),+) => {
-        $( impl_base![@unsigned $t| $d]; )+
+        $( __impl_int_base![@unsigned $t| $d]; )+
     };
     (
     // implements ops on signed primitives
@@ -260,4 +260,4 @@ macro_rules! impl_base {
         }
     }};
 }
-impl_base!();
+__impl_int_base!();

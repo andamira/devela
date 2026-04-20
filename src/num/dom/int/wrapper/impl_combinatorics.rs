@@ -23,9 +23,9 @@ use crate::{
 /// $t:   the input/output type
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_combinatorics {
+macro_rules! __impl_int_combinatorics {
     () => {
-        impl_combinatorics![signed
+        __impl_int_combinatorics![signed
             i8     |"",
             i16    |"-1",
             i32    |"-2",
@@ -33,7 +33,7 @@ macro_rules! impl_combinatorics {
             i128   |"-4",
             isize  |"-5"
         ];
-        impl_combinatorics![unsigned
+        __impl_int_combinatorics![unsigned
             u8     |"-6",
             u16    |"-7",
             u32    |"-8",
@@ -43,10 +43,10 @@ macro_rules! impl_combinatorics {
         ];
     };
     (signed $( $t:ty | $d:literal ),+) => {
-        $( impl_combinatorics![@signed $t| $d]; )+
+        $( __impl_int_combinatorics![@signed $t| $d]; )+
     };
     (unsigned $( $t:ty | $d:literal ),+) => {
-        $( impl_combinatorics![@unsigned $t| $d]; )+
+        $( __impl_int_combinatorics![@unsigned $t| $d]; )+
     };
     (
     // implements signed ops
@@ -564,4 +564,4 @@ macro_rules! impl_combinatorics {
         }
     }};
 }
-impl_combinatorics!();
+__impl_int_combinatorics!();

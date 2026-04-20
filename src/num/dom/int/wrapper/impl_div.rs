@@ -23,9 +23,9 @@ use crate::{Int, is, paste};
 /// # Args
 /// $t:   the input/output type
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_div {
+macro_rules! __impl_int_div {
     () => {
-        impl_div![signed
+        __impl_int_div![signed
             i8    :"",
             i16   :"-1",
             i32   :"-2",
@@ -33,7 +33,7 @@ macro_rules! impl_div {
             i128  :"-4",
             isize :"-5"
         ];
-        impl_div![unsigned
+        __impl_int_div![unsigned
             u8    :"-6",
             u16   :"-7",
             u32   :"-8",
@@ -43,10 +43,10 @@ macro_rules! impl_div {
         ];
     };
     (signed $( $t:ty : $d:literal ),+) => {
-        $( impl_div![@signed $t:$d]; )+
+        $( __impl_int_div![@signed $t:$d]; )+
     };
     (unsigned $( $t:ty : $d:literal ),+) => {
-        $( impl_div![@unsigned $t:$d]; )+
+        $( __impl_int_div![@unsigned $t:$d]; )+
     };
     (
     // implements signed ops
@@ -375,4 +375,4 @@ macro_rules! impl_div {
         }
     }};
 }
-impl_div!();
+__impl_int_div!();

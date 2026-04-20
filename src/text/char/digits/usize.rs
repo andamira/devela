@@ -10,7 +10,7 @@ impl Digits<usize> {
     /// The maximum number of hexadecimal digits a `usize` can represent in the current platform.
     pub const MAX_DIGITS_16: u8 = Digits(usize::MAX).count_digits16();
 
-    #[doc = DOC_COUNT_DIGITS_10!()]
+    #[doc = _DOC_COUNT_DIGITS_10!()]
     /// # Examples
     /// ```
     /// # use devela::text::Digits;
@@ -21,7 +21,7 @@ impl Digits<usize> {
     pub const fn count_digits10(self) -> u8 {
         is![self.0 == 0, 1, self.0.ilog10() as u8 + 1]
     }
-    #[doc = DOC_COUNT_DIGITS_16!()]
+    #[doc = _DOC_COUNT_DIGITS_16!()]
     #[must_use]
     pub const fn count_digits16(self) -> u8 {
         is![self.0 == 0, 1, ((self.0.ilog2() + 4) / 4) as u8]
@@ -111,7 +111,7 @@ impl Digits<usize> {
 
     //
 
-    #[doc = DOC_DIGIT_AT_POWER_10!()]
+    #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
     #[allow(dead_code)]
     pub(crate) const fn digit_at_power10(self, divisor: usize) -> u8 {
@@ -127,7 +127,7 @@ impl Digits<usize> {
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
         Digits(self.0 as u32).digit_at_power16(divisor as u32)
     }
-    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    #[doc = _DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
     #[allow(dead_code)]
     #[cfg(target_pointer_width = "64")]
@@ -188,28 +188,28 @@ impl Digits<usize> {
         Digits(self.0 as u64).digits16()
     }
 
-    #[doc = DOC_WRITE_DIGITS_10!(10)]
+    #[doc = _DOC_WRITE_DIGITS_10!(10)]
     #[must_use]
     #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10(buf, offset)
     }
-    #[doc = DOC_WRITE_DIGITS_10_FAST!(10)]
+    #[doc = _DOC_WRITE_DIGITS_10_FAST!(10)]
     #[must_use]
     #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10_fast(buf, offset)
     }
-    #[doc = DOC_WRITE_DIGITS_10!(20)]
+    #[doc = _DOC_WRITE_DIGITS_10!(20)]
     #[must_use]
     #[inline(always)]
     #[cfg(target_pointer_width = "64")]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10(buf, offset)
     }
-    #[doc = DOC_WRITE_DIGITS_10_FAST!(20)]
+    #[doc = _DOC_WRITE_DIGITS_10_FAST!(20)]
     #[must_use]
     #[inline(always)]
     #[cfg(target_pointer_width = "64")]
@@ -217,7 +217,7 @@ impl Digits<usize> {
         Digits(self.0 as u64).write_digits10_fast(buf, offset)
     }
 
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
         let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -229,7 +229,7 @@ impl Digits<usize> {
                 ::from_array_nright(self.digits10(), width)]
         }}
     }
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
         let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {

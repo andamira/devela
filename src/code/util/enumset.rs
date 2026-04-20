@@ -32,7 +32,7 @@
 /// ```
 #[doc(hidden)]
 #[macro_export]
-macro_rules! _enumset {
+macro_rules! enumset· {
     (
         // $enum_attr: the attributes of the enum.
         // $enum_vis:  the visibility of the enum.
@@ -116,4 +116,4 @@ macro_rules! _enumset {
     }};
 }
 #[doc(inline)]
-pub use _enumset as enumset;
+pub use enumset· as enumset;

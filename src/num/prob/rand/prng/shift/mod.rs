@@ -45,7 +45,7 @@ crate::structural_mods! { // _mods, _hidden
     _crate_internals {
         #[cfg(feature = "rand")]
         pub(crate) use super::{
-            macros::xorshift_basis,
+            macros::_xorshift_basis,
         };
     }
     _hidden {

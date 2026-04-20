@@ -207,7 +207,7 @@ pub struct Slice<T>(crate::PhantomData<T>);
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-macro_rules! _slice {
+macro_rules! slice· {
     /* Str */
     (
      str_mut_checked $s:expr, $l:expr,    ..= $u:expr) => { $crate::Str::range_inclusive_mut_checked($s, $l, $u) };
@@ -377,4 +377,4 @@ macro_rules! _slice {
     $($t:tt)*) => { compile_error! { "Invalid interval syntax. Expected forms like: l..u, l..=u, ..x, ..=x" } };
 }
 #[doc(inline)]
-pub use _slice as slice;
+pub use slice· as slice;

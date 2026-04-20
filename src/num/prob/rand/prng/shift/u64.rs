@@ -3,7 +3,7 @@
 //! 64-bit version of XorShift.
 //
 
-use crate::{Cast, ConstInit, Own, Rand, xorshift_basis};
+use crate::{_xorshift_basis, Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -83,7 +83,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     #[must_use]
     pub const fn next_u64(&mut self) -> u64 {
         let mut x = self.0;
-        xorshift_basis!(x, BASIS, (A, B, C));
+        _xorshift_basis!(x, BASIS, (A, B, C));
         self.0 = x;
         x
     }
@@ -91,7 +91,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
     /// Returns a copy of the next new random state.
     pub const fn peek_next_state(&self) -> Self {
         let mut x = self.0;
-        xorshift_basis!(x, BASIS, (A, B, C));
+        _xorshift_basis!(x, BASIS, (A, B, C));
         Self(x)
     }
 

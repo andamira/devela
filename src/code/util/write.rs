@@ -55,7 +55,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _write_at {
+macro_rules! write_at· {
     ($buf:ident, += $offset:ident, $($elem:tt)*) => { #[allow(unused_assignments)] {
         let mut __offset = $offset;
         $crate::write_at!(% $buf, __offset, $($elem)*);
@@ -96,7 +96,7 @@ macro_rules! _write_at {
     }};
     (% $buf:ident, $offset:ident $(,)?) => {};
 }
-pub use _write_at as write_at;
+pub use write_at· as write_at;
 
 #[cfg(test)]
 mod tests {

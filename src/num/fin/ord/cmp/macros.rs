@@ -25,7 +25,7 @@
 /// - `total x y` returns an [`Ordering`][crate::Ordering] using total ordering (floats included).
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _cmp {
+macro_rules! cmp· {
     (
     // partial cmp
 
@@ -67,7 +67,7 @@ macro_rules! _cmp {
     (ge $x:expr, $y:expr) => { $crate::Cmp($x).ge($y) };
 }
 #[doc(inline)]
-pub use _cmp as cmp;
+pub use cmp· as cmp;
 
 #[cfg(test)]
 mod tests {

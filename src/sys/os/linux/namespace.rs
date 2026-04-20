@@ -621,7 +621,7 @@ impl Linux {
 
 /// Generates a `random_*` function for each given integer primitive
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-macro_rules! impl_random_fns {
+macro_rules! _sys_os_linux_impl_random_fns {
     // $prim: the unsigned integer primitive
     // $len:  the length of the primitive in bytes
     ($($prim:ident : $len:literal),+) => { $crate::paste! { $(
@@ -650,7 +650,7 @@ macro_rules! impl_random_fns {
 #[rustfmt::skip]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
-    impl_random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
+    _sys_os_linux_impl_random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 
     /// Fills the given `buffer` with random bytes that may not be cryptographically secure.
     ///

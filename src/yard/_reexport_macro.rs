@@ -15,7 +15,7 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "_dep relative to macro call")]
-macro_rules! __reexport {
+macro_rules! _reexport· {
     // -------------------------------------------------------------------------
     /* re-exports from normal modules */
 
@@ -376,4 +376,4 @@ macro_rules! __reexport {
     }};
 }
 #[doc(inline)]
-pub use __reexport as _reexport;
+pub use _reexport· as _reexport;

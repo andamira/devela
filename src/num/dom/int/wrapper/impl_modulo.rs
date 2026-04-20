@@ -38,9 +38,9 @@ const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 /// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_modulo {
+macro_rules! __impl_int_modulo {
     () => {
-        impl_modulo![signed
+        __impl_int_modulo![signed
             (i8,    i16      :Y |""),
             (i16,   i32      :Y |"-1"),
             (i32,   i64      :Y |"-2"),
@@ -48,7 +48,7 @@ macro_rules! impl_modulo {
             (i128,  i128     :N |"-4"),
             (isize, isize_up :Y |"-5")
         ];
-        impl_modulo![unsigned
+        __impl_int_modulo![unsigned
             (u8,   u16|i16   :Y |"-6"),
             (u16,  u32|i32   :Y |"-7"),
             (u32,  u64|i64   :Y |"-8"),
@@ -56,17 +56,17 @@ macro_rules! impl_modulo {
             (u128, u128|i128 :N |"-10")
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
+        __impl_int_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
         #[cfg(target_pointer_width = "64")]
-        impl_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
+        __impl_int_modulo![unsigned (usize, usize_up|isize_up :Y |"-11")];
     };
     (signed $( ($t:ty, $up:ty:$is_up:ident |$d:literal) ),+) => {
-        $( impl_modulo![@signed ($t, $up:$is_up |$d)]; )+
+        $( __impl_int_modulo![@signed ($t, $up:$is_up |$d)]; )+
     };
     (unsigned $(
         ($t:ty, $up:ty | $iup:ty : $is_up:ident |$d:literal)
     ),+ ) => {
-        $( impl_modulo![@unsigned ($t, $up|$iup :$is_up |$d)]; )+
+        $( __impl_int_modulo![@unsigned ($t, $up|$iup :$is_up |$d)]; )+
     };
     (
     // implements signed ops
@@ -1433,4 +1433,4 @@ macro_rules! impl_modulo {
         }
     }};
 }
-impl_modulo!();
+__impl_int_modulo!();

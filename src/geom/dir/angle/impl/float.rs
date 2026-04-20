@@ -1,4 +1,4 @@
-// devela::geom::metric::angle::impl::float
+// devela::geom::dir::angle::impl::float
 //
 //!
 //
@@ -9,12 +9,12 @@ use crate::{Angle, AngleDirection, AngleKind, Cmp, Float, FloatConst};
 ///
 /// # Macro arguments
 /// $f: the inner floating-point type
-macro_rules! impl_angle {
+macro_rules! _geom_dir_angle_impl_float {
     () => {
-        impl_angle![float f32, f64];
+        _geom_dir_angle_impl_float![float f32, f64];
     };
     (float $($f:ty),+ $(,)?) => {
-        $( impl_angle![@float $f]; )+
+        $( _geom_dir_angle_impl_float![@float $f]; )+
     };
     (@float $f:ty) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($f), "`.")]
@@ -201,4 +201,4 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle!();
+_geom_dir_angle_impl_float!();

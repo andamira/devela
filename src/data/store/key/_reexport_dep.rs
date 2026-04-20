@@ -5,7 +5,7 @@
 /* from `hashbrown` or `std` */
 
 #[allow(unused_macros)]
-macro_rules! hashbrown_or_std {
+macro_rules! _hashbrown_or_std {
     (start) => {
         "<span class='stab portability'
         title='re-exported from either `hashbrown` or `std`'>`≡std`</span>"
@@ -16,36 +16,36 @@ macro_rules! hashbrown_or_std {
         \n\n---"
     };
 }
-use hashbrown_or_std;
+use _hashbrown_or_std;
 
 // types from hashbrown have preference over those from std.
 #[cfg(feature = "dep_hashbrown")]
 pub use hashbrown_reexports::*;
 #[cfg(feature = "dep_hashbrown")]
 mod hashbrown_reexports {
-    use super::hashbrown_or_std;
+    use super::_hashbrown_or_std;
 
     #[doc = crate::_tags!(hash data_structure)]
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = _hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashMap;
 
     #[doc = crate::_tags!(hash)]
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = _hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
 
     #[doc = crate::_tags!(hash)]
-    #[doc = hashbrown_or_std!(start)]
+    #[doc = _hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = hashbrown_or_std!(end)]
+    #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashSet;
 }
@@ -55,26 +55,26 @@ pub use std_reexports::*;
 #[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
 mod std_reexports {
     #[doc = crate::_tags!(hash data_structure)]
-    #[doc = super::hashbrown_or_std!(start)]
+    #[doc = super::_hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = super::hashbrown_or_std!(end)]
+    #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::HashMap;
 
     #[doc = crate::_tags!(hash)]
-    #[doc = super::hashbrown_or_std!(start)]
+    #[doc = super::_hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = super::hashbrown_or_std!(end)]
+    #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::Entry as HashMapEntry;
 
     #[doc = crate::_tags!(hash data_structure)]
-    #[doc = super::hashbrown_or_std!(start)]
+    #[doc = super::_hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
     #[doc = crate::_doc_location!("data/id")]
-    #[doc = super::hashbrown_or_std!(end)]
+    #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
 }

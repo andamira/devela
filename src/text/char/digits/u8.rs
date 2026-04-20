@@ -10,7 +10,7 @@ impl Digits<u8> {
     /// The maximum number of hexadecimal digits a `u8` can represent.
     pub const MAX_DIGITS_16: u8 = 2; // 0xFF
 
-    #[doc = DOC_COUNT_DIGITS_10!()]
+    #[doc = _DOC_COUNT_DIGITS_10!()]
     /// # Examples
     /// ```
     /// # use devela::text::Digits;
@@ -22,7 +22,7 @@ impl Digits<u8> {
         is![self.0 == 0, 1, self.0.ilog10() as u8 + 1]
     }
 
-    #[doc = DOC_COUNT_DIGITS_16!()]
+    #[doc = _DOC_COUNT_DIGITS_16!()]
     #[must_use]
     pub const fn count_digits16(self) -> u8 {
         match self.0 {
@@ -115,14 +115,14 @@ impl Digits<u8> {
 
     //
 
-    #[doc = DOC_DIGIT_AT_POWER_10!()]
+    #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
     #[inline(always)]
     pub(crate) const fn digit_at_power10(self, divisor: u8) -> u8 {
         (self.0 / divisor % 10) + b'0'
     }
 
-    #[doc = DOC_DIGIT_AT_POWER_16!()]
+    #[doc = _DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
     #[inline(always)]
     pub(crate) const fn digit_at_power16(self, divisor: u8) -> u8 {
@@ -237,7 +237,7 @@ impl Digits<u8> {
         }
     }
 
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
         let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -249,7 +249,7 @@ impl Digits<u8> {
                 ::from_array_nright(self.digits10(), width)]
         }}
     }
-    #[doc = DOC_DIGITS_STR!()] #[rustfmt::skip]
+    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
         let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {

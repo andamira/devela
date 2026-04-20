@@ -125,18 +125,18 @@ pub unsafe trait MemPod: Copy + 'static {
 
 // Implement MemPod
 #[rustfmt::skip]
-macro_rules! mem_pod {
+macro_rules! _impl_mem_pod {
     // impl for types that are always POD.
-    ($($t:ty),+) => { $( mem_pod![@$t]; )+ };
+    ($($t:ty),+) => { $( _impl_mem_pod![@$t]; )+ };
     (@$t:ty) => { unsafe impl MemPod for $t {} };
 
     // impl for types that are POD only when wrapped in an Option.
-    (option: $($t:ty),+) => { $( mem_pod![@option: $t]; )+ };
+    (option: $($t:ty),+) => { $( _impl_mem_pod![@option: $t]; )+ };
     (@option: $t:ty) => { unsafe impl MemPod for Option<$t> {} };
 }
 
 #[rustfmt::skip]
-mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize, f32, f64];
+_impl_mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize, f32, f64];
 
 unsafe impl<T: MemPod, const N: usize> MemPod for [T; N] {}
 unsafe impl<T: MemPod> MemPod for MaybeUninit<T> {}
@@ -145,7 +145,7 @@ unsafe impl<T: MemPod> MemPod for ::core::num::Wrapping<T> {}
 unsafe impl<T: ?Sized + 'static> MemPod for ::core::marker::PhantomData<T> {}
 
 unsafe impl<T: MemPod> MemPod for Option<T> {}
-mem_pod![option:
+_impl_mem_pod![option:
     NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
     NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize
 ];

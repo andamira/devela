@@ -58,7 +58,7 @@ impl Display for LinuxError {
     }
 }
 
-macro_rules! match_linux_to_io {
+macro_rules! _match_linux_to_io {
     ($self:ident) => {
         match $self {
             LinuxError::Sys(errno) => {
@@ -104,7 +104,7 @@ macro_rules! match_linux_to_io {
         }
     };
 }
-macro_rules! match_io_to_linux {
+macro_rules! _match_io_to_linux {
     ($err:ident) => {
         match $err.kind() {
             IoErrorKind::PermissionDenied => LinuxError::Sys(ERRNO::EACCES),
@@ -128,20 +128,20 @@ impl LinuxError {
     /// This will only be *const* if the `std` feature is **disabled**,
     /// because `std::io::Error::new` is not *const*.
     #[cfg(feature = "std")]
-    pub fn to_io(self) -> IoError { match_linux_to_io!(self) }
+    pub fn to_io(self) -> IoError { _match_linux_to_io!(self) }
     /// Converts `LinuxError` to `IoError`.
     #[cfg(not(feature = "std"))]
-    pub const fn to_io(self) -> IoError { match_linux_to_io!(self) }
+    pub const fn to_io(self) -> IoError { _match_linux_to_io!(self) }
 
     /// Converts `IoError` to `LinuxError`.
     ///
     /// This will only be *const* if the `std` feature is **disabled**,
     /// because `std::io::Error::kind` is not *const*.
     #[cfg(feature = "std")]
-    pub fn from_io(err: IoError) -> LinuxError { match_io_to_linux!(err) }
+    pub fn from_io(err: IoError) -> LinuxError { _match_io_to_linux!(err) }
     /// Converts `IoError` to `LinuxError`.
     #[cfg(not(feature = "std"))]
-    pub const fn from_io(err: IoError) -> LinuxError { match_io_to_linux!(err) }
+    pub const fn from_io(err: IoError) -> LinuxError { _match_io_to_linux!(err) }
 }
 impl From<LinuxError> for IoError {
     fn from(err: LinuxError) -> Self {

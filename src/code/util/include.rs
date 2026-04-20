@@ -46,7 +46,7 @@
 /// See [#752](https://github.com/rust-lang/rfcs/issues/752).
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _include_from {
+macro_rules! include_from· {
     ($module_name:ident) => {
         include!(concat!(env!("CARGO_MANIFEST_DIR"), "/", stringify!($module_name), ".rs"));
     };
@@ -55,7 +55,7 @@ macro_rules! _include_from {
     };
 }
 #[doc(inline)]
-pub use _include_from as include_from;
+pub use include_from· as include_from;
 
 #[doc = crate::_tags!(code)]
 /// Declares a module by including a Rust source file relative to the project's directory.
@@ -86,7 +86,7 @@ pub use _include_from as include_from;
 /// See [#752](https://github.com/rust-lang/rfcs/issues/752).
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _mod_from {
+macro_rules! mod_from· {
     ($vis:vis $module_name:ident) => {
         $vis mod $module_name { $crate::include_from!($module_name); }
     };
@@ -95,7 +95,7 @@ macro_rules! _mod_from {
     };
 }
 #[doc(inline)]
-pub use _mod_from as mod_from;
+pub use mod_from· as mod_from;
 
 #[doc = crate::_tags!(code)]
 /// A macro helper to define a module name and path.
@@ -129,7 +129,7 @@ pub use _mod_from as mod_from;
 /// See also [`mod_from!`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _mod_path {
+macro_rules! mod_path· {
     (
      /* most common feature-gates */
      alloc $mod:ident $path:literal) => { $crate::mod_path![["alloc"] $mod $path]; };
@@ -156,4 +156,4 @@ macro_rules! _mod_path {
     };
 }
 #[doc(inline)]
-pub use _mod_path as mod_path;
+pub use mod_path· as mod_path;

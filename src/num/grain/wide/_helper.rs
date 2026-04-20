@@ -59,7 +59,7 @@ pub use __lane_dispatch;
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-macro_rules! __simd_use {
+macro_rules! _simd_use· {
     ($t:ty, $L:literal) => {
         // type Simd = $crate::Simd<$t, $L>; // FIX: doctest
         type Simd = ::core::simd::Simd<$t, $L>;
@@ -79,7 +79,7 @@ macro_rules! __simd_use {
     };
 }
 #[doc(hidden)]
-pub use __simd_use as _simd_use;
+pub use _simd_use· as _simd_use;
 
 /* dep_wide_compile! */
 

@@ -77,18 +77,18 @@ impl GraphemeMachineState {
         // GB1/GB2: Start/end boundaries handled by the `prev.is_none()` case above
 
         #[rustfmt::skip]
-        macro_rules! pair_matches {
+        macro_rules! _pair_matches {
             ($prev:pat, $next:pat) => {
                 matches!(prev.gcb_property(), $prev) && matches!(next.gcb_property(), $next)
             };
         }
         #[rustfmt::skip]
-        macro_rules! one_matches {
+        macro_rules! _one_matches {
             ($which:expr, $pat:pat) => { matches!($which.gcb_property(), $pat) };
         }
 
         // GB3: Keep CR+LF together
-        if pair_matches!(CR, LF) {
+        if _pair_matches!(CR, LF) {
             return (false, next_state);
         }
         // GB4/5: Break around controls
@@ -96,23 +96,23 @@ impl GraphemeMachineState {
             return (true, next_state);
         }
         // GB6-8: Keep Hangul syllables together
-        if pair_matches!(L, L | V | LV | LVT)
-            || pair_matches!(LV | V, V | T)
-            || pair_matches!(LVT | T, T)
+        if _pair_matches!(L, L | V | LV | LVT)
+            || _pair_matches!(LV | V, V | T)
+            || _pair_matches!(LVT | T, T)
         {
             return (false, next_state);
         }
 
         // GB9: Keep extending code points and ZWJ with previous
-        if one_matches!(next, Extend | Zwj) {
+        if _one_matches!(next, Extend | Zwj) {
             return (false, next_state);
         }
         // GB9a: Keep SpacingMarks with previous
-        if one_matches!(next, SpacingMark) {
+        if _one_matches!(next, SpacingMark) {
             return (false, next_state);
         }
         // GB9b: Keep Prepend code points with next
-        if one_matches!(prev, Prepend) {
+        if _one_matches!(prev, Prepend) {
             return (false, next_state);
         }
         // GB9c: Keep Indic conjunct sequences together
@@ -126,11 +126,11 @@ impl GraphemeMachineState {
         // GB10: (Obsolete - removed from Unicode specification)
 
         // GB11: Keep emoji ZWJ sequences together
-        if self.gb11_active() && pair_matches!(Zwj, ExtendedPictographic) {
+        if self.gb11_active() && _pair_matches!(Zwj, ExtendedPictographic) {
             return (false, next_state);
         }
         // GB12/13: Keep emoji flag pairs together
-        if self.gb13_active() && pair_matches!(RegionalIndicator, RegionalIndicator) {
+        if self.gb13_active() && _pair_matches!(RegionalIndicator, RegionalIndicator) {
             return (false, next_state);
         }
 

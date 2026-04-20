@@ -21,22 +21,22 @@ impl<T, const D: usize> Vector<T, D> {
 
 /* compile-time ops for primitives */
 
-/// helper for implementing methods on `Vector`.
+/// Helper for implementing methods on `Vector`.
 ///
 /// $t: the inner integer primitive type
-macro_rules! impl_vector {
+macro_rules! _impl_vector {
     () => {
         #[cfg(feature = "int")]
-        impl_vector![sint i8, i16, i32, i64, i128, isize];
+        _impl_vector![sint i8, i16, i32, i64, i128, isize];
         #[cfg(feature = "int")]
-        impl_vector![uint u8, u16, u32, u64, u128, usize];
+        _impl_vector![uint u8, u16, u32, u64, u128, usize];
 
-        impl_vector![float f32, f64];
+        _impl_vector![float f32, f64];
     };
 
     // integers common methods
     (int $($t:ty),+ $(,)?) => {
-        $( impl_vector![@int $t]; )+
+        $( _impl_vector![@int $t]; )+
     };
     (@int $t:ty) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`.")]
@@ -167,10 +167,10 @@ macro_rules! impl_vector {
 
     // signed integers specific methods
     (sint $($t:ty),+ $(,)?) => {
-        $( impl_vector![@sint $t]; )+
+        $( _impl_vector![@sint $t]; )+
     };
     (@sint $t:ty) => {
-        impl_vector![int $t];
+        _impl_vector![int $t];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, signed.")]
         impl<const D: usize> Vector<$t, D> {
@@ -202,10 +202,10 @@ macro_rules! impl_vector {
 
     // unsigned integers specific methods
     (uint $($t:ty),+ $(,)?) => {
-        $( impl_vector![@uint $t]; )+
+        $( _impl_vector![@uint $t]; )+
     };
     (@uint $t:ty) => {
-        impl_vector![int $t];
+        _impl_vector![int $t];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, unsigned.")]
         impl<const D: usize> Vector<$t, D> {
@@ -234,7 +234,7 @@ macro_rules! impl_vector {
 
     // $f: the inner floating-point primitive type
     (float $($f:ty),+ $(,)?) => {
-        $( impl_vector![@float $f]; )+
+        $( _impl_vector![@float $f]; )+
     };
     (@float $f:ty) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($f), "`.")]
@@ -357,4 +357,4 @@ macro_rules! impl_vector {
         }
     };
 }
-impl_vector!();
+_impl_vector!();

@@ -3,9 +3,9 @@
 //!
 //
 // TOC
-// - define_data_value!
-// - define_data_type!
-// - define_data_raw!
+// - __define_data_value!
+// - __define_data_type!
+// - __define_data_raw!
 
 /// for defining enum DataValue*
 //
@@ -18,7 +18,7 @@
 // - _dep*  :
 // - _ptr*  :
 #[allow(unused_macros)]
-macro_rules! define_data_value {
+macro_rules! __define_data_value {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
         size: $b:literal, feature: $feature:literal,
@@ -128,7 +128,7 @@ macro_rules! define_data_value {
         pub type [<$Value $b Copy>] = [< $Value $b Copy With>]<$crate::NoData>;
 
         // implement the DataValue trait
-        $crate::impl_data_value![
+        $crate::__impl_data_value![
             v: [< $Value $b Copy With >], DataValue,
             t: [< $Type $b Copy With >], DataType,
             all_are_copy: true,
@@ -247,7 +247,7 @@ macro_rules! define_data_value {
         pub type [<$Value $b>] = [< $Value $b With>]<$crate::NoData>;
 
         // implement the DataValue trait
-        $crate::impl_data_value![
+        $crate::__impl_data_value![
             v: [< $Value $b With >], DataValue,
             t: [< $Type $b With >], DataType,
             all_are_copy: false,
@@ -397,10 +397,10 @@ macro_rules! define_data_value {
     }};
 }
 #[allow(unused_imports)]
-pub(crate) use define_data_value;
+pub(crate) use __define_data_value;
 /// for defining enum DataType*
 #[allow(unused_macros)]
-macro_rules! define_data_type {
+macro_rules! __define_data_type {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
         size: $b:literal, feature: $feature:literal,
@@ -510,7 +510,7 @@ macro_rules! define_data_type {
         pub type [<$Type $b Copy>] = [< $Type $b Copy With>]<$crate::NoData>;
 
         // implement the DataType trait
-        $crate::impl_data_type![
+        $crate::__impl_data_type![
             v: [< $Value $b Copy With >], DataValue,
             t: [< $Type $b Copy With >], DataType,
             all_are_copy: true,
@@ -635,7 +635,7 @@ macro_rules! define_data_type {
         pub type [<$Type $b>] = [< $Type $b With>]<$crate::NoData>;
 
         // implement the DataType trait
-        $crate::impl_data_type![
+        $crate::__impl_data_type![
             v: [< $Value $b With >], DataValue,
             t: [< $Type $b With >], DataType,
             all_are_copy: false,
@@ -685,7 +685,7 @@ macro_rules! define_data_type {
     }};
 }
 #[allow(unused_imports)]
-pub(crate) use define_data_type;
+pub(crate) use __define_data_type;
 
 /// Defines the `DataRaw*` union.
 ///
@@ -701,7 +701,7 @@ pub(crate) use define_data_type;
 // - support non-Copy types by wrapping with ManuallyDrop<T>.
 // - add a not so unsafe api for first use cases, (space efficient rows).
 #[allow(unused_macros)]
-macro_rules! define_data_raw {
+macro_rules! __define_data_raw {
     (
         v: $Value:ident, t: $Type:ident, r: $Raw:ident,
         size: $b:literal, feature: $feature:literal,
@@ -809,10 +809,10 @@ macro_rules! define_data_raw {
         }
 
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-        $crate::impl_data_raw![
+        $crate::__impl_data_raw![
             r: [< $Raw $b Copy>],
         ];
     }};
 }
 #[allow(unused_imports)]
-pub(crate) use define_data_raw;
+pub(crate) use __define_data_raw;

@@ -69,7 +69,7 @@ use crate::{
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-macro_rules! _interval {
+macro_rules! interval· {
     (
     /* expressions */
 
@@ -118,7 +118,7 @@ macro_rules! _interval {
     };
 }
 #[doc(inline)]
-pub use _interval as interval;
+pub use interval· as interval;
 
 #[doc = crate::_tags!(quant)]
 /// A range of values with `lower` and `upper` [`Bound`]s.

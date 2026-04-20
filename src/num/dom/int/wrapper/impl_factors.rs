@@ -26,9 +26,9 @@ use crate::{Int, IntError::MismatchedSizes, IntResult as Result, is, paste, unwr
 /// $t:   the input/output type
 ///
 /// $d:   the doclink suffix for the method name
-macro_rules! impl_factors {
+macro_rules! __impl_int_factors {
     () => {
-        impl_factors![signed
+        __impl_int_factors![signed
             i8    |"",
             i16   |"-1",
             i32   |"-2",
@@ -36,7 +36,7 @@ macro_rules! impl_factors {
             i128  |"-4",
             isize |"-5"
         ];
-        impl_factors![unsigned
+        __impl_int_factors![unsigned
             u8    |"-6",
             u16   |"-7",
             u32   |"-8",
@@ -46,10 +46,10 @@ macro_rules! impl_factors {
         ];
     };
     (signed $( $t:ty | $d:literal ),+) => {
-        $( impl_factors![@signed $t|$d]; )+
+        $( __impl_int_factors![@signed $t|$d]; )+
     };
     (unsigned $( $t:ty | $d:literal ),+) => {
-        $( impl_factors![@unsigned $t|$d]; )+
+        $( __impl_int_factors![@unsigned $t|$d]; )+
     };
     (
     // implements signed ops
@@ -813,4 +813,4 @@ macro_rules! impl_factors {
         }
     }};
 }
-impl_factors!();
+__impl_int_factors!();

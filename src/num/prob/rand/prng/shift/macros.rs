@@ -1,6 +1,6 @@
 // devela::num::prob::rand::prng::shift::macros
 //
-//! Defines [`rand_xorshift!`],  ([`xorshift_basis!`]).
+//! Defines [`rand_xorshift!`],  ([`_xorshift_basis!`]).
 //
 
 #[cfg(doc)]
@@ -37,7 +37,7 @@ use crate::{XorShift16, XorShift32, XorShift64};
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
-macro_rules! _rand_xorshift {
+macro_rules! rand_xorshift· {
     (bits:$bits:literal, basis:$basis:expr, triplet:$triplet:expr, seed:$seed:expr) => {{
         $crate::paste! {
             const T: (u8, u8, u8) = $crate::[<XOROSHIFT_ $bits _TRIPLETS>][{ $triplet }];
@@ -49,14 +49,14 @@ macro_rules! _rand_xorshift {
 }
 #[doc = crate::_tags!(rand)]
 #[doc(inline)]
-pub use _rand_xorshift as rand_xorshift;
+pub use rand_xorshift· as rand_xorshift;
 
 #[doc = crate::_tags!(construction code rand)]
 /// Generates a XORSHIFT sequence using the given operation basis and shift triplet.
 #[doc = crate::_doc_location!("num/prob/rand")]
 ///
 /// # Usage:
-/// `xorshift_basis![<basis>: (<a>, <b>, <c>) <state>];`
+/// `_xorshift_basis![<basis>: (<a>, <b>, <c>) <state>];`
 ///
 /// Notes
 /// - The `state` has to be different from 0.
@@ -69,7 +69,7 @@ pub use _rand_xorshift as rand_xorshift;
 //
 // - The canonical 32-bit example uses triplet  #40:( 5,17,13) with basis 1.
 // - The canonical 64-bit example uses triplet #155:(13, 7,17) with basis 0.
-macro_rules! xorshift_basis {
+macro_rules! _xorshift_basis {
     [$state:ident, $basis:expr, ($a:expr, $b:expr, $c:expr)] => {
         match $basis {
             0 => { $state^=$state << $a; $state^=$state >> $b; $state^=$state << $c; },
@@ -84,4 +84,4 @@ macro_rules! xorshift_basis {
         }
     };
 }
-pub(crate) use xorshift_basis;
+pub(crate) use _xorshift_basis;

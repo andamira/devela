@@ -191,38 +191,38 @@ pub use zall_ as all_;
 #[rustfmt::skip]
 #[doc = crate::_DOC_ZALL_!()]
 pub mod zall_ {
-    macro_rules! COMMON_DOC { ($mod:literal) => { concat!(" ",
+    macro_rules! _COMMON_DOC { ($mod:literal) => { concat!(" ",
         crate::_doc!(root:$mod), "\n\nAll `", $mod,"` module's items flat re-exported.") }; }
-    #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), COMMON_DOC!("code")]]
+    #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), _COMMON_DOC!("code")]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
-    #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), COMMON_DOC!("data")]]
+    #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), _COMMON_DOC!("data")]]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
-    #[doc = concat![crate::_DOC_GEOM!(), crate::_DOC_GEOM_MODULES!(), COMMON_DOC!("geom")]]
+    #[doc = concat![crate::_DOC_GEOM!(), crate::_DOC_GEOM_MODULES!(), _COMMON_DOC!("geom")]]
     pub mod _geom { #[allow(unused)] pub use super::super::geom::_all::*; }
-    #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), COMMON_DOC!("lang")]]
+    #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), _COMMON_DOC!("lang")]]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
-    #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), COMMON_DOC!("media")]]
+    #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), _COMMON_DOC!("media")]]
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
-    #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), COMMON_DOC!("num")]]
+    #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), _COMMON_DOC!("num")]]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
     #[doc = crate::_tags!(wip)]
     #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
-    #[doc = concat![crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), COMMON_DOC!("org")]]
+    #[doc = concat![crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), _COMMON_DOC!("org")]]
     pub mod _org { #[allow(unused)] pub use super::super::org::_all::*; }
-    #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), COMMON_DOC!("phys")]]
+    #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), _COMMON_DOC!("phys")]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
-    #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), COMMON_DOC!("run")]]
+    #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), _COMMON_DOC!("run")]]
     pub mod _run { #[allow(unused)] pub use super::super::run::_all::*; }
-    #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), COMMON_DOC!("sys")]]
+    #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), _COMMON_DOC!("sys")]]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
-    #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), COMMON_DOC!("text")]]
+    #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), _COMMON_DOC!("text")]]
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
-    #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), COMMON_DOC!("ui")]]
+    #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), _COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-    #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), COMMON_DOC!("vita")]]
+    #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), _COMMON_DOC!("vita")]]
     pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
-    #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), COMMON_DOC!("work")]]
+    #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), _COMMON_DOC!("work")]]
     /// <br/><hr>
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }

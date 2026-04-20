@@ -7,17 +7,17 @@ use crate::{Cmp, Sort, cswap, is, paste, whilst};
 
 /* impl Sort on primitives */
 
-macro_rules! impl_sort {
+macro_rules! _data_layout_sort_impl_prims {
     () => {
-        impl_sort![signed i8, i16, i32, i64, i128, isize];
-        impl_sort![unsigned u8, u16, u32, u64, u128, usize];
-        impl_sort![float f32, f64];
+        _data_layout_sort_impl_prims![signed i8, i16, i32, i64, i128, isize];
+        _data_layout_sort_impl_prims![unsigned u8, u16, u32, u64, u128, usize];
+        _data_layout_sort_impl_prims![float f32, f64];
     };
 
     // $t: the input/output primitive type
-    (signed   $( $t:ty ),+) => { $( impl_sort![@signed $t]; )+ };
-    (unsigned $( $t:ty ),+) => { $( impl_sort![@unsigned $t]; )+ };
-    (float    $( $t:ty ),+) => { $( impl_sort![@float $t]; )+ };
+    (signed   $( $t:ty ),+) => { $( _data_layout_sort_impl_prims![@signed $t]; )+ };
+    (unsigned $( $t:ty ),+) => { $( _data_layout_sort_impl_prims![@unsigned $t]; )+ };
+    (float    $( $t:ty ),+) => { $( _data_layout_sort_impl_prims![@float $t]; )+ };
 
     (@signed $t:ty) => { paste! {
         /// Implement const sorting methods for arrays of primitives.
@@ -152,4 +152,4 @@ macro_rules! impl_sort {
         }
     }};
 }
-impl_sort![];
+_data_layout_sort_impl_prims![];

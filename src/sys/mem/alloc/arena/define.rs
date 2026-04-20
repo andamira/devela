@@ -276,7 +276,7 @@ macro_rules! arena {
         #[allow(dead_code, private_interfaces)]
         /// Implements push, read and replace for primitives.
         impl<const CAP: usize> $Arena<CAP> {
-            impl_for_primitives!();
+            _impl_arena_methods_for_prims!();
 
             /* bool */
 
@@ -326,18 +326,18 @@ macro_rules! arena {
 
         /// Private helper to implement push, read & replace methods over primitives.
         #[rustfmt::skip] // fixes rustfmt warnings
-        macro_rules! impl_for_primitives {
+        macro_rules! _impl_arena_methods_for_prims {
             () => {
-                impl_for_primitives!(single-byte: u8, i8);
-                impl_for_primitives!(multi-byte:
+                _impl_arena_methods_for_prims!(single-byte: u8, i8);
+                _impl_arena_methods_for_prims!(multi-byte:
                     u16, u32, u64, u128, usize,
                     i16, i32, i64, i128, isize,
                     f32, f64,
                 );
-                impl_for_primitives!(str_len: u8, u16, u32, usize);
+                _impl_arena_methods_for_prims!(str_len: u8, u16, u32, usize);
             };
             (single-byte: $_d($P:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%single-byte: $P); )+
+                $_d( _impl_arena_methods_for_prims!(%single-byte: $P); )+
             };
             (%single-byte: $P:ty) => { $crate::paste! {
                 #[doc = "Pushes a `" $P "`. Returns its handle on success."]
@@ -361,7 +361,7 @@ macro_rules! arena {
                 }
             }};
             (multi-byte: $_d($P:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%multi-byte: $P); )+
+                $_d( _impl_arena_methods_for_prims!(%multi-byte: $P); )+
             };
             (%multi-byte: $P:ty) => { $crate::paste! {
                 #[doc = "Pushes a `" $P "` in little-endian order. Returns its handle on success."]
@@ -395,7 +395,7 @@ macro_rules! arena {
                 }
             }};
             (str_len: $_d($P:ty),+ $_d(,)?) => {
-                $_d( impl_for_primitives!(%str_len: $P); )+
+                $_d( _impl_arena_methods_for_prims!(%str_len: $P); )+
             };
             (%str_len: $P:ty) => { $crate::paste! {
                 #[doc = "Pushes a `&str` with a prefixed len of up to [`" $P "::MAX`] bytes."]
@@ -441,7 +441,7 @@ macro_rules! arena {
                 }
             }};
         }
-        use impl_for_primitives;
+        use _impl_arena_methods_for_prims;
     };
     (%mark $Arena:ident<$T:ty>, $(#[$mark_attr:meta])* $vis:vis $Mark:ident) => {
         $(#[$mark_attr])*

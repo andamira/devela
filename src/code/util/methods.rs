@@ -47,7 +47,7 @@ assert_eq!(addition(5, 2), 7);
 // and the same for the async and unsafe fn modifiers.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _methods_as_fns {
+macro_rules! methods_as_fns· {
     (
     // same name for method and function
         $fn_vis:vis
@@ -98,7 +98,7 @@ macro_rules! _methods_as_fns {
         )*
     };
 }
-pub use _methods_as_fns as methods_as_fns;
+pub use methods_as_fns· as methods_as_fns;
 
 // TODO
 /*

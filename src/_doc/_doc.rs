@@ -18,7 +18,7 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
 // #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
-macro_rules! __doc {
+macro_rules! _doc· {
     (@meta_start_br) => {
         "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
@@ -118,7 +118,7 @@ macro_rules! __doc {
     };
 }
 #[doc(inline)]
-pub use __doc as _doc;
+pub use _doc· as _doc;
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for conditional availability.
@@ -134,7 +134,7 @@ pub use __doc as _doc;
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
-macro_rules! __doc_availability {
+macro_rules! _doc_availability· {
     (feature = $feat:literal) => {
         $crate::_doc_availability!{@wrap
             "Available on <strong>crate feature ",
@@ -197,7 +197,7 @@ macro_rules! __doc_availability {
     };
 }
 #[doc(inline)]
-pub use __doc_availability as _doc_availability;
+pub use _doc_availability· as _doc_availability;
 
 // WAIT: doctests cannot see items/macros behind cfg(doctest) in dependencies:
 // WAIT: [cfg(doctest)](https://github.com/rust-lang/rust/issues/67295)
@@ -282,7 +282,7 @@ pub use _doc_location;
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
-macro_rules! __doc_miri_warn {
+macro_rules! _doc_miri_warn· {
     (tag) => {
         concat!(
             "<span class='stab portability' ",
@@ -300,7 +300,7 @@ macro_rules! __doc_miri_warn {
     };
 }
 #[doc(inline)]
-pub use __doc_miri_warn as _doc_miri_warn;
+pub use _doc_miri_warn· as _doc_miri_warn;
 
 #[doc = crate::_tags!(internal)]
 /// Shows the `Vendored` doc section and links to the info line.
@@ -313,7 +313,7 @@ pub use __doc_miri_warn as _doc_miri_warn;
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
-macro_rules! __doc_vendor {
+macro_rules! _doc_vendor· {
     (
     // Shows the `Vendored` doc section and links to the info line.
     //
@@ -359,4 +359,4 @@ macro_rules! __doc_vendor {
     // )};
 }
 #[doc(inline)]
-pub use __doc_vendor as _doc_vendor;
+pub use _doc_vendor· as _doc_vendor;

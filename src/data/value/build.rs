@@ -18,7 +18,7 @@ use super::*;
 // 2. TYPES DEFINITIONS
 // -----------------------------------------------------------------------------
 
-define_data_value_type_raw! {
+_define_data_value_type_raw! {
     all_sizes: v: DataValue, t: DataType, r: DataRaw,
 
     // ----------------------------------------------------------------- 8b / 1B

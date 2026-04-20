@@ -58,7 +58,7 @@ impl TextLayout {
         // Index of the symbol partially consumed (valid only if `partial_break`).
         let mut partial_index: usize = 0;
 
-        macro_rules! consume_whole {
+        macro_rules! _consume_whole {
             ($sym:ident) => {{
                 is![span_start.is_none(), span_start = Some(index)];
                 span_units += $sym.units;
@@ -74,11 +74,11 @@ impl TextLayout {
                 // Elidable symbols may always be skipped.
                 TextCohesion::Elidable => index += 1,
                 // Atomic symbols must fit entirely or stop layout.
-                TextCohesion::Atomic => is![sym.units <= remaining, consume_whole!(sym), break],
+                TextCohesion::Atomic => is![sym.units <= remaining, _consume_whole!(sym), break],
                 // Breakable symbols may be partially consumed if space runs out.
                 TextCohesion::Breakable => {
                     if sym.units <= remaining {
-                        consume_whole!(sym);
+                        _consume_whole!(sym);
                     } else {
                         // Partial consumption: consume remaining space,
                         // do not advance the symbol index.

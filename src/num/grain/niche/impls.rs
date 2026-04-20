@@ -13,16 +13,16 @@ use crate::{
     NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize,
 };
 
-macro_rules! impl_for_non_value {
+macro_rules! _impl_traits_for_non_value {
     () => {
-        impl_for_non_value![
+        _impl_traits_for_non_value![
             u8, u16, u32, u64, u128, usize,
             i8, i16, i32, i64, i128, isize,
         ];
     };
     ($($IP:ty),+ $(,)?) => { crate::paste! {
         $(
-            impl_for_non_value!(@
+            _impl_traits_for_non_value!(@
                 [<NonValue $IP:camel>],
                 [<NonExtreme $IP:camel>],
                 $IP
@@ -44,4 +44,4 @@ macro_rules! impl_for_non_value {
         unsafe impl<const V: $IP> MemPod for Option<$nv<V>> {}
     };
 }
-impl_for_non_value![];
+_impl_traits_for_non_value![];

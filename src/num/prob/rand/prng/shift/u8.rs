@@ -3,7 +3,7 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{ConstInit, Own, Rand, xorshift_basis};
+use crate::{_xorshift_basis, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -85,7 +85,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     ///
     pub const fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
-        xorshift_basis!(x, 0, (A, B, C));
+        _xorshift_basis!(x, 0, (A, B, C));
         self.0 = x;
         x
     }
@@ -93,7 +93,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     /// Returns a copy of the next new random state.
     pub const fn peek_next_state(&self) -> Self {
         let mut x = self.0;
-        xorshift_basis!(x, 0, (A, B, C));
+        _xorshift_basis!(x, 0, (A, B, C));
         Self(x)
     }
 

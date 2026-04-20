@@ -55,7 +55,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _lets {
+macro_rules! lets· {
     () => {};
     (
     // pattern destructuring (struct;, tuple;, slice;,)
@@ -111,7 +111,7 @@ macro_rules! _lets {
         $( let $ident = $type::$var; )+ $crate::lets!($($($rest)*)?); };
 }
 #[doc(inline)]
-pub use _lets as lets;
+pub use lets· as lets;
 
 #[cfg(test)]
 #[rustfmt::skip]

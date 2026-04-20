@@ -48,7 +48,7 @@
 /// Makes use of the `unsafe_str` feature if available.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _const_join {
+macro_rules! const_join· {
     /* bytes */
 
     // trivial cases
@@ -164,7 +164,7 @@ macro_rules! _const_join {
     }};
 }
 #[doc(inline)]
-pub use _const_join as const_join;
+pub use const_join· as const_join;
 
 #[cfg(test)]
 mod tests {

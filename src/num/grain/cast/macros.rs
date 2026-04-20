@@ -35,7 +35,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! _cast {
+macro_rules! cast· {
     (
     /* cast */
 
@@ -89,7 +89,7 @@ macro_rules! _cast {
     }};
 }
 #[doc(inline)]
-pub use _cast as cast;
+pub use cast· as cast;
 
 #[cfg(test)]
 crate::items! {

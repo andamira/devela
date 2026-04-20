@@ -3,31 +3,31 @@
 //! Defines the [`Oneof`] type.
 //
 
-impl_oneof!();
+_data_value_impl_oneof!();
 
 /// Defines [`Oneof`] and implements all the methods.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[allow(clippy::crate_in_macro_def, reason = "impl_const_init arm")]
-macro_rules! impl_oneof {
+macro_rules! _data_value_impl_oneof {
     /* points of entry, using hardcoded argument list */
 
     // main point of entry
     // (defines Oneof & implements everything)
-    () => { $crate::impl_oneof!(%canonical); };
+    () => { $crate::_data_value_impl_oneof!(%canonical); };
     //
     // var_name : var_idx(0-based) + var_nth(1-based) : nth_suffix
     ($($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
-        $crate::impl_oneof!(define_enum: $($T:$nth:$suf),+);
-        $crate::impl_oneof!(impl_default: $($T),+);
-        $crate::impl_oneof!(impl_const_init: $($T),+);
-        $crate::impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
-        $crate::impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
+        $crate::_data_value_impl_oneof!(define_enum: $($T:$nth:$suf),+);
+        $crate::_data_value_impl_oneof!(impl_default: $($T),+);
+        $crate::_data_value_impl_oneof!(impl_const_init: $($T),+);
+        $crate::_data_value_impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
+        $crate::_data_value_impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
 
     // point of entry for implementing ConstInit
     (impl_const_init) => {
-        $crate::impl_oneof!(%canonical %map_ident impl_const_init:);
+        $crate::_data_value_impl_oneof!(%canonical %map_ident impl_const_init:);
     };
     // real ConstInit implementation
     (impl_const_init: $_0:ident $(, $rest:ident)*) => {
@@ -40,19 +40,19 @@ macro_rules! impl_oneof {
     /* helpers */
 
     // hardcoded canonical list (12 variants)
-    (%canonical $($prefix:tt)*) => { $crate::impl_oneof! { $($prefix)*
+    (%canonical $($prefix:tt)*) => { $crate::_data_value_impl_oneof! { $($prefix)*
         _0:0+1:"st", _1:1+2:"nd", _2:2+3:"rd", _3:3+4:"th", _4:4+5:"th", _5:5+6:"th",
         _6:6+7:"th", _7:7+8:"th", _8:8+9:"th", _9:9+10:"th", _10:10+11:"th", _11:11+12:"th",
     }};
     // maps the canonical list to one of idents and forwards them to the prefixed arm.
     (%map_ident $prefix:ident:
      $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
-        $crate::impl_oneof!($prefix: $($T),*);
+        $crate::_data_value_impl_oneof!($prefix: $($T),*);
     };
     // maps the canonical list to one of idents:nth:suf and forwards them to the prefixed arm.
     (%map_ident_nth_suf $prefix:ident:
      $($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
-        $crate::impl_oneof!($prefix: $($T:$nth:$suf),+);
+        $crate::_data_value_impl_oneof!($prefix: $($T:$nth:$suf),+);
     };
 
     /* main arms */
@@ -180,10 +180,10 @@ macro_rules! impl_oneof {
     methods_individ: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Variant-specific methods.
         impl<const LEN: usize, $($T),+> Oneof<LEN, $($T),+> {
-            // $crate::impl_oneof!(methods_field_access: $($T),+);
-            $crate::impl_oneof!(methods_field_access: $($T:$idx+$nth:$suf),+);
-            $crate::impl_oneof!(methods_map: $($T),+);
-            // $crate::impl_oneof!(methods_map: $($T:$idx+$nth),+);
+            // $crate::_data_value_impl_oneof!(methods_field_access: $($T),+);
+            $crate::_data_value_impl_oneof!(methods_field_access: $($T:$idx+$nth:$suf),+);
+            $crate::_data_value_impl_oneof!(methods_map: $($T),+);
+            // $crate::_data_value_impl_oneof!(methods_map: $($T:$idx+$nth),+);
         }
     };
     (
@@ -193,7 +193,7 @@ macro_rules! impl_oneof {
     // - as_ref_*
     // - as_mut_*
     methods_field_access: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
-        $( $crate::impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
+        $( $crate::_data_value_impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
     };
     (@methods_field_access: $T:ident : $idx:literal + $nth:literal : $suf:literal
     ) => { $crate::paste! {
@@ -224,9 +224,9 @@ macro_rules! impl_oneof {
     // - map_*
     methods_map: $first:ident $(, $rest:ident)*) => {
         // For the first variant, the `$before` list is empty.
-        $crate::impl_oneof!(@methods_map: $first, (), ($($rest),*));
+        $crate::_data_value_impl_oneof!(@methods_map: $first, (), ($($rest),*));
         // Then, delegate to the helper macro with the first element as the accumulator.
-        $crate::impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
+        $crate::_data_value_impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
 
         // NOTE: generates something like the following (e.g. for 6 variants):
         //
@@ -266,13 +266,13 @@ macro_rules! impl_oneof {
     (@methods_map_helper: ($($before:ident),*), ()) => {};
     // Recursively take the next type as the current one.
     (@methods_map_helper: ($($before:ident),*), ($first:ident $(, $rest:ident)*)) => {
-        $crate::impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
+        $crate::_data_value_impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
         // Append the current type to the "before" list and continue.
-        $crate::impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
+        $crate::_data_value_impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
     };
 }
 #[doc(hidden)]
-pub use impl_oneof;
+pub use _data_value_impl_oneof;
 
 #[cfg(test)]
 mod tests {

@@ -9,7 +9,7 @@
 // - implementations
 // - trait impls
 // - helpers
-//   - macro build_lut
+//   - macro _data_codec_radix_build_lut
 //   - macro methods
 
 use crate::{ConstInit, PhantomData, whilst};
@@ -140,18 +140,18 @@ crate::sf! {
         const fn remap(byte: u8) -> Option<u8> { Some(byte) } }
     impl<const PAD: bool, const CASE: bool>                  // CODE: Rfc4648
         Base<16, false, PAD, CASE, Rfc4648> {
-        methods!(16, false, 4, Self); }                                        // LUT: false
+        _data_codec_radix_methods!(16, false, 4, Self); }                      // LUT: false
     impl<const PAD: bool, const CASE: bool>
         Base<16, true, PAD, CASE, Rfc4648> {                                   // LUT: true
-        build_lut!(16, Self::remap, Self::ALPHABET);
-        methods!(16, true, 4, Self); }
+        _data_codec_radix_build_lut!(16, Self::remap, Self::ALPHABET);
+        _data_codec_radix_methods!(16, true, 4, Self); }
     // impl<const PAD: bool, const CASE: bool>                  // CODE: Rfc4648Hex
     //     Base<16, false, PAD, CASE, Rfc4648Hex> { // (duplicated)
-    //     methods!(16, false, 4, Self); }                                     // LUT: false
+    //     _data_codec_radix_methods!(16, false, 4, Self); }                   // LUT: false
     // impl<const PAD: bool, const CASE: bool>
     //     Base<16, true, PAD, CASE, Rfc4648Hex> {                             // LUT: true
-    //     build_lut!(16, Self::remap, Self::ALPHABET);
-    //     methods!(16, true, 4, Self); }
+    //     _data_codec_radix_build_lut!(16, Self::remap, Self::ALPHABET);
+    //     _data_codec_radix_methods!(16, true, 4, Self); }
 
     // # Base32
     impl<const LUT: bool, const PAD: bool, const CASE: bool>
@@ -160,11 +160,11 @@ crate::sf! {
         const fn remap(byte: u8) -> Option<u8> { Some(byte) } }
     impl<const PAD: bool, const CASE: bool>
         Base<32, false, PAD, CASE, Rfc4648> {                                  // LUT:false
-        methods!(32, false, 5, Self); }
+        _data_codec_radix_methods!(32, false, 5, Self); }
     impl<const PAD: bool, const CASE: bool>
         Base<32, true, PAD, CASE, Rfc4648> {                                   // LUT:true
-        build_lut!(32, Self::remap, Self::ALPHABET);
-        methods!(32, true, 5, Self); }
+        _data_codec_radix_build_lut!(32, Self::remap, Self::ALPHABET);
+        _data_codec_radix_methods!(32, true, 5, Self); }
 
     impl<const LUT: bool, const PAD: bool, const CASE: bool>
         Base<32, LUT, PAD, CASE, Crockford> {                                  // CODE: Crockford
@@ -173,22 +173,22 @@ crate::sf! {
             match byte { b'O' => Some(b'0'), b'I' | b'L' => Some(b'1'), _ => Some(byte) } } }
     impl<const PAD: bool, const CASE: bool>
         Base<32, false, PAD, CASE, Crockford> {                                // LUT:false
-        methods!(32, false, 5, Self); }
+        _data_codec_radix_methods!(32, false, 5, Self); }
     impl<const PAD: bool, const CASE: bool>
         Base<32, true, PAD, CASE, Crockford> {                                 // LUT:true
-        build_lut!(32, Self::remap, Self::ALPHABET);
-        methods!(32, true, 5, Self); }
+        _data_codec_radix_build_lut!(32, Self::remap, Self::ALPHABET);
+        _data_codec_radix_methods!(32, true, 5, Self); }
     impl<const LUT: bool, const PAD: bool, const CASE: bool>
         Base<32, LUT, PAD, CASE, Rfc4648Hex> {                                 // CODE: Rfc4648Hex
         const ALPHABET: [u8; 32] = *b"0123456789ABCDEFGHIJKLMNOPQRSTUV";       // ----------------
         const fn remap(byte: u8) -> Option<u8> { Some(byte) } }
     impl<const PAD: bool, const CASE: bool>
         Base<32, false, PAD, CASE, Rfc4648Hex> {                               // LUT:false
-        methods!(32, false, 5, Self); }
+        _data_codec_radix_methods!(32, false, 5, Self); }
     impl<const PAD: bool, const CASE: bool>
         Base<32, true, PAD, CASE, Rfc4648Hex> {                                // LUT:true
-        build_lut!(32, Self::remap, Self::ALPHABET);
-        methods!(32, true, 5, Self); }
+        _data_codec_radix_build_lut!(32, Self::remap, Self::ALPHABET);
+        _data_codec_radix_methods!(32, true, 5, Self); }
 
     // // Base58
     // #[rustfmt::skip] impl<const LUT: bool, const PAD: bool, const CASE: bool, CODE>
@@ -199,7 +199,7 @@ crate::sf! {
     //     const fn remap(byte: u8) -> Option<u8> {
     //         match byte { b'0' | b'O' | b'I' | b'l' => None, _ => Some(byte) } } }
     // #[rustfmt::skip] impl<const PAD: bool, const CASE: bool>
-    //     Base<58, true, PAD, CASE, Base58> { build_lut!(58, Self::remap, Self::ALPHABET); }
+    //     Base<58, true, PAD, CASE, Base58> { _data_codec_radix_build_lut!(58, Self::remap, Self::ALPHABET); }
 
     // Base64
     impl<const LUT: bool, const PAD: bool, const CASE: bool>
@@ -209,11 +209,11 @@ crate::sf! {
         const fn remap(byte: u8) -> Option<u8> { Some(byte) } }
     impl<const PAD: bool, const CASE: bool>
         Base<64, false, PAD, CASE, Rfc4648> {                                  // LUT:false
-        methods!(64, false, 6, Self); }
+        _data_codec_radix_methods!(64, false, 6, Self); }
     impl<const PAD: bool, const CASE: bool>
         Base<64, true, PAD, CASE, Rfc4648> {                                   // LUT:true
-        build_lut!(64, Self::remap, Self::ALPHABET);
-        methods!(64, true, 6, Self); }
+        _data_codec_radix_build_lut!(64, Self::remap, Self::ALPHABET);
+        _data_codec_radix_methods!(64, true, 6, Self); }
 
     // // Base85
     // #[rustfmt::skip] impl<const LUT: bool, const PAD: bool, const CASE: bool, CODE>
@@ -222,7 +222,7 @@ crate::sf! {
     //         *b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
     //     const fn remap(byte: u8) -> Option<u8> { Some(byte) } }
     // #[rustfmt::skip] impl<const PAD: bool, const CASE: bool, CODE>
-    //     Base<85, true, PAD, CASE, CODE> { build_lut!(58, Self::remap, Self::ALPHABET); }
+    //     Base<85, true, PAD, CASE, CODE> { _data_codec_radix_build_lut!(58, Self::remap, Self::ALPHABET); }
 }
 
 /// # misc. methods
@@ -274,7 +274,7 @@ impl<
 
 /* helpers */
 
-macro_rules! build_lut {
+macro_rules! _data_codec_radix_build_lut {
     ($radix:expr, $remap_fn:expr, $alphabet:expr) => {
         const LUT_TABLE: [u8; 256] = {
             let mut table = [255; 256]; // Default: invalid character
@@ -294,16 +294,16 @@ macro_rules! build_lut {
         };
     };
 }
-use build_lut;
+use _data_codec_radix_build_lut;
 
-macro_rules! methods {
+macro_rules! _data_codec_radix_methods {
     ( // LUT: True
       $radix:expr, true, $chunk_bits:expr, $Self:ident) => {
         const fn decode_byte(byte: u8) -> Option<u8> {
             let decoded = $Self::LUT_TABLE[byte as usize];
             if decoded == 255 { None } else { Some(decoded) }
         }
-        methods![@non_alloc $radix, $chunk_bits, $Self];
+        _data_codec_radix_methods![@non_alloc $radix, $chunk_bits, $Self];
     };
     ( // LUT: False
       $radix:expr, false, $chunk_bits:expr, $Self:ident) => {
@@ -323,7 +323,7 @@ macro_rules! methods {
             }
             None
         }
-        methods![@non_alloc $radix, $chunk_bits, $Self];
+        _data_codec_radix_methods![@non_alloc $radix, $chunk_bits, $Self];
     };
     (@non_alloc $radix:expr, $chunk_bits:expr, $Self:ident) => {
         /// Returns the required output buffer size for encoding `input_len` bytes.
@@ -413,4 +413,4 @@ macro_rules! methods {
         }
     };
 }
-use methods;
+use _data_codec_radix_methods;
