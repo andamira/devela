@@ -1,14 +1,14 @@
 // devela::ui::event::pointer
 //
-//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`],
-//! [`EventButton`], [`EventButtonState`], [`EventWheel`].
+//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`], [`EventButton`],
+//! [`EventButtons`], [`EventButtonState`], [`EventWheel`] [`EventWheelUnit`].
 //
 // TOC
 // - definitions
 // - impls
 // - tests
 
-use crate::{ConstInit, EventTimestamp, NonZeroU8, f32bits_niche, unwrap};
+use crate::{ConstInit, EventTimestamp, NonZeroU8, bitfield, f32bits_niche, unwrap};
 
 /* definitions */
 
@@ -28,7 +28,7 @@ pub struct EventMouse {
     /// The state of the mouse button (pressed, released, moved).
     pub state: EventButtonState,
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
-    pub buttons: u8,
+    pub buttons: EventButtons,
 }
 
 #[doc = crate::_tags!(event interaction)]
@@ -131,8 +131,8 @@ impl EventButton {
 
     /// Returns some primary button (left, right, middle) from the mask, if only one is set.
     #[inline(always)]
-    pub const fn primary_from_mask(mask: u8) -> Option<EventButton> {
-        match mask {
+    pub const fn primary_from_mask(mask: EventButtons) -> Option<EventButton> {
+        match mask.bits() {
             1 => Some(EventButton::Left),
             2 => Some(EventButton::Right),
             4 => Some(EventButton::Middle),
@@ -141,12 +141,58 @@ impl EventButton {
     }
 }
 
+bitfield! {
+    #[doc = crate::_tags!(event interaction)]
+    /// A semantic bitmask of currently held pressable buttons.
+    #[doc = crate::_doc_location!("ui/event")]
+    ///
+    /// The bits represent normalized button roles, not raw backend button numbers.
+    ///
+    /// This means:
+    /// - `LEFT`, `RIGHT`, and `MIDDLE` are the three primary buttons.
+    /// - `X1..X5` are additional auxiliary buttons when a backend can report them.
+    /// - wheel motion is **not** represented here; it belongs in [`EventWheel`].
+    ///
+    /// Unsupported buttons are left cleared.
+    ///
+    /// # Backend notes
+    /// - **X11** currently sets only `LEFT`, `RIGHT`, and `MIDDLE`,
+    ///   because the current X11 state-mask mapping only exposes those three.
+    /// - **Web** can naturally carry `LEFT`, `RIGHT`, `MIDDLE`, `X1`, and `X2`
+    ///   from the DOM `buttons` bitmask.
+    /// - Other backends may populate only the subset they can observe.
+    ///
+    /// This type is semantic and cross-platform.
+    /// Backend-specific numbering should be translated at the backend edge.
+    pub struct EventButtons(u8) {
+        /// The primary left button.
+        LEFT: 0;
+        /// The primary right button.
+        RIGHT: 1;
+        /// The primary middle button.
+        MIDDLE: 2;
+        /// The first auxiliary button, often “back”.
+        X1: 3;
+        /// The second auxiliary button, often “forward”.
+        X2: 4;
+        /// The third auxiliary button, when available.
+        X3: 5;
+        /// The fourth auxiliary button, when available.
+        X4: 6;
+        /// The fifth auxiliary button, when available.
+        X5: 7;
+    }
+}
+
 #[doc = crate::_tags!(event interaction)]
 /// Represents the state of a button.
 #[doc = crate::_doc_location!("ui/event")]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
     /// The button was pressed.
+    ///
+    /// This is the default.
+    #[default]
     Pressed,
     /// The button was released.
     Released,
@@ -157,18 +203,50 @@ pub enum EventButtonState {
 #[doc = crate::_tags!(event interaction)]
 /// Represents a mouse wheel event.
 #[doc = crate::_doc_location!("ui/event")]
+///
+/// It represents signed discrete scroll steps.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventWheel {
     /// The amount scrolled horizontally.
     pub delta_x: i32,
     /// The amount scrolled vertically.
     pub delta_y: i32,
+    /// The unit associated to the delta fields.
+    pub unit: EventWheelUnit,
     /// The x-coordinate of the mouse cursor during the event.
     pub x: i32,
     /// The y-coordinate of the mouse cursor during the event.
     pub y: i32,
-    /// The timestamp of when the event occurred.
-    pub timestamp: Option<EventTimestamp>,
+    /// A bitmask of currently pressed buttons.
+    pub buttons: EventButtons,
+}
+impl EventWheel {
+    /// Returns a wheel event.
+    pub const fn new(
+        delta_x: i32,
+        delta_y: i32,
+        unit: EventWheelUnit,
+        x: i32,
+        y: i32,
+        buttons: EventButtons,
+    ) -> Self {
+        Self { delta_x, delta_y, unit, x, y, buttons }
+    }
+}
+
+#[doc = crate::_tags!(event interaction)]
+/// The unit used by the wheel event.
+#[doc = crate::_doc_location!("ui/event")]
+///
+/// It defaults to `Step`.
+#[allow(missing_docs)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub enum EventWheelUnit {
+    Line,
+    Page,
+    Pixel,
+    #[default]
+    Step,
 }
 
 /* impls */
@@ -179,7 +257,8 @@ mod init {
 
     impl ConstInit for EventMouse {
         const INIT: Self = Self {
-            x: 0, y: 0, button: None, state: EventButtonState::INIT, buttons: 0, timestamp: None,
+            x: 0, y: 0, button: None, state: EventButtonState::INIT,
+            buttons: EventButtons::INIT, timestamp: None,
         };
     }
     impl ConstInit for EventPointer {
@@ -195,8 +274,12 @@ mod init {
     impl ConstInit for EventButton { const INIT: Self = Self::Left; }
     impl ConstInit for EventButtonState { const INIT: Self = Self::Pressed; }
     impl ConstInit for EventWheel {
-        const INIT: Self = Self { delta_x: 0, delta_y: 0, x: 0, y: 0, timestamp: None };
+        const INIT: Self = Self {
+            delta_x: 0, delta_y: 0, unit: EventWheelUnit::INIT,
+            x: 0, y: 0, buttons: EventButtons::INIT,
+        };
     }
+    impl ConstInit for EventWheelUnit { const INIT: Self = Self::Step; }
 }
 
 #[rustfmt::skip]
@@ -215,7 +298,7 @@ mod impl_js {
                 y: js.y as i32,
                 button: EventButton::from_js(js.button),
                 state: EventButtonState::from_js(js.etype),
-                buttons: js.buttons,
+                buttons: EventButtons::with_bits(js.buttons),
                 timestamp: Some(EventTimestamp::from_js(js.timestamp)),
             }
         }
@@ -228,7 +311,7 @@ mod impl_js {
                 x: self.x as js_number,
                 y: self.y as js_number,
                 button: is![let Some(b) = self.button, b.to_js(), 255], // IMPROVE to_js
-                buttons: self.buttons, // already a bitmask, directly compatible
+                buttons: self.buttons.bits(), // already a bitmask, directly compatible
                 etype: self.state.to_js_as_mouse(),
                 timestamp: is![let Some(t) = self.timestamp, t.to_js(), JsInstant { ms: 0.0 }],
             }

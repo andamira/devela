@@ -131,8 +131,21 @@
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
 
-## text
+### text::fmt
 - make `Fmt::from_fn` const.
+
+### ui::event
+- new types: `EventButtons`, `EventWheelUnit`.
+- update `EventMouse`:
+  - change the `buttons` field to use `EventButtons`.
+- update `EventButtonState`: make `Pressed` the default.
+- update `EventKind` and `EventTag`:
+  - add `Wheel` variant.
+  - add methods: `is_wheel`, `some_wheel`.
+- update `EventWheel`:
+  - add fields: `unit`, `buttons`.
+  - remove field: `timestamp`.
+  - add method: `new`.
 
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.

@@ -3,7 +3,7 @@
 //! Defines [`EventTag`] and [`EventKind`].
 //
 
-use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventWindow};
+use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventWheel, EventWindow};
 
 #[doc = crate::_tags!(event uid)]
 /// A lightweight, data-less identifier for `EventKind`.
@@ -26,6 +26,8 @@ pub enum EventTag {
     Mouse,
     /// A pointing-device event (mouse, pen, stylus, touch).
     Pointer,
+    ///  A wheel event.
+    Wheel,
     /// A window-related event (focus, resize, etc.).
     Window,
 }
@@ -58,6 +60,9 @@ pub enum EventKind {
     /// A pointing-device event (mouse, pen, stylus, or multi-touch).
     Pointer(EventPointer),
 
+    /// A wheel event.
+    Wheel(EventWheel),
+
     /// A window event.
     Window(EventWindow),
     // /// A gamepad event.
@@ -79,6 +84,7 @@ impl EventKind {
             Self::Key(_) => EventTag::Key,
             Self::Mouse(_) => EventTag::Mouse,
             Self::Pointer(_) => EventTag::Pointer,
+            Self::Wheel(_) => EventTag::Wheel,
             Self::Window(_) => EventTag::Window,
         }
     }
@@ -110,6 +116,10 @@ impl EventKind {
     #[must_use] #[inline(always)]
     pub const fn is_pointer(&self) -> bool { matches![self, EventKind::Pointer(_)] }
 
+    /// Whether it's a wheel event.
+    #[must_use] #[inline(always)]
+    pub const fn is_wheel(&self) -> bool { matches![self, EventKind::Wheel(_)] }
+
     // /// Returns `true` if it's a keyboard event.
     // pub const fn is_midi(&self) -> bool { matches![self, EventKind::Midi(_)] }
 
@@ -121,30 +131,30 @@ impl EventKind {
     pub const fn some_window(&self) -> Option<&EventWindow> {
         if let EventKind::Window(e) = &self { Some(e) } else { None }
     }
-
     /// Returns some keyboard event, if that's the kind.
     #[must_use] #[inline(always)]
     pub const fn some_key(&self) -> Option<&EventKey> {
         if let EventKind::Key(e) = &self { Some(e) } else { None }
     }
-
     /// Returns some mouse event, if that's the kind.
     #[must_use] #[inline(always)]
     pub const fn some_mouse(&self) -> Option<&EventMouse> {
         if let EventKind::Mouse(e) = &self { Some(e) } else { None }
     }
-
     /// Returns some pointer event, if that's the kind.
     #[must_use] #[inline(always)]
     pub const fn some_pointer(&self) -> Option<&EventPointer> {
         if let EventKind::Pointer(e) = &self { Some(e) } else { None }
     }
-
+    /// Returns some wheel event, if that's the kind.
+    #[must_use] #[inline(always)]
+    pub const fn some_wheel(&self) -> Option<&EventWheel> {
+        if let EventKind::Wheel(e) = &self { Some(e) } else { None }
+    }
     // /// Returns some gamepad event, if that's the kind.
     // pub const fn some_gamepad(&self) -> Option<&GamepadEvent> {
     //     if let EventKind::Gamepad(e) = &self { Some(e) } else { None }
     // }
-
     // /// Returns some midi event, if that's the kind.
     // pub const fn some_midi(&self) -> Option<&MidiEvent> {
     //     if let EventKind::Midi(e) = &self { Some(e) } else { None }

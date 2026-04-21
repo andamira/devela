@@ -7,7 +7,10 @@
 
 use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XWindowState, XkbState, raw};
 use crate::{ConstInit, Extent, Position, Ptr, Vec, c_int, is, lets, sf, vec_ as vec};
-use crate::{Event, EventButton, EventButtonState, EventKind, EventMouse, EventQueue, EventWindow};
+use crate::{
+    Event, EventButton, EventButtonState, EventButtons, EventKind, EventMouse, EventQueue,
+    EventWheel, EventWheelUnit, EventWindow,
+};
 
 /// Describes which parts of a window configuration changed.
 ///
@@ -267,10 +270,9 @@ impl XDisplay {
     ///
     /// It never performs I/O. The caller supplies the raw event pointer; the method returns
     /// the corresponding high-level `Event` or `Event::None` if the event is ignored.
+    #[rustfmt::skip]
     fn handle_raw_event(&mut self, xev: XEvent) -> Event {
-        use EventKind as Kind;
-        use EventWindow as Win;
-
+        use {EventKind as Kind, EventWindow as Win};
         if let Some(ev) = xev.as_raw_key() {
             let keycode = unsafe { ev.detail };
             let time_ms = unsafe { ev.time };
@@ -282,21 +284,30 @@ impl XDisplay {
                 return Event::from_window(ev.event, Kind::Key(key), xev.timestamp());
             }
         } else if let Some(ev) = xev.as_raw_button() {
+            let x = ev.event_x.into();
+            let y = ev.event_y.into();
+            let timestamp = xev.timestamp();
             let buttons = XEvent::map_button_mask(ev.state);
-            let button = XEvent::map_button(ev.detail);
-            let state = xev.map_button_state();
-            return Event::from_window(
-                ev.event,
-                Kind::Mouse(EventMouse {
-                    x: ev.event_x.into(),
-                    y: ev.event_y.into(),
-                    button: Some(button),
-                    state,
-                    buttons,
-                    timestamp: xev.timestamp(),
-                }),
-                xev.timestamp(),
-            );
+            let unit = EventWheelUnit::Step;
+            // X11 raw button 4..7 become EventWheel { unit: Step, ... }
+            match ev.detail {
+                4 => { return Event::from_window(ev.event, Kind::Wheel(
+                        EventWheel::new(0, 1, unit, x, y, buttons)), timestamp); }
+                5 => { return Event::from_window(ev.event, Kind::Wheel(
+                        EventWheel::new(0, -1, unit, x, y, buttons)), timestamp); }
+                6 => { return Event::from_window(ev.event, Kind::Wheel(
+                        EventWheel::new(-1, 0, unit, x, y, buttons)), timestamp); }
+                7 => { return Event::from_window(ev.event, Kind::Wheel(
+                        EventWheel::new(1, 0, unit, x, y, buttons)), timestamp); }
+                _ => {
+                    let button = XEvent::map_button(ev.detail);
+                    let state = xev.map_button_state();
+                    return Event::from_window(ev.event, Kind::Mouse(
+                        EventMouse { x, y, button: Some(button), state, buttons, timestamp }),
+                        timestamp,
+                    );
+                }
+            }
         } else if let Some(ev) = xev.as_raw_motion() {
             let buttons = XEvent::map_button_mask(ev.state);
             let button = EventButton::primary_from_mask(buttons);

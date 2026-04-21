@@ -59,6 +59,7 @@ fn sizes_of() {
 
     assert_eq![16, size_of::<EventMouse>()];        // 128
     assert_eq![02, size_of::<EventButton>()];       // 16
+    assert_eq![01, size_of::<EventButtons>()];      // 8
     assert_eq![01, size_of::<EventButtonState>()];  // 8
     assert_eq![36, size_of::<EventPointer>()];      // 288
     // assert_eq![40, size_of::<EventPointer>()];      // 320 FUTURE: with phase
@@ -67,10 +68,12 @@ fn sizes_of() {
     assert_eq![20, size_of::<EventWheel>()];        // 160
     assert![size_of::<EventMouse>() == size_of::<Option<EventMouse>>()];
     assert![size_of::<EventButton>() == size_of::<Option<EventButton>>()];
+    assert![size_of::<EventButtons>() != size_of::<Option<EventButtons>>()]; // NOTE: !=
     assert![size_of::<EventButtonState>() == size_of::<Option<EventButtonState>>()];
     assert![size_of::<EventPointer>() == size_of::<Option<EventPointer>>()];
     assert![size_of::<EventPointerType>() == size_of::<Option<EventPointerType>>()];
-    assert![size_of::<EventWheel>() != size_of::<Option<EventWheel>>()]; // NOTE !=
+    assert![size_of::<EventWheel>() == size_of::<Option<EventWheel>>()];
+    assert![size_of::<EventWheelUnit>() == size_of::<Option<EventWheelUnit>>()];
 
     /* timestamp */
 
