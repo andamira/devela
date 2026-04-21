@@ -1,8 +1,6 @@
 // devela::ui::event::tests
 
 use super::*;
-#[cfg(all(feature = "js", not(windows)))]
-use crate::WebEventKind;
 
 #[test] #[rustfmt::skip]
 fn sizes_of() {
@@ -79,23 +77,4 @@ fn sizes_of() {
 
     assert_eq![4, size_of::<EventTimestamp>()]; // 32
     assert![size_of::<EventTimestamp>() == size_of::<Option<EventTimestamp>>()];
-}
-
-#[test]
-#[cfg(all(feature = "js", not(windows)))]
-fn key_state_to_js_event() {
-    assert_eq!(KeyState::Press.to_js(), WebEventKind::KeyDown);
-    assert_eq!(KeyState::Release.to_js(), WebEventKind::KeyUp);
-}
-#[test]
-#[cfg(all(feature = "js", not(windows)))]
-fn js_event_to_key_state() {
-    assert_eq!(KeyState::from_js(WebEventKind::KeyDown, false), Some(KeyState::Press));
-    assert_eq!(KeyState::from_js(WebEventKind::KeyUp, false), Some(KeyState::Release));
-
-    assert_eq!(KeyState::from_js(WebEventKind::KeyDown, true), Some(KeyState::Repeat));
-    assert_eq!(KeyState::from_js(WebEventKind::KeyUp, true), Some(KeyState::Release));
-
-    assert_eq!(KeyState::from_js(WebEventKind::Click, false), None);
-    assert_eq!(KeyState::from_js(WebEventKind::Click, true), None);
 }

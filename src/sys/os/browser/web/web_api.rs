@@ -10,12 +10,14 @@ use devela::_js_extern;
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{
     _js_doc, Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebDocument,
-    WebEventKind, WebEventMouse, WebEventPointer, WebPermission, WebPermissionState, WebWindow,
-    WebWorker, WebWorkerError, WebWorkerJob, js_bool, js_int32, js_number, js_uint32, transmute,
+    WebPermission, WebPermissionState, WebWindow, WebWorker, WebWorkerError, WebWorkerJob, js_bool,
+    js_int32, js_number, js_uint32, transmute,
 };
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
 use devela::{String, Vec, vec_ as vec};
+#[cfg(feature = "event")]
+use devela::{WebEventKind, WebEventMouse, WebEventPointer};
 
 #[doc = crate::_tags!(web namespace)]
 /// A Web API namespace.
@@ -75,6 +77,7 @@ impl Web {
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg(feature = "event")]
 impl Web {
     #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a Rust function `event` listener from an `element`.
@@ -197,6 +200,7 @@ impl Web {
             etype, timestamp));
     }
 }
+#[cfg(feature = "event")]
 _js_extern! {
     [ module: "api_events" ]
     unsafe fn "event_addListener" event_add_listener(element_ptr: *const u8,
@@ -419,6 +423,7 @@ impl Web {
         JsInstant::from_millis_f64(performance_time_origin()) }
     #[doc = _js_doc!("Performance", "eventCounts")]
     /// Retrieves the count of recorded events.
+    #[cfg(feature = "event")]
     pub fn performance_event_count(event: WebEventKind) -> js_uint32 {
         let name = event.as_str();
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
@@ -428,6 +433,7 @@ _js_extern! {
     [ module: "api_performance" ]
     safe fn "now" performance_now() -> js_number;
     safe fn "timeOrigin" performance_time_origin() -> js_number;
+    #[cfg(feature = "event")]
     unsafe fn "eventCounts" performance_event_count(event_ptr: *const u8, event_len: usize)
         -> js_uint32;
 }

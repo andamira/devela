@@ -5,12 +5,9 @@
 // TOC
 // - enum KeyMod
 // - struct KeyMods
-// - impls
 
 #![allow(unused, missing_docs)] // WIP
 
-#[cfg(all(feature = "js", not(windows)))]
-use crate::WebKeyLocation;
 use crate::{ConstInit, impl_trait, is};
 
 /* definitions */
@@ -176,94 +173,4 @@ impl KeyMods {
     pub const fn unset_repeating(&mut self) { self.0 &= !Self::REPEATING; }
     /// Unsets the composing modifier.
     pub const fn unset_composing(&mut self) { self.0 &= !Self::COMPOSING; }
-}
-
-/* impls */
-
-#[rustfmt::skip]
-#[cfg(all(feature = "js", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
-impl KeyMod {
-    /// Atempts to construct a `KeyMod` from a JavaScript `KeyboardEvent`
-    /// physical [code] and [location].
-    ///
-    /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-    /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
-        use {KeyMod as K, WebKeyLocation as L};
-        match (code.as_bytes(), location) {
-            (b"ShiftLeft", L::Left) => Some(K::LeftShift),
-            (b"ControlLeft", L::Left) => Some(K::LeftControl),
-            (b"AltLeft", L::Left) => Some(K::LeftAlt),
-            (b"MetaLeft", L::Left) => Some(K::LeftSuper),
-            (b"ShiftRight", L::Right) => Some(K::RightShift),
-            (b"ControlRight", L::Right) => Some(K::RightControl),
-            (b"AltRight", L::Right) => Some(K::RightAlt),
-            (b"MetaRight", L::Right) => Some(K::RightSuper),
-            (b"AltGraph", L::Standard) => Some(K::AltGr),
-            (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
-            _ => None,
-        }
-    }
-    /// Returns a JavaScript `KeyboardEvent` physical [code] and [location].
-    ///
-    /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-    /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
-        use {KeyMod as K, WebKeyLocation as L};
-        match self {
-            K::LeftShift => ("ShiftLeft", L::Left),
-            K::LeftControl => ("ControlLeft", L::Left),
-            K::LeftAlt => ("AltLeft", L::Left),
-            K::LeftSuper => ("MetaLeft", L::Left),
-            K::RightShift => ("ShiftRight", L::Right),
-            K::RightControl => ("ControlRight", L::Right),
-            K::RightAlt => ("AltRight", L::Right),
-            K::RightSuper => ("MetaRight", L::Right),
-            K::AltGr => ("AltGraph", L::Standard),
-            K::IsoLevel5Shift => ("Level5Shift", L::Standard),
-        }
-    }
-    /// Atempts to construct a `KeyMod` from a JavaScript `KeyboardEvent`
-    /// semantic [key] and [location].
-    ///
-    /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-    /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_key(key: &str, location: WebKeyLocation) -> Option<Self> {
-        use {KeyMod as K, WebKeyLocation as L};
-        match (key.as_bytes(), location) {
-            (b"Shift", L::Left) => Some(K::LeftShift),
-            (b"Control", L::Left) => Some(K::LeftControl),
-            (b"Alt", L::Left) => Some(K::LeftAlt),
-            (b"Meta", L::Left) => Some(K::LeftSuper),
-            (b"Shift", L::Right) => Some(K::RightShift),
-            (b"Control", L::Right) => Some(K::RightControl),
-            (b"Alt", L::Right) => Some(K::RightAlt),
-            (b"Meta", L::Right) => Some(K::RightSuper),
-            (b"AltGraph", L::Standard) => Some(K::AltGr),
-            (b"Level5Shift", L::Standard) => Some(K::IsoLevel5Shift),
-            _ => None,
-        }
-    }
-    /// Returns a JavaScript `KeyboardEvent` semantic [key] and [location].
-    ///
-    /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-    /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_key(self) -> (&'static str, WebKeyLocation) {
-        use {KeyMod as K, WebKeyLocation as L};
-        match self {
-            K::LeftShift => ("Shift", L::Left),
-            K::LeftControl => ("Control", L::Left),
-            K::LeftAlt => ("Alt", L::Left),
-            K::LeftSuper => ("Meta", L::Left),
-            K::RightShift => ("Shift", L::Right),
-            K::RightControl => ("Control", L::Right),
-            K::RightAlt => ("Alt", L::Right),
-            K::RightSuper => ("Meta", L::Right),
-            K::AltGr => ("AltGraph", L::Standard),
-            K::IsoLevel5Shift => ("Level5Shift", L::Standard),
-        }
-    }
 }

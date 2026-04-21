@@ -176,28 +176,3 @@ impl_trait! { fmt::Display for EventTimestamp |self, f| self.as_millis_f32().fmt
 impl ConstInit for EventTimestamp {
     const INIT: Self = Self::new(f32bits_niche::INIT);
 }
-
-#[rustfmt::skip]
-#[cfg(all(feature = "js", not(windows)))]
-mod impl_js {
-    pub use super::*;
-    pub use crate::JsInstant;
-
-    impl EventTimestamp {
-        /// Converts a `JsInstant` to an `EventTimestamp`, ensuring a valid value.
-        pub const fn from_js(from: JsInstant) -> EventTimestamp {
-            EventTimestamp::from_millis_f32(from.as_millis_f64() as f32)
-        }
-
-        /// Converts an `EventTimestamp` to a `JsInstant`.
-        pub const fn to_js(self) -> JsInstant {
-            JsInstant::from_millis_f64(self.as_millis_f32() as f64)
-        }
-    }
-    impl From<JsInstant> for EventTimestamp {
-        fn from(from: JsInstant) -> Self { EventTimestamp::from_js(from) }
-    }
-    impl From<EventTimestamp> for JsInstant {
-        fn from(from: EventTimestamp) -> Self { from.to_js() }
-    }
-}

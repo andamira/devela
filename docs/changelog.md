@@ -128,6 +128,10 @@
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.
 
+##### sys::os::browser::web
+- bring here impls from `ui::event`.
+- feature-gate with `event` the event-related impls.
+
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
 

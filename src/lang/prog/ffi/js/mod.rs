@@ -53,7 +53,7 @@ mod namespace; // Js
 mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextMetrics, JsTextMetricsFull
 mod time; // JsInstant, JsTimeout
-mod value; // JsInstant, JsTimeout
+mod value; // JsValue
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

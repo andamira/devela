@@ -1,0 +1,66 @@
+// devela::lang::prog::ffi::js::time::timeout
+//
+//! Defines [`JsTimeout`].
+//
+
+use crate::js_uint32;
+#[cfg(not(feature = "safe_lang"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+use crate::{_js_doc, WebWindow};
+
+#[doc = crate::_tags!(runtime time uid)]
+/// A handle to a JavaScript timeout.
+#[doc = crate::_doc_location!("lang/prog/ffi/js")]
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct JsTimeout {
+    pub(crate) id: js_uint32,
+}
+
+impl JsTimeout {
+    /// Returns a new invalid handle.
+    pub const fn invalid() -> Self {
+        JsTimeout { id: 0 }
+    }
+    /// Returns the numeric ID of the handle.
+    pub const fn id(self) -> js_uint32 {
+        self.id
+    }
+}
+
+#[rustfmt::skip]
+#[cfg(not(feature = "safe_lang"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
+impl JsTimeout {
+    #[doc = _js_doc!("Window", "setTimeout")]
+    /// Calls a function after a delay in milliseconds.
+    pub fn timeout(callback: extern "C" fn(), delay_ms: js_uint32) -> Self {
+        WebWindow::set_timeout(callback, delay_ms) }
+    #[doc = _js_doc!("Window", "setInterval")]
+    /// Calls a function repeatedly at a fixed interval in milliseconds.
+    pub fn interval(callback: extern "C" fn(), interval_ms: js_uint32) -> Self {
+        WebWindow::set_timeout(callback, interval_ms) }
+
+    /// Executes JavaScript code immediately.
+    /// ## Security Warning
+    /// - Avoid passing untrusted input, as this executes arbitrary JS.
+    /// - Ensure all evaluated code is **safe and controlled**.
+    pub fn eval(js_code: &str) { WebWindow::eval(js_code) }
+    #[doc = _js_doc!("Window", "setTimeout")]
+    /// Executes JavaScript code after a delay in milliseconds.
+    pub fn eval_timeout(js_code: &str, delay_ms: js_uint32) -> Self {
+        WebWindow::eval_timeout(js_code, delay_ms) }
+    #[doc = _js_doc!("Window", "setInterval")]
+    /// Executes JavaScript code repeatedly at a fixed interval in milliseconds.
+    pub fn eval_interval(js_code: &str, interval_ms: js_uint32) -> Self {
+        WebWindow::eval_interval(js_code, interval_ms) }
+
+    #[doc = _js_doc!("Window", "clearTimeout")]
+    #[doc = _js_doc!("Window", "clearInterval")]
+    /// Cancels a timeout or interval.
+    pub fn clear(self) { WebWindow::clear_timeout(self); }
+}

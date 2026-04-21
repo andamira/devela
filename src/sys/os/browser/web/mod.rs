@@ -10,6 +10,7 @@
 
 mod document; // WebDocument
 mod element; // WebElement
+#[cfg(feature = "event")]
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
 mod web_api; // Web
@@ -24,11 +25,12 @@ crate::structural_mods! { // _mods
         pub use super::{
             document::*,
             element::*,
-            event::*,
             permission::*,
             web_api::*,
             window::*,
             worker::*,
         };
+        #[cfg(feature = "event")]
+        pub use super::event::*;
     }
 }

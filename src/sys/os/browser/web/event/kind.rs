@@ -1,0 +1,109 @@
+// devela::sys::os::browser::web::event::kind
+//
+//! Defines [`WebEventKind`].
+//
+
+use crate::{KeyState, is};
+
+#[doc = crate::_tags!(event web uid)]
+/// # A web API Event kind.
+#[doc = crate::_doc_location!("sys/os/browser/web")]
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
+pub enum WebEventKind {
+    /// Unknown event. Default case.
+    #[default]
+    Unknown = 0,
+
+    /// Fires when an element is clicked.
+    Click = 1,
+
+    /// Fires when a key is pressed down.
+    KeyDown = 2,
+    /// Fires when a key is released.
+    KeyUp = 3,
+    // no KeyPress (deprecated)
+    /// Fires when the mouse button is pressed down.
+    MouseDown = 4,
+    /// Fires when the mouse button is released.
+    MouseUp = 5,
+    /// Fires when the mouse moves over an element.
+    MouseMove = 6,
+
+    /// Fires when the pointer is pressed down.
+    PointerDown = 7,
+    /// Fires when the pointer is released.
+    PointerUp = 8,
+    /// Fires when the pointer is moved.
+    PointerMove = 9,
+
+    ///
+    GamepadPoll = 10,
+
+    /// Fires when the window is resized.
+    Resize = 11,
+}
+impl WebEventKind {
+    /// Constructs a `WebEventKind` from its representation.
+    pub const fn from_repr(from: u8) -> Self {
+        use WebEventKind as E;
+        match from {
+            1 => E::Click,
+            2 => E::KeyDown,
+            3 => E::KeyUp,
+            4 => E::MouseDown,
+            5 => E::MouseUp,
+            6 => E::MouseMove,
+            7 => E::PointerDown,
+            8 => E::PointerUp,
+            9 => E::PointerMove,
+            10 => E::GamepadPoll,
+            11 => E::Resize,
+            _ => E::Unknown,
+        }
+    }
+    /// Returns the event name as a string.
+    pub const fn as_str(self) -> &'static str {
+        use WebEventKind as E;
+        match self {
+            E::Click => "click",
+            E::KeyDown => "keydown",
+            E::KeyUp => "keyup",
+            E::MouseDown => "mousedown",
+            E::MouseUp => "mouseup",
+            E::MouseMove => "mousemove",
+            E::PointerDown => "pointerdown",
+            E::PointerUp => "pointerup",
+            E::PointerMove => "pointermove",
+            E::GamepadPoll => "gamepadpoll",
+            E::Resize => "resize",
+            E::Unknown => "none",
+        }
+    }
+}
+
+#[rustfmt::skip]
+impl KeyState {
+    /// Converts a `WebEventKind` to `KeyState`, if applicable.
+    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat
+    #[must_use]
+    pub const fn from_js(from: WebEventKind, repeat: bool) -> Option<KeyState> {
+        match from {
+            WebEventKind::KeyDown => Some(is![repeat, KeyState::Repeat, KeyState::Press]),
+            WebEventKind::KeyUp => Some(KeyState::Release),
+            _ => None,
+        }
+    }
+    /// Converts a `KeyState` to `WebEventKind`.
+    #[must_use]
+    pub const fn to_js(self) -> WebEventKind {
+        match self {
+            KeyState::Press => WebEventKind::KeyDown,
+            KeyState::Release => WebEventKind::KeyUp,
+            KeyState::Repeat => WebEventKind::KeyDown,
+        }
+    }
+}
