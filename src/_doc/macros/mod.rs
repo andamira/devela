@@ -1,6 +1,12 @@
 // devela::_doc::macros
 //
-// #![doc = crate::_tags!(procedural_macro)]
-//! Procedural macros.
-//!
-#![doc = include_str!("./devela_macros.md")]
+//! Guidelines and information about macros.
+//
+
+// /// # Declarative macros.
+// pub mod declarative; // WIP
+
+/// # Procedural macros.
+pub mod procedural {
+    #![doc = include_str!("./devela_macros.md")] // conditional compilation
+}

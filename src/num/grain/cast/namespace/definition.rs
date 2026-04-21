@@ -4,11 +4,13 @@
 /// Provides *const* casting, joining and splitting operations between primitives.
 #[doc = crate::_doc_location!("num/grain")]
 ///
-/// See also the related traits: [`PrimCast`], [`PrimJoin`] and [`PrimSplit`].
+/// See also the related traits: [`PrimCast`], [`PrimJoin`], [`PrimSplit`],
+/// and macro: [`cast!`].
 ///
 /// [`PrimCast`]: crate::PrimCast
 /// [`PrimJoin`]: crate::PrimJoin
 /// [`PrimSplit`]: crate::PrimSplit
+/// [`cast!`]: crate::cast
 #[repr(transparent)]
 pub struct Cast<T>(pub T);
 

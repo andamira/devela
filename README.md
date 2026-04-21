@@ -2,10 +2,10 @@
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![MSRV 1.94.1](https://flat.badgen.net/badge/MSRV/1.94.1/purple)](https://releases.rs/docs/1.94.1/)
-[![Documentation](https://flat.badgen.net/badge/docs/260311/green)](https://docs.rs/devela/)
+[![Documentation](https://flat.badgen.net/badge/docs/260410/green)](https://docs.rs/devela/)
 &nbsp;<sup>←published</sup>
 <br/>
-[![Repository](https://flat.badgen.net/badge/github/v0.26.0/blue?icon=git)](https://github.com/andamira/devela)
+[![Repository](https://flat.badgen.net/badge/github/v0.28.0/blue?icon=git)](https://github.com/andamira/devela)
 [![MSRV ahead 1.95.0](https://flat.badgen.net/badge/MSRV/1.95.0/blue)](https://releases.rs/docs/1.95.0/)
 <!--
 [![Documentation ahead](https://flat.badgen.net/badge/docs/250914/blue)](https://andamira.github.io/devela/unpublished/devela/)
