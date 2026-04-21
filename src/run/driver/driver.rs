@@ -113,65 +113,8 @@ impl<T> RunDriver<T> {
     }
 }
 
-/// Expands the shared core of [`RunDriver::step_frame`] and [`RunDriver::run_frame`].
-///
-/// This exists to avoid repeating the same higher-ranked `RunRender`/`RunPresent`
-/// orchestration body in two methods, which currently helps sidestep compiler
-/// limitations around reusing the generic frame-step path through a normal helper.
-///
-/// The macro performs:
-/// - phase validation,
-/// - event collection,
-/// - logical stepping,
-/// - frame construction,
-/// - rendering,
-/// - presentation,
-/// - and runtime progression update.
-///
-/// The optional trailing expression is executed when the app returns
-/// [`RunControl::Stop`], allowing callers such as `run_frame` to `break`.
-macro_rules! _run_driver_step_frame_body {
-    // with phase check
-    (@check
-     $runtime:expr, $backend:expr, $app:expr, $renderer:expr, $presenter:expr,
-     $scene:expr, $events:ident, $control:ident,
-     $on_continue:expr, $on_stop:expr $(,$break:expr)?) => {
-        if !$runtime.can_advance() {
-            return Err(RunDriverFrameError::InvalidPhase($runtime.phase()));
-        }
-        _run_driver_step_frame_body!(
-            $runtime, $backend, $app, $renderer, $presenter, $scene, $events, $control,
-            $on_continue, $on_stop $(,$break)?);
-    };
-    // without phase check
-    ($runtime:expr, $backend:expr, $app:expr, $renderer:expr, $presenter:expr,
-     $scene:expr, $events:ident, $control:ident,
-     $on_continue:expr, $on_stop:expr $(,$break:expr)?) => {
-        // 1. Gather normalized backend events into caller-provided storage.
-        let written = $backend.collect_events($events).map_err(RunDriverFrameError::Backend)?;
-        let $events = &$events[..written];
-        // 2. Build the logical step snapshot.
-        let step = RunStep::new($runtime.tick(), $runtime.phase(), $events);
-        // 3. Advance app logic first, so rendering observes post-step state.
-        let $control = $app.run_step(step).map_err(RunDriverFrameError::App)?;
-        // 4. Build one backend-facing frame snapshot shared by render and present.
-        let mut frame = $backend.frame($runtime.tick(), $runtime.phase(), $events);
-        // 5. Render the current scene or app-facing projection.
-        let artifact = $renderer.run_render(&mut frame, $scene).map_err(RunDriverFrameError::Render)?;
-        // 6. Finalize or expose the rendered artifact.
-        $presenter.run_present(&mut frame, artifact).map_err(RunDriverFrameError::Present)?;
-        // 7. Update logical progression.
-        match $control {
-            RunControl::Continue => { $on_continue; }
-            RunControl::Stop => {
-                $on_stop;
-                $($break)?
-            }
-        }
-    };
-}
-pub(crate) use _run_driver_step_frame_body;
-
+/// Use these when the renderable scene is stored separately from the app,
+/// or is intentionally passed as an independent value.
 impl<T> RunDriver<T> {
     /// Drives one runtime iteration including rendering and presentation.
     ///
@@ -182,10 +125,13 @@ impl<T> RunDriver<T> {
     /// 4. build a [`RunFrame`],
     /// 5. render `scene`,
     /// 6. present the renderer output,
-    /// 7. update lifecycle and logical tick state.
+    /// 7. update runtime phase and tick state.
     ///
-    /// The rendered frame corresponds to the post-step application state.
-    pub fn step_frame<B, A, R, P, S, RE, PE>(
+    /// The rendered frame observes the post-step application state.
+    ///
+    /// See also [`step_frame_from_app`][Self::step_frame_from_app]
+    /// for app-owned scenes borrowed after logical stepping.
+    pub fn step_frame<B, A, R, P, S: ?Sized, RE, PE>(
         &mut self,
         backend: &mut B,
         app: &mut A,
@@ -205,18 +151,20 @@ impl<T> RunDriver<T> {
                 Error = PE,
             >,
     {
-        _run_driver_step_frame_body!(@check
-            self.runtime, backend, app, renderer, presenter, scene, events, control,
+        crate::_run_driver_step_run_frame_body!(@check
+            self.runtime, backend, app, renderer, presenter, scene(scene), events, control,
             self.runtime.tick_once(), self.runtime.transition(RunPhase::Stopped));
         Ok(control)
     }
 
-    /// Runs until the app stops or an error occurs,
-    /// including rendering and presentation.
+    /// Repeatedly drives frame iterations until the app stops or an error occurs.
     ///
-    /// This method attempts to enter the [`Running`][RunPhase::Running] phase
+    /// This attempts to enter the [`Running`][RunPhase::Running] phase
     /// before the first frame step.
-    pub fn run_frame<B, A, R, P, S, RE, PE>(
+    ///
+    /// See also [`run_frame_from_app`][Self::run_frame_from_app]
+    /// for app-owned scenes borrowed after each logical step.
+    pub fn run_frame<B, A, R, P, S: ?Sized, RE, PE>(
         &mut self,
         backend: &mut B,
         app: &mut A,
@@ -238,13 +186,103 @@ impl<T> RunDriver<T> {
     {
         self.start();
         while self.runtime.can_advance() {
-            _run_driver_step_frame_body!(
+            crate::_run_driver_step_run_frame_body!(
                 self.runtime,
                 backend,
                 app,
                 renderer,
                 presenter,
-                scene,
+                scene(scene),
+                events,
+                control,
+                self.runtime.tick_once(),
+                self.runtime.transition(RunPhase::Stopped),
+                break
+            );
+        }
+        Ok(())
+    }
+}
+
+/// Use these when the renderable scene is borrowed from app state
+/// after logical stepping.
+impl<T> RunDriver<T> {
+    /// Drives one runtime iteration including rendering and presentation,
+    /// deriving the renderable scene from `app` after logical stepping.
+    ///
+    /// `scene_of` is called after [`RunApp::run_step`], so rendering observes
+    /// the post-step state without holding an immutable borrow of `app`
+    /// across the logic step.
+    ///
+    /// See also [`step_frame`][Self::step_frame]
+    /// for scenes passed independently from the application state.
+    pub fn step_frame_from_app<B, A, R, P, S: ?Sized, Q, RE, PE>(
+        &mut self,
+        backend: &mut B,
+        app: &mut A,
+        renderer: &mut R,
+        presenter: &mut P,
+        scene_of: Q,
+        events: &mut [A::Event],
+    ) -> Result<RunControl, RunDriverFrameError<B::Error, A::Error, RE, PE>>
+    where
+        B: RunBackend<Event = A::Event>,
+        A: RunApp,
+        Q: for<'a> Fn(&'a A) -> &'a S,
+        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = RE>,
+        for<'a> P: RunPresent<
+                A::Event,
+                B::Context<'a>,
+                Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>,
+                Error = PE,
+            >,
+    {
+        crate::_run_driver_step_run_frame_body!(@check
+        self.runtime, backend, app, renderer, presenter, scene_of(scene_of), events, control,
+        self.runtime.tick_once(), self.runtime.transition(RunPhase::Stopped));
+        Ok(control)
+    }
+
+    /// Repeatedly drives frame iterations until the app stops or an error occurs,
+    /// deriving the renderable scene from `app` after each logical step.
+    ///
+    /// This attempts to enter the [`Running`][RunPhase::Running] phase
+    /// before the first frame step.
+    ///
+    /// `scene_of` is called after each [`RunApp::run_step`].
+    ///
+    /// See also [`run_frame`][Self::run_frame]
+    /// for scenes passed independently from the application state.
+    pub fn run_frame_from_app<B, A, R, P, S: ?Sized, Q, RE, PE>(
+        &mut self,
+        backend: &mut B,
+        app: &mut A,
+        renderer: &mut R,
+        presenter: &mut P,
+        scene_of: Q,
+        events: &mut [A::Event],
+    ) -> Result<(), RunDriverFrameError<B::Error, A::Error, RE, PE>>
+    where
+        B: RunBackend<Event = A::Event>,
+        A: RunApp,
+        Q: for<'a> Fn(&'a A) -> &'a S,
+        for<'a> R: RunRender<S, A::Event, B::Context<'a>, Error = RE>,
+        for<'a> P: RunPresent<
+                A::Event,
+                B::Context<'a>,
+                Input<'a> = <R as RunRender<S, A::Event, B::Context<'a>>>::Output<'a>,
+                Error = PE,
+            >,
+    {
+        self.start();
+        while self.runtime.can_advance() {
+            crate::_run_driver_step_run_frame_body!(
+                self.runtime,
+                backend,
+                app,
+                renderer,
+                presenter,
+                scene_of(scene_of),
                 events,
                 control,
                 self.runtime.tick_once(),

@@ -268,15 +268,14 @@ impl XkbState {
         if utf32 != 0 {
             cfg_select! { all(feature = "unsafe_str", not(feature = "safe_sys")) => {
                 // SAFETY: we trust the fn raw::xkb_state_key_get_utf32
-                unsafe { return Key::Char(char::from_u32_unchecked(utf32)); }
+                unsafe { Key::Char(char::from_u32_unchecked(utf32)) }
             } _ => {
                 Key::Char(char::from_u32(utf32).expect("valid unicode scalar"))
-
             }}
-
+        } else {
+            // fallback (dead keys etc.)
+            Key::Unknown
         }
-        // fallback (dead keys etc.)
-        Key::Unknown
     }
 
     /// Returns the physical key for the given X11 keycode.

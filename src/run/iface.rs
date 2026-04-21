@@ -109,7 +109,7 @@ pub trait RunBackend {
 ///
 /// This trait defines rendering only.
 /// It does not define logical progression or final presentation.
-pub trait RunRender<S, E = (), C = ()> {
+pub trait RunRender<S: ?Sized, E = (), C = ()> {
     /// The successful artifact produced for presentation.
     type Output<'a>
     where

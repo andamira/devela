@@ -96,6 +96,7 @@
 - update `RunRender` and `RunPresent`:
   - support borrowed render artifacts with GATs.
   - make them use a borrowed `RunFrame`.
+  - make `RunRender`'s `S: ?Sized`.
 
 ## run::time
 - update `RunPacer`:
