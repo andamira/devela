@@ -92,7 +92,7 @@ macro_rules! enumset· {
 
             /// Returns the associated empty set.
             $set_vis const fn new_empty_set() -> $set_name {
-                $set_name::without_fields()
+                $set_name::new()
             }
             /// Returns the associated full set.
             $set_vis const fn new_full_set() -> $set_name {

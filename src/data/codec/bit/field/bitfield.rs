@@ -73,11 +73,19 @@ macro_rules! bitfield· {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name { bits: $T }
 
+        impl $name {
+            #[doc = "Returns a new `" $name "` with none of the fields set."]
+            #[must_use]
+            $vis const fn new() -> Self {
+                Self { bits: 0 }
+            }
+        }
+
         /* core impls */
 
-        impl Default for $name {
-            fn default() -> Self { $name { bits: Default::default() } }
-        }
+        impl Default for $name { fn default() -> Self { Self::new() } }
+        impl $crate::ConstInit for $name { const INIT: Self = Self::new(); }
+
         $crate::impl_trait![fmt::Display for $name |self, f|
             ::core::fmt::Display::fmt(&self.bits, f)];
         $crate::impl_trait![fmt::Binary for $name |self, f|
@@ -114,12 +122,6 @@ macro_rules! bitfield· {
         /// # Custom fields operations
         #[allow(dead_code)]
         impl $name {
-            #[doc = "Returns a new `" $name "` with none of the fields set."]
-            #[must_use]
-            $vis_custom const fn without_fields() -> Self {
-                Self { bits: 0 }
-            }
-
             #[doc = "Returns a new `" $name "` with all the fields set."]
             #[must_use]
             $vis_custom const fn with_all_fields() -> Self {
@@ -127,7 +129,6 @@ macro_rules! bitfield· {
                     bits: 0 $(| $crate::Bitwise::<$T>::mask_range($f_start, $f_end).0)*
                 }
             }
-
             /// Returns `true` if it all the fields are set.
             #[must_use]
             $vis_custom const fn are_all_fields(self) -> bool {

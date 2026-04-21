@@ -43,6 +43,11 @@
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
+#### data::codec
+- update `bitfield!`
+  - rename method `without_fields` with `new`, and make it always visible.
+  - derive `ConstInit`.
+
 ### data::id
 - rename `define_handle!` to `handle!`
 
