@@ -164,7 +164,7 @@
   - add methods: `is_wheel`, `some_wheel`.
 - update `EventWheel`:
   - add fields: `unit`, `buttons`.
-  - add method: `new`.
+  - add many convenience methods.
 
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.

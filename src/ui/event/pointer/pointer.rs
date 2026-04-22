@@ -1,14 +1,10 @@
 // devela::ui::event::pointer
 //
-//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`], [`EventButton`],
-//! [`EventButtons`], [`EventButtonState`], [`EventWheel`] [`EventWheelUnit`].
+//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`],
+//! [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //
-// TOC
-// - definitions
-// - impls
-// - tests
 
-use crate::{ConstInit, NonZeroU8, bitfield, f32bits_niche, unwrap};
+use crate::{_impl_init, NonZeroU8, bitfield, f32bits_niche, unwrap};
 
 /* definitions */
 
@@ -27,6 +23,17 @@ pub struct EventMouse {
     pub state: EventButtonState,
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
     pub buttons: EventButtons,
+}
+_impl_init! {
+    ConstInit: Self::new(0, 0, None, EventButtonState::INIT, EventButtons::INIT) => EventMouse
+}
+#[rustfmt::skip]
+impl EventMouse {
+    /// Returns a normalized wheel-scroll event.
+    pub const fn new(x: i32, y: i32, button: Option<EventButton>,
+        state: EventButtonState, buttons: EventButtons,) -> Self {
+        Self { x, y, button, state, buttons }
+    }
 }
 
 #[doc = crate::_tags!(event interaction)]
@@ -61,11 +68,21 @@ pub struct EventPointer {
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,
 }
-
+_impl_init! { ConstInit: Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0,
+f32bits_niche::INIT, 0, 0, 0, None, EventButtonState::INIT) => EventPointer }
 #[rustfmt::skip]
 impl EventPointer {
+    /// Returns a normalized wheel-scroll event.
+    #[allow(clippy::too_many_arguments)]
+    pub const fn new(kind: EventPointerType, id: u32, x: i32, y: i32, dx: i32, dy: i32,
+        pressure: f32bits_niche, tilt_x: i8, tilt_y: i8, twist: u16,
+        button: Option<EventButton>, state: EventButtonState) -> Self {
+        Self { kind, id, x, y, dx, dy, pressure, tilt_x, tilt_y, twist, button, state }
+    }
     /// Gets the pressure.
-    pub const fn get_pressure(&self) -> f32 { self.pressure.as_float() }
+    pub const fn get_pressure(&self) -> f32 {
+        self.pressure.as_float()
+    }
     /// Sets the pressure.
     pub const fn set_pressure(&mut self, pressure: f32) {
         self.pressure = f32bits_niche::new(pressure);
@@ -84,6 +101,7 @@ pub enum EventPointerType {
     /// A pen pointer.
     Pen,
 }
+_impl_init! { ConstInit: Self::Mouse => EventPointerType }
 
 // /// Represents the phase of a pointer (useful for touch events).
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -97,6 +115,7 @@ pub enum EventPointerType {
 //     /// The input was cancelled (e.g., interrupted by system gestures).
 //     Cancel,
 // }
+// _impl_init! { ConstInit: Self::Start => EventPointerPhase }
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents mouse, touch, or pen buttons.
@@ -114,6 +133,7 @@ pub enum EventButton {
     /// Additional buttons (e.g., side buttons on advanced mice).
     Other(NonZeroU8),
 }
+_impl_init! { ConstInit: Self::Left => EventButton }
 impl EventButton {
     /// Returns some button as long as it's not 0.
     pub const fn new(number: u8) -> Option<Self> {
@@ -195,125 +215,4 @@ pub enum EventButtonState {
     /// The pointer moved without a button press/release.
     Moved,
 }
-
-#[doc = crate::_tags!(event interaction)]
-/// Represents a mouse wheel event.
-#[doc = crate::_doc_location!("ui/event")]
-///
-/// It represents signed discrete scroll steps.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct EventWheel {
-    /// The amount scrolled horizontally.
-    pub delta_x: i32,
-    /// The amount scrolled vertically.
-    pub delta_y: i32,
-    /// The unit associated to the delta fields.
-    pub unit: EventWheelUnit,
-    /// The x-coordinate of the mouse cursor during the event.
-    pub x: i32,
-    /// The y-coordinate of the mouse cursor during the event.
-    pub y: i32,
-    /// A bitmask of currently pressed buttons.
-    pub buttons: EventButtons,
-}
-impl EventWheel {
-    /// Returns a wheel event.
-    pub const fn new(
-        delta_x: i32,
-        delta_y: i32,
-        unit: EventWheelUnit,
-        x: i32,
-        y: i32,
-        buttons: EventButtons,
-    ) -> Self {
-        Self { delta_x, delta_y, unit, x, y, buttons }
-    }
-}
-
-#[doc = crate::_tags!(event interaction)]
-/// The semantic unit carried by an [`EventWheel`].
-#[doc = crate::_doc_location!("ui/event")]
-///
-/// This describes the meaning of `delta_x` and `delta_y` after backend normalization.
-///
-///
-/// # Notes
-/// - [`Step`][Self::Step] is the default and represents
-///   discrete wheel notches or equivalent semantic steps.
-/// - [`Pixel`][Self::Pixel], [`Line`][Self::Line], and [`Page`][Self::Page]
-///   preserve richer backend units when available.
-/// - Backends should translate their native wheel representation inward to one
-///   of these units.
-///
-/// # Backend notes
-/// - **X11** wheel pseudo-buttons map naturally to [`Step`][Self::Step].
-/// - **Terminal** wheel reporting also maps naturally to [`Step`][Self::Step].
-/// - **Web** may report wheel deltas in pixel, line, or page units.
-#[allow(missing_docs)]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub enum EventWheelUnit {
-    /// Discrete semantic wheel steps.
-    #[default]
-    Step,
-    /// Pixel-based wheel deltas.
-    Pixel,
-    /// Line-based wheel deltas.
-    Line,
-    /// Page-based wheel deltas.
-    Page,
-}
-impl EventWheelUnit {
-    /// Converts a web wheel-unit code into `EventWheelUnit`.
-    pub const fn from_web(code: u8) -> Self {
-        match code {
-            0 => Self::Pixel,
-            1 => Self::Line,
-            2 => Self::Page,
-            _ => Self::Step,
-        }
-    }
-    /// Converts `EventWheelUnit` into a web wheel-unit code.
-    ///
-    /// `Step` is mapped to `Line` as the best semantic fallback for the web side.
-    pub const fn to_web(self) -> u8 {
-        match self {
-            Self::Pixel => 0,
-            Self::Line => 1,
-            Self::Page => 2,
-            Self::Step => 1,
-        }
-    }
-}
-
-/* impls */
-
-#[rustfmt::skip]
-mod init {
-    use super::*;
-
-    impl ConstInit for EventMouse {
-        const INIT: Self = Self {
-            x: 0, y: 0, button: None, state: EventButtonState::INIT, buttons: EventButtons::INIT,
-        };
-    }
-    impl ConstInit for EventPointer {
-        const INIT: Self = Self {
-            kind: EventPointerType::INIT, id: 0, x: 0, y: 0, dx: 0, dy: 0,
-            pressure: f32bits_niche::INIT, tilt_x: 0, tilt_y: 0, twist: 0, button: None,
-            state: EventButtonState::INIT,
-        };
-    }
-    impl ConstInit for EventPointerType { const INIT: Self = Self::Mouse; }
-    // impl ConstInit for EventPointerPhase { const INIT: Self = Self::Start; }
-
-    impl ConstInit for EventButton { const INIT: Self = Self::Left; }
-    impl ConstInit for EventButtonState { const INIT: Self = Self::Pressed; }
-    impl ConstInit for EventWheel {
-        const INIT: Self = Self {
-            delta_x: 0, delta_y: 0, unit: EventWheelUnit::INIT,
-            x: 0, y: 0, buttons: EventButtons::INIT,
-        };
-    }
-    impl ConstInit for EventWheelUnit { const INIT: Self = Self::Step; }
-}
+_impl_init! { ConstInit: Self::Pressed => EventButtonState }
