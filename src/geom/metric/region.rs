@@ -165,19 +165,16 @@ impl<P: Copy, E: Copy> Region3<P, E> {
 /* impls: mapping */
 
 impl<P, E, const D: usize> Region<P, E, D> {
-    #[must_use]
     /// Returns a new region by applying `f` to each position component.
     pub fn map_pos<P2>(self, f: impl FnMut(P) -> P2) -> Region<P2, E, D> {
         Region::new(self.pos.map(f), self.ext)
     }
 
-    #[must_use]
     /// Returns a new region by applying `f` to each extent component.
     pub fn map_ext<E2>(self, f: impl FnMut(E) -> E2) -> Region<P, E2, D> {
         Region::new(self.pos, self.ext.map(f))
     }
 
-    #[must_use]
     /// Returns a new region by applying `fpos` to the position and `fext` to the extent.
     pub fn map<P2, E2>(
         self,
@@ -215,7 +212,6 @@ impl<P, E, const D: usize> Region<P, E, D> {
         Ok(Region::new(self.pos.try_map(fpos)?, self.ext.try_map(fext)?))
     }
 
-    #[must_use]
     /// Converts the position and extent using `From`.
     pub fn map_into<P2, E2>(self) -> Region<P2, E2, D>
     where

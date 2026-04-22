@@ -56,7 +56,7 @@ impl<'a, T, const N: usize> MemReplicaSlice<'a, T, N> {
         let elem_size = size_of::<T>();
         is! { elem_size == 0, return Err(E::ZeroSizedType) }
         is! { channel_offset_bytes < elem_size, return Err(E::OffsetTooSmall) }
-        is! { channel_offset_bytes % elem_size != 0, return Err(E::MisalignedOffset) }
+        is! { !channel_offset_bytes.is_multiple_of(elem_size), return Err(E::MisalignedOffset) }
 
         let elems_per_chunk = channel_offset_bytes / elem_size;
         let stride_elems = num_channels * elems_per_chunk;

@@ -122,6 +122,7 @@ impl Digits<usize> {
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
         Digits(self.0 as u16).digit_at_power16(divisor as u16)
     }
+    #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
     #[cfg(target_pointer_width = "32")]
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
@@ -145,6 +146,11 @@ impl Digits<usize> {
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u16).digits10()
     }
+    /// Converts a `usize` into a byte array of `4` hexadecimal digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[cfg(target_pointer_width = "16")]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
@@ -161,6 +167,11 @@ impl Digits<usize> {
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u32).digits10()
     }
+    /// Converts a `usize` into a byte array of `8` hexadecimal digits with leading zeros.
+    ///
+    /// The actual array length depends on the target platform's pointer size.
+    ///
+    /// You can trim the leading zeros with `Slice::`[`trim_leading()`][crate::Slice::trim_leading].
     #[must_use]
     #[cfg(target_pointer_width = "32")]
     pub const fn digits16(self) -> [u8; Self::MAX_DIGITS_16 as usize] {
@@ -177,7 +188,7 @@ impl Digits<usize> {
     pub const fn digits10(self) -> [u8; Self::MAX_DIGITS_10 as usize] {
         Digits(self.0 as u64).digits10()
     }
-    /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
+    /// Converts a `usize` into a byte array of `16` hexadecimal digits with leading zeros.
     ///
     /// The actual array length depends on the target platform's pointer size.
     ///

@@ -60,12 +60,11 @@ impl MemHedgeCtrl {
     /// Returns the current lifecycle state.
     pub fn state(&self) -> MemHedgeState {
         let raw = self.state.load(AtomicOrdering::Acquire);
-        match MemHedgeState::from_u8(raw) {
-            Some(state) => state,
-            None => {
-                debug_assert!(false, "invalid MemHedgeState value: {raw}");
-                MemHedgeState::Idle
-            }
+        if let Some(state) = MemHedgeState::from_u8(raw) {
+            state
+        } else {
+            debug_assert!(false, "invalid MemHedgeState value: {raw}");
+            MemHedgeState::Idle
         }
     }
 

@@ -344,7 +344,6 @@ macro_rules! _geom_dim_impl_common {
             ///
             /// It is useful for reshaping the inner scalar type without introducing
             /// blanket `From`/`TryFrom` impl conflicts on the wrapper itself.
-            #[must_use]
             pub fn map<U>(self, f: impl FnMut(T) -> U) -> $Name<U, D> {
                 $Name::new(self.dim.map(f))
             }
@@ -370,7 +369,6 @@ macro_rules! _geom_dim_impl_common {
             #[doc = "Converts this " $Name:lower " to another inner type `U` when `U` implements `From<T>`."]
             ///
             /// This is a convenience wrapper over [`map`](Self::map).
-            #[must_use]
             pub fn map_into<U>(self) -> $Name<U, D> where U: From<T> {
                 self.map(U::from)
             }
