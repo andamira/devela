@@ -87,6 +87,8 @@
 - new module `phys::subs`.
 
 #### phys::time
+- new type: `Timed`.
+- new alias: `MaybeTimed`.
 - update `NoTime`:
   - implement `TimePoint`, `TimeSource` and `TimeSpan`.
 

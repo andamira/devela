@@ -22,6 +22,7 @@ mod fmt; // Timecode
 mod no; // NoTime
 mod scale; // TimeScale
 mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
+mod timed; // Timed
 
 mod error; // Timeout
 #[cfg(feature = "std")]
@@ -48,6 +49,7 @@ crate::structural_mods! { // _mods, _pub_mods
             no::*,
             scale::*,
             split::*,
+            timed::*,
         };
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
