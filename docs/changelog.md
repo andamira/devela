@@ -133,6 +133,11 @@
 ##### sys::os::browser::web
 - bring here impls from `ui::event`.
 - feature-gate with `event` the event-related impls.
+- rename all methods `[from|to]_js*` to `[from|to]_web*`.
+- replace `ui::event::KeyState` methods: `[from|to]_js` with `WebEventKind` methods: `[to|from]_key_state`.
+- replace `ui::event::EventMouse` methods: `[from|to]_js` with `WebEventMouse` methods: `to_kind_timed`, `from_event_mouse_timed`.
+- replace `impl From<WebEventMouse> for EventMouse` with one `for EventKindTimed`.
+- replace `impl From<EventMouse> for WebEventMouse` with one `From<Timed<EventMouse, Option<EventTimestamp>>>`.
 
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
@@ -142,6 +147,11 @@
 
 ### ui::event
 - new types: `EventButtons`, `EventWheelUnit`.
+- new alias `EventKindTimed`.
+- update `Event`:
+  - new method: `from_kind_timed_with`.
+  - impl `From<EventKindTimed>.
+- remove the `timestamp` field from: `EventKey`, `EventKeyFfi`, `EventMouse`, `EventPointer`, `EventWheel`.
 - update `EventMouse`:
   - change the `buttons` field to use `EventButtons`.
 - update `EventButtonState`: make `Pressed` the default.
@@ -150,7 +160,6 @@
   - add methods: `is_wheel`, `some_wheel`.
 - update `EventWheel`:
   - add fields: `unit`, `buttons`.
-  - remove field: `timestamp`.
   - add method: `new`.
 
 ## yard

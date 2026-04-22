@@ -4,10 +4,10 @@
 //
 
 crate::items! {
-    use crate::{KeyFfi, KeyPad, KeyMedia, KeyMod, };
-    use crate::{WebKeyLocation};
+    use crate::{KeyFfi, KeyMedia, KeyMod, KeyPad};
+    use crate::WebKeyLocation;
     use crate::{Char, Slice, is};
-    crate::_use! {basic::from_utf8}
+    crate::_use! { basic::from_utf8 }
 }
 
 #[rustfmt::skip]
@@ -55,7 +55,7 @@ impl KeyFfi {
     //
     // Returns `None` for unmappable codes to distinguish invalid JS input
     // from the internal `Key::Unknown` fallback.
-    pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
+    pub const fn from_web_code(code: &str, location: WebKeyLocation) -> Option<Self> {
         use KeyFfi as K;
         match code.as_bytes() {
             b"Backspace" => Some(K::Backspace),
@@ -102,13 +102,13 @@ impl KeyFfi {
             b"Digit8" => Some(K::Digit8), b"Digit9" => Some(K::Digit9),
             _ => {
                 // Try converting from inner enums
-                if let Some(pad) = KeyPad::from_js_code(code) {
+                if let Some(pad) = KeyPad::from_web_code(code) {
                     return Some(K::Pad(pad));
                 }
-                if let Some(media) = KeyMedia::from_js_code(code) {
+                if let Some(media) = KeyMedia::from_web_code(code) {
                     return Some(K::Media(media));
                 }
-                if let Some(mod_key) = KeyMod::from_js_code(code, location) {
+                if let Some(mod_key) = KeyMod::from_web_code(code, location) {
                     return Some(K::Mod(mod_key));
                 }
                 let cbytes = code.as_bytes();
@@ -128,7 +128,7 @@ impl KeyFfi {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
+    pub const fn to_web_code(self) -> (&'static str, WebKeyLocation) {
         use WebKeyLocation::{self as L, Standard as Std};
         use KeyFfi as K;
         match self {
@@ -174,9 +174,9 @@ impl KeyFfi {
             K::Digit4 => ("Digit4", Std), K::Digit5 => ("Digit5", Std),
             K::Digit6 => ("Digit6", Std), K::Digit7 => ("Digit7", Std),
             K::Digit8 => ("Digit8", Std), K::Digit9 => ("Digit9", Std),
-            K::Pad(pad) => (pad.to_js_code(), L::NumPad),
-            K::Media(media) => (media.to_js_code(), Std),
-            K::Mod(mod_key) => mod_key.to_js_code(),
+            K::Pad(pad) => (pad.to_web_code(), L::NumPad),
+            K::Media(media) => (media.to_web_code(), Std),
+            K::Mod(mod_key) => mod_key.to_web_code(),
             //
             K::Fn(num) => match num {
                 1..=48 => (F_KEYS[(num - 1) as usize], Std),
@@ -201,7 +201,7 @@ impl KeyFfi {
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
     // Returns `None` for unmappable codes to distinguish invalid JS input
     // from the internal `Key::Unknown` fallback.
-    pub const fn from_js_key(key: &str, location: WebKeyLocation) -> Option<Self> {
+    pub const fn from_web_key(key: &str, location: WebKeyLocation) -> Option<Self> {
         use KeyFfi as K;
         match key.as_bytes() {
             b"Backspace" => Some(K::Backspace),
@@ -245,9 +245,9 @@ impl KeyFfi {
             b"9" => Some(K::Digit9),
             _ => {
                 // Try converting from inner enums
-                if let Some(p) = KeyPad::from_js_key(key) { return Some(K::Pad(p)); }
-                if let Some(m) = KeyMedia::from_js_key(key) { return Some(K::Media(m)); }
-                if let Some(m) = KeyMod::from_js_key(key, location) { return Some(K::Mod(m)); }
+                if let Some(p) = KeyPad::from_web_key(key) { return Some(K::Pad(p)); }
+                if let Some(m) = KeyMedia::from_web_key(key) { return Some(K::Media(m)); }
+                if let Some(m) = KeyMod::from_web_key(key, location) { return Some(K::Mod(m)); }
                 let kbytes = key.as_bytes();
                 if let Some(first) = kbytes.first() {
                     // Check if the key starts with "F" (Function keys)
@@ -268,7 +268,7 @@ impl KeyFfi {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_key(self) -> (&'static str, WebKeyLocation) {
+    pub const fn to_web_key(self) -> (&'static str, WebKeyLocation) {
         use WebKeyLocation::{self as L, Standard as Std};
         use KeyFfi as K;
         match self {
@@ -312,9 +312,9 @@ impl KeyFfi {
             K::Digit6 => ("6", Std), K::Digit7 => ("7", Std), K::Digit8 => ("8", Std),
             K::Digit9 => ("9", Std),
             //
-            K::Pad(pad) => (pad.to_js_key(), L::NumPad),
-            K::Media(media) => (media.to_js_key(), Std),
-            K::Mod(mod_key) => mod_key.to_js_key(),
+            K::Pad(pad) => (pad.to_web_key(), L::NumPad),
+            K::Media(media) => (media.to_web_key(), Std),
+            K::Mod(mod_key) => mod_key.to_web_key(),
             //
             K::Fn(num) => match num {
                 1..=48 => (F_KEYS[(num - 1) as usize], Std),

@@ -6,7 +6,7 @@
 use crate::KeyMod;
 
 #[doc = crate::_tags!(interaction web)]
-/// Which part of the keyboard the key event originates from
+/// Which part of the keyboard the key event originates from.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
@@ -44,7 +44,7 @@ impl KeyMod {
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn from_js_code(code: &str, location: WebKeyLocation) -> Option<Self> {
+    pub const fn from_web_code(code: &str, location: WebKeyLocation) -> Option<Self> {
         use {KeyMod as K, WebKeyLocation as L};
         match (code.as_bytes(), location) {
             (b"ShiftLeft", L::Left) => Some(K::LeftShift),
@@ -65,7 +65,7 @@ impl KeyMod {
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn to_js_code(self) -> (&'static str, WebKeyLocation) {
+    pub const fn to_web_code(self) -> (&'static str, WebKeyLocation) {
         use {KeyMod as K, WebKeyLocation as L};
         match self {
             K::LeftShift => ("ShiftLeft", L::Left),
@@ -85,7 +85,7 @@ impl KeyMod {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn from_js_key(key: &str, location: WebKeyLocation) -> Option<Self> {
+    pub const fn from_web_key(key: &str, location: WebKeyLocation) -> Option<Self> {
         use {KeyMod as K, WebKeyLocation as L};
         match (key.as_bytes(), location) {
             (b"Shift", L::Left) => Some(K::LeftShift),
@@ -105,7 +105,7 @@ impl KeyMod {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     /// [location]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/location
-    pub const fn to_js_key(self) -> (&'static str, WebKeyLocation) {
+    pub const fn to_web_key(self) -> (&'static str, WebKeyLocation) {
         use {KeyMod as K, WebKeyLocation as L};
         match self {
             K::LeftShift => ("Shift", L::Left),

@@ -10,7 +10,7 @@ impl KeyMedia {
     /// Atempts to construct a `KeyMedia` from a JavaScript `KeyboardEvent` physical [code].
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-    pub const fn from_js_code(code: &str) -> Option<Self> {
+    pub const fn from_web_code(code: &str) -> Option<Self> {
         use KeyMedia as K;
         match code.as_bytes() {
             b"MediaPlay" => Some(K::Play),
@@ -49,7 +49,7 @@ impl KeyMedia {
     /// Returns a JavaScript `KeyboardEvent` physical [code].
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-    pub const fn to_js_code(self) -> &'static str {
+    pub const fn to_web_code(self) -> &'static str {
         use KeyMedia as K;
         match self {
             K::Play => "MediaPlay",
@@ -88,7 +88,7 @@ impl KeyMedia {
     /// Atempts to construct a `KeyMedia` from a JavaScript `KeyboardEvent` semantic [key].
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-    pub const fn from_js_key(key: &str) -> Option<Self> {
+    pub const fn from_web_key(key: &str) -> Option<Self> {
         use KeyMedia as K;
         match key.as_bytes() {
             b"Play" => Some(K::Play),
@@ -127,7 +127,7 @@ impl KeyMedia {
     /// Returns a JavaScript `KeyboardEvent` semantic [key].
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-    pub const fn to_js_key(self) -> &'static str {
+    pub const fn to_web_key(self) -> &'static str {
         use KeyMedia as K;
         match self {
             K::Play => "Play",

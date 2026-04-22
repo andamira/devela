@@ -8,7 +8,7 @@
 // - impls
 // - tests
 
-use crate::{ConstInit, EventTimestamp, NonZeroU8, bitfield, f32bits_niche, unwrap};
+use crate::{ConstInit, NonZeroU8, bitfield, f32bits_niche, unwrap};
 
 /* definitions */
 
@@ -17,8 +17,6 @@ use crate::{ConstInit, EventTimestamp, NonZeroU8, bitfield, f32bits_niche, unwra
 #[doc = crate::_doc_location!("ui/event")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
-    /// The time stamp of when the event occurred.
-    pub timestamp: Option<EventTimestamp>,
     /// The x-coordinate of the mouse cursor.
     pub x: i32,
     /// The y-coordinate of the mouse cursor.
@@ -36,8 +34,6 @@ pub struct EventMouse {
 #[doc = crate::_doc_location!("ui/event")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
-    /// The time stamp of the event.
-    pub timestamp: Option<EventTimestamp>,
     /// The type of pointer (mouse, touch, pen).
     pub kind: EventPointerType,
     /// Unique ID for touch and pen inputs (e.g., multi-touch gestures).
@@ -257,15 +253,14 @@ mod init {
 
     impl ConstInit for EventMouse {
         const INIT: Self = Self {
-            x: 0, y: 0, button: None, state: EventButtonState::INIT,
-            buttons: EventButtons::INIT, timestamp: None,
+            x: 0, y: 0, button: None, state: EventButtonState::INIT, buttons: EventButtons::INIT,
         };
     }
     impl ConstInit for EventPointer {
         const INIT: Self = Self {
             kind: EventPointerType::INIT, id: 0, x: 0, y: 0, dx: 0, dy: 0,
             pressure: f32bits_niche::INIT, tilt_x: 0, tilt_y: 0, twist: 0, button: None,
-            state: EventButtonState::INIT, timestamp: None,
+            state: EventButtonState::INIT,
         };
     }
     impl ConstInit for EventPointerType { const INIT: Self = Self::Mouse; }

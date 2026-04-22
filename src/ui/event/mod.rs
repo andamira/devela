@@ -9,7 +9,7 @@
 mod event; // Event
 mod id; // DeviceId, WindowId
 mod key; // EventKey[Ffi], Key[Ffi|Media|Mod|Mods|Pad|State]
-mod kind; // EventKind, EventTag
+mod kind; // EventKind, EventKindTimed, EventTag
 mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
 mod queue; // EventQueue
 mod target; // EventTarget

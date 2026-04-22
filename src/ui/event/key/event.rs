@@ -3,7 +3,7 @@
 //! Defines [`EventKey`], [`EventKeyFfi`].
 //
 
-use crate::{ConstInit, EventTimestamp, Key, KeyMods, KeyState};
+use crate::{ConstInit, Key, KeyMods, KeyState};
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents a keyboard event.
@@ -12,9 +12,6 @@ use crate::{ConstInit, EventTimestamp, Key, KeyMods, KeyState};
 #[doc = "See also [`EventKeyFfi`]."]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct EventKey {
-    /// The time stamp of when the event occurred.
-    pub timestamp: Option<EventTimestamp>,
-
     /// The key representing the human-readable code.
     ///
     /// This corresponds to X11's keysym.
@@ -37,7 +34,6 @@ impl ConstInit for EventKey {
         physical: Key::INIT,
         state: KeyState::INIT,
         mods: KeyMods::INIT,
-        timestamp: None,
     };
 }
 
@@ -48,7 +44,7 @@ pub use ffi::*;
 #[cfg_attr(nightly_doc, doc(cfg(ffi··)))]
 mod ffi {
     use super::*;
-    use crate::{ConstInit, KeyFfi, f32bits, is};
+    use crate::KeyFfi;
 
     #[doc = crate::_tags!(event interaction ffi)]
     /// An FFI-safe version of [`EventKey`].
@@ -57,10 +53,6 @@ mod ffi {
     #[allow(missing_docs)]
     #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
     pub struct EventKeyFfi {
-        #[doc = crate::_tags!(ffi)]
-        /// The time stamp of when the event occurred.
-        pub timestamp: f32bits,
-
         #[doc = crate::_tags!(ffi)]
         /// The key representing the human-readable code.
         pub semantic: KeyFfi,
@@ -84,7 +76,6 @@ mod ffi {
                 physical: self.physical.to_ffi(),
                 state: self.state,
                 mods: self.mods,
-                timestamp: is![let Some(t) = self.timestamp, t.get_non_niche(), f32bits::INIT],
             }
         }
         /// Converts `EventKeyFfi` to `EventKey`.
@@ -94,7 +85,6 @@ mod ffi {
                 physical: Key::from_ffi(from.physical),
                 state: from.state,
                 mods: from.mods,
-                timestamp: Some(EventTimestamp::from_non_niche(from.timestamp)),
             }
         }
     }

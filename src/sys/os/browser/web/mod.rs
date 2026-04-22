@@ -11,14 +11,13 @@
 mod document; // WebDocument
 mod element; // WebElement
 #[cfg(feature = "event")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "event")))]
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
+// mod url; // WebUrl, WebUrlSearchParams // WIP
 mod web_api; // Web
 mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
-
-// WIPZONE
-// mod url; // WebUrl, WebUrlSearchParams
 
 crate::structural_mods! { // _mods
     _mods {

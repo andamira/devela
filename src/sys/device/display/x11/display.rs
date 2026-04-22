@@ -280,9 +280,8 @@ impl XDisplay {
                 let real = self.classify_release(keycode, time_ms);
                 is! { !real, return Event::default() } // skip fake release
             }
-            if let Some(key) = xev.to_event_key(&self.xkb, &mut self.repeat_filter) {
-                return Event::from_window(ev.event, Kind::Key(key), xev.timestamp());
-            }
+            let key = xev.to_event_key(&self.xkb, &mut self.repeat_filter);
+            return Event::from_window(ev.event, Kind::Key(key), xev.timestamp());
         } else if let Some(ev) = xev.as_raw_button() {
             let x = ev.event_x.into();
             let y = ev.event_y.into();
@@ -303,7 +302,7 @@ impl XDisplay {
                     let button = XEvent::map_button(ev.detail);
                     let state = xev.map_button_state();
                     return Event::from_window(ev.event, Kind::Mouse(
-                        EventMouse { x, y, button: Some(button), state, buttons, timestamp }),
+                        EventMouse { x, y, button: Some(button), state, buttons }),
                         timestamp,
                     );
                 }
@@ -319,7 +318,6 @@ impl XDisplay {
                     button,
                     state: EventButtonState::Moved,
                     buttons,
-                    timestamp: xev.timestamp(),
                 }),
                 xev.timestamp(),
             );

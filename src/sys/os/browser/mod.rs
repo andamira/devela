@@ -1,7 +1,7 @@
 // devela::sys::os::browser
 //
 #![doc = crate::_DOC_SYS_OS_BROWSER!()] // public
-#![doc = crate::_doc!(modules: crate::sys::os; browser)]
+#![doc = crate::_doc!(modules: crate::sys::os; browser: web)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!

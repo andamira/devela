@@ -12,6 +12,7 @@ mod pointer; // WebEventMouse, WebEventPointer
 
 crate::structural_mods! { // _mods
     _mods {
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "event")))]
         pub use super::{
             key::*,
             kind::*,

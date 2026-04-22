@@ -5,8 +5,8 @@
 
 use crate::{ConstInit, NonZeroU64};
 use crate::{
-    DeviceId, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTarget, EventTimestamp,
-    EventWindow, WindowId,
+    DeviceId, EventKey, EventKind, EventKindTimed, EventMouse, EventPointer, EventTag, EventTarget,
+    EventTimestamp, EventWindow, WindowId,
 };
 
 #[doc = crate::_tags!(event)]
@@ -106,6 +106,14 @@ impl Event {
     pub fn from_device(id: impl Into<DeviceId>,
         kind: EventKind, emitted: Option<EventTimestamp>) -> Event {
         Self { kind, target: EventTarget::Device(id.into()), emitted, processed: None, count: None }
+    }
+
+    /// Creates a new event with the given `target and timed `kind`.
+    ///
+    /// `processed` and `count` are left unset and should be filled by the engine.
+    #[inline(always)]
+    pub fn from_kind_timed_with(target: EventTarget, kind: EventKindTimed) -> Event {
+        Self { kind: kind.value, target, emitted: kind.time, processed: None, count: None }
     }
 
     /* setters */
@@ -224,6 +232,17 @@ impl From<EventKind> for Event {
             kind,
             target: EventTarget::Global,
             emitted: None,
+            processed: None,
+            count: None,
+        }
+    }
+}
+impl From<EventKindTimed> for Event {
+    fn from(kind: EventKindTimed) -> Event {
+        Self {
+            kind: kind.value,
+            target: EventTarget::Global,
+            emitted: kind.time,
             processed: None,
             count: None,
         }

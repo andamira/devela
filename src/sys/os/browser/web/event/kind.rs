@@ -6,7 +6,7 @@
 use crate::{KeyState, is};
 
 #[doc = crate::_tags!(event web uid)]
-/// # A web API Event kind.
+/// A web API Event kind.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
@@ -86,12 +86,12 @@ impl WebEventKind {
 }
 
 #[rustfmt::skip]
-impl KeyState {
+impl WebEventKind {
     /// Converts a `WebEventKind` to `KeyState`, if applicable.
     // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat
     #[must_use]
-    pub const fn from_js(from: WebEventKind, repeat: bool) -> Option<KeyState> {
-        match from {
+    pub const fn to_key_state(self, repeat: bool) -> Option<KeyState> {
+        match self {
             WebEventKind::KeyDown => Some(is![repeat, KeyState::Repeat, KeyState::Press]),
             WebEventKind::KeyUp => Some(KeyState::Release),
             _ => None,
@@ -99,8 +99,8 @@ impl KeyState {
     }
     /// Converts a `KeyState` to `WebEventKind`.
     #[must_use]
-    pub const fn to_js(self) -> WebEventKind {
-        match self {
+    pub const fn from_key_state(from: KeyState) -> WebEventKind {
+        match from {
             KeyState::Press => WebEventKind::KeyDown,
             KeyState::Release => WebEventKind::KeyUp,
             KeyState::Repeat => WebEventKind::KeyDown,

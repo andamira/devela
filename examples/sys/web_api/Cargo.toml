@@ -17,7 +17,7 @@ path = "main.rs"
 # git = "https://github.com/andamira/devela"
 path = "../../.."
 features = [
-	"js", "time", "unsafe_ffi",
+	"js", "time", "event", "unsafe_ffi",
 	"alloc", "unsafe_layout",
 ]
 

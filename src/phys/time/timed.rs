@@ -16,7 +16,7 @@ use crate::ConstInit;
 /// quantity, depending on the domain.
 ///
 /// # Notes
-/// - `Timed` itself does not require `T` to implement [`TimePoint`].
+/// - `Timed` itself does not require `T` to implement [`TimePoint`][crate::TimePoint].
 /// - It is intentionally generic so it can carry backend timestamps, sampled values,
 ///   profiling records, or intermediate normalized event data.
 ///

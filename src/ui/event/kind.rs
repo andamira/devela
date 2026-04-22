@@ -1,9 +1,10 @@
 // devela::ui::event::kind
 //
-//! Defines [`EventTag`] and [`EventKind`].
+//! Defines [`EventTag`], [`EventKindTimed`], [`EventKind`].
 //
 
-use crate::{ConstInit, EventKey, EventMouse, EventPointer, EventWheel, EventWindow};
+use crate::{ConstInit, MaybeTimed};
+use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
 
 #[doc = crate::_tags!(event uid)]
 /// A lightweight, data-less identifier for `EventKind`.
@@ -31,6 +32,11 @@ pub enum EventTag {
     /// A window-related event (focus, resize, etc.).
     Window,
 }
+
+#[doc = crate::_tags!(event time maybe)]
+/// A convenience helper for optionally timed event kinds.
+#[doc = crate::_doc_location!("ui/event")]
+pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 
 #[doc = crate::_tags!(event)]
 /// An enumeration of concrete event variants.

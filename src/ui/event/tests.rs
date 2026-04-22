@@ -7,16 +7,16 @@ fn sizes_of() {
     /* event, kind, window */
 
     #[cfg(not(feature = "alloc"))] {
-    assert_eq![64, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
-    assert_eq![36, size_of::<EventKind>()];         // 288 bits
+    assert_eq![56, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
+    assert_eq![32, size_of::<EventKind>()];         // 256 bits
     assert_eq![16, size_of::<EventWindow>()];       // 128 bits
     assert![size_of::<Event>() == size_of::<Option<Event>>()];
     assert![size_of::<EventKind>() == size_of::<Option<EventKind>>()];
     assert![size_of::<EventWindow>() == size_of::<Option<EventWindow>>()];
     }
     #[cfg(feature = "alloc")] {
-    assert_eq![64, size_of::<Event>()];             // 512 bits (+proc+count NonZeroU64)
-    assert_eq![40, size_of::<EventKind>()];         // 320 bits
+    assert_eq![56, size_of::<Event>()];             // 448 bits (+proc+count NonZeroU64)
+    assert_eq![32, size_of::<EventKind>()];         // 256 bits
     assert_eq![24, size_of::<EventWindow>()];       // 192 bits
     assert![size_of::<Event>() == size_of::<Option<Event>>()];
     assert![size_of::<EventKind>() == size_of::<Option<EventKind>>()];
@@ -26,10 +26,10 @@ fn sizes_of() {
 
     /* key */
 
-    assert_eq![24, size_of::<EventKey>()];          // 192 bits
+    assert_eq![20, size_of::<EventKey>()];          // 160 bits
     assert![size_of::<EventKey>() == size_of::<Option<EventKey>>()];
     #[cfg(ffi··)] {
-    assert_eq![24, size_of::<EventKeyFfi>()];       // 192 bits
+    assert_eq![20, size_of::<EventKeyFfi>()];       // 160 bits
     assert![size_of::<EventKeyFfi>() == size_of::<Option<EventKeyFfi>>()];
     }
 
@@ -55,11 +55,11 @@ fn sizes_of() {
 
     /* pointer */
 
-    assert_eq![16, size_of::<EventMouse>()];        // 128
+    assert_eq![12, size_of::<EventMouse>()];        // 96
     assert_eq![02, size_of::<EventButton>()];       // 16
     assert_eq![01, size_of::<EventButtons>()];      // 8
     assert_eq![01, size_of::<EventButtonState>()];  // 8
-    assert_eq![36, size_of::<EventPointer>()];      // 288
+    assert_eq![32, size_of::<EventPointer>()];      // 256
     // assert_eq![40, size_of::<EventPointer>()];      // 320 FUTURE: with phase
     assert_eq![01, size_of::<EventPointerType>()];  // 8
     // assert_eq![01, size_of::<EventPointerPhase>()]; // 8 // FUTURE

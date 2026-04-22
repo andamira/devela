@@ -11,7 +11,7 @@ impl KeyPad {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn from_js_code(code: &str) -> Option<Self> {
+    pub const fn from_web_code(code: &str) -> Option<Self> {
         use KeyPad as K;
         match code.as_bytes() {
             b"Numpad0" => Some(K::Num0), b"Numpad1" => Some(K::Num1), b"Numpad2" => Some(K::Num2),
@@ -29,7 +29,7 @@ impl KeyPad {
     ///
     /// [code]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-    pub const fn to_js_code(self) -> &'static str {
+    pub const fn to_web_code(self) -> &'static str {
         use KeyPad as K;
         match self {
             K::Num0 => "Numpad0", K::Num1 => "Numpad1", K::Num2 => "Numpad2",
@@ -46,7 +46,7 @@ impl KeyPad {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
-    pub const fn from_js_key(key: &str) -> Option<Self> {
+    pub const fn from_web_key(key: &str) -> Option<Self> {
         use KeyPad as K;
         match key.as_bytes() {
             b"0" => Some(K::Num0), b"1" => Some(K::Num1), b"2" => Some(K::Num2),
@@ -62,7 +62,7 @@ impl KeyPad {
     ///
     /// [key]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
     // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
-    pub const fn to_js_key(self) -> &'static str {
+    pub const fn to_web_key(self) -> &'static str {
         use KeyPad as K;
         match self {
             K::Num0 => "0", K::Num1 => "1", K::Num2 => "2", K::Num3 => "3", K::Num4 => "4",

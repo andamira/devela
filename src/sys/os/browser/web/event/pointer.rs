@@ -92,52 +92,54 @@ impl WebEventPointer {
 
 #[rustfmt::skip]
 mod impls {
-    use crate::{is, NonZeroU8};
-    use crate::{js_number, WebEventKind, WebEventMouse, JsInstant};
-    use crate::ui::{EventButton, EventButtons, EventButtonState, EventMouse, EventTimestamp};
+    use crate::{
+        EventButton, EventButtons, EventButtonState, EventKind, EventKindTimed, EventMouse,
+        EventTimestamp, JsInstant, NonZeroU8, Timed, WebEventKind, WebEventMouse, is, js_number,
+    };
 
     /* mouse */
 
-    impl EventMouse {
-        /// Converts `WebEventMouse` to `EventMouse`.
-        pub const fn from_js(js: WebEventMouse) -> EventMouse {
-            EventMouse {
-                x: js.x as i32,
-                y: js.y as i32,
-                button: EventButton::from_js(js.button),
-                state: EventButtonState::from_js(js.etype),
-                buttons: EventButtons::with_bits(js.buttons),
-                timestamp: Some(EventTimestamp::from_js(js.timestamp)),
-            }
+    impl WebEventMouse {
+        /// Converts `WebEventMouse` to `EventKindTimed`.
+        pub const fn to_kind_timed(self) -> EventKindTimed {
+            let kind = EventKind::Mouse(EventMouse {
+                x: self.x as i32,
+                y: self.y as i32,
+                button: EventButton::from_web(self.button),
+                state: EventButtonState::from_web(self.etype),
+                buttons: EventButtons::with_bits(self.buttons),
+            });
+            let timestamp = Some(EventTimestamp::from_js(self.timestamp));
+            EventKindTimed::new(kind, timestamp)
         }
-    }
-
-    impl EventMouse {
         /// Converts `EventMouse` to `WebEventMouse`.
-        pub const fn to_js(self) -> WebEventMouse {
+        pub const fn from_event_mouse_timed(from: Timed<EventMouse, Option<EventTimestamp>>)
+            -> WebEventMouse {
+            let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
             WebEventMouse {
-                x: self.x as js_number,
-                y: self.y as js_number,
-                button: is![let Some(b) = self.button, b.to_js(), 255], // IMPROVE to_js
-                buttons: self.buttons.bits(), // already a bitmask, directly compatible
-                etype: self.state.to_js_as_mouse(),
-                timestamp: is![let Some(t) = self.timestamp, t.to_js(), JsInstant { ms: 0.0 }],
+                x: from.value.x as js_number,
+                y: from.value.y as js_number,
+                button: is![let Some(b) = from.value.button, b.to_web(), 255], // IMPROVE to_web
+                buttons: from.value.buttons.bits(), // already a bitmask, directly compatible
+                etype: from.value.state.to_web_as_mouse(),
+                timestamp,
             }
         }
     }
-
-    impl From<WebEventMouse> for EventMouse {
-        fn from(from: WebEventMouse) -> Self { Self::from_js(from) }
+    impl From<WebEventMouse> for EventKindTimed {
+        fn from(from: WebEventMouse) -> Self { from.to_kind_timed() }
     }
-    impl From<EventMouse> for WebEventMouse {
-        fn from(from: EventMouse) -> Self { from.to_js() }
+    impl From<Timed<EventMouse, Option<EventTimestamp>>> for WebEventMouse {
+        fn from(from: Timed<EventMouse, Option<EventTimestamp>>) -> Self {
+            Self::from_event_mouse_timed(from)
+        }
     }
 
     /* button */
 
     impl EventButton {
-        /// Converts a JavaScript button index in [`WebEventMouse`] into `EventButton`.
-        pub const fn from_js(js_button: u8) -> Option<Self> {
+        /// Converts a web API button index in [`WebEventMouse`] into `EventButton`.
+        pub const fn from_web(js_button: u8) -> Option<Self> {
             match js_button {
                 0 => Some(EventButton::Left),
                 1 => Some(EventButton::Middle),
@@ -147,7 +149,7 @@ mod impls {
             }
         }
         /// Converts an EventButton to a JavaScript button index in [`WebEventMouse`].
-        pub const fn to_js(self) -> u8 {
+        pub const fn to_web(self) -> u8 {
             match self {
                 EventButton::Left => 0,
                 EventButton::Right => 1,
@@ -160,7 +162,7 @@ mod impls {
     // IMPROVE: MAYBE impl try_ methods
     impl EventButtonState {
         /// Converts a `WebEventKind` into `EventButtonState`.
-        pub const fn from_js(js_event: WebEventKind) -> Self {
+        pub const fn from_web(js_event: WebEventKind) -> Self {
             use {WebEventKind as J, EventButtonState as E};
             match js_event {
                 J::Click | J::MouseDown | J::PointerDown => E::Pressed,
@@ -169,7 +171,7 @@ mod impls {
             }
         }
         /// Converts a `EventButtonState` into a `WebEventKind`.
-        pub const fn to_js_as_mouse(self) -> WebEventKind {
+        pub const fn to_web_as_mouse(self) -> WebEventKind {
             use {WebEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::MouseDown,
@@ -178,7 +180,7 @@ mod impls {
             }
         }
         /// Converts a `EventButtonState` into a `WebEventKind`.
-        pub const fn to_js_as_pointer(self) -> WebEventKind {
+        pub const fn to_web_as_pointer(self) -> WebEventKind {
             use {WebEventKind as J, EventButtonState as E};
             match self {
                 E::Pressed => J::PointerDown,

@@ -28,6 +28,7 @@ echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""
 echo "$ $BUILD_CMD"
 #
 export RUSTFLAGS=$RUSTFLAGS
+# IMPROVE: show compiler errors
 WASM_PATH=$(${BUILD_CMD} --message-format=json \
 	| jq -r 'select(.filenames != null) | .filenames[] | select(endswith(".wasm"))' )
 

@@ -184,11 +184,9 @@ impl XEvent {
     //
 
     /// Converts this X11 key event into a generic `EventKey` using XKB.
-    pub(crate) fn to_event_key(&self, xkb: &XkbState, repeat: &mut KeyRepeatFilter)
-        -> Option<EventKey> {
-
+    pub(crate) fn to_event_key(&self, xkb: &XkbState, repeat: &mut KeyRepeatFilter) -> EventKey {
         let ev = self.raw as *const raw::xcb_key_press_event_t;
-        let (keycode, state_raw, time_ms) = unsafe { ((*ev).detail, (*ev).state, (*ev).time) };
+        let (keycode, state_raw) = unsafe { ((*ev).detail, (*ev).state) };
         let is_press = self.is_key_press();
 
         // filter before touching XKB
@@ -206,13 +204,7 @@ impl XEvent {
         // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
         // let info = xkb.translate_key(keycode);
 
-        Some(EventKey {
-            semantic: info.semantic,
-            physical: info.physical,
-            state,
-            mods: info.mods,
-            timestamp: Some(EventTimestamp::from_millis_u32(time_ms)),
-        })
+        EventKey { semantic: info.semantic, physical: info.physical, state, mods: info.mods }
     }
 
     /// Converts this X11 button event into an `EventButton`.
