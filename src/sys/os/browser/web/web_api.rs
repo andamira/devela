@@ -4,20 +4,28 @@
 //! Defines [`Web`] and implements Web API methods.
 //
 
-use devela::_js_extern;
-#[cfg(not(feature = "safe_lang"))]
+use crate::_js_extern;
 #[cfg(feature = "unsafe_ffi")]
-#[allow(unused_imports, reason = "not(windows)")]
-use devela::{
-    _js_doc, Js, JsInstant, JsTextMetrics, JsTextMetricsFull, JsTimeout, TaskPoll, WebDocument,
-    WebPermission, WebPermissionState, WebWindow, WebWorker, WebWorkerError, WebWorkerJob, js_bool,
-    js_int32, js_number, js_uint32, transmute,
-};
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "alloc", feature = "unsafe_ffi"))]
-use devela::{String, Vec, vec_ as vec};
-#[cfg(feature = "event")]
-use devela::{WebEventKind, WebEventMouse, WebEventPointer};
+crate::items! {
+    use crate::{TaskPoll, transmute};
+    use crate::sys::os::browser::web::{
+        WebDocument, WebPermission, WebPermissionState, WebWindow, WebWorker, WebWorkerError,
+        WebWorkerJob,
+    };
+    use crate::lang::prog::ffi::js::{
+        _js_doc, js_int32, js_number, js_uint32, js_bool, JsInstant, JsTextMetrics,
+        JsTextMetricsFull,
+    };
+    #[cfg(feature = "event")]
+    use crate::{
+        sys::os::browser::web::{WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel},
+        ui::event::EventWheelUnit,
+    };
+}
+#[allow(unused_imports)]
+#[cfg(feature = "alloc")]
+use crate::{Js, String, Vec, vec_ as vec};
 
 #[doc = crate::_tags!(web namespace)]
 /// A Web API namespace.
@@ -136,6 +144,18 @@ impl Web {
                 event.as_str().as_ptr(), event.as_str().len(), callback as usize);
         }
     }
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
+    /// Attaches a Rust function as a `wheel event` listener on an `element`.
+    ///
+    /// The callback receives [`WebEventWheel`] with raw browser deltas, unit,
+    /// held-button mask, and viewport-relative coordinates.
+    pub fn event_add_listener_wheel(element: &str, event: WebEventKind,
+        callback: extern "C" fn(WebEventWheel)) {
+        unsafe {
+            event_add_listener_wheel(element.as_ptr(), element.len(),
+                event.as_str().as_ptr(), event.as_str().len(), callback as usize);
+        }
+    }
 
     /* callbacks */
 
@@ -199,6 +219,23 @@ impl Web {
         callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
             etype, timestamp));
     }
+    /// WebAssembly wheel event callback dispatcher.
+    ///
+    /// - Called from JavaScript when a wheel event is fired.
+    /// - Passes the `WebEventWheel` struct to the Rust callback.
+    ///
+    /// # Safety
+    /// - `callback_ptr` must be a valid function pointer.
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback_wheel(callback_ptr: usize, x: js_number, y: js_number,
+        delta_x: js_number, delta_y: js_number, buttons: js_int32, unit: js_int32,
+        timestamp: js_number) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn(WebEventWheel) = unsafe { transmute(callback) };
+        let unit = EventWheelUnit::from_web(unit as u8);
+        let timestamp = JsInstant::from_millis_f64(timestamp);
+        callback(WebEventWheel::new(x, y, delta_x, delta_y, buttons as u8, unit, timestamp));
+    }
 }
 #[cfg(feature = "event")]
 _js_extern! {
@@ -219,6 +256,8 @@ _js_extern! {
     unsafe fn "event_addListenerMouse" event_add_listener_mouse(element_ptr: *const u8,
         element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
     unsafe fn "event_addListenerPointer" event_add_listener_pointer(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
+    unsafe fn "event_addListenerWheel" event_add_listener_wheel(element_ptr: *const u8,
         element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
 }
 

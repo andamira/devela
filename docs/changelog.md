@@ -131,6 +131,9 @@
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.
 
 ##### sys::os::browser::web
+- new type `WebEventWheel`.
+- update `WebEventKind`:
+  - add `Wheel` variant, update associated values.
 - bring here impls from `ui::event`.
 - feature-gate with `event` the event-related impls.
 - rename all methods `[from|to]_js*` to `[from|to]_web*`.

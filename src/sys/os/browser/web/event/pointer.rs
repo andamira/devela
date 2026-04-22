@@ -32,7 +32,8 @@ pub struct WebEventMouse {
     pub timestamp: JsInstant,
 }
 impl WebEventMouse {
-    pub(crate) fn new(
+    /// Returns a new [`WebEventMouse`].
+    pub const fn new(
         x: js_number,
         y: js_number,
         button: u8,
@@ -74,8 +75,9 @@ pub struct WebEventPointer {
     pub timestamp: JsInstant,
 }
 impl WebEventPointer {
+    /// Returns a new [`WebEventPointer`].
     #[allow(clippy::too_many_arguments)] #[rustfmt::skip]
-    pub(crate) fn new(
+    pub const fn new(
         x: js_number,
         y: js_number,
         pressure: js_number,
@@ -112,7 +114,7 @@ mod impls {
             let timestamp = Some(EventTimestamp::from_js(self.timestamp));
             EventKindTimed::new(kind, timestamp)
         }
-        /// Converts `EventMouse` to `WebEventMouse`.
+        /// Converts a timed normalized `EventMouse` back to `WebEventMouse`.
         pub const fn from_event_mouse_timed(from: Timed<EventMouse, Option<EventTimestamp>>)
             -> WebEventMouse {
             let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];

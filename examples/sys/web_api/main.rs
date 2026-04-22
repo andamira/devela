@@ -8,10 +8,10 @@
 #![allow(clippy::deref_addrof, reason = "safe references to static mut")]
 // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
 
+use devela::{JsConsole as console, Wasm, WasmAlloc, format_buf as fmt, set_panic_handler};
 use devela::{
-    JsConsole as console, Wasm, WasmAlloc, Web, WebDocument as document, WebEventKind,
-    WebEventMouse, WebEventPointer, WebWindow as window, format, format_buf as fmt,
-    set_panic_handler,
+    Web, WebDocument as document, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel,
+    WebWindow as window,
 };
 
 set_panic_handler![web];
@@ -121,10 +121,10 @@ pub extern "C" fn main() {
 
     // Add an event listener to the canvas for clicks
     Web::event_add_listener("#example_canvas_1", WebEventKind::Click, canvas_click);
-
     // mouse
     Web::event_add_listener_mouse("window", WebEventKind::MouseDown, my_mouse_callback);
-
+    // wheel
+    Web::event_add_listener_wheel("window", WebEventKind::Wheel, my_wheel_callback);
     // pointer
     Web::event_add_listener_pointer("window", WebEventKind::PointerDown, my_pointer_callback);
 
@@ -155,12 +155,15 @@ pub extern "C" fn canvas_click() {
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
     let buf = unsafe { &mut *&raw mut BUF };
-
     console::log(fmt![?buf, "MOUSE: {event:?}"]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
     let buf = unsafe { &mut *&raw mut BUF };
-
     console::log(fmt![?buf, "POINT: {event:?}"]);
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn my_wheel_callback(event: WebEventWheel) {
+    let buf = unsafe { &mut *&raw mut BUF };
+    console::log(fmt![?buf, "WHEEL: {event:?}"]);
 }

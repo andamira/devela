@@ -6,12 +6,20 @@
 use crate::{KeyState, is};
 
 #[doc = crate::_tags!(event web uid)]
-/// A web API Event kind.
+/// A typed selector for web event names used by the web API browser bridge.
 #[doc = crate::_doc_location!("sys/os/browser/web")]
 ///
+/// # Role
+/// - Selects the exact web event name passed to `addEventListener`.
+/// - Bridges raw browser events into web API callbacks and normalized events.
+/// - Keeps the web adapter typed without leaking stringly-typed event names into user code.
+///
+/// ---
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
+// NOTE: In sync with web_api.js::get_event_kind()
 #[repr(C)]
+#[non_exhaustive]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum WebEventKind {
     /// Unknown event. Default case.
@@ -21,11 +29,14 @@ pub enum WebEventKind {
     /// Fires when an element is clicked.
     Click = 1,
 
+    /* keyboard */
     /// Fires when a key is pressed down.
     KeyDown = 2,
     /// Fires when a key is released.
     KeyUp = 3,
     // no KeyPress (deprecated)
+
+    /* mouse */
     /// Fires when the mouse button is pressed down.
     MouseDown = 4,
     /// Fires when the mouse button is released.
@@ -33,6 +44,7 @@ pub enum WebEventKind {
     /// Fires when the mouse moves over an element.
     MouseMove = 6,
 
+    /* pointer */
     /// Fires when the pointer is pressed down.
     PointerDown = 7,
     /// Fires when the pointer is released.
@@ -40,11 +52,14 @@ pub enum WebEventKind {
     /// Fires when the pointer is moved.
     PointerMove = 9,
 
+    /// Fires when the wheel is moved.
+    Wheel = 10,
+
     ///
-    GamepadPoll = 10,
+    GamepadPoll = 11,
 
     /// Fires when the window is resized.
-    Resize = 11,
+    Resize = 12,
 }
 impl WebEventKind {
     /// Constructs a `WebEventKind` from its representation.
@@ -60,8 +75,9 @@ impl WebEventKind {
             7 => E::PointerDown,
             8 => E::PointerUp,
             9 => E::PointerMove,
-            10 => E::GamepadPoll,
-            11 => E::Resize,
+            10 => E::Wheel,
+            11 => E::GamepadPoll,
+            12 => E::Resize,
             _ => E::Unknown,
         }
     }
@@ -78,6 +94,7 @@ impl WebEventKind {
             E::PointerDown => "pointerdown",
             E::PointerUp => "pointerup",
             E::PointerMove => "pointermove",
+            E::Wheel => "wheel",
             E::GamepadPoll => "gamepadpoll",
             E::Resize => "resize",
             E::Unknown => "none",

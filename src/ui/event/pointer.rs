@@ -231,18 +231,59 @@ impl EventWheel {
 }
 
 #[doc = crate::_tags!(event interaction)]
-/// The unit used by the wheel event.
+/// The semantic unit carried by an [`EventWheel`].
 #[doc = crate::_doc_location!("ui/event")]
 ///
-/// It defaults to `Step`.
+/// This describes the meaning of `delta_x` and `delta_y` after backend normalization.
+///
+///
+/// # Notes
+/// - [`Step`][Self::Step] is the default and represents
+///   discrete wheel notches or equivalent semantic steps.
+/// - [`Pixel`][Self::Pixel], [`Line`][Self::Line], and [`Page`][Self::Page]
+///   preserve richer backend units when available.
+/// - Backends should translate their native wheel representation inward to one
+///   of these units.
+///
+/// # Backend notes
+/// - **X11** wheel pseudo-buttons map naturally to [`Step`][Self::Step].
+/// - **Terminal** wheel reporting also maps naturally to [`Step`][Self::Step].
+/// - **Web** may report wheel deltas in pixel, line, or page units.
 #[allow(missing_docs)]
+#[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventWheelUnit {
-    Line,
-    Page,
-    Pixel,
+    /// Discrete semantic wheel steps.
     #[default]
     Step,
+    /// Pixel-based wheel deltas.
+    Pixel,
+    /// Line-based wheel deltas.
+    Line,
+    /// Page-based wheel deltas.
+    Page,
+}
+impl EventWheelUnit {
+    /// Converts a web wheel-unit code into `EventWheelUnit`.
+    pub const fn from_web(code: u8) -> Self {
+        match code {
+            0 => Self::Pixel,
+            1 => Self::Line,
+            2 => Self::Page,
+            _ => Self::Step,
+        }
+    }
+    /// Converts `EventWheelUnit` into a web wheel-unit code.
+    ///
+    /// `Step` is mapped to `Line` as the best semantic fallback for the web side.
+    pub const fn to_web(self) -> u8 {
+        match self {
+            Self::Pixel => 0,
+            Self::Line => 1,
+            Self::Page => 2,
+            Self::Step => 1,
+        }
+    }
 }
 
 /* impls */
