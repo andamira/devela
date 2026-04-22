@@ -116,6 +116,7 @@
 
 ### sys::log
 - new modules `sys::log::{bench, trace}`;
+- new types: `DiagLevel`, `DiagOut`.
 
 ### sys::mem
 - rename `define_arena!` to `arena!`

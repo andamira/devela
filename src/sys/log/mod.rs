@@ -9,7 +9,7 @@
 mod _reexport_dep; // ::log::*
 
 // mod bench; //
-// mod diag; // DiagLevel, DiagOut WIP
+mod diag; // DiagLevel, DiagOut
 // mod logger; // LogLevel, Logger, log_with WIP
 mod slog; // LoggerStatic, slog!
 // mod trace; //
@@ -24,7 +24,7 @@ crate::items! {
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            // diag::*,
+            diag::*,
             // logger::*, // WIP
             slog::*,
         };

@@ -8,7 +8,7 @@
 // - extern impls
 // - impl traits
 
-use crate::{Infallible, TextOut};
+use crate::{DiagLevel, DiagOut, Infallible, TextOut};
 #[allow(unused_imports)]
 use devela::{_js_doc, _js_extern};
 
@@ -25,7 +25,7 @@ pub struct JsConsole;
 #[rustfmt::skip]
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 impl JsConsole {
     #[doc = _js_doc!(console "clear")]
     /// Clears the console if possible.
@@ -117,6 +117,31 @@ _js_extern! {
     unsafe fn console_time_log(str_ptr: *const u8, str_len: usize);
 }
 
+/// Emits leveled diagnostics to the JavaScript console.
+///
+/// This implementation maps [`DiagOut`] directly onto the browser's native
+/// console levels, preserving the semantic distinction between trace, debug,
+/// info, warning, and error output.
+///
+/// See also [`TextOut`] for plain text emission.
+#[cfg(not(feature = "safe_lang"))]
+#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+impl DiagOut for JsConsole {
+    type Error = Infallible;
+
+    fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
+        match level {
+            DiagLevel::Trace => Self::debug(text), // FUTURE `trace` when message-bearing
+            DiagLevel::Debug => Self::debug(text),
+            DiagLevel::Info => Self::info(text),
+            DiagLevel::Warn => Self::warn(text),
+            DiagLevel::Error => Self::error(text),
+        }
+        Ok(())
+    }
+}
+
 /// Emits UTF-8 text to the JavaScript console.
 ///
 /// This is a convenience text-sink implementation over [`JsConsole`],
@@ -125,6 +150,7 @@ _js_extern! {
 /// For leveled diagnostic output, prefer [`DiagOut`].
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 impl TextOut for JsConsole {
     type Error = Infallible;
 
