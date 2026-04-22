@@ -13,9 +13,9 @@ set -e
 # CONFIG
 CRATE_NAME="web_api" # in sync with Cargo.toml, public_html/index.html
 WASM_NAME="${CRATE_NAME}.wasm"
-JS_LIB_DIR="../../../src/sys/os/browser/web/"
+JS_LIB_DIR="../../../src/sys/os/browser/web/api/"
 JS_LIB_NAME="web_api.js"
-# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/sys/os/browser/web/${JS_LIB_NAME}"
+# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/sys/os/browser/web/api/${JS_LIB_NAME}"
 PROFILE="release"
 WEB_DIR="./public_html/"
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"

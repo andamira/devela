@@ -8,6 +8,7 @@
 //! - <https://developer.mozilla.org/en-US/docs/Web/API>.
 //
 
+mod api; // Web (js & rust files)
 mod document; // WebDocument
 mod element; // WebElement
 #[cfg(feature = "event")]
@@ -15,17 +16,16 @@ mod element; // WebElement
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
 mod permission; // WebPermission, WebPermissionState
 // mod url; // WebUrl, WebUrlSearchParams // WIP
-mod web_api; // Web
 mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            api::*,
             document::*,
             element::*,
             permission::*,
-            web_api::*,
             window::*,
             worker::*,
         };
