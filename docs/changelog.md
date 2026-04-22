@@ -111,6 +111,9 @@
   - make the constructor fallible.
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
+##### sys::device::display::x11
+- new types: `XBackend` `XFrameCtx`, `XFrontend`, `XPresent`, `XPresenter`, `XRasterRender`.
+
 ### sys::io
 - new traits `TextIn`, `TextOut`.
 

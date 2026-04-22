@@ -291,9 +291,9 @@ impl XDisplay {
             // X11 raw button 4..7 become EventWheel { unit: Step, ... }
             match ev.detail {
                 4 => { return Event::from_window(ev.event, Kind::Wheel(
-                        EventWheel::new(0, 1, unit, x, y, buttons)), timestamp); }
-                5 => { return Event::from_window(ev.event, Kind::Wheel(
                         EventWheel::new(0, -1, unit, x, y, buttons)), timestamp); }
+                5 => { return Event::from_window(ev.event, Kind::Wheel(
+                        EventWheel::new(0, 1, unit, x, y, buttons)), timestamp); }
                 6 => { return Event::from_window(ev.event, Kind::Wheel(
                         EventWheel::new(-1, 0, unit, x, y, buttons)), timestamp); }
                 7 => { return Event::from_window(ev.event, Kind::Wheel(

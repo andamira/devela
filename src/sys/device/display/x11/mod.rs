@@ -21,12 +21,17 @@ mod event; // XEvent
 // mod surface; // XSurface
 mod window; // XWindow
 
+mod backfront; // XBackend, XFrameCtx XFrontend
+mod present; // XPresent, XPresenter, XRasterRender
+
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
+            backfront::*,
             display::*,
             error::*,
             event::*,
+            present::*,
             // shm::*,
             // surface::*,
             window::*,
