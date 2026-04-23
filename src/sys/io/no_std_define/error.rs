@@ -22,6 +22,7 @@ pub type IoResult<T> = Result<T, IoError>;
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
 // #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…
+// WAIT: [Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
 pub struct IoError {
     repr: Repr,
 }

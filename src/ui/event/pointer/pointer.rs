@@ -167,7 +167,8 @@ bitfield! {
     /// This means:
     /// - `LEFT`, `RIGHT`, and `MIDDLE` are the three primary buttons.
     /// - `X1..X5` are additional auxiliary buttons when a backend can report them.
-    /// - wheel motion is **not** represented here; it belongs in [`EventWheel`].
+    /// - wheel motion is **not** represented here; it belongs in
+    ///   [`EventWheel`][crate::EventWheel].
     ///
     /// Unsupported buttons are left cleared.
     ///

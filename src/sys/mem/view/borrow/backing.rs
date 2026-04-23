@@ -41,19 +41,19 @@ pub enum Backing<'a> {
 }
 
 impl Backing<'_> {
-    /// Returns `true` if this mode requires allocation.
+    /// Returns `true` if this mode uses existing memory.
     #[inline(always)]
     pub const fn is_buf(&self) -> bool {
+        matches!(self, Self::Buf(_))
+    }
+
+    /// Returns `true` if this mode requires allocation.
+    #[inline(always)]
+    pub const fn is_alloc(&self) -> bool {
         #[cfg(not(feature = "alloc"))]
         return false;
         #[cfg(feature = "alloc")]
         matches!(self, Self::Alloc)
-    }
-
-    /// Returns `true` if this mode uses existing memory.
-    #[inline(always)]
-    pub const fn is_alloc(&self) -> bool {
-        matches!(self, Self::Buf(_))
     }
 }
 

@@ -11,8 +11,6 @@
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Rgb<T, const LINEAR: bool = false> {
     /// Color channels in order: [red, green, blue].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=255).
     pub c: [T; 3],
 }
 
@@ -24,9 +22,6 @@ pub struct Rgb<T, const LINEAR: bool = false> {
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Rgba<T, const LINEAR: bool = false, const PREMUL: bool = false> {
     /// Color channels in order: [red, green, blue, alpha].
-    ///
-    /// - **Red/Green/Blue**: Gamma-encoded luminosity (0..=255).
-    /// - **Alpha**: Linear opacity (0 = transparent, 255 = opaque).
     pub c: [T; 4],
 }
 

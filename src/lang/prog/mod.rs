@@ -8,8 +8,9 @@
 //! > Languages that describe computation, behavior, and execution.
 //
 
-mod dsl; // embedded or domain-specific languages
-pub mod ffi; // foreign language interfaces
+// mod calc; // Executable semantic calculus WIP
+mod dsl; // Embedded or domain-specific languages WIP
+pub mod ffi; // Foreign language interfaces
 // mod ir; // Intermediate representations
 // mod script; // Command and scripting languages
 // mod template; // Template and substitution languages
@@ -17,6 +18,7 @@ pub mod ffi; // foreign language interfaces
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
+            // calc::_all::*,
             dsl::_all::*,
             // ir::_all::*,
             // script::_all::*,

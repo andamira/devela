@@ -155,10 +155,12 @@ See also
   - [Lazy Type Aliases (LTA)](https://github.com/orgs/rust-lang/projects/59/)
 - other
   - [type alias impl trait (TAIT) stabilization](https://github.com/orgs/rust-lang/projects/22/)
-  - [safer transmute](https://github.com/rust-lang/rfcs/pull/2981)
-    - <https://github.com/jswrenn/project-safe-transmute/blob/rfc/rfcs/0000-safe-transmute.md#safe-transmute-rfc>
+  - [safer transmute](https://github.com/rust-lang/rfcs/pull/2981) (closed)
+    - <https://github.com/rust-lang/project-safe-transmute>
+      - <https://github.com/jswrenn/project-safe-transmute/blob/rfc/rfcs/0000-safe-transmute.md#safe-transmute-rfc>
     - <https://jswrenn.github.io/safer-transmute-rustdoc/rfc/core/convert/transmute/index.html>
     - <https://jswrenn.github.io/transmutation-foundation/>
+    - [Lang Item for Transmutability](https://github.com/rust-lang/compiler-team/issues/411)
 
 # Pitfalls
 - [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)
