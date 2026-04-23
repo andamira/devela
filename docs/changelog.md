@@ -60,7 +60,7 @@
 - new methods for `Region`: `map`, `map_ext`, `map_pos`, `try_map`, `try_map_ext`, `try_map_pos`.
 
 #### media::visual::image
-- new traits: `Raster`, `RasterBuf`,`RasterView`.
+- new traits: `Raster`, `RasterBuf`,`RasterView`, `RasterBufBytes`, `RasterViewBytes`, `RasterSamplePacked`, `RasterViewPacked`.
 - remove `image` feature-gate from the module.
 - update `ImageError`.
   - make `InvalidParsedInteger` variant contain `ParseIntErrorKind`.
