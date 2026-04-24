@@ -1,6 +1,6 @@
 // devela::sys::device::display::x11::surface::base
 //
-//! Defines (`XSurface`), ([`XSurfaceStorage`]).
+//! Defines `XSurfaceFrame`, (`XSurface`), (`XSurfaceStorage`).
 //
 
 use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XShmBuffer, XWindow};
@@ -62,6 +62,54 @@ impl XImageStore for XSurface {
         -> Result<(), XError> {
         self.storage.resize(display, width, height, depth)
     }
+}
+
+#[doc = crate::_tags!(unix runtime)]
+/// Borrowed mutable X11 surface for direct frame rendering.
+#[doc = crate::_doc_location!("sys/device/display/x11")]
+///
+/// This exposes the retained X11 presentation surface for one frame.
+///
+/// Drawing into this surface avoids the intermediate scene-to-surface copy
+/// used by [`XRasterRenderer`][crate::XRasterRenderer].
+///
+/// `XSurfaceFrame` is the X11 direct-surface path.
+///
+/// It exposes the retained X11 surface for one frame, allowing callers to render
+/// directly into the CPU/SHM presentation buffer.
+///
+/// Use it when X11-specific performance or surface control matters.
+pub struct XSurfaceFrame<'a> {
+    surface: &'a mut XSurface,
+    bytes_per_line: u32,
+}
+#[rustfmt::skip]
+impl<'a> XSurfaceFrame<'a> {
+    pub(crate) const fn _new(surface: &'a mut XSurface, bytes_per_line: u32) -> Self {
+        Self { surface, bytes_per_line }
+    }
+    /// Returns the surface width in pixels.
+    #[must_use]
+    pub const fn width(&self) -> u16 { self.surface.width }
+    /// Returns the surface height in pixels.
+    #[must_use]
+    pub const fn height(&self) -> u16 { self.surface.height }
+    /// Returns the surface pixel depth in bits.
+    #[must_use]
+    pub const fn depth(&self) -> u8 { self.surface.depth }
+    /// Returns the byte stride between consecutive rows.
+    #[must_use]
+    pub const fn bytes_per_line(&self) -> u32 { self.bytes_per_line }
+    /// Returns the active surface backing mode.
+    pub const fn mode(&self) -> XImageMode { self.surface.mode() }
+    /// Returns whether each row has no backend padding.
+    #[must_use]
+    pub const fn is_tight_rows(&self) -> bool {
+        let bits = self.width() as u32 * self.depth() as u32;
+        bits.div_ceil(8) == self.bytes_per_line
+    }
+    /// Returns the mutable surface bytes for direct rendering.
+    pub fn bytes_mut(&mut self) -> &mut [u8] { self.surface.bytes_mut() }
 }
 
 /// Retained X11 image backing, either CPU-owned or MIT-SHM-backed.

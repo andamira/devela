@@ -1,6 +1,6 @@
 // devela::sys::device::display::x11::surface
 
-mod base; // (XSurface), (XSurfaceStorage)
+mod base; // XSurfaceFrame, (XSurface), (XSurfaceStorage)
 mod cpu; // XCpuBuffer
 mod shm; // XShmBuffer, (XShmCaps)
 

@@ -5,7 +5,7 @@
 
 use crate::{_run_driver_step_run_frame_body, RunPhase, RunPresent, RunStep};
 use crate::{Event, RunApp, RunBackend, RunControl, RunDriver, RunDriverFrameError, RunRender};
-use crate::{XDisplay, XError, XImageMode, XPresent, XPresenter, XWindow};
+use crate::{XDisplay, XError, XImageMode, XPresent, XPresenter, XSurfaceFrame, XWindow};
 use crate::{is, whilst};
 
 #[doc = crate::_tags!(unix runtime)]
@@ -75,26 +75,52 @@ pub struct XFrontend {
     backend: XBackend,
     presenter: XPresenter,
 }
+#[rustfmt::skip]
 impl XFrontend {
+    const fn _new(backend: XBackend, presenter: XPresenter) -> Self { Self { backend, presenter } }
+
     /// Opens an X11 frontend.
     pub fn open(x: i16, y: i16, width: u16, height: u16) -> Result<Self, XError> {
         Self::open_with(XImageMode::Auto, x, y, width, height)
     }
-
     /// Opens an X11 frontend with the given image `mode`.
-    pub fn open_with(
-        mode: XImageMode,
-        x: i16,
-        y: i16,
-        width: u16,
-        height: u16,
-    ) -> Result<Self, XError> {
-        Ok(Self {
-            backend: XBackend::open(x, y, width, height)?,
-            presenter: XPresenter::new(mode),
-        })
+    pub fn open_with(mode: XImageMode, x: i16, y: i16, width: u16, height: u16)
+        -> Result<Self, XError> {
+        Ok(Self::_new(XBackend::open(x, y, width, height)?, XPresenter::new(mode)))
     }
 
+    /// Returns a shared reference to the X11 Display server.
+    pub const fn display(&self) -> &XDisplay { &self.backend.display }
+    /// Returns an exclusive reference to the X11 Display server.
+    pub const fn display_mut(&mut self) -> &mut XDisplay { &mut self.backend.display }
+
+    /// Returns whether MIT-SHM is available on this display.
+    pub const fn has_shm(&self) -> bool { self.backend.display.has_shm() }
+
+    /// Returns the configured X11 image presentation mode.
+    ///
+    /// This is the mode requested when opening the frontend.
+    /// It may still be [`XImageMode::Auto`] before any presentation occurs.
+    pub const fn mode(&self) -> XImageMode { self.presenter.mode() }
+
+    /// Returns the currently resolved X11 image presentation mode, if any.
+    ///
+    /// This resolves the active backing chosen after presentation begins.
+    ///
+    /// It returns `None` while no presentation surface has been created yet.
+    pub fn active_mode(&self) -> Option<XImageMode> { self.presenter.active_mode() }
+
+    /// Polls the next event without blocking.
+    ///
+    /// See [`XDisplay::poll_event`] for more information.
+    pub fn poll_event(&mut self) -> Event { self.backend.display.poll_event() }
+
+    /// Waits for the next event, blocking until one is available.
+    ///
+    /// See [`XDisplay::wait_event`] for more information.
+    pub fn wait_event(&mut self) -> Event { self.backend.display.wait_event() }
+}
+impl XFrontend {
     /// Drives one X11 runtime iteration including rendering and presentation.
     #[allow(private_bounds, reason = "private XFrameCtx")]
     pub fn step_frame<T, A, R, S, RE>(
@@ -152,35 +178,88 @@ impl XFrontend {
         }
         Ok(())
     }
-
-    /// Returns a shared reference to the X11 Display server.
-    pub const fn display(&self) -> &XDisplay {
-        &self.backend.display
-    }
-    /// Returns an exclusive reference to the X11 Display server.
-    pub const fn display_mut(&mut self) -> &mut XDisplay {
-        &mut self.backend.display
-    }
-
-    /// Returns whether MIT-SHM is available on this display.
-    pub const fn has_shm(&self) -> bool {
-        self.backend.display.has_shm()
-    }
-
-    /// Returns the configured X11 image presentation mode.
+}
+impl XFrontend {
+    /// Renders directly into the retained X11 surface and presents it.
     ///
-    /// This is the mode requested when opening the frontend.
-    /// It may still be [`XImageMode::Auto`] before any presentation occurs.
-    pub const fn mode(&self) -> XImageMode {
-        self.presenter.mode()
+    /// This bypasses [`XRasterRenderer`][crate::XRasterRenderer]
+    /// and avoids the scene-to-surface copy.
+    pub fn with_surface_frame<F, T>(
+        &mut self,
+        width: u16,
+        height: u16,
+        depth: u8,
+        clear_redraw: bool,
+        render: F,
+    ) -> Result<T, XError>
+    where
+        F: FnOnce(&mut XSurfaceFrame<'_>) -> Result<T, XError>,
+    {
+        let result = {
+            let mut frame =
+                self.presenter.surface_frame(&self.backend.display, width, height, depth)?;
+            render(&mut frame)?
+        };
+        self.presenter.present_surface(
+            &mut self.backend.display,
+            &mut self.backend.window,
+            clear_redraw,
+        )?;
+        Ok(result)
     }
 
-    /// Returns the currently resolved X11 image presentation mode, if any.
+    /// Advances one runtime frame and renders directly into the retained X11 surface.
     ///
-    /// This resolves the active backing chosen after presentation begins.
+    /// This is the X11-specific zero-copy rendering path. It bypasses
+    /// [`XRasterRenderer`][crate::XRasterRenderer] and exposes the
+    /// retained surface bytes for the duration of one frame.
     ///
-    /// It returns `None` while no presentation surface has been created yet.
-    pub fn active_mode(&self) -> Option<XImageMode> {
-        self.presenter.active_mode()
+    /// This avoids the intermediate artifact-to-surface copy,
+    /// but it also gives up backend independence.
+    //
+    // BENCH NOTE: On local X11 SHM tests at 2560x1440-like scale, direct surface
+    // rendering was ~5-20% faster than the artifact path depending on workload.
+    // Presentation remained the dominant cost. Keeping both paths.
+    #[allow(private_bounds, reason = "private XFrameCtx")]
+    pub fn step_frame_surface<R, A, F, RE>(
+        &mut self,
+        driver: &mut RunDriver<R>,
+        app: &mut A,
+        width: u16,
+        height: u16,
+        depth: u8,
+        clear_redraw: bool,
+        events: &mut [Event],
+        render: F,
+    ) -> Result<RunControl, RunDriverFrameError<XError, A::Error, RE, XError>>
+    where
+        A: RunApp<Event = Event>,
+        F: FnOnce(&mut XSurfaceFrame<'_>) -> Result<(), RE>,
+    {
+        // 1. Collect backend events.
+        let written = self.backend.collect_events(events).map_err(RunDriverFrameError::Backend)?;
+        let events = &events[..written];
+        // 2. Build the runtime step.
+        let step = RunStep::new(driver.runtime_mut().tick(), driver.phase(), events);
+        // 3. Advance app logic.
+        let control = app.run_step(step).map_err(RunDriverFrameError::App)?;
+        // 4B. Stop before rendering/presenting.
+        if matches!(control, RunControl::Stop) {
+            driver.runtime_mut().transition(RunPhase::Stopped);
+            return Ok(control);
+        }
+        // 5B. Ensure the retained surface and render directly into it.
+        let mut surface = self
+            .presenter
+            .surface_frame(&mut self.backend.display, width, height, depth)
+            .map_err(RunDriverFrameError::Present)?;
+        render(&mut surface).map_err(RunDriverFrameError::Render)?;
+        // 6B. Present after the surface borrow ends.
+        self.presenter
+            .present_surface(&mut self.backend.display, &mut self.backend.window, clear_redraw)
+            .map_err(RunDriverFrameError::Present)?;
+        // 7B. Advance runtime.
+        driver.runtime_mut().tick_once();
+        Ok(control)
     }
 }

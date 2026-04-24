@@ -6,7 +6,9 @@
 use crate::RasterViewBytes;
 use crate::is;
 use crate::{Event, RunFrame, RunPresent, RunRender};
-use crate::{XDisplay, XError, XFrameCtx, XImageMode, XImageStore, XSurface};
+use crate::{
+    XDisplay, XError, XFrameCtx, XImageMode, XImageStore, XSurface, XSurfaceFrame, XWindow,
+};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed byte-backed presentation artifact for X11.
@@ -93,6 +95,29 @@ impl XPresenter {
             let se = ss + dst_bytes_per_line.min(src_bytes_per_line);
             dst[ds..de].copy_from_slice(&src[ss..se]);
         }
+    }
+    pub(crate) fn surface_frame<'a>(
+        &'a mut self,
+        display: &XDisplay,
+        width: u16,
+        height: u16,
+        depth: u8,
+    ) -> Result<XSurfaceFrame<'a>, XError> {
+        let surface = self.ensure_surface(display, width, height, depth)?;
+        let bytes_per_line = display.bytes_per_line(width);
+        Ok(XSurfaceFrame::_new(surface, bytes_per_line))
+    }
+    pub(crate) fn present_surface(
+        &mut self,
+        display: &mut XDisplay,
+        window: &mut XWindow,
+        clear_redraw: bool,
+    ) -> Result<(), XError> {
+        let surface = self.surface.as_mut().ok_or(XError::Other("no surface in XPresenter"))?;
+        surface.present(display, window)?;
+        is! { clear_redraw, window.clear_redraw(display) }
+        display.flush();
+        Ok(())
     }
 }
 impl<'ctx> RunPresent<Event, XFrameCtx<'ctx>> for XPresenter {

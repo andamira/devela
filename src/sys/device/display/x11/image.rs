@@ -12,6 +12,7 @@ use super::{XDisplay, XError};
 /// This selects whether image presentation should prefer plain CPU upload,
 /// MIT-SHM upload, or automatically choose the best available path.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[must_use]
 pub enum XImageMode {
     /// Chooses the best available presentation path at runtime.
     ///
