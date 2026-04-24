@@ -80,6 +80,8 @@ Legend:
 
 - 1.91: `…`[array_repeat](https://github.com/rust-lang/rust/issues/126695)
 - 1.91: ` `[as_array_of_cells](https://github.com/rust-lang/rust/pull/144054)
+- 1.91: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
+- 1.91: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
 - 1.91: `…`[const_array_each_ref](https://github.com/rust-lang/rust/pull/143383)
 - 1.91: ` `[const_pathbuf_osstring_new](https://github.com/rust-lang/rust/pull/145464)
 - 1.91: ` `[const_type_id](https://github.com/rust-lang/rust/pull/144133)

@@ -50,8 +50,7 @@ See also
         = `nightly_doc` flag
 
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
-- 1.??: `a`[btree_extract_if](https://github.com/rust-lang/rust/pull/145471)
-- 1.??: ` `[c-style varargs](https://github.com/rust-lang/rust/pull/144066)
+- 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
 - 1.??: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
