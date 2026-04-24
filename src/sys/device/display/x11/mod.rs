@@ -8,32 +8,27 @@
 // - [library functions](https://www.x.org/releases/current/doc/man/man3/)
 //
 
-// private items
-mod atoms; // (XAtoms)
-mod raw;
-mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
+mod raw; //
 
-// public items
+mod atoms; // (XAtoms)
 mod display; // XDisplay
 mod error; // XError
 mod event; // XEvent
-// mod shm; // XShm
-// mod surface; // XSurface
+mod image; // XImageMode, (XImageFormat), (XImageStore).
+mod runtime; // XFrontend, XPresent, XRasterRender, (XBackend), (XFrameCtx), (XPresenter)
+mod surface; // XCpuBuffer, XShmBuffer, (XShmCaps), (XSurface), (XSurfaceStorage)
 mod window; // XWindow
-
-mod backfront; // XBackend, XFrameCtx XFrontend
-mod present; // XPresent, XPresenter, XRasterRender
+mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            backfront::*,
             display::*,
             error::*,
             event::*,
-            present::*,
-            // shm::*,
-            // surface::*,
+            image::*,
+            runtime::*,
+            surface::*,
             window::*,
         };
     }

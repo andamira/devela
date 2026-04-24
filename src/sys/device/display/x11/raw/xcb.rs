@@ -1,6 +1,6 @@
 // devela::sys::display::x11::raw::xcb
 //
-//! from `xcb.h`, `xproto.h`.
+//! from `xcb.h`, `xcb_ext.h`, `xproto.h`.
 //
 // DOC LINKS:
 // - https://www.x.org/releases/current/doc/man/man3/
@@ -12,6 +12,8 @@
 //   - xcb_gcontext_t
 //   - xcb_keycode_t
 //   - xcb_timestamp_t
+// * extension protocol types
+//   - xcb_extension_t
 // * connection
 //   - xcb_connection_t
 //   - xcb_connect()
@@ -20,10 +22,13 @@
 //   - xcb_flush()
 //   - xcb_generate_id()
 // * setup
+//   - xcb_format_t
+//   - xcb_format_iterator_t
 //   - xcb_setup_t
 //   - xcb_screen_t
 //   - xcb_screen_iterator_t
 //   - xcb_get_setup()
+//   - xcb_setup_pixmap_formats_iterator()
 //   - xcb_setup_roots_iterator()
 // * window/gc
 //   - xcb_create_gc()
@@ -62,12 +67,26 @@ use crate::{Extent, Position, c_char, c_int};
 
 /// X11 window identifier.
 pub(crate) type xcb_window_t = u32;
+/// X11 drawable identifier.
+pub(crate) type xcb_drawable_t = u32;
 /// X11 graphics context identifier.
 pub(crate) type xcb_gcontext_t = u32;
 /// X11 keycode (hardware scancode). Example: 24 is 'q' on US layout.
 pub(crate) type xcb_keycode_t = u8;
 /// X11 timestamp in milliseconds.
 pub(crate) type xcb_timestamp_t = u32;
+
+/* extension protocol types */
+
+#[doc = crate::_tags!(unix ffi)]
+/// XCB extension descriptor.
+/// - <https://xcb.freedesktop.org/manual/structxcb__extension__t.html>
+#[repr(C)]
+#[derive(Debug)]
+pub(crate) struct xcb_extension_t {
+    name: *const c_char,
+    global_id: c_int,
+}
 
 /* connection */
 
@@ -104,13 +123,36 @@ unsafe extern "C" {
 /* setup structs */
 
 #[doc = crate::_tags!(unix ffi)]
+/// X11 pixmap format descriptor.
+/// - <https://xcb.freedesktop.org/manual/structxcb__format__t.html>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct xcb_format_t {
+    pub depth: u8,
+    pub bits_per_pixel: u8,
+    pub scanline_pad: u8,
+    _pad0: [u8; 5],
+}
+
+#[doc = crate::_tags!(unix ffi)]
+/// /// Iterator over X11 pixmap formats.
+/// - <https://xcb.freedesktop.org/manual/structxcb__format__iterator__t.html>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct xcb_format_iterator_t {
+    pub data: *mut xcb_format_t,
+    pub rem: c_int,
+    pub index: c_int,
+}
+
+#[doc = crate::_tags!(unix ffi)]
 /// Xcb setup.
 /// - <https://xcb.freedesktop.org/manual/structxcb__setup__t.html>
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct xcb_setup_t {
     pub status: u8,
-    pad0: u8,
+    _pad0: u8,
     pub protocol_major_version: u16,
     pub protocol_minor_version: u16,
     pub length: u16,
@@ -128,11 +170,11 @@ pub(crate) struct xcb_setup_t {
     pub bitmap_format_scanline_pad: u8,
     pub min_keycode: u8,
     pub max_keycode: u8,
-    pad1: [u8; 4],
+    _pad1: [u8; 4],
 }
 
 #[doc = crate::_tags!(unix ffi)]
-/// A screen.
+/// A screen descriptor.
 /// - <https://xcb.freedesktop.org/manual/structxcb__screen__t.html>
 #[repr(C)]
 #[derive(Debug)]
@@ -174,7 +216,17 @@ unsafe extern "C" {
     /// - <https://xcb.freedesktop.org/manual/group__XCB__Core__API.html#:~:text=xcb_get_setup>
     pub(crate) fn xcb_get_setup(c: *mut xcb_connection_t) -> *const xcb_setup_t;
 
-    /// The iterator for the roots field inside the `xcb_setup_t` struct.
+    /// Returns an iterator over the setup pixmap formats.
+    /// - <https://xcb.freedesktop.org/manual/group__XCB____API.html#:~:text=xcb_setup_pixmap_formats_iterator>
+    pub(crate) fn xcb_setup_pixmap_formats_iterator(
+        setup: *const xcb_setup_t,
+    ) -> xcb_format_iterator_t;
+
+    /// Advances a pixmap-format iterator by one entry.
+    /// - <https://xcb.freedesktop.org/manual/group__XCB____API.html#:~:text=xcb_format_next>
+    pub(crate) fn xcb_format_next(iter: *mut xcb_format_iterator_t);
+
+    /// Returns an iterator for the roots field inside the `xcb_setup_t` struct.
     /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_setup_roots_iterator.html>
     pub(crate) fn xcb_setup_roots_iterator(setup: *const xcb_setup_t) -> xcb_screen_iterator_t;
 }
@@ -321,7 +373,7 @@ pub(crate) struct xcb_void_cookie_t {
 #[derive(Debug)]
 pub struct xcb_intern_atom_reply_t {
     pub response_type: u8,
-    pub pad0: u8,
+    _pad0: u8,
     pub sequence: u16,
     pub length: u32,
     pub atom: u32, // xcb_atom_t
@@ -362,8 +414,8 @@ pub struct xcb_generic_error_t {
     pub resource_id: u32,
     pub minor_code: u16,
     pub major_code: u8,
-    pub pad0: u8,
-    pub pad: [u32; 5],
+    _pad0: u8,
+    _pad1: [u32; 5],
     pub full_sequence: u32,
 }
 
@@ -374,9 +426,9 @@ pub struct xcb_generic_error_t {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct xcb_generic_event_t {
     pub response_type: u8,
-    pad0: u8,
+    _pad0: u8,
     pub sequence: u16,
-    pub pad: [u32; 7],
+    _pad1: [u32; 7],
     pub full_sequence: u32,
 }
 
@@ -415,7 +467,7 @@ pub(crate) struct xcb_key_press_event_t {
     pub state: u16,
     /// Whether the event window is on the same screen as the root window.
     pub same_screen: u8,
-    pad0: u8,
+    _pad0: u8,
 }
 
 // these have the same representation:
@@ -584,7 +636,7 @@ crate::impl_trait! { fmt::Debug for xcb_client_message_data_t |self,f|
 pub(crate) struct xcb_configure_notify_event_t {
     /// The type of this event, in this case `XCB_CONFIGURE_NOTIFY`.
     pub response_type: u8,
-    pad0: u8,
+    _pad0: u8,
     /// The sequence number of the last request processed by the X11 server.
     pub sequence: u16,
     /// The reconfigured window or its parent, depending on whether
@@ -609,7 +661,7 @@ pub(crate) struct xcb_configure_notify_event_t {
     pub border_width: u16,
     /// Window managers should ignore this window if override_redirect is 1.
     pub override_redirect: u8,
-    pad1: u8,
+    _pad1: u8,
 }
 
 #[link(name = "xcb")]

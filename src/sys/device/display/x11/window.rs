@@ -114,31 +114,29 @@ impl XWindow {
         display.window_position(self.id()).expect("current window ID is valid")
     }
     /// Returns whether this window is currently marked for redraw.
+    #[must_use]
     pub fn needs_redraw(&self, display: &XDisplay) -> bool {
         display.window_needs_redraw(self.id())
     }
     /// Clears the redraw flag.
     pub fn clear_redraw(&self, display: &mut XDisplay) {
-        display.window_needs_redraw(self.id());
+        display.window_clear_redraw(self.id());
     }
 
     /* */
 
-    /// Writes an rgba image from a byte buffer, into the window using XCB.
+    /// Writes image bytes into the window using XCB `PutImage`.
     pub fn put_image_bytes(&self, width: u16, height: u16, depth: u8, data: &[u8]) {
         lets![dst_x=0, dst_y=0, left_pad=0];
         unsafe { raw::xcb_put_image(self.display, raw::XCB_IMAGE_FORMAT_Z_PIXMAP, self.win, self.gc,
             width, height, dst_x, dst_y, left_pad, depth, data.len() as u32, data.as_ptr()); }
     }
 
-    /// Writes an rgba image from a u32 buffer into the window using XCB.
+    /// Writes a tightly packed 32-bit pixel buffer into the window using XCB.
     pub fn put_image_u32(&self, width: u16, height: u16, depth: u8, data: &[u32]) {
-        lets![dst_x=0, dst_y=0, left_pad=0];
-        unsafe {
-            let bytes = core::slice::from_raw_parts(data.as_ptr() as *const u8, data.len() * 4);
-            raw::xcb_put_image(self.display, raw::XCB_IMAGE_FORMAT_Z_PIXMAP, self.win, self.gc,
-            width, height, dst_x, dst_y, left_pad, depth, data.len() as u32 * 4, bytes.as_ptr());
-        }
+        let len = data.len() * size_of::<u32>();
+        let bytes = unsafe { core::slice::from_raw_parts(data.as_ptr().cast::<u8>(), len) };
+        self.put_image_bytes(width, height, depth, bytes);
     }
 
     /// Fills a rectangle in the window

@@ -5,8 +5,10 @@
 
 #![allow(unused)]
 
-use super::{KeyRepeatFilter, XAtoms, XError, XEvent, XWindowState, XkbState, raw};
-use crate::{ConstInit, Extent, Position, Ptr, Vec, c_int, is, lets, sf, vec_ as vec};
+use super::{
+    KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XShmCaps, XWindowState, XkbState, raw,
+};
+use crate::{ConstInit, Extent, Libc, Position, Ptr, Vec, c_int, is, lets, vec_ as vec};
 use crate::{
     Event, EventButton, EventButtonState, EventButtons, EventKind, EventMouse, EventQueue,
     EventWheel, EventWheelUnit, EventWindow,
@@ -35,6 +37,8 @@ pub struct XDisplay {
     pub(super) screen: *const raw::xcb_screen_t,
     screen_num: c_int,
     pub(super) depth: u8,
+    pub(super) image_format: XImageFormat,
+    pub(super) shm_caps: Option<XShmCaps>,
     xkb: XkbState,
     pub(super) atoms: XAtoms,
     /* repeat detection */
@@ -45,6 +49,7 @@ pub struct XDisplay {
     queue: EventQueue<2>,
 }
 
+#[rustfmt::skip]
 impl XDisplay {
     /// Opens the default X11 display and retrieves its first screen.
     pub fn open() -> Result<Self, XError> {
@@ -69,6 +74,8 @@ impl XDisplay {
         }
         let screen: *const raw::xcb_screen_t = iter.data;
         let depth = unsafe { (*screen).root_depth };
+        let image_format = Self::query_image_format(setup, depth)?;
+        let shm_caps = Self::query_shm_caps(conn);
 
         // extension setup hand-shake
         lets![mut major = 0, mut minor = 0, mut ev = 0, mut err = 0];
@@ -91,15 +98,23 @@ impl XDisplay {
         let windows = vec![];
         let queue = EventQueue::new();
 
-        sf! { Ok(Self {
-            conn, screen, screen_num, depth, xkb, pending, repeat_filter, atoms, windows, queue
-        }) }
+        Ok(Self { conn, screen, screen_num, depth, image_format, shm_caps,
+            xkb, pending, repeat_filter, atoms, windows, queue, })
     }
 
     /// Returns the root depth of the default screen.
     pub fn depth(&self) -> u8 {
         self.depth
     }
+    ///
+    pub const fn bits_per_pixel(&self) -> u8 { self.image_format.bits_per_pixel }
+    ///
+    pub const fn scanline_pad_bits(&self) -> u8 { self.image_format.scanline_pad_bits }
+    ///
+    pub const fn bytes_per_line(&self, width: u16) -> u32 { self.image_format.bytes_per_line(width) }
+
+    /// Returns whether MIT-SHM is available on this display.
+    pub const fn has_shm(&self) -> bool { self.shm_caps.is_some() }
 
     /// Polls the next event without blocking.
     ///
@@ -131,14 +146,14 @@ impl XDisplay {
 
     /// Flushes pending XCB commands.
     #[inline(always)]
-    pub fn flush(&self) {
-        unsafe {
-            raw::xcb_flush(self.conn);
-        }
-    }
+    pub fn flush(&self) { unsafe { raw::xcb_flush(self.conn); } }
 }
 
 // Internal methods
+//
+// - windows
+// - capabilities
+// - events
 impl XDisplay {
     /// Returns the underlying XCB connection.
     pub(crate) fn conn(&self) -> *mut raw::xcb_connection_t {
@@ -257,6 +272,41 @@ impl XDisplay {
         state.height = height;
         is! { resized, state.needs_redraw = true }
         Some(XWindowConfigureDelta { moved, resized })
+    }
+
+    /* capabilties */
+
+    fn query_image_format(
+        setup: *const raw::xcb_setup_t,
+        depth: u8,
+    ) -> Result<XImageFormat, XError> {
+        let mut it = unsafe { raw::xcb_setup_pixmap_formats_iterator(setup) };
+        while it.rem > 0 && !it.data.is_null() {
+            let fmt = unsafe { &*it.data };
+            if fmt.depth == depth {
+                return Ok(XImageFormat::new(fmt.depth, fmt.bits_per_pixel, fmt.scanline_pad));
+            }
+            unsafe { raw::xcb_format_next(&mut it) };
+        }
+        Err(XError::Other("no pixmap format for root depth"))
+    }
+    fn query_shm_caps(conn: *mut raw::xcb_connection_t) -> Option<XShmCaps> {
+        unsafe {
+            let cookie = raw::xcb_shm_query_version(conn);
+            let mut err = core::ptr::null_mut();
+            let reply = raw::xcb_shm_query_version_reply(conn, cookie, &mut err);
+            if !err.is_null() || reply.is_null() {
+                return None;
+            }
+            let caps = XShmCaps {
+                major_version: (*reply).major_version,
+                minor_version: (*reply).minor_version,
+                shared_pixmaps: (*reply).shared_pixmaps != 0,
+                pixmap_format: (*reply).pixmap_format,
+            };
+            Libc::free(reply.cast());
+            Some(caps)
+        }
     }
 
     /* events */

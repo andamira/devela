@@ -9,12 +9,12 @@
 //! # DOCS
 //! There are two different documentation sources, generated in different ways,
 //! and neither is complete on its own:
-//! 1. XCB Manual (freedesktop.org/manual)
-//! 2. X.Org manpages (x.org/releases/current/doc/man/…)
+//! 1. XCB Manual (<https://xcb.freedesktop.org/manual/modules.html>)
+//! 2. X.Org manpages (<https://x.org/releases/current/doc/man/>)
 
 #![allow(unused)]
 
-mod xcb; // main xcb.h + xproto.h structs, fns
+mod xcb; // main items from: xcb.h + xcb_ext.h + xproto.h
 mod xcb_flags; // protocol bit-masks
 mod xcb_shm; // shm extension
 mod xcb_values; // protocol const values

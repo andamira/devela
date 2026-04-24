@@ -112,7 +112,11 @@
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
 ##### sys::device::display::x11
-- new types: `XBackend` `XFrameCtx`, `XFrontend`, `XPresent`, `XPresenter`, `XRasterRender`.
+- new items: `XCpuBuffer`, `XFrontend`, `XImageMode`, `XPresent`, `XRasterRender`, `XShmBuffer`.
+- update `XDisplay`:
+  - add fields: `image_format`, `shm_caps`.
+  - add methods: `bits_per_pixel`, `scanline_pad_bits`, `bytes_per_line`, `has_shm`.
+- fix `XWindow::clear_redraw`.
 
 ### sys::io
 - new traits `TextIn`, `TextOut`.
