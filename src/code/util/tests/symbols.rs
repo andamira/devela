@@ -1,4 +1,4 @@
-// devela::code::util::tests
+// devela::code::util::tests::symbols
 //
 // - https://doc.rust-lang.org/reference/macros-by-example.html
 
