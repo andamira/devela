@@ -40,6 +40,7 @@
 
 ### code::util
 - new macro `maybe_slot!`.
+- update `cdbg!` to add custom prefix syntax.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
