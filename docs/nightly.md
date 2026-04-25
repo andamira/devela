@@ -40,6 +40,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
 > - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
 
+- 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
 - 1.97: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)

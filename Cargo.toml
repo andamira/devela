@@ -85,7 +85,7 @@ bench = false
 # ==============================================================================
 name = "devela"
 build = "build/main/mod.rs"
-description = "A development layer of coherence."
+description = "A development substrate of coherence."
 readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
@@ -428,7 +428,11 @@ _docs_min = [ # the minimum capabilities to document every item independent of a
 		# device
 			"x11",
 		# sys
-			"linux",
+			# os
+				# browser
+					"web",
+				"linux",
+				# "windows"
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll", "_value64",
 ]
@@ -639,7 +643,7 @@ features = ["fallback", "float"]
 # feature-gated: serde, require-cas(maybe)
 
 [workspace.dependencies.portable-atomic-util] # https://crates.io/crates/portable-atomic-util (unsafe)
-version = "0.2.7" # ✓ https://github.com/taiki-e/portable-atomic-util/blob/main/CHANGELOG.md
+version = "0.2" # ✓ https://github.com/taiki-e/portable-atomic-util/blob/main/CHANGELOG.md
 default-features = false # 3 https://docs.rs/crate/portable-atomic-util/latest/features
 
 [workspace.dependencies.rand_core] # https://crates.io/crates/rand_core (safe)
