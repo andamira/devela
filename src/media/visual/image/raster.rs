@@ -236,7 +236,8 @@ impl<T: Sealed> RasterSamplePacked for T {}
 /// layout is known to be safely byte-addressable.
 ///
 /// It is intended for tightly packed sample rows by default.
-/// Backends with padded scanlines may override [`raster_bytes_per_line`].
+/// Backends with padded scanlines may override
+/// [`raster_bytes_per_line`][Self::raster_bytes_per_line].
 pub trait RasterViewPacked: RasterView
 where
     Self::Sample: RasterSamplePacked,

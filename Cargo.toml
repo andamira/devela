@@ -294,9 +294,10 @@ work = [
 	"process", "sync", "thread",
 	"bytemuck?/zeroable_atomics",
 ]
-	process = []
+	# exec
+		process = []
+		thread = []
 	sync = []
-	thread = []
 
 
 #* Safety features *#

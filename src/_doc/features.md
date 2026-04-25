@@ -149,7 +149,7 @@ Root modules & public sub-modules features:
   <!-- [`layout`]:     crate::ui::layout -->
 [`work`]:         crate::work
   [`future`]:     crate::work::future
-  [`process`]:    crate::work::process
+  [`process`]:    crate::work::exec::process
   [`sync`]:       crate::work::sync
 
 

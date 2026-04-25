@@ -138,6 +138,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_LANG_HUM_I18N      = "Internationalization and localization support.";
     _DOC_LANG_HUM_NAT       = "Natural human languages.";
     _DOC_LANG_PROG          = "Programming languages.";
+    _DOC_LANG_PROG_CALC     = "Executable semantic calculus.";
     _DOC_LANG_PROG_DSL      = "Embedded and domain-specific languages.";
     _DOC_LANG_PROG_IR       = "Intermediate program representations.";
     _DOC_LANG_PROG_SCRIPT   = "Command and scripting languages.";
