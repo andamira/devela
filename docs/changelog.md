@@ -30,6 +30,7 @@
 
 ## features & flags
 - update the intended scope of the `_docs_examples` feature.
+- feature `x11` auto-enables `unsafe_ffi`.
 
 ---
 

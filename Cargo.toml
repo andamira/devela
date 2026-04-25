@@ -271,7 +271,7 @@ sys = ["io", "mem", "term"]
 		# display
 			# cocoa = []
 			# gdi = []
-			x11 = ["alloc", "event"] # also needs unsafe_ffi
+			x11 = ["alloc", "event", "unsafe_ffi"]
 		# midi = []
 	# fs
 	io = []
