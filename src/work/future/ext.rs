@@ -8,7 +8,7 @@
 use crate::future_block;
 
 use {
-    crate::{Future, FuturePending, FuturePollFn, FutureReady, TaskContext, TaskPoll},
+    crate::{AsyncContext, AsyncPoll, Future, FuturePending, FuturePollFn, FutureReady},
     ::core::future::{pending, poll_fn, ready},
 };
 
@@ -57,9 +57,9 @@ pub trait FutureExt: Future {
     /// Creates a future which never resolves.
     fn pending<T>() -> FuturePending<T> { pending() }
 
-    /// Creates a future that wraps a `function` returning [`TaskPoll`].
+    /// Creates a future that wraps a `function` returning [`AsyncPoll`].
     fn poll_fn<T, F>(function: F) -> FuturePollFn<F>
-    where F: FnMut(&mut TaskContext<'_>) -> TaskPoll<T> { poll_fn(function) }
+    where F: FnMut(&mut AsyncContext<'_>) -> AsyncPoll<T> { poll_fn(function) }
 
     /// Creates a future that is immediately ready with a `value`.
     fn ready<T>(value: T) -> FutureReady<T> { ready(value) }

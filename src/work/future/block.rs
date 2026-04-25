@@ -9,7 +9,7 @@
 // - [Lock-free and alloc-free implementation](https://github.com/zesterer/pollster/pull/9)
 // - [add benchmarks](https://github.com/zesterer/pollster/pull/20)
 
-use crate::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker, pin};
+use crate::{Arc, AsyncContext, AsyncPoll, AsyncWake, AsyncWaker, Condvar, Future, Mutex, pin};
 
 /// Blocks the thread until the `future` is ready.
 ///
@@ -28,14 +28,14 @@ pub(crate) fn future_block<F: Future>(future: F) -> F::Output {
     let signal = Arc::new(Signal::new());
 
     // Create a context that will be passed to the future.
-    let waker = TaskWaker::from(Arc::clone(&signal));
-    let mut context = TaskContext::from_waker(&waker);
+    let waker = AsyncWaker::from(Arc::clone(&signal));
+    let mut context = AsyncContext::from_waker(&waker);
 
     // Poll the future to completion
     loop {
         match future.as_mut().poll(&mut context) {
-            TaskPoll::Pending => signal.wait(),
-            TaskPoll::Ready(item) => break item,
+            AsyncPoll::Pending => signal.wait(),
+            AsyncPoll::Ready(item) => break item,
         }
     }
 }
@@ -51,7 +51,7 @@ enum SignalState {
     Notified,
 }
 
-impl TaskWake for Signal {
+impl AsyncWake for Signal {
     // WAIT: [arbitrary_self_types](https://github.com/rust-lang/rust/pull/135881)
     fn wake(self: Arc<Self>) {
         self.notify();

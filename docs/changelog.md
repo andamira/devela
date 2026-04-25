@@ -179,6 +179,7 @@
 ## work
 - new `work` submodules: `exec`, `plan`, `task`.
 - move `thread` and `process` inside `exec`.
+- rename `Task*` items to `Async*`.
 
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.

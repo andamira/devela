@@ -4,19 +4,19 @@
 //! Implements the web workers API.
 //
 
-use crate::TaskPoll;
+use crate::AsyncPoll;
 use crate::{_js_extern, js_bool, js_uint32};
 #[cfg(feature = "alloc")]
 use crate::{Js, String, Vec, js_int32, vec_ as vec};
-use crate::{Web, WebWorker, WebWorkerError, WebWorkerJob};
+use crate::{Web, WebWorker, WebWorkerError as Error, WebWorkerJob};
 
 /// Web API workers
 #[rustfmt::skip]
 impl Web {
     /// Spawns a Web Worker and returns its ID.
-    pub fn worker_spawn(script: &str) -> Result<WebWorker, WebWorkerError> {
+    pub fn worker_spawn(script: &str) -> Result<WebWorker, Error> {
         let id = unsafe { worker_spawn(script.as_ptr(), script.len()) };
-        if id == 0 { Err(WebWorkerError::InvalidScript) } else { Ok(WebWorker { id }) }
+        if id == 0 { Err(Error::InvalidScript) } else { Ok(WebWorker { id }) }
     }
     /// Checks if this worker is still active by querying JavaScript.
     pub fn worker_is_active(worker: WebWorker) -> js_bool { worker_is_active(worker.id()) }
@@ -56,20 +56,20 @@ impl Web {
     ///
     /// If ready, returns the number of bytes written to the buffer.
     pub fn worker_poll(job: WebWorkerJob, buffer: &mut [u8])
-        -> TaskPoll<Result<usize, WebWorkerError>> {
-        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
+        -> AsyncPoll<Result<usize, Error>> {
+        if !job.worker().is_active() { return AsyncPoll::Ready(Err(Error::WorkerNotFound)); }
         let written = unsafe { worker_poll(job.id(), buffer.as_mut_ptr(), buffer.len()) };
         match written {
-            0 => TaskPoll::Pending,
-            js_uint32::MAX => TaskPoll::Ready(Err(WebWorkerError::JobNotFound)),
-            _ => TaskPoll::Ready(Ok(written as usize)),
+            0 => AsyncPoll::Pending,
+            js_uint32::MAX => AsyncPoll::Ready(Err(Error::JobNotFound)),
+            _ => AsyncPoll::Ready(Ok(written as usize)),
         }
     }
     /// Polls for the result of a JavaScript execution in a worker.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn worker_poll_alloc(job: WebWorkerJob) -> TaskPoll<Result<String, WebWorkerError>> {
-        if !job.worker().is_active() { return TaskPoll::Ready(Err(WebWorkerError::WorkerNotFound)); }
+    pub fn worker_poll_alloc(job: WebWorkerJob) -> AsyncPoll<Result<String, Error>> {
+        if !job.worker().is_active() { return AsyncPoll::Ready(Err(Error::WorkerNotFound)); }
         let mut first_check = true;
         let result = Js::read_string_capped(128, false, |ptr, cap| {
             let res = unsafe { worker_poll(job.id(), ptr, cap as usize) as js_int32 };
@@ -80,8 +80,8 @@ impl Web {
             res
         });
         match result.as_str() {
-            "" => TaskPoll::Pending, // Covers 0 and -1 (mapped above)
-            _ => TaskPoll::Ready(Ok(result)),
+            "" => AsyncPoll::Pending, // Covers 0 and -1 (mapped above)
+            _ => AsyncPoll::Ready(Ok(result)),
         }
     }
     /// Cancels an ongoing JavaScript evaluation.

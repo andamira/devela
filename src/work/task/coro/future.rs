@@ -14,9 +14,9 @@
 //! - <https://www.reddit.com/r/rust/comments/etqwhx/a_stackless_rust_coroutine_library_under_100_loc/>
 //
 
+use crate::{AsyncContext, AsyncPoll, Debug, Future, OptRes, Pin, serr, sok};
 #[cfg(feature = "alloc")]
-use crate::{Box, TaskWaker, VecDeque};
-use crate::{Debug, Future, OptRes, Pin, TaskContext, TaskPoll, serr, sok};
+use crate::{AsyncWaker, Box, VecDeque};
 
 /* coroutine */
 
@@ -61,8 +61,8 @@ impl<T, E> CoroWorker<T, E> {
 /* yielder */
 
 #[doc = crate::_tags!(concurrency runtime)]
-/// A future that alternates between [`Ready`][TaskPoll::Ready] and
-/// [`Pending`][TaskPoll::Pending] status each time it's polled.
+/// A future that alternates between [`Ready`][AsyncPoll::Ready] and
+/// [`Pending`][AsyncPoll::Pending] status each time it's polled.
 #[doc = crate::_doc_location!("work/future")]
 ///
 /// This allows the coroutine to yield control back and be resumed later.
@@ -74,14 +74,14 @@ pub struct CoroWork<'a, T, E> {
 impl<T, E> Future for CoroWork<'_, T, E> {
     type Output = OptRes<T, E>;
 
-    fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<OptRes<T, E>> {
+    fn poll(mut self: Pin<&mut Self>, _cx: &mut AsyncContext) -> AsyncPoll<OptRes<T, E>> {
         match self.cor.status {
             CoroWorkerStatus::Halted => {
                 self.cor.status = CoroWorkerStatus::Running;
                 if let Some(result) = self.cor.result.take() {
                     match result {
-                        Err(error) => TaskPoll::Ready(serr(error)),
-                        Ok(value) => TaskPoll::Ready(sok(value)),
+                        Err(error) => AsyncPoll::Ready(serr(error)),
+                        Ok(value) => AsyncPoll::Ready(sok(value)),
                     }
                 } else {
                     unreachable!();
@@ -89,7 +89,7 @@ impl<T, E> Future for CoroWork<'_, T, E> {
             }
             CoroWorkerStatus::Running => {
                 self.cor.status = CoroWorkerStatus::Halted;
-                TaskPoll::Pending
+                AsyncPoll::Pending
             }
         }
     }
@@ -104,8 +104,8 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 /// It maintains a queue of coroutines in the stack, and runs them in a loop
 /// until they are all complete.
 ///
-/// When a coroutine is polled and returns [`TaskPoll::Pending`], it is put back
-/// into the queue to be run again later. If it returns [`TaskPoll::Ready`]
+/// When a coroutine is polled and returns [`AsyncPoll::Pending`], it is put back
+/// into the queue to be run again later. If it returns [`AsyncPoll::Ready`]
 /// it is considered complete and is not put back into the queue.
 ///
 /// # Examples
@@ -173,19 +173,19 @@ impl<T, E: 'static + Debug> CoroManager<T, E> {
 
     /// Runs all the coroutines to completion.
     pub fn run(&mut self) {
-        let waker = TaskWaker::noop();
-        let mut context = TaskContext::from_waker(waker);
+        let waker = AsyncWaker::noop();
+        let mut context = AsyncContext::from_waker(waker);
 
         while let Some(mut cor) = self.coros.pop_front() {
             let polled = cor.as_mut().poll(&mut context);
             // println!("  coroutine polled:");
 
             match polled {
-                TaskPoll::Pending => {
+                AsyncPoll::Pending => {
                     // println!("  - pending, push back");
                     self.coros.push_back(cor);
                 }
-                TaskPoll::Ready(_result) => {
+                AsyncPoll::Ready(_result) => {
                     // println!("  - READY");
                     // if let Some(Err(err)) = result {
                     //     // eprintln!("    Error in coroutine: {:?}", err);

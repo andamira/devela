@@ -11,7 +11,7 @@
 #[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
 use crate::String;
 #[allow(unused_imports)]
-use crate::{TaskPoll, Web, js_uint32};
+use crate::{AsyncPoll, Web, js_uint32};
 
 #[doc = crate::_tags!(web uid)]
 /// A handle to a JavaScript Web Worker.
@@ -94,13 +94,13 @@ impl WebWorkerJob {
     /// Polls the result of this job and writes it into `buffer`.
     ///
     /// Returns the number of bytes written to the buffer.
-    pub fn poll(self, buffer: &mut [u8]) -> TaskPoll<Result<usize, WebWorkerError>> {
+    pub fn poll(self, buffer: &mut [u8]) -> AsyncPoll<Result<usize, WebWorkerError>> {
         Web::worker_poll(self, buffer)
     }
     /// Polls the result of this job.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn poll_alloc(self) -> TaskPoll<Result<String, WebWorkerError>> {
+    pub fn poll_alloc(self) -> AsyncPoll<Result<String, WebWorkerError>> {
         Web::worker_poll_alloc(self)
     }
     /// Cancels this job.
