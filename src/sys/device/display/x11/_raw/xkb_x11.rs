@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::xkb_x11
+// devela::sys::display::x11::_raw::xkb_x11
 //
 //! Everything from libxkbcommon-x11.so
 //

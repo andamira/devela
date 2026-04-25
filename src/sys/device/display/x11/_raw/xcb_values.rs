@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::xcb_values
+// devela::sys::display::x11::_raw::xcb_values
 //
 //! Values from `xproto.h`
 //

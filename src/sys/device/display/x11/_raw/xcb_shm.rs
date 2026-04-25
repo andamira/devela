@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::xcb_shm
+// devela::sys::display::x11::_raw::xcb_shm
 //
 //! from `shm.h`
 //

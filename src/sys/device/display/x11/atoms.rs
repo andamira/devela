@@ -3,7 +3,7 @@
 //! Defines [`XAtoms`].
 //
 
-use super::raw;
+use super::_raw;
 use crate::{Libc, Ptr, is};
 
 #[doc = crate::_tags!(linux uid runtime)]
@@ -25,7 +25,7 @@ pub(crate) struct XAtoms {
 }
 impl XAtoms {
     /// Returns a new [`XAtoms`] by resolving and caching the relevant atoms.
-    pub(crate) fn new(conn: *mut raw::xcb_connection_t) -> Self {
+    pub(crate) fn new(conn: *mut _raw::xcb_connection_t) -> Self {
         let wm_normal_hints = XAtoms::get_atom(conn, b"WM_NORMAL_HINTS");
         let wm_protocols = XAtoms::get_atom(conn, b"WM_PROTOCOLS");
         let wm_delete_window = XAtoms::get_atom(conn, b"WM_DELETE_WINDOW");
@@ -35,11 +35,11 @@ impl XAtoms {
     /// Resolves an X11 atom by name.
     ///
     /// Returns `0` if the atom does not exist or an error occurs.
-    pub(crate) fn get_atom(conn: *mut raw::xcb_connection_t, name: &[u8]) -> u32 {
+    pub(crate) fn get_atom(conn: *mut _raw::xcb_connection_t, name: &[u8]) -> u32 {
         unsafe {
-            let cookie = raw::xcb_intern_atom(conn, 0, name.len() as u16, name.as_ptr());
-            let mut err: *mut raw::xcb_generic_error_t = Ptr::null_mut();
-            let reply = raw::xcb_intern_atom_reply(conn, cookie, &mut err);
+            let cookie = _raw::xcb_intern_atom(conn, 0, name.len() as u16, name.as_ptr());
+            let mut err: *mut _raw::xcb_generic_error_t = Ptr::null_mut();
+            let reply = _raw::xcb_intern_atom_reply(conn, cookie, &mut err);
             is![reply.is_null(), return 0];
             let atom = (*reply).atom;
             Libc::free(reply as *mut _);
@@ -52,19 +52,19 @@ impl XAtoms {
     /// This is mainly used to advertise support for a protocol such as `WM_DELETE_WINDOW`.
     pub(crate) fn set_property_atom(
         &self,
-        conn: *mut raw::xcb_connection_t,
+        conn: *mut _raw::xcb_connection_t,
         window: u32,
         property: u32,
         atom_value: u32,
     ) {
         let data = atom_value.to_ne_bytes();
         unsafe {
-            raw::xcb_change_property(
+            _raw::xcb_change_property(
                 conn,
-                raw::xcb_prop_mode::XCB_PROP_MODE_REPLACE as u8,
+                _raw::xcb_prop_mode::XCB_PROP_MODE_REPLACE as u8,
                 window,
                 property,
-                raw::xcb_atom_enum_t::XCB_ATOM_ATOM as u32,
+                _raw::xcb_atom_enum_t::XCB_ATOM_ATOM as u32,
                 32,
                 1,
                 data.as_ptr(),

@@ -3,7 +3,7 @@
 //! Defines [`XWindow`].
 //
 
-use super::raw;
+use super::_raw;
 use crate::{Extent, Position, XDisplay, XError, lets};
 
 /// The inner state for [`XWindow`], stored in [`XDisplay`].
@@ -24,7 +24,7 @@ pub(crate) struct XWindowState {
 /// required to manage the window, its graphics context, and its basic geometry.
 #[derive(Debug)]
 pub struct XWindow {
-    pub(super) display: *mut raw::xcb_connection_t,
+    pub(super) display: *mut _raw::xcb_connection_t,
     pub(super) win: u32,
     pub(super) gc: u32,
 }
@@ -35,49 +35,49 @@ impl XWindow {
     pub fn new(display: &mut XDisplay, x: i16, y: i16, width: u16, height: u16, border_width: u16)
         -> Result<Self, XError> {
         let conn = display.conn;
-        let win: u32 = unsafe { raw::xcb_generate_id(conn) }; // generate window ID
+        let win: u32 = unsafe { _raw::xcb_generate_id(conn) }; // generate window ID
         let screen = unsafe { &*display.screen }; // extract screen
 
         // create window, supported events:
         let values: [u32; 2] = [screen.black_pixel,
             // key input
-            raw::XCB_EVENT_MASK_KEY_PRESS
-            | raw::XCB_EVENT_MASK_KEY_RELEASE
+            _raw::XCB_EVENT_MASK_KEY_PRESS
+            | _raw::XCB_EVENT_MASK_KEY_RELEASE
             // mouse button input
-            | raw::XCB_EVENT_MASK_BUTTON_PRESS
-            | raw::XCB_EVENT_MASK_BUTTON_RELEASE
-            | raw::XCB_EVENT_MASK_POINTER_MOTION
-            | raw::XCB_EVENT_MASK_BUTTON_MOTION
+            | _raw::XCB_EVENT_MASK_BUTTON_PRESS
+            | _raw::XCB_EVENT_MASK_BUTTON_RELEASE
+            | _raw::XCB_EVENT_MASK_POINTER_MOTION
+            | _raw::XCB_EVENT_MASK_BUTTON_MOTION
             // pointer enter/leave
-            | raw::XCB_EVENT_MASK_ENTER_WINDOW
-            | raw::XCB_EVENT_MASK_LEAVE_WINDOW
+            | _raw::XCB_EVENT_MASK_ENTER_WINDOW
+            | _raw::XCB_EVENT_MASK_LEAVE_WINDOW
             // focus in/out
-            | raw::XCB_EVENT_MASK_FOCUS_CHANGE
+            | _raw::XCB_EVENT_MASK_FOCUS_CHANGE
             // expose
-            | raw::XCB_EVENT_MASK_EXPOSURE
-            | raw::XCB_EVENT_MASK_STRUCTURE_NOTIFY
-            | raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
-            | raw::XCB_EVENT_MASK_PROPERTY_CHANGE
-            // | raw::XCB_EVENT_MASK_RESIZE_REDIRECT // only intended for window managers
-            // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY
-            // | raw::XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT
+            | _raw::XCB_EVENT_MASK_EXPOSURE
+            | _raw::XCB_EVENT_MASK_STRUCTURE_NOTIFY
+            | _raw::XCB_EVENT_MASK_VISIBILITY_CHANGE
+            | _raw::XCB_EVENT_MASK_PROPERTY_CHANGE
+            // | _raw::XCB_EVENT_MASK_RESIZE_REDIRECT // only intended for window managers
+            // | _raw::XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY
+            // | _raw::XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT
         ];
-        let mask: u32 = raw::XCB_CW_BACK_PIXEL | raw::XCB_CW_EVENT_MASK;
+        let mask: u32 = _raw::XCB_CW_BACK_PIXEL | _raw::XCB_CW_EVENT_MASK;
         unsafe {
-            raw::xcb_create_window(conn, screen.root_depth, win, screen.root, x, y, width, height,
-                border_width, raw::XCB_WINDOW_CLASS_INPUT_OUTPUT, screen.root_visual, mask,
+            _raw::xcb_create_window(conn, screen.root_depth, win, screen.root, x, y, width, height,
+                border_width, _raw::XCB_WINDOW_CLASS_INPUT_OUTPUT, screen.root_visual, mask,
                 values.as_ptr());
         }
 
         // tell WM we are intentionally specifying a position
-        let hints = raw::XSizeHints::new().set_position(x, y);
+        let hints = _raw::XSizeHints::new().set_position(x, y);
         hints.set_on(conn, win, display.atoms.wm_normal_hints);
 
         // create graphic context
-        let gc: u32 = unsafe { raw::xcb_generate_id(conn) };
+        let gc: u32 = unsafe { _raw::xcb_generate_id(conn) };
         let gc_values: [u32; 1] = [screen.black_pixel];
-        unsafe { raw::xcb_create_gc(conn, gc, win, raw::XCB_GC_FOREGROUND, gc_values.as_ptr()); }
-        unsafe { raw::xcb_map_window(conn, win); } // show window
+        unsafe { _raw::xcb_create_gc(conn, gc, win, _raw::XCB_GC_FOREGROUND, gc_values.as_ptr()); }
+        unsafe { _raw::xcb_map_window(conn, win); } // show window
 
         // set window properties
         display.atoms.set_property_atom(conn, win,
@@ -128,8 +128,10 @@ impl XWindow {
     /// Writes image bytes into the window using XCB `PutImage`.
     pub fn put_image_bytes(&self, width: u16, height: u16, depth: u8, data: &[u8]) {
         lets![dst_x=0, dst_y=0, left_pad=0];
-        unsafe { raw::xcb_put_image(self.display, raw::XCB_IMAGE_FORMAT_Z_PIXMAP, self.win, self.gc,
-            width, height, dst_x, dst_y, left_pad, depth, data.len() as u32, data.as_ptr()); }
+        unsafe {
+            _raw::xcb_put_image(self.display, _raw::XCB_IMAGE_FORMAT_Z_PIXMAP, self.win, self.gc,
+                width, height, dst_x, dst_y, left_pad, depth, data.len() as u32, data.as_ptr());
+        }
     }
 
     /// Writes a tightly packed 32-bit pixel buffer into the window using XCB.
@@ -144,7 +146,9 @@ impl XWindow {
     ///
     /// Coordinates are relative to the window's origin in the X11 pixel grid.
     pub fn fill_rect(&self, pos: Position<i16, 2>, ext: Extent<u16, 2>) {
-        let rect = raw::xcb_rectangle_t::new(pos, ext);
-        unsafe { raw::xcb_poly_fill_rectangle(self.display, self.win, self.gc, 1, &rect as *const _); }
+        let rect = _raw::xcb_rectangle_t::new(pos, ext);
+        unsafe {
+            _raw::xcb_poly_fill_rectangle(self.display, self.win, self.gc, 1, &rect as *const _);
+        }
     }
 }

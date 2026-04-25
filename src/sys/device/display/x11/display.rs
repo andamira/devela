@@ -6,7 +6,7 @@
 #![allow(unused)]
 
 use super::{
-    KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XShmCaps, XWindowState, XkbState, raw,
+    _raw, KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XShmCaps, XWindowState, XkbState,
 };
 use crate::{ConstInit, Extent, Libc, Position, Ptr, Vec, c_int, is, lets, vec_ as vec};
 use crate::{
@@ -33,8 +33,8 @@ pub(crate) struct XWindowConfigureDelta {
 /// Represents the root environment required to create windows and interact with the X server.
 #[derive(Debug)]
 pub struct XDisplay {
-    pub(super) conn: *mut raw::xcb_connection_t,
-    pub(super) screen: *const raw::xcb_screen_t,
+    pub(super) conn: *mut _raw::xcb_connection_t,
+    pub(super) screen: *const _raw::xcb_screen_t,
     screen_num: c_int,
     pub(super) depth: u8,
     pub(super) image_format: XImageFormat,
@@ -42,7 +42,7 @@ pub struct XDisplay {
     xkb: XkbState,
     pub(super) atoms: XAtoms,
     /* repeat detection */
-    pub(super) pending: Option<*mut raw::xcb_generic_event_t>,
+    pub(super) pending: Option<*mut _raw::xcb_generic_event_t>,
     pub(super) repeat_filter: KeyRepeatFilter,
     pub(super) windows: Vec<(u32, XWindowState)>,
     // custom synthetic event queue
@@ -55,24 +55,24 @@ impl XDisplay {
     pub fn open() -> Result<Self, XError> {
         // open connection
         let mut screen_num = 0;
-        let conn = unsafe { raw::xcb_connect(Ptr::null(), &mut screen_num as *mut c_int) };
+        let conn = unsafe { _raw::xcb_connect(Ptr::null(), &mut screen_num as *mut c_int) };
         is! { conn.is_null(), return Err(XError::ConnectionFailed) }
-        if unsafe { raw::xcb_connection_has_error(conn) } != 0 {
-            unsafe { raw::xcb_disconnect(conn) };
+        if unsafe { _raw::xcb_connection_has_error(conn) } != 0 {
+            unsafe { _raw::xcb_disconnect(conn) };
             return Err(XError::ConnectionFailed);
         }
         // get setup
-        let setup = unsafe { raw::xcb_get_setup(conn) };
+        let setup = unsafe { _raw::xcb_get_setup(conn) };
         if setup.is_null() {
-            unsafe { raw::xcb_disconnect(conn) };
+            unsafe { _raw::xcb_disconnect(conn) };
             return Err(XError::SetupFailed);
         }
-        let iter = unsafe { raw::xcb_setup_roots_iterator(setup) };
+        let iter = unsafe { _raw::xcb_setup_roots_iterator(setup) };
         if iter.data.is_null() {
-            unsafe { raw::xcb_disconnect(conn) };
+            unsafe { _raw::xcb_disconnect(conn) };
             return Err(XError::NoScreensFound);
         }
-        let screen: *const raw::xcb_screen_t = iter.data;
+        let screen: *const _raw::xcb_screen_t = iter.data;
         let depth = unsafe { (*screen).root_depth };
         let image_format = Self::query_image_format(setup, depth)?;
         let shm_caps = Self::query_shm_caps(conn);
@@ -80,12 +80,12 @@ impl XDisplay {
         // extension setup hand-shake
         lets![mut major = 0, mut minor = 0, mut ev = 0, mut err = 0];
         let ok = unsafe {
-            raw::xkb_x11_setup_xkb_extension(
+            _raw::xkb_x11_setup_xkb_extension(
                 conn, 1, 0, 0, &mut major, &mut minor, &mut ev, &mut err,
             )
         };
         if ok <= 0 {
-            unsafe { raw::xcb_disconnect(conn) };
+            unsafe { _raw::xcb_disconnect(conn) };
             return Err(XError::ExtensionUnavailable("xkb-setup"));
         }
         let xkb = XkbState::new(conn)?;
@@ -111,7 +111,9 @@ impl XDisplay {
     ///
     pub const fn scanline_pad_bits(&self) -> u8 { self.image_format.scanline_pad_bits }
     ///
-    pub const fn bytes_per_line(&self, width: u16) -> u32 { self.image_format.bytes_per_line(width) }
+    pub const fn bytes_per_line(&self, width: u16) -> u32 {
+        self.image_format.bytes_per_line(width)
+    }
 
     /// Returns whether MIT-SHM is available on this display.
     pub const fn has_shm(&self) -> bool { self.shm_caps.is_some() }
@@ -146,7 +148,7 @@ impl XDisplay {
 
     /// Flushes pending XCB commands.
     #[inline(always)]
-    pub fn flush(&self) { unsafe { raw::xcb_flush(self.conn); } }
+    pub fn flush(&self) { unsafe { _raw::xcb_flush(self.conn); } }
 }
 
 // Internal methods
@@ -156,12 +158,12 @@ impl XDisplay {
 // - events
 impl XDisplay {
     /// Returns the underlying XCB connection.
-    pub(crate) fn conn(&self) -> *mut raw::xcb_connection_t {
+    pub(crate) fn conn(&self) -> *mut _raw::xcb_connection_t {
         self.conn
     }
 
     /// Returns the default screen for this display.
-    pub(crate) fn screen(&self) -> &raw::xcb_screen_t {
+    pub(crate) fn screen(&self) -> &_raw::xcb_screen_t {
         unsafe { &*self.screen }
     }
 
@@ -204,8 +206,8 @@ impl XDisplay {
             return false;
         };
         unsafe {
-            raw::xcb_free_gc(self.conn, gc);
-            raw::xcb_destroy_window(self.conn, window_id);
+            _raw::xcb_free_gc(self.conn, gc);
+            _raw::xcb_destroy_window(self.conn, window_id);
         }
         self.flush();
         true
@@ -277,24 +279,24 @@ impl XDisplay {
     /* capabilties */
 
     fn query_image_format(
-        setup: *const raw::xcb_setup_t,
+        setup: *const _raw::xcb_setup_t,
         depth: u8,
     ) -> Result<XImageFormat, XError> {
-        let mut it = unsafe { raw::xcb_setup_pixmap_formats_iterator(setup) };
+        let mut it = unsafe { _raw::xcb_setup_pixmap_formats_iterator(setup) };
         while it.rem > 0 && !it.data.is_null() {
             let fmt = unsafe { &*it.data };
             if fmt.depth == depth {
                 return Ok(XImageFormat::new(fmt.depth, fmt.bits_per_pixel, fmt.scanline_pad));
             }
-            unsafe { raw::xcb_format_next(&mut it) };
+            unsafe { _raw::xcb_format_next(&mut it) };
         }
         Err(XError::Other("no pixmap format for root depth"))
     }
-    fn query_shm_caps(conn: *mut raw::xcb_connection_t) -> Option<XShmCaps> {
+    fn query_shm_caps(conn: *mut _raw::xcb_connection_t) -> Option<XShmCaps> {
         unsafe {
-            let cookie = raw::xcb_shm_query_version(conn);
+            let cookie = _raw::xcb_shm_query_version(conn);
             let mut err = core::ptr::null_mut();
-            let reply = raw::xcb_shm_query_version_reply(conn, cookie, &mut err);
+            let reply = _raw::xcb_shm_query_version_reply(conn, cookie, &mut err);
             if !err.is_null() || reply.is_null() {
                 return None;
             }
@@ -425,9 +427,9 @@ impl XDisplay {
     /// Consumes a previously buffered event if one exists; otherwise polls
     /// the connection with `xcb_poll_for_event`. Returns `None` if no event
     /// is available at this time.
-    fn next_raw_event(&mut self) -> Option<*mut raw::xcb_generic_event_t> {
+    fn next_raw_event(&mut self) -> Option<*mut _raw::xcb_generic_event_t> {
         is! { let Some(ev) = self.pending.take(), return Some(ev) }
-        let ev = unsafe { raw::xcb_poll_for_event(self.conn) };
+        let ev = unsafe { _raw::xcb_poll_for_event(self.conn) };
         if ev.is_null() { None } else { Some(ev) }
     }
 
@@ -436,9 +438,9 @@ impl XDisplay {
     /// If no event is currently buffered, attempts a non-blocking poll and,
     /// if successful, stores the event in the internal `pending` slot.
     /// Returns the buffered pointer, or `None` if no event is available.
-    fn peek_raw_event(&mut self) -> Option<*mut raw::xcb_generic_event_t> {
+    fn peek_raw_event(&mut self) -> Option<*mut _raw::xcb_generic_event_t> {
         if self.pending.is_none() {
-            let ev = unsafe { raw::xcb_poll_for_event(self.conn) };
+            let ev = unsafe { _raw::xcb_poll_for_event(self.conn) };
             is! { !ev.is_null(), self.pending = Some(ev) }
         }
         self.pending
@@ -462,7 +464,7 @@ impl XDisplay {
     /// Only returns `None` if the connection is in an error state.
     fn wait_raw_event(&mut self) -> Option<XEvent> {
         is! { let Some(ev) = self.pending.take(), return Some(XEvent { raw: ev }) }
-        let ev = unsafe { raw::xcb_wait_for_event(self.conn) };
+        let ev = unsafe { _raw::xcb_wait_for_event(self.conn) };
         if ev.is_null() { None } else { Some(XEvent { raw: ev }) }
     }
 
@@ -478,8 +480,8 @@ impl XDisplay {
         if let Some(next) = self.peek_raw_event() {
             unsafe {
                 let ty = (*next).response_type & 0x7F;
-                if ty == raw::xcb_event_code::XCB_KEY_PRESS as u8 {
-                    let kpev = next as *const raw::xcb_key_press_event_t;
+                if ty == _raw::xcb_event_code::XCB_KEY_PRESS as u8 {
+                    let kpev = next as *const _raw::xcb_key_press_event_t;
                     is! { (*kpev).detail == keycode && (*kpev).time == timestamp, return false }
                 }
             }
@@ -490,6 +492,6 @@ impl XDisplay {
 
 impl Drop for XDisplay {
     fn drop(&mut self) {
-        unsafe { raw::xcb_disconnect(self.conn) }
+        unsafe { _raw::xcb_disconnect(self.conn) }
     }
 }

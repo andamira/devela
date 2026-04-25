@@ -2,7 +2,7 @@
 //
 //! Defines [`XShmCaps`], [`XShmBuffer`].
 
-use super::super::raw;
+use super::super::_raw;
 use crate::{Libc, XDisplay, XError, XImageFormat, XImageStore, XWindow};
 
 #[doc = crate::_tags!(unix runtime)]
@@ -32,8 +32,8 @@ pub(crate) struct XShmCaps {
 // A future variant may support `xcb_shm_attach_fd` for caller-managed backing.
 #[derive(Debug)]
 pub struct XShmBuffer {
-    pub(super) conn: *mut raw::xcb_connection_t,
-    pub(super) shmseg: raw::xcb_shm_seg_t,
+    pub(super) conn: *mut _raw::xcb_connection_t,
+    pub(super) shmseg: _raw::xcb_shm_seg_t,
 
     pub(super) width: u16,
     pub(super) height: u16,
@@ -67,11 +67,11 @@ impl XShmBuffer {
         }
         unsafe {
             let conn = display.conn;
-            let shmseg = raw::xcb_generate_id(conn);
+            let shmseg = _raw::xcb_generate_id(conn);
 
-            let cookie = raw::xcb_shm_create_segment(conn, shmseg, len_bytes as u32, 0);
+            let cookie = _raw::xcb_shm_create_segment(conn, shmseg, len_bytes as u32, 0);
             let mut err = core::ptr::null_mut();
-            let reply = raw::xcb_shm_create_segment_reply(conn, cookie, &mut err);
+            let reply = _raw::xcb_shm_create_segment_reply(conn, cookie, &mut err);
 
             if !err.is_null() {
                 let code = (*err).error_code;
@@ -86,7 +86,7 @@ impl XShmBuffer {
                 return Err(XError::Other("xcb_shm_create_segment returned no file descriptor"));
             }
 
-            let fds = raw::xcb_shm_create_segment_reply_fds(conn, reply);
+            let fds = _raw::xcb_shm_create_segment_reply_fds(conn, reply);
             if fds.is_null() {
                 Libc::free(reply.cast());
                 return Err(XError::Other("xcb_shm_create_segment_reply_fds returned null"));
@@ -103,7 +103,7 @@ impl XShmBuffer {
             );
             if Libc::is_map_failed(map) {
                 Libc::close(fd);
-                let _ = raw::xcb_shm_detach(conn, shmseg);
+                let _ = _raw::xcb_shm_detach(conn, shmseg);
                 return Err(XError::Other("mmap failed for X11 SHM segment"));
             }
             // the mapping stays valid after close()
@@ -134,7 +134,7 @@ impl XShmBuffer {
     /// Presents the current pixels to `window`.
     pub fn present(&self, _display: &mut XDisplay, window: &XWindow) -> Result<(), XError> {
         unsafe {
-            raw::xcb_shm_put_image(
+            _raw::xcb_shm_put_image(
                 self.conn,
                 window.win,
                 window.gc,
@@ -147,7 +147,7 @@ impl XShmBuffer {
                 0,           // dst_x
                 0,           // dst_y
                 self.format.depth,
-                raw::XCB_IMAGE_FORMAT_Z_PIXMAP,
+                _raw::XCB_IMAGE_FORMAT_Z_PIXMAP,
                 0, // send_event
                 self.shmseg,
                 0, // offset
@@ -179,7 +179,7 @@ impl XImageStore for XShmBuffer {
 impl Drop for XShmBuffer {
     fn drop(&mut self) {
         unsafe {
-            let _ = raw::xcb_shm_detach(self.conn, self.shmseg);
+            let _ = _raw::xcb_shm_detach(self.conn, self.shmseg);
             if !self.bytes.is_null() && self.len_bytes != 0 {
                 let _ = Libc::munmap(self.bytes.cast(), self.len_bytes);
             }

@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::iccm
+// devela::sys::display::x11::_raw::iccm
 //
 //! ICCCM window-manager hint structures (`Xutil.h`).
 //!
@@ -17,7 +17,7 @@
 // - XSizeRatio
 // - XWinGravity
 
-use super::super::raw;
+use super::super::_raw;
 
 /* constants */
 
@@ -166,10 +166,10 @@ impl XSizeHints {
     }
 
     /// Pushes `WM_NORMAL_HINTS` to the server.
-    pub fn set_on(&self, conn: *mut raw::xcb_connection_t, win: u32, atom_normal_hints: u32) {
+    pub fn set_on(&self, conn: *mut _raw::xcb_connection_t, win: u32, atom_normal_hints: u32) {
         let arr = self.as_u32_array();
-        raw::change_property_u32(conn, win, atom_normal_hints,
-            raw::xcb_atom_enum_t::XCB_ATOM_WM_SIZE_HINTS as u32, &arr);
+        _raw::change_property_u32(conn, win, atom_normal_hints,
+            _raw::xcb_atom_enum_t::XCB_ATOM_WM_SIZE_HINTS as u32, &arr);
     }
     /// Converts the ICCCM struct into a 20-long array of 32-bit units.
     pub fn as_u32_array(&self) -> [u32; 20] {

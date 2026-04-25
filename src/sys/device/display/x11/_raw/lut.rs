@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::lut
+// devela::sys::display::x11::_raw::lut
 //
 //! Defines [`LUT_SCANCODE_TO_KEY`].
 //

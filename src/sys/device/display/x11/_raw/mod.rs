@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw
+// devela::sys::display::x11::_raw
 //
 //! Raw XCB bindings.
 //!

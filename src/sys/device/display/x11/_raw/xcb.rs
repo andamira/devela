@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::xcb
+// devela::sys::display::x11::_raw::xcb
 //
 //! from `xcb.h`, `xcb_ext.h`, `xproto.h`.
 //

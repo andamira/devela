@@ -1,4 +1,4 @@
-// devela::sys::display::x11::raw::_helper
+// devela::sys::display::x11::_raw::_helper
 //
 //! Defines convenience helpers.
 //

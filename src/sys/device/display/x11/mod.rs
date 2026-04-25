@@ -8,7 +8,7 @@
 // - [library functions](https://www.x.org/releases/current/doc/man/man3/)
 //
 
-mod raw; //
+mod _raw; //
 
 mod atoms; // (XAtoms)
 mod display; // XDisplay
@@ -34,8 +34,8 @@ crate::structural_mods! { // _mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::{
+            _raw::*,
             atoms::*,
-            raw::*,
             xkb::*,
         };
     }

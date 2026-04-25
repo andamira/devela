@@ -7,7 +7,7 @@
 // - struct XkbInfo
 // - struct XkbState
 
-use super::{XError, raw};
+use super::{_raw, XError};
 use crate::{Bitwise, Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
@@ -84,7 +84,7 @@ impl XkbKeyInfo {
 //     level5: u32,
 // }
 // impl XkbModIndices {
-//     fn new(keymap: *mut raw::xkb_keymap) -> Self {
+//     fn new(keymap: *mut _raw::xkb_keymap) -> Self {
 //         Self {
 //             shift:   Self::index(keymap, "Shift\0"),
 //             lock:    Self::index(keymap, "Lock\0"),
@@ -99,8 +99,8 @@ impl XkbKeyInfo {
 //         }
 //     }
 //     #[inline(always)]
-//     fn index(keymap: *mut raw::xkb_keymap, name: &str) -> u32 {
-//         unsafe { raw::xkb_keymap_mod_get_index(keymap, name.as_ptr().cast()) }
+//     fn index(keymap: *mut _raw::xkb_keymap, name: &str) -> u32 {
+//         unsafe { _raw::xkb_keymap_mod_get_index(keymap, name.as_ptr().cast()) }
 //     }
 // }
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -110,7 +110,7 @@ impl XkbKeyInfo {
 //     scroll: u32,
 // }
 // impl XkbLedIndices {
-//     fn new(keymap: *mut raw::xkb_keymap) -> Self {
+//     fn new(keymap: *mut _raw::xkb_keymap) -> Self {
 //         Self {
 //             caps:   Self::index(keymap, "Caps Lock\0"),
 //             num:    Self::index(keymap, "Num Lock\0"),
@@ -118,8 +118,8 @@ impl XkbKeyInfo {
 //         }
 //     }
 //     #[inline(always)]
-//     fn index(keymap: *mut raw::xkb_keymap, name: &str) -> u32 {
-//         unsafe { raw::xkb_keymap_led_get_index(keymap, name.as_ptr().cast()) }
+//     fn index(keymap: *mut _raw::xkb_keymap, name: &str) -> u32 {
+//         unsafe { _raw::xkb_keymap_led_get_index(keymap, name.as_ptr().cast()) }
 //     }
 // }
 
@@ -135,17 +135,17 @@ impl XkbKeyInfo {
 pub(crate) struct XkbState {
     /// The XKB context.
     #[allow(dead_code, reason = "appears unused, but must outlive `keymap` and `state`")]
-    ctx: *mut raw::xkb_context,
+    ctx: *mut _raw::xkb_context,
 
     /// Compiled keymap for the current keyboard device.
     ///
     /// Provides layout, symbol tables, physical positions, etc.
-    keymap: *mut raw::xkb_keymap,
+    keymap: *mut _raw::xkb_keymap,
 
     /// Active XKB state for querying keysyms and modifiers.
     ///
     /// Updated implicitly according to X11 events.
-    pub(crate) state: *mut raw::xkb_state,
+    pub(crate) state: *mut _raw::xkb_state,
     // // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
     // /// Cached key modifier indices.
     // mod_idx: XkbModIndices,
@@ -163,23 +163,23 @@ impl XkbState {
     /// - modifier interpretation.
     ///
     /// Returns an [`XError`] if the XKB extension cannot be used.
-    pub fn new(conn: *mut raw::xcb_connection_t) -> Result<Self, XError> {
+    pub fn new(conn: *mut _raw::xcb_connection_t) -> Result<Self, XError> {
         // context
-        let ctx = unsafe { raw::xkb_context_new(0) };
+        let ctx = unsafe { _raw::xkb_context_new(0) };
         is![ctx.is_null(), return Err(XError::ExtensionUnavailable("xkb-context"))];
 
         // find core keyboard device
-        let device_id = unsafe { raw::xkb_x11_get_core_keyboard_device_id(conn) };
+        let device_id = unsafe { _raw::xkb_x11_get_core_keyboard_device_id(conn) };
         is![device_id < 0, return Err(XError::ExtensionUnavailable("xkb-core-keyboard"))];
 
         // load keymap from device
-        let keymap = unsafe { raw::xkb_x11_keymap_new_from_device(ctx, conn, device_id, 0) };
+        let keymap = unsafe { _raw::xkb_x11_keymap_new_from_device(ctx, conn, device_id, 0) };
         is![keymap.is_null(), return Err(XError::ExtensionUnavailable("xkb-keymap"))];
 
         // create XKB state
-        let state = unsafe { raw::xkb_x11_state_new_from_device(keymap, conn, device_id) };
+        let state = unsafe { _raw::xkb_x11_state_new_from_device(keymap, conn, device_id) };
         if state.is_null() {
-            unsafe { raw::xkb_keymap_unref(keymap) };
+            unsafe { _raw::xkb_keymap_unref(keymap) };
             return Err(XError::ExtensionUnavailable("xkb-state"));
         }
 
@@ -199,8 +199,8 @@ impl XkbState {
     /// (`key_mods`, `key_semantic`, etc.) reflect the new modifier and group state.
     ///
     /// This is called from [`crate::XEvent::to_update_key`].
-    pub fn update(&self, keycode: u8, dir: raw::xkb_key_direction ) {
-        unsafe { raw::xkb_state_update_key(self.state, keycode as u32, dir); }
+    pub fn update(&self, keycode: u8, dir: _raw::xkb_key_direction ) {
+        unsafe { _raw::xkb_state_update_key(self.state, keycode as u32, dir); }
     }
 
     /// Translates an X11 keycode and modifier bitmask into semantic + physical keys.
@@ -234,22 +234,22 @@ impl XkbState {
     // helper to check effective modifier state
     // #[inline(always)]
     // fn mod_active(&self, idx: u32) -> bool {
-    //     idx != raw::XKB_MOD_INVALID && unsafe {
-    //         raw::xkb_state_mod_index_is_active(self.state, idx,
-    //             raw::xkb_state_component::XKB_STATE_MODS_EFFECTIVE) } != 0
+    //     idx != _raw::XKB_MOD_INVALID && unsafe {
+    //         _raw::xkb_state_mod_index_is_active(self.state, idx,
+    //             _raw::xkb_state_component::XKB_STATE_MODS_EFFECTIVE) } != 0
     // }
 
     /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
         let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::empty());
-        is![x.is_set_mask(raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_CONTROL), m.set_control()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_1), m.set_alt()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_2), m.set_num_lock()];
-        // is![x.is_set_mask(raw::XCB_MOD_MASK_3), unimplemented!()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_4), m.set_super()];
-        is![x.is_set_mask(raw::XCB_MOD_MASK_4), m.set_alt_gr()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_CONTROL), m.set_control()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_1), m.set_alt()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_2), m.set_num_lock()];
+        // is![x.is_set_mask(_raw::XCB_MOD_MASK_3), unimplemented!()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_4), m.set_super()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_4), m.set_alt_gr()];
         m
     }
 
@@ -260,14 +260,14 @@ impl XkbState {
     #[inline(always)]
     pub fn key_semantic(&self, keycode: u8) -> Key {
         // try to get special keys via keysym (arrows, F1, Shift, etc.)
-        let sym = unsafe { raw::xkb_state_key_get_one_sym(self.state, keycode as u32) };
+        let sym = unsafe { _raw::xkb_state_key_get_one_sym(self.state, keycode as u32) };
         if let Some(key) = Self::map_special_keys(sym) { return key; }
 
         // try to get Unicode (ñ, ç, á, € …)
-        let utf32 = unsafe { raw::xkb_state_key_get_utf32(self.state, keycode as u32) };
+        let utf32 = unsafe { _raw::xkb_state_key_get_utf32(self.state, keycode as u32) };
         if utf32 != 0 {
             cfg_select! { all(feature = "unsafe_str", not(feature = "safe_sys")) => {
-                // SAFETY: we trust the fn raw::xkb_state_key_get_utf32
+                // SAFETY: we trust the fn _raw::xkb_state_key_get_utf32
                 unsafe { Key::Char(char::from_u32_unchecked(utf32)) }
             } _ => {
                 Key::Char(char::from_u32(utf32).expect("valid unicode scalar"))
@@ -300,71 +300,71 @@ impl XkbState {
     const fn map_special_keys(sym: u32) -> Option<Key> {
         let k = match sym {
             /* control keys */
-            raw::XKB_KEY_Return       => Key::Enter,
-            raw::XKB_KEY_Tab          => Key::Tab,
-            raw::XKB_KEY_BackSpace    => Key::Backspace,
-            raw::XKB_KEY_Escape       => Key::Escape,
-            raw::XKB_KEY_Delete       => Key::Delete,
-            raw::XKB_KEY_KP_Delete    => Key::Delete,
-            raw::XKB_KEY_Insert       => Key::Insert,
-            raw::XKB_KEY_KP_Insert    => Key::Insert,
+            _raw::XKB_KEY_Return       => Key::Enter,
+            _raw::XKB_KEY_Tab          => Key::Tab,
+            _raw::XKB_KEY_BackSpace    => Key::Backspace,
+            _raw::XKB_KEY_Escape       => Key::Escape,
+            _raw::XKB_KEY_Delete       => Key::Delete,
+            _raw::XKB_KEY_KP_Delete    => Key::Delete,
+            _raw::XKB_KEY_Insert       => Key::Insert,
+            _raw::XKB_KEY_KP_Insert    => Key::Insert,
 
             /* navigation */
-            raw::XKB_KEY_Left         => Key::Left,
-            raw::XKB_KEY_Right        => Key::Right,
-            raw::XKB_KEY_Up           => Key::Up,
-            raw::XKB_KEY_Down         => Key::Down,
-            raw::XKB_KEY_Home         => Key::Home,
-            raw::XKB_KEY_End          => Key::End,
-            raw::XKB_KEY_Page_Up      => Key::PageUp,
-            raw::XKB_KEY_Page_Down    => Key::PageDown,
+            _raw::XKB_KEY_Left         => Key::Left,
+            _raw::XKB_KEY_Right        => Key::Right,
+            _raw::XKB_KEY_Up           => Key::Up,
+            _raw::XKB_KEY_Down         => Key::Down,
+            _raw::XKB_KEY_Home         => Key::Home,
+            _raw::XKB_KEY_End          => Key::End,
+            _raw::XKB_KEY_Page_Up      => Key::PageUp,
+            _raw::XKB_KEY_Page_Down    => Key::PageDown,
 
             /* lock keys */
-            raw::XKB_KEY_Num_Lock     => Key::NumLock,
-            raw::XKB_KEY_Caps_Lock    => Key::CapsLock,
-            raw::XKB_KEY_Scroll_Lock  => Key::ScrollLock,
+            _raw::XKB_KEY_Num_Lock     => Key::NumLock,
+            _raw::XKB_KEY_Caps_Lock    => Key::CapsLock,
+            _raw::XKB_KEY_Scroll_Lock  => Key::ScrollLock,
 
             /* dead keys */
             0xfe50 ..= 0xfe93 => Key::Dead(KeyDead::from_keysym(sym)),
 
             /* modifiers */
-            raw::XKB_KEY_Shift_L      => Key::Mod(KeyMod::LeftShift),
-            raw::XKB_KEY_Shift_R      => Key::Mod(KeyMod::RightShift),
-            raw::XKB_KEY_Control_L    => Key::Mod(KeyMod::LeftControl),
-            raw::XKB_KEY_Control_R    => Key::Mod(KeyMod::RightControl),
-            raw::XKB_KEY_Alt_L        => Key::Mod(KeyMod::LeftAlt),
-            raw::XKB_KEY_Alt_R        => Key::Mod(KeyMod::RightAlt),
-            raw::XKB_KEY_Super_L      => Key::Mod(KeyMod::LeftSuper),
-            raw::XKB_KEY_Super_R      => Key::Mod(KeyMod::RightSuper),
+            _raw::XKB_KEY_Shift_L      => Key::Mod(KeyMod::LeftShift),
+            _raw::XKB_KEY_Shift_R      => Key::Mod(KeyMod::RightShift),
+            _raw::XKB_KEY_Control_L    => Key::Mod(KeyMod::LeftControl),
+            _raw::XKB_KEY_Control_R    => Key::Mod(KeyMod::RightControl),
+            _raw::XKB_KEY_Alt_L        => Key::Mod(KeyMod::LeftAlt),
+            _raw::XKB_KEY_Alt_R        => Key::Mod(KeyMod::RightAlt),
+            _raw::XKB_KEY_Super_L      => Key::Mod(KeyMod::LeftSuper),
+            _raw::XKB_KEY_Super_R      => Key::Mod(KeyMod::RightSuper),
             0xfe03..=0xfe05           => Key::Mod(KeyMod::IsoLevel3Shift),
-            raw::XKB_KEY_Mode_switch  => Key::Mod(KeyMod::AltGr),
+            _raw::XKB_KEY_Mode_switch  => Key::Mod(KeyMod::AltGr),
             0xfe11..=0xfe13           => Key::Mod(KeyMod::IsoLevel5Shift),
 
             /* function keys */
-            sym if (sym >= raw::XKB_KEY_F1 && sym <= raw::XKB_KEY_F35) => {
-                let n = (sym - raw::XKB_KEY_F1 + 1) as u8;
+            sym if (sym >= _raw::XKB_KEY_F1 && sym <= _raw::XKB_KEY_F35) => {
+                let n = (sym - _raw::XKB_KEY_F1 + 1) as u8;
                 Key::Fn(n)
             }
 
             /* keypad numeric keys */
-            raw::XKB_KEY_KP_0         => Key::Pad(KeyPad::Num0),
-            raw::XKB_KEY_KP_1         => Key::Pad(KeyPad::Num1),
-            raw::XKB_KEY_KP_2         => Key::Pad(KeyPad::Num2),
-            raw::XKB_KEY_KP_3         => Key::Pad(KeyPad::Num3),
-            raw::XKB_KEY_KP_4         => Key::Pad(KeyPad::Num4),
-            raw::XKB_KEY_KP_5         => Key::Pad(KeyPad::Num5),
-            raw::XKB_KEY_KP_6         => Key::Pad(KeyPad::Num6),
-            raw::XKB_KEY_KP_7         => Key::Pad(KeyPad::Num7),
-            raw::XKB_KEY_KP_8         => Key::Pad(KeyPad::Num8),
-            raw::XKB_KEY_KP_9         => Key::Pad(KeyPad::Num9),
-            raw::XKB_KEY_KP_Add       => Key::Pad(KeyPad::Add),
-            raw::XKB_KEY_KP_Subtract  => Key::Pad(KeyPad::Subtract),
-            raw::XKB_KEY_KP_Multiply  => Key::Pad(KeyPad::Multiply),
-            raw::XKB_KEY_KP_Divide    => Key::Pad(KeyPad::Divide),
-            raw::XKB_KEY_KP_Enter     => Key::Pad(KeyPad::Enter),
-            raw::XKB_KEY_KP_Equal     => Key::Pad(KeyPad::Equal),
-            raw::XKB_KEY_KP_Separator => Key::Pad(KeyPad::Comma),
-            raw::XKB_KEY_KP_Decimal   => Key::Pad(KeyPad::Decimal),
+            _raw::XKB_KEY_KP_0         => Key::Pad(KeyPad::Num0),
+            _raw::XKB_KEY_KP_1         => Key::Pad(KeyPad::Num1),
+            _raw::XKB_KEY_KP_2         => Key::Pad(KeyPad::Num2),
+            _raw::XKB_KEY_KP_3         => Key::Pad(KeyPad::Num3),
+            _raw::XKB_KEY_KP_4         => Key::Pad(KeyPad::Num4),
+            _raw::XKB_KEY_KP_5         => Key::Pad(KeyPad::Num5),
+            _raw::XKB_KEY_KP_6         => Key::Pad(KeyPad::Num6),
+            _raw::XKB_KEY_KP_7         => Key::Pad(KeyPad::Num7),
+            _raw::XKB_KEY_KP_8         => Key::Pad(KeyPad::Num8),
+            _raw::XKB_KEY_KP_9         => Key::Pad(KeyPad::Num9),
+            _raw::XKB_KEY_KP_Add       => Key::Pad(KeyPad::Add),
+            _raw::XKB_KEY_KP_Subtract  => Key::Pad(KeyPad::Subtract),
+            _raw::XKB_KEY_KP_Multiply  => Key::Pad(KeyPad::Multiply),
+            _raw::XKB_KEY_KP_Divide    => Key::Pad(KeyPad::Divide),
+            _raw::XKB_KEY_KP_Enter     => Key::Pad(KeyPad::Enter),
+            _raw::XKB_KEY_KP_Equal     => Key::Pad(KeyPad::Equal),
+            _raw::XKB_KEY_KP_Separator => Key::Pad(KeyPad::Comma),
+            _raw::XKB_KEY_KP_Decimal   => Key::Pad(KeyPad::Decimal),
 
             // no match => not a special key
             _ => return None,
@@ -383,16 +383,16 @@ impl XkbState {
     /// - basic system keys (Escape, Enter, etc.)
     #[inline(always)]
     const fn map_scancode_to_key(sc: u32) -> Key {
-        // raw::SCANCODE_TO_KEY.get(sc as usize).copied().unwrap_or(Key::Unknown)
-        raw::LUT_SCANCODE_TO_KEY[sc as usize]
+        // _raw::SCANCODE_TO_KEY.get(sc as usize).copied().unwrap_or(Key::Unknown)
+        _raw::LUT_SCANCODE_TO_KEY[sc as usize]
     }
 }
 
 impl Drop for XkbState {
     fn drop(&mut self) {
         unsafe {
-            raw::xkb_state_unref(self.state);
-            raw::xkb_keymap_unref(self.keymap);
+            _raw::xkb_state_unref(self.state);
+            _raw::xkb_keymap_unref(self.keymap);
         }
     }
 }

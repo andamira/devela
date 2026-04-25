@@ -3,7 +3,7 @@
 //! Defines [`XEvent`].
 //
 
-use super::{KeyRepeatFilter, XkbState, raw, xcb_event_code};
+use super::{_raw, KeyRepeatFilter, XkbState, xcb_event_code};
 use crate::{Bitwise, Libc, c_void, unwrap};
 use crate::{EventButton, EventButtonState, EventButtons, EventKey, EventTimestamp, KeyState};
 // use crate::{EventKind, EventWindow};
@@ -13,7 +13,7 @@ use crate::{EventButton, EventButtonState, EventButtons, EventKey, EventTimestam
 #[doc = crate::_doc_location!("sys/device/display/x11")]
 #[derive(Debug)]
 pub struct XEvent {
-    pub(super) raw: *mut raw::xcb_generic_event_t,
+    pub(super) raw: *mut _raw::xcb_generic_event_t,
 }
 
 #[rustfmt::skip]
@@ -24,7 +24,7 @@ impl XEvent {
 
     /// Returns the event timestamp in backend-specific milliseconds, if present.
     pub fn timestamp(&self) -> Option<EventTimestamp> {
-        type XcbAnyInputEvent = raw::xcb_key_press_event_t;
+        type XcbAnyInputEvent = _raw::xcb_key_press_event_t;
         if self.is_key() | self.is_button() | self.is_motion() | self.is_enter() | self.is_leave() {
             let ev = self.raw as *const XcbAnyInputEvent;
             Some(EventTimestamp::from_millis_u32((unsafe { *ev }).time))
@@ -36,7 +36,7 @@ impl XEvent {
     // TODO
     // pub fn event_kind(&self) -> EventKind {
     //     match self.response_type() {
-    //         raw::XCB_EXPOSE => EventKind::Window(EventWindow::RedrawRequested),
+    //         _raw::XCB_EXPOSE => EventKind::Window(EventWindow::RedrawRequested),
     //         _ => EventKind::None,
     //     }
     // }
@@ -117,67 +117,67 @@ impl XEvent {
     /* internals */
 
     /// Return some key event, if that's the kind.
-    pub(crate) fn as_raw_key(&self) -> Option<&raw::xcb_key_press_event_t> {
+    pub(crate) fn as_raw_key(&self) -> Option<&_raw::xcb_key_press_event_t> {
         if self.is_key() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_key_press_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_key_press_event_t) })
         } else { None }
     }
     /// Return some button event, if that's the kind.
-    pub(crate) fn as_raw_button(&self) -> Option<&raw::xcb_button_press_event_t> {
+    pub(crate) fn as_raw_button(&self) -> Option<&_raw::xcb_button_press_event_t> {
         if self.is_button() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_button_press_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_button_press_event_t) })
         } else { None }
     }
     /// Return some motion event, if that's the kind.
-    pub(crate) fn as_raw_motion(&self) -> Option<&raw::xcb_motion_notify_event_t> {
+    pub(crate) fn as_raw_motion(&self) -> Option<&_raw::xcb_motion_notify_event_t> {
         if self.is_motion() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_motion_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_motion_notify_event_t) })
         } else { None }
     }
     /// Return some enter event, if that's the kind.
-    pub(crate) fn as_raw_enter(&self) -> Option<&raw::xcb_enter_notify_event_t> {
+    pub(crate) fn as_raw_enter(&self) -> Option<&_raw::xcb_enter_notify_event_t> {
         if self.is_enter() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_enter_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_enter_notify_event_t) })
         } else { None }
     }
     /// Return some leave event, if that's the kind.
-    pub(crate) fn as_raw_leave(&self) -> Option<&raw::xcb_leave_notify_event_t> {
+    pub(crate) fn as_raw_leave(&self) -> Option<&_raw::xcb_leave_notify_event_t> {
         if self.is_leave() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_leave_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_leave_notify_event_t) })
         } else { None }
     }
 
     /// Return some expose event, if that's the kind.
-    pub(crate) fn as_raw_expose(&self) -> Option<&raw::xcb_expose_event_t> {
+    pub(crate) fn as_raw_expose(&self) -> Option<&_raw::xcb_expose_event_t> {
         if self.is_expose() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_expose_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_expose_event_t) })
         } else { None }
     }
 
     /// Return some client message, if that's the kind.
-    pub(crate) fn as_raw_client_message(&self) -> Option<&raw::xcb_client_message_event_t> {
+    pub(crate) fn as_raw_client_message(&self) -> Option<&_raw::xcb_client_message_event_t> {
         if self.is_client_message() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_client_message_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_client_message_event_t) })
         } else { None }
     }
     /// Return some configure notification, if that's the kind.
-    pub(crate) fn as_raw_configure(&self) -> Option<&raw::xcb_configure_notify_event_t> {
+    pub(crate) fn as_raw_configure(&self) -> Option<&_raw::xcb_configure_notify_event_t> {
         if self.is_configure() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_configure_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_configure_notify_event_t) })
         } else { None }
     }
 
     /// Return some map event, if that's the kind.
-    pub(crate) fn as_raw_map(&self) -> Option<&raw::xcb_map_notify_event_t> {
+    pub(crate) fn as_raw_map(&self) -> Option<&_raw::xcb_map_notify_event_t> {
         if self.is_map() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_map_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_map_notify_event_t) })
         } else { None }
     }
 
     /// Return some unmap event, if that's the kind.
-    pub(crate) fn as_raw_unmap(&self) -> Option<&raw::xcb_unmap_notify_event_t> {
+    pub(crate) fn as_raw_unmap(&self) -> Option<&_raw::xcb_unmap_notify_event_t> {
         if self.is_unmap() {
-            Some(unsafe { &*(self.raw as *const raw::xcb_unmap_notify_event_t) })
+            Some(unsafe { &*(self.raw as *const _raw::xcb_unmap_notify_event_t) })
         } else { None }
     }
 
@@ -185,7 +185,7 @@ impl XEvent {
 
     /// Converts this X11 key event into a generic `EventKey` using XKB.
     pub(crate) fn to_event_key(&self, xkb: &XkbState, repeat: &mut KeyRepeatFilter) -> EventKey {
-        let ev = self.raw as *const raw::xcb_key_press_event_t;
+        let ev = self.raw as *const _raw::xcb_key_press_event_t;
         let (keycode, state_raw) = unsafe { ((*ev).detail, (*ev).state) };
         let is_press = self.is_key_press();
 
@@ -194,8 +194,8 @@ impl XEvent {
 
         // update XKB only for real events (Press/Repeat/Release)
         let dir = match state {
-            KeyState::Press | KeyState::Repeat => raw::xkb_key_direction::XKB_KEY_DOWN,
-            KeyState::Release => raw::xkb_key_direction::XKB_KEY_UP,
+            KeyState::Press | KeyState::Repeat => _raw::xkb_key_direction::XKB_KEY_DOWN,
+            KeyState::Release => _raw::xkb_key_direction::XKB_KEY_UP,
         };
         xkb.update(keycode, dir);
 
@@ -215,9 +215,9 @@ impl XEvent {
     #[inline(always)]
     pub(crate) const fn map_button_mask(state: u16) -> EventButtons {
         let (state, mut buttons) = (Bitwise(state), EventButtons::new());
-        if state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_1) { buttons.mut_set_field_left(); }
-        if state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_3) { buttons.mut_set_field_right(); }
-        if state.is_set_mask(raw::XCB_KEY_BUT_MASK_BUTTON_2) { buttons.mut_set_field_middle(); }
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_1) { buttons.mut_set_field_left(); }
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_3) { buttons.mut_set_field_right(); }
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_2) { buttons.mut_set_field_middle(); }
         buttons
     }
 
