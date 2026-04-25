@@ -1,4 +1,4 @@
-// devela::work::thread::sleep::macros
+// devela::work::exec::thread::sleep::macros
 
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact [`Thread::sleep`][crate::Thread#method.sleep].

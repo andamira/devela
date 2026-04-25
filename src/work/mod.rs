@@ -9,25 +9,23 @@
 #![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_WORK_MODULES =
-    crate::_doc!(modules: crate; work: future, process, sync, thread);
+    crate::_doc!(modules: crate; work: exec, future, sync, task); // plan
 }
 
-// pub mod actor;
-// pub mod fiber;
+pub mod exec;
 pub mod future;
-pub mod process;
+// pub mod plan;
 pub mod sync;
-pub mod thread;
+pub mod task;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
-            // actor::*,
-            // fiber::*,
+            exec::_all::*,
             future::_all::*,
-            process::_all::*,
+            // plan::_all::*,
             sync::_all::*,
-            thread::_all::*,
+            task::_all::*,
         };
     }
     _crate_internals {

@@ -1,4 +1,4 @@
-// devela::work::process::process
+// devela::work::exec::process::process
 //
 //! Defines the [`ProcessExt`] trait.
 //

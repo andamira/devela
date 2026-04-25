@@ -1,10 +1,10 @@
-// devela::work::process::flow
+// devela::work::exec::process::flow
 //
 //! Defines [`CommandFlow`].
 //
 
 use crate::sys::io::{Io, IoRead, IoResult};
-use crate::work::process::{Command, ExitStatus, Output, Stdio};
+use crate::work::exec::process::{Command, ExitStatus, Output, Stdio};
 
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.

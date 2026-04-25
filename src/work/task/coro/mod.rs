@@ -1,7 +1,7 @@
-// devela::work::future::coroutine
+// devela::work::task::coro
 //
-#![doc = crate::_DOC_WORK_FUTURE_COROUTINE!()] // public
-#![doc = crate::_doc!(modules: crate::work::future; coroutine)]
+#![doc = crate::_DOC_WORK_TASK_CORO!()] // public
+#![doc = crate::_doc!(modules: crate::work::task; coro)]
 #![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(hr)]
 //
@@ -12,11 +12,11 @@ mod _reexport_core;
 // #[cfg(feature = "alloc")]
 // mod tests;
 
-mod coro; // CoroManager, CoroWork, CoroWorker (IMPROVE do not depend on alloc)
+mod future; // CoroManager, CoroWork, CoroWorker (IMPROVE do not depend on alloc)
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::coro::*;
+        pub use super::future::*;
     }
     _reexports {
         pub use {

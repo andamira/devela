@@ -1,6 +1,8 @@
-// devela::work::future::coroutine::coro
+// devela::work::task::coro::future
 //
-//! A minimal single-threaded coroutine implementation.
+//! An experimental, minimal, single-threaded, coroutine implementation.
+//!
+//! It is implemented over Rust's async machinery.
 //!
 //! This code demonstrates a basic cooperative multitasking system where tasks
 //! can yield control back to the scheduler and be resumed later.

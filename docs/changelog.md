@@ -176,6 +176,10 @@
   - add fields: `unit`, `buttons`.
   - add many convenience methods.
 
+## work
+- new `work` submodules: `exec`, `plan`, `task`.
+- move `thread` and `process` inside `exec`.
+
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`

@@ -305,15 +305,23 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_VITA_PLAY_GAME = "Games across cultures.";
 
     // 14. work (effort structured over time)
-    _DOC_WORK             = "Computational work and its execution mechanics.";
-    _DOC_WORK_ACTOR       = "Isolated units of agency that own state and communicate by message.";
-    _DOC_WORK_FUTURE      = "Asynchronous work and continuations.";
-    _DOC_WORK_FUTURE_COROUTINE = "Stackless coroutines with explicit scheduling and runners.";
-    _DOC_WORK_PROCESS     = "Process-based execution of work.";
-    _DOC_WORK_SYNC        = "Synchronization mechanisms for concurrent work.";
-    _DOC_WORK_SYNC_ATOMIC = "Atomic types.";
-    _DOC_WORK_SYNC_MPSC   = "Multi-producer, single-consumer channels.";
-    _DOC_WORK_THREAD      = "Thread-based execution of work.";
+    _DOC_WORK              = "Computational work, its coordination, and its execution.";
+    _DOC_WORK_EXEC         = "Execution loci that host and run work.";
+    _DOC_WORK_EXEC_FIBER   = "User-space suspended execution carriers.";
+    _DOC_WORK_EXEC_PROCESS = "Process-based execution of work.";
+    _DOC_WORK_EXEC_REMOTE  = "Execution hosted beyond the local process boundary.";
+    _DOC_WORK_EXEC_THREAD  = "Thread-based execution of work.";
+    _DOC_WORK_EXEC_WORKER  = "Long-lived isolated execution agents that host and control work.";
+    _DOC_WORK_FUTURE       = "Rust-style asynchronous computations and polling continuations.";
+    _DOC_WORK_PLAN         = "Policies for ordering, admitting, and advancing work.";
+    _DOC_WORK_PLAN_BUDGET  = "Constraints on how much work may advance before yielding or stopping.";
+    _DOC_WORK_PLAN_SCHED   = "Task scheduling policies and progression control.";
+    _DOC_WORK_TASK         = "Schedulable units of work and their control state.";
+    _DOC_WORK_TASK_ACTOR   = "State-owning message-driven tasks.";
+    _DOC_WORK_TASK_CORO    = "Cooperative tasks that yield and resume explicitly.";
+    _DOC_WORK_SYNC         = "Synchronization and communication for concurrent work.";
+    _DOC_WORK_SYNC_ATOMIC  = "Atomic coordination primitives.";
+    _DOC_WORK_SYNC_MPSC    = "Multi-producer, single-consumer channels.";
 
     // 15. yard (support structures not part of the public scene)
     _DOC_YARD       = "Internal scaffolding and misc. machinery.";

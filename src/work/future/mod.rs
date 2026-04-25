@@ -14,7 +14,6 @@
 
 mod _reexport_core;
 
-mod coroutine;
 mod ext; // FutureExt
 
 #[cfg(feature = "std")]
@@ -24,7 +23,6 @@ mod block;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            coroutine::_all::*,
             ext::*,
         };
 

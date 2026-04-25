@@ -1,10 +1,10 @@
-// devela::work::process::output
+// devela::work::exec::process::output
 //
 //! Defines the [`OutputExt`] trait.
 //
 
 use crate::text::InvalidUtf8;
-use crate::work::process::{ExitStatusError, Output};
+use crate::work::exec::process::{ExitStatusError, Output};
 
 /// Marker trait to prevent downstream implementations of the [`OutputExt`] trait.
 trait Sealed {}

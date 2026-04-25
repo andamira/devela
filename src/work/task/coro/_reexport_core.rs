@@ -1,4 +1,4 @@
-// devela::work::future::coroutine::_reexport
+// devela::work::task::coro::_reexport_core
 
 #[allow(unused_imports, reason = "nightly_coro feature-gate")]
 use crate::{_reexport, _tags};

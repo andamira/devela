@@ -1,4 +1,4 @@
-// devela::work::process::cmd
+// devela::work::exec::process::cmd
 //
 //! Defines [`cmd!`].
 //

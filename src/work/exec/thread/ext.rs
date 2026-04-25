@@ -1,4 +1,4 @@
-// devela::work::thread::ext
+// devela::work::exec::thread::ext
 //
 //! Defines the [`ThreadExt`] trait.
 //
