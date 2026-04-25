@@ -157,4 +157,5 @@ macro_rules! _js_method_str_alloc {
         }
     }};
 }
+#[allow(unused_imports, reason = "WIP JsObject")]
 pub(crate) use _js_method_str_alloc;

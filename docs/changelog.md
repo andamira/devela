@@ -29,8 +29,9 @@
 - bump `wide` to 1.3.
 
 ## features & flags
+- new feature: `web`.
+- auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - update the intended scope of the `_docs_examples` feature.
-- feature `x11` auto-enables `unsafe_ffi`.
 
 ---
 

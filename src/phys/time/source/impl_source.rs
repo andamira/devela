@@ -147,9 +147,7 @@ mod impl_std {
 }
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "js", feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "js", feature = "unsafe_ffi"))))]
+#[cfg(all(feature = "web", not(windows)))]
 mod impl_js {
     use crate::JsInstant;
     use super::*;

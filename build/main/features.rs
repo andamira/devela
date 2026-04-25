@@ -4,7 +4,8 @@
 //
 // NOTE: this file is shared between the build scripts in:
 // - devela/build/main/
-// - devela_base_core/build/
+//
+// NOTE: features not included: web, x11
 
 #[cfg(feature = "__dbg")]
 use super::Build;
@@ -291,7 +292,7 @@ mod reflection {
     };
         pub const FFI: FlagsFeatures = FlagsFeatures {
             ref_flags: &["ffi··"],
-            features: &["glsl", "js"]
+            features: &["glsl", "js", "unsafe_ffi"]
         };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         ref_flags: &["media··"],

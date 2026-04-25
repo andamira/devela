@@ -262,7 +262,7 @@ phys = ["time", "unit", "wave"]
 	unit = []
 	wave = [] # wavelets
 run = []
-sys = ["io", "mem", "term"]
+sys = ["io", "mem", "term"] # EXCLUDED: "os"
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -279,6 +279,7 @@ sys = ["io", "mem", "term"]
 		bit = [] # BitSize
 	# os
 		# browser
+			web = ["js", "unsafe_ffi"]
 		linux = [] #
 		term = [] # media::image::sixel
 		windows = []

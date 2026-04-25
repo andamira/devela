@@ -8,6 +8,8 @@
 //! - <https://developer.mozilla.org/en-US/docs/Web/API>.
 //
 
+mod time; // impls for JsInstant and JsTimeout
+
 mod api; // Web (js & rust files)
 mod document; // WebDocument
 mod element; // WebElement

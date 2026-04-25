@@ -16,13 +16,13 @@
 // mod container; // MAYBE container/bridge, hosted/integration
 // mod extension; // WIP
 
-#[cfg(all(feature = "js", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "js")))]
+#[cfg(all(feature = "web", not(windows)))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "web")))]
 pub mod web; // Web[Document|Element|Event*|Permission*|Window*|Worker*]…
 
 crate::structural_mods! { // _pub_mods
     _pub_mods {
-        #[cfg(all(feature = "js", not(windows)))]
+        #[cfg(all(feature = "web", not(windows)))]
         pub use super::web::_all::*;
     }
 }

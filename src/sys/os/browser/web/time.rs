@@ -1,40 +1,24 @@
-// devela::lang::prog::ffi::js::time::timeout
-//
-//! Defines [`JsTimeout`].
-//
+// devela::sys::os::browser::web::time
 
-use crate::js_uint32;
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-use crate::{_js_doc, WebWindow};
+use crate::{_js_doc, JsInstant, JsTimeout, js_uint32};
+use crate::{TimeDelta, Web, WebWindow};
 
-#[doc = crate::_tags!(runtime time uid)]
-/// A handle to a JavaScript timeout.
-#[doc = crate::_doc_location!("lang/prog/ffi/js")]
-///
-/// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
-#[repr(C)]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct JsTimeout {
-    pub(crate) id: js_uint32,
-}
+#[rustfmt::skip]
+impl JsInstant {
+    /// Returns the current instant using `performance.now()`.
+    pub fn now() -> Self { Web::performance_now() }
+    /// Returns the time origin using `performance.timeOrigin()`.
+    pub fn origin() -> Self { Web::performance_time_origin() }
 
-impl JsTimeout {
-    /// Returns a new invalid handle.
-    pub const fn invalid() -> Self {
-        JsTimeout { id: 0 }
-    }
-    /// Returns the numeric ID of the handle.
-    pub const fn id(self) -> js_uint32 {
-        self.id
-    }
+    /// Resets this instant to the current time.
+    pub fn reset(&mut self) { *self = Web::performance_now(); }
+    /// Returns the elapsed time since this instant.
+    pub fn elapsed(self) -> Self { Self::from_millis_f64(Web::performance_now().ms - self.ms) }
+    /// Returns the elapsed time since this instant as a `TimeDelta`.
+    pub fn delta_elapsed(self) -> TimeDelta { TimeDelta::from_js(self.elapsed()) }
 }
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl JsTimeout {
     #[doc = _js_doc!("Window", "setTimeout")]
     /// Calls a function after a delay in milliseconds.

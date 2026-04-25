@@ -48,11 +48,11 @@ mod _helper; // _js_doc!, _js_extern!, js_method_str_alloc!
 
 mod console; // JsConsole
 // mod error; // JsError WIP
+mod instant; // JsInstant, JsTimeout
 mod namespace; // Js
 // mod object; // JsObject WIP
 mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextMetrics, JsTextMetricsFull
-mod time; // JsInstant, JsTimeout
 mod value; // JsValue
 
 crate::structural_mods! { // _mods, _crate_internals
@@ -60,11 +60,11 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::{
             console::*,
             // error::*,
+            instant::*,
             namespace::*,
             // object::*,
             primitives::*,
             text::*,
-            time::*,
             value::*,
         };
     }

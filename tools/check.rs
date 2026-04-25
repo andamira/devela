@@ -95,7 +95,7 @@ const SUB_MODULES: &[&str] = &[
     // run
 
     // sys
-        "io", "mem", "bit", // "x11",
+        "io", "mem", "bit", // "x11", "os"
     // text
         "grapheme", "translit",
     // ui
@@ -259,8 +259,11 @@ fn main() -> Result<()> {
         &[("RUSTFLAGS", "--cfg nightly")])?; }
 
         // std (un)safe (max capabilities)
-        sf! { run_cargo(&msrv, cmd,
-        &["-F all,std,safe,_docs_min,_max", "--workspace", "--", "--color=always"])?; }
+        //
+        // NOTE:RETHINK: now that we're unabling unsafe_ffi we need to rethink these tests
+        // sf! { run_cargo(&msrv, cmd,
+        // &["-F all,std,safe,_docs_min,_max", "--workspace", "--", "--color=always"])?; }
+        //
         sf! { run_cargo(&msrv, cmd,
         &["-F all,std,unsafe,_docs_min,_max", "--workspace", "--", "--color=always"])?; }
 

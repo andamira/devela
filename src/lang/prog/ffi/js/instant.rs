@@ -1,11 +1,10 @@
-// devela::lang::prog::ffi::js::time::instant
+// devela::lang::prog::ffi::js::instant
 //
-//! Defines [`JsInstant`].
+//! Defines [`JsInstant`], [`JsTimeout`].
 //
 
 use crate::{Display, TimeDelta, impl_trait};
-#[allow(unused_imports)]
-use crate::{Web, js_number, js_uint32};
+use crate::{js_number, js_uint32};
 
 #[doc = crate::_tags!(runtime time)]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
@@ -36,25 +35,6 @@ impl JsInstant {
     pub const fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
 }
 
-#[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
-impl JsInstant {
-    /// Returns the current instant using `performance.now()`.
-    pub fn now() -> Self { Web::performance_now() }
-    /// Returns the time origin using `performance.timeOrigin()`.
-    pub fn origin() -> Self { Web::performance_time_origin() }
-
-    /// Resets this instant to the current time.
-    pub fn reset(&mut self) { *self = Web::performance_now(); }
-    /// Returns the elapsed time since this instant.
-    pub fn elapsed(self) -> Self { Self::from_millis_f64(Web::performance_now().ms - self.ms) }
-    /// Returns the elapsed time since this instant as a `TimeDelta`.
-    pub fn delta_elapsed(self) -> TimeDelta { TimeDelta::from_js(self.elapsed()) }
-}
-
 impl_trait![fmt::Display for JsInstant |self, f| Display::fmt(&self.ms, f)];
 
 #[rustfmt::skip]
@@ -78,5 +58,27 @@ mod impls {
     }
     impl From<EventTimestamp> for JsInstant {
         fn from(from: EventTimestamp) -> Self { from.to_js() }
+    }
+}
+
+#[doc = crate::_tags!(runtime time uid)]
+/// A handle to a JavaScript timeout.
+#[doc = crate::_doc_location!("lang/prog/ffi/js")]
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct JsTimeout {
+    pub(crate) id: js_uint32,
+}
+
+impl JsTimeout {
+    /// Returns a new invalid handle.
+    pub const fn invalid() -> Self {
+        JsTimeout { id: 0 }
+    }
+    /// Returns the numeric ID of the handle.
+    pub const fn id(self) -> js_uint32 {
+        self.id
     }
 }

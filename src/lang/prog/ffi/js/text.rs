@@ -1,6 +1,7 @@
 // devela::lang::prog::ffi::js::types::text
 
 #[cfg(doc)]
+#[cfg(feature = "web")]
 use crate::Web;
 
 #[doc = crate::_tags!(runtime text layout)]
