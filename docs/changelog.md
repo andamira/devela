@@ -163,6 +163,10 @@
 ### text::fmt
 - make `Fmt::from_fn` const.
 
+### text::parse
+- update `TextScanner`
+  - new methods: `take_ascii_ident_tail`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `take_quoted_basic_or_rest`.
+
 ### ui::event
 - new types: `EventButtons`, `EventWheelUnit`.
 - new alias `EventKindTimed`.
