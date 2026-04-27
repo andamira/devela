@@ -1,7 +1,7 @@
 // devela::lang::prog
 //
 #![doc = crate::_DOC_LANG_PROG!()] // public
-#![doc = crate::_doc!(modules: crate::lang; prog: ffi)] // dsl, ir
+#![doc = crate::_doc!(modules: crate::lang; prog: ffi)] //
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(extends: ffi)]
 //!
@@ -9,18 +9,22 @@
 //
 
 // mod calc; // Executable semantic calculus WIP
-mod dsl; // Embedded or domain-specific languages WIP
+// mod embed; // Host-embedded notation and generator macros WIP
 pub mod ffi; // Foreign language interfaces
-// mod ir; // Intermediate representations
-// mod script; // Command and scripting languages
-// mod template; // Template and substitution languages
+// mod ir; // Lowered program representations
+// mod kernel; // Reusable computational language kernels
+// mod phrase;   // Source-level program phrases/forms.
+// mod script; // Command and scripting language surfaces
+// mod template; // Template and substitution language machinery
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // calc::_all::*,
-            dsl::_all::*,
+            // embed::_all::*,
             // ir::_all::*,
+            // kernel::_all::*,
+            // phrase::_all::*,
             // script::_all::*,
             // template::_all::*,
         };

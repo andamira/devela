@@ -62,6 +62,10 @@
 - new methods for `geom::metric` *dim* types: `map`, `map_into`, `try_map`, `try_map_into`.
 - new methods for `Region`: `map`, `map_ext`, `map_pos`, `try_map`, `try_map_ext`, `try_map_pos`.
 
+### lang::prog
+- new submodules: `calc`, `embed`, `kernel`, `phrase`.
+- remove submodule: `dsl`.
+
 #### media::visual::image
 - new traits: `Raster`, `RasterBuf`,`RasterView`, `RasterBufBytes`, `RasterViewBytes`, `RasterSamplePacked`, `RasterViewPacked`.
 - remove `image` feature-gate from the module.

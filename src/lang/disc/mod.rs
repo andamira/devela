@@ -3,7 +3,7 @@
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC!()] // public
 #![doc = crate::_doc!(modules: crate::lang; disc: narr)]
-// argument, lyric, move, plot, rethoric, style
+// argument, lyric, move, plot, rhetoric, style
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(hr)]
 //

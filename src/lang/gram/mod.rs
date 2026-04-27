@@ -1,7 +1,7 @@
 // devela::lang::hum::gram
 //
 #![doc = crate::_tags!(wip)]
-#![doc = crate::_DOC_LANG_HUM_GRAM!()] // public
+#![doc = crate::_DOC_LANG_GRAM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; gram)]
 #![doc = crate::_doc!(flat:"lang")]
 //!
