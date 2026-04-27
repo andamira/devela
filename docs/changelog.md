@@ -43,10 +43,12 @@
 ### code::util
 - new macro `maybe_slot!`.
 - update `cdbg!` to add custom prefix syntax.
+- update `enumset!`, replace `bitfield!` with `set!`.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
 #### data::codec
+- new `set!` macro.
 - update `bitfield!`
   - rename method `without_fields` with `new`, and make it always visible.
   - derive `ConstInit`.

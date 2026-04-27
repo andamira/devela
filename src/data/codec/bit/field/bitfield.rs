@@ -40,9 +40,7 @@
 /// assert![b.is_empty()];
 /// ```
 ///
-/// See also the [`enumset!`] macro.
-// #[doc = "\n\n[`enumset!`]: crate::enumset"]
-#[doc = crate::doclink!(custom devela "[`enumset!`]" "code/util/macro.enumset.html")]
+/// See also the [`set!`][crate::set] macro.
 #[doc(hidden)]
 #[macro_export]
 macro_rules! bitfield· {

@@ -7,7 +7,7 @@
 //
 // # Implementation notes
 // Several macros are defined hidden, suffixed with `·`, an publicly re-exported unsuffixed.
-// This makes them able to be imported from the root. E.g.: bitfield, capture_last, enumset…
+// This makes them able to be imported from the root. E.g.: capture_last!, enumset!, set!…
 // See: https://github.com/rust-lang/rust/pull/52234#issuecomment-976702997
 //
 // # Warning regarding macro expansion

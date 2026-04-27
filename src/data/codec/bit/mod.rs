@@ -14,6 +14,7 @@ mod field; // bitfield!
 // mod manifest; // BitManifest
 // mod recipe; // BitRecipe
 // mod view; // BitView // WIP
+mod set; // set!
 
 crate::structural_mods! { // _mods
     _mods {
@@ -23,6 +24,7 @@ crate::structural_mods! { // _mods
             // manifest::*,
             // recipe::*,
             // view::*,
+            set::*,
         };
     }
 }
