@@ -7,7 +7,7 @@
 
 mod _reexport_core;
 
-mod ascii; // CharAscii
+mod ascii; // AsciiSet, CharAscii
 mod digits; // Digits
 mod iter; // CharIter
 mod namespace; // Char

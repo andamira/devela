@@ -1,4 +1,4 @@
-// devela::text::char::ascii
+// devela::text::char::ascii::char
 //
 //! Defines [`CharAscii`].
 //

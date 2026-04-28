@@ -113,7 +113,7 @@
 - new trait `TimeSpan`.
 
 ## run
-- new items: `RunDriver`, `RunDriverError`, `RunDriverFrameError`.
+- new types: `RunDriver`, `RunDriverError`, `RunDriverFrameError`.
 - update `RunRender` and `RunPresent`:
   - support borrowed render artifacts with GATs.
   - make them use a borrowed `RunFrame`.
@@ -126,7 +126,7 @@
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
 ##### sys::device::display::x11
-- new items: `XCpuBuffer`, `XFrontend`, `XImageMode`, `XPresent`, `XRasterRender`, `XShmBuffer`, `XSurfaceFrame`.
+- new types: `XCpuBuffer`, `XFrontend`, `XImageMode`, `XPresent`, `XRasterRender`, `XShmBuffer`, `XSurfaceFrame`.
 - update `XDisplay`:
   - add fields: `image_format`, `shm_caps`.
   - add methods: `bits_per_pixel`, `scanline_pad_bits`, `bytes_per_line`, `has_shm`.
@@ -143,11 +143,11 @@
 - rename `define_arena!` to `arena!`
 
 ### sys::mem::cell
-- new items: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
+- new types: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
 
 ### sys::mem::view
 - update `Slice`: add methods: `get`, `get_mut`:
-- new items: `MemReplicaError`, `MemReplicaSlice`.
+- new types: `MemReplicaError`, `MemReplicaSlice`.
 
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.
@@ -166,6 +166,9 @@
 
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
+
+### text::char
+- new type `AsciiSet`.
 
 ### text::fmt
 - make `Fmt::from_fn` const.
