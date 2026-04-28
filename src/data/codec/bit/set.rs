@@ -14,6 +14,10 @@
 /// The generated struct derives
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
 ///
+/// One or more custom `impl { ... }` blocks may be provided after the declarations.
+/// They are emitted before all generated associated constants and methods,
+/// and may still refer to them through `Self`.
+///
 /// # Example
 /// ```
 /// # use devela::set;
@@ -27,7 +31,18 @@
 ///         HIGH = 4..=7;
 ///         MIXED = 0, 3..=5, 7;
 ///     }
+///     /// Custom semantic helpers emitted before generated methods.
+///     impl {
+///         /// A custom named combination.
+///         pub const LOW: Self = Self::A.with(Self::B).with(Self::C);
+///
+///         /// Returns `true` if any low bit is set.
+///         pub const fn has_low(self) -> bool { self.intersects(Self::LOW) }
+///     }
 /// }
+/// assert!(SmallSet::LOW.has_low());
+/// assert_eq!(SmallSet::LOW.bits(), 0b0000_0111);
+///
 /// let mut set = SmallSet::A | SmallSet::B;
 /// assert_eq!(SmallSet::A.bits(), 0b0000_0001);
 /// assert_eq!(SmallSet::AB.bits(), 0b0000_0011);
@@ -44,10 +59,13 @@
 /// assert_eq!(set, SmallSet::B | SmallSet::C);
 /// ```
 ///
-/// For an example of a struct created with the `set!` macro see
-/// [`EventButtons`][crate::EventButtons].
+/// - Some examples of structs defined with the `set!` macro are:
+///   [`AsciiSet`] and [`EventButtons`].
+/// - Some other macro that leverages `set!` is: [`enumset!`][crate::enumset].
 ///
-/// See also the [`enumset!`][crate::enumset] macro.
+/// [`AsciiSet`]: crate::AsciiSet
+/// [`EventButtons`]: crate::EventButtons
+/// [`enumset!`]: crate::enumset
 #[doc(hidden)]
 #[macro_export]
 macro_rules! set· {
@@ -59,6 +77,10 @@ macro_rules! set· {
                 $f:ident = $( $start:tt $(..= $end:tt)? ),+ $(,)?;
             )*
         }
+        $( // optional impl blocks
+            $(#[$impl_attrs:meta])*
+            impl { $($user_impl:item)* }
+        )*
     } => {
         $crate::set!(%guard_allowed_type $T);
 
@@ -66,7 +88,22 @@ macro_rules! set· {
         #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $Set { bits: $T }
 
-        /// Common methods
+        $(
+            $( #[$impl_attrs] )*
+            impl $Set { $($user_impl)* }
+        )*
+
+        /// Named constants
+        impl $Set {
+            $(
+                $(#[$f_attrs])*
+                $vis const $f: Self = Self {
+                    bits: $crate::set!(%mask $T; $( $start $(..= $end)? ),+)
+                };
+            )*
+        }
+
+        /// Common set methods
         impl $Set {
             /// Returns an empty set.
             #[must_use]
@@ -111,7 +148,7 @@ macro_rules! set· {
             }
         }
 
-        /// Set operations.
+        /// Set operations
         impl $Set {
             /// Returns the union of `self` and `other`.
             #[must_use]
@@ -148,26 +185,16 @@ macro_rules! set· {
             }
         }
 
-        /// Mutating set operations.
+        /// Mutating set operations
         impl $Set {
+            /// Clears the set.
+            $vis const fn clear(&mut self) { self.bits = 0; }
             /// Inserts all bits from `other`.
             $vis const fn insert(&mut self, other: Self) { self.bits |= other.bits; }
             /// Removes all bits from `other`.
             $vis const fn remove(&mut self, other: Self) { self.bits &= !other.bits; }
             /// Toggles all bits from `other`.
             $vis const fn toggle(&mut self, other: Self) { self.bits ^= other.bits; }
-            /// Clears the set.
-            $vis const fn clear(&mut self) { self.bits = 0; }
-        }
-
-        /// Named constants
-        impl $Set {
-            $(
-                $(#[$f_attrs])*
-                $vis const $f: Self = Self {
-                    bits: $crate::set!(%mask $T; $( $start $(..= $end)? ),+)
-                };
-            )*
         }
 
         /* impl traits */

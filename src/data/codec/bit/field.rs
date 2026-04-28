@@ -39,6 +39,10 @@ bitfield! {
 /// Unchecked setters mask values to the field width.
 /// Checked setters return an error when the value does not fit.
 ///
+/// One or more custom `impl { ... }` blocks may be provided after the declarations.
+/// They are emitted before all generated associated constants and methods,
+/// and may still refer to them through `Self`.
+///
 /// # Examples
 /// ```
 /// # use devela::bitfield;
@@ -48,15 +52,18 @@ bitfield! {
 ///         LEN  = 4..=11;
 ///         FLAG = 12;
 ///     }
+///     /// Custom semantic helpers emitted before generated methods.
+///     impl {
+///         /// Returns whether this header has a payload.
+///         pub const fn has_payload(self) -> bool { self.get_len() != 0 }
+///     }
 /// }
-/// let mut h = Header::new()
-///     .with_kind(3)
-///     .with_len(120)
-///     .with_flag(1);
+/// let mut h = Header::new().with_kind(3).with_len(120).with_flag(1);
 ///
 /// assert_eq!(h.get_kind(), 3);
 /// assert_eq!(h.get_len(), 120);
 /// assert_eq!(h.get_flag(), 1);
+/// assert!(h.has_payload());
 ///
 /// assert!(h.try_set_kind(15).is_ok());
 /// assert!(h.try_set_kind(16).is_err()); // 16 does not fit in 4 bits.
@@ -73,6 +80,10 @@ macro_rules! bitfield· {
                 $field:ident = $start:tt $(..= $end:tt)?;
             )*
         }
+        $( // optional impl blocks
+            $(#[$impl_attrs:meta])*
+            impl { $($user_impl:item)* }
+        )*
     } => {
         $crate::bitfield!(%guard_allowed_type $T);
 
@@ -80,6 +91,10 @@ macro_rules! bitfield· {
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $Bitfield { bits: $T, }
+        $(
+            $( #[$impl_attrs] )*
+            impl $Bitfield { $($user_impl)* }
+        )*
         impl $Bitfield {
             /// Returns a new bitfield with all bits cleared.
             #[must_use]
@@ -102,7 +117,8 @@ macro_rules! bitfield· {
                 $crate::bitfield!(%field_methods $vis $Bitfield $T;
                     $(#[$field_attrs])* $field; $start $(..= $end)?);
             }
-            )*
+        )*
+
         impl $crate::ConstInit for $Bitfield { const INIT: Self = Self::new(); }
     };
     // single-bit field.
