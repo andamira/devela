@@ -61,6 +61,8 @@ macro_rules! set· {
         #[must_use]
         $vis struct $Set { bits: $T }
 
+        $crate::set!(%guard_allowed_type $T);
+
         /// Common methods
         impl $Set {
             /// Returns an empty set.
@@ -214,6 +216,13 @@ macro_rules! set· {
     // Inclusive bit range.
     (%item $T:ty; $start:tt ..= $end:tt) => {
         $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
+    };
+    // only allow implementions over unsigned integers
+    (%guard_allowed_type $T:ty) => {
+        const __GUARD_ALLOWED_TYPE: () = {
+            const fn __allowed_types<P: $crate::PrimUint>() {}
+            __allowed_types::<$T>();
+        };
     };
 }
 #[doc(inline)]
