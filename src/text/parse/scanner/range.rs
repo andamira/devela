@@ -2,7 +2,7 @@
 
 #[cfg(doc)]
 use crate::TextParseErrorKind;
-use crate::{TextParseError, TextRange, TextScanner};
+use crate::{AsciiSet, TextParseError, TextRange, TextScanner, TextUnit};
 use crate::{is, unwrap, whilst};
 
 /// ASCII scanning and range-taking operations.
@@ -40,21 +40,7 @@ impl<'a> TextScanner<'a> {
     /// Returns `None` if the next byte is not a valid identifier start.
     #[must_use]
     pub const fn take_ascii_ident(&mut self) -> Option<TextRange> {
-        let start = self.mark();
-        let Some(first) = self.peek_byte() else {
-            return None;
-        };
-        match first {
-            b'A'..=b'Z' | b'a'..=b'z' | b'_' => self._cursor_bump(1),
-            _ => return None,
-        }
-        whilst! { let Some(byte) = self.peek_byte(); {
-            match byte {
-                b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'_' => self._cursor_bump(1),
-                _ => break,
-            }
-        }}
-        Some(self.range_from(start))
+        self.take_ascii_run(AsciiSet::IDENT_HEAD, AsciiSet::IDENT_TAIL)
     }
 
     /// Consumes and returns an ASCII identifier-tail range.
@@ -68,16 +54,56 @@ impl<'a> TextScanner<'a> {
     /// Returns `None` if no identifier-tail byte was consumed.
     #[must_use]
     pub const fn take_ascii_ident_tail(&mut self) -> Option<TextRange> {
+        self.take_ascii_set(AsciiSet::IDENT_TAIL)
+    }
+}
+
+impl<'a> TextScanner<'a> {
+    /// Skips bytes while they belong to `set`.
+    ///
+    /// Returns the number of skipped bytes.
+    pub const fn skip_ascii_set(&mut self, set: AsciiSet) -> TextUnit {
+        let start = self.cursor.index.0;
+        whilst! { let Some(byte) = self.peek_byte(); {
+            is! { set.contains_byte(byte), self._cursor_bump(1), break }
+        }}
+        self.cursor.index.0 - start
+    }
+
+    /// Consumes and returns a range of bytes belonging to `set`.
+    ///
+    /// Returns `None` if no byte was consumed.
+    #[must_use]
+    pub const fn take_ascii_set(&mut self, set: AsciiSet) -> Option<TextRange> {
         let start = self.mark();
         whilst! { let Some(byte) = self.peek_byte(); {
-            match byte {
-                b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'_' => self._cursor_bump(1),
-                _ => break,
-            }
+            is! { set.contains_byte(byte), self._cursor_bump(1), break }
         }}
         is! { self.cursor.index.0 == start.index.0, None, Some(self.range_from(start)) }
     }
 
+    /// Consumes and returns an ASCII run with distinct head and tail sets.
+    ///
+    /// The first byte must belong to `head`.
+    /// Following bytes may belong to `tail`.
+    ///
+    /// Returns `None` if the first byte does not belong to `head`.
+    #[must_use]
+    pub const fn take_ascii_run(&mut self, head: AsciiSet, tail: AsciiSet) -> Option<TextRange> {
+        let start = self.mark();
+        // let Some(byte) = self.peek_byte() else { return None; };
+        // let byte = is![let Some(byte) = self.peek_byte(), byte, return None];
+        let byte = unwrap![some? self.peek_byte()];
+        is! { !head.contains_byte(byte), return None }
+        self._cursor_bump(1);
+        whilst! { let Some(byte) = self.peek_byte(); {
+            is! { tail.contains_byte(byte), self._cursor_bump(1), break }
+        }}
+        Some(self.range_from(start))
+    }
+}
+
+impl<'a> TextScanner<'a> {
     /// Consumes an ASCII unsigned 64-bit integer prefix.
     ///
     /// Returns:
