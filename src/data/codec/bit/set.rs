@@ -43,6 +43,10 @@
 /// set.remove(SmallSet::A);
 /// assert_eq!(set, SmallSet::B | SmallSet::C);
 /// ```
+///
+/// For an example of a struct created with the `set!` macro see
+/// [`EventButtons`][crate::EventButtons].
+///
 /// See also the [`enumset!`][crate::enumset] macro.
 #[doc(hidden)]
 #[macro_export]
@@ -56,18 +60,19 @@ macro_rules! set· {
             )*
         }
     } => {
-        $( #[$struct_attrs] )*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        #[must_use]
-        $vis struct $Set { bits: $T }
-
         $crate::set!(%guard_allowed_type $T);
+
+        $( #[$struct_attrs] )*
+        #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        $vis struct $Set { bits: $T }
 
         /// Common methods
         impl $Set {
             /// Returns an empty set.
+            #[must_use]
             $vis const fn new() -> Self { Self { bits: 0 } }
             /// Returns a set from raw bits.
+            #[must_use]
             $vis const fn from_bits(bits: $T) -> Self { Self { bits } }
 
             /// Returns the raw backing bits.
@@ -90,14 +95,17 @@ macro_rules! set· {
             }
 
             /// Returns `self` with `other` inserted.
+            #[must_use]
             $vis const fn with(self, other: Self) -> Self {
                 Self { bits: self.bits | other.bits }
             }
             /// Returns `self` with `other` removed.
+            #[must_use]
             $vis const fn without(self, other: Self) -> Self {
                 Self { bits: self.bits & !other.bits }
             }
             /// Returns `self` with `other` toggled.
+            #[must_use]
             $vis const fn toggled(self, other: Self) -> Self {
                 Self { bits: self.bits ^ other.bits }
             }
@@ -106,18 +114,22 @@ macro_rules! set· {
         /// Set operations.
         impl $Set {
             /// Returns the union of `self` and `other`.
+            #[must_use]
             $vis const fn union(self, other: Self) -> Self {
                 Self { bits: self.bits | other.bits }
             }
             /// Returns the intersection of `self` and `other`.
+            #[must_use]
             $vis const fn intersection(self, other: Self) -> Self {
                 Self { bits: self.bits & other.bits }
             }
             /// Returns the difference of `self` and `other`.
+            #[must_use]
             $vis const fn difference(self, other: Self) -> Self {
                 Self { bits: self.bits & !other.bits }
             }
             /// Returns the symmetric difference of `self` and `other`.
+            #[must_use]
             $vis const fn symmetric_difference(self, other: Self) -> Self {
                 Self { bits: self.bits ^ other.bits }
             }
@@ -160,7 +172,6 @@ macro_rules! set· {
 
         /* impl traits */
 
-        impl Default for $Set { fn default() -> Self { Self::new() } }
         impl $crate::ConstInit for $Set { const INIT: Self = Self::new(); }
         $crate::impl_trait![fmt::Display for $Set |self, f| $crate::Display::fmt(&self.bits, f)];
         $crate::impl_trait![fmt::Binary for $Set |self, f| $crate::Binary::fmt(&self.bits, f)];
@@ -205,15 +216,15 @@ macro_rules! set· {
             fn not(self) -> Self::Output { Self::all().difference(self) }
         }
     };
-    // Reduces a comma-list of bits/ranges into one backing integer mask.
+    // reduces a comma-list of bits/ranges into one backing integer mask.
     (%mask $T:ty; $($start:tt $(..= $end:tt)?),+ $(,)?) => {{
         0 as $T $(| $crate::set!(%item $T; $start $(..= $end)?))+
     }};
-    // Single bit.
+    // single bit.
     (%item $T:ty; $bit:tt) => {
         $crate::Bitwise::<$T>::mask_range(($bit) as u32, ($bit) as u32).0
     };
-    // Inclusive bit range.
+    // inclusive bit range.
     (%item $T:ty; $start:tt ..= $end:tt) => {
         $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
     };

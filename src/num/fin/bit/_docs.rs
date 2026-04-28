@@ -16,7 +16,7 @@ Sets the rest of the bits to 0.
 Panics in debug mode if `start >= BITS` || `end >= BITS` || `start > end`.
 "#;
 _DOC_BIT_MASK_RANGE_CHECKED = r#"
-Returns a bitmask of ones from the `[start..=end]` checked range.
+Returns a bitmask of ones from the checked `[start..=end]` range.
 
 Sets the rest of the bits to 0.
 # Errors
@@ -54,7 +54,7 @@ Sets the rest of the bits to 0.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_GET_CHECKED_RANGE = r#"
-Gets the bits in `self` from the `[start..=end]` checked range.
+Gets the bits in `self` from the checked `[start..=end]` range.
 
 Sets the rest of the bits to 0.
 # Errors
@@ -75,7 +75,7 @@ significant bit (LSB) aligns with the units place, forming the integer value.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_GET_VALUE_CHECKED_RANGE = r#"
-Gets the value of the bits in `self` from the `[start..=end]` checked range.
+Gets the value of the bits in `self` from the checked `[start..=end]` range.
 
 Sets the rest of the bits to 0.
 
@@ -131,7 +131,7 @@ Leaves the rest of the bits unchanged.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_SET_CHECKED_RANGE = r#"
-Sets the bits in `self` to 1, from the `[start..=end]` checked range.
+Sets the bits in `self` to 1, from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
 # Errors
@@ -154,7 +154,7 @@ the existing bits in that range. The rest of the bits in `self` remain unchanged
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_SET_VALUE_CHECKED_RANGE = r#"
-Sets the given `value` into the bits from the `[start..=end]` checked range.
+Sets the given `value` into the bits from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
 # Errors
@@ -162,9 +162,11 @@ Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`
 and [`MismatchedIndices`] if `start > end`.
 "#;
 _DOC_BIT_SET_CHECKED_VALUE_CHECKED_RANGE = r#"
-Sets the given checked `value` into the bits from the `[start..=end]` checked range.
+Sets the given checked `value` into the bits from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
+
+A value fits when it can be represented by `end - start + 1` bits.
 # Errors
 Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS`,
 [`MismatchedIndices`] if `start > end`, and
@@ -216,7 +218,7 @@ Leaves the rest of the bits unchanged.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_UNSET_CHECKED_RANGE = r#"
-Unsets the bits in `self` to 0, from the `[start..=end]` checked range.
+Unsets the bits in `self` to 0, from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
 # Errors
@@ -243,7 +245,7 @@ Leaves the rest of the bits unchanged.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_FLIP_CHECKED_RANGE = r#"
-Flips the bits in `self` from the `[start..=end]` checked range.
+Flips the bits in `self` from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
 # Errors
@@ -272,7 +274,7 @@ Leaves the rest of the bits unchanged.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_REVERSE_CHECKED_RANGE = r#"
-Reverses the order of the bits in `self` from the `[start..=end]` checked range.
+Reverses the order of the bits in `self` from the checked `[start..=end]` range.
 
 Leaves the rest of the bits unchanged.
 # Errors
@@ -288,7 +290,7 @@ Counts the number of 1s in `self` from the `[start..=end]` range.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_COUNT_ONES_CHECKED_RANGE = r#"
-Counts the number of 1s in `self` from the `[start..=end]` checked range.
+Counts the number of 1s in `self` from the checked `[start..=end]` range.
 # Errors
 Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS` and
 [`MismatchedIndices`] if `start > end`.
@@ -299,7 +301,7 @@ Counts the number of 0s in `self` from the `[start..=end]` range.
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_COUNT_ZEROS_CHECKED_RANGE = r#"
-Counts the number of 0s in `self` from the `[start..=end]` checked range.
+Counts the number of 0s in `self` from the checked `[start..=end]` range.
 # Errors
 Returns [`IndexOutOfBounds`] if `start >= BITS || end >= BITS` and
 [`MismatchedIndices`] if `start > end`.
@@ -317,7 +319,7 @@ The index is relative to the entire sequence of `self`, not to the given `start`
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_FIND_FIRST_ONE_CHECKED_RANGE = r#"
-Finds the index of the first 1 in `self` from the `[start..=end]` checked range.
+Finds the index of the first 1 in `self` from the checked `[start..=end]` range.
 
 Returns `None` if there are no bits set.
 
@@ -336,7 +338,7 @@ The index is relative to the entire sequence of `self`, not to the given `start`
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_FIND_FIRST_ZERO_CHECKED_RANGE = r#"
-Finds the index of the first 0 in `self` from the `[start..=end]` checked range.
+Finds the index of the first 0 in `self` from the checked `[start..=end]` range.
 
 Returns `None` if there are no bits unset.
 
@@ -358,7 +360,7 @@ The index is relative to the entire sequence of `self`, not to the given `start`
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_FIND_LAST_ONE_CHECKED_RANGE = r#"
-Finds the index of the last 1 in `self` from the `[start..=end]` checked range.
+Finds the index of the last 1 in `self` from the checked `[start..=end]` range.
 
 Returns `None` if there are no bits set.
 
@@ -377,7 +379,7 @@ The index is relative to the entire sequence of `self`, not to the given `start`
 Panics in debug mode if `start >= BITS || end >= BITS || start > end`.
 "#;
 _DOC_BIT_FIND_LAST_ZERO_CHECKED_RANGE = r#"
-Finds the index of the last 0 in `self` from the `[start..=end]` checked range.
+Finds the index of the last 0 in `self` from the checked `[start..=end]` range.
 
 Returns `None` if there are no bits set.
 

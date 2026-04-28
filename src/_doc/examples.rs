@@ -17,8 +17,6 @@ pub mod enumset;
 #[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
 
-#[path = "../../examples/data/bitfield.rs"]
-pub mod bitfield;
 #[path = "../../examples/data/id_seq.rs"]
 pub mod id_seq;
 

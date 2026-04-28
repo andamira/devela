@@ -49,9 +49,8 @@
 
 #### data::codec
 - new `set!` macro.
-- update `bitfield!`
-  - rename method `without_fields` with `new`, and make it always visible.
-  - derive `ConstInit`.
+- recreate `bitfield!` making it much more lean.
+- remove the `bitfield` example.
 
 ### data::id
 - rename `define_handle!` to `handle!`
@@ -83,6 +82,9 @@
 
 #### num::dom::real
 - make `Float`'s std methods const: `ceil`, `floor`, `mul_add`, `round_ties_away`, `round_ties_even`.
+
+#### num::fin::bit
+- fix `Bitwise::set_checked_value_checked_range`.
 
 ### num::grain
 - rename `Primitive*` traits to `Prim*`.

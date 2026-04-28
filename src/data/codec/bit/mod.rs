@@ -6,9 +6,6 @@
 #![doc = crate::_doc!(hr)]
 //
 
-#[cfg(test)]
-mod tests;
-
 // mod budget; // BitBudget
 mod field; // bitfield!
 // mod manifest; // BitManifest
@@ -20,11 +17,14 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // budget::*,
-            field::_all::*,
+            field::bitfield,
             // manifest::*,
             // recipe::*,
             // view::*,
             set::set,
         };
+
+        #[cfg(feature = "_docs_examples")]
+        pub use super::field::BitfieldExample;
     }
 }

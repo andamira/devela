@@ -110,7 +110,6 @@ include = [
 	## examples shown from /src/_doc
 	"/examples/code/enumint.rs",
 	"/examples/code/enumset.rs",
-	"/examples/data/bitfield.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 	## programs
@@ -984,9 +983,6 @@ path = "examples/code/enumint.rs"
 name = "enumset" # NOTE: in docs
 path = "examples/code/enumset.rs"
 # data
-[[example]]
-name = "bitfield" # NOTE: in docs
-path = "examples/data/bitfield.rs"
 [[example]]
 name = "id_pin"
 path = "examples/data/id_pin.rs"

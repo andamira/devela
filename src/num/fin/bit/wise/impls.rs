@@ -191,10 +191,14 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
-                        if value >= (1 << (end - start)) {
-                            let err = crate::MismatchedCapacity
-                                ::too_large(value as usize, ( 1 << (end - start)));
-                            return Err(MismatchedBounds::from_mismatched_capacity(err));
+                        let width = end - start + 1;
+                        let limit = is! { width == <$t>::BITS, None, Some(1 as $t << width) };
+                        if let Some(limit) = limit {
+                            if value >= limit {
+                                let err = crate::MismatchedCapacity
+                                    ::too_large(value as usize, limit as usize);
+                                return Err(MismatchedBounds::from_mismatched_capacity(err));
+                            }
                         }
                         let value_shifted = (value << start) & mask.0;
                         Ok(Self((self.0 & !mask.0) | value_shifted))
