@@ -92,12 +92,10 @@ crate::set! {
             is![Self::is_ascii_char(ch), Some(Self::from_ascii_byte_unchecked(ch as u8)), None]
         }
         /// Returns a singleton set containing `ch`.
-        #[must_use]
         pub const fn from_char7(ch: char7) -> Self {
             Self::from_ascii_byte_unchecked(ch.to_utf8_bytes()[0])
         }
         /// Returns a singleton set containing `ch`.
-        #[must_use]
         pub const fn from_ascii(ch: CharAscii) -> Self {
             Self::from_ascii_byte_unchecked(ch as u8)
         }
@@ -137,29 +135,24 @@ crate::set! {
         }
 
         /// Returns this set with `ch` inserted.
-        #[must_use]
         pub const fn with_char7(self, ch: char7) -> Self {
             Self::from_bits(self.bits | Self::bit(ch.to_utf8_bytes()[0]))
         }
         /// Returns this set without `ch`.
-        #[must_use]
         pub const fn without_char7(self, ch: char7) -> Self {
             Self::from_bits(self.bits & !Self::bit(ch.to_utf8_bytes()[0]))
         }
         /// Returns this set with `ch` inserted.
-        #[must_use]
         pub const fn with_ascii(self, ch: CharAscii) -> Self {
             Self::from_bits(self.bits | Self::bit(ch as u8))
         }
         /// Returns this set without `ch`.
-        #[must_use]
         pub const fn without_ascii(self, ch: CharAscii) -> Self {
             Self::from_bits(self.bits & !Self::bit(ch as u8))
         }
 
         #[must_use]
         const fn bit(byte: u8) -> u128 { 1_u128 << byte }
-        #[must_use]
         const fn from_ascii_byte_unchecked(byte: u8) -> Self { Self::from_bits(Self::bit(byte)) }
     }
 }

@@ -104,6 +104,7 @@ macro_rules! set· {
         }
 
         /// Common set methods
+        #[allow(clippy::double_must_use)]
         impl $Set {
             /// Returns an empty set.
             #[must_use]
@@ -149,6 +150,7 @@ macro_rules! set· {
         }
 
         /// Set operations
+        #[allow(clippy::double_must_use)]
         impl $Set {
             /// Returns the union of `self` and `other`.
             #[must_use]

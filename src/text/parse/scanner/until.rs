@@ -1,6 +1,6 @@
 // devela::text::parse::scanner::until
 
-use crate::{TextScanner, TextRange};
+use crate::{TextRange, TextScanner};
 use crate::{is, whilst};
 
 /// Byte-delimited range scanning
