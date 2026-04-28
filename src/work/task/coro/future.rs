@@ -22,7 +22,7 @@ use crate::{AsyncWaker, Box, VecDeque};
 
 #[doc = crate::_tags!(concurrency runtime)]
 /// Represents a single-thread stackless coroutine worker.
-#[doc = crate::_doc_location!("work/future")]
+#[doc = crate::_doc_location!("work/task/coro")]
 ///
 /// It has a private status that can be either running or halted.
 #[derive(Clone, Copy, Debug)]
@@ -63,7 +63,7 @@ impl<T, E> CoroWorker<T, E> {
 #[doc = crate::_tags!(concurrency runtime)]
 /// A future that alternates between [`Ready`][AsyncPoll::Ready] and
 /// [`Pending`][AsyncPoll::Pending] status each time it's polled.
-#[doc = crate::_doc_location!("work/future")]
+#[doc = crate::_doc_location!("work/task/coro")]
 ///
 /// This allows the coroutine to yield control back and be resumed later.
 #[derive(Debug)]
@@ -99,7 +99,7 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 
 #[doc = crate::_tags!(concurrency runtime)]
 /// A managed dynamic collection of single-thread [`CoroWorker`] coroutines.
-#[doc = crate::_doc_location!("work/future")]
+#[doc = crate::_doc_location!("work/task/coro")]
 ///
 /// It maintains a queue of coroutines in the stack, and runs them in a loop
 /// until they are all complete.

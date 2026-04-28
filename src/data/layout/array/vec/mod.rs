@@ -23,6 +23,6 @@ crate::structural_mods! { // _mods, _reexports
         // pub use super::hvec::_all::*;
     }
     _reexports {
-        pub use super::_reexport_alloc::*;
+        pub use super::_reexport_alloc::{Vec, vec_};
     }
 }

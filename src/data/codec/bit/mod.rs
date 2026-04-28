@@ -24,7 +24,7 @@ crate::structural_mods! { // _mods
             // manifest::*,
             // recipe::*,
             // view::*,
-            set::*,
+            set::set,
         };
     }
 }

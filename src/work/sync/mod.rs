@@ -1,7 +1,7 @@
 // devela::work::sync
 //
 #![doc = crate::_DOC_WORK_SYNC!()] // public
-#![doc = crate::_doc!(modules: crate::work; sync)]
+#![doc = crate::_doc!(modules: crate::work; sync: atomic, mpsc)]
 #![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: sync)]
 //
