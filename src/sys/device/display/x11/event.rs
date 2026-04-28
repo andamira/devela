@@ -214,10 +214,11 @@ impl XEvent {
     /// Converts this X11 button state into an `EventButtons` bitmask.
     #[inline(always)]
     pub(crate) const fn map_button_mask(state: u16) -> EventButtons {
-        let (state, mut buttons) = (Bitwise(state), EventButtons::new());
-        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_1) { buttons.mut_set_field_left(); }
-        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_3) { buttons.mut_set_field_right(); }
-        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_2) { buttons.mut_set_field_middle(); }
+        use EventButtons as B;
+        let (state, mut buttons) = (Bitwise(state), B::new());
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_1) { buttons.insert(B::LEFT); }
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_3) { buttons.insert(B::RIGHT); }
+        if state.is_set_mask(_raw::XCB_KEY_BUT_MASK_BUTTON_2) { buttons.insert(B::MIDDLE); }
         buttons
     }
 

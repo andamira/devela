@@ -4,7 +4,7 @@
 //! [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //
 
-use crate::{_impl_init, NonZeroU8, bitfield, f32bits_niche, unwrap};
+use crate::{_impl_init, NonZeroU8, f32bits_niche, set, unwrap};
 
 /* definitions */
 
@@ -157,7 +157,7 @@ impl EventButton {
     }
 }
 
-bitfield! {
+set! {
     #[doc = crate::_tags!(event interaction)]
     /// A semantic bitmask of currently held pressable buttons.
     #[doc = crate::_doc_location!("ui/event")]
@@ -183,21 +183,21 @@ bitfield! {
     /// Backend-specific numbering should be translated at the backend edge.
     pub struct EventButtons(u8) {
         /// The primary left button.
-        LEFT: 0;
+        LEFT = 0;
         /// The primary right button.
-        RIGHT: 1;
+        RIGHT = 1;
         /// The primary middle button.
-        MIDDLE: 2;
+        MIDDLE = 2;
         /// The first auxiliary button, often “back”.
-        X1: 3;
+        X1 = 3;
         /// The second auxiliary button, often “forward”.
-        X2: 4;
+        X2 = 4;
         /// The third auxiliary button, when available.
-        X3: 5;
+        X3 = 5;
         /// The fourth auxiliary button, when available.
-        X4: 6;
+        X4 = 6;
         /// The fifth auxiliary button, when available.
-        X5: 7;
+        X5 = 7;
     }
 }
 

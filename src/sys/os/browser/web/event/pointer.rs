@@ -109,7 +109,7 @@ mod impls {
                 y: self.y as i32,
                 button: EventButton::from_web(self.button),
                 state: EventButtonState::from_web(self.etype),
-                buttons: EventButtons::with_bits(self.buttons),
+                buttons: EventButtons::from_bits(self.buttons),
             });
             let timestamp = Some(EventTimestamp::from_js(self.timestamp));
             EventKindTimed::new(kind, timestamp)
