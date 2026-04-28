@@ -1,6 +1,6 @@
 // devela::data::topol::linked:const
 //
-//! Defines [`ConstList`], [`ConstListIterator`].
+//! Defines [`ConstList`], [`ConstListIter`].
 //
 // This is a modified version of:
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
@@ -86,17 +86,17 @@ impl<'a, T: 'a> ConstList<'a, T> {
     }
 
     /// Creates an iterator over the contents of the list.
-    pub const fn iter(&self) -> ConstListIterator<'_, T> {
-        ConstListIterator { target: self }
+    pub const fn iter(&self) -> ConstListIter<'_, T> {
+        ConstListIter { target: self }
     }
 }
 
 impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
     type Item = &'a T;
-    type IntoIter = ConstListIterator<'a, T>;
+    type IntoIter = ConstListIter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        ConstListIterator { target: self }
+        ConstListIter { target: self }
     }
 }
 
@@ -105,16 +105,21 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 #[doc = crate::_doc_location!("data/topol")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct ConstListIterator<'a, T> {
+pub struct ConstListIter<'a, T> {
     /// The current list head.
     target: &'a ConstList<'a, T>,
 }
-impl<'a, T> Iterator for ConstListIterator<'a, T> {
-    type Item = &'a T;
-
-    fn next(&mut self) -> Option<Self::Item> {
+impl<'a, T> ConstListIter<'a, T> {
+    /// Returns the next item from the list.
+    pub const fn next(&mut self) -> Option<&'a T> {
         let (first, rest) = self.target.pop();
         self.target = rest;
         first
+    }
+}
+impl<'a, T> Iterator for ConstListIter<'a, T> {
+    type Item = &'a T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next()
     }
 }

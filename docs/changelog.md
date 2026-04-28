@@ -56,6 +56,9 @@
 ### data::id
 - rename `define_handle!` to `handle!`
 
+### data::topol
+- rename `ConstListIterator` to `ConstListIter`; add new const-fn `next` method.
+
 #### data storage::key
 - rename `define_static_map!` to `map!`
 
