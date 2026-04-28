@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::quoted
+// devela::text::parse::scanner::quote
 
 #[cfg(doc)]
 use crate::TextParseErrorKind;

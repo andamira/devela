@@ -75,32 +75,6 @@ impl<'a> TextScanner<'a> {
         true
     }
 
-    /// Consumes a single line ending.
-    ///
-    /// Accepts `\n`, `\r`, or `\r\n`.
-    ///
-    /// Returns `true` if a line ending was consumed.
-    #[must_use]
-    pub const fn eat_eol(&mut self) -> bool {
-        let pos = self.cursor.index.as_usize();
-        is! { pos >= self.bytes.len(), return false }
-        match self.bytes[pos] {
-            b'\n' => {
-                self._cursor_bump(1);
-                true
-            }
-            b'\r' => {
-                if pos + 1 < self.bytes.len() && self.bytes[pos + 1] == b'\n' {
-                    self._cursor_bump(2);
-                } else {
-                    self._cursor_bump(1);
-                }
-                true
-            }
-            _ => false,
-        }
-    }
-
     /// Consumes `byte` if it is next, or returns an error.
     pub const fn expect_byte(&mut self, byte: u8) -> Result<(), TextParseError> {
         match self.peek_byte() {
