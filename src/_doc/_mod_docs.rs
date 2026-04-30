@@ -174,6 +174,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_MEDIA_VISUAL_COLOR = "Color models and chromatic systems.";
     _DOC_MEDIA_VISUAL_DRAW  = "Geometric drawing primitives and composition.";
     _DOC_MEDIA_VISUAL_IMAGE = "Raster image representation and processing.";
+    _DOC_MEDIA_VISUAL_IMAGE_FORMAT = "Encoded raster image representations.";
+    _DOC_MEDIA_VISUAL_IMAGE_RASTER = "Raster image storage, views, and access traits.";
     _DOC_MEDIA_VISUAL_VIDEO = "Video stream representation and processing.";
 
     // 6. num (formal systems of magnitude, order, and uncertainty)
