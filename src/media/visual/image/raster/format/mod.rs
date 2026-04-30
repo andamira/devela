@@ -11,7 +11,7 @@
 
    Packed formats:
    - `RasterChannels::Packed(p)` means one scalar element contains several channel bit fields.
-   - `RasterPackedFormat` variant names describe scalar bit-field order from
+   - `RasterPackedChannels` variant names describe scalar bit-field order from
      most-significant field to least-significant field.
    - Packed names do not describe native byte order. Byte slices still follow
      the target endianness of the scalar representation.
@@ -36,7 +36,7 @@ mod impl_const;
 
 mod base; // RasterFormat, (RasterTransfer, RasterAlpha)
 mod channels; // (RasterChannels)
-mod packed; // (RasterPackedFormat)
+mod packed; // (RasterPackedChannels)
 mod sample; // (RasterSampleFormat)
 
 crate::structural_mods! { // _mods

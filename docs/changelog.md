@@ -79,8 +79,8 @@
 
 ##### media::visual::image::raster
 - new traits: `Raster`, `RasterBuf`,`RasterView`, `RasterBufBytes`, `RasterViewBytes`, `RasterSamplePacked`, `RasterViewPacked`.
-- new type: `RasterFormat`.
-- new private types: `RasterAlpha`, `RasterChannels`, `RasterPackedFormat`, `RasterSampleFormat`, `RasterTransfer`.
+- new types: `RasterBytesMut`, `RasterBytesRef`, `RasterFormat`, `RasterLayout`, `RasterMut`, `RasterRef`.
+- new private types: `RasterAlpha`, `RasterChannels`, `RasterPackedChannels`, `RasterSampleFormat`, `RasterTransfer`.
 
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.

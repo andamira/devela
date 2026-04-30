@@ -3,7 +3,7 @@
 //! Defines [`RasterChannels`].
 //
 
-use crate::{_impl_init, RasterPackedFormat, RasterSampleFormat};
+use crate::{_impl_init, RasterPackedChannels, RasterSampleFormat};
 
 /// Channel order, packing, or indexing model of raster elements.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -51,7 +51,7 @@ pub(crate) enum RasterChannels {
     ///
     /// The packed format describes the bit layout of that scalar element,
     /// not the byte order of a borrowed byte slice.
-    Packed(RasterPackedFormat),
+    Packed(RasterPackedChannels),
 }
 _impl_init![ConstInit: Self::Unknown => RasterChannels];
 

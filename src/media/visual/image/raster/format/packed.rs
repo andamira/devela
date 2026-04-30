@@ -1,11 +1,11 @@
 // devela::media::visual::image::raster::format::packed
 //
-//! Defines [`RasterPackedFormat`].
+//! Defines [`RasterPackedChannels`].
 //
 
 use crate::_impl_init;
 
-/// Bit layout of channels inside one scalar raster element.
+/// Packed channel bit layout inside one scalar raster element.
 ///
 /// Variant names describe channel order from the most-significant field to the
 /// least-significant field of the scalar value. For example, `Rgb565` means red
@@ -23,7 +23,7 @@ use crate::_impl_init;
     dead_code,
     reason = "Only exposed: Rgb332, Rgb565, Xrgb8888, Argb8888 Bgr332, Bgr565, Xbgr8888, Abgr8888"
 )]
-pub(crate) enum RasterPackedFormat {
+pub(crate) enum RasterPackedChannels {
     /// Unknown or unspecified packed layout.
     #[default]
     Unknown,
@@ -72,9 +72,9 @@ pub(crate) enum RasterPackedFormat {
     /// Packed 32-bit BGRA: 8 bits per channel.
     Bgra8888,
 }
-_impl_init![ConstInit: Self::Unknown => RasterPackedFormat];
+_impl_init![ConstInit: Self::Unknown => RasterPackedChannels];
 
-impl RasterPackedFormat {
+impl RasterPackedChannels {
     /// Returns whether this packed layout is unknown.
     pub const fn is_unknown(self) -> bool {
         matches!(self, Self::Unknown)

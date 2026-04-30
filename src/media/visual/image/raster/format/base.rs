@@ -133,7 +133,9 @@ impl RasterFormat {
     }
 
     /// Returns the number of stored bytes per pixel, if byte-aligned.
-    pub const fn bytes_per_pixel(self) -> Option<u16> {
+    ///
+    /// Padding bits are included.
+    pub const fn stored_bytes_per_pixel(self) -> Option<u16> {
         match self.bits_per_pixel() {
             Some(bits) if bits % 8 == 0 => Some(bits / 8),
             _ => None,
