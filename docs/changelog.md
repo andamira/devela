@@ -72,11 +72,15 @@
 
 #### media::visual::image
 - new submodules: `format`, `raster`.
-- new traits: `Raster`, `RasterBuf`,`RasterView`, `RasterBufBytes`, `RasterViewBytes`, `RasterSamplePacked`, `RasterViewPacked`.
 - remove `image` feature-gate from the module.
 - update `ImageError`:
   - make `InvalidParsedInteger` variant contain `ParseIntErrorKind`.
   - derive `Hash`.
+
+##### media::visual::image::raster
+- new traits: `Raster`, `RasterBuf`,`RasterView`, `RasterBufBytes`, `RasterViewBytes`, `RasterSamplePacked`, `RasterViewPacked`.
+- new type: `RasterFormat`.
+- new private types: `RasterAlpha`, `RasterChannels`, `RasterPackedFormat`, `RasterSampleFormat`, `RasterTransfer`.
 
 #### num::dom::int
 - rename `define_divisor!` to `divisor!`.

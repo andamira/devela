@@ -69,6 +69,7 @@ pub(crate) trait XImageStore {
     fn depth(&self) -> u8;
     fn bytes(&self) -> &[u8];
     fn bytes_mut(&mut self) -> &mut [u8];
+    #[allow(dead_code, reason = "WIP")]
     fn resize(
         &mut self,
         display: &XDisplay,

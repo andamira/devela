@@ -15,10 +15,22 @@
 //   - (trait Sealed)
 //   - trait RasterSamplePacked
 //   - trait RasterViewPacked
+//
+/* depth vs storage width
+   ---------------------------------------------------------------------------
+   - `raster_depth()` is a compact logical depth value, kept as `u8` because it
+     mirrors common backend/image depth fields such as X11 depth.
+   - Logical depth may exclude padding bits. Example: a 32-bit stored XRGB pixel
+     often has logical depth 24.
+   - `raster_bits_per_pixel()` is stored pixel width and includes padding bits.
+   - Stored widths are returned as `u16` to avoid truncation for large sample
+     types such as `[u8; 32]`, even though real presentation backends usually
+     stay far below that.
+*/
 
-use crate::Extent2;
 #[cfg(feature = "unsafe_layout")]
 use crate::MemPod;
+use crate::{Extent2, is};
 
 /* typed-sample family */
 
@@ -107,7 +119,8 @@ pub trait RasterViewBytes {
     fn raster_extent_bytes(&self) -> Extent2<u32>;
     /// Returns the logical raster depth in bits.
     ///
-    /// This may differ from the stored bits per pixel.
+    /// This is a compact backend-style depth value. It may differ from the stored
+    /// bits per pixel. For example, a 32-bit stored XRGB pixel may have depth 24.
     fn raster_depth(&self) -> u8;
     /// Returns the raw raster bytes.
     fn raster_bytes(&self) -> &[u8];
@@ -119,6 +132,16 @@ pub trait RasterViewBytes {
     /// Returns the total stored byte length.
     fn raster_len_bytes(&self) -> usize {
         self.raster_bytes().len()
+    }
+    /// Returns the stored bits per pixel, if known from the row layout.
+    ///
+    /// This is storage width, not logical depth.
+    fn raster_bits_per_pixel_bytes(&self) -> Option<u16> {
+        let [w, _] = self.raster_extent_bytes().dim;
+        is! { w == 0, return None }
+        let bits = self.raster_bytes_per_line().checked_mul(8)?;
+        let bpp = bits / w as usize;
+        u16::try_from(bpp).ok()
     }
 }
 impl<T> RasterViewBytes for T
@@ -243,19 +266,29 @@ where
     Self::Sample: RasterSamplePacked,
 {
     /// Returns the logical storage depth in bits.
+    ///
+    /// This is a compact backend-style depth value, not necessarily the full
+    /// stored bits per pixel. For example, a 32-bit stored pixel may have
+    /// logical depth 24.
     fn raster_depth(&self) -> u8;
 
     /* provided */
 
     /// Returns the stored bits per pixel.
-    fn raster_bits_per_pixel(&self) -> u8 {
-        (size_of::<Self::Sample>() * 8) as u8
+    ///
+    /// This is derived from the packed sample type and includes padding bits.
+    fn raster_bits_per_pixel(&self) -> u16 {
+        (size_of::<Self::Sample>() * 8) as u16
+    }
+    /// Returns the stored bytes per pixel.
+    fn raster_bytes_per_pixel(&self) -> usize {
+        size_of::<Self::Sample>()
     }
     /// Returns the stored bytes per scanline.
     ///
     /// Default: tightly packed rows.
     fn raster_bytes_per_line(&self) -> usize {
         let [w, _h] = self.raster_extent().dim;
-        w as usize * size_of::<Self::Sample>()
+        w as usize * self.raster_bytes_per_pixel()
     }
 }

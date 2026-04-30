@@ -6,16 +6,20 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod macros; // WIP raster!
-mod traits; // Raster[[Buf|View][Bytes]], Raster<Sample|View>Packed
-// mod types; // WIP
+// mod borrow; // (4) Raster<[Bytes]<Mut|Ref>> WIP
+mod format; // (1+5) RasterFormat, (Raster<Alpha|Channels|<<Sample|Packed>Format>|Transfer>
+// mod layout; // (1) RasterLayout
+// mod macros; // (1) raster! WIP
+mod traits; // (7) Raster[[Buf|View][Bytes]], Raster<Sample|View>Packed
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            macros::*,
+            // borrow::*,
+            format::*,
+            // layout::*,
+            // macros::*,
             traits::*,
-            // types::*,
         };
     }
 }

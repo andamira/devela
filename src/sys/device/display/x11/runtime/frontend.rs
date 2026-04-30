@@ -220,6 +220,7 @@ impl XFrontend {
     // BENCH NOTE: On local X11 SHM tests at 2560x1440-like scale, direct surface
     // rendering was ~5-20% faster than the artifact path depending on workload.
     // Presentation remained the dominant cost. Keeping both paths.
+    #[allow(clippy::too_many_arguments)]
     #[allow(private_bounds, reason = "private XFrameCtx")]
     pub fn step_frame_surface<R, A, F, RE>(
         &mut self,
@@ -251,7 +252,7 @@ impl XFrontend {
         // 5B. Ensure the retained surface and render directly into it.
         let mut surface = self
             .presenter
-            .surface_frame(&mut self.backend.display, width, height, depth)
+            .surface_frame(&self.backend.display, width, height, depth)
             .map_err(RunDriverFrameError::Present)?;
         render(&mut surface).map_err(RunDriverFrameError::Render)?;
         // 6B. Present after the surface borrow ends.

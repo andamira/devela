@@ -136,7 +136,7 @@ impl XWindow {
 
     /// Writes a tightly packed 32-bit pixel buffer into the window using XCB.
     pub fn put_image_u32(&self, width: u16, height: u16, depth: u8, data: &[u32]) {
-        let len = data.len() * size_of::<u32>();
+        let len = size_of_val(data);
         let bytes = unsafe { core::slice::from_raw_parts(data.as_ptr().cast::<u8>(), len) };
         self.put_image_bytes(width, height, depth, bytes);
     }
