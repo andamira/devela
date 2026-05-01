@@ -1014,6 +1014,10 @@ name = "scope_guard"
 path = "src/code/guard.rs"
 required-features = ["std"]
 [[example]]
+name = "otp"
+path = "src/data/codec/crypto/otp.rs"
+required-features = ["std", "time"]
+[[example]]
 name = "current_guard"
 path = "src/sys/mem/guard.rs"
 required-features = ["std", "unsafe_layout"]

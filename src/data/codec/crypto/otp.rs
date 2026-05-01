@@ -1,13 +1,28 @@
+#!/usr/bin/env -S rust-script -c --debug
+//! ```cargo
+//! [dependencies]
+//! devela = { path = "../../../..", features = ["std", "time", "_docs_examples"]}
+//! [features]
+//! default = ["std", "time", "_docs_examples"]
+//! _docs_examples = []
+//! std = []
+//! time = []
+//! ```
+// WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
+//
 // devela::data::codec::crypto::otp
 //
 //! Defines [`Otp`].
 //
 
-use crate::{CryptoError, Sha1, unwrap};
+#![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
-#[doc = crate::_tags!(crypto hash)]
+use ::devela::{CryptoError, Sha1, unwrap};
+::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
+
+#[doc = _tags!(crypto hash)]
 /// HMAC-based One‑Time Password generators (HOTP / TOTP).
-#[doc = crate::_doc_location!("data/codec/crypto")]
+#[doc = _doc_location!("data/codec/crypto")]
 ///
 /// Implements [RFC 4226](https://tools.ietf.org/html/rfc4226) (HOTP)
 /// and [RFC 6238](https://tools.ietf.org/html/rfc6238) (TOTP)
@@ -78,4 +93,20 @@ impl Otp {
         let counter = Self::counter(unix_seconds, period);
         Self::generate_hotp(key, counter, digits)
     }
+}
+
+#[allow(unused, reason = "example script")]
+#[cfg(all(feature = "std", feature = "time"))]
+fn main() {
+    use ::devela::{Base32, Otp, TimeUnixU32};
+
+    // test here: https://authenticationtest.com/totpChallenge/
+    const SECRET: &str = "I65VU7K5ZQL7WB4E";
+    const PERIOD: u64 = 30;
+
+    let mut key = [0u8; Base32::decoded_len_stripped(SECRET.as_bytes())];
+    let key_len = Base32::decode_from_slice(SECRET.as_bytes(), &mut key).unwrap();
+    let now = TimeUnixU32::now().seconds as u64;
+    let otp = Otp::generate_totp(&key[..key_len], now, PERIOD, Otp::DEFAULT_DIGITS).unwrap();
+    println!("{otp:06}");
 }

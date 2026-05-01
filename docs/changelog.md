@@ -21,7 +21,7 @@
 
 ## workspace
 ### examples
-- new example scripts: `scope_guard`, `current_guard`.
+- new example scripts: `current_guard`, `otp`, `scope_guard`.
 
 ## build
 - new native section to detect native library availability.
