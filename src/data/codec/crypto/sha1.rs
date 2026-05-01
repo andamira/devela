@@ -8,6 +8,7 @@
 // - References:
 //   - FIPS 180-4, Secure Hash Standard.
 //   - RFC 3174, US Secure Hash Algorithm 1.
+//   - RFC 2104, Keyed-Hash Message Authentication Code.
 
 use crate::{_impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
@@ -92,6 +93,46 @@ impl Sha1 {
         unwrap![ok? sha.update(bytes)];
         Ok(sha.finalize())
     }
+    /// Computes the HMAC-SHA1 of `message` using the given `key`.
+    ///
+    /// If the key is longer than the block size (64 bytes), it is first hashed
+    /// to obtain a 20‑byte key. The resulting HMAC is a 20‑byte digest.
+    ///
+    /// # Errors
+    /// Returns [`CryptoError::LengthOverflow`] if `bytes` exceeds SHA-1's supported message length.
+    pub const fn hmac(key: &[u8], message: &[u8]) -> Result<Sha1Digest, CryptoError> {
+        // 1. Prepare a 64‑byte key block.
+        const BLOCK: usize = 64;
+        let mut key_block = [0u8; BLOCK];
+        if key.len() > BLOCK {
+            // hash the key and pad the rest with zeros
+            let hashed = unwrap![ok? Self::digest_bytes(key)].into_array();
+            whilst! { i in 0..hashed.len(); { key_block[i] = hashed[i]; }}
+        } else {
+            // copy the key and pad with zeros
+            whilst! { i in 0..key.len(); { key_block[i] = key[i]; }}
+        }
+        // 2. Inner and outer padding
+        const IPAD: u8 = 0x36;
+        const OPAD: u8 = 0x5c;
+        let (mut ipad, mut opad) = ([0u8; BLOCK], [0u8; BLOCK]);
+        whilst! { i in 0..BLOCK; {
+            ipad[i] = key_block[i] ^ IPAD;
+            opad[i] = key_block[i] ^ OPAD;
+        }}
+        // 3. Inner hash: H(ipad || message)
+        let mut inner = Self::new();
+        // update with ipad (64 bytes) -> exactly one block
+        unwrap![ok? inner.update(&ipad)];
+        unwrap![ok? inner.update(message)];
+        let inner_hash = inner.finalize().into_array();
+        // 4. Outer hash: H(opad || inner_hash)
+        let mut outer = Self::new();
+        unwrap![ok? outer.update(&opad)]; // 64 bytes
+        unwrap![ok? outer.update(&inner_hash)]; // 20 bytes
+        Ok(outer.finalize())
+    }
+
     /// Finalizes the digest and consumes the state.
     ///
     /// This method cannot fail.
@@ -192,26 +233,26 @@ impl Sha1 {
 mod tests {
     use super::{Digest, Sha1, Sha1Digest, whilst};
 
-    fn hex_value(byte: u8) -> u8 {
-        match byte {
-            b'0'..=b'9' => byte - b'0',
-            b'a'..=b'f' => byte - b'a' + 10,
-            b'A'..=b'F' => byte - b'A' + 10,
-            _ => panic!("invalid hex digit"),
-        }
+    const fn hex<const N: usize>(s: &str) -> [u8; N] {
+        use devela::{Base, Rfc4648}; // TEMP
+        type Hex = Base<16, false, false, true, Rfc4648>; // TEMP
+        let input = s.as_bytes();
+        assert!(input.len() == N * 2);
+        let mut out = [0u8; N];
+        let written = match Hex::decode_from_slice(input, &mut out) {
+            Some(written) => written,
+            None => panic!("invalid hex"),
+        };
+        assert!(written == N);
+        out
     }
     fn digest_from_hex(hex: &str) -> Sha1Digest {
-        let bytes = hex.as_bytes();
-        assert_eq!(bytes.len(), Sha1::DIGEST_LEN * 2);
-        let mut out = [0u8; Sha1::DIGEST_LEN];
-        whilst! { i in 0..Sha1::DIGEST_LEN; {
-            out[i] = (hex_value(bytes[i * 2]) << 4) | hex_value(bytes[i * 2 + 1]);
-        }}
-        Digest(out)
+        Digest(self::hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {
         assert_eq!(Sha1::digest_bytes(input).unwrap(), digest_from_hex(expected));
     }
+
     #[test]
     fn known_vectors() {
         assert_digest(b"", "da39a3ee5e6b4b0d3255bfef95601890afd80709");
@@ -222,6 +263,7 @@ mod tests {
         );
     }
     #[test]
+    #[cfg(not(miri))] // too slow for miri
     fn million_a() {
         let mut sha = Sha1::new();
         for _ in 0..1_000_000 {
@@ -260,5 +302,32 @@ mod tests {
         sha.reset();
         sha.update(b"abc").unwrap();
         assert_eq!(sha.finalize(), digest_from_hex("a9993e364706816aba3e25717850c26c9cd0d89d"),);
+    }
+    #[test]
+    // https://www.rfc-editor.org/rfc/rfc2202
+    fn hmac_rfc_2202() {
+        // 1
+        let (key, data) = ([0x0b; 20], b"Hi There");
+        let mac = Sha1::hmac(&key, data).unwrap();
+        assert_eq!(mac.as_array(), &hex("b617318655057264e28bc0b6fb378c8ef146be00"));
+        // 2
+        let (key, data) = (b"Jefe", b"what do ya want for nothing?");
+        let mac = Sha1::hmac(key, data).unwrap();
+        assert_eq!(mac.as_array(), &hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
+        // 3
+        let (key, data) = ([0xaa; 20], [0xdd; 50]);
+        let mac = Sha1::hmac(&key, &data).unwrap();
+        assert_eq!(mac.as_array(), &hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
+        // 4
+        let key = hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
+        let data = [0xcd; 50];
+        let mac = Sha1::hmac(&key, &data).unwrap();
+        assert_eq!(mac.as_array(), &hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
+        // …
+        // 7
+        let key = [0xaa; 80];
+        let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
+        let mac = Sha1::hmac(&key, data).unwrap();
+        assert_eq!(mac.as_array(), &hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
     }
 }

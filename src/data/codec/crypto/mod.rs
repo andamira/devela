@@ -8,7 +8,8 @@
 
 mod digest; // Digest
 mod error; // CryptoError
-// mod otp; // WIP
+// mod md5; // Md5 WIP
+mod otp; // Otp
 mod sha1; // Sha1
 
 crate::structural_mods! { // _mods
@@ -16,7 +17,8 @@ crate::structural_mods! { // _mods
         pub use super::{
             digest::*,
             error::*,
-            // otp::*,
+            // md5::*,
+            otp::*,
             sha1::*,
         };
     }
