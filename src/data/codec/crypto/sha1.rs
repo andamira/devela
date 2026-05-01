@@ -231,23 +231,10 @@ impl Sha1 {
 
 #[cfg(test)]
 mod tests {
-    use super::{Digest, Sha1, Sha1Digest, whilst};
+    use super::{super::_hex, Digest, Sha1, Sha1Digest, whilst};
 
-    const fn hex<const N: usize>(s: &str) -> [u8; N] {
-        use devela::{Base, Rfc4648}; // TEMP
-        type Hex = Base<16, false, false, true, Rfc4648>; // TEMP
-        let input = s.as_bytes();
-        assert!(input.len() == N * 2);
-        let mut out = [0u8; N];
-        let written = match Hex::decode_from_slice(input, &mut out) {
-            Some(written) => written,
-            None => panic!("invalid hex"),
-        };
-        assert!(written == N);
-        out
-    }
     fn digest_from_hex(hex: &str) -> Sha1Digest {
-        Digest(self::hex(hex))
+        Digest(self::_hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {
         assert_eq!(Sha1::digest_bytes(input).unwrap(), digest_from_hex(expected));
@@ -304,30 +291,30 @@ mod tests {
         assert_eq!(sha.finalize(), digest_from_hex("a9993e364706816aba3e25717850c26c9cd0d89d"),);
     }
     #[test]
-    // https://www.rfc-editor.org/rfc/rfc2202
+    // https://www.rfc-editor.org/rfc/rfc2202#section-2
     fn hmac_rfc_2202() {
         // 1
         let (key, data) = ([0x0b; 20], b"Hi There");
         let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &hex("b617318655057264e28bc0b6fb378c8ef146be00"));
+        assert_eq!(mac.as_array(), &_hex("b617318655057264e28bc0b6fb378c8ef146be00"));
         // 2
         let (key, data) = (b"Jefe", b"what do ya want for nothing?");
         let mac = Sha1::hmac(key, data).unwrap();
-        assert_eq!(mac.as_array(), &hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
+        assert_eq!(mac.as_array(), &_hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
         // 3
         let (key, data) = ([0xaa; 20], [0xdd; 50]);
         let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
+        assert_eq!(mac.as_array(), &_hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
         // 4
-        let key = hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
+        let key = _hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
         let data = [0xcd; 50];
         let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
+        assert_eq!(mac.as_array(), &_hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
         // …
         // 7
         let key = [0xaa; 80];
         let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
         let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
+        assert_eq!(mac.as_array(), &_hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
     }
 }

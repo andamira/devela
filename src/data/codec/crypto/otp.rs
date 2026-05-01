@@ -17,56 +17,109 @@
 
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
-use ::devela::{CryptoError, Sha1, unwrap};
+use ::devela::{CryptoError, Sha1, impl_trait, unwrap};
 ::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 #[doc = _tags!(crypto hash)]
-/// HMAC-based One‑Time Password generators (HOTP / TOTP).
+/// A generated one-time password code.
 #[doc = _doc_location!("data/codec/crypto")]
 ///
-/// Implements [RFC 4226](https://tools.ietf.org/html/rfc4226) (HOTP)
-/// and [RFC 6238](https://tools.ietf.org/html/rfc6238) (TOTP)
-/// using SHA-1 as the underlying HMAC function.
+/// Provides HOTP and TOTP constructors as defined by [RFC 4226] and [RFC 6238].
+///
+/// SHA-1 is the HOTP algorithm mandated by RFC 4226, and remains the common
+/// interoperability default for TOTP. RFC 6238 also permits HMAC-SHA-256 and
+/// HMAC-SHA-512 variants.
+///
+/// The numeric code is stored without leading zeroes;
+/// use [`digits`][Self::digits] when formatting it for display.
 ///
 /// # Examples
 /// ```
 /// # use devela::Otp;
-/// let key = b"12345678901234567890";
-/// let hotp = Otp::generate_hotp(key, 0, Otp::DEFAULT_DIGITS).unwrap();
-/// assert_eq!(hotp, 755224);
+/// let key = b"jAaO2ynesPYCdTZV";
+/// let hotp = Otp::hotp_sha1(key, 0, Otp::DEFAULT_DIGITS).unwrap();
+/// assert_eq!(hotp.code(), 1639);
+/// # #[cfg(alloc)]
+/// assert_eq!(hotp.to_string(), "001639");
 /// ```
-///
-/// # Errors
-///
-/// The only error that can occur is [`CryptoError::LengthOverflow`] from the
-/// underlying HMAC‑SHA1 computation, if the total message length (including
-/// the padded key) exceeds SHA‑1’s maximum message length (≈ 2^64 bits).
-/// In practice, for HOTP/TOTP with a small key and a fixed 8‑byte counter,
-/// this will never happen.
+/// [RFC 4226]: https://tools.ietf.org/html/rfc4226
+/// [RFC 6238]: https://tools.ietf.org/html/rfc6238
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[must_use]
-pub struct Otp;
+pub struct Otp {
+    code: u32,
+    digits: u32,
+}
+impl_trait! { fmt::Display for Otp |self, f|
+    write!(f, "{:0width$}", self.code, width = self.digits as usize)
+}
 impl Otp {
-    /// Number of digits in the generated password.
+    /// Default number of decimal OTP digits.
     pub const DEFAULT_DIGITS: u32 = 6;
-    /// Reference Unix second used as counter base for TOTP.
+    /// Minimum supported decimal OTP digits.
+    pub const MIN_DIGITS: u32 = 1;
+    /// Maximum supported decimal OTP digits for a `u32` code.
+    ///
+    /// HOTP dynamic truncation produces a 31-bit value, so 10-digit codes are
+    /// supported as display width but do not span the full 10-digit range.
+    pub const MAX_DIGITS: u32 = 10;
+    /// Default TOTP initial counter time, the Unix epoch.
     pub const DEFAULT_EPOCH: u64 = 0;
-    /// Time step in seconds for TOTP (usually 30).
+    /// Default TOTP time step in seconds.
     pub const DEFAULT_PERIOD: u64 = 30;
 
-    /// Converts `unix_seconds` into a counter value based on `period`.
-    /// The result is `unix_seconds / period`.
-    pub const fn counter(unix_seconds: u64, period: u64) -> u64 {
-        unix_seconds / period
+    const fn validate_digits(digits: u32) -> Result<(), CryptoError> {
+        if digits < Self::MIN_DIGITS || digits > Self::MAX_DIGITS {
+            Err(CryptoError::InvalidLength)
+        } else {
+            Ok(())
+        }
     }
-    /// Generates an HMAC-based One-Time Password (HOTP) using SHA-1.
+
+    /// Returns the numeric OTP code, without leading zeroes.
+    #[must_use]
+    pub const fn code(self) -> u32 {
+        self.code
+    }
+    /// Returns the decimal digit width used by this OTP code.
+    #[must_use]
+    pub const fn digits(self) -> u32 {
+        self.digits
+    }
+
+    /// Derives the TOTP moving counter.
     ///
-    /// Returns a number in `0..10^digits`.
+    /// Computes `(unix_seconds - epoch) / period`.
     ///
-    /// The shared secret `key` is fed into an HMAC together with the 8‑byte
-    /// big‑endian representation of `counter`. The resulting hash is then
-    /// truncated to `digits` decimal digits (typically 6).
-    pub const fn generate_hotp(key: &[u8], counter: u64, digits: u32) -> Result<u32, CryptoError> {
+    /// # Errors
+    /// Returns [`CryptoError::InvalidParameter`] if `period == 0`
+    /// or if `unix_seconds < epoch`.
+    pub const fn time_counter(
+        unix_seconds: u64,
+        epoch: u64,
+        period: u64,
+    ) -> Result<u64, CryptoError> {
+        if period == 0 || unix_seconds < epoch {
+            Err(CryptoError::InvalidParameter)
+        } else {
+            Ok((unix_seconds - epoch) / period)
+        }
+    }
+
+    /// Generates an HOTP code using HMAC-SHA-1.
+    ///
+    /// Computes `HOTP(K, C)` from the shared secret `key` and 8-byte big-endian
+    /// counter, then applies dynamic truncation.
+    ///
+    /// The returned code is numeric and may have fewer visible digits than
+    /// [`digits`][Self::digits]; format it with leading zeroes for display.
+    ///
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
+    ///   computation exceeds SHA-1's input length limit.
+    pub const fn hotp_sha1(key: &[u8], counter: u64, digits: u32) -> Result<Otp, CryptoError> {
+        unwrap![ok? Self::validate_digits(digits)];
         let mac = unwrap![ok? Sha1::hmac(key, &counter.to_be_bytes())];
         let offset = (mac.0[19] & 0x0f) as usize;
         let code = u32::from_be_bytes([
@@ -75,23 +128,44 @@ impl Otp {
             mac.0[offset + 2],
             mac.0[offset + 3],
         ]);
-        Ok(code % 10u32.pow(digits))
+        let modulo = 10u64.pow(digits);
+        Ok(Self { code: (code as u64 % modulo) as u32, digits })
     }
-    /// Generates a Time-based One-Time Password (TOTP).
+
+    /// Generates a TOTP code using HMAC-SHA-1 and the default TOTP parameters.
     ///
-    /// Converts the current Unix timestamp `unix_seconds` into a counter
-    /// by dividing by `period` (usually 30 seconds). This derived counter
-    /// is then used to compute a HOTP via [`generate_hotp`][Self::generate_hotp].
+    /// Uses [`DEFAULT_EPOCH`][Self::DEFAULT_EPOCH] and [`DEFAULT_PERIOD`][Self::DEFAULT_PERIOD].
     ///
-    /// The `digits` parameter controls the length of the output code (commonly 6).
-    pub const fn generate_totp(
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
+    ///   computation exceeds SHA-1's input length limit.
+    pub const fn totp_sha1(
         key: &[u8],
         unix_seconds: u64,
+        digits: u32,
+    ) -> Result<Self, CryptoError> {
+        Self::totp_sha1_with(key, unix_seconds, Self::DEFAULT_EPOCH, Self::DEFAULT_PERIOD, digits)
+    }
+    /// Generates a TOTP code using HMAC-SHA-1 and explicit TOTP parameters.
+    ///
+    /// Derives the moving counter from `unix_seconds`, `epoch`, and `period`,
+    /// then computes HOTP-SHA1 with that counter.
+    ///
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidParameter`] if `period == 0` or if `unix_seconds < epoch`.
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
+    ///   computation exceeds SHA-1's input length limit.
+    pub const fn totp_sha1_with(
+        key: &[u8],
+        unix_seconds: u64,
+        epoch: u64,
         period: u64,
         digits: u32,
-    ) -> Result<u32, CryptoError> {
-        let counter = Self::counter(unix_seconds, period);
-        Self::generate_hotp(key, counter, digits)
+    ) -> Result<Self, CryptoError> {
+        let counter = unwrap![ok? Self::time_counter(unix_seconds, epoch, period)];
+        Self::hotp_sha1(key, counter, digits)
     }
 }
 
@@ -107,6 +181,39 @@ fn main() {
     let mut key = [0u8; Base32::decoded_len_stripped(SECRET.as_bytes())];
     let key_len = Base32::decode_from_slice(SECRET.as_bytes(), &mut key).unwrap();
     let now = TimeUnixU32::now().seconds as u64;
-    let otp = Otp::generate_totp(&key[..key_len], now, PERIOD, Otp::DEFAULT_DIGITS).unwrap();
-    println!("{otp:06}");
+    let otp = Otp::totp_sha1(&key[..key_len], now, Otp::DEFAULT_DIGITS).unwrap();
+    println!("{otp}");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{super::_hex, Otp};
+    #[test]
+    // https://datatracker.ietf.org/doc/html/rfc4226#page-32
+    fn otp_rfc4226() {
+        let key = _hex::<20>("3132333435363738393031323334353637383930");
+        let hotp = Otp::hotp_sha1(&key, 0, Otp::DEFAULT_DIGITS).unwrap();
+        assert_eq![hotp.digits(), 6];
+        assert_eq![hotp.code(), 755224];
+        assert_eq![Otp::hotp_sha1(&key, 1, Otp::DEFAULT_DIGITS).unwrap().code(), 287082];
+        assert_eq![Otp::hotp_sha1(&key, 2, Otp::DEFAULT_DIGITS).unwrap().code(), 359152];
+        assert_eq![Otp::hotp_sha1(&key, 3, Otp::DEFAULT_DIGITS).unwrap().code(), 969429];
+        assert_eq![Otp::hotp_sha1(&key, 4, Otp::DEFAULT_DIGITS).unwrap().code(), 338314];
+        assert_eq![Otp::hotp_sha1(&key, 5, Otp::DEFAULT_DIGITS).unwrap().code(), 254676];
+        assert_eq![Otp::hotp_sha1(&key, 6, Otp::DEFAULT_DIGITS).unwrap().code(), 287922];
+        assert_eq![Otp::hotp_sha1(&key, 7, Otp::DEFAULT_DIGITS).unwrap().code(), 162583];
+        assert_eq![Otp::hotp_sha1(&key, 8, Otp::DEFAULT_DIGITS).unwrap().code(), 399871];
+        assert_eq![Otp::hotp_sha1(&key, 9, Otp::DEFAULT_DIGITS).unwrap().code(), 520489];
+    }
+    #[test]
+    fn otp_rejects_invalid_digits() {
+        let key = _hex::<20>("3132333435363738393031323334353637383930");
+        assert!(Otp::hotp_sha1(&key, 0, 0).unwrap_err().is_invalid_length());
+        assert!(Otp::hotp_sha1(&key, 0, 11).unwrap_err().is_invalid_length());
+    }
+    #[test]
+    fn otp_rejects_invalid_time_counter_parameters() {
+        assert!(Otp::time_counter(100, 0, 0).unwrap_err().is_invalid_parameter());
+        assert!(Otp::time_counter(99, 100, 30).unwrap_err().is_invalid_parameter());
+    }
 }
