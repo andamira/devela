@@ -37,6 +37,10 @@
 
 # Modules
 
+## build
+- update `Build`:
+  - new methods: `emit_[check_cfg|checked_flag|env|env_marker|flag|flag_if|flag_if_lib]`, `has_lib`.
+
 ## code
 - impl `ConstInit` for more types.
 
