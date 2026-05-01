@@ -58,10 +58,13 @@
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
-#### data::codec
-- new `set!` macro.
+### data::codec
+- new macro: `set!`.
 - recreate `bitfield!` making it much more lean.
 - remove the `bitfield` example.
+
+#### data::codec::crypto
+- new types: `CryptoError`, `Digest`.
 
 ### data::id
 - rename `define_handle!` to `handle!`
