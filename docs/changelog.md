@@ -31,6 +31,9 @@
 - bump `hashbrown` to 0.17.
 - bump `wide` to 1.3.
 
+## docs
+- new tags: `_TAG_[CRYPTO]`.
+
 ## features & flags
 - new feature: `web`.
 - new flag: `ffi_xcb_shm··`.

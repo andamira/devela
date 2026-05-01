@@ -55,6 +55,9 @@ _define_symbol_tags! {
     // Emphasizes how values or structures come into existence,
     // not what they represent once built.
     _TAG_CONSTRUCTION, "Construction", "🏗️";
+    // Cryptographic algorithms and protocol primitives.
+    // Covers encryption, authentication, cryptographic hashing, and key-related machinery.
+    _TAG_CRYPTO, "Cryptography", "🔐";
     // General data carriers and abstractions.
     // Focuses on representation and transport of information,
     // not on its semantic meaning or mathematical structure.
