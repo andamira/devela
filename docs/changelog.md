@@ -64,7 +64,7 @@
 - remove the `bitfield` example.
 
 #### data::codec::crypto
-- new types: `CryptoError`, `Digest`.
+- new types: `CryptoError`, `Digest`, `Sha1`.
 
 ### data::id
 - rename `define_handle!` to `handle!`

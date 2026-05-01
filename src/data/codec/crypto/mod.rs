@@ -9,7 +9,7 @@
 mod digest; // Digest
 mod error; // CryptoError
 // mod otp; // WIP
-// mod sha1; // Sha1 WIP
+mod sha1; // Sha1
 
 crate::structural_mods! { // _mods
     _mods {
@@ -17,7 +17,7 @@ crate::structural_mods! { // _mods
             digest::*,
             error::*,
             // otp::*,
-            // sha1::*,
+            sha1::*,
         };
     }
 }
