@@ -40,6 +40,7 @@ impl Build {
         PathBuf::from(env::var("CARGO_MANIFEST_PATH").expect("CARGO_MANIFEST_PATH not set"))
     }
     /// Marks an environment variable as affecting build-script reruns.
+    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
     pub fn rerun_if_env_changed(var: &str) {
         println!("cargo:rerun-if-env-changed={var}");
     }

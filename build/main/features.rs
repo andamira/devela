@@ -2,8 +2,6 @@
 //
 //! Features debugging and compile flags enabling for reflexion.
 //
-// NOTE: this file is shared between the build scripts in:
-// - devela/build/main/
 //
 // NOTE: features not included: web, x11
 
@@ -234,7 +232,6 @@ mod reflection {
         features: &[
             "safest",
             "safe",
-            "safe_base",
             "safe_build",
             "safe_code",
             "safe_data",

@@ -2,50 +2,38 @@
 //
 //! Build script environment variables.
 //
-// NOTE: this file is shared between the build scripts in:
-// - devela/build/main/
-// - devela_base_core/build/
-//
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html
 // #environment-variables-cargo-sets-for-build-scripts
 
+use super::Build;
 use std::{io::Error as IoError, path::Path};
 
 pub(crate) fn main() -> Result<(), IoError> {
-    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
-    println!("cargo:rerun-if-env-changed=CARGO_PRIMARY_PACKAGE");
-    println!("cargo:rerun-if-env-changed=CARGO_TARGET_DIR");
-    println!("cargo:rerun-if-env-changed=CARGO_WORKSPACE_DIR");
+    Build::rerun_if_env_changed("CARGO_PRIMARY_PACKAGE");
+    Build::rerun_if_env_changed("CARGO_TARGET_DIR");
+    Build::rerun_if_env_changed("CARGO_WORKSPACE_DIR");
 
     // This environment variable will be set if the package being built is primary.
     let cargo_primary_package = option_env!("CARGO_PRIMARY_PACKAGE");
-    if cargo_primary_package.is_some() {
-        println!("cargo:rustc-cfg=cargo_primary_package");
-    }
+    Build::emit_flag_if("cargo_primary_package", cargo_primary_package.is_some());
 
     // Makes sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
     //
-    // Used in: doclink! (/src/base/core/src/code/util/doclink
-    // In sync with: /.cargo/config.toml#[env] & /src/base/core/build/environment.rs
+    // Used in: doclink! (/src/code/util/doclink.rs
+    // In sync with: /.cargo/config.toml#[env]
     let cwd = get_workspace_dir();
     let ctd = get_target_dir(&cwd);
-    println!("cargo:rustc-env=CARGO_WORKSPACE_DIR={}", cwd);
-    println!("cargo:rustc-env=CARGO_TARGET_DIR={}", ctd);
+    Build::emit_env("CARGO_WORKSPACE_DIR", cwd);
+    Build::emit_env("CARGO_TARGET_DIR", ctd);
 
     let crate_name = std::env::var("CARGO_PKG_NAME").unwrap();
     let is_workspace_member = matches!(
         crate_name.as_str(), // in sync with /Cargo.toml:members
-        "devela_base_macros"
-            | "devela_base_core"
-            | "devela_base_alloc"
-            | "devela_base_std"
-            | "devela_macros"
-            | "devela"
-            | "devela_postbuild"
+        "devela" | "devela_macros" | "devela_postbuild"
     );
     if is_workspace_member {
-        println!("cargo:rustc-env=__DEVELA_MEMBER=");
-        println!("cargo:rustc-env=__DEVELA_MEMBER_NAME={crate_name}");
+        Build::emit_env_marker("__DEVELA_MEMBER");
+        Build::emit_env("__DEVELA_MEMBER_NAME", crate_name);
     }
 
     #[cfg(feature = "__dbg")]

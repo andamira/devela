@@ -38,16 +38,13 @@ const CRATE_NAME: &str = "devela";
 
 /* imports */
 
-// extern crate devela_base_core as base_core;
-// extern crate devela_base_std as base_std; // MAYBE
 extern crate self as build;
 
-// NOTE: manually imports the Build namespace from devela_base_std
+// NOTE: manually imports the Build namespace from devela
 items! {
-    macro_rules! _TAG_NAMESPACE {()=>{""}} #[allow(unused)] use _TAG_NAMESPACE; // NEEDED
-    #[allow(unused)]
-    mod _imports_std; // SYMLINK TO /src/build/namespace.rs
-    #[allow(unused_imports)] use _imports_std::Build;
+    macro_rules! _TAG_NAMESPACE {()=>{""}} #[allow(unused)] use _TAG_NAMESPACE;
+    #[allow(unused)] mod _imports_std; // SYMLINK TO /src/build/namespace.rs
+    #[allow(unused_imports)] pub(crate) use _imports_std::Build;
 }
 
 /* build modules */
