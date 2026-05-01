@@ -52,6 +52,7 @@ items! {
 mod alias;
 mod environment;
 mod features;
+mod native;
 
 mod codegen; // tuple, unroll
 
@@ -67,6 +68,7 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
 
     alias::main()?;
     environment::main()?;
+    native::main()?;
     features::main()?;
 
     codegen::main()?;

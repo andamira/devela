@@ -5,9 +5,9 @@
 
 #![allow(unused)]
 
-use super::{
-    _raw, KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XShmCaps, XWindowState, XkbState,
-};
+#[cfg(ffi_xcb_shm··)]
+use super::XShmCaps;
+use super::{_raw, KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XWindowState, XkbState};
 use crate::{ConstInit, Extent, Libc, Position, Ptr, Vec, c_int, is, lets, vec_ as vec};
 use crate::{
     Event, EventButton, EventButtonState, EventButtons, EventKind, EventMouse, EventQueue,
@@ -38,6 +38,7 @@ pub struct XDisplay {
     screen_num: c_int,
     pub(super) depth: u8,
     pub(super) image_format: XImageFormat,
+    #[cfg(ffi_xcb_shm··)]
     pub(super) shm_caps: Option<XShmCaps>,
     xkb: XkbState,
     pub(super) atoms: XAtoms,
@@ -75,6 +76,7 @@ impl XDisplay {
         let screen: *const _raw::xcb_screen_t = iter.data;
         let depth = unsafe { (*screen).root_depth };
         let image_format = Self::query_image_format(setup, depth)?;
+        #[cfg(ffi_xcb_shm··)]
         let shm_caps = Self::query_shm_caps(conn);
 
         // extension setup hand-shake
@@ -98,7 +100,9 @@ impl XDisplay {
         let windows = vec![];
         let queue = EventQueue::new();
 
-        Ok(Self { conn, screen, screen_num, depth, image_format, shm_caps,
+        Ok(Self { conn, screen, screen_num, depth, image_format,
+            #[cfg(ffi_xcb_shm··)]
+            shm_caps,
             xkb, pending, repeat_filter, atoms, windows, queue, })
     }
 
@@ -116,6 +120,7 @@ impl XDisplay {
     }
 
     /// Returns whether MIT-SHM is available on this display.
+    #[cfg(ffi_xcb_shm··)]
     pub const fn has_shm(&self) -> bool { self.shm_caps.is_some() }
 
     /// Polls the next event without blocking.
@@ -292,6 +297,7 @@ impl XDisplay {
         }
         Err(XError::Other("no pixmap format for root depth"))
     }
+    #[cfg(ffi_xcb_shm··)]
     fn query_shm_caps(conn: *mut _raw::xcb_connection_t) -> Option<XShmCaps> {
         unsafe {
             let cookie = _raw::xcb_shm_query_version(conn);

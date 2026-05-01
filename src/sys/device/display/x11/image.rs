@@ -22,6 +22,7 @@ pub enum XImageMode {
     /// Forces plain client-side CPU upload.
     Cpu,
     /// Forces MIT-SHM-backed upload.
+    #[cfg(ffi_xcb_shm··)]
     Shm,
 }
 

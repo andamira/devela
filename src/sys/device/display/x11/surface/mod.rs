@@ -2,6 +2,8 @@
 
 mod base; // XSurfaceFrame, (XSurface), (XSurfaceStorage)
 mod cpu; // XCpuBuffer
+
+#[cfg(ffi_xcb_shm··)]
 mod shm; // XShmBuffer, (XShmCaps)
 
 crate::structural_mods! { // _mods
@@ -9,7 +11,8 @@ crate::structural_mods! { // _mods
         pub use super::{
             base::*,
             cpu::*,
-            shm::*,
         };
+        #[cfg(ffi_xcb_shm··)]
+        pub use super::shm::*;
     }
 }

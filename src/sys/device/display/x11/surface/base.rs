@@ -3,7 +3,9 @@
 //! Defines `XSurfaceFrame`, (`XSurface`), (`XSurfaceStorage`).
 //
 
-use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XShmBuffer, XWindow};
+#[cfg(ffi_xcb_shm··)]
+use crate::XShmBuffer;
+use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XWindow};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Pixel-backed X11 drawing surface.
@@ -24,6 +26,9 @@ impl XSurface {
     }
     /// Creates the best available X11 pixel surface for the display.
     pub fn new(display: &XDisplay, width: u16, height: u16, depth: u8) -> Result<Self, XError> {
+        #[cfg(not(ffi_xcb_shm··))]
+        return Self::new_cpu(display, width, height, depth);
+        #[cfg(ffi_xcb_shm··)]
         match XShmBuffer::new(display, width, height, depth) {
             Ok(shm) => Ok(Self::_new(width, height, depth, XSurfaceStorage::Shm(shm))),
             Err(XError::ExtensionUnavailable(_)) => Self::new_cpu(display, width, height, depth),
@@ -36,6 +41,7 @@ impl XSurface {
         Ok(Self::_new(width, height, depth, XSurfaceStorage::Cpu(cpu)))
     }
     /// Creates an SHM-backed X11 pixel surface.
+    #[cfg(ffi_xcb_shm··)]
     pub fn new_shm(display: &XDisplay, width: u16, height: u16, depth: u8) -> Result<Self, XError> {
         let shm = XShmBuffer::new(display, width, height, depth)?;
         Ok(Self::_new(width, height, depth, XSurfaceStorage::Shm(shm)))
@@ -48,6 +54,7 @@ impl XSurface {
     pub const fn mode(&self) -> XImageMode {
         match self.storage {
             XSurfaceStorage::Cpu(_) => XImageMode::Cpu,
+            #[cfg(ffi_xcb_shm··)]
             XSurfaceStorage::Shm(_) => XImageMode::Shm,
         }
     }
@@ -116,10 +123,12 @@ impl<'a> XSurfaceFrame<'a> {
 #[derive(Debug)]
 enum XSurfaceStorage {
     Cpu(XCpuBuffer),
+    #[cfg(ffi_xcb_shm··)]
     Shm(XShmBuffer),
 }
 #[rustfmt::skip]
 impl XSurfaceStorage {
+    #[allow(unused_variables, reason = "display gated by ffi_xcb_shm··")]
     pub fn present(&self, display: &mut XDisplay, window: &XWindow,
         width: u16, height: u16, depth: u8) -> Result<(), XError> {
         match self {
@@ -127,28 +136,50 @@ impl XSurfaceStorage {
                 window.put_image_bytes(width, height, depth, cpu.bytes());
                 Ok(())
             }
+            #[cfg(ffi_xcb_shm··)]
             Self::Shm(shm) => shm.present(display, window),
         }
     }
 }
-#[rustfmt::skip]
 impl XImageStore for XSurfaceStorage {
     fn size(&self) -> (u16, u16) {
-        match self { Self::Cpu(cpu) => cpu.size(), Self::Shm(shm) => shm.size() }
+        match self {
+            Self::Cpu(cpu) => cpu.size(),
+            #[cfg(ffi_xcb_shm··)]
+            Self::Shm(shm) => shm.size(),
+        }
     }
     fn depth(&self) -> u8 {
-        match self { Self::Cpu(cpu) => cpu.depth(), Self::Shm(shm) => shm.depth() }
+        match self {
+            Self::Cpu(cpu) => cpu.depth(),
+            #[cfg(ffi_xcb_shm··)]
+            Self::Shm(shm) => shm.depth(),
+        }
     }
     fn bytes(&self) -> &[u8] {
-        match self { Self::Cpu(cpu) => cpu.bytes(), Self::Shm(shm) => shm.bytes() }
+        match self {
+            Self::Cpu(cpu) => cpu.bytes(),
+            #[cfg(ffi_xcb_shm··)]
+            Self::Shm(shm) => shm.bytes(),
+        }
     }
     fn bytes_mut(&mut self) -> &mut [u8] {
-        match self { Self::Cpu(cpu) => cpu.bytes_mut(), Self::Shm(shm) => shm.bytes_mut() }
+        match self {
+            Self::Cpu(cpu) => cpu.bytes_mut(),
+            #[cfg(ffi_xcb_shm··)]
+            Self::Shm(shm) => shm.bytes_mut(),
+        }
     }
-    fn resize(&mut self, display: &XDisplay, width: u16, height: u16, depth: u8)
-        -> Result<(), XError> {
+    fn resize(
+        &mut self,
+        display: &XDisplay,
+        width: u16,
+        height: u16,
+        depth: u8,
+    ) -> Result<(), XError> {
         match self {
             Self::Cpu(cpu) => cpu.resize(display, width, height, depth),
+            #[cfg(ffi_xcb_shm··)]
             Self::Shm(shm) => shm.resize(display, width, height, depth),
         }
     }

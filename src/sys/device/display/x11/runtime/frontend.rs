@@ -95,6 +95,7 @@ impl XFrontend {
     pub const fn display_mut(&mut self) -> &mut XDisplay { &mut self.backend.display }
 
     /// Returns whether MIT-SHM is available on this display.
+    #[cfg(ffi_xcb_shm··)]
     pub const fn has_shm(&self) -> bool { self.backend.display.has_shm() }
 
     /// Returns the configured X11 image presentation mode.

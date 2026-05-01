@@ -74,6 +74,7 @@ impl XPresenter {
             let surface = match self.mode {
                 XImageMode::Auto => XSurface::new(display, width, height, depth)?,
                 XImageMode::Cpu => XSurface::new_cpu(display, width, height, depth)?,
+                #[cfg(ffi_xcb_shm··)]
                 XImageMode::Shm => XSurface::new_shm(display, width, height, depth)?,
             };
             self.surface = Some(surface);

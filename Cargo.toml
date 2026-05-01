@@ -147,7 +147,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 157/300 (143 remaining), 102 visible, 55 hidden
+[features] # 158/300 (142 remaining), 103 visible, 55 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -901,7 +901,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_stable_1_98)",
 			"cfg(nightly_stable_later)",
 	#
-	# Auto-enabled reflection flags from ./build/main/features.rs (22)
+	# Auto-enabled reflection flags from ./build/main/features.rs (23)
 	# --------------------------------------------------------------------------
 	# general: (4)
 	"cfg(unsafe··, safe··, nightly··, dep··)",
@@ -933,6 +933,10 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(vita··)',
 	# work: (1)
 	'cfg(work··)',
+	#
+	# Auto-enabled native availability flags from ./build/main/native.rs (1)
+	# --------------------------------------------------------------------------
+	'cfg(ffi_xcb_shm··)',
 ]
 
 

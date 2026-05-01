@@ -23,6 +23,9 @@
 ### examples
 - new example scripts: `scope_guard`, `current_guard`.
 
+## build
+- new native section to detect native library availability.
+
 ## dependencies
 - bump `portable-atomic-util` to 0.2.7.
 - bump `hashbrown` to 0.17.
@@ -30,6 +33,7 @@
 
 ## features & flags
 - new feature: `web`.
+- new flag: `ffi_xcb_shm··`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - update the intended scope of the `_docs_examples` feature.
 
@@ -136,6 +140,7 @@
 
 ##### sys::device::display::x11
 - new types: `XCpuBuffer`, `XFrontend`, `XImageMode`, `XPresent`, `XRasterRender`, `XShmBuffer`, `XSurfaceFrame`.
+- gate SHM functionality on native `xcb-shm` availability via `ffi_xcb_shm··`.
 - update `XDisplay`:
   - add fields: `image_format`, `shm_caps`.
   - add methods: `bits_per_pixel`, `scanline_pad_bits`, `bytes_per_line`, `has_shm`.
