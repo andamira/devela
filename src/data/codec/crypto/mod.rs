@@ -14,6 +14,7 @@ mod error; // CryptoError
 mod otp; // Otp
 mod sha1; // Sha1
 mod sha256; // Sha256
+mod sha512; // Sha512
 
 crate::structural_mods! { // _mods, crate_internals
     _mods {
@@ -24,6 +25,7 @@ crate::structural_mods! { // _mods, crate_internals
             otp::*,
             sha1::*,
             sha256::*,
+            sha512::*,
         };
     }
     _crate_internals {

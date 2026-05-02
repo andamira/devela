@@ -205,6 +205,7 @@ mod tests {
     }
 
     #[test]
+    // https://datatracker.ietf.org/doc/html/rfc6234#section-8.5
     fn known_vectors() {
         assert_digest(b"", "da39a3ee5e6b4b0d3255bfef95601890afd80709");
         assert_digest(b"abc", "a9993e364706816aba3e25717850c26c9cd0d89d");
@@ -221,6 +222,34 @@ mod tests {
             sha.update(b"a").unwrap();
         }
         assert_eq!(sha.finalize(), digest_from_hex("34aa973cd4c4daa4f61eeb2bdbad27316534016f"),);
+    }
+    #[test]
+    // https://www.rfc-editor.org/rfc/rfc2202#section-2
+    // https://datatracker.ietf.org/doc/html/rfc6234#page-100
+    fn hmac_vectors() {
+        // 1
+        let (key, data) = ([0x0b; 20], b"Hi There");
+        let mac = Sha1::hmac(&key, data).unwrap();
+        assert_eq!(mac.as_array(), &_hex("b617318655057264e28bc0b6fb378c8ef146be00"));
+        // 2
+        let (key, data) = (b"Jefe", b"what do ya want for nothing?");
+        let mac = Sha1::hmac(key, data).unwrap();
+        assert_eq!(mac.as_array(), &_hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
+        // 3
+        let (key, data) = ([0xaa; 20], [0xdd; 50]);
+        let mac = Sha1::hmac(&key, &data).unwrap();
+        assert_eq!(mac.as_array(), &_hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
+        // 4
+        let key = _hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
+        let data = [0xcd; 50];
+        let mac = Sha1::hmac(&key, &data).unwrap();
+        assert_eq!(mac.as_array(), &_hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
+        // …
+        // 7
+        let key = [0xaa; 80];
+        let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
+        let mac = Sha1::hmac(&key, data).unwrap();
+        assert_eq!(mac.as_array(), &_hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
     }
     #[test]
     fn chunked_updates_match_one_shot() {
@@ -253,32 +282,5 @@ mod tests {
         sha.reset();
         sha.update(b"abc").unwrap();
         assert_eq!(sha.finalize(), digest_from_hex("a9993e364706816aba3e25717850c26c9cd0d89d"),);
-    }
-    #[test]
-    // https://www.rfc-editor.org/rfc/rfc2202#section-2
-    fn hmac_rfc_2202() {
-        // 1
-        let (key, data) = ([0x0b; 20], b"Hi There");
-        let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("b617318655057264e28bc0b6fb378c8ef146be00"));
-        // 2
-        let (key, data) = (b"Jefe", b"what do ya want for nothing?");
-        let mac = Sha1::hmac(key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
-        // 3
-        let (key, data) = ([0xaa; 20], [0xdd; 50]);
-        let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
-        // 4
-        let key = _hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
-        let data = [0xcd; 50];
-        let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
-        // …
-        // 7
-        let key = [0xaa; 80];
-        let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
-        let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
     }
 }

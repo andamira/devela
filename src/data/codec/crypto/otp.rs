@@ -17,7 +17,7 @@
 
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
-use ::devela::{CryptoError, Sha1, Sha256, impl_trait, unwrap};
+use ::devela::{CryptoError, Sha1, Sha256, Sha512, impl_trait, unwrap};
 ::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 #[doc = _tags!(crypto hash)]
@@ -234,6 +234,70 @@ impl Otp {
         Self::hotp_sha256(key, counter, digits)
     }
 }
+/// Sha-512 impls
+impl Otp {
+    /// Generates an HOTP code using HMAC-SHA-512.
+    ///
+    /// Computes `HOTP(K, C)` from the shared secret `key` and 8-byte big-endian
+    /// counter, then applies dynamic truncation.
+    ///
+    /// The returned code is numeric and may have fewer visible digits than
+    /// [`digits`][Self::digits]; format it with leading zeroes for display.
+    ///
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
+    ///   computation exceeds SHA-512's input length limit.
+    pub const fn hotp_sha512(key: &[u8], counter: u64, digits: u32) -> Result<Otp, CryptoError> {
+        unwrap![ok? Self::validate_digits(digits)];
+        let mac = unwrap![ok? Sha512::hmac(key, &counter.to_be_bytes())];
+        let offset = (mac.0[Sha512::DIGEST_LEN - 1] & 0x0f) as usize;
+        let code = u32::from_be_bytes([
+            mac.0[offset] & 0x7f,
+            mac.0[offset + 1],
+            mac.0[offset + 2],
+            mac.0[offset + 3],
+        ]);
+        let modulo = 10u64.pow(digits);
+        Ok(Self { code: (code as u64 % modulo) as u32, digits })
+    }
+
+    /// Generates a TOTP code using HMAC-SHA-512 and the default TOTP parameters.
+    ///
+    /// Uses [`DEFAULT_EPOCH`][Self::DEFAULT_EPOCH] and [`DEFAULT_PERIOD`][Self::DEFAULT_PERIOD].
+    ///
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
+    ///   computation exceeds SHA-512's input length limit.
+    pub const fn totp_sha512(
+        key: &[u8],
+        unix_seconds: u64,
+        digits: u32,
+    ) -> Result<Self, CryptoError> {
+        Self::totp_sha512_with(key, unix_seconds, Self::DEFAULT_EPOCH, Self::DEFAULT_PERIOD, digits)
+    }
+    /// Generates a TOTP code using HMAC-SHA-512 and explicit TOTP parameters.
+    ///
+    /// Derives the moving counter from `unix_seconds`, `epoch`, and `period`,
+    /// then computes HOTP-SHA-512 with that counter.
+    ///
+    /// # Errors
+    /// - Returns [`CryptoError::InvalidParameter`] if `period == 0` or if `unix_seconds < epoch`.
+    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
+    ///   computation exceeds SHA-512's input length limit.
+    pub const fn totp_sha512_with(
+        key: &[u8],
+        unix_seconds: u64,
+        epoch: u64,
+        period: u64,
+        digits: u32,
+    ) -> Result<Self, CryptoError> {
+        let counter = unwrap![ok? Self::time_counter(unix_seconds, epoch, period)];
+        Self::hotp_sha512(key, counter, digits)
+    }
+}
 
 #[allow(unused, reason = "example script")]
 #[cfg(all(feature = "std", feature = "time"))]
@@ -303,14 +367,14 @@ mod tests {
         assert_eq![Otp::totp_sha256_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 90698825];
         assert_eq![Otp::totp_sha256_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 77737706];
     }
-    // #[test]
-    // fn otp_sha512_rfc6238() {
-    //     let key = b"1234567890123456789012345678901234567890123456789012345678901234"; // 64
-    //     assert_eq![Otp::totp_sha512_with(key, 59, 0, 30, 8).unwrap().code(), 90693936];
-    //     assert_eq![Otp::totp_sha512_with(key, 1_111_111_109, 0, 30, 8).unwrap().code(), 25091201];
-    //     assert_eq![Otp::totp_sha512_with(key, 1_111_111_111, 0, 30, 8).unwrap().code(), 99943326];
-    //     assert_eq![Otp::totp_sha512_with(key, 1_234_567_890, 0, 30, 8).unwrap().code(), 93441116];
-    //     assert_eq![Otp::totp_sha512_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 38618901];
-    //     assert_eq![Otp::totp_sha512_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 47863826];
-    // }
+    #[test]
+    fn otp_sha512_rfc6238() {
+        let key = b"1234567890123456789012345678901234567890123456789012345678901234"; // 64
+        assert_eq![Otp::totp_sha512_with(key, 59, 0, 30, 8).unwrap().code(), 90693936];
+        assert_eq![Otp::totp_sha512_with(key, 1_111_111_109, 0, 30, 8).unwrap().code(), 25091201];
+        assert_eq![Otp::totp_sha512_with(key, 1_111_111_111, 0, 30, 8).unwrap().code(), 99943326];
+        assert_eq![Otp::totp_sha512_with(key, 1_234_567_890, 0, 30, 8).unwrap().code(), 93441116];
+        assert_eq![Otp::totp_sha512_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 38618901];
+        assert_eq![Otp::totp_sha512_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 47863826];
+    }
 }

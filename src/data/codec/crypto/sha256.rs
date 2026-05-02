@@ -244,6 +244,7 @@ mod tests {
     }
 
     #[test]
+    // https://datatracker.ietf.org/doc/html/rfc6234#section-8.5
     fn known_vectors() {
         assert_digest(b"", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
         assert_digest(b"abc", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
@@ -262,6 +263,21 @@ mod tests {
         assert_eq!(
             sha.finalize(),
             digest_from_hex("cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0"),
+        );
+    }
+    #[test]
+    // https://datatracker.ietf.org/doc/html/rfc6234#page-100
+    fn hmac_vectors() {
+        // 1
+        let key = [0x0b; 20];
+        assert_eq!(
+            Sha256::hmac(&key, b"Hi There").unwrap(),
+            digest_from_hex("b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7"),
+        );
+        // 2
+        assert_eq!(
+            Sha256::hmac(b"Jefe", b"what do ya want for nothing?").unwrap(),
+            digest_from_hex("5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"),
         );
     }
     #[test]
@@ -298,18 +314,6 @@ mod tests {
         assert_eq!(
             sha.finalize(),
             digest_from_hex("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"),
-        );
-    }
-    #[test]
-    fn hmac_vectors() {
-        let key = [0x0b; 20];
-        assert_eq!(
-            Sha256::hmac(&key, b"Hi There").unwrap(),
-            digest_from_hex("b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7"),
-        );
-        assert_eq!(
-            Sha256::hmac(b"Jefe", b"what do ya want for nothing?").unwrap(),
-            digest_from_hex("5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"),
         );
     }
 }
