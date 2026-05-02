@@ -6,7 +6,6 @@
 #![doc = crate::_doc!(hr)]
 //
 
-#[cfg(test)]
 mod _helper;
 
 mod digest; // Digest
@@ -14,6 +13,7 @@ mod error; // CryptoError
 // mod md5; // Md5 WIP
 mod otp; // Otp
 mod sha1; // Sha1
+mod sha256; // Sha256
 
 crate::structural_mods! { // _mods, crate_internals
     _mods {
@@ -23,10 +23,10 @@ crate::structural_mods! { // _mods, crate_internals
             // md5::*,
             otp::*,
             sha1::*,
+            sha256::*,
         };
     }
     _crate_internals {
-        #[cfg(test)]
         pub(crate) use super::_helper::*;
     }
 }

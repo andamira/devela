@@ -7,10 +7,11 @@
 // - This is not adapted from any third-party implementation.
 // - References:
 //   - FIPS 180-4, Secure Hash Standard.
-//   - RFC 3174, US Secure Hash Algorithm 1.
+//   - RFC 6234, US Secure Hash Algorithms.
 //   - RFC 2104, Keyed-Hash Message Authentication Code.
+//   - RFC 2202, Test Cases for HMAC-MD5 and HMAC-SHA-1.
 
-use crate::{_impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
+use crate::{_crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
 type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
 
@@ -93,45 +94,8 @@ impl Sha1 {
         unwrap![ok? sha.update(bytes)];
         Ok(sha.finalize())
     }
-    /// Computes the HMAC-SHA1 of `message` using the given `key`.
-    ///
-    /// If the key is longer than the block size (64 bytes), it is first hashed
-    /// to obtain a 20‑byte key. The resulting HMAC is a 20‑byte digest.
-    ///
-    /// # Errors
-    /// Returns [`CryptoError::LengthOverflow`] if `bytes` exceeds SHA-1's supported message length.
-    pub const fn hmac(key: &[u8], message: &[u8]) -> Result<Sha1Digest, CryptoError> {
-        // 1. Prepare a 64‑byte key block.
-        const BLOCK: usize = 64;
-        let mut key_block = [0u8; BLOCK];
-        if key.len() > BLOCK {
-            // hash the key and pad the rest with zeros
-            let hashed = unwrap![ok? Self::digest_bytes(key)].into_array();
-            whilst! { i in 0..hashed.len(); { key_block[i] = hashed[i]; }}
-        } else {
-            // copy the key and pad with zeros
-            whilst! { i in 0..key.len(); { key_block[i] = key[i]; }}
-        }
-        // 2. Inner and outer padding
-        const IPAD: u8 = 0x36;
-        const OPAD: u8 = 0x5c;
-        let (mut ipad, mut opad) = ([0u8; BLOCK], [0u8; BLOCK]);
-        whilst! { i in 0..BLOCK; {
-            ipad[i] = key_block[i] ^ IPAD;
-            opad[i] = key_block[i] ^ OPAD;
-        }}
-        // 3. Inner hash: H(ipad || message)
-        let mut inner = Self::new();
-        // update with ipad (64 bytes) -> exactly one block
-        unwrap![ok? inner.update(&ipad)];
-        unwrap![ok? inner.update(message)];
-        let inner_hash = inner.finalize().into_array();
-        // 4. Outer hash: H(opad || inner_hash)
-        let mut outer = Self::new();
-        unwrap![ok? outer.update(&opad)]; // 64 bytes
-        unwrap![ok? outer.update(&inner_hash)]; // 20 bytes
-        Ok(outer.finalize())
-    }
+
+    _crypto_impl_hmac![Sha1, Sha1Digest, "HMAC-SHA-1"];
 
     /// Finalizes the digest and consumes the state.
     ///

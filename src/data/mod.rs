@@ -38,6 +38,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals
     _crate_internals {
         pub(crate) use super::_DOC_DATA_MODULES;
         pub(crate) use super::{
+            codec::_crate_internals::*,
             layout::_crate_internals::*,
             value::_crate_internals::*,
         };

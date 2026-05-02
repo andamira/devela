@@ -64,4 +64,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             // schema::_all::*,
         };
     }
+    _crate_internals {
+        pub(crate) use super::crypto::_crate_internals::*;
+    }
 }
