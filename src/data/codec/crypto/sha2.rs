@@ -2,6 +2,16 @@
 //
 //! Defines SHA2 secure hash algorithms.
 //
+// TOC
+// - impls:
+//   - Sha256
+//   - Sha512
+//   - Sha224
+//   - Sha384
+//   - Sha512_224
+//   - Sha512_384
+// - macro: _crypto_impl_sha2!
+// - consts: _SHA2_32_K, _SHA2_64_K
 
 _crypto_impl_sha2! { word: u32, name: Sha256, doc: "SHA-256",
     digest: Sha256Digest, digest_bits: 256, digest_len: 32,
@@ -21,21 +31,65 @@ _crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
         0x1F83_D9AB_FB41_BD6B, 0x5BE0_CD19_137E_2179,
     ]
 }
-
 crate::_crypto_impl_otp!(crate::Otp, Sha256, "SHA-256");
 crate::_crypto_impl_otp!(crate::Otp, Sha512, "SHA-512");
 
+_crypto_impl_sha2! { word: u32, name: Sha224, doc: "SHA-224",
+    digest: Sha224Digest, digest_bits: 224, digest_len: 28,
+    output_words: 7, output_tail_bytes: 0,
+    initial_state: [
+        0xC105_9ED8, 0x367C_D507, 0x3070_DD17, 0xF70E_5939,
+        0xFFC0_0B31, 0x6858_1511, 0x64F9_8FA7, 0xBEFA_4FA4,
+    ]
+}
+_crypto_impl_sha2! { word: u64, name: Sha384, doc: "SHA-384",
+    digest: Sha384Digest, digest_bits: 384, digest_len: 48,
+    output_words: 6, output_tail_bytes: 0,
+    initial_state: [
+        0xCBBB_9D5D_C105_9ED8, 0x629A_292A_367C_D507,
+        0x9159_015A_3070_DD17, 0x152F_ECD8_F70E_5939,
+        0x6733_2667_FFC0_0B31, 0x8EB4_4A87_6858_1511,
+        0xDB0C_2E0D_64F9_8FA7, 0x47B5_481D_BEFA_4FA4,
+    ]
+}
+
+_crypto_impl_sha2! { word: u64, name: Sha512_224, doc: "SHA-512/224",
+    digest: Sha512_224Digest, digest_bits: 224, digest_len: 28,
+    output_words: 3, output_tail_bytes: 4,
+    initial_state: [
+        0x8C3D_37C8_1954_4DA2, 0x73E1_9966_89DC_D4D6,
+        0x1DFA_B7AE_32FF_9C82, 0x679D_D514_582F_9FCF,
+        0x0F6D_2B69_7BD4_4DA8, 0x77E3_6F73_04C4_8942,
+        0x3F9D_85A8_6A1D_36C8, 0x1112_E6AD_91D6_92A1,
+    ]
+}
+_crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
+    digest: Sha512_256Digest, digest_bits: 256, digest_len: 32,
+    output_words: 4, output_tail_bytes: 0,
+    initial_state: [
+        0x2231_2194_FC2B_F72C, 0x9F55_5FA3_C84C_64C2,
+        0x2393_B86B_6F53_B151, 0x9638_7719_5940_EABD,
+        0x9628_3EE2_A88E_FFE3, 0xBE5E_1E25_5386_3992,
+        0x2B01_99FC_2C85_B8AA, 0x0EB7_2DDC_81C5_2CA2,
+    ]
+}
+
 /// Implements SHA-2 digest methods for a concrete hash type.
 ///
-/// Supports the SHA-2 32-bit-word core and 64-bit-word core. The core selects
-/// the machine shape; the invocation supplies the digest size and initial state.
+/// Supports the SHA-2 32-bit-word core used by SHA-224 and SHA-256, and the
+/// SHA-2 64-bit-word core used by SHA-384, SHA-512, and SHA-512/t variants.
+///
+/// The selected word type determines the machine shape: word size, block size,
+/// length-field size, schedule size, round constants, and compression functions.
+/// The invocation supplies the concrete digest size, output truncation shape,
+/// display name, and initial hash state.
 //
-// - References:
-//   - FIPS 180-4, Secure Hash Standard.
-//   - RFC 6234, US Secure Hash Algorithms.
-//   - RFC 2104, Keyed-Hash Message Authentication Code.
-//   - RFC 4231, Identifiers and Test Vectors for HMAC-SHA-224,
-//     HMAC-SHA-256, HMAC-SHA-384, and HMAC-SHA-512.
+// References:
+// - FIPS 180-4, Secure Hash Standard.
+// - RFC 6234, US Secure Hash Algorithms.
+// - RFC 2104, Keyed-Hash Message Authentication Code.
+// - RFC 4231, Test Vectors for HMAC-SHA-224, HMAC-SHA-256,
+//   HMAC-SHA-384, and HMAC-SHA-512.
 macro_rules! _crypto_impl_sha2 {
     (word: u32,
      name: $Self:ident,
@@ -163,6 +217,8 @@ macro_rules! _crypto_impl_sha2 {
         impl Default for $Self { fn default() -> $Self { $Self::new() } }
 
         impl $Self {
+            const __: [(); $digest_len] = [(); $output_words * $word_bytes + $output_tail_bytes];
+
             /// The digest size in bytes.
             pub const DIGEST_LEN: usize = $digest_len;
             /// The internal block size in bytes.
@@ -221,7 +277,6 @@ macro_rules! _crypto_impl_sha2 {
             ///
             /// This method cannot fail.
             pub const fn finalize(mut self) -> $digest {
-                const _: [(); $digest_len] = [(); $output_words * $word_bytes + $output_tail_bytes];
                 let len_bits = self.len_bits;
                 self.push_padding_byte(0x80);
                 while self.block_len != $pad_at { self.push_padding_byte(0); }
