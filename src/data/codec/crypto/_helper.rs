@@ -24,7 +24,7 @@ pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __crypto_impl_hmac {
-    ($Self:ident, $digest:ty) => {
+    ($Self:ident) => {
         $crate::paste! {
             /// Computes the HMAC of `message` using the given `key`.
             ///
@@ -35,7 +35,8 @@ macro_rules! __crypto_impl_hmac {
             /// inner/outer digest computation exceeds the hash input length limit.
             ///
             /// [`LengthOverflow`]: crate::CryptoError::LengthOverflow
-            pub const fn hmac(key: &[u8], message: &[u8]) -> Result<$digest, $crate::CryptoError> {
+            pub const fn hmac(key: &[u8], message: &[u8])
+                -> Result<$crate::Digest<{ $Self::DIGEST_LEN }>, $crate::CryptoError> {
                 // 1. Prepare a key block.
                 let mut key_block = [0u8; $Self::BLOCK_LEN];
                 if key.len() > $Self::BLOCK_LEN {
@@ -75,9 +76,9 @@ pub use __crypto_impl_hmac;
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __crypto_impl_otp {
-    ($otp:path, $sha:ident, $doc:literal) => { $crate::paste! {
+    (hash: $name:ident, otp: $otp:path, doc: $doc:literal) => { $crate::paste! {
         #[doc = $doc " impls"]
-        impl $sha {
+        impl $name {
             #[doc = "Generates an HOTP code using HMAC-" $doc "."]
             ///
             /// Computes `HOTP(K, C)` from the shared secret `key` and 8-byte big-endian
@@ -94,8 +95,8 @@ macro_rules! __crypto_impl_otp {
             pub const fn hotp(key: &[u8], counter: u64, digits: u32)
                 -> Result<$otp, $crate::CryptoError> {
                 $crate::unwrap![ok? $otp::validate_digits(digits)];
-                let mac = $crate::unwrap![ok? <$sha>::hmac(key, &counter.to_be_bytes())];
-                let offset = (mac.0[<$sha>::DIGEST_LEN - 1] & 0x0f) as usize;
+                let mac = $crate::unwrap![ok? <$name>::hmac(key, &counter.to_be_bytes())];
+                let offset = (mac.0[<$name>::DIGEST_LEN - 1] & 0x0f) as usize;
                 let code = u32::from_be_bytes([
                     mac.0[offset] & 0x7f,
                     mac.0[offset + 1],
@@ -118,7 +119,7 @@ macro_rules! __crypto_impl_otp {
             #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
             pub const fn totp(key: &[u8], unix_seconds: u64, digits: u32)
                 -> Result<$otp, $crate::CryptoError> {
-                $sha::totp_with(key, unix_seconds,
+                $name::totp_with(key, unix_seconds,
                     $otp::DEFAULT_EPOCH, $otp::DEFAULT_PERIOD, digits)
             }
             #[doc = "Generates a TOTP code using HMAC-" $doc " and explicit TOTP parameters."]
@@ -136,7 +137,7 @@ macro_rules! __crypto_impl_otp {
             pub const fn totp_with(key: &[u8], unix_seconds: u64, epoch: u64,
                 period: u64, digits: u32) -> Result<$otp, $crate::CryptoError> {
                 let counter = $crate::unwrap![ok? $otp::time_counter(unix_seconds, epoch, period)];
-                $sha::hotp(key, counter, digits)
+                $name::hotp(key, counter, digits)
             }
         }
     }};

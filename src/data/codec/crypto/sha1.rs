@@ -13,7 +13,7 @@
 
 use crate::{__crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-crate::__crypto_impl_otp!(crate::Otp, Sha1, "SHA-1");
+crate::__crypto_impl_otp! { hash: Sha1, otp: crate::Otp, doc: "SHA-1" }
 
 #[doc = crate::_tags!(crypto hash)]
 /// Incremental SHA-1 state.
@@ -36,8 +36,6 @@ pub struct Sha1 {
     block: [u8; Sha1::BLOCK_LEN],
     block_len: u8,
 }
-pub(crate) type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
-
 _impl_init![ConstInit: Self::new() => Sha1];
 impl Default for Sha1 {
     fn default() -> Self {
@@ -92,18 +90,18 @@ impl Sha1 {
     /// # Errors
     /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
     /// if `bytes` exceeds SHA-1's supported message length.
-    pub const fn digest_bytes(bytes: &[u8]) -> Result<Sha1Digest, CryptoError> {
+    pub const fn digest_bytes(bytes: &[u8]) -> Result<Digest<{ Self::DIGEST_LEN }>, CryptoError> {
         let mut sha = Self::new();
         unwrap![ok? sha.update(bytes)];
         Ok(sha.finalize())
     }
 
-    __crypto_impl_hmac![Sha1, Sha1Digest];
+    __crypto_impl_hmac![Sha1];
 
     /// Finalizes the digest and consumes the state.
     ///
     /// This method cannot fail.
-    pub const fn finalize(mut self) -> Sha1Digest {
+    pub const fn finalize(mut self) -> Digest<{ Self::DIGEST_LEN }> {
         let len_bits = self.len_bits;
         self.push_padding_byte(0x80);
         while self.block_len != 56 {

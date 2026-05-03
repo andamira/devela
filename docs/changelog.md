@@ -64,7 +64,9 @@
 - remove the `bitfield` example.
 
 #### data::codec::crypto
-- new types: `CryptoError`, `Digest`, `Md5`, `Otp`, `Sha1`, `Sha256`, `Sha512`, `Sha224`, `Sha384`, `Sha512_224`, `Sha512_384`.
+- new macro: `digest!`.
+- new types: `CryptoError`, `Digest`, `Md5`, `Otp`, `Sha1`.
+- new example types: `Sha256`, `Sha512`, `Sha224`, `Sha384`.
 
 ### data::id
 - rename `define_handle!` to `handle!`

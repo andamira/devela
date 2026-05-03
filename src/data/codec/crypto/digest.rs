@@ -1,6 +1,6 @@
 // devela::data::codec::crypto::digest
 //
-//! Defines [`Digest`].
+//! Defines [`Digest`] and [`digest!`].
 //
 
 use crate::{is, whilst};
@@ -69,3 +69,106 @@ mod impls_traits {
         fn as_ref(&self) -> &[u8] { &self.0 }
     }
 }
+
+#[doc = crate::_tags!(crypto hash construction)]
+/// Defines a selected cryptographic message-digest state type.
+#[doc = crate::_doc_location!("data/codec/crypto")]
+///
+/// Generates a concrete allocation-free, const-friendly digest type from a
+/// whitelisted algorithm selector.
+///
+/// The generated type includes streaming update/finalize methods, one-shot
+/// digesting, HMAC support when applicable, and OTP helpers when the digest
+/// output is suitable for HOTP truncation.
+///
+/// # Examples
+/// ```
+/// use devela::{Digest, digest};
+/// digest! {
+///     /// Incremental SHA-256 state for this module.
+///     pub struct MySha256: Sha256
+/// }
+/// let digest = MySha256::digest_bytes(b"abc").unwrap();
+/// assert_eq!(
+///     digest,
+///     Digest([
+///         0xba, 0x78, 0x16, 0xbf, 0x8f, 0x01, 0xcf, 0xea,
+///         0x41, 0x41, 0x40, 0xde, 0x5d, 0xae, 0x22, 0x23,
+///         0xb0, 0x03, 0x61, 0xa3, 0x96, 0x17, 0x7a, 0x9c,
+///         0xb4, 0x10, 0xff, 0x61, 0xf2, 0x00, 0x15, 0xad,
+///     ]),
+/// );
+/// ```
+#[doc(hidden)]
+#[macro_export]
+macro_rules! digest· {
+    // ($(#[$attr:meta])* $vis:vis struct $name:ident: Md5 $(;)?) => {
+    //     $crate::__crypto_impl_md5! { name: $name }
+    // };
+    // ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha1 $(;)?) => {
+    //     $crate::__crypto_impl_sha1! { name: $name }
+    // };
+    ( // supported hashes: Sha256, Sha512, Sha224, Sha384, Sha512_224, Sha512_256
+    $(#[$attr:meta])* $vis:vis struct $name:ident: Sha256 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u32, name: $name, doc: "SHA-256",
+            digest_bits: 256, digest_len: 32, output_words: 8, output_tail_bytes: 0,
+            initial_state: [
+                0x6A09_E667, 0xBB67_AE85, 0x3C6E_F372, 0xA54F_F53A,
+                0x510E_527F, 0x9B05_688C, 0x1F83_D9AB, 0x5BE0_CD19]
+        }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512",
+            digest_bits: 512, digest_len: 64, output_words: 8, output_tail_bytes: 0,
+            initial_state: [
+                0x6A09_E667_F3BC_C908, 0xBB67_AE85_84CA_A73B,
+                0x3C6E_F372_FE94_F82B, 0xA54F_F53A_5F1D_36F1,
+                0x510E_527F_ADE6_82D1, 0x9B05_688C_2B3E_6C1F,
+                0x1F83_D9AB_FB41_BD6B, 0x5BE0_CD19_137E_2179]
+        }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha224 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u32, name: $name, doc: "SHA-224",
+            digest_bits: 224, digest_len: 28, output_words: 7, output_tail_bytes: 0,
+            initial_state: [
+                0xC105_9ED8, 0x367C_D507, 0x3070_DD17, 0xF70E_5939,
+                0xFFC0_0B31, 0x6858_1511, 0x64F9_8FA7, 0xBEFA_4FA4]
+        }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha384 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-384",
+            digest_bits: 384, digest_len: 48, output_words: 6, output_tail_bytes: 0,
+            initial_state: [
+                0xCBBB_9D5D_C105_9ED8, 0x629A_292A_367C_D507,
+                0x9159_015A_3070_DD17, 0x152F_ECD8_F70E_5939,
+                0x6733_2667_FFC0_0B31, 0x8EB4_4A87_6858_1511,
+                0xDB0C_2E0D_64F9_8FA7, 0x47B5_481D_BEFA_4FA4]
+        }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512_224 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512/224",
+            digest_bits: 224, digest_len: 28, output_words: 3, output_tail_bytes: 4,
+            initial_state: [
+                0x8C3D_37C8_1954_4DA2, 0x73E1_9966_89DC_D4D6,
+                0x1DFA_B7AE_32FF_9C82, 0x679D_D514_582F_9FCF,
+                0x0F6D_2B69_7BD4_4DA8, 0x77E3_6F73_04C4_8942,
+                0x3F9D_85A8_6A1D_36C8, 0x1112_E6AD_91D6_92A1]
+        }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512_256 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512/256",
+            digest_bits: 256, digest_len: 32, output_words: 4, output_tail_bytes: 0,
+            initial_state: [
+                0x2231_2194_FC2B_F72C, 0x9F55_5FA3_C84C_64C2,
+                0x2393_B86B_6F53_B151, 0x9638_7719_5940_EABD,
+                0x9628_3EE2_A88E_FFE3, 0xBE5E_1E25_5386_3992,
+                0x2B01_99FC_2C85_B8AA, 0x0EB7_2DDC_81C5_2CA2]
+        }
+    };
+    // unsupported hash error
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: $hash:ident $(;)?) => {
+        compile_error! { concat!("Hash function not supported: ", stringify!($hash)) }
+    };
+}
+#[doc(inline)]
+pub use digest· as digest;

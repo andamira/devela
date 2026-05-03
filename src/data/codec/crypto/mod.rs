@@ -6,14 +6,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-#[cfg(test)]
-mod tests_sha;
+#[cfg(any(test, feature = "_docs_examples"))]
+mod tests_examples;
 
 mod _helper; // (_crypto_impl_hmac, _crypto_impl_otp, _hex)
 
-mod digest; // Digest
+mod digest; // Digest, digest! {Sha256, Sha512, Sha224, Sha384…}
 mod error; // CryptoError
-mod md5; // Md5
+mod md5; // Md5 TODO (__crypto_impl_md5)
 mod otp; // Otp
 mod sha1; // Sha1 TODO (__crypto_impl_sha1)
 mod sha2; // (__crypto_impl_sha2)
@@ -22,13 +22,15 @@ crate::structural_mods! { // _mods, crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
-            digest::*,
+            digest::{Digest, digest},
             error::*,
             md5::*,
             otp::Otp,
             sha1::*,
-            sha2::*,
         };
+        // #[cfg(any(test, feature = "_docs_examples"))]
+        #[cfg(feature = "_docs_examples")]
+        pub use super::tests_examples::*;
     }
     _crate_internals {
         pub(crate) use super::{

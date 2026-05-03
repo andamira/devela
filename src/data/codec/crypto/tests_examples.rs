@@ -1,13 +1,58 @@
 // devela::data::codec::crypto::tests_sha
 
-use crate::{
-    _hex, Digest, Otp, Sha1, Sha1Digest, Sha256, Sha256Digest, Sha512, Sha512Digest, whilst,
-};
+use crate::{_hex, Digest, Otp, Sha1, whilst};
+
+macro_rules! _doc {
+    () => {
+        "This implementation is allocation-free, compile-time friendly,
+and supports incremental updates.
+
+Use [`update`][Self::update] to feed bytes and [`finalize`][Self::finalize]
+to consume the state and return the digest.
+
+Generated with [`digest!`][crate::digest]."
+    };
+}
+
+// crate::digest![pub struct Md5: Md5]; // TODO
+// crate::digest![pub struct Sha1: Sha1]; // TODO
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-256 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha256: Sha256
+}
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha512: Sha512
+}
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-224 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha224: Sha224
+}
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-384 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha384: Sha384
+}
+/*
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512/224 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha512_224: Sha512_224
+}
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512/256 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha512_256: Sha512_256
+}
+*/
 
 mod sha1 {
     use super::*;
 
-    fn digest_from_hex(hex: &str) -> Sha1Digest {
+    fn digest_from_hex(hex: &str) -> Digest<{ Sha1::DIGEST_LEN }> {
         Digest(self::_hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {
@@ -126,7 +171,7 @@ mod sha1 {
 mod sha2_256 {
     use super::*;
 
-    fn digest_from_hex(hex: &str) -> Sha256Digest {
+    fn digest_from_hex(hex: &str) -> Digest<{ Sha256::DIGEST_LEN }> {
         Digest(self::_hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {
@@ -221,7 +266,7 @@ mod sha2_256 {
 mod sha2_512 {
     use super::*;
 
-    fn digest_from_hex(hex: &str) -> Sha512Digest {
+    fn digest_from_hex(hex: &str) -> Digest<{ Sha512::DIGEST_LEN }> {
         Digest(self::_hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {

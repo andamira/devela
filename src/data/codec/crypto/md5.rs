@@ -14,8 +14,6 @@
 
 use crate::{__crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-type Md5Digest = Digest<{ Md5::DIGEST_LEN }>;
-
 #[doc = crate::_tags!(crypto hash)]
 /// Incremental MD5 state.
 #[doc = crate::_doc_location!("data/codec/crypto")]
@@ -115,18 +113,18 @@ impl Md5 {
     /// # Errors
     /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
     /// if `bytes` exceeds MD5's supported message length.
-    pub const fn digest_bytes(bytes: &[u8]) -> Result<Md5Digest, CryptoError> {
+    pub const fn digest_bytes(bytes: &[u8]) -> Result<Digest<{ Self::DIGEST_LEN }>, CryptoError> {
         let mut md5 = Self::new();
         unwrap![ok? md5.update(bytes)];
         Ok(md5.finalize())
     }
 
-    __crypto_impl_hmac![Md5, Md5Digest];
+    __crypto_impl_hmac![Md5];
 
     /// Finalizes the digest and consumes the state.
     ///
     /// This method cannot fail.
-    pub const fn finalize(mut self) -> Md5Digest {
+    pub const fn finalize(mut self) -> Digest<{ Self::DIGEST_LEN }> {
         let len_bits = self.len_bits;
         self.push_padding_byte(0x80);
         while self.block_len != 56 {
@@ -225,9 +223,9 @@ impl Md5 {
 
 #[cfg(test)]
 mod tests {
-    use super::{super::_hex, Digest, Md5, Md5Digest, whilst};
+    use super::{super::_hex, Digest, Md5, whilst};
 
-    fn digest_from_hex(hex: &str) -> Md5Digest {
+    fn digest_from_hex(hex: &str) -> Digest<{ Md5::DIGEST_LEN }> {
         Digest(self::_hex(hex))
     }
     fn assert_digest(input: &[u8], expected: &str) {

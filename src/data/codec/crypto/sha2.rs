@@ -2,77 +2,6 @@
 //
 //! Defines SHA2 secure hash algorithms.
 //
-// TOC
-// - impls:
-//   - Sha256
-//   - Sha512
-//   - Sha224
-//   - Sha384
-//   - Sha512_224
-//   - Sha512_384
-// - macro: __crypto_impl_sha2!
-// - consts: __SHA2_32_K, __SHA2_64_K
-
-__crypto_impl_sha2! { word: u32, name: Sha256, doc: "SHA-256",
-    digest: Sha256Digest, digest_bits: 256, digest_len: 32,
-    output_words: 8, output_tail_bytes: 0,
-    initial_state: [
-        0x6A09_E667, 0xBB67_AE85, 0x3C6E_F372, 0xA54F_F53A,
-        0x510E_527F, 0x9B05_688C, 0x1F83_D9AB, 0x5BE0_CD19,
-    ]
-}
-__crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
-    digest: Sha512Digest, digest_bits: 512, digest_len: 64,
-    output_words: 8, output_tail_bytes: 0,
-    initial_state: [
-        0x6A09_E667_F3BC_C908, 0xBB67_AE85_84CA_A73B,
-        0x3C6E_F372_FE94_F82B, 0xA54F_F53A_5F1D_36F1,
-        0x510E_527F_ADE6_82D1, 0x9B05_688C_2B3E_6C1F,
-        0x1F83_D9AB_FB41_BD6B, 0x5BE0_CD19_137E_2179,
-    ]
-}
-crate::__crypto_impl_otp!(crate::Otp, Sha256, "SHA-256");
-crate::__crypto_impl_otp!(crate::Otp, Sha512, "SHA-512");
-
-__crypto_impl_sha2! { word: u32, name: Sha224, doc: "SHA-224",
-    digest: Sha224Digest, digest_bits: 224, digest_len: 28,
-    output_words: 7, output_tail_bytes: 0,
-    initial_state: [
-        0xC105_9ED8, 0x367C_D507, 0x3070_DD17, 0xF70E_5939,
-        0xFFC0_0B31, 0x6858_1511, 0x64F9_8FA7, 0xBEFA_4FA4,
-    ]
-}
-__crypto_impl_sha2! { word: u64, name: Sha384, doc: "SHA-384",
-    digest: Sha384Digest, digest_bits: 384, digest_len: 48,
-    output_words: 6, output_tail_bytes: 0,
-    initial_state: [
-        0xCBBB_9D5D_C105_9ED8, 0x629A_292A_367C_D507,
-        0x9159_015A_3070_DD17, 0x152F_ECD8_F70E_5939,
-        0x6733_2667_FFC0_0B31, 0x8EB4_4A87_6858_1511,
-        0xDB0C_2E0D_64F9_8FA7, 0x47B5_481D_BEFA_4FA4,
-    ]
-}
-
-__crypto_impl_sha2! { word: u64, name: Sha512_224, doc: "SHA-512/224",
-    digest: Sha512_224Digest, digest_bits: 224, digest_len: 28,
-    output_words: 3, output_tail_bytes: 4,
-    initial_state: [
-        0x8C3D_37C8_1954_4DA2, 0x73E1_9966_89DC_D4D6,
-        0x1DFA_B7AE_32FF_9C82, 0x679D_D514_582F_9FCF,
-        0x0F6D_2B69_7BD4_4DA8, 0x77E3_6F73_04C4_8942,
-        0x3F9D_85A8_6A1D_36C8, 0x1112_E6AD_91D6_92A1,
-    ]
-}
-__crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
-    digest: Sha512_256Digest, digest_bits: 256, digest_len: 32,
-    output_words: 4, output_tail_bytes: 0,
-    initial_state: [
-        0x2231_2194_FC2B_F72C, 0x9F55_5FA3_C84C_64C2,
-        0x2393_B86B_6F53_B151, 0x9638_7719_5940_EABD,
-        0x9628_3EE2_A88E_FFE3, 0xBE5E_1E25_5386_3992,
-        0x2B01_99FC_2C85_B8AA, 0x0EB7_2DDC_81C5_2CA2,
-    ]
-}
 
 /// Implements SHA-2 digest methods for a concrete hash type.
 ///
@@ -93,10 +22,10 @@ __crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __crypto_impl_sha2 {
-    (word: u32,
+    ($(#[$attr:meta])*
+     word: u32,
      name: $Self:ident,
      doc: $DOC:literal,
-     digest: $digest:ident,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
      output_words: $output_words:literal,
@@ -105,9 +34,9 @@ macro_rules! __crypto_impl_sha2 {
     ) => {
         $crate::__crypto_impl_sha2! {
             %common
+            $(#[$attr])*
             name: $Self,
             doc: $DOC,
-            digest: $digest,
             digest_bits: $digest_bits,
             digest_len: $digest_len,
             output_words: $output_words,
@@ -135,10 +64,10 @@ macro_rules! __crypto_impl_sha2 {
                 x.rotate_right(17) ^ x.rotate_right(19) ^ (x >> 10) }
         }
     };
-    (word: u64,
+    ($(#[$attr:meta])*
+     word: u64,
      name: $Self:ident,
      doc: $DOC:literal,
-     digest: $digest:ident,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
      output_words: $output_words:literal,
@@ -147,9 +76,9 @@ macro_rules! __crypto_impl_sha2 {
     ) => {
         $crate::__crypto_impl_sha2! {
             %common
+            $(#[$attr])*
             name: $Self,
             doc: $DOC,
-            digest: $digest,
             digest_bits: $digest_bits,
             digest_len: $digest_len,
             output_words: $output_words,
@@ -178,9 +107,9 @@ macro_rules! __crypto_impl_sha2 {
         }
     };
     (%common
+     $(#[$attr:meta])*
      name: $Self:ident,
      doc: $DOC:literal,
-     digest: $digest:ident,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
      output_words: $output_words:literal,
@@ -195,17 +124,7 @@ macro_rules! __crypto_impl_sha2 {
      k: $K:path,
      initial_state: [$($initial_state:literal),+ $(,)?]
     ) => {
-        #[doc = crate::_tags!(crypto hash)]
-        #[doc = concat!("Incremental ", $DOC, " state.")]
-        #[doc = crate::_doc_location!("data/codec/crypto")]
-        ///
-        #[doc = concat!($DOC, " is provided as a fixed-size cryptographic message digest.")]
-        ///
-        /// This implementation is allocation-free, compile-time friendly,
-        /// and supports incremental updates.
-        ///
-        /// Use [`update`][Self::update] to feed bytes and [`finalize`][Self::finalize] to consume
-        #[doc = concat!("the state and return the ", stringify!($digest_len) , "-byte digest.")]
+        $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         pub struct $Self {
             state: [$word; 8],
@@ -213,9 +132,7 @@ macro_rules! __crypto_impl_sha2 {
             block: [u8; $Self::BLOCK_LEN],
             block_len: u8,
         }
-        pub(crate) type $digest = $crate::Digest<{ $Self::DIGEST_LEN }>;
-
-        $crate::_impl_init![ConstInit: $Self::new() => $Self];
+        impl $crate::ConstInit for $Self { const INIT: $Self = $Self::new(); }
         impl Default for $Self { fn default() -> $Self { $Self::new() } }
 
         impl $Self {
@@ -267,18 +184,19 @@ macro_rules! __crypto_impl_sha2 {
             #[doc = concat!("if `bytes` exceeds ", $DOC, "'s supported message length.")]
             ///
             /// [`LengthOverflow`]: crate::CryptoError::LengthOverflow
-            pub const fn digest_bytes(bytes: &[u8]) -> Result<$digest, $crate::CryptoError> {
+            pub const fn digest_bytes(bytes: &[u8])
+                -> Result<$crate::Digest<{ $Self::DIGEST_LEN }>, $crate::CryptoError> {
                 let mut sha = Self::new();
                 $crate::unwrap![ok? sha.update(bytes)];
                 Ok(sha.finalize())
             }
 
-            $crate::__crypto_impl_hmac![$Self, $digest];
+            $crate::__crypto_impl_hmac![$Self];
 
             /// Finalizes the digest and consumes the state.
             ///
             /// This method cannot fail.
-            pub const fn finalize(mut self) -> $digest {
+            pub const fn finalize(mut self) -> $crate::Digest<{ $Self::DIGEST_LEN }> {
                 let len_bits = self.len_bits;
                 self.push_padding_byte(0x80);
                 while self.block_len != $pad_at { self.push_padding_byte(0); }
@@ -367,6 +285,7 @@ macro_rules! __crypto_impl_sha2 {
                 self.state[7] = self.state[7].wrapping_add(h);
             }
         }
+        $crate::__crypto_impl_otp! { hash: $Self, otp: $crate::Otp, doc: $DOC }
     };
     (%write_digest
         out: $out:ident,
@@ -410,22 +329,13 @@ macro_rules! __crypto_impl_sha2 {
     };
     (%read_word word: u32, block: $block:expr, at: $i:expr) => {
         u32::from_be_bytes([
-            $block[$i],
-            $block[$i + 1],
-            $block[$i + 2],
-            $block[$i + 3],
+            $block[$i + 0], $block[$i + 1], $block[$i + 2], $block[$i + 3],
         ])
     };
     (%read_word word: u64, block: $block:expr, at: $i:expr) => {
         u64::from_be_bytes([
-            $block[$i],
-            $block[$i + 1],
-            $block[$i + 2],
-            $block[$i + 3],
-            $block[$i + 4],
-            $block[$i + 5],
-            $block[$i + 6],
-            $block[$i + 7],
+            $block[$i + 0], $block[$i + 1], $block[$i + 2], $block[$i + 3],
+            $block[$i + 4], $block[$i + 5], $block[$i + 6], $block[$i + 7],
         ])
     };
 }
