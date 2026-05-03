@@ -12,7 +12,7 @@
 //   - RFC 2104, Keyed-Hash Message Authentication Code.
 //   - RFC 2202, Test Cases for HMAC-MD5 and HMAC-SHA-1.
 
-use crate::{_crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
+use crate::{__crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
 type Md5Digest = Digest<{ Md5::DIGEST_LEN }>;
 
@@ -121,7 +121,7 @@ impl Md5 {
         Ok(md5.finalize())
     }
 
-    _crypto_impl_hmac![Md5, Md5Digest];
+    __crypto_impl_hmac![Md5, Md5Digest];
 
     /// Finalizes the digest and consumes the state.
     ///

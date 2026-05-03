@@ -10,10 +10,10 @@
 //   - Sha384
 //   - Sha512_224
 //   - Sha512_384
-// - macro: _crypto_impl_sha2!
-// - consts: _SHA2_32_K, _SHA2_64_K
+// - macro: __crypto_impl_sha2!
+// - consts: __SHA2_32_K, __SHA2_64_K
 
-_crypto_impl_sha2! { word: u32, name: Sha256, doc: "SHA-256",
+__crypto_impl_sha2! { word: u32, name: Sha256, doc: "SHA-256",
     digest: Sha256Digest, digest_bits: 256, digest_len: 32,
     output_words: 8, output_tail_bytes: 0,
     initial_state: [
@@ -21,7 +21,7 @@ _crypto_impl_sha2! { word: u32, name: Sha256, doc: "SHA-256",
         0x510E_527F, 0x9B05_688C, 0x1F83_D9AB, 0x5BE0_CD19,
     ]
 }
-_crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
+__crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
     digest: Sha512Digest, digest_bits: 512, digest_len: 64,
     output_words: 8, output_tail_bytes: 0,
     initial_state: [
@@ -31,10 +31,10 @@ _crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
         0x1F83_D9AB_FB41_BD6B, 0x5BE0_CD19_137E_2179,
     ]
 }
-crate::_crypto_impl_otp!(crate::Otp, Sha256, "SHA-256");
-crate::_crypto_impl_otp!(crate::Otp, Sha512, "SHA-512");
+crate::__crypto_impl_otp!(crate::Otp, Sha256, "SHA-256");
+crate::__crypto_impl_otp!(crate::Otp, Sha512, "SHA-512");
 
-_crypto_impl_sha2! { word: u32, name: Sha224, doc: "SHA-224",
+__crypto_impl_sha2! { word: u32, name: Sha224, doc: "SHA-224",
     digest: Sha224Digest, digest_bits: 224, digest_len: 28,
     output_words: 7, output_tail_bytes: 0,
     initial_state: [
@@ -42,7 +42,7 @@ _crypto_impl_sha2! { word: u32, name: Sha224, doc: "SHA-224",
         0xFFC0_0B31, 0x6858_1511, 0x64F9_8FA7, 0xBEFA_4FA4,
     ]
 }
-_crypto_impl_sha2! { word: u64, name: Sha384, doc: "SHA-384",
+__crypto_impl_sha2! { word: u64, name: Sha384, doc: "SHA-384",
     digest: Sha384Digest, digest_bits: 384, digest_len: 48,
     output_words: 6, output_tail_bytes: 0,
     initial_state: [
@@ -53,7 +53,7 @@ _crypto_impl_sha2! { word: u64, name: Sha384, doc: "SHA-384",
     ]
 }
 
-_crypto_impl_sha2! { word: u64, name: Sha512_224, doc: "SHA-512/224",
+__crypto_impl_sha2! { word: u64, name: Sha512_224, doc: "SHA-512/224",
     digest: Sha512_224Digest, digest_bits: 224, digest_len: 28,
     output_words: 3, output_tail_bytes: 4,
     initial_state: [
@@ -63,7 +63,7 @@ _crypto_impl_sha2! { word: u64, name: Sha512_224, doc: "SHA-512/224",
         0x3F9D_85A8_6A1D_36C8, 0x1112_E6AD_91D6_92A1,
     ]
 }
-_crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
+__crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
     digest: Sha512_256Digest, digest_bits: 256, digest_len: 32,
     output_words: 4, output_tail_bytes: 0,
     initial_state: [
@@ -90,7 +90,9 @@ _crypto_impl_sha2! { word: u64, name: Sha512_256, doc: "SHA-512/256",
 // - RFC 2104, Keyed-Hash Message Authentication Code.
 // - RFC 4231, Test Vectors for HMAC-SHA-224, HMAC-SHA-256,
 //   HMAC-SHA-384, and HMAC-SHA-512.
-macro_rules! _crypto_impl_sha2 {
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __crypto_impl_sha2 {
     (word: u32,
      name: $Self:ident,
      doc: $DOC:literal,
@@ -101,7 +103,7 @@ macro_rules! _crypto_impl_sha2 {
      output_tail_bytes: $output_tail_bytes:tt,
      initial_state: [$($initial_state:literal),+ $(,)?]
     ) => {
-        $crate::_crypto_impl_sha2! {
+        $crate::__crypto_impl_sha2! {
             %common
             name: $Self,
             doc: $DOC,
@@ -117,7 +119,7 @@ macro_rules! _crypto_impl_sha2 {
             schedule_len: 64,
             word_bytes: 4,
             full_len: 32,
-            k: $crate::_SHA2_32_K,
+            k: $crate::__SHA2_32_K,
             initial_state: [$($initial_state),+]
         }
         impl $Self {
@@ -143,7 +145,7 @@ macro_rules! _crypto_impl_sha2 {
      output_tail_bytes: $output_tail_bytes:tt,
      initial_state: [$($initial_state:literal),+ $(,)?]
     ) => {
-        $crate::_crypto_impl_sha2! {
+        $crate::__crypto_impl_sha2! {
             %common
             name: $Self,
             doc: $DOC,
@@ -159,7 +161,7 @@ macro_rules! _crypto_impl_sha2 {
             schedule_len: 80,
             word_bytes: 8,
             full_len: 64,
-            k: $crate::_SHA2_64_K,
+            k: $crate::__SHA2_64_K,
             initial_state: [$($initial_state),+]
         }
         impl $Self {
@@ -271,7 +273,7 @@ macro_rules! _crypto_impl_sha2 {
                 Ok(sha.finalize())
             }
 
-            $crate::_crypto_impl_hmac![$Self, $digest];
+            $crate::__crypto_impl_hmac![$Self, $digest];
 
             /// Finalizes the digest and consumes the state.
             ///
@@ -283,7 +285,7 @@ macro_rules! _crypto_impl_sha2 {
                 let len = len_bits.to_be_bytes();
                 $crate::whilst! { i in 0..len.len(); { self.push_padding_byte(len[i]); }}
                 let mut out = [0u8; $digest_len];
-                $crate::_crypto_impl_sha2! { %write_digest
+                $crate::__crypto_impl_sha2! { %write_digest
                     out: out, state: self.state,
                     word_bytes: $word_bytes,
                     output_words: $output_words,
@@ -336,7 +338,7 @@ macro_rules! _crypto_impl_sha2 {
                 let mut w = [0; $schedule_len];
                 $crate::whilst! { t in 0..16; {
                     let i = t * $word_bytes;
-                    w[t] = $crate::_crypto_impl_sha2! { %read_word word: $word, block: block, at: i };
+                    w[t] = $crate::__crypto_impl_sha2![%read_word word: $word, block: block, at: i];
                 }}
                 $crate::whilst! { t in 16..$schedule_len; {
                     w[t] = Self::small_sigma1(w[t - 2])
@@ -380,7 +382,7 @@ macro_rules! _crypto_impl_sha2 {
                 $out[j + bi] = bytes[bi]
             }
         }}
-        $crate::_crypto_impl_sha2! { %write_digest_tail
+        $crate::__crypto_impl_sha2! { %write_digest_tail
             out: $out,
             state: $state,
             word_bytes: $word_bytes,
@@ -427,15 +429,17 @@ macro_rules! _crypto_impl_sha2 {
         ])
     };
 }
-pub(crate) use _crypto_impl_sha2;
+#[doc(hidden)]
+pub use __crypto_impl_sha2;
 
 /// SHA-2 32-bit-word round constants.
 ///
 /// These are the first 32 bits of the fractional parts of the cube roots
 /// of the first 64 prime numbers. One fixed constant is mixed into each
 /// compression round and shared by SHA-224 and SHA-256.
+#[doc(hidden)]
 #[rustfmt::skip]
-pub(crate) const _SHA2_32_K: [u32; 64] = [
+pub const __SHA2_32_K: [u32; 64] = [
     0x428A_2F98, 0x7137_4491, 0xB5C0_FBCF, 0xE9B5_DBA5,
     0x3956_C25B, 0x59F1_11F1, 0x923F_82A4, 0xAB1C_5ED5,
     0xD807_AA98, 0x1283_5B01, 0x2431_85BE, 0x550C_7DC3,
@@ -459,8 +463,9 @@ pub(crate) const _SHA2_32_K: [u32; 64] = [
 /// These are the first 64 bits of the fractional parts of the cube roots
 /// of the first 80 prime numbers. One fixed constant is mixed into each
 /// compression round and shared by SHA-384, SHA-512, and SHA-512/t variants.
+#[doc(hidden)]
 #[rustfmt::skip]
-pub(crate) const _SHA2_64_K: [u64; 80] = [
+pub const __SHA2_64_K: [u64; 80] = [
     0x428A_2F98_D728_AE22, 0x7137_4491_23EF_65CD, 0xB5C0_FBCF_EC4D_3B2F, 0xE9B5_DBA5_8189_DBBC,
     0x3956_C25B_F348_B538, 0x59F1_11F1_B605_D019, 0x923F_82A4_AF19_4F9B, 0xAB1C_5ED5_DA6D_8118,
     0xD807_AA98_A303_0242, 0x1283_5B01_4570_6FBE, 0x2431_85BE_4EE4_B28C, 0x550C_7DC3_D5FF_B4E2,

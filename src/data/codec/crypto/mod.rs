@@ -15,24 +15,31 @@ mod digest; // Digest
 mod error; // CryptoError
 mod md5; // Md5
 mod otp; // Otp
-mod sha1; // Sha1
-mod sha2; // Sha256, Sha512… (_crypto_impl_sha2)
+mod sha1; // Sha1 TODO (__crypto_impl_sha1)
+mod sha2; // (__crypto_impl_sha2)
 
-crate::structural_mods! { // _mods, crate_internals
+crate::structural_mods! { // _mods, crate_internals, _hidden
     _mods {
+        #[doc(inline)]
         pub use super::{
             digest::*,
             error::*,
             md5::*,
-            otp::*,
+            otp::Otp,
             sha1::*,
             sha2::*,
         };
     }
     _crate_internals {
         pub(crate) use super::{
-            _helper::*,
-            sha2::{_crypto_impl_sha2, _SHA2_64_K, _SHA2_32_K},
+            _helper::_hex,
+        };
+    }
+    _hidden {
+        #[doc(hidden)]
+        pub use super::{
+            _helper::{__crypto_impl_hmac, __crypto_impl_otp},
+            sha2::{__crypto_impl_sha2, __SHA2_64_K, __SHA2_32_K},
         };
     }
 }

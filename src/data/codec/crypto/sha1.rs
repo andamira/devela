@@ -11,9 +11,9 @@
 //   - RFC 2104, Keyed-Hash Message Authentication Code.
 //   - RFC 2202, Test Cases for HMAC-MD5 and HMAC-SHA-1.
 
-use crate::{_crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
+use crate::{__crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-crate::_crypto_impl_otp!(crate::Otp, Sha1, "SHA-1");
+crate::__crypto_impl_otp!(crate::Otp, Sha1, "SHA-1");
 
 #[doc = crate::_tags!(crypto hash)]
 /// Incremental SHA-1 state.
@@ -98,7 +98,7 @@ impl Sha1 {
         Ok(sha.finalize())
     }
 
-    _crypto_impl_hmac![Sha1, Sha1Digest];
+    __crypto_impl_hmac![Sha1, Sha1Digest];
 
     /// Finalizes the digest and consumes the state.
     ///

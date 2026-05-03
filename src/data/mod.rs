@@ -21,7 +21,7 @@ pub mod store; // Retained data stores and retrieval semantics
 pub mod topol; // Relational topology over structured data
 pub mod value; // Enumerated data values and types, classified by size
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         #[doc(inline)]
         pub use super::{
@@ -41,6 +41,11 @@ crate::structural_mods! { // _pub_mods, _crate_internals
             codec::_crate_internals::*,
             layout::_crate_internals::*,
             value::_crate_internals::*,
+        };
+    }
+    _hidden {
+        pub use super::{
+            codec::_hidden::*,
         };
     }
 }

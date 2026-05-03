@@ -45,7 +45,7 @@ mod deser; // WIP structured serialization/deserialization
 // #[cfg(feature = "alloc")]
 // mod lempel_ziv; // WIP
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             bit::_all::*,
@@ -66,5 +66,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::crypto::_crate_internals::*;
+    }
+    _hidden {
+        pub use super::crypto::_hidden::*;
     }
 }

@@ -35,9 +35,9 @@ use ::devela::{CryptoError, impl_trait};
 ///
 /// # Examples
 /// ```
-/// # use devela::Otp;
+/// # use devela::{Otp, Sha1};
 /// let key = b"jAaO2ynesPYCdTZV";
-/// let hotp = Otp::hotp_sha1(key, 0, Otp::DEFAULT_DIGITS).unwrap();
+/// let hotp = Sha1::hotp(key, 0, Otp::DEFAULT_DIGITS).unwrap();
 /// assert_eq!(hotp.code(), 1639);
 /// # #[cfg(alloc)]
 /// assert_eq!(hotp.to_string(), "001639");
@@ -47,12 +47,30 @@ use ::devela::{CryptoError, impl_trait};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[must_use]
 pub struct Otp {
-    pub(crate) code: u32,
-    pub(crate) digits: u32,
+    code: u32,
+    digits: u32,
 }
 impl_trait! { fmt::Display for Otp |self, f|
     write!(f, "{:0width$}", self.code, width = self.digits as usize)
 }
+
+// hidden helpers
+impl Otp {
+    #[doc(hidden)]
+    pub const fn from_code_digits(code: u32, digits: u32) -> Self {
+        Self { code, digits }
+    }
+    #[doc(hidden)]
+    #[allow(unused, reason = "when run as standalone script")]
+    pub const fn validate_digits(digits: u32) -> Result<(), CryptoError> {
+        if digits < Self::MIN_DIGITS || digits > Self::MAX_DIGITS {
+            Err(CryptoError::InvalidLength)
+        } else {
+            Ok(())
+        }
+    }
+}
+
 impl Otp {
     /// Default number of decimal OTP digits.
     pub const DEFAULT_DIGITS: u32 = 6;
@@ -67,15 +85,6 @@ impl Otp {
     pub const DEFAULT_EPOCH: u64 = 0;
     /// Default TOTP time step in seconds.
     pub const DEFAULT_PERIOD: u64 = 30;
-
-    #[allow(unused, reason = "when run as standalone script")]
-    pub(crate) const fn validate_digits(digits: u32) -> Result<(), CryptoError> {
-        if digits < Self::MIN_DIGITS || digits > Self::MAX_DIGITS {
-            Err(CryptoError::InvalidLength)
-        } else {
-            Ok(())
-        }
-    }
 
     /// Returns the numeric OTP code, without leading zeroes.
     #[must_use]
@@ -111,7 +120,7 @@ impl Otp {
 #[allow(unused, reason = "example script")]
 #[cfg(all(feature = "std", feature = "time"))]
 fn main() {
-    use ::devela::{Base32, Otp, TimeUnixU32};
+    use ::devela::{Base32, Otp, Sha1, TimeUnixU32};
 
     // test here: https://authenticationtest.com/totpChallenge/
     const SECRET: &str = "I65VU7K5ZQL7WB4E";
@@ -120,18 +129,18 @@ fn main() {
     let mut key = [0u8; Base32::decoded_len_stripped(SECRET.as_bytes())];
     let key_len = Base32::decode_from_slice(SECRET.as_bytes(), &mut key).unwrap();
     let now = TimeUnixU32::now().seconds as u64;
-    let otp = Otp::totp_sha1(&key[..key_len], now, Otp::DEFAULT_DIGITS).unwrap();
+    let otp = Sha1::totp(&key[..key_len], now, Otp::DEFAULT_DIGITS).unwrap();
     println!("{otp}");
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{super::_hex, Otp};
+    use crate::{_hex, Otp, Sha1};
     #[test]
     fn otp_rejects_invalid_digits() {
         let key = _hex::<20>("3132333435363738393031323334353637383930");
-        assert!(Otp::hotp_sha1(&key, 0, 0).unwrap_err().is_invalid_length());
-        assert!(Otp::hotp_sha1(&key, 0, 11).unwrap_err().is_invalid_length());
+        assert!(Sha1::hotp(&key, 0, 0).unwrap_err().is_invalid_length());
+        assert!(Sha1::hotp(&key, 0, 11).unwrap_err().is_invalid_length());
     }
     #[test]
     fn otp_rejects_invalid_time_counter_parameters() {

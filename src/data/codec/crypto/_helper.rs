@@ -1,6 +1,6 @@
 // devela::data::codec::crypto::_helper
 //
-//! Defines `_crypto_impl_hmac!`, `_hex`.
+//! Defines `_hex`, `__crypto_impl_hmac!`, `__crypto_impl_otp`.
 //
 
 pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
@@ -21,7 +21,9 @@ pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
 ///
 /// The hash type must provide `BLOCK_LEN`, `digest_bytes`, `new`, `update`, and `finalize`.
 /// The generated method is allocation-free and const-friendly.
-macro_rules! _crypto_impl_hmac {
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __crypto_impl_hmac {
     ($Self:ident, $digest:ty) => {
         $crate::paste! {
             /// Computes the HMAC of `message` using the given `key`.
@@ -67,12 +69,15 @@ macro_rules! _crypto_impl_hmac {
         }
     };
 }
-pub(crate) use _crypto_impl_hmac;
+#[doc(hidden)]
+pub use __crypto_impl_hmac;
 
-macro_rules! _crypto_impl_otp {
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __crypto_impl_otp {
     ($otp:path, $sha:ident, $doc:literal) => { $crate::paste! {
         #[doc = $doc " impls"]
-        impl $otp {
+        impl $sha {
             #[doc = "Generates an HOTP code using HMAC-" $doc "."]
             ///
             /// Computes `HOTP(K, C)` from the shared secret `key` and 8-byte big-endian
@@ -86,7 +91,7 @@ macro_rules! _crypto_impl_otp {
             ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
             /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow] if the
             #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
-            pub const fn [<hotp_ $sha:lower>](key: &[u8], counter: u64, digits: u32)
+            pub const fn hotp(key: &[u8], counter: u64, digits: u32)
                 -> Result<$otp, $crate::CryptoError> {
                 $crate::unwrap![ok? $otp::validate_digits(digits)];
                 let mac = $crate::unwrap![ok? <$sha>::hmac(key, &counter.to_be_bytes())];
@@ -98,7 +103,7 @@ macro_rules! _crypto_impl_otp {
                     mac.0[offset + 3],
                 ]);
                 let modulo = 10u64.pow(digits);
-                Ok($otp { code: (code as u64 % modulo) as u32, digits })
+                Ok($otp::from_code_digits((code as u64 % modulo) as u32, digits))
             }
 
             #[doc = "Generates a TOTP code using HMAC-" $doc " and the default TOTP parameters."]
@@ -111,10 +116,10 @@ macro_rules! _crypto_impl_otp {
             ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
             /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow]
             #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
-            pub const fn [<totp_ $sha:lower>](key: &[u8], unix_seconds: u64, digits: u32)
+            pub const fn totp(key: &[u8], unix_seconds: u64, digits: u32)
                 -> Result<$otp, $crate::CryptoError> {
-                $otp::[<totp_ $sha:lower _with>]
-                    (key, unix_seconds, $otp::DEFAULT_EPOCH, $otp::DEFAULT_PERIOD, digits)
+                $sha::totp_with(key, unix_seconds,
+                    $otp::DEFAULT_EPOCH, $otp::DEFAULT_PERIOD, digits)
             }
             #[doc = "Generates a TOTP code using HMAC-" $doc " and explicit TOTP parameters."]
             ///
@@ -128,12 +133,13 @@ macro_rules! _crypto_impl_otp {
             ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
             /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow]
             #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
-            pub const fn [<totp_ $sha:lower _with>](key: &[u8], unix_seconds: u64, epoch: u64,
+            pub const fn totp_with(key: &[u8], unix_seconds: u64, epoch: u64,
                 period: u64, digits: u32) -> Result<$otp, $crate::CryptoError> {
                 let counter = $crate::unwrap![ok? $otp::time_counter(unix_seconds, epoch, period)];
-                $otp::[<hotp_ $sha:lower>](key, counter, digits)
+                $sha::hotp(key, counter, digits)
             }
         }
     }};
 }
-pub(crate) use _crypto_impl_otp;
+#[doc(hidden)]
+pub use __crypto_impl_otp;
