@@ -13,7 +13,7 @@
 
 use crate::{_crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
+pub(crate) type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
 
 #[doc = crate::_tags!(crypto hash)]
 /// Incremental SHA-1 state.
@@ -96,7 +96,7 @@ impl Sha1 {
         Ok(sha.finalize())
     }
 
-    _crypto_impl_hmac![Sha1, Sha1Digest, "HMAC-SHA-1"];
+    _crypto_impl_hmac![Sha1, Sha1Digest];
 
     /// Finalizes the digest and consumes the state.
     ///
@@ -191,97 +191,5 @@ impl Sha1 {
         self.state[2] = self.state[2].wrapping_add(c);
         self.state[3] = self.state[3].wrapping_add(d);
         self.state[4] = self.state[4].wrapping_add(e);
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{super::_hex, Digest, Sha1, Sha1Digest, whilst};
-
-    fn digest_from_hex(hex: &str) -> Sha1Digest {
-        Digest(self::_hex(hex))
-    }
-    fn assert_digest(input: &[u8], expected: &str) {
-        assert_eq!(Sha1::digest_bytes(input).unwrap(), digest_from_hex(expected));
-    }
-
-    #[test]
-    // https://datatracker.ietf.org/doc/html/rfc6234#section-8.5
-    fn known_vectors() {
-        assert_digest(b"", "da39a3ee5e6b4b0d3255bfef95601890afd80709");
-        assert_digest(b"abc", "a9993e364706816aba3e25717850c26c9cd0d89d");
-        assert_digest(
-            b"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
-            "84983e441c3bd26ebaae4aa1f95129e5e54670f1",
-        );
-    }
-    #[test]
-    #[cfg(not(miri))] // too slow for miri
-    fn million_a() {
-        let mut sha = Sha1::new();
-        for _ in 0..1_000_000 {
-            sha.update(b"a").unwrap();
-        }
-        assert_eq!(sha.finalize(), digest_from_hex("34aa973cd4c4daa4f61eeb2bdbad27316534016f"),);
-    }
-    #[test]
-    // https://www.rfc-editor.org/rfc/rfc2202#section-2
-    // https://datatracker.ietf.org/doc/html/rfc6234#page-100
-    fn hmac_vectors() {
-        // 1
-        let (key, data) = ([0x0b; 20], b"Hi There");
-        let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("b617318655057264e28bc0b6fb378c8ef146be00"));
-        // 2
-        let (key, data) = (b"Jefe", b"what do ya want for nothing?");
-        let mac = Sha1::hmac(key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"));
-        // 3
-        let (key, data) = ([0xaa; 20], [0xdd; 50]);
-        let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("125d7342b9ac11cd91a39af48aa17b4f63f175d3"));
-        // 4
-        let key = _hex::<25>("0102030405060708090a0b0c0d0e0f10111213141516171819");
-        let data = [0xcd; 50];
-        let mac = Sha1::hmac(&key, &data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("4c9007f4026250c6bc8414f9bf50c86c2d7235da"));
-        // …
-        // 7
-        let key = [0xaa; 80];
-        let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
-        let mac = Sha1::hmac(&key, data).unwrap();
-        assert_eq!(mac.as_array(), &_hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
-    }
-    #[test]
-    fn chunked_updates_match_one_shot() {
-        let input = b"the quick brown fox jumps over the lazy dog";
-        let full = Sha1::digest_bytes(input).unwrap();
-        let mut chunked = Sha1::new();
-        chunked.update(b"the quick ").unwrap();
-        chunked.update(b"brown fox ").unwrap();
-        chunked.update(b"jumps over ").unwrap();
-        chunked.update(b"the lazy dog").unwrap();
-        assert_eq!(full, chunked.finalize());
-    }
-    #[test]
-    fn boundary_lengths() {
-        for len in [0, 1, 55, 56, 57, 63, 64, 65, 119, 120] {
-            let mut bytes = [0u8; 120];
-            whilst! { i in 0..len; { bytes[i] = i as u8; }}
-            let full = Sha1::digest_bytes(&bytes[..len]).unwrap();
-            let mut chunked = Sha1::new();
-            for chunk in bytes[..len].chunks(3) {
-                chunked.update(chunk).unwrap();
-            }
-            assert_eq!(full, chunked.finalize());
-        }
-    }
-    #[test]
-    fn reset() {
-        let mut sha = Sha1::new();
-        sha.update(b"abc").unwrap();
-        sha.reset();
-        sha.update(b"abc").unwrap();
-        assert_eq!(sha.finalize(), digest_from_hex("a9993e364706816aba3e25717850c26c9cd0d89d"),);
     }
 }

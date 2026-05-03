@@ -121,7 +121,7 @@ impl Md5 {
         Ok(md5.finalize())
     }
 
-    _crypto_impl_hmac![Md5, Md5Digest, "HMAC-MD5"];
+    _crypto_impl_hmac![Md5, Md5Digest];
 
     /// Finalizes the digest and consumes the state.
     ///
