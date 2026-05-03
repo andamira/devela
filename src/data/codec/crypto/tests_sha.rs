@@ -1,6 +1,8 @@
-// devela::data::codec::crypto::test_sha
+// devela::data::codec::crypto::tests_sha
 
-use crate::{_hex, Digest, Sha1, Sha1Digest, Sha256, Sha256Digest, Sha512, Sha512Digest, whilst};
+use crate::{
+    _hex, Digest, Otp, Sha1, Sha1Digest, Sha256, Sha256Digest, Sha512, Sha512Digest, whilst,
+};
 
 mod sha1 {
     use super::*;
@@ -58,6 +60,34 @@ mod sha1 {
         let data = b"Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data";
         let mac = Sha1::hmac(&key, data).unwrap();
         assert_eq!(mac.as_array(), &_hex("e8e99d0f45237d786d6bbaa7965c7808bbff1a91"));
+    }
+    #[test]
+    // https://datatracker.ietf.org/doc/html/rfc4226#page-32
+    fn otp_sha1_rfc4226() {
+        let key = _hex::<20>("3132333435363738393031323334353637383930");
+        let hotp = Otp::hotp_sha1(&key, 0, Otp::DEFAULT_DIGITS).unwrap();
+        assert_eq![hotp.digits(), 6];
+        assert_eq![hotp.code(), 755224];
+        assert_eq![Otp::hotp_sha1(&key, 1, Otp::DEFAULT_DIGITS).unwrap().code(), 287082];
+        assert_eq![Otp::hotp_sha1(&key, 2, Otp::DEFAULT_DIGITS).unwrap().code(), 359152];
+        assert_eq![Otp::hotp_sha1(&key, 3, Otp::DEFAULT_DIGITS).unwrap().code(), 969429];
+        assert_eq![Otp::hotp_sha1(&key, 4, Otp::DEFAULT_DIGITS).unwrap().code(), 338314];
+        assert_eq![Otp::hotp_sha1(&key, 5, Otp::DEFAULT_DIGITS).unwrap().code(), 254676];
+        assert_eq![Otp::hotp_sha1(&key, 6, Otp::DEFAULT_DIGITS).unwrap().code(), 287922];
+        assert_eq![Otp::hotp_sha1(&key, 7, Otp::DEFAULT_DIGITS).unwrap().code(), 162583];
+        assert_eq![Otp::hotp_sha1(&key, 8, Otp::DEFAULT_DIGITS).unwrap().code(), 399871];
+        assert_eq![Otp::hotp_sha1(&key, 9, Otp::DEFAULT_DIGITS).unwrap().code(), 520489];
+    }
+    /* https://www.rfc-editor.org/rfc/rfc6238#appendix-B */
+    #[test]
+    fn otp_sha1_rfc6238() {
+        let key = b"12345678901234567890"; // 20
+        assert_eq![Otp::totp_sha1_with(key, 59, 0, 30, 8).unwrap().code(), 94287082];
+        assert_eq![Otp::totp_sha1_with(key, 1_111_111_109, 0, 30, 8).unwrap().code(), 07081804];
+        assert_eq![Otp::totp_sha1_with(key, 1_111_111_111, 0, 30, 8).unwrap().code(), 14050471];
+        assert_eq![Otp::totp_sha1_with(key, 1_234_567_890, 0, 30, 8).unwrap().code(), 89005924];
+        assert_eq![Otp::totp_sha1_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 69279037];
+        assert_eq![Otp::totp_sha1_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 65353130];
     }
     #[test]
     fn chunked_updates_match_one_shot() {
@@ -139,6 +169,16 @@ mod sha2_256 {
             Sha256::hmac(b"Jefe", b"what do ya want for nothing?").unwrap(),
             digest_from_hex("5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"),
         );
+    }
+    #[test]
+    fn otp_sha256_rfc6238() {
+        let key = b"12345678901234567890123456789012"; // 32
+        assert_eq![Otp::totp_sha256_with(key, 59, 0, 30, 8).unwrap().code(), 46119246];
+        assert_eq![Otp::totp_sha256_with(key, 1_111_111_109, 0, 30, 8).unwrap().code(), 68084774];
+        assert_eq![Otp::totp_sha256_with(key, 1_111_111_111, 0, 30, 8).unwrap().code(), 67062674];
+        assert_eq![Otp::totp_sha256_with(key, 1_234_567_890, 0, 30, 8).unwrap().code(), 91819424];
+        assert_eq![Otp::totp_sha256_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 90698825];
+        assert_eq![Otp::totp_sha256_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 77737706];
     }
     #[test]
     fn chunked_updates_match_one_shot() {
@@ -242,6 +282,16 @@ mod sha2_512 {
                  9758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737",
             ),
         );
+    }
+    #[test]
+    fn otp_sha512_rfc6238() {
+        let key = b"1234567890123456789012345678901234567890123456789012345678901234"; // 64
+        assert_eq![Otp::totp_sha512_with(key, 59, 0, 30, 8).unwrap().code(), 90693936];
+        assert_eq![Otp::totp_sha512_with(key, 1_111_111_109, 0, 30, 8).unwrap().code(), 25091201];
+        assert_eq![Otp::totp_sha512_with(key, 1_111_111_111, 0, 30, 8).unwrap().code(), 99943326];
+        assert_eq![Otp::totp_sha512_with(key, 1_234_567_890, 0, 30, 8).unwrap().code(), 93441116];
+        assert_eq![Otp::totp_sha512_with(key, 2_000_000_000, 0, 30, 8).unwrap().code(), 38618901];
+        assert_eq![Otp::totp_sha512_with(key, 20_000_000_000, 0, 30, 8).unwrap().code(), 47863826];
     }
     #[test]
     fn chunked_updates_match_one_shot() {

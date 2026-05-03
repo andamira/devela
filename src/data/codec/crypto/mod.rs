@@ -9,7 +9,7 @@
 #[cfg(test)]
 mod tests_sha;
 
-mod _helper; // (_crypto_impl_hmac, _hex)
+mod _helper; // (_crypto_impl_hmac, _crypto_impl_otp, _hex)
 
 mod digest; // Digest
 mod error; // CryptoError

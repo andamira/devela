@@ -68,3 +68,72 @@ macro_rules! _crypto_impl_hmac {
     };
 }
 pub(crate) use _crypto_impl_hmac;
+
+macro_rules! _crypto_impl_otp {
+    ($otp:path, $sha:ident, $doc:literal) => { $crate::paste! {
+        #[doc = $doc " impls"]
+        impl $otp {
+            #[doc = "Generates an HOTP code using HMAC-" $doc "."]
+            ///
+            /// Computes `HOTP(K, C)` from the shared secret `key` and 8-byte big-endian
+            /// counter, then applies dynamic truncation.
+            ///
+            /// The returned code is numeric and may have fewer visible digits than
+            /// [`digits`][crate::Otp::digits]; format it with leading zeroes for display.
+            ///
+            /// # Errors
+            /// - Returns [`InvalidLength`][crate::CryptoError::InvalidLength]
+            ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+            /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow] if the
+            #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
+            pub const fn [<hotp_ $sha:lower>](key: &[u8], counter: u64, digits: u32)
+                -> Result<$otp, $crate::CryptoError> {
+                $crate::unwrap![ok? $otp::validate_digits(digits)];
+                let mac = $crate::unwrap![ok? <$sha>::hmac(key, &counter.to_be_bytes())];
+                let offset = (mac.0[<$sha>::DIGEST_LEN - 1] & 0x0f) as usize;
+                let code = u32::from_be_bytes([
+                    mac.0[offset] & 0x7f,
+                    mac.0[offset + 1],
+                    mac.0[offset + 2],
+                    mac.0[offset + 3],
+                ]);
+                let modulo = 10u64.pow(digits);
+                Ok($otp { code: (code as u64 % modulo) as u32, digits })
+            }
+
+            #[doc = "Generates a TOTP code using HMAC-" $doc " and the default TOTP parameters."]
+            ///
+            /// Uses [`DEFAULT_EPOCH`][crate::Otp::DEFAULT_EPOCH]
+            /// and [`DEFAULT_PERIOD`][crate::Otp::DEFAULT_PERIOD].
+            ///
+            /// # Errors
+            /// - Returns [`InvalidLength`][crate::CryptoError::InvalidLength]
+            ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+            /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow]
+            #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
+            pub const fn [<totp_ $sha:lower>](key: &[u8], unix_seconds: u64, digits: u32)
+                -> Result<$otp, $crate::CryptoError> {
+                $otp::[<totp_ $sha:lower _with>]
+                    (key, unix_seconds, $otp::DEFAULT_EPOCH, $otp::DEFAULT_PERIOD, digits)
+            }
+            #[doc = "Generates a TOTP code using HMAC-" $doc " and explicit TOTP parameters."]
+            ///
+            /// Derives the moving counter from `unix_seconds`, `epoch`, and `period`,
+            #[doc = "then computes HOTP-" $doc " with that counter."]
+            ///
+            /// # Errors
+            /// - Returns [`InvalidParameter`][crate::CryptoError::InvalidParameter]
+            ///   if `period == 0` or if `unix_seconds < epoch`.
+            /// - Returns [`InvalidLength`][crate::CryptoError::InvalidLength]
+            ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+            /// - Returns [`LengthOverflow`][crate::CryptoError::LengthOverflow]
+            #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
+            pub const fn [<totp_ $sha:lower _with>](key: &[u8], unix_seconds: u64, epoch: u64,
+                period: u64, digits: u32) -> Result<$otp, $crate::CryptoError> {
+                let counter = $crate::unwrap![ok? $otp::time_counter(unix_seconds, epoch, period)];
+                $otp::[<hotp_ $sha:lower>](key, counter, digits)
+            }
+        }
+    }};
+}
+pub(crate) use _crypto_impl_otp;

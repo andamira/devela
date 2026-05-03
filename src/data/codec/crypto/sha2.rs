@@ -22,6 +22,9 @@ _crypto_impl_sha2! { word: u64, name: Sha512, doc: "SHA-512",
     ]
 }
 
+crate::_crypto_impl_otp!(crate::Otp, Sha256, "SHA-256");
+crate::_crypto_impl_otp!(crate::Otp, Sha512, "SHA-512");
+
 /// Implements SHA-2 digest methods for a concrete hash type.
 ///
 /// Supports the SHA-2 32-bit-word core and 64-bit-word core. The core selects

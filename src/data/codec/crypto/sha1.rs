@@ -13,7 +13,7 @@
 
 use crate::{_crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-pub(crate) type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
+crate::_crypto_impl_otp!(crate::Otp, Sha1, "SHA-1");
 
 #[doc = crate::_tags!(crypto hash)]
 /// Incremental SHA-1 state.
@@ -36,6 +36,8 @@ pub struct Sha1 {
     block: [u8; Sha1::BLOCK_LEN],
     block_len: u8,
 }
+pub(crate) type Sha1Digest = Digest<{ Sha1::DIGEST_LEN }>;
+
 _impl_init![ConstInit: Self::new() => Sha1];
 impl Default for Sha1 {
     fn default() -> Self {
