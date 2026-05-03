@@ -118,8 +118,8 @@ impl Sha512 {
     /// Updates the digest state with `bytes`.
     ///
     /// # Errors
-    /// Returns [`CryptoError::LengthOverflow`] if the total message length
-    /// would exceed SHA-512's 128-bit bit-length field.
+    /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    /// if the total message length would exceed SHA-512's 128-bit bit-length field.
     pub const fn update(&mut self, bytes: &[u8]) -> Result<(), CryptoError> {
         let add_bits = (bytes.len() as u128) * 8;
         let Some(new_len_bits) = self.len_bits.checked_add(add_bits) else {
@@ -132,8 +132,8 @@ impl Sha512 {
     /// Computes the SHA-512 digest of `bytes`.
     ///
     /// # Errors
-    /// Returns [`CryptoError::LengthOverflow`] if `bytes` exceeds SHA-512's
-    /// supported message length.
+    /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    /// if `bytes` exceeds SHA-512's supported message length.
     pub const fn digest_bytes(bytes: &[u8]) -> Result<Sha512Digest, CryptoError> {
         let mut sha = Self::new();
         unwrap![ok? sha.update(bytes)];

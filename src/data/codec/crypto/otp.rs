@@ -92,8 +92,8 @@ impl Otp {
     /// Computes `(unix_seconds - epoch) / period`.
     ///
     /// # Errors
-    /// Returns [`CryptoError::InvalidParameter`] if `period == 0`
-    /// or if `unix_seconds < epoch`.
+    /// Returns [`InvalidParameter`][CryptoError::InvalidParameter]
+    /// if `period == 0` or if `unix_seconds < epoch`.
     pub const fn time_counter(
         unix_seconds: u64,
         epoch: u64,
@@ -117,9 +117,10 @@ impl Otp {
     /// [`digits`][Self::digits]; format it with leading zeroes for display.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
-    ///   computation exceeds SHA-1's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-1 computation exceeds SHA-1's input length limit.
     pub const fn hotp_sha1(key: &[u8], counter: u64, digits: u32) -> Result<Otp, CryptoError> {
         unwrap![ok? Self::validate_digits(digits)];
         let mac = unwrap![ok? Sha1::hmac(key, &counter.to_be_bytes())];
@@ -139,9 +140,10 @@ impl Otp {
     /// Uses [`DEFAULT_EPOCH`][Self::DEFAULT_EPOCH] and [`DEFAULT_PERIOD`][Self::DEFAULT_PERIOD].
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
-    ///   computation exceeds SHA-1's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-1 computation exceeds SHA-1's input length limit.
     pub const fn totp_sha1(
         key: &[u8],
         unix_seconds: u64,
@@ -155,10 +157,12 @@ impl Otp {
     /// then computes HOTP-SHA1 with that counter.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidParameter`] if `period == 0` or if `unix_seconds < epoch`.
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-1
-    ///   computation exceeds SHA-1's input length limit.
+    /// - Returns [`InvalidParameter`][CryptoError::InvalidParameter]
+    ///   if `period == 0` or if `unix_seconds < epoch`.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-1 computation exceeds SHA-1's input length limit.
     pub const fn totp_sha1_with(
         key: &[u8],
         unix_seconds: u64,
@@ -181,9 +185,10 @@ impl Otp {
     /// [`digits`][Self::digits]; format it with leading zeroes for display.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-256
-    ///   computation exceeds SHA-256's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-256 computation exceeds SHA-256's input length limit.
     pub const fn hotp_sha256(key: &[u8], counter: u64, digits: u32) -> Result<Otp, CryptoError> {
         unwrap![ok? Self::validate_digits(digits)];
         let mac = unwrap![ok? Sha256::hmac(key, &counter.to_be_bytes())];
@@ -203,9 +208,10 @@ impl Otp {
     /// Uses [`DEFAULT_EPOCH`][Self::DEFAULT_EPOCH] and [`DEFAULT_PERIOD`][Self::DEFAULT_PERIOD].
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-256
-    ///   computation exceeds SHA-256's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-256 computation exceeds SHA-256's input length limit.
     pub const fn totp_sha256(
         key: &[u8],
         unix_seconds: u64,
@@ -219,10 +225,12 @@ impl Otp {
     /// then computes HOTP-SHA-256 with that counter.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidParameter`] if `period == 0` or if `unix_seconds < epoch`.
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-256
-    ///   computation exceeds SHA-256's input length limit.
+    /// - Returns [`InvalidParameter`][CryptoError::InvalidParameter]
+    ///   if `period == 0` or if `unix_seconds < epoch`.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-256 computation exceeds SHA-256's input length limit.
     pub const fn totp_sha256_with(
         key: &[u8],
         unix_seconds: u64,
@@ -245,9 +253,10 @@ impl Otp {
     /// [`digits`][Self::digits]; format it with leading zeroes for display.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
-    ///   computation exceeds SHA-512's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-512 computation exceeds SHA-512's input length limit.
     pub const fn hotp_sha512(key: &[u8], counter: u64, digits: u32) -> Result<Otp, CryptoError> {
         unwrap![ok? Self::validate_digits(digits)];
         let mac = unwrap![ok? Sha512::hmac(key, &counter.to_be_bytes())];
@@ -267,9 +276,10 @@ impl Otp {
     /// Uses [`DEFAULT_EPOCH`][Self::DEFAULT_EPOCH] and [`DEFAULT_PERIOD`][Self::DEFAULT_PERIOD].
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
-    ///   computation exceeds SHA-512's input length limit.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-512 computation exceeds SHA-512's input length limit.
     pub const fn totp_sha512(
         key: &[u8],
         unix_seconds: u64,
@@ -283,10 +293,12 @@ impl Otp {
     /// then computes HOTP-SHA-512 with that counter.
     ///
     /// # Errors
-    /// - Returns [`CryptoError::InvalidParameter`] if `period == 0` or if `unix_seconds < epoch`.
-    /// - Returns [`CryptoError::InvalidLength`] if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    /// - Returns [`CryptoError::LengthOverflow`] if the underlying HMAC-SHA-512
-    ///   computation exceeds SHA-512's input length limit.
+    /// - Returns [`InvalidParameter`][CryptoError::InvalidParameter]
+    ///   if `period == 0` or if `unix_seconds < epoch`.
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    ///   if the underlying HMAC-SHA-512 computation exceeds SHA-512's input length limit.
     pub const fn totp_sha512_with(
         key: &[u8],
         unix_seconds: u64,

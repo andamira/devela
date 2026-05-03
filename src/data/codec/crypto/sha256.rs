@@ -92,8 +92,8 @@ impl Sha256 {
     /// Updates the digest state with `bytes`.
     ///
     /// # Errors
-    /// Returns [`CryptoError::LengthOverflow`] if the total message length
-    /// would exceed SHA-256's 64-bit bit-length field.
+    /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    /// if the total message length would exceed SHA-256's 64-bit bit-length field.
     pub const fn update(&mut self, bytes: &[u8]) -> Result<(), CryptoError> {
         is! { bytes.len() > (u64::MAX / 8) as usize, return Err(CryptoError::LengthOverflow) }
         let add_bits = (bytes.len() as u64) * 8;
@@ -107,8 +107,8 @@ impl Sha256 {
     /// Computes the SHA-256 digest of `bytes`.
     ///
     /// # Errors
-    /// Returns [`CryptoError::LengthOverflow`] if `bytes` exceeds SHA-256's
-    /// supported message length.
+    /// Returns [`LengthOverflow`][CryptoError::LengthOverflow]
+    /// if `bytes` exceeds SHA-256's supported message length.
     pub const fn digest_bytes(bytes: &[u8]) -> Result<Sha256Digest, CryptoError> {
         let mut sha = Self::new();
         unwrap![ok? sha.update(bytes)];
