@@ -65,8 +65,8 @@
 
 #### data::codec::crypto
 - new macro: `digest!`.
-- new types: `CryptoError`, `Digest`, `Md5`, `Otp`, `Sha1`.
-- new example types: `Sha256`, `Sha512`, `Sha224`, `Sha384`.
+- new types: `CryptoError`, `Digest`, `Otp`.
+- new example types: `Md5`, `Sha1`, `Sha256`, `Sha512`, `Sha224`, `Sha384`.
 
 ### data::id
 - rename `define_handle!` to `handle!`

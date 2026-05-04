@@ -3,7 +3,9 @@
 //! Defines SHA2 secure hash algorithms.
 //
 
+#[doc = crate::_tags!(crypto hash)]
 /// Implements SHA-2 digest methods for a concrete hash type.
+#[doc = crate::_doc_location!("data/codec/crypto")]
 ///
 /// Supports the SHA-2 32-bit-word core used by SHA-224 and SHA-256, and the
 /// SHA-2 64-bit-word core used by SHA-384, SHA-512, and SHA-512/t variants.
@@ -17,14 +19,13 @@
 // - FIPS 180-4, Secure Hash Standard.
 // - RFC 6234, US Secure Hash Algorithms.
 // - RFC 2104, Keyed-Hash Message Authentication Code.
-// - RFC 4231, Test Vectors for HMAC-SHA-224, HMAC-SHA-256,
-//   HMAC-SHA-384, and HMAC-SHA-512.
+// - RFC 4231, Test Vectors for HMAC-SHA-224, HMAC-SHA-256, HMAC-SHA-384, and HMAC-SHA-512.
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __crypto_impl_sha2 {
     ($(#[$attr:meta])*
+     $vis:vis struct $Self:ident;
      word: u32,
-     name: $Self:ident,
      doc: $DOC:literal,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
@@ -35,7 +36,7 @@ macro_rules! __crypto_impl_sha2 {
         $crate::__crypto_impl_sha2! {
             %common
             $(#[$attr])*
-            name: $Self,
+            $vis struct $Self;
             doc: $DOC,
             digest_bits: $digest_bits,
             digest_len: $digest_len,
@@ -65,8 +66,8 @@ macro_rules! __crypto_impl_sha2 {
         }
     };
     ($(#[$attr:meta])*
+     $vis:vis struct $Self:ident;
      word: u64,
-     name: $Self:ident,
      doc: $DOC:literal,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
@@ -77,7 +78,7 @@ macro_rules! __crypto_impl_sha2 {
         $crate::__crypto_impl_sha2! {
             %common
             $(#[$attr])*
-            name: $Self,
+            $vis struct $Self;
             doc: $DOC,
             digest_bits: $digest_bits,
             digest_len: $digest_len,
@@ -108,7 +109,7 @@ macro_rules! __crypto_impl_sha2 {
     };
     (%common
      $(#[$attr:meta])*
-     name: $Self:ident,
+     $vis:vis struct $Self:ident;
      doc: $DOC:literal,
      digest_bits: $digest_bits:literal,
      digest_len: $digest_len:literal,
@@ -126,7 +127,7 @@ macro_rules! __crypto_impl_sha2 {
     ) => {
         $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub struct $Self {
+        $vis struct $Self {
             state: [$word; 8],
             len_bits: $len_bits,
             block: [u8; $Self::BLOCK_LEN],

@@ -1,6 +1,8 @@
 // devela::data::codec::crypto::tests_sha
 
-use crate::{_hex, Digest, Otp, Sha1, whilst};
+#![cfg_attr(not(test), allow(unused))]
+
+use crate::{_hex, Digest, Otp, whilst};
 
 macro_rules! _doc {
     () => {
@@ -14,8 +16,16 @@ Generated with [`digest!`][crate::digest]."
     };
 }
 
-// crate::digest![pub struct Md5: Md5]; // TODO
-// crate::digest![pub struct Sha1: Sha1]; // TODO
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental Md5 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Md5: Md5
+}
+crate::digest! {
+    #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-1 state."]
+    #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
+    pub struct Sha1: Sha1
+}
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-256 state."]
     #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc!()]
@@ -49,6 +59,89 @@ crate::digest! {
 }
 */
 
+mod md5 {
+    use super::*;
+
+    fn digest_from_hex(hex: &str) -> Digest<{ Md5::DIGEST_LEN }> {
+        Digest(self::_hex(hex))
+    }
+    fn assert_digest(input: &[u8], expected: &str) {
+        assert_eq!(Md5::digest_bytes(input).unwrap(), digest_from_hex(expected));
+    }
+
+    #[test]
+    // https://datatracker.ietf.org/doc/html/rfc1321#appendix-A.5
+    fn known_vectors() {
+        assert_digest(b"", "d41d8cd98f00b204e9800998ecf8427e");
+        assert_digest(b"a", "0cc175b9c0f1b6a831c399e269772661");
+        assert_digest(b"abc", "900150983cd24fb0d6963f7d28e17f72");
+        assert_digest(b"message digest", "f96b697d7cb7938d525a2f31aaf161d0");
+        assert_digest(b"abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b");
+        assert_digest(
+            b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+            "d174ab98d277d9f5a5611c2c9f419d9f",
+        );
+        assert_digest(
+            b"12345678901234567890123456789012345678901234567890\
+              123456789012345678901234567890",
+            "57edf4a22be3c955ac49da2e2107b67a",
+        );
+    }
+    #[test]
+    #[cfg(not(miri))] // too slow for miri
+    fn million_a() {
+        let mut md5 = Md5::new();
+        for _ in 0..1_000_000 {
+            md5.update(b"a").unwrap();
+        }
+        assert_eq!(md5.finalize(), digest_from_hex("7707d6ae4e027c70eea2a935c2296f21"),);
+    }
+    #[test]
+    // https://www.rfc-editor.org/rfc/rfc2202.html#section-2
+    fn hmac_vectors() {
+        let key = [0x0b; 16];
+        assert_eq!(
+            Md5::hmac(&key, b"Hi There").unwrap(),
+            digest_from_hex("9294727a3638bb1c13f48ef8158bfc9d"),
+        );
+        assert_eq!(
+            Md5::hmac(b"Jefe", b"what do ya want for nothing?").unwrap(),
+            digest_from_hex("750c783e6ab0b503eaa86e310a5db738"),
+        );
+    }
+    #[test]
+    fn chunked_updates_match_one_shot() {
+        let input = b"the quick brown fox jumps over the lazy dog";
+        let full = Md5::digest_bytes(input).unwrap();
+        let mut chunked = Md5::new();
+        chunked.update(b"the quick ").unwrap();
+        chunked.update(b"brown fox ").unwrap();
+        chunked.update(b"jumps over ").unwrap();
+        chunked.update(b"the lazy dog").unwrap();
+        assert_eq!(full, chunked.finalize());
+    }
+    #[test]
+    fn boundary_lengths() {
+        for len in [0, 1, 55, 56, 57, 63, 64, 65, 119, 120] {
+            let mut bytes = [0u8; 120];
+            whilst! { i in 0..len; { bytes[i] = i as u8; }}
+            let full = Md5::digest_bytes(&bytes[..len]).unwrap();
+            let mut chunked = Md5::new();
+            for chunk in bytes[..len].chunks(3) {
+                chunked.update(chunk).unwrap();
+            }
+            assert_eq!(full, chunked.finalize());
+        }
+    }
+    #[test]
+    fn reset() {
+        let mut md5 = Md5::new();
+        md5.update(b"abc").unwrap();
+        md5.reset();
+        md5.update(b"abc").unwrap();
+        assert_eq!(md5.finalize(), digest_from_hex("900150983cd24fb0d6963f7d28e17f72"),);
+    }
+}
 mod sha1 {
     use super::*;
 

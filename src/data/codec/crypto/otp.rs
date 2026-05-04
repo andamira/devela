@@ -35,9 +35,12 @@ use ::devela::{CryptoError, impl_trait, is, unwrap, whilst};
 ///
 /// # Examples
 /// ```
-/// # use devela::{Otp, Sha1};
+/// use devela::{Otp, digest};
+///
+/// digest![struct MySha1: Sha1];
+///
 /// let key = b"jAaO2ynesPYCdTZV";
-/// let hotp = Sha1::hotp(key, 0, Otp::DEFAULT_DIGITS).unwrap();
+/// let hotp = MySha1::hotp(key, 0, Otp::DEFAULT_DIGITS).unwrap();
 /// assert_eq!(hotp.code(), 1639);
 /// # #[cfg(alloc)]
 /// assert_eq!(hotp.to_string(), "001639");
@@ -152,7 +155,9 @@ impl Otp {
 #[allow(unused, reason = "example script")]
 #[cfg(all(feature = "std", feature = "time"))]
 fn main() {
-    use ::devela::{Base32, Otp, Sha1, TimeUnixU32};
+    use ::devela::{Base32, Otp, TimeUnixU32, digest};
+
+    digest![struct Sha1: Sha1];
 
     // test here: https://authenticationtest.com/totpChallenge/
     const SECRET: &str = "I65VU7K5ZQL7WB4E";

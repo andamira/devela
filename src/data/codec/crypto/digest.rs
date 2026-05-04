@@ -102,15 +102,15 @@ mod impls_traits {
 #[doc(hidden)]
 #[macro_export]
 macro_rules! digest· {
-    // ($(#[$attr:meta])* $vis:vis struct $name:ident: Md5 $(;)?) => {
-    //     $crate::__crypto_impl_md5! { name: $name }
-    // };
-    // ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha1 $(;)?) => {
-    //     $crate::__crypto_impl_sha1! { name: $name }
-    // };
-    ( // supported hashes: Sha256, Sha512, Sha224, Sha384, Sha512_224, Sha512_256
-    $(#[$attr:meta])* $vis:vis struct $name:ident: Sha256 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u32, name: $name, doc: "SHA-256",
+    ( // supported hashes: Sha1, Sha256, Sha512, Sha224, Sha384, Sha512_224, Sha512_256
+    $(#[$attr:meta])* $vis:vis struct $name:ident: Md5 $(;)?) => {
+        $crate::__crypto_impl_md5! { $(#[$attr])* $vis struct $name }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha1 $(;)?) => {
+        $crate::__crypto_impl_sha1! { $(#[$attr])* $vis struct $name }
+    };
+    ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha256 $(;)?) => {
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u32, doc: "SHA-256",
             digest_bits: 256, digest_len: 32, output_words: 8, output_tail_bytes: 0,
             initial_state: [
                 0x6A09_E667, 0xBB67_AE85, 0x3C6E_F372, 0xA54F_F53A,
@@ -118,7 +118,7 @@ macro_rules! digest· {
         }
     };
     ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512",
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u64, doc: "SHA-512",
             digest_bits: 512, digest_len: 64, output_words: 8, output_tail_bytes: 0,
             initial_state: [
                 0x6A09_E667_F3BC_C908, 0xBB67_AE85_84CA_A73B,
@@ -128,7 +128,7 @@ macro_rules! digest· {
         }
     };
     ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha224 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u32, name: $name, doc: "SHA-224",
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u32, doc: "SHA-224",
             digest_bits: 224, digest_len: 28, output_words: 7, output_tail_bytes: 0,
             initial_state: [
                 0xC105_9ED8, 0x367C_D507, 0x3070_DD17, 0xF70E_5939,
@@ -136,7 +136,7 @@ macro_rules! digest· {
         }
     };
     ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha384 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-384",
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u64, doc: "SHA-384",
             digest_bits: 384, digest_len: 48, output_words: 6, output_tail_bytes: 0,
             initial_state: [
                 0xCBBB_9D5D_C105_9ED8, 0x629A_292A_367C_D507,
@@ -146,7 +146,7 @@ macro_rules! digest· {
         }
     };
     ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512_224 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512/224",
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u64, doc: "SHA-512/224",
             digest_bits: 224, digest_len: 28, output_words: 3, output_tail_bytes: 4,
             initial_state: [
                 0x8C3D_37C8_1954_4DA2, 0x73E1_9966_89DC_D4D6,
@@ -156,7 +156,7 @@ macro_rules! digest· {
         }
     };
     ($(#[$attr:meta])* $vis:vis struct $name:ident: Sha512_256 $(;)?) => {
-        $crate::__crypto_impl_sha2! { $(#[$attr])* word: u64, name: $name, doc: "SHA-512/256",
+        $crate::__crypto_impl_sha2! { $(#[$attr])* $vis struct $name; word: u64, doc: "SHA-512/256",
             digest_bits: 256, digest_len: 32, output_words: 4, output_tail_bytes: 0,
             initial_state: [
                 0x2231_2194_FC2B_F72C, 0x9F55_5FA3_C84C_64C2,
