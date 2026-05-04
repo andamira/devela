@@ -17,7 +17,7 @@
 
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
-use ::devela::{CryptoError, impl_trait};
+use ::devela::{CryptoError, impl_trait, is, unwrap, whilst};
 ::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
 
 #[doc = _tags!(crypto hash)]
@@ -54,23 +54,7 @@ impl_trait! { fmt::Display for Otp |self, f|
     write!(f, "{:0width$}", self.code, width = self.digits as usize)
 }
 
-// hidden helpers
-impl Otp {
-    #[doc(hidden)]
-    pub const fn from_code_digits(code: u32, digits: u32) -> Self {
-        Self { code, digits }
-    }
-    #[doc(hidden)]
-    #[allow(unused, reason = "when run as standalone script")]
-    pub const fn validate_digits(digits: u32) -> Result<(), CryptoError> {
-        if digits < Self::MIN_DIGITS || digits > Self::MAX_DIGITS {
-            Err(CryptoError::InvalidLength)
-        } else {
-            Ok(())
-        }
-    }
-}
-
+// Constants
 impl Otp {
     /// Default number of decimal OTP digits.
     pub const DEFAULT_DIGITS: u32 = 6;
@@ -85,6 +69,40 @@ impl Otp {
     pub const DEFAULT_EPOCH: u64 = 0;
     /// Default TOTP time step in seconds.
     pub const DEFAULT_PERIOD: u64 = 30;
+}
+impl Otp {
+    const fn validate_digits(digits: u32) -> Result<(), CryptoError> {
+        if digits < Self::MIN_DIGITS || digits > Self::MAX_DIGITS {
+            Err(CryptoError::InvalidLength)
+        } else {
+            Ok(())
+        }
+    }
+    /// Creates an OTP code with an explicit decimal digit width.
+    ///
+    /// The numeric `code` is stored without leading zeroes.
+    /// The `digits` value controls display width.
+    ///
+    /// # Errors
+    /// - Returns [`InvalidLength`][CryptoError::InvalidLength]
+    ///   if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    /// - Returns [`InvalidParameter`][CryptoError::InvalidParameter]
+    ///   if `code` does not fit within the requested digit width.
+    pub const fn new(code: u32, digits: u32) -> Result<Self, CryptoError> {
+        let modulo = unwrap![ok? Self::modulo(digits)];
+        is![code as u64 >= modulo, Err(CryptoError::InvalidParameter), Ok(Self { code, digits })]
+    }
+    /// Creates an OTP code after reducing `code` modulo `10^digits`.
+    ///
+    /// This is useful for HOTP/TOTP dynamic truncation.
+    ///
+    /// # Errors
+    /// Returns [`CryptoError::InvalidLength`] if `digits` is outside
+    /// `MIN_DIGITS..=MAX_DIGITS`.
+    pub const fn new_reduced(code: u64, digits: u32) -> Result<Self, CryptoError> {
+        let modulo = unwrap![ok? Self::modulo(digits)];
+        Ok(Self { code: (code % modulo) as u32, digits })
+    }
 
     /// Returns the numeric OTP code, without leading zeroes.
     #[must_use]
@@ -97,6 +115,20 @@ impl Otp {
         self.digits
     }
 
+    /// Returns the decimal modulus for `digits`.
+    ///
+    /// That is, returns `10^digits`.
+    ///
+    /// # Errors
+    /// Returns [`InvalidLength`][CryptoError::InvalidLength]
+    /// if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
+    #[must_use]
+    pub const fn modulo(digits: u32) -> Result<u64, CryptoError> {
+        unwrap![ok? Self::validate_digits(digits)];
+        let mut n = 1u64;
+        whilst! { i in 0..digits; { n *= 10; }}
+        Ok(n)
+    }
     /// Derives the TOTP moving counter.
     ///
     /// Computes `(unix_seconds - epoch) / period`.

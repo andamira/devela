@@ -94,7 +94,6 @@ macro_rules! __crypto_impl_otp {
             #[doc = "underlying HMAC-" $doc " computation exceeds " $doc "'s input length limit."]
             pub const fn hotp(key: &[u8], counter: u64, digits: u32)
                 -> Result<$otp, $crate::CryptoError> {
-                $crate::unwrap![ok? $otp::validate_digits(digits)];
                 let mac = $crate::unwrap![ok? <$name>::hmac(key, &counter.to_be_bytes())];
                 let offset = (mac.0[<$name>::DIGEST_LEN - 1] & 0x0f) as usize;
                 let code = u32::from_be_bytes([
@@ -103,8 +102,7 @@ macro_rules! __crypto_impl_otp {
                     mac.0[offset + 2],
                     mac.0[offset + 3],
                 ]);
-                let modulo = 10u64.pow(digits);
-                Ok($otp::from_code_digits((code as u64 % modulo) as u32, digits))
+                $otp::new_reduced(code as u64, digits)
             }
 
             #[doc = "Generates a TOTP code using HMAC-" $doc " and the default TOTP parameters."]

@@ -11,7 +11,7 @@ mod tests_examples;
 
 mod _helper; // (_crypto_impl_hmac, _crypto_impl_otp, _hex)
 
-mod digest; // Digest, digest! {Sha256, Sha512, Sha224, Sha384…}
+mod digest; // Digest, digest!
 mod error; // CryptoError
 mod md5; // Md5 TODO (__crypto_impl_md5)
 mod otp; // Otp
@@ -28,8 +28,7 @@ crate::structural_mods! { // _mods, crate_internals, _hidden
             otp::Otp,
             sha1::*,
         };
-        // #[cfg(any(test, feature = "_docs_examples"))]
-        #[cfg(feature = "_docs_examples")]
+        #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::tests_examples::*;
     }
     _crate_internals {
