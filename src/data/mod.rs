@@ -40,7 +40,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
         pub(crate) use super::{
             codec::_crate_internals::*,
             layout::_crate_internals::*,
-            value::_crate_internals::*,
         };
     }
     _hidden {

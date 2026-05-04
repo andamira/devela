@@ -37,6 +37,7 @@
 ## features & flags
 - new feature: `web`.
 - new flag: `ffi_xcb_shm··`.
+- remove features: `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - update the intended scope of the `_docs_examples` feature.
 
@@ -76,6 +77,9 @@
 
 #### data storage::key
 - rename `define_static_map!` to `map!`
+
+### data::value
+- remove items: `DataValue*`, `DataType*`, `DataRaw*`.
 
 ### geom::metric
 - new macros: `dis!`, `ext!`, `ori!`, `pos!`, `region!`.
