@@ -95,7 +95,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_TOPOL_NODE    = "Abstractions for structured relationships.";
     _DOC_DATA_TOPOL_SPATIAL = "Spatial adjacency and partitioning structures over indexed data.";
     _QUO_DATA_TOPOL_SPATIAL = "> Organizes locality, neighborhood, and region-based relations.";
-    _DOC_DATA_VALUE         = "Enumerated data values and types, classified by size.";
+    _DOC_DATA_VALUE         = "Semantic data atoms and composable value forms.";
+    _DOC_DATA_WORD          = "Fixed-width encoded data words.";
 
     // 3. geom (the grammar of space)
     _DOC_GEOM              = "Geometric types, operations, and spatial constructs.";

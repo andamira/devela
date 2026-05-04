@@ -20,8 +20,14 @@ pub mod layout; // Structural arrangement of elements in memory or sequence
 pub mod store; // Retained data stores and retrieval semantics
 pub mod topol; // Relational topology over structured data
 pub mod value; // Enumerated data values and types, classified by size
+mod word; // Fixed-width encoded data words
 
-crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+    _mods {
+        pub use super::{
+            word::*,
+        };
+    }
     _pub_mods {
         #[doc(inline)]
         pub use super::{

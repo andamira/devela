@@ -59,6 +59,10 @@
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
+## data
+- new macro: `word!`.
+- new trait: `Word`.
+
 ### data::codec
 - new macro: `set!`.
 - recreate `bitfield!` making it much more lean.

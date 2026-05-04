@@ -173,6 +173,7 @@ _define_symbol_tags! {
     _TAG_WAVE, "Wave and signal analysis", "〰️";
     _TAG_WEB, "Web platform", "🌐";
     _TAG_WINDOWS, "Windows platform", "🪟";
+    _TAG_WORD, "Fixed-width encoded word", "▣";
 
     /* misc. */
 
