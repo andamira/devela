@@ -11,6 +11,11 @@
 ///
 /// You have to give unique names both to the enum and to the associated set.
 ///
+/// One or more custom `impl enum { ... }` and `impl set { ... }` blocks
+/// may be provided after the variant block. They are emitted
+/// before all generated associated constants and methods,
+/// and may still refer to them through `Self`.
+///
 /// # Examples
 /// See also the [enumset][crate::_doc::examples::enumset] example.
 ///
@@ -24,7 +29,7 @@
 ///         Variant3{a: u8, b: u16},
 ///     }
 /// }
-/// assert_eq![3, MyEnum::ENUM_VARIANTS];
+/// assert_eq![3, MyEnum::VARIANTS];
 /// let mut eset = MyEnumSet::default();
 /// assert![eset.is_empty()];
 /// eset = eset.with(MyEnumSet::Variant1);
@@ -57,6 +62,14 @@ macro_rules! enumset· {
                 $(,)?
             )*
         }
+        $( // optional impl blocks for the enum
+            $(#[$impl_enum_attrs:meta])*
+            impl enum { $($impl_enum:item)* }
+        )*
+        $( // optional impl blocks for the set
+            $(#[$impl_set_attrs:meta])*
+            impl set { $($impl_set:item)* }
+        )*
     ) => { $crate::paste! {
         /* define enum */
 
@@ -72,27 +85,44 @@ macro_rules! enumset· {
                 $(= $discriminant)?
             ),*
         }
+        /* impl enum methods */
+        $(
+            $( #[$impl_enum_attrs] )*
+            impl $enum_name { $($impl_enum)* }
+        )*
+        /// # `enumset` methods
+        #[allow(dead_code)]
+        impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
+            /// Returns the total number of variants.
+            $enum_vis const VARIANTS: usize = [<_$enum_name _private>]::VARIANTS;
+
+            /// Returns the total number of variants.
+            #[must_use]
+            $enum_vis const fn variants(&self) -> usize { Self::VARIANTS }
+            /// Returns the associated empty set.
+            $enum_vis const fn empty_set() -> $set_name { $set_name::new() }
+            /// Returns the associated full set.
+            $enum_vis const fn full_set() -> $set_name { $set_name::all() }
+            // TODO
+            /*
+            /// Returns the associated single-variant set.
+            $enum_vis const fn to_set(&self) -> $set_name {
+                match self { $( $enum_name::$variant_name => $set_name::$variant_name ,)* }
+            }
+            /// Returns whether this variant is contained in `set`.
+            #[must_use]
+            $enum_vis const fn is_in(&self, set: $set_name) -> bool {
+                set.contains(self.to_set())
+            }
+            */
+        }
 
         /* define the associated bit set */
 
         #[allow(non_snake_case)]
         mod [<_$enum_name _private>] {
-            pub(super) const ENUM_VARIANTS: usize = $crate::ident_total!($($variant_name),*);
-            $crate::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name),*);
-        }
-
-        /// # `enumset` methods
-        #[allow(dead_code)]
-        impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
-            /// Returns the total number of variants.
-            $set_vis const ENUM_VARIANTS: usize = [<_$enum_name _private>]::ENUM_VARIANTS;
-
-            /// Returns the total number of variants.
-            $set_vis const fn enum_variants(&self) -> usize { Self::ENUM_VARIANTS }
-            /// Returns the associated empty set.
-            $set_vis const fn new_empty_set() -> $set_name { $set_name::new() }
-            /// Returns the associated full set.
-            $set_vis const fn new_full_set() -> $set_name { $set_name::all() }
+            pub(super) const VARIANTS: usize = $crate::ident_total!($($variant_name),*);
+            $crate::ident_const_index!(pub(super), VARIANTS; $($variant_name),*);
         }
         $crate::data::set! {
             $( #[$set_attr] )*
@@ -104,7 +134,10 @@ macro_rules! enumset· {
                     $variant_name = ([<_$enum_name _private>]::$variant_name);
                 )*
             }
-
+            $( // optional set impl blocks
+                $( #[$impl_set_attrs] )*
+                impl { $($impl_set)* }
+            )*
         }
     }};
 }
@@ -124,14 +157,14 @@ mod tests {
                 C { x: u8 },
             }
         }
-        assert_eq!(TestEnum::ENUM_VARIANTS, 3);
+        assert_eq!(TestEnum::VARIANTS, 3);
 
         assert_eq!(TestEnumSet::A.bits(), 0b001);
         assert_eq!(TestEnumSet::B.bits(), 0b010);
         assert_eq!(TestEnumSet::C.bits(), 0b100);
 
-        assert_eq!(TestEnum::new_empty_set().bits(), 0);
-        assert_eq!(TestEnum::new_full_set().bits(), 0b111);
+        assert_eq!(TestEnum::empty_set().bits(), 0);
+        assert_eq!(TestEnum::full_set().bits(), 0b111);
 
         let ab = TestEnumSet::A.union(TestEnumSet::B);
         assert!(ab.contains(TestEnumSet::A));

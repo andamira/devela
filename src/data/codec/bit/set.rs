@@ -66,8 +66,8 @@
 /// [`AsciiSet`]: crate::AsciiSet
 /// [`EventButtons`]: crate::EventButtons
 /// [`enumset!`]: crate::enumset
-#[doc(hidden)]
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! set· {
     {
         $(#[$struct_attrs:meta])*

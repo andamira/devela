@@ -55,7 +55,9 @@
 ### code::util
 - new macro `maybe_slot!`.
 - update `cdbg!` to add custom prefix syntax.
-- update `enumset!`, replace `bitfield!` with `set!`.
+- update `enumset!`:
+  - rename consts and methods; remove prefixes: `ENUM_*`, `enum_*`, `new_*`.
+  - replace `bitfield!` with `set!`.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
