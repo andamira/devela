@@ -16,6 +16,12 @@
 /// before all generated associated constants and methods,
 /// and may still refer to them through `Self`.
 ///
+/// # Limitations
+/// - Deriving [`Default`] on the generated enum is not currently supported,
+///   and has to be manually implemented instead.
+/// - Outer attributes for custom impl blocks are placed
+///   after the `impl enum` or `impl set` marker.
+///
 /// # Examples
 /// See also the [enumset][crate::_doc::examples::enumset] example.
 ///
@@ -28,12 +34,26 @@
 ///         Variant2(bool),
 ///         Variant3{a: u8, b: u16},
 ///     }
+///    impl enum
+///    /// Extra methods for [`MyEnum`].
+///    {
+///        /// Returns whether this variant belongs to [`MyEnumSet::DATA`].
+///        pub const fn is_data(&self) -> bool {
+///            self.is_in(MyEnumSet::DATA)
+///        }
+///    }
+///    impl set
+///    /// Extra constants for [`MyEnumSet`].
+///    {
+///        /// Variants carrying payload data.
+///        pub const DATA: Self = Self::Variant2.with(Self::Variant3);
+///    }
 /// }
 /// assert_eq![3, MyEnum::VARIANTS];
-/// let mut eset = MyEnumSet::default();
-/// assert![eset.is_empty()];
-/// eset = eset.with(MyEnumSet::Variant1);
-/// assert![eset.contains(MyEnumSet::Variant1)];
+/// let mut es = MyEnumSet::default();
+/// assert![es.is_empty()];
+/// es.insert(MyEnumSet::Variant1);
+/// assert![es.contains(MyEnumSet::Variant1)];
 /// ```
 #[doc(hidden)]
 #[macro_export]
@@ -45,7 +65,7 @@ macro_rules! enumset· {
         // $set_attr:  the attributes of the set.
         // $set_vis:   the visibility of the set.
         // $set_name:  the name of the associated set.
-        // $set_ty:    the inner integer primitive type for the bit set (u8, i32, …).
+        // $set_ty:    the inner unsigned integer primitive for the bit set (u8, u16, u32…).
         $( #[$enum_attr:meta] )*
         $enum_vis:vis enum $enum_name:ident
             $( < $($gen:tt),* $(,)? > )? // optional generics and lifetimes
@@ -63,14 +83,12 @@ macro_rules! enumset· {
             )*
         }
         $( // optional impl blocks for the enum
-            $(#[$impl_enum_attrs:meta])*
-            impl enum { $($impl_enum:item)* }
+            impl enum $(#[$impl_enum_attrs:meta])* { $($impl_enum:item)* }
         )*
         $( // optional impl blocks for the set
-            $(#[$impl_set_attrs:meta])*
-            impl set { $($impl_set:item)* }
+            impl set $(#[$impl_set_attrs:meta])* { $($impl_set:item)* }
         )*
-    ) => { $crate::paste! {
+    ) => {
         /* define enum */
 
         $( #[$enum_attr] )*
@@ -86,77 +104,122 @@ macro_rules! enumset· {
             ),*
         }
         /* impl enum methods */
-        $(
-            $( #[$impl_enum_attrs] )*
-            impl $enum_name { $($impl_enum)* }
-        )*
-        /// # `enumset` methods
+        $crate::__enumset_impl_enum_blocks! {
+            [$( < $($gen),* > )?] [$enum_name] [$( < $($gen),* > )?] [$( where $($where)+ )?]
+            $(
+                [$( #[$impl_enum_attrs] )*]
+                { $($impl_enum)* }
+            )*
+        }
+
+        /// # Associated set methods
         #[allow(dead_code)]
         impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
-            /// Returns the total number of variants.
-            $enum_vis const VARIANTS: usize = [<_$enum_name _private>]::VARIANTS;
+            /// The total number of *declared* variants.
+            $enum_vis const VARIANTS: usize = $crate::paste! { [<_$enum_name _private>]::VARIANTS };
 
-            /// Returns the total number of variants.
+            /// Returns the total number of *declared* variants.
             #[must_use]
             $enum_vis const fn variants(&self) -> usize { Self::VARIANTS }
             /// Returns the associated empty set.
+            #[must_use]
             $enum_vis const fn empty_set() -> $set_name { $set_name::new() }
             /// Returns the associated full set.
+            #[must_use]
             $enum_vis const fn full_set() -> $set_name { $set_name::all() }
-            // TODO
-            /*
-            /// Returns the associated single-variant set.
+            /// Returns the singleton set for this variant.
+            #[must_use]
             $enum_vis const fn to_set(&self) -> $set_name {
-                match self { $( $enum_name::$variant_name => $set_name::$variant_name ,)* }
+                #[allow(unused_doc_comments, reason = "attributes could be comments")]
+                match self {
+                    $(
+                        $( #[$variant_attr] )*
+                        $crate::__enumset_to_set_pattern!(
+                            $enum_name, $variant_name
+                            $(( $($tuple_type),* ))?
+                            $({ $( $(#[$field_attr])* $field_name : $field_type),* })?
+                        ) => $set_name::$variant_name,
+                    )*
+                }
             }
-            /// Returns whether this variant is contained in `set`.
+            /// Returns whether this variant belongs to `set`.
             #[must_use]
             $enum_vis const fn is_in(&self, set: $set_name) -> bool {
                 set.contains(self.to_set())
             }
-            */
         }
 
         /* define the associated bit set */
-
-        #[allow(non_snake_case)]
-        mod [<_$enum_name _private>] {
-            pub(super) const VARIANTS: usize = $crate::ident_total!($($variant_name),*);
-            $crate::ident_const_index!(pub(super), VARIANTS; $($variant_name),*);
-        }
-        $crate::data::set! {
-            $( #[$set_attr] )*
-            $set_vis struct $set_name($set_ty) {
-                $(
-                    #[doc = "The bit index that corresponds to `" $enum_name "::`[`"
-                        $variant_name "`][" $enum_name "::" $variant_name "]."]
-                    #[allow(non_upper_case_globals)]
-                    $variant_name = ([<_$enum_name _private>]::$variant_name);
+        $crate::paste! {
+            #[allow(non_snake_case)]
+            mod [<_$enum_name _private>] {
+                pub(super) const VARIANTS: usize = $crate::ident_total!($($variant_name),*);
+                $crate::ident_const_index!(pub(super), VARIANTS; $($variant_name),*);
+            }
+            $crate::data::set! {
+                $( #[$set_attr] )*
+                $set_vis struct $set_name($set_ty) {
+                    $(
+                        #[doc = "The bit index that corresponds to `" $enum_name "::`[`"
+                            $variant_name "`][" $enum_name "::" $variant_name "]."]
+                        #[allow(non_upper_case_globals)]
+                        $variant_name = ([<_$enum_name _private>]::$variant_name);
+                    )*
+                }
+                $( // optional set impl blocks
+                    $( #[$impl_set_attrs] )*
+                    impl { $($impl_set)* }
                 )*
             }
-            $( // optional set impl blocks
-                $( #[$impl_set_attrs] )*
-                impl { $($impl_set)* }
-            )*
         }
-    }};
+    };
 }
 #[doc(inline)]
 pub use enumset· as enumset;
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __enumset_to_set_pattern {
+    ($enum_name:ident, $variant_name:ident) => {
+        $enum_name::$variant_name // Unit variant
+    };
+    ($enum_name:ident, $variant_name:ident ( $($field:tt)*) ) => {
+        $enum_name::$variant_name(..) // Tuple variant
+    };
+    ($enum_name:ident, $variant_name:ident { $($field:tt)*} ) => {
+        $enum_name::$variant_name { .. } // Struct variant
+    };
+}
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __enumset_impl_enum_blocks {
+    ( // End
+        [$($impl_gen:tt)*][$enum_name:ident][$($ty_gen:tt)*][$($where:tt)*] ) => {};
+    ( // Emit one impl block, then recurse
+        [$($impl_gen:tt)*][$enum_name:ident][$($ty_gen:tt)*][$($where:tt)*]
+        [$($impl_attrs:tt)*] { $($impl_item:item)* } $($rest:tt)*
+    ) => {
+        $($impl_attrs)*
+        impl $($impl_gen)* $enum_name $($ty_gen)* $($where)* { $($impl_item)* }
+        $crate::__enumset_impl_enum_blocks! {
+            [$($impl_gen)*] [$enum_name] [$($ty_gen)*] [$($where)*] $($rest)*
+        }
+    };
+}
 
 #[cfg(test)]
 mod tests {
     #![allow(unused)]
 
+    crate::enumset! {
+        enum TestEnum(pub TestEnumSet: u8) {
+            A,
+            B(bool),
+            C { x: u8 },
+        }
+    }
     #[test]
     fn enumset_uses_set_macro() {
-        crate::enumset! {
-            enum TestEnum(pub TestEnumSet: u8) {
-                A,
-                B(bool),
-                C { x: u8 },
-            }
-        }
         assert_eq!(TestEnum::VARIANTS, 3);
 
         assert_eq!(TestEnumSet::A.bits(), 0b001);
@@ -191,5 +254,34 @@ mod tests {
         assert_eq!((TestEnumSet::A | TestEnumSet::B) - TestEnumSet::A, TestEnumSet::B);
         assert_eq!((TestEnumSet::A | TestEnumSet::B) ^ TestEnumSet::B, TestEnumSet::A);
         assert_eq!((!TestEnumSet::A).bits(), 0b110);
+    }
+    #[test]
+    fn enumset_is_in_set() {
+        let a = TestEnum::A;
+        let b = TestEnum::B(true);
+        let c = TestEnum::C { x: 7 };
+        assert_eq!(a.to_set(), TestEnumSet::A);
+        assert_eq!(b.to_set(), TestEnumSet::B);
+        assert_eq!(c.to_set(), TestEnumSet::C);
+        assert!(a.is_in(TestEnumSet::A));
+        assert!(b.is_in(TestEnumSet::A | TestEnumSet::B));
+        assert!(c.is_in(TestEnumSet::C));
+        assert!(!c.is_in(TestEnumSet::A | TestEnumSet::B));
+    }
+    #[test]
+    fn enumset_generics() {
+        crate::enumset! {
+            enum GenEnum<'a, T>(pub GenEnumSet: u8) {
+                A(T),
+                B(&'a str),
+            }
+            impl enum {
+                pub fn is_a(&self) -> bool {
+                    self.is_in(GenEnumSet::A)
+                }
+            }
+        }
+        let a = GenEnum::A(());
+        assert!(a.is_a());
     }
 }

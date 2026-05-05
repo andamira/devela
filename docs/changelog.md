@@ -56,7 +56,10 @@
 - new macro `maybe_slot!`.
 - update `cdbg!` to add custom prefix syntax.
 - update `enumset!`:
-  - rename consts and methods; remove prefixes: `ENUM_*`, `enum_*`, `new_*`.
+  - rename consts and methods by removing prefixes: `ENUM_*`, `enum_*`, `new_*`.
+  - accept custom impl blocks for both the enum and the set.
+  - remove support for deriving `Default` for the enum.
+  - new enum methods: `to_set`, `is_in`.
   - replace `bitfield!` with `set!`.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
