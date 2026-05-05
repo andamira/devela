@@ -3,10 +3,10 @@
 //! Defines [`Event`].
 //
 
-use crate::{ConstInit, NonZeroU64};
+use crate::{_impl_init, NonZeroU64};
 use crate::{
-    DeviceId, EventKey, EventKind, EventKindTimed, EventMouse, EventPointer, EventTag, EventTarget,
-    EventTimestamp, EventWindow, WindowId,
+    DeviceId, EventKey, EventKind, EventKindTimed, EventMouse, EventPointer, EventTag, EventTagSet,
+    EventTarget, EventTimestamp, EventWheel, EventWindow, WindowId,
 };
 
 #[doc = crate::_tags!(event)]
@@ -49,9 +49,7 @@ pub struct Event {
     /// Useful for deterministic game logic or state comparisons.
     pub count: Option<NonZeroU64>,
 }
-impl ConstInit for Event {
-    const INIT: Event = Self::None;
-}
+_impl_init![Self::None => Event];
 
 #[rustfmt::skip]
 impl Event {
@@ -169,6 +167,20 @@ impl Event {
     #[must_use] #[inline(always)]
     pub const fn tag(&self) -> EventTag { self.kind.tag() }
 
+    /// Returns whether this event has `tag`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn has_tag(&self, tag: EventTag) -> bool {
+        self.kind.has_tag(tag)
+    }
+
+    /// Returns whether this event belongs to `set`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_in(&self, set: EventTagSet) -> bool {
+        self.kind.is_in(set)
+    }
+
     //
 
     /// Whether there's no event.
@@ -178,6 +190,10 @@ impl Event {
     /// Whether it's some event.
     #[must_use] #[inline(always)]
     pub const fn is_some(&self) -> bool { self.kind.is_some() }
+
+    /// Whether it's a window event.
+    #[must_use] #[inline(always)]
+    pub const fn is_window(&self) -> bool { self.kind.is_window() }
 
     /// Whether it's a keyboard event.
     #[must_use] #[inline(always)]
@@ -191,9 +207,9 @@ impl Event {
     #[must_use] #[inline(always)]
     pub const fn is_pointer(&self) -> bool { self.kind.is_pointer() }
 
-    /// Whether it's a window event.
+    /// Whether it's a wheel event.
     #[must_use] #[inline(always)]
-    pub const fn is_window(&self) -> bool { self.kind.is_window() }
+    pub const fn is_wheel(&self) -> bool { matches![self.kind, EventKind::Wheel(_)] }
 
     // /// Returns true if it's a gamepad event.
     // pub const fn is_gamepad(&self) -> bool { self.kind.is_gamepad() }
@@ -202,6 +218,10 @@ impl Event {
     // pub const fn is_midi(&self) -> bool { self.kind.is_midi() }
 
     //
+
+    /// Returns some window event, if that's the kind.
+    #[must_use] #[inline(always)]
+    pub const fn some_window(&self) -> Option<&EventWindow> { self.kind.some_window() }
 
     /// Returns some keyboard event, if that's the kind.
     #[must_use] #[inline(always)]
@@ -215,9 +235,11 @@ impl Event {
     #[must_use] #[inline(always)]
     pub const fn some_pointer(&self) -> Option<&EventPointer> { self.kind.some_pointer() }
 
-    /// Returns some window event, if that's the kind.
+    /// Returns some wheel event, if that's the kind.
     #[must_use] #[inline(always)]
-    pub const fn some_window(&self) -> Option<&EventWindow> { self.kind.some_window() }
+    pub const fn some_wheel(&self) -> Option<&EventWheel> {
+        if let EventKind::Wheel(e) = &self.kind { Some(e) } else { None }
+    }
 
     // /// Returns some gamepad event, if that's the kind.
     // pub const fn some_gamepad(&self) -> Option<&GamepadEvent> { self.kind.some_gamepad() }

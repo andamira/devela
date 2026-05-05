@@ -1,36 +1,62 @@
 // devela::ui::event::kind
 //
-//! Defines [`EventTag`], [`EventKindTimed`], [`EventKind`].
+//! Defines [`EventTag`], [`EventTagSet`], [`EventKindTimed`], [`EventKind`].
 //
 
 use crate::{ConstInit, MaybeTimed};
 use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
 
-#[doc = crate::_tags!(event uid)]
-/// A lightweight, data-less identifier for `EventKind`.
-#[doc = crate::_doc_location!("ui/event")]
-///
-/// Used when only the *category* of the event is relevant and the
-/// payload of the variant is not needed.
-///
-/// This avoids carrying the full `EventKind` and is suitable for
-/// quick routing, filtering, or statistics.
-#[non_exhaustive]
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-pub enum EventTag {
-    /// No event or an empty placeholder.
-    #[default]
-    None,
-    /// A keyboard event.
-    Key,
-    /// A mouse button or motion event.
-    Mouse,
-    /// A pointing-device event (mouse, pen, stylus, touch).
-    Pointer,
-    ///  A wheel event.
-    Wheel,
-    /// A window-related event (focus, resize, etc.).
-    Window,
+crate::enumset! {
+    #[doc = crate::_tags!(event uid)]
+    /// A lightweight, data-less identifier for [`EventKind`].
+    #[doc = crate::_doc_location!("ui/event")]
+    ///
+    /// Used when only the *category* of the event is relevant and the
+    /// payload of the variant is not needed.
+    ///
+    /// This avoids carrying the full `EventKind` and is suitable for
+    /// quick routing, filtering, or statistics.
+    #[repr(u8)]
+    #[non_exhaustive]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    pub enum EventTag(
+        #[doc = crate::_tags!(event data_structure)]
+        /// A compact set of [`EventTag`]s.
+        #[doc = crate::_doc_location!("ui/event")]
+        ///
+        /// Used to declare, filter, and query coarse event categories.
+        pub EventTagSet: u8
+    ) {
+        /// No event or an empty placeholder. (Default)
+        None,
+        /// A keyboard event.
+        Key,
+        /// A mouse button or motion event.
+        Mouse,
+        /// A pointing-device event (mouse, pen, stylus, touch).
+        Pointer,
+        ///  A wheel event.
+        Wheel,
+        /// A window-related event (focus, resize, etc.).
+        Window,
+    }
+    impl set #[doc = "Common event category groups."] {
+        /// Events caused by direct user input.
+        pub const INPUT: Self = Self::Key
+            .with(Self::Mouse)
+            .with(Self::Pointer)
+            .with(Self::Wheel);
+        /// Events related to pointing devices.
+        pub const POINTING: Self = Self::Mouse
+            .with(Self::Pointer)
+            .with(Self::Wheel);
+    }
+}
+impl Default for EventTag {
+    /// Returns [`EventTag::None`].
+    fn default() -> Self {
+        Self::None
+    }
 }
 
 #[doc = crate::_tags!(event time maybe)]
@@ -81,6 +107,19 @@ impl ConstInit for EventKind {
     const INIT: Self = Self::None;
 }
 impl EventKind {
+    /// Returns whether this event kind has `tag`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn has_tag(&self, tag: EventTag) -> bool {
+        self.tag().to_set().contains(tag.to_set())
+    }
+    /// Returns whether this event kind belongs to `set`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_in(&self, set: EventTagSet) -> bool {
+        self.tag().is_in(set)
+    }
+
     /// Returns the coarse category of this event without its associated data.
     ///
     /// Useful for fast dispatch or matching on *type* rather than *content*.

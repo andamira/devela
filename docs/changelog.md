@@ -214,7 +214,7 @@
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
 
 ### ui::event
-- new types: `EventButtons`, `EventWheelUnit`.
+- new types: `EventButtons`, `EventTagSet`, `EventWheelUnit`.
 - new alias `EventKindTimed`.
 - update `Event`:
   - new method: `from_kind_timed_with`.
@@ -223,9 +223,16 @@
 - update `EventMouse`:
   - change the `buttons` field to use `EventButtons`.
 - update `EventButtonState`: make `Pressed` the default.
-- update `EventKind` and `EventTag`:
+- update `Event`:
+  - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
+- update `EventTag`:
+  - derive `Copy`.
   - add `Wheel` variant.
+  - define with `enumset!`.
   - add methods: `is_wheel`, `some_wheel`.
+- update `EventKind`:
+  - add `Wheel` variant.
+  - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventWheel`:
   - add fields: `unit`, `buttons`.
   - add many convenience methods.
