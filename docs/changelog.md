@@ -3,8 +3,8 @@
 [0.28.0-wip] unreleased
 =======================
 
-> 
-> 
+>
+>
 
 ```
 ```
@@ -22,6 +22,11 @@
 ## workspace
 ### examples
 - new example scripts: `current_guard`, `otp`, `scope_guard`.
+
+### devela_macros
+- enable safety feature guards.
+- remove `enumint` example.
+- improve integration tests.
 
 ## build
 - new native section to detect native library availability.
@@ -51,6 +56,11 @@
 
 ## code
 - impl `ConstInit` for more types.
+- fix and update `enumint!`
+  - rename `ExampleEnumIntU8` to `ExampleEnumIntI8`.
+  - rename constants: `VALID_VALUES` to `VALUES` and `NICHE_VALUES` to `NICHES`.
+  - change implementation to be safe by default.
+  - remove manual `Send` and `Sync` impls.
 
 ### code::util
 - new macro `maybe_slot!`.

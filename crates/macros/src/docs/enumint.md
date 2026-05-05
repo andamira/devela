@@ -27,3 +27,15 @@ enumint![pub MyEnum, i8, -10, 10];
 - Panics if `start` or `end` are outside the `repr` representable range.
 - Panics if `start` is greater than `end`.
 
+```compile_fail
+# use devela_macros::enumint;
+enumint![Bad, u8, 5, 2]; // reversed range
+```
+```compile_fail
+# use devela_macros::enumint;
+enumint![Bad, u8, -1, 1]; // negative range
+```
+```compile_fail
+# use devela_macros::enumint;
+enumint![Bad, u8, 254, 256]; // unsigned upper overflow
+```

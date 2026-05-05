@@ -22,7 +22,7 @@ pub(crate) fn expect_punct(iter: &mut Peekable<impl Iterator<Item = TokenTree>>,
 }
 
 /// Parses an integer from the token stream.
-pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) -> i128 {
+pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) -> i64 {
     let mut is_negative = false;
     if let Some(TokenTree::Punct(punct)) = iter.peek() {
         if punct.as_char() == '-' {
@@ -30,13 +30,12 @@ pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) ->
             iter.next(); // Consume '-'
         }
     }
-
     let value = match iter.next() {
         Some(TokenTree::Literal(lit)) => {
             let s = lit.to_string();
             // Remove any underscores from the literal
             let s = s.replace('_', "");
-            s.parse::<i128>().expect("Invalid integer literal")
+            s.parse::<i64>().expect("Invalid integer literal")
         }
         other => panic!("Expected integer literal, found {:?}", other),
     };

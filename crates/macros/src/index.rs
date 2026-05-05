@@ -32,6 +32,12 @@
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(nightly_stable_later, feature(proc_macro_value))]
 
+/* crate safeguards */
+
+// safety
+#[cfg(all(feature = "safe", any(feature = "unsafe")))]
+compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
+
 extern crate self as devela_macros;
 macro_rules! __crate_name {
     () => {
@@ -205,6 +211,6 @@ pub fn repeat(input: TS) -> TS { body_repeat(input) }
 /// Generates a unit-only enum with variants associated to a specified range.
 #[doc = crate::_doc_location!(proc "code/util")]
 #[doc = include_str!("docs/enumint.md")]
-#[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
+// #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]
 pub fn enumint(input: TS) -> TS { body_enumint(input) }

@@ -1,132 +1,198 @@
+// devela_macros/tests/enumint.rs
+//
 //!
+//
 
-mod allocating {
-    use core::mem::size_of;
-    use devela_macros::enumint;
+use devela_macros::enumint;
 
-    enumint!(Enum253, u8, 1, 253);
-    enumint!(Enum4, u8, 2, 5);
-    enumint!(EnumI4, i8, -2, 3);
+enumint!(U4, u8, 2, 5);
+enumint!(I6, i8, -2, 3);
+enumint!(U253, u8, 1, 253);
 
-    #[test]
-    fn enumint_niches() {
-        /* positive repr */
+enumint!(I16_6, i16, -2, 3);
+enumint!(pub PublicU4, u8, 2, 5);
+enumint!(pub(crate) CrateI6, i16, -2, 3);
 
-        assert_eq!(Enum4::VALID_VALUES, 4);
-        assert_eq!(Enum4::NICHE_VALUES, 252);
-        // We could nest 252 Options before the memory representation increases
-        assert_eq!(size_of::<Enum4>(), 1);
-        assert_eq!(size_of::<Option<Enum4>>(), 1);
-        assert_eq!(size_of::<Option<Option<Enum4>>>(), 1);
-        // ...
+#[test]
+fn enumint_constants_and_niches() {
+    assert_eq!(U4::MIN, 2);
+    assert_eq!(U4::MAX, 5);
+    assert_eq!(U4::VALUES, 4);
+    assert_eq!(U4::NICHES, 252);
 
-        assert_eq!(Enum253::VALID_VALUES, 253);
-        assert_eq!(Enum253::NICHE_VALUES, 3);
-        // We can nest 3 Options before the memory representation increases:
-        assert_eq!(size_of::<Enum253>(), 1); // 0 niches used
-        assert_eq!(size_of::<Option<Enum253>>(), 1); // 1 niche used
-        assert_eq!(size_of::<Option<Option<Enum253>>>(), 1); // 2 niches used
-        assert_eq!(size_of::<Option<Option<Option<Enum253>>>>(), 1); // all 3 niches used
-        assert_eq!(size_of::<Option<Option<Option<Option<Enum253>>>>>(), 2); // increased
+    assert_eq!(I6::MIN, -2);
+    assert_eq!(I6::MAX, 3);
+    assert_eq!(I6::VALUES, 6);
+    assert_eq!(I6::NICHES, 250);
 
-        /* negative repr */
+    assert_eq!(I16_6::VALUES, 6);
+    assert_eq!(I16_6::NICHES, 65_530);
+}
+#[test]
+fn enumint_option_niche_layout() {
+    assert_eq!(size_of::<U4>(), 1);
+    assert_eq!(size_of::<Option<U4>>(), 1);
+    assert_eq!(size_of::<Option<Option<U4>>>(), 1);
 
-        assert_eq!(EnumI4::VALID_VALUES, 6);
-        assert_eq!(EnumI4::NICHE_VALUES, 250);
-        assert_eq!(size_of::<EnumI4>(), 1);
-        assert_eq!(size_of::<Option<EnumI4>>(), 1);
-        assert_eq!(size_of::<Option<Option<EnumI4>>>(), 1);
+    assert_eq!(size_of::<U253>(), 1);
+    assert_eq!(size_of::<Option<U253>>(), 1);
+    assert_eq!(size_of::<Option<Option<U253>>>(), 1);
+    assert_eq!(size_of::<Option<Option<Option<U253>>>>(), 1);
+    assert_eq!(size_of::<Option<Option<Option<Option<U253>>>>>(), 2);
+
+    assert_eq!(size_of::<I6>(), 1);
+    assert_eq!(size_of::<Option<I6>>(), 1);
+}
+#[test]
+fn enumint_checked_unsigned() {
+    use U4::{P2, P3, P4, P5};
+    let cases = [
+        (0, None),
+        (1, None),
+        (2, Some(P2)),
+        (3, Some(P3)),
+        (4, Some(P4)),
+        (5, Some(P5)),
+        (6, None),
+        (7, None),
+    ];
+    for (value, expected) in cases {
+        assert_eq!(U4::new(value), expected, "value = {value}");
     }
+}
+#[test]
+fn enumint_checked_signed() {
+    use I6::{N1, N2, P0, P1, P2, P3};
+    let cases = [
+        (-3, None),
+        (-2, Some(N2)),
+        (-1, Some(N1)),
+        (0, Some(P0)),
+        (1, Some(P1)),
+        (2, Some(P2)),
+        (3, Some(P3)),
+        (4, None),
+    ];
+    for (value, expected) in cases {
+        assert_eq!(I6::new(value), expected, "value = {value}");
+    }
+}
+#[test]
+fn enumint_saturated_unsigned() {
+    use U4::{P2, P3, P4, P5};
+    let cases = [(0, P2), (1, P2), (2, P2), (3, P3), (4, P4), (5, P5), (6, P5), (7, P5)];
+    for (value, expected) in cases {
+        assert_eq!(U4::new_saturated(value), expected, "value = {value}");
+    }
+}
+#[test]
+fn enumint_wrapped_unsigned() {
+    use U4::{P2, P3, P4, P5};
+    let cases = [(0, P4), (1, P5), (2, P2), (3, P3), (4, P4), (5, P5), (6, P2), (7, P3)];
+    for (value, expected) in cases {
+        assert_eq!(U4::new_wrapped(value), expected, "value = {value}");
+    }
+}
+#[test]
+fn enumint_wrapped_signed() {
+    use I6::{N1, N2, P0, P1, P2, P3};
+    let cases = [
+        (-4, P2),
+        (-3, P3),
+        (-2, N2),
+        (-1, N1),
+        (0, P0),
+        (1, P1),
+        (2, P2),
+        (3, P3),
+        (4, N2),
+        (5, N1),
+    ];
+    for (value, expected) in cases {
+        assert_eq!(I6::new_wrapped(value), expected, "value = {value}");
+    }
+}
+#[test]
+fn enumint_full_u8() {
+    enumint!(FullU8, u8, 0, 255);
 
-    #[test]
-    fn enumint_new() {
-        /* positive repr */
-        {
-            use Enum4::{P2, P3, P4, P5};
-            assert_eq![Enum4::MAX, P5.get()];
+    assert_eq!(FullU8::MIN, 0);
+    assert_eq!(FullU8::MAX, 255);
+    assert_eq!(FullU8::VALUES, 256);
+    assert_eq!(FullU8::NICHES, 0);
 
-            // checked
-            assert_eq![Enum4::new(0), None];
-            assert_eq![Enum4::new(1), None];
-            //
-            assert_eq![Enum4::new(2), Some(P2)];
-            assert_eq![Enum4::new(3), Some(P3)];
-            assert_eq![Enum4::new(4), Some(P4)];
-            assert_eq![Enum4::new(5), Some(P5)];
-            //
-            assert_eq![Enum4::new(6), None];
-            assert_eq![Enum4::new(7), None];
+    assert_eq!(FullU8::new(0), Some(FullU8::P0));
+    assert_eq!(FullU8::new(255), Some(FullU8::P255));
 
-            // saturating
-            assert_eq![Enum4::new_saturated(0), P2];
-            assert_eq![Enum4::new_saturated(1), P2];
-            //
-            assert_eq![Enum4::new_saturated(2), P2];
-            assert_eq![Enum4::new_saturated(3), P3];
-            assert_eq![Enum4::new_saturated(4), P4];
-            assert_eq![Enum4::new_saturated(5), P5];
-            //
-            assert_eq![Enum4::new_saturated(6), P5];
-            assert_eq![Enum4::new_saturated(7), P5];
+    assert_eq!(FullU8::new_wrapped(0), FullU8::P0);
+    assert_eq!(FullU8::new_wrapped(255), FullU8::P255);
+}
+#[test]
+fn enumint_full_i8() {
+    enumint!(FullI8, i8, -128, 127);
 
-            // wrapping
-            assert_eq![Enum4::P4, Enum4::new_wrapped(0)];
-            assert_eq![Enum4::P5, Enum4::new_wrapped(1)];
-            //
-            assert_eq![Enum4::P2, Enum4::new_wrapped(2)];
-            assert_eq![Enum4::P3, Enum4::new_wrapped(3)];
-            assert_eq![Enum4::P4, Enum4::new_wrapped(4)];
-            assert_eq![Enum4::P5, Enum4::new_wrapped(5)];
-            //
-            assert_eq![Enum4::P2, Enum4::new_wrapped(6)];
-            assert_eq![Enum4::P3, Enum4::new_wrapped(7)];
-        }
+    assert_eq!(FullI8::MIN, -128);
+    assert_eq!(FullI8::MAX, 127);
+    assert_eq!(FullI8::VALUES, 256);
+    assert_eq!(FullI8::NICHES, 0);
 
-        /* negative repr */
-        {
-            use EnumI4::{N1, N2, P0, P1, P2, P3};
-            assert_eq![EnumI4::MIN, N2.get()];
-            assert_eq![EnumI4::MAX, P3.get()];
+    assert_eq!(FullI8::new(-128), Some(FullI8::N128));
+    assert_eq!(FullI8::new(127), Some(FullI8::P127));
 
-            // checked
-            assert_eq![EnumI4::new(-3), None];
-            //
-            assert_eq![EnumI4::new(-2), Some(N2)];
-            assert_eq![EnumI4::new(-1), Some(N1)];
-            assert_eq![EnumI4::new(0), Some(P0)];
-            assert_eq![EnumI4::new(1), Some(P1)];
-            assert_eq![EnumI4::new(2), Some(P2)];
-            assert_eq![EnumI4::new(3), Some(P3)];
-            //
-            assert_eq![EnumI4::new(4), None];
+    assert_eq!(FullI8::new_wrapped(-128), FullI8::N128);
+    assert_eq!(FullI8::new_wrapped(127), FullI8::P127);
+}
+#[test]
+fn enumint_wide_i8_wrapping() {
+    enumint!(WideI8, i8, -100, 100);
 
-            // saturating
-            assert_eq![EnumI4::new_saturated(-4), N2];
-            assert_eq![EnumI4::new_saturated(-3), N2];
-            //
-            assert_eq![EnumI4::new_saturated(-2), N2];
-            assert_eq![EnumI4::new_saturated(-1), N1];
-            assert_eq![EnumI4::new_saturated(0), P0];
-            assert_eq![EnumI4::new_saturated(1), P1];
-            assert_eq![EnumI4::new_saturated(2), P2];
-            assert_eq![EnumI4::new_saturated(3), P3];
-            //
-            assert_eq![EnumI4::new_saturated(4), P3];
-            assert_eq![EnumI4::new_saturated(5), P3];
+    assert_eq!(WideI8::new_wrapped(-101), WideI8::P100);
+    assert_eq!(WideI8::new_wrapped(101), WideI8::N100);
+    assert_eq!(WideI8::new_wrapped(100), WideI8::P100);
+    assert_eq!(WideI8::new_wrapped(-100), WideI8::N100);
+}
+#[test]
+fn enumint_singletons() {
+    enumint!(OneU8, u8, 7, 7);
+    enumint!(OneI8, i8, -1, -1);
 
-            // wrapping
-            assert_eq![EnumI4::new_wrapped(-4), P2];
-            assert_eq![EnumI4::new_wrapped(-3), P3];
-            //
-            assert_eq![EnumI4::new_wrapped(-2), N2];
-            assert_eq![EnumI4::new_wrapped(-1), N1];
-            assert_eq![EnumI4::new_wrapped(0), P0];
-            assert_eq![EnumI4::new_wrapped(1), P1];
-            assert_eq![EnumI4::new_wrapped(2), P2];
-            assert_eq![EnumI4::new_wrapped(3), P3];
-            //
-            assert_eq![EnumI4::new_wrapped(4), N2];
-            assert_eq![EnumI4::new_wrapped(5), N1];
-        }
+    assert_eq!(OneU8::VALUES, 1);
+    assert_eq!(OneU8::NICHES, 255);
+    assert_eq!(OneU8::new(7), Some(OneU8::P7));
+    assert_eq!(OneU8::new_saturated(0), OneU8::P7);
+    assert_eq!(OneU8::new_wrapped(255), OneU8::P7);
+
+    assert_eq!(OneI8::VALUES, 1);
+    assert_eq!(OneI8::NICHES, 255);
+    assert_eq!(OneI8::new(-1), Some(OneI8::N1));
+    assert_eq!(OneI8::new_saturated(-128), OneI8::N1);
+    assert_eq!(OneI8::new_wrapped(127), OneI8::N1);
+}
+#[test]
+fn enumint_const_methods() {
+    const NEW: Option<U4> = U4::new(3);
+    const SAT: U4 = U4::new_saturated(99);
+    const WRAP: U4 = U4::new_wrapped(6);
+    const GET: u8 = U4::P4.get();
+
+    assert_eq!(NEW, Some(U4::P3));
+    assert_eq!(SAT, U4::P5);
+    assert_eq!(WRAP, U4::P2);
+    assert_eq!(GET, 4);
+}
+#[test]
+fn enumint_roundtrip_unsigned() {
+    for n in 0u8..=255 {
+        let got = U4::new(n).map(U4::get);
+        let expected = if (2..=5).contains(&n) { Some(n) } else { None };
+        assert_eq!(got, expected, "n = {n}");
+    }
+}
+#[test]
+fn enumint_roundtrip_signed() {
+    for n in i8::MIN..=i8::MAX {
+        let got = I6::new(n).map(I6::get);
+        let expected = if (-2..=3).contains(&n) { Some(n) } else { None };
+        assert_eq!(got, expected, "n = {n}");
     }
 }

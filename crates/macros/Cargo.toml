@@ -81,6 +81,3 @@ name = "compile_attr"
 name = "compile_doc"
 [[example]]
 name = "compile"
-[[example]]
-name = "enumint_macro"
-path = "examples/enumint.rs"
