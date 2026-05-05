@@ -9,9 +9,8 @@ pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
     let input = s.as_bytes();
     assert!(input.len() == N * 2);
     let mut out = [0u8; N];
-    let written = match Hex::decode_from_slice(input, &mut out) {
-        Some(written) => written,
-        None => panic!("invalid hex"),
+    let Some(written) = Hex::decode_from_slice(input, &mut out) else {
+        panic!("invalid hex")
     };
     assert!(written == N);
     out

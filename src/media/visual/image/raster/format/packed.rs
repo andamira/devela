@@ -72,7 +72,7 @@ pub(crate) enum RasterPackedChannels {
     /// Packed 32-bit BGRA: 8 bits per channel.
     Bgra8888,
 }
-_impl_init![ConstInit: Self::Unknown => RasterPackedChannels];
+_impl_init![Self::Unknown => RasterPackedChannels];
 
 impl RasterPackedChannels {
     /// Returns whether this packed layout is unknown.

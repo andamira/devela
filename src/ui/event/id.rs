@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::EventTarget;
 
-crate::_impl_init![ConstInit: Self(0) => WindowId, DeviceId];
+crate::_impl_init![Self(0) => WindowId, DeviceId];
 
 #[doc = crate::_tags!(ui uid)]
 /// A backend-agnostic identifier for a UI window.

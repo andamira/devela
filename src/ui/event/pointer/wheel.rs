@@ -38,9 +38,7 @@ pub struct EventWheel {
     /// A bitmask of currently pressed buttons.
     pub buttons: EventButtons,
 }
-_impl_init! { ConstInit:
-    Self::new(0, 0, EventWheelUnit::INIT, 0, 0, EventButtons::INIT) => EventWheel
-}
+_impl_init! { Self::new(0, 0, EventWheelUnit::INIT, 0, 0, EventButtons::INIT) => EventWheel }
 #[rustfmt::skip]
 impl EventWheel {
     /// Returns a normalized wheel-scroll event.
@@ -130,7 +128,7 @@ pub enum EventWheelUnit {
     /// Page-based wheel deltas.
     Page,
 }
-_impl_init! { ConstInit: Self::Step => EventWheelUnit }
+_impl_init! { Self::Step => EventWheelUnit }
 impl EventWheelUnit {
     /// Converts a web wheel-unit code into `EventWheelUnit`.
     pub const fn from_web(code: u8) -> Self {

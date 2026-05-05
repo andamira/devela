@@ -23,7 +23,7 @@ pub(crate) enum RasterSampleFormat {
     /// 64-bit floating-point sample.
     F64,
 }
-_impl_init![ConstInit: Self::Unknown => RasterSampleFormat];
+_impl_init![Self::Unknown => RasterSampleFormat];
 
 impl RasterSampleFormat {
     /// Returns the number of bits used by one sample.

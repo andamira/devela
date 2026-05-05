@@ -24,7 +24,6 @@ crate::structural_mods! { // _mods, crate_internals, _hidden
         pub use super::{
             digest::{Digest, digest},
             error::*,
-            md5::*,
             otp::Otp,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
@@ -39,6 +38,7 @@ crate::structural_mods! { // _mods, crate_internals, _hidden
         #[doc(hidden)]
         pub use super::{
             _helper::{__crypto_impl_hmac, __crypto_impl_otp},
+            md5::__crypto_impl_md5,
             sha1::__crypto_impl_sha1,
             sha2::{__crypto_impl_sha2, __SHA2_64_K, __SHA2_32_K},
         };

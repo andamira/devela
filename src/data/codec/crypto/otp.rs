@@ -125,7 +125,6 @@ impl Otp {
     /// # Errors
     /// Returns [`InvalidLength`][CryptoError::InvalidLength]
     /// if `digits` is outside `MIN_DIGITS..=MAX_DIGITS`.
-    #[must_use]
     pub const fn modulo(digits: u32) -> Result<u64, CryptoError> {
         unwrap![ok? Self::validate_digits(digits)];
         let mut n = 1u64;

@@ -318,7 +318,7 @@ pub enum CharAscii {
     Delete = 127,
 }
 
-crate::_impl_init![ConstInit: Self::Null => CharAscii];
+crate::_impl_init![Self::Null => CharAscii];
 
 impl CharAscii {
     /// Creates an ascii character from the byte `b`,

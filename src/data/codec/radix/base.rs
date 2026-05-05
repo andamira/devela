@@ -1,4 +1,4 @@
-// devela::data::codec::radix
+// devela::data::codec::radix::base
 //
 //! Radix-based encodings.
 //

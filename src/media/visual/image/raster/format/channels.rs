@@ -53,7 +53,7 @@ pub(crate) enum RasterChannels {
     /// not the byte order of a borrowed byte slice.
     Packed(RasterPackedChannels),
 }
-_impl_init![ConstInit: Self::Unknown => RasterChannels];
+_impl_init![Self::Unknown => RasterChannels];
 
 impl RasterChannels {
     /// Returns whether this channel model is unknown or incomplete.

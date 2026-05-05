@@ -48,7 +48,7 @@ impl CryptoError {
         matches!(self, Self::VerificationFailed)
     }
 }
-_impl_init![ConstInit: Self::LengthOverflow => CryptoError];
+_impl_init![Self::LengthOverflow => CryptoError];
 impl_trait![fmt::Display+Error for CryptoError |self, f| match self {
     Self::InvalidKeyLength => f.write_str("invalid cryptographic key length"),
     Self::InvalidLength => f.write_str("invalid cryptographic input length"),

@@ -7,7 +7,7 @@
 
 #[cfg(doc)]
 use crate::TextParseErrorKind;
-use crate::{_impl_init, ConstInit, Slice, Str, is, unwrap, whilst};
+use crate::{_impl_init, Slice, Str, is, unwrap, whilst};
 use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextUnit};
 
 #[must_use]
@@ -90,4 +90,4 @@ pub struct TextScanner<'a> {
     pub(crate) bytes: &'a [u8],
     pub(crate) cursor: TextCursor,
 }
-_impl_init![ConstInit: Self::new("") => TextScanner<'_>];
+_impl_init![Self::new("") => TextScanner<'_>];

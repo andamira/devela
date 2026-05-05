@@ -24,9 +24,7 @@ pub struct EventMouse {
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
     pub buttons: EventButtons,
 }
-_impl_init! {
-    ConstInit: Self::new(0, 0, None, EventButtonState::INIT, EventButtons::INIT) => EventMouse
-}
+_impl_init! { Self::new(0, 0, None, EventButtonState::INIT, EventButtons::INIT) => EventMouse }
 #[rustfmt::skip]
 impl EventMouse {
     /// Returns a normalized wheel-scroll event.
@@ -68,7 +66,7 @@ pub struct EventPointer {
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,
 }
-_impl_init! { ConstInit: Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0,
+_impl_init! { Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0,
 f32bits_niche::INIT, 0, 0, 0, None, EventButtonState::INIT) => EventPointer }
 #[rustfmt::skip]
 impl EventPointer {
@@ -101,7 +99,7 @@ pub enum EventPointerType {
     /// A pen pointer.
     Pen,
 }
-_impl_init! { ConstInit: Self::Mouse => EventPointerType }
+_impl_init! { Self::Mouse => EventPointerType }
 
 // /// Represents the phase of a pointer (useful for touch events).
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -115,7 +113,7 @@ _impl_init! { ConstInit: Self::Mouse => EventPointerType }
 //     /// The input was cancelled (e.g., interrupted by system gestures).
 //     Cancel,
 // }
-// _impl_init! { ConstInit: Self::Start => EventPointerPhase }
+// _impl_init! { Self::Start => EventPointerPhase }
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents mouse, touch, or pen buttons.
@@ -133,7 +131,7 @@ pub enum EventButton {
     /// Additional buttons (e.g., side buttons on advanced mice).
     Other(NonZeroU8),
 }
-_impl_init! { ConstInit: Self::Left => EventButton }
+_impl_init! { Self::Left => EventButton }
 impl EventButton {
     /// Returns some button as long as it's not 0.
     pub const fn new(number: u8) -> Option<Self> {
@@ -216,4 +214,4 @@ pub enum EventButtonState {
     /// The pointer moved without a button press/release.
     Moved,
 }
-_impl_init! { ConstInit: Self::Pressed => EventButtonState }
+_impl_init! { Self::Pressed => EventButtonState }

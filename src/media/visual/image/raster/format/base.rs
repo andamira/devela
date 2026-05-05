@@ -23,7 +23,7 @@ pub struct RasterFormat {
     /// Meaning of the alpha component, if present.
     pub(super) alpha: RasterAlpha,
 }
-_impl_init![ConstInit: Self::UNKNOWN => RasterFormat];
+_impl_init![Self::UNKNOWN => RasterFormat];
 
 /// # Queries
 impl RasterFormat {
@@ -156,7 +156,7 @@ pub(crate) enum RasterAlpha {
     /// Color channels are already multiplied by alpha.
     Premultiplied,
 }
-_impl_init![ConstInit: Self::None => RasterAlpha];
+_impl_init![Self::None => RasterAlpha];
 
 /// Transfer curve used to interpret color sample values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -169,7 +169,7 @@ pub(crate) enum RasterTransfer {
     /// sRGB transfer-encoded sample values.
     Srgb,
 }
-_impl_init![ConstInit: Self::Unknown => RasterTransfer];
+_impl_init![Self::Unknown => RasterTransfer];
 impl RasterTransfer {
     /// Returns whether this transfer curve is unknown.
     pub const fn is_unknown(self) -> bool {
