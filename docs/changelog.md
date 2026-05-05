@@ -27,6 +27,7 @@
 - enable safety feature guards.
 - remove `enumint` example.
 - improve integration tests.
+- new helper fn `warn_tokens`.
 
 ## build
 - new native section to detect native library availability.
@@ -44,6 +45,7 @@
 - new flag: `ffi_xcb_shm··`.
 - remove features: `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
+- enable the nightly feature `proc_macro_diagnostic` with the `nightly_stable_later` flag.
 - update the intended scope of the `_docs_examples` feature.
 
 ---

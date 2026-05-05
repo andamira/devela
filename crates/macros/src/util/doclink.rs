@@ -1,6 +1,6 @@
-// devela_macros::core_bridge::_doc_location
+// devela_macros::util::doclink
 //
-//! Recreates devela_base_core's `doclink!` macro without `#[macro_export]`.
+//! Recreates devela's `doclink!` macro without `#[macro_export]`.
 //
 
 #![allow(unused)]

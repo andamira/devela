@@ -1,6 +1,6 @@
-// devela_macros::core_bridge::_doc_location
+// devela_macros::util::_doc_location
 //
-//! Recreates devela_base_core's `_doc_location!` macro without `#[macro_export]`.
+//! Recreates devela's `_doc_location!` macro without `#[macro_export]`.
 //
 
 /// Emits a location annotation for documentation.

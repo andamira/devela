@@ -82,7 +82,8 @@ See also
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_base_macros`
+- 1.??: `·`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
+- 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)

@@ -30,7 +30,7 @@
 #![cfg_attr(nightly_doc, feature(doc_cfg))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
-#![cfg_attr(nightly_stable_later, feature(proc_macro_value))]
+#![cfg_attr(nightly_stable_later, feature(proc_macro_diagnostic, proc_macro_value))]
 
 /* crate safeguards */
 
@@ -50,8 +50,8 @@ use proc_macro::TokenStream as TS;
 use std::collections::HashSet;
 
 mod bodies;
-mod core_bridge;
-use {bodies::*, core_bridge::*};
+mod util;
+use {bodies::*, util::*};
 
 // mod _doc;
 // mod yard;
