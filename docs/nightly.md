@@ -86,6 +86,7 @@ See also
 - 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
+- 1.??: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
