@@ -20,7 +20,8 @@
 - bump MSRV to 1.95.0.
 
 ### tools
-- temporarily downgrade devela version in `check.rs` to `0.26.0`.
+- update `check.rs`: downgrade devela version to `0.26.0`.
+- update `x` workspace command wrapper: add support for flags with values.
 
 ## workspace
 ### examples

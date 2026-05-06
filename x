@@ -18,6 +18,47 @@ toolchain=""
 native=0
 cfg_flags=()
 
+normalize_cfg() {
+    local cfg="$1"
+    local name value
+
+    # trim surrounding whitespace
+    cfg="${cfg#"${cfg%%[![:space:]]*}"}"
+    cfg="${cfg%"${cfg##*[![:space:]]}"}"
+    [[ -n "$cfg" ]] || return 0
+
+    if [[ "$cfg" == *=* ]]; then
+        name="${cfg%%=*}"
+        value="${cfg#*=}"
+
+        # Already a Rust string literal: name="value"
+        if [[ "${value:0:1}" == '"' && "${value: -1}" == '"' ]]; then
+            printf '%s\n' "$cfg"
+            return 0
+        fi
+        # Tolerate literal single quotes if they somehow survive shell parsing.
+        if [[ "${value:0:1}" == "'" && "${value: -1}" == "'" ]]; then
+            value="${value:1:${#value}-2}"
+        fi
+        # Escape for Rust string literal.
+        value="${value//\\/\\\\}"
+        value="${value//\"/\\\"}"
+
+        printf '%s="%s"\n' "$name" "$value"
+    else
+        printf '%s\n' "$cfg"
+    fi
+}
+push_cfg_list() {
+    local raw="$1"
+    local list c
+    IFS=',' read -ra list <<< "$raw"
+    for c in "${list[@]}"; do
+        c="$(normalize_cfg "$c")"
+        [[ -n "$c" ]] && cfg_flags+=("$c")
+    done
+}
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
 
@@ -31,12 +72,18 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
 
-        --cfg)
+		--cfg)
             shift
-            IFS=',' read -ra list <<< "$1"
-            for c in "${list[@]}"; do
-                cfg_flags+=("$c")
-            done
+            [[ $# -gt 0 ]] || {
+                echo "error: --cfg requires an argument" >&2
+                exit 2
+            }
+            push_cfg_list "$1"
+            shift
+            ;;
+
+        --cfg=*)
+            push_cfg_list "${1#--cfg=}"
             shift
             ;;
 
@@ -52,7 +99,7 @@ done
 
 x_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 crate_cargo_toml=$(cargo locate-project --message-format plain 2>/dev/null)
-crate_dir=$(dirname $crate_cargo_toml)
+crate_dir=$(dirname "$crate_cargo_toml")
 if [[ "${X_DEBUG:-0}" == 1 ]]; then
 	echo "workspace dir: $x_script_dir";
 	echo "crate dir:     $crate_dir";
@@ -88,6 +135,7 @@ for cfg in "${cfg_flags[@]}"; do
 done
 
 export RUSTFLAGS
+export RUSTDOCFLAGS
 
 #------------------------------------------------------------------------------
 # Debug
