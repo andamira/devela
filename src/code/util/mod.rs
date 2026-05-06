@@ -33,7 +33,7 @@ mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!
 mod cdbg; // cdbg!
 mod r#const; // CONST!
-mod debug; // , compile_warning!, fn_name!
+mod debug; // const_warn!, fn_name!
 mod deprecate; // deprecate_feature!
 mod doclink; // doclink!
 mod enumset; // enumset!
@@ -63,7 +63,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             capture::{capture_first, capture_last, capture_tail_tuple},
             cdbg::*,
             r#const::CONST,
-            debug::{compile_warn, fn_name},
+            debug::{const_warn, fn_name},
             deprecate::deprecate_feature,
             doclink::doclink,
             enumset::enumset,

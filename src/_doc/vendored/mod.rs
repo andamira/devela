@@ -32,7 +32,6 @@ crate::_doc_vendor! { mod: "encode", encode }
 crate::_doc_vendor! { mod: "grapheme_machine", grapheme_machine }
 // crate::_doc_vendor! { mod: "musl", musl }
 crate::_doc_vendor! { mod: "object-id", object_id }
-crate::_doc_vendor! { mod: "stdext", stdext }
 // Other
 crate::_doc_vendor! { mod: "apply", apply }
 // crate::_doc_vendor! { mod: "blit-fonts", blit_fonts }

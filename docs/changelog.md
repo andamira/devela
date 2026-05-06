@@ -75,6 +75,8 @@
 
 ### code::util
 - new macro `maybe_slot!`.
+- remake `fn_name!` and `compile_warn!`.
+  - rename `compile_warn!` to `const_warn!`.
 - update `cdbg!` to add custom prefix syntax.
 - update `enumset!`:
   - rename consts and methods by removing prefixes: `ENUM_*`, `enum_*`, `new_*`.

@@ -1,58 +1,73 @@
 // devela::code::util::debug
 //
-//! Defines [`compile_warn!`], [`fn_name`].
+//! Defines [`const_warn!`], [`fn_name`].
 //
 
 #[doc = crate::_tags!(code debug)]
 /// Emits a compile-time warning with a provided message.
 #[doc = crate::_doc_location!("code/util")]
 ///
-/// This implemented through an existing `dead_code` warning,
-/// thus the output for the following example:
-///
+/// # Example
 /// ```
-/// # use devela::compile_warn;
-/// compile_warn!(sample_user_defined_warning);
+/// # use devela::const_warn;
+/// fn main() {
+///     const_warn!("hello warning!");
+///     const_warn!(if size_of::<u8>() == 1, "byte alert!!");
+/// }
 /// ```
-///
-/// may look as follows:
+/// That may look as follows:
 /// ```text
-/// warning: constant `user_defined_warning` is never used
-///   --> src/lib.rs:7:9
+/// warning: use of deprecated associated constant `main::_::__::<true>::WARNING`: hello warning!
+///  --> src/main.rs:3:5
 ///   |
-/// 7 |  compile_warn!(user_defined_warning);
-///   |                ^^^^^^^^^^^^^^^^^^^^
+/// 3 |     const_warn!("hello warning!");
+///   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///   |
+///   = note: `#[warn(deprecated)]` on by default
+///   = note: this warning originates in the macro `$crate::const_warn` which comes from the expansion of the macro `const_warn` (in Nightly builds, run with -Z macro-backtrace for more info)
+///
+/// warning: use of deprecated associated constant `main::_::__::<true>::WARNING`: byte alert!!
+///  --> src/main.rs:4:5
+///   |
+/// 4 |     const_warn!(if size_of::<u8>() == 1, "byte alert!!");
+///   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+///   ...
 /// ```
-///
-/// Once [`proc_macro_diagnostics`] feature is stabilized, this macro
-/// could be replaced with a proper proc-macro-based implementation.
-///
-/// This macro is intended to be used in the development process, as an alternative
-/// to the [`unimplemented`] macro which doesn't cause code to panic.
-///
-/// [`std::compile_error`]: https://doc.rust-lang.org/std/macro.compile_error.html
-/// [`proc_macro_diagnostics`]: https://github.com/rust-lang/rust/issues/54140
-/// [`unimplemented`]: https://doc.rust-lang.org/std/macro.unimplemented.html
-#[doc = crate::_doc_vendor!("stdext")]
+// IMPROVE: use a proc-macro leveraging nightly feature proc_macro_diagnostics
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! compile_warn {
-    ($const:ident) => {
-        #[warn(dead_code)]
-        #[allow(non_upper_case_globals)]
-        const $const: &str = "";
+macro_rules! const_warn {
+    ($msg:literal $(,)?) => {
+        $crate::const_warn!(if true, $msg);
+    };
+    (if $cond:expr, $msg:literal $(,)?) => {
+        $crate::const_warn!(%if $cond, WARNING, $msg);
+    };
+    (%if $cond:expr, $name:ident, $msg:literal $(,)?) => {
+        #[allow(dead_code)]
+        const _: () = {
+            struct __<const B: bool>;
+            impl __<false> {
+                const $name: () = ();
+            }
+            impl __<true> {
+                #[deprecated(note = $msg)]
+                const $name: () = ();
+            }
+            let _ = __::<{ $cond }>::$name;
+        };
     };
 }
 #[doc(inline)]
-pub use compile_warn;
+pub use const_warn;
 
 #[doc = crate::_tags!(code debug)]
-/// This macro returns the name of the enclosing function.
+/// Returns a best-effort name of the enclosing function.
 #[doc = crate::_doc_location!("code/util")]
 ///
-/// As the internal implementation is based on [`type_name`],
-/// this macro derives all the limitations of this function.
-#[doc = crate::doclink!(custom devela "[`type_name`]" "code/trait.AnyExt.html#method.type_name")]
+/// This is a diagnostic helper based on [`core::any::type_name_of_val`].
+/// The exact format is not guaranteed by Rust, so this macro must not be
+/// used for semantic program behavior.
 ///
 /// ## Examples
 /// ```
@@ -64,18 +79,13 @@ pub use compile_warn;
 /// }
 /// bar::sample_function();
 /// ```
-#[doc = crate::_doc_vendor!("stdext")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! fn_name {
     () => {{
-        // Okay, this is ugly, I get it. However, this is the best we can get on a stable rust.
         fn f() {}
-        fn type_name_of<T>(_: T) -> &'static str {
-            ::core::any::type_name::<T>()
-        }
-        let name = type_name_of(f);
-        &name[..name.len() - 3] // `3` is the length of the `::f`.
+        let name = ::core::any::type_name_of_val(&f);
+        name.strip_suffix("::f").unwrap_or(name)
     }};
 }
 #[doc(inline)]
