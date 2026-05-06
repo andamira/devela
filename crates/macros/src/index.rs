@@ -35,7 +35,10 @@
 /* crate safeguards */
 
 // safety
-#[cfg(all(feature = "safe", any(feature = "unsafe")))]
+#[cfg(all(
+    feature = "safe",
+    any(feature = "unsafe", feature = "unsafe_layout")
+))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 
 extern crate self as devela_macros;
@@ -208,7 +211,7 @@ pub fn field_of(input: TS) -> TS { body_field_of(input) }
 pub fn repeat(input: TS) -> TS { body_repeat(input) }
 
 // #[doc = base::_tags!(construction niche procedural_macro)]
-/// Generates a unit-only enum with variants associated to a specified range.
+/// Defines a compact enum over a contiguous integer interval.
 #[doc = crate::_doc_location!(proc "code/util")]
 #[doc = include_str!("docs/enumint.md")]
 // #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]

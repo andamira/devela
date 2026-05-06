@@ -37,7 +37,8 @@ __docs_internal = [] # enables documentation for internal items
 
 #* Safety features *#
 safe = []
-unsafe = []
+unsafe = ["unsafe_layout"]
+	unsafe_layout = []
 
 #* Capability features *#
 _docs_nodep = [ # +unsafe

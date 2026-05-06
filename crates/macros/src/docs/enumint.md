@@ -1,12 +1,19 @@
 
-This macro generates an enum with integer variants named `P#` for positive
-vales and `N#` for negative values.
+The generated enum has one variant per integer in the inclusive range.
+Positive values are named `P{n}` and negative values are named `N{n}`.
 
-It allows to represent integers with valid range of values, and where the
-invalid values can be used by the compiler for memory niche optimization.
+# Safety backends
 
-It only supports 8-bit and 16-bit representations to avoid excessive time
-and memory usage during compilation.
+By default, construction is fully safe and uses generated match arms.
+With the `unsafe` feature, construction uses a compact checked conversion
+backend to reduce compile time for larger ranges.
+
+# Compile-time cost
+
+This macro generates one enum variant per represented value. Large ranges,
+especially broad `u16`/`i16` ranges, can substantially increase compile time
+and memory use. For large numeric domains where variant names are not needed,
+prefer a checked newtype.
 
 # Usage
 ```
@@ -15,14 +22,8 @@ and memory usage during compilation.
 enumint![pub MyEnum, i8, -10, 10];
 ```
 
-# Parameters
-- `visibility`: Optional visibility indicator. E.g. `pub(crate)`.
-- `name`: The name of the enum to be created.
-- `repr`: the data representation. E.g `u8`.
-- `start`: The starting value for the range of variants (inclusive).
-- `end`: The ending value for the range of variants (inclusive).
-
 # Panics
+
 - Panics if any given value is not of the kind expected.
 - Panics if `start` or `end` are outside the `repr` representable range.
 - Panics if `start` is greater than `end`.

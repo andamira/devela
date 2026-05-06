@@ -4,6 +4,7 @@
 //
 
 use super::shared::{expect_punct, parse_int, parse_visibility};
+use crate::{error_tokens, warn_tokens};
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::quote;
@@ -46,8 +47,8 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     }
     let (repr, repr_min, repr_max, capacity): (TokenStream2, i64, i64, i64) = match repr_str {
         "u8" => (quote!(u8), u8::MIN as i64, u8::MAX as i64, 256),
-        "u16" => (quote!(u16), u16::MIN as i64, u16::MAX as i64, 65_536),
         "i8" => (quote!(i8), i8::MIN as i64, i8::MAX as i64, 256),
+        "u16" => (quote!(u16), u16::MIN as i64, u16::MAX as i64, 65_536),
         "i16" => (quote!(i16), i16::MIN as i64, i16::MAX as i64, 65_536),
         _ => panic!("Invalid representation type: {}", repr_str),
     };
@@ -70,6 +71,7 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             Ident::new(&format!("P{}", i), Span::call_site())
         };
         enum_variants.push(quote! { #variant = #i as #repr });
+
         #[cfg(not(feature = "unsafe"))]
         {
             let lit = int_lit(i);
@@ -77,14 +79,68 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             valid_arms.push(quote! { #lit => Self::#variant });
         }
     }
-    #[cfg(not(feature = "unsafe"))]
+    // Appends the integer type to `n`.
+    #[cfg(any(feature = "safe", not(feature = "unsafe")))]
     fn int_lit(n: i64) -> TokenStream2 {
         n.to_string().parse().unwrap()
     }
 
+    /* safety guards */
+
+    let unsafe_backend = cfg!(all(not(feature = "safe"), feature = "unsafe_layout"));
+    let safe_backend = cfg!(any(feature = "safe", not(feature = "unsafe_layout")));
+
+    const SAFE_WARN_VALUES: i64 = 256;
+    const SAFE_ERROR_VALUES: i64 = 1024;
+    const UNSAFE_WARN_VALUES: i64 = 4096;
+    const UNSAFE_ERROR_VALUES: i64 = 32768;
+
+    let warn_safe_large = warn_tokens(
+        safe_backend && range_length > SAFE_WARN_VALUES && range_length <= SAFE_ERROR_VALUES,
+        enum_name.span(),
+        &format!(
+            "enumint generated {range_length} variants using the safe backend;\n \
+             this also generates one match arm per value and may noticeably increase compile time"
+        ),
+    );
+    let err_safe_large = error_tokens(
+        safe_backend && range_length > SAFE_ERROR_VALUES,
+        enum_name.span(),
+        &format!(
+            "enumint safe backend refuses to generate {range_length} values;\n \
+             reduce the range to {SAFE_ERROR_VALUES} values or fewer, \
+             or enable the `unsafe_layout` feature to use the compact checked-conversion backend"
+        ),
+    );
+    let warn_unsafe_large = warn_tokens(
+        unsafe_backend && range_length > UNSAFE_WARN_VALUES && range_length <= UNSAFE_ERROR_VALUES,
+        enum_name.span(),
+        &format!(
+            "enumint generated {range_length} variants;\n \
+             large ranges can significantly increase \
+             compile time and memory use even with the unsafe backend"
+        ),
+    );
+    let err_unsafe_large = error_tokens(
+        unsafe_backend && range_length > UNSAFE_ERROR_VALUES,
+        enum_name.span(),
+        &format!(
+            "enumint refuses to generate {range_length} variants;\n \
+             large contiguous numeric domains should usually be represented by a checked newtype"
+        ),
+    );
+
+    let (start_doc, end_doc, repr_doc) = (start.to_string(), end.to_string(), repr_str.to_string());
+
     // Generate the final output
     let enum_definition = quote! {
-        /// An auto-generated enum for values between #start and #end.
+        #warn_safe_large
+        #err_safe_large
+        #warn_unsafe_large
+        #err_unsafe_large
+
+        #[doc = concat!("A compact `", #repr_doc, "` enum over the contiguous integer range `",
+            #start_doc, "..=", #end_doc, "`.")]
         #[allow(missing_docs)] // reason = "undocumented variants"
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(#repr)]
@@ -97,25 +153,23 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         impl #enum_name {
             /* constants */
 
-            /// The number of valid values, as an unsigned primitive.
+            /// The number of represented values.
             pub const VALUES: usize = #range_length as usize;
-            /// The number of invalid values, as an unsigned primitive.
+            /// The number of invalid representation left available as niches.
             pub const NICHES: usize = #capacity as usize - Self::VALUES;
 
-            /// Returns the minimum possible value.
+            /// The lowest represented integer.
             pub const MIN: #repr = #start as #repr;
-            /// Returns the maximum possible value.
+            /// The highest represented integer.
             pub const MAX: #repr = #end as #repr;
 
-            /* methods */
+            /* constructors */
 
-            /// Returns the appropriate variant from the given `value`.
-            ///
-            /// Returns `None` if it's out of range.
+            /// Returns the variant for `value`, or `None` if it is outside the range.
             #[must_use]
             pub const fn new(value: #repr) -> Option<Self> {
                 cfg_select! {
-                    not(feature = "unsafe") => {
+                    any(feature = "safe", not(feature = "unsafe_layout")) => {
                         match value { #( #new_arms, )* _ => None }
                     }
                     _ => {
@@ -131,27 +185,11 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
                 }
             }
 
-            /// Returns the appropriate variant if the given `value` is within bounds.
-            ///
-            /// # Panics
-            /// Panics in debug if `value < #start || value > #end`.
-            /// # Safety
-            /// The given `value` must always be `value >= #start && value <= #end`.
-            #[must_use]
-            #[cfg(feature = "unsafe")]
-            pub const unsafe fn new_unchecked(value: #repr) -> Self {
-                debug_assert!(value >= #start as #repr && value <= #end as #repr,
-                    "Value out of range");
-                // SAFETY: caller must ensure safety
-                unsafe { core::mem::transmute(value) }
-            }
-
-            /// Returns the appropriate variant from the given `value`,
-            /// saturating at the type bounds.
+            /// Returns the variant for `value`, clamped to the represented range.
             #[must_use]
             pub const fn new_saturated(value: #repr) -> Self {
                 cfg_select! {
-                    not(feature = "unsafe") => {
+                    any(feature = "safe", not(feature = "unsafe_layout")) => {
                         Self::_new_valid(Self::clamp(value, Self::MIN, Self::MAX))
                     }
                     _ => {
@@ -164,8 +202,7 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
                 }
             }
 
-            /// Returns the appropriate variant from the given `value`,
-            /// wrapping around within the type bounds.
+            /// Returns the variant for `value`, wrapped inside the represented range.
             #[must_use]
             pub const fn new_wrapped(value: #repr) -> Self {
                 let (start, end) = (#start as i64, #end as i64);
@@ -173,7 +210,9 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
                 let offset = (value as i64 - start).rem_euclid(len);
                 let wrapped = (start + offset) as #repr;
                 cfg_select! {
-                    not(feature = "unsafe") => Self::_new_valid(wrapped),
+                    any(feature = "safe", not(feature = "unsafe_layout")) => {
+                        Self::_new_valid(wrapped)
+                    }
                     _ => {
                         // SAFETY: The `wrapped_value` is guaranteed to be within the valid range,
                         // so `transmute` will always produce a valid enum variant.
@@ -182,7 +221,9 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
                 }
             }
 
-            /// Cast the enum to its underlying representation.
+            /* getters */
+
+            /// Returns the underlying integer representation.
             #[must_use]
             pub const fn get(self) -> #repr {
                 self as #repr

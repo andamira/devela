@@ -6,12 +6,13 @@
 //! This will create the [`ExampleEnumIntI8`] type.
 //! ```
 //! # use devela::enumint;
-//! enumint![pub ExampleEnumIntI8, i8, -126, 125];
+//! enumint![pub ExampleEnumIntI8, i8, -126, 126];
 //! ```
 //
 // Note that having a huge number of variants needs a lot of resources. E.g.:
-// enumint![pub ExampleEnumIntU16, u16, 0, 16384]; // +5s to compile
-// enumint![pub ExampleEnumIntU16, u16, -16384, 16384]; // +17s +25GB to compile
+// enumint![pub ExampleEnumIntI8, i8, -126, 126]; // +0.2s to compile
+// enumint![pub ExampleEnumIntU16, u16, 0, 16384]; // +30s in safe mode, +10.0s unsafe
+// enumint![pub ExampleEnumIntU16, u16, -16384, 16384]; // +30s +25GB RAM in unsafe mode
 
 use devela::enumint;
 

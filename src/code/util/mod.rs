@@ -96,7 +96,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             compile_doc,
             repeat,
         };
-        #[doc = crate::_tags!(construction code procedural_macro)]
+        #[doc = crate::_tags!(construction code niche procedural_macro)]
         pub use devela_macros::enumint;
     }
     _crate_internals {

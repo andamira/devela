@@ -19,6 +19,9 @@
 ### cargo
 - bump MSRV to 1.95.0.
 
+### tools
+- temporarily downgrade devela version in `check.rs` to `0.26.0`.
+
 ## workspace
 ### examples
 - new example scripts: `current_guard`, `otp`, `scope_guard`.
@@ -27,7 +30,7 @@
 - enable safety feature guards.
 - remove `enumint` example.
 - improve integration tests.
-- new helper fn `warn_tokens`.
+- new helper fns: `error_tokens`, `warn_tokens`.
 
 ## build
 - new native section to detect native library availability.
@@ -59,10 +62,11 @@
 ## code
 - impl `ConstInit` for more types.
 - fix and update `enumint!`
+  - remove `new_unchecked` method.
+  - remove manual `Send` and `Sync` impls.
   - rename `ExampleEnumIntU8` to `ExampleEnumIntI8`.
   - rename constants: `VALID_VALUES` to `VALUES` and `NICHE_VALUES` to `NICHES`.
   - change implementation to be safe by default.
-  - remove manual `Send` and `Sync` impls.
 
 ### code::util
 - new macro `maybe_slot!`.

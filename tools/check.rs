@@ -3,7 +3,7 @@
 [package]
 edition = "2024"
 [dependencies]
-devela = { version = "0.27.0", features = ["std"] }
+devela = { version = "0.26.0", features = ["std"] }
 itertools = "0.14"
 lexopt = "0.3"
 toml_edit = "0.25"
