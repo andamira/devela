@@ -147,7 +147,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 149/300 (151 remaining), 103 visible, 46 hidden
+[features] # 150/300 (150 remaining), 104 visible, 46 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -834,6 +834,19 @@ check-cfg = [ # Allowed configuration flags:
 	# Arch flags
 	"cfg(any_target_arch_linux)", # x86_64, x86, arm, aarch64, riscv32, riscv64
 	"cfg(any_target_arch_riscv)", # riscv32, riscv64
+	#
+	# devela_macros diagnostic policy flags:
+	# --------------------------------------------------------------------------
+	# These flags customize devela_macros policy diagnostics.
+	#
+	# devela_macros_warnings="allow"  -> suppress macro policy warnings
+	# devela_macros_warnings="warn"   -> emit macro policy warnings, default
+	# devela_macros_warnings="deny"   -> promote macro policy warnings to errors
+	'cfg(devela_macros_warnings, values("allow", "warn", "deny"))',
+	#
+	# devela_macros_errors="warn"     -> downgrade intended policy errors to warnings
+	# devela_macros_errors="deny"     -> emit macro policy errors, default
+	'cfg(devela_macros_errors, values("warn", "deny"))',
 	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------

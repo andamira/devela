@@ -4,5 +4,6 @@
 //
 
 mod common;
+mod diag;
 mod enumint;
-pub(crate) use {common::*, enumint::*};
+pub(crate) use {common::*, diag::*, enumint::*};

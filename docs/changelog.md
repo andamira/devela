@@ -31,7 +31,7 @@
 - enable safety feature guards.
 - remove `enumint` example.
 - improve integration tests.
-- new helper fns: `error_tokens`, `warn_tokens`.
+- new helper fns: `deny_tokens`, `error_tokens`, `warn_tokens`.
 
 ## build
 - new native section to detect native library availability.
@@ -46,7 +46,7 @@
 
 ## features & flags
 - new feature: `web`.
-- new flag: `ffi_xcb_shm··`.
+- new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - enable the nightly feature `proc_macro_diagnostic` with the `nightly_stable_later` flag.
@@ -63,9 +63,12 @@
 ## code
 - impl `ConstInit` for more types.
 - fix and update `enumint!`
+  - improve error diagnostics.
   - remove `new_unchecked` method.
+  - remove automatic documentation.
+  - support receiving custom attributes.
   - remove manual `Send` and `Sync` impls.
-  - rename `ExampleEnumIntU8` to `ExampleEnumIntI8`.
+  - rename `ExampleEnumIntU8` to `EnumintI8Example`.
   - rename constants: `VALID_VALUES` to `VALUES` and `NICHE_VALUES` to `NICHES`.
   - change implementation to be safe by default.
 

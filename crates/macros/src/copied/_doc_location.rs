@@ -1,4 +1,4 @@
-// devela_macros::util::_doc_location
+// devela_macros::copied::_doc_location
 //
 //! Recreates devela's `_doc_location!` macro without `#[macro_export]`.
 //

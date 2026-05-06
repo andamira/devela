@@ -3,11 +3,17 @@
 //! Shared functionality for procedural macros.
 //
 // TOC
-// - split_args
-// - split_compile_doc_tuple
-// - deindent
-// - compile_eval
-// - parse_vis_ident
+// - int_lit()
+// - split_args()
+// - split_compile_doc_tuple()
+// - deindent()
+// - compile_eval()
+// - parse_vis_ident()
+
+/// Creates an unsuffixed integer literal token.
+pub(crate) fn int_lit(n: i64) -> proc_macro2::TokenStream {
+    n.to_string().parse().unwrap()
+}
 
 /// Argument parser that correctly deals with nested arguments with commas.
 pub(crate) fn split_args(arg: &str) -> Vec<String> {

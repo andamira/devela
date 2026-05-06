@@ -1,4 +1,4 @@
-// devela_macros::util::doclink
+// devela_macros::copied::doclink
 //
 //! Recreates devela's `doclink!` macro without `#[macro_export]`.
 //
