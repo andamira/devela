@@ -4,17 +4,21 @@
 //!
 //! # Examples
 //!
-//! This will create the [`ExampleEnum`] and [`ExampleEnumSet`] interrelated types.
+//! This will create the [`EnumExample`] and [`EnumSetExample`] interrelated types.
 //! ```
 //! # use devela::enumset;
 //! enumset! {
-//!     /// An example created with [`enumset!`].
+//!     /// An example enum generated with [`enumset!`].
+//!     ///
+//!     /// It has an associated set [`EnumSetExample`].
 //!     #[allow(dead_code)]
 //!     #[derive(Clone)]
 //!     #[repr(u64)]
-//!     pub enum ExampleEnum<'a, 'b, T>(
-//!         /// Represents a set of [`ExampleEnum`] variants.
-//!         pub ExampleEnumSet: u8
+//!     pub enum EnumExample<'a, 'b, T>(
+//!         /// An example set of enum variants, generated with [`enumset!`].
+//!         ///
+//!         /// Represents a set of [`EnumExample`] variants.
+//!         pub EnumSetExample: u8
 //!     )
 //!         [where T: Clone] // supports where clauses (between [])
 //!     {
@@ -36,21 +40,21 @@
 //!         Variant4(T, &'a str, &'b u32),
 //!     }
 //!     impl enum
-//!     /// Classification helpers for [`ExampleEnum`].
+//!     /// Classification helpers for [`EnumExample`].
 //!     {
-//!         /// Returns whether this variant belongs to [`ExampleEnumSet::DATA`].
+//!         /// Returns whether this variant belongs to [`EnumSetExample::DATA`].
 //!         pub const fn is_data(&self) -> bool {
-//!             self.is_in(ExampleEnumSet::DATA)
+//!             self.is_in(EnumSetExample::DATA)
 //!         }
 //!     }
 //!     impl enum
-//!     /// Small associated constants for [`ExampleEnum`].
+//!     /// Small associated constants for [`EnumExample`].
 //!     #[allow(missing_docs)]
 //!     {
 //!         pub const HAS_CUSTOM_IMPLS: bool = true;
 //!     }
 //!     impl set
-//!     /// Named subsets of [`ExampleEnumSet`].
+//!     /// Named subsets.
 //!     {
 //!         /// Variants carrying payload data.
 //!         pub const DATA: Self = Self::all().without(Self::Variant0);
@@ -65,27 +69,31 @@
 //!         };
 //!     }
 //! }
-//! impl<T: Clone> Default for ExampleEnum<'_, '_, T> {
-//!     /// Returns [`ExampleEnum::Variant0`].
+//! impl<T: Clone> Default for EnumExample<'_, '_, T> {
+//!     /// Returns [`EnumExample::Variant0`].
 //!     fn default() -> Self {
 //!         Self::Variant0
 //!     }
 //! }
 //!
-//! assert_eq![5, ExampleEnum::<()>::VARIANTS];
+//! assert_eq![5, EnumExample::<()>::VARIANTS];
 //! ```
 //
 
 use devela::enumset;
 
 enumset! {
-    /// An example created with [`enumset!`].
+    /// An example enum generated with [`enumset!`].
+    ///
+    /// It has an associated set [`EnumSetExample`].
     #[allow(dead_code)]
     #[derive(Clone)]
     #[repr(u64)]
-    pub enum ExampleEnum<'a, 'b, T>(
-        /// Represents a set of [`ExampleEnum`] variants.
-        pub ExampleEnumSet: u8
+    pub enum EnumExample<'a, 'b, T>(
+        /// An example set of enum variants, generated with [`enumset!`].
+        ///
+        /// Represents a set of [`EnumExample`] variants.
+        pub EnumSetExample: u8
     )
         [where T: Clone] // supports where clauses (between [])
     {
@@ -107,21 +115,21 @@ enumset! {
         Variant4(T, &'a str, &'b u32),
     }
     impl enum
-    /// Classification helpers for [`ExampleEnum`].
+    /// Classification helpers for [`EnumExample`].
     {
-        /// Returns whether this variant belongs to [`ExampleEnumSet::DATA`].
+        /// Returns whether this variant belongs to [`EnumSetExample::DATA`].
         pub const fn is_data(&self) -> bool {
-            self.is_in(ExampleEnumSet::DATA)
+            self.is_in(EnumSetExample::DATA)
         }
     }
     impl enum
-    /// Small associated constants for [`ExampleEnum`].
+    /// Small associated constants for [`EnumExample`].
     #[allow(missing_docs)]
     {
         pub const HAS_CUSTOM_IMPLS: bool = true;
     }
     impl set
-    /// Named subsets of [`ExampleEnumSet`].
+    /// Named subsets.
     {
         /// Variants carrying payload data.
         pub const DATA: Self = Self::all().without(Self::Variant0);
@@ -136,28 +144,28 @@ enumset! {
         };
     }
 }
-impl<T: Clone> Default for ExampleEnum<'_, '_, T> {
-    /// Returns [`ExampleEnum::Variant0`].
+impl<T: Clone> Default for EnumExample<'_, '_, T> {
+    /// Returns [`EnumExample::Variant0`].
     fn default() -> Self {
         Self::Variant0
     }
 }
 
 fn main() {
-    let v1 = ExampleEnum::<()>::Variant1([3, 2, 1]);
+    let v1 = EnumExample::<()>::Variant1([3, 2, 1]);
     #[cfg(feature = "std")]
-    let v2 = ExampleEnum::<()>::Variant2(Box::new(v1.clone()));
-    let v4 = ExampleEnum::<()>::Variant4((), "hello", &23);
+    let v2 = EnumExample::<()>::Variant2(Box::new(v1.clone()));
+    let v4 = EnumExample::<()>::Variant4((), "hello", &23);
 
-    let _es = ExampleEnum::<()>::empty_set();
+    let _es = EnumExample::<()>::empty_set();
 
-    assert_eq![ExampleEnum::<()>::VARIANTS, 5];
+    assert_eq![EnumExample::<()>::VARIANTS, 5];
     assert_eq![v1.variants(), 5];
 
-    assert_eq![v1.to_set(), ExampleEnumSet::Variant1];
+    assert_eq![v1.to_set(), EnumSetExample::Variant1];
     assert![v1.is_data()];
-    assert![v4.is_in(ExampleEnumSet::BORROW_OR_ALLOC)];
+    assert![v4.is_in(EnumSetExample::BORROW_OR_ALLOC)];
     #[cfg(feature = "std")]
-    assert![v2.is_in(ExampleEnumSet::BORROW_OR_ALLOC)];
-    assert![ExampleEnum::<()>::HAS_CUSTOM_IMPLS];
+    assert![v2.is_in(EnumSetExample::BORROW_OR_ALLOC)];
+    assert![EnumExample::<()>::HAS_CUSTOM_IMPLS];
 }

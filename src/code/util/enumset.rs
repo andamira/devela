@@ -23,7 +23,8 @@
 ///   after the `impl enum` or `impl set` marker.
 ///
 /// # Examples
-/// See also the [enumset][crate::_doc::examples::enumset] example.
+/// See also [`EnumExample`][crate::EnumExample] and [`EnumSetExample`][crate::EnumSetExample],
+/// generated in the [enumset][crate::_doc::examples::enumset] example.
 ///
 /// ```
 /// # use devela::enumset;

@@ -14,6 +14,6 @@
 
 use devela::id_seq;
 
-id_seq![ExampleIdSeqUsize, usize];
+id_seq![IdSeqUsizeExample, usize];
 
 fn main() {}

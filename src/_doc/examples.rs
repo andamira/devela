@@ -12,10 +12,10 @@
 
 /* in-crate integrated examples */
 
-#[path = "../../examples/code/enumset.rs"]
-pub mod enumset;
 #[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
+#[path = "../../examples/code/enumset.rs"]
+pub mod enumset;
 
 #[path = "../../examples/data/id_seq.rs"]
 pub mod id_seq;
@@ -33,3 +33,18 @@ pub mod id_seq;
 //     #[path = "examples/hello_world.rs"]
 //     pub mod example_hello_world;
 // }
+
+crate::structural_mods! { // _pub_mods
+    _pub_mods {
+        #[doc(inline)]
+        pub use super::enumint::*;
+
+        #[doc(inline)]
+        #[doc = crate::_tags!(example code)]
+        pub use super::enumset::*;
+
+        #[doc(inline)]
+        #[doc = crate::_tags!(example uid construction)]
+        pub use super::id_seq::*;
+    }
+}

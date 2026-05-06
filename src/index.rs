@@ -237,6 +237,7 @@ pub mod zall {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
+        _doc::_all::*,
         code::_all::*,
         data::_all::*,
         geom::_all::*,

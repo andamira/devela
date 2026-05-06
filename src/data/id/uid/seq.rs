@@ -27,7 +27,8 @@
 /// assert_eq![AppId1::new_fast(), None];
 /// ```
 ///
-/// See also the [id_seq][crate::_doc::examples::id_seq] example.
+/// See also [`IdSeqUsizeExample`][crate::IdSeqUsizeExample],
+/// generated in the [id_seq][crate::_doc::examples::id_seq] example.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! id_seq {

@@ -43,6 +43,7 @@
 
 ## docs
 - new tags: `_TAG_[CRYPTO]`.
+- make example-generated `*Example` items visible in the docs.
 
 ## features & flags
 - new feature: `web`.

@@ -41,7 +41,11 @@ mod _tags; // EMOJI_*!, _TAG_*! _tags!
 pub(crate) mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
 
 // IMPROVE: some could be _crate_internals, currently blocked by define_error! and rand_pcg!
-crate::structural_mods! { // _hidden
+crate::structural_mods! { // _mods, _crate_internals, _hidden
+    _mods {
+        #[cfg(feature = "_docs_examples")]
+        pub use super::examples::_all::*;
+    }
     _crate_internals {
         pub use super::{
             _doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
