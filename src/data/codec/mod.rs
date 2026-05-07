@@ -5,26 +5,6 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 #![doc = crate::_QUO_DATA_CODEC!()]
-//!
-//! ## Determinism & Side Effects
-//! Encoding and decoding should be **deterministic**.
-//! Implementations should avoid introducing side effects where possible.
-//!
-//! **Potential sources of non-determinism:**
-//! - Writing to or reading from external files or devices.
-//! - Using randomness during encoding or decoding.
-//! - Modifying or depending on global state.
-//!
-//! ## Examples
-//! ```
-//! use devela::{Encodable, CodecLenValue, IoWrite};
-//!
-//! # #[cfg(feature = "alloc")] { use devela::Vec;
-//! let mut buf = Vec::new();
-//! CodecLenValue::<_, u8>::new("hello").encode(&mut buf).unwrap();
-//! assert_eq!(&buf, b"\x05hello");
-//! # }
-//! ```
 //
 
 mod bit;

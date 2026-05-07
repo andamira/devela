@@ -6,20 +6,12 @@
 #![doc = crate::_doc!(extends: encode)]
 //
 
-mod impls;
-#[cfg(test)]
-mod tests;
-
-mod combinators; // Codec*
 mod enums; // EncodingMode
-mod traits; // Decodable, Encodable, EncodableLen
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            combinators::*,
             enums::*,
-            traits::*,
         };
     }
 }

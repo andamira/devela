@@ -96,8 +96,6 @@ See the linked modifications for detailed changes.
   as the [`unroll!`] macro ([*modifications*][M_crunchy]).
 - <i id="current"></i>[current] by *PistonDevelopers*,
   as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
-- <i id="encode"></i>[encode] by Altair Bueno,
-  as some items in the [`data::codec`] module ([*modifications*][M_encode]).
 - <i id="grapheme_machine"></i>[grapheme_machine] by Martin Atkins,
   as [`GraphemeMachine`] and related items in [`text::grapheme`] ([*modifications*][M_grapheme_machine]).
 - <i id="musl"></i>[musl] by Rich Felker, et al.,
@@ -118,9 +116,6 @@ See the linked modifications for detailed changes.
   [M_current]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/current.md
   [`Current`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.Current.html
   [`CurrentGuard`]: https://andamira.github.io/devela/latest/devela/sys/mem/struct.CurrentGuard.html
-[encode]: https://crates.io/crates/encode/0.1.2
-  [M_encode]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/encode.md
-  [`data::codec`]: https://andamira.github.io/devela/latest/devela/data/codec/
 [grapheme_machine]: https://crates.io/crates/grapheme_machine/0.2.0
   [M_grapheme_machine]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/grapheme_machine.md
   [`GraphemeMachine`]: https://andamira.github.io/devela/latest/devela/text/grapheme/struct.GraphemeMachine.html

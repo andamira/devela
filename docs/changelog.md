@@ -103,6 +103,9 @@
 - new types: `CryptoError`, `Digest`, `Otp`.
 - new example/test `digest!` items: `Md5`, `Sha1`, `Sha256`, `Sha512`.
 
+#### data::codec::encode
+- remove `encode` vendored items: `CodecBe`, `CodecLe`, `CodecIf`, `CodecFlags`, `CodecJoin`, `CodecLen`, `CodecLenValue`, `Decodable`, `Encodable`, `EncodableLen`.
+
 ### data::id
 - rename `define_handle!` to `handle!`
 

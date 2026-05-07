@@ -43,8 +43,6 @@
   [M_current]: crate::_doc::vendored::current
   [`Current`]: crate::sys::mem::Current
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
-  [M_encode]: crate::_doc::vendored::encode
-  [`data::codec`]: crate::data::codec
   [M_grapheme_machine]: crate::_doc::vendored::grapheme_machine
   [`GraphemeMachine`]: crate::text::grapheme::GraphemeMachine
   [`text::grapheme`]: crate::text::grapheme

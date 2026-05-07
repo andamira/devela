@@ -28,7 +28,6 @@ crate::_doc_vendor! { mod: "tupl", tupl }
 // MIT
 crate::_doc_vendor! { mod: "crunchy", crunchy }
 crate::_doc_vendor! { mod: "current", current }
-crate::_doc_vendor! { mod: "encode", encode }
 crate::_doc_vendor! { mod: "grapheme_machine", grapheme_machine }
 // crate::_doc_vendor! { mod: "musl", musl }
 crate::_doc_vendor! { mod: "object-id", object_id }
