@@ -113,6 +113,7 @@
 - rename `define_static_map!` to `map!`
 
 ### data::value
+- new types: `ValueKind`, `ValueKind4`.
 - remove items: `DataValue*`, `DataType*`, `DataRaw*`.
 
 ### geom::metric

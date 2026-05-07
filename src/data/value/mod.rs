@@ -9,6 +9,10 @@
 mod absence; // NoData
 mod of; // Oneof
 
+// mod decode; // ValueDecode WIP
+mod kind; // ValueKind, ValueKind4, WIP ValueKindSet
+// mod value; // value! WIP
+
 #[cfg(feature = "_tuple")]
 pub mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 
@@ -16,7 +20,10 @@ crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             absence::*,
+            // decode::*,
             of::_all::*,
+            kind::*,
+            // value::*,
         };
     }
     _pub_mods {
