@@ -10,7 +10,6 @@ mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-mod check; // Adler32
 mod fx; // HasherBuildFx, HasherFx.
 
 #[cfg(feature = "hash")]
@@ -22,7 +21,6 @@ crate::items! {
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            check::_all::*,
             fx::*,
         };
         #[cfg(feature = "hash")]

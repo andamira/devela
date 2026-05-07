@@ -1,4 +1,4 @@
-// devela::data::codec::hash::check::adler
+// devela::data::codec::integrity::adler
 //
 //! Defines [`Adler32`].
 //
@@ -12,7 +12,7 @@ lane! {
 
 #[doc = crate::_tags!(hash)]
 /// Adler-32 checksum.
-#[doc = crate::_doc_location!("data/codec/hash")]
+#[doc = crate::_doc_location!("data/codec")] // integrity
 ///
 /// A lightweight checksum consisting of two 16-bit accumulators (`a` and `b`)
 /// updated modulo 65521, the largest prime below 2^16.

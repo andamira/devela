@@ -43,6 +43,7 @@ crate::digest! {
     #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc_example!()]
     pub struct Sha512: Sha512
 }
+/*
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-224 state."]
     #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc_example!()]
@@ -53,7 +54,6 @@ crate::digest! {
     #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc_example!()]
     pub struct Sha384: Sha384
 }
-/*
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512/224 state."]
     #[doc = crate::_doc_location!("data/codec/crypto")] #[doc = _doc_example!()]

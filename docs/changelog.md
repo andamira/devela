@@ -20,7 +20,7 @@
 - bump MSRV to 1.95.0.
 
 ### tools
-- update `check.rs`: downgrade devela version to `0.26.0`.
+- update `check.rs`: downgrade devela version to 0.26.0.
 - update `x` workspace command wrapper: add support for flags with values.
 
 ## workspace
@@ -93,13 +93,15 @@
 
 ### data::codec
 - new macro: `set!`.
+- new module: `data::codec::pack`.
+- move `data::codec::hash::check` to `data::codec::integrity`.
 - recreate `bitfield!` making it much more lean.
 - remove the `bitfield` example.
 
 #### data::codec::crypto
 - new macro: `digest!`.
 - new types: `CryptoError`, `Digest`, `Otp`.
-- new example types: `Md5`, `Sha1`, `Sha256`, `Sha512`, `Sha224`, `Sha384`.
+- new example/test `digest!` items: `Md5`, `Sha1`, `Sha256`, `Sha512`.
 
 ### data::id
 - rename `define_handle!` to `handle!`
@@ -152,7 +154,7 @@
 
 #### num::prob::rand
 - rename `define_pcg!` to `rand_pcg!`
-- rename `define_xorshift!` to `rand_xorshift!`
+- rename `define_xorshift!` to `rand_xorshift!`.
 
 ## phys
 - new module `phys::subs`.
@@ -194,11 +196,11 @@
 - new traits `TextIn`, `TextOut`.
 
 ### sys::log
-- new modules `sys::log::{bench, trace}`;
+- new modules `sys::log::{bench, trace}`.
 - new types: `DiagLevel`, `DiagOut`.
 
 ### sys::mem
-- rename `define_arena!` to `arena!`
+- rename `define_arena!` to `arena!`.
 
 ### sys::mem::cell
 - new types: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
@@ -268,6 +270,6 @@
 ## yard
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
-- update syntax of `_devela_policy`.rs
+- update syntax of `_devela_policy`.
 
 [0.28.0]: https://github.com/andamira/devela/releases/tag/v0.28.0

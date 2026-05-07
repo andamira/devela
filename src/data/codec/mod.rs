@@ -28,18 +28,17 @@
 //
 
 mod bit;
-mod encode; // encoders and decoders.
-mod radix; // radix-based encodings (Base32, Base64, Base58…).
-mod types;
-
-// mod compress; // WIP compression algorithms
 pub mod crypto; // Cryptographic primitives (Digest, Sha1)
 // mod _wip_crc; // WIP
+mod encode; // encoders and decoders
 // pub mod frame; // WIP
-pub mod hash; // hashing algorithms (Fnv, Fx, MD5)
+pub mod hash; // hashing algorithms (Fnv, Fx)
+mod integrity; // integrity codecs (Adler32, Crc32)
 // mod hex; // WIP Hexadecimal literals and conversions
 // mod rle; // WIP Run-length encoding and similar techniques
 mod deser; // WIP structured serialization/deserialization
+mod pack; // WIP compression algorithms
+mod radix; // radix-based encodings (Base32, Base64, Base58…)
 // pub mod schema; // WIP
 
 // #[cfg(feature = "alloc")]
@@ -51,8 +50,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             bit::_all::*,
             // deser::_all::*,
             encode::_all::*,
+            integrity::_all::*,
+            pack::_all::*,
             radix::_all::*,
-            types::*,
         };
         // pub use super::lempel_ziv::*;
     }
