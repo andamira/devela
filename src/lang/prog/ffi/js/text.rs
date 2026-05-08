@@ -13,7 +13,7 @@ use crate::Web;
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
-pub struct JsTextMetrics {
+pub struct JsTextRenderMetrics {
     /// The width of the rendered text.
     pub width: f32,
     /// The distance from the baseline to the highest point.
@@ -32,7 +32,7 @@ pub struct JsTextMetrics {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics>
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
-pub struct JsTextMetricsFull {
+pub struct JsTextRenderMetricsFull {
     /// The width of the rendered text.
     pub width: f32,
     /// Distance from the alignment point to the leftmost glyph edge.

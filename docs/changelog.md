@@ -131,6 +131,9 @@
 - new submodules: `calc`, `embed`, `kernel`, `phrase`.
 - remove submodule: `dsl`.
 
+##### lang::prog::ffi::js
+- rename `JsTextMetrics*` to `JsTextRenderMetrics*`.
+
 #### media::visual::image
 - new submodules: `format`, `raster`.
 - remove `image` feature-gate from the module.

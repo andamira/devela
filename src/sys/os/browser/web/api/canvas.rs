@@ -5,7 +5,7 @@
 //
 
 use crate::Web;
-use crate::{_js_doc, _js_extern, JsTextMetrics, JsTextMetricsFull, js_number};
+use crate::{_js_doc, _js_extern, JsTextRenderMetrics, JsTextRenderMetricsFull, js_number};
 
 /// # Web API canvas
 ///
@@ -60,16 +60,17 @@ impl Web {
     }
     #[doc = _js_doc!(canvas "measureText")]
     /// Measures the essential properties of text.
-    pub fn measure_text(text: &str) -> JsTextMetrics {
-        let (mut metrics, ptr, len) = (JsTextMetrics::default(), text.as_ptr(), text.len());
-        unsafe { measure_text(ptr, len, &mut metrics as *mut JsTextMetrics); }
+    pub fn measure_text(text: &str) -> JsTextRenderMetrics {
+        let (mut metrics, ptr, len) = (JsTextRenderMetrics::default(), text.as_ptr(), text.len());
+        unsafe { measure_text(ptr, len, &mut metrics as *mut JsTextRenderMetrics); }
         metrics
     }
     #[doc = _js_doc!(canvas "measureTextFull")]
     /// Measures all available text metrics.
-    pub fn measure_text_full(text: &str) -> JsTextMetricsFull {
-        let (mut metrics, ptr, len) = (JsTextMetricsFull::default(), text.as_ptr(), text.len());
-        unsafe { measure_text_full(ptr, len, &mut metrics as *mut JsTextMetricsFull); }
+    pub fn measure_text_full(text: &str) -> JsTextRenderMetricsFull {
+        let (mut metrics, ptr, len) =
+            (JsTextRenderMetricsFull::default(), text.as_ptr(), text.len());
+        unsafe { measure_text_full(ptr, len, &mut metrics as *mut JsTextRenderMetricsFull); }
         metrics
     }
 }
@@ -95,7 +96,7 @@ _js_extern! {
     unsafe fn "strokeText" stroke_text(str_ptr: *const u8, str_len: usize,
         x: js_number, y: js_number);
     unsafe fn "measureText" measure_text(text_ptr: *const u8, text_len: usize,
-        out_metrics: *mut JsTextMetrics);
+        out_metrics: *mut JsTextRenderMetrics);
     unsafe fn "measureTextFull" measure_text_full(text_ptr: *const u8, text_len: usize,
-        out_metrics: *mut JsTextMetricsFull);
+        fut_metrics: *mut JsTextRenderMetricsFull);
 }
