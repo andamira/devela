@@ -24,12 +24,11 @@ macro_rules! _impl_traits_for_non_value {
         $(
             _impl_traits_for_non_value!(@
                 [<NonValue $IP:camel>],
-                [<NonExtreme $IP:camel>],
                 $IP
                 );
             )+
     }};
-    (@$nv:ident, $ne:ident, $IP:ty) => {
+    (@$nv:ident, $IP:ty) => {
 
         // BitSized for NonValue*
         #[cfg(feature = "bit")]

@@ -22,16 +22,16 @@ macro_rules! impl_node {
     // $IP:  the index primitive type. E.g. u8.
     // $cap:  the capability feature that enables the given implementation. E.g "_node_u8".
     //
-    // $NodeIndex: the index type name. E.g. NonExtremeU8.
+    // $NodeIndex: the index type name. E.g. NonMaxU8.
     // $Node:  the node name. E.g. NodeU8.
     // $Links: the links field type. E.g. [Option<$NodeIndex>; LCAP].
     ($( $IP:ty : $cap:literal ),+) => { paste! {
         $(
             #[cfg(feature = $cap )]
             impl_node!(@
-                [<NonExtreme $IP:camel>],                 // $NodeIndex
+                [<NonMax $IP:camel>],                 // $NodeIndex
                 [<Node $IP:camel>],                       // $Node
-                [Option<[<NonExtreme $IP:camel>]>; LCAP], // $Links
+                [Option<[<NonMax $IP:camel>]>; LCAP], // $Links
                 $IP,
                 $cap
             );

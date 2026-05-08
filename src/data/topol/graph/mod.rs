@@ -28,7 +28,7 @@ macro_rules! impl_graph {
     // $Graph: the graph type name. E.g. GraphU8.
     // $Node: the node type name. E.g. NodeU8.
     // $Edge:  the edge type name. E.g. EdgeU8.
-    // $Index: the index real type name. E.g. NonExtremeU8.
+    // $Index: the index real type name. E.g. NonMaxU8.
     ($( $IDX:ty : $cap:literal ),+) => { paste! {
         $(
             #[cfg(feature = $cap )]
@@ -36,7 +36,7 @@ macro_rules! impl_graph {
                 [<Graph $IDX:camel>],      // $Graph
                 [<Node $IDX:camel>],       // $Node
                 [<Edge $IDX:camel>],       // $Edge
-                [<NonExtreme $IDX:camel>], // $Index
+                [<NonMax $IDX:camel>], // $Index
                 $IDX);
         )+
     }};

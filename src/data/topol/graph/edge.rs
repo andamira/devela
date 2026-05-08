@@ -5,7 +5,7 @@ macro_rules! impl_graph_edge {
     //
     // $Graph: the graph type name. E.g. GraphU8.
     // $Edge:  the edge type name. E.g. EdgeU8.
-    // $Index: the index real type name. E.g. NonExtremeU8.
+    // $Index: the index real type name. E.g. NonMaxU8.
     (@$Graph:ty, $Node:ty, $Edge:ty, $Index:ty, $IDX:ty) => { paste! {
         /* definition */
 

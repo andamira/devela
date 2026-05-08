@@ -5,7 +5,7 @@
 
 #[cfg(any(test, feature = "_docs_examples"))]
 arena! {
-    // [ offset: u8+crate::NonExtremeU8; ] // WIP TODO
+    // [ offset: u8+crate::NonMaxU8; ] // WIP TODO
     [ offset: u8+u8; ]
 
     #[doc = crate::_tags!(example allocation)]

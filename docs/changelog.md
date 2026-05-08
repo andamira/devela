@@ -159,6 +159,10 @@
 - rename `Primitive*` traits to `Prim*`.
 - rename `define_lane!` to `lane!`
 
+#### num::grain::niche
+- rename `NonExtremeI*` to `NonMin*` and `NonExtremeU*` to `NonMax*`.
+- rename `ne!` to `nm!`.
+
 ### num::prob
 - new module `phys::prob::markov`.
 

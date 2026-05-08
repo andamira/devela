@@ -5,7 +5,7 @@
 // IMPROVE IDEAS
 // - make alternative methods that doesn't depnd on floating point operations,
 //   and instead use integer scaling functions Int::scale.
-// - maybe use NonExtreme for the signed representation.
+// - maybe use NonMax for the signed representation.
 
 // IMPROVE: remove FloatExt, replace by Float, to simplify from_float_normalized
 #[allow(unused)]

@@ -4,9 +4,7 @@
 //
 
 use super::*;
-use crate::{
-    AsciiLut, Char, CharAscii, ConstInit, MismatchedCapacity, NonExtremeU8, Str, cmp, whilst,
-};
+use crate::{AsciiLut, Char, CharAscii, ConstInit, MismatchedCapacity, NonMaxU8, Str, cmp, whilst};
 
 #[rustfmt::skip]
 impl char7 {
@@ -20,9 +18,9 @@ impl char7 {
     // for a few selected operations in this module and also by CharIter.
     pub(crate) const fn new_unchecked(value: u8) -> char7 {
         cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_text")) => {
-            unsafe { char7(NonExtremeU8::new_unchecked(value)) }
+            unsafe { char7(NonMaxU8::new_unchecked(value)) }
         } _ => {
-            if let Some(c) = NonExtremeU8::new(value) { char7(c) } else { unreachable![] }
+            if let Some(c) = NonMaxU8::new(value) { char7(c) } else { unreachable![] }
         }}
     }
 

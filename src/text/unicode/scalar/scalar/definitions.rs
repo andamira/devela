@@ -12,7 +12,7 @@
 
 #![allow(non_camel_case_types)]
 
-pub(crate) use crate::{NonExtremeU8, NonExtremeU32, NonNiche, NonValueU16};
+pub(crate) use crate::{NonMaxU8, NonMaxU32, NonNiche, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a Unicode scalar.
 pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
@@ -54,7 +54,7 @@ pub use ch;
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char7(pub(super) NonExtremeU8);
+pub struct char7(pub(super) NonMaxU8);
 
 #[doc = crate::_tags!(text)]
 /// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
@@ -123,7 +123,7 @@ pub struct charu(pub(super) NonNiche<u32>);
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct charu_niche(pub(super) NonExtremeU32);
+pub struct charu_niche(pub(super) NonMaxU32);
 
 #[cfg(test)]
 const _TEST_CHAR_SIZES: () = {

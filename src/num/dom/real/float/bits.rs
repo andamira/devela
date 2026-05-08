@@ -5,7 +5,7 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{ConstInit, NonExtremeU32, NonExtremeU64, ne};
+use crate::{ConstInit, NonMaxU32, NonMaxU64, nm};
 
 // Macro helper to implement the types f32bits, f32bits_niche, ...
 macro_rules! _num_dom_real_float_define_fbits {
@@ -14,10 +14,10 @@ macro_rules! _num_dom_real_float_define_fbits {
     };
     ($($float:ident + $bits:ident),+ $(,)?) => { $crate::paste! { $(
         _num_dom_real_float_define_fbits![
-            @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonExtreme $bits:upper>]
+            @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonMax $bits:upper>]
         ];
     )+ }};
-    (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NE:ident) => { $crate::paste! {
+    (@$non_niche:ident, $niche:ident, $float:ident, $bits:ident, $NM:ident) => { $crate::paste! {
         /* non-niche */
 
         #[doc = crate::_tags!(num ffi)]
@@ -68,7 +68,7 @@ macro_rules! _num_dom_real_float_define_fbits {
         /* niche */
 
         #[doc = crate::_tags!(num niche)]
-        #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NE "`]."]
+        #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NM "`]."]
         #[doc = crate::_doc_location!("num/dom/real")]
         ///
         /// This preserves all IEEE-754 bit patterns except the prohibited value.
@@ -90,18 +90,18 @@ macro_rules! _num_dom_real_float_define_fbits {
         #[must_use]
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        pub struct $niche($NE);
+        pub struct $niche($NM);
 
         impl $niche {
             #[doc = "Converts a `" $float "` into its masked bit representation."]
             ///
             /// All bit patterns are preserved except the prohibited one.
             pub const fn new(float: $float) -> Self {
-                Self(ne![lossy float.to_bits(), $bits])
+                Self(nm![lossy float.to_bits(), $bits])
             }
-            #[doc = "Wraps an existing raw bit pattern, masking it through `" $NE "`."]
+            #[doc = "Wraps an existing raw bit pattern, masking it through `" $NM "`."]
             pub const fn from_bits(bits: $bits) -> Self {
-                Self(ne![lossy bits, $bits])
+                Self(nm![lossy bits, $bits])
             }
 
             #[doc = "Reinterprets the stored bits as a `" $float "`."]
@@ -110,7 +110,7 @@ macro_rules! _num_dom_real_float_define_fbits {
             /// Returns the masked raw bits.
             ///
             /// The prohibited value is never returned; it is always replaced
-            #[doc = "by the remapped payload defined by `" $NE "`."]
+            #[doc = "by the remapped payload defined by `" $NM "`."]
             pub const fn as_bits(self) -> $bits { self.0.get() }
 
             /// Converts to the non-niche variant.

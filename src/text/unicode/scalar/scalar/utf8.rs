@@ -1,14 +1,14 @@
 // devela::text::unicode::scalar::scalar::utf8
 
 use super::*;
-use crate::{Char, CharAscii, MismatchedCapacity, NonExtremeU32, NonNiche, Str, is, slice, unwrap};
+use crate::{Char, CharAscii, MismatchedCapacity, NonMaxU32, NonNiche, Str, is, slice, unwrap};
 
 /// Implements methods for both `charu` and `charu_niche`.
 macro_rules! _text_char_scalar_charu_impls {
     //
     () => {
         _text_char_scalar_charu_impls![@non charu, NonNiche::<u32>, !charu_niche];
-        _text_char_scalar_charu_impls![@niche charu_niche, NonExtremeU32, !charu];
+        _text_char_scalar_charu_impls![@niche charu_niche, NonMaxU32, !charu];
     };
     // specific implementations for the non-niche version
     (@non $name:ident, $inner:ty, !$other:ty) => { $crate::paste! {

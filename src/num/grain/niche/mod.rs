@@ -38,35 +38,35 @@
 //!
 //! ## Recommended Defaults
 //!
-//! ### `NonExtremeU*` = `NonValueU*<MAX>`
+//! ### `NonMaxU*` = `NonValueU*<MAX>`
 //! - Preserve zero while prohibiting `MAX`.
 //! - Suitable for indices and counters where `MAX` is reserved.
 //! - Ideal for: collection indices, counters, bitmask handling.
 //! - **Optimization**: Single `NOT` instruction.
 //!
-//! ### `NonExtremeI*` = `NonValueI*<MIN>`
+//! ### `NonMinI*` = `NonValueI*<MIN>`
 //! - Preserve zero with a symmetric signed range.
 //! - Useful when `MIN` is problematic.
 //! - Ideal for: mathematical ranges, circular buffers, DSP algorithms.
 //! - **Optimization**: `LEA` instruction fusion.
 //!
 //! ## Optimization Characteristics
-//! | Type                | Prohibits | Storage       | Optimization | vs `NonZero*`         |
-//! |---------------------|-----------|---------------|--------------|-----------------------|
-//! | `NonExtremeU*`      | MAX       | `!value`      | `NOT`        | Keeps zero, drops MAX |
-//! | `NonExtremeI*`      | MIN       | `value ^ MIN` | `LEA`        | Keeps zero, drops MIN |
-//! | `NonValue*`         | Custom V  | `value ^ V`   | `XOR`        | Fully general         |
-//! | `NonZero*`          | 0         | raw value     | -            | Classic case          |
+//! | Type            | Prohibits | Storage       | Optimization | vs `NonZero*`         |
+//! |-----------------|-----------|---------------|--------------|-----------------------|
+//! | `NonMaxU*`      | MAX       | `!value`      | `NOT`        | Keeps zero, drops MAX |
+//! | `NonMinI*`      | MIN       | `value ^ MIN` | `LEA`        | Keeps zero, drops MIN |
+//! | `NonValue*`     | Custom V  | `value ^ V`   | `XOR`        | Fully general         |
+//! | `NonZero*`      | 0         | raw value     | -            | Classic case          |
 //!
 //! ## Usage Guide
-//! | Use Case                  | Recommended Type          | Advantage                      |
-//! |---------------------------|---------------------------|--------------------------------|
-//! | Must prohibit zero        | `NonZero*`                | Standard solution              |
-//! | Custom sentinel value     | `NonValue*<SENTINEL>`     | Flexible prohibited value      |
-//! | Index/counter handling    | `NonExtremeU*`            | Avoids overflow edge cases     |
-//! | Mathematical purity       | `NonExtremeI*`            | Mathematical clarity           |
-//! | API-only abstraction      | `MaybeNiche`              | Representation-agnostic        |
-//! | No constraints needed     | Primitive / `NonNiche`    | Maximum simplicity             |
+//! | Use Case                  | Recommended Type       | Advantage                     |
+//! |---------------------------|------------------------|-------------------------------|
+//! | Must prohibit zero        | `NonZero*`             | Standard solution             |
+//! | Custom sentinel value     | `NonValue*<SENTINEL>`  | Flexible prohibited value     |
+//! | Index/counter handling    | `NonMaxU*`             | Avoids overflow edge cases    |
+//! | Mathematical purity       | `NonMinI*`             | Mathematical clarity          |
+//! | API-only abstraction      | `MaybeNiche`           | Representation-agnostic       |
+//! | No constraints needed     | Primitive / `NonNiche` | Maximum simplicity            |
 //
 
 mod _reexport_core;
@@ -74,8 +74,8 @@ mod _reexport_core;
 mod impls; // impl ConstInit, BitSized
 
 mod absence; // MaybeNiche, NonNiche
-mod macros; // niche_prim!, ne!, nv!, nz!, (NicheNew)
-mod mem; // NonExtreme*, NonValue*
+mod macros; // niche_prim!, nm!, nv!, nz!, (NicheNew)
+mod mem; // NonMax*, NonMin*, NonValue*
 // mod norm; // Norm WIP
 
 crate::structural_mods! { // _mods, _reexports, _hidden
@@ -83,7 +83,7 @@ crate::structural_mods! { // _mods, _reexports, _hidden
         #[doc(inline)]
         pub use super::{
             absence::*,
-            macros::{niche_prim, ne, nv, nz},
+            macros::{niche_prim, nm, nv, nz},
             mem::*,
             // norm::*,
         };

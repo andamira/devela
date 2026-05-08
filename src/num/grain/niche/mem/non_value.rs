@@ -37,22 +37,25 @@ items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonValueI8, NonValueU8, NonExtremeI8};
-///
+/// # use devela::{NonValueI8, NonValueU8, NonMaxU16, NonMinI8};
 /// assert![NonValueI8::<3>::new(2).is_some()];
 /// assert![NonValueI8::<3>::new(3).is_none()];
 ///
-/// assert![NonExtremeI8::new(i8::MIN).is_none()];
-/// assert![NonExtremeI8::new(i8::MAX).is_some()];
-/// assert![NonExtremeI8::new(0).is_some()];
+/// assert![NonMinI8::new(i8::MIN).is_none()];
+/// assert![NonMinI8::new(i8::MAX).is_some()];
+/// assert![NonMinI8::new(0).is_some()];
+///
+/// assert![NonMaxU16::new(u16::MIN).is_some()];
+/// assert![NonMaxU16::new(u16::MAX).is_none()];
+/// assert![NonMaxU16::new(0).is_some()];
 /// ```
 ///
-/// See for example: [`NonValueI8`] and [`NonExtremeI8`].
+/// See for example: [`NonValueI8`], [`NonMaxU8`] and [`NonMinI8`].
 //
 // NOTE: can't use doc(cfg) attributes in generated methods.
 macro_rules! impl_non_value {
     // Defines a new unsigned non-value type.
-    // E.g.: impl_non_value![U 32, u32] would generate NonValueU32 and NonExtremeU32
+    // E.g.: impl_non_value![U 32, u32] would generate NonValueU32 and NonMaxU32
     (I $bits:literal, $IP:ty) => { impl_non_value![@MIN, "A signed", i, $bits, $IP]; };
     (U $bits:literal, $IP:ty) => { impl_non_value![@MAX, "An unsigned", u, $bits, $IP]; };
     (@$XTR:ident, $doc:literal, $s:ident, $b:literal, $IP:ty) => {
@@ -60,7 +63,7 @@ macro_rules! impl_non_value {
             impl_non_value![@
                 [<NonValue $IP:camel>],   // $name
                 [<NonZero $IP:camel>],    // $n0
-                [<NonExtreme $IP:camel>], // $ne
+                [<Non $XTR:camel $IP:camel>], // $nm
                 $XTR,
                 $doc,
                 $IP,
@@ -72,14 +75,14 @@ macro_rules! impl_non_value {
     (
     // $name: the full name of the new type. E.g. NonValueI8.
     // $n0: the full name of the inner NonZero. E.g. NonZeroI8.
-    // $ne: the full name of the new type. E.g. NonExtremeI8.
+    // $nm: the full name of the new type. E.g. NonMinI8, NonMaxU8.
     //
     // $XTR:  the *extreme* value constant for this type. (MIN | MAX).
     // $doc:  the specific beginning of the documentation.
     // $IP:   the type of the corresponding integer primitive. E.g. i8
     // $s:    the sign identifier: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    @$name:ident, $n0:ident, $ne:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
+    @$name:ident, $n0:ident, $nm:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
         => { $crate::paste! {
 
         // NOTE: the inner module is necessary to get the full docs for the alias.
@@ -101,30 +104,30 @@ macro_rules! impl_non_value {
             /// assert![NonValueI8::<13>::new(13).is_none()];
             /// assert![NonValueI8::<13>::new(12).unwrap().get() == 12];
             /// ```
-            #[doc = "See also [`" $ne "`]."]
+            #[doc = "See also [`" $nm "`]."]
             #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
             pub struct $name <const V: $IP>(pub(in crate::num::grain::niche::mem) $crate::$n0);
 
             /* aliases */
 
             #[doc = crate::_tags!(num niche)]
-            #[doc = $doc " integer that is known not to equal its most extreme value ([`"
-                $XTR "`][" $IP "::" $XTR "])."]
+            #[doc = $doc " integer that is known not to equal its [`"
+            $XTR "`][" $IP "::" $XTR "] value."]
             #[doc = crate::_doc_location!("num/grain/niche")]
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstInit`][crate::ConstInit] traits.
             #[doc = crate::_DOCLINK_CONST_INIT!()]
-            pub type $ne = $crate::$name <{$IP::$XTR}>;
+            pub type $nm = $crate::$name <{$IP::$XTR}>;
 
-            impl Default for $ne {
+            impl Default for $nm {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 fn default() -> Self {
                     cfg_select! { all(feature = "unsafe_niche", not(feature = "safe_num")) => {
                         // SAFETY: the default primitive value is always 0, and its MAX is never 0
-                        unsafe { return $ne::new_unchecked($IP::default()); }
-                    } _ => { $ne::new($IP::default()).unwrap() }}
+                        unsafe { return $nm::new_unchecked($IP::default()); }
+                    } _ => { $nm::new($IP::default()).unwrap() }}
                 }
             }
             // ConstInit for NonValue*
