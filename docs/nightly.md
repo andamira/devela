@@ -183,7 +183,14 @@ See also
 
 # Rust project Goals:
 - <https://rust-lang.github.io/rust-project-goals/>
-  - <https://rust-lang.github.io/rust-project-goals/2025h2/>
+  - <https://rust-lang.github.io/rust-project-goals/2026/goals.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/const-generics.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/macro-improvements.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/open-enums.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/open-namespaces.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/unsafe-fields.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/wasm-components.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/roadmap-rust-for-linux.html>
 - [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
 - [expanded const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
 - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
