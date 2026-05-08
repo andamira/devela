@@ -1,6 +1,5 @@
 // devela::lang::hum
 //
-#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; hum: art, i18n, nat)]
 // denote, form, prag, syntax, vocal, write
@@ -10,6 +9,7 @@
 //
 
 pub mod art; // Artificial human languages
+// pub mod code; // Cultural/semiotic code systems
 mod denote; // Denotation, reference, semantics
 mod form; // Word formation (morphology)
 pub mod i18n; // Internationalization and localization support
@@ -33,6 +33,7 @@ crate::structural_mods! { // _mods, _pub_mods
     _pub_mods {
         pub use super::{
             art::_all::*,
+            // code::_all::*,
             i18n::_all::*,
             nat::_all::*,
         };

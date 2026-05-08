@@ -142,6 +142,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_LANG_GRAM          = "Shared grammar and parsing machinery.";
     _DOC_LANG_HUM           = "Human linguistics and language theory.";
     _DOC_LANG_HUM_ART       = "Artificial human languages.";
+    _DOC_LANG_HUM_CODE      = "Human code systems, signs, ciphers as cultural language.";
     _DOC_LANG_HUM_I18N      = "Internationalization and localization support.";
     _DOC_LANG_HUM_NAT       = "Natural human languages.";
     _DOC_LANG_PROG          = "Languages of computation and execution.";
