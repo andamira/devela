@@ -14,7 +14,6 @@ mod _reexport_std;
 mod ext_str; // StrExt
 mod namespace; // Str
 mod nonul; // StringNonul
-// mod _wip_sixbit; WIP
 mod u; // StringU8, StringU16, StringU32, StringUsize
 
 #[cfg(feature = "alloc")]
@@ -26,7 +25,6 @@ crate::structural_mods! { // _mods, _reexports
             ext_str::*,
             namespace::Str,
             nonul::*,
-            // _wip_sixbit::*;
             u::*,
         };
         #[cfg(feature = "alloc")]

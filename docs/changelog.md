@@ -231,6 +231,15 @@
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
 
+## text
+- new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.
+- move submodule `char::ascii` to `ascii` and make public.
+- move submodule `char::digits` inside `ascii`
+- move submodule `char` to `unicode::scalar`
+- move submodule `grapheme` inside `unicode`.
+- rename `TextLut` to `AsciiLut`, move it to `ascii`.
+- move fn `scalar_as_ascii_translit` to `Translit::ascii_scalar`.
+
 ### text::char
 - new type `AsciiSet`.
 

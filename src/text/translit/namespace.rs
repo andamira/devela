@@ -1,0 +1,13 @@
+// devela::text::translit::namespace
+//
+//! Defines the [`Translit`] namespace.
+//
+
+#[doc = crate::_tags!(text namespace)]
+/// Lossy text transliteration utilities.
+///
+/// Provides small, mostly `const` mappings
+/// from Unicode scalars to simpler textual approximations.
+#[doc = crate::_doc_location!("text")]
+#[derive(Debug)]
+pub struct Translit;

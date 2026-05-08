@@ -3,7 +3,7 @@
 //! Defines [`SixelChar`].
 //
 
-use crate::{Display, FmtResult, FmtWriter, Formatter, StringU8, TextLut, format_buf, is, unwrap};
+use crate::{AsciiLut, Display, FmtResult, FmtWriter, Formatter, StringU8, format_buf, is, unwrap};
 
 #[doc = crate::_tags!(image term)]
 /// A sixel character.
@@ -148,7 +148,7 @@ impl SixelChar {
     pub const fn from_hexagram(hexagram: char) -> Option<Self> {
         let h = hexagram as usize;
         if h >= 0x4DC0 && h <= 0x4DFF {
-            Some(Self::from_bitmask(TextLut::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
+            Some(Self::from_bitmask(AsciiLut::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
         } else {
             None
         }
@@ -157,7 +157,7 @@ impl SixelChar {
     ///
     /// - Standard mapping: filled pixels represent broken lines.
     pub const fn to_hexagram(self) -> char {
-        TextLut::SIXEL_TO_CHAR_HEXAGRAM[self.as_bitmask() as usize]
+        AsciiLut::SIXEL_TO_CHAR_HEXAGRAM[self.as_bitmask() as usize]
     }
 
     /// Creates a sixel from an I Ching hexagram character.
@@ -167,7 +167,7 @@ impl SixelChar {
     pub const fn from_hexagram_inverted(hexagram: char) -> Option<Self> {
         let h = hexagram as usize;
         if h >= 0x4DC0 && h <= 0x4DFF {
-            Some(Self::from_bitmask(!TextLut::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
+            Some(Self::from_bitmask(!AsciiLut::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
         } else {
             None
         }
@@ -176,7 +176,7 @@ impl SixelChar {
     ///
     /// - Inverted mapping: filled pixels represent unbroken lines.
     pub const fn to_hexagram_inverted(self) -> char {
-        TextLut::SIXEL_TO_CHAR_HEXAGRAM[(!self.as_bitmask() & Self::MASK) as usize]
+        AsciiLut::SIXEL_TO_CHAR_HEXAGRAM[(!self.as_bitmask() & Self::MASK) as usize]
     }
 
     /* string */
@@ -283,7 +283,7 @@ impl Display for SixelChar {
     }
 }
 
-impl TextLut {
+impl AsciiLut {
     /// Lookup table for fast conversion from sixel bitmask to I-Ching hexagram Unicode scalar.
     ///
     /// - Standard mapping: filled pixels represent broken lines.
@@ -323,8 +323,8 @@ impl TextLut {
     const _SIXEL_HEXAGRAM_CORRESPONDANCE: () = {
         let mut index = 0;
         while index < 64 {
-            let bitmask = TextLut::CHAR_HEXAGRAM_TO_SIXEL[index];
-            let char_from_bitmask = TextLut::SIXEL_TO_CHAR_HEXAGRAM[bitmask as usize];
+            let bitmask = AsciiLut::CHAR_HEXAGRAM_TO_SIXEL[index];
+            let char_from_bitmask = AsciiLut::SIXEL_TO_CHAR_HEXAGRAM[bitmask as usize];
             let char_code = char_from_bitmask as u32;
             let index_from_char = (char_code - 0x4DC0) as usize;
 
@@ -333,7 +333,7 @@ impl TextLut {
             assert!(index_from_char == index);
 
             // Verify that CHAR_HEXAGRAM_TO_SIXEL[index_from_char] gives back the original bitmask
-            let roundtrip_bitmask = TextLut::CHAR_HEXAGRAM_TO_SIXEL[index_from_char];
+            let roundtrip_bitmask = AsciiLut::CHAR_HEXAGRAM_TO_SIXEL[index_from_char];
             assert!(roundtrip_bitmask == bitmask);
 
             index += 1;

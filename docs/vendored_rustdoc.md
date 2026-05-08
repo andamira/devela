@@ -44,8 +44,8 @@
   [`Current`]: crate::sys::mem::Current
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
   [M_grapheme_machine]: crate::_doc::vendored::grapheme_machine
-  [`GraphemeMachine`]: crate::text::grapheme::GraphemeMachine
-  [`text::grapheme`]: crate::text::grapheme
+  [`GraphemeMachine`]: crate::text::unicode::grapheme::GraphemeMachine
+  [`text::grapheme`]: crate::text::unicode::grapheme
   <!-- [M_musl]: crate::_doc::vendored::musl -->
   [`Linux`]: crate::sys::os::linux::Linux
   [M_object-id]: crate::_doc::vendored::object_id
@@ -53,7 +53,7 @@
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
   [`as_bytes_mut`]: crate::sys::mem::Mem::as_bytes_mut
-  [`scalar_as_ascii_translit`]: crate::text::char::scalar_as_ascii_translit
+  [`Translit::ascii_scalar`]: crate::text::Translit::ascii_scalar
   [`FatPtr`]: crate::sys::mem::FatPtr
 
 <!-- license: Other compatible -->

@@ -6,10 +6,9 @@
 // - definitions
 // - trait impls
 
-use crate::{
-    Char, CharIter, InvalidText, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Str, char7,
-    char8, char16, charu, is, lets, slice, unwrap, whilst,
-};
+use crate::{Char, CharIter, Str, char7, char8, char16, charu};
+use crate::{InvalidText, MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
+use crate::{is, lets, slice, unwrap, whilst};
 
 /* definitions */
 

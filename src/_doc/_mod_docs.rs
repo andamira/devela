@@ -292,16 +292,22 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 11. text (symbolic sequences with cultural weight)
-    _DOC_TEXT            = "Text types and processing.";
-    _DOC_TEXT_ASCII      = "ASCII strings and characters.";
-    _DOC_TEXT_CHAR       = "Unicode scalar types and operations.";
-    _DOC_TEXT_GRAPHEME   = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
+    _DOC_TEXT            = "Symbolic sequences, encodings, and text processing.";
+    _DOC_TEXT_ASCII      = "ASCII characters, sets, digits and tables";
+    _DOC_TEXT_CODEC      = "Text codecs, alphabets, and transmission codes.";
+    _DOC_TEXT_DRAW       = "Drawing with textual symbols.";
     _DOC_TEXT_ERROR      = "Text-related error types.";
-    _DOC_TEXT_FMT        = "String formatting.";
-    _DOC_TEXT_LAYOUT     = "One-dimensional spatial semantics of text.";
-    _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and an available extent.";
-    _DOC_TEXT_PARSE      = "Unstructured string parsing.";
-    _DOC_TEXT_STR        = "String types and related functionality.";
+    _DOC_TEXT_FMT        = "Text and string formatting.";
+    _DOC_TEXT_GENERATE   = "Procedures that produce text.";
+    _DOC_TEXT_LAYOUT     = "Spatial arrangement of text within available extent.";
+    _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and bounded space.";
+    _DOC_TEXT_METRIC     = "Text measures, positions, cursors, and ranges.";
+    _DOC_TEXT_PARSE      = "Lightweight parsing over string slices.";
+    _DOC_TEXT_STR        = "String types, views, and storage invariants.";
+    _DOC_TEXT_TRANSLIT   = "Lossy script, alphabet, and symbol approximations.";
+    _DOC_TEXT_UNICODE          = "Unicode text units, properties, and algorithms.";
+    _DOC_TEXT_UNICODE_SCALAR   = "Unicode scalar values and operations.";
+    _DOC_TEXT_UNICODE_GRAPHEME = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
 
     // 12. ui (interaction structures, presentation state, and input semantics)
     _DOC_UI         = "Interactive surfaces, input semantics, and presentation state.";

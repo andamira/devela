@@ -8,13 +8,12 @@
 //   - trait impls
 // - tests
 
-use crate::{
-    CharIter, ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
-    Hasher, InvalidText, InvalidUtf8, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Str,
-    is, paste, slice, text::char::*, whilst,
-};
+use crate::{CharIter, InvalidText, InvalidUtf8, Str, text::unicode::scalar::*};
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, unwrap};
+use crate::{ConstInit, Deref, Hash, Hasher, is, paste, slice, whilst};
+use crate::{Debug, Display, FmtError, FmtResult, FmtWrite, Formatter};
+use crate::{MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
 
 macro_rules! impl_str_u {
     // in sync with devela::code::const_init % _stringu
