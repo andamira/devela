@@ -1,177 +1,76 @@
 // devela::num::grain::niche::macros
 //
-//! Defines [`nm!`], [`nv!`] [`nz!`], and the [`NicheNew`] hidden helper.
+//! Defines [`niche!`], (`NicheNew`) and [`niche_prim!`].
 //
 // TOC
-// - macro niche_prim! (via _generate_niche_prim!)
-// - macro nm!
-// - macro nv!
-// - macro nz!
-// - struct NicheNew (hidden)
+// - niche!
+// - (NicheNew)
+// - (_generate_niche_prim!) generates niche_prim!
 // - tests
 
-/// Generates the `niche_prim!` macro for a closed set of primitive carrier types.
-///
-/// It exists solely to avoid duplication and keep the supported primitive list centralized.
-///
-/// About using $ as a token delimiter:
-///   this part:  ($P $_d($_:tt)*) => { $P };
-///   expands to: (u8 $($_:tt)*) => { u8 };
-macro_rules! _generate_niche_prim {
-    ($_d:tt $( $XTR:ident: $($P:ty),+ $(,)? );+ $(;)?) => { $crate::paste! {
-        #[doc = crate::_tags!(niche)]
-        /// Maps a niche representation type to its primitive carrier type.
-        #[doc = crate::_doc_location!("num/grain/niche")]
-        ///
-        /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
-        /// supported niche type (for example `NonMaxU8`, `NonValueU16<…>`,
-        /// `MaybeNiche<NonZero<i32>>`) to its underlying primitive numeric type
-        /// (`u8`, `u16`, `i32`, …).
-        ///
-        /// This macro is intended for use in type position, including type aliases,
-        /// signatures, and const contexts.
-        ///
-        /// ## Supported forms
-        /// For each supported primitive `P`, the following spellings are recognized:
-        /// - `P`
-        /// - `NonNiche<P>`
-        /// - `NonZero<P>` and `NonZeroP`
-        /// - `NonMaxP` (for unsigned primitives)
-        /// - `NonMinP` (for signed primitives)
-        /// - `NonValueP<…>`
-        /// - `MaybeNiche<P>`
-        /// - `MaybeNiche<NonNiche<P>>`
-        /// - `MaybeNiche<NonZero<P>>` and `MaybeNiche<NonZeroP>`
-        /// - `MaybeNiche<NonMaxP> (for unsigned primitives)`
-        /// - `MaybeNiche<NonMinP> (for signed primitives)`
-        /// - `MaybeNiche<NonValueP<…>>`
-        ///
-        /// The mapping is shallow and exact: only the explicitly supported spellings are matched.
-        ///
-        /// ## Closed-world behavior
-        /// The set of recognized niche types is intentionally fixed and mirrors the
-        /// niche representations provided by this crate. User-defined wrappers or
-        /// arbitrary nesting are not supported.
-        ///
-        /// # Examples
-        /// ```
-        /// # use devela::{NonValueU8, niche_prim};
-        /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
-        /// ```
-        #[doc(hidden)]
-        #[macro_export]
-        macro_rules! niche_prim· {
-            // strip one leading path segment at a time
-            ($head:ident :: $_d($rest:tt)+) => { $crate::niche_prim!($_d($rest)+) };
-            $($(
-                ($P $_d($_:tt)*) => { $P };
-                (NonNiche<$P> $_d($_:tt)*) => { $P };
-                (NonZero<$P> $_d($_:tt)*) => { $P };
-                ([<NonZero$P:camel>] $_d($_:tt)*) => { $P };
-                ([<Non $XTR $P:camel>] $_d($_:tt)*) => { $P };
-                ([<NonValue$P:camel>] $_d($_:tt)*) => { $P };
-                (MaybeNiche<$P> $_d($_:tt)*) => { $P };
-                (MaybeNiche<NonNiche<$P>> $_d($_:tt)*) => { $P };
-                (MaybeNiche<NonZero<$P>> $_d($_:tt)*) => { $P };
-                (MaybeNiche<[<NonZero$P:camel>]> $_d($_:tt)*) => { $P };
-                (MaybeNiche<[<Non $XTR $P:camel>]> $_d($_:tt)*) => { $P };
-                (MaybeNiche<[<NonValue$P:camel>]> $_d($_:tt)*) => { $P };
-            )+)+
-        }
-        #[doc(inline)]
-        pub use niche_prim· as niche_prim;
-    }};
-}
-_generate_niche_prim![$ Min: i8, i16, i32, i64, i128, isize; Max: u8, u16, u32, u64, u128, usize; ];
-
 #[doc = crate::_tags!(num niche construction)]
-/// Creates a `NonMax*` or `NonMin*` niche instance with compile-time checking.
+/// Creates a primitive niche value with compile-time type selection.
 #[doc = crate::_doc_location!("num/grain/niche")]
+///
+/// `niche!` constructs one of the primitive niche wrappers by spelling the
+/// excluded value as a small invariant:
+///
+/// - `!= 0` creates a `NonZero*`.
+/// - `!= MIN` creates a signed `NonMin*`.
+/// - `!= MAX` creates an unsigned `NonMax*`.
+/// - `!= V` creates a `NonValue*<V>`.
+///
+/// Use `lossy` to map a prohibited value to a nearby valid value instead of panicking.
 ///
 /// # Examples
 /// ```
-/// # use devela::nm;
-/// let x = nm!(42_u32);  // NonMaxU32
-/// let y = nm!(42, u32); // alternative syntax
-/// // let y: NonMaxU32 = nm!(42); // Would fail to compile (needs type suffix)
+/// # use devela::{niche, NonZeroU8, NonMaxU8, NonMinI8, NonValueU8};
+/// let a: NonZeroU8     = niche!(42_u8;  != 0);
+/// let b: NonMaxU8      = niche!(42_u8;  != MAX);
+/// let c: NonMinI8      = niche!(-42_i8; != MIN);
+/// let d: NonValueU8<7> = niche!(42_u8;  != 7);
 ///
-/// // alternative lossy constructor, non-panicking
-/// assert_eq![nm!(lossy u8::MAX).get(), u8::MAX-1]; // MAX prohibited value is -1 mapped
-/// assert_eq![nm!(lossy 254_u8).get(), 254];
-/// assert_eq![nm!(lossy -127_i8).get(), -127];
-/// assert_eq![nm!(lossy i8::MIN).get(), i8::MIN+1]; // MIN prohibited value is +1 mapped
+/// // The carrier type may also be written separately.
+/// let e: NonMaxU8 = niche!(42, u8; != MAX);
+///
+/// // Lossy construction avoids panicking on the excluded value.
+/// assert_eq![niche!(lossy 0_u8;     != 0).get(), 1];
+/// assert_eq![niche!(lossy u8::MAX;  != MAX).get(), u8::MAX - 1];
+/// assert_eq![niche!(lossy i8::MIN;  != MIN).get(), i8::MIN + 1];
+///
+/// // These would fail:
+/// // let x: NonMaxU32 = niche!(42; != MAX);      // needs a suffix or explicit type
+/// // let y: NonMaxU8  = niche!(u8::MAX; != MAX); // strict construction rejects MAX
 /// ```
 #[macro_export]
-#[doc(hidden)]
-macro_rules! nm {
-    (lossy $num:expr) => {{ $crate::NicheNew($num).to_lossy_non_extreme() }};
-    (lossy $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_extreme() }};
-    ($num:expr) => {{ $crate::NicheNew($num).to_non_extreme() }};
-    ($num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_non_extreme() }};
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+macro_rules! niche {
+    /* lossy: specific */
+    (lossy $num:expr; != 0) => {{ $crate::NicheNew($num).to_lossy_non_zero() }};
+    (lossy $num:expr, $T:ty; != 0) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_zero() }};
+    (lossy $num:expr; != MIN) => {{ $crate::NicheNew($num).to_lossy_non_extreme() }};
+    (lossy $num:expr, $T:ty; != MIN) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_extreme() }};
+    (lossy $num:expr; != MAX) => {{ $crate::NicheNew($num).to_lossy_non_extreme() }};
+    (lossy $num:expr, $T:ty; != MAX) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_extreme() }};
+
+    /* lossy: fallback */
+    (lossy $num:expr; != $V:expr) => {{ $crate::NicheNew($num).to_lossy_non_value::<{ $V }>() }};
+    (lossy $num:expr, $T:ty; != $V:expr) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_value::<{ $V }>() }};
+
+    /* strict: specific */
+    ($num:expr; != 0) => {{ $crate::NicheNew($num).to_non_zero() }};
+    ($num:expr, $T:ty; != 0) => {{ $crate::NicheNew::<$T>($num).to_non_zero() }};
+    ($num:expr; != MIN) => {{ $crate::NicheNew($num).to_non_extreme() }};
+    ($num:expr, $T:ty; != MIN) => {{ $crate::NicheNew::<$T>($num).to_non_extreme() }};
+    ($num:expr; != MAX) => {{ $crate::NicheNew($num).to_non_extreme() }};
+    ($num:expr, $T:ty; != MAX) => {{ $crate::NicheNew::<$T>($num).to_non_extreme() }};
+
+    /* strict: fallback */
+    ($num:expr; != $V:expr) => {{ $crate::NicheNew($num).to_non_value::<{ $V }>() }};
+    ($num:expr, $T:ty; != $V:expr) => {{ $crate::NicheNew::<$T>($num).to_non_value::<{ $V }>() }};
 }
 #[doc(inline)]
-pub use nm;
-
-#[doc = crate::_tags!(num niche construction)]
-/// Creates a `NonValue*` niche value with compile-time checking.
-#[doc = crate::_doc_location!("num/grain/niche")]
-///
-/// # Examples
-/// ```
-/// # use devela::nv;
-/// let x = nv!(3: 42_u8);  // NonValueU8<3>
-/// let y = nv!(3: 42, u8); // alternative syntax
-/// // let y: NonValue<u8> = nv!(3: 42); // Would fail to compile (needs type suffix)
-///
-/// // alternative lossy constructor, non-panicking
-/// assert_eq![nv!(lossy 255: 255_u8).get(), 254]; // most prohibited values are -1 mapped
-/// assert_eq![nv!(lossy 255: 254_u8).get(), 254];
-/// assert_eq![nv!(lossy 2: 2, u8).get(), 1];
-/// assert_eq![nv!(lossy 2: 1, u8).get(), 1];
-/// assert_eq![nv!(lossy 0: 0, u8).get(), 1]; // MIN prohibited value is +1 mapped
-/// ```
-#[macro_export]
-#[doc(hidden)]
-macro_rules! nv {
-    (lossy $val:literal: $num:expr) => {{ $crate::NicheNew($num).to_lossy_non_value::<$val>() }};
-    (lossy $val:literal: $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_value::<$val>() }};
-
-    ($val:literal: $num:expr) => {{ $crate::NicheNew($num).to_non_value::<$val>() }};
-    ($val:literal: $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_non_value::<$val>() }};
-}
-#[doc(inline)]
-pub use nv;
-
-#[doc = crate::_tags!(num niche construction)]
-/// Creates a `NonZero*` niche value with compile-time checking.
-#[doc = crate::_doc_location!("num/grain/niche")]
-///
-/// # Examples
-/// ```
-/// # use devela::nz;
-/// let x = nz!(42u32);   // NonZeroU32
-/// let y = nz!(42, u32); // alternative syntax
-/// // let y: NonZero<u8> = nz!(42); // Would fail to compile (needs type suffix)
-///
-/// // alternative lossy constructor, non-panicking
-/// assert_eq![nz!(lossy u8::MAX).get(), u8::MAX];
-/// assert_eq![nz!(lossy 1, u8).get(), 1];
-/// assert_eq![nz!(lossy 0_u8).get(), 1]; // 0 value is 1 mapped
-/// assert_eq![nz!(lossy i8::MIN).get(), i8::MIN];
-/// ```
-#[macro_export]
-#[doc(hidden)]
-macro_rules! nz {
-    (lossy $num:expr) => {{ $crate::NicheNew($num).to_lossy_non_zero() }};
-    (lossy $num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_zero() }};
-
-    ($num:expr) => {{ $crate::NicheNew($num).to_non_zero() }};
-    ($num:expr, $T:ty) => {{ $crate::NicheNew::<$T>($num).to_non_zero() }};
-}
-#[doc(inline)]
-pub use nz;
-
-/* helpers */
+pub use niche;
 
 #[doc = crate::_tags!(num niche construction)]
 /// Private helper to construct niche types.
@@ -179,7 +78,6 @@ pub use nz;
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct NicheNew<T>(pub T);
-
 macro_rules! impl_niche_new {
     () => {
         impl_niche_new!(U MAX: u8, u16, u32, u64, u128, usize);
@@ -229,6 +127,80 @@ macro_rules! impl_niche_new {
 }
 impl_niche_new!();
 
+/// Generates the `niche_prim!` macro for a closed set of primitive carrier types.
+///
+/// It exists solely to avoid duplication and keep the supported primitive list centralized.
+///
+/// About using $ as a token delimiter:
+///   this part:  ($P $_d($_:tt)*) => { $P };
+///   expands to: (u8 $($_:tt)*) => { u8 };
+macro_rules! _generate_niche_prim {
+    ($_d:tt $( $XTR:ident: $($P:ty),+ $(,)? );+ $(;)?) => { $crate::paste! {
+        #[doc = crate::_tags!(niche)]
+        /// Maps a niche representation type to its primitive carrier type.
+        #[doc = crate::_doc_location!("num/grain/niche")]
+        ///
+        /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
+        /// supported niche type (for example `NonMaxU8`, `NonValueU16<…>`,
+        /// `MaybeNiche<NonZero<i32>>`) to its underlying primitive numeric type
+        /// (`u8`, `u16`, `i32`, …).
+        ///
+        /// This macro is intended for use in type position, including type aliases,
+        /// signatures, and const contexts.
+        ///
+        /// ## Supported forms
+        /// For each supported primitive `P`, the following spellings are recognized:
+        /// - `P`
+        /// - `NonNiche<P>`
+        /// - `NonZero<P>` and `NonZeroP`
+        /// - `NonMaxP` (for unsigned primitives)
+        /// - `NonMinP` (for signed primitives)
+        /// - `NonValueP<…>`
+        /// - `MaybeNiche<P>`
+        /// - `MaybeNiche<NonNiche<P>>`
+        /// - `MaybeNiche<NonZero<P>>` and `MaybeNiche<NonZeroP>`
+        /// - `MaybeNiche<NonMaxP> (for unsigned primitives)`
+        /// - `MaybeNiche<NonMinP> (for signed primitives)`
+        /// - `MaybeNiche<NonValueP<…>>`
+        ///
+        /// The mapping is shallow and exact: only the explicitly supported spellings are matched.
+        ///
+        /// ## Closed-world behavior
+        /// The set of recognized niche types is intentionally fixed and mirrors the
+        /// niche representations provided by this crate. User-defined wrappers or
+        /// arbitrary nesting are not supported.
+        ///
+        /// # Examples
+        /// ```
+        /// # use devela::{NonValueU8, niche_prim};
+        /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
+        /// ```
+        #[macro_export]
+        #[cfg_attr(cargo_primary_package, doc(hidden))]
+        macro_rules! niche_prim· {
+            // strip one leading path segment at a time
+            ($head:ident :: $_d($rest:tt)+) => { $crate::niche_prim!($_d($rest)+) };
+            $($(
+                ($P $_d($_:tt)*) => { $P };
+                (NonNiche<$P> $_d($_:tt)*) => { $P };
+                (NonZero<$P> $_d($_:tt)*) => { $P };
+                ([<NonZero$P:camel>] $_d($_:tt)*) => { $P };
+                ([<Non $XTR $P:camel>] $_d($_:tt)*) => { $P };
+                ([<NonValue$P:camel>] $_d($_:tt)*) => { $P };
+                (MaybeNiche<$P> $_d($_:tt)*) => { $P };
+                (MaybeNiche<NonNiche<$P>> $_d($_:tt)*) => { $P };
+                (MaybeNiche<NonZero<$P>> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<NonZero$P:camel>]> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<Non $XTR $P:camel>]> $_d($_:tt)*) => { $P };
+                (MaybeNiche<[<NonValue$P:camel>]> $_d($_:tt)*) => { $P };
+            )+)+
+        }
+        #[doc(inline)]
+        pub use niche_prim· as niche_prim;
+    }};
+}
+_generate_niche_prim![$ Min: i8, i16, i32, i64, i128, isize; Max: u8, u16, u32, u64, u128, usize; ];
+
 #[cfg(test)]
 crate::items! {
     #[test]
@@ -255,39 +227,41 @@ crate::items! {
     }
 
     #[test]
-    fn test_nz() {
-        assert_eq![nz![20i32], crate::NonZeroI32::new(20).unwrap()];
-        assert_eq![nz![20u8], crate::NonZeroU8::new(20).unwrap()];
+    fn test_niche_non0() {
+        assert_eq![niche![20i32; != 0], crate::NonZeroI32::new(20).unwrap()];
+        assert_eq![niche![20u8;  != 0], crate::NonZeroU8::new(20).unwrap()];
         // alternative syntax
-        assert_eq![nz![20, i32], crate::NonZeroI32::new(20).unwrap()];
-        assert_eq![nz![20, u8], crate::NonZeroU8::new(20).unwrap()];
+        assert_eq![niche![20, i32; != 0], crate::NonZeroI32::new(20).unwrap()];
+        assert_eq![niche![20, u8;  != 0], crate::NonZeroU8::new(20).unwrap()];
     }
     #[test]
     #[should_panic(expected = "value must not be 0")]
-    fn test_nz_panic() { let _panic = nz![0i64]; }
+    fn test_niche_non0_panic() { let _panic = niche![0i64; != 0]; }
 
     #[test]
-    fn test_nv() {
-        assert_eq![nv![3: 20u8], crate::NonValueU8::new(20).unwrap()];
+    fn test_niche_non_value() {
+        assert_eq![niche![20u8; != 3], crate::NonValueU8::new(20).unwrap()];
         // alternative syntax
-        assert_eq![nv![3: 20, i32], crate::NonValueI32::new(20).unwrap()];
+        assert_eq![niche![20, i32; != 3], crate::NonValueI32::new(20).unwrap()];
     }
     #[test]
     #[should_panic(expected = "Invalid value")]
-    fn test_nv_panic() { let _panic = nv![3: 3, i32]; }
+    fn test_niche_non_value_panic() { let _panic = niche![3, i32; != 3]; }
 
     #[test]
-    fn test_ne() {
-        assert_eq![nm![20i8], crate::NonMinI8::new(20).unwrap()];
-        assert_eq![nm![20u8], crate::NonMaxU8::new(20).unwrap()];
+    fn test_niche_non_extreme() {
+        assert_eq![niche![20i8; != MIN], crate::NonMinI8::new(20).unwrap()];
+        assert_eq![niche![20u8; != MAX], crate::NonMaxU8::new(20).unwrap()];
         // alternative syntax
-        assert_eq![nm![20, i8], crate::NonMinI8::new(20).unwrap()];
-        assert_eq![nm![20, u8], crate::NonMaxU8::new(20).unwrap()];
+        assert_eq![niche![20, i8; != MIN], crate::NonMinI8::new(20).unwrap()];
+        assert_eq![niche![20, u8; != MAX], crate::NonMaxU8::new(20).unwrap()];
     }
     #[test]
     #[should_panic(expected = "value must not be MIN")]
-    fn test_ne_min_panic() { let min = i8::MIN; let _panic = nm![min]; }
+    fn test_niche_non_min_panic() { let min = i8::MIN; let _panic = niche![min; != MIN]; }
     #[test]
     #[should_panic(expected = "value must not be MAX")]
-    fn test_ne_max_panic() { let max = u8::MAX; let _panic = nm![max]; }
+    fn test_niche_non_max_panic() { let max = u8::MAX; let _panic = niche![max; != MAX]; }
+
+
 }

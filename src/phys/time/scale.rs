@@ -3,7 +3,7 @@
 //! Defines [`TimeScale`].
 //
 
-use crate::{NonZeroU32, Ratio, nz, unwrap};
+use crate::{NonZeroU32, Ratio, niche, unwrap};
 
 #[doc = crate::_tags!(time)]
 /// Describes the conceptual scale at which time is expressed or interpreted.
@@ -150,12 +150,12 @@ impl TimeScale {
     /// Calendar-based scales (`Days`, `Years`) return `None`.
     pub const fn to_ratio(self) -> Option<Ratio<NonZeroU32, NonZeroU32>> {
         match self {
-            Self::Seconds => Some(Ratio::new(nz!(1u32), nz!(1u32))),
-            Self::Milliseconds => Some(Ratio::new(nz!(1u32), nz!(1_000u32))),
-            Self::Microseconds => Some(Ratio::new(nz!(1u32), nz!(1_000_000u32))),
-            Self::Nanoseconds => Some(Ratio::new(nz!(1u32), nz!(1_000_000_000u32))),
-            Self::Minutes => Some(Ratio::new(nz!(60u32), nz!(1u32))),
-            Self::Hours => Some(Ratio::new(nz!(3_600u32), nz!(1u32))),
+            Self::Seconds => Some(Ratio::new(niche!(1u32;!=0), niche!(1u32;!=0))),
+            Self::Milliseconds => Some(Ratio::new(niche!(1u32; !=0), niche!(1_000u32;!=0))),
+            Self::Microseconds => Some(Ratio::new(niche!(1u32; !=0), niche!(1_000_000u32;!=0))),
+            Self::Nanoseconds => Some(Ratio::new(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0))),
+            Self::Minutes => Some(Ratio::new(niche!(60u32;!=0), niche!(1u32;!=0))),
+            Self::Hours => Some(Ratio::new(niche!(3_600u32;!=0), niche!(1u32;!=0))),
             Self::Ratio(r) => Some(r),
             Self::Days | Self::Years => None,
         }
@@ -176,15 +176,15 @@ impl TimeScale {
     /// civil-time accuracy.
     pub const fn to_ratio_simulated(self) -> Ratio<NonZeroU32, NonZeroU32> {
         match self {
-            Self::Seconds => Ratio::new(nz!(1u32), nz!(1u32)),
-            Self::Milliseconds => Ratio::new(nz!(1u32), nz!(1_000u32)),
-            Self::Microseconds => Ratio::new(nz!(1u32), nz!(1_000_000u32)),
-            Self::Nanoseconds => Ratio::new(nz!(1u32), nz!(1_000_000_000u32)),
-            Self::Minutes => Ratio::new(nz!(60u32), nz!(1u32)),
-            Self::Hours => Ratio::new(nz!(3_600u32), nz!(1u32)),
+            Self::Seconds => Ratio::new(niche!(1u32;!=0), niche!(1u32;!=0)),
+            Self::Milliseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000u32;!=0)),
+            Self::Microseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000_000u32;!=0)),
+            Self::Nanoseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0)),
+            Self::Minutes => Ratio::new(niche!(60u32;!=0), niche!(1u32;!=0)),
+            Self::Hours => Ratio::new(niche!(3_600u32;!=0), niche!(1u32;!=0)),
             Self::Ratio(r) => r,
-            Self::Days => Ratio::new(nz!(86_400u32), nz!(1u32)), // 24 hours
-            Self::Years => Ratio::new(nz!(31_536_000u32), nz!(1u32)), // 365 days
+            Self::Days => Ratio::new(niche!(86_400u32;!=0), niche!(1u32;!=0)), // 24 hours
+            Self::Years => Ratio::new(niche!(31_536_000u32;!=0), niche!(1u32;!=0)), // 365 days
         }
     }
 }

@@ -5,7 +5,7 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{ConstInit, NonMaxU32, NonMaxU64, nm};
+use crate::{ConstInit, NonMaxU32, NonMaxU64, niche};
 
 // Macro helper to implement the types f32bits, f32bits_niche, ...
 macro_rules! _num_dom_real_float_define_fbits {
@@ -97,11 +97,11 @@ macro_rules! _num_dom_real_float_define_fbits {
             ///
             /// All bit patterns are preserved except the prohibited one.
             pub const fn new(float: $float) -> Self {
-                Self(nm![lossy float.to_bits(), $bits])
+                Self(niche![lossy float.to_bits(), $bits; != MAX])
             }
             #[doc = "Wraps an existing raw bit pattern, masking it through `" $NM "`."]
             pub const fn from_bits(bits: $bits) -> Self {
-                Self(nm![lossy bits, $bits])
+                Self(niche![lossy bits, $bits; != MAX])
             }
 
             #[doc = "Reinterprets the stored bits as a `" $float "`."]

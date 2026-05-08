@@ -74,7 +74,7 @@ mod _reexport_core;
 mod impls; // impl ConstInit, BitSized
 
 mod absence; // MaybeNiche, NonNiche
-mod macros; // niche_prim!, nm!, nv!, nz!, (NicheNew)
+mod macros; // niche!, (NicheNew), niche_prim!
 mod mem; // NonMax*, NonMin*, NonValue*
 // mod norm; // Norm WIP
 
@@ -83,7 +83,7 @@ crate::structural_mods! { // _mods, _reexports, _hidden
         #[doc(inline)]
         pub use super::{
             absence::*,
-            macros::{niche_prim, nm, nv, nz},
+            macros::{niche, niche_prim},
             mem::*,
             // norm::*,
         };
