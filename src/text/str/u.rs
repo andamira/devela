@@ -17,7 +17,7 @@ use crate::{MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
 
 macro_rules! impl_str_u {
     // in sync with devela::code::const_init % _stringu
-    () => { impl_str_u![u8, u16, u32, usize]; };
+    () => { impl_str_u![u8, u16]; };
     (
     // $t: the length type. E.g.: u8.
     $($t:ty),+ $(,)?) => { $( paste! { impl_str_u![@[<String $t:camel>], $t]; } )+ };

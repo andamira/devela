@@ -14,7 +14,7 @@ mod _reexport_std;
 mod ext_str; // StrExt
 mod namespace; // Str
 mod nonul; // StringNonul
-mod u; // StringU8, StringU16, StringU32, StringUsize
+mod u; // StringU8, StringU16
 
 #[cfg(feature = "alloc")]
 mod ext_string; // StringExt

@@ -246,7 +246,7 @@
 - rename `TextLut` to `AsciiLut`, move it to `ascii`.
 - move fn `scalar_as_ascii_translit` to `Translit::ascii_scalar`.
 
-### text::char
+### text::ascii
 - new type `AsciiSet`.
 
 ### text::fmt
@@ -256,6 +256,9 @@
 - update `TextScanner`
   - new methods: `take_ascii_ident_tail`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`.
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
+
+### text::str
+- remove `StringU32`, `StringUSize`.
 
 ### ui::event
 - new types: `EventButtons`, `EventTagSet`, `EventWheelUnit`.
