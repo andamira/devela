@@ -112,6 +112,9 @@
 ### data::id
 - rename `define_handle!` to `handle!`
 
+### data::layout
+- update `buffer_linear!` to add index type guards and optimize zero-index creation.
+
 ### data::topol
 - rename `ConstListIterator` to `ConstListIter`; add new const-fn `next` method.
 

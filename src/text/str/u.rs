@@ -112,8 +112,8 @@ macro_rules! impl_str_u {
             /* niche construction */
             #[inline(always)]
             const fn _ni_zero() -> $crate::MaybeNiche<$NI> {
-                Self::_ni_prim(0)
-                // $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$NI>::ZERO]
+                // SAFETY-INVARIANT: `$NI` is a `NonMaxU*`; zero is always representable.
+                $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$NI>::ZERO]
             }
             #[inline(always)]
             const fn _ni_prim(p: $P) -> $crate::MaybeNiche<$NI> {

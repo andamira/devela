@@ -309,6 +309,8 @@ macro_rules! buffer_linear {
     };
     // common items for tracked len (regimes: static, view)
     (%common_tracked $name:ident, $I:ty, $P:ty) => {
+        $crate::buffer_linear!(%guard_index_repr $I);
+
         /// Constructs a buffer from raw components, assuming all invariants hold.
         #[inline(always)]
         const fn _new(storage: S, len: $crate::MaybeNiche<$I>) -> Self {
@@ -321,7 +323,8 @@ macro_rules! buffer_linear {
         // It should not panic since we've already checked the invariants.
         #[inline(always)]
         const fn _idx_zero() -> $crate::MaybeNiche<$I> {
-            $crate::unwrap![some $crate::MaybeNiche::<$I>::ZERO]
+            // SAFETY-INVARIANT: checked above; buffer indices must represent zero.
+            $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$I>::ZERO]
         }
 
         /// `a == b`
@@ -420,6 +423,8 @@ macro_rules! buffer_linear {
     };
     // common items for delegated len (regimes: alloc)
     (%common_delegated $name:ident, $I:ty, $P:ty) => {
+        $crate::buffer_linear!(%guard_index_repr $I);
+
         /// Constructs a buffer from raw components, assuming all invariants hold.
         #[inline(always)]
         const fn _new(storage: S) -> Self {
@@ -557,6 +562,13 @@ macro_rules! buffer_linear {
         pub fn visit_mut_slice<F, R>(&mut self, f: F)
             -> R where for<'v> F: FnOnce(&'v mut [T]) -> R { f(self.as_mut_slice())
         }
+    };
+    // only allow implementions over unsigned integers of size <= pointer-width
+    (%guard_index_repr $I:ty) => {
+        const __GUARD_INDEX_REPR: () = {
+            const fn __index_repr<I: $crate::IndexRepr>() {}
+            __index_repr::<$I>();
+        };
     };
 }
 #[doc(inline)]
