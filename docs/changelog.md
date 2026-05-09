@@ -73,6 +73,9 @@
   - rename constants: `VALID_VALUES` to `VALUES` and `NICHE_VALUES` to `NICHES`.
   - change implementation to be safe by default.
 
+### code::marker
+- new trait `IndexRepr`.
+
 ### code::util
 - new macro `maybe_slot!`.
 - remake `fn_name!` and `compile_warn!`.

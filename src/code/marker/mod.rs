@@ -8,7 +8,7 @@
 
 mod _reexport_core;
 
-mod prim; // Prim, PrimFitPtr, PrimIndex
+mod prim; // Prim, PrimFitPtr, PrimIndex, IndexRepr
 mod type_marker; // zero-cost generic type markers
 mod type_resource; // zero-cost type-safe resource markers
 
