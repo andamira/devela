@@ -140,8 +140,10 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, assuming (unsafely) that it cannot be `None`.
-      // Only use when the `None` case is statically impossible.
+      // Unwraps `Some`, treating `None` as an impossible invariant violation.
+      //
+      // Debug/safe paths panic. Optimized unsafe paths may use unchecked unreachable,
+      // so an invalid proof can become UB.
       some_guaranteed_or_ub $T:expr $(,)?
     ) => {
         match $T {
@@ -291,8 +293,10 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value, assuming (unsafely) that it cannot be `Err`.
-      // Only use when the `Err` case is statically impossible (e.g., `Infallible` or `!`).
+      // Unwraps `Ok`, treating `Err` as an impossible invariant violation.
+      //
+      // Debug/safe paths panic. Optimized unsafe paths may use unchecked unreachable,
+      // so an invalid proof can become UB.
       ok_guaranteed_or_ub $T:expr $(,)?
     ) => {
         match $T {
@@ -492,8 +496,10 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value, assuming (unsafely) that it cannot be Some(Err)` or `None`.
-      // Only use when the `Some(Err)` or `None` cases are statically impossible.
+      // Unwraps `Some(Ok)`, treating `Some(Err)` and `None` as an impossible invariant violation.
+      //
+      // Debug/safe paths panic. Optimized unsafe paths may use unchecked unreachable,
+      // so an invalid proof can become UB.
       sok_guaranteed_or_ub $T:expr $(,)?
     ) => {
         match $T {
