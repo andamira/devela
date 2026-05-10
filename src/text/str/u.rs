@@ -563,7 +563,7 @@ macro_rules! impl_str_u {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
                     // SAFETY: we ensure to contain a correct length
                     unsafe { slice![mut_unchecked &mut self.arr, ..len] }
-                } _ => { slice![mut &mut self.arr, ..self.len()] }}
+                } _ => { slice![mut &mut self.arr, ..len] }}
             }
 
             /// Returns a reference to the inner string slice.

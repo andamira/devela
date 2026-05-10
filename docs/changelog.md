@@ -269,6 +269,7 @@
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
 
 ### text::str
+- new type `StrBuf`.
 - make `StringU*` use `NonMax*` for the length.
 - remove `StringU32`, `StringUSize`.
 

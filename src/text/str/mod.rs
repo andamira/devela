@@ -11,7 +11,7 @@ mod _reexport_alloc;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-// mod buf; // WIP StrBuf
+mod buf; // WIP StrBuf
 mod ext; // StrExt, StringExt
 mod namespace; // Str
 mod nonul; // StringNonul
@@ -22,7 +22,7 @@ mod u; // StringU8, StringU16
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            //buf::*,
+            buf::*,
             ext::*,
             namespace::Str,
             nonul::*,
