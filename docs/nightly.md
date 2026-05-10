@@ -43,6 +43,7 @@ See also
 - 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
 - 1.97: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
+- 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
 - 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
@@ -186,8 +187,10 @@ See also
   - <https://rust-lang.github.io/rust-project-goals/2026/goals.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/const-generics.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/macro-improvements.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/move-trait.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/open-enums.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/open-namespaces.html>
+    - <https://rust-lang.github.io/rust-project-goals/2026/reflection-and-comptime.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/unsafe-fields.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/wasm-components.html>
     - <https://rust-lang.github.io/rust-project-goals/2026/roadmap-rust-for-linux.html>
