@@ -1,4 +1,4 @@
-// devela::text::ext::slice
+// devela::text::str::ext::slice
 //
 //! Defines the [`StrExt`] trait.
 //

@@ -1,6 +1,6 @@
-// devela::text::ext::string
+// devela::text::str::ext::alloc
 //
-//!
+//! Defines the [`StringExt`] trait.
 //
 
 #[cfg(feature = "alloc")]
