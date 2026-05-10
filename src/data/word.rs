@@ -25,6 +25,7 @@ pub trait Word: Copy + Eq {
 ///
 /// Implements both the [`Word`] trait and its methods directly as const-fns.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! word {
     (
         $(#[$meta:meta])*

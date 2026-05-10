@@ -115,7 +115,7 @@ impl<T> Slice<T> {
             Some(index) => {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_mem")) => {
                     // SAFETY: `n` is checked to be within bounds and valid
-                    return Some(unsafe { slice.split_at_unchecked(index).1 });
+                    Some(unsafe { slice.split_at_unchecked(index).1 })
                 } _ => {
                     Some(slice.split_at(index).1)
                 }}

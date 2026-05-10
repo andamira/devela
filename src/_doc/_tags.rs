@@ -130,6 +130,7 @@ _define_symbol_tags! {
     // Not intended to carry semantic state of their own.
     _TAG_NAMESPACE, "Utility namespace", "🛠️";
     _TAG_NETWORK, "Networking", "📡";
+    // Items whose main surface depends on excluded values or niche layout.
     _TAG_NICHE, "Niche memory optimizations", "⚗️";
     // Semantic absence, emptiness, or inert behavior.
     // Represents "nothing happens" or "nothing is present",
@@ -140,7 +141,8 @@ _define_symbol_tags! {
     _TAG_NUM, "Numeric structures and computation", "⅀";
     // Platform-dependent behavior or guarantees.
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
-    _TAG_PRIMITIVE, "Related to Rust primitives", "⚙️";
+    // Items whose main surface is about Rust primitive carriers.
+    _TAG_PRIMITIVE, "Related to Rust primitives and their carriers", "⚙️";
     // Quantitative relations and measured magnitudes.
     // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";

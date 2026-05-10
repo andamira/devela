@@ -4,19 +4,15 @@
 //
 
 mod define; // defina_arena!
-mod internals;
-
-// WIPZONE
-// mod field; // ArenaField
-// mod primitive; // ArenaPrimitive
-// mod recipe; // ArenaRecipe
+mod internals; // __Arena
+// mod field; // WIP ArenaField
+// mod primitive; // WIP ArenaPrimitive
+// mod recipe; // WIP ArenaRecipe
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             define::*,
-            internals::*,
-            // WIPZONE
             // field::*,
             // primitive::*,
             // recipe::*,

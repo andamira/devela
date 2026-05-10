@@ -39,7 +39,6 @@ pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) ->
         }
         other => panic!("Expected integer literal, found {:?}", other),
     };
-
     if is_negative { -value } else { value }
 }
 

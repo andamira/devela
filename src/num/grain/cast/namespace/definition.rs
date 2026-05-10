@@ -1,6 +1,6 @@
 // devela::num::grain::cast::namespace::definition
 
-#[doc = crate::_tags!(num namespace)]
+#[doc = crate::_tags!(num primitive namespace)]
 /// Provides *const* casting, joining and splitting operations between primitives.
 #[doc = crate::_doc_location!("num/grain")]
 ///

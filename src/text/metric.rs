@@ -8,7 +8,7 @@
 use crate::_impl_init;
 
 #[doc = crate::_tags!(text)]
-/// Primitive text-domain unit.
+/// Basic text-domain unit.
 #[doc = crate::_doc_location!("text")]
 ///
 /// `TextUnit` is the base primitive quantity used by text-related abstractions.

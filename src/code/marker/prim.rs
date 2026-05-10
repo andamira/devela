@@ -31,7 +31,7 @@ _impl_prim![Sealed for
 
 /* primitives */
 
-#[doc = crate::_tags!(code)]
+#[doc = crate::_tags!(code primitive)]
 /// Language primitive value types.
 #[doc = crate::_doc_location!("code/marker")]
 ///
@@ -51,7 +51,7 @@ _impl_prim![Prim for
 
 /* pointer-width related */
 
-#[doc = crate::_tags!(code mem)]
+#[doc = crate::_tags!(code mem primitive)]
 /// Primitive value types that fit in pointer-width on supported Rust targets.
 #[doc = crate::_doc_location!("code/marker")]
 #[doc(alias = "PrimitiveFitPtr")]
@@ -65,7 +65,7 @@ _impl_prim![PrimFitPtr for u16, u32, i16, i32, f32];
 #[cfg(target_pointer_width = "64")]
 _impl_prim![PrimFitPtr for u16, u32, u64, i16, i32, i64, f32, f64];
 
-#[doc = crate::_tags!(code mem num)]
+#[doc = crate::_tags!(code mem num primitive)]
 /// Primitive types that can be used for indexing.
 #[doc = crate::_doc_location!("code/marker")]
 #[doc(alias = "PrimitiveIndex")]
@@ -79,15 +79,16 @@ _impl_prim![PrimIndex for u16, u32];
 #[cfg(target_pointer_width = "64")]
 _impl_prim![PrimIndex for u16, u32, u64];
 
-#[doc = crate::_tags!(code mem)]
-/// Value representations usable as compact contiguous indices.
+#[doc = crate::_tags!(code mem num primitive niche)]
+/// A representation accepted for compact contiguous indexing.
 #[doc = crate::_doc_location!("code/marker")]
 ///
-/// This includes primitive index integers and selected niche-backed wrappers
-/// whose primitive carrier is a [`PrimIndex`].
+/// This trait marks types whose value domain is suitable for representing
+/// non-negative indices, including primitive index integers and selected
+/// niche-backed wrappers such as `NonMaxU*`.
 ///
-/// It is intended for APIs that accept either a raw primitive index type
-/// or a compact representation such as `NonMaxU*`.
+/// Unlike [`PrimIndex`], this trait may be implemented for wrapper types.
+/// Its [`Prim`][Self::Prim] associated type names the primitive integer carrier.
 #[doc(alias = "IndexRepresentation")]
 #[doc(alias = "PrimitiveIndexRepresentation")]
 pub trait IndexRepr: Copy {

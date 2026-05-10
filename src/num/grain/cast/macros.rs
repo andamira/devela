@@ -3,7 +3,7 @@
 //! Defines [`cast!`].
 //
 
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(num primitive)]
 /// Provides *const* primitive casting, joining and splitting operations.
 #[doc = crate::_doc_location!("num/grain")]
 ///

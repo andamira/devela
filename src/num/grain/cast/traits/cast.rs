@@ -10,7 +10,7 @@ use crate::{Cast, Overflow, isize_down, isize_up, usize_down, usize_up};
 
 type Result<T> = crate::Result<T, Overflow>;
 
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(num primitive)]
 /// Offers methods for casting between primitives.
 #[doc = crate::_doc_location!("num/grain")]
 ///

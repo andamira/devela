@@ -8,7 +8,7 @@
 
 use crate::Cast;
 
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(num primitive)]
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
 #[doc = crate::_doc_location!("num/grain")]
 ///

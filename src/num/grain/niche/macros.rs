@@ -9,11 +9,11 @@
 // - tests
 
 #[doc = crate::_tags!(num niche construction)]
-/// Creates a primitive niche value with compile-time type selection.
+/// Creates a primitive-backed niche value with compile-time type selection.
 #[doc = crate::_doc_location!("num/grain/niche")]
 ///
-/// `niche!` constructs one of the primitive niche wrappers by spelling the
-/// excluded value as a small invariant:
+/// `niche!` constructs a niche wrapper over a primitive carrier,
+/// using the excluded value as a small invariant.
 ///
 /// - `!= 0` creates a `NonZero*`.
 /// - `!= MIN` creates a signed `NonMin*`.
@@ -136,7 +136,7 @@ impl_niche_new!();
 ///   expands to: (u8 $($_:tt)*) => { u8 };
 macro_rules! _generate_niche_prim {
     ($_d:tt $( $XTR:ident: $($P:ty),+ $(,)? );+ $(;)?) => { $crate::paste! {
-        #[doc = crate::_tags!(niche)]
+        #[doc = crate::_tags!(niche primitive)]
         /// Maps a niche representation type to its primitive carrier type.
         #[doc = crate::_doc_location!("num/grain/niche")]
         ///
