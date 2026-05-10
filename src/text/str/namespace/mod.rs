@@ -1,6 +1,6 @@
 // devela::text::str::namespace
 //
-//! [`Str`] namespace.
+//! Defines the [`Str`] namespace.
 //
 
 mod definition; // Str

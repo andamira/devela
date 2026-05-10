@@ -1,6 +1,6 @@
 // devela::text::str::small
 //
-//! Defines strings with small-string optimizations.
+//! Inline-first UTF-8 string storage with spillover.
 //
 
 #[cfg(feature = "alloc")]

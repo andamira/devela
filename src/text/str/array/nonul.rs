@@ -4,7 +4,7 @@
 //
 // TOC
 // - definitions
-// - trait impls
+// - impl traits
 
 use crate::{Char, CharIter, Str, char7, char8, char16, charu};
 use crate::{InvalidText, MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
@@ -713,7 +713,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 /* trait impls */
 
 #[rustfmt::skip]
-mod trait_impls {
+mod impl_traits {
     use crate::{
         ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
         Hasher,
@@ -839,7 +839,6 @@ mod trait_impls {
                 Ok(_) => {
                     let mut arr = [0; CAP];
                     let mut idx = 0;
-
                     for &byte in bytes.iter() {
                         if byte != 0 {
                             arr[idx] = byte;
