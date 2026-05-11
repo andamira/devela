@@ -3,15 +3,6 @@
 //! Attribute adapters for declarative macros.
 //
 
-#[doc(hidden)]
-#[macro_export]
-macro_rules! _with_dollar {
-    ($($body:tt)*) => {
-        macro_rules! __with_dollar { $($body)* }
-        __with_dollar! { $ }
-    };
-}
-
 #[doc = crate::_tags!(code)]
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
 #[doc = crate::_doc_location!("code/util")]
@@ -54,7 +45,7 @@ macro_rules! derive_alias· {
         $crate::derive_alias! { $($rest)* }
     };
     (%def $vis:vis $name:ident ($($derives:tt)*)) => {
-        $crate::_with_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => {
             #[allow(nonstandard_style)]
             macro_rules! $name {
                 ($d($item:tt)*) => {
@@ -111,7 +102,7 @@ macro_rules! attr_alias· {
         $crate::attr_alias! { $($rest)* }
     };
     (%def $vis:vis $name:ident ($(#[$($attrs:tt)*])+)) => {
-        $crate::_with_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => {
             #[allow(nonstandard_style)]
             macro_rules! $name {
                 ($d($item:tt)*) => {

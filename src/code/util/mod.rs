@@ -37,6 +37,7 @@ mod debug; // const_warn!, fn_name!
 mod deprecate; // deprecate_feature!
 mod derive; // attr_alias!, derive_alias!
 mod doclink; // doclink!
+mod dollar; // macro_dollar!
 mod enumset; // enumset!
 mod ident; // ident_const_index!
 mod impl_trait; // impl_trait!
@@ -68,6 +69,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             deprecate::deprecate_feature,
             derive::{attr_alias, derive_alias},
             doclink::doclink,
+            dollar::macro_dollar,
             enumset::enumset,
             ident::ident_const_index,
             impl_trait::impl_trait,
