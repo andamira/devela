@@ -35,6 +35,7 @@ mod cdbg; // cdbg!
 mod r#const; // CONST!
 mod debug; // const_warn!, fn_name!
 mod deprecate; // deprecate_feature!
+mod derive; // attr_alias!, derive_alias!
 mod doclink; // doclink!
 mod enumset; // enumset!
 mod ident; // ident_const_index!
@@ -65,6 +66,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             r#const::CONST,
             debug::{const_warn, fn_name},
             deprecate::deprecate_feature,
+            derive::{attr_alias, derive_alias},
             doclink::doclink,
             enumset::enumset,
             ident::ident_const_index,
@@ -87,7 +89,10 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
     }
     _reexports {
         pub use super::_reexport_core::*;
-
+        #[doc = crate::_tags!(code procedural_macro)]
+        pub use super::derive::{
+            macro_apply, macro_derive, macro_derive_with,
+        };
         #[doc = crate::_tags!(code procedural_macro)]
         pub use devela_macros::{
             cif, compile, compile_attr,
@@ -105,6 +110,8 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
         };
     }
     _hidden {
+        #[doc(hidden)]
+        pub use devela_macros::__macro_derive_helpers;
         #[doc(hidden)]
         pub use super::{
             paste::__paste,

@@ -1,0 +1,1 @@
+../../../../crates/macros/src/docs/macro_apply_examples.rs

@@ -6,7 +6,7 @@
 // - cif
 // - compile
 // - compile_attr
-// - compile_doc
+// - compile_doc WIP
 
 use super::shared::{compile_eval, deindent, split_args, split_compile_doc_tuple};
 use ::core::fmt::Write;
@@ -45,6 +45,7 @@ pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenS
     }
 }
 
+// WIP
 #[inline(always)]
 pub(crate) fn body_compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();

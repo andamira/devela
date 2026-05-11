@@ -8,5 +8,6 @@
 
 /// # Procedural macros.
 pub mod procedural {
-    #![doc = include_str!("./devela_macros.md")] // conditional compilation
+    #![doc = include_str!("./devela_macros_compile.md")] // conditional compilation
+    // #![doc = include_str!("./devela_macros_derive.md")] // declarative macro adapters
 }

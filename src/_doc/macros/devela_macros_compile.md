@@ -1,0 +1,1 @@
+../../../crates/macros/src/docs/compile.md

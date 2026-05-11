@@ -19,6 +19,10 @@ See the linked modifications for detailed changes.
   as `OptionExt`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
 - <i id="fxhash"></i>[fxhash] by Christopher Breeden,
   as the [`HasherFx`] struct ([*modifications*][M_fxhash]).
+- <i id="macro_rules_attribute"></i>[macro_rules_attribute] by Daniel Henry-Mantilla,
+  as the [`macro_apply!`], [`macro_derive!`], [`macro_derive_with!`] proc-macros
+  and the [`attr_alias!`] and [`derive_alias!`] decl-macros
+  ([*modifications*][M_macro_rules_attribute]).
 - <i id="mini-alloc"></i>[mini-alloc] by Offchain Labs Inc.,
   as the [`WasmAlloc`] struct ([*modifications*][M_mini-alloc]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
@@ -62,8 +66,16 @@ See the linked modifications for detailed changes.
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
   [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/fxhash.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherFx.html
+[macro_rules_attribute]: https://crates.io/crates/macro_rules_attribute/0.2.0
+  [M_macro_rules_attribute]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/macro_rules_attribute.md
+  [`macro_apply!`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_apply.html
+  [`macro_derive!`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_derive.html
+  [`macro_derive_with!`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_derive_with.html
+  [`attr_alias!`]: https://docs.rs/devela/latest/devela/code/util/macro.attr_alias.html
+  [`derive_alias!`]: https://docs.rs/devela/latest/devela/code/util/macro.derive-alias.html
 [mini-alloc]: https://crates.io/crates/mini-alloc/0.9.0
   [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/mini-alloc.md
+  [`WasmAlloc`]: https://docs.rs/devela/latest/devela/sys/mem/alloc/struct.WasmAlloc.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
   [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/no_std_io.md
@@ -95,7 +107,7 @@ See the linked modifications for detailed changes.
 - <i id="crunchy"></i>[crunchy] by Eira Fransham,
   as the [`unroll!`] macro ([*modifications*][M_crunchy]).
 - <i id="current"></i>[current] by *PistonDevelopers*,
-  as the structs [`Current`] and [`CurrentGuard`] ([*modifications*][M_current]).
+  as the [`Current`] and [`CurrentGuard`] structs ([*modifications*][M_current]).
 - <i id="grapheme_machine"></i>[grapheme_machine] by Martin Atkins,
   as [`GraphemeMachine`] and related items in [`text::grapheme`] ([*modifications*][M_grapheme_machine]).
 - <i id="musl"></i>[musl] by Rich Felker, et al.,

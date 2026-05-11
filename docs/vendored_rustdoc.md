@@ -17,8 +17,14 @@
   [`fmt_or_empty`]: crate::code::result::OptionExt::fmt_or_empty
   [M_fxhash]: crate::_doc::vendored::fxhash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
+  [M_macro_rules_attribute]: crate::_doc::vendored::macro_rules_attribute
+  [`macro_apply`]: crate::code::util::macro_apply
+  [`macro_derive`]: crate::code::util::macro_derive
+  [`macro_derive_with`]: crate::code::util::macro_derive_with
+  [`attr_alias`]: crate::code::util::attr_alias
+  [`derive_alias`]: crate::code::util::derive_alias
   [M_mini-alloc]: crate::_doc::vendored::mini_alloc
-  [`WasmAlloc`]: crate::sys::mem::WasmAlloc
+  [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
   [M_no_std_io]: crate::_doc::vendored::no_std_io
   [`io`]: crate::sys::io
   [M_pollster]: crate::_doc::vendored::pollster

@@ -6,7 +6,7 @@
 //!
 //! Procedural macros for devela.
 //!
-#![doc = include_str!("./Index.md")]
+#![doc = include_str!("./docs/compile.md")]
 //
 // TOC
 // - helpers
@@ -19,6 +19,10 @@
 //   - ident_total
 //   - ident_total_unique
 //   - ident_unique
+// - macro:
+//   - macro_apply
+//   - macro_derive
+//   - macro_derive_with
 // - misc:
 //   - coalesce
 //   - field_of
@@ -35,10 +39,7 @@
 /* crate safeguards */
 
 // safety
-#[cfg(all(
-    feature = "safe",
-    any(feature = "unsafe", feature = "unsafe_layout")
-))]
+#[cfg(all(feature = "safe", any(feature = "unsafe", feature = "unsafe_layout")))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 
 extern crate self as devela_macros;
@@ -65,7 +66,7 @@ use {bodies::*, copied::*};
 #[allow(unused_macros)] #[rustfmt::skip] macro_rules! items { ($($item:item)*) => { $($item)* }; }
 items! { #[allow(unused_imports)] use items; }
 
-/* macros: compile */
+/* compile */
 
 /// Evaluates to either a `true` of `false` literal based on the [predicate].
 #[doc = crate::_doc_location!(proc "code/util")]
@@ -102,7 +103,7 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 #[proc_macro_attribute] #[rustfmt::skip]
 pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 
-/* macros: ident */
+/* ident */
 
 /// Returns the total number of [identifiers] in its input.
 #[doc = crate::_doc_location!(proc "code/util")]
@@ -161,7 +162,66 @@ pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 #[proc_macro] #[rustfmt::skip]
 pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 
-/* macros: misc. */
+/* derive */
+
+/// Applies a declarative macro to the decorated item.
+#[doc = crate::_doc_location!(proc "code/util")]
+///
+/// Expands `#[macro_apply(m)] item` as `m! { item }`.
+///
+/// The macro receives ownership of the item and must re-emit it if it should remain.
+///
+/// # Examples
+/// ```ignore
+#[doc = include_str!("./docs/macro_apply_examples.rs")]
+/// ```
+#[doc = crate::_doc_vendor!("macro_rules_attribute")]
+#[proc_macro_attribute] #[rustfmt::skip]
+pub fn macro_apply(args: TS, input: TS) -> TS { body_macro_apply(args, input) }
+
+/// Runs classic derives and declarative derives from one list.
+#[doc = crate::_doc_location!(proc "code/util")]
+///
+/// Entries ending in `!` are called as declarative macros.
+/// Other entries are forwarded to Rust's built-in `derive`.
+///
+/// The optional helper attribute `#[derive_args(...)]`
+/// may be used to pass item-local arguments to declarative derives.
+///
+/// # Examples
+/// ```ignore
+#[doc = include_str!("./docs/macro_derive_examples.rs")]
+/// ```
+#[doc = crate::_doc_vendor!("macro_rules_attribute")]
+#[proc_macro_attribute] #[rustfmt::skip]
+pub fn macro_derive(args: TS, input: TS) -> TS { body_macro_derive(args, input) }
+
+/// Runs declarative derive-like macros over the decorated item.
+#[doc = crate::_doc_location!(proc "code/util")]
+///
+/// Each macro receives a copy of the item and may emit impls or side-items.
+/// The original item is preserved.
+///
+/// The optional helper attribute `#[derive_args(...)]`
+/// may be used to pass item-local arguments to those declarative derives.
+///
+/// # Examples
+/// ```ignore
+#[doc = include_str!("./docs/macro_derive_with_examples.rs")]
+/// ```
+#[doc = crate::_doc_vendor!("macro_rules_attribute")]
+#[proc_macro_attribute] #[rustfmt::skip]
+pub fn macro_derive_with(args: TS, input: TS) -> TS { body_macro_derive_with(args, input) }
+
+#[doc(hidden)] #[rustfmt::skip]
+/// No-op derive used by [`macro_derive`] and [`macro_derive_with`].
+#[proc_macro_derive(__macro_derive_helpers, attributes(macro_derive_args))]
+///
+/// It admits helper attributes such as `#[macro_derive_args(...)]`
+/// on items inspected by declarative derive macros.
+pub fn __macro_derive_helpers(_: TS) -> TS { TS::new() }
+
+/* misc. */
 
 /// Returns the first non-empty argument.
 #[doc = crate::_doc_location!(proc "code/util")]
@@ -213,6 +273,7 @@ pub fn repeat(input: TS) -> TS { body_repeat(input) }
 // #[doc = base::_tags!(construction niche procedural_macro)]
 /// Defines a compact enum over a contiguous integer interval.
 #[doc = crate::_doc_location!(proc "code/util")]
+///
 #[doc = include_str!("docs/enumint.md")]
 // #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
 #[proc_macro] #[rustfmt::skip]

@@ -9,12 +9,14 @@ crate::items! {
 
     mod shared;
 
-    mod compile; // cif!, compile[_attr|_doc]!
+    mod derive; // macro_apply!, macro_derive!, macro_derive-with!
+    mod compile; // cif!, compile!, compile_attr!, (compile_doc!)
     mod enumint; // enumint!
     mod ident; // coalesce!, field_of!, ident_total!, ident_total_unique!, ident_unique!
     mod repeat; // repeat!
 
     pub(crate) use {
+        derive::*,
         compile::*,
         enumint::*,
         ident::*,
