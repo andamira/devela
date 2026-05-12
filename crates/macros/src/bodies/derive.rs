@@ -16,20 +16,33 @@ pub(crate) fn body_macro_derive(args: TS, input: TS) -> TS {
         Ok(args) => args,
         Err(err) => return err,
     };
-    let has_macro_derive = args.iter().any(|a| a.iter().any(is_bang));
-    // pure classic derive path
-    if !has_macro_derive {
+    let mut parsed = Vec::with_capacity(args.len());
+    for arg in &args {
+        let Ok(head) = parse_macro_head(arg.clone()) else {
+            return error(
+                "expected `path::to::Macro`, `path::to::Macro!`, or `path::to::Macro!(...)`",
+            );
+        };
+        parsed.push(head);
+    }
+    // Pure classic derive path.
+    if parsed.iter().all(|head| !head.had_bang) {
+        if parsed.iter().any(|head| head.args.is_some()) {
+            return error("macro derives with arguments must end in `!`");
+        }
         let mut out = real_derive(join_commas(args));
         out.extend(input);
         return out;
     }
     let mut out = TS::new();
     let mut real_derives = Vec::new();
-    for arg in args {
-        match path_bang(&arg) {
-            Ok(true) => out.extend(macro_call(arg, input.clone())),
-            Ok(false) => real_derives.push(arg),
-            Err(()) => return error("expected `path::to::Macro` or `path::to::Macro!`"),
+    for (arg, head) in args.into_iter().zip(parsed) {
+        if head.had_bang {
+            out.extend(macro_call_parsed(head, input.clone()));
+        } else if head.args.is_some() {
+            return error("macro derives with arguments must end in `!`");
+        } else {
+            real_derives.push(arg);
         }
     }
     let mut real_derives = join_commas(real_derives);
@@ -59,20 +72,47 @@ pub(crate) fn body_macro_derive_with(args: TS, input: TS) -> TS {
 
 /* helpers */
 
-fn macro_call(mut path: Vec<TT>, input: TS) -> TS {
-    strip_trailing_comma(&mut path);
-    match path_bang(&path) {
-        Ok(has_bang) => {
-            if !has_bang {
-                path.push(bang());
-            }
-            path.push(TT::Group(Group::new(Delimiter::Brace, input)));
-            path.into_iter().collect()
-        }
-        Err(()) => error("expected `path::to::macro` or `path::to::macro!`"),
-    }
+struct MacroHead {
+    path: Vec<TT>,
+    args: Option<Group>,
+    had_bang: bool,
 }
-
+// This accepts: m m! m("x") m!("x") path::to::m("x", "y") path::to::m!("x", "y")
+fn parse_macro_head(mut tts: Vec<TT>) -> Result<MacroHead, ()> {
+    strip_trailing_comma(&mut tts);
+    let args = if matches!(
+        tts.last(),
+        Some(TT::Group(g)) if g.delimiter() == Delimiter::Parenthesis
+    ) {
+        match tts.pop().unwrap() {
+            TT::Group(g) => Some(g),
+            _ => unreachable!(),
+        }
+    } else {
+        None
+    };
+    let had_bang = path_bang(&tts)?;
+    if had_bang {
+        strip_trailing_bang(&mut tts)?;
+    }
+    Ok(MacroHead { path: tts, args, had_bang })
+}
+fn macro_call(head: Vec<TT>, input: TS) -> TS {
+    let Ok(head) = parse_macro_head(head) else {
+        return error("expected `path::to::macro`, optionally followed by `(...)`");
+    };
+    macro_call_parsed(head, input)
+}
+fn macro_call_parsed(mut head: MacroHead, input: TS) -> TS {
+    head.path.push(bang());
+    let mut body = TS::new();
+    if let Some(args) = head.args {
+        body.extend([TT::Group(args)]);
+    }
+    body.extend(input);
+    head.path.push(TT::Group(Group::new(Delimiter::Brace, body)));
+    head.path.into_iter().collect()
+}
 fn real_derive(derives: TS) -> TS {
     let mut inner: TS = "::core::prelude::v1::derive".parse().unwrap();
     inner.extend([TT::Group(Group::new(Delimiter::Parenthesis, derives))]);
@@ -149,6 +189,12 @@ fn is_bang(tt: &TT) -> bool {
 }
 fn macro_attrs_derive() -> TS {
     real_derive("::devela::__macro_derive_helpers,".parse().unwrap())
+}
+fn strip_trailing_bang(tts: &mut Vec<TT>) -> Result<(), ()> {
+    match tts.pop() {
+        Some(TT::Punct(p)) if p.as_char() == '!' => Ok(()),
+        _ => Err(()),
+    }
 }
 fn strip_trailing_comma(tts: &mut Vec<TT>) {
     if tts.last().is_some_and(is_comma) {
