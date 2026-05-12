@@ -360,3 +360,34 @@ fn derive_alias_accepts_arguments() {
     let mut buf = [0; 24];
     assert_eq!(format_buf!(&mut buf, "{AliasDeriveWithArgs:?}"), Ok("AliasDeriveWithArgs"));
 }
+
+/* macro_derive_alias: accepts attributes and arguments */
+
+macro_rules! derive_alias_label {
+    (
+        ($label:literal)
+        $(#[$meta:meta])*
+        $vis:vis struct $Name:ident;
+    ) => {
+        impl $Name {
+            const ALIAS_LABEL: &'static str = $label;
+        }
+    };
+}
+
+macro_derive_alias! {
+    #[doc = "A labeled debug alias."]
+    AliasLabeled($label:literal) =
+        #[derive(Debug, derive_alias_label!($label))];
+}
+
+#[macro_derive(AliasLabeled!("from-alias"))]
+struct AliasLabeledType;
+
+#[test]
+fn macro_derive_alias_accepts_attrs_and_args() {
+    assert_eq!(AliasLabeledType::ALIAS_LABEL, "from-alias");
+
+    let mut buf = [0; 24];
+    assert_eq!(format_buf!(&mut buf, "{AliasLabeledType:?}"), Ok("AliasLabeledType"));
+}

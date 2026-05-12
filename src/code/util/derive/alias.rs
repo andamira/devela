@@ -46,92 +46,30 @@
 #[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! macro_apply_alias· {
+macro_rules! macro_apply_alias {
     () => {};
     (
-        $name:ident = $(#[$($attrs:tt)*])+;
+        $(#[$meta:meta])*
+        $vis:vis $name:ident = $(#[$($attrs:tt)*])+;
         $($rest:tt)*
     ) => {
-        $crate::__macro_apply_alias! { #[macro_apply($name)] = $(#[$($attrs)*])+; }
+        $crate::macro_apply_alias! {% [$(#[$meta])*] $vis $name () ($(#[$($attrs)*])+) }
         $crate::macro_apply_alias! { $($rest)* }
     };
     (
-        $name:ident ($($params:tt)*) = $(#[$($attrs:tt)*])+;
+        $(#[$meta:meta])*
+        $vis:vis $name:ident ($($params:tt)*) = $(#[$($attrs:tt)*])+;
         $($rest:tt)*
     ) => {
-        $crate::__macro_apply_alias! { #[macro_apply($name($($params)*))] = $(#[$($attrs)*])+; }
+        $crate::macro_apply_alias! {% [$(#[$meta])*] $vis $name ($($params)*) ($(#[$($attrs)*])+) }
         $crate::macro_apply_alias! { $($rest)* }
     };
-    (
-        pub $name:ident = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias! { pub #[macro_apply($name)] = $(#[$($attrs)*])+; }
-        $crate::macro_apply_alias! { $($rest)* }
-    };
-    (
-        pub $name:ident ($($params:tt)*) = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias! { pub #[macro_apply($name($($params)*))] = $(#[$($attrs)*])+; }
-        $crate::macro_apply_alias! { $($rest)* }
-    };
-}
-#[doc(inline)]
-pub use macro_apply_alias· as macro_apply_alias;
-
-// Hidden implementation grammar for macro_apply_alias.
-//
-// This form mirror the eventual use-site attributes,
-// while the public builders use a simpler `name(...) = ...;` syntax
-#[doc(hidden)]
-#[macro_export]
-macro_rules! __macro_apply_alias {
-    () => {};
-    (
-        #[macro_apply($name:ident ($($params:tt)*))] = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias!(%def_args pub(in crate) $name ($($params)*) ($(#[$($attrs)*])+));
-        $crate::__macro_apply_alias! { $($rest)* }
-    };
-    (
-        pub #[macro_apply($name:ident ($($params:tt)*))] = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias!(%def_args pub $name ($($params)*) ($(#[$($attrs)*])+));
-        $crate::__macro_apply_alias! { $($rest)* }
-    };
-    (
-        #[macro_apply($name:ident $(!)?)] = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias!(%def pub(in crate) $name ($(#[$($attrs)*])+));
-        $crate::__macro_apply_alias! { $($rest)* }
-    };
-    (
-        pub #[macro_apply($name:ident $(!)?)] = $(#[$($attrs:tt)*])+;
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_apply_alias!(%def pub $name ($(#[$($attrs)*])+));
-        $crate::__macro_apply_alias! { $($rest)* }
-    };
-    (%def_args $vis:vis $name:ident ($($params:tt)*) ($(#[$($attrs:tt)*])+)) => {
+    (% [$($meta:tt)*] $vis:vis $name:ident () ($(#[$($attrs:tt)*])+)) => {
         $crate::macro_dollar! { ($d:tt) => {
+            $($meta)*
             #[allow(nonstandard_style)]
-            macro_rules! $name {
-                (($($params)*) $d($item:tt)*) => {
-                    $(#[$($attrs)*])+
-                    $d($item)*
-                };
-            }
-            #[allow(unused_imports)]
-            $vis use $name;
-        }}
-    };
-    (%def $vis:vis $name:ident ($(#[$($attrs:tt)*])+)) => {
-        $crate::macro_dollar! { ($d:tt) => {
-            #[allow(nonstandard_style)]
+            #[allow(unused_macros)]
+            #[$crate::compile_attr(same($vis, pub), macro_export)]
             macro_rules! $name {
                 ($d($item:tt)*) => {
                     $(#[$($attrs)*])+
@@ -142,7 +80,25 @@ macro_rules! __macro_apply_alias {
             $vis use $name;
         }}
     };
+    (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($(#[$($attrs:tt)*])+)) => {
+        $crate::macro_dollar! { ($d:tt) => {
+            $($meta)*
+            #[allow(nonstandard_style)]
+            #[allow(unused_macros)]
+            #[$crate::compile_attr(same($vis, pub), macro_export)]
+            macro_rules! $name {
+                (($($params)*) $d($item:tt)*) => {
+                    $(#[$($attrs)*])+
+                    $d($item)*
+                };
+            }
+            #[allow(unused_imports)]
+            $vis use $name;
+        }}
+    };
 }
+#[doc(inline)]
+pub use macro_apply_alias;
 
 #[doc = crate::_tags!(code)]
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
@@ -199,108 +155,57 @@ macro_rules! __macro_apply_alias {
 #[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! macro_derive_alias· {
+macro_rules! macro_derive_alias {
     () => {};
     (
-        $name:ident = #[derive($($derives:tt)*)];
+        $(#[$meta:meta])*
+        $vis:vis $name:ident = #[derive($($derives:tt)*)];
         $($rest:tt)*
     ) => {
-        $crate::__macro_derive_alias! { #[derive($name!)] = #[derive($($derives)*)]; }
+        $crate::macro_derive_alias! {% [$(#[$meta])*] $vis $name () ($($derives)*) }
         $crate::macro_derive_alias! { $($rest)* }
     };
     (
-        $name:ident ($($params:tt)*) = #[derive($($derives:tt)*)];
+        $(#[$meta:meta])*
+        $vis:vis $name:ident ($($params:tt)*) = #[derive($($derives:tt)*)];
         $($rest:tt)*
     ) => {
-        $crate::__macro_derive_alias! { #[derive($name!($($params)*))] = #[derive($($derives)*)]; }
+        $crate::macro_derive_alias! {% [$(#[$meta])*] $vis $name ($($params)*) ($($derives)*) }
         $crate::macro_derive_alias! { $($rest)* }
     };
-    (
-        pub $name:ident = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias! { pub #[derive($name!)] = #[derive($($derives)*)]; }
-        $crate::macro_derive_alias! { $($rest)* }
+    (% [$($meta:tt)*] $vis:vis $name:ident () ($($derives:tt)*)) => {
+        $crate::macro_dollar! { ($d:tt) => {
+            $($meta)*
+            #[allow(nonstandard_style)]
+            #[allow(unused_macros)]
+            #[$crate::compile_attr(same($vis, pub), macro_export)]
+            macro_rules! $name {
+                ($d($item:tt)*) => {
+                    $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
+                };
+            }
+            #[allow(unused_imports)]
+            $vis use $name;
+        }}
     };
-    (
-        pub $name:ident ($($params:tt)*) = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias! {
-            pub #[derive($name!($($params)*))] = #[derive($($derives)*)]; }
-        $crate::macro_derive_alias! { $($rest)* }
+    (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($($derives:tt)*)) => {
+        $crate::macro_dollar! { ($d:tt) => {
+            $($meta)*
+            #[allow(nonstandard_style)]
+            #[allow(unused_macros)]
+            #[$crate::compile_attr(same($vis, pub), macro_export)]
+            macro_rules! $name {
+                (($($params)*) $d($item:tt)*) => {
+                    $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
+                };
+            }
+            #[allow(unused_imports)]
+            $vis use $name;
+        }}
     };
 }
 #[doc(inline)]
-pub use macro_derive_alias· as macro_derive_alias;
-
-// Hidden implementation grammar for macro_derive_alias.
-//
-// This form mirror the eventual use-site attributes,
-// while the public builders use a simpler `name(...) = ...;` syntax
-#[doc(hidden)]
-#[macro_export]
-macro_rules! __macro_derive_alias {
-    () => {};
-    (
-        #[derive($name:ident ! ($($params:tt)*))] = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias!(%def_args pub(in crate) $name ($($params)*) ($($derives)*));
-        $crate::__macro_derive_alias! { $($rest)* }
-    };
-    (
-        pub #[derive($name:ident ! ($($params:tt)*))] = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias!(%def_args pub $name ($($params)*) ($($derives)*));
-        $crate::__macro_derive_alias! { $($rest)* }
-    };
-    (
-        #[derive($name:ident !)] = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias!(%def pub(in crate) $name ($($derives)*));
-        $crate::__macro_derive_alias! { $($rest)* }
-    };
-    (
-        pub #[derive($name:ident !)] = #[derive($($derives:tt)*)];
-        $($rest:tt)*
-    ) => {
-        $crate::__macro_derive_alias!(%def pub $name ($($derives)*));
-        $crate::__macro_derive_alias! { $($rest)* }
-    };
-    (%def_args $vis:vis $name:ident ($($params:tt)*) ($($derives:tt)*)) => {
-        $crate::macro_dollar! { ($d:tt) => {
-            #[allow(nonstandard_style)]
-            macro_rules! $name {
-                (($($params)*) $d($item:tt)*) => {
-                    $crate::__macro_nested_derive! {
-                        #[derive($($derives)*)]
-                        $d($item)*
-                    }
-                };
-            }
-            #[allow(unused_imports)]
-            $vis use $name;
-        }}
-    };
-    (%def $vis:vis $name:ident ($($derives:tt)*)) => {
-        $crate::macro_dollar! { ($d:tt) => {
-            #[allow(nonstandard_style)]
-            macro_rules! $name {
-                ($d($item:tt)*) => {
-                    $crate::__macro_nested_derive! {
-                        #[derive($($derives)*)]
-                        $d($item)*
-                    }
-                };
-            }
-            #[allow(unused_imports)]
-            $vis use $name;
-        }}
-    };
-}
+pub use macro_derive_alias;
 
 /// Recursively applies #[derive(...)] then drops duplicate item.
 #[doc(hidden)]
