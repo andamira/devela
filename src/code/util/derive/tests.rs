@@ -1,6 +1,8 @@
 // devela::code::util::derive::tests
 
-use crate::{attr_alias, derive_alias, format_buf, macro_apply, macro_derive, macro_derive_with};
+use crate::{
+    format_buf, macro_apply, macro_apply_alias, macro_derive, macro_derive_alias, macro_derive_with,
+};
 
 /* macro_apply: item passthrough */
 
@@ -262,10 +264,10 @@ fn mixed_derive_permits_custom_helper_attr() {
     assert_eq!(format_buf!(&mut buf, "{HelperCustomMixed:?}"), Ok("HelperCustomMixed"));
 }
 
-/* attr_alias */
+/* macro_apply_alias */
 
-attr_alias! {
-    #[macro_apply(inline_answer)] =
+macro_apply_alias! {
+    inline_answer =
         #[inline]
         #[must_use]
     ;
@@ -276,14 +278,14 @@ fn alias_answer() -> u8 {
 }
 
 #[test]
-fn attr_alias_defines_attribute_bundle() {
+fn macro_apply_alias_defines_attribute_bundle() {
     assert_eq!(alias_answer(), 42);
 }
 
-/* attr_alias: accepts arguments */
+/* macro_apply_alias: accepts arguments */
 
-attr_alias! {
-    #[macro_apply(repr_alias($repr:ident))] =
+macro_apply_alias! {
+    repr_alias($repr:ident) =
         #[repr($repr)]
     ;
 }
@@ -295,16 +297,16 @@ enum AliasRepr {
 }
 
 #[test]
-fn attr_alias_accepts_arguments() {
+fn macro_apply_alias_accepts_arguments() {
     assert_eq!(size_of::<AliasRepr>(), 1);
     assert_eq!(AliasRepr::A as u8, 1);
     assert_eq!(AliasRepr::B as u8, 2);
 }
 
-/* attr_alias: accepts literal arguments and may hardcode other attributes */
+/* macro_apply_alias: accepts literal arguments and may hardcode other attributes */
 
-attr_alias! {
-    #[macro_apply(doc_repr_u8($doc:literal))] =
+macro_apply_alias! {
+    doc_repr_u8($doc:literal) =
         #[doc = $doc]
         #[repr(u8)]
     ;
@@ -316,15 +318,15 @@ enum AliasDocRepr {
 }
 
 #[test]
-fn attr_alias_accepts_literal_arguments_and_hardcoded_attrs() {
+fn macro_apply_alias_accepts_literal_arguments_and_hardcoded_attrs() {
     assert_eq!(size_of::<AliasDocRepr>(), 1);
     assert_eq!(AliasDocRepr::A as u8, 3);
 }
 
-/* derive_alias */
+/* macro_derive_alias */
 
-derive_alias! {
-    #[derive(Value!)] = #[derive(Clone, Copy, Debug, PartialEq, Eq)];
+macro_derive_alias! {
+    Value = #[derive(Clone, Copy, Debug, PartialEq, Eq)];
 }
 #[macro_derive(Value!)]
 struct AliasValue(u8);
@@ -339,10 +341,10 @@ fn derive_alias_defines_derive_bundle() {
     assert_eq!(format_buf!(&mut buf, "{a:?}"), Ok("AliasValue(3)"));
 }
 
-/* derive_alias: accepts arguments */
+/* macro_derive_alias: accepts arguments */
 
-derive_alias! {
-    #[derive(Labeled!($label:literal))] =
+macro_derive_alias! {
+    Labeled($label:literal) =
         #[derive(Debug, derive_label_direct!($label))];
 }
 

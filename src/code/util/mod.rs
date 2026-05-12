@@ -35,7 +35,7 @@ mod cdbg; // cdbg!
 mod r#const; // CONST!
 mod debug; // const_warn!, fn_name!
 mod deprecate; // deprecate_feature!
-mod derive; // attr_alias!, derive_alias!
+mod derive; // macro_apply_alias!, macro_derive_alias!
 mod doclink; // doclink!
 mod dollar; // macro_dollar!
 mod enumset; // enumset!
@@ -67,7 +67,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             r#const::CONST,
             debug::{const_warn, fn_name},
             deprecate::deprecate_feature,
-            derive::{attr_alias, derive_alias},
+            derive::{macro_apply_alias, macro_derive_alias},
             doclink::doclink,
             dollar::macro_dollar,
             enumset::enumset,

@@ -169,6 +169,9 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 ///
 /// Expands `#[macro_apply(m)] item` as `m! { item }`.
 ///
+/// If arguments are provided, `#[macro_apply(m(args...))] item`
+/// expands as `m! { (args...) item }`.
+///
 /// The macro receives ownership of the item and must re-emit it if it should remain.
 ///
 /// # Examples
@@ -185,7 +188,10 @@ pub fn macro_apply(args: TS, input: TS) -> TS { body_macro_apply(args, input) }
 /// Entries ending in `!` are called as declarative macros.
 /// Other entries are forwarded to Rust's built-in `derive`.
 ///
-/// The optional helper attribute `#[derive_args(...)]`
+/// Declarative derives may receive call-local arguments:
+/// `Name!(args...)` expands as `Name! { (args...) item }`.
+///
+/// The optional helper attribute `#[macro_derive_args(...)]`
 /// may be used to pass item-local arguments to declarative derives.
 ///
 /// # Examples
@@ -202,7 +208,10 @@ pub fn macro_derive(args: TS, input: TS) -> TS { body_macro_derive(args, input) 
 /// Each macro receives a copy of the item and may emit impls or side-items.
 /// The original item is preserved.
 ///
-/// The optional helper attribute `#[derive_args(...)]`
+/// A macro may receive call-local arguments:
+/// `m(args...)` expands as `m! { (args...) item }`.
+///
+/// The optional helper attribute `#[macro_derive_args(...)]`
 /// may be used to pass item-local arguments to those declarative derives.
 ///
 /// # Examples
@@ -215,10 +224,10 @@ pub fn macro_derive_with(args: TS, input: TS) -> TS { body_macro_derive_with(arg
 
 #[doc(hidden)] #[rustfmt::skip]
 /// No-op derive used by [`macro_derive`] and [`macro_derive_with`].
-#[proc_macro_derive(__macro_derive_helpers, attributes(macro_derive_args))]
 ///
 /// It admits helper attributes such as `#[macro_derive_args(...)]`
 /// on items inspected by declarative derive macros.
+#[proc_macro_derive(__macro_derive_helpers, attributes(macro_derive_args))]
 pub fn __macro_derive_helpers(_: TS) -> TS { TS::new() }
 
 /* misc. */

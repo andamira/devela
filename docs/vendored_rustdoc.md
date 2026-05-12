@@ -21,8 +21,8 @@
   [`macro_apply`]: crate::code::util::macro_apply
   [`macro_derive`]: crate::code::util::macro_derive
   [`macro_derive_with`]: crate::code::util::macro_derive_with
-  [`attr_alias`]: crate::code::util::attr_alias
-  [`derive_alias`]: crate::code::util::derive_alias
+  [`macro_apply_alias!`]: crate::code::util::macro_apply_alias
+  [`macro_derive_alias!`]: crate::code::util::macro_derive_alias
   [M_mini-alloc]: crate::_doc::vendored::mini_alloc
   [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
   [M_no_std_io]: crate::_doc::vendored::no_std_io

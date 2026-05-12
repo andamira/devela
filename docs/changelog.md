@@ -77,8 +77,8 @@
 - new trait `IndexRepr`.
 
 ### code::util
-- new proc-macros: `macro_apply!`, `macro_derive!`, `macro_derive_with!`.
-- new decl-macros: `attr_alias!`, `derive_alias!`, `macro_dollar!`, `maybe_slot!`.
+- new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
+- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`.
   - vendor `macro_rules_attribute`.
 - remake `fn_name!` and `compile_warn!`.
   - rename `compile_warn!` to `const_warn!`.

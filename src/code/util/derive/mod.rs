@@ -3,7 +3,7 @@
 #[cfg(test)]
 mod tests;
 
-mod alias; // attr_alias!, derive_alias!
+mod alias; // macro_apply_alias!, derive_alias!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
