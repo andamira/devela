@@ -23,19 +23,6 @@ pub struct StrBuf<'a> {
 // private helpers
 #[rustfmt::skip]
 impl<'a> StrBuf<'a> {
-    /// Returns whether `idx` is a valid UTF-8 boundary in `s`.
-    #[inline(always)]
-    const fn _is_boundary(s: &str, idx: usize) -> bool {
-        let bytes = s.as_bytes();
-        idx == 0 || idx == bytes.len()
-            || idx < bytes.len() && bytes[idx] & 0b1100_0000 != 0b1000_0000
-    }
-    /// Returns the largest UTF-8 boundary `<= max`.
-    const fn _fitted_len(s: &str, max: usize) -> usize {
-        let mut n = if max < s.len() { max } else { s.len() };
-        while !Self::_is_boundary(s, n) { n -= 1; }
-        n
-    }
     /// Copies `bytes[..n]` into the spare tail.
     const fn _push_bytes_prefix(&mut self, bytes: &[u8], n: usize) {
         whilst! { i in 0..n; { self.buf[self.len + i] = bytes[i]; }}
@@ -262,7 +249,7 @@ impl<'a> StrBuf<'a> {
     ///
     /// Returns the number of bytes written.
     pub const fn push_str(&mut self, s: &str) -> usize {
-        let n = Self::_fitted_len(s, self.remaining_capacity());
+        let n = Char(s.as_bytes()).floor_utf8_boundary(self.remaining_capacity());
         self._push_bytes_prefix(s.as_bytes(), n);
         n
     }
