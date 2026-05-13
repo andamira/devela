@@ -537,7 +537,7 @@ dep_wide = ["dep:wide"]                                                         
 #* Workspace features *#
 # ------------------------------------------------------------------------------
 
-[dependencies] # 16 (2 required, 14 optional)
+[dependencies] # 15 (1 required, 14 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -552,10 +552,6 @@ dep_wide = ["dep:wide"]                                                         
 #* workspace internal libraries (1req) *#
 
 devela_macros = { workspace = true }
-
-#* required external dependencies (1req) *#
-
-pastey = { workspace = true }
 
 #* optional external dependencies (14opt) *#
 
@@ -580,12 +576,6 @@ wide = { workspace = true, optional = true }
 # ------------------------------------------------------------------------------
 devela_macros      = { version = "0.28.0-wip", path = "./crates/macros" }
 #devela_buildpost   = { version = "0.28.0-wip", path = "./build/post" }
-
-#* required external dependencies *#
-
-[workspace.dependencies.pastey] # https://crates.io/crates/pastey
-version = "0.2.0" # ✓ https://github.com/AS1100K/pastey/blob/master/CHANGELOG.md
-package = "pastey" # safe
 
 #* optional external dependencies *#
 

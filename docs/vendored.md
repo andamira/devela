@@ -27,6 +27,8 @@ See the linked modifications for detailed changes.
   as the [`WasmAlloc`] struct ([*modifications*][M_mini-alloc]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
   as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
+- <i id="pastey"></i>[pastey] by Aditya Kumar,
+  as the [`paste!`] macro ([*modifications*][M_pastey]).
 - <i id="pollster"></i>[pollster] by Joshua Barretto,
   as the `FutureExt::`[`block_on`] method ([*modifications*][M_pollster]).
 - <i id="quickdiv"></i>[quickdiv] by Darko Trifunovski,
@@ -80,6 +82,9 @@ See the linked modifications for detailed changes.
 [core2]: https://crates.io/crates/core2/0.4.0
   [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/no_std_io.md
   [`sys::io`]: https://docs.rs/devela/latest/devela/sys/io/
+[pastey]: https://crates.io/crates/pastey/0.2.2
+  [M_pastey]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pastey.md
+  [`paste!`]: https://docs.rs/devela/latest/devela/code/util/macro.paste.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [M_pollster]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pollster.md
   [`block_on`]: https://docs.rs/devela/latest/devela/work/future/trait.FutureExt.html#method.block_on

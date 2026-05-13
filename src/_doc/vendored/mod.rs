@@ -19,6 +19,7 @@ crate::_doc_vendor! { mod: "fxhash", fxhash }
 crate::_doc_vendor! { mod: "macro_rules_attribute", macro_rules_attribute }
 crate::_doc_vendor! { mod: "mini-alloc", mini_alloc }
 crate::_doc_vendor! { mod: "no_std_io", no_std_io }
+crate::_doc_vendor! { mod: "pastey", pastey }
 crate::_doc_vendor! { mod: "pollster", pollster }
 crate::_doc_vendor! { mod: "quickdiv", quickdiv }
 crate::_doc_vendor! { mod: "stack_dst", stack_dst }

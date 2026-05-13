@@ -48,7 +48,6 @@ mod lets; // lets!
 mod likely; // likely, unlikely
 mod maybe; // maybe!, maybe_slot!
 mod methods; // methods_as_fns!
-mod paste; // paste!, (wrapped for docs)
 mod structural; // structural_mods!
 mod type_count; // type_count!
 mod whilst; // whilst!
@@ -80,7 +79,6 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             likely::{likely, unlikely},
             maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
-            paste::paste,
             structural::structural_mods,
             type_count::type_count,
             whilst::whilst,
@@ -97,10 +95,10 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
         };
         #[doc = crate::_tags!(code procedural_macro)]
         pub use devela_macros::{
-            cif, compile, compile_attr,
+            cif, compile, compile_attr, // compile_doc,
             ident_total, ident_total_unique, ident_unique,
             coalesce, field_of,
-            compile_doc,
+            paste,
             repeat,
         };
         #[doc = crate::_tags!(construction code niche procedural_macro)]
@@ -114,9 +112,5 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
     _hidden {
         #[doc(hidden)]
         pub use devela_macros::__macro_derive_helpers;
-        #[doc(hidden)]
-        pub use super::{
-            paste::__paste,
-        };
     }
 }

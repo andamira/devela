@@ -25,9 +25,10 @@
 //   - macro_derive_with
 // - misc:
 //   - coalesce
-//   - field_of
-//   - repeat
 //   - enumint
+//   - field_of
+//   - paste
+//   - repeat
 //
 // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727#issuecomment-485181171)
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
@@ -248,6 +249,15 @@ pub fn __macro_derive_helpers(_: TS) -> TS { TS::new() }
 #[proc_macro] #[rustfmt::skip]
 pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
+// #[doc = base::_tags!(construction niche procedural_macro)]
+/// Defines a compact enum over a contiguous integer interval.
+#[doc = crate::_doc_location!(proc "code/util")]
+///
+#[doc = include_str!("docs/enumint.md")]
+// #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
+#[proc_macro] #[rustfmt::skip]
+pub fn enumint(input: TS) -> TS { body_enumint(input) }
+
 /// Generates an expression for accessing a field of a tuple or struct.
 #[doc = crate::_doc_location!(proc "code/util")]
 ///
@@ -270,6 +280,14 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 #[proc_macro] #[rustfmt::skip]
 pub fn field_of(input: TS) -> TS { body_field_of(input) }
 
+/// Allows to paste identifiers together.
+#[doc = crate::_doc_location!("code/util")]
+///
+#[doc = include_str!("docs/paste.md")]
+#[doc = crate::_doc_vendor!("pastey")]
+#[proc_macro] #[rustfmt::skip]
+pub fn paste(input: TS) -> TS { body_paste(input) }
+
 /// Repeats an expression the given number of times, as duplicated code with no loops.
 #[doc = crate::_doc_location!(proc "code/util")]
 ///
@@ -282,12 +300,3 @@ pub fn field_of(input: TS) -> TS { body_field_of(input) }
 /// ```
 #[proc_macro] #[rustfmt::skip]
 pub fn repeat(input: TS) -> TS { body_repeat(input) }
-
-// #[doc = base::_tags!(construction niche procedural_macro)]
-/// Defines a compact enum over a contiguous integer interval.
-#[doc = crate::_doc_location!(proc "code/util")]
-///
-#[doc = include_str!("docs/enumint.md")]
-// #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
-#[proc_macro] #[rustfmt::skip]
-pub fn enumint(input: TS) -> TS { body_enumint(input) }

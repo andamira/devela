@@ -78,8 +78,8 @@
 
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
-- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`.
-  - vendor `macro_rules_attribute`.
+- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`.
+  - vendor `macro_rules_attribute` and `pastey`.
 - remake `fn_name!` and `compile_warn!`.
   - rename `compile_warn!` to `const_warn!`.
 - update `cdbg!` to add custom prefix syntax.

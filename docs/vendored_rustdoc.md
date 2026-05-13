@@ -27,6 +27,8 @@
   [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
   [M_no_std_io]: crate::_doc::vendored::no_std_io
   [`io`]: crate::sys::io
+  [M_pastey]: crate::_doc::vendored::pastey
+  [`paste!`]: crate::code::paste
   [M_pollster]: crate::_doc::vendored::pollster
   [`block_on`]: crate::work::future::FutureExt#method.block_on
   [M_quickdiv]: crate::_doc::vendored::quickdiv

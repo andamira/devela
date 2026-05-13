@@ -13,6 +13,7 @@ crate::items! {
     mod compile; // cif!, compile!, compile_attr!, (compile_doc!)
     mod enumint; // enumint!
     mod ident; // coalesce!, field_of!, ident_total!, ident_total_unique!, ident_unique!
+    mod paste; // paste!
     mod repeat; // repeat!
 
     pub(crate) use {
@@ -20,6 +21,7 @@ crate::items! {
         compile::*,
         enumint::*,
         ident::*,
+        paste::*,
         repeat::*,
     };
 }
