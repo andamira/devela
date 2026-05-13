@@ -144,6 +144,7 @@ See also
 
 # Experimental features:
 - [local_waker](https://github.com/rust-lang/rust/issues/118959)
+- [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727)
 - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
     - [related issues](https://github.com/rust-lang/rust/issues?q=state%3Aopen%20label%3A%22F-ptr_metadata%22)

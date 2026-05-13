@@ -201,10 +201,8 @@ mod impls {
             Display::fmt(&self.value, f)
         }
     }
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))] // unsafe
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
+    #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_mem", "unsafe_sync"))]
     unsafe impl<T: Send> Send for CacheAlign<T> {}
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))] // unsafe
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
+    #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_mem", "unsafe_sync"))]
     unsafe impl<T: Sync> Sync for CacheAlign<T> {}
 }

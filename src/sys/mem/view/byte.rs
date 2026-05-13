@@ -7,26 +7,27 @@
 
 #[allow(unused)]
 use crate::MaybeUninit;
-
-crate::CONST! {
+use crate::{
+    __cfg_item_safe_hide, __cfg_item_unsafe_hide, _doc_location, _tags, CONST, macro_apply,
+};
+CONST! {
     _DOC_MAYBE_BYTE = "
 # Features
-When `unsafe_array` is **enabled** it aliases [`MaybeUninit<u8>`].
-Otherwise it aliases [`u8`].";
+Uses [`MaybeUninit<u8>`] only in unsafe memory builds with `unsafe_array`.
+
+In safe memory builds, or when `unsafe_array` is disabled, it aliases [`u8`].";
 }
 
-#[doc = crate::_tags!(maybe mem)]
+#[doc = _tags!(maybe mem)]
 /// A byte type that may be uninitialized depending on features.
-#[doc = crate::_doc_location!("sys/mem/view")]
+#[doc = _doc_location!("sys/mem/view")]
 #[doc = _DOC_MAYBE_BYTE!()]
-#[cfg(any(feature = "safe_mem", not(feature = "unsafe_array")))] // safe
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
+#[macro_apply(__cfg_item_safe_hide("safe_mem", "unsafe_array"))]
 pub type MaybeByte = u8;
 
-#[doc = crate::_tags!(maybe mem)]
+#[doc = _tags!(maybe mem)]
 /// A byte type that may be uninitialized depending on features.
-#[doc = crate::_doc_location!("sys/mem/view")]
+#[doc = _doc_location!("sys/mem/view")]
 #[doc = _DOC_MAYBE_BYTE!()]
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_array"))] // unsafe
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
+#[macro_apply(__cfg_item_unsafe_hide("safe_mem", "unsafe_array"))]
 pub type MaybeByte = MaybeUninit<u8>;

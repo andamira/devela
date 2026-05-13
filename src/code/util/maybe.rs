@@ -47,7 +47,7 @@ macro_rules! maybe {
         // { None }
 
         // // WAIT: custom attributes can't be applied to statements
-        // // https://github.com/rust-lang/rust/issues/54727
+        // // [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727)
         //
         // #[crate::compile($implements_default)]
         // let res = Some(Self::Value::$C_name(<$T>::default()));

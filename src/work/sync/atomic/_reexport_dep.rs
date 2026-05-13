@@ -6,7 +6,7 @@
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::_DOC_ATOMIC_CORE_PORTABLE;
-use crate::{_reexport, _tags};
+use crate::{__doc_hide, _reexport, _tags, macro_apply};
 
 /* from the `atomic` crate */
 
@@ -99,14 +99,14 @@ pub use core::sync::atomic::AtomicPtr;
 /// A boolean type which can be safely shared between threads.
 #[doc = crate::_doc_location!("work/sync/atomic")]
 #[cfg(feature = "dep_portable_atomic")]
-#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "dep_portable_atomic"))))]
+#[macro_apply(__doc_hide(feature = "dep_portable_atomic"))]
 pub use crate::_dep::portable_atomic::AtomicBool;
 //
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A boolean type which can be safely shared between threads.
 #[doc = crate::_doc_location!("work/sync/atomic")]
 #[cfg(not(feature = "dep_portable_atomic"))]
-#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature = "dep_portable_atomic"))))]
+#[macro_apply(__doc_hide(feature = "dep_portable_atomic"))]
 pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstInit */

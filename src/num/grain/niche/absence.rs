@@ -162,7 +162,7 @@ macro_rules! impl_maybe {
             /// - [`InvalidValue`] if the value violates the validity invariant of `T`.
             #[inline(always)]
             pub const fn try_from_prim(primitive: $prim) -> Result<Self, InvalidValue> {
-                // WAIT: custom attrs on expr https://github.com/rust-lang/rust/issues/54727
+                // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727)
                 // Can't use `compile` on expr or stmt, e.g.: return Some(Self(primitive));
                 // so we need to leverage defined functions instead.
 

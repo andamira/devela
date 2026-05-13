@@ -311,6 +311,8 @@
 - rename `Task*` items to `Async*`.
 
 ## yard
+- new hidden maintenance aliases for item attributes:
+  - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `__js_[un]safe_ffi[_doc]`.
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
 - update syntax of `_devela_policy`.

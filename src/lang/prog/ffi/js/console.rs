@@ -8,6 +8,7 @@
 // - extern impls
 // - impl traits
 
+use crate::{_js_unsafe_ffi_doc, macro_apply};
 use crate::{DiagLevel, DiagOut, Infallible, TextOut};
 #[allow(unused_imports)]
 use devela::{_js_doc, _js_extern};
@@ -15,6 +16,7 @@ use devela::{_js_doc, _js_extern};
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
 #[doc = crate::_doc_location!("lang/prog/ffi/js")]
+#[macro_apply(crate::__doc_show(feature = "unsafe_ffi"))]
 #[derive(Debug)]
 pub struct JsConsole;
 
@@ -24,8 +26,7 @@ pub struct JsConsole;
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/console>
 #[rustfmt::skip]
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[macro_apply(crate::_js_unsafe_ffi_doc)]
 impl JsConsole {
     #[doc = _js_doc!(console "clear")]
     /// Clears the console if possible.
@@ -125,8 +126,7 @@ _js_extern! {
 ///
 /// See also [`TextOut`] for plain text emission.
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[macro_apply(_js_unsafe_ffi_doc)]
 impl DiagOut for JsConsole {
     type Error = Infallible;
 
@@ -149,8 +149,7 @@ impl DiagOut for JsConsole {
 ///
 /// For leveled diagnostic output, prefer [`DiagOut`].
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[macro_apply(_js_unsafe_ffi_doc)]
 impl TextOut for JsConsole {
     type Error = Infallible;
 

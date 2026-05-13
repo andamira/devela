@@ -50,6 +50,7 @@ mod console; // JsConsole
 // mod error; // JsError WIP
 mod instant; // JsInstant, JsTimeout
 mod namespace; // Js
+// #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 // mod object; // JsObject WIP
 mod primitives; // js_number, js_int32, js_unit32, js_bool…
 mod text; // JsTextRenderMetrics[Full]

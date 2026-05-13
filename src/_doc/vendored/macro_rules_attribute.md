@@ -19,5 +19,4 @@ including the following modifications:
 - simplify path parsing, macro invocation, and alias-builder logic.
 - preserve optional trailing `!` support for `macro_apply` and `macro_derive_with`.
 - preserve mixed derive support where entries ending in `!` are treated as declarative derives.
-- remove dependency on `paste`.
 - misc. refactors.

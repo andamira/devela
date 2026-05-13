@@ -2,10 +2,19 @@
 //
 //! Attribute adapters for declarative macros.
 //
+// WAIT: [attributes on expressions](https://github.com/rust-lang/rust/issues/15701)
+// NOTE: paste! is used to avoid the following error:
+// macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
 
 #[doc = crate::_tags!(code)]
 /// Defines attribute aliases usable from [`macro_apply`][crate::macro_apply].
 #[doc = crate::_doc_location!("code/util")]
+///
+/// These aliases expand to attributes,
+/// so they only apply where attributes are accepted.
+///
+/// For out-of-line modules (`mod name;`), call the alias macro directly instead.
+// WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727#issuecomment-485181171)
 ///
 /// # Examples
 /// ```
@@ -65,36 +74,36 @@ macro_rules! macro_apply_alias {
         $crate::macro_apply_alias! { $($rest)* }
     };
     (% [$($meta:tt)*] $vis:vis $name:ident () ($(#[$($attrs:tt)*])+)) => {
-        $crate::macro_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
             $($meta)*
             #[allow(nonstandard_style)]
             #[allow(unused_macros)]
             #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! $name {
+            macro_rules! [<__$name __>] {
                 ($d($item:tt)*) => {
                     $(#[$($attrs)*])+
                     $d($item)*
                 };
             }
             #[allow(unused_imports)]
-            $vis use $name;
-        }}
+            $vis use [<__$name __>] as $name;
+        }}}
     };
     (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($(#[$($attrs:tt)*])+)) => {
-        $crate::macro_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
             $($meta)*
             #[allow(nonstandard_style)]
             #[allow(unused_macros)]
             #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! $name {
+            macro_rules! [<__$name __>] {
                 (($($params)*) $d($item:tt)*) => {
                     $(#[$($attrs)*])+
                     $d($item)*
                 };
             }
             #[allow(unused_imports)]
-            $vis use $name;
-        }}
+            $vis use [<__$name __>] as $name;
+        }}}
     };
 }
 #[doc(inline)]
@@ -103,6 +112,9 @@ pub use macro_apply_alias;
 #[doc = crate::_tags!(code)]
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
 #[doc = crate::_doc_location!("code/util")]
+///
+/// These aliases expand through declarative derive macros,
+/// so they apply to items inspected by `macro_derive`.
 ///
 /// # Example
 /// ```
@@ -174,7 +186,7 @@ macro_rules! macro_derive_alias {
         $crate::macro_derive_alias! { $($rest)* }
     };
     (% [$($meta:tt)*] $vis:vis $name:ident () ($($derives:tt)*)) => {
-        $crate::macro_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
             $($meta)*
             #[allow(nonstandard_style)]
             #[allow(unused_macros)]
@@ -186,10 +198,10 @@ macro_rules! macro_derive_alias {
             }
             #[allow(unused_imports)]
             $vis use $name;
-        }}
+        }}}
     };
     (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($($derives:tt)*)) => {
-        $crate::macro_dollar! { ($d:tt) => {
+        $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
             $($meta)*
             #[allow(nonstandard_style)]
             #[allow(unused_macros)]
@@ -201,7 +213,7 @@ macro_rules! macro_derive_alias {
             }
             #[allow(unused_imports)]
             $vis use $name;
-        }}
+        }}}
     };
 }
 #[doc(inline)]

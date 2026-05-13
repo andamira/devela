@@ -10,6 +10,7 @@
 #![doc = crate::_QUO_YARD!()]
 //
 
+mod alias; // aliases for attributes and derives
 mod _env; // __dbg!, __std!, _std_core!
 mod _policy; // _devela_policy!
 mod _reexport_macro; // _reexport!
@@ -35,6 +36,7 @@ crate::structural_mods! { // _crate_internals, _hidden
     _hidden {
         #[doc(hidden)]
         pub use super::{
+            alias::*,
             _policy::{_devela_policy, __devela_unreachable_unchecked},
             _use::_use_or_shim,
         };

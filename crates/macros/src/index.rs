@@ -174,6 +174,10 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 ///
 /// The macro receives ownership of the item and must re-emit it if it should remain.
 ///
+/// This attribute cannot be used on out-of-line file modules such as
+/// `mod name;`, because file modules in proc-macro input are unstable.
+/// Use the generated alias macro directly for those cases.
+///
 /// # Examples
 /// ```ignore
 #[doc = include_str!("./docs/macro_apply_examples.rs")]

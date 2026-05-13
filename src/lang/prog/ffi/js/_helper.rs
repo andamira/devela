@@ -7,6 +7,8 @@
 // - _js_extern!
 // - _js_method_str_alloc!
 
+use crate::{__doc_show, _js_safe_ffi, _js_unsafe_ffi, macro_apply};
+
 /// Helper for Web API doc links.
 #[rustfmt::skip]
 macro_rules! _js_doc {
@@ -62,7 +64,7 @@ pub(crate) use _js_doc;
 /// - It performs DOM manipulations that might trigger undefined behavior.
 /// - It can throw exceptions that Rust cannot catch.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
+#[macro_apply(_js_unsafe_ffi)]
 macro_rules! _js_extern {
     (
         // # Args
@@ -97,10 +99,10 @@ macro_rules! _js_extern {
 }
 /// Dummy safe fallback of the real `_js_extern!` macro.
 #[rustfmt::skip]
-#[cfg(any(not(feature = "unsafe_ffi"), windows))]
+#[macro_apply(_js_safe_ffi)]
 macro_rules! _js_extern { ($($tt:tt)*) => {}; }
 
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
+#[macro_apply(__doc_show(feature = "unsafe_ffi"))]
 pub(crate) use _js_extern;
 
 /// Helper macro to generate JS methods that return strings.
