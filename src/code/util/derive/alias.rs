@@ -13,6 +13,9 @@
 /// These aliases expand to attributes,
 /// so they only apply where attributes are accepted.
 ///
+/// Generated aliases are emitted through a hidden macro and a re-export.
+/// Add `#[doc(inline)]` to the alias definition to show it in public docs.
+///
 /// For out-of-line modules (`mod name;`), call the alias macro directly instead.
 // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727#issuecomment-485181171)
 ///
@@ -75,34 +78,46 @@ macro_rules! macro_apply_alias {
     };
     (% [$($meta:tt)*] $vis:vis $name:ident () ($(#[$($attrs:tt)*])+)) => {
         $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
-            $($meta)*
             #[allow(nonstandard_style)]
-            #[allow(unused_macros)]
-            #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! [<__$name __>] {
-                ($d($item:tt)*) => {
-                    $(#[$($attrs)*])+
-                    $d($item)*
-                };
+            mod [<__mod_ $name __>] {
+                #[doc(hidden)]
+                #[allow(unused_macros)]
+                #[$crate::compile_attr(same($vis, pub), macro_export)]
+                macro_rules! [<__ $name __>] {
+                    ($d($item:tt)*) => { $(#[$($attrs)*])+ $d($item)* };
+                }
+                #[$crate::compile(none($vis))]
+                pub(super) use [<__$name __>] as $name;
+                #[$crate::compile(some($vis))]
+                $vis use [<__$name __>] as $name;
             }
+            $($meta)*
             #[allow(unused_imports)]
-            $vis use [<__$name __>] as $name;
+            #[doc = "\n\n---"]
+            #[doc = "*Generated with [`macro_apply_alias`][$crate::macro_apply_alias]*."]
+            $vis use [<__mod_ $name __>]::$name;
         }}}
     };
     (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($(#[$($attrs:tt)*])+)) => {
         $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
-            $($meta)*
             #[allow(nonstandard_style)]
-            #[allow(unused_macros)]
-            #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! [<__$name __>] {
-                (($($params)*) $d($item:tt)*) => {
-                    $(#[$($attrs)*])+
-                    $d($item)*
-                };
+            mod [<__mod_ $name __>] {
+                #[doc(hidden)]
+                #[allow(unused_macros)]
+                #[$crate::compile_attr(same($vis, pub), macro_export)]
+                macro_rules! [<__$name __>] {
+                    (($($params)*) $d($item:tt)*) => { $(#[$($attrs)*])+ $d($item)* };
+                }
+                #[$crate::compile(none($vis))]
+                pub(super) use [<__$name __>] as $name;
+                #[$crate::compile(some($vis))]
+                $vis use [<__$name __>] as $name;
             }
+            $($meta)*
             #[allow(unused_imports)]
-            $vis use [<__$name __>] as $name;
+            #[doc = "\n\n---"]
+            #[doc = "*Generated with [`macro_apply_alias`][$crate::macro_apply_alias]*."]
+            $vis use [<__mod_ $name __>]::$name;
         }}}
     };
 }
@@ -115,6 +130,9 @@ pub use macro_apply_alias;
 ///
 /// These aliases expand through declarative derive macros,
 /// so they apply to items inspected by `macro_derive`.
+///
+/// Generated aliases are emitted through a hidden macro and a re-export.
+/// Add `#[doc(inline)]` to the alias definition to show it in public docs.
 ///
 /// # Example
 /// ```
@@ -187,32 +205,50 @@ macro_rules! macro_derive_alias {
     };
     (% [$($meta:tt)*] $vis:vis $name:ident () ($($derives:tt)*)) => {
         $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
-            $($meta)*
             #[allow(nonstandard_style)]
-            #[allow(unused_macros)]
-            #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! $name {
-                ($d($item:tt)*) => {
-                    $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
-                };
+            mod [<__mod_ $name __>] {
+                #[doc(hidden)]
+                #[allow(unused_macros)]
+                #[$crate::compile_attr(same($vis, pub), macro_export)]
+                macro_rules! [<__ $name __>] {
+                    ($d($item:tt)*) => {
+                        $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
+                    };
+                }
+                #[$crate::compile(none($vis))]
+                pub(super) use [<__$name __>] as $name;
+                #[$crate::compile(some($vis))]
+                $vis use [<__ $name __>] as $name;
             }
+            $($meta)*
             #[allow(unused_imports)]
-            $vis use $name;
+            #[doc = "\n\n---"]
+            #[doc = "*Generated with [`macro_derive_alias`][$crate::macro_derive_alias]*."]
+            $vis use [<__mod_ $name __>]::$name;
         }}}
     };
     (% [$($meta:tt)*] $vis:vis $name:ident ($($params:tt)*) ($($derives:tt)*)) => {
         $crate::macro_dollar! { ($d:tt) => { $crate::paste! {
-            $($meta)*
             #[allow(nonstandard_style)]
-            #[allow(unused_macros)]
-            #[$crate::compile_attr(same($vis, pub), macro_export)]
-            macro_rules! $name {
-                (($($params)*) $d($item:tt)*) => {
-                    $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
-                };
+            mod [<__mod_ $name __>] {
+                #[doc(hidden)]
+                #[allow(unused_macros)]
+                #[$crate::compile_attr(same($vis, pub), macro_export)]
+                macro_rules! [<__ $name __>] {
+                    (($($params)*) $d($item:tt)*) => {
+                        $crate::__macro_nested_derive! { #[derive($($derives)*)] $d($item)* }
+                    };
+                }
+                #[$crate::compile(none($vis))]
+                pub(super) use [<__$name __>] as $name;
+                #[$crate::compile(some($vis))]
+                $vis use [<__ $name __>] as $name;
             }
+            $($meta)*
             #[allow(unused_imports)]
-            $vis use $name;
+            #[doc = "\n\n---"]
+            #[doc = "*Generated with [`macro_derive_alias`][$crate::macro_derive_alias]*."]
+            $vis use [<__mod_ $name __>]::$name;
         }}}
     };
 }

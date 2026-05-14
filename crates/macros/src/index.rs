@@ -180,7 +180,7 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 /// Use the generated alias macro directly for those cases.
 ///
 /// # Examples
-/// ```ignore
+/// ```
 #[doc = include_str!("./docs/macro_apply_examples.rs")]
 /// ```
 #[doc = crate::_doc_vendor!("macro_rules_attribute")]

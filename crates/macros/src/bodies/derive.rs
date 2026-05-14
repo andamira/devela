@@ -124,7 +124,7 @@ fn real_derive(derives: TS) -> TS {
 }
 fn path_bang(tts: &[TT]) -> Result<bool, ()> {
     let mut i = 0;
-    if eat_colons(tts, &mut i) {}
+    eat_colons(tts, &mut i);
     loop {
         match tts.get(i) {
             Some(TT::Ident(_)) => i += 1,
