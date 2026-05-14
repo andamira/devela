@@ -3,19 +3,19 @@
 //! Defines the [`Linux`] namespace.
 //
 
-use crate::{__doc_show, macro_apply};
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use crate::{
-    AtomicOrdering, AtomicPtr, Duration, LINUX_ERRNO as ERRNO, LINUX_EXIT, LINUX_FILENO as FILENO,
-    LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock, LinuxError,
-    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec, MaybeUninit,
-    Ptr, Str, c_int, c_uint, c_void, is, transmute,
-};
-#[cfg(feature = "term")]
-use crate::{LinuxTermios, ScopeGuard, TermSize};
-
-#[cfg(all(feature = "unsafe_syscall", feature = "alloc", not(miri)))]
-use crate::Vec;
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+crate::items! {
+    use crate::{
+        AtomicOrdering, AtomicPtr, Duration, LINUX_ERRNO as ERRNO, LINUX_EXIT,
+        LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock,
+        LinuxError, LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec,
+        MaybeUninit, Ptr, Str, c_int, c_uint, c_void, is, transmute,
+    };
+    #[cfg(feature = "alloc")]
+    use crate::Vec;
+    #[cfg(feature = "term")]
+    use crate::{LinuxTermios, ScopeGuard, TermSize};
+}
 
 #[doc = crate::_tags!(linux namespace)]
 /// Linux-related operations.
@@ -38,13 +38,12 @@ use crate::Vec;
 ///   - [IPC](#syscalls-ipc)
 ///   - [process control](#syscalls-process-control)
 ///   - [timing and signal handling](#syscalls-timing-and-signal-handling)
-#[macro_apply(__doc_show(all(feature = "linux", feature = "unsafe_syscall")))]
 #[derive(Debug)]
 pub struct Linux;
 
 /// # Read-related methods.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     /// Checks if there is input available to read from stdin.
     pub fn has_input() -> bool { Self::available_bytes().unwrap_or(0) > 0 }
@@ -202,7 +201,7 @@ impl Linux {
 
 /// # Write-related methods.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     /* core helpers */
 
@@ -313,7 +312,7 @@ impl Linux {
 /// # Terminal-related methods.
 #[rustfmt::skip]
 #[cfg(feature = "term")]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     /// Returns `true` if we are in a terminal context.
     #[must_use]
@@ -357,7 +356,7 @@ impl Linux {
 
 /// # Thread-related methods.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     /// Gets clock resolution for the specified clock.
     ///
@@ -420,7 +419,7 @@ impl Linux {
 
 /* signals */
 
-#[cfg(feature = "unsafe_syscall")]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 crate::items! {
     /// Maximum number of signals.
     const LINUX_SIG_MAX: usize = 30;
@@ -434,7 +433,7 @@ crate::items! {
 
 /// # Signaling-related methods.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     /// Registers multiple signals using a handler function.
     ///
@@ -625,7 +624,7 @@ impl Linux {
 /* random */
 
 /// Generates a `random_*` function for each given integer primitive
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 macro_rules! _sys_os_linux_impl_random_fns {
     // $prim: the unsigned integer primitive
     // $len:  the length of the primitive in bytes
@@ -653,7 +652,7 @@ macro_rules! _sys_os_linux_impl_random_fns {
 /// source is not ready, instead of blocking it may return less secure data in linux >= 5.6
 /// or retry it a certain number of times, or even return 0 in some cases.
 #[rustfmt::skip]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl Linux {
     _sys_os_linux_impl_random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 

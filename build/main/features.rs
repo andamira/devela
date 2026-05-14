@@ -353,7 +353,7 @@ mod reflection {
 
     /* ## code */
 
-    pub const UNROLL: FlagsFeatures = FlagsFeatures {
+    pub const _UNROLL: FlagsFeatures = FlagsFeatures {
         ref_flags: &[],
         features: &[
             "_unroll", "_unroll_128", "_unroll_256", "_unroll_512", "_unroll_1024", "_unroll_2048",
@@ -362,27 +362,36 @@ mod reflection {
 
     /* ## data */
 
-    pub const TUPLE: FlagsFeatures = FlagsFeatures {
+    pub const _TUPLE: FlagsFeatures = FlagsFeatures {
         ref_flags: &[],
         features: &["_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72"]
     };
 
     // ### collections
-    pub const DESTAQUE: FlagsFeatures = FlagsFeatures {
+    pub const _DESTAQUE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_destaque··"],
         features: &["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
     };
-    pub const GRAPH: FlagsFeatures = FlagsFeatures {
+    pub const _GRAPH: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_graph··"],
         features: &["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
     };
-    pub const NODE: FlagsFeatures = FlagsFeatures {
+    pub const _NODE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_node··"],
         features: &["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
     };
-    pub const STACK: FlagsFeatures = FlagsFeatures {
+    pub const _STACK: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_stack··"],
         features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
+
+    /* ## sys */
+
+    pub const _SYS: FlagsFeatures = FlagsFeatures {
+        ref_flags: &[],
+        features: &[
+            "_linux_abi",
+        ]
+    };
 
 
     // function helpers
@@ -424,10 +433,12 @@ mod reflection {
             /* capabilities */
 
             // code
-            UNROLL,
+            _UNROLL,
             // data
-            TUPLE,
-            DESTAQUE, GRAPH, NODE, STACK, // collections
+            _TUPLE,
+            _DESTAQUE, _GRAPH, _NODE, _STACK, // collections
+            // sys
+            _SYS,
 
         ] { set_flags_dbg_features(ff.ref_flags, ff.features, &mut enabled_ref_flags); }
 

@@ -158,8 +158,7 @@ impl LinuxClock {
     }
 }
 
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl LinuxClock {
     /// Gets the current time for this clock
     pub fn get_time(self) -> Result<LinuxTimespec> {

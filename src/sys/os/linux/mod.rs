@@ -29,7 +29,7 @@ mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, LINUX_[SIGACTION|SIGNA
 mod term; // LinuxTermios, LINUX_TERMIOS
 mod time; // LinuxClock, LinuxInstant, LinuxTime, LinuxTimespec
 
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 crate::items! {
     mod point_entry; // linux_entry!
     mod syscalls; // LINUX_SYS
@@ -71,8 +71,7 @@ crate::structural_mods! { // _mods, _pub_mods
             namespace::*,
         };
 
-        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-        #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
+        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub use super::{
             point_entry::*,
             syscalls::_all::*,

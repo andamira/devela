@@ -6,8 +6,6 @@
 //! with second and nanosecond precision.
 //
 
-#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
-
 use crate::{
     Cast, ConstInit, Display, Duration, FmtResult, Formatter, Overflow, format_buf, unwrap,
 };

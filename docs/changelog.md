@@ -47,10 +47,11 @@
 - make example-generated `*Example` items visible in the docs.
 
 ## features & flags
-- new feature: `web`.
+- new features: `web`, `_linux_abi`.
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
+- auto-enable feature `unsafe_syscall` via: `linux`.
 - require the `term` feature for all term-related functionality.
 - enable the nightly feature `proc_macro_diagnostic` with the `nightly_stable_later` flag.
 - update the intended scope of the `_docs_examples` feature.
@@ -318,7 +319,7 @@
 
 ## yard
 - new hidden maintenance aliases for item attributes:
-  - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `__js_[un]safe_ffi[_doc]`.
+  - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `_js_[un]safe_ffi[_doc]`, `_unsafe_syscall_not_miri`.
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
 - update syntax of `_devela_policy`.

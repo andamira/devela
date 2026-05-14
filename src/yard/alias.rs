@@ -7,7 +7,7 @@ crate::macro_apply_alias! {
     /* docs */
 
     /// Shows a cfg tree on nightly documentation.
-    pub __doc_show($meta:meta) = #[cfg_attr(nightly_doc, doc(cfg($meta)))];
+    pub __doc_show($cfg_tree:meta) = #[cfg_attr(nightly_doc, doc(cfg($cfg_tree)))];
 
     /// Hides a cfg item from nightly `auto_cfg` documentation.
     //
@@ -16,8 +16,7 @@ crate::macro_apply_alias! {
     // NOTE: `doc(auto_cfg(hide(…)))` may fail when emitted directly beside the
     // `#[cfg(…)]` from the same alias expansion. Route it through `macro_apply`
     // so rustdoc observes the hide directive as a separate attribute expansion.
-    pub __doc_hide($meta:meta) = #[cfg_attr(nightly_doc, doc(auto_cfg(hide($meta))))];
-
+    pub __doc_hide($cfg_item:meta) = #[cfg_attr(nightly_doc, doc(auto_cfg(hide($cfg_item))))];
 
     /* safety */
 
@@ -52,10 +51,7 @@ crate::macro_apply_alias! {
         #[cfg(all(feature = "unsafe_ffi", not(windows)))]
         #[$crate::macro_apply($crate::__doc_show(feature = "unsafe_ffi"))];
 
-    /* syscall */
+    /* sys */
 
-    // TEMP WIP
-    pub(crate) _cfg_linux_syscall =
-        #[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
-    ;
+    pub(crate) _unsafe_syscall_not_miri = #[cfg(all(feature = "unsafe_syscall", not(miri)))];
 }

@@ -6,10 +6,8 @@
 //! attributes via ioctl operations.
 //
 
-#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
-
 use crate::c_uint;
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 use crate::{
     LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG, Linux, LinuxError,
     LinuxResult as Result, TermSize, is,
@@ -45,7 +43,7 @@ pub struct LinuxTermios {
     pub c_cc: [u8; 19],
 }
 
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))))]
+#[crate::macro_apply(crate::__doc_show(feature = "dep_bytemuck"))]
 #[cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))]
 unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
 
@@ -76,7 +74,8 @@ impl LinuxTermios {
     }
 }
 
-#[cfg(all(any_target_arch_linux, feature = "unsafe_syscall", not(miri)))]
+#[cfg(any_target_arch_linux)]
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl LinuxTermios {
     /// Gets the current termios state into `state`.
     pub fn get_state() -> Result<LinuxTermios> {

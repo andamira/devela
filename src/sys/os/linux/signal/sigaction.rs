@@ -9,8 +9,6 @@
 //! As well as the private items: `LinuxSigactionHandler`, `LinuxSigval`.
 //
 
-#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
-
 use crate::{Debug, FmtResult, Formatter, c_void};
 #[cfg(feature = "unsafe_syscall")]
 use crate::{LINUX_SIGACTION, impl_trait};
@@ -90,7 +88,6 @@ impl LinuxSigaction {
     }
     /// Returns the simple handler, if set.
     #[cfg(feature = "unsafe_syscall")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub const fn sa_handler(&self) -> Option<extern "C" fn(i32)> {
         if self.sa_flags & LINUX_SIGACTION::SA_SIGINFO == 0 {
             Some(unsafe { self.sa_handler.sa_handler })
@@ -101,7 +98,6 @@ impl LinuxSigaction {
     /// Returns the `SA_SIGINFO` handler, if set.
     #[must_use]
     #[cfg(feature = "unsafe_syscall")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub const fn sa_sigaction(&self) -> Option<extern "C" fn(i32, LinuxSiginfo, *mut c_void)> {
         if self.sa_flags & LINUX_SIGACTION::SA_SIGINFO != 0 {
             Some(unsafe { self.sa_handler.sa_sigaction })
@@ -220,11 +216,9 @@ impl LinuxSiginfo {
     pub fn band(&self) -> i64 { self.si_band }
     /// Returns the signal value as an integer.
     #[cfg(feature = "unsafe_syscall")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn value_int(&self) -> i32 { unsafe { self.si_value.int } }
     /// Returns the signal value as a pointer.
     #[cfg(feature = "unsafe_syscall")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_syscall")))]
     pub fn value_ptr(&self) -> *mut c_void { unsafe { self.si_value.ptr } }
 }
 #[rustfmt::skip]

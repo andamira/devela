@@ -10,8 +10,10 @@
 mod sigaction; // LinuxSigaction, LinuxSiginfo, LinuxSigset
 mod consts; // LINUX_SIGACTION, LINUX_SIGNAL
 
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
-mod restorer;
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+crate::items! {
+    mod restorer;
+}
 
 crate::structural_mods! { // _mods
     _mods {
