@@ -51,6 +51,7 @@
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
+- require the `term` feature for all term-related functionality.
 - enable the nightly feature `proc_macro_diagnostic` with the `nightly_stable_later` flag.
 - update the intended scope of the `_docs_examples` feature.
 

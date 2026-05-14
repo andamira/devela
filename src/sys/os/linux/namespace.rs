@@ -3,13 +3,16 @@
 //! Defines the [`Linux`] namespace.
 //
 
+use crate::{__doc_show, macro_apply};
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 use crate::{
     AtomicOrdering, AtomicPtr, Duration, LINUX_ERRNO as ERRNO, LINUX_EXIT, LINUX_FILENO as FILENO,
     LINUX_IOCTL as IOCTL, LINUX_SIGACTION as SIGACTION, LinuxClock, LinuxError,
-    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTermios, LinuxTimespec,
-    MaybeUninit, Ptr, ScopeGuard, Str, TermSize, c_int, c_uint, c_void, is, transmute,
+    LinuxResult as Result, LinuxSigaction, LinuxSiginfo, LinuxSigset, LinuxTimespec, MaybeUninit,
+    Ptr, Str, c_int, c_uint, c_void, is, transmute,
 };
+#[cfg(feature = "term")]
+use crate::{LinuxTermios, ScopeGuard, TermSize};
 
 #[cfg(all(feature = "unsafe_syscall", feature = "alloc", not(miri)))]
 use crate::Vec;
@@ -35,6 +38,7 @@ use crate::Vec;
 ///   - [IPC](#syscalls-ipc)
 ///   - [process control](#syscalls-process-control)
 ///   - [timing and signal handling](#syscalls-timing-and-signal-handling)
+#[macro_apply(__doc_show(all(feature = "linux", feature = "unsafe_syscall")))]
 #[derive(Debug)]
 pub struct Linux;
 
@@ -308,6 +312,7 @@ impl Linux {
 
 /// # Terminal-related methods.
 #[rustfmt::skip]
+#[cfg(feature = "term")]
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 impl Linux {
     /// Returns `true` if we are in a terminal context.

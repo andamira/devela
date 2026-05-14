@@ -25,6 +25,7 @@ mod error; // LinuxError, LinuxResult, LINUX_[ERRNO|EXIT]
 mod file; // LinuxStat, LINUX_[F_CMD|FILENO|IOCTL|O_FLAGS|S_IFMT|SEEK]
 mod namespace; // Linux
 mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, LINUX_[SIGACTION|SIGNAL]
+#[cfg(feature = "term")]
 mod term; // LinuxTermios, LINUX_TERMIOS
 mod time; // LinuxClock, LinuxInstant, LinuxTime, LinuxTimespec
 
@@ -38,10 +39,9 @@ crate::items! {
 pub mod io {
     crate::structural_mods! { // _mods
         _mods {
-            pub use super::super::{
-                file::*,
-                term::*,
-            };
+            pub use super::super::file::*;
+            #[cfg(feature = "term")]
+            pub use super::super::term::*;
         }
     }
 }

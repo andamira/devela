@@ -27,7 +27,7 @@
 ///     pub MyHandle;
 /// }
 /// ```
-/// See also [`HandleExample`].
+/// See also [`HandleSpanExample`][crate::HandleSpanExample].
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! handle {

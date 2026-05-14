@@ -5,27 +5,32 @@
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
+// THINK: .
 
-mod size; // TermSize
-
-#[cfg(feature = "term")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "term")))]
 mod ansi; // Ansi, AnsiColor3, AnsiColor8
-
+// mod backend; // WIP
+// mod cap; // WIP
+// #[cfg(feature = "event")]
+// mod event; // WIP
+mod metric; // TermSize
 // #[cfg(feature = "term")]
 // mod render; // TermRenderer WIP
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::size::*;
-        #[cfg(feature = "term")]
+        pub use super::{
+            // cap::*,
+            metric::*,
+        };
         pub use super::{
             ansi::_all::*,
+            // backend::_all::*,
             // render::_all::*,
         };
+        // #[cfg(feature = "event")]
+        // pub use super::event::_all::*;
     }
     _crate_internals {
-        #[cfg(feature = "term")]
         pub use super::ansi::_crate_internals::*;
     }
 }
