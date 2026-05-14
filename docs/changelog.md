@@ -251,6 +251,10 @@
 
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
+- feature-gate term-related functionality.
+
+#### sys::os::term
+- new type `TermInputParser`.
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.

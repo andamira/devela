@@ -10,8 +10,8 @@
 mod ansi; // Ansi, AnsiColor3, AnsiColor8
 // mod backend; // WIP
 // mod cap; // WIP
-// #[cfg(feature = "event")]
-// mod event; // WIP
+#[cfg(feature = "event")]
+mod event; // TermInputParser WIP
 mod metric; // TermSize
 // #[cfg(feature = "term")]
 // mod render; // TermRenderer WIP
@@ -27,8 +27,8 @@ crate::structural_mods! { // _mods, _crate_internals
             // backend::_all::*,
             // render::_all::*,
         };
-        // #[cfg(feature = "event")]
-        // pub use super::event::_all::*;
+        #[cfg(feature = "event")]
+        pub use super::event::_all::*;
     }
     _crate_internals {
         pub use super::ansi::_crate_internals::*;
