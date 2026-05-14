@@ -83,7 +83,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        # NOTE: windows-latest will switch to vs2026 between 20260608 and 20260615
+        os: [macos-latest, windows-latest] # latest, 2022, 2025vs2026
     steps:
       - name: "checkout"
         uses: actions/checkout@v6

@@ -17,6 +17,7 @@ mod traits; // Canvas, CanvasRead, CanvasTextel
 // #[cfg(feature = "shape")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
 // pub mod line; // WIP
+// pub mod paint; // WIP
 
 crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
@@ -33,8 +34,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
     }
     _pub_mods {
         // pub use super::{
-        //     compose::*,
-        //     line::*,
+        //     // compose::*,
+        //     // line::*,
+        //     // paint::*,
         // };
     }
 }

@@ -6,12 +6,13 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod script;
+// mod script; // script! WIP
 
 crate::structural_mods! { // _mods
     _mods {
+        // #[doc(inline)]
         // pub use super::{
-        //     script::_all::*,
+        //     script::script,
         // };
     }
 }

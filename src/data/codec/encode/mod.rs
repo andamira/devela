@@ -8,6 +8,14 @@
 
 mod enums; // EncodingMode
 
+// WIP
+// mod combinator; // CodecIf, CodecJoin, CodecLenValue...
+// mod error; // CodecError
+// mod endian; // CodecBe, CodecLe
+// mod len; // CodecLen
+// mod traits; // Encode, Decode, EncodedLen
+// mod generator; // MAYBE codec! or encode!
+
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{

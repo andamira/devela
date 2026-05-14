@@ -6,8 +6,18 @@
 
 extern crate alloc;
 
-use devela::buffer_linear;
 
-buffer_linear!(pub struct BufferLinearExample: (u8); array, uninit, option);
-buffer_linear!(pub struct BufferLinearViewExample: view (u8); slice_mut, slice);
-buffer_linear!(pub struct BufferDynExample: alloc (u8); vec);
+mod all_imports {
+    use devela::all::*;
+
+    #[macro_derive(Debug)]
+    struct Test;
+}
+
+mod buffer_linear {
+    use devela::buffer_linear;
+
+    buffer_linear!(pub struct BufferLinearExample: (u8); array, uninit, option);
+    buffer_linear!(pub struct BufferLinearViewExample: view (u8); slice_mut, slice);
+    buffer_linear!(pub struct BufferDynExample: alloc (u8); vec);
+}

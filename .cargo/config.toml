@@ -169,6 +169,14 @@ tl = "test --lib"
 tl_ = "test --lib -- --nocapture"
 tl_1 = "test --lib -- --test-threads 1 --nocapture"
 td = "test --doc" #+w
+# Linux targets:
+# INSTALL:
+# $ rustup target add i686-unknown-linux-gnu
+# $ sudo apt install gcc-multilib libc6-dev-i386
+# USAGE:
+# $ cargo cl_x64l -F linux,unsafe_ffi
+t_x32l = "t --target i686-unknown-linux-gnu"
+t_x64l = "t --target x86_64-unknown-linux-gnu"
 
 # MIRI
 m = "miri test" #+w

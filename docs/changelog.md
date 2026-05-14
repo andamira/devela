@@ -37,6 +37,7 @@
 - new native section to detect native library availability.
 
 ## dependencies
+- remove `pastey`.
 - bump `portable-atomic-util` to 0.2.7.
 - bump `hashbrown` to 0.17.
 - bump `wide` to 1.3.
