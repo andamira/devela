@@ -57,6 +57,7 @@ mod slice; // Char<&[u8] | &[u8; N]>
 ///   - [**len_utf8_match**](#method.len_utf8_match) ([*naive*](#method.len_utf8_match_naive)).
 ///   - [**is_utf8_boundary**](#method.is_utf8_boundary).
 ///   - [**is_utf8_continuation**](#method.is_utf8_continuation).
+///   - [**as_char**](#method.as_char).
 ///
 /// - [over `&[u8]`](#methods-over-u8-slice)
 ///   - [**to_char**](#method.to_char) ([*lenient*](#method.to_char_lenient),

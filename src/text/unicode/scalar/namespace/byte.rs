@@ -100,4 +100,10 @@ impl Char<u8> {
     /// Continuation bytes have the bit pattern `10xxxxxx`.
     #[must_use] #[inline(always)]
     pub const fn is_utf8_continuation(self) -> bool { !self.is_utf8_boundary() }
+
+    /// Returns the current byte as a `char`.
+    ///
+    /// See [`char::from(u8)`][char#impl-From<u8>-for-char].
+    #[must_use] #[inline(always)]
+    pub const fn as_char(self) -> char { self.0 as char }
 }
