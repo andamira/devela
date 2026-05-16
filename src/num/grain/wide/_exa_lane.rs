@@ -22,10 +22,10 @@
 #![allow(unexpected_cfgs)]
 #![cfg_attr(nightly_simd, feature(portable_simd))]
 
-use devela::define_lane;
+use devela::lane;
 
 fn main() {
-    define_lane!(auto TestLane4 lanes(4); signed(i32); float(f32););
+    lane!(auto TestLane4 lanes(4); signed(i32); float(f32););
 
     // auto
     let mut i1 = TestLane4::<i32>::splat(10);

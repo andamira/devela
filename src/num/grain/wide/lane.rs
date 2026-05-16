@@ -1,24 +1,7 @@
 // devela::num::grain::wide::lane
 //
-//! Defines [`lane!`] macro.
+//! Defines the [`lane!`] macro.
 //
-// TOC
-// - struct Lane4_i32Example
-// - consts for method's docs
-// - macro lane!
-// - tests
-
-#[cfg(feature = "_docs_examples")]
-lane! {
-    #[doc = crate::_tags!(example code num)]
-    /// Example fixed-width pack of 4 × `i32` lanes.
-    #[doc = crate::_doc_location!("num/grain")]
-    ///
-    /// Generated with [`lane!`].
-    #[derive(Clone, Copy, Debug)]
-    #[allow(non_camel_case_types)]
-    pub struct Lane4_i32Example pub lanes(4); unsigned(i32);
-}
 
 #[doc = crate::_tags!(construction code num)]
 /// Defines a fixed-width lane type.
@@ -53,7 +36,8 @@ lane! {
 /// lane![impl Lane8 lanes(8); signed(i64);];
 /// ```
 ///
-/// See also [`Lane4_i32Example`] for the exact methods implementations.
+/// See also [`Lane4_i32Example`][crate::Lane4_i32Example]
+/// for the exact methods implementations.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! lane {
@@ -134,14 +118,14 @@ macro_rules! lane {
     (%impl_common $name:ident : $L:literal for $t:ty) => { $crate::paste! {
         #[allow(dead_code)]
         #[allow(unexpected_cfgs)]
-        /// Common methods for all integers and floating-point primitives.
+        /// # Common methods for all integers and floating-point primitives.
         impl $name<$t> {
             /* broadcasting / constructing */
 
             #[doc = "Builds a lane pack from the first " $L " bytes of a byte slice."]
             /// # Panics
             #[doc = "Panics if `bytes.len() < " $L "`."]
-            pub const fn from_bytes(bytes: &[u8]) -> Self {
+            pub const fn from_byte_values(bytes: &[u8]) -> Self {
                 Self( $crate::punroll! { $L[] |i| bytes[i] as $t })
             }
 
@@ -216,7 +200,7 @@ macro_rules! lane {
                 pub fn sub_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
-                    self.0 = (a + b).into();
+                    self.0 = (a - b).into();
                 } else {
                     $crate::punroll! { $L |i| self.0[i] -= rhs.0[i] }
                 }
@@ -247,7 +231,7 @@ macro_rules! lane {
                 pub fn mul_assign_wide(&mut self, rhs: Self) {
                     $crate::_dep_wide_use!($t, $L);
                     let a = Wide::new(self.0); let b = Wide::new(rhs.0);
-                    self.0 = (a + b).into();
+                    self.0 = (a + b).into(); // FIXME
                 } else {
                     $crate::punroll! { $L |i| self.0[i] *= rhs.0[i] }
                 }
@@ -472,7 +456,7 @@ macro_rules! lane {
     (%impl_int $name:ident : $L:literal for $t:ty) => { $crate::paste! {
         #[allow(dead_code)]
         #[allow(unexpected_cfgs)]
-        /// Methods for integer primitives.
+        /// # Methods for integer primitives.
         impl $name<$t> {
             /* arithmetic: elementwise */
 

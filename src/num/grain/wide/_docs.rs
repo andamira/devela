@@ -5,8 +5,9 @@ crate::CONST! { hidden macro_export,
 
 /* method api docs */
 
-_LANE_AUTO =
-"This method is a thin wrapper over the best available alternative (simd→wide→plain)";
+_LANE_AUTO = "
+
+This method is a thin wrapper over the best available alternative (simd→wide→plain)";
 // MAYBE Refer to that method's documentation.
 
 /* simd docs */

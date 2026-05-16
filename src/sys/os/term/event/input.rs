@@ -59,7 +59,10 @@ impl TermInputParser {
     ///
     /// Use [`flush_escape`][Self::flush_escape] to resolve a pending lone `ESC`
     /// after the backend's escape timeout expires.
-    pub const fn feed(&mut self, byte: u8) -> Option<EventKind> {
+    //
+    // NOTE: not const because it discards `TermParsed`,
+    // whose event path may carry non-const-drop event payloads.
+    pub fn feed(&mut self, byte: u8) -> Option<EventKind> {
         match self.feed_parsed(byte) {
             TermParsed::Event(ev) => Some(ev),
             _ => None,

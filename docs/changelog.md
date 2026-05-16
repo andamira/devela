@@ -175,6 +175,12 @@
 - remove macros: `nm!`, `nv!`, `nz!`.
 - rename `NonExtremeI*` to `NonMin*` and `NonExtremeU*` to `NonMax*`.
 
+#### num::grain::wide
+- update `lane!`:
+  - document methods in `Lane4_i32Example`.
+  - rename `from_bytes` to `from_byte_values`.
+  - fix `sub_assign_wide`.
+
 ### num::prob
 - new module `phys::prob::markov`.
 

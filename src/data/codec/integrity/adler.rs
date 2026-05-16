@@ -112,7 +112,7 @@ impl Adler32 {
             let (inner_count, _) = Slice::chunks_exact::<INNER_CHUNK>(outer_chunk);
             whilst! { j in 0..inner_count; {
                 let byte_vec = Slice::chunk::<INNER_CHUNK>(outer_chunk, j).unwrap();
-                let val = Lane4::<u32>::from_bytes(byte_vec);
+                let val = Lane4::<u32>::from_byte_values(byte_vec);
                 a_vec.add_assign_plain(val);
                 b_vec.add_assign_plain(a_vec);
             }}
@@ -125,7 +125,7 @@ impl Adler32 {
         let (inner_count, _) = Slice::chunks_exact::<INNER_CHUNK>(remainder_outer_chunk);
         whilst! { i in 0..inner_count; {
             let byte_vec = unwrap![some Slice::chunk::<4>(remainder_outer_chunk, i)];
-            let val = Lane4::<u32>::from_bytes(byte_vec);
+            let val = Lane4::<u32>::from_byte_values(byte_vec);
             a_vec.add_assign_plain(val);
             b_vec.add_assign_plain(a_vec);
         }}

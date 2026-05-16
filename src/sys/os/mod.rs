@@ -20,8 +20,13 @@ pub mod browser; // Web*
 #[cfg(feature = "unsafe_ffi")]
 mod c; // Libc
 pub mod fd;
-#[cfg(feature = "linux")]
-pub mod linux;
+
+#[cfg(feature = "_linux_abi")]
+#[crate::macro_apply(crate::__doc_show(feature = "linux"))]
+crate::items! {
+    pub mod linux;
+}
+
 // #[cfg(feature = "macos")]
 // pub mod macos;
 #[cfg(feature = "term")]
@@ -39,7 +44,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             browser::_all::*,
             fd::_all::*,
         };
-        #[cfg(feature = "linux")]
+        #[cfg(feature = "_linux_abi")]
         pub use super::linux::_all::*;
         #[cfg(feature = "term")]
         pub use super::term::_all::*;
