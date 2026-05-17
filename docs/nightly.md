@@ -51,6 +51,7 @@ See also
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
         = `nightly_doc` flag
 
+- 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
 - 1.??: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
@@ -59,6 +60,7 @@ See also
         `·` `const_slice_from_ref`
 - 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `·` `const_sockaddr_setters`
+- 1.??: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) new_range_api
 - 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `·`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
@@ -78,8 +80,7 @@ See also
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/issues/125687)
-- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/pull/152304)
+- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/pull/152304) new_range_api
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)

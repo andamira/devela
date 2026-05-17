@@ -22,10 +22,10 @@ mod c; // Libc
 pub mod fd;
 
 #[cfg(feature = "_linux_abi")]
-#[crate::macro_apply(crate::__doc_show(feature = "linux"))]
-crate::items! {
+crate::__doc_hide! { (feature = "_linux_abi")
+crate::__doc_show! { (feature = "linux")
     pub mod linux;
-}
+}}
 
 // #[cfg(feature = "macos")]
 // pub mod macos;

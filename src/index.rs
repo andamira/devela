@@ -74,6 +74,7 @@
 #![cfg_attr(
     nightly_stable_later,
     feature(
+        bool_to_result,
         breakpoint,
         cfg_target_has_atomic_equal_alignment,
         cfg_version,
