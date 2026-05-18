@@ -65,6 +65,7 @@
   - new methods: `emit_[check_cfg|checked_flag|env|env_marker|flag|flag_if|flag_if_lib]`, `has_lib`.
 
 ## code
+- new type: `Version`.
 - impl `ConstInit` for more types.
 - fix and update `enumint!`
   - improve error diagnostics.

@@ -20,7 +20,7 @@ mod const_init; // ConstInit
 mod guard; // ScopeGuard
 mod intro; // Introspect
 mod site; // CodeLocation, CodeSpan
-// mod version; // WIP Version
+mod version; // Version
 
 pub mod error; // AllError, modular errors
 pub mod marker; // core::marker, TypeResource, TypeResourced, type_marker!, type_resource!
@@ -37,7 +37,7 @@ util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
             guard::*,
             intro::_all::*,
             site::*,
-            // version::*,
+            version::*,
         };
     }
     _pub_mods {
