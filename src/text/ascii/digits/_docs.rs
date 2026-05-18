@@ -16,12 +16,6 @@ _DOC_COUNT_DIGITS_10 = "Counts the number of decimal digits in the number.\n\n
 Returns 1 for zero, and the base-10 logarithm plus one for other numbers.\n\n";
 _DOC_COUNT_DIGITS_16 = "Counts the number of hexadecimal digits in the number.\n\n
 Returns 1 for zero, and the base-16 logarithm plus one for other numbers.\n\n";
-
-_DOC_DIGITS_STR = "Returns a static string with zero-padded digits with minimum `width`.\n\n
-The given `width` will be clamped betweeen the actual number of digits
-and the maximum number of digits.
-# Features
-- Makes use of the `unsafe_str` feature if enabled.\n\n";
 }
 
 #[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10 { ($MAX:literal) => { concat![

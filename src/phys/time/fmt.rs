@@ -7,7 +7,7 @@
 // - nanos_u64: to not show leading zeros for seconds.
 // - nanos_u64: not just clamp the seconds but all to 999?
 
-use crate::{Cmp, Digits, Float, NoTime, StringU8, TimeSplit, TimeSplitHourNano, format_buf};
+use crate::{Cmp, Digits, Float, NoTime, StringU8, TimeSplit, TimeSplitHourNano, is, write_at};
 #[cfg(feature = "alloc")]
 use crate::{String, format};
 
@@ -77,36 +77,43 @@ impl Timecode {
     }
 
     /* strings */
-    // TODO add write methods into the given buffer
 
-    /// Returns the time code as `HH:MM:SS:MIL` or `MM:SS:MIL`.
+    /// Writes the time code as `HH:MM:SS.mmm` or `MM:SS.mmm`.
     ///
-    /// The hours are clamped to 99 (more than 4 days).
+    /// Hours are clamped to `99`.
+    ///
+    /// Returns the number of bytes written, or `0` if `buf` is too small.
+    pub const fn write_secs_f64(buf: &mut [u8], seconds: f64) -> usize {
+        let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
+        let has_hours = h > 0;
+        let len = is! { has_hours, 12, 9 };
+        is! { buf.len() < len, return 0 }
+        let mut pos = 0;
+        if has_hours {
+            pos += Self::write_2(buf, pos, Cmp(h).min(99) as u16);
+            write_at![buf, +=pos, b':'];
+        }
+        pos += Self::write_2(buf, pos, m as u16);
+        write_at![buf, +=pos, b':'];
+        pos += Self::write_2(buf, pos, s as u16);
+        write_at![buf, +=pos, b'.'];
+        pos += Self::write_3(buf, pos, ms);
+        pos
+    }
+    /// Returns the time code as `HH:MM:SS.mmm` or `MM:SS.mmm`.
+    ///
+    /// Hours are clamped to `99`.
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
-    //
-    // -> 96 bits
-    // TODO: make const, replace format_buf.
-    pub fn secs_f64(seconds: f64) -> StringU8<12> {
-        let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
-        let m = Digits(m as u32).digits10_str(2);
-        let s = Digits(s as u32).digits10_str(2);
-        let ms = Digits(ms as u32).digits10_str(3);
+    /// Uses `unsafe_str` if enabled.
+    pub const fn secs_f64(seconds: f64) -> StringU8<12> {
         let mut buf = [0; 12];
-        let mut buf_len = 12;
-        if h > 0 {
-            let h = Digits(Cmp(h).min(99)).digits10_str(2);
-            let _str = format_buf![&mut buf, "{h}:{m}:{s}.{ms}"];
-        } else {
-            buf_len = 9;
-            let _str = format_buf![&mut buf, "{m}:{s}.{ms}"];
-        }
+        let len = Self::write_secs_f64(&mut buf, seconds) as u8;
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_time")) => {
-            // SAFETY: the buffer contains only ASCII characters.
-            unsafe { StringU8::<12>::from_array_nleft_unchecked(buf, buf_len) }
+            // SAFETY: only valid UTF-8 bytes are written.
+            unsafe { StringU8::<12>::from_array_nleft_unchecked(buf, len) }
         } _ => {
-            crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, buf_len)]
+            crate::unwrap![ok StringU8::<12>::from_array_nleft(buf, len)]
         }}
     }
 
@@ -134,41 +141,71 @@ impl Timecode {
         }
     }
 
-    /// Returns the time code, up to seconds, as `001s 012ms 012µs 012345ns`.
+    /// Writes a compact nanosecond time code.
     ///
-    /// The seconds are clamped to 999 (more than 16 minutes).
+    /// Format examples:
+    /// - `001s 002ms 003µs 004ns`
+    /// - `002ms 003µs 004ns`
+    /// - `003µs 004ns`
+    /// - `004ns`
+    ///
+    /// Seconds are clamped to `999`.
+    ///
+    /// Returns the number of bytes written, or `0` if `buf` is too small.
+    pub const fn write_nanos_u64(buf: &mut [u8], nanos: u64) -> usize {
+        let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
+        let len = is![s > 0, 23, is![ms > 0, 18, is![us > 0, 12, 5]]];
+        is![buf.len() < len, return 0];
+        let mut pos = 0;
+        if s > 0 {
+            pos += Self::write_3(buf, pos, Cmp(s).min(999) as u16);
+            write_at![buf, +=pos, b's', b' ']; // s
+        }
+        if s > 0 || ms > 0 {
+            pos += Self::write_3(buf, pos, ms);
+            write_at![buf, +=pos, b'm', b's', b' ']; // ms
+        }
+        if s > 0 || ms > 0 || us > 0 {
+            pos += Self::write_3(buf, pos, us);
+            write_at![buf, +=pos, 0xC2, 0xB5, b's', b' ']; // µs
+        }
+        pos += Self::write_3(buf, pos, ns);
+        write_at![buf, +=pos, b'n', b's'];
+        pos
+    }
+    /// Returns the time code, up to seconds, as `001s 002ms 003µs 004ns`.
+    ///
+    /// Seconds are clamped to `999`.
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
-    // -> 208 bits
-    // TODO: make const, replace format_buf.
-    // TODO: also make a version that writes bytes on provided buffer
-    pub fn nanos_u64(nanos: u64) -> StringU8<23> {
-        let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
-        let s_str = Digits(s.min(999)).digits10_str(3);
-        let ms_str = Digits(ms as u32).digits10_str(3);
-        let us_str = Digits(us as u32).digits10_str(3);
-        let ns_str = Digits(ns as u32).digits10_str(3);
+    /// Uses `unsafe_str` if enabled.
+    pub const fn nanos_u64(nanos: u64) -> StringU8<23> {
         let mut buf = [0; 23];
-        let mut buf_len = 23; // = 18 + 3digits + 1name(s) + 1space
-        if s > 0 {
-            let _ = format_buf![&mut buf, "{s_str}s {ms_str}ms {us_str}µs {ns_str}ns"];
-        } else if ms > 0 {
-            buf_len = 18; // = 18 + 3digits + 2name(ms) + 1space
-            let _ = format_buf![&mut buf, "{ms_str}ms {us_str}µs {ns_str}ns"];
-        } else if us > 0 {
-            buf_len = 12; // = 5 + 3digits + 3name(µs) + 1space
-            let _ = format_buf![&mut buf, "{us_str}µs {ns_str}ns"];
-        } else {
-            buf_len = 5; // = 0 + 3digits + 2name(ns)
-            let _ = format_buf![&mut buf, "{ns_str}ns"];
-        }
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: the buffer contains only ASCII characters.
-            unsafe { StringU8::<23>::from_array_nleft_unchecked(buf, buf_len) }
+        let len = Self::write_nanos_u64(&mut buf, nanos) as u8;
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_time")) => {
+            // SAFETY: only valid UTF-8 bytes are written.
+            unsafe { StringU8::<23>::from_array_nleft_unchecked(buf, len) }
         } _ => {
-            crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, buf_len)]
+            crate::unwrap![ok StringU8::<23>::from_array_nleft(buf, len)]
         }}
+    }
+
+    /* helpers */
+
+    #[inline(always)]
+    const fn write_2(buf: &mut [u8], pos: usize, n: u16) -> usize {
+        let d = Digits(n).digits10_2();
+        buf[pos] = d[0];
+        buf[pos + 1] = d[1];
+        2
+    }
+    #[inline(always)]
+    const fn write_3(buf: &mut [u8], pos: usize, n: u16) -> usize {
+        let d = Digits(n).digits10_3();
+        buf[pos] = d[0];
+        buf[pos + 1] = d[1];
+        buf[pos + 2] = d[2];
+        3
     }
 }
 

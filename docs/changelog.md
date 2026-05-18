@@ -199,6 +199,8 @@
 - new alias: `MaybeTimed`.
 - update `NoTime`:
   - implement `TimePoint`, `TimeSource` and `TimeSpan`.
+- update `Timecode`:
+  - new methods: `write_nanos_u64`, `write_secs_f64`.
 
 #### phys::time::source
 - update `TimePoint`:
@@ -279,10 +281,12 @@
 - new type `AsciiSet`.
 - update `Digits`:
   - rename methods `*_omit0`  to `*_nonzero`.
+  - new method for u16: `digits10_2`.
   - new methods for u16 and smaller impls: `write_digits10_fast`, `write_digits10_fast_nonzero`.
   - new methods for u32 and larger impls: `write_digits10_nonzero`, `write_digits10_fast_nonzero`.
   - make `write_digits10` always an exact-space writer. Update behavior for u8 and u16.
   - make `write_digits_10_fast` methods *const*.
+  - remove methods: `digits10_str`, `digits16_str`.
 
 ### text::fmt
 - make `Fmt::from_fn` const.

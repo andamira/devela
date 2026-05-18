@@ -1,7 +1,7 @@
 // devela::text::ascii::digits::u128
 
 use super::*;
-use crate::{AsciiLut, Cmp, StringU8, is, whilst};
+use crate::{AsciiLut, is, whilst};
 
 impl Digits<u128> {
     /// The maximum number of decimal digits a `u128` can represent.
@@ -301,31 +301,5 @@ impl Digits<u128> {
     pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10_fast(buf, offset)
-    }
-
-    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: the bytes are valid UTF-8
-            unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
-                ::from_array_nright_unchecked(self.digits10(), width) }
-        } _ => {
-            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
-                ::from_array_nright(self.digits10(), width)]
-        }}
-    }
-    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: the bytes are valid UTF-8
-            unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
-                ::from_array_nright_unchecked(self.digits16(), width) }
-        } _ => {
-            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
-                ::from_array_nright(self.digits16(), width)]
-        }}
-
     }
 }

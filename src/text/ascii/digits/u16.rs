@@ -1,7 +1,7 @@
 // devela::text::ascii::digits::u16
 
 use super::*;
-use crate::{AsciiLut, Cmp, StringU8, is};
+use crate::{AsciiLut, is};
 
 impl Digits<u16> {
     /// The maximum number of decimal digits a `u16` can represent.
@@ -220,29 +220,14 @@ impl Digits<u16> {
         self.write_digits10_fast(buf, offset)
     }
 
-    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits10_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_10 as usize}> {
-        let width = Cmp(width).clamp(self.count_digits10(), Self::MAX_DIGITS_10);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: the bytes are valid UTF-8
-            unsafe { StringU8::<{Self::MAX_DIGITS_10 as usize}>
-                ::from_array_nright_unchecked(self.digits10(), width)}
-        } _ => {
-            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_10 as usize}>
-                ::from_array_nright(self.digits10(), width)]
-        }}
-    }
-    #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]
-    pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
-        let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: the bytes are valid UTF-8
-            unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
-                ::from_array_nright_unchecked(self.digits16(), width) }
-        } _ => {
-            crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
-                ::from_array_nright(self.digits16(), width)]
-        }}
+    /// Converts a three-digit decimal number to the corresponding `2` ASCII digits.
+    ///
+    /// # Panics
+    /// This function panics in debug if the given number is > 99.
+    #[must_use]
+    pub const fn digits10_2(self) -> [u8; 2] {
+        debug_assert![self.0 <= 99];
+        [self.digit_at_power10(10), self.digit_at_power10(1)]
     }
 
     /// Converts a three-digit decimal number to the corresponding `3` ASCII digits.

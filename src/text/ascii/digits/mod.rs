@@ -57,14 +57,15 @@ mod usize;
 ///   [digits16_str](#method.digits16_str).
 ///
 /// Exclusive for `u8`:
-/// - [digits10_1](#method.digits10_3),
+/// - [digits10_1](#method.digits10_1),
 /// - [digits10_2](#method.digits10_2),
 ///   [digits16_1](#method.digits16_1).
 /// - [write_digits16](#method.write_digits16)
 ///   ([*nonzero*](#method.write_digits16_nonzero)).
 ///
 /// Exclusive for `u16`:
-/// - [digits10_3](#method.digits10_3),
+/// - [digits10_2](#method.digits10_2),
+///   [digits10_3](#method.digits10_3),
 ///   [digits10_4](#method.digits10_4).
 ///
 /// # Examples
