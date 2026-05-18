@@ -17,7 +17,7 @@
 /// # Panics
 /// Panics if writing would exceed the buffer bounds.
 ///
-/// /// # Behavior
+/// # Behavior
 /// - With `+= $offset` syntax, the offset identifier is updated to the new position.
 /// - With `$offset` syntax, the offset expression is used as the starting position
 ///   and is not updated.

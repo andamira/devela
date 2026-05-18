@@ -415,6 +415,8 @@ macro_rules! impl_str_u {
 
             /// Returns a string from an array of `bytes` that must be valid UTF-8.
             ///
+            /// # Panics
+            /// Panics if `CAP > Self::MAX_CAPACITY`.
             /// # Safety
             /// The caller must ensure that the content of the slice is valid UTF-8.
             ///
@@ -427,7 +429,7 @@ macro_rules! impl_str_u {
             }
             /// Internal accessor for trusted formatting operations, avoiding UTF-8 re-validation.
             /// # Panics
-            /// Panics if `CAP > Self::MAX_CAPACITY` or if `len <= CAP`.
+            /// Panics if `CAP > Self::MAX_CAPACITY` or if `len > CAP`.
             #[inline(always)]
             pub(crate) const fn _from_array_len_trusted(array: [u8; CAP], len: $P) -> Self {
                 Self::_assert_cap();

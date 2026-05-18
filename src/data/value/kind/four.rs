@@ -73,9 +73,9 @@ impl ValueKind4 {
             9 => Some(Self::Bytes),
             10 => Some(Self::Text),
             11 => Some(Self::List),
-            14 => Some(Self::Set),
-            12 => Some(Self::Table),
-            13 => Some(Self::Callable),
+            12 => Some(Self::Set),
+            13 => Some(Self::Table),
+            14 => Some(Self::Callable),
             15 => Some(Self::Escape),
             _ => None,
         }
