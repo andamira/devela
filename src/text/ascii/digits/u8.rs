@@ -190,8 +190,8 @@ impl Digits<u8> {
         is![len > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(3)]
-    pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_NONZERO!(3)]
+    pub const fn write_digits10_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10(buf, offset)
     }
@@ -201,8 +201,8 @@ impl Digits<u8> {
         is![MAX > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(3)]
-    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_NONZERO!(3)]
+    pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10_fast(buf, offset)
     }
@@ -227,7 +227,7 @@ impl Digits<u8> {
     /// returning the number of bytes written.
     ///
     /// Returns 0 and writes nothing if the value is 0 or if fewer than 2 bytes remain.
-    pub const fn write_digits16_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    pub const fn write_digits16_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         let n = self.0;
         is![n == 0, return 0];
         is![offset + 2 > buf.len(), return 0];
@@ -310,14 +310,14 @@ mod tests {
         assert_eq!(Digits(100_u8).write_digits10(&mut buf[0..2], 0), 0); // buffer too small
     }
     #[test]
-    fn test_write_digits10_omit0() {
+    fn test_write_digits10_nonzero() {
         let mut buf = [0u8; 10];
-        assert_eq!(Digits(123_u8).write_digits10_omit0(&mut buf, 0), 3);
-        assert_eq!(Digits(45_u8).write_digits10_omit0(&mut buf, 3), 2);
-        assert_eq!(Digits(0_u8).write_digits10_omit0(&mut buf, 3), 0); // omits zero
-        assert_eq!(Digits(6_u8).write_digits10_omit0(&mut buf, 5), 1);
+        assert_eq!(Digits(123_u8).write_digits10_nonzero(&mut buf, 0), 3);
+        assert_eq!(Digits(45_u8).write_digits10_nonzero(&mut buf, 3), 2);
+        assert_eq!(Digits(0_u8).write_digits10_nonzero(&mut buf, 3), 0); // omits zero
+        assert_eq!(Digits(6_u8).write_digits10_nonzero(&mut buf, 5), 1);
         assert_eq!(&buf[0..6], b"123456");
-        assert_eq!(Digits(100_u8).write_digits10_omit0(&mut buf[0..2], 0), 0); // buffer too small
+        assert_eq!(Digits(100_u8).write_digits10_nonzero(&mut buf[0..2], 0), 0); // buffer too small
     }
 
     #[test]
@@ -330,12 +330,12 @@ mod tests {
         assert_eq!(Digits(0x10_u8).write_digits16(&mut buf[0..1], 0), 0); // buffer too small
     }
     #[test]
-    fn test_write_digits16_omit0() {
+    fn test_write_digits16_nonzero() {
         let mut buf = [0u8; 10];
-        assert_eq!(Digits(0x1_u8).write_digits16_omit0(&mut buf, 0), 1);
-        assert_eq!(Digits(0x0__u8).write_digits16_omit0(&mut buf, 1), 0); // omits zero
-        assert_eq!(Digits(0x23_u8).write_digits16_omit0(&mut buf, 1), 2);
+        assert_eq!(Digits(0x1_u8).write_digits16_nonzero(&mut buf, 0), 1);
+        assert_eq!(Digits(0x0__u8).write_digits16_nonzero(&mut buf, 1), 0); // omits zero
+        assert_eq!(Digits(0x23_u8).write_digits16_nonzero(&mut buf, 1), 2);
         assert_eq!(&buf[0..3], b"123");
-        assert_eq!(Digits(0x10_u8).write_digits16_omit0(&mut buf[0..1], 0), 0); // buffer too small
+        assert_eq!(Digits(0x10_u8).write_digits16_nonzero(&mut buf[0..1], 0), 0); // buffer too small
     }
 }

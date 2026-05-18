@@ -203,8 +203,8 @@ impl Digits<u16> {
         is![len > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(5)]
-    pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_NONZERO!(5)]
+    pub const fn write_digits10_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10(buf, offset)
     }
@@ -214,8 +214,8 @@ impl Digits<u16> {
         is![MAX > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(5)]
-    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_NONZERO!(5)]
+    pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10_fast(buf, offset)
     }

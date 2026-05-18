@@ -236,7 +236,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     const fn write_color_reference(buffer: &mut [u8], index: u16) -> Result<usize, NotEnoughSpace> {
         is![buffer.len() < 2, return Err(NotEnoughSpace(Some(2)))];
         buffer[0] = b'#';
-        let digits_written = Digits(index).write_digits10_omit0(buffer, 1);
+        let digits_written = Digits(index).write_digits10_nonzero(buffer, 1);
         is![digits_written == 0, return Err(NotEnoughSpace(Some(2)))];
         Ok(1 + digits_written)
     }

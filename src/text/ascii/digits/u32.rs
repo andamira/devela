@@ -208,8 +208,8 @@ impl Digits<u32> {
         }
         digits
     }
-    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(10)]
-    pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_NONZERO!(10)]
+    pub const fn write_digits10_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10(buf, offset)
     }
@@ -245,8 +245,8 @@ impl Digits<u32> {
         whilst! { i in 0..written_len; { buf[offset + i] = buf[pos + i]; }}
         written_len
     }
-    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(10)]
-    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_NONZERO!(10)]
+    pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
         self.write_digits10_fast(buf, offset)
     }

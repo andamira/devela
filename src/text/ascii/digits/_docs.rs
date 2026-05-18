@@ -33,10 +33,10 @@ It can write into buffers with fewer than ", $MAX, " bytes remaining when
 the value itself needs fewer digits. Returns 0 and writes nothing if
 insufficient space remains.\n\n"
 ]}; }
-#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_OMIT0 { ($MAX:literal) => { concat![
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_NONZERO { ($MAX:literal) => { concat![
 "Writes 0..=", $MAX, " decimal digits without leading zeros starting at `offset`,
 returning the number of bytes written.\n\n",
-"Returns 0 and writes nothing when the value is zero.\n\n",
+"If the number is zero, writes nothing and returns `0`.\n\n",
 "This method checks the exact number of bytes required before writing.
 It can write into buffers with fewer than ", $MAX, " bytes remaining when
 the value itself needs fewer digits. Returns 0 and writes nothing if
@@ -51,16 +51,16 @@ available starting at `offset`. It avoids the exact pre-counting step used by
 [`write_digits10`][Self::write_digits10]. Returns 0 and writes nothing if
 that workspace is not available.\n\n"
 ]}; }
-#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_FAST_OMIT0 { ($MAX:literal) => { concat![
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_FAST_NONZERO { ($MAX:literal) => { concat![
 "Writes 0..=", $MAX, " decimal digits without leading zeros starting at `offset`,
 returning the number of bytes written.\n\n",
-"Returns 0 and writes nothing when the value is zero.\n\n",
+"If the number is zero, writes nothing and returns `0`.\n\n",
 "This method assumes a maximum-width workspace: ", $MAX, " bytes must be
 available starting at `offset`. It avoids the exact pre-counting step used by
 [`write_digits10`][Self::write_digits10]. Returns 0 and writes nothing if
 that workspace is not available.\n\n"
 ]}; }
 pub(super) use {
-    _DOC_WRITE_DIGITS_10, _DOC_WRITE_DIGITS_10_FAST, _DOC_WRITE_DIGITS_10_FAST_OMIT0,
-    _DOC_WRITE_DIGITS_10_OMIT0,
+    _DOC_WRITE_DIGITS_10, _DOC_WRITE_DIGITS_10_FAST, _DOC_WRITE_DIGITS_10_FAST_NONZERO,
+    _DOC_WRITE_DIGITS_10_NONZERO,
 };

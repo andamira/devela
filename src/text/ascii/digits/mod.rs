@@ -50,9 +50,9 @@ mod usize;
 /// - [digits10](#method.digits10),
 ///   [digits16](#method.digits16).
 /// - [write_digits10](#method.write_digits10)
-///   ([*omit0*](#method.write_digits10_omit0)).
+///   ([*nonzero*](#method.write_digits10_nonzero)).
 /// - [write_digits10_fast](#method.write_digits10_fast)
-///   ([*omit0*](#method.write_digits10_fast_omit0)).
+///   ([*nonzero*](#method.write_digits10_fast_nonzero)).
 /// - [digits10_str](#method.digits10_str),
 ///   [digits16_str](#method.digits16_str).
 ///
@@ -61,7 +61,7 @@ mod usize;
 /// - [digits10_2](#method.digits10_2),
 ///   [digits16_1](#method.digits16_1).
 /// - [write_digits16](#method.write_digits16)
-///   ([*omit0*](#method.write_digits16_omit0)).
+///   ([*nonzero*](#method.write_digits16_nonzero)).
 ///
 /// Exclusive for `u16`:
 /// - [digits10_3](#method.digits10_3),

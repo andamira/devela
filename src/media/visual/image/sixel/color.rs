@@ -64,13 +64,13 @@ impl SixelColor {
     ) -> usize {
         let start = offset;
         write_at!(buf, +=offset, b'#');
-        offset += Digits(idx).write_digits10_omit0(buf, offset);
+        offset += Digits(idx).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';', b'2', b';'); // 2=RGB, 1=HSL
-        offset += Digits(self.r()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.r()).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';');
-        offset += Digits(self.g()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.g()).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';');
-        offset += Digits(self.b()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.b()).write_digits10_nonzero(buf, offset);
         offset - start
     }
     /// Writes the sixel color definition bytes for a given color index,
@@ -91,13 +91,13 @@ impl SixelColor {
         is![offset + 15 > buf.len(), return None];
         let start = offset;
         write_at!(buf, +=offset, b'#');
-        offset += Digits(idx).write_digits10_omit0(buf, offset);
+        offset += Digits(idx).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';', b'2', b';'); // 2=RGB, 1=HSL
-        offset += Digits(self.r()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.r()).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';');
-        offset += Digits(self.g()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.g()).write_digits10_nonzero(buf, offset);
         write_at!(buf, +=offset, b';');
-        offset += Digits(self.b()).write_digits10_omit0(buf, offset);
+        offset += Digits(self.b()).write_digits10_nonzero(buf, offset);
         Some(offset - start)
     }
 
