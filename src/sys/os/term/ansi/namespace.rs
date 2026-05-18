@@ -60,13 +60,16 @@ impl Ansi {
 
     /* helper functions */
 
-    // Writes an ansi code with a dynamic number of digits as an argument.
+    // Writes an ANSI CSI code with one dynamic `u16` argument.
+    //
+    // Required capacity: `ESC [` + 5 digits + final byte = 8 bytes.
     #[must_use]
     const fn write_ansi_code_n(buffer: &mut [u8], n: u16, final_byte: u8) -> &[u8] {
+        assert![buffer.len() >= 8];
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
         let mut index = 2;
-        index += Digits(n).write_digits10(buffer, index);
+        index += Digits(n).write_digits10_fast(buffer, index);
         buffer[index] = final_byte;
         slice![buffer, ..=index]
     }
@@ -157,17 +160,19 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor to the specified position (col, row).
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 row digits + `;` + 5 column digits + `H`, i.e. 14 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 14`.
         pub const fn CURSOR_MOVE_N(buffer: &mut [u8], col: u16, row: u16) -> &[u8] {
+            assert![buffer.len() >= 14];
             buffer[0] = b'\x1b';
             buffer[1] = b'[';
             let mut index = 2;
-            index += Digits(row).write_digits10(buffer, index);
+            index += Digits(row).write_digits10_fast(buffer, index);
             write_at![buffer, +=index, b';'];
-            index += Digits(col).write_digits10(buffer, index);
+            index += Digits(col).write_digits10_fast(buffer, index);
             buffer[index] = b'H';
             slice![buffer, ..=index]
         }
@@ -208,10 +213,11 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor up by `n` lines.
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 8`.
         pub const fn CURSOR_UP_N(buffer: &mut [u8], n: u16) -> &[u8] {
             Self::write_ansi_code_n(buffer, n, b'A')
         }
@@ -252,10 +258,11 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor down by `n` lines.
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 8`.
         pub const fn CURSOR_DOWN_N(buffer: &mut [u8], n: u16) -> &[u8] {
             Self::write_ansi_code_n(buffer, n, b'B')
         }
@@ -296,10 +303,11 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor right by `n` lines.
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 8`.
         pub const fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u16) -> &[u8] {
             Self::write_ansi_code_n(buffer, n, b'C')
         }
@@ -340,10 +348,11 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor left by `n` lines.
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 8`.
         pub const fn CURSOR_LEFT_N(buffer: &mut [u8], n: u16) -> &[u8] {
             Self::write_ansi_code_n(buffer, n, b'D')
         }
@@ -384,10 +393,11 @@ impl Ansi {
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor to the beginning of the next `n` lines.
         ///
-        /// It needs a `buffer` where to store the bytes.
+        /// The `buffer` must have room for the longest `u16` cursor sequence:
+        /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
         ///
         /// # Panics
-        /// Panics if the buffer is not big enough.
+        /// Panics if `buffer.len() < 8`.
         pub const fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u16) -> &[u8] {
             Self::write_ansi_code_n(buffer, n, b'F')
         }
@@ -427,12 +437,14 @@ impl Ansi {
         }
     }
     __ansi_consts! {
-    /// Returns a slice with the code to move the cursor to the beginning of the previous `n` lines.
+    /// Returns a slice with the code to move the cursor
+    /// to the beginning of the previous `n` lines.
     ///
-    /// It needs a `buffer` where to store the bytes.
+    /// The `buffer` must have room for the longest `u16` cursor sequence:
+    /// `ESC [` + 5 digits + `A`, i.e. 8 bytes.
     ///
     /// # Panics
-    /// Panics if the buffer is not big enough.
+    /// Panics if `buffer.len() < 8`.
     pub const fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u16) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'E')
     }}

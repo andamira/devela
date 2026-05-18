@@ -19,7 +19,7 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// - Negative values are preceded by the `'-'` sign.
             /// - The operation is atomic: on failure, nothing is written.
             #[rustfmt::skip]
@@ -44,7 +44,7 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// - The emitted sign and any leading zero-padding are controlled by `conf`.
             /// - The operation is atomic: on failure, nothing is written.
             #[rustfmt::skip]
@@ -76,7 +76,7 @@ macro_rules! __impl_fmt_num_int {
             /// Grouping is applied to the *rendered* integral digit sequence,
             /// after sign emission and zero-padding have been accounted for.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// - Grouping assumes 1-byte separators and ASCII digits.
             /// - `conf.int` specifies the minimum width of the *entire* left block
             ///   (digits + zero padding + grouping separators), excluding the sign.
@@ -179,7 +179,7 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// The operation is atomic: on failure, nothing is written.
             #[inline(always)]
             pub const fn write(self, buf: &mut [u8], pos: usize) -> usize {
@@ -193,7 +193,7 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// The emitted sign and any leading zero-padding are controlled by `conf`.
             /// The operation is atomic: on failure, nothing is written.
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: $crate::FmtNumConf)
@@ -221,7 +221,7 @@ macro_rules! __impl_fmt_num_int {
             /// Grouping is applied to the *rendered* integral digit sequence,
             /// after sign emission and zero-padding have been accounted for.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// - Grouping assumes 1-byte separators and ASCII digits.
             /// - `conf.int` specifies the minimum width of the *entire* left block
             ///   (digits + zero padding + grouping separators), excluding the sign.

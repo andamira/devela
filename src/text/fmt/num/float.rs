@@ -21,10 +21,10 @@ macro_rules! __impl_fmt_num_float {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// The operation is atomic: on failure, nothing is written.
-            /// Negative values are preceded by the `'-'` sign.
-            ///
-            /// Fractional digits are truncated and zero-padded as needed.
+            /// # Behavioral guarantees
+            /// - The operation is atomic: on failure, nothing is written.
+            /// - Negative values are preceded by the `'-'` sign.
+            /// - Fractional digits are truncated and zero-padded as needed.
             #[rustfmt::skip]
             pub const fn write(self, buf: &mut [u8], mut pos: usize, fract_len: u16) -> usize {
                 use $crate::{Digits, Float, is, whilst, write_at};
@@ -57,10 +57,10 @@ macro_rules! __impl_fmt_num_float {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// The operation is atomic: on failure, nothing is written.
-            ///
-            /// The emitted sign, any leading zero-padding and the number of fractional digits
-            /// are controlled by `conf`.
+            /// # Behavioral guarantees
+            /// - The operation is atomic: on failure, nothing is written.
+            /// - The emitted sign, any leading zero-padding, and the number of fractional digits
+            ///   are controlled by `conf`.
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: $crate::FmtNumConf)
                 -> usize {
                 use $crate::{Cmp, Digits, Float, is, whilst, write_at};
@@ -99,7 +99,7 @@ macro_rules! __impl_fmt_num_float {
             /// Grouping is applied to the *rendered* digit sequences on both sides of the radix,
             /// after sign emission, zero-padding, and precision handling have been accounted for.
             ///
-            /// # Invariants
+            /// # Behavioral guarantees
             /// - Grouping assumes 1-byte separators and ASCII digits.
             /// - `conf.int` specifies the minimum width of the *entire* left block
             ///   (integral digits + zero padding + grouping separators), excluding the sign.

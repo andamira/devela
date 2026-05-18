@@ -1,7 +1,7 @@
 // devela::text::ascii::digits::u32
 
 use super::*;
-use crate::{AsciiLut, Cmp, StringU8, is};
+use crate::{AsciiLut, Cmp, StringU8, is, whilst};
 
 impl Digits<u32> {
     /// The maximum number of decimal digits a `u32` can represent.
@@ -208,9 +208,14 @@ impl Digits<u32> {
         }
         digits
     }
+    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(10)]
+    pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0, return 0];
+        self.write_digits10(buf, offset)
+    }
 
     #[doc = _DOC_WRITE_DIGITS_10_FAST!(10)]
-    pub fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+    pub const fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
         const MAX: usize = Digits::<u32>::MAX_DIGITS_10 as usize;
         debug_assert!(offset + MAX <= buf.len(), "buffer < 10 bytes");
         let mut n = self.0;
@@ -236,8 +241,14 @@ impl Digits<u32> {
             buf[pos + 1] = AsciiLut::DECIMAL_PAIRS[idx + 1];
         }
         let written_len = (offset + MAX) - pos;
-        buf.copy_within(pos..(offset + MAX), offset); // WAIT: non-const
+        // buf.copy_within(pos..(offset + MAX), offset); // NOTE: non-const
+        whilst! { i in 0..written_len; { buf[offset + i] = buf[pos + i]; }}
         written_len
+    }
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(10)]
+    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0, return 0];
+        self.write_digits10_fast(buf, offset)
     }
 
     #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]

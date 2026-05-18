@@ -26,16 +26,41 @@ and the maximum number of digits.
 
 #[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10 { ($MAX:literal) => { concat![
 "Writes 1..=", $MAX, " decimal digits without leading zeros starting at `offset`,
-returning the number of bytes written.\n\n
-This method calculates the exact digit count first, allowing it to work with
-buffers smaller than ", $MAX, " bytes. Returns 0 if insufficient space remains.\n\n"
+returning the number of bytes written.\n\n",
+"Writes `0` when the value is zero.\n\n",
+"This method checks the exact number of bytes required before writing.
+It can write into buffers with fewer than ", $MAX, " bytes remaining when
+the value itself needs fewer digits. Returns 0 and writes nothing if
+insufficient space remains.\n\n"
+]}; }
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_OMIT0 { ($MAX:literal) => { concat![
+"Writes 0..=", $MAX, " decimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n",
+"Returns 0 and writes nothing when the value is zero.\n\n",
+"This method checks the exact number of bytes required before writing.
+It can write into buffers with fewer than ", $MAX, " bytes remaining when
+the value itself needs fewer digits. Returns 0 and writes nothing if
+insufficient space remains.\n\n"
 ]}; }
 #[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_FAST { ($MAX:literal) => { concat![
 "Writes 1..=", $MAX, " decimal digits without leading zeros starting at `offset`,
-returning the number of bytes written.\n\n
-This method uses a faster algorithm that avoids digit counting but requires
-the buffer to have at least ", $MAX, " bytes available.
-# Panics
-Panics in debug mode if fewer than ", $MAX, " bytes remain starting at `offset`."
-] }; }
-pub(super) use {_DOC_WRITE_DIGITS_10, _DOC_WRITE_DIGITS_10_FAST};
+returning the number of bytes written.\n\n",
+"Writes `0` when the value is zero.\n\n",
+"This method assumes a maximum-width workspace: ", $MAX, " bytes must be
+available starting at `offset`. It avoids the exact pre-counting step used by
+[`write_digits10`][Self::write_digits10]. Returns 0 and writes nothing if
+that workspace is not available.\n\n"
+]}; }
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_10_FAST_OMIT0 { ($MAX:literal) => { concat![
+"Writes 0..=", $MAX, " decimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n",
+"Returns 0 and writes nothing when the value is zero.\n\n",
+"This method assumes a maximum-width workspace: ", $MAX, " bytes must be
+available starting at `offset`. It avoids the exact pre-counting step used by
+[`write_digits10`][Self::write_digits10]. Returns 0 and writes nothing if
+that workspace is not available.\n\n"
+]}; }
+pub(super) use {
+    _DOC_WRITE_DIGITS_10, _DOC_WRITE_DIGITS_10_FAST, _DOC_WRITE_DIGITS_10_FAST_OMIT0,
+    _DOC_WRITE_DIGITS_10_OMIT0,
+};

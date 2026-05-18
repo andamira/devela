@@ -274,6 +274,11 @@
 
 ### text::ascii
 - new type `AsciiSet`.
+- update `Digits`:
+- new methods for u16 and smaller impls: `write_digits10_fast`, `write_digits10_fast_omit0`.
+- new methods for u32 and larger impls: `write_digits10_omit0`, `write_digits10_fast_omit0`.
+- make `write_digits10` always an exact-space writer. Update behavior for u8 and u16.
+- make `write_digits_10_fast` methods *const*.
 
 ### text::fmt
 - make `Fmt::from_fn` const.

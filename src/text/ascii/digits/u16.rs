@@ -166,8 +166,6 @@ impl Digits<u16> {
 
     /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
     /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if fewer than 5 bytes remain.
     #[inline(always)]
     const fn write_digits10_inner(self, buf: &mut [u8], offset: usize) -> usize {
         let n = self.0;
@@ -199,23 +197,27 @@ impl Digits<u16> {
         }
     }
 
-    /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if fewer than 5 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_10!(5)]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
-        is![offset + 5 > buf.len(), return 0];
+        let len = self.count_digits10() as usize;
+        is![len > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-
-    /// Writes 1..=5 decimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if the value is 0 or if fewer than 5 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(5)]
     pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
-        is![offset + 5 > buf.len(), return 0];
+        self.write_digits10(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_10_FAST!(5)]
+    pub const fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        const MAX: usize = Digits::<u16>::MAX_DIGITS_10 as usize;
+        is![MAX > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(5)]
+    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0, return 0];
+        self.write_digits10_fast(buf, offset)
     }
 
     #[doc = _DOC_DIGITS_STR!()] #[rustfmt::skip]

@@ -21,7 +21,7 @@ mod usize;
 #[doc = crate::_doc_location!("text")]
 ///
 /// Enables efficient ASCII digit extraction, counting, and conversion
-/// for unsigned integer types. Most operations are `const` and designed for
+/// for unsigned integer types. All operations are `const` and designed for
 /// performance-critical scenarios like number formatting.
 ///
 /// It converts **numbers → digits** for display/formatting.
@@ -40,16 +40,19 @@ mod usize;
 /// - [count_digits10](#method.count_digits10),
 ///   [count_digits16](#method.count_digits16).
 /// - [digit_at_index10](#method.digit_at_index10)
-///  ([*checked*](#method.digit_at_index10_checked)),
+///   ([*checked*](#method.digit_at_index10_checked)),
 ///   [digit_at_index16](#method.digit_at_index16)
-///  ([*checked*](#method.digit_at_index16_checked)).
+///   ([*checked*](#method.digit_at_index16_checked)).
 /// - [digit_value_at_index10](#method.digit_value_at_index10)
-///  ([*checked*](#method.digit_value_at_index10_checked)),
+///   ([*checked*](#method.digit_value_at_index10_checked)),
 /// - [digit_value_at_index16](#method.digit_value_at_index16)
-///  ([*checked*](#method.digit_value_at_index16_checked)),
+///   ([*checked*](#method.digit_value_at_index16_checked)),
 /// - [digits10](#method.digits10),
 ///   [digits16](#method.digits16).
-/// - [write_digits10](#method.write_digits10).
+/// - [write_digits10](#method.write_digits10)
+///   ([*omit0*](#method.write_digits10_omit0)).
+/// - [write_digits10_fast](#method.write_digits10_fast)
+///   ([*omit0*](#method.write_digits10_fast_omit0)).
 /// - [digits10_str](#method.digits10_str),
 ///   [digits16_str](#method.digits16_str).
 ///
@@ -57,16 +60,12 @@ mod usize;
 /// - [digits10_1](#method.digits10_3),
 /// - [digits10_2](#method.digits10_2),
 ///   [digits16_1](#method.digits16_1).
-/// - [write_digits10_omit0](#method.write_digits10_omit0).
-/// - [write_digits16](#method.write_digits16),
-///  ([*omit0*](#method.write_digits16_omit0)).
+/// - [write_digits16](#method.write_digits16)
+///   ([*omit0*](#method.write_digits16_omit0)).
 ///
 /// Exclusive for `u16`:
 /// - [digits10_3](#method.digits10_3),
 ///   [digits10_4](#method.digits10_4).
-///
-/// Exclusive for `u32`, `u64`, `u128` and `usize`:
-/// - [write_digits10_fast](#method.write_digits10_fast).
 ///
 /// # Examples
 /// ```

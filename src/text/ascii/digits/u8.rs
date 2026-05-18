@@ -184,23 +184,27 @@ impl Digits<u8> {
         }
     }
 
-    /// Writes 1..=3 decimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if fewer than 3 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_10!(3)]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
-        is![offset + 3 > buf.len(), return 0];
+        let len = self.count_digits10() as usize;
+        is![len > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
     }
-
-    /// Writes 1..=3 decimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if the value is 0 or if fewer than 3 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_10_OMIT0!(3)]
     pub const fn write_digits10_omit0(self, buf: &mut [u8], offset: usize) -> usize {
         is![self.0 == 0, return 0];
-        is![offset + 3 > buf.len(), return 0];
+        self.write_digits10(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_10_FAST!(3)]
+    pub const fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
+        const MAX: usize = Digits::<u8>::MAX_DIGITS_10 as usize;
+        is![MAX > buf.len().saturating_sub(offset), return 0];
         self.write_digits10_inner(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_10_FAST_OMIT0!(3)]
+    pub const fn write_digits10_fast_omit0(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0, return 0];
+        self.write_digits10_fast(buf, offset)
     }
 
     /// Writes 1..=2 hexadecimal digits without leading zeros starting at `offset`,
@@ -253,9 +257,9 @@ impl Digits<u8> {
     pub const fn digits16_str(self, width: u8) -> StringU8<{Self::MAX_DIGITS_16 as usize}> {
         let width = Cmp(width).clamp(self.count_digits16(), Self::MAX_DIGITS_16);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-        // SAFETY: the bytes are valid UTF-8
-        unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
-            ::from_array_nright_unchecked(self.digits16(), width) }
+            // SAFETY: the bytes are valid UTF-8
+            unsafe { StringU8::<{Self::MAX_DIGITS_16 as usize}>
+                ::from_array_nright_unchecked(self.digits16(), width) }
         } _ => {
             crate::unwrap![ok StringU8::<{Self::MAX_DIGITS_16 as usize}>
                 ::from_array_nright(self.digits16(), width)]
