@@ -93,6 +93,8 @@
   - remove support for deriving `Default` for the enum.
   - new enum methods: `to_set`, `is_in`.
   - replace `bitfield!` with `set!`.
+- update `write_at!`:
+  - make it return the offset.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
