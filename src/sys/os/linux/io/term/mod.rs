@@ -1,4 +1,4 @@
-// devela::sys::os::linux::term
+// devela::sys::os::linux::io::term
 //
 //! Terminal I/O control ABI definitions.
 //!

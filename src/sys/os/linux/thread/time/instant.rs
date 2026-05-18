@@ -1,4 +1,4 @@
-// devela::sys::os::linux::time::instant
+// devela::sys::os::linux::thread::time::instant
 //
 //! Defines [`LinuxInstant`], [`LinuxTime`].
 //
@@ -7,7 +7,7 @@ use crate::{Linux, LinuxClock, LinuxTimespec, TimeScale, TimeSource, TimeSourceC
 
 #[doc = crate::_tags!(linux time)]
 /// A fast monotonic Linux time source.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/thread")]
 ///
 /// This is the canonical fixed Linux numeric source.
 /// It uses `CLOCK_MONOTONIC` and projects time as `u64` nanoseconds.
@@ -68,7 +68,7 @@ impl TimeSource<u32> for LinuxInstant {
 
 #[doc = crate::_tags!(linux time)]
 /// A configurable family of Linux clocks.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/thread")]
 ///
 /// Each [`LinuxClock`] selects a concrete Linux timeline and exposes it
 /// through the common `TimeSourceCfg<u64>` interface using nanosecond values.

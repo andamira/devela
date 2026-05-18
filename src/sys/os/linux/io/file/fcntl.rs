@@ -1,4 +1,4 @@
-// devela::sys::os::linux::file::fcntl
+// devela::sys::os::linux::io::file::fcntl
 //
 //! File-descriptor control commands.
 //!
@@ -13,7 +13,7 @@ use crate::c_int;
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] File descriptor commands (for `fcntl`).
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 //
 // - /usr/include/asm-generic/fcntl.h
 // - /usr/include/bits/fcntl-linux.h

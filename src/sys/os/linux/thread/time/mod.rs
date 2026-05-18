@@ -1,4 +1,4 @@
-// devela::sys::os::linux::time
+// devela::sys::os::linux::thread::time
 //
 //! Timekeeping ABI definitions.
 //!

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::term::termios
+// devela::sys::os::linux::io::term::termios
 //
 //! Terminal I/O configuration structure.
 //!
@@ -15,7 +15,7 @@ use crate::{
 
 #[doc = crate::_tags!(linux term)]
 /// Represents the [`termios`] structure from libc, used to control terminal I/O.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 ///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.

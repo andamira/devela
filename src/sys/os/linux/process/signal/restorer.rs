@@ -1,4 +1,4 @@
-// devela::sys::os::linux::signal::restorer
+// devela::sys::os::linux::process::signal::restorer
 //
 //! Configures the global assembly for target-architecture-specific signal restorers.
 //!

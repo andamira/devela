@@ -1,9 +1,9 @@
-// devela::sys::os::linux::point_entry
+// devela::sys::os::linux::entry
 //
 //! Configures the global assembly for target-architecture-specific program entry points.
 //!
-//! This module defines the low-level assembly routines that serve as the initial execution point
-//! for the program. These routines are architecture-specific and handle:
+//! This module defines the low-level assembly routines that serve as the initial
+//! execution point for the program. These routines are architecture-specific and handle:
 //! 1. Setting up the minimal execution environment
 //! 2. Transferring control to the Rust entry point
 //! 3. Properly exiting with the program's return status

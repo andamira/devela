@@ -21,61 +21,24 @@
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
 
-mod error; // LinuxError, LinuxResult, LINUX_[ERRNO|EXIT]
-mod file; // LinuxStat, LINUX_[F_CMD|FILENO|IOCTL|O_FLAGS|S_IFMT|SEEK]
+// mod container; // WIP
+mod error; // LinuxError, LinuxResult, LINUX_<ERRNO|EXIT>
+pub mod io; // LinuxStat, LinuxTermios, LINUX_<FILENO|IOCTL|TERMIOS_*|…>-
 mod namespace; // Linux
-mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, LINUX_[SIGACTION|SIGNAL]
-#[cfg(feature = "term")]
-mod term; // LinuxTermios, LINUX_TERMIOS
-mod time; // LinuxClock, LinuxInstant, LinuxTime, LinuxTimespec
-
-#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
-crate::items! {
-    mod point_entry; // linux_entry!
-    mod syscalls; // LINUX_SYS
-}
-
-/// Linux-specific extensions to [`std::io`].
-pub mod io {
-    crate::structural_mods! { // _mods
-        _mods {
-            pub use super::super::file::*;
-            #[cfg(feature = "term")]
-            pub use super::super::term::*;
-        }
-    }
-}
-
-/// Linux-specific extensions to [`std::process`].
-pub mod process {
-    crate::structural_mods! { // _mods
-        _mods {
-            pub use super::super::signal::*;
-        }
-    }
-}
-
-/// Linux-specific extensions to [`std::thread`].
-pub mod thread {
-    crate::structural_mods! { // _mods
-        _mods {
-            pub use super::super::time::*;
-        }
-    }
-}
+pub mod process; // LinuxSig<action|set|siginfo>, LINUX_SIG<ACTION|AIGNAL>
+crate::_unsafe_syscall_not_miri! {
+mod syscalls; } // LINUX_SYS
+pub mod thread; // Linux<Clock|Instant|Time|Timespec>
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
+            // container::*,
             error::*,
             namespace::*,
         };
-
         #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
-        pub use super::{
-            point_entry::*,
-            syscalls::_all::*,
-        };
+        pub use super::syscalls::_all::*;
     }
     _pub_mods {
         pub use super::{

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::time::timespec
+// devela::sys::os::linux::thread::time::timespec
 //
 //! Time value representation.
 //!
@@ -14,7 +14,7 @@ use crate::TimeDelta;
 
 #[doc = crate::_tags!(linux time)]
 /// Represents the [`timespec`] structure from libc. Time in seconds and nanoseconds.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/thread")]
 ///
 /// [`timespec`]: https://man7.org/linux/man-pages/man3/timespec.3type.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

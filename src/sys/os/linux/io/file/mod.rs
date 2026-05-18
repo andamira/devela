@@ -1,4 +1,4 @@
-// devela::sys::os::linux::file
+// devela::sys::os::linux::io::file
 //
 //! File-descriptor–centric ABI surface.
 //!

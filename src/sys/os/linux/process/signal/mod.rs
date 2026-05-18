@@ -1,4 +1,4 @@
-// devela::sys::os::linux::signal
+// devela::sys::os::linux::process::signal
 //
 //! Signal handling ABI definitions.
 //!

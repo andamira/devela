@@ -1,4 +1,4 @@
-// devela::sys::os::linux::term::consts
+// devela::sys::os::linux::io::term::consts
 //
 //! Terminal mode flags.
 //!
@@ -22,19 +22,19 @@ pub struct LINUX_TERMIOS_IFLAG;
 
 #[doc = crate::_tags!(linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] output flags.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_OFLAG;
 
 #[doc = crate::_tags!(linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_CFLAG;
 
 #[doc = crate::_tags!(linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] local flags.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_LFLAG;
 

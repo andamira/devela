@@ -1,4 +1,4 @@
-// devela::sys::os::linux::file::fd
+// devela::sys::os::linux::io::file::fd
 //
 //! File-descriptor identity and positioning.
 //!
@@ -13,7 +13,7 @@ use crate::c_int;
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 #[derive(Debug)]
 pub struct LINUX_FILENO;
 impl LINUX_FILENO {
@@ -27,7 +27,7 @@ impl LINUX_FILENO {
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] file creation and status flags.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 ///
 /// Used with `sys_open`, `sys_fcntl`, etc.
 //
@@ -108,7 +108,7 @@ impl LINUX_O_FLAGS {
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 //
 // Architecture independent
 // - /usr/include/unistd.h

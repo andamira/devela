@@ -1,4 +1,4 @@
-// devela::sys::os::linux::file::ioctl
+// devela::sys::os::linux::io::file::ioctl
 //
 //! Extended file-descriptor control operations.
 //!
@@ -12,7 +12,7 @@ use crate::{c_int, c_ulong};
 
 #[doc = crate::_tags!(linux fs)]
 /// Linux `ioctl` constants.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_location!("sys/os/linux/io")]
 #[allow(non_camel_case_types)]
 #[derive(Debug)]
 pub struct LINUX_IOCTL;
