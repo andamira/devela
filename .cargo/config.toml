@@ -202,9 +202,12 @@ trr = "tr --format {p}:{r}" # with repository url
 #/ cargo subcommands: /#
 # ------------------------------------------------------------------------------
 
-# $ cargo install -f cargo-show-asm
 # - https://crates.io/crates/cargo-show-asm
 # - https://github.com/pacak/cargo-show-asm/blob/master/Changelog.md
+#
+# INSTALL:
+# $ cargo install -f cargo-show-asm
+# $ rustup component add rust-src
 #
 # USAGE EXAMPLES:
 # $ cargo A_x64l --lib -F linux,unsafe_syscall linux

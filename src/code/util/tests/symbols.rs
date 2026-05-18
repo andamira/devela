@@ -34,12 +34,13 @@ fn _macro_symbols_pattern() {
     _macro_symbols!([]s 1);
     _macro_symbols!({}s 1);
     _macro_symbols!("" s 1);
+    _macro_symbols!('a' s 1); // NOTE: has to contain exactly 1 character
     // don't work:
     // _macro_symbols!($ s 1);
     // _macro_symbols!(' s 1);
     // _macro_symbols!(` s 1);
     // _macro_symbols!(\ s 1);
-    assert_eq![s, 24];
+    assert_eq![s, 25];
 
     #[rustfmt::skip]
     macro_rules! _macro_symbols {
@@ -70,6 +71,7 @@ fn _macro_symbols_pattern() {
         ([]$id:ident $val:expr) => { $id += $val; };
         ({}$id:ident $val:expr) => { $id += $val; };
         (""$id:ident $val:expr) => { $id += $val; };
+        ('a'$id:ident $val:expr) => { $id += $val; };
         // don't work:
         // ($ $id:ident $val:expr) => { $id += $val; };
         // (''$id:ident $val:expr) => { $id += $val; };

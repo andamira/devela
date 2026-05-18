@@ -103,6 +103,7 @@ impl Version {
 
     /// Returns the byte length needed to write this version.
     #[must_use]
+    #[allow(clippy::len_without_is_empty)]
     pub const fn len(self) -> usize {
         Digits(self.major).count_digits10() as usize
             + 1
@@ -136,7 +137,7 @@ impl Version {
     ///
     /// # Errors
     /// Returns the required length if `buf` is too small.
-    pub const fn to_str<'a>(self, buf: &'a mut [u8]) -> Result<&'a str, usize> {
+    pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
         let len = unwrap![ok? self.write_to(buf)];
         let slice = Slice::range_to(buf, len);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -157,7 +158,6 @@ impl Version {
     ///
     /// The capacity is enough for the largest possible `u16` triplet:
     /// `65535.65535.65535`.
-    #[must_use]
     pub fn to_string_u8(self) -> StringU8<17> {
         let mut buf = [0u8; Self::MAX_LEN];
         let len = unwrap![ok_guaranteed_or_ub self.write_to(&mut buf)];
