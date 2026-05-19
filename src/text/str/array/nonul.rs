@@ -4,9 +4,9 @@
 //
 // TOC
 // - definitions
-// - impl traits
+// - trait impls
 
-use crate::{Char, CharIter, Str, char7, char8, char16, charu};
+use crate::{Char, CharIter, Str, StringU8, char7, char8, char16, charu};
 use crate::{InvalidText, MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
 use crate::{is, lets, slice, unwrap, whilst};
 
@@ -21,54 +21,45 @@ const NUL_CHAR: char = '\0';
 ///
 /// Suited for write-once or protocol-level text where the length is rarely queried.
 /// Uses one less byte of storage, with length determined by scanning.
-/// For the opposite trade-off see [`StringU8`][crate::StringU8].
+/// For the opposite trade-off see [`StringU8`].
 ///
 /// ## Methods
 ///
 /// - [Constructors](#constructors):
-///   [`new`][Self::new],
-///   [`from_str`][Self::from_str],
-///     *([_truncate][Self::from_str_truncate],
-///       [_unchecked][Self::from_str_unchecked])*,
-///   [`from_char`][Self::from_char]
-///     *([7](Self::from_char7),
-///       [8](Self::from_char8),
-///       [16](Self::from_char16),
-///       [utf8](Self::from_charu))*.
-///   [`from_array`][Self::from_array],
-#[cfg_attr(
-    feature = "unsafe_str",
-    doc = "[_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>."
-)]
+///   - [new](#method.new).
+///   - [from_str](#method.from_str),
+///     *([_truncate](#method.from_str_truncate),
+///       [_unchecked](#method.from_str_unchecked))*.
+///   - [from_char](#method.from_char)
+///     *([7](#method.from_char7),
+///       [8](#method.from_char8),
+///       [16](#method.from_char16),
+///       [utf8](#method.from_charu))*.
+///   - [from_array](#method.from_array)
+///     *([_unchecked](#method.from_array_unchecked)<sup title='unsafe function'>⚠</sup>)*.
 ///
 /// - [Deconstructors](#deconstructors):
-///   [`into_array`][Self::into_array],
-///   [`as_array`][Self::as_array],
-///   [`as_bytes`][Self::as_bytes]
-#[cfg_attr(
-    feature = "unsafe_str",
-    doc = "*([mut][Self::as_bytes_mut]<sup title='unsafe function'>⚠</sup>)*."
-)]
-///   [`as_str`][Self::as_str]
-#[cfg_attr(
-    feature = "unsafe_str",
-    doc = "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*."
-)]
-///   [`chars`][Self::chars],
+///   - [into_array](#method.into_array).
+///   - [as_array](#method.as_array).
+///   - [as_bytes](#method.as_bytes)
+///     *([mut](#method.as_bytes_mut)<sup title='unsafe function'>⚠</sup>)*.
+///   - [as_str](#method.as_str)
+///     *([mut](#method.as_mut_str)<sup title='unsafe function'>⚠</sup>)*.
+///   - [chars](#method.chars).
 ///
 /// - [Queries](#queries):
-///   [`len`][Self::len],
-///   [`is_empty`][Self::is_empty],
-///   [`is_full`][Self::is_full],
-///   [`capacity`][Self::capacity],
-///   [`remaining_capacity`][Self::remaining_capacity].
+///   - [len](#method.len).
+///   - [is_empty](#method.is_empty).
+///   - [is_full](#method.is_full).
+///   - [capacity](#method.capacity).
+///   - [remaining_capacity](#method.remaining_capacity).
 ///
 /// - Operations:
-///   [`clear`][Self::clear],
-///   [`pop`][Self::pop]*([try][Self::try_pop])*,
-///   [`push`][Self::push]*([try][Self::try_push])*.
-///   [`push_str`][Self::push]*([try][Self::try_push_str])*,
-///   [`try_push_str_complete`][Self::try_push_str_complete].
+///   - [clear](#method.clear).
+///   - [pop](#method.pop)*([try](#method.try_pop))*.
+///   - [push](#method.push)*([try](#method.try_push))*.
+///   - [push_str](#method.push)*([try](#method.try_push_str))*.
+///   - [try_push_str_complete](#method.try_push_str_complete).
 #[must_use]
 #[derive(Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct StringNonul<const CAP: usize> {
@@ -110,7 +101,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`] or if `CAP < string.len()`.
     ///
-    /// This is implemented via `Self::`[`try_push_str_complete()`][Self::try_push_str_complete].
+    /// This is implemented via `Self::`[`try_push_str_complete()`](#method.try_push_str_complete).
     ///
     /// # Examples
     /// ```
@@ -128,7 +119,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
     ///
-    /// This is implemented via `Self::`[`push_str()`][Self::push_str].
+    /// This is implemented via `Self::`[`push_str()`](#method.push_str).
     pub const fn from_str_truncate(string: &str) -> Result<Self, MismatchedCapacity> {
         let mut new_string = unwrap![ok? Self::new_checked()];
         let _ = new_string.push_str(string);
@@ -140,7 +131,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`].
     ///
-    /// This is implemented via `Self::`[`push_str()`][Self::push_str].
+    /// This is implemented via `Self::`[`push_str()`](#method.push_str).
     #[inline(always)]
     pub const fn from_str_unchecked(string: &str) -> Self {
         let mut new_string = Self::new();
@@ -715,10 +706,10 @@ impl<const CAP: usize> StringNonul<CAP> {
 #[rustfmt::skip]
 mod impl_traits {
     use crate::{
-        ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter, Hash,
-        Hasher,
+        AddAssign, ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter,
+        Hash, Hasher,
     };
-    use super::{StringNonul, InvalidText, MismatchedCapacity, is};
+    use super::{StringNonul, StringU8, InvalidText, MismatchedCapacity, is};
 
     impl<const CAP: usize> Default for StringNonul<CAP> {
         /// Returns an empty string.
@@ -744,7 +735,7 @@ mod impl_traits {
         }
     }
 
-    /// Leverages [`try_push`][Self::try_push] and [`try_push_str`][Self::try_push_str].
+    /// Leverages [`try_push`](#method.try_push) and [`try_push_str`](#method.try_push_str).
     impl<const CAP: usize> FmtWrite for StringNonul<CAP> {
         fn write_str(&mut self, s: &str) -> FmtResult<()> {
             self.try_push_str(s).map_err(|_| FmtError)?;
@@ -799,6 +790,47 @@ mod impl_traits {
     impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
         fn as_ref(&self) -> &[u8] { self.as_bytes() }
     }
+
+    /* overloadable operators */
+
+    impl<const CAP: usize> AddAssign<char> for StringNonul<CAP> {
+        /// Appends the character if it fits and is not NUL.
+        fn add_assign(&mut self, rhs: char) {
+            let _ = self.push(rhs);
+        }
+    }
+    impl<const CAP: usize> AddAssign<&str> for StringNonul<CAP> {
+        /// Appends text in place, skipping NULs and keeping what fits.
+        fn add_assign(&mut self, rhs: &str) {
+            let _ = self.push_str(rhs);
+        }
+    }
+    impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonul<RHS>> for StringNonul<CAP> {
+        /// Appends text in place, skipping NULs and keeping what fits.
+        fn add_assign(&mut self, rhs: &StringNonul<RHS>) {
+            let _ = self.push_str(rhs.as_str());
+        }
+    }
+    impl<const CAP: usize, const RHS: usize> AddAssign<StringNonul<RHS>> for StringNonul<CAP> {
+        /// Appends text in place, skipping NULs and keeping what fits.
+        fn add_assign(&mut self, rhs: StringNonul<RHS>) {
+            let _ = self.push_str(rhs.as_str());
+        }
+    }
+    /// Appends text in place, skipping NULs and keeping what fits.
+    impl<const CAP: usize, const RHS: usize> AddAssign<&StringU8<RHS>> for StringNonul<CAP> {
+        fn add_assign(&mut self, rhs: &StringU8<RHS>) {
+            let _ = self.push_str(rhs.as_str());
+        }
+    }
+    /// Appends text in place, skipping NULs and keeping what fits.
+    impl<const CAP: usize, const RHS: usize> AddAssign<StringU8<RHS>> for StringNonul<CAP> {
+        fn add_assign(&mut self, rhs: StringU8<RHS>) {
+            let _ = self.push_str(rhs.as_str());
+        }
+    }
+
+    /* conversions */
 
     impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
         type Error = MismatchedCapacity;

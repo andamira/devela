@@ -8,10 +8,10 @@
 //   - trait impls
 // - tests
 
-use crate::{Char, CharIter, InvalidText, Str, char7, char8, char16, charu};
+use crate::{AddAssign, ConstInit, Deref, Hash, Hasher, is, lets, paste, slice, whilst};
+use crate::{Char, CharIter, InvalidText, Str, StringNonul, char7, char8, char16, charu};
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, unwrap};
-use crate::{ConstInit, Deref, Hash, Hasher, is, lets, paste, slice, whilst};
 use crate::{Debug, Display, FmtError, FmtResult, FmtWrite, Formatter, Ordering};
 use crate::{MismatchedCapacity, NotEnoughElements, NotEnoughSpace};
 
@@ -38,7 +38,7 @@ macro_rules! impl_str_u {
         ///
         /// Suited for frequently inspected or manipulated text where constant-time
         /// length access is important. Uses extra space to provide O(1) length operations.
-        /// For the opposite trade-off see [`StringNonul`][crate::StringNonul].
+        /// For the opposite trade-off see [`StringNonul`].
         ///
         #[doc = concat!(
             "Internally, the current length is stored as a [`",
@@ -47,58 +47,51 @@ macro_rules! impl_str_u {
         /// ## Methods
         ///
         /// - [Constructors](#constructors):
-        ///   [`new`][Self::new],
-        ///     *([_checked][Self::new_checked])*.
-        ///   [`from_str`][Self::from_str],
-        ///     *([_truncate][Self::from_str_truncate],
-        ///       [_unchecked][Self::from_str_unchecked])*,
-        ///   [`from_char`][Self::from_char]
-        ///     *([7][Self::from_char7],
-        ///       [8][Self::from_char8],
-        ///       [16](Self::from_char16),
-        ///       [utf8](Self::from_charu))*.
-        ///   [`from_array`][Self::from_array] *(
-        #[cfg_attr(feature = "unsafe_str", doc =
-            "[_unchecked][Self::from_array_unchecked]<sup title='unsafe function'>⚠</sup>,")]
-        ///     [_nleft][Self::from_array_nleft],
-        #[cfg_attr(feature = "unsafe_str", doc =
-            "[_nleft_unchecked][Self::from_array_nleft_unchecked]<sup title='unsafe function'>⚠</sup>,")]
-        ///       [_nright][Self::from_array_nleft]
-        // IMPROVE comma list, maybe _doc macro to concat method links with optional unsafe items
-        #[cfg_attr(feature = "unsafe_str", doc =
-            ", [_nright_unchecked][Self::from_array_nright_unchecked]<sup title='unsafe function'>⚠</sup>")]
-        /// )*.
+        ///   - [new](#method.new)
+        ///     *([_checked](#method.new_checked))*.
+        ///   - [from_str](#method.from_str),
+        ///     *([_truncate](#method.from_str_truncate),
+        ///       [_unchecked](#method.from_str_unchecked))*.
+        ///   - [from_char](#method.from_char)
+        ///     *([7](#method.from_char7),
+        ///       [8](#method.from_char8),
+        ///       [16](#method.from_char16),
+        ///       [utf8](#method.from_charu))*.
+        ///   - [from_array](#method.from_array) *(
+        ///     [_unchecked](#method.from_array_unchecked)<sup title='unsafe function'>⚠</sup>,
+        ///     [_nleft](#method.from_array_nleft),
+        ///     [_nleft_unchecked](#method.from_array_nleft_unchecked)<sup title='unsafe function'>⚠</sup>,
+        ///     [_nright](#method.from_array_nleft),
+        ///     [_nright_unchecked](#method.from_array_nright_unchecked)<sup title='unsafe function'>⚠</sup>)*.
         ///
         /// - [Deconstructors](#deconstructors):
-        ///   [`into_array`][Self::into_array],
-        ///   [`as_array`][Self::as_array],
-        ///   [`as_bytes`][Self::as_bytes]
-        #[cfg_attr(feature = "unsafe_str", doc =
-            "*([mut][Self::as_bytes_mut]<sup title='unsafe function'>⚠</sup>)*.")]
-        ///   [`as_str`][Self::as_str]
-        #[cfg_attr(feature = "unsafe_str", doc =
-            "*([mut][Self::as_mut_str]<sup title='unsafe function'>⚠</sup>)*.")]
-        ///   [`chars`][Self::chars].
+        ///   - [into_array](#method.into_array).
+        ///   - [as_array](#method.as_array).
+        ///   - [as_bytes](#method.as_bytes)
+        ///     *([mut](#method.as_bytes_mut)<sup title='unsafe function'>⚠</sup>)*.
+        ///   - [as_str](#method.as_str)
+        ///     *([mut](#method.as_mut_str)<sup title='unsafe function'>⚠</sup>)*.
+        ///   - [chars](#method.chars).
         ///
         /// - [Queries](#queries):
-        ///   [`len`][Self::len],
-        ///   [`is_empty`][Self::is_empty],
-        ///   [`is_full`][Self::is_full],
-        ///   [`capacity`][Self::capacity],
-        ///   [`remaining_capacity`][Self::remaining_capacity].
+        ///   - [len](#method.len).
+        ///   - [is_empty](#method.is_empty).
+        ///   - [is_full](#method.is_full).
+        ///   - [capacity](#method.capacity).
+        ///   - [remaining_capacity](#method.remaining_capacity).
         ///
         /// - [Modifiers](#modifiers):
-        ///   [`clear`][Self::clear],
-        ///   [`reset`][Self::reset],
-        ///   [`sanitize`][Self::sanitize],
-        ///   [`pop`][Self::pop]
-        ///     *([try_][Self::try_pop],
-        ///       [_unchecked][Self::pop_unchecked])*,
-        ///   [`push`][Self::push]
-        ///     *([try_][Self::try_push])*.
-        ///   [`push_str`][Self::push]
-        ///     *([try_][Self::try_push_str],
-        ///       [try__complete][Self::try_push_str_complete])*.
+        ///   - [clear](#method.clear),
+        ///   - [reset](#method.reset),
+        ///   - [sanitize](#method.sanitize),
+        ///   - [pop](#method.pop)
+        ///     *([try_](#method.try_pop),
+        ///       [_unchecked](#method.pop_unchecked))*,
+        ///   - [push](#method.push)
+        ///     *([try_](#method.try_push))*.
+        ///   - [push_str](#method.push_str)
+        ///     *([try_](#method.try_push_str),
+        ///       [try_ _complete](#method.try_push_str_complete))*.
         #[must_use]
         #[derive(Clone, Copy, Eq)]
         pub struct $name<const CAP: usize> {
@@ -909,6 +902,45 @@ macro_rules! impl_str_u {
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
             fn as_ref(&self) -> &[u8] { self.as_bytes() }
+        }
+
+        /* AddAssign */
+
+        impl<const CAP: usize> AddAssign<char> for $name<CAP> {
+            /// Appends the character if it fits.
+            fn add_assign(&mut self, rhs: char) {
+                let _ = self.push(rhs);
+            }
+        }
+        impl<const CAP: usize> AddAssign<&str> for $name<CAP> {
+            /// Appends text in place, keeping the fitted UTF-8 prefix.
+            fn add_assign(&mut self, rhs: &str) {
+                let _ = self.push_str(rhs);
+            }
+        }
+        impl<const CAP: usize, const RHS: usize> AddAssign<&$name<RHS>> for $name<CAP> {
+            /// Concatenates by appending what fits into `self`'s capacity.
+            fn add_assign(&mut self, rhs: &$name<RHS>) {
+                let _ = self.push_str(rhs.as_str());
+            }
+        }
+        impl<const CAP: usize, const RHS: usize> AddAssign<$name<RHS>> for $name<CAP> {
+            /// Concatenates by appending what fits into `self`'s capacity.
+            fn add_assign(&mut self, rhs: $name<RHS>) {
+                let _ = self.push_str(rhs.as_str());
+            }
+        }
+        /// Appends non-NUL text in place, keeping the fitted UTF-8 prefix.
+        impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonul<RHS>> for StringU8<CAP> {
+            fn add_assign(&mut self, rhs: &StringNonul<RHS>) {
+                let _ = self.push_str(rhs.as_str());
+            }
+        }
+        /// Appends non-NUL text in place, keeping the fitted UTF-8 prefix.
+        impl<const CAP: usize, const RHS: usize> AddAssign<StringNonul<RHS>> for StringU8<CAP> {
+            fn add_assign(&mut self, rhs: StringNonul<RHS>) {
+                let _ = self.push_str(rhs.as_str());
+            }
         }
 
         /* conversions */

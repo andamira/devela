@@ -301,6 +301,7 @@
 
 ### text::str
 - new types: `StrBuf`, `StringSmallAlloc`.
+- impl `AddAssign` for `StringNonul` & `StringU*`.
 - make `StringU*` use `NonMax*` for the length.
 - remove `StringU32`, `StringUSize`.
 
