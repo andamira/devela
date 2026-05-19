@@ -14,7 +14,7 @@ pub mod ffi; // Foreign language interfaces
 // mod ir; // Lowered program representations
 // mod kernel; // Reusable computational language kernels
 // mod phrase;   // Source-level program phrases/forms.
-// mod script; // Command and scripting language surfaces
+pub mod script; // Command and scripting language surfaces
 // mod template; // Template and substitution language machinery
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
@@ -25,13 +25,13 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             // ir::_all::*,
             // kernel::_all::*,
             // phrase::_all::*,
-            // script::_all::*,
             // template::_all::*,
         };
     }
     _pub_mods {
         pub use super::{
             ffi::_all::*,
+            script::_all::*,
         };
     }
     _crate_internals {

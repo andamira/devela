@@ -11,7 +11,7 @@ use crate::_dep::memchr::*;
 #[cfg(not(feature = "dep_memchr"))]
 use crate::is;
 
-#[doc = crate::_tags!(text namespace)] // TODO search
+#[doc = crate::_tags!(text parser namespace)] // TODO search
 /// A utility struct for searching bytes in slices.
 ///
 #[doc = crate::_doc_location!("text/parse")]

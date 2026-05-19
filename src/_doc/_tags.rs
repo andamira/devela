@@ -100,6 +100,9 @@ _define_symbol_tags! {
     _TAG_IO, "Input and output", "🔌";
     // Iterator traits and adapters operating on sequential iteration.
     _TAG_ITERATOR, "Iterator or iterator adapter", "🔄";
+    // Language systems, grammars, and interpretation.
+    // Covers human, programming, and representation languages.
+    _TAG_LANG, "Language structure", "𝕃";
     // Arrangement in conceptual or visual space, not in RAM.
     _TAG_LAYOUT, "Spatial layout", "🧱";
     // Borrowed views, scoped validity, and ownership relations.
@@ -139,6 +142,10 @@ _define_symbol_tags! {
     _TAG_NON_STANDARD, "Non-standard", "⚠️";
     // Numeric structures, operations, and mathematical computation.
     _TAG_NUM, "Numeric structures and computation", "⅀";
+    // Transforming input streams or symbolic sequences into structured meaning.
+    // Covers scanners, parsers, parser states, parse errors, and grammar readers.
+    // Excludes raw text storage and formatting.
+    _TAG_PARSER, "Parsing", "::=";
     // Platform-dependent behavior or guarantees.
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
     // Items whose main surface is about Rust primitive carriers.

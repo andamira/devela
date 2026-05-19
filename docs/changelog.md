@@ -43,7 +43,7 @@
 - bump `wide` to 1.3.
 
 ## docs
-- new tags: `_TAG_[CRYPTO]`.
+- new tags: `_TAG_[CRYPTO|LANG|PARSER]`.
 - make example-generated `*Example` items visible in the docs.
 
 ## features & flags
@@ -150,6 +150,10 @@
 
 ##### lang::prog::ffi::js
 - rename `JsTextMetrics*` to `JsTextRenderMetrics*`.
+
+#### lang::prog::script
+- new submodule: `shell`.
+- new types: `ShellLex`, `ShellQuote`, `ShellWordError`.
 
 #### media::visual::image
 - new submodules: `format`, `raster`.
@@ -296,7 +300,7 @@
 
 ### text::parse
 - update `TextScanner`
-  - new methods: `take_ascii_ident_tail`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`.
+  - new methods: `take_ascii_ident_tail`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `skip_byte`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`.
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
 
 ### text::str

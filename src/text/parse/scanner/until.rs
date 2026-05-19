@@ -5,6 +5,7 @@ use crate::{is, whilst};
 
 /// Byte-delimited range scanning
 impl<'a> TextScanner<'a> {
+    // MAYBE add: skip_until_byte
     /// Consumes and returns the range up to, but excluding, the next `byte`.
     ///
     /// If `byte` is not found, consumes to end of input.

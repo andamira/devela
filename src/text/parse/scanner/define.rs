@@ -11,7 +11,7 @@ use crate::{_impl_init, Slice, Str, is, unwrap, whilst};
 use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextUnit};
 
 #[must_use]
-#[doc = crate::_tags!(text)]
+#[doc = crate::_tags!(text parser)]
 /// A byte scanner over source text.
 #[doc = crate::_doc_location!("text/parse")]
 ///
@@ -43,6 +43,7 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 //   - peek_byte_at
 //   - starts_with
 //   - next_byte
+//   - skip_byte
 //   - eat_byte
 //   - eat_bytes
 //   - expect_byte

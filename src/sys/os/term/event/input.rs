@@ -6,7 +6,7 @@
 use crate::{_impl_init, Char, CharIter, Position2, is, pos, slice, unwrap, whilst};
 use crate::{EventKey, EventKind, Key, KeyMods, KeyState};
 
-#[doc = crate::_tags!(term event)]
+#[doc = crate::_tags!(term event parser)]
 /// Parses terminal input bytes into normalized events.
 #[doc = crate::_doc_location!("sys/os/term")]
 ///

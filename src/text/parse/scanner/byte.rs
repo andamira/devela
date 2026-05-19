@@ -51,6 +51,13 @@ impl<'a> TextScanner<'a> {
         }
     }
 
+    /// Advances the scanner by one byte.
+    ///
+    /// Returns `true` if a byte was consumed.
+    pub const fn skip_byte(&mut self) -> bool {
+        self.advance(1) == 1
+    }
+
     #[must_use]
     /// Consumes `byte` if it is next.
     pub const fn eat_byte(&mut self, byte: u8) -> bool {
