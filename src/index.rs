@@ -60,7 +60,12 @@
 // `nightly_stable_1_97`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_97,
-    feature(int_lowest_highest_one, isolate_most_least_significant_one, uint_bit_width,)
+    feature(
+        int_lowest_highest_one,
+        isolate_most_least_significant_one,
+        uint_bit_width,
+        cfg_target_has_atomic_equal_alignment,
+    )
 )]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
@@ -76,7 +81,6 @@
     feature(
         bool_to_result,
         breakpoint,
-        cfg_target_has_atomic_equal_alignment,
         cfg_version,
         const_array_from_ref,
         const_char_classify,

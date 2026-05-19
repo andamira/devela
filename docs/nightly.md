@@ -41,6 +41,7 @@ See also
 > - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
 
 - 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
+- 1.97: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
 - 1.97: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
 - 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
@@ -54,7 +55,6 @@ See also
 - 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
-- 1.??: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
         `·` `const_slice_from_ref`
