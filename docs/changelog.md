@@ -95,6 +95,7 @@
   - replace `bitfield!` with `set!`.
 - update `write_at!`:
   - make it return the offset.
+  - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 
@@ -304,7 +305,7 @@
 #### text::unicode::scalar
 - update `Char`:
   - improve documentation.
-  - add methods: `as_char`, `ceil_utf8_boundary`, `floor_utf8_boundary`, `is_utf8_continuation`, `write_utf8_to`.
+  - add methods: `as_char`, `ceil_utf8_boundary`, `floor_utf8_boundary`, `is_utf8_continuation`, `write_utf8_to`, `write_utf8_to_unchecked`.
   - add missing method for ref array: `to_char_unchecked`.
 
 ### ui::event

@@ -15,20 +15,23 @@
 /// - Updates offset variables automatically when an identifier is provided.
 /// - Works with any indexable type (arrays, vectors, etc.).
 /// - Supports spreading sequences with `@expr` syntax.
+/// - Supports writing Unicode scalar values as UTF-8 bytes with `#expr` syntax.
 ///
 /// # Panics
 /// Panics if writing would exceed the buffer bounds.
 ///
 /// # Behavior
-/// - With `+= $offset` syntax, the offset identifier is updated to the new position,
-///   and that final position is returned.
-/// - With `$offset` syntax, the offset expression is used as the starting position
-///   but is not updated. The final position is still returned.
+/// - With `+= $offset` syntax, the offset identifier is updated to the new
+///   position, and that final position is returned.
+/// - With `$offset` syntax, the offset expression is used as the starting
+///   position but is not updated. The final position is still returned.
+/// - With `@expr` syntax, the expression is treated as a sequence and spread.
+/// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
 /// - The return value can be ignored by using the macro as a statement.
 ///
 /// # Examples
 /// ```
-/// # use devela::write_at;
+/// # use devela::{Slice, Str, write_at};
 /// let mut bytes = [0u8; 8];
 /// let mut offset = 0;
 ///
@@ -53,6 +56,14 @@
 /// write_at!(bytes, +=offset, @hello.as_bytes(), b' ', @b"world", b'!');
 /// assert_eq!(offset, 12);
 /// assert_eq!(&bytes[0..offset], b"hello world!");
+///
+/// // Encode Unicode scalar values as UTF-8 bytes with `#`.
+/// let mut bytes = [0u8; 6];
+/// let mut offset = 0;
+/// let ch = 'µ';
+/// write_at!(bytes, +=offset, #'µ', #ch, #0x00B5);
+/// assert_eq!(offset, 6);
+/// assert_eq!(Str::from_utf8(Slice::range_to(&bytes, offset)), Ok("µµµ"));
 ///
 /// // Works with any element type.
 /// let mut chars = ['_'; 8];
@@ -89,6 +100,13 @@ macro_rules! write_at· {
         let seq = $seq;
         $crate::whilst! { i in 0..seq.len(); { $buf[$offset] = seq[i]; $offset += 1; }}
     }};
+    (% $buf:ident, $offset:ident, #$ch:expr, $($rest:tt)*) => {{ // UTF-8 scalar + rest
+        $crate::write_at!(%utf8_char $buf, $offset, $ch);
+        $crate::write_at!(% $buf, $offset, $($rest)*);
+    }};
+    (% $buf:ident, $offset:ident, #$ch:expr) => {{ // UTF-8 scalar last
+        $crate::write_at!(%utf8_char $buf, $offset, $ch);
+    }};
     (% $buf:ident, $offset:ident, $elem:expr, $($rest:tt)*) => {{ // element + rest
         $buf[$offset] = $elem;
         $offset += 1;
@@ -99,6 +117,9 @@ macro_rules! write_at· {
         $offset += 1;
     }};
     (% $buf:ident, $offset:ident $(,)?) => {};
+    (% utf8_char $buf:ident, $offset:ident, $ch:expr) => {{
+        $offset += $crate::__unicode_scalar_write_utf8_at![$buf, $offset, $ch];
+    }};
 }
 pub use write_at· as write_at;
 
@@ -154,12 +175,9 @@ mod tests {
     fn test_unicode() {
         let mut buf = [0u8; 12];
         let mut offset = 0;
-        write_at!(buf, +=offset, @"µ".as_bytes()); // current way using a loop
-        write_at![buf, +=offset, 0xC2, 0xB5]; // manual way, ideal performance
-        // WIP
-        // write_at!(buf, +=offset, #'µ');
-        // write_at!(buf, +=offset, @>"µ");
-        // assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµµµ")];
-        assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµ")];
+        write_at![buf, +=offset, 0xC2, 0xB5]; // manual
+        write_at!(buf, +=offset, @"µ".as_bytes()); // byte loop
+        write_at!(buf, +=offset, #'µ'); // UTF-8 scalar
+        assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµµ")];
     }
 }

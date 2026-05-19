@@ -30,6 +30,7 @@ mod slice; // Char<&[u8] | &[u8; N]>
 ///   - [**as_ascii**](#method.as_ascii) ([*unchecked*](#method.as_ascii_unchecked)).
 ///   - [**to_ascii_fold**](#method.to_ascii_fold)
 ///    ([*unchecked*](#method.to_ascii_fold_unchecked)).
+///   - [**write_utf8_to**](#method.write_utf8_to).
 ///
 /// - [over `u16`](#methods-over-u16)
 ///   - [**is_surrogate**](#method.is_surrogate)
@@ -51,6 +52,7 @@ mod slice; // Char<&[u8] | &[u8; N]>
 ///   - [**as_ascii**](#method.as_ascii-1) ([*unchecked*](#method.as_ascii_unchecked-1)).
 ///   - [**to_utf8_bytes**](#method.to_utf8_bytes-1)
 ///    ([*unchecked*](#method.to_utf8_bytes_unchecked)).
+///   - [**write_utf8_to_unchecked**](#method.write_utf8_to_unchecked).
 ///
 /// - [over `u8`](#methods-over-u8)
 ///   - [**len_utf8**](#method.len_utf8-2) ([*unchecked*](#method.len_utf8_unchecked-1)).
