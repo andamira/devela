@@ -5,13 +5,6 @@ use crate::Char;
 /// # Methods over `u16`.
 #[rustfmt::skip]
 impl Char<u16> {
-    /* private helpers */
-
-    /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte (`10xxxxxx`).
-    pub(crate) const CONT_MASK: u16 = 0b0011_1111;
-
-    /* public methods */
-
     /// Returns `true` if the given Unicode scalar code is a [surrogate code point][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#surrogate_code_point

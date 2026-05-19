@@ -7,9 +7,6 @@ use crate::{Char, is};
 impl Char<u8> {
     /* private helpers */
 
-    /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte (`10xxxxxx`).
-    pub(crate) const CONT_MASK: u8 = 0b0011_1111;
-
     // https://tools.ietf.org/html/rfc3629
     // https://github.com/rust-lang/rust/blob/master/library/core/src/str/validations.rs
     pub(crate) const UTF8_CHAR_LEN: &[u8; 256] = &[

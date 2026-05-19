@@ -158,7 +158,7 @@ impl char16 {
             // the UTF-8 encoding is 110xxxxx 10xxxxxx,
             // where xxxxx and xxxxxx are the bits of the scalar value.
             0x0080..=0x07FF => {
-                let y = 0b10_000000 | (Char::<u8>::CONT_MASK & (c as u8));
+                let y = 0b10_000000 | (Char::<u32>::CONT_MASK as u8 & (c as u8));
                 let x = 0b110_00000 | ((c >> 6) as u8);
                 [x, y, 0]
             }
@@ -166,8 +166,8 @@ impl char16 {
             // From from 0x0800 to 0xFFFF:
             // the UTF-8 encoding is 1110xxxx 10xxxxxx 10xxxxxx.
             0x0800..=0xFFFF => {
-                let z = 0b10_000000 | (Char::<u8>::CONT_MASK & (c as u8));
-                let y = 0b10_000000 | ((c >> 6) & Char::<u16>::CONT_MASK) as u8;
+                let z = 0b10_000000 | (Char::<u32>::CONT_MASK as u8 & (c as u8));
+                let y = 0b10_000000 | ((c >> 6) & Char::<u32>::CONT_MASK as u16) as u8;
                 let x = 0b1110_0000 | ((c >> 12) as u8);
                 [x, y, z]
             }

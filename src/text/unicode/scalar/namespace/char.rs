@@ -63,13 +63,26 @@ impl Char<char> {
     #[must_use] #[inline(always)]
     pub const fn is_fullwidth_common(self) -> bool { Char(self.0 as u32).is_fullwidth_common() }
 
-    /// Converts the given Unicode scalar to a UTF-8 encoded byte sequence.
+    /// Converts this Unicode scalar to a UTF-8 encoded byte sequence.
     ///
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`char::encode_utf8`].
     #[must_use] #[inline(always)]
     pub const fn to_utf8_bytes(self) -> [u8; 4] { Char(self.0 as u32).to_utf8_bytes_unchecked() }
+
+    /// Writes this Unicode scalar as UTF-8 into `buf`.
+    ///
+    /// Returns the number of bytes written.
+    ///
+    /// A buffer of 4 bytes is always large enough for any Unicode scalar.
+    ///
+    /// # Panics
+    /// Panics if `buf.len() < self.0.len_utf8()`.
+    #[must_use] #[inline(always)]
+    pub const fn write_utf8_to(self, buf: &mut [u8]) -> usize {
+        Char(self.0 as u32).write_utf8_to_unchecked(buf)
+    }
 
     /// Returns the ASCII representation as a `&'static str`, or `""` if non-ASCII.
     #[must_use]

@@ -7,10 +7,9 @@ use crate::{AsciiLut, Char};
 impl Char<u32> {
     /* private helpers */
 
+    #[doc(hidden)]
     /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte (`10xxxxxx`).
-    pub(crate) const CONT_MASK: u32 = 0b0011_1111;
-
-    /* constants */
+    pub const CONT_MASK: u32 = 0b0011_1111;
 
     /// The maximum value of a Unicode code point.
     const MAX_UNICODE: u32 = 0x10_FFFF;
@@ -348,39 +347,58 @@ impl Char<u32> {
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes_unchecked(self) -> [u8; 4] {
-        let value = self.0;
-        match value {
-            // From 0x0000 to 0x007F:
-            // the UTF-8 encoding is the same as the scalar value.
-            0x0000..=0x007F => [value as u8, 0, 0, 0],
-
-            // from 0x0080 to 0x07FF:
-            // the UTF-8 encoding is 110xxxxx 10xxxxxx,
-            // where xxxxx and xxxxxx are the bits of the scalar value.
-            0x0080..=0x07FF => {
-                let y = 0b10_000000 | (Char::<u8>::CONT_MASK & (value as u8));
-                let x = 0b110_00000 | ((value >> 6) as u8);
-                [x, y, 0, 0]
-            }
-
-            // From from 0x0800 to 0xFFFF:
-            // the UTF-8 encoding is 1110xxxx 10xxxxxx 10xxxxxx.
-            0x0800..=0xFFFF => {
-                let z = 0b10_000000 | (Char::<u8>::CONT_MASK & (value as u8));
-                let y = 0b10_000000 | ((value >> 6) & Char::<u32>::CONT_MASK) as u8;
-                let x = 0b1110_0000 | ((value >> 12) as u8);
-                [x, y, z, 0]
-            }
-
-            // From 0x10000 to 0x10FFFF:
-            // the UTF-8 encoding is 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx.
-            _ => {
-                let w = 0b10_000000 | (Char::<u8>::CONT_MASK & (value as u8));
-                let z = 0b10_000000 | ((value >> 6) & Char::<u32>::CONT_MASK) as u8;
-                let y = 0b10_000000 | ((value >> 12) & Char::<u32>::CONT_MASK) as u8;
-                let x = 0b11110_000 | ((value >> 18) as u8);
-                [x, y, z, w]
-            }
-        }
+        let mut buf = [0; 4];
+        let _ = self.write_utf8_to_unchecked(&mut buf);
+        buf
+    }
+    /// Writes this Unicode scalar as UTF-8 into `buf` **without validation**.
+    ///
+    /// Returns the number of bytes written.
+    ///
+    /// A buffer of 4 bytes is always large enough for any Unicode scalar.
+    ///
+    /// # Panics
+    /// Panics if `buf.len() < self.0.len_utf8()`.
+    #[must_use]
+    #[allow(clippy::unusual_byte_groupings)]
+    pub const fn write_utf8_to_unchecked(self, buf: &mut [u8]) -> usize {
+        __unicode_scalar_write_utf8_at![buf, 0, self.0]
     }
 }
+
+#[doc(hidden)]
+/// Writes a Unicode scalar value as UTF-8 bytes at the given offset.
+///
+/// Returns the number of bytes written. Does not validate scalar range.
+#[macro_export]
+macro_rules! __unicode_scalar_write_utf8_at {
+    ($buf:ident, $offset:expr, $value:expr) => {{
+        let off = $offset;
+        let val = $value as u32;
+        match val {
+            0x0000..=0x007F => {
+                $buf[off + 0] = val as u8;
+                1
+            }
+            0x0080..=0x07FF => {
+                $buf[off + 0] = 0b110_00000 | (val >> 6) as u8;
+                $buf[off + 1] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
+                2
+            }
+            0x0800..=0xFFFF => {
+                $buf[off + 0] = 0b1110_0000 | (val >> 12) as u8;
+                $buf[off + 1] = 0b10_000000 | ((val >> 6) & $crate::Char::<u32>::CONT_MASK) as u8;
+                $buf[off + 2] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
+                3
+            }
+            _ => {
+                $buf[off + 0] = 0b11110_000 | (val >> 18) as u8;
+                $buf[off + 1] = 0b10_000000 | ((val >> 12) & $crate::Char::<u32>::CONT_MASK) as u8;
+                $buf[off + 2] = 0b10_000000 | ((val >> 6) & $crate::Char::<u32>::CONT_MASK) as u8;
+                $buf[off + 3] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
+                4
+            }
+        }
+    }};
+}
+use __unicode_scalar_write_utf8_at;

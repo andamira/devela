@@ -135,7 +135,7 @@ impl char8 {
             // the UTF-8 encoding is 110xxxxx 10xxxxxx,
             // where xxxxx and xxxxxx are the bits of the scalar value.
             0x0080.. => {
-                let y = 0b10_000000 | (Char::<u8>::CONT_MASK & c);
+                let y = 0b10_000000 | (Char::<u32>::CONT_MASK as u8 & c);
                 let x = 0b110_00000 | (c >> 6);
                 [x, y]
             }

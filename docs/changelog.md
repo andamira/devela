@@ -304,7 +304,7 @@
 #### text::unicode::scalar
 - update `Char`:
   - improve documentation.
-  - add methods: `as_char`, `ceil_utf8_boundary`, `floor_utf8_boundary`, `is_utf8_continuation`.
+  - add methods: `as_char`, `ceil_utf8_boundary`, `floor_utf8_boundary`, `is_utf8_continuation`, `write_utf8_to`.
   - add missing method for ref array: `to_char_unchecked`.
 
 ### ui::event
