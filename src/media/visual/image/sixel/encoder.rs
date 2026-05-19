@@ -130,10 +130,10 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                         Self::write_rle_run(slice![mut buf, off,..], char, repeat_count)];
                 }
                 // return to start for next color
-                is! { idx != self.palette.len() as u16 - 1, { write_at![buf, +=off, b'$']; }}
+                is! { idx != self.palette.len() as u16 - 1, write_at![buf, +=off, b'$'];}
             }
             band_y += 6;
-            is! { band_y < height, { write_at![buf, +=off, b'-']; }} // move to next band?
+            is! { band_y < height, write_at![buf, +=off, b'-'];} // move to next band?
         }
         off += unwrap![ok? Self::write_sixel_end(slice![mut buf, off,..])];
         Ok(off)

@@ -93,6 +93,8 @@
   - remove support for deriving `Default` for the enum.
   - new enum methods: `to_set`, `is_in`.
   - replace `bitfield!` with `set!`.
+- update `if!`:
+  - support branch-local statement semicolons and empty then/else arms.
 - update `write_at!`:
   - make it return the offset.
   - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.
