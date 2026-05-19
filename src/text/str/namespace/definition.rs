@@ -26,55 +26,55 @@ use ::core::str::from_utf8_mut;
 /// - [extra methods](#extra-methods)
 ///
 /// - [`range*` API methods](#range-api-methods-for-returning-substrings):<br/>
-///   - [**range**](#method.range)
+///   - [range](#method.range)
 ///    ([*checked*](#method.range_checked),
-///     [_**mut**_](#method.range_mut),
+///     [_mut_](#method.range_mut),
 ///     [*mut_checked*](#method.range_mut_checked)),                     ≈ `&str[start..end]`
-///   - [**range_inclusive**](#method.range_inclusive)
+///   - [range_inclusive](#method.range_inclusive)
 ///    ([*checked*](#method.range_inclusive_checked),
-///     [_**mut**_](#method.range_inclusive_mut),
+///     [_mut_](#method.range_inclusive_mut),
 ///     [*mut_checked*](#method.range_inclusive_mut_checked)),           ≈ `&str[start..=end]`
-///   - [**range_from**](#method.range_from),
+///   - [range_from](#method.range_from),
 ///    ([*checked*](#method.range_from_checked),
-///     [_**mut**_](#method.range_from_mut),
+///     [_mut_](#method.range_from_mut),
 ///     [*mut_checked*](#method.range_from_mut_checked)),                ≈ `&str[start..]`
-///   - [**range_to**](#method.range_to)
+///   - [range_to](#method.range_to)
 ///    ([*checked*](#method.range_to_checked),
-///     [_**mut**_](#method.range_to_mut),
+///     [_mut_](#method.range_to_mut),
 ///     [*mut_checked*](#method.range_to_mut_checked)),                  ≈ `&str[..end]`
-///   - [**range_to_inclusive**](#method.range_to_inclusive)
+///   - [range_to_inclusive](#method.range_to_inclusive)
 ///    ([*checked*](#method.range_to_inclusive_checked),
-///     [_**mut**_](#method.range_to_inclusive_mut),
+///     [_mut_](#method.range_to_inclusive_mut),
 ///     [*mut_checked*](#method.range_to_inclusive_mut_checked)).        ≈ `&str[..=end]`
 ///
 /// - [`take*` API methods](#take-api-methods-for-subslicing):<br/>
-///   - [**take_first**](#method.take_first)
+///   - [take_first](#method.take_first)
 ///    ([*checked*](#method.take_first_checked),
-///     [_**mut**_](#method.take_first_mut),
+///     [_mut_](#method.take_first_mut),
 ///     [*mut_checked*](#method.take_first_mut_checked)),                ≈ `&str[..n]`
-///   - [**take_last**](#method.take_last)
+///   - [take_last](#method.take_last)
 ///    ([*checked*](#method.take_last_checked),
-///     [_**mut**_](#method.take_last_mut),
+///     [_mut_](#method.take_last_mut),
 ///     [*mut_checked*](#method.take_last_mut_checked)),                 ≈ `&str[len - n..]`
-///   - [**take_omit_last**](#method.take_omit_last)
+///   - [take_omit_last](#method.take_omit_last)
 ///    ([*checked*](#method.take_omit_last_checked),
-///     [_**mut**_](#method.take_omit_last_mut),
+///     [_mut_](#method.take_omit_last_mut),
 ///     [*mut_checked*](#method.take_omit_last_mut_checked)).            ≈ `&str[..len - n]`
 ///
 /// - [`*split*` API methods](#split-api-methods-for-returning-substrings):<br/>
-///   - [**lsplit**](#method.lsplit)
+///   - [lsplit](#method.lsplit)
 ///    ([*checked*](#method.lsplit_checked),
-///    [**mut**](#method.lsplit_mut),
+///    [mut](#method.lsplit_mut),
 ///    [*mut_checked*](#method.lsplit_mut_checked)),
-///   - [**rsplit**](#method.rsplit)
+///   - [rsplit](#method.rsplit)
 ///    ([*checked*](#method.rsplit_checked),
 ///    [*mut*](#method.rsplit_mut),
 ///    [*mut_checked*](#method.rsplit_mut_checked)),
-///   - [**msplit_left**](#method.msplit_left)
+///   - [msplit_left](#method.msplit_left)
 ///    ([*checked*](#method.msplit_left_checked),
 ///    [*mut*](#method.msplit_left_mut),
 ///    [*mut_checked*](#method.msplit_left_mut_checked)),
-///   - [**msplit_right**](#method.msplit_right)
+///   - [msplit_right](#method.msplit_right)
 ///    ([*checked*](#method.msplit_right_checked),
 ///    [*mut*](#method.msplit_right_mut).
 ///    [*mut_checked*](#method.msplit_right_mut_checked)).
