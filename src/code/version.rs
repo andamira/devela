@@ -1,16 +1,10 @@
 // devela::code::version
 //
-//! Defines [`Version`].
+//! Defines [`Version`] and [`VersionFull`].
 //
 
-use crate::{_impl_init, Digits, Slice, Str, StringU8, impl_trait, is, unwrap, write_at};
-
-// MAYBE
-// pub struct VersionFull<'a> {
-//     pub version: Version,
-//     pub pre: Option<&'a str>,
-//     pub build: Option<&'a str>,
-// }
+use crate::{ConstInit, Display, FmtResult, Formatter, impl_trait};
+use crate::{Digits, Slice, Str, is, unwrap, whilst, write_at};
 
 #[doc = crate::_tags!(code)]
 /// A compact three-part semantic version core.
@@ -35,7 +29,9 @@ pub struct Version {
     pub patch: u16,
 }
 
-_impl_init! { Self::ZERO => Version }
+impl ConstInit for Version {
+    const INIT: Self = Self::ZERO;
+}
 impl_trait! { fmt::Display for Version |self, f| {
     write!(f, "{}.{}.{}", self.major, self.minor, self.patch)
 }}
@@ -153,14 +149,136 @@ impl Version {
     pub fn to_string(self) -> crate::String {
         crate::format!("{self}")
     }
+}
 
-    /// Returns this version as a fixed-capacity string.
+#[doc = crate::_tags!(code)]
+/// A semantic version with optional borrowed metadata.
+#[doc = crate::_doc_location!("code")]
+///
+/// Extends [`Version`] with optional pre-release and build metadata.
+///
+/// Formats as:
+/// - `major.minor.patch`
+/// - `major.minor.patch-pre`
+/// - `major.minor.patch+build`
+/// - `major.minor.patch-pre+build`
+#[must_use]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct VersionFull<'a> {
+    /// The numeric version core.
+    pub version: Version,
+    /// Optional pre-release metadata, written after `-`.
+    pub pre: Option<&'a str>,
+    /// Optional build metadata, written after `+`.
+    pub build: Option<&'a str>,
+}
+impl<'a> ConstInit for VersionFull<'a> {
+    const INIT: Self = Self::ZERO;
+}
+impl Display for VersionFull<'_> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        Display::fmt(&self.version, f)?;
+        is! { let Some(pre) = self.pre, write!(f, "-{pre}")?; }
+        is! { let Some(build) = self.build, write!(f, "+{build}")?; }
+        Ok(())
+    }
+}
+
+// Constructors and setters
+impl<'a> VersionFull<'a> {
+    /// The zero version: `0.0.0`.
+    pub const ZERO: Self = Self::new(Version::ZERO);
+
+    /// Returns a full version with no metadata.
+    pub const fn new(version: Version) -> Self {
+        Self { version, pre: None, build: None }
+    }
+    /// Returns a full version from all components.
+    pub const fn with(version: Version, pre: Option<&'a str>, build: Option<&'a str>) -> Self {
+        Self { version, pre, build }
+    }
+    /// Returns the numeric version core.
+    pub const fn version(self) -> Version {
+        self.version
+    }
+    /// Returns a copy with pre-release metadata.
+    pub const fn with_pre(mut self, pre: &'a str) -> Self {
+        self.pre = Some(pre);
+        self
+    }
+    /// Returns a copy without pre-release metadata.
+    pub const fn without_pre(mut self) -> Self {
+        self.pre = None;
+        self
+    }
+    /// Returns a copy with build metadata.
+    pub const fn with_build(mut self, build: &'a str) -> Self {
+        self.build = Some(build);
+        self
+    }
+    /// Returns a copy without build metadata.
+    pub const fn without_build(mut self) -> Self {
+        self.build = None;
+        self
+    }
+    /// Returns `true` if no metadata is present.
+    #[must_use]
+    pub const fn is_core(self) -> bool {
+        self.pre.is_none() && self.build.is_none()
+    }
+}
+// Length and writing
+impl VersionFull<'_> {
+    /// Returns the byte length needed to write this version.
+    #[must_use]
+    #[allow(clippy::len_without_is_empty)]
+    pub const fn len(self) -> usize {
+        let mut len = self.version.len();
+        is! { let Some(pre) = self.pre, len += 1 + pre.len(); } // '-'
+        is! { let Some(build) = self.build, len += 1 + build.len(); } // '+'
+        len
+    }
+    /// Writes this version as `major.minor.patch[-pre][+build]`.
     ///
-    /// The capacity is enough for the largest possible `u16` triplet:
-    /// `65535.65535.65535`.
-    pub fn to_string_u8(self) -> StringU8<17> {
-        let mut buf = [0u8; Self::MAX_LEN];
-        let len = unwrap![ok_guaranteed_or_ub self.write_to(&mut buf)];
-        StringU8::<17>::_from_array_len_trusted(buf, len as u8)
+    /// Returns the number of bytes written.
+    ///
+    /// # Errors
+    /// Returns the required length if `buf` is too small.
+    pub const fn write_to(self, buf: &mut [u8]) -> Result<usize, usize> {
+        let needed = self.len();
+        is! { buf.len() < needed, return Err(needed) }
+        let mut pos = unwrap![ok_guaranteed_or_ub self.version.write_to(buf)];
+        if let Some(pre) = self.pre {
+            write_at![buf, +=pos, b'-'];
+            let bytes = pre.as_bytes();
+            whilst! { i in 0..bytes.len(); { write_at![buf, +=pos, bytes[i]]; }}
+        }
+        if let Some(build) = self.build {
+            write_at![buf, +=pos, b'+'];
+            let bytes = build.as_bytes();
+            whilst! { i in 0..bytes.len(); { write_at![buf, +=pos, bytes[i]]; }}
+        }
+        Ok(pos)
+    }
+    /// Writes this version and returns the written string slice.
+    ///
+    /// # Errors
+    /// Returns the required length if `buf` is too small.
+    pub const fn to_str<'b>(self, buf: &'b mut [u8]) -> Result<&'b str, usize> {
+        let len = unwrap![ok? self.write_to(buf)];
+        let slice = Slice::range_to(buf, len);
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: `write_to` writes the numeric core plus caller-provided `str` slices.
+            unsafe { Ok(Str::from_utf8_unchecked(slice)) }
+        } _ => {
+            Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)])
+        }}
+    }
+    /// Returns this version as an allocated string.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    #[must_use]
+    pub fn to_string(self) -> crate::String {
+        crate::format!("{self}")
     }
 }
