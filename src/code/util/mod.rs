@@ -60,7 +60,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
-            asserts::{assert_eq_all, assert_approx_eq_all, const_assert},
+            asserts::{assert_eq_all, assert_approx_eq_all, const_assert, test_size_of},
             capture::{capture_first, capture_last, capture_tail_tuple},
             cdbg::*,
             r#const::CONST,
