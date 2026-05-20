@@ -285,12 +285,17 @@ mod reflection {
     };
     pub const LANG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["lang··"],
-        features: &["lang", "glsl", "js"]
+        features: &["lang", "glsl", "js", "shell"]
     };
         pub const FFI: FlagsFeatures = FlagsFeatures {
             ref_flags: &["ffi··"],
-            features: &["glsl", "js", "unsafe_ffi"]
+            features: &["glsl", "js", "unsafe_ffi"] // ffi
         };
+        // pub const SCRIPT: FlagsFeatures = FlagsFeatures {
+        //     ref_flags: &["script··"],
+        //     features: &["shell"] // script
+        // };
+
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         ref_flags: &["media··"],
         features: &["media",
