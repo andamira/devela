@@ -280,7 +280,7 @@
 - feature-gate term-related functionality.
 
 #### sys::os::term
-- new type `TermInputParser`.
+- new types: `TermCap`, `TermCaps`, `TermColorDepth`, `TermInputParser`.
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.

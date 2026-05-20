@@ -5,13 +5,13 @@
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
-// THINK: .
 
 mod ansi; // Ansi, AnsiColor3, AnsiColor8
-// mod backend; // WIP
-// mod cap; // WIP
+// mod backend; // WIP TermLinux
+mod cap; // WIP TermCaps
 #[cfg(feature = "event")]
-mod event; // TermInputParser WIP
+mod event; // TermInputParser
+// mod line; // WIP CLI
 mod metric; // TermSize
 // #[cfg(feature = "term")]
 // mod render; // TermRenderer WIP
@@ -19,12 +19,11 @@ mod metric; // TermSize
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            // cap::*,
-            metric::*,
-        };
-        pub use super::{
             ansi::_all::*,
+            cap::_all::*,
             // backend::_all::*,
+            // line::*,
+            metric::*,
             // render::_all::*,
         };
         #[cfg(feature = "event")]
