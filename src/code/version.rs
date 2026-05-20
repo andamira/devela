@@ -179,10 +179,14 @@ impl Display for VersionFull<'_> {
 // Constructors and setters
 impl<'a> VersionFull<'a> {
     /// The zero version: `0.0.0`.
-    pub const ZERO: Self = Self::new(Version::ZERO);
+    pub const ZERO: Self = Self::from_version(Version::ZERO);
 
+    /// Returns a new version from its three numeric components.
+    pub const fn new(major: u16, minor: u16, patch: u16) -> Self {
+        Self::from_version(Version::new(major, minor, patch))
+    }
     /// Returns a full version with no metadata.
-    pub const fn new(version: Version) -> Self {
+    pub const fn from_version(version: Version) -> Self {
         Self { version, pre: None, build: None }
     }
     /// Returns a full version from all components.
@@ -265,5 +269,16 @@ impl VersionFull<'_> {
         } _ => {
             Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)])
         }}
+    }
+}
+
+impl From<Version> for VersionFull<'_> {
+    fn from(v: Version) -> Self {
+        Self::from_version(v)
+    }
+}
+impl From<VersionFull<'_>> for Version {
+    fn from(v: VersionFull) -> Self {
+        v.version()
     }
 }
