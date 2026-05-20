@@ -24,7 +24,7 @@
 /// | `?`                 | Early return                           | Safe          |
 /// | (none)              | Panic                                  | Safe          |
 /// | `_expect`           | Panic with message                     | Safe          |
-/// | `_or`               | Return default                         | Safe          |
+/// | `_or`               | Evaluate fallback expression           | Safe          |
 /// | `_map`              | Maps the value of the previous variant | Safe          |
 /// | `_into`             | Unwraps the value explicitly           | Safe          |
 /// | `_if`               | Unwrap depends on the given condition  | Safe          |
@@ -132,11 +132,11 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, otherwise yields the provided `$default` value.
-      some_or $T:expr, $default:expr) => {
+      // Unwraps `Some` value, otherwise evaluates `$fallback`.
+      some_or $T:expr, $fallback:expr) => {
         match $T {
             Some(v) => v,
-            None => $default,
+            None => $fallback,
         }
     };
     (
@@ -285,11 +285,11 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value; otherwise yields the provided `$default` value.
-      ok_or $T:expr, $default:expr) => {
+      // Unwraps the `Ok` value; otherwise evaluates `$fallback`.
+      ok_or $T:expr, $fallback:expr) => {
         match $T {
             Ok(v) => v,
-            Err(_) => $default,
+            Err(_) => $fallback,
         }
     };
     (
@@ -324,11 +324,11 @@ macro_rules! unwrap {
     };
     (
       // Unwraps the `Ok` value if `$cond` holds;
-      // otherwise yields the provided `$default` value.
-      ok_if_or $T:expr, |$v:ident| $cond:expr, $default:expr) => {
+      // otherwise evaluates `$fallback`.
+      ok_if_or $T:expr, |$v:ident| $cond:expr, $fallback:expr) => {
         match $T {
             Ok($v) if $cond => $v,
-            _ => $default,
+            _ => $fallback,
         }
     };
     (
@@ -431,10 +431,10 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Err` value; otherwise yields the provided `$default` value.
-      err_or $T:expr, $default:expr) => {
+      // Unwraps the `Err` value; otherwise evaluates `$fallback`.
+      err_or $T:expr, $fallback:expr) => {
         match $T {
-            Ok(_) => $default,
+            Ok(_) => $fallback,
             Err(e) => e,
         }
     };
@@ -487,12 +487,12 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value; otherwise yields the provided `$default` value.
-      sok_or $T:expr, $default:expr) => {
+      // Unwraps `Some(Ok)` value; otherwise evaluates `$fallback`.
+      sok_or $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(v)) => v,
-            Some(Err(_)) => $default,
-            None => $default,
+            Some(Err(_)) => $fallback,
+            None => $fallback,
         }
     };
     (
@@ -527,12 +527,12 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Err)` value; otherwise yields the provided `$default` value.
-      serr_or $T:expr, $default:expr) => {
+      // Unwraps `Some(Err)` value; otherwise evaluates `$fallback`.
+      serr_or $T:expr, $fallback:expr) => {
         match $T {
-            Some(Ok(_)) => $default,
+            Some(Ok(_)) => $fallback,
             Some(Err(v)) => v,
-            None => $default,
+            None => $fallback,
         }
     };
 }
