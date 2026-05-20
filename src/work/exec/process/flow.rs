@@ -5,6 +5,8 @@
 
 use crate::sys::io::{Io, IoRead, IoResult};
 use crate::work::exec::process::{Command, ExitStatus, Output, Stdio};
+#[cfg(feature = "shell")]
+use crate::{Process, ProcessExt, ShellWordError};
 
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.
@@ -32,6 +34,13 @@ impl CommandFlow {
     ///
     /// This is equivalent to a flow of length 1, with no piping.
     pub fn new(cmd: Command) -> Self { Self { cmds: vec![cmd] } }
+
+    /// Creates a one-command flow from shell-like command words.
+    #[cfg(feature = "shell")]
+    pub fn command_shell(line: &str) -> Result<Self, ShellWordError> {
+        use ProcessExt as _;
+        Ok(Self::new(Process::command_shell(line)?))
+    }
 
     /// Appends a command to the flow, piping the previous command into it.
     ///

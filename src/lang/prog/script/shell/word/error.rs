@@ -9,6 +9,9 @@
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ShellWordError {
+    /// The command line ended before a program word was found.
+    EmptyCommand,
+
     /// The input ended after an unescaped backslash.
     TrailingEscape,
 

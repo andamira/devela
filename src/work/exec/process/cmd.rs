@@ -17,8 +17,11 @@
 ///
 /// Semantics:
 /// - This macro does not invoke a shell.
-/// - No redirection, globbing, or quoting is performed.
-/// - Argument splitting only happens when a segment consists of a single string literal.
+/// - Commands are spawned directly through the OS process API.
+/// - No expansion, globbing, redirection, variables, or pipes are performed.
+/// - Explicit segments like `cmd!("echo", "hello world")` are passed as argv words.
+/// - Single string-literal segments like `cmd!("echo 'hello world'")` require
+///   the `shell` feature and are split using shell word syntax.
 ///
 /// # Examples
 /// ```
@@ -30,7 +33,17 @@
 /// // a single command. E.g.: `ls -F .`
 /// cmd!("ls").run();
 /// cmd!("ls", arg1, ".").run();
+/// cmd!("ls", "-F", ".").run();
+///
+/// #[cfg(feature = "shell")]
 /// cmd!("ls -F .").run();
+///
+/// #[cfg(feature = "shell")]
+/// cmd!(r#"echo "hello world""#).run();
+///
+/// // Still no shell expansion:
+/// #[cfg(feature = "shell")]
+/// cmd!(r#"echo "$HOME" "*.rs""#).run(); // literal "$HOME" and "*.rs"
 ///
 /// // multiple piped commands. E.g.: `ps aux | grep lib | wc -l`
 /// cmd!("ps", "aux" => cmd2, "lib" => "wc", "-l").run();
@@ -67,11 +80,18 @@ macro_rules! cmd {
     (%flow $flow:expr) => { $flow };
     // Command constructor: A single string literal is split on whitespace.
     (%cmd $cmd:literal) => {{
-        let mut it = $cmd.split_whitespace();
-        let prog = it.next().expect("empty command literal");
-        let mut c = $crate::Command::new(prog);
-        for arg in it { c.arg(arg); }
-        c
+        #[cfg(feature = "shell")]
+        {
+            use $crate::ProcessExt as _;
+            $crate::Process::command_shell($cmd).expect("invalid command literal")
+        }
+        #[cfg(not(feature = "shell"))]
+        {
+            compile_error!(
+                "`cmd!(\"...\")` single-literal splitting requires the `shell` feature; \
+                 use `cmd!(program, args...)` or enable `shell`"
+            );
+        }
     }};
     // Command constructor: First expr is the program, the rest are arguments.
     (%cmd $prog:expr $(, $arg:expr)* $(,)?) => {{

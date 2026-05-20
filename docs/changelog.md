@@ -355,6 +355,10 @@
 - move `thread` and `process` inside `exec`.
 - rename `Task*` items to `Async*`.
 
+#### work::exec::process
+- update `cmd!` to parse single string literals as shell words.
+- new `CommandFlow` and `ProcessExt` method: `command_shell`.
+
 ## yard
 - new hidden maintenance aliases for item attributes:
   - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `_js_[un]safe_ffi[_doc]`, `_unsafe_syscall_not_miri`.
