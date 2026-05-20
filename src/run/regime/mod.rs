@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 
 mod cap; // RunCap*
-mod service; // RunService
+mod service; // RunService[Probe]
 
 crate::structural_mods! { // _mods
     _mods {

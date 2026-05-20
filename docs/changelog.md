@@ -222,7 +222,14 @@
   - make them use a borrowed `RunFrame`.
   - make `RunRender`'s `S: ?Sized`.
 
-## run::time
+### run::regime
+- new `RunServiceProbe` trait.
+- update `RunService`:
+  - rename methods with the `run_` prefix.
+  - make `version` return `VersionFull`.
+  - remove method `version_string`.
+
+### run::time
 - update `RunPacer`:
   - change requiring `Duration` for `T: TimeSpan`.
   - make the constructor fallible.
