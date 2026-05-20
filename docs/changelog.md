@@ -300,7 +300,7 @@
 
 ### text::parse
 - update `TextScanner`
-  - new methods: `take_ascii_ident_tail`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `skip_byte`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`.
+  - new methods: `eat_ascii_set`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `skip_byte`, `skip_until_ascii_set`, `take_ascii_ident_tail`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`, `take_until_ascii_set`.
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
 
 ### text::str

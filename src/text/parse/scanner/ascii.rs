@@ -105,6 +105,22 @@ impl<'a> TextScanner<'a> {
 
 /// `AsciiSet` scanning.
 impl<'a> TextScanner<'a> {
+    /// Consumes the next byte if it belongs to `set`.
+    ///
+    /// Returns `true` if a byte was consumed.
+    ///
+    /// Non-ASCII bytes never match.
+    #[must_use]
+    pub const fn eat_ascii_set(&mut self, set: AsciiSet) -> bool {
+        match self.peek_byte() {
+            Some(byte) if set.contains_byte(byte) => {
+                self._cursor_bump(1);
+                true
+            }
+            _ => false,
+        }
+    }
+
     /// Skips bytes while they belong to `set`.
     ///
     /// Returns the number of skipped bytes.
@@ -112,6 +128,22 @@ impl<'a> TextScanner<'a> {
         let start = self.cursor.index.0;
         whilst! { let Some(byte) = self.peek_byte(); {
             is! { set.contains_byte(byte), self._cursor_bump(1), break }
+        }}
+        self.cursor.index.0 - start
+    }
+
+    /// Skips bytes until the next byte belonging to `set`.
+    ///
+    /// Stops before the matching byte.
+    ///
+    /// If no byte from `set` is found, skips to the end of input.
+    ///
+    /// Non-ASCII bytes never match.
+    pub const fn skip_until_ascii_set(&mut self, set: AsciiSet) -> TextUnit {
+        let start = self.cursor.index.0;
+        whilst! { let Some(byte) = self.peek_byte(); {
+            is! { set.contains_byte(byte), break }
+            self._cursor_bump(1);
         }}
         self.cursor.index.0 - start
     }
@@ -146,5 +178,19 @@ impl<'a> TextScanner<'a> {
             is! { tail.contains_byte(byte), self._cursor_bump(1), break }
         }}
         Some(self.range_from(start))
+    }
+
+    /// Consumes and returns the range up to, but excluding, the next byte belonging to `set`.
+    ///
+    /// If no byte from `set` is found, consumes to the end of input.
+    ///
+    /// Non-ASCII bytes never match.
+    pub const fn take_until_ascii_set(&mut self, set: AsciiSet) -> TextRange {
+        let start = self.mark();
+        whilst! { let Some(byte) = self.peek_byte(); {
+            is! { set.contains_byte(byte), break }
+            self._cursor_bump(1);
+        }}
+        self.range_from(start)
     }
 }

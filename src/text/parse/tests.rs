@@ -1,6 +1,10 @@
 // devela::text::parse::tests
 
-use crate::{TextParseErrorKind, TextScanner};
+use crate::{AsciiSet, TextParseErrorKind, TextRange, TextScanner};
+
+fn str_at<'a>(scanner: &TextScanner<'a>, range: TextRange) -> &'a str {
+    scanner.slice_str(range).unwrap()
+}
 
 /* construction, views, and cursor state */
 
@@ -50,6 +54,28 @@ fn byte_ops() {
 }
 
 #[test]
+fn scanner_byte_consumption_and_position() {
+    let mut s = TextScanner::new("abc");
+
+    assert_eq!(s.pos().as_usize(), 0);
+    assert_eq!(s.peek_byte(), Some(b'a'));
+
+    assert!(s.skip_byte());
+    assert_eq!(s.pos().as_usize(), 1);
+    assert_eq!(s.peek_byte(), Some(b'b'));
+
+    assert_eq!(s.next_byte(), Some(b'b'));
+    assert_eq!(s.pos().as_usize(), 2);
+
+    assert!(s.eat_byte(b'c'));
+    assert!(s.is_eof());
+
+    assert!(!s.skip_byte());
+    assert_eq!(s.next_byte(), None);
+    assert_eq!(s.pos().as_usize(), 3);
+}
+
+#[test]
 fn expect_ops_do_not_advance_on_failure() {
     let mut s = TextScanner::new("abc");
 
@@ -61,40 +87,6 @@ fn expect_ops_do_not_advance_on_failure() {
 
     assert!(s.expect_bytes(b"abcd").is_err());
     assert_eq!(s.pos().as_usize(), 0);
-}
-
-/* ascii scanning and range-taking */
-
-#[test]
-fn ascii_scanners() {
-    let mut s = TextScanner::new(" \t\r\nfoo_12 123bar");
-    s.skip_ascii_ws();
-    assert_eq!(s.pos().as_usize(), 4);
-
-    let ident = s.take_ascii_ident().unwrap();
-    assert_eq!(s.slice_str(ident), Some("foo_12"));
-    assert_eq!(s.peek_byte(), Some(b' '));
-
-    s.skip_ascii_ws();
-    assert_eq!(s.expect_ascii_u64(), Ok(123));
-    assert_eq!(s.rest(), b"bar");
-}
-
-#[test]
-fn ascii_u64_edge_cases() {
-    let mut s = TextScanner::new("abc");
-    assert_eq!(s.take_ascii_u64(), Ok(None));
-    assert!(s.expect_ascii_u64().is_err());
-    assert_eq!(s.pos().as_usize(), 0);
-
-    let mut s = TextScanner::new("18446744073709551615!");
-    assert_eq!(s.take_ascii_u64(), Ok(Some(u64::MAX)));
-    assert_eq!(s.peek_byte(), Some(b'!'));
-
-    let mut s = TextScanner::new("18446744073709551616!");
-    assert!(s.take_ascii_u64().is_err());
-    assert_eq!(s.pos().as_usize(), 19); // stops before the offending digit
-    assert_eq!(s.peek_byte(), Some(b'6'));
 }
 
 #[test]
@@ -148,6 +140,91 @@ fn take_until_bytes_regression_nonzero_cursor() {
     assert_eq!(s.slice_str(r), Some("zz"));
     assert_eq!(s.pos().as_usize(), 10);
     assert!(s.is_eof());
+}
+
+/* ascii scanning and range-taking */
+
+#[test]
+fn ascii_scanners() {
+    let mut s = TextScanner::new(" \t\r\nfoo_12 123bar");
+    s.skip_ascii_ws();
+    assert_eq!(s.pos().as_usize(), 4);
+
+    let ident = s.take_ascii_ident().unwrap();
+    assert_eq!(s.slice_str(ident), Some("foo_12"));
+    assert_eq!(s.peek_byte(), Some(b' '));
+
+    s.skip_ascii_ws();
+    assert_eq!(s.expect_ascii_u64(), Ok(123));
+    assert_eq!(s.rest(), b"bar");
+}
+
+#[test]
+fn ascii_u64_edge_cases() {
+    let mut s = TextScanner::new("abc");
+    assert_eq!(s.take_ascii_u64(), Ok(None));
+    assert!(s.expect_ascii_u64().is_err());
+    assert_eq!(s.pos().as_usize(), 0);
+
+    let mut s = TextScanner::new("18446744073709551615!");
+    assert_eq!(s.take_ascii_u64(), Ok(Some(u64::MAX)));
+    assert_eq!(s.peek_byte(), Some(b'!'));
+
+    let mut s = TextScanner::new("18446744073709551616!");
+    assert!(s.take_ascii_u64().is_err());
+    assert_eq!(s.pos().as_usize(), 19); // stops before the offending digit
+    assert_eq!(s.peek_byte(), Some(b'6'));
+}
+
+#[test]
+fn scanner_ascii_set_consumes_runs_and_delimiters() {
+    let mut s = TextScanner::from_bytes(b"abc=123;\xC3\xB1!");
+
+    let alpha = s.take_ascii_set(AsciiSet::ALPHA).unwrap();
+    assert_eq!(str_at(&s, alpha), "abc");
+
+    assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+    assert_eq!(s.peek_byte(), Some(b'1'));
+
+    let digits = s.take_ascii_set(AsciiSet::DIGIT).unwrap();
+    assert_eq!(s.slice(digits), b"123");
+
+    assert_eq!(s.skip_until_ascii_set(AsciiSet::PUNCT), 0);
+    assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+
+    // Non-ASCII bytes do not match the ASCII set, but are still skipped over.
+    assert_eq!(s.skip_until_ascii_set(AsciiSet::PUNCT), 2);
+    assert_eq!(s.peek_byte(), Some(b'!'));
+    assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+    assert!(s.is_eof());
+}
+
+#[test]
+fn scanner_ascii_set_takes_until_and_runs() {
+    let mut s = TextScanner::new("name:value rest");
+
+    let head = s.take_until_ascii_set(AsciiSet::PUNCT);
+    assert_eq!(str_at(&s, head), "name");
+    assert_eq!(s.peek_byte(), Some(b':'));
+
+    assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+
+    let tail = s.take_until_ascii_set(AsciiSet::PUNCT);
+    assert_eq!(str_at(&s, tail), "value rest");
+    assert!(s.is_eof());
+
+    let mut id = TextScanner::new("9bad _good");
+    assert!(id.take_ascii_run(AsciiSet::IDENT_HEAD, AsciiSet::IDENT_TAIL).is_none());
+    assert_eq!(id.pos().as_usize(), 0);
+
+    let tail = id.take_ascii_set(AsciiSet::IDENT_TAIL).unwrap();
+    assert_eq!(str_at(&id, tail), "9bad");
+
+    id.skip_ascii_hws();
+
+    let ident = id.take_ascii_run(AsciiSet::IDENT_HEAD, AsciiSet::IDENT_TAIL).unwrap();
+    assert_eq!(str_at(&id, ident), "_good");
+    assert!(id.is_eof());
 }
 
 /* quoted strings */
@@ -252,6 +329,31 @@ fn quoted_decode_buffer_too_small() {
 
     let mut out = [0u8; 2];
     assert!(s.decode_quoted_basic_into(range, &mut out).is_err());
+}
+
+#[test]
+fn scanner_line_and_quoted_helpers() {
+    let mut s = TextScanner::new("  alpha # comment\r\n\"a\\n b\" tail\nplain tail");
+
+    let line = s.next_line_trimmed_before(b'#').unwrap();
+    assert_eq!(str_at(&s, line), "alpha");
+
+    let quoted = s.take_quoted_basic_or_rest().unwrap();
+    assert_eq!(str_at(&s, quoted), "a\\n b");
+
+    s.skip_ascii_hws();
+
+    let tail = s.next_line_trimmed().unwrap();
+    assert_eq!(str_at(&s, tail), "tail");
+
+    let rest = s.take_quoted_basic_or_rest().unwrap();
+    assert_eq!(str_at(&s, rest), "plain tail");
+    assert!(s.is_eof());
+
+    // Pin the documented byte-blind behavior.
+    let mut comments = TextScanner::new(r#"  "x # y" # z"#);
+    let before_hash = comments.next_line_trimmed_before(b'#').unwrap();
+    assert_eq!(str_at(&comments, before_hash), r#""x"#);
 }
 
 /* predicate-driven adapters */
