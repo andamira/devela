@@ -77,9 +77,9 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP > StringU8::MAX_CAPACITY`.
+    #[allow(clippy::should_implement_trait, reason = "it does as well")]
     pub fn from_str(string: &str) -> Result<Self, MismatchedCapacity> {
         let _ = StringU8::<CAP>::new_checked()?;
-
         if string.len() <= CAP {
             Ok(Self {
                 repr: StringSmallAllocRepr::Inline(StringU8::<CAP>::from_str(string)?),
@@ -99,7 +99,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
     /// Returns [`MismatchedCapacity`] if `CAP > StringU8::MAX_CAPACITY`.
     pub fn from_string(string: String) -> Result<Self, MismatchedCapacity> {
         let _ = StringU8::<CAP>::new_checked()?;
-
         if string.len() <= CAP {
             Ok(Self {
                 repr: StringSmallAllocRepr::Inline(StringU8::<CAP>::from_str(string.as_str())?),
@@ -351,12 +350,17 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 #[rustfmt::skip]
 mod impl_traits {
     use crate::{
-        Borrow, ConstInit, Debug, Deref, Display, FmtResult, FmtWrite, Formatter, Hash, Hasher,
-        Ordering, StringSmallAlloc,
+        Borrow, ConstInit, Debug, Deref, Display, FmtResult, FmtWrite, Formatter, FromStr, Hash,
+        Hasher, MismatchedCapacity, Ordering, StringSmallAlloc,
     };
 
     impl<const CAP: usize> ConstInit for StringSmallAlloc<CAP> { const INIT: Self =  Self::new(); }
     impl<const CAP: usize> Default for StringSmallAlloc<CAP> { fn default() -> Self { Self::new() }}
+
+    impl<const CAP: usize> FromStr for StringSmallAlloc<CAP> {
+        type Err = MismatchedCapacity;
+        fn from_str(string: &str) -> Result<Self, Self::Err> { Self::from_str(string) }
+    }
 
     impl<const CAP: usize> FmtWrite for StringSmallAlloc<CAP> {
         fn write_str(&mut self, s: &str) -> FmtResult<()> { self.push_str(s); Ok(()) }
@@ -397,9 +401,7 @@ mod impl_traits {
         fn cmp(&self, other: &Self) -> Ordering { self.as_str().cmp(other.as_str()) }
     }
     impl<const CAP: usize> PartialOrd for StringSmallAlloc<CAP> {
-        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            Some(self.as_str().cmp(other.as_str()))
-        }
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }
     }
 
     impl<const CAP: usize> Extend<char> for StringSmallAlloc<CAP> {

@@ -94,6 +94,7 @@ impl TermInputParser {
             TermInputState::Utf8 { .. } => self.feed_utf8(byte),
         }
     }
+    #[allow(clippy::match_overlapping_arm, reason = "b' ' with 0x20..=0x7E")]
     const fn feed_ground(&mut self, byte: u8) -> TermParsed {
         match byte {
             // ESC is stateful: it may become Escape, CSI, SS3, mouse, paste, etc.
@@ -194,8 +195,8 @@ impl TermInputParser {
             (b"", b'D') => K::Left,
             (b"", b'H') => K::Home,
             (b"", b'F') => K::End,
-            (b"1", b'~') | (b"7", b'~') => K::Home,
-            (b"4", b'~') | (b"8", b'~') => K::End,
+            (b"1" | b"7", b'~') => K::Home,
+            (b"4" | b"8", b'~') => K::End,
             (b"2", b'~') => K::Insert,
             (b"3", b'~') => K::Delete,
             (b"5", b'~') => K::PageUp,

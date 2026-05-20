@@ -141,14 +141,6 @@ impl Version {
             unsafe { Ok(Str::from_utf8_unchecked(slice)) }
         } _ => { Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]) }}
     }
-
-    /// Returns this version as an allocated string.
-    #[must_use]
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn to_string(self) -> crate::String {
-        crate::format!("{self}")
-    }
 }
 
 #[doc = crate::_tags!(code)]
@@ -264,7 +256,7 @@ impl VersionFull<'_> {
     ///
     /// # Errors
     /// Returns the required length if `buf` is too small.
-    pub const fn to_str<'b>(self, buf: &'b mut [u8]) -> Result<&'b str, usize> {
+    pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
         let len = unwrap![ok? self.write_to(buf)];
         let slice = Slice::range_to(buf, len);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -273,12 +265,5 @@ impl VersionFull<'_> {
         } _ => {
             Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)])
         }}
-    }
-    /// Returns this version as an allocated string.
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    #[must_use]
-    pub fn to_string(self) -> crate::String {
-        crate::format!("{self}")
     }
 }

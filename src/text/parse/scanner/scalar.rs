@@ -124,7 +124,7 @@ impl<'a> TextScanner<'a> {
         let Some((ch, len)) = charu::from_utf8_prefix(slice![self.bytes, pos, ..]) else {
             return None;
         };
-        self._cursor_bump(len as u32);
+        self._cursor_bump(len);
         Some(ch)
     }
 

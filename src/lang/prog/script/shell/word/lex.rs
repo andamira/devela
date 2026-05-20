@@ -120,12 +120,11 @@ impl<'a> ShellLex<'a> {
             let Some(byte) = self.scanner.next_byte() else {
                 return Err(ShellWordError::UnterminatedSingleQuote);
             };
-            match byte {
-                b'\'' => return Ok(len),
-                _ => {
-                    self.bump_line(byte);
-                    len = unwrap![ok? Self::push_byte(out, len, byte)];
-                }
+            if byte == b'\'' {
+                return Ok(len);
+            } else {
+                self.bump_line(byte);
+                len = unwrap![ok? Self::push_byte(out, len, byte)];
             }
         }
     }

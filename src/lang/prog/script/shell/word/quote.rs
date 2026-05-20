@@ -83,9 +83,6 @@ const fn is_control_byte(byte: u8) -> bool {
     byte <= 0x1F || byte == 0x7F
 }
 const fn is_unquoted_shell_byte(byte: u8) -> bool {
-    match byte {
-        b'+' | b'-' | b'.' | b'/' | b':' | b'@' | b']' | b'_' => true,
-        b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z' => true,
-        _ => false,
-    }
+    matches!(byte, b'+' | b'-' | b'.' | b'/' | b':' | b'@' | b']' | b'_'
+        | b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z')
 }

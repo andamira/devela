@@ -59,6 +59,7 @@ macro_rules! __crypto_impl_md5 {
                 0x6FA8_7E4F, 0xFE2C_E6E0, 0xA301_4314, 0x4E08_11A1,
                 0xF753_7E82, 0xBD3A_F235, 0x2AD7_D2BB, 0xEB86_D391,
             ];
+            #[allow(clippy::zero_prefixed_literal)]
             const S: [u32; 64] = [
                 07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22,
                 05, 09, 14, 20, 05, 09, 14, 20, 05, 09, 14, 20, 05, 09, 14, 20,
