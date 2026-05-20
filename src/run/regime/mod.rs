@@ -6,12 +6,14 @@
 #![doc = crate::_doc!(hr)]
 
 mod cap; // RunCap*
+mod info; // RunSystemInfo
 mod service; // RunService[Probe]
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             cap::*,
+            info::*,
             service::*,
         };
     }

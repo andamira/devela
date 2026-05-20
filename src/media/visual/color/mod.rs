@@ -8,12 +8,19 @@
 // safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
+#[cfg(feature = "color")]
 mod _helper; // (TEMP Norm)
 
 mod color; // Color
+mod depth; // ColorDepth
+
+#[cfg(feature = "color")]
 mod gamma; // Gamma
+#[cfg(feature = "color")]
 mod luminance; // Luma, Luminance
+#[cfg(feature = "color")]
 mod palette; // WIP
+#[cfg(feature = "color")]
 mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 
 // #[cfg(feature = "linear")]
@@ -22,7 +29,11 @@ mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            color::*,
+            color::Color,
+            depth::*,
+        };
+        #[cfg(feature = "color")]
+        pub use super::{
             gamma::*,
             luminance::*,
             palette::_all::*,
@@ -32,6 +43,12 @@ crate::structural_mods! { // _mods, _crate_internals
         // pub use super::xyz::*;
     }
     _crate_internals {
-        pub(crate) use super::_helper::*;
+        pub(crate) use super::{
+            color::_media_visual_color_impl,
+        };
+        #[cfg(feature = "color")]
+        pub(crate) use super::{
+            _helper::*,
+        };
     }
 }

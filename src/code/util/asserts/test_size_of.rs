@@ -99,6 +99,7 @@ pub use test_size_of;
 #[cfg(test)]
 mod tests {
     struct TestSizeOfUnit;
+    #[allow(dead_code)]
     struct TestSizeOfTuple(u8, u16);
 
     test_size_of![TestSizeOfUnit = 0];

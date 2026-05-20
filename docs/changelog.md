@@ -155,6 +155,10 @@
 - new submodule: `shell`.
 - new types: `ShellLex`, `ShellQuote`, `ShellWordError`.
 
+#### media::visual::color
+- new type `ColorDepth`.
+- make the `Color` trait not depend on the `color` feature.
+
 #### media::visual::image
 - new submodules: `format`, `raster`.
 - remove `image` feature-gate from the module.
@@ -223,7 +227,16 @@
   - make `RunRender`'s `S: ?Sized`.
 
 ### run::regime
-- new `RunServiceProbe` trait.
+- new type: `RunCapColor`, `RunCapText`.
+- new trait `RunServiceProbe`.
+- update `RunCap`:
+  - new field: `color`.
+  - make the system field not depend on `alloc`.
+- update `RunCapImage`:
+  - rename field `max_bitmap_size` to `max_bitmap_extent` with type `Option<Extent2<NonMaxU32>>`.
+  - remove the `rgb` field.
+- remake `RunCapSystem` from scratch as a set.
+- make `RunCapInput` a set.
 - update `RunService`:
   - rename methods with the `run_` prefix.
   - make `version` return `VersionFull`.
@@ -280,7 +293,7 @@
 - feature-gate term-related functionality.
 
 #### sys::os::term
-- new types: `TermCap`, `TermCaps`, `TermColorDepth`, `TermInputParser`.
+- new types: `TermCap`, `TermCaps`, `TermInputParser`.
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.

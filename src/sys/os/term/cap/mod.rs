@@ -3,14 +3,14 @@
 //! Terminal capabilities.
 //
 
-mod cap; // TermCap, TermCaps
-mod color; // TermColorDepth
+mod field; // TermCaps
+mod list; // TermCap
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            cap::*,
-            color::*,
+            field::*,
+            list::*,
         };
     }
 }

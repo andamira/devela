@@ -3,65 +3,31 @@
 //! Runtime capabilities.
 //
 
-#[cfg(feature = "alloc")]
-use crate::String;
+use crate::{ColorDepth, Extent2, NonMaxU16, NonMaxU32, set, test_size_of};
 
+test_size_of![RunCap = 28]; // 224 bits
 #[doc = crate::_tags!(runtime)]
 /// The capabilities supported by a `Runtime`.
 #[doc = crate::_doc_location!("run/regime")]
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct RunCap {
+    /// Audio capabilities.
+    pub audio: Option<RunCapAudio>,
+    /// Color capabilities.
+    pub color: Option<RunCapColor>,
     /// Image capabilities.
     pub image: Option<RunCapImage>,
     /// Input capabilities.
     pub input: Option<RunCapInput>,
-    /// Audio capabilities.
-    pub audio: Option<RunCapAudio>,
     /// System capabilities.
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub system: Option<RunCapSystem>,
+    /// Text capabilities.
+    pub text: Option<RunCapText>,
     /// Windowing capabilities.
     pub window: Option<RunCapWindow>,
 }
 
-#[doc = crate::_tags!(runtime image)]
-/// Image capabilities.
-#[doc = crate::_doc_location!("run/regime")]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct RunCapImage {
-    /// Maximum bitmap size, in native pixels.
-    pub max_bitmap_size: Option<[usize; 2]>,
-    /// Whether pixel-accurate bitmaps are supported.
-    pub pixel_native: bool,
-
-    /// Whether it's possible to specify rgb values.
-    pub rgb: bool,
-    // ///
-    // pub palette: Option<u16>,
-    // ///
-    // pub palette_change: bool,
-    // ///
-    // pub palette_size: u16,
-}
-
-#[doc = crate::_tags!(runtime interaction)]
-/// Runtime input capabilities.
-#[doc = crate::_doc_location!("run/regime")]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct RunCapInput {
-    /// Gamepad input capabilities.
-    pub gamepad: bool,
-    /// Keyboard input capabilities.
-    pub keyboard: bool,
-    /// Midi input capabilities
-    pub midi: bool,
-    /// Mouse input capabilities.
-    pub mouse: bool,
-    /// Touchscreen input capabilities.
-    pub touchscreen: bool,
-}
-
+test_size_of![RunCapAudio = 1]; // 8 bits
 #[doc = crate::_tags!(runtime audio)]
 /// Runtime audio capabilities.
 #[doc = crate::_doc_location!("run/regime")]
@@ -71,21 +37,104 @@ pub struct RunCapAudio {
     pub play: bool,
 }
 
-#[doc = crate::_tags!(runtime)]
-/// Runtime system capabilities.
+test_size_of![RunCapColor = 4]; // 32 bits
+#[doc = crate::_tags!(runtime color)]
+/// Runtime color capabilities.
 #[doc = crate::_doc_location!("run/regime")]
-#[cfg(feature = "alloc")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct RunCapSystem {
-    /// The name of the detected OS version.
-    pub os_version: Option<String>,
-    /// The name of the current user.
-    pub user_name: Option<String>,
-    /// The name of the current host.
-    pub host_name: Option<String>,
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub struct RunCapColor {
+    /// Maximum color depth.
+    pub depth: ColorDepth,
+    /// Maximum palette size, when indexed color is supported.
+    pub palette_size: Option<NonMaxU16>,
+    /// Whether the palette can be changed by the application.
+    pub palette_set: bool,
 }
 
+test_size_of![RunCapImage = 12]; // 96 bits
+#[doc = crate::_tags!(runtime image)]
+/// Runtime image capabilities.
+#[doc = crate::_doc_location!("run/regime")]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct RunCapImage {
+    /// Maximum bitmap size, in native pixels.
+    pub max_bitmap_extent: Option<Extent2<NonMaxU32>>,
+    /// Whether pixel-accurate bitmaps are supported.
+    pub pixel_native: bool,
+}
+
+test_size_of![RunCapInput = 1]; // 8 bits
+set! {
+    #[doc = crate::_tags!(runtime interaction)]
+    /// Runtime input capabilities.
+    #[doc = crate::_doc_location!("run/regime")]
+    pub struct RunCapInput(u8) {
+        /// Gamepad input capabilities.
+        GAMEPAD = 0 ;
+        /// Keyboard input capabilities.
+        KEYBOARD = 1 ;
+        /// Midi input capabilities
+        MIDI = 2 ;
+        /// Mouse input capabilities.
+        MOUSE = 3;
+        /// Touchscreen input capabilities.
+        TOUCHSCREEN = 4;
+    }
+}
+
+test_size_of![RunCapSystem = 2]; // 16 bits
+set! {
+    #[doc = crate::_tags!(runtime)]
+    /// Runtime system capabilities.
+    #[doc = crate::_doc_location!("run/regime")]
+    pub struct RunCapSystem(u16) {
+        /// Current or monotonic time can be queried.
+        TIME = 0;
+        /// Timers, sleeps, delays, or scheduled wakeups are available.
+        TIMER = 1;
+        /// Randomness or system entropy is available.
+        RANDOM = 2;
+        /// Environment variables or host environment metadata can be queried.
+        ENV = 3;
+        /// Filesystem access is available.
+        FS = 4;
+        /// Process spawning or process inspection is available.
+        PROCESS = 5;
+        /// Thread spawning or host threading is available.
+        THREAD = 6;
+        /// Network access is available.
+        NET = 7;
+        /// Host signals, interrupts, or shutdown notifications are available.
+        SIGNAL = 8;
+    }
+}
+
+test_size_of![RunCapText = 1]; // 8 bits
+set! {
+    #[doc = crate::_tags!(runtime text)]
+    /// Runtime text capabilities.
+    #[doc = crate::_doc_location!("run/regime")]
+    pub struct RunCapText(u8) {
+        /// Text output.
+        WRITE = 0;
+        /// Fixed-cell text layout.
+        CELL_GRID = 1;
+        /// Variable-width text layout.
+        PROPORTIONAL = 2;
+        /// Addressable text cursor.
+        CURSOR = 3;
+        /// Text styling, such as bold, underline, inverse, or reset.
+        STYLE = 4;
+        /// Text input or editable text regions.
+        EDIT = 5;
+        /// Text color is assigned as a foreground/background pair.
+        COLOR_PAIR = 6;
+        /// Text extents or advances can be measured.
+        MEASURE = 7;
+    }
+}
+
+test_size_of![RunCapWindow = 1]; // 8 bits
 #[doc = crate::_tags!(runtime)]
 /// Runtime window capabilities.
 #[doc = crate::_doc_location!("run/regime")]

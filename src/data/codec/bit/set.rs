@@ -61,7 +61,8 @@
 ///
 /// - Some examples of structs defined with the `set!` macro are:
 ///   [`AsciiSet`] and [`EventButtons`].
-/// - Some other macro that leverages `set!` is: [`enumset!`][crate::enumset].
+/// - Some other macros that leverages `set!` are:
+///   [`bitfield!`][crate::bitfield], [`enumset!`][crate::enumset].
 ///
 /// [`AsciiSet`]: crate::AsciiSet
 /// [`EventButtons`]: crate::EventButtons
@@ -82,7 +83,7 @@ macro_rules! set· {
             impl { $($user_impl:item)* }
         )*
     } => {
-        $crate::set!(%guard_allowed_type $T);
+        $crate::set!(%guard_allowed_type $Set, $T);
 
         $( #[$struct_attrs] )*
         #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -258,12 +259,12 @@ macro_rules! set· {
         $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
     };
     // only allow implementions over unsigned integers
-    (%guard_allowed_type $T:ty) => {
-        const __GUARD_ALLOWED_TYPE: () = {
+    (%guard_allowed_type $Set:ident, $T:ty) => { $crate::paste! {
+        const [<__GUARD_ALLOWED_TYPE_ $Set:upper>]: () = {
             const fn __allowed_types<P: $crate::PrimUint>() {}
             __allowed_types::<$T>();
         };
-    };
+    }};
 }
 #[doc(inline)]
 pub use set· as set;

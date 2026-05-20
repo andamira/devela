@@ -6,11 +6,6 @@
 // - trait Color
 // - macro _media_visual_color_impl!
 
-use crate::{
-    Rgb8, Rgb16, RgbF32, RgbF64, RgbLinF32, RgbLinF64, Rgba8, Rgba16, RgbaF32, RgbaF64, RgbaLinF32,
-    RgbaLinF64, RgbaLinPreF32, RgbaLinPreF64, RgbaPre8, RgbaPre16, RgbaPreF32, RgbaPreF64,
-};
-
 use crate::{NotEnoughSpace, NumConst};
 #[cfg(feature = "alloc")]
 use crate::{Vec, vec_ as vec};
@@ -239,28 +234,4 @@ macro_rules! _media_visual_color_impl {
         }
     };
 }
-
-// impl Color trait
-// type, name, primitive, bits, integer, linear, premul
-_media_visual_color_impl![rgb: Rgb8, u8, 8, true, false];
-_media_visual_color_impl![rgba: Rgba8, u8, 8, true, false, false];
-_media_visual_color_impl![rgba: RgbaPre8, u8, 8, true, false, true];
-_media_visual_color_impl![rgb: Rgb16, u16, 16, true, false];
-_media_visual_color_impl![rgba: Rgba16, u16, 16, true, false, false];
-_media_visual_color_impl![rgba: RgbaPre16, u16, 16, true, false, true];
-crate::items! {
-    _media_visual_color_impl![rgb: RgbF32, f32, 32, false, false];
-    _media_visual_color_impl![rgba: RgbaF32, f32, 32, false, false, false];
-    _media_visual_color_impl![rgba: RgbaPreF32, f32, 32, false, false, true];
-    _media_visual_color_impl![rgb: RgbLinF32, f32, 32, false, true];
-    _media_visual_color_impl![rgba: RgbaLinF32, f32, 32, false, true, false];
-    _media_visual_color_impl![rgba: RgbaLinPreF32, f32, 32, false, true, true];
-}
-crate::items! {
-    _media_visual_color_impl![rgb: RgbF64, f64, 64, false, false];
-    _media_visual_color_impl![rgba: RgbaF64, f64, 64, false, false, false];
-    _media_visual_color_impl![rgba: RgbaPreF64, f64, 64, false, false, true];
-    _media_visual_color_impl![rgb: RgbLinF64, f64, 64, false, true];
-    _media_visual_color_impl![rgba: RgbaLinF64, f64, 64, false, true, false];
-    _media_visual_color_impl![rgba: RgbaLinPreF64, f64, 64, false, true, true];
-}
+pub(crate) use _media_visual_color_impl;
