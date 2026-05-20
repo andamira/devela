@@ -213,7 +213,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[must_use] #[rustfmt::skip]
     pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
-        let (ch, len) = unwrap![some? charu::from_utf8_bytes_with_len(self.bytes)];
+        let (ch, len) = unwrap![some? charu::from_utf8_prefix(self.bytes)];
         self.pos += len as usize;
         Some(ch)
     }
@@ -235,7 +235,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_charu_unchecked(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
-        let (ch, len) = unsafe { charu::from_utf8_bytes_with_len_unchecked(self.bytes) };
+        let (ch, len) = unsafe { charu::from_utf8_prefix_unchecked(self.bytes) };
         self.pos += len as usize;
         Some(ch)
     }

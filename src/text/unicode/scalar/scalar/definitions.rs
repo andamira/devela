@@ -26,11 +26,11 @@ macro_rules! ch {
     ( // charu
     u $char:literal) => { $crate::charu::from_char($char) };
     (u str $str:literal) => { $crate::charu::from_str_unchecked($str) };
-    (u bytes $str:literal) => { $crate::unwrap![some $crate::charu::from_utf8_bytes($str)] };
+    (u bytes $str:literal) => { $crate::unwrap![some $crate::charu::from_utf8($str)] };
     ( // charu_niche
     un $char:literal) => { $crate::charu_niche::from_char($char) };
     (un str $str:literal) => { $crate::charu_niche::from_str_unchecked($str) };
-    (un bytes $str:literal) => { $crate::unwrap![some $crate::charu_niche::from_utf8_bytes($str)] };
+    (un bytes $str:literal) => { $crate::unwrap![some $crate::charu_niche::from_utf8($str)] };
     (
     c7 $char:literal) => { $crate::unwrap![some $crate::char7::try_from_char($char)] };
     (c8 $char:literal) => { $crate::unwrap![some $crate::char8::try_from_char($char)] };

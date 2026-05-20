@@ -171,7 +171,7 @@ impl<'a> CharIter<'a, &str> {
     pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
         let len = Char(self.bytes[self.pos]).len_utf8_unchecked();
-        let ch = charu::decode_utf8(slice![self.bytes, self.pos,..], len);
+        let ch = charu::_from_utf8_prefix_trusted(slice![self.bytes, self.pos,..], len);
         self.pos += len;
         Some(ch)
     }

@@ -300,7 +300,12 @@
 
 ### text::parse
 - update `TextScanner`
-  - new methods: `eat_ascii_set`, `next_line`, `next_line_trimmed`, `next_line_trimmed_before`, `skip_ascii_set`, `skip_byte`, `skip_until_ascii_set`, `take_ascii_ident_tail`, `take_ascii_set`, `take_ascii_run`, `take_quoted_basic_or_rest`, `take_until_ascii_set`.
+  - new methods:
+    - `eat_ascii_set`,  `skip_ascii_set`, `skip_until_ascii_set`, `take_ascii_ident_tail`, `take_ascii_set`, `take_ascii_run`, `take_until_ascii_set`.
+    - `peek_char[u]`, `next_char[u]`, `take_char`, `eat_char[u]`, `take_char[u]_if`, `skip_char[u]_while`, `take_char[u]_while`.
+    - `next_line`, `next_line_trimmed`, `next_line_trimmed_before`.
+    - `skip_byte`, `take_quoted_basic_or_rest`.
+
 - simplify methods impls: `take_ascii_ident`, `take_ascii_ident_tail`.
 
 ### text::str
@@ -314,6 +319,12 @@
   - improve documentation.
   - add methods: `as_char`, `ceil_utf8_boundary`, `floor_utf8_boundary`, `is_utf8_continuation`, `write_utf8_to`, `write_utf8_to_unchecked`.
   - add missing method for ref array: `to_char_unchecked`.
+- rename `charu` methods:
+  - `from_utf8_bytes` to `from_utf8`.
+  - `from_utf8_bytes_unchecked`to `from_utf8_unchecked`.
+  - `from_utf8_bytes_with_len` to `from_utf8_prefix`.
+  - `from_utf8_bytes_with_len_unchecked` to `from_utf8_prefix_unchecked`.
+  - `decode_utf8` to `_from_utf8_prefix_trusted`.
 
 ### ui::event
 - new types: `EventButtons`, `EventTagSet`, `EventWheelUnit`.

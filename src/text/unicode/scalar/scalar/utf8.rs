@@ -132,7 +132,7 @@ macro_rules! _text_char_scalar_charu_impls {
                 debug_assert!(!string.is_empty(), "string must not be empty");
                 let bytes = string.as_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                Self::decode_utf8(bytes, len)
+                Self::_from_utf8_prefix_trusted(bytes, len)
             }
 
             #[doc = "Creates a `" $name "` from the first scalar value present in a string slice."]
@@ -160,7 +160,7 @@ macro_rules! _text_char_scalar_charu_impls {
                 debug_assert!(!string.is_empty(), "string must not be empty");
                 let bytes = string.as_bytes();
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                (Self::decode_utf8(bytes, len), len as u32)
+                (Self::_from_utf8_prefix_trusted(bytes, len), len as u32)
             }
 
             #[doc = "Creates a `" $name "` from the first UTF-8 encoded scalar value in a byte
@@ -172,25 +172,25 @@ macro_rules! _text_char_scalar_charu_impls {
             /// # Examples
             /// ```
             /// # use devela::charu;
-            /// let ascii = charu::from_utf8_bytes(b"A").unwrap();
+            /// let ascii = charu::from_utf8(b"A").unwrap();
             /// assert_eq!(ascii.to_utf8_bytes(), [b'A', 0, 0, 0]);
             ///
-            /// let multi_byte = charu::from_utf8_bytes(b"\xC2\xA2 rest").unwrap(); // ¢
+            /// let multi_byte = charu::from_utf8(b"\xC2\xA2 rest").unwrap(); // ¢
             /// assert_eq!(multi_byte.to_utf8_bytes(), [0xC2, 0xA2, 0, 0]);
             ///
-            /// assert!(charu::from_utf8_bytes(b"").is_none());
-            /// assert!(charu::from_utf8_bytes(b"\xC2").is_none()); // incomplete sequence
+            /// assert!(charu::from_utf8(b"").is_none());
+            /// assert!(charu::from_utf8(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[must_use] #[rustfmt::skip]
-            pub const fn from_utf8_bytes(bytes: &[u8]) -> Option<$name> {
+            pub const fn from_utf8(bytes: &[u8]) -> Option<$name> {
                 is![bytes.is_empty(), return None];
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
                 is![!Char(bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
                 is![Char(bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
                 is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
-                Some(Self::decode_utf8(bytes, len))
+                Some(Self::_from_utf8_prefix_trusted(bytes, len))
             }
 
             #[doc = "Creates a `" $name "` from the first UTF-8 encoded scalar value in a byte slice,
@@ -211,9 +211,9 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-            pub const unsafe fn from_utf8_bytes_unchecked(bytes: &[u8]) -> $name {
+            pub const unsafe fn from_utf8_unchecked(bytes: &[u8]) -> $name {
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                Self::decode_utf8(bytes, len)
+                Self::_from_utf8_prefix_trusted(bytes, len)
             }
 
             #[doc = "Creates a `" $name "` from the first UTF-8 encoded scalar value in a byte
@@ -226,24 +226,24 @@ macro_rules! _text_char_scalar_charu_impls {
             /// # Examples
             /// ```
             /// # use devela::charu;
-            /// let (c, len) = charu::from_utf8_bytes_with_len(b"A").unwrap();
+            /// let (c, len) = charu::from_utf8_prefix(b"A").unwrap();
             /// assert!(c.to_utf8_bytes() == [b'A', 0, 0, 0] && len == 1);
-            /// let (c, len) = charu::from_utf8_bytes_with_len(b"\xC2\xA2 rest").unwrap(); // ¢
+            /// let (c, len) = charu::from_utf8_prefix(b"\xC2\xA2 rest").unwrap(); // ¢
             /// assert!(c.to_utf8_bytes() == [0xC2, 0xA2, 0, 0] && len == 2);
             ///
-            /// assert!(charu::from_utf8_bytes_with_len(b"").is_none());
-            /// assert!(charu::from_utf8_bytes_with_len(b"\xC2").is_none()); // incomplete sequence
+            /// assert!(charu::from_utf8_prefix(b"").is_none());
+            /// assert!(charu::from_utf8_prefix(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[must_use] #[rustfmt::skip]
-            pub const fn from_utf8_bytes_with_len(bytes: &[u8]) -> Option<($name, u32)> {
+            pub const fn from_utf8_prefix(bytes: &[u8]) -> Option<($name, u32)> {
                 is![bytes.is_empty(), return None];
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
                 is![!Char(bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
                 is![Char(bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
                 is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
-                Some((Self::decode_utf8(bytes, len), len as u32))
+                Some((Self::_from_utf8_prefix_trusted(bytes, len), len as u32))
             }
 
             #[doc = "Creates a `" $name "` from the first UTF-8 encoded scalar value in a byte slice,
@@ -264,9 +264,9 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-            pub const unsafe fn from_utf8_bytes_with_len_unchecked(bytes: &[u8]) -> ($name, u32) {
+            pub const unsafe fn from_utf8_prefix_unchecked(bytes: &[u8]) -> ($name, u32) {
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                (Self::decode_utf8(bytes, len), len as u32)
+                (Self::_from_utf8_prefix_trusted(bytes, len), len as u32)
             }
 
             #[doc = "Creates a `" $name "` from an array of UTF-8 bytes."]
@@ -290,7 +290,7 @@ macro_rules! _text_char_scalar_charu_impls {
                 is![!Char(&bytes).has_valid_continuation(0, len), return None]; // malformed utf-8?
                 is![Char(&bytes).has_overlong_encoding(0, len), return None]; // overlong encoding?
                 is![len == 3 && bytes[0] == 0xED && bytes[1] >= 0xA0, return None]; // surrogate?
-                Some(Self::decode_utf8(&bytes, len))
+                Some(Self::_from_utf8_prefix_trusted(&bytes, len))
             }
 
             #[doc = "Creates a `" $name "` from an array of UTF-8 bytes, without validation."]
@@ -312,14 +312,14 @@ macro_rules! _text_char_scalar_charu_impls {
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_byte_array_unchecked(bytes: [u8; 4]) -> $name {
                 let len = Char(bytes[0]).len_utf8_unchecked();
-                Self::decode_utf8(&bytes, len)
+                Self::_from_utf8_prefix_trusted(&bytes, len)
             }
 
             // Private helper to create a charu* from the first scalar value in a UTF-8 byte slice.
             // Most efficient implementation with jump table, bit shifting and oring.
             // This doesn't perform any validation and should be used carefully.
             #[inline(always)] #[rustfmt::skip]
-            pub(crate) const fn decode_utf8(bytes: &[u8], len: usize) -> $name {
+            pub(crate) const fn _from_utf8_prefix_trusted(bytes: &[u8], len: usize) -> $name {
                 let scalar = match len {
                     1 =>  (bytes[0] as u32) << 24,
                     2 => ((bytes[0] as u32) << 24)
