@@ -7,8 +7,9 @@
 /// Terminal capability flag.
 #[doc = crate::_doc_location!("sys/os/term")]
 ///
-/// These flags describe independent terminal features. Ordered or exclusive
-/// properties, such as color depth, are stored separately in [`TermCaps`].
+/// These flags describe independent terminal features.
+/// Ordered or exclusive properties, such as color depth,
+/// are stored separately in [`TermCaps`][crate::TermCaps].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[repr(u8)]
 pub enum TermCap {

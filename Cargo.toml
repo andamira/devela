@@ -147,7 +147,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 152/300 (148 remaining), 105 visible, 47 hidden
+[features] # 150/300 (150 remaining), 103 visible, 47 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -263,7 +263,7 @@ phys = ["time", "unit", "wave"]
 	unit = []
 	wave = [] # wavelets
 run = []
-sys = ["io", "mem", "term"] # EXCLUDED: "os"
+sys = ["io", "term"] # EXCLUDED: "os"
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -276,8 +276,6 @@ sys = ["io", "mem", "term"] # EXCLUDED: "os"
 		# midi = []
 	# fs
 	io = []
-	mem = ["bit"]
-		bit = [] # BitSize
 	# os
 		# browser
 			web = ["js", "unsafe_ffi"]

@@ -1,9 +1,7 @@
-// devela::sys::mem::size::bit
-//
-//! Functionality related to memory bit size.
+// devela::sys::mem::size::bit::impls
 //
 // TOC
-// - trait BitSized
+// - imports
 // - macro _impl_bit_sized!
 // - trait impls
 
@@ -14,14 +12,14 @@ use crate::{Ansi, AnsiColor, AnsiColor3, AnsiColor8};
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 use crate::{
-    BareBox, ByteSized, CharAscii, Duration, Infallible, Mem, NonZeroI8, NonZeroI16, NonZeroI32,
+    BareBox, BitSized, CharAscii, Duration, Infallible, NonZeroI8, NonZeroI16, NonZeroI32,
     NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
     NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonul,
 };
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // use crate::{StringU16, StringU32, GraphemeU8, StringU8};
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "alloc", feature = "grapheme"))]
 use crate::GraphemeString;
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, String, Vec, VecDeque};
@@ -40,65 +38,6 @@ use crate::{AtomicI32, AtomicU32};
 use crate::{AtomicI64, AtomicU64};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "ptr")))]
 use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
-
-/* trait definition */
-
-#[doc = crate::_tags!(mem)]
-/// Type size information in bits.
-#[doc = crate::_doc_location!("sys/mem")]
-///
-/// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
-///
-/// E.g. a `bool` has a BitSized of 1 bit.
-pub trait BitSized<const LEN: usize>: ByteSized {
-    /// The bit size of this type (only the relevant data part, without padding).
-    ///
-    /// # Panics
-    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
-    const BIT_SIZE: usize = {
-        let min_byte_size = Mem::bytes_from_bits(LEN);
-        if min_byte_size > Self::BYTE_SIZE {
-            panic!["BitSized::MIN_BYTE_SIZE > ByteSized::BYTE_SIZE"];
-        }
-        LEN
-    };
-
-    /// The rounded up byte size for this type.
-    ///
-    /// This is the minimum number of full bytes needed to represent this type.
-    /// Basically `(LEN + 7) / 8`.
-    ///
-    /// # Panics
-    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
-    const MIN_BYTE_SIZE: usize = {
-        let min_byte_size = Mem::bytes_from_bits(LEN);
-        if min_byte_size > Self::BYTE_SIZE {
-            panic!["BitSized::MIN_BYTE_SIZE > ByteSized::BYTE_SIZE"];
-        }
-        min_byte_size
-    };
-
-    /// Returns the bit size of this type (only the relevant data part, without padding).
-    ///
-    /// # Panics
-    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
-    #[must_use]
-    fn bit_size(&self) -> usize {
-        Self::BIT_SIZE
-    }
-
-    /// Returns the rounded up byte size for this type.
-    ///
-    /// This is the minimum number of full bytes needed to represent this type.
-    /// Basically `(LEN + 7) / 8`.
-    ///
-    /// # Panics
-    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
-    #[must_use]
-    fn min_byte_size(&self) -> usize {
-        Self::MIN_BYTE_SIZE
-    }
-}
 
 /// Helper macro to implement [`BitSized`].
 macro_rules! _impl_bit_sized {
@@ -146,7 +85,7 @@ macro_rules! _impl_bit_sized {
         #[cfg(feature = "alloc")]
         _impl_bit_sized![= {$PTR_BITS * 3}; for String];
 
-        #[cfg(feature = "alloc")]
+        #[cfg(all(feature = "alloc", feature = "grapheme"))]
         _impl_bit_sized![= {$PTR_BITS * 3}; for GraphemeString];
 
         #[cfg(feature = "alloc")]

@@ -49,7 +49,7 @@
 ## features & flags
 - new features: `shell`, `web`, `_linux_abi`.
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
-- remove features: `_value_*`.
+- remove features: `bit`, `mem`, `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - auto-enable feature `unsafe_syscall` via: `linux`.
 - require the `term` feature for all term-related functionality.
@@ -283,6 +283,9 @@
 ### sys::mem::view
 - update `Slice`: add methods: `get`, `get_mut`:
 - new types: `MemReplicaError`, `MemReplicaSlice`.
+
+### sys::mem::size
+- refactor the `bit` submodule.
 
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.

@@ -5,7 +5,6 @@
 
 #[cfg(all(feature = "unsafe_layout", not(feature = "safe_mem")))]
 use crate::MemPod;
-#[cfg(feature = "bit")]
 use crate::{BitSized, ByteSized};
 #[allow(unused, reason = "±unsafe")]
 use crate::{
@@ -31,7 +30,6 @@ macro_rules! _impl_traits_for_non_value {
     (@$nv:ident, $IP:ty) => {
 
         // BitSized for NonValue*
-        #[cfg(feature = "bit")]
         impl<const V: $IP> BitSized<{<$IP>::BYTE_SIZE * 8}> for $nv<V> {}
 
         // MemPod for NonValue*

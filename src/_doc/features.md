@@ -93,7 +93,6 @@ Root modules & public sub-modules features:
 - [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`device`]
   - [`io`]: no_std `io` implementations.
-  - [`mem`]
   - [`os`]:
     - [`linux`]
     - `windows`
@@ -139,7 +138,6 @@ Root modules & public sub-modules features:
 [`sys`]:          crate::sys
   [`device`]:     crate::sys::device
   [`io`]:         crate::sys::io
-  [`mem`]:        crate::sys::mem
   [`os`]:         crate::sys::os
     [`linux`]:    crate::sys::os::linux
 [`text`]:         crate::text

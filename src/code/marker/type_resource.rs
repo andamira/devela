@@ -166,7 +166,6 @@ mod impls {
         const INIT: Self = TypeResource::new(T::TypeData::INIT);
     }
 
-    #[cfg(feature = "bit")]
     impl<T, const LEN: usize> crate::BitSized<LEN> for TypeResource<T>
         where
             T: TypeResourced,

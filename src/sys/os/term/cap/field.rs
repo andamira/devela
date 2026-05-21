@@ -12,10 +12,6 @@ crate::bitfield! {
     #[doc = crate::_doc_location!("sys/os/term")]
     ///
     /// Stores independent terminal feature flags plus the maximum known color depth.
-    ///
-    /// `TermCaps` is terminal-local. Use [`to_run_cap`][Self::to_run_cap] to project
-    /// the portion that can be represented by the broader runtime capability model.
-    // #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)] // TEST
     pub struct TermCaps(u32) {
         /* input */
         /// Keyboard input.

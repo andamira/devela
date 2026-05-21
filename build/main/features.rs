@@ -327,14 +327,12 @@ mod reflection {
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
         features: &["sys", "io",
-            "mem", "bit",
             /* os: */ "linux", "term", "windows"]
     };
-        // RETHINK:
-        pub const MEM: FlagsFeatures = FlagsFeatures {
-            ref_flags: &["mem··"],
-            features: &["mem", "bit"]
-        };
+        // pub const MEM: FlagsFeatures = FlagsFeatures {
+        //     ref_flags: &["mem··"],
+        //     features: &["mem"]
+        // };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         ref_flags: &["text··"],
         features: &["text", "grapheme", "translit"]
@@ -429,7 +427,7 @@ mod reflection {
             ORG,
             PHYS,
             RUN,
-            SYS, MEM,
+            SYS, // MEM,
             TEXT,
             UI,
             VITA,

@@ -56,8 +56,8 @@ impl ColorDepth {
     }
     /// Returns the greatest supported depth not exceeding `bits`.
     ///
-    /// For example, `7` truncates to [`Palette16`], and `23` truncates to
-    /// [`Rgb16`].
+    /// For example, `7` truncates to [`Palette16`][Self::Palette16],
+    /// and `23` truncates to [`Rgb16`][Self::Rgb16].
     #[must_use]
     pub const fn from_bits_trunc(bits: u8) -> Self {
         match bits {

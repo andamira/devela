@@ -97,10 +97,10 @@ macro_rules! bitfield· {
         )*
         impl $Bitfield {
             /// Returns a new bitfield with all bits cleared.
-            #[must_use]
+            #[must_use] #[allow(clippy::double_must_use)]
             $vis const fn new() -> Self { Self { bits: 0 } }
             /// Returns a new bitfield from raw bits.
-            #[must_use]
+            #[must_use] #[allow(clippy::double_must_use)]
             $vis const fn from_bits(bits: $T) -> Self { Self { bits } }
             /// Returns the raw backing bits.
             #[must_use]
@@ -138,13 +138,13 @@ macro_rules! bitfield· {
      $(#[$field_attrs:meta])* $field:ident; $start:tt, $end:tt) => { $crate::paste! {
             $(#[$field_attrs])*
             /// Returns the field value.
-            #[must_use]
+            #[must_use] #[allow(dead_code)]
             $vis const fn [<get_ $field:lower>](self) -> $T {
                 $crate::Bitwise::<$T>(self.bits)
                     .get_value_range(($start) as u32, ($end) as u32).0
             }
             #[doc = "Returns the raw mask for this field."]
-            #[must_use]
+            #[must_use] #[allow(dead_code)]
             $vis const fn [<$field:lower _mask>]() -> $T {
                 $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
             }
@@ -152,7 +152,7 @@ macro_rules! bitfield· {
             #[doc = "Returns `self` with the field value replaced."]
             ///
             /// The value is masked to fit the field width.
-            #[must_use]
+            #[must_use] #[allow(clippy::double_must_use)] #[allow(dead_code)]
             $vis const fn [<with_ $field:lower>](self, value: $T) -> Self {
                 Self { bits: $crate::Bitwise::<$T>(self.bits)
                     .set_value_range(value, ($start) as u32, ($end) as u32).0 }
@@ -164,6 +164,7 @@ macro_rules! bitfield· {
             /// or if `value` does not fit within the field width.
             ///
             /// [`MismatchedBounds`]: crate::MismatchedBounds
+            #[allow(dead_code)]
             $vis const fn [<try_with_ $field:lower>](self, value: $T)
                 -> $crate::Result<Self, $crate::MismatchedBounds>
             {
@@ -178,6 +179,7 @@ macro_rules! bitfield· {
             #[doc = "Replaces the field value."]
             ///
             /// The value is masked to fit the field width.
+            #[allow(dead_code)]
             $vis const fn [<set_ $field:lower>](&mut self, value: $T) {
                 self.bits = $crate::Bitwise::<$T>(self.bits)
                     .set_value_range(value, ($start) as u32, ($end) as u32).0;
@@ -189,6 +191,7 @@ macro_rules! bitfield· {
             /// or if `value` does not fit within the field width.
             ///
             /// [`MismatchedBounds`]: crate::MismatchedBounds
+            #[allow(dead_code)]
             $vis const fn [<try_set_ $field:lower>](&mut self, value: $T)
                 -> $crate::Result<(), $crate::MismatchedBounds>
             {
@@ -204,6 +207,7 @@ macro_rules! bitfield· {
             }
 
             #[doc = "Clears the field."]
+            #[allow(dead_code)]
             $vis const fn [<clear_ $field:lower>](&mut self) {
                 self.bits &= !Self::[<$field:lower _mask>]();
             }
