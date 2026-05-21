@@ -96,7 +96,7 @@ crate::set! {
             Self::from_ascii_byte_unchecked(ch.to_utf8_bytes()[0])
         }
         /// Returns a singleton set containing `ch`.
-        pub const fn from_ascii(ch: CharAscii) -> Self {
+        pub const fn from_char_ascii(ch: CharAscii) -> Self {
             Self::from_ascii_byte_unchecked(ch as u8)
         }
 
@@ -117,7 +117,7 @@ crate::set! {
         }
         /// Returns `true` if this set contains `ch`.
         #[must_use]
-        pub const fn contains_ascii(self, ch: CharAscii) -> bool {
+        pub const fn contains_char_ascii(self, ch: CharAscii) -> bool {
             self.contains_byte(ch as u8)
         }
 
@@ -143,11 +143,11 @@ crate::set! {
             Self::from_bits(self.bits & !Self::bit(ch.to_utf8_bytes()[0]))
         }
         /// Returns this set with `ch` inserted.
-        pub const fn with_ascii(self, ch: CharAscii) -> Self {
+        pub const fn with_char_ascii(self, ch: CharAscii) -> Self {
             Self::from_bits(self.bits | Self::bit(ch as u8))
         }
         /// Returns this set without `ch`.
-        pub const fn without_ascii(self, ch: CharAscii) -> Self {
+        pub const fn without_char_ascii(self, ch: CharAscii) -> Self {
             Self::from_bits(self.bits & !Self::bit(ch as u8))
         }
 

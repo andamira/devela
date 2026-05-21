@@ -18,45 +18,104 @@
 /// They are emitted before all generated associated constants and methods,
 /// and may still refer to them through `Self`.
 ///
+/// # Generated methods
+///
+/// For a generated set type `Set`, the macro defines the following methods.
+///
+/// ## Core construction and access
+/// - `new()`
+/// - `from_bits(bits)`
+/// - `bits()`
+/// - `all()`
+///
+/// ## Core predicates
+/// - `is_empty()`
+/// - `is_full()`
+/// - `contains(other)`
+/// - `has(other)`
+/// - `intersects(other)`
+/// - `is_subset(other)`
+/// - `is_superset(other)`
+///
+/// `contains` and `has` return whether all bits in `other` are present.
+/// `has` is a shorter alias intended for flag-like use.
+///
+/// ## By-value modification
+/// - `with(other)`
+/// - `without(other)`
+/// - `toggled(other)`
+/// - `with_if(condition, other)`
+///
+/// ## Set algebra
+/// - `union(other)`
+/// - `intersection(other)`
+/// - `difference(other)`
+/// - `symmetric_difference(other)`
+///
+/// ## In-place modification
+/// - `clear()`
+/// - `insert(other)`
+/// - `remove(other)`
+/// - `toggle(other)`
+///
+/// ## Per-constant methods
+///
+/// For each named constant `NAME`, the macro generates:
+/// - `contains_name()`
+/// - `intersects_name()`
+/// - `with_name()`
+/// - `with_name_if(condition)`
+/// - `without_name()`
+/// - `set_name()`
+/// - `set_name_if(condition)`
+/// - `unset_name()`
+///
+/// For constants declared as a single bit, it also generates:
+/// - `has_name()`
+///
+/// For grouped constants, use `contains_name()` for “all bits are present”
+/// and `intersects_name()` for “at least one bit is present”.
+///
 /// # Example
 /// ```
 /// # use devela::set;
 /// set! {
-///     /// A small test set.
-///     pub struct SmallSet(u8) {
+///     /// A small set example.
+///     pub struct SmallSet(u16) {
+///         /// A single bit.
 ///         A = 0;
+///
+///         /// Another single bit.
 ///         B = 1;
-///         C = 2;
+///
+///         /// A grouped constant from explicit bits.
 ///         AB = 0, 1;
-///         HIGH = 4..=7;
+///
+///         /// A grouped constant from an inclusive range.
+///         BC = 1..=2;
+///
+///         /// A grouped constant from mixed bits and ranges.
 ///         MIXED = 0, 3..=5, 7;
 ///     }
 ///     /// Custom semantic helpers emitted before generated methods.
 ///     impl {
 ///         /// A custom named combination.
-///         pub const LOW: Self = Self::A.with(Self::B).with(Self::C);
+///         pub const ABC: Self = Self::AB.with_bc();
 ///
-///         /// Returns `true` if any low bit is set.
-///         pub const fn has_low(self) -> bool { self.intersects(Self::LOW) }
+///         pub const fn contains_abc(self) -> bool { self.contains(Self::ABC) }
 ///     }
 /// }
-/// assert!(SmallSet::LOW.has_low());
-/// assert_eq!(SmallSet::LOW.bits(), 0b0000_0111);
 ///
-/// let mut set = SmallSet::A | SmallSet::B;
-/// assert_eq!(SmallSet::A.bits(), 0b0000_0001);
-/// assert_eq!(SmallSet::AB.bits(), 0b0000_0011);
-/// assert_eq!(SmallSet::HIGH.bits(), 0b1111_0000);
-/// assert_eq!(SmallSet::MIXED.bits(), 0b1011_1001);
+/// let mut s = SmallSet::new()
+///     .with_a()
+///     .with_mixed_if(true);
 ///
-/// assert!(set.contains(SmallSet::A));
-/// assert!(set.intersects(SmallSet::AB));
+/// assert!(s.has_a());
+/// assert!(s.contains_mixed());
+/// assert!(s.intersects_ab());
 ///
-/// set.insert(SmallSet::C);
-/// assert_eq!(set.bits(), 0b0000_0111);
-///
-/// set.remove(SmallSet::A);
-/// assert_eq!(set, SmallSet::B | SmallSet::C);
+/// s.unset_a();
+/// assert!(!s.has_a());
 /// ```
 ///
 /// - Some examples of structs defined with the `set!` macro are:
@@ -95,14 +154,76 @@ macro_rules! set· {
         )*
 
         /// Named constants
-        impl $Set {
-            $(
+        impl $Set { $crate::paste! { $(
+            // single-bit constants
+            #[$crate::compile[all(none($($($end)?)+), xone($(some($start)),+))]]
+            $crate::items! {
+                /// <span class='stab portability' title='single-bit constant'>`1`</span>
                 $(#[$f_attrs])*
+                #[allow(non_upper_case_globals)]
                 $vis const $f: Self = Self {
                     bits: $crate::set!(%mask $T; $( $start $(..= $end)? ),+)
                 };
-            )*
-        }
+            }
+            // grouped constants
+            #[$crate::compile[any(some($($($end)?)+), not(xone($(some($start)),+)))]]
+            $crate::items! {
+                /// <span class='stab portability' title='grouped constant'>`+`</span>
+                $(#[$f_attrs])*
+                #[allow(non_upper_case_globals)]
+                $vis const $f: Self = Self {
+                    bits: $crate::set!(%mask $T; $( $start $(..= $end)? ),+)
+                };
+            }
+
+            /* per-constant metadata */
+            // #[doc(hidden)]
+            // #[doc = "The number of bits in `" $f "`."]
+            #[allow(non_upper_case_globals)]
+            pub(crate) const [<_ $f _BITS>]: u32 = Self::$f.bits.count_ones();
+            // #[doc = "Whether `" $f "` is composed of a single bit."]
+            // #[allow(non_upper_case_globals)]
+            // pub(crate) const [<_ $f _IS_SINGLE>]: bool = Self::[<_ $f _BITS>] == 1;
+        )* }}
+
+        /// Convenience methods derived from each named constant.
+        //
+        // Note: The first method links to the named constant to serve as a group marker
+        impl $Set { $crate::paste! { $(
+            // for single-bit constants
+            #[$crate::compile[all(none($($($end)?)+), xone($(some($start)),+))]]
+            $crate::items! {
+                #[doc = "Returns `true` if [`" $f "`][Self::" $f "] is present."]
+                $vis const fn [<has_ $f:lower>](self) -> bool { self.contains(Self::$f) }
+                #[doc = "Returns `true` if all bits in `" $f "` are present."]
+                $vis const fn [<contains_ $f:lower>](self) -> bool { self.contains(Self::$f) }
+            }
+            // for grouped constants
+            #[$crate::compile[any(some($($($end)?)+), not(xone($(some($start)),+)))]]
+            $crate::items! {
+                #[doc = "Returns `true` if the set contains all bits in [`" $f "`][Self::" $f "]."]
+                $vis const fn [<contains_ $f:lower>](self) -> bool { self.contains(Self::$f) }
+            }
+            #[doc = "Returns `true` if the set shares any bit with `" $f "`."]
+            $vis const fn [<intersects_ $f:lower>](self) -> bool { self.intersects(Self::$f) }
+
+            #[doc = "Returns `self` with `" $f "` inserted."]
+            $vis const fn [<with_ $f:lower>](self) -> Self { self.with(Self::$f) }
+            #[doc = "Returns `self` with `" $f "` inserted if `condition` is true."]
+            $vis const fn [<with_ $f:lower _if>](self, condition: bool) -> Self {
+                self.with_if(condition, Self::$f) }
+            #[doc = "Returns `self` with `" $f "` removed."]
+            $vis const fn [<without_ $f:lower>](self) -> Self { self.without(Self::$f) }
+
+            /* mutating */
+            #[doc = "Sets `" $f "`."]
+            $vis const fn [<set_ $f:lower>](&mut self) { self.insert(Self::$f); }
+            #[doc = "Sets `" $f "` if `condition` is true."]
+            $vis const fn [<set_ $f:lower _if>](&mut self, condition: bool) {
+                if condition { self.insert(Self::$f); } }
+            #[doc = "Unsets `" $f "`."]
+            $vis const fn [<unset_ $f:lower>](&mut self) { self.remove(Self::$f); }
+        )* }}
 
         /// Common set methods
         #[allow(clippy::double_must_use)]
@@ -129,14 +250,20 @@ macro_rules! set· {
             $vis const fn is_full(self) -> bool { self.bits == Self::all().bits }
             /// Returns `true` if all bits in `other` are also set in `self`.
             #[must_use]
-            $vis const fn contains(self, other: Self) -> bool {
-                self.is_superset(other)
-            }
+            $vis const fn contains(self, other: Self) -> bool { self.is_superset(other) }
+            /// An alias of `contains`.
+            #[must_use]
+            $vis const fn has(self, other: Self) -> bool { self.contains(other) }
 
             /// Returns `self` with `other` inserted.
             #[must_use]
             $vis const fn with(self, other: Self) -> Self {
                 Self { bits: self.bits | other.bits }
+            }
+            /// Returns `self` with `other` inserted if `condition` is true.
+            #[must_use]
+            $vis const fn with_if(self, condition: bool, other: Self) -> Self {
+                if condition { Self { bits: self.bits | other.bits } } else { self }
             }
             /// Returns `self` with `other` removed.
             #[must_use]
@@ -153,6 +280,19 @@ macro_rules! set· {
         /// Set operations
         #[allow(clippy::double_must_use)]
         impl $Set {
+            /// Returns `true` if `self` and `other` share any bit.
+            $vis const fn intersects(self, other: Self) -> bool {
+                (self.bits & other.bits) != 0
+            }
+            /// Returns `true` if all bits in `self` are also set in `other`.
+            $vis const fn is_subset(self, other: Self) -> bool {
+                (self.bits & other.bits) == self.bits
+            }
+            /// Returns `true` if all bits in `other` are also set in `self`.
+            $vis const fn is_superset(self, other: Self) -> bool {
+                (self.bits & other.bits) == other.bits
+            }
+
             /// Returns the union of `self` and `other`.
             #[must_use]
             $vis const fn union(self, other: Self) -> Self {
@@ -172,19 +312,6 @@ macro_rules! set· {
             #[must_use]
             $vis const fn symmetric_difference(self, other: Self) -> Self {
                 Self { bits: self.bits ^ other.bits }
-            }
-
-            /// Returns `true` if `self` and `other` share any bit.
-            $vis const fn intersects(self, other: Self) -> bool {
-                (self.bits & other.bits) != 0
-            }
-            /// Returns `true` if all bits in `self` are also set in `other`.
-            $vis const fn is_subset(self, other: Self) -> bool {
-                (self.bits & other.bits) == self.bits
-            }
-            /// Returns `true` if all bits in `other` are also set in `self`.
-            $vis const fn is_superset(self, other: Self) -> bool {
-                (self.bits & other.bits) == other.bits
             }
         }
 
@@ -265,6 +392,19 @@ macro_rules! set· {
             __allowed_types::<$T>();
         };
     }};
+    ($($tt:tt)*) => { compile_error! { concat![
+        "set!: wrong syntax.\n\n",
+        "Expected:\n",
+        "    set! { $vis struct Name($ty) { CONST = bits; ... } }\n\n",
+        "Examples of constant syntax:\n",
+        "    SPACE = b' ';\n",
+        "    HWS   = b' ', b'\\t';\n",
+        "    DIGIT = b'0'..=b'9';\n",
+        "    ALNUM = b'0'..=b'9', b'A'..=b'Z', b'a'..=b'z';",
+        // "Input:\n",
+        // "    ",
+        // stringify!($($tt)*)
+    ]}};
 }
 #[doc(inline)]
 pub use set· as set;
@@ -285,7 +425,6 @@ mod tests {
             MIXED = 0, 3..=5, 7;
         }
     }
-
     #[test]
     fn constants_accept_bits_and_ranges() {
         assert_eq!(TestSet::A.bits(), 0b0000_0001);
@@ -295,12 +434,10 @@ mod tests {
         assert_eq!(TestSet::AD.bits(), 0b0000_1001);
         assert_eq!(TestSet::MIXED.bits(), 0b1011_1001);
     }
-
     #[test]
     fn mathematical_set_operations() {
         let a = TestSet::AB; // 0, 1
         let b = TestSet::BC; // 1, 2
-
         assert_eq!(a.union(b).bits(), 0b0000_0111);
         assert_eq!(a.intersection(b).bits(), 0b0000_0010);
         assert_eq!(a.difference(b).bits(), 0b0000_0001);
@@ -318,18 +455,89 @@ mod tests {
         assert!(!TestSet::A.is_superset(a));
         assert!(!TestSet::A.contains(a));
     }
-
     #[test]
     fn mutating_core_operations_match_set_operations() {
         let mut s = TestSet::A;
-
         s.insert(TestSet::C);
         assert_eq!(s.bits(), TestSet::A.union(TestSet::C).bits());
-
         s.toggle(TestSet::A);
         assert_eq!(s.bits(), TestSet::C.bits());
-
         s.remove(TestSet::C);
         assert!(s.is_empty());
     }
+    #[test]
+    fn generic_convenience_methods_work() {
+        let s =
+            TestSet::new().with(TestSet::A).with_if(true, TestSet::C).with_if(false, TestSet::D);
+        assert!(s.has(TestSet::A));
+        assert!(s.contains(TestSet::C));
+        assert!(!s.has(TestSet::D));
+        assert_eq!(s.without(TestSet::A).bits(), TestSet::C.bits());
+        assert_eq!(s.toggled(TestSet::C).bits(), TestSet::A.bits());
+    }
+    #[test]
+    fn per_constant_methods_work_for_single_bit_constants() {
+        let mut s = TestSet::new();
+        assert!(!s.has_a());
+        assert!(!s.contains_a());
+        assert!(!s.intersects_a());
+        s.set_a();
+        assert!(s.has_a());
+        assert!(s.contains_a());
+        assert!(s.intersects_a());
+        s.set_b_if(true);
+        s.set_c_if(false);
+        assert!(s.has_b());
+        assert!(!s.has_c());
+        assert_eq!(s.without_a().bits(), TestSet::B.bits());
+        s.unset_b();
+        assert!(!s.is_empty());
+        s.unset_a();
+        assert!(s.is_empty());
+    }
+    #[test]
+    fn per_constant_methods_work_for_grouped_constants() {
+        let s = TestSet::AB;
+        assert!(s.contains_ab());
+        assert!(s.intersects_ab());
+        assert!(!TestSet::A.contains_ab());
+        assert!(TestSet::A.intersects_ab());
+        assert_eq!(TestSet::new().with_ab().bits(), TestSet::AB.bits());
+        assert_eq!(TestSet::AB.without_b().bits(), TestSet::A.bits());
+        let mut s = TestSet::new();
+        s.set_mixed();
+        assert!(s.contains_mixed());
+        s.unset_ad();
+        assert_eq!(s.bits(), TestSet::MIXED.without(TestSet::AD).bits());
+    }
+    #[test]
+    fn generated_metadata_counts_bits() {
+        assert_eq!(TestSet::_A_BITS, 1);
+        assert_eq!(TestSet::_B_BITS, 1);
+        assert_eq!(TestSet::_AB_BITS, 2);
+        assert_eq!(TestSet::_BC_BITS, 2);
+        assert_eq!(TestSet::_AD_BITS, 2);
+        assert_eq!(TestSet::_MIXED_BITS, 5);
+    }
+    #[test]
+    fn only_single_bit_constants_get_has_aliases() {
+        let _ = TestSet::A.has_a();
+        let _ = TestSet::B.has_b();
+    }
+}
+
+// The following tests intentionally should not compile
+#[cfg(doctest)]
+mod doctests {
+    /**
+    ```compile_fail
+    devela::set! { struct TestSet(u16) { A = 0; B = 1; C = 2; AB = 0, 1; BC = 1..=2; } }
+    let _ = TestSet::AB.has_ab();
+    ```
+    ```compile_fail
+    devela::set! { struct TestSet(u16) { A = 0; B = 1; C = 2; AB = 0, 1; BC = 1..=2; } }
+    let _ = TestSet::BC.has_bc();
+    ```
+    **/
+    fn grouped_constants_do_not_have_has_aliases() {}
 }
