@@ -1,4 +1,4 @@
-// devela::build::native
+// devela::build::main::native
 //
 //! Native library availability probing.
 //

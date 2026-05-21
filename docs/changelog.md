@@ -256,6 +256,13 @@
   - add methods: `bits_per_pixel`, `scanline_pad_bits`, `bytes_per_line`, `has_shm`.
 - fix `XWindow::clear_redraw`.
 
+### sys::env
+- update `Env`:
+  - make all environment constants available without `std`.
+  - add `TARGET`, `FAMILIES`, `ENV`, `ABI`, `ENDIAN`, and `POINTER_WIDTH`.
+  - derive `DLL_*` and `EXE_*` constants from target information.
+  - align `ARCH`, `OS`, `FAMILY`, `VENDOR`, with Cargo/rustc target cfg values.
+
 ### sys::io
 - new traits `TextIn`, `TextOut`.
 

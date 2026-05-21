@@ -1,4 +1,4 @@
-// devela::build
+// devela::build::main
 //
 //! Build-time configuration and code generation.
 //!

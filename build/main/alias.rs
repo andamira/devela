@@ -1,4 +1,4 @@
-// devela::build::alias
+// devela::build::main::alias
 //
 //! Aliases of combinations of configuration features.
 //

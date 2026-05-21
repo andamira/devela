@@ -1,4 +1,4 @@
-// devela::build::features
+// devela::build::main::features
 //
 //! Features debugging and compile flags enabling for reflexion.
 //

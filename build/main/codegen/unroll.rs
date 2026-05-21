@@ -1,4 +1,4 @@
-// devela::build::codegen::unroll
+// devela::build::main::codegen::unroll
 //
 //! Code generator for the [`unroll!`] macro.
 //
