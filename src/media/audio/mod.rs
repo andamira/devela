@@ -12,7 +12,7 @@
 // mod drum_machine;
 mod layout; // AudioChannel, AudioChannels
 // mod music; //
-// mod pcm; // WIP: PcmBuffer, PcmPlanar, PcmRaw, PcmWav, PcmSample, PcmSpec, …
+mod pcm; // WIP: PcmBuffer, PcmPlanar, PcmRaw, PcmWav, PcmSample, PcmSpec, …
 // mod spatial; // …
 // mod synth; // …
 
@@ -23,7 +23,7 @@ crate::structural_mods! { // _mods
             // drum_machine::*,
             layout::*,
             // music::*,
-            // pcm::*,
+            pcm::*,
             // spatial::*,
             // synth::*,
         };

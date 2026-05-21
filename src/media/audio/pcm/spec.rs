@@ -1,0 +1,113 @@
+// devela::media::audio::pcm::spec
+//
+//! Defines [`PcmSpec`], [`PcmSample`].
+//
+
+use crate::{_impl_init, AudioChannels, impl_trait, test_size_of};
+
+test_size_of![PcmSpec = 8]; // 64 bits
+#[doc = crate::_tags!(audio)]
+/// Essential metadata describing a PCM audio stream.
+#[doc = crate::_doc_location!("media/audio")]
+#[must_use]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct PcmSpec {
+    /// bit-depth + numeric type
+    pub sample: PcmSample,
+    /// layout (Mono, Stereo, 5.1…)
+    pub channels: AudioChannels,
+    /// Hz
+    pub sample_rate: u32,
+}
+_impl_init![Self::new(PcmSample::INIT, AudioChannels::INIT, 0) => PcmSpec];
+impl_trait![fmt::Display for PcmSpec |self, f| {
+    write!(f, "{}/{}@{}Hz", self.sample, self.channels, self.sample_rate)
+}];
+
+impl PcmSpec {
+    /// Creates a PCM stream specification.
+    pub const fn new(sample: PcmSample, channels: AudioChannels, sample_rate: u32) -> Self {
+        Self { sample, channels, sample_rate }
+    }
+    /// Returns the number of channels.
+    #[must_use]
+    pub const fn channel_count(self) -> u8 {
+        self.channels.channels()
+    }
+    /// Returns the byte size of one interleaved frame.
+    #[must_use]
+    pub const fn frame_bytes(self) -> usize {
+        self.sample.bytes() as usize * self.channel_count() as usize
+    }
+    /// Returns whether the sample rate is non-zero.
+    #[must_use]
+    pub const fn has_valid_rate(self) -> bool {
+        self.sample_rate != 0
+    }
+}
+
+test_size_of![PcmSample = 1]; // 8 bits
+#[doc = crate::_tags!(audio)]
+/// Numeric encoding of a single PCM sample.
+#[doc = crate::_doc_location!("media/audio")]
+#[allow(missing_docs)]
+#[must_use]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum PcmSample {
+    I8,
+    #[default]
+    I16,
+    I24,
+    I32,
+    F32,
+    F64,
+}
+_impl_init![Self::I16 => PcmSample];
+impl_trait![fmt::Display for PcmSample |self, f| f.write_str(self.as_code())];
+
+impl PcmSample {
+    /// Returns the number of meaningful sample bits.
+    #[must_use]
+    pub const fn bits(self) -> u8 {
+        match self {
+            Self::I8 => 8,
+            Self::I16 => 16,
+            Self::I24 => 24,
+            Self::I32 | Self::F32 => 32,
+            Self::F64 => 64,
+        }
+    }
+    /// Returns the canonical byte width for packed raw PCM.
+    #[must_use]
+    pub const fn bytes(self) -> u8 {
+        match self {
+            Self::I8 => 1,
+            Self::I16 => 2,
+            Self::I24 => 3,
+            Self::I32 | Self::F32 => 4,
+            Self::F64 => 8,
+        }
+    }
+    /// Returns whether this is an integer sample encoding.
+    #[must_use]
+    pub const fn is_int(self) -> bool {
+        matches!(self, Self::I8 | Self::I16 | Self::I24 | Self::I32)
+    }
+    /// Returns whether this is a floating-point sample encoding.
+    #[must_use]
+    pub const fn is_float(self) -> bool {
+        matches!(self, Self::F32 | Self::F64)
+    }
+    /// Returns a compact encoding label.
+    #[must_use]
+    pub const fn as_code(self) -> &'static str {
+        match self {
+            Self::I8 => "i8",
+            Self::I16 => "i16",
+            Self::I24 => "i24",
+            Self::I32 => "i32",
+            Self::F32 => "f32",
+            Self::F64 => "f64",
+        }
+    }
+}

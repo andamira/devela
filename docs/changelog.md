@@ -155,6 +155,10 @@
 - new submodule: `shell`.
 - new types: `ShellLex`, `ShellQuote`, `ShellWordError`.
 
+### media::audio
+- new trait: `PcmSampleType`.
+- new types: `PcmBuffer`, `PcmPlanar`, `PcmSample`, `PcmSpec`.
+
 #### media::visual::color
 - new type `ColorDepth`.
 - make the `Color` trait not depend on the `color` feature.
