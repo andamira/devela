@@ -314,7 +314,7 @@ impl Ansi {
             let [r, g, b] = color;
             let [r, g, b] = [Digits(r).digits16(), Digits(g).digits16(), Digits(b).digits16()];
             [
-                b'\x1b', b'[', b'4', b';', i[0], i[1], i[2], b';',
+                b'\x1b', b']', b'4', b';', i[0], i[1], i[2], b';',
                 b'r', b'g', b'b', b':',
                 r[0], r[1], b'/', g[0], g[1], b'/', b[0], b[1], b'\x07'
             ]
@@ -322,7 +322,7 @@ impl Ansi {
         /// Resets the given palette color to the default one. (OSC 104)
         pub const fn RESET_PALETTE(index: u8) -> [u8; 10] {
             let i = Digits(index).digits10();
-            [b'\x1b', b'[', b'1', b'0', b'4', b';', i[0], i[1], i[2], b'\x07']
+            [b'\x1b', b']', b'1', b'0', b'4', b';', i[0], i[1], i[2], b'\x07']
         }
     }
     __ansi_consts! {

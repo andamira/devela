@@ -136,7 +136,7 @@ mod tests {
         let len = Ansi::strip_codes(input, &mut output);
         assert_eq!(&output[0..len], b"NormalTextEnd");
 
-        // Test 4: OSC sequences (less common but important)
+        // Test 4: OSC sequences
         let input = b"Start\x1B]0;Window Title\x07End";
         let len = Ansi::strip_codes(input, &mut output);
         assert_eq!(&output[0..len], b"StartEnd");

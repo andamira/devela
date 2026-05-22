@@ -309,7 +309,11 @@
 - feature-gate term-related functionality.
 
 #### sys::os::term
-- new types: `TermCap`, `TermCaps`, `TermInputParser`.
+- new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`.
+- update `Ansi`:
+  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`.
+  - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`.
+  - fix `<SET|RESET>_PALETTE`.
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.

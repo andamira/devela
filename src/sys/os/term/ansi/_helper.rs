@@ -4,6 +4,25 @@
 //
 // Note: to convert the syntax of old constants for this macro using Vim: s/\*b\(.*\);/\1, *b\1;
 
+use crate::{Ansi, Digits, slice};
+
+// Helper functions
+impl Ansi {
+    // Writes an ANSI CSI code with one dynamic `u16` argument.
+    //
+    // Required capacity: `ESC [` + 5 digits + final byte = 8 bytes.
+    #[must_use]
+    pub(crate) const fn write_ansi_code_n(buffer: &mut [u8], n: u16, final_byte: u8) -> &[u8] {
+        assert![buffer.len() >= 8];
+        buffer[0] = b'\x1b';
+        buffer[1] = b'[';
+        let mut index = 2;
+        index += Digits(n).write_digits10_fast(buffer, index);
+        buffer[index] = final_byte;
+        slice![buffer, ..=index]
+    }
+}
+
 /// Implements methods
 ///
 /// Rules:
