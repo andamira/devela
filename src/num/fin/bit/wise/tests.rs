@@ -9,15 +9,15 @@ use crate::{Bitwise, Bitwise as Bg};
 #[test] #[rustfmt::skip]
 fn bit_mask_range() {
     assert_eq![0b_0000_0001, Bitwise::<u8>::mask_range(0, 0).0];
-    assert_eq![0b_0000_0001, Bitwise::<u8>::mask_checked_range(0, 0).unwrap().0];
+    assert_eq![0b_0000_0001, Bitwise::<u8>::mask_range_checked(0, 0).unwrap().0];
     assert_eq![0b_1000_0000, Bitwise::<u8>::mask_range(7, 7).0];
-    assert_eq![0b_1000_0000, Bitwise::<u8>::mask_checked_range(7, 7).unwrap().0];
+    assert_eq![0b_1000_0000, Bitwise::<u8>::mask_range_checked(7, 7).unwrap().0];
     assert_eq![0b_0111_1110, Bitwise::<u8>::mask_range(1, 6).0];
-    assert_eq![0b_0111_1110, Bitwise::<u8>::mask_checked_range(1, 6).unwrap().0];
+    assert_eq![0b_0111_1110, Bitwise::<u8>::mask_range_checked(1, 6).unwrap().0];
 
-    debug_assert![Bitwise::<u8>::mask_checked_range(8, 8).is_err()];
-    debug_assert![Bitwise::<u8>::mask_checked_range(0, 8).is_err()];
-    debug_assert![Bitwise::<u8>::mask_checked_range(4, 1).is_err()];
+    debug_assert![Bitwise::<u8>::mask_range_checked(8, 8).is_err()];
+    debug_assert![Bitwise::<u8>::mask_range_checked(0, 8).is_err()];
+    debug_assert![Bitwise::<u8>::mask_range_checked(4, 1).is_err()];
 
     // NOTE: panics are tested in devela::num::fin::bit::tests
 }
@@ -36,7 +36,7 @@ fn bit_ops() {
     assert_eq![0b_1000_1101, b.set_value_range(0b_11, 2, 5).0];
     assert_eq![0b_1011_0001, b.set_value_range(0b_11, 4, 5).0];
     assert_eq![0b_1011_0001, b.set_value_range(0b_111, 4, 5).0]; // value trimmed to range
-    assert![b.set_checked_value_checked_range(0b_111, 4, 5).is_err()]; // err value overflows range
+    assert![b.set_value_range_checked_strict(0b_111, 4, 5).is_err()]; // err value overflows range
 
     // reverse
     let b = Bg(0b_1010_1010_u8);

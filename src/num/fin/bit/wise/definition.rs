@@ -25,71 +25,56 @@
 /// The following list of methods links to the `u8` implementation:
 ///
 /// - [Constants and mask constructors](#constants-and-mask-constructors-for-u8)
-///   - mask_range
-///   - mask_checked_range
-///   - is_set_mask
-///   - set_mask
-///   - is_unset_mask
-///   - unset_mask
+///   - [mask_range](#method.mask_range) ([*checked*](#method.mask_range_checked)).
+///   - [is_set_mask](#method.is_set_mask).
+///   - [set_mask](#method.set_mask).
+///   - [is_unset_mask](#method.is_unset_mask).
+///   - [unset_mask](#method.unset_mask).
 ///
 /// - [Get methods](#get-methods-for-u8)
-///   - get_range
-///   - get_checked_range
-///   - get_value_range
-///   - get_value_checked_range
+///   - [get_range](#method.get_range) ([*checked*](#method.get_range_checked)).
+///   - [get_value_range](#method.get_value_range) ([*checked*](#method.get_value_range_checked)).
 ///
 /// - [Set ops](#set-ops-for-u8)
-///   - is_set
-///   - is_set_checked
-///   - set
-///   - set_checked
-///   - is_set_range
-///   - is_set_checked_range
-///   - set_range
-///   - set_checked_range
-///   - set_all
-///   - set_value_range
-///   - set_value_checked_range
-///   - set_checked_value_checked_range
+///   - [is_set](#method.is_set) ([*checked*](#method.is_set_checked)).
+///   - [set](#method.set) ([*checked*](#method.set_checked)).
+///   - [is_set_range](#method.is_set_range) ([*checked*](#method.is_set_range_checked)).
+///   - [set_range](#method.set_range) ([*checked*](#method.set_range_checked)).
+///   - [set_all](#method.set_all).
+///   - [set_value_range](#method.set_value_range)
+///     ([*checked*](#method.set_value_range_checked),
+///     [*checked_strict*](#method.set_value_range_checked_strict)).
 ///
 /// - [Unset ops](#unset-ops-for-u8)
-///   - is_unset
-///   - is_unset_checked
-///   - unset
-///   - unset_checked
-///   - is_unset_range
-///   - is_unset_checked_range
-///   - unset_range
-///   - unset_checked_range
-///   - unset_all
+///   - [is_unset](#method.is_unset) ([*checked*](#method.is_unset_checked)).
+///   - [unset](#method.unset) ([*checked*](#method.unset_checked)).
+///   - [is_unset_range](#method.is_unset_range) ([*checked*](#method.is_unset_range_checked)).
+///   - [unset_range](#method.unset_range) ([*checked*](#method.unset_range_checked)).
+///   - [unset_all](#method.unset_all).
 ///
 /// - [Flip ops](#flip-ops-for-u8)
-///   - flip
-///   - flip_checked
-///   - flip_range
-///   - flip_checked_range
-///   - flip_range_if
-///   - flip_checked_range_if
+///   - [flip](#method.flip) ([*checked*](#method.flip_checked)).
+///   - [flip_range](#method.flip_range) ([*checked*](#method.flip_range_checked)).
+///   - [flip_range_if](#method.flip_range_if) ([*checked*](#method.flip_range_if_checked)).
 ///
 /// - [Reverse ops](#reverse-ops-for-u8)
-///   - reverse_range
-///   - reverse_checked_range
+///   - [reverse_range](#method.reverse_range) ([*checked*](#method.reverse_range_checked)).
 ///
 /// - [Count ops](#count-ops-for-u8)
-///   - count_ones_range
-///   - count_ones_checked_range
-///   - count_zeros_range
-///   - count_zeros_checked_range
+///   - [count_ones_range](#method.count_ones_range)
+///     ([*checked*](#method.count_ones_range_checked)).
+///   - [count_zeros_range](#method.count_zeros_range)
+///     ([*checked*](#method.count_zeros_range_checked)).
 ///
 /// - [Find ops](#find-ops-for-u8)
-///   - find_first_one_range
-///   - find_first_one_checked_range
-///   - find_first_zero_range
-///   - find_first_zero_checked_range
-///   - find_last_one_range
-///   - find_last_one_checked_range
-///   - find_last_zero_range
-///   - find_last_zero_checked_range
+///   - [find_first_one_range](#method.find_first_one_range)
+///     ([*checked*](#method.find_first_one_range_checked)).
+///   - [find_first_zero_range](#method.find_first_zero_range)
+///     ([*checked*](#method.find_first_zero_range_checked)).
+///   - [find_last_one_range](#method.find_last_one_range)
+///     ([*checked*](#method.find_last_one_range_checked)).
+///   - [find_last_zero_range](#method.find_last_zero_range)
+///     ([*checked*](#method.find_last_zero_range_checked)).
 #[must_use]
 #[repr(transparent)]
 pub struct Bitwise<T>(pub T);

@@ -161,7 +161,7 @@ macro_rules! bitfield· {
                 -> $crate::Result<Self, $crate::MismatchedBounds>
             {
                 match $crate::Bitwise::<$T>(self.bits)
-                    .set_checked_value_checked_range(value, ($start) as u32, ($end) as u32)
+                    .set_value_range_checked_strict(value, ($start) as u32, ($end) as u32)
                 {
                     Ok(bits) => Ok(Self { bits: bits.0 }),
                     Err(e) => Err(e),
@@ -188,7 +188,7 @@ macro_rules! bitfield· {
                 -> $crate::Result<(), $crate::MismatchedBounds>
             {
                 match $crate::Bitwise::<$T>(self.bits)
-                    .set_checked_value_checked_range(value, ($start) as u32, ($end) as u32)
+                    .set_value_range_checked_strict(value, ($start) as u32, ($end) as u32)
                 {
                     Ok(bits) => {
                         self.bits = bits.0;

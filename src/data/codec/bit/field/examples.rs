@@ -1,6 +1,6 @@
-// devela::data::codec::bit::field::definition
+// devela::data::codec::bit::field::examples
 //
-//! Defines [`bitfield!`]
+//! Defines [`BitfieldExample`]
 //
 
 crate::bitfield! {
