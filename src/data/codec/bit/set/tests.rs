@@ -47,6 +47,14 @@ fn formatting_uses_declared_domain_width() {
     assert_eq!(upper_hex, Ok("B9"));
     let upper_hex_pretty = format_buf![&mut buf, "{:#X}", mixed];
     assert_eq!(upper_hex_pretty, Ok("0xB9"));
+
+    use crate::{DebugExt, ReprMode};
+    let named = format_buf![&mut buf, "{:?}", TestSet::MIXED.debug_with(&ReprMode::Named)];
+    assert_eq!(named, Ok("TestSet(A | D)"));
+    let raw = format_buf![&mut buf, "{:?}", TestSet::MIXED.debug_with(&ReprMode::Raw)];
+    assert_eq!(raw, Ok("TestSet(0b10111001)"));
+    let raw_named = format_buf![&mut buf, "{:?}", TestSet::MIXED.debug_with(&ReprMode::RawNamed)];
+    assert_eq!(raw_named, Ok("TestSet(0b10111001; A | D)"));
 }
 #[test]
 fn constants_accept_bits_and_ranges() {

@@ -13,7 +13,7 @@ mod _reexport_alloc;
 mod buf; // FmtWriter, format_buf!
 mod cat; // fmtcat!
 // mod case; // WIP
-mod debug; // DebugExt
+mod debug; // DebugExt, DebugWith
 mod namespace; // Fmt
 mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, fmt_num! WIP
 // mod table; // WIP

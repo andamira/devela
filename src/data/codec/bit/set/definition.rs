@@ -7,7 +7,7 @@
 /// Defines a compact set backed by an integer bit mask.
 #[doc = crate::_doc_location!("data/codec")]
 ///
-#[doc = include_str!["./_docs.md"]]
+#[doc = include_str!["./_docs_set.md"]]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! set· {
@@ -262,6 +262,46 @@ macro_rules! set· {
             $Set |self, f|
                 if f.alternate() { write!(f, "0x{:0w$X}", self.bits, w = Self::_SET_HEX_WIDTH) }
                 else { write!(f, "{:0w$X}", self.bits, w = Self::_SET_HEX_WIDTH) }
+        }
+
+        impl $crate::DebugExt for $Set {
+            type Ctx = $crate::ReprMode;
+            fn fmt_with(&self, f: &mut $crate::Formatter<'_>, ctx: &Self::Ctx)
+                -> $crate::FmtResult<()> {
+                match ctx {
+                    $crate::ReprMode::Raw => $crate::Debug::fmt(self, f),
+                    $crate::ReprMode::Named => { self._fmt_named(f) }
+                    $crate::ReprMode::RawNamed => {
+                        write!(f, concat!(stringify!($Set), "("))?;
+                        write!(f, "0b{:0width$b}", self.bits, width = Self::_SET_DEBUG_WIDTH)?;
+                        write!(f, "; ")?;
+                        self._fmt_named_inner(f)?;
+                        write!(f, ")")
+                    }
+                }
+            }
+        }
+        impl $Set {
+            fn _fmt_named(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                write!(f, concat!(stringify!($Set), "("))?;
+                self._fmt_named_inner(f)?;
+                write!(f, ")")
+            }
+            fn _fmt_named_inner(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                let mut first = true;
+                $crate::paste! { $(
+                    // for now, only show single-bit fields
+                    if $crate::cif![all(none($($($end)?)+), xone($(some($start)),+))]
+                        && self.contains(Self::$f)
+                    {
+                        if !first { write!(f, " | ")?; }
+                        write!(f, stringify!($f))?;
+                        first = false;
+                    }
+                )* }
+                if first { write!(f, "empty")?; }
+                Ok(())
+            }
         }
 
         /* operator implementations */

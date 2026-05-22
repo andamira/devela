@@ -79,6 +79,7 @@
 
 ### code::marker
 - new trait `IndexRepr`.
+- new type `ReprMode`.
 
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
@@ -331,6 +332,8 @@
   - remove methods: `digits10_str`, `digits16_str`.
 
 ### text::fmt
+- new type `DebugWith`.
+- update `DebugExt`; add new method `debug_with`.
 - make `Fmt::from_fn` const.
 
 ### text::parse
