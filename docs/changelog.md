@@ -95,6 +95,7 @@
   - replace `bitfield!` with `set!`.
 - update `if!`:
   - support branch-local statement semicolons and empty then/else arms.
+- update `impl_trait!` to support custom attributes.
 - update `write_at!`:
   - make it return the offset.
   - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.

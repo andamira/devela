@@ -45,9 +45,12 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! impl_trait {
     (FromStr<$err:ty> for
-    $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
-     | $s:ident | $expr:expr) => {
+    $( $(#[$impl_meta:meta])* $type:ident
+       $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?
+    );+
+    | $s:ident | $expr:expr) => {
         $(
+            $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::FromStr for $type $(<$($args)*>)?
             $(where $($bounded: $crate::FromStr,)+ )? {
                 type Err = $err;
@@ -56,9 +59,12 @@ macro_rules! impl_trait {
         )+
     };
     (Hash for
-     $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?);+
-      | $self:ident, $state:ident | $expr:expr) => {
+     $( $(#[$impl_meta:meta])* $type:ident
+        $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?
+     );+
+     | $self:ident, $state:ident | $expr:expr) => {
         $(
+            $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::Hash for $type $(<$($args)*>)?
             $(where $($bounded: $crate::Hash,)+ )? {
                 fn hash<__H: $crate::Hasher>(&$self, $state: &mut __H) { $expr }
@@ -66,9 +72,12 @@ macro_rules! impl_trait {
         )+
     };
     (PartialEq for
-     $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?);+
-      | $self:ident, $other:ident | $expr:expr) => {
+     $( $(#[$impl_meta:meta])* $type:ident
+         $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?
+     );+
+     | $self:ident, $other:ident | $expr:expr) => {
         $(
+            $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::PartialEq for $type $(<$($args)*>)?
             $(where $($bounded: $crate::PartialEq,)+ )? {
                 fn eq(&$self, $other: &Self) -> bool { $expr }
@@ -76,9 +85,11 @@ macro_rules! impl_trait {
         )+
     };
     (fmt::Display+Error for
-        $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
+        $( $(#[$impl_meta:meta])* $type:ident
+           $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
         | $self:ident, $f:ident | $expr:expr) => {
         $(
+            $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::Display for $type $(<$($args)*>)?
             $(where $($bounded: $crate::Display,)+ )? {
                 fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
@@ -87,9 +98,12 @@ macro_rules! impl_trait {
         )+
     };
     (fmt::$trait:ident for
-        $( $type:ident $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )? );+
-        | $self:ident, $f:ident | $expr:expr) => {
+     $( $(#[$impl_meta:meta])* $type:ident
+        $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?
+     );+
+     | $self:ident, $f:ident | $expr:expr) => {
         $(
+            $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::$trait for $type $(<$($args)*>)?
             $(where $($bounded: $crate::$trait,)+ )? {
                 fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }

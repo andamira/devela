@@ -5,6 +5,9 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //
+//! > If a named item is a thing that can be present, use `set!`.
+//! > If a named item is a slot that can hold a value, use `bitfield!`.
+//
 
 // mod budget; // BitBudget
 mod field; // bitfield!
