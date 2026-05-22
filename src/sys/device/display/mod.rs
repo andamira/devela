@@ -15,7 +15,7 @@
 // pub mod gdi;
 
 #[cfg(feature = "x11")]
-#[cfg(all(not(feature = "safe_sys"), feature = "unsafe_ffi"))]
+#[cfg(not(feature = "safe_sys"))]
 pub mod x11;
 
 crate::structural_mods! { // _pub_mods, _crate_internals

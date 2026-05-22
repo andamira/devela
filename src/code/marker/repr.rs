@@ -17,3 +17,4 @@ pub enum ReprMode {
     RawNamed,
 }
 crate::_impl_init![Self::Raw => ReprMode];
+impl crate::BitSized<3> for ReprMode {}

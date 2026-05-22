@@ -1,7 +1,7 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! devela = { path = "../..", features = ["linux", "unsafe_syscall"] }
+//! devela = { path = "../..", features = ["linux", "term"] }
 //! ```
 // devela::examples::sys::term::linux
 

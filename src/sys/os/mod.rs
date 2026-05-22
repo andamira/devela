@@ -17,7 +17,7 @@
 // - https://wasi.dev/ | https://github.com/WebAssembly/WASI
 
 pub mod browser; // Web*
-#[cfg(feature = "unsafe_ffi")]
+#[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
 mod c; // Libc
 pub mod fd;
 
@@ -36,7 +36,7 @@ pub mod term; // Ansi* Term*
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
-        #[cfg(feature = "unsafe_ffi")]
+        #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
         pub use super::c::*;
     }
     _pub_mods {

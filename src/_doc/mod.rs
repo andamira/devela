@@ -1,6 +1,7 @@
 // devela::_doc
 //
 //! Extra documentation about the library.
+#![doc = crate::_doc!(modules: crate; _doc: examples, features, macros, nightly, vendored)]
 #![doc = crate::_doc!(br+hr)] // gives way to the first root module
 //
 // #![cfg(any(doc, test))] // RETHINK
@@ -41,8 +42,8 @@ mod _tags; // EMOJI_*!, _TAG_*! _tags!
 pub(crate) mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
 
 // IMPROVE: some could be _crate_internals, currently blocked by define_error! and rand_pcg!
-crate::structural_mods! { // _mods, _crate_internals, _hidden
-    _mods {
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+    _pub_mods {
         #[cfg(feature = "_docs_examples")]
         pub use super::examples::_all::*;
     }

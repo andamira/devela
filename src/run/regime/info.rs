@@ -11,6 +11,7 @@ crate::items! {
     /// Runtime system identity metadata.
     #[doc = crate::_doc_location!("run/regime")]
     #[derive(Clone, Debug, Default, PartialEq, Eq)]
+    #[crate::macro_apply(crate::__doc_show(feature = "alloc"))]
     pub struct RunSystemInfo {
         /// Detected operating system or platform version.
         pub os_version: Option<String>,

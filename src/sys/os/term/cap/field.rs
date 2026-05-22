@@ -1,10 +1,11 @@
 // devela::sys::os::term::cap::field
 //
-//! Defines [`TermCap`] and [`TermCaps`].
+//! Defines [`TermCaps`].
 //
 
 use crate::{BitSized, ColorDepth, TermCap};
 
+crate::test_size_of![TermCaps = 4]; // 32 bits
 crate::bitfield! {
     #[must_use]
     #[doc = crate::_tags!(term runtime)]
@@ -53,7 +54,6 @@ crate::bitfield! {
         /// Terminal color depth.
         COLOR_DEPTH        = 16..=18;
     }
-
     impl {
         /// Returns an empty terminal capability set.
         pub const EMPTY: Self = Self::new();
@@ -71,12 +71,10 @@ crate::bitfield! {
         pub const fn color_depth(self) -> ColorDepth {
             ColorDepth::from_bits_trunc(self.get_color_depth() as u8)
         }
-
         /// Returns a copy with the given color depth.
         pub const fn with_color_depth_enum(self, depth: ColorDepth) -> Self {
             self.with_color_depth(depth as u32)
         }
-
         /// Sets the maximum known terminal color depth.
         pub const fn set_color_depth_enum(&mut self, depth: ColorDepth) {
             self.set_color_depth(depth as u32);
@@ -87,15 +85,14 @@ crate::bitfield! {
         pub const fn has(self, cap: TermCap) -> bool {
             self.bits() & cap.bit() != 0
         }
-
         /// Returns a copy with `cap` enabled.
         pub const fn with_cap(self, cap: TermCap) -> Self {
             Self::from_bits(self.bits() | cap.bit())
         }
-
         /// Returns a copy with `cap` disabled.
         pub const fn without_cap(self, cap: TermCap) -> Self {
             Self::from_bits(self.bits() & !cap.bit())
         }
     }
 }
+impl BitSized<19> for TermCaps {}

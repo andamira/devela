@@ -30,12 +30,12 @@ crate::_unsafe_syscall_not_miri! {
 mod syscalls; } // LINUX_SYS
 pub mod thread; // Linux<Clock|Instant|Time|Timespec>
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // container::*,
             error::*,
-            namespace::*,
+            namespace::Linux,
         };
         #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub use super::syscalls::_all::*;

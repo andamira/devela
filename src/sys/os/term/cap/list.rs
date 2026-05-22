@@ -3,6 +3,7 @@
 //! Defines [`TermCap`].
 //
 
+crate::test_size_of![TermCap = 1]; // 8 bits
 #[doc = crate::_tags!(term runtime)]
 /// Terminal capability flag.
 #[doc = crate::_doc_location!("sys/os/term")]

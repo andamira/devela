@@ -9,7 +9,7 @@ test_size_of![RunCap = 28]; // 224 bits
 #[doc = crate::_tags!(runtime)]
 /// The capabilities supported by a `Runtime`.
 #[doc = crate::_doc_location!("run/regime")]
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCap {
     /// Audio capabilities.
     pub audio: Option<RunCapAudio>,

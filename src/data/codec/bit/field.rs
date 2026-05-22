@@ -68,7 +68,10 @@ bitfield! {
 /// assert!(h.try_set_kind(15).is_ok());
 /// assert!(h.try_set_kind(16).is_err()); // 16 does not fit in 4 bits.
 /// ```
-/// See also the [`BitfieldExample`] and the [`set!`][crate::set] macro.
+///
+/// - An example of a struct defined with the `set!` macro is:
+///   [`TermCaps`][crate::TermCaps].
+/// - See also the [`BitfieldExample`] and the [`set!`][crate::set] macro.
 #[doc(hidden)]
 #[macro_export]
 macro_rules! bitfield· {

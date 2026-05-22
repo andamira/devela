@@ -17,7 +17,7 @@ crate::CONST! {
 ## Features
 `*` Printing is supported only when any of the following set of features are enabled:
 - `std` (takes preference)
-- `linux`, `unsafe_syscall`
+- `linux`
 
 ## Notes
 - commands are case-insensitive.
@@ -65,12 +65,9 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(not(any(
     /* 1) */ feature = "std",
-    /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
+    /* 2) */ all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
 )))]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -107,11 +104,13 @@ macro_rules! ansi {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "std")]
-#[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
-)]
+#[cfg(not(all(
+    feature = "_linux_abi",
+    feature = "unsafe_syscall",
+    not(miri),
+    any_target_arch_linux
+)))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -159,11 +158,8 @@ macro_rules! ansi {
 #[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
-)]
+#[cfg(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 macro_rules! ansi {
     (
     b: // outputs a static byte slice
@@ -236,7 +232,7 @@ mod tests {
     #[test]
     #[cfg(any(
         /* 1) */ feature = "std",
-        /* 2) */ all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
+        /* 2) */ all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
     ))]
     fn print_non_const() {
         fn dyn_args(x: u8, y: u8) {

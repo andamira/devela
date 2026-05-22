@@ -2,9 +2,7 @@
 //
 //! Defines [`ansi_print`].
 //!
-//! The function depends on:
-//! - both `linux` and `unsafe_syscall` features enabled.
-//! - or on the `std` feature enabled, otherwise.
+//! The function depends on either the `linux` or the `std` feature enabled.
 //
 
 #![allow(unused, reason = "± std or linux")]
@@ -35,12 +33,9 @@ See also the [`ansi!`][crate::ansi] macro.
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
 #[doc = crate::_doc_location!("sys/os/term")]
 #[doc = DOC_ANSI_PRINT!()]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 #[cfg(feature = "std")]
-// #[cfg(not(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
+// #[cfg(not(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
 pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Io::stdout().write_all(sequence)
 }
@@ -50,12 +45,9 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
 #[doc = crate::_doc_location!("sys/os/term")]
 #[doc = DOC_ANSI_PRINT!()]
-#[cfg_attr(
-    nightly_doc,
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_syscall"))))
-)]
+#[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 #[cfg(not(feature = "std"))]
-#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[cfg(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
 pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Linux::print_bytes(sequence).map_err(crate::LinuxError::to_io)
 }
@@ -74,8 +66,8 @@ pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
 #[doc = crate::_doc_location!("sys/os/term")]
 ///
 /// This method avoids having to perform extra error conversions.
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "linux", feature = "unsafe_syscall"))))]
-#[cfg(all(feature = "linux", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
+#[cfg(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
 pub fn ansi_print_linux(sequence: &[u8]) -> crate::LinuxResult<()> {
     crate::Linux::print_bytes(sequence)
 }
