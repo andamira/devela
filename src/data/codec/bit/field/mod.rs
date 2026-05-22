@@ -1,20 +1,18 @@
-// devela::data::id::handle
-//
-//!
-//
+// devela::data::codec::bit::field
 
-// mod define; // WIP TEMP handle2!
-mod legacy; // OLD handle! (Span)
+#[cfg(any(test, doctest))]
+mod tests;
 
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // HandleSpanExample
+mod examples; // BitfieldExample
+
+mod definition; // bitfield!
 
 crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            // define::*,
-            legacy::*,
+            definition::bitfield,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::examples::*;

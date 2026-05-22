@@ -111,7 +111,7 @@
 - new macro: `set!`.
 - new module: `data::codec::pack`.
 - move `data::codec::hash::check` to `data::codec::integrity`.
-- recreate `bitfield!` making it much more lean.
+- recreate `bitfield!` making it much more lean and improved.
 - remove the `bitfield` example.
 
 #### data::codec::crypto
