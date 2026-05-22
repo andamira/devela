@@ -241,15 +241,10 @@ impl TermInputParser {
         }
     }
     const fn key(key: Key) -> EventKind {
-        Self::modified_key(key, KeyMods::empty())
+        EventKind::Key(EventKey::press(key))
     }
     const fn modified_key(key: Key, mods: KeyMods) -> EventKind {
-        EventKind::Key(EventKey {
-            semantic: key,
-            physical: key,
-            mods,
-            state: KeyState::Press,
-        })
+        EventKind::Key(EventKey::modified_press(key, mods))
     }
     const fn mods_control() -> KeyMods {
         let mut mods = KeyMods::empty();

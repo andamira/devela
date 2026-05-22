@@ -378,6 +378,8 @@
   - add `Wheel` variant.
   - define with `enumset!`.
   - add methods: `is_wheel`, `some_wheel`.
+- update `EventKey`:
+  - add methods: `new`, `press`, `modified_press`, `text`, `modified_text`, `with_state`, `with_mods`.
 - update `EventKind`:
   - add `Wheel` variant.
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.

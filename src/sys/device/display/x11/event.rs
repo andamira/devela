@@ -204,7 +204,7 @@ impl XEvent {
         // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
         // let info = xkb.translate_key(keycode);
 
-        EventKey { semantic: info.semantic, physical: info.physical, state, mods: info.mods }
+        EventKey::new(info.semantic, info.physical, info.mods, state)
     }
 
     /// Converts this X11 button event into an `EventButton`.

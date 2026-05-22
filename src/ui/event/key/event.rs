@@ -32,9 +32,41 @@ impl ConstInit for EventKey {
     const INIT: Self = Self {
         semantic: Key::INIT,
         physical: Key::INIT,
-        state: KeyState::INIT,
         mods: KeyMods::INIT,
+        state: KeyState::INIT,
     };
+}
+impl EventKey {
+    /// Creates a key event from fully specified fields.
+    pub const fn new(semantic: Key, physical: Key, mods: KeyMods, state: KeyState) -> Self {
+        Self { semantic, physical, mods, state }
+    }
+    /// Creates a key press whose semantic and physical keys are the same.
+    pub const fn press(key: Key) -> Self {
+        Self::new(key, key, KeyMods::empty(), KeyState::Press)
+    }
+    /// Creates a modified key press whose semantic and physical keys are the same.
+    pub const fn modified_press(key: Key, mods: KeyMods) -> Self {
+        Self::new(key, key, mods, KeyState::Press)
+    }
+    /// Creates a text-producing key press with unknown physical origin.
+    pub const fn text(c: char) -> Self {
+        Self::new(Key::Char(c), Key::Unknown, KeyMods::empty(), KeyState::Press)
+    }
+    /// Creates a modified text-producing key press with unknown physical origin.
+    pub const fn modified_text(c: char, mods: KeyMods) -> Self {
+        Self::new(Key::Char(c), Key::Unknown, mods, KeyState::Press)
+    }
+    /// Returns this key event with a different state.
+    pub const fn with_state(mut self, state: KeyState) -> Self {
+        self.state = state;
+        self
+    }
+    /// Returns this key event with different modifiers.
+    pub const fn with_mods(mut self, mods: KeyMods) -> Self {
+        self.mods = mods;
+        self
+    }
 }
 
 #[cfg(ffi··)]
