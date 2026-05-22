@@ -11,6 +11,21 @@ use crate::{
     is,
 };
 
+// helper for the methods examples
+macro_rules! _example {
+    (%open) => { concat!["\n# Examples\n", "```\n", "# use devela::Bitwise;\n"] };
+    (%close) => { "\n```\n" };
+    // raw body: useful for static methods.
+    ($body:expr) => { concat![_example!(%open), $body, _example!(%close)] };
+    // default self-value arm: declares `b`.
+    ($t:ty, $value:expr; $body:expr) => { _example![b: $t = $value; $body] };
+    // named self-value arm: useful when `b` is not clear enough.
+    ($name:ident : $t:ty = $value:expr; $body:expr) => {
+        concat![_example!(%open), "let ", stringify!($name), " = Bitwise::<",
+        stringify!($t), ">(", stringify!($value), ");\n", $body, _example!(%close)]
+    };
+}
+
 macro_rules! _num_fin_bit_ops_wise_impl_prims {
     () => { _num_fin_bit_ops_wise_impl_prims![
         u8, u16, u32, u64, u128, usize
@@ -22,15 +37,7 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
         /* impl traits */
 
         #[doc = concat!["# Implementations for `", stringify!($t), "`."]]
-        /// ---
-        /// TOC
-        /// - constants + mask constructors
-        /// - single-bit \[get|set\], \[get|set\]_range, \[get|set\]_value_range…
-        /// - unset\[_range\]…
-        /// - flip, flip_range…
-        /// - reverse_range…
-        /// - count_ones_range, count_zeros_range…
-        /// - find_first_one, find_last_one…
+        #[doc = concat!["# Constants and mask constructors for `", stringify!($t), "`."]]
         impl Bitwise::<$t> {
             /* constants */
 
@@ -40,6 +47,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* mask constructors */
 
             #[doc = _DOC_BIT_MASK_RANGE!()]
+            #[doc = _example!(concat!(
+                "assert_eq![0b0001_1110, Bitwise::<", stringify!($t), ">::mask_range(1, 4).0]"))]
             #[doc = include_str!("../_benches/mask_range.md")]
             pub const fn mask_range(start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
@@ -50,6 +59,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 Self(mask_end - mask_start)
             }
             #[doc = _DOC_BIT_MASK_RANGE_CHECKED!()]
+            #[doc = _example!(concat!("assert_eq![0b0001_1110, Bitwise::<", stringify!($t),
+                ">::mask_checked_range(1, 4).unwrap().0];"))]
             #[doc = include_str!("../_benches/mask_checked_range.md")]
             pub const fn mask_checked_range(start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
@@ -70,16 +81,22 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_IS_SET_MASK!()]
+            #[doc = _example!($t, 0b1010_0000; "assert![b.is_set_mask(0b1000_0000)];")]
             pub const fn is_set_mask(self, mask: $t) -> bool { (self.0 & mask) != 0 }
 
             #[doc = _DOC_BIT_SET_MASK!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b1010_1111, b.set_mask(0b0000_1111).0];")]
             pub const fn set_mask(self, mask: $t) -> Self { Self(self.0 | mask) }
 
             #[must_use]
             #[doc = _DOC_BIT_IS_UNSET_MASK!()]
+            #[doc = _example!($t, 0b1010_0000; "assert![b.is_unset_mask(0b0100_0000)];")]
             pub const fn is_unset_mask(self, mask: $t) -> bool { (self.0 & mask) == 0 }
 
             #[doc = _DOC_BIT_UNSET_MASK!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b0010_0000, b.unset_mask(0b1000_0000).0];")]
             pub const fn unset_mask(self, mask: $t) -> Self { Self(self.0 & !mask) }
         }
         #[doc = concat!["# Get methods for `", stringify!($t), "`."]]
@@ -87,10 +104,13 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* get */
 
             #[doc = _DOC_BIT_GET_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110; "assert_eq![0b0001_0110, b.get_range(1, 4).0];")]
             pub const fn get_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & Self::mask_range(start, end).0)
             }
             #[doc = _DOC_BIT_GET_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110;
+                "assert_eq![0b0001_0110, b.get_checked_range(1, 4).unwrap().0];")]
             pub const fn get_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -102,10 +122,13 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* get value */
 
             #[doc = _DOC_BIT_GET_VALUE_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110; "assert_eq![0b1011, b.get_value_range(1, 4).0];")]
             pub const fn get_value_range(self, start: u32, end: u32) -> Self {
                 Self((self.0 & Self::mask_range(start, end).0) >> start)
             }
             #[doc = _DOC_BIT_GET_VALUE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110;
+                "assert_eq![0b1011, b.get_value_checked_range(1, 4).unwrap().0];")]
             pub const fn get_value_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -119,30 +142,36 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* set */
 
             #[doc = _DOC_BIT_IS_SET!()]
+            #[doc = _example!($t, 0b1000_0000; "assert![b.is_set(7)];")]
             pub const fn is_set(self, nth: u32) -> bool {
                 (self.0 & (1 << nth)) != 0
             }
             #[doc = _DOC_BIT_IS_SET_CHECKED!()]
+            #[doc = _example!($t, 0b1000_0000; "assert![b.is_set_checked(7).unwrap()];")]
             pub const fn is_set_checked(self, nth: u32) -> Result<bool, MismatchedBounds> {
                 if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
                 else { Ok((self.0 & (1 << nth)) != 0) }
             }
 
             #[doc = _DOC_BIT_SET!()]
+            #[doc = _example!($t, 0; "assert_eq![0b0000_1000, b.set(3).0];")]
             pub const fn set(self, nth: u32) -> Self {
                 Self(self.0 | 1 << nth)
             }
             #[doc = _DOC_BIT_SET_CHECKED!()]
+            #[doc = _example!($t, 0; "assert_eq![0b0000_1000, b.set_checked(3).unwrap().0];")]
             pub const fn set_checked(self, nth: u32) -> Result<Self, MismatchedBounds> {
                 if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
                 else { Ok(self.set(nth)) }
             }
 
             #[doc = _DOC_BIT_IS_SET_RANGE!()]
+            #[doc = _example!($t, 0b0011_1000; "assert![b.is_set_range(3, 5)];")]
             pub const fn is_set_range(self, start: u32, end: u32) -> bool {
                 self.get_range(start, end).0 == Self::mask_range(start, end).0
             }
             #[doc = _DOC_BIT_IS_SET_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b0011_1000; "assert![b.is_set_checked_range(3, 5).unwrap()];")]
             pub const fn is_set_checked_range(self, start: u32, end: u32,)
                 -> Result<bool, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -152,10 +181,13 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_SET_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001; "assert_eq![0b1001_1111, b.set_range(1, 4).0];")]
             pub const fn set_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 | Self::mask_range(start, end).0)
             }
             #[doc = _DOC_BIT_SET_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001;
+                "assert_eq![0b1001_1111, b.set_checked_range(1, 4).unwrap().0];")]
             pub const fn set_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -165,17 +197,23 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_SET_ALL!()]
+            #[doc = _example!(concat!("let b = Bitwise::<", stringify!($t), ">(0);\n",
+                "assert_eq![!0 as ", stringify!($t), ", b.set_all().0];"))]
             pub const fn set_all(self) -> Self { Self(!0) }
 
             /* set value */
 
             #[doc = _DOC_BIT_SET_VALUE_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001;
+                "assert_eq![0b1000_1011, b.set_value_range(0b101, 1, 3).0];")]
             pub const fn set_value_range(self, value: $t, start: u32, end: u32) -> Self {
                 let mask = Self::mask_range(start, end).0;
                 let value_shifted = (value << start) & mask;
                 Self((self.0 & !mask) | value_shifted)
             }
             #[doc = _DOC_BIT_SET_VALUE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001;
+                "assert_eq![0b1000_1011, b.set_value_checked_range(0b101, 1, 3).unwrap().0];")]
             pub const fn set_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -187,6 +225,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 }
             }
             #[doc = _DOC_BIT_SET_CHECKED_VALUE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0;
+                "assert![b.set_checked_value_checked_range(0b100, 0, 1).is_err()];")]
             pub const fn set_checked_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -212,30 +252,37 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* unset */
 
             #[doc = _DOC_BIT_IS_UNSET!()]
+            #[doc = _example!($t, 0b1010_0000; "assert![b.is_unset(6)];")]
             pub const fn is_unset(self, nth: u32) -> bool {
                 (self.0 & (1 << nth)) == 0
             }
             #[doc = _DOC_BIT_IS_UNSET_CHECKED!()]
+            #[doc = _example!($t, 0b1010_0000; "assert![b.is_unset_checked(6).unwrap()];")]
             pub const fn is_unset_checked(self, nth: u32) -> Result<bool, MismatchedBounds> {
                 if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
                 else { Ok((self.0 & (1 << nth)) == 0) }
             }
 
             #[doc = _DOC_BIT_UNSET!()]
+            #[doc = _example!($t, 0b1010_0000; "assert_eq![0b0010_0000, b.unset(7).0];")]
             pub const fn unset(self, nth: u32) -> Self {
                 Self(self.0 & !(1 << nth))
             }
             #[doc = _DOC_BIT_UNSET_CHECKED!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b0010_0000, b.unset_checked(7).unwrap().0];")]
             pub const fn unset_checked(self, nth: u32) -> Result<Self, MismatchedBounds> {
                 if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
                 else { Ok(self.unset(nth)) }
             }
 
             #[doc = _DOC_BIT_IS_UNSET_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001; "assert![b.is_unset_range(1, 6)];")]
             pub const fn is_unset_range(self, start: u32, end: u32) -> bool {
                 self.get_range(start, end).0 == 0
             }
             #[doc = _DOC_BIT_IS_UNSET_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1000_0001; "assert![b.is_unset_checked_range(1, 6).unwrap()];")]
             pub const fn is_unset_checked_range(self, start: u32, end: u32)
                 -> Result<bool, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -245,10 +292,13 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_UNSET_RANGE!()]
+            #[doc = _example!($t, 0b1111_1111; "assert_eq![0b1110_0001, b.unset_range(1, 4).0];")]
             pub const fn unset_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & !Self::mask_range(start, end).0)
             }
             #[doc = _DOC_BIT_UNSET_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1111_1111;
+                "assert_eq![0b1110_0001, b.unset_checked_range(1, 4).unwrap().0];")]
             pub const fn unset_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -258,6 +308,7 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_UNSET_ALL!()]
+            #[doc = _example!($t, 0b1111_1111; "assert_eq![0, b.unset_all().0];")]
             pub const fn unset_all(self) -> Self { Self(0) }
         }
         #[doc = concat!["# Flip ops for `", stringify!($t), "`."]]
@@ -265,21 +316,26 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* flip */
 
             #[doc = _DOC_BIT_FLIP!()]
+            #[doc = _example!($t, 0b0000_0001; "assert_eq![0, b.flip(0).0];")]
             pub const fn flip(self, nth: u32) -> Self {
                 Self(self.0 ^ (1 << nth))
             }
             #[doc = _DOC_BIT_FLIP_CHECKED!()]
+            #[doc = _example!($t, 0b0000_0001; "assert_eq![0, b.flip_checked(0).unwrap().0];")]
             pub const fn flip_checked(self, nth: u32) -> Result<Self, MismatchedBounds> {
                 if nth >= Self::BITS { Err(IndexOutOfBounds(Some(nth as usize))) }
                 else { Ok(self.flip(nth)) }
             }
 
             #[doc = _DOC_BIT_FLIP_RANGE!()]
+            #[doc = _example!($t, 0b1010_0000; "assert_eq![0b0101_0000, b.flip_range(4, 7).0];")]
             pub const fn flip_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 ^ Self::mask_range(start, end).0)
             }
 
             #[doc = _DOC_BIT_FLIP_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b0101_0000, b.flip_checked_range(4, 7).unwrap().0];")]
             pub const fn flip_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -289,10 +345,14 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_FLIP_RANGE_IF!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b1010_0000, b.flip_range_if(4, 7, false).0];")]
             pub const fn flip_range_if(self, start: u32, end: u32, cond: bool) -> Self {
                 if cond { self.flip_range(start, end) } else { self }
             }
             #[doc = _DOC_BIT_FLIP_CHECKED_RANGE_IF!()]
+            #[doc = _example!($t, 0b1010_0000;
+                "assert_eq![0b1010_0000, b.flip_checked_range_if(4, 7, false).unwrap().0];")]
             pub const fn flip_checked_range_if(self, start: u32, end: u32, cond: bool)
                 -> Result<Self, MismatchedBounds> {
                 if cond { self.flip_checked_range(start, end) } else { Ok(self) }
@@ -303,6 +363,7 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             /* reverse */
 
             #[doc = _DOC_BIT_REVERSE_RANGE!()]
+            #[doc = _example!($t, 0b0001_0110; "assert_eq![0b0001_1010, b.reverse_range(1, 4).0];")]
             pub const fn reverse_range(self, start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // If the entire range of bits is selected, simply reverse all bits
@@ -317,8 +378,9 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 // Combine with the original number, preserving bits outside the range
                 Self((self.0 & !mask) | rev_shifted)
             }
-
             #[doc = _DOC_BIT_REVERSE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b0001_0110;
+                "assert_eq![0b0001_1010, b.reverse_checked_range(1, 4).unwrap().0];")]
             pub const fn reverse_checked_range(self, start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
                 if start >= Self::BITS {
@@ -348,11 +410,14 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_COUNT_ONES_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110; "assert_eq![3, b.count_ones_range(1, 4)];")]
             pub const fn count_ones_range(self, start: u32, end: u32) -> u32 {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 masked_bits.count_ones()
             }
-            #[doc = _DOC_BIT_COUNT_ONES_RANGE!()]
+            #[doc = _DOC_BIT_COUNT_ONES_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110;
+                "assert_eq![3, b.count_ones_checked_range(1, 4).unwrap()];")]
             pub const fn count_ones_checked_range(self, start: u32, end: u32)
                 -> Result<u32, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -363,12 +428,15 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_COUNT_ZEROS_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110; "assert_eq![1, b.count_zeros_range(1, 4)];")]
             pub const fn count_zeros_range(self, start: u32, end: u32) -> u32 {
                 let mask = Self::mask_range(start, end).0;
                 let masked_bits = self.0 & mask;
                 (!masked_bits & mask).count_ones()
             }
             #[doc = _DOC_BIT_COUNT_ZEROS_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1011_0110;
+                "assert_eq![1, b.count_zeros_checked_range(1, 4).unwrap()];")]
             pub const fn count_zeros_checked_range(self, start: u32, end: u32)
                 -> Result<u32, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -386,6 +454,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_FIND_FIRST_ONE_RANGE!()]
+            #[doc = _example!($t, 0b1011_0000;
+                "assert_eq![Some(4), b.find_first_one_range(0, 7)];")]
             pub const fn find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = start;
@@ -396,6 +466,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 None
             }
             #[doc = _DOC_BIT_FIND_FIRST_ONE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1011_0000;
+                "assert_eq![Some(4), b.find_first_one_checked_range(0, 7).unwrap()];")]
             pub const fn find_first_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -414,6 +486,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_FIND_FIRST_ZERO_RANGE!()]
+            #[doc = _example!($t, 0b1111_1011;
+                "assert_eq![Some(2), b.find_first_zero_range(0, 7)];")]
             pub const fn find_first_zero_range(self, start: u32, end: u32)
                 -> Option<u32> {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
@@ -425,6 +499,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 None
             }
             #[doc = _DOC_BIT_FIND_FIRST_ZERO_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1111_1011;
+                "assert_eq![Some(2), b.find_first_zero_checked_range(0, 7).unwrap()];")]
             pub const fn find_first_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -445,6 +521,7 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_FIND_LAST_ONE_RANGE!()]
+            #[doc = _example!($t, 0b0001_0110; "assert_eq![Some(4), b.find_last_one_range(0, 7)];")]
             pub const fn find_last_one_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = end;
@@ -457,6 +534,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
             }
 
             #[doc = _DOC_BIT_FIND_LAST_ONE_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b0001_0110;
+                "assert_eq![Some(4), b.find_last_one_checked_range(0, 7).unwrap()];")]
             pub const fn find_last_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {
@@ -476,6 +555,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
 
             #[must_use]
             #[doc = _DOC_BIT_FIND_LAST_ZERO_RANGE!()]
+            #[doc = _example!($t, 0b1110_1111;
+                "assert_eq![Some(4), b.find_last_zero_range(0, 7)];")]
             pub const fn find_last_zero_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
                 let mut idx = end;
@@ -487,6 +568,8 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 None
             }
             #[doc = _DOC_BIT_FIND_LAST_ZERO_CHECKED_RANGE!()]
+            #[doc = _example!($t, 0b1110_1111;
+                "assert_eq![Some(4), b.find_last_zero_checked_range(0, 7).unwrap()];")]
             pub const fn find_last_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>, MismatchedBounds> {
                 match Self::mask_checked_range(start, end) {

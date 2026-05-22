@@ -101,7 +101,7 @@ Returns [`IndexOutOfBounds`] if `nth >= BITS`.
 _DOC_BIT_SET = r#"
 Sets the nth bit.
 # Panics
-Panics in debug mode if `nth >= BITS
+Panics in debug mode if `nth >= BITS`.
 "#;
 _DOC_BIT_SET_CHECKED = r#"
 Sets the `nth` bit.
