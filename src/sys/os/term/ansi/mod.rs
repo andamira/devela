@@ -9,18 +9,18 @@
 
 mod _helper; // __ansi_consts!
 
+mod namespace; // Ansi
+mod color; // AnsiColor, AnsiColor3, AnsiColor8 (+Ansi impls)
 mod strip; // impl: Ansi:strip_codes
 
-mod color; // AnsiColor, AnsiColor3, AnsiColor8 (+Ansi impls)
-mod namespace; // Ansi
 mod print; // ansi_print, ansi_print_linux, ansi_print_std
 mod r#macro; // ansi!
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            color::*,
             namespace::*,
+            color::*,
             print::*,
             r#macro::*,
         };
