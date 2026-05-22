@@ -46,6 +46,7 @@ See also
 - 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
 - 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
+- 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
