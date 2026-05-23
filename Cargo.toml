@@ -223,6 +223,8 @@ data = ["hash"]
 	# codec
 		hash = [] # HashFnv, HashPengy
 		# crypto = []
+		# pack = []
+			# riff = []
 	# list = []
 geom = ["fig"]
 	# dir = []

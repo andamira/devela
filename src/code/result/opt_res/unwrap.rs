@@ -293,6 +293,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps the `Ok` value; otherwise returns `Err($err)`.
+      ok_or? $T:expr, $err:expr) => {
+        match $T {
+            Ok(v) => v,
+            Err(_) => return Err($err),
+        }
+    };
+    (
       // Unwraps `Ok`, treating `Err` as an impossible invariant violation.
       //
       // Debug/safe paths panic. Optimized unsafe paths may use unchecked unreachable,
@@ -493,6 +501,15 @@ macro_rules! unwrap {
             Some(Ok(v)) => v,
             Some(Err(_)) => $fallback,
             None => $fallback,
+        }
+    };
+    (
+      // Unwraps `Some(Ok)` value; otherwise returns `Err($err)`.
+      sok_or? $T:expr, $err:expr) => {
+        match $T {
+            Some(Ok(v)) => v,
+            Some(Err(_)) => return $err,
+            None => return $err,
         }
     };
     (

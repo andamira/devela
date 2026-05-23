@@ -97,6 +97,7 @@
 - update `if!`:
   - support branch-local statement semicolons and empty then/else arms.
 - update `impl_trait!` to support custom attributes.
+- update `unwrap!`: add missing arms: `ok_or?`, `sok_or?`.
 - update `write_at!`:
   - make it return the offset.
   - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.
@@ -124,6 +125,9 @@
 - new macro: `digest!`.
 - new types: `CryptoError`, `Digest`, `Otp`.
 - new example/test `digest!` items: `Md5`, `Sha1`, `Sha256`, `Sha512`.
+
+#### data::codec::pack
+- new types `Riff`, `RiffChunk`, `RiffChunkIter`, `RiffError`.
 
 #### data::codec::encode
 - remove `encode` vendored items: `CodecBe`, `CodecLe`, `CodecIf`, `CodecFlags`, `CodecJoin`, `CodecLen`, `CodecLenValue`, `Decodable`, `Encodable`, `EncodableLen`.

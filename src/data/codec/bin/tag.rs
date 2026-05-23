@@ -3,14 +3,14 @@
 //! Fixed binary tags.
 //
 
-use crate::{_impl_init, Word, whilst};
+use crate::{_impl_init, Word, impl_trait, whilst};
 
 #[must_use]
 #[doc = crate::_tags!(data codec)]
 /// A fixed four-byte binary tag.
 #[doc = crate::_doc_location!("data/codec/bin")]
 #[repr(transparent)]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialOrd, Ord, Hash)]
 pub struct BinTag4([u8; 4]);
 _impl_init![BinTag4::new([0; 4]) => BinTag4];
 
@@ -94,6 +94,11 @@ impl BinTag4 {
         else { 0 }
     }
 
+    /// Returns whether the tag equals another tag.
+    #[must_use] #[inline(always)]
+    pub const fn eq(self, other: Self) -> bool {
+        self.eq_bytes(other.bytes())
+    }
     /// Returns whether the tag equals the given bytes.
     #[must_use] #[inline(always)]
     pub const fn eq_bytes(self, bytes: [u8; 4]) -> bool {
@@ -121,6 +126,8 @@ impl BinTag4 {
         b == b' ' || (b >= 0x21 && b <= 0x7E)
     }
 }
+impl_trait![PartialEq for BinTag4 |self, other| Self::eq(*self, *other)];
+
 #[rustfmt::skip]
 impl Word for BinTag4 {
     type Repr = [u8; 4];
