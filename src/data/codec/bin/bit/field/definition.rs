@@ -1,4 +1,4 @@
-// devela::data::codec::bit::field::definition
+// devela::data::codec::bit::bin::field::definition
 //
 //! Defines [`bitfield!`]
 //

@@ -67,15 +67,14 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_ACCESS_ITER    = "Composable external iteration.";
     _DOC_DATA_CODEC         = "Data encoding and decoding abstractions.";
     _QUO_DATA_CODEC         = "> Structured, algorithmic transformations of data representations.";
-    _DOC_DATA_CODEC_BIT     = "Bit-focused items.";
+    _DOC_DATA_CODEC_BIN     = "Binary representation atoms.";
+    _DOC_DATA_CODEC_BIN_BIT = "Bit-focused items.";
     _DOC_DATA_CODEC_CRYPTO  = "Cryptographic primitives for encryption, authentication, and hashing.";
-    _DOC_DATA_CODEC_DESER   = "Format-neutral value serialization.";
     _DOC_DATA_CODEC_ENCODE  = "Composable codecs for reading and writing values.";
     _DOC_DATA_CODEC_FRAME   = "Framing codecs for bounded byte sequences.";
     _DOC_DATA_CODEC_HASH    = "Hash functions and hashers for compact data fingerprints.";
     _DOC_DATA_CODEC_INTEGRITY = "Integrity checks and correction codes.";
-    _DOC_DATA_CODEC_PACK    = "Packing codecs for compact data representations.";
-    _DOC_DATA_CODEC_SCHEMA  = "Schemas for encoded data structures.";
+    _DOC_DATA_CODEC_PACK    = "Packed data representations";
     _DOC_DATA_ERROR         = "Data-related error types.";
     _DOC_DATA_ID            = "Identity abstractions for stable and contextual distinction.";
     _QUO_DATA_ID            = "> Distinction preserved across change.";
@@ -102,7 +101,8 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_DATA_TOPOL_SPATIAL = "Spatial adjacency and partitioning structures over indexed data.";
     _QUO_DATA_TOPOL_SPATIAL = "> Organizes locality, neighborhood, and region-based relations.";
     _DOC_DATA_VALUE         = "Semantic value categories and composable data forms.";
-    _DOC_DATA_WORD          = "Fixed-width encoded data words.";
+    _DOC_DATA_VALUE_SCHEMA  = "Schemas for encoded values.";
+    _DOC_DATA_WORD          = "Raw-representable data words.";
 
     // 3. geom (the grammar of space)
     _DOC_GEOM              = "Geometric types, operations, and spatial constructs.";

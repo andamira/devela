@@ -1,4 +1,4 @@
-// devela::data::codec::bit::field
+// devela::data::codec::bit::bin::field
 
 #[cfg(any(test, doctest))]
 mod tests;

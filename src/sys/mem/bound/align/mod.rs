@@ -1,6 +1,6 @@
 // devela::sys::mem::bound::align
 //
-//!
+//! Memory alignment bounds.
 //
 
 mod aligned; // Aligned

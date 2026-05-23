@@ -1,4 +1,4 @@
-// devela::data::codec::bit::set::tests
+// devela::data::codec::bit::bin::set::tests
 
 #![allow(unused)]
 

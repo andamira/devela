@@ -7,41 +7,34 @@
 #![doc = crate::_QUO_DATA_CODEC!()]
 //
 
-mod bit;
-pub mod crypto; // Cryptographic primitives (Digest, Sha1)
-// mod _wip_crc; // WIP
-mod encode; // encoders and decoders
-// pub mod frame; // WIP
-pub mod hash; // hashing algorithms (Fnv, Fx)
-mod integrity; // integrity codecs (Adler32, Crc32)
-// mod hex; // WIP Hexadecimal literals and conversions
-// mod rle; // WIP Run-length encoding and similar techniques
-mod deser; // WIP structured serialization/deserialization
-mod pack; // WIP compression algorithms
-mod radix; // radix-based encodings (Base32, Base64, Base58…)
-// pub mod schema; // WIP
-
-// #[cfg(feature = "alloc")]
-// mod lempel_ziv; // WIP
+mod bin; // Binary representation atoms.
+pub mod crypto; // Cryptographic primitives
+// mod detect; // WIP Format detection
+mod encode; // Composable codecs for reading and writing values
+// pub mod frame; // WIP Framing codecs for bounded byte sequences
+pub mod hash; // Hashing algorithms (Fnv, Fx…)
+mod integrity; // Integrity codecs (Adler32, Crc32…)
+mod pack; // Packed data representations
+mod radix; // Radix-based encodings (Base32, Base64, Base58…)
+// mod symbol; // WIP Symbolic codes that encode data into visual marks.
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
-            bit::_all::*,
-            // deser::_all::*,
+            bin::_all::*,
+            // detect::_all::*,
             encode::_all::*,
             integrity::_all::*,
             pack::_all::*,
             radix::_all::*,
+            // symbol::_all::*,
         };
-        // pub use super::lempel_ziv::*;
     }
     _pub_mods {
         pub use super::{
             crypto::_all::*,
             // frame::_all::*,
             hash::_all::*,
-            // schema::_all::*,
         };
     }
     _crate_internals {

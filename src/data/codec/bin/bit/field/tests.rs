@@ -1,4 +1,4 @@
-// devela::data::codec::bit::field::tests
+// devela::data::codec::bit::bin::field::tests
 
 #![allow(unused)]
 

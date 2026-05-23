@@ -109,8 +109,11 @@
 
 ### data::codec
 - new macro: `set!`.
-- new module: `data::codec::pack`.
-- move `data::codec::hash::check` to `data::codec::integrity`.
+- new submodules: `bin`, `detect`, `pack`, `symbol`.
+- move `hash::check` to `integrity`.
+- move `bit` inside `bin`.
+- move `schema` inside `data::value`.
+- move `deser` inside `data::value::schema`
 - recreate `bitfield!` making it much more lean and improved.
 - remove the `bitfield` example.
 

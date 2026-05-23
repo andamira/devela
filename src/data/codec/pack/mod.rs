@@ -6,12 +6,16 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod compress; // CompressionMode
+// mod archive; // Multi-resource packages
+mod compress; // Size-reducing codecs
+mod wrap; // Structured wrappers and chunked containers
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            compress::*,
+            // archive::_all::*,
+            compress::_all::*,
+            wrap::_all::*,
         };
     }
 }

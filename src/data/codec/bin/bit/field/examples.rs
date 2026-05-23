@@ -1,4 +1,4 @@
-// devela::data::codec::bit::field::examples
+// devela::data::codec::bit::bin::field::examples
 //
 //! Defines [`BitfieldExample`]
 //
@@ -8,7 +8,7 @@ crate::bitfield! {
     /// A compact packet header.
     #[doc = crate::_doc_location!("data/codec")]
     ///
-    /// It has been generated with the [`bitfield!`] macro like this:
+    /// It has been generated with the [`bitfield!`][crate::bitfield] macro like this:
     /// ```
     /// # use devela::bitfield;
     /// bitfield! {
