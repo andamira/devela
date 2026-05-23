@@ -1,0 +1,81 @@
+// devela::media::audio::pcm::format::wav::error
+//
+//! Defines [`PcmWavError`].
+//
+
+use crate::RiffError;
+#[cfg(feature = "std")]
+use crate::{IoError, IoErrorKind};
+
+#[doc = crate::_tags!(audio error)]
+/// WAVE decoding error.
+#[doc = crate::_doc_location!("media/audio")]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum PcmWavError {
+    /// RIFF-level parsing failed.
+    Riff(RiffError),
+
+    /// The RIFF form type is not `WAVE`.
+    NotWave,
+
+    /// The required `fmt ` chunk was not found.
+    MissingFmt,
+
+    /// The required `data` chunk was not found.
+    MissingData,
+
+    /// The `fmt ` chunk is shorter than the base 16-byte PCM format.
+    TruncatedFmt,
+
+    /// The WAVE format code is not supported by this parser.
+    UnsupportedFormat(u16),
+
+    /// The channel count is zero or cannot map to current PCM metadata.
+    UnsupportedChannelCount(u16),
+
+    /// The bits-per-sample field is not supported by current PCM metadata.
+    UnsupportedBitsPerSample(u16),
+
+    /// `block_align` does not match the parsed format.
+    InvalidBlockAlign,
+
+    /// `byte_rate` does not match the parsed format.
+    InvalidByteRate,
+
+    /// The `data` chunk length is not a multiple of `block_align`.
+    InvalidDataLength,
+
+    /// A size computation overflowed.
+    Overflow,
+
+    /// Reading the file failed.
+    #[cfg(feature = "std")]
+    Io(IoErrorKind),
+}
+crate::impl_trait![fmt::Display+Error for PcmWavError |self, f| match self {
+    Self::Riff(err) => write!(f, "RIFF parsing failed: {err}"),
+    Self::NotWave => f.write_str("RIFF form type is not `WAVE`"),
+    Self::MissingFmt => f.write_str("missing required `fmt ` chunk"),
+    Self::MissingData => f.write_str("missing required `data` chunk"),
+    Self::TruncatedFmt => f.write_str("`fmt ` chunk is shorter than the 16-byte PCM base format"),
+    Self::UnsupportedFormat(code) => write!(f, "unsupported WAVE format code: 0x{code:04X}"),
+    Self::UnsupportedChannelCount(chans) => write!(f, "unsupported WAVE channel count: {chans}"),
+    Self::UnsupportedBitsPerSample(bits) => write!(f, "unsupported WAVE bits per sample: {bits}"),
+    Self::InvalidBlockAlign => f.write_str("invalid WAVE block alignment"),
+    Self::InvalidByteRate => f.write_str("invalid WAVE byte rate"),
+    Self::InvalidDataLength => f.write_str("WAVE data length is not a multiple of block alignment"),
+    Self::Overflow => f.write_str("WAVE chunk size computation overflowed"),
+    #[cfg(feature = "std")]
+    Self::Io(err) => write!(f, "WAVE file read failed.: {err}"),
+}];
+impl From<RiffError> for PcmWavError {
+    fn from(err: RiffError) -> Self {
+        Self::Riff(err)
+    }
+}
+#[cfg(feature = "std")]
+impl From<IoError> for PcmWavError {
+    fn from(err: IoError) -> Self {
+        Self::Io(err.kind())
+    }
+}

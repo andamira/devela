@@ -55,6 +55,7 @@ test_size_of![PcmSample = 1]; // 8 bits
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum PcmSample {
     I8,
+    U8,
     #[default]
     I16,
     I24,
@@ -71,6 +72,7 @@ impl PcmSample {
     pub const fn bits(self) -> u8 {
         match self {
             Self::I8 => 8,
+            Self::U8 => 8,
             Self::I16 => 16,
             Self::I24 => 24,
             Self::I32 | Self::F32 => 32,
@@ -82,6 +84,7 @@ impl PcmSample {
     pub const fn bytes(self) -> u8 {
         match self {
             Self::I8 => 1,
+            Self::U8 => 1,
             Self::I16 => 2,
             Self::I24 => 3,
             Self::I32 | Self::F32 => 4,
@@ -91,18 +94,35 @@ impl PcmSample {
     /// Returns whether this is an integer sample encoding.
     #[must_use]
     pub const fn is_int(self) -> bool {
+        matches!(self, Self::I8 | Self::U8 | Self::I16 | Self::I24 | Self::I32)
+    }
+    /// Returns whether this is a signed integer sample encoding.
+    #[must_use]
+    pub const fn is_signed_int(self) -> bool {
         matches!(self, Self::I8 | Self::I16 | Self::I24 | Self::I32)
+    }
+
+    /// Returns whether this is an unsigned integer sample encoding.
+    #[must_use]
+    pub const fn is_unsigned_int(self) -> bool {
+        matches!(self, Self::U8)
     }
     /// Returns whether this is a floating-point sample encoding.
     #[must_use]
     pub const fn is_float(self) -> bool {
         matches!(self, Self::F32 | Self::F64)
     }
+    /// Returns whether this sample encoding can represent negative values.
+    #[must_use]
+    pub const fn has_negative(self) -> bool {
+        matches!(self, Self::I8 | Self::I16 | Self::I24 | Self::I32 | Self::F32 | Self::F64)
+    }
     /// Returns a compact encoding label.
     #[must_use]
     pub const fn as_code(self) -> &'static str {
         match self {
             Self::I8 => "i8",
+            Self::U8 => "u8",
             Self::I16 => "i16",
             Self::I24 => "i24",
             Self::I32 => "i32",

@@ -169,7 +169,7 @@
 
 ### media::audio
 - new trait: `PcmSampleType`.
-- new types: `PcmBuffer`, `PcmPlanar`, `PcmSample`, `PcmSpec`.
+- new types: `PcmBuffer`, `PcmPlanar`, `PcmSample`, `PcmSpec`, `PcmWav`, `PcmWavAlloc`, `PcmWavRef`, `PcmWavError`, `PcmWavFmt`.
 
 #### media::visual::color
 - new type `ColorDepth`.
