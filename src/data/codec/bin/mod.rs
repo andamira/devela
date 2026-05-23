@@ -10,7 +10,7 @@ mod bit; // Bit-focused items
 // mod endian // MAYBE Be, Le…
 // mod magic; // WIP MagicBytes, signatures, later
 // mod pad; // WIP Serialized padding helpers
-// mod tag // WIP Tag4, FourCc
+mod tag; // BinTag4
 // mod varint; // WIP LEB128, VLQ, MIDI variable length quantities
 
 crate::structural_mods! { // _mods
@@ -21,8 +21,8 @@ crate::structural_mods! { // _mods
             // endian::*,
             // magic::*,
             // pad::*,
-            // tag::_all:*,
-            // varint::_all:*,
+            tag::*,
+            // varint::_all::*,
         };
     }
 }
