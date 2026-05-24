@@ -1,35 +1,15 @@
 // devela::media::audio::format::wav::namespace
 //
-//! Defines [`PcmWavFmt`], [`PcmWav`].
+//! Defines [`PcmWav`].
 //
 
+#[cfg(feature = "alloc")]
+use crate::Vec;
 #[cfg(feature = "std")]
 use crate::{Fs, Path};
-#[cfg(feature = "alloc")]
-use crate::{PcmWavAlloc, Vec};
-use crate::{PcmWavError, PcmWavRef, Riff, is};
+use crate::{PcmWavBuf, PcmWavError, PcmWavFmt, Riff, is, unwrap};
 
 #[doc = crate::_tags!(audio parser)]
-/// Parsed WAVE `fmt` chunk.
-#[doc = crate::_doc_location!("media/audio")]
-#[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct PcmWavFmt {
-    /// WAVE format code.
-    pub format_tag: u16,
-    /// Number of interleaved channels.
-    pub channels: u16,
-    /// Samples per second.
-    pub sample_rate: u32,
-    /// Average bytes per second.
-    pub byte_rate: u32,
-    /// Bytes per interleaved frame.
-    pub block_align: u16,
-    /// Meaningful bits per sample.
-    pub bits_per_sample: u16,
-}
-
-#[doc = crate::_tags!(audio)]
 /// Minimal WAVE parser for borrowed PCM-family audio.
 #[doc = crate::_doc_location!("media/audio")]
 #[derive(Debug)]
@@ -38,82 +18,31 @@ pub struct PcmWav;
 impl PcmWav {
     /// Integer PCM.
     pub const FORMAT_PCM: u16 = 0x0001;
-
     /// IEEE floating-point PCM.
     pub const FORMAT_IEEE_FLOAT: u16 = 0x0003;
 
-    /// Parses a borrowed WAVE container.
-    pub const fn parse(bytes: &[u8]) -> Result<PcmWavRef<'_>, PcmWavError> {
-        let root = match Riff::root(bytes) {
-            Ok(root) => root,
-            Err(err) => return Err(PcmWavError::Riff(err)),
-        };
-        match root.container_type() {
-            Some(tag) if tag.eq(Riff::WAVE) => {}
-            _ => return Err(PcmWavError::NotWave),
-        }
-        let mut chunks = match root.subchunks() {
-            Ok(chunks) => chunks,
-            Err(err) => return Err(PcmWavError::Riff(err)),
-        };
-        let mut fmt: Option<PcmWavFmt> = None;
-        let mut data: Option<&[u8]> = None;
-        let mut data_offset = 0usize;
-        while let Some(next) = chunks.next_chunk() {
-            let chunk = match next {
-                Ok(chunk) => chunk,
-                Err(err) => return Err(PcmWavError::Riff(err)),
-            };
-            if chunk.id().eq(Riff::FMT) {
-                if fmt.is_none() {
-                    fmt = match Self::parse_fmt(chunk.data()) {
-                        Ok(fmt) => Some(fmt),
-                        Err(err) => return Err(err),
-                    };
-                }
-            } else if chunk.id().eq(Riff::DATA) {
-                if data.is_none() {
-                    data = Some(chunk.data());
-                    // Root RIFF header: 8 bytes.
-                    // WAVE form tag:    4 bytes.
-                    // Chunk header:     8 bytes.
-                    let Some(offset) = 12usize.checked_add(chunk.offset()) else {
-                        return Err(PcmWavError::Overflow);
-                    };
-                    let Some(offset) = offset.checked_add(8) else {
-                        return Err(PcmWavError::Overflow);
-                    };
-                    data_offset = offset;
-                }
-            }
-            is! { fmt.is_some() && data.is_some(), break }
-        }
-        let Some(fmt) = fmt else {
-            return Err(PcmWavError::MissingFmt);
-        };
-        let Some(data) = data else {
-            return Err(PcmWavError::MissingData);
-        };
-        let wav = PcmWavRef::_new(fmt, data, data_offset);
-        match Self::validate_data_shape(wav) {
-            Ok(()) => Ok(wav),
-            Err(err) => Err(err),
-        }
+    /// Parses a borrowed WAVE byte region.
+    ///
+    /// This validates the RIFF container, finds the first `fmt ` chunk, finds
+    /// the first `data` chunk, checks the basic PCM shape, and returns a
+    /// byte-backed view into the original input.
+    pub const fn parse(bytes: &[u8]) -> Result<PcmWavBuf<&[u8]>, PcmWavError> {
+        let parts = unwrap![ok? Self::parse_parts(bytes)];
+        Ok(PcmWavBuf::_new(bytes, parts.fmt, parts.data_offset, parts.data_len))
     }
     /// Alias for parser-style use from format modules.
-    pub const fn decode(bytes: &[u8]) -> Result<PcmWavRef<'_>, PcmWavError> {
+    pub const fn decode(bytes: &[u8]) -> Result<PcmWavBuf<&[u8]>, PcmWavError> {
         Self::parse(bytes)
     }
-
-    /// Parses an owned WAVE container.
+    /// Parses owned WAVE bytes.
     #[cfg(feature = "alloc")]
-    pub fn from_vec(bytes: Vec<u8>) -> Result<PcmWavAlloc, PcmWavError> {
-        PcmWavAlloc::from_vec(bytes)
+    pub fn from_vec(bytes: Vec<u8>) -> Result<PcmWavBuf<Vec<u8>>, PcmWavError> {
+        let parts = Self::parse_parts(bytes.as_slice())?;
+        Ok(PcmWavBuf::_new(bytes, parts.fmt, parts.data_offset, parts.data_len))
     }
-
     /// Reads and parses a WAVE file.
     #[cfg(feature = "std")]
-    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<PcmWavAlloc, PcmWavError> {
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<PcmWavBuf<Vec<u8>>, PcmWavError> {
         Self::from_vec(Fs::read(path)?)
     }
 
@@ -147,19 +76,79 @@ impl PcmWav {
             return Err(PcmWavError::InvalidByteRate);
         };
         is! { fmt.byte_rate != expected_rate, return Err(PcmWavError::InvalidByteRate) }
-
         Ok(fmt)
     }
 
     /* private helpers */
 
-    const fn validate_data_shape(wav: PcmWavRef<'_>) -> Result<(), PcmWavError> {
-        is! { wav.fmt().block_align == 0, return Err(PcmWavError::InvalidBlockAlign) }
-        if !wav.data_len().is_multiple_of(wav.fmt().block_align as usize) {
+    const fn parse_parts(bytes: &[u8]) -> Result<PcmWavParts, PcmWavError> {
+        let root = match Riff::root(bytes) {
+            Ok(root) => root,
+            Err(err) => return Err(PcmWavError::Riff(err)),
+        };
+        match root.container_type() {
+            Some(tag) if tag.eq(Riff::WAVE) => {}
+            _ => return Err(PcmWavError::NotWave),
+        }
+        let mut chunks = match root.subchunks() {
+            Ok(chunks) => chunks,
+            Err(err) => return Err(PcmWavError::Riff(err)),
+        };
+        let mut fmt: Option<PcmWavFmt> = None;
+        let mut data_len = 0usize;
+        let mut data_offset = 0usize;
+        while let Some(next) = chunks.next_chunk() {
+            let chunk = match next {
+                Ok(chunk) => chunk,
+                Err(err) => return Err(PcmWavError::Riff(err)),
+            };
+            if chunk.id().eq(Riff::FMT) {
+                if fmt.is_none() {
+                    fmt = match Self::parse_fmt(chunk.data()) {
+                        Ok(fmt) => Some(fmt),
+                        Err(err) => return Err(err),
+                    };
+                }
+            } else if chunk.id().eq(Riff::DATA) {
+                if data_len == 0 && data_offset == 0 {
+                    data_len = chunk.data().len();
+                    // Full WAVE byte layout:
+                    // - RIFF header:       8 bytes
+                    // - WAVE form tag:     4 bytes
+                    // - subchunk header:   8 bytes
+                    //
+                    // `chunk.offset()` is relative to the subchunk region, which
+                    // starts after the RIFF header and WAVE form tag.
+                    let Some(offset) = 12usize.checked_add(chunk.offset()) else {
+                        return Err(PcmWavError::Overflow);
+                    };
+                    let Some(offset) = offset.checked_add(8) else {
+                        return Err(PcmWavError::Overflow);
+                    };
+                    data_offset = offset;
+                }
+            }
+            is! { fmt.is_some() && (data_len != 0 || data_offset != 0), break }
+        }
+        let Some(fmt) = fmt else {
+            return Err(PcmWavError::MissingFmt);
+        };
+        is! { data_len == 0 && data_offset == 0, return Err(PcmWavError::MissingData) }
+        match Self::validate_data_shape(fmt, data_len) {
+            Ok(()) => Ok(PcmWavParts { fmt, data_offset, data_len }),
+            Err(err) => Err(err),
+        }
+    }
+
+    /// Checks that the `data` chunk length is frame-aligned.
+    const fn validate_data_shape(fmt: PcmWavFmt, data_len: usize) -> Result<(), PcmWavError> {
+        is! { fmt.block_align == 0, return Err(PcmWavError::InvalidBlockAlign) }
+        if !data_len.is_multiple_of(fmt.block_align as usize) {
             return Err(PcmWavError::InvalidDataLength);
         }
         Ok(())
     }
+    /// Returns the packed byte width for the supported WAVE sample encoding.
     const fn bytes_per_sample(format_tag: u16, bits: u16) -> Result<u16, PcmWavError> {
         match (format_tag, bits) {
             (Self::FORMAT_PCM, 8) => Ok(1),
@@ -172,6 +161,14 @@ impl PcmWav {
         }
     }
 }
+
+#[derive(Clone, Copy)]
+struct PcmWavParts {
+    fmt: PcmWavFmt,
+    data_offset: usize,
+    data_len: usize,
+}
+
 const fn read_u16_le(bytes: &[u8], offset: usize) -> u16 {
     u16::from_le_bytes([bytes[offset], bytes[offset + 1]])
 }

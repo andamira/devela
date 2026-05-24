@@ -1,8 +1,7 @@
-// devela::media::audio::codec
+// devela::media::audio::format
 //
-#![doc = crate::_tags!(audio codec)]
-#![doc = crate::_DOC_MEDIA_AUDIO_CODEC!()]
-#![doc = crate::_doc!(modules: crate::media::audio; codec)]
+#![doc = crate::_DOC_MEDIA_AUDIO_FORMAT!()]
+#![doc = crate::_doc!(modules: crate::media::audio; format)]
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 
@@ -12,14 +11,14 @@
 // mod mulaw; // MuLaw
 // mod ogg;
 // mod raw; // PcmRaw
-mod wav; // PcmWav
+mod wav; // Waveform Audio File Format
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // mp3::*,
             // mulaw::*,
-            raw::*,
+            // raw::*,
             wav::*,
         };
     }

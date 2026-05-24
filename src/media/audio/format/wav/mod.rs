@@ -6,15 +6,17 @@
 #[cfg(test)]
 mod tests;
 
+mod buf; // PcmWavBuf
 mod error; // PcmWavError
+mod fmt; // PcmWavFmt
 mod namespace; // PcmWav, PcmWavFmt
-mod refalloc; // PcmWavRef, PcmWavAlloc
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            buf::*,
             error::*,
-            refalloc::*,
+            fmt::*,
             namespace::*,
         };
     }

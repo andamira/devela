@@ -10,19 +10,19 @@
 
 // mod acoustic; // Acoustic spaces, sources, listeners, propagation, effects
 // mod effect;   // Signal filters, dynamics, delays, and transformations
-// mod format;    // Encoded audio representations and containers
+mod format;    // Encoded audio representations and containers
 // mod instrument; // Instruments, sample maps, presets, and sound banks
 mod layout; // Channel roles, arrangements, and sample layouts
 // mod music;    // Theory, tuning, notation, harmony, performance data
 mod pcm; // PCM samples, buffers, specs, and stream metadata
-// mod rhythm;   // Pulses, meters, grooves, trigger patterns
 // mod synth;    // Oscillators, envelopes, voices, modulation
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // acoustic::_all::*,
-            // codec::_all::*,
+            // effect::_all::*,
+            format::_all::*,
             layout::*,
             // music::_all::*,
             pcm::_all::*,

@@ -90,7 +90,7 @@ fn rejects_bad_block_align() {
 
 #[test]
 fn parses_const() {
-    const WAV: Result<PcmWavRef<'static>, PcmWavError> = PcmWav::parse(WAV_I16_STEREO);
+    const WAV: Result<PcmWavBuf<&'static [u8]>, PcmWavError> = PcmWav::parse(WAV_I16_STEREO);
     const FRAMES: usize = match WAV {
         Ok(wav) => wav.frames(),
         Err(_) => 0,
@@ -105,7 +105,7 @@ fn parses_wav_alloc() {
     assert_eq!(wav.fmt().channels, 2);
     assert_eq!(wav.data_bytes().len(), 8);
     assert_eq!(wav.frames(), 2);
-    let borrowed = wav.as_ref();
+    let borrowed = wav.as_borrowed();
     assert_eq!(borrowed.fmt(), wav.fmt());
     assert_eq!(borrowed.data_bytes(), wav.data_bytes());
     assert_eq!(borrowed.data_offset(), wav.data_offset());
