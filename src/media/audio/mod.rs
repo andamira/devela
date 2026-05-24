@@ -10,7 +10,7 @@
 
 // mod acoustic; // Acoustic spaces, sources, listeners, propagation, effects
 // mod effect;   // Signal filters, dynamics, delays, and transformations
-mod format;    // Encoded audio representations and containers
+mod format; // Encoded audio representations and containers
 // mod instrument; // Instruments, sample maps, presets, and sound banks
 mod layout; // Channel roles, arrangements, and sample layouts
 // mod music;    // Theory, tuning, notation, harmony, performance data

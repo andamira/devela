@@ -8,7 +8,7 @@ use crate::RiffError;
 use crate::{IoError, IoErrorKind};
 
 #[doc = crate::_tags!(audio error)]
-/// WAVE decoding error.
+/// WAVE encoding and decoding error.
 #[doc = crate::_doc_location!("media/audio")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum PcmWavError {
@@ -48,6 +48,15 @@ pub enum PcmWavError {
     /// A size computation overflowed.
     Overflow,
 
+    /// The destination buffer is too small.
+    NotEnoughSpace,
+
+    /// The encoded WAVE file would exceed RIFF's 32-bit size fields.
+    SizeOutOfRange,
+
+    /// The WAVE format metadata cannot be represented by the current writer.
+    UnsupportedEncoding,
+
     /// Reading the file failed.
     #[cfg(feature = "std")]
     Io(IoErrorKind),
@@ -65,6 +74,9 @@ crate::impl_trait![fmt::Display+Error for PcmWavError |self, f| match self {
     Self::InvalidByteRate => f.write_str("invalid WAVE byte rate"),
     Self::InvalidDataLength => f.write_str("WAVE data length is not a multiple of block alignment"),
     Self::Overflow => f.write_str("WAVE chunk size computation overflowed"),
+    Self::NotEnoughSpace => f.write_str("not enough space to write WAVE data"),
+    Self::SizeOutOfRange => f.write_str("encoded WAVE data exceeds RIFF size limits"),
+    Self::UnsupportedEncoding => f.write_str("unsupported WAVE encoding"),
     #[cfg(feature = "std")]
     Self::Io(err) => write!(f, "WAVE file read failed.: {err}"),
 }];

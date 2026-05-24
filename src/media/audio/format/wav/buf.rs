@@ -5,9 +5,9 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{PcmSpec, PcmWavError, PcmWavFmt};
+use crate::{PcmSpec, PcmWavError, PcmWavFmt, Riff, RiffChunkIter};
 
-#[doc = crate::_tags!(audio)]
+#[doc = crate::_tags!(audio data)]
 /// Parsed WAVE byte buffer over borrowed or owned storage.
 #[doc = crate::_doc_location!("media/audio")]
 ///
@@ -78,6 +78,12 @@ impl<B: AsRef<[u8]>> PcmWavBuf<B> {
     /// Returns whether the `data` chunk payload is empty.
     #[must_use]
     pub fn is_empty(&self) -> bool { self.data_len == 0 }
+
+    /// Returns an iterator over the WAVE subchunks.
+    pub fn chunks(&self) -> Result<RiffChunkIter<'_>, PcmWavError> {
+        let root = Riff::root(self.bytes()).map_err(PcmWavError::Riff)?;
+        root.subchunks().map_err(PcmWavError::Riff)
+    }
 }
 #[rustfmt::skip]
 impl<'a> PcmWavBuf<&'a [u8]> {

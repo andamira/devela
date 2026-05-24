@@ -3,18 +3,19 @@
 //! Defines [`PcmWav`].
 //
 
-#[cfg(feature = "alloc")]
-use crate::Vec;
 #[cfg(feature = "std")]
 use crate::{Fs, Path};
-use crate::{PcmWavBuf, PcmWavError, PcmWavFmt, Riff, is, unwrap};
+#[cfg(feature = "alloc")]
+use crate::{PcmSpec, Vec, vec_};
+use crate::{PcmWavBuf, PcmWavError, PcmWavFmt, Riff, is, slice, unwrap, whilst};
 
 #[doc = crate::_tags!(audio parser)]
-/// Minimal WAVE parser for borrowed PCM-family audio.
+/// WAVE operations for PCM-family audio.
 #[doc = crate::_doc_location!("media/audio")]
 #[derive(Debug)]
 pub struct PcmWav;
 
+// Decoding methods
 impl PcmWav {
     /// Integer PCM.
     pub const FORMAT_PCM: u16 = 0x0001;
@@ -48,7 +49,12 @@ impl PcmWav {
 
     /// Parses the base WAVE `fmt` payload.
     pub const fn parse_fmt(bytes: &[u8]) -> Result<PcmWavFmt, PcmWavError> {
-        is! { bytes.len() < 16, return Err(PcmWavError::TruncatedFmt) }
+        is! { bytes.len() < PcmWavFmt::BASE_LEN, return Err(PcmWavError::TruncatedFmt) }
+        let extra_len = if bytes.len() >= PcmWavFmt::WAVEFORMATEX_EMPTY_LEN {
+            read_u16_le(bytes, 16)
+        } else {
+            0
+        };
         let fmt = PcmWavFmt {
             format_tag: read_u16_le(bytes, 0),
             channels: read_u16_le(bytes, 2),
@@ -56,27 +62,9 @@ impl PcmWav {
             byte_rate: read_u32_le(bytes, 8),
             block_align: read_u16_le(bytes, 12),
             bits_per_sample: read_u16_le(bytes, 14),
+            extra_len,
         };
-        match fmt.format_tag {
-            Self::FORMAT_PCM | Self::FORMAT_IEEE_FLOAT => {}
-            other => return Err(PcmWavError::UnsupportedFormat(other)),
-        }
-        if fmt.channels == 0 {
-            return Err(PcmWavError::UnsupportedChannelCount(fmt.channels));
-        }
-        let bytes_per_sample = match Self::bytes_per_sample(fmt.format_tag, fmt.bits_per_sample) {
-            Ok(bytes) => bytes,
-            Err(err) => return Err(err),
-        };
-        let Some(expected_align) = fmt.channels.checked_mul(bytes_per_sample) else {
-            return Err(PcmWavError::InvalidBlockAlign);
-        };
-        is! { fmt.block_align != expected_align, return Err(PcmWavError::InvalidBlockAlign) }
-        let Some(expected_rate) = fmt.sample_rate.checked_mul(fmt.block_align as u32) else {
-            return Err(PcmWavError::InvalidByteRate);
-        };
-        is! { fmt.byte_rate != expected_rate, return Err(PcmWavError::InvalidByteRate) }
-        Ok(fmt)
+        fmt.validate()
     }
 
     /* private helpers */
@@ -149,7 +137,7 @@ impl PcmWav {
         Ok(())
     }
     /// Returns the packed byte width for the supported WAVE sample encoding.
-    const fn bytes_per_sample(format_tag: u16, bits: u16) -> Result<u16, PcmWavError> {
+    pub(super) const fn bytes_per_sample(format_tag: u16, bits: u16) -> Result<u16, PcmWavError> {
         match (format_tag, bits) {
             (Self::FORMAT_PCM, 8) => Ok(1),
             (Self::FORMAT_PCM, 16) => Ok(2),
@@ -159,6 +147,143 @@ impl PcmWav {
             (Self::FORMAT_IEEE_FLOAT, 64) => Ok(8),
             (_, other) => Err(PcmWavError::UnsupportedBitsPerSample(other)),
         }
+    }
+}
+// Encoding methods
+impl PcmWav {
+    /// Returns the encoded WAVE byte length for `fmt` and `data`.
+    ///
+    /// This writes a minimal RIFF/WAVE container with:
+    /// - one `fmt ` chunk,
+    /// - one optional `fact` chunk for non-PCM formats,
+    /// - one contiguous `data` chunk.
+    pub const fn encode_len(fmt: PcmWavFmt, data_len: usize) -> Result<usize, PcmWavError> {
+        let fmt = match fmt.validate() {
+            Ok(fmt) => fmt,
+            Err(err) => return Err(err),
+        };
+        match fmt.frames_for_data_len(data_len) {
+            Ok(_) => {}
+            Err(err) => return Err(err),
+        }
+        is! { !Riff::fits_u32(data_len), return Err(PcmWavError::SizeOutOfRange) }
+        let Some(fmt_chunk_len) = Riff::chunk_len(fmt.encoded_len()) else {
+            return Err(PcmWavError::Overflow);
+        };
+        let fact_chunk_len = if fmt.needs_fact() {
+            match Riff::chunk_len(4) {
+                Some(len) => len,
+                None => return Err(PcmWavError::Overflow),
+            }
+        } else {
+            0
+        };
+        let Some(data_chunk_len) = Riff::chunk_len(data_len) else {
+            return Err(PcmWavError::Overflow);
+        };
+        let Some(subchunks_len) = fmt_chunk_len.checked_add(fact_chunk_len) else {
+            return Err(PcmWavError::Overflow);
+        };
+        let Some(subchunks_len) = subchunks_len.checked_add(data_chunk_len) else {
+            return Err(PcmWavError::Overflow);
+        };
+        // The RIFF size field stores `4 + subchunks_len`.
+        let Some(riff_data_len) = Riff::FORM_TYPE_LEN.checked_add(subchunks_len) else {
+            return Err(PcmWavError::Overflow);
+        };
+        is! { !Riff::fits_u32(riff_data_len), return Err(PcmWavError::SizeOutOfRange) }
+        match Riff::form_len(subchunks_len) {
+            Some(len) => Ok(len),
+            None => Err(PcmWavError::Overflow),
+        }
+    }
+    /// Encodes a minimal PCM-family WAVE file into `dst`.
+    ///
+    /// Returns the number of bytes written.
+    pub const fn encode_into(
+        dst: &mut [u8],
+        fmt: PcmWavFmt,
+        data: &[u8],
+    ) -> Result<usize, PcmWavError> {
+        let fmt = unwrap![ok? fmt.validate()];
+        let frames = unwrap![ok? fmt.frames_for_data_len(data.len())];
+        let len = unwrap![ok? Self::encode_len(fmt, data.len())];
+        is! { dst.len() < len, return Err(PcmWavError::NotEnoughSpace) }
+        is! { frames > u32::MAX as usize, return Err(PcmWavError::SizeOutOfRange) }
+        let fmt_len = fmt.encoded_len();
+        let fmt_chunk_len = unwrap![some_ok_or? Riff::chunk_len(fmt_len), PcmWavError::Overflow];
+        let fact_chunk_len = if fmt.needs_fact() {
+            unwrap![some_ok_or? Riff::chunk_len(4), PcmWavError::Overflow]
+        } else {
+            0
+        };
+        let data_chunk_len =
+            unwrap![some_ok_or? Riff::chunk_len(data.len()), PcmWavError::Overflow];
+        let subchunks_len = unwrap![some_ok_or?
+            fmt_chunk_len.checked_add(fact_chunk_len), PcmWavError::Overflow];
+        let subchunks_len = unwrap![some_ok_or?
+            subchunks_len.checked_add(data_chunk_len), PcmWavError::Overflow];
+        let mut offset = unwrap![ok_err_map?
+            Riff::write_form_header(dst, Riff::WAVE, subchunks_len), |e|e.to_wav()];
+        offset += unwrap! { ok_err_map? Riff::write_chunk_header(slice![mut dst, offset,..],
+        Riff::FMT, fmt_len), |e| e.to_wav() };
+        offset += unwrap![ok? Self::write_fmt_payload(slice![mut dst, offset,..], fmt)];
+        if fmt.needs_fact() {
+            offset += unwrap! {ok_err_map? Riff::write_chunk_header(slice![mut dst, offset,..],
+            Riff::FACT, 4), |e| e.to_wav() };
+            offset += unwrap![ok? write_u32_le(slice![mut dst, offset,..], frames as u32)];
+        }
+        offset += unwrap! { ok_err_map? Riff::write_chunk_header(slice![mut dst, offset,..],
+        Riff::DATA, data.len()), |e| e.to_wav() };
+        offset += unwrap![ok? write_bytes(slice![mut dst, offset, ..], data)];
+        is! { Riff::pad_len(data.len()) != 0, { dst[offset] = 0; offset += 1; }}
+        debug_assert!(offset == len);
+        Ok(offset)
+    }
+    /// Encodes a minimal PCM-family WAVE file into an allocated byte vector.
+    #[cfg(feature = "alloc")]
+    pub fn to_vec(fmt: PcmWavFmt, data: &[u8]) -> Result<Vec<u8>, PcmWavError> {
+        let len = Self::encode_len(fmt, data.len())?;
+        let mut out = vec_![0u8; len];
+        let written = Self::encode_into(&mut out, fmt, data)?;
+        debug_assert_eq!(written, len);
+        Ok(out)
+    }
+    /// Encodes and writes a minimal PCM-family WAVE file.
+    #[cfg(feature = "std")]
+    pub fn to_file<P: AsRef<Path>>(
+        path: P,
+        fmt: PcmWavFmt,
+        data: &[u8],
+    ) -> Result<(), PcmWavError> {
+        let bytes = Self::to_vec(fmt, data)?;
+        Fs::write(path, bytes)?;
+        Ok(())
+    }
+    /// Encodes a minimal PCM-family WAVE file from a [`PcmSpec`].
+    #[cfg(feature = "alloc")]
+    pub fn spec_to_vec(spec: PcmSpec, data: &[u8]) -> Result<Vec<u8>, PcmWavError> {
+        let fmt = PcmWavFmt::from_spec(spec)?;
+        Self::to_vec(fmt, data)
+    }
+    /// Writes the WAVE `fmt ` payload.
+    const fn write_fmt_payload(dst: &mut [u8], fmt: PcmWavFmt) -> Result<usize, PcmWavError> {
+        let len = fmt.encoded_len();
+        is! { dst.len() < len, return Err(PcmWavError::NotEnoughSpace) }
+        let mut offset = 0;
+        offset += unwrap![ok? write_u16_le(slice![mut dst, offset,..], fmt.format_tag)];
+        offset += unwrap![ok? write_u16_le(slice![mut dst, offset,..], fmt.channels)];
+        offset += unwrap![ok? write_u32_le(slice![mut dst, offset,..], fmt.sample_rate)];
+        offset += unwrap![ok? write_u32_le(slice![mut dst, offset,..], fmt.byte_rate)];
+        offset += unwrap![ok? write_u16_le(slice![mut dst, offset,..], fmt.block_align)];
+        offset += unwrap![ok? write_u16_le(slice![mut dst, offset,..], fmt.bits_per_sample)];
+        if len >= PcmWavFmt::WAVEFORMATEX_EMPTY_LEN {
+            offset += unwrap![ok? write_u16_le(slice![mut dst, offset,..], fmt.extra_len)];
+            // This first writer only supports `cbSize = 0`.
+            // Once WAVE_FORMAT_EXTENSIBLE lands, this is where the extra bytes go.
+            is! { fmt.extra_len != 0, return Err(PcmWavError::UnsupportedEncoding) }
+        }
+        Ok(offset)
     }
 }
 
@@ -174,4 +299,25 @@ const fn read_u16_le(bytes: &[u8], offset: usize) -> u16 {
 }
 const fn read_u32_le(bytes: &[u8], offset: usize) -> u32 {
     u32::from_le_bytes([bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3]])
+}
+const fn write_bytes(dst: &mut [u8], src: &[u8]) -> Result<usize, PcmWavError> {
+    is! { dst.len() < src.len(), return Err(PcmWavError::NotEnoughSpace) }
+    whilst! { i in 0..src.len(); { dst[i] = src[i]; }}
+    Ok(src.len())
+}
+const fn write_u16_le(dst: &mut [u8], value: u16) -> Result<usize, PcmWavError> {
+    is! { dst.len() < 2, return Err(PcmWavError::NotEnoughSpace) }
+    let bytes = value.to_le_bytes();
+    dst[0] = bytes[0];
+    dst[1] = bytes[1];
+    Ok(2)
+}
+const fn write_u32_le(dst: &mut [u8], value: u32) -> Result<usize, PcmWavError> {
+    is! { dst.len() < 4, return Err(PcmWavError::NotEnoughSpace) }
+    let bytes = value.to_le_bytes();
+    dst[0] = bytes[0];
+    dst[1] = bytes[1];
+    dst[2] = bytes[2];
+    dst[3] = bytes[3];
+    Ok(4)
 }

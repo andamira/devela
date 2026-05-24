@@ -1,4 +1,4 @@
-// devela::data::codec::pack::wrap::riff::test
+// devela::data::codec::pack::wrap::riff::tests
 
 use crate::{BinTag4, Riff, RiffError};
 
