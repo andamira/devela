@@ -1,6 +1,6 @@
 // devela::sys::device::audio
 //
-#![doc = crate::_DOC_DEVICE_AUDIO!()] // public
+#![doc = crate::_DOC_SYS_DEVICE_AUDIO!()] // public
 #![doc = crate::_doc!(modules: crate::sys::device; audio)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
@@ -11,13 +11,13 @@
 //
 
 // TEMP std (println), alloc (String)
-// #[cfg(all(feature = "audio", feature = "unsafe_syscall", feature = "std"))]
+// #[cfg(all(feature = "alsa", feature = "std"))]
 // mod alsa;
 // mod pulse;
 
 crate::structural_mods! { // _mods
     _mods {
-        // #[cfg(all(feature = "audio", feature = "unsafe_syscall", feature = "std"))]
+        // #[cfg(all(feature = "alsa", feature = "std"))]
         // pub use super::alsa::*;
         // pub use super::pulse::*;
     }

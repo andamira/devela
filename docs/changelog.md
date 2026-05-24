@@ -267,6 +267,9 @@
   - make the constructor fallible.
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
+##### sys::device::audio
+- gate alsa functionality on native `libasound` availability via `ffi_alsa··`.
+
 ##### sys::device::display::x11
 - new types: `XCpuBuffer`, `XFrontend`, `XImageMode`, `XPresent`, `XRasterRender`, `XShmBuffer`, `XSurfaceFrame`.
 - gate SHM functionality on native `xcb-shm` availability via `ffi_xcb_shm··`.

@@ -120,9 +120,9 @@ macro_rules! set· {
                 if bits == 0 { 0 } else { (<$T>::BITS - bits.leading_zeros()) as usize }
             };
             /// The octal digit width needed to show all declared bits.
-            pub(crate) const _SET_OCTAL_WIDTH: usize = (Self::_SET_DEBUG_WIDTH + 2) / 3;
+            pub(crate) const _SET_OCTAL_WIDTH: usize = Self::_SET_DEBUG_WIDTH.div_ceil(3);
             /// The hexadecimal digit width needed to show all declared bits.
-            pub(crate) const _SET_HEX_WIDTH: usize = (Self::_SET_DEBUG_WIDTH + 3) / 4;
+            pub(crate) const _SET_HEX_WIDTH: usize = Self::_SET_DEBUG_WIDTH.div_ceil(4);
             // _FIELD_COUNT, _SINGLE_COUNT, _GROUP_COUNT, _FIELD_NAMES
 
             /* public methods */

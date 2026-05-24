@@ -11,6 +11,9 @@ pub(crate) fn main() -> Result<(), IoError> {
     #[cfg(feature = "__dbg")]
     Build::println_heading("Native libraries:");
 
+    #[cfg(feature = "alsa")]
+    let _ = Build::emit_flag_if_lib("ffi_alsa··", "asound");
+
     #[cfg(feature = "x11")]
     let _ = Build::emit_flag_if_lib("ffi_xcb_shm··", "xcb-shm");
 

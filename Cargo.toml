@@ -424,12 +424,16 @@ _docs_min = [ # the minimum scope to document every item independent of alloc/st
 	# modules:
 	"all",
 		# device
-			"x11",
+			# audio
+				"alsa",
+			# display
+				"x11",
 		# sys
 			# os
 				# browser
 					"web",
 				"linux",
+				"term",
 				# "windows"
 	# data:
 	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll",
@@ -926,9 +930,10 @@ check-cfg = [ # Allowed configuration flags:
 	# work: (1)
 	'cfg(work··)',
 	#
-	# Auto-enabled native availability flags from ./build/main/native.rs (1)
+	# Auto-enabled native availability flags from ./build/main/native.rs (2)
 	# --------------------------------------------------------------------------
-	'cfg(ffi_xcb_shm··)',
+	'cfg(ffi_alsa··)',     # alsa
+	'cfg(ffi_xcb_shm··)',  # x11
 ]
 
 
