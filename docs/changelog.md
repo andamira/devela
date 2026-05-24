@@ -47,7 +47,7 @@
 - make example-generated `*Example` items visible in the docs.
 
 ## features & flags
-- new features: `alsa`, `shell`, `web`, `_linux_abi`.
+- new features: `alsa`, `shell`, `web`, `_linux_abi`, `__disable_native_libs`.
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `bit`, `mem`, `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.

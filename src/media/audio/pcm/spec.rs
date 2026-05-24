@@ -135,6 +135,7 @@ impl PcmSample {
 
     // Converts the sample to ALSA format.
     #[cfg(feature = "alsa")]
+    #[cfg_attr(not(ffi_alsa··), allow(dead_code))]
     pub(crate) const fn to_alsa(self) -> _alsa_raw::snd_pcm_format_t {
         match self {
             Self::I8 => _alsa_raw::SND_PCM_FORMAT_S8,

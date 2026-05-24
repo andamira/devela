@@ -124,6 +124,9 @@ impl Build {
     /// reflective flag such as `ffi_xcb_shm··`.
     ///
     /// Returns whether the flag was emitted.
+    ///
+    /// # Features
+    /// If the feature `__disable_native_libs` is enabled then this always returns `false`.
     #[must_use]
     pub fn emit_flag_if_lib(flag: &str, lib: &str) -> bool {
         Self::emit_check_cfg(flag);
@@ -147,7 +150,9 @@ impl Build {
             Self::rerun_if_env_changed(var);
         }
     }
+    // NOTE: If the feature `__disable_native_libs` is enabled then this always returns `false`.
     fn lib_found_source(lib: &str) -> Option<String> {
+        if cfg!(feature = "__disable_native_libs") { return None; }
         if Self::lib_found_pkg_config(lib) { return Some("pkg-config".to_string()); }
         Self::find_lib_file(lib).map(|path| path.display().to_string())
     }

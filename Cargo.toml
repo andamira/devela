@@ -145,7 +145,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 151/300 (149 remaining), 104 visible, 47 hidden
+[features] # 152/300 (148 remaining), 104 visible, 48 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -183,7 +183,8 @@ __publish = [
 __docs_internal = [ # enables documentation for internal items
 	"devela_macros/__docs_internal",
 ]
-__exclude_test = [] # excludes examples from being tested
+__disable_native_libs = [] # disables native libraries from being detected
+__exclude_test = [] # excludes specific examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
 
 

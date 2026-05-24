@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
-#![cfg_attr(ffi_xcb_shm··, allow(unused_imports))]
+#![cfg_attr(not(ffi_alsa··), allow(dead_code, unused_imports))]
 
 #[cfg(test)]
 mod tests;

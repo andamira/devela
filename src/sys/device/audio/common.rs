@@ -116,6 +116,7 @@ impl AudioDeviceDir {
     }
     // Returns the direction from ALSA format.
     #[cfg(feature = "alsa")]
+    #[cfg_attr(not(ffi_alsa··), allow(dead_code))]
     pub(crate) const fn from_alsa_ioid(ioid: Option<&CStr>) -> Self {
         match ioid {
             Some(cstr) => match cstr.to_bytes() {
@@ -175,6 +176,7 @@ impl AudioStreamDir {
     }
     // Converts the direction to ALSA format.
     #[cfg(feature = "alsa")]
+    #[cfg_attr(not(ffi_alsa··), allow(dead_code))]
     pub(crate) const fn to_alsa(self) -> _alsa_raw::snd_pcm_stream_t {
         match self {
             Self::Playback => _alsa_raw::SND_PCM_STREAM_PLAYBACK,

@@ -210,6 +210,7 @@ mod reflection {
         ref_flags: &[],
         features: &[
             "__dbg",
+            "__disable_native",
             "__exclude_test",
             "__force_miri_dst",
             "__publish",
