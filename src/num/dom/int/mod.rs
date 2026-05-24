@@ -41,7 +41,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
     }
     _crate_internals {
         #[cfg(feature = "int")]
-        pub use super::_docs::*;
+        pub(crate) use super::_docs::*;
     }
     _hidden {
         pub use super::divisor::DivisorInner;

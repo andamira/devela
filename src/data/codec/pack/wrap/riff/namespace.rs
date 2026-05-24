@@ -83,7 +83,6 @@ impl Riff {
         Ok(chunk)
     }
     /// Iterates over chunks in a RIFF chunk region.
-    #[must_use]
     #[inline(always)]
     pub const fn chunks<'a>(bytes: &'a [u8]) -> RiffChunkIter<'a> {
         RiffChunkIter::new(bytes)

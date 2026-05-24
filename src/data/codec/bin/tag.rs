@@ -10,7 +10,7 @@ use crate::{_impl_init, Word, impl_trait, whilst};
 /// A fixed four-byte binary tag.
 #[doc = crate::_doc_location!("data/codec/bin")]
 #[repr(transparent)]
-#[derive(Clone, Copy, Debug, Default, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialOrd, Ord)]
 pub struct BinTag4([u8; 4]);
 _impl_init![BinTag4::new([0; 4]) => BinTag4];
 
@@ -127,6 +127,7 @@ impl BinTag4 {
     }
 }
 impl_trait![PartialEq for BinTag4 |self, other| Self::eq(*self, *other)];
+impl_trait![Hash for BinTag4 |self, s| self.bytes().hash(s)];
 
 #[rustfmt::skip]
 impl Word for BinTag4 {

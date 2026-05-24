@@ -43,6 +43,6 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::_reexport_std::*;
     }
     _crate_internals {
-        pub use super::_helper::*;
+        pub(crate) use super::_helper::*;
     }
 }

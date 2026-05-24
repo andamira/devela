@@ -18,6 +18,6 @@ crate::structural_mods! { // _mods, _crate_internals
         };
     }
     _crate_internals {
-        pub use super::float::_crate_internals::*;
+        pub(crate) use super::float::_crate_internals::*;
     }
 }

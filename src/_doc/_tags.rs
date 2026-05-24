@@ -147,6 +147,7 @@ _define_symbol_tags! {
     // Excludes raw text storage and formatting.
     _TAG_PARSER, "Parsing", "::=";
     // Platform-dependent behavior or guarantees.
+    // It is exclusive to specific platforms.
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
     // Items whose main surface is about Rust primitive carriers.
     _TAG_PRIMITIVE, "Related to Rust primitives and their carriers", "⚙️";

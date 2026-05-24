@@ -141,7 +141,7 @@ impl AlsaPcmHandle {
             self.io_result(written)
         }
     }
-    // Writes interleaved frames, making sure to write all of them.
+    // Writes all requested interleaved frames.
     fn write_all_pcm<T>(
         &mut self,
         pcm: PcmBuffer<'_, T>,
@@ -160,10 +160,12 @@ impl AlsaPcmHandle {
         }
         Ok(())
     }
-    // Writes all requested interleaved frames.
+    // Reads interleaved frames. Returns the number of frames read.
     fn read_pcm<T>(&mut self, data: &mut [T], channels: AudioChannels) -> Result<usize, AlsaError> {
         let channels = channels.channels() as usize;
-        is![channels == 0 || data.len() % channels != 0, return Err(AlsaError::invalid_argument())];
+        if channels == 0 || !data.len().is_multiple_of(channels) {
+            return Err(AlsaError::invalid_argument());
+        }
         let frames = (data.len() / channels) as _raw::snd_pcm_uframes_t;
         unsafe {
             let read = _raw::snd_pcm_readi(self.raw, data.as_mut_ptr().cast(), frames);

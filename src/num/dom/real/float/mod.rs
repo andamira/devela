@@ -32,7 +32,7 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::_reexport_core::*;
     }
     _crate_internals {
-        pub use super::{
+        pub(crate) use super::{
             _consts::*,
             _docs::*,
             _internals::*,

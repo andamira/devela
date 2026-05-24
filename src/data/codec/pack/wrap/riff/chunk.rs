@@ -92,7 +92,7 @@ impl<'a> RiffChunkIter<'a> {
     pub(crate) const fn _new(bytes: &'a [u8], offset: usize) -> Self { Self { bytes, offset } }
 
     /// Returns a new iterator over the chunks in `bytes`.
-    #[must_use] #[inline(always)]
+    #[inline(always)]
     pub const fn new(bytes: &'a [u8]) -> Self { Self::_new(bytes, 0) }
 
     /// Returns the remaining byte region.

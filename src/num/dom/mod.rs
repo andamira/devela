@@ -41,7 +41,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         };
     }
     _crate_internals {
-        pub use super::{
+        pub(crate) use super::{
             real::_crate_internals::*,
             int::_crate_internals::*,
         };

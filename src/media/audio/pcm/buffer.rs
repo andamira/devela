@@ -39,7 +39,6 @@ impl<'a, T> PcmBuffer<'a, T> {
         Self { data, format, channels, sample_rate }
     }
     /// Returns the sample format.
-    #[must_use]
     pub const fn format(&self) -> PcmSample {
         self.format
     }
@@ -59,7 +58,6 @@ impl<'a, T> PcmBuffer<'a, T> {
         self.sample_rate
     }
     /// Returns the stream metadata.
-    #[must_use]
     pub const fn spec(&self) -> PcmSpec {
         PcmSpec::new(self.format, self.channels, self.sample_rate)
     }
@@ -116,7 +114,6 @@ impl<'a, T> PcmPlanar<'a, T> {
         Self { planes, format, channels, sample_rate }
     }
     /// Returns the sample format.
-    #[must_use]
     pub const fn format(&self) -> PcmSample {
         self.format
     }
@@ -136,7 +133,6 @@ impl<'a, T> PcmPlanar<'a, T> {
         self.sample_rate
     }
     /// Returns the stream metadata.
-    #[must_use]
     pub const fn spec(&self) -> PcmSpec {
         PcmSpec::new(self.format, self.channels, self.sample_rate)
     }

@@ -139,14 +139,12 @@ impl PcmWav {
             Ok(bytes) => bytes,
             Err(err) => return Err(err),
         };
-        let expected_align = match fmt.channels.checked_mul(bytes_per_sample) {
-            Some(v) => v,
-            None => return Err(PcmWavError::InvalidBlockAlign),
+        let Some(expected_align) = fmt.channels.checked_mul(bytes_per_sample) else {
+            return Err(PcmWavError::InvalidBlockAlign);
         };
         is! { fmt.block_align != expected_align, return Err(PcmWavError::InvalidBlockAlign) }
-        let expected_rate = match fmt.sample_rate.checked_mul(fmt.block_align as u32) {
-            Some(v) => v,
-            None => return Err(PcmWavError::InvalidByteRate),
+        let Some(expected_rate) = fmt.sample_rate.checked_mul(fmt.block_align as u32) else {
+            return Err(PcmWavError::InvalidByteRate);
         };
         is! { fmt.byte_rate != expected_rate, return Err(PcmWavError::InvalidByteRate) }
 
@@ -157,7 +155,7 @@ impl PcmWav {
 
     const fn validate_data_shape(wav: PcmWavRef<'_>) -> Result<(), PcmWavError> {
         is! { wav.fmt().block_align == 0, return Err(PcmWavError::InvalidBlockAlign) }
-        if wav.data_len() % wav.fmt().block_align as usize != 0 {
+        if !wav.data_len().is_multiple_of(wav.fmt().block_align as usize) {
             return Err(PcmWavError::InvalidDataLength);
         }
         Ok(())

@@ -95,7 +95,7 @@ impl TermInputParser {
         match self.state {
             TermInputState::Ground => self.feed_ground(byte),
             TermInputState::Esc => self.feed_esc(byte),
-            TermInputState::Ss3 { .. } => self.feed_ss3(byte),
+            TermInputState::Ss3 => self.feed_ss3(byte),
             TermInputState::Csi { .. } => self.feed_csi(byte),
             TermInputState::Utf8 { .. } => self.feed_utf8(byte),
         }

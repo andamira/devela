@@ -30,6 +30,6 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::event::_all::*;
     }
     _crate_internals {
-        pub use super::ansi::_crate_internals::*;
+        pub(crate) use super::ansi::_crate_internals::*;
     }
 }
