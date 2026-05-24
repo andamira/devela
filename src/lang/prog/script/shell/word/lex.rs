@@ -5,7 +5,7 @@
 
 use crate::{ShellWordError, TextScanner, is, unwrap};
 
-#[doc = crate::_tags!(parser lang)]
+#[doc = crate::_tags!(lang parser)]
 /// Splits shell-like input into command words.
 #[doc = crate::_doc_location!("lang/prog/script/shell")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

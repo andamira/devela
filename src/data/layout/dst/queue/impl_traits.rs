@@ -3,7 +3,7 @@
 //!
 //
 
-use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
+use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopGuard};
 use core::{fmt, iter, mem, ops};
 
 /* queue */
@@ -33,18 +33,18 @@ impl<BUF: DstBuf, DST: ?Sized + fmt::Debug> fmt::Debug for DstQueue<DST, BUF> {
 
 /* pop handle */
 
-impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstQueuePopHandle<'_, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstQueuePopGuard<'_, DST, BUF> {
     type Target = DST;
     fn deref(&self) -> &DST {
         unsafe { &*self.parent.front_raw() }
     }
 }
-impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstQueuePopHandle<'_, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstQueuePopGuard<'_, DST, BUF> {
     fn deref_mut(&mut self) -> &mut DST {
         unsafe { &mut *self.parent.front_raw_mut() }
     }
 }
-impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopHandle<'_, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopGuard<'_, DST, BUF> {
     fn drop(&mut self) {
         self.parent.pop_front_inner();
     }

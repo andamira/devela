@@ -12,7 +12,7 @@ trait Sealed {}
 #[cfg(feature = "alloc")]
 impl Sealed for String {}
 
-#[doc = crate::_tags!(text)]
+#[doc = crate::_tags!(string)]
 /// Extension trait providing additional methods for [`String`].
 #[expect(private_bounds, reason = "Sealed")]
 #[cfg(feature = "alloc")]

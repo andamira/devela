@@ -31,7 +31,7 @@ define_error! { individual:
         /// The length of the error in bytes, if known.
         pub error_len: Option<usize>
     }
-    +location: "text", +tag: _tags!(text),
+    +location: "text", +tag: _tags!(string),
     DOC_INVALID_UTF8 = "Invalid UTF-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {

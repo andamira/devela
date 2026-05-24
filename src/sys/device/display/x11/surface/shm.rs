@@ -27,9 +27,13 @@ pub(crate) struct XShmCaps {
 ///
 /// Owns one shared-memory mapping together with the X11 SHM segment attachment
 /// used to upload image bytes efficiently.
+///
+/// # Availability
+///
+/// This type is available when the native `xcb-shm` library is discoverable at build time.
 //
 // This first implementation uses `xcb_shm_create_segment`.
-// A future variant may support `xcb_shm_attach_fd` for caller-managed backing.
+// A FUTURE variant may support `xcb_shm_attach_fd` for caller-managed backing.
 #[derive(Debug)]
 pub struct XShmBuffer {
     pub(super) conn: *mut _raw::xcb_connection_t,

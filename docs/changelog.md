@@ -43,7 +43,8 @@
 - bump `wide` to 1.3.
 
 ## docs
-- new tags: `_TAG_[CRYPTO|LANG|PARSER]`.
+- new tags: `_TAG_[CRYPTO|GAME|LANG|PARSER|STRING]`.
+- rename tag `_TAG_GEOM_DIR` to `_TAG_DIR`.
 - make example-generated `*Example` items visible in the docs.
 
 ## features & flags
@@ -138,6 +139,7 @@
 
 ### data::layout
 - update `buffer_linear!` to add index type guards and optimize zero-index creation.
+- rename `DstQueuePopHandle` to `DstQueuePopGuard`.
 
 ### data::topol
 - rename `ConstListIterator` to `ConstListIter`; add new const-fn `next` method.
@@ -285,6 +287,9 @@
   - add `TARGET`, `FAMILIES`, `ENV`, `ABI`, `ENDIAN`, and `POINTER_WIDTH`.
   - derive `DLL_*` and `EXE_*` constants from target information.
   - align `ARCH`, `OS`, `FAMILY`, `VENDOR`, with Cargo/rustc target cfg values.
+
+### sys::fs
+- rename `PathPrefix` to `PathWindowsPrefix`, `PathPrefixComponent` to `PathWindowsPrefixComponent`.
 
 ### sys::io
 - new traits `TextIn`, `TextOut`.

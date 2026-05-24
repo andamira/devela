@@ -32,7 +32,7 @@ macro_rules! impl_str_u {
         /* definitions */
 
         #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
-        #[doc = crate::_tags!(text)]
+        #[doc = crate::_tags!(string)]
         /// A UTF-8 string with fixed capacity that stores length explicitly.
         #[doc = crate::_doc_location!("text/str")]
         ///

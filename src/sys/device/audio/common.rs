@@ -67,7 +67,7 @@ pub struct AudioDeviceCow<'a> {
     pub dir: AudioDeviceDir,
 }
 
-#[doc = crate::_tags!(audio geom_dir)]
+#[doc = crate::_tags!(audio dir)]
 /// Direction capability of an audio endpoint.
 #[doc = crate::_doc_location!("media/audio")]
 ///
@@ -129,7 +129,7 @@ impl AudioDeviceDir {
     }
 }
 
-#[doc = crate::_tags!(audio geom_dir)]
+#[doc = crate::_tags!(audio dir)]
 /// Direction of an audio stream.
 #[doc = crate::_doc_location!("media/audio")]
 ///

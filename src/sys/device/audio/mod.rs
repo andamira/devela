@@ -13,6 +13,7 @@
 mod common; // AudioDevice, AudioDeviceDir
 
 #[cfg(feature = "alsa")]
+#[cfg(not(feature = "safe_sys"))]
 crate::__doc_hide! { (ffi_alsa··)
     mod alsa;
 }

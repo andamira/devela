@@ -1,6 +1,8 @@
 // devela::vita::play::game::cycle
 
+#[doc = crate::_tags!(game)]
 /// A repeated structural grouping of turns, phases, or recurrent play segments.
+#[doc = crate::_doc_location!("vita/play/game")]
 ///
 /// Represents one recurring loop in the formal organization of play.
 ///

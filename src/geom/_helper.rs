@@ -119,11 +119,11 @@ macro_rules! _geom_dim_define_macro {
     // $name: the name of the macro. E.g. ext.
     // $det: the determinant used to introduce a singular $Wrap. Either "a" or "an".
     // $Wrap: the name of the wrapper type. E.g. Extent.
-    // $tag1: the first doc tag for _tag!. E.g. geom.
+    // $tag: the doc tag or tags for _tag!. E.g. geom.
     // $location: the location for _doc_location!. E.g. "geom/metric"
-    (($_d:tt) $name:ident, $det:literal, $Wrap:ident, $tag1:ident, $location:literal
+    (($_d:tt) $name:ident, $det:literal, $Wrap:ident, $($tag:ident)+, $location:literal
     ) => { $crate::paste! {
-        #[doc = crate::_tags!($tag1 construction)]
+        #[doc = crate::_tags!($($tag)+ construction)]
         #[doc = "Constructs " $det " [`" $Wrap "`] with inferred dimensionality."]
         #[doc = crate::_doc_location!($location)]
         ///

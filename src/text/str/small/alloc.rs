@@ -8,7 +8,7 @@ use crate::{MismatchedCapacity, NotEnoughElements, String, StringU8};
 // (15 in 64-bit, 7 in 32-bit, 3 in 16 bit)
 const STRING_SMALL_ALLOC_DEFAULT_CAP: usize = 2 * size_of::<usize>() - 1;
 
-#[doc = crate::_tags!(text)]
+#[doc = crate::_tags!(string)]
 /// A UTF-8 string with inline storage and heap spillover.
 #[doc = crate::_doc_location!("text/str")]
 ///

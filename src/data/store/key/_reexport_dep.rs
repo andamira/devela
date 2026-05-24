@@ -27,7 +27,7 @@ mod hashbrown_reexports {
 
     #[doc = crate::_tags!(hash data_structure)]
     #[doc = _hashbrown_or_std!(start)]
-    /// An unordered hash map implemented with quadratic probing and SIMD lookup.
+    /// An unordered hash map with quadratic probing and SIMD lookup.
     #[doc = crate::_doc_location!("data/id")]
     #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
@@ -56,7 +56,7 @@ pub use std_reexports::*;
 mod std_reexports {
     #[doc = crate::_tags!(hash data_structure)]
     #[doc = super::_hashbrown_or_std!(start)]
-    /// An unordered hash map implemented with quadratic probing and SIMD lookup.
+    /// An unordered hash map with quadratic probing and SIMD lookup.
     #[doc = crate::_doc_location!("data/id")]
     #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]

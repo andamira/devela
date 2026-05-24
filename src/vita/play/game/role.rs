@@ -1,6 +1,8 @@
 // devela::vita::play::game::role
 
+#[doc = crate::_tags!(game)]
 /// A rule-bearing identity or seat in play.
+#[doc = crate::_doc_location!("vita/play/game")]
 ///
 /// Defines who or what occupies a structured position in the game system.
 ///

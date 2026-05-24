@@ -5,7 +5,7 @@
 // TOC
 
 use super::super::{check_fat_pointer, list_push_gen, make_fat_ptr};
-use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
+use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopGuard};
 use crate::MemAligned;
 use ::core::{marker, ptr};
 
@@ -57,11 +57,11 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
 
     /// Removes an item from the front of the queue.
     #[must_use]
-    pub fn pop_front(&mut self) -> Option<DstQueuePopHandle<'_, DST, BUF>> {
+    pub fn pop_front(&mut self) -> Option<DstQueuePopGuard<'_, DST, BUF>> {
         if self.read_pos == self.write_pos {
             None
         } else {
-            Some(DstQueuePopHandle { parent: self })
+            Some(DstQueuePopGuard { parent: self })
         }
     }
 

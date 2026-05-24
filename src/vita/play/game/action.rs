@@ -1,6 +1,8 @@
 // devela::vita::play::game::action
 
+#[doc = crate::_tags!(game)]
 /// A declared move or operation recognized by the rules of play.
+#[doc = crate::_doc_location!("vita/play/game")]
 ///
 /// Represents what an actor attempts or selects within the formal game.
 ///

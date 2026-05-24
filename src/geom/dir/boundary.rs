@@ -19,7 +19,7 @@ use crate::{_impl_init, Sign};
 
 _impl_init![Self::Left => Boundary1d, Boundary2d, Boundary3d];
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a one-dimensional boundary.
 #[doc = crate::_doc_location!("geom/dir")]
 ///
@@ -60,7 +60,7 @@ impl Boundary1d {
     }
 }
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a two-dimensional rectangular boundary.
 #[doc = crate::_doc_location!("geom/dir")]
 ///
@@ -92,7 +92,7 @@ impl Boundary2d {
     }
 }
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a three-dimensional bounding volume.
 #[doc = crate::_doc_location!("geom/dir")]
 ///

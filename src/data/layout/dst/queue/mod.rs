@@ -43,11 +43,13 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
 pub type DstQueueUsize<DST /*: ?Sized*/, const CAP: usize> = DstQueue<DST, DstArray<usize, CAP>>;
 
-/// Handle returned by [`DstQueue::pop`][DstQueue#method.pop]
-/// (does the actual pop on drop).
+#[doc = crate::_tags!(guard)]
+/// Guard returned by [`DstQueue::pop`][DstQueue#method.pop]
+///
+/// Removes the front element when dropped.
 #[doc = crate::_doc_location!("data/layout/dst")]
 #[derive(Debug)]
-pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
+pub struct DstQueuePopGuard<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
     parent: &'a mut DstQueue<DST, BUF>,
 }
 

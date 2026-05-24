@@ -7,7 +7,7 @@ use crate::{Char, Str, slice, whilst};
 use crate::{FmtArguments, FmtError, FmtResult, FmtWrite};
 use crate::{InvalidText, MismatchedCapacity, NotEnoughSpace};
 
-#[doc = crate::_tags!(text)]
+#[doc = crate::_tags!(string)]
 /// A borrowed UTF-8 string buffer over caller-provided bytes.
 #[doc = crate::_doc_location!("text/str")]
 ///

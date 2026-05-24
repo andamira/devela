@@ -1,6 +1,9 @@
 // devela::vita::play::game::turn
 
+#[doc = crate::_tags!(game)]
 /// A bounded instance of enacted play.
+#[doc = crate::_doc_location!("vita/play/game")]
+///
 /// Represents one occurrence of play as a whole.
 ///
 /// A session contains the active structure of play and may contribute to a legacy.

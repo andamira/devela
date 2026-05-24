@@ -13,7 +13,9 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 }
 
 #[cfg(ui··)]
-mod error;
+crate::__doc_hide! { (ui··)
+    mod error;
+}
 mod intent; // WIP
 #[cfg(feature = "layout")]
 mod layout; // WIP

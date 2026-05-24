@@ -7,7 +7,7 @@ use super::_raw;
 use crate::{AlsaError, AudioChannels, PcmBuffer, PcmSample, PcmSpec};
 use crate::{Ptr, c_int, c_uint, is};
 
-#[doc = crate::_tags!(audio linux)]
+#[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
 #[doc = crate::_doc_location!("sys/device/audio")]
 #[derive(Debug)]

@@ -67,6 +67,7 @@ _define_symbol_tags! {
     _TAG_DATA_STRUCTURE, "Data structure (collection)", "🗃️";
     // Diagnostics, introspection, debugging intent.
     _TAG_DEBUG, "Debugging", "🐛";
+    _TAG_DIR, "Direction and orientation", "🧭";
     // Actual error types representing failure states.
     // Not for fallible abstractions or result carriers.
     _TAG_ERROR, "Error", "🚩";
@@ -87,8 +88,8 @@ _define_symbol_tags! {
     _TAG_FS, "File system", "📁";
     _TAG_FONT, "Font or glyph", "🅵";
     _TAG_FMT, "Formatting", "🖹";
+    _TAG_GAME, "Game and formal play", "🀄";
     _TAG_GEOM, "Geometry", "📐";
-    _TAG_GEOM_DIR, "Direction and orientation", "🧭";
     // RAII abstractions whose semantics are driven by scope exit (`Drop`).
     _TAG_GUARD, "Scoped guard", "🔒";
     _TAG_HASH, "Hashing", "🔀";
@@ -162,6 +163,7 @@ _define_symbol_tags! {
     // Covers schedulers, tasks, async runtimes, and progression of active systems.
     // Excludes structural invocation semantics.
     _TAG_RUNTIME, "Runtime", "⬡";
+    _TAG_STRING, "String storage and views", "🧶"; // (yarn)
     // Symbolic representations and manipulation of expressions.
     // Focuses on form and rewriting, not truth evaluation or inference.
     // Applicable across numeric, logical, and domain-specific languages.

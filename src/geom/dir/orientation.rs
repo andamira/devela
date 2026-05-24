@@ -6,7 +6,7 @@
 #[cfg(doc)]
 use crate::{Distance, Position};
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// A unitless directional vector in `D`-dimensional space.
 #[doc = crate::_doc_location!("geom/dir")]
 ///
@@ -28,17 +28,17 @@ pub struct Orientation<T, const D: usize> {
     pub dim: [T; D],
 }
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// A 1-dimensional [`Orientation`].
 #[doc = crate::_doc_location!("geom/dir")]
 pub type Orientation1<T> = Orientation<T, 1>;
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// A 2-dimensional [`Orientation`].
 #[doc = crate::_doc_location!("geom/dir")]
 pub type Orientation2<T> = Orientation<T, 2>;
 
-#[doc = crate::_tags!(geom_dir)]
+#[doc = crate::_tags!(geom dir)]
 /// A 3-dimensional [`Orientation`].
 #[doc = crate::_doc_location!("geom/dir")]
 pub type Orientation3<T> = Orientation<T, 3>;
