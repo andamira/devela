@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::format::wav::fmt_ref
+// devela::media::audio::format::wav::fmt_ref
 //
 //! Defines [`PcmWavRef`], [`PcmWavAlloc`].
 //
@@ -22,7 +22,7 @@ impl<'a> PcmWavRef<'a> {
     pub(super) const fn _new(fmt: PcmWavFmt, data: &'a [u8], data_offset: usize) -> Self {
         Self { fmt, data, data_offset }
     }
-    /// Returns the parsed `fmt ` metadata.
+    /// Returns the parsed `fmt` metadata.
     pub const fn fmt(self) -> PcmWavFmt { self.fmt }
 
     /// Returns the borrowed `data` chunk bytes.
@@ -95,7 +95,7 @@ impl PcmWavAlloc {
         let end = self.data_offset + self.data_len;
         PcmWavRef::_new(self.fmt, &self.bytes[self.data_offset..end], self.data_offset)
     }
-    /// Returns the parsed `fmt ` metadata.
+    /// Returns the parsed `fmt` metadata.
     pub const fn fmt(&self) -> PcmWavFmt { self.fmt }
     /// Returns the borrowed `data` chunk bytes.
     pub fn data_bytes(&self) -> &[u8] { self.as_ref().data_bytes() }

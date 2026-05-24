@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::format::wav::tests
+// devela::media::audio::format::wav::tests
 
 use super::*;
 #[cfg(feature = "std")]

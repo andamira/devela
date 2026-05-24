@@ -171,6 +171,7 @@
 - new types: `ShellLex`, `ShellQuote`, `ShellWordError`.
 
 ### media::audio
+- new submodules: `acoustic`, `effect`, `format`, `instrument`, `music`, `rhythm`, `synth`.
 - new trait: `PcmSampleType`.
 - new types: `PcmBuffer`, `PcmPlanar`, `PcmSample`, `PcmSpec`, `PcmWav`, `PcmWavAlloc`, `PcmWavRef`, `PcmWavError`, `PcmWavFmt`.
 

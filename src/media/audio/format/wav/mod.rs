@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::format::wav
+// devela::media::audio::format::wav
 //
 //! Minimal RIFF/WAVE parsing for PCM-family audio.
 //

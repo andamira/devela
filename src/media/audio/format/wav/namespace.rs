@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::format::wav::namespace
+// devela::media::audio::format::wav::namespace
 //
 //! Defines [`PcmWavFmt`], [`PcmWav`].
 //
@@ -9,8 +9,8 @@ use crate::{Fs, Path};
 use crate::{PcmWavAlloc, Vec};
 use crate::{PcmWavError, PcmWavRef, Riff, is};
 
-#[doc = crate::_tags!(audio)]
-/// Parsed WAVE `fmt ` chunk.
+#[doc = crate::_tags!(audio parser)]
+/// Parsed WAVE `fmt` chunk.
 #[doc = crate::_doc_location!("media/audio")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -117,7 +117,7 @@ impl PcmWav {
         Self::from_vec(Fs::read(path)?)
     }
 
-    /// Parses the base WAVE `fmt ` payload.
+    /// Parses the base WAVE `fmt` payload.
     pub const fn parse_fmt(bytes: &[u8]) -> Result<PcmWavFmt, PcmWavError> {
         is! { bytes.len() < 16, return Err(PcmWavError::TruncatedFmt) }
         let fmt = PcmWavFmt {

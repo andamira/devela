@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::format::wav::error
+// devela::media::audio::format::wav::error
 //
 //! Defines [`PcmWavError`].
 //
@@ -18,13 +18,13 @@ pub enum PcmWavError {
     /// The RIFF form type is not `WAVE`.
     NotWave,
 
-    /// The required `fmt ` chunk was not found.
+    /// The required `fmt` chunk was not found.
     MissingFmt,
 
     /// The required `data` chunk was not found.
     MissingData,
 
-    /// The `fmt ` chunk is shorter than the base 16-byte PCM format.
+    /// The `fmt` chunk is shorter than the base 16-byte PCM format.
     TruncatedFmt,
 
     /// The WAVE format code is not supported by this parser.
@@ -55,9 +55,9 @@ pub enum PcmWavError {
 crate::impl_trait![fmt::Display+Error for PcmWavError |self, f| match self {
     Self::Riff(err) => write!(f, "RIFF parsing failed: {err}"),
     Self::NotWave => f.write_str("RIFF form type is not `WAVE`"),
-    Self::MissingFmt => f.write_str("missing required `fmt ` chunk"),
+    Self::MissingFmt => f.write_str("missing required `fmt` chunk"),
     Self::MissingData => f.write_str("missing required `data` chunk"),
-    Self::TruncatedFmt => f.write_str("`fmt ` chunk is shorter than the 16-byte PCM base format"),
+    Self::TruncatedFmt => f.write_str("`fmt` chunk is shorter than the 16-byte PCM base format"),
     Self::UnsupportedFormat(code) => write!(f, "unsupported WAVE format code: 0x{code:04X}"),
     Self::UnsupportedChannelCount(chans) => write!(f, "unsupported WAVE channel count: {chans}"),
     Self::UnsupportedBitsPerSample(bits) => write!(f, "unsupported WAVE bits per sample: {bits}"),

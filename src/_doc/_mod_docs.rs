@@ -172,7 +172,15 @@ It is also mirrored at the crate root through a hidden `all_` module.";
 
     // 5. media (artifacts meant to be perceived)
     _DOC_MEDIA              = "Media representation, processing, and synthesis.";
-    _DOC_MEDIA_AUDIO        = "Audio signal representation and processing.";
+    _DOC_MEDIA_AUDIO          = "Sound representation and synthesis.";
+    _DOC_MEDIA_AUDIO_ACOUSTIC = "Sound propagation and acoustic spaces.";
+    _DOC_MEDIA_AUDIO_EFFECT     = "Audio signal transformations and effects.";
+    _DOC_MEDIA_AUDIO_FORMAT     = "Encoded audio and music representations.";
+    _DOC_MEDIA_AUDIO_INSTRUMENT = "Instruments, sample maps, presets, and sound banks.";
+    _DOC_MEDIA_AUDIO_LAYOUT     = "Audio channel roles, arrangements, and sample layouts.";
+    _DOC_MEDIA_AUDIO_MUSIC      = "Musical theory, tuning, notation, harmony, and scores.";
+    _DOC_MEDIA_AUDIO_PCM        = "Pulse-code modulation samples, buffers, and stream metadata.";
+    _DOC_MEDIA_AUDIO_SYNTH      = "Sound synthesis, generators, envelopes, and modulation.";
     _DOC_MEDIA_COMPO        = "Spatial and temporal composition of media elements.";
     _DOC_MEDIA_COMPO_PLOT   = "Structured plotting of data into visual form.";
     _DOC_MEDIA_DOC          = "Structured document layout and generation.";
