@@ -1,5 +1,7 @@
 // devela::sys::mem::size::bit::tests
 
+#![allow(unused)]
+
 use crate::{BitSized, ByteSized, Mem};
 
 #[test]

@@ -68,11 +68,11 @@ use toml_edit::Document;
 const NIGHTLY: &str = "nightly"; // NOTE: specific version can be set like: nightly-2025-08-14
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 12 + 1] = [
+const ROOT_MODULES: [&str; 12 + 3] = [
     "code", "data", "geom", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
-    "linux", // "windows",
+    "linux", "term", "web", // "windows",
 ];
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[
@@ -95,7 +95,7 @@ const SUB_MODULES: &[&str] = &[
     // run
 
     // sys
-        "io", "mem", "bit", // "x11", "os"
+        "io", "mem", // "x11", "os"
     // text
         "grapheme", "translit",
     // ui
@@ -119,8 +119,6 @@ const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
 
 /// Dependencies to not cross compile, ever.
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
-    // IMPROVE: allow activating `windows` feature
-    "dep_crossterm",
     // - https://docs.rs/safe_arch/latest/safe_arch/#current-support
     "dep_safe_arch",
     // DONE:CHECK: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)

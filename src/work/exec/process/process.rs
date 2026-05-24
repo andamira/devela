@@ -7,9 +7,9 @@
 // https://doc.rust-lang.org/std/os/unix/process/trait.CommandExt.html
 // https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html
 
-use crate::{Command, OsStr, Process, Str};
+use crate::{Command, OsStr, Process};
 #[cfg(feature = "shell")]
-use crate::{ShellLex, ShellWordError};
+use crate::{ShellLex, ShellWordError, Str};
 use std::process::{abort, exit, id};
 
 /// Marker trait to prevent downstream implementations of the [`ProcessExt`] trait.

@@ -1,7 +1,7 @@
 // devela::media::visual
 //
 #![doc = crate::_DOC_MEDIA_VISUAL!()] // public
-#![doc = crate::_doc!(modules: crate::media; visual: color, image)] // draw, video
+#![doc = crate::_doc!(modules: crate::media; visual: color, draw, image)] // pattern, video
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
@@ -20,6 +20,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         // pub use super::video::_all::*;
     }
     _crate_internals {
-        #[cfg(feature = "color")] pub(crate) use super::color::_crate_internals::*;
+        pub(crate) use super::color::_crate_internals::*;
     }
 }

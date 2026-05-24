@@ -991,7 +991,7 @@ path = "examples/data/id_seq.rs"
 [[example]]
 name = "term_linux"
 path = "examples/sys/term/linux.rs"
-required-features = ["linux", "unsafe_syscall"]
+required-features = ["linux", "term"]
 doc-scrape-examples = false
 # work
 [[example]]

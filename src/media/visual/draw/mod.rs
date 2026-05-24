@@ -19,7 +19,7 @@ mod traits; // Canvas, CanvasRead, CanvasTextel
 // pub mod line; // WIP
 // pub mod paint; // WIP
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
             // buffer::*,

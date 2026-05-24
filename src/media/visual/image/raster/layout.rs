@@ -2,21 +2,12 @@
 //
 //! Defines [`RasterLayout`].
 //
-/* layout terminology
-   ---------------------------------------------------------------------------
-   - `extent` is logical image size, not byte size.
-   - `row_start` describes vertical row order only. It is not a full 2D origin.
-   - `bytes_per_pixel` is stored pixel width and includes padding fields.
-   - `bytes_per_line` is row stride in bytes and may include trailing row padding.
-   - The minimum byte length is usually:
-       (height - 1) * bytes_per_line + width * bytes_per_pixel
-     not simply:
-       height * bytes_per_line
-*/
 
 use crate::{Boundary1d, Extent2};
 
+#[doc = crate::_tags!(image layout)]
 /// Describes the extent and memory stepping of raster storage.
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct RasterLayout {
     /// Logical width and height of the raster, in pixels.

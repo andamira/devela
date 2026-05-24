@@ -21,14 +21,14 @@ macro_rules! _num_dom_real_float_define_fsize {
         ///
         /// # Features
         /// Makes use of `nightly_float` in 16-bit architectures.
-        // #[cfg_attr(
-        //     nightly_doc,
-        //     doc(cfg(any(
-        //         target_pointer_width = "16",
-        //         target_pointer_width = "32",
-        //         target_pointer_width = "64"
-        //     )))
-        // )]
+        #[cfg_attr(
+            nightly_doc,
+            doc(cfg(any(
+                target_pointer_width = "16",
+                target_pointer_width = "32",
+                target_pointer_width = "64"
+            )))
+        )]
         #[cfg(target_pointer_width = $pointer_width)]
         pub type fsize = $float;
     };

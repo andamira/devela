@@ -16,17 +16,6 @@
 //   - trait RasterSamplePacked
 //   - trait RasterViewPacked
 //
-/* depth vs storage width
-   ---------------------------------------------------------------------------
-   - `raster_depth()` is a compact logical depth value, kept as `u8` because it
-     mirrors common backend/image depth fields such as X11 depth.
-   - Logical depth may exclude padding bits. Example: a 32-bit stored XRGB pixel
-     often has logical depth 24.
-   - `raster_bits_per_pixel()` is stored pixel width and includes padding bits.
-   - Stored widths are returned as `u16` to avoid truncation for large sample
-     types such as `[u8; 32]`, even though real presentation backends usually
-     stay far below that.
-*/
 
 #[cfg(feature = "unsafe_layout")]
 use crate::MemPod;
@@ -36,7 +25,7 @@ use crate::{Extent2, is};
 
 #[doc = crate::_tags!(image)]
 /// A borrowed dense 2D raster view over contiguous samples.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This is the minimal read contract for typed raster consumption and export.
 ///
@@ -55,7 +44,7 @@ pub trait RasterView {
 #[rustfmt::skip]
 #[doc = crate::_tags!(image)]
 /// Exclusive access to a dense 2D raster over contiguous samples.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This extends [`RasterView`] with direct mutable access to the dense sample
 /// storage.
@@ -76,7 +65,7 @@ pub trait RasterBuf: RasterView {
 
 #[doc = crate::_tags!(image)]
 /// A retained dense raster that owns its sample storage.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This is the practical CPU-side raster contract for surfaces that keep pixels
 /// across frames and may need to reshape their backing memory.
@@ -105,7 +94,7 @@ pub trait Raster: RasterBuf {
 
 #[doc = crate::_tags!(image)]
 /// A borrowed dense 2D byte raster view with explicit row layout.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This is the safe byte-first bridge for presentation and backend upload.
 ///
@@ -165,7 +154,7 @@ where
 
 #[doc = crate::_tags!(image)]
 /// Exclusive access to a dense 2D byte raster with explicit row layout.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This extends [`RasterViewBytes`] with direct mutable access to the backing
 /// bytes used by a backend-native image layout.
@@ -237,7 +226,7 @@ impl<const N: usize> Sealed for [u8; N] {}
 
 #[doc = crate::_tags!(image)]
 /// Marker for packed sample types supported by safe byte reinterpretation.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This trait is sealed.
 ///
@@ -253,7 +242,7 @@ impl<T: Sealed> RasterSamplePacked for T {}
 
 #[doc = crate::_tags!(image)]
 /// A typed raster view whose packed samples can be exposed as bytes.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_location!("media/visual/image/raster")]
 ///
 /// This bridges typed sample rasters into [`RasterViewBytes`] when the sample
 /// layout is known to be safely byte-addressable.

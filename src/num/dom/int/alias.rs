@@ -12,6 +12,11 @@ macro_rules! _iusize_alias {
             #[doc = $casted " pointer-sized " $sign " integer primitive."]
             #[doc = crate::_doc_location!("num/dom/int")]
             #[cfg(target_pointer_width = $width)]
+            #[cfg_attr(nightly_doc, doc(cfg(any(
+                target_pointer_width = "16",
+                target_pointer_width = "32",
+                target_pointer_width = "64"
+            ))))]
             pub type $ty = $cast;
         )+
     }}
