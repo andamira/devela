@@ -8,19 +8,22 @@
 //!
 //
 
-// pub mod audio; // {alsa}, {pulse}
+pub mod audio; // {alsa}
 pub mod display; // {x11}
 // pub mod midi; //
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
-            // audio::_all::*,
+            audio::_all::*,
             display::_all::*,
             // midi::_all::*,
         };
     }
     _crate_internals {
-        pub(crate) use super::display::_crate_internals::*;
+        pub(crate) use super::{
+            audio::_crate_internals::*,
+            display::_crate_internals::*,
+        };
     }
 }

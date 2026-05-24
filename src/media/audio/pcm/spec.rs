@@ -3,6 +3,8 @@
 //! Defines [`PcmSpec`], [`PcmSample`].
 //
 
+#[cfg(feature = "alsa")]
+use crate::_alsa_raw;
 use crate::{_impl_init, AudioChannels, impl_trait, test_size_of};
 
 test_size_of![PcmSpec = 8]; // 64 bits
@@ -128,6 +130,20 @@ impl PcmSample {
             Self::I32 => "i32",
             Self::F32 => "f32",
             Self::F64 => "f64",
+        }
+    }
+
+    // Converts the sample to ALSA format.
+    #[cfg(feature = "alsa")]
+    pub(crate) const fn to_alsa(self) -> _alsa_raw::snd_pcm_format_t {
+        match self {
+            Self::I8 => _alsa_raw::SND_PCM_FORMAT_S8,
+            Self::U8 => _alsa_raw::SND_PCM_FORMAT_U8,
+            Self::I16 => _alsa_raw::SND_PCM_FORMAT_S16_LE,
+            Self::I24 => _alsa_raw::SND_PCM_FORMAT_S24_3LE,
+            Self::I32 => _alsa_raw::SND_PCM_FORMAT_S32_LE,
+            Self::F32 => _alsa_raw::SND_PCM_FORMAT_FLOAT_LE,
+            Self::F64 => _alsa_raw::SND_PCM_FORMAT_FLOAT64_LE,
         }
     }
 }

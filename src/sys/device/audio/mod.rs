@@ -10,15 +10,23 @@
 // and platform-specific audio drivers.
 //
 
-// TEMP std (println), alloc (String)
-// #[cfg(all(feature = "alsa", feature = "std"))]
-// mod alsa;
+mod common; // AudioDevice, AudioDeviceDir
+
+#[cfg(feature = "alsa")]
+crate::__doc_hide! { (ffi_alsa··)
+    mod alsa;
+}
 // mod pulse;
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        // #[cfg(all(feature = "alsa", feature = "std"))]
-        // pub use super::alsa::*;
+        pub use super::common::*;
+        #[cfg(feature = "alsa")]
+        pub use super::alsa::_all::*;
         // pub use super::pulse::*;
+    }
+    _crate_internals {
+        #[cfg(feature = "alsa")]
+        pub(crate) use super::alsa::_crate_internals::*;
     }
 }

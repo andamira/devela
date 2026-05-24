@@ -268,6 +268,7 @@
   - add new methods: `interval`, `accum`, `allow`, `allow_checked`, `cycles`, `cycles_checked`.
 
 ##### sys::device::audio
+- new types `Alsa`, `AlsaError`, `AlsaPcmHandle`, `AudioDevice`, `AudioDeviceCow`, `AudioDeviceDir`, `AudioStreamDir`.
 - gate alsa functionality on native `libasound` availability via `ffi_alsa··`.
 
 ##### sys::device::display::x11
