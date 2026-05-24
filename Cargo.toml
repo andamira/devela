@@ -19,13 +19,11 @@
 #   - Environment       (std,alloc,no_std)
 #   - Module            (all,code,data,geom,lang,media,num,org,phys,run,sys,text,ui,work)
 #   - Safety            (safest,safe,unsafe,…)
-#   - Capability        (_*)
+#   - Scope             (_*)
 #     - default         (_max,_maxest)
 #     - docs            (_docs, _docs_[examples|min|nodep|max])
 #     - code            (_unroll*)
 #     - data            (_data*,_tuple*,…)
-#     - num             (_num*)
-#     - text            (_text*)
 #   - Dependency        (dep_*)
 #   - Workspace         (devela_*)
 #
@@ -147,7 +145,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 150/300 (150 remaining), 103 visible, 47 hidden
+[features] # 151/300 (149 remaining), 104 visible, 47 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -156,12 +154,12 @@ targets = [ ## +std:
 # - Environment      alloc, [no_]std
 # - Module           …
 # - Safety           [un]safe_*, …
-# - Capability       _*
+# - Scope             _*
 # - Dependency       dep_*
 #
 # Sintax:
 # - ["name"]: Visible public-facing features.
-# - ["_name"]: Hidden extra capability features.
+# - ["_name"]: Hidden additional scope features.
 # - ["__name"]: Development & maintenance features.
 #
 # Notes:
@@ -265,12 +263,13 @@ phys = ["time", "unit", "wave"]
 	unit = []
 	wave = [] # wavelets
 run = []
-sys = ["io", "term"] # EXCLUDED: "os"
+sys = ["io"] # EXCLUDED: "os"
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
 	# device
 		# audio
+			alsa = ["audio", "unsafe_ffi"]
 		# display
 			# cocoa = []
 			# gdi = []
@@ -388,7 +387,7 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 
 
-#* Capability features *#
+#* Scope features *#
 # ------------------------------------------------------------------------------
 # Most of these features are prefixed with an underscore (_) to be semi-hidden.
 # Enabling them enables extra implementations which increases compilation times.
@@ -408,8 +407,8 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 _max = ["_data_all"]
 _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 
-#* _docs capabilities *#
-# ----------------------
+#* _docs scope *#
+# ---------------
 # WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
 # WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
 # WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
@@ -420,7 +419,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 # WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
 
 _docs_examples = [] # documents examples, generates example items, feature-gate in example scripts
-_docs_min = [ # the minimum capabilities to document every item independent of alloc/std/unsafe
+_docs_min = [ # the minimum scope to document every item independent of alloc/std/unsafe
 	"_docs_examples",
 	# modules:
 	"all",
@@ -447,8 +446,8 @@ _docs_max = [ # +max +__docs_internal
 	"_docs", "_max", "__docs_internal"
 ]
 
-#* code capabilities *#
-# ---------------------
+#* code scope *#
+# --------------
 
 # `unroll!` macro and maximum recursion supported
 _unroll = [] # recursion 64
@@ -458,8 +457,8 @@ _unroll_512 = ["_unroll_256"]
 _unroll_1024 = ["_unroll_512"]
 _unroll_2048 = ["_unroll_1024"]
 
-#* data capabilities *#
-# ---------------------
+#* data scope *#
+# --------------
 
 _data_all = ["_collections_all", "_tuple"]
 
@@ -493,8 +492,8 @@ _tuple_36 = ["_tuple_24"]       # time:  4.6s, codegen: 561K
 _tuple_48 = ["_tuple_36"]       # time:  6.3s, codegen: 942K
 _tuple_72 = ["_tuple_48"]       # time: 10.3s, codegen: 2.0M
 
-#* sys capabilities *#
-# --------------------
+#* sys scope *#
+# -------------
 
 _linux_abi = [] # constants, repr structs, syscall vocabulary
 

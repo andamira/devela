@@ -5,7 +5,7 @@ Features are grouped in the following categories:
 - [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
 - [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
 - [*Safety*](#safety-features) (`safe*`, `unsafe*`)
-- [*Capability*](#capability-features)  (`_*`)
+- [*Scope*](#scope-features)  (`_*`)
 - [*Dependency*](#dependency-features) (`dep_*`)
 
 Flags are grouped in the following categories:
@@ -200,15 +200,20 @@ To be able to use any unsafe functionality it's necessary to:
 - `safest`: forbids `unsafe` even in dependencies (except for the standard library).
 
 
-### Capability features
+### Scope features
 
-These semi-hidden features allows to fine-tune extra capabilities.
+These semi-hidden features allows to fine-tune extra scope.
 Enabling them will likely worsen compilation times.
 
-Documentation capabilities:
+Documentation scope
 - `_docs[_min|_nodep]`: enables the most complete (or custom) version of the documentation.
 
-#### `data` capabilities
+#### `code` scope
+
+Implement the [`unroll!`] macro for some maximum recursion (64 by default).
+- `_unroll[_128|_256|_512|_1024|_2048]`.
+
+#### `data` scope
 
 Enable specific implementations of data collections
 [`Destaque`], [`Stack`]:
@@ -224,6 +229,7 @@ They also set the corresponding flags:
 Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `_tuple[_24|_36|_48|_72]`.
 
+[`unroll!`]: crate::code::util::unroll
 [`Destaque`]: crate::data::Destaque
 [`Stack`]: crate::data::Stack
 [`Tuple`]: crate::data::value::Tuple

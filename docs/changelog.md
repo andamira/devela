@@ -47,11 +47,12 @@
 - make example-generated `*Example` items visible in the docs.
 
 ## features & flags
-- new features: `shell`, `web`, `_linux_abi`.
+- new features: `alsa`, `shell`, `web`, `_linux_abi`.
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `bit`, `mem`, `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
 - auto-enable feature `unsafe_syscall` via: `linux`.
+- remove feature `term` from being enabled by `sys`.
 - require the `term` feature for all term-related functionality.
 - enable the nightly feature `proc_macro_diagnostic` with the `nightly_stable_later` flag.
 - update the intended scope of the `_docs_examples` feature.
