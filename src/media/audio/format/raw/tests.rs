@@ -84,7 +84,7 @@ mod encode {
     fn encodes_into() {
         let mut out = [0u8; 8];
         let written =
-            PcmRaw::encode_into(&mut out, fixture::I16_STEREO_SPEC, fixture::I16_STEREO_BYTES)
+            PcmRaw::write_into(&mut out, fixture::I16_STEREO_SPEC, fixture::I16_STEREO_BYTES)
                 .unwrap();
         assert_eq!(written, fixture::I16_STEREO_BYTES.len());
         assert_eq!(&out, fixture::I16_STEREO_BYTES);
@@ -92,20 +92,16 @@ mod encode {
     #[test]
     fn rejects_small_destination() {
         let mut out = [0u8; 4];
-        let err =
-            PcmRaw::encode_into(&mut out, fixture::I16_STEREO_SPEC, fixture::I16_STEREO_BYTES)
-                .unwrap_err();
+        let err = PcmRaw::write_into(&mut out, fixture::I16_STEREO_SPEC, fixture::I16_STEREO_BYTES)
+            .unwrap_err();
         assert_eq!(err, PcmRawError::NotEnoughSpace);
     }
     #[test]
     fn rejects_incomplete_frame() {
         let mut out = [0u8; 8];
-        let err = PcmRaw::encode_into(
-            &mut out,
-            fixture::I16_STEREO_SPEC,
-            &fixture::I16_STEREO_BYTES[..7],
-        )
-        .unwrap_err();
+        let err =
+            PcmRaw::write_into(&mut out, fixture::I16_STEREO_SPEC, &fixture::I16_STEREO_BYTES[..7])
+                .unwrap_err();
         assert_eq!(err, PcmRawError::InvalidDataLength);
     }
 }

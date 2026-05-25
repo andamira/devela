@@ -157,7 +157,7 @@ impl PcmWav {
     /// - one `fmt ` chunk,
     /// - one optional `fact` chunk for non-PCM formats,
     /// - one contiguous `data` chunk.
-    pub const fn encode_len(fmt: PcmWavFmt, data_len: usize) -> Result<usize, PcmWavError> {
+    pub const fn encoded_len(fmt: PcmWavFmt, data_len: usize) -> Result<usize, PcmWavError> {
         let fmt = match fmt.validate() {
             Ok(fmt) => fmt,
             Err(err) => return Err(err),
@@ -207,7 +207,7 @@ impl PcmWav {
     ) -> Result<usize, PcmWavError> {
         let fmt = unwrap![ok? fmt.validate()];
         let frames = unwrap![ok? fmt.frames_for_data_len(data.len())];
-        let len = unwrap![ok? Self::encode_len(fmt, data.len())];
+        let len = unwrap![ok? Self::encoded_len(fmt, data.len())];
         is! { dst.len() < len, return Err(PcmWavError::NotEnoughSpace) }
         is! { frames > u32::MAX as usize, return Err(PcmWavError::SizeOutOfRange) }
         let fmt_len = fmt.encoded_len();
@@ -243,7 +243,7 @@ impl PcmWav {
     /// Encodes a minimal PCM-family WAVE file into an allocated byte vector.
     #[cfg(feature = "alloc")]
     pub fn to_vec(fmt: PcmWavFmt, data: &[u8]) -> Result<Vec<u8>, PcmWavError> {
-        let len = Self::encode_len(fmt, data.len())?;
+        let len = Self::encoded_len(fmt, data.len())?;
         let mut out = vec_![0u8; len];
         let written = Self::encode_into(&mut out, fmt, data)?;
         debug_assert_eq!(written, len);

@@ -52,6 +52,11 @@ impl PcmSample {
             Self::F64 => 8,
         }
     }
+    /// Checks the equality of two PCM samples.
+    #[must_use]
+    pub const fn eq(self, other: Self) -> bool {
+        self as u8 == other as u8
+    }
     /// Returns whether this is an integer sample encoding.
     #[must_use]
     pub const fn is_int(self) -> bool {

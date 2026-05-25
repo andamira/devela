@@ -19,6 +19,9 @@ pub enum PcmRawError {
     /// The byte length is not a multiple of the PCM frame size.
     InvalidDataLength,
 
+    /// The PCM sample format does not match the requested operation.
+    MismatchedSampleFormat,
+
     /// The destination buffer is too small.
     NotEnoughSpace,
 
@@ -31,6 +34,9 @@ crate::impl_trait![fmt::Display+Error for PcmRawError |self, f| match self {
     Self::InvalidSpec => f.write_str("invalid raw PCM stream specification"),
     Self::InvalidDataLength => {
         f.write_str("raw PCM data length is not a multiple of frame size")
+    }
+    Self::MismatchedSampleFormat => {
+        f.write_str("PCM sample format does not match the requested operation")
     }
     Self::NotEnoughSpace => f.write_str("not enough space to write raw PCM data"),
     #[cfg(feature = "std")]

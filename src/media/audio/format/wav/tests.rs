@@ -140,7 +140,7 @@ mod encode {
     fn encodes_i16_stereo_wav() {
         let fmt = PcmWavFmt::new(PcmWav::FORMAT_PCM, 2, 44_100, 16, 0).unwrap();
         let data = b"\0\0\0\0\xFF\x7F\0\x80";
-        let len = PcmWav::encode_len(fmt, data.len()).unwrap();
+        let len = PcmWav::encoded_len(fmt, data.len()).unwrap();
         assert_eq!(len, 44 + data.len());
         let mut out = [0u8; 64];
         let written = PcmWav::encode_into(&mut out, fmt, data).unwrap();
@@ -158,7 +158,7 @@ mod encode {
     fn encodes_u8_mono_with_pad() {
         let fmt = PcmWavFmt::new(PcmWav::FORMAT_PCM, 1, 8_000, 8, 0).unwrap();
         let data = &[0x80];
-        let len = PcmWav::encode_len(fmt, data.len()).unwrap();
+        let len = PcmWav::encoded_len(fmt, data.len()).unwrap();
         assert_eq!(len, 46); // 44 bytes + 1 data byte + 1 RIFF pad byte.
         let mut out = [0u8; 64];
         let written = PcmWav::encode_into(&mut out, fmt, data).unwrap();
@@ -173,7 +173,7 @@ mod encode {
     fn encodes_f32_with_fact_chunk() {
         let fmt = PcmWavFmt::new(PcmWav::FORMAT_IEEE_FLOAT, 1, 48_000, 32, 0).unwrap();
         let data = &[0u8; 8]; // 2 mono f32 frames
-        let len = PcmWav::encode_len(fmt, data.len()).unwrap();
+        let len = PcmWav::encoded_len(fmt, data.len()).unwrap();
         assert_eq!(len, 12 + 26 + 12 + 16);
         let mut out = [0u8; 80];
         let written = PcmWav::encode_into(&mut out, fmt, data).unwrap();

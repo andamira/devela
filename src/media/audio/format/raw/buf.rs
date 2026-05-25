@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{AudioChannels, PcmRawError, PcmSample, PcmSpec};
+use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
 
 #[doc = crate::_tags!(audio data)]
 /// Raw PCM byte buffer over borrowed or owned storage.
@@ -62,6 +62,45 @@ impl<B: AsRef<[u8]>> PcmRawBuf<B> {
     #[must_use]
     pub fn has_complete_frames(&self) -> bool {
         self.spec.has_complete_frames_for_data_len(self.len())
+    }
+
+    /* decode helpers */
+
+    /// Decodes unsigned 8-bit PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_u8_into(&self, dst: &mut [u8]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_u8_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes signed 8-bit PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_i8_into(&self, dst: &mut [i8]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_i8_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes little-endian signed 16-bit PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_i16_le_into(&self, dst: &mut [i16]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_i16_le_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes little-endian signed 32-bit PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_i32_le_into(&self, dst: &mut [i32]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_i32_le_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes little-endian 32-bit floating-point PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_f32_le_into(&self, dst: &mut [f32]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_f32_le_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes little-endian 64-bit floating-point PCM samples into `dst`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_f64_le_into(&self, dst: &mut [f64]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_f64_le_into(self.bytes(), self.spec(), dst)
     }
 }
 #[rustfmt::skip]
