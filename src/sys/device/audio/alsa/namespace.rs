@@ -1,15 +1,15 @@
 // devela::sys::device::audio::alsa::namespace
 //
-//! Defines [`Alsa`], [`AlsaError`].
+//! Defines [`Alsa`].
 //
 
 use super::_raw;
+use crate::{AlsaError, AlsaPcmHandle, AudioDevice, AudioDeviceDir, AudioStreamDir};
 #[cfg(ffi_alsa··)]
 use crate::{AlsaHintList, AlsaHintValue};
-use crate::{AlsaPcmHandle, AudioDevice, AudioDeviceDir, AudioStreamDir};
 #[cfg(all(ffi_alsa··, feature = "alloc"))]
 use crate::{AudioDeviceCow, Cow, ToString, Vec};
-use crate::{CStr, Ptr, c_int};
+use crate::{CStr, Ptr};
 
 #[doc = crate::_tags!(audio linux namespace)]
 /// ALSA operations.
@@ -115,36 +115,5 @@ impl Alsa {
             }
             Ok(())
         }
-    }
-}
-
-#[doc = crate::_tags!(audio linux error)]
-/// ALSA operation error.
-#[doc = crate::_doc_location!("sys/device/audio")]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct AlsaError {
-    /// Negative ALSA/libc-style error code.
-    pub code: c_int,
-}
-#[rustfmt::skip]
-impl AlsaError {
-    /// Invalid argument.
-    ///
-    /// Matches the usual negative `EINVAL` value used by ALSA/libc-style APIs.
-    pub const INVALID_ARGUMENT: c_int = -22;
-
-    /// Creates a new ALSA error from a negative error code.
-    pub const fn new(code: c_int) -> Self {
-        Self { code }
-    }
-
-    /// Creates an invalid-argument error.
-    pub const fn invalid_argument() -> Self {
-        Self::new(Self::INVALID_ARGUMENT)
-    }
-
-    #[inline(always)]
-    pub(crate) const fn result(code: c_int) -> Result<(), AlsaError> {
-        if code < 0 { Err(AlsaError::new(code)) } else { Ok(()) }
     }
 }

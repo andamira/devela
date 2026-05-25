@@ -3,9 +3,9 @@
 //! Defines [`PcmWavError`].
 //
 
-use crate::{PcmRawError, RiffError};
 #[cfg(feature = "std")]
 use crate::{IoError, IoErrorKind};
+use crate::{PcmRawError, RiffError};
 
 crate::test_size_of![PcmWavError = 4]; // 32 bits
 

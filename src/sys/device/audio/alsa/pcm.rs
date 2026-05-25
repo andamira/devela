@@ -82,6 +82,16 @@ impl AlsaPcmHandle {
         unsafe { AlsaError::result(_raw::snd_pcm_prepare(self.raw)) }
     }
 
+    /* write */
+
+    /// Writes interleaved `u8` frames. Returns the number of frames written.
+    pub fn write_u8(&mut self, pcm: PcmBuffer<'_, u8>) -> Result<usize, AlsaError> {
+        self.write_pcm(pcm, PcmSample::U8)
+    }
+    /// Writes all requested interleaved `u8` frames.
+    pub fn write_all_u8(&mut self, pcm: PcmBuffer<'_, u8>) -> Result<(), AlsaError> {
+        self.write_all_pcm(pcm, Self::write_u8)
+    }
     /// Writes interleaved `i16` frames. Returns the number of frames written.
     pub fn write_i16(&mut self, pcm: PcmBuffer<'_, i16>) -> Result<usize, AlsaError> {
         self.write_pcm(pcm, PcmSample::I16)
@@ -89,6 +99,14 @@ impl AlsaPcmHandle {
     /// Writes all requested interleaved `i16` frames.
     pub fn write_all_i16(&mut self, pcm: PcmBuffer<'_, i16>) -> Result<(), AlsaError> {
         self.write_all_pcm(pcm, Self::write_i16)
+    }
+    /// Writes interleaved `i32` frames. Returns the number of frames written.
+    pub fn write_i32(&mut self, pcm: PcmBuffer<'_, i32>) -> Result<usize, AlsaError> {
+        self.write_pcm(pcm, PcmSample::I32)
+    }
+    /// Writes all requested interleaved `i32` frames.
+    pub fn write_all_i32(&mut self, pcm: PcmBuffer<'_, i32>) -> Result<(), AlsaError> {
+        self.write_all_pcm(pcm, Self::write_i32)
     }
     /// Writes interleaved `f32` frames. Returns the number of frames written.
     pub fn write_f32(&mut self, pcm: PcmBuffer<'_, f32>) -> Result<usize, AlsaError> {
@@ -98,6 +116,25 @@ impl AlsaPcmHandle {
     pub fn write_all_f32(&mut self, pcm: PcmBuffer<'_, f32>) -> Result<(), AlsaError> {
         self.write_all_pcm(pcm, Self::write_f32)
     }
+
+    /* read */
+
+    /// Reads interleaved `u8` frames. Returns the number of frames read.
+    pub fn read_u8(
+        &mut self,
+        data: &mut [u8],
+        channels: AudioChannels,
+    ) -> Result<usize, AlsaError> {
+        self.read_pcm(data, channels)
+    }
+    /// Reads all requested interleaved `u8` frames.
+    pub fn read_all_u8(
+        &mut self,
+        data: &mut [u8],
+        channels: AudioChannels,
+    ) -> Result<(), AlsaError> {
+        self.read_all_pcm(data, channels, Self::read_u8)
+    }
     /// Reads interleaved `i16` frames. Returns the number of frames read.
     pub fn read_i16(
         &mut self,
@@ -106,6 +143,30 @@ impl AlsaPcmHandle {
     ) -> Result<usize, AlsaError> {
         self.read_pcm(data, channels)
     }
+    /// Reads all requested interleaved `i16` frames.
+    pub fn read_all_i16(
+        &mut self,
+        data: &mut [i16],
+        channels: AudioChannels,
+    ) -> Result<(), AlsaError> {
+        self.read_all_pcm(data, channels, Self::read_i16)
+    }
+    /// Reads interleaved `i32` frames. Returns the number of frames read.
+    pub fn read_i32(
+        &mut self,
+        data: &mut [i32],
+        channels: AudioChannels,
+    ) -> Result<usize, AlsaError> {
+        self.read_pcm(data, channels)
+    }
+    /// Reads all requested interleaved `i32` frames.
+    pub fn read_all_i32(
+        &mut self,
+        data: &mut [i32],
+        channels: AudioChannels,
+    ) -> Result<(), AlsaError> {
+        self.read_all_pcm(data, channels, Self::read_i32)
+    }
     /// Reads interleaved `f32` frames. Returns the number of frames read.
     pub fn read_f32(
         &mut self,
@@ -113,6 +174,14 @@ impl AlsaPcmHandle {
         channels: AudioChannels,
     ) -> Result<usize, AlsaError> {
         self.read_pcm(data, channels)
+    }
+    /// Reads all requested interleaved `f32` frames.
+    pub fn read_all_f32(
+        &mut self,
+        data: &mut [f32],
+        channels: AudioChannels,
+    ) -> Result<(), AlsaError> {
+        self.read_all_pcm(data, channels, Self::read_f32)
     }
 
     /// Waits until queued playback frames have been played.
@@ -171,6 +240,28 @@ impl AlsaPcmHandle {
             let read = _raw::snd_pcm_readi(self.raw, data.as_mut_ptr().cast(), frames);
             self.io_result(read)
         }
+    }
+    // Reads all requested interleaved frames.
+    fn read_all_pcm<T>(
+        &mut self,
+        data: &mut [T],
+        channels: AudioChannels,
+        mut read: impl FnMut(&mut Self, &mut [T], AudioChannels) -> Result<usize, AlsaError>,
+    ) -> Result<(), AlsaError> {
+        let channel_count = channels.channels() as usize;
+        if channel_count == 0 || !data.len().is_multiple_of(channel_count) {
+            return Err(AlsaError::invalid_argument());
+        }
+        let frames = data.len() / channel_count;
+        let mut done = 0;
+        while done < frames {
+            let offset = done * channel_count;
+            let remaining = frames - done;
+            let n = read(self, &mut data[offset..], channels)?;
+            is! { n == 0 || n > remaining, return Err(AlsaError::invalid_argument()) }
+            done += n;
+        }
+        Ok(())
     }
 }
 

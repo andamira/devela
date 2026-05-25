@@ -16,12 +16,14 @@ pub(crate) mod _raw; //
 #[cfg(ffi_alsa··)]
 mod hint;
 
-mod namespace; // Alsa, AlsaError
+mod error; // AlsaError
+mod namespace; // Alsa
 mod pcm; // AlsaPcmHandle
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
+            error::*,
             namespace::*,
             pcm::*,
         };

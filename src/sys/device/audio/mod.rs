@@ -12,9 +12,9 @@
 
 mod common; // AudioDevice, AudioDeviceDir
 
-#[cfg(feature = "alsa")]
-#[cfg(not(feature = "safe_sys"))]
-crate::__doc_hide! { (ffi_alsa··)
+crate::__doc_hide! { (ffi_alsa··) // crate::__docshow! { (feature = "alsa")
+    #[cfg(feature = "alsa")]
+    #[cfg(not(feature = "safe_sys"))]
     mod alsa;
 }
 // mod pulse;
