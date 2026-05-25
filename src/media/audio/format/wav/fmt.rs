@@ -5,6 +5,8 @@
 
 use crate::{AudioChannels, PcmSample, PcmSpec, PcmWav, PcmWavError, is};
 
+crate::test_size_of![PcmWavFmt = 28]; // 224 bits
+
 #[doc = crate::_tags!(audio parser)]
 /// Parsed WAVE `fmt` chunk.
 #[doc = crate::_doc_location!("media/audio")]
@@ -13,6 +15,20 @@ use crate::{AudioChannels, PcmSample, PcmSpec, PcmWav, PcmWavError, is};
 pub struct PcmWavFmt {
     /// WAVE format code.
     pub format_tag: u16,
+    /// Effective sample format code.
+    ///
+    /// For classic PCM/float WAVE this equals [`format_tag`](Self::format_tag).
+    /// For WAVE_FORMAT_EXTENSIBLE this is resolved from the subformat GUID.
+    pub subformat_tag: u16,
+    /// Valid precision bits per sample.
+    ///
+    /// For classic WAVE this equals [`bits_per_sample`](Self::bits_per_sample).
+    /// For WAVE_FORMAT_EXTENSIBLE this may be smaller than the container size.
+    pub valid_bits_per_sample: u16,
+    /// WAVE_FORMAT_EXTENSIBLE channel mask.
+    ///
+    /// `0` means absent or unspecified.
+    pub channel_mask: u32,
     /// Number of interleaved channels.
     pub channels: u16,
     /// Samples per second.
@@ -30,12 +46,8 @@ pub struct PcmWavFmt {
     /// contains this value.
     pub extra_len: u16,
 }
+///
 impl PcmWavFmt {
-    /// The base PCM `fmt ` payload length.
-    pub const BASE_LEN: usize = 16;
-    /// The WAVEFORMATEX `fmt ` payload length with `cbSize = 0`.
-    pub const WAVEFORMATEX_EMPTY_LEN: usize = 18;
-
     /// Creates validated WAVE format metadata from a PCM stream specification.
     pub const fn from_spec(spec: PcmSpec) -> Result<Self, PcmWavError> {
         let format_tag = if spec.sample.is_float() {
@@ -64,6 +76,7 @@ impl PcmWavFmt {
     ) -> Result<Self, PcmWavError> {
         match format_tag {
             PcmWav::FORMAT_PCM | PcmWav::FORMAT_IEEE_FLOAT => {}
+            PcmWav::FORMAT_EXTENSIBLE => return Err(PcmWavError::InvalidExtensibleFormat),
             other => return Err(PcmWavError::UnsupportedFormat(other)),
         }
         is! { channels == 0, return Err(PcmWavError::UnsupportedChannelCount(channels)) }
@@ -79,20 +92,62 @@ impl PcmWavFmt {
         };
         Ok(Self {
             format_tag,
+            subformat_tag: format_tag,
             channels,
             sample_rate,
             byte_rate,
             block_align,
             bits_per_sample,
+            valid_bits_per_sample: bits_per_sample,
+            channel_mask: 0,
             extra_len,
         })
+    }
+    /// Creates validated extended WAVE format metadata.
+    pub const fn new_extensible(
+        subformat_tag: u16,
+        channels: u16,
+        sample_rate: u32,
+        bits_per_sample: u16,
+        valid_bits_per_sample: u16,
+        channel_mask: u32,
+    ) -> Result<Self, PcmWavError> {
+        match subformat_tag {
+            PcmWav::FORMAT_PCM | PcmWav::FORMAT_IEEE_FLOAT => {}
+            other => return Err(PcmWavError::UnsupportedFormat(other)),
+        }
+
+        if valid_bits_per_sample == 0 || valid_bits_per_sample > bits_per_sample {
+            return Err(PcmWavError::InvalidExtensibleFormat);
+        }
+
+        let mut fmt = match Self::new(
+            subformat_tag,
+            channels,
+            sample_rate,
+            bits_per_sample,
+            PcmWav::EXTENSIBLE_EXTRA_LEN,
+        ) {
+            Ok(fmt) => fmt,
+            Err(err) => return Err(err),
+        };
+
+        fmt.format_tag = PcmWav::FORMAT_EXTENSIBLE;
+        fmt.subformat_tag = subformat_tag;
+        fmt.valid_bits_per_sample = valid_bits_per_sample;
+        fmt.channel_mask = channel_mask;
+        fmt.extra_len = PcmWav::EXTENSIBLE_EXTRA_LEN;
+
+        Ok(fmt)
     }
     /// Returns the encoded `fmt ` chunk payload length.
     ///
     /// PCM is written as the classic 16-byte `fmt ` form.
     /// IEEE float is written as WAVEFORMATEX with `cbSize = 0`.
     pub const fn encoded_len(self) -> usize {
-        if self.format_tag == PcmWav::FORMAT_PCM && self.extra_len == 0 {
+        if self.format_tag == PcmWav::FORMAT_EXTENSIBLE {
+            PcmWav::EXTENSIBLE_LEN
+        } else if self.format_tag == PcmWav::FORMAT_PCM && self.extra_len == 0 {
             Self::BASE_LEN
         } else {
             Self::WAVEFORMATEX_EMPTY_LEN + self.extra_len as usize
@@ -101,7 +156,7 @@ impl PcmWavFmt {
     /// Returns whether this format should be accompanied by a `fact` chunk.
     #[must_use]
     pub const fn needs_fact(self) -> bool {
-        self.format_tag != PcmWav::FORMAT_PCM
+        self.subformat_tag != PcmWav::FORMAT_PCM
     }
     /// Returns the number of frames in `data_len`, if frame-aligned.
     pub const fn frames_for_data_len(self, data_len: usize) -> Result<usize, PcmWavError> {
@@ -117,11 +172,32 @@ impl PcmWavFmt {
     /// Validates this format against its derived fields.
     pub const fn validate(self) -> Result<Self, PcmWavError> {
         is![self.channels == 0, return Err(PcmWavError::UnsupportedChannelCount(self.channels))];
-        let bytes_per_sample = match PcmWav::bytes_per_sample(self.format_tag, self.bits_per_sample)
-        {
-            Ok(bytes) => bytes,
-            Err(err) => return Err(err),
-        };
+        match self.format_tag {
+            PcmWav::FORMAT_PCM | PcmWav::FORMAT_IEEE_FLOAT => {
+                if self.subformat_tag != self.format_tag {
+                    return Err(PcmWavError::InvalidExtensibleFormat);
+                }
+                if self.valid_bits_per_sample != self.bits_per_sample {
+                    return Err(PcmWavError::InvalidExtensibleFormat);
+                }
+            }
+            PcmWav::FORMAT_EXTENSIBLE => {
+                if self.extra_len < PcmWav::EXTENSIBLE_EXTRA_LEN {
+                    return Err(PcmWavError::InvalidExtensibleFormat);
+                }
+                if self.valid_bits_per_sample == 0
+                    || self.valid_bits_per_sample > self.bits_per_sample
+                {
+                    return Err(PcmWavError::InvalidExtensibleFormat);
+                }
+            }
+            other => return Err(PcmWavError::UnsupportedFormat(other)),
+        }
+        let bytes_per_sample =
+            match PcmWav::bytes_per_sample(self.subformat_tag, self.bits_per_sample) {
+                Ok(bytes) => bytes,
+                Err(err) => return Err(err),
+            };
         let Some(expected_align) = self.channels.checked_mul(bytes_per_sample) else {
             return Err(PcmWavError::InvalidBlockAlign);
         };
@@ -136,7 +212,7 @@ impl PcmWavFmt {
     }
     /// Maps this WAVE format metadata to current [`PcmSpec`] metadata when unambiguous.
     pub const fn spec(self) -> Result<PcmSpec, PcmWavError> {
-        let sample = match (self.format_tag, self.bits_per_sample) {
+        let sample = match (self.subformat_tag, self.bits_per_sample) {
             (PcmWav::FORMAT_PCM, 8) => PcmSample::U8,
             (PcmWav::FORMAT_PCM, 16) => PcmSample::I16,
             (PcmWav::FORMAT_PCM, 24) => PcmSample::I24,
@@ -152,4 +228,11 @@ impl PcmWavFmt {
         };
         Ok(PcmSpec::new(sample, channels, self.sample_rate))
     }
+}
+/// # Constants
+impl PcmWavFmt {
+    /// The base PCM `fmt ` payload length.
+    pub const BASE_LEN: usize = 16;
+    /// The WAVEFORMATEX `fmt ` payload length with `cbSize = 0`.
+    pub const WAVEFORMATEX_EMPTY_LEN: usize = 18;
 }

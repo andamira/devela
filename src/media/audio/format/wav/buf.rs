@@ -7,9 +7,9 @@
 use crate::Vec;
 use crate::{PcmRawBuf, PcmSpec, PcmWavError, PcmWavFmt, Riff, RiffChunkIter};
 
-crate::test_size_of![PcmWavBuf_Slice: PcmWavBuf<&[u8]> = 56]; // 448 bits
+crate::test_size_of![PcmWavBuf_Slice: PcmWavBuf<&[u8]> = 64]; // 512 bits
 #[cfg(feature = "alloc")]
-crate::test_size_of![PcmWavBuf_Vec: PcmWavBuf<Vec<u8>> = 64]; // 512 bits
+crate::test_size_of![PcmWavBuf_Vec: PcmWavBuf<Vec<u8>> = 72]; // 576 bits
 
 #[doc = crate::_tags!(audio data)]
 /// Parsed WAVE byte buffer over borrowed or owned storage.

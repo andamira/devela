@@ -3,7 +3,7 @@
 //! Defines [`PcmWavError`].
 //
 
-use crate::RiffError;
+use crate::{PcmRawError, RiffError};
 #[cfg(feature = "std")]
 use crate::{IoError, IoErrorKind};
 
@@ -14,6 +14,9 @@ crate::test_size_of![PcmWavError = 4]; // 32 bits
 #[doc = crate::_doc_location!("media/audio")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum PcmWavError {
+    /// Raw PCM byte/sample conversion failed.
+    Raw(PcmRawError),
+
     /// RIFF-level parsing failed.
     Riff(RiffError),
 
@@ -59,11 +62,18 @@ pub enum PcmWavError {
     /// The WAVE format metadata cannot be represented by the current writer.
     UnsupportedEncoding,
 
+    /// The WAVE extensible `fmt` extension is malformed.
+    InvalidExtensibleFormat,
+
+    /// The WAVE extensible subformat GUID is not supported.
+    UnsupportedSubformat,
+
     /// Reading the file failed.
     #[cfg(feature = "std")]
     Io(IoErrorKind),
 }
 crate::impl_trait![fmt::Display+Error for PcmWavError |self, f| match self {
+    Self::Raw(err) => write!(f, "raw PCM operation failed: {err}"),
     Self::Riff(err) => write!(f, "RIFF parsing failed: {err}"),
     Self::NotWave => f.write_str("RIFF form type is not `WAVE`"),
     Self::MissingFmt => f.write_str("missing required `fmt` chunk"),
@@ -79,9 +89,16 @@ crate::impl_trait![fmt::Display+Error for PcmWavError |self, f| match self {
     Self::NotEnoughSpace => f.write_str("not enough space to write WAVE data"),
     Self::SizeOutOfRange => f.write_str("encoded WAVE data exceeds RIFF size limits"),
     Self::UnsupportedEncoding => f.write_str("unsupported WAVE encoding"),
+    Self::InvalidExtensibleFormat => f.write_str("invalid WAVE extensible format"),
+    Self::UnsupportedSubformat => f.write_str("unsupported WAVE extensible subformat"),
     #[cfg(feature = "std")]
     Self::Io(err) => write!(f, "WAVE file read failed.: {err}"),
 }];
+impl From<PcmRawError> for PcmWavError {
+    fn from(err: PcmRawError) -> Self {
+        Self::Raw(err)
+    }
+}
 impl From<RiffError> for PcmWavError {
     fn from(err: RiffError) -> Self {
         Self::Riff(err)

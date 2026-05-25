@@ -9,7 +9,7 @@ use crate::Vec;
 use crate::{Fs, Path};
 use crate::{PcmRawBuf, PcmRawError, PcmSample, PcmSpec, is, read_at, whilst, write_at};
 
-#[doc = crate::_tags!(audio)]
+#[doc = crate::_tags!(audio codec)]
 /// Headerless raw PCM operations.
 #[doc = crate::_doc_location!("media/audio")]
 ///
@@ -47,6 +47,8 @@ use crate::{PcmRawBuf, PcmRawError, PcmSample, PcmSpec, is, read_at, whilst, wri
 /// ```
 #[derive(Debug)]
 pub struct PcmRaw;
+
+/// # Parsing
 impl PcmRaw {
     /// Creates a borrowed raw PCM byte buffer from caller-provided metadata.
     ///
@@ -57,10 +59,6 @@ impl PcmRaw {
             return Err(PcmRawError::InvalidDataLength);
         }
         Ok(PcmRawBuf::_new(bytes, spec))
-    }
-    /// Alias for parser-style use from format modules.
-    pub const fn decode(bytes: &[u8], spec: PcmSpec) -> Result<PcmRawBuf<&[u8]>, PcmRawError> {
-        Self::from_bytes(bytes, spec)
     }
     /// Creates an owned raw PCM byte buffer from caller-provided metadata.
     #[cfg(feature = "alloc")]
@@ -76,49 +74,8 @@ impl PcmRaw {
     ) -> Result<PcmRawBuf<Vec<u8>>, PcmRawError> {
         Self::from_vec(Fs::read(path)?, spec)
     }
-    /// Returns the encoded raw PCM byte length.
-    ///
-    /// For raw PCM this is exactly the payload length, after validating that it
-    /// contains complete frames for `spec`.
-    pub const fn written_len(spec: PcmSpec, data_len: usize) -> Result<usize, PcmRawError> {
-        is! { !spec.is_valid(), return Err(PcmRawError::InvalidSpec) }
-        if spec.frames_for_data_len(data_len).is_none() {
-            return Err(PcmRawError::InvalidDataLength);
-        }
-        Ok(data_len)
-    }
-    /// Writes raw PCM bytes into `dst`.
-    ///
-    /// This does not transform endianness or sample representation. It copies the
-    /// given raw byte stream as-is after validating its frame shape.
-    pub const fn write_into(
-        dst: &mut [u8],
-        spec: PcmSpec,
-        data: &[u8],
-    ) -> Result<usize, PcmRawError> {
-        let len = match Self::written_len(spec, data.len()) {
-            Ok(len) => len,
-            Err(err) => return Err(err),
-        };
-        is! { dst.len() < len, return Err(PcmRawError::NotEnoughSpace) }
-        whilst! { i in 0..data.len(); { dst[i] = data[i]; }}
-        Ok(len)
-    }
-    /// Copies raw PCM bytes into an allocated vector.
-    #[cfg(feature = "alloc")]
-    pub fn to_vec(spec: PcmSpec, data: &[u8]) -> Result<Vec<u8>, PcmRawError> {
-        Self::written_len(spec, data.len())?;
-        Ok(data.to_vec())
-    }
-    /// Writes raw PCM bytes to a file.
-    #[cfg(feature = "std")]
-    pub fn to_file<P: AsRef<Path>>(path: P, spec: PcmSpec, data: &[u8]) -> Result<(), PcmRawError> {
-        Self::written_len(spec, data.len())?;
-        Fs::write(path, data)?;
-        Ok(())
-    }
-}
-impl PcmRaw {
+    /* typed decoding */
+
     /// Checks a typed decode operation and returns the sample count.
     const fn check_decode(
         bytes: &[u8],
@@ -136,32 +93,6 @@ impl PcmRaw {
         is! { dst_samples < samples, return Err(E::NotEnoughSpace) }
         Ok(samples)
     }
-    /// Checks a typed encode operation and returns the byte count.
-    const fn check_encode(
-        dst_len: usize,
-        spec: PcmSpec,
-        expected: PcmSample,
-        sample_bytes: usize,
-        sample_len: usize,
-    ) -> Result<usize, PcmRawError> {
-        use PcmRawError as E;
-        is! { !spec.is_valid(), return Err(E::InvalidSpec) }
-        is! { !spec.sample.eq(expected), return Err(E::MismatchedSampleFormat) }
-        let channels = spec.channel_count() as usize;
-        if channels == 0 || !sample_len.is_multiple_of(channels) {
-            return Err(E::InvalidDataLength);
-        }
-        let Some(bytes_len) = sample_len.checked_mul(sample_bytes) else {
-            return Err(E::InvalidDataLength);
-        };
-        is! { spec.frames_for_data_len(bytes_len).is_none(), return Err(E::InvalidDataLength) }
-        is! { dst_len < bytes_len,return Err(E::NotEnoughSpace) }
-        Ok(bytes_len)
-    }
-}
-
-// Decode bodies
-impl PcmRaw {
     /// Decodes unsigned 8-bit PCM samples into `dst`.
     ///
     /// Returns the number of samples written.
@@ -295,8 +226,73 @@ impl PcmRaw {
         }
     }
 }
-// Encode bodies
+/// # Writing
 impl PcmRaw {
+    /// Returns the encoded raw PCM byte length.
+    ///
+    /// For raw PCM this is exactly the payload length, after validating that it
+    /// contains complete frames for `spec`.
+    pub const fn written_len(spec: PcmSpec, data_len: usize) -> Result<usize, PcmRawError> {
+        is! { !spec.is_valid(), return Err(PcmRawError::InvalidSpec) }
+        if spec.frames_for_data_len(data_len).is_none() {
+            return Err(PcmRawError::InvalidDataLength);
+        }
+        Ok(data_len)
+    }
+    /// Writes raw PCM bytes into `dst`.
+    ///
+    /// This does not transform endianness or sample representation. It copies the
+    /// given raw byte stream as-is after validating its frame shape.
+    pub const fn write_into(
+        dst: &mut [u8],
+        spec: PcmSpec,
+        data: &[u8],
+    ) -> Result<usize, PcmRawError> {
+        let len = match Self::written_len(spec, data.len()) {
+            Ok(len) => len,
+            Err(err) => return Err(err),
+        };
+        is! { dst.len() < len, return Err(PcmRawError::NotEnoughSpace) }
+        whilst! { i in 0..data.len(); { dst[i] = data[i]; }}
+        Ok(len)
+    }
+    /// Copies raw PCM bytes into an allocated vector.
+    #[cfg(feature = "alloc")]
+    pub fn to_vec(spec: PcmSpec, data: &[u8]) -> Result<Vec<u8>, PcmRawError> {
+        Self::written_len(spec, data.len())?;
+        Ok(data.to_vec())
+    }
+    /// Writes raw PCM bytes to a file.
+    #[cfg(feature = "std")]
+    pub fn to_file<P: AsRef<Path>>(path: P, spec: PcmSpec, data: &[u8]) -> Result<(), PcmRawError> {
+        Self::written_len(spec, data.len())?;
+        Fs::write(path, data)?;
+        Ok(())
+    }
+    /* typed encoding */
+
+    /// Checks a typed encode operation and returns the byte count.
+    const fn check_encode(
+        dst_len: usize,
+        spec: PcmSpec,
+        expected: PcmSample,
+        sample_bytes: usize,
+        sample_len: usize,
+    ) -> Result<usize, PcmRawError> {
+        use PcmRawError as E;
+        is! { !spec.is_valid(), return Err(E::InvalidSpec) }
+        is! { !spec.sample.eq(expected), return Err(E::MismatchedSampleFormat) }
+        let channels = spec.channel_count() as usize;
+        if channels == 0 || !sample_len.is_multiple_of(channels) {
+            return Err(E::InvalidDataLength);
+        }
+        let Some(bytes_len) = sample_len.checked_mul(sample_bytes) else {
+            return Err(E::InvalidDataLength);
+        };
+        is! { spec.frames_for_data_len(bytes_len).is_none(), return Err(E::InvalidDataLength) }
+        is! { dst_len < bytes_len,return Err(E::NotEnoughSpace) }
+        Ok(bytes_len)
+    }
     /// Encodes unsigned 8-bit PCM samples into `dst`.
     ///
     /// Returns the number of bytes written.
@@ -313,7 +309,6 @@ impl PcmRaw {
             Err(err) => Err(err),
         }
     }
-
     /// Encodes signed 8-bit PCM samples into `dst`.
     ///
     /// Returns the number of bytes written.
@@ -330,7 +325,6 @@ impl PcmRaw {
             Err(err) => Err(err),
         }
     }
-
     /// Encodes signed 16-bit PCM samples as little-endian bytes into `dst`.
     ///
     /// Returns the number of bytes written.
