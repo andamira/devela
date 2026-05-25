@@ -61,6 +61,7 @@ mod fixture {
 mod expect {
     use super::*;
 
+    #[cfg(feature = "alloc")]
     pub(super) fn i16_stereo_44k<B: AsRef<[u8]>>(wav: &PcmWavBuf<B>) {
         assert_eq!(wav.fmt().format_tag, PcmWav::FORMAT_PCM);
         assert_eq!(wav.fmt().channels, 2);

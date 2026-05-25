@@ -7,12 +7,20 @@
 use crate::Vec;
 use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
 
+crate::test_size_of![PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24]; // 192 bits
+#[cfg(feature = "alloc")]
+crate::test_size_of![PcmRawBuf_Vec: PcmRawBuf<Vec<u8>> = 32]; // 256 bits
+
 #[doc = crate::_tags!(audio data)]
 /// Raw PCM byte buffer over borrowed or owned storage.
 #[doc = crate::_doc_location!("media/audio")]
 ///
 /// Raw PCM contains no header and no embedded metadata. The caller must provide
 /// the [`PcmSpec`] that describes the byte stream.
+///
+/// This is a validated pairing of raw interleaved PCM bytes and a [`PcmSpec`].
+/// It does not own typed samples. Typed materialization is explicit through
+/// [`PcmRaw`] decode helpers.
 ///
 /// The storage type decides ownership:
 /// - `PcmRawBuf<&[u8]>` borrows existing raw PCM bytes.
@@ -83,6 +91,14 @@ impl<B: AsRef<[u8]>> PcmRawBuf<B> {
     /// Returns the number of samples written.
     pub fn decode_i16_le_into(&self, dst: &mut [i16]) -> Result<usize, PcmRawError> {
         PcmRaw::decode_i16_le_into(self.bytes(), self.spec(), dst)
+    }
+    /// Decodes little-endian signed 24-bit PCM samples into `dst`.
+    ///
+    /// Samples are sign-extended into `i32`.
+    ///
+    /// Returns the number of samples written.
+    pub fn decode_i24_le_into(&self, dst: &mut [i32]) -> Result<usize, PcmRawError> {
+        PcmRaw::decode_i24_le_into(self.bytes(), self.spec(), dst)
     }
     /// Decodes little-endian signed 32-bit PCM samples into `dst`.
     ///

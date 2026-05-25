@@ -7,11 +7,44 @@
 use crate::Vec;
 #[cfg(feature = "std")]
 use crate::{Fs, Path};
-use crate::{PcmRawBuf, PcmRawError, PcmSample, PcmSpec, is, whilst};
+use crate::{PcmRawBuf, PcmRawError, PcmSample, PcmSpec, is, read_at, whilst, write_at};
 
 #[doc = crate::_tags!(audio)]
 /// Headerless raw PCM operations.
 #[doc = crate::_doc_location!("media/audio")]
+///
+/// Raw PCM has no embedded metadata. Callers must provide a [`PcmSpec`]
+/// describing the byte stream.
+///
+/// This namespace separates three operations:
+/// - [`from_bytes`](Self::from_bytes) binds raw bytes to a caller-provided spec.
+/// - [`write_into`](Self::write_into) copies already-encoded raw PCM bytes.
+/// - `decode_*` / `encode_*` convert between raw PCM bytes and typed samples.
+///
+/// # Examples
+/// ```rust
+/// use devela::{AudioChannels, PcmRaw, PcmSample, PcmSpec};
+///
+/// let spec = PcmSpec::new(PcmSample::I16, AudioChannels::Stereo, 44_100);
+/// let bytes = b"\0\0\0\0\xFF\x7F\0\x80";
+///
+/// let raw = PcmRaw::from_bytes(bytes, spec)?;
+/// assert_eq!(raw.frames()?, 2);
+///
+/// let mut samples = [0i16; 4];
+/// let count = raw.decode_i16_le_into(&mut samples)?;
+///
+/// assert_eq!(count, 4);
+/// assert_eq!(samples, [0, 0, 32767, -32768]);
+///
+/// let mut encoded = [0u8; 8];
+/// let written = PcmRaw::encode_i16_le_into(&mut encoded, spec, &samples)?;
+///
+/// assert_eq!(written, bytes.len());
+/// assert_eq!(&encoded, bytes);
+///
+/// # Ok::<(), devela::PcmRawError>(())
+/// ```
 #[derive(Debug)]
 pub struct PcmRaw;
 impl PcmRaw {
@@ -171,10 +204,33 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_decode(bytes, spec, PcmSample::I16, 2, dst.len()) {
             Ok(samples) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples; {
-                    dst[i] = i16::from_le_bytes([bytes[o], bytes[o + 1]]);
-                    o += 2;
+                    dst[i] = i16::from_le_bytes(read_at![bytes, +=offset, @2]);
+                }}
+                Ok(samples)
+            }
+            Err(err) => Err(err),
+        }
+    }
+    /// Decodes little-endian signed 24-bit PCM samples into `dst`.
+    ///
+    /// Samples are sign-extended into `i32`.
+    ///
+    /// Returns the number of samples written.
+    pub const fn decode_i24_le_into(
+        bytes: &[u8],
+        spec: PcmSpec,
+        dst: &mut [i32],
+    ) -> Result<usize, PcmRawError> {
+        match Self::check_decode(bytes, spec, PcmSample::I24, 3, dst.len()) {
+            Ok(samples) => {
+                let mut offset = 0;
+                whilst! { i in 0..samples; {
+                    let b = read_at![bytes, +=offset, @3];
+                    let unsigned = (b[0] as i32) | ((b[1] as i32) << 8) | ((b[2] as i32) << 16);
+                    // sign-extend bit 23 into bits 24..31
+                    dst[i] = is![unsigned & 0x0080_0000 != 0, unsigned | !0x00FF_FFFF, unsigned];
                 }}
                 Ok(samples)
             }
@@ -191,15 +247,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_decode(bytes, spec, PcmSample::I32, 4, dst.len()) {
             Ok(samples) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples; {
-                    dst[i] = i32::from_le_bytes([
-                        bytes[o],
-                        bytes[o + 1],
-                        bytes[o + 2],
-                        bytes[o + 3],
-                    ]);
-                    o += 4;
+                    dst[i] = i32::from_le_bytes(read_at![bytes, +=offset, @4]);
                 }}
                 Ok(samples)
             }
@@ -216,16 +266,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_decode(bytes, spec, PcmSample::F32, 4, dst.len()) {
             Ok(samples) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples; {
-                    let bits = u32::from_le_bytes([
-                        bytes[o],
-                        bytes[o + 1],
-                        bytes[o + 2],
-                        bytes[o + 3],
-                    ]);
-                    dst[i] = f32::from_bits(bits);
-                    o += 4;
+                    dst[i] = f32::from_bits(u32::from_le_bytes(read_at![bytes, +=offset, @4]));
                 }}
                 Ok(samples)
             }
@@ -242,20 +285,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_decode(bytes, spec, PcmSample::F64, 8, dst.len()) {
             Ok(samples) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples; {
-                    let bits = u64::from_le_bytes([
-                        bytes[o],
-                        bytes[o + 1],
-                        bytes[o + 2],
-                        bytes[o + 3],
-                        bytes[o + 4],
-                        bytes[o + 5],
-                        bytes[o + 6],
-                        bytes[o + 7],
-                    ]);
-                    dst[i] = f64::from_bits(bits);
-                    o += 8;
+                    dst[i] = f64::from_bits(u64::from_le_bytes(read_at![bytes, +=offset, @8]));
                 }}
                 Ok(samples)
             }
@@ -309,19 +341,42 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_encode(dst.len(), spec, PcmSample::I16, 2, samples.len()) {
             Ok(bytes_len) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples.len(); {
-                    let b = samples[i].to_le_bytes();
-                    dst[o] = b[0];
-                    dst[o + 1] = b[1];
-                    o += 2;
+                    write_at![dst, +=offset, @2 samples[i].to_le_bytes()];
                 }}
                 Ok(bytes_len)
             }
             Err(err) => Err(err),
         }
     }
-
+    /// Encodes signed 24-bit PCM samples as little-endian bytes into `dst`.
+    ///
+    /// Input samples must fit the signed 24-bit range:
+    /// `-8_388_608..=8_388_607`.
+    ///
+    /// Returns the number of bytes written.
+    pub const fn encode_i24_le_into(
+        dst: &mut [u8],
+        spec: PcmSpec,
+        samples: &[i32],
+    ) -> Result<usize, PcmRawError> {
+        match Self::check_encode(dst.len(), spec, PcmSample::I24, 3, samples.len()) {
+            Ok(bytes_len) => {
+                let mut offset = 0;
+                whilst! { i in 0..samples.len(); {
+                    let sample = samples[i];
+                    if sample < -8_388_608 || sample > 8_388_607 {
+                        return Err(PcmRawError::SampleOutOfRange);
+                    }
+                    // low 24 bits, two's-complement little-endian
+                    write_at![dst, +=offset, @3 sample.to_le_bytes()];
+                }}
+                Ok(bytes_len)
+            }
+            Err(err) => Err(err),
+        }
+    }
     /// Encodes signed 32-bit PCM samples as little-endian bytes into `dst`.
     ///
     /// Returns the number of bytes written.
@@ -332,14 +387,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_encode(dst.len(), spec, PcmSample::I32, 4, samples.len()) {
             Ok(bytes_len) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples.len(); {
-                    let b = samples[i].to_le_bytes();
-                    dst[o] = b[0];
-                    dst[o + 1] = b[1];
-                    dst[o + 2] = b[2];
-                    dst[o + 3] = b[3];
-                    o += 4;
+                    write_at![dst, +=offset, @4 samples[i].to_le_bytes()];
                 }}
                 Ok(bytes_len)
             }
@@ -356,14 +406,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_encode(dst.len(), spec, PcmSample::F32, 4, samples.len()) {
             Ok(bytes_len) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples.len(); {
-                    let b = samples[i].to_bits().to_le_bytes();
-                    dst[o] = b[0];
-                    dst[o + 1] = b[1];
-                    dst[o + 2] = b[2];
-                    dst[o + 3] = b[3];
-                    o += 4;
+                    write_at![dst, +=offset, @4 samples[i].to_bits().to_le_bytes()];
                 }}
                 Ok(bytes_len)
             }
@@ -380,18 +425,9 @@ impl PcmRaw {
     ) -> Result<usize, PcmRawError> {
         match Self::check_encode(dst.len(), spec, PcmSample::F64, 8, samples.len()) {
             Ok(bytes_len) => {
-                let mut o = 0;
+                let mut offset = 0;
                 whilst! { i in 0..samples.len(); {
-                    let b = samples[i].to_bits().to_le_bytes();
-                    dst[o] = b[0];
-                    dst[o + 1] = b[1];
-                    dst[o + 2] = b[2];
-                    dst[o + 3] = b[3];
-                    dst[o + 4] = b[4];
-                    dst[o + 5] = b[5];
-                    dst[o + 6] = b[6];
-                    dst[o + 7] = b[7];
-                    o += 8;
+                    write_at![dst, +=offset, @8 samples[i].to_bits().to_le_bytes()];
                 }}
                 Ok(bytes_len)
             }

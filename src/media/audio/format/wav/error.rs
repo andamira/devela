@@ -7,6 +7,8 @@ use crate::RiffError;
 #[cfg(feature = "std")]
 use crate::{IoError, IoErrorKind};
 
+crate::test_size_of![PcmWavError = 4]; // 32 bits
+
 #[doc = crate::_tags!(audio error)]
 /// WAVE encoding and decoding error.
 #[doc = crate::_doc_location!("media/audio")]

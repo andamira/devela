@@ -7,7 +7,9 @@
 use crate::{Fs, Path};
 #[cfg(feature = "alloc")]
 use crate::{PcmSpec, Vec, vec_};
-use crate::{PcmWavBuf, PcmWavError, PcmWavFmt, Riff, is, slice, unwrap, whilst};
+use crate::{
+    PcmWavBuf, PcmWavError, PcmWavFmt, Riff, is, read_at, slice, unwrap, whilst, write_at,
+};
 
 #[doc = crate::_tags!(audio parser)]
 /// WAVE operations for PCM-family audio.
@@ -51,17 +53,18 @@ impl PcmWav {
     pub const fn parse_fmt(bytes: &[u8]) -> Result<PcmWavFmt, PcmWavError> {
         is! { bytes.len() < PcmWavFmt::BASE_LEN, return Err(PcmWavError::TruncatedFmt) }
         let extra_len = if bytes.len() >= PcmWavFmt::WAVEFORMATEX_EMPTY_LEN {
-            read_u16_le(bytes, 16)
+            u16::from_le_bytes(read_at![bytes, 16, @2])
         } else {
             0
         };
+        // let mut offset = 0;
         let fmt = PcmWavFmt {
-            format_tag: read_u16_le(bytes, 0),
-            channels: read_u16_le(bytes, 2),
-            sample_rate: read_u32_le(bytes, 4),
-            byte_rate: read_u32_le(bytes, 8),
-            block_align: read_u16_le(bytes, 12),
-            bits_per_sample: read_u16_le(bytes, 14),
+            format_tag: u16::from_le_bytes(read_at![bytes, 0, @2]),
+            channels: u16::from_le_bytes(read_at![bytes, 2, @2]),
+            sample_rate: u32::from_le_bytes(read_at![bytes, 4, @4]),
+            byte_rate: u32::from_le_bytes(read_at![bytes, 8, @4]),
+            block_align: u16::from_le_bytes(read_at![bytes, 12, @2]),
+            bits_per_sample: u16::from_le_bytes(read_at![bytes, 14, @2]),
             extra_len,
         };
         fmt.validate()
@@ -205,24 +208,24 @@ impl PcmWav {
         fmt: PcmWavFmt,
         data: &[u8],
     ) -> Result<usize, PcmWavError> {
+        use PcmWavError as E;
         let fmt = unwrap![ok? fmt.validate()];
         let frames = unwrap![ok? fmt.frames_for_data_len(data.len())];
         let len = unwrap![ok? Self::encoded_len(fmt, data.len())];
-        is! { dst.len() < len, return Err(PcmWavError::NotEnoughSpace) }
-        is! { frames > u32::MAX as usize, return Err(PcmWavError::SizeOutOfRange) }
+        is! { dst.len() < len, return Err(E::NotEnoughSpace) }
+        is! { frames > u32::MAX as usize, return Err(E::SizeOutOfRange) }
         let fmt_len = fmt.encoded_len();
-        let fmt_chunk_len = unwrap![some_ok_or? Riff::chunk_len(fmt_len), PcmWavError::Overflow];
+        let fmt_chunk_len = unwrap![some_ok_or? Riff::chunk_len(fmt_len), E::Overflow];
         let fact_chunk_len = if fmt.needs_fact() {
-            unwrap![some_ok_or? Riff::chunk_len(4), PcmWavError::Overflow]
+            unwrap![some_ok_or? Riff::chunk_len(4), E::Overflow]
         } else {
             0
         };
-        let data_chunk_len =
-            unwrap![some_ok_or? Riff::chunk_len(data.len()), PcmWavError::Overflow];
+        let data_chunk_len = unwrap![some_ok_or? Riff::chunk_len(data.len()), E::Overflow];
         let subchunks_len = unwrap![some_ok_or?
-            fmt_chunk_len.checked_add(fact_chunk_len), PcmWavError::Overflow];
+            fmt_chunk_len.checked_add(fact_chunk_len), E::Overflow];
         let subchunks_len = unwrap![some_ok_or?
-            subchunks_len.checked_add(data_chunk_len), PcmWavError::Overflow];
+            subchunks_len.checked_add(data_chunk_len), E::Overflow];
         let mut offset = unwrap![ok_err_map?
             Riff::write_form_header(dst, Riff::WAVE, subchunks_len), |e|e.to_wav()];
         offset += unwrap! { ok_err_map? Riff::write_chunk_header(slice![mut dst, offset,..],
@@ -293,13 +296,6 @@ struct PcmWavParts {
     data_offset: usize,
     data_len: usize,
 }
-
-const fn read_u16_le(bytes: &[u8], offset: usize) -> u16 {
-    u16::from_le_bytes([bytes[offset], bytes[offset + 1]])
-}
-const fn read_u32_le(bytes: &[u8], offset: usize) -> u32 {
-    u32::from_le_bytes([bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3]])
-}
 const fn write_bytes(dst: &mut [u8], src: &[u8]) -> Result<usize, PcmWavError> {
     is! { dst.len() < src.len(), return Err(PcmWavError::NotEnoughSpace) }
     whilst! { i in 0..src.len(); { dst[i] = src[i]; }}
@@ -307,17 +303,11 @@ const fn write_bytes(dst: &mut [u8], src: &[u8]) -> Result<usize, PcmWavError> {
 }
 const fn write_u16_le(dst: &mut [u8], value: u16) -> Result<usize, PcmWavError> {
     is! { dst.len() < 2, return Err(PcmWavError::NotEnoughSpace) }
-    let bytes = value.to_le_bytes();
-    dst[0] = bytes[0];
-    dst[1] = bytes[1];
+    write_at![dst, 0, @2 value.to_le_bytes()];
     Ok(2)
 }
 const fn write_u32_le(dst: &mut [u8], value: u32) -> Result<usize, PcmWavError> {
     is! { dst.len() < 4, return Err(PcmWavError::NotEnoughSpace) }
-    let bytes = value.to_le_bytes();
-    dst[0] = bytes[0];
-    dst[1] = bytes[1];
-    dst[2] = bytes[2];
-    dst[3] = bytes[3];
+    write_at![dst, 0, @4 value.to_le_bytes()];
     Ok(4)
 }
