@@ -50,7 +50,8 @@ impl PcmWavFmt {
             spec.channel_count() as u16,
             spec.sample_rate,
             spec.sample.bits() as u16,
-            if format_tag == PcmWav::FORMAT_IEEE_FLOAT { 0 } else { 0 },
+            0, // TEMP
+               // if format_tag == PcmWav::FORMAT_IEEE_FLOAT { 0 } else { 0 }, // IMPROVE
         )
     }
     /// Creates validated WAVE format metadata.
@@ -104,9 +105,14 @@ impl PcmWavFmt {
     }
     /// Returns the number of frames in `data_len`, if frame-aligned.
     pub const fn frames_for_data_len(self, data_len: usize) -> Result<usize, PcmWavError> {
-        is![self.block_align == 0, return Err(PcmWavError::InvalidBlockAlign)];
-        is![data_len % self.block_align as usize != 0, return Err(PcmWavError::InvalidDataLength)];
-        Ok(data_len / self.block_align as usize)
+        let spec = match self.spec() {
+            Ok(spec) => spec,
+            Err(err) => return Err(err),
+        };
+        match spec.frames_for_data_len(data_len) {
+            Some(frames) => Ok(frames),
+            None => Err(PcmWavError::InvalidDataLength),
+        }
     }
     /// Validates this format against its derived fields.
     pub const fn validate(self) -> Result<Self, PcmWavError> {
@@ -116,16 +122,14 @@ impl PcmWavFmt {
             Ok(bytes) => bytes,
             Err(err) => return Err(err),
         };
-        let expected_align = match self.channels.checked_mul(bytes_per_sample) {
-            Some(v) => v,
-            None => return Err(PcmWavError::InvalidBlockAlign),
+        let Some(expected_align) = self.channels.checked_mul(bytes_per_sample) else {
+            return Err(PcmWavError::InvalidBlockAlign);
         };
         if self.block_align != expected_align {
             return Err(PcmWavError::InvalidBlockAlign);
         }
-        let expected_rate = match self.sample_rate.checked_mul(self.block_align as u32) {
-            Some(v) => v,
-            None => return Err(PcmWavError::InvalidByteRate),
+        let Some(expected_rate) = self.sample_rate.checked_mul(self.block_align as u32) else {
+            return Err(PcmWavError::InvalidByteRate);
         };
         is![self.byte_rate != expected_rate, return Err(PcmWavError::InvalidByteRate)];
         Ok(self)

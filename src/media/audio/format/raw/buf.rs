@@ -1,0 +1,99 @@
+// devela::media::audio::format::raw::buf
+//
+//! Defines [`PcmRawBuf`].
+//
+
+#[cfg(feature = "alloc")]
+use crate::Vec;
+use crate::{AudioChannels, PcmRawError, PcmSample, PcmSpec};
+
+#[doc = crate::_tags!(audio data)]
+/// Raw PCM byte buffer over borrowed or owned storage.
+#[doc = crate::_doc_location!("media/audio")]
+///
+/// Raw PCM contains no header and no embedded metadata. The caller must provide
+/// the [`PcmSpec`] that describes the byte stream.
+///
+/// The storage type decides ownership:
+/// - `PcmRawBuf<&[u8]>` borrows existing raw PCM bytes.
+/// - `PcmRawBuf<Vec<u8>>` owns allocated raw PCM bytes.
+#[must_use]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct PcmRawBuf<B> {
+    /// Raw interleaved PCM bytes.
+    bytes: B,
+    /// Caller-provided stream metadata.
+    spec: PcmSpec,
+}
+#[rustfmt::skip]
+impl<B> PcmRawBuf<B> {
+    /// Creates a raw PCM buffer from already-validated parts.
+    pub(crate) const fn _new(bytes: B, spec: PcmSpec) -> Self { Self { bytes, spec } }
+    /// Returns the stream metadata.
+    pub const fn spec(&self) -> PcmSpec { self.spec }
+    /// Returns the encoded sample format.
+    pub const fn sample(&self) -> PcmSample { self.spec.sample }
+    /// Returns the channel layout.
+    #[must_use]
+    pub const fn channels(&self) -> AudioChannels { self.spec.channels }
+    /// Returns the sample rate in Hertz.
+    #[must_use]
+    pub const fn sample_rate(&self) -> u32 { self.spec.sample_rate }
+    /// Returns the byte size of one interleaved frame.
+    #[must_use]
+    pub const fn frame_bytes(&self) -> usize { self.spec.frame_bytes() }
+}
+#[rustfmt::skip]
+impl<B: AsRef<[u8]>> PcmRawBuf<B> {
+    /// Returns the raw interleaved PCM bytes.
+    #[must_use]
+    pub fn bytes(&self) -> &[u8] { self.bytes.as_ref() }
+    /// Returns whether the byte stream is empty.
+    #[must_use]
+    pub fn is_empty(&self) -> bool { self.bytes.as_ref().is_empty() }
+    /// Returns the byte length of the raw stream.
+    #[must_use]
+    pub fn len(&self) -> usize { self.bytes.as_ref().len() }
+    /// Returns the number of complete interleaved frames.
+    pub fn frames(&self) -> Result<usize, PcmRawError> {
+        self.spec.frames_for_data_len(self.len()).ok_or(PcmRawError::InvalidDataLength)
+    }
+    /// Returns whether the byte stream contains complete interleaved frames.
+    #[must_use]
+    pub fn has_complete_frames(&self) -> bool {
+        self.spec.has_complete_frames_for_data_len(self.len())
+    }
+}
+#[rustfmt::skip]
+impl<'a> PcmRawBuf<&'a [u8]> {
+    /// Returns the raw interleaved PCM bytes.
+    ///
+    /// Const-friendly alternative to [`bytes`](Self::bytes).
+    #[must_use]
+    pub const fn bytes_const(&self) -> &'a [u8] { self.bytes }
+    /// Returns whether the byte stream is empty.
+    #[must_use]
+    pub const fn is_empty_const(&self) -> bool { self.bytes.is_empty() }
+    /// Returns the byte length of the raw stream.
+    #[must_use]
+    pub const fn len_const(&self) -> usize { self.bytes.len() }
+    /// Returns the number of complete interleaved frames.
+    pub const fn frames_const(&self) -> Result<usize, PcmRawError> {
+        match self.spec.frames_for_data_len(self.bytes.len()) {
+            Some(frames) => Ok(frames),
+            None => Err(PcmRawError::InvalidDataLength),
+        }
+    }
+}
+#[cfg(feature = "alloc")]
+impl PcmRawBuf<Vec<u8>> {
+    /// Returns this owned raw PCM buffer as a borrowed raw PCM buffer.
+    pub fn as_borrowed(&self) -> PcmRawBuf<&[u8]> {
+        PcmRawBuf::_new(self.bytes.as_slice(), self.spec)
+    }
+    /// Returns the owned raw PCM bytes.
+    #[must_use]
+    pub fn into_bytes(self) -> Vec<u8> {
+        self.bytes
+    }
+}

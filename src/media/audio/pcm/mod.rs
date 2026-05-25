@@ -7,12 +7,14 @@
 mod tests;
 
 mod buffer; // PcmBuffer
-mod spec; // PcmSpec, PcmSample
+mod sample; // PcmSample
+mod spec; // PcmSpec
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             buffer::*,
+            sample::*,
             spec::*,
         };
     }

@@ -9,7 +9,7 @@ mod tests;
 mod buf; // PcmWavBuf
 mod error; // PcmWavError
 mod fmt; // PcmWavFmt
-mod namespace; // PcmWav, PcmWavFmt
+mod namespace; // PcmWav
 
 crate::structural_mods! { // _mods
     _mods {

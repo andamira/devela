@@ -10,7 +10,7 @@
 // mod mp3; // Mp3Decoder
 // mod mulaw; // MuLaw
 // mod ogg;
-// mod raw; // PcmRaw
+mod raw; // Headerless raw PCM audio.
 mod wav; // Waveform Audio File Format
 
 crate::structural_mods! { // _mods
@@ -18,7 +18,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             // mp3::*,
             // mulaw::*,
-            // raw::*,
+            raw::*,
             wav::*,
         };
     }
