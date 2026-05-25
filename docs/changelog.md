@@ -85,7 +85,7 @@
 
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
-- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `test_size_of!`.
+- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `read_at!`, `test_size_of!`.
   - vendor `macro_rules_attribute` and `pastey`.
 - remake `fn_name!` and `compile_warn!`.
   - rename `compile_warn!` to `const_warn!`.

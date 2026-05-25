@@ -48,6 +48,7 @@ mod lets; // lets!
 mod likely; // likely, unlikely
 mod maybe; // maybe!, maybe_slot!
 mod methods; // methods_as_fns!
+mod read; // read_at!
 mod structural; // structural_mods!
 mod type_count; // type_count!
 mod whilst; // whilst!
@@ -79,6 +80,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             likely::{likely, unlikely},
             maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
+            read::read_at,
             structural::structural_mods,
             type_count::type_count,
             whilst::whilst,

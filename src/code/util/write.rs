@@ -22,16 +22,17 @@
 /// Panics if writing would exceed the buffer bounds.
 ///
 /// # Behavior
-/// - With `+= $offset` syntax, the offset identifier is updated to the new
+/// - With `+= $offset`, the offset identifier is updated to the new
 ///   position, and that final position is returned.
-/// - With `$offset` syntax, the offset expression is used as the starting
+/// - With `$offset`, the offset expression is used as the starting
 ///   position but is not updated. The final position is still returned.
-/// - With `@expr` syntax, the expression is treated as a sequence and spread
+/// - With `@expr`, the expression is treated as a sequence and spread
 ///   using its runtime `.len()`.
-/// - With `@N expr` syntax, the first `N` indexed elements are written through
-///   an unrolled expansion. Supported widths are `1..=8`, `16`, `32`, and `64`.
+/// - With `@N`, the first `N` indexed elements are written through an unrolled expansion.
 /// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
 /// - The return value can be ignored by using the macro as a statement.
+///
+/// Supported fixed widths are `1..=8`, `16`, `32`, and `64`.
 ///
 /// # Examples
 /// ```
@@ -88,6 +89,14 @@
 /// assert_eq!(offset, 7);
 /// assert_eq!(&chars[..], &['_', '_', 'c', 'h', 'a', 'r', 's', '_']);
 /// ```
+/// # See also
+/// [`read_at!`] is the dual operation: it gathers sequence elements from a
+/// buffer at an offset, while `write_at!` scatters sequence elements into one.
+///
+/// This pair is useful for small binary codecs, parsers, emitters…
+/// where an explicit offset is clearer than introducing a cursor type.
+///
+/// [`read_at!`]: super::read_at
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! write_at· {
@@ -119,6 +128,10 @@ macro_rules! write_at· {
     (% $buf:ident, $off:ident, @16 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 16 $($t)*); };
     (% $buf:ident, $off:ident, @32 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 32 $($t)*); };
     (% $buf:ident, $off:ident, @64 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 64 $($t)*); };
+    // this conflicts with @"str".as_bytes() syntax.
+    // (% $buf:ident, $off:ident, @$n:literal $($t:tt)*) => {
+    //     compile_error!("unsupported fixed write width; expected 0..=8, 16, 32, or 64")
+    // };
     (% unr $buf:ident, $offset:ident, $n:tt $seq:expr $(, $($rest:tt)*)? ) => {{
         let seq = $seq;
         $crate::punroll![$n |i| { $buf[$offset] = seq[i]; $offset += 1; }];
@@ -159,13 +172,13 @@ macro_rules! write_at· {
 }
 pub use write_at· as write_at;
 
-#[cfg(test)]
+#[cfg(any(doctest, test))]
 mod tests {
     use super::write_at;
     use crate::{Slice, Str};
 
     #[test]
-    fn test_write_at() {
+    fn write_at() {
         let mut buffer = [0u8; 20];
         let mut offset = 0;
 
@@ -177,7 +190,7 @@ mod tests {
         assert_eq![&buffer[0..offset], b"\x1bPq\"hello world"];
     }
     #[test]
-    const fn test_const_write_at() {
+    const fn const_write_at() {
         let mut buffer = [0u8; 20];
         let start = 3;
         let mut offset = start;
@@ -192,7 +205,7 @@ mod tests {
         assert![Slice::<u8>::eq(result, b"\x1bPq\"hello world")];
     }
     #[test]
-    fn test_sequence_spread() {
+    fn sequence_spread() {
         let bytes = [6, 7, 8];
         let mut buffer = [0u8; 10];
         let mut offset = 0;
@@ -201,13 +214,13 @@ mod tests {
     }
     #[test]
     #[should_panic(expected = "index out of bounds: the len is 4 but the index is 4")]
-    fn test_buffer_overflow() {
+    fn buffer_overflow() {
         let mut buffer = [0u8; 4];
         let mut offset = 0;
         write_at!(buffer, +=offset, 1, 2, 3, 4, 5);
     }
     #[test]
-    fn test_unicode() {
+    fn unicode() {
         let mut buf = [0u8; 12];
         let mut offset = 0;
         write_at![buf, +=offset, 0xC2, 0xB5]; // manual
@@ -216,7 +229,7 @@ mod tests {
         assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµµ")];
     }
     #[test]
-    fn test_fixed_unrolled_sequence_spread() {
+    fn fixed_unrolled_sequence_spread() {
         let id = *b"RIFF";
         let mut dst = [0u8; 8];
         let end = write_at!(dst, 0, @4 id);
@@ -224,7 +237,7 @@ mod tests {
         assert_eq![&dst[..4], b"RIFF"];
     }
     #[test]
-    fn test_fixed_unrolled_sequence_spread_mut_offset() {
+    fn fixed_unrolled_sequence_spread_mut_offset() {
         let id = *b"fmt ";
         let mut dst = [0u8; 8];
         let mut pos = 2;
@@ -233,4 +246,13 @@ mod tests {
         assert_eq![pos, 6];
         assert_eq![&dst[2..6], b"fmt "];
     }
+    // /**
+    // ```compile_fail
+    // let src = [1u8, 2, 3, 4, 5, 6, 7, 8, 9];
+    // let mut dst = [0u8; 9];
+    // let _ = devela::write_at!(dst, 0, @9 src);
+    // ```
+    // **/
+    // #[allow(dead_code)]
+    // fn unsupported_fixed_arity() {}
 }
