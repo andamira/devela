@@ -103,6 +103,7 @@
 - update `write_at!`:
   - make it return the offset.
   - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.
+  - add special support for fixed-width unrolled spread sequences.
 - reexport `cfg_select!`, `cold_path()`.
 - remove `cfg_if!`, replace with `cfg_select!`.
 

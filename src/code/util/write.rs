@@ -15,6 +15,7 @@
 /// - Updates offset variables automatically when an identifier is provided.
 /// - Works with any indexable type (arrays, vectors, etc.).
 /// - Supports spreading sequences with `@expr` syntax.
+/// - Supports fixed-width unrolled sequence spreading with `@N expr` syntax.
 /// - Supports writing Unicode scalar values as UTF-8 bytes with `#expr` syntax.
 ///
 /// # Panics
@@ -25,7 +26,10 @@
 ///   position, and that final position is returned.
 /// - With `$offset` syntax, the offset expression is used as the starting
 ///   position but is not updated. The final position is still returned.
-/// - With `@expr` syntax, the expression is treated as a sequence and spread.
+/// - With `@expr` syntax, the expression is treated as a sequence and spread
+///   using its runtime `.len()`.
+/// - With `@N expr` syntax, the first `N` indexed elements are written through
+///   an unrolled expansion. Supported widths are `1..=8`, `16`, `32`, and `64`.
 /// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
 /// - The return value can be ignored by using the macro as a statement.
 ///
@@ -56,6 +60,17 @@
 /// write_at!(bytes, +=offset, @hello.as_bytes(), b' ', @b"world", b'!');
 /// assert_eq!(offset, 12);
 /// assert_eq!(&bytes[0..offset], b"hello world!");
+///
+/// // Spread a fixed number of elements with unrolled assignments.
+/// let mut header = [0u8; 8];
+/// let mut offset = 0;
+/// let id = *b"RIFF";
+/// let size = 36u32.to_le_bytes();
+/// let end = write_at!(header, +=offset, @4 id, @4 size);
+/// assert_eq!(end, 8);
+/// assert_eq!(offset, 8);
+/// assert_eq!(&header[..4], b"RIFF");
+/// assert_eq!(&header[4..], &size);
 ///
 /// // Encode Unicode scalar values as UTF-8 bytes with `#`.
 /// let mut bytes = [0u8; 6];
@@ -91,35 +106,56 @@ macro_rules! write_at· {
         __offset
     }};
     /* private arms */
-    (% $buf:ident, $offset:ident, @$seq:expr, $($rest:tt)*) => {{ // spread sequence + rest
+    // fixed-width sequence spread
+    (% $buf:ident, $off:ident, @0 $($t:tt)*) => { $crate::write_at!(% $buf, $off, $($rest)*); };
+    (% $buf:ident, $off:ident, @1 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 1 $($t)*); };
+    (% $buf:ident, $off:ident, @2 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 2 $($t)*); };
+    (% $buf:ident, $off:ident, @3 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 3 $($t)*); };
+    (% $buf:ident, $off:ident, @4 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 4 $($t)*); };
+    (% $buf:ident, $off:ident, @5 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 5 $($t)*); };
+    (% $buf:ident, $off:ident, @6 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 6 $($t)*); };
+    (% $buf:ident, $off:ident, @7 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 7 $($t)*); };
+    (% $buf:ident, $off:ident, @8 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 8 $($t)*); };
+    (% $buf:ident, $off:ident, @16 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 16 $($t)*); };
+    (% $buf:ident, $off:ident, @32 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 32 $($t)*); };
+    (% $buf:ident, $off:ident, @64 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 64 $($t)*); };
+    (% unr $buf:ident, $offset:ident, $n:tt $seq:expr $(, $($rest:tt)*)? ) => {{
+        let seq = $seq;
+        $crate::punroll![$n |i| { $buf[$offset] = seq[i]; $offset += 1; }];
+        $( $crate::write_at!(% $buf, $offset, $($rest)*); )?
+    }};
+    // dynamic-width sequence spread
+    (% $buf:ident, $offset:ident, @$seq:expr, $($rest:tt)*) => {{
         let seq = $seq;
         $crate::whilst! { i in 0..seq.len(); { $buf[$offset] = seq[i]; $offset += 1; }}
         $crate::write_at!(% $buf, $offset, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, @$seq:expr) => {{ // last spread sequence
+    (% $buf:ident, $offset:ident, @$seq:expr) => {{
         let seq = $seq;
         $crate::whilst! { i in 0..seq.len(); { $buf[$offset] = seq[i]; $offset += 1; }}
     }};
-    (% $buf:ident, $offset:ident, #$ch:expr, $($rest:tt)*) => {{ // UTF-8 scalar + rest
+    // UTF-8 scalar
+    (% $buf:ident, $offset:ident, #$ch:expr, $($rest:tt)*) => {{
         $crate::write_at!(%utf8_char $buf, $offset, $ch);
         $crate::write_at!(% $buf, $offset, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, #$ch:expr) => {{ // UTF-8 scalar last
+    (% $buf:ident, $offset:ident, #$ch:expr) => {{
         $crate::write_at!(%utf8_char $buf, $offset, $ch);
     }};
-    (% $buf:ident, $offset:ident, $elem:expr, $($rest:tt)*) => {{ // element + rest
+    (% utf8_char $buf:ident, $offset:ident, $ch:expr) => {{
+        $offset += $crate::__unicode_scalar_write_utf8_at![$buf, $offset, $ch];
+    }};
+    // generic element
+    (% $buf:ident, $offset:ident, $elem:expr, $($rest:tt)*) => {{
         $buf[$offset] = $elem;
         $offset += 1;
         $crate::write_at!(% $buf, $offset, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, $elem:expr) => {{ // last element
+    (% $buf:ident, $offset:ident, $elem:expr) => {{
         $buf[$offset] = $elem;
         $offset += 1;
     }};
     (% $buf:ident, $offset:ident $(,)?) => {};
-    (% utf8_char $buf:ident, $offset:ident, $ch:expr) => {{
-        $offset += $crate::__unicode_scalar_write_utf8_at![$buf, $offset, $ch];
-    }};
 }
 pub use write_at· as write_at;
 
@@ -155,7 +191,6 @@ mod tests {
         assert![offset == start + 15];
         assert![Slice::<u8>::eq(result, b"\x1bPq\"hello world")];
     }
-    #[cfg(test)]
     #[test]
     fn test_sequence_spread() {
         let bytes = [6, 7, 8];
@@ -179,5 +214,23 @@ mod tests {
         write_at!(buf, +=offset, @"µ".as_bytes()); // byte loop
         write_at!(buf, +=offset, #'µ'); // UTF-8 scalar
         assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµµ")];
+    }
+    #[test]
+    fn test_fixed_unrolled_sequence_spread() {
+        let id = *b"RIFF";
+        let mut dst = [0u8; 8];
+        let end = write_at!(dst, 0, @4 id);
+        assert_eq![end, 4];
+        assert_eq![&dst[..4], b"RIFF"];
+    }
+    #[test]
+    fn test_fixed_unrolled_sequence_spread_mut_offset() {
+        let id = *b"fmt ";
+        let mut dst = [0u8; 8];
+        let mut pos = 2;
+        let end = write_at!(dst, +=pos, @4 id);
+        assert_eq![end, 6];
+        assert_eq![pos, 6];
+        assert_eq![&dst[2..6], b"fmt "];
     }
 }
