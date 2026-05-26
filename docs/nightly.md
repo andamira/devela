@@ -28,12 +28,14 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.96.0> -->
 
+- 1.96: ` `[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
 - 1.96: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
 - 1.96: `·`[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
 - 1.96: `·`[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
 - 1.96: `·`[new_range_api](https://github.com/rust-lang/rust/pull/154620) (new_range_api)
 - 1.96: `·`[new_range_from_api](https://github.com/rust-lang/rust/pull/153380) (new_range_api)
 - 1.96: `·`[new_range_to_inclusive_api](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
+- 1.96: ` `[step_nonzero_impl](https://github.com/rust-lang/rust/pull/127534)
 
 # 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
 > - <https://github.com/rust-lang/rust/milestone/144>
@@ -50,6 +52,8 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
+- 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
+        = `nightly_allocator` flag
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
         = `nightly_doc` flag
 
@@ -102,8 +106,6 @@ See also
 
 # … may be stable even later
 
-- 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/issues/32838)
-        = `nightly_allocator` flag
 - 1.??: `F`[coroutines](https://github.com/rust-lang/rust/issues/43122)
         = `nightly_coro` flag
 - 1.??: `F`[doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
