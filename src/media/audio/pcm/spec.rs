@@ -9,7 +9,6 @@ test_size_of![PcmSpec = 8]; // 64 bits
 #[doc = crate::_tags!(audio)]
 /// Essential metadata describing a PCM audio stream.
 #[doc = crate::_doc_location!("media/audio")]
-#[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PcmSpec {
     /// bit-depth + numeric type
@@ -26,6 +25,7 @@ impl_trait![fmt::Display for PcmSpec |self, f| {
 
 impl PcmSpec {
     /// Creates a PCM stream specification.
+    #[must_use]
     pub const fn new(sample: PcmSample, channels: AudioChannels, sample_rate: u32) -> Self {
         Self { sample, channels, sample_rate }
     }

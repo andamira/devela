@@ -173,9 +173,14 @@
 
 ### media::audio
 - new submodules: `acoustic`, `effect`, `format`, `instrument`, `music`, `rhythm`, `synth`.
-- new trait: `PcmSampleType`.
-- new types: `PcmBuf`, `PcmLayout`, `PcmRaw`, `PcmRawBuf`, `PcmRawError`, `PcmSample`, `PcmSampleType`, `PcmSpec`, `PcmWav`, `PcmWavBuf`, `PcmWavError`, `PcmWavFmt`.
-- add `AudioChannels::MAX_COUNT` constant.
+- new `AudioChannels::MAX_COUNT` constant.
+
+#### media::audio::format
+- new types: `PcmRaw`, `PcmRawBuf`, `PcmRawError`, `PcmWav`, `PcmWavBuf`, `PcmWavError`, `PcmWavFmt`.
+
+#### media::audio::pcm
+- new traits: `PcmDrain`, `PcmSampleType`, `PcmSink`, `PcmSinkPlanar`, `PcmSource`, `PcmSourcePlanar`, `PcmStream`.
+- new types: `PcmBuf`, `PcmLayout`, `PcmSample`, `PcmSampleType`, `PcmSpec`.
 
 #### media::visual::color
 - new type `ColorDepth`.

@@ -10,6 +10,7 @@
 mod tests;
 
 mod buf; // PcmBuf
+mod io; // PcmStream, PcmDrain, PcmSink, PcmSource, PcmSinkPlanar, PcmSourcePlanar
 mod layout; // PcmLayout
 mod sample; // PcmSample, PcmSampleType
 mod spec; // PcmSpec
@@ -18,6 +19,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             buf::*,
+            io::*,
             layout::*,
             sample::*,
             spec::*,

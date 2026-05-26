@@ -2,6 +2,13 @@
 //
 //! Defines [`AlsaPcmHandle`].
 //
+// TOC
+// - struct AlsaPcmHandle
+// - public impls
+// - trait impls
+// - internal helpers
+//   - internal impls
+//   - struct HwParams
 
 use super::_raw;
 use crate::{AlsaError, AudioChannels, PcmBuf, PcmLayout, PcmSampleType, PcmSpec};
@@ -19,6 +26,7 @@ pub struct AlsaPcmHandle {
     layout: Option<PcmLayout>,
     spec: Option<PcmSpec>,
 }
+
 unsafe impl Send for AlsaPcmHandle {}
 #[cfg(ffi_alsa··)]
 impl Drop for AlsaPcmHandle {
@@ -28,12 +36,53 @@ impl Drop for AlsaPcmHandle {
         }
     }
 }
+
+#[cfg(ffi_alsa··)]
+#[rustfmt::skip]
+mod impl_traits {
+    use super::*;
+    use crate::{PcmDrain, PcmSink, PcmSinkPlanar, PcmSource, PcmSourcePlanar, PcmStream};
+
+    impl PcmStream for AlsaPcmHandle {
+        type Error = AlsaError;
+        fn pcm_spec(&self) -> Option<PcmSpec> { self.spec }
+        fn pcm_layout(&self) -> Option<PcmLayout> { self.layout }
+    }
+    impl PcmDrain for AlsaPcmHandle {
+        fn drain(&mut self) -> Result<(), AlsaError> { self.drain() }
+    }
+    impl<T: PcmSampleType> PcmSink<T> for AlsaPcmHandle {
+        fn write(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<usize, AlsaError> { self.write(pcm) }
+        fn write_all(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<(), AlsaError> {
+            self.write_all(pcm)
+        }
+    }
+    impl<T: PcmSampleType> PcmSource<T> for AlsaPcmHandle {
+        fn read(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<usize, AlsaError> { self.read(pcm) }
+        fn read_all(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<(), AlsaError> {
+            self.read_all(pcm)
+        }
+    }
+    impl<T: PcmSampleType> PcmSinkPlanar<T> for AlsaPcmHandle {
+        fn write_planar(&mut self, pcm: PcmBuf<T, &[&[T]]>) -> Result<usize, AlsaError> {
+            self.write_planar(pcm)
+        }
+        fn write_all_planar(&mut self, pcm: PcmBuf<T, &[&[T]]>) -> Result<(), Self::Error> {
+            self.write_all_planar(pcm)
+        }
+    }
+    impl<T: PcmSampleType> PcmSourcePlanar<T> for AlsaPcmHandle {
+        fn read_planar(&mut self, pcm: PcmBuf<T, &mut [&mut [T]]>) -> Result<usize, AlsaError> {
+            self.read_planar(pcm)
+        }
+        fn read_all_planar(&mut self, pcm: PcmBuf<T, &mut [&mut [T]]>) -> Result<(), Self::Error> {
+            self.read_all_planar(pcm)
+        }
+    }
+}
+
 #[cfg(ffi_alsa··)]
 impl AlsaPcmHandle {
-    pub(super) const unsafe fn from_raw(raw: *mut _raw::snd_pcm_t) -> Self {
-        Self { raw, layout: None, spec: None }
-    }
-
     /* configuration */
 
     /// Configures this PCM stream for interleaved read/write.
@@ -47,10 +96,6 @@ impl AlsaPcmHandle {
     /// Returns the actual spec accepted by ALSA. The sample rate may be adjusted.
     pub fn configure_planar(&mut self, spec: PcmSpec) -> Result<PcmSpec, AlsaError> {
         self.configure_access(spec, PcmLayout::Planar)
-    }
-    /// Returns the PCM metadata, if configured.
-    pub const fn spec(&self) -> Option<PcmSpec> {
-        self.spec
     }
     /// Prepares this stream for I/O.
     pub fn prepare(&mut self) -> Result<(), AlsaError> {
@@ -154,10 +199,17 @@ impl AlsaPcmHandle {
         self.read_all_planar_pcm(pcm)
     }
 }
-// Private helpers
+
+/* private helpers */
+
 #[cfg(ffi_alsa··)]
 impl AlsaPcmHandle {
+    pub(super) const unsafe fn from_raw(raw: *mut _raw::snd_pcm_t) -> Self {
+        Self { raw, layout: None, spec: None }
+    }
+
     /* configuration and validation*/
+
     /// Configures this PCM stream for the given ALSA access mode.
     fn configure_access(
         &mut self,

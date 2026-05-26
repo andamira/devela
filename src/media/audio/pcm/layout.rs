@@ -60,6 +60,7 @@ impl PcmLayout {
 
     // Converts the sample to ALSA access.
     #[cfg(feature = "alsa")]
+    #[cfg_attr(not(ffi_alsa··), allow(dead_code))]
     pub(crate) const fn to_alsa(self) -> _alsa_raw::snd_pcm_access_t {
         match self {
             Self::Interleaved => _alsa_raw::SND_PCM_ACCESS_RW_INTERLEAVED,

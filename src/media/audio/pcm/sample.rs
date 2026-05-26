@@ -121,20 +121,33 @@ impl PcmSample {
 ///
 /// It is sealed because backend I/O depends on the Rust type layout matching
 /// the declared PCM sample representation.
-pub trait PcmSampleType: Copy + private_pcm_sample_type::Sealed {
+#[expect(private_bounds, reason = "Sealed")]
+pub trait PcmSampleType: Copy + Sealed {
     /// The PCM sample encoding represented by this Rust type.
     const SAMPLE: PcmSample;
+
+    /// The silent value for this PCM sample type.
+    ///
+    /// This is the value that represents zero amplitude in the corresponding
+    /// PCM encoding.
+    const SILENCE: Self;
 }
 
-mod private_pcm_sample_type {
-    pub trait Sealed {}
-}
-macro_rules! _impl_pcm_sample_type {
-    () => { _impl_pcm_sample_type!(u8,U8; i8,I8; i16,I16; i32,I32; f32,F32; f64,F64); };
-    ($($T:ty, $sample:ident);+ $(;)?) => { $( _impl_pcm_sample_type!(% $T, $sample);)+ };
-    (% $T:ty, $sample:ident) => {
-        impl private_pcm_sample_type::Sealed for $T {}
-        impl PcmSampleType for $T { const SAMPLE: PcmSample = PcmSample::$sample; }
+/// Marker trait to prevent downstream implementations of the [`PcmSampleType`] trait.
+trait Sealed {}
+macro_rules! _pcm_sample_type {
+    () => {
+        _pcm_sample_type!(u8,U8,128; i8,I8,0; i16,I16,0; i32,I32,0; f32,F32,0.0; f64,F64,0.0);
+    };
+    ($($T:ty, $sample:ident, $SI:literal);+ $(;)?) => {
+        $( _pcm_sample_type!(% $T, $sample, $SI);)+
+    };
+    (% $T:ty, $sample:ident, $SI:literal) => {
+        impl Sealed for $T {}
+        impl PcmSampleType for $T {
+            const SAMPLE: PcmSample = PcmSample::$sample;
+            const SILENCE: Self = $SI;
+        }
     };
 }
-_impl_pcm_sample_type!();
+_pcm_sample_type!();

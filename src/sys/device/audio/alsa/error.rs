@@ -101,15 +101,18 @@ impl AlsaError {
     }
 }
 impl_trait![fmt::Display+Error for AlsaError |self, f| match *self {
-    Self::Code(code) => unsafe {
-        let msg = _raw::snd_strerror(code);
-        if msg.is_null() {
-            write![f, "ALSA error {code}"]
-        } else if let Ok(msg) = CStr::from_ptr(msg).to_str() {
-            write![f, "ALSA error {code}: {msg}"]
-        } else {
-            write![f, "ALSA error {code}"]
-        }
+    Self::Code(code) => cfg_select! {
+        ffi_alsa·· => { unsafe {
+            let msg = _raw::snd_strerror(code);
+            if msg.is_null() {
+                write![f, "ALSA error {code}"]
+            } else if let Ok(msg) = CStr::from_ptr(msg).to_str() {
+                write![f, "ALSA error {code}: {msg}"]
+            } else {
+                write![f, "ALSA error {code}"]
+            }
+        }}
+        _ => write![f, "ALSA error {code}"],
     },
     Self::Unconfigured =>
         f.write_str("ALSA PCM stream is not configured"),
