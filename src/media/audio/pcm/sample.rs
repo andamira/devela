@@ -1,6 +1,6 @@
 // devela::media::audio::pcm::sample
 //
-//! Defines [`PcmSample`].
+//! Defines [`PcmSample`], [`PcmSampleType`].
 //
 
 #[cfg(feature = "alsa")]
@@ -42,7 +42,7 @@ impl PcmSample {
     }
     /// Returns the canonical byte width for packed raw PCM.
     #[must_use]
-    pub const fn bytes(self) -> u8 {
+    pub const fn bytes(self) -> usize {
         match self {
             Self::I8 => 1,
             Self::U8 => 1,
@@ -112,3 +112,30 @@ impl PcmSample {
         }
     }
 }
+
+#[doc = crate::_tags!(audio)]
+/// Rust sample type with a fixed PCM sample encoding.
+#[doc = crate::_doc_location!("media/audio")]
+///
+/// This trait connects typed sample buffers such as `&[i16]` or `&mut [f32]`
+/// to their corresponding [`PcmSample`] encoding.
+///
+/// It is sealed because backend I/O depends on the Rust type layout matching
+/// the declared PCM sample representation.
+pub trait PcmSampleType: Copy + private_pcm_sample_type::Sealed {
+    /// The PCM sample encoding represented by this Rust type.
+    const SAMPLE: PcmSample;
+}
+
+mod private_pcm_sample_type {
+    pub trait Sealed {}
+}
+macro_rules! _impl_pcm_sample_type {
+    () => { _impl_pcm_sample_type!(u8,U8; i8,I8; i16,I16; i32,I32; f32,F32; f64,F64); };
+    ($($T:ty, $sample:ident);+ $(;)?) => { $( _impl_pcm_sample_type!(% $T, $sample);)+ };
+    (% $T:ty, $sample:ident) => {
+        impl private_pcm_sample_type::Sealed for $T {}
+        impl PcmSampleType for $T { const SAMPLE: PcmSample = PcmSample::$sample; }
+    };
+}
+_impl_pcm_sample_type!();

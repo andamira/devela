@@ -31,13 +31,13 @@ impl PcmSpec {
     }
     /// Returns the number of channels.
     #[must_use]
-    pub const fn channel_count(self) -> u8 {
-        self.channels.channels()
+    pub const fn channel_count(self) -> usize {
+        self.channels.channels() as usize
     }
     /// Returns the byte size of one interleaved frame.
     #[must_use]
     pub const fn frame_bytes(self) -> usize {
-        self.sample.bytes() as usize * self.channel_count() as usize
+        self.sample.bytes() * self.channel_count()
     }
     /// Returns whether the sample rate is non-zero.
     #[must_use]

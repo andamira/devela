@@ -7,7 +7,7 @@
 mod tests;
 
 mod buf; // PcmBuf
-mod sample; // PcmSample
+mod sample; // PcmSample, PcmSampleType
 mod spec; // PcmSpec
 
 crate::structural_mods! { // _mods

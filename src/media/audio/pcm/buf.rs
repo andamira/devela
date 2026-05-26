@@ -40,7 +40,7 @@ test_size_of![test_size_of_PcmBuf_planar_i32: PcmBuf<i32, &[&[i32]]> = 24]; // 1
 /// Borrowed interleaved stereo samples:
 /// ```
 /// # use devela::{AudioChannels, PcmBuf, PcmSample};
-/// let pcm = PcmBuf::new(
+/// let pcm = PcmBuf::from_parts(
 ///     &[0i16, 1, 2, 3][..],
 ///     PcmSample::I16,
 ///     AudioChannels::Stereo,
@@ -52,16 +52,12 @@ test_size_of![test_size_of_PcmBuf_planar_i32: PcmBuf<i32, &[&[i32]]> = 24]; // 1
 ///
 /// Borrowed planar stereo samples:
 /// ```
-/// # use devela::{AudioChannels, PcmBuf, PcmSample};
+/// # use devela::{AudioChannels, PcmBuf, PcmSample, PcmSpec};
 /// let left = [0i16, 2];
 /// let right = [1i16, 3];
 /// let planes: &[&[i16]] = &[&left, &right];
-/// let pcm = PcmBuf::new(
-///     planes,
-///     PcmSample::I16,
-///     AudioChannels::Stereo,
-///     44_100,
-/// );
+/// let spec = PcmSpec::new(PcmSample::I16, AudioChannels::Stereo, 44_100);
+/// let pcm = PcmBuf::new(planes, spec);
 /// assert_eq!(pcm.planes_len(), 2);
 /// assert_eq!(pcm.frames(), Some(2));
 /// ```
@@ -70,63 +66,54 @@ test_size_of![test_size_of_PcmBuf_planar_i32: PcmBuf<i32, &[&[i32]]> = 24]; // 1
 pub struct PcmBuf<T, B> {
     /// Sample storage, whose type determines layout and mutability.
     pub data: B,
-    /// Sample encoding.
-    pub format: PcmSample,
-    /// Channel layout.
-    pub channels: AudioChannels,
-    /// Samples per second, in Hz.
-    pub sample_rate: u32,
+    /// PCM metadata.
+    pub spec: PcmSpec,
     _sample: PhantomData<fn() -> T>,
 }
 
 impl<T> ConstInit for PcmBuf<T, &[T]> {
-    const INIT: Self = Self::new(&[], PcmSample::INIT, AudioChannels::INIT, 0);
+    const INIT: Self = Self::new(&[], PcmSpec::INIT);
 }
 impl<T> ConstInit for PcmBuf<T, &mut [T]> {
-    const INIT: Self = Self::new(&mut [], PcmSample::INIT, AudioChannels::INIT, 0);
+    const INIT: Self = Self::new(&mut [], PcmSpec::INIT);
 }
 impl<T> ConstInit for PcmBuf<T, &[&[T]]> {
-    const INIT: Self = Self::new(&[], PcmSample::INIT, AudioChannels::INIT, 0);
+    const INIT: Self = Self::new(&[], PcmSpec::INIT);
 }
 impl<T> ConstInit for PcmBuf<T, &mut [&mut [T]]> {
-    const INIT: Self = Self::new(&mut [], PcmSample::INIT, AudioChannels::INIT, 0);
+    const INIT: Self = Self::new(&mut [], PcmSpec::INIT);
 }
 
 /// # Generic storage
 /// Common PCM metadata methods independent of the sample storage shape.
 #[rustfmt::skip]
 impl<T, B> PcmBuf<T, B> {
-    /// Creates a PCM buffer over the given storage.
-    pub const fn new(data: B, format: PcmSample, channels: AudioChannels, sample_rate: u32)
-        -> Self { Self { data, format, channels, sample_rate, _sample: PhantomData } }
-    /// Returns the sample format.
-    pub const fn format(&self) -> PcmSample { self.format }
+    /// Creates a PCM buffer over the given storage and stream specification.
+    pub const fn new(data: B, spec: PcmSpec) -> Self { Self { data, spec, _sample: PhantomData } }
+    /// Creates a PCM buffer from storage and separate stream metadata parts.
+    pub const fn from_parts(data: B, format: PcmSample, channels: AudioChannels, sample_rate: u32)
+        -> Self { Self::new(data, PcmSpec::new(format, channels, sample_rate)) }
+
+    /// Returns the sample encoding.
+    pub const fn sample(&self) -> PcmSample { self.spec.sample }
     /// Returns the channel layout.
     #[must_use]
-    pub const fn channels(&self) -> AudioChannels { self.channels }
+    pub const fn channels(&self) -> AudioChannels { self.spec.channels }
     /// Returns the number of channels.
     #[must_use]
-    pub const fn channel_count(&self) -> usize { self.channels.channels() as usize }
+    pub const fn channel_count(&self) -> usize { self.spec.channel_count() }
     /// Returns the sample rate in Hertz.
     #[must_use]
-    pub const fn sample_rate(&self) -> u32 { self.sample_rate }
-    /// Returns the stream metadata.
-    pub const fn spec(&self) -> PcmSpec {
-        PcmSpec::new(self.format, self.channels, self.sample_rate)
-    }
+    pub const fn sample_rate(&self) -> u32 { self.spec.sample_rate }
 }
 
 /// # Shared interleaved slices
 /// Methods for borrowed interleaved PCM samples.
 impl<'a, T> PcmBuf<T, &'a [T]> {
+    /* constructors*/
     /// Creates a PCM buffer from borrowed interleaved samples.
-    pub const fn from_interleaved(
-        data: &'a [T],
-        format: PcmSample,
-        channels: AudioChannels,
-        sample_rate: u32,
-    ) -> Self {
-        Self::new(data, format, channels, sample_rate)
+    pub const fn from_interleaved(data: &'a [T], spec: PcmSpec) -> Self {
+        Self::new(data, spec)
     }
     /* direct accessors*/
     /// Returns the sample data.
@@ -190,13 +177,8 @@ impl<'a, T> PcmBuf<T, &'a [T]> {
 /// Methods for mutably borrowed interleaved PCM samples.
 impl<'a, T> PcmBuf<T, &'a mut [T]> {
     /// Creates a PCM buffer from mutably borrowed interleaved samples.
-    pub const fn from_interleaved_mut(
-        data: &'a mut [T],
-        format: PcmSample,
-        channels: AudioChannels,
-        sample_rate: u32,
-    ) -> Self {
-        Self::new(data, format, channels, sample_rate)
+    pub const fn from_interleaved_mut(data: &'a mut [T], spec: PcmSpec) -> Self {
+        Self::new(data, spec)
     }
     /* direct accessors*/
     /// Returns the sample data.
@@ -264,13 +246,8 @@ impl<'a, T> PcmBuf<T, &'a mut [T]> {
 /// Methods for borrowed per-channel PCM sample planes.
 impl<'a, T> PcmBuf<T, &'a [&'a [T]]> {
     /// Creates a PCM buffer from borrowed per-channel sample planes.
-    pub const fn from_planar(
-        data: &'a [&'a [T]],
-        format: PcmSample,
-        channels: AudioChannels,
-        sample_rate: u32,
-    ) -> Self {
-        Self::new(data, format, channels, sample_rate)
+    pub const fn from_planar(data: &'a [&'a [T]], spec: PcmSpec) -> Self {
+        Self::new(data, spec)
     }
     /* direct accessors*/
     /// Returns the per-channel sample planes.
@@ -328,13 +305,8 @@ impl<'a, T> PcmBuf<T, &'a [&'a [T]]> {
 /// Methods for mutably borrowed per-channel PCM sample planes.
 impl<'a, 'p, T> PcmBuf<T, &'a mut [&'p mut [T]]> {
     /// Creates a PCM buffer from mutably borrowed per-channel sample planes.
-    pub const fn from_planar_mut(
-        data: &'a mut [&'p mut [T]],
-        format: PcmSample,
-        channels: AudioChannels,
-        sample_rate: u32,
-    ) -> Self {
-        Self::new(data, format, channels, sample_rate)
+    pub const fn from_planar_mut(data: &'a mut [&'p mut [T]], spec: PcmSpec) -> Self {
+        Self::new(data, spec)
     }
     /* direct accessors*/
     /// Returns the per-channel sample planes.

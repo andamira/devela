@@ -4,8 +4,11 @@
 //
 
 use super::_raw;
-use crate::{AlsaError, PcmBuf, PcmSample, PcmSpec};
+use crate::{AlsaError, PcmBuf, PcmSampleType, PcmSpec};
 use crate::{Ptr, c_int, c_uint, is};
+
+#[cfg(target_pointer_width = "64")]
+crate::test_size_of![AlsaPcmHandle = 16]; // 128 bits
 
 #[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
@@ -13,6 +16,7 @@ use crate::{Ptr, c_int, c_uint, is};
 #[derive(Debug)]
 pub struct AlsaPcmHandle {
     raw: *mut _raw::snd_pcm_t,
+    spec: Option<PcmSpec>,
 }
 unsafe impl Send for AlsaPcmHandle {}
 #[cfg(ffi_alsa··)]
@@ -26,7 +30,7 @@ impl Drop for AlsaPcmHandle {
 #[cfg(ffi_alsa··)]
 impl AlsaPcmHandle {
     pub(super) const unsafe fn from_raw(raw: *mut _raw::snd_pcm_t) -> Self {
-        Self { raw }
+        Self { raw, spec: None }
     }
 
     /* configuration */
@@ -34,17 +38,93 @@ impl AlsaPcmHandle {
     /// Configures this PCM stream for interleaved read/write.
     ///
     /// Returns the actual spec accepted by ALSA. The sample rate may be adjusted.
-    pub fn configure_interleaved(&mut self, mut spec: PcmSpec) -> Result<PcmSpec, AlsaError> {
+    pub fn configure_interleaved(&mut self, spec: PcmSpec) -> Result<PcmSpec, AlsaError> {
+        self.configure_access(spec, _raw::SND_PCM_ACCESS_RW_INTERLEAVED)
+    }
+    /// Returns the PCM metadata, if configured.
+    pub const fn spec(&self) -> Option<PcmSpec> {
+        self.spec
+    }
+    /// Prepares this stream for I/O.
+    pub fn prepare(&mut self) -> Result<(), AlsaError> {
+        unsafe { AlsaError::result(_raw::snd_pcm_prepare(self.raw)) }
+    }
+    /// Waits until queued playback frames have been played.
+    pub fn drain(&mut self) -> Result<(), AlsaError> {
+        unsafe { AlsaError::result(_raw::snd_pcm_drain(self.raw)) }
+    }
+    /// Stops the stream and discards queued frames.
+    pub fn discard(&mut self) -> Result<(), AlsaError> {
+        unsafe { AlsaError::result(_raw::snd_pcm_drop(self.raw)) }
+    }
+
+    /* interleaved playback */
+
+    /// Writes interleaved frames. Returns the number of frames written.
+    pub fn write<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<usize, AlsaError> {
+        self.validate_pcm(&pcm)?;
+        self.write_pcm(pcm)
+    }
+    /// Writes interleaved samples from a slice using the configured stream spec.
+    /// Returns the number of frames written.
+    pub fn write_from<T: PcmSampleType>(&mut self, data: &[T]) -> Result<usize, AlsaError> {
+        let spec = self.spec_for_sample::<T>()?;
+        self.write_pcm(PcmBuf::from_interleaved(data, spec))
+    }
+    /// Writes all requested interleaved samples.
+    pub fn write_all<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<(), AlsaError> {
+        self.validate_pcm(&pcm)?;
+        self.write_all_pcm(pcm)
+    }
+    /// Writes all complete interleaved frames from the given sample slice.
+    pub fn write_all_from<T: PcmSampleType>(&mut self, data: &[T]) -> Result<(), AlsaError> {
+        let spec = self.spec_for_sample::<T>()?;
+        self.write_all_pcm(PcmBuf::from_interleaved(data, spec))
+    }
+
+    /* interleaved capture */
+
+    /// Reads interleaved frames. Returns the number of frames read.
+    pub fn read<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<usize, AlsaError> {
+        self.validate_pcm(&pcm)?;
+        self.read_pcm(pcm)
+    }
+    /// Reads interleaved samples into a slice using the configured stream spec.
+    /// Returns the number of frames read.
+    pub fn read_into<T: PcmSampleType>(&mut self, data: &mut [T]) -> Result<usize, AlsaError> {
+        let spec = self.spec_for_sample::<T>()?;
+        self.read_pcm(PcmBuf::from_interleaved_mut(data, spec))
+    }
+    /// Reads all requested interleaved frames.
+    pub fn read_all<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &mut [T]>,
+    ) -> Result<(), AlsaError> {
+        self.validate_pcm(&pcm)?;
+        self.read_all_pcm(pcm)
+    }
+    /// Reads all requested complete interleaved frames into the given sample slice.
+    pub fn read_all_into<T: PcmSampleType>(&mut self, data: &mut [T]) -> Result<(), AlsaError> {
+        let spec = self.spec_for_sample::<T>()?;
+        self.read_all_pcm(PcmBuf::from_interleaved_mut(data, spec))
+    }
+}
+// Private helpers
+#[cfg(ffi_alsa··)]
+impl AlsaPcmHandle {
+    /* configuration and validation*/
+    // Configures this PCM stream for the given ALSA access mode.
+    fn configure_access(
+        &mut self,
+        mut spec: PcmSpec,
+        access: _raw::snd_pcm_access_t,
+    ) -> Result<PcmSpec, AlsaError> {
         if !spec.has_valid_rate() || spec.channel_count() == 0 {
             return Err(AlsaError::invalid_argument());
         }
         unsafe {
             let hw = HwParams::new(self.raw)?;
-            AlsaError::result(_raw::snd_pcm_hw_params_set_access(
-                self.raw,
-                hw.raw,
-                _raw::SND_PCM_ACCESS_RW_INTERLEAVED,
-            ))?;
+            AlsaError::result(_raw::snd_pcm_hw_params_set_access(self.raw, hw.raw, access))?;
             AlsaError::result(_raw::snd_pcm_hw_params_set_format(
                 self.raw,
                 hw.raw,
@@ -65,95 +145,26 @@ impl AlsaPcmHandle {
             ))?;
             AlsaError::result(_raw::snd_pcm_hw_params(self.raw, hw.raw))?;
             self.prepare()?;
+            self.spec = Some(spec);
             Ok(spec)
         }
     }
-    /// Prepares this stream for I/O.
-    pub fn prepare(&mut self) -> Result<(), AlsaError> {
-        unsafe { AlsaError::result(_raw::snd_pcm_prepare(self.raw)) }
+    // Validates that `pcm` matches both its Rust sample type and this configured stream.
+    fn validate_pcm<T: PcmSampleType, B>(&self, pcm: &PcmBuf<T, B>) -> Result<(), AlsaError> {
+        let spec = self.spec.ok_or_else(AlsaError::invalid_argument)?;
+        is![pcm.spec.sample != T::SAMPLE, return Err(AlsaError::invalid_argument())];
+        is![pcm.spec != spec, return Err(AlsaError::invalid_argument())];
+        Ok(())
     }
-    /// Waits until queued playback frames have been played.
-    pub fn drain(&mut self) -> Result<(), AlsaError> {
-        unsafe { AlsaError::result(_raw::snd_pcm_drain(self.raw)) }
+    // Returns the configured spec if it matches the Rust sample type.
+    fn spec_for_sample<T: PcmSampleType>(&self) -> Result<PcmSpec, AlsaError> {
+        let spec = self.spec.ok_or_else(AlsaError::invalid_argument)?;
+        is![spec.sample != T::SAMPLE, return Err(AlsaError::invalid_argument())];
+        Ok(spec)
     }
-    /// Stops the stream and discards queued frames.
-    pub fn discard(&mut self) -> Result<(), AlsaError> {
-        unsafe { AlsaError::result(_raw::snd_pcm_drop(self.raw)) }
-    }
-
-    /* interleaved playback */
-
-    /// Writes interleaved `u8` frames. Returns the number of frames written.
-    pub fn write_u8(&mut self, pcm: PcmBuf<u8, &[u8]>) -> Result<usize, AlsaError> {
-        self.write_pcm(pcm, PcmSample::U8)
-    }
-    /// Writes all requested interleaved `u8` frames.
-    pub fn write_all_u8(&mut self, pcm: PcmBuf<u8, &[u8]>) -> Result<(), AlsaError> {
-        self.write_all_pcm(pcm, PcmSample::U8)
-    }
-    /// Writes interleaved `i16` frames. Returns the number of frames written.
-    pub fn write_i16(&mut self, pcm: PcmBuf<i16, &[i16]>) -> Result<usize, AlsaError> {
-        self.write_pcm(pcm, PcmSample::I16)
-    }
-    /// Writes all requested interleaved `i16` frames.
-    pub fn write_all_i16(&mut self, pcm: PcmBuf<i16, &[i16]>) -> Result<(), AlsaError> {
-        self.write_all_pcm(pcm, PcmSample::I16)
-    }
-    /// Writes interleaved `i32` frames. Returns the number of frames written.
-    pub fn write_i32(&mut self, pcm: PcmBuf<i32, &[i32]>) -> Result<usize, AlsaError> {
-        self.write_pcm(pcm, PcmSample::I32)
-    }
-    /// Writes all requested interleaved `i32` frames.
-    pub fn write_all_i32(&mut self, pcm: PcmBuf<i32, &[i32]>) -> Result<(), AlsaError> {
-        self.write_all_pcm(pcm, PcmSample::I32)
-    }
-    /// Writes interleaved `f32` frames. Returns the number of frames written.
-    pub fn write_f32(&mut self, pcm: PcmBuf<f32, &[f32]>) -> Result<usize, AlsaError> {
-        self.write_pcm(pcm, PcmSample::F32)
-    }
-    /// Writes all requested interleaved `f32` frames.
-    pub fn write_all_f32(&mut self, pcm: PcmBuf<f32, &[f32]>) -> Result<(), AlsaError> {
-        self.write_all_pcm(pcm, PcmSample::F32)
-    }
-
-    /* interleaved capture */
-
-    /// Reads interleaved `u8` frames. Returns the number of frames read.
-    pub fn read_u8(&mut self, pcm: PcmBuf<u8, &mut [u8]>) -> Result<usize, AlsaError> {
-        self.read_pcm(pcm, PcmSample::U8)
-    }
-    /// Reads all requested interleaved `u8` frames.
-    pub fn read_all_u8(&mut self, pcm: PcmBuf<u8, &mut [u8]>) -> Result<(), AlsaError> {
-        self.read_all_pcm(pcm, PcmSample::U8)
-    }
-    /// Reads interleaved `i16` frames. Returns the number of frames read.
-    pub fn read_i16(&mut self, pcm: PcmBuf<i16, &mut [i16]>) -> Result<usize, AlsaError> {
-        self.read_pcm(pcm, PcmSample::I16)
-    }
-    /// Reads all requested interleaved `i16` frames.
-    pub fn read_all_i16(&mut self, pcm: PcmBuf<i16, &mut [i16]>) -> Result<(), AlsaError> {
-        self.read_all_pcm(pcm, PcmSample::I16)
-    }
-    /// Reads interleaved `f32` frames. Returns the number of frames read.
-    pub fn read_f32(&mut self, pcm: PcmBuf<f32, &mut [f32]>) -> Result<usize, AlsaError> {
-        self.read_pcm(pcm, PcmSample::F32)
-    }
-    /// Reads all requested interleaved `f32` frames.
-    pub fn read_all_f32(&mut self, pcm: PcmBuf<f32, &mut [f32]>) -> Result<(), AlsaError> {
-        self.read_all_pcm(pcm, PcmSample::F32)
-    }
-}
-// Private helpers
-#[cfg(ffi_alsa··)]
-impl AlsaPcmHandle {
     /* interleaved playback */
     // Writes interleaved frames. Returns the number of frames written.
-    fn write_pcm<T>(
-        &mut self,
-        pcm: PcmBuf<T, &[T]>,
-        expected: PcmSample,
-    ) -> Result<usize, AlsaError> {
-        is![pcm.format() != expected, return Err(AlsaError::invalid_argument())];
+    fn write_pcm<T>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<usize, AlsaError> {
         let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
         let frames = frames as _raw::snd_pcm_uframes_t;
         unsafe {
@@ -162,19 +173,14 @@ impl AlsaPcmHandle {
         }
     }
     // Writes all requested interleaved frames.
-    fn write_all_pcm<T>(
-        &mut self,
-        pcm: PcmBuf<T, &[T]>,
-        expected: PcmSample,
-    ) -> Result<(), AlsaError> {
-        is![pcm.format() != expected, return Err(AlsaError::invalid_argument())];
+    fn write_all_pcm<T>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<(), AlsaError> {
         let channels = pcm.channel_count();
         let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
         let mut done = 0;
         while done < frames {
             let offset = done * channels;
-            let sub = PcmBuf::new(&pcm.data[offset..], pcm.format, pcm.channels, pcm.sample_rate);
-            let n = self.write_pcm(sub, expected)?;
+            let sub = PcmBuf::new(&pcm.data[offset..], pcm.spec);
+            let n = self.write_pcm(sub)?;
             is! { n == 0, return Err(AlsaError::invalid_argument()) }
             done += n;
         }
@@ -182,12 +188,7 @@ impl AlsaPcmHandle {
     }
     /* interleaved capture */
     // Reads interleaved frames. Returns the number of frames read.
-    fn read_pcm<T>(
-        &mut self,
-        mut pcm: PcmBuf<T, &mut [T]>,
-        expected: PcmSample,
-    ) -> Result<usize, AlsaError> {
-        is![pcm.format() != expected, return Err(AlsaError::invalid_argument())];
+    fn read_pcm<T>(&mut self, mut pcm: PcmBuf<T, &mut [T]>) -> Result<usize, AlsaError> {
         let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
         let frames = frames as _raw::snd_pcm_uframes_t;
         unsafe {
@@ -196,23 +197,15 @@ impl AlsaPcmHandle {
         }
     }
     // Reads all requested interleaved frames.
-    fn read_all_pcm<T>(
-        &mut self,
-        pcm: PcmBuf<T, &mut [T]>,
-        expected: PcmSample,
-    ) -> Result<(), AlsaError> {
-        is![pcm.format() != expected, return Err(AlsaError::invalid_argument())];
+    fn read_all_pcm<T>(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<(), AlsaError> {
         let channel_count = pcm.channel_count();
         let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
-        let format = pcm.format;
-        let channels = pcm.channels;
-        let sample_rate = pcm.sample_rate;
         let mut done = 0;
         while done < frames {
             let offset = done * channel_count;
             let remaining = frames - done;
-            let sub = PcmBuf::new(&mut pcm.data[offset..], format, channels, sample_rate);
-            let n = self.read_pcm(sub, expected)?;
+            let sub = PcmBuf::new(&mut pcm.data[offset..], pcm.spec);
+            let n = self.read_pcm(sub)?;
             is! { n == 0 || n > remaining, return Err(AlsaError::invalid_argument()) }
             done += n;
         }
