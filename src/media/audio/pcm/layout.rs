@@ -7,7 +7,7 @@
 use crate::_alsa_raw;
 use crate::{_impl_init, impl_trait};
 
-#[doc = crate::_tags!(audio)]
+#[doc = crate::_tags!(audio layout)]
 /// Sample arrangement of a PCM buffer.
 #[doc = crate::_doc_location!("media/audio")]
 ///

@@ -16,6 +16,9 @@
 // - https://source.android.com/docs/security/features/trusty
 // - https://wasi.dev/ | https://github.com/WebAssembly/WASI
 
+// #[cfg(feature = "android")]
+// pub mod android;
+
 pub mod browser; // Web*
 #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
 mod c; // Libc
@@ -44,6 +47,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             browser::_all::*,
             fd::_all::*,
         };
+        // #[cfg(feature = "android")]
+        // pub use super::android::_all::*;
         #[cfg(feature = "_linux_abi")]
         pub use super::linux::_all::*;
         #[cfg(feature = "term")]
@@ -54,6 +59,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         // pub use super::windows::_all::*;
     }
     _crate_internals {
+        #[cfg(feature = "_linux_abi")]
+        pub(crate) use super::linux::_crate_internals::*;
         #[cfg(feature = "term")]
         pub(crate) use super::term::_crate_internals::*;
     }

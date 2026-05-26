@@ -96,7 +96,7 @@
 /// This pair is useful for small binary codecs, parsers, emitters…
 /// where an explicit offset is clearer than introducing a cursor type.
 ///
-/// [`read_at!`]: super::read_at
+/// [`read_at!`]: crate::read_at
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! write_at· {

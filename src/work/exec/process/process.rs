@@ -78,6 +78,7 @@ impl ProcessExt for Process {}
 
 #[cfg(test)]
 mod tests {
+    #[cfg(feature = "shell")]
     use super::*;
 
     #[test]

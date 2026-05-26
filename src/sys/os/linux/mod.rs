@@ -47,4 +47,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             thread::_all::*,
         };
     }
+    _crate_internals {
+    }
 }

@@ -123,10 +123,7 @@ mod tests;
 /// - [specific methods for byte slices](#methods-for-byte-slices)
 /// - [`eq` methods for slices of (slices of) primitives](#method.eq)
 ///
-/// Additionally implements `eq()` methods for comparing primitives and slices of primitives.
-///
-/// See also: [`slice!`], [`SliceExt`], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
-#[doc = crate::doclink!(custom devela "[`SliceExt`]" "sys/mem/view/trait.SliceExt.html")]
+/// See also: [`slice!`] and [`SliceExt`][crate::SliceExt].
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
