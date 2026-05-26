@@ -110,6 +110,9 @@ _impl_init![Self::Stereo => AudioChannels];
 impl_trait![fmt::Display for AudioChannels |self, f| f.write_str(self.as_x_y())];
 
 impl AudioChannels {
+    /// Maximum channel count expressible by this enum.
+    pub const MAX_COUNT: usize = 8;
+
     /// Creates a channel layout from the total number of channels and an `lfe` flag.
     ///
     /// Returns `None` if the combination is not a valid layout represented by this enum.

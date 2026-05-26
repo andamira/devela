@@ -282,7 +282,7 @@ impl PcmRaw {
         use PcmRawError as E;
         is! { !spec.is_valid(), return Err(E::InvalidSpec) }
         is! { !spec.sample.eq(expected), return Err(E::MismatchedSampleFormat) }
-        let channels = spec.channel_count() as usize;
+        let channels = spec.channel_count();
         if channels == 0 || !sample_len.is_multiple_of(channels) {
             return Err(E::InvalidDataLength);
         }

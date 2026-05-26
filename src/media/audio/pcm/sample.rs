@@ -5,9 +5,8 @@
 
 #[cfg(feature = "alsa")]
 use crate::_alsa_raw;
-use crate::{_impl_init, impl_trait, test_size_of};
+use crate::{_impl_init, impl_trait};
 
-test_size_of![PcmSample = 1]; // 8 bits
 #[doc = crate::_tags!(audio)]
 /// Numeric encoding of a single PCM sample.
 #[doc = crate::_doc_location!("media/audio")]

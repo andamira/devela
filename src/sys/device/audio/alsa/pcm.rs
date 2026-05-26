@@ -4,11 +4,11 @@
 //
 
 use super::_raw;
-use crate::{AlsaError, PcmBuf, PcmSampleType, PcmSpec};
-use crate::{Ptr, c_int, c_uint, is};
+use crate::{AlsaError, AudioChannels, PcmBuf, PcmLayout, PcmSampleType, PcmSpec};
+use crate::{Ptr, c_int, c_uint, is, whilst};
 
 #[cfg(target_pointer_width = "64")]
-crate::test_size_of![AlsaPcmHandle = 16]; // 128 bits
+crate::test_size_of![AlsaPcmHandle = 24]; // 192 bits
 
 #[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
@@ -16,6 +16,7 @@ crate::test_size_of![AlsaPcmHandle = 16]; // 128 bits
 #[derive(Debug)]
 pub struct AlsaPcmHandle {
     raw: *mut _raw::snd_pcm_t,
+    layout: Option<PcmLayout>,
     spec: Option<PcmSpec>,
 }
 unsafe impl Send for AlsaPcmHandle {}
@@ -30,7 +31,7 @@ impl Drop for AlsaPcmHandle {
 #[cfg(ffi_alsa··)]
 impl AlsaPcmHandle {
     pub(super) const unsafe fn from_raw(raw: *mut _raw::snd_pcm_t) -> Self {
-        Self { raw, spec: None }
+        Self { raw, layout: None, spec: None }
     }
 
     /* configuration */
@@ -39,7 +40,13 @@ impl AlsaPcmHandle {
     ///
     /// Returns the actual spec accepted by ALSA. The sample rate may be adjusted.
     pub fn configure_interleaved(&mut self, spec: PcmSpec) -> Result<PcmSpec, AlsaError> {
-        self.configure_access(spec, _raw::SND_PCM_ACCESS_RW_INTERLEAVED)
+        self.configure_access(spec, PcmLayout::Interleaved)
+    }
+    /// Configures this PCM stream for planar read/write.
+    ///
+    /// Returns the actual spec accepted by ALSA. The sample rate may be adjusted.
+    pub fn configure_planar(&mut self, spec: PcmSpec) -> Result<PcmSpec, AlsaError> {
+        self.configure_access(spec, PcmLayout::Planar)
     }
     /// Returns the PCM metadata, if configured.
     pub const fn spec(&self) -> Option<PcmSpec> {
@@ -62,37 +69,56 @@ impl AlsaPcmHandle {
 
     /// Writes interleaved frames. Returns the number of frames written.
     pub fn write<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<usize, AlsaError> {
-        self.validate_pcm(&pcm)?;
+        self.validate_pcm(&pcm, PcmLayout::Interleaved)?;
         self.write_pcm(pcm)
     }
     /// Writes interleaved samples from a slice using the configured stream spec.
     /// Returns the number of frames written.
     pub fn write_from<T: PcmSampleType>(&mut self, data: &[T]) -> Result<usize, AlsaError> {
-        let spec = self.spec_for_sample::<T>()?;
+        let spec = self.spec_for_sample::<T>(PcmLayout::Interleaved)?;
         self.write_pcm(PcmBuf::from_interleaved(data, spec))
     }
     /// Writes all requested interleaved samples.
     pub fn write_all<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<(), AlsaError> {
-        self.validate_pcm(&pcm)?;
+        self.validate_pcm(&pcm, PcmLayout::Interleaved)?;
         self.write_all_pcm(pcm)
     }
     /// Writes all complete interleaved frames from the given sample slice.
     pub fn write_all_from<T: PcmSampleType>(&mut self, data: &[T]) -> Result<(), AlsaError> {
-        let spec = self.spec_for_sample::<T>()?;
+        let spec = self.spec_for_sample::<T>(PcmLayout::Interleaved)?;
         self.write_all_pcm(PcmBuf::from_interleaved(data, spec))
+    }
+
+    /* planar playback */
+
+    /// Writes planar frames. Returns the number of frames written.
+    pub fn write_planar<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &[&[T]]>,
+    ) -> Result<usize, AlsaError> {
+        self.validate_pcm(&pcm, PcmLayout::Planar)?;
+        self.write_planar_pcm(pcm)
+    }
+    /// Writes all requested planar frames.
+    pub fn write_all_planar<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &[&[T]]>,
+    ) -> Result<(), AlsaError> {
+        self.validate_pcm(&pcm, PcmLayout::Planar)?;
+        self.write_all_planar_pcm(pcm)
     }
 
     /* interleaved capture */
 
     /// Reads interleaved frames. Returns the number of frames read.
     pub fn read<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<usize, AlsaError> {
-        self.validate_pcm(&pcm)?;
+        self.validate_pcm(&pcm, PcmLayout::Interleaved)?;
         self.read_pcm(pcm)
     }
     /// Reads interleaved samples into a slice using the configured stream spec.
     /// Returns the number of frames read.
     pub fn read_into<T: PcmSampleType>(&mut self, data: &mut [T]) -> Result<usize, AlsaError> {
-        let spec = self.spec_for_sample::<T>()?;
+        let spec = self.spec_for_sample::<T>(PcmLayout::Interleaved)?;
         self.read_pcm(PcmBuf::from_interleaved_mut(data, spec))
     }
     /// Reads all requested interleaved frames.
@@ -100,31 +126,54 @@ impl AlsaPcmHandle {
         &mut self,
         pcm: PcmBuf<T, &mut [T]>,
     ) -> Result<(), AlsaError> {
-        self.validate_pcm(&pcm)?;
+        self.validate_pcm(&pcm, PcmLayout::Interleaved)?;
         self.read_all_pcm(pcm)
     }
     /// Reads all requested complete interleaved frames into the given sample slice.
     pub fn read_all_into<T: PcmSampleType>(&mut self, data: &mut [T]) -> Result<(), AlsaError> {
-        let spec = self.spec_for_sample::<T>()?;
+        let spec = self.spec_for_sample::<T>(PcmLayout::Interleaved)?;
         self.read_all_pcm(PcmBuf::from_interleaved_mut(data, spec))
+    }
+
+    /* planar capture */
+
+    /// Reads planar frames. Returns the number of frames read.
+    pub fn read_planar<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &mut [&mut [T]]>,
+    ) -> Result<usize, AlsaError> {
+        self.validate_pcm(&pcm, PcmLayout::Planar)?;
+        self.read_planar_pcm(pcm)
+    }
+    /// Reads all requested planar frames.
+    pub fn read_all_planar<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &mut [&mut [T]]>,
+    ) -> Result<(), AlsaError> {
+        self.validate_pcm(&pcm, PcmLayout::Planar)?;
+        self.read_all_planar_pcm(pcm)
     }
 }
 // Private helpers
 #[cfg(ffi_alsa··)]
 impl AlsaPcmHandle {
     /* configuration and validation*/
-    // Configures this PCM stream for the given ALSA access mode.
+    /// Configures this PCM stream for the given ALSA access mode.
     fn configure_access(
         &mut self,
         mut spec: PcmSpec,
-        access: _raw::snd_pcm_access_t,
+        layout: PcmLayout,
     ) -> Result<PcmSpec, AlsaError> {
         if !spec.has_valid_rate() || spec.channel_count() == 0 {
-            return Err(AlsaError::invalid_argument());
+            return Err(AlsaError::invalid_spec(spec));
         }
         unsafe {
             let hw = HwParams::new(self.raw)?;
-            AlsaError::result(_raw::snd_pcm_hw_params_set_access(self.raw, hw.raw, access))?;
+            AlsaError::result(_raw::snd_pcm_hw_params_set_access(
+                self.raw,
+                hw.raw,
+                layout.to_alsa(),
+            ))?;
             AlsaError::result(_raw::snd_pcm_hw_params_set_format(
                 self.raw,
                 hw.raw,
@@ -146,81 +195,203 @@ impl AlsaPcmHandle {
             AlsaError::result(_raw::snd_pcm_hw_params(self.raw, hw.raw))?;
             self.prepare()?;
             self.spec = Some(spec);
+            self.layout = Some(layout);
             Ok(spec)
         }
     }
-    // Validates that `pcm` matches both its Rust sample type and this configured stream.
-    fn validate_pcm<T: PcmSampleType, B>(&self, pcm: &PcmBuf<T, B>) -> Result<(), AlsaError> {
-        let spec = self.spec.ok_or_else(AlsaError::invalid_argument)?;
-        is![pcm.spec.sample != T::SAMPLE, return Err(AlsaError::invalid_argument())];
-        is![pcm.spec != spec, return Err(AlsaError::invalid_argument())];
+    /// Validates that `pcm` matches the Rust sample type and configured stream.
+    fn validate_pcm<T, B>(
+        &self,
+        pcm: &PcmBuf<T, B>,
+        expected_layout: PcmLayout,
+    ) -> Result<(), AlsaError>
+    where
+        T: PcmSampleType,
+    {
+        let spec = self.spec.ok_or(AlsaError::Unconfigured)?;
+        let active_layout = self.layout.ok_or(AlsaError::LayoutUnconfigured)?;
+        if active_layout != expected_layout {
+            return Err(AlsaError::LayoutMismatch {
+                active: active_layout,
+                expected: expected_layout,
+            });
+        }
+        if pcm.spec.sample != T::SAMPLE {
+            return Err(AlsaError::SampleMismatch { pcm: pcm.spec.sample, ty: T::SAMPLE });
+        }
+        if pcm.spec != spec {
+            return Err(AlsaError::SpecMismatch { buffer: pcm.spec, stream: spec });
+        }
         Ok(())
     }
-    // Returns the configured spec if it matches the Rust sample type.
-    fn spec_for_sample<T: PcmSampleType>(&self) -> Result<PcmSpec, AlsaError> {
-        let spec = self.spec.ok_or_else(AlsaError::invalid_argument)?;
-        is![spec.sample != T::SAMPLE, return Err(AlsaError::invalid_argument())];
+    /// Returns the configured spec if it matches the Rust sample type and layout.
+    fn spec_for_sample<T>(&self, expected_layout: PcmLayout) -> Result<PcmSpec, AlsaError>
+    where
+        T: PcmSampleType,
+    {
+        let spec = self.spec.ok_or(AlsaError::Unconfigured)?;
+        let active_layout = self.layout.ok_or(AlsaError::LayoutUnconfigured)?;
+        if active_layout != expected_layout {
+            return Err(AlsaError::layout_mismatch(active_layout, expected_layout));
+        }
+        if spec.sample != T::SAMPLE {
+            return Err(AlsaError::sample_mismatch(spec.sample, T::SAMPLE));
+        }
         Ok(spec)
     }
+    /// Validates progress from a partial read/write operation.
+    fn check_progress(n: usize, remaining: usize) -> Result<(), AlsaError> {
+        is![n == 0, return Err(AlsaError::NoProgress)];
+        is![n > remaining, return Err(AlsaError::frame_count_exceeded(n, remaining))];
+        Ok(())
+    }
+
     /* interleaved playback */
-    // Writes interleaved frames. Returns the number of frames written.
+
+    /// Writes interleaved frames. Returns the number of frames written.
     fn write_pcm<T>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<usize, AlsaError> {
-        let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
         let frames = frames as _raw::snd_pcm_uframes_t;
         unsafe {
             let written = _raw::snd_pcm_writei(self.raw, pcm.data.as_ptr().cast(), frames);
             self.io_result(written)
         }
     }
-    // Writes all requested interleaved frames.
+    /// Writes all requested interleaved frames.
     fn write_all_pcm<T>(&mut self, pcm: PcmBuf<T, &[T]>) -> Result<(), AlsaError> {
         let channels = pcm.channel_count();
-        let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
         let mut done = 0;
         while done < frames {
             let offset = done * channels;
+            let remaining = frames - done;
             let sub = PcmBuf::new(&pcm.data[offset..], pcm.spec);
             let n = self.write_pcm(sub)?;
-            is! { n == 0, return Err(AlsaError::invalid_argument()) }
+            Self::check_progress(n, remaining)?;
             done += n;
         }
         Ok(())
     }
+
+    /* planar playback */
+
+    /// Writes planar frames. Returns the number of frames written.
+    fn write_planar_pcm<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &[&[T]]>,
+    ) -> Result<usize, AlsaError> {
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
+        let frames = frames as _raw::snd_pcm_uframes_t;
+        let planes = pcm.planes_len();
+        let mut ptrs = [Ptr::null_mut(); AudioChannels::MAX_COUNT];
+        is![planes > ptrs.len(), return Err(AlsaError::too_many_channels(planes, ptrs.len()))];
+        whilst! { i in 0..planes; { ptrs[i] = pcm.data[i].as_ptr().cast_mut().cast(); }}
+        unsafe {
+            let written = _raw::snd_pcm_writen(self.raw, ptrs.as_mut_ptr(), frames);
+            self.io_result(written)
+        }
+    }
+    /// Writes all requested planar frames.
+    fn write_all_planar_pcm<T: PcmSampleType>(
+        &mut self,
+        pcm: PcmBuf<T, &[&[T]]>,
+    ) -> Result<(), AlsaError> {
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
+        let planes_len = pcm.planes_len();
+        let mut done = 0;
+        while done < frames {
+            let remaining = frames - done;
+            let mut planes = [<&[T]>::default(); AudioChannels::MAX_COUNT];
+            if planes_len > planes.len() {
+                return Err(AlsaError::too_many_channels(planes_len, planes.len()));
+            }
+            whilst! { i in 0..planes_len; { planes[i] = &pcm.data[i][done..]; }}
+            let sub = PcmBuf::from_planar(&planes[..planes_len], pcm.spec);
+            let n = self.write_planar_pcm(sub)?;
+            Self::check_progress(n, remaining)?;
+            done += n;
+        }
+        Ok(())
+    }
+
     /* interleaved capture */
-    // Reads interleaved frames. Returns the number of frames read.
+
+    /// Reads interleaved frames. Returns the number of frames read.
     fn read_pcm<T>(&mut self, mut pcm: PcmBuf<T, &mut [T]>) -> Result<usize, AlsaError> {
-        let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
         let frames = frames as _raw::snd_pcm_uframes_t;
         unsafe {
             let read = _raw::snd_pcm_readi(self.raw, pcm.data_mut().as_mut_ptr().cast(), frames);
             self.io_result(read)
         }
     }
-    // Reads all requested interleaved frames.
+    /// Reads all requested interleaved frames.
     fn read_all_pcm<T>(&mut self, pcm: PcmBuf<T, &mut [T]>) -> Result<(), AlsaError> {
         let channel_count = pcm.channel_count();
-        let frames = pcm.frames().ok_or_else(AlsaError::invalid_argument)?;
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
         let mut done = 0;
         while done < frames {
             let offset = done * channel_count;
             let remaining = frames - done;
             let sub = PcmBuf::new(&mut pcm.data[offset..], pcm.spec);
             let n = self.read_pcm(sub)?;
-            is! { n == 0 || n > remaining, return Err(AlsaError::invalid_argument()) }
+            Self::check_progress(n, remaining)?;
             done += n;
         }
         Ok(())
     }
+
+    /* planar capture */
+
+    /// Reads planar frames. Returns the number of frames read.
+    fn read_planar_pcm<T: PcmSampleType>(
+        &mut self,
+        mut pcm: PcmBuf<T, &mut [&mut [T]]>,
+    ) -> Result<usize, AlsaError> {
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
+        let frames = frames as _raw::snd_pcm_uframes_t;
+        let planes = pcm.planes_len();
+        let mut ptrs = [Ptr::null_mut(); AudioChannels::MAX_COUNT];
+        is![planes > ptrs.len(), return Err(AlsaError::too_many_channels(planes, ptrs.len()))];
+        let data = pcm.planes_mut();
+        whilst! { i in 0..planes; { ptrs[i] = data[i].as_mut_ptr().cast(); }}
+        unsafe {
+            let read = _raw::snd_pcm_readn(self.raw, ptrs.as_mut_ptr(), frames);
+            self.io_result(read)
+        }
+    }
+    /// Reads all requested planar frames.
+    fn read_all_planar_pcm<T: PcmSampleType>(
+        &mut self,
+        mut pcm: PcmBuf<T, &mut [&mut [T]]>,
+    ) -> Result<(), AlsaError> {
+        let frames = pcm.frames().ok_or_else(AlsaError::incomplete_frames)?;
+        let planes = pcm.planes_len();
+        let data = pcm.planes_mut();
+        let mut done = 0;
+        while done < frames {
+            let remaining = frames - done;
+            let mut ptrs = [Ptr::null_mut(); AudioChannels::MAX_COUNT];
+            is![planes > ptrs.len(), return Err(AlsaError::too_many_channels(planes, ptrs.len()))];
+            whilst! { i in 0..planes; { ptrs[i] = data[i][done..].as_mut_ptr().cast(); }}
+            unsafe {
+                let raw_remaining = remaining as _raw::snd_pcm_uframes_t;
+                let read = _raw::snd_pcm_readn(self.raw, ptrs.as_mut_ptr(), raw_remaining);
+                let n = self.io_result(read)?;
+                Self::check_progress(n, remaining)?;
+                done += n;
+            }
+        }
+        Ok(())
+    }
+
     /* low-level result handling */
     fn io_result(&mut self, frames: _raw::snd_pcm_sframes_t) -> Result<usize, AlsaError> {
         if frames >= 0 {
             Ok(frames as usize)
         } else {
-            let err = frames as c_int;
-            unsafe {
-                AlsaError::result(_raw::snd_pcm_recover(self.raw, err, 1))?;
-            }
-            Err(AlsaError::new(err))
+            let recovered = unsafe { _raw::snd_pcm_recover(self.raw, frames as c_int, 1) };
+            if recovered < 0 { Err(AlsaError::Code(recovered)) } else { Ok(0) }
         }
     }
 }

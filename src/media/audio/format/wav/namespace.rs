@@ -27,6 +27,9 @@ use crate::{
 /// The WAVE layer does not reinterpret sample bytes as typed slices. Use the
 /// typed helpers on [`PcmRaw`] or [`PcmRawBuf`] to decode or encode samples.
 ///
+/// [`PcmRaw`]: crate::PcmRaw
+/// [`PcmRawBuf`]: crate::PcmRawBuf
+///
 /// # Example
 /// ```
 /// # use devela::{AudioChannels, PcmRaw, PcmSample, PcmSpec, PcmWav, PcmWavError, PcmWavFmt};
