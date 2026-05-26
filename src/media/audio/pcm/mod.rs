@@ -1,6 +1,9 @@
 // devela::media::audio::pcm
 //
-//! Pulse-code modulation audio buffers and stream metadata.
+#![doc = crate::_DOC_MEDIA_AUDIO_PCM!()] // public
+#![doc = crate::_doc!(modules: crate::media::audio; pcm)]
+#![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
 //
 
 #[cfg(test)]

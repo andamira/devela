@@ -1,6 +1,6 @@
 // devela::media::audio::format
 //
-#![doc = crate::_DOC_MEDIA_AUDIO_FORMAT!()]
+#![doc = crate::_DOC_MEDIA_AUDIO_FORMAT!()] // public
 #![doc = crate::_doc!(modules: crate::media::audio; format)]
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
