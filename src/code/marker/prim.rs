@@ -33,7 +33,7 @@ _impl_prim![Sealed for
 
 #[doc = crate::_tags!(code primitive)]
 /// Language primitive value types.
-#[doc = crate::_doc_location!("code/marker")]
+#[doc = crate::_doc_meta!{location("code/marker")}]
 ///
 /// See also the related traits:
 /// - markers: [`PrimFitPtr`], [`PrimIndex`],
@@ -53,7 +53,7 @@ _impl_prim![Prim for
 
 #[doc = crate::_tags!(code mem primitive)]
 /// Primitive value types that fit in pointer-width on supported Rust targets.
-#[doc = crate::_doc_location!("code/marker")]
+#[doc = crate::_doc_meta!{location("code/marker")}]
 #[doc(alias = "PrimitiveFitPtr")]
 pub trait PrimFitPtr: Prim {}
 
@@ -67,7 +67,7 @@ _impl_prim![PrimFitPtr for u16, u32, u64, i16, i32, i64, f32, f64];
 
 #[doc = crate::_tags!(code mem num primitive)]
 /// Primitive types that can be used for indexing.
-#[doc = crate::_doc_location!("code/marker")]
+#[doc = crate::_doc_meta!{location("code/marker")}]
 #[doc(alias = "PrimitiveIndex")]
 pub trait PrimIndex: crate::PrimUint + PrimFitPtr {}
 
@@ -81,7 +81,7 @@ _impl_prim![PrimIndex for u16, u32, u64];
 
 #[doc = crate::_tags!(code mem num primitive niche)]
 /// A representation accepted for compact contiguous indexing.
-#[doc = crate::_doc_location!("code/marker")]
+#[doc = crate::_doc_meta!{location("code/marker")}]
 ///
 /// This trait marks types whose value domain is suitable for representing
 /// non-negative indices, including primitive index integers and selected

@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact [`Thread::sleep`][crate::Thread#method.sleep].
-#[doc = crate::_doc_location!("work/thread")]
+#[doc = crate::_doc_meta!{location("work/thread")}]
 ///
 /// Sleeps for `$ns` seconds + `$ms` milliseconds + `$us` microseconds + `$ns` nanoseconds
 ///

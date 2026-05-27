@@ -9,7 +9,7 @@ impl<T: ?Sized> MemExt for T {}
 
 #[doc = crate::_tags!(namespace)]
 /// Extension trait for type memory information and manipulation.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_meta!{location("sys/mem")}]
 ///
 /// This trait is automatically implemented for every `?Sized` type,
 /// although most methods are only available where `Self: Sized`.

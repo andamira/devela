@@ -10,7 +10,7 @@
 
 #[doc = crate::_tags!(num niche construction)]
 /// Creates a primitive-backed niche value with compile-time type selection.
-#[doc = crate::_doc_location!("num/grain/niche")]
+#[doc = crate::_doc_meta!{location("num/grain/niche")}]
 ///
 /// `niche!` constructs a niche wrapper over a primitive carrier,
 /// using the excluded value as a small invariant.
@@ -74,7 +74,7 @@ pub use niche;
 
 #[doc = crate::_tags!(num niche construction)]
 /// Private helper to construct niche types.
-#[doc = crate::_doc_location!("num/grain/niche")]
+#[doc = crate::_doc_meta!{location("num/grain/niche")}]
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct NicheNew<T>(pub T);
@@ -138,7 +138,7 @@ macro_rules! _generate_niche_prim {
     ($_d:tt $( $XTR:ident: $($P:ty),+ $(,)? );+ $(;)?) => { $crate::paste! {
         #[doc = crate::_tags!(niche primitive)]
         /// Maps a niche representation type to its primitive carrier type.
-        #[doc = crate::_doc_location!("num/grain/niche")]
+        #[doc = crate::_doc_meta!{location("num/grain/niche")}]
         ///
         /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
         /// supported niche type (for example `NonMaxU8`, `NonValueU16<…>`,

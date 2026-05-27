@@ -6,7 +6,7 @@
 
 #[doc = crate::_tags!(log)]
 /// The severity of a diagnostic emission.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Ord, PartialOrd)]
 #[allow(missing_docs)]
 pub enum DiagLevel {
@@ -20,7 +20,7 @@ pub enum DiagLevel {
 
 #[doc = crate::_tags!(log)]
 /// Emits leveled diagnostic text.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 ///
 /// This is the minimal semantic sink for diagnostics.
 /// It layers above plain text output by attaching a [`DiagLevel`]

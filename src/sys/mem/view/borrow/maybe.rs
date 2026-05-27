@@ -12,7 +12,7 @@ use devela::{Deref, Hash, Hasher, Ordering, Ownership};
 
 #[doc = crate::_tags!(maybe lifetime)]
 /// A container that may hold either a borrowed or owned value.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_meta!{location("sys/mem")}]
 ///
 /// Unlike [`Cow`], this:
 /// - Uses the [`Ownership`] trait for flexible backing types.

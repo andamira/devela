@@ -8,7 +8,7 @@ use crate::{__ansi_consts, Ansi, Digits};
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 3-bit color codes, 8 colors.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum AnsiColor3 {

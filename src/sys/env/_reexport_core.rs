@@ -14,7 +14,7 @@ _reexport! { rust: core, location: "sys/env", tag: _tags!(code),
 //
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Inspects an environment variable at compile time.
-#[doc = crate::_doc_location!("sys/env")]
+#[doc = crate::_doc_meta!{location("sys/env")}]
 ///
 #[doc = "*Re-exported from [`core::env`][macro@::core::env]*."]
 #[doc = "\n\n---"]

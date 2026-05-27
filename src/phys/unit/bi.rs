@@ -12,7 +12,7 @@ use crate::{Vec, vec_ as vec};
 
 #[doc = crate::_tags!(num)]
 /// Binary unit prefixes.
-#[doc = crate::_doc_location!("phys/unit")]
+#[doc = crate::_doc_meta!{location("phys/unit")}]
 ///
 /// - <https://en.wikipedia.org/wiki/Binary_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

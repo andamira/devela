@@ -11,7 +11,7 @@ use crate::GraphemeKind;
 
 #[doc = crate::_tags!(text)]
 /// Common trait for <abbr title="Extended Grapheme Cluster">EGC</abbr> types.
-#[doc = crate::_doc_location!("text/unicode/grapheme")]
+#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
 pub trait Grapheme {
     /// Returns an iterator over Unicode scalars.
     // NOTE: this method makes the trait not dyn compatible

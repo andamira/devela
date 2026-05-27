@@ -8,7 +8,7 @@ use crate::{FmtNum, Slice};
 
 #[doc = crate::_tags!(fmt)]
 /// Writes concatenated formatted data into a byte buffer.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// Expands into sequential write calls using a mutable offset, combining:
 /// - String literals: `"text"`

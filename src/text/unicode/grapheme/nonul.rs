@@ -15,7 +15,7 @@ use crate::{
 
 #[doc = crate::_tags!(text)]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonul`]."]]
-#[doc = crate::_doc_location!("text/unicode/grapheme")]
+#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
 ///
 /// ## Methods
 ///

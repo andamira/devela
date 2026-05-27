@@ -15,7 +15,7 @@ use crate::{Cast, ConstInit, Own, Rand, whilst};
 #[doc = crate::_tags!(rand)]
 /// The `Xoroshiro128++`
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// It has a 128-bit state and generates 32-bit numbers.
 #[must_use]

@@ -31,7 +31,7 @@ macro_rules! _slog_guard {
 
 #[doc = crate::_tags!(log)]
 /// Fixed-capacity static logger with owned byte buffers.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 ///
 /// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
 /// and each message's maximum length (`MSG_LEN`).
@@ -190,7 +190,7 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 // no-op macro placeholder
 #[doc = crate::_tags!(fake log)]
 /// Static global logger macro, compile-time friendly.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 ///
 /// This inert implementation preserves call-site ergonomics
 /// when the logging backend is not enabled.
@@ -208,7 +208,7 @@ macro_rules! slog {
 
 #[doc = crate::_tags!(log)]
 /// Static global logger macro, compile-time friendly.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 ///
 /// Defines and operates on [`LoggerStatic`] instances for fixed-capacity logging.
 /// Each logger is identified by its `(CAP, MSG_LEN)` pair and may optionally have

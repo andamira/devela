@@ -7,7 +7,7 @@ use crate::{Ordering, TimePoint, TimeScale, TimeSource, TimeSpan};
 
 #[doc = crate::_tags!(no time)]
 /// Represents the absence of time.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_doc_meta!{location("phys/time")}]
 ///
 /// This can be used anywhere an implementation of a time-related trait or
 /// a time component is expected, serving as a no-op placeholder.

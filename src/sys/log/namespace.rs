@@ -9,7 +9,7 @@ use ::log::{STATIC_MAX_LEVEL, logger, max_level, set_logger, set_max_level};
 
 #[doc = crate::_tags!(log namespace)]
 /// Log-related operations.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 ///
 /// It is a namespace for the `log` crate standalone functions.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]

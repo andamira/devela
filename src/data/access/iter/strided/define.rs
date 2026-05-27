@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(iterator)]
 /// Generates a strided iterator type over a slice.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// The generated iterator traverses a slice according to
 /// an affine index progression:

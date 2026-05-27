@@ -9,7 +9,7 @@ use crate::_impl_init;
 
 #[doc = crate::_tags!(text)]
 /// Basic text-domain unit.
-#[doc = crate::_doc_location!("text")]
+#[doc = crate::_doc_meta!{location("text")}]
 ///
 /// `TextUnit` is the base primitive quantity used by text-related abstractions.
 ///
@@ -27,7 +27,7 @@ pub type TextUnit = u32;
 #[must_use]
 #[doc = crate::_tags!(text layout)]
 /// Position within a caller-defined text-oriented sequence.
-#[doc = crate::_doc_location!("text")]
+#[doc = crate::_doc_meta!{location("text")}]
 ///
 /// The sequence may represent bytes, Unicode scalars, graphemes, layout symbols,
 /// or other text-derived units chosen by the caller.
@@ -60,7 +60,7 @@ impl TextIndex {
 #[must_use]
 #[doc = crate::_tags!(text)]
 /// Continuation point within a caller-defined text traversal.
-#[doc = crate::_doc_location!("text")]
+#[doc = crate::_doc_meta!{location("text")}]
 ///
 /// A `TextCursor` marks where a text-oriented process should resume.
 ///
@@ -87,7 +87,7 @@ impl TextCursor {
 #[must_use]
 #[doc = crate::_tags!(text)]
 /// A half-open range within a caller-defined text-oriented sequence.
-#[doc = crate::_doc_location!("text")]
+#[doc = crate::_doc_meta!{location("text")}]
 ///
 /// `TextRange` covers the interval `[start, end)`,
 /// including `start` and excluding `end`.

@@ -7,7 +7,7 @@ use crate::{Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift128` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// It has a 128-bit state and generates 64-bit numbers.
 ///

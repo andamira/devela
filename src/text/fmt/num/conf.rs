@@ -10,7 +10,7 @@ use crate::{ConstInit, Sign};
 
 #[doc = crate::_tags!(fmt num)]
 /// Configuration for numeric formatting.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// This configuration applies uniformly to integers and floating-point numbers.
 /// Fields that do not apply to a given number type are ignored.
@@ -111,7 +111,7 @@ impl FmtNumConf {
 
 #[doc = crate::_tags!(fmt num)]
 /// Controls how the sign of a number is formatted.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// This enum specifies whether a sign glyph (`'-'` or `'+'`) is emitted,
 /// independently of the numeric magnitude.

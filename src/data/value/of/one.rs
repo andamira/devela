@@ -60,7 +60,7 @@ macro_rules! _data_value_impl_oneof {
     (define_enum: $($variant:ident : $nth:literal : $suf:literal),+) => { $crate::paste! {
         #[doc = crate::_tags!(code)]
         /// A generic, parameterized *enum* for expressing structured alternatives.
-        #[doc = crate::_doc_location!("data/value")]
+        #[doc = crate::_doc_meta!{location("data/value")}]
         ///
         /// Variants are expected to be **contiguous**, meaning `()` (unit types)
         /// should only appear at the **end**.

@@ -17,7 +17,7 @@ use crate::{_reexport, _tags};
 #[doc = _tags!(platform)]
 /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
 /// Turns a round operator token to the correct constant value.
-#[doc = crate::_doc_location!("sys/arch")]
+#[doc = crate::_doc_meta!{location("sys/arch")}]
 #[cfg(all(feature = "dep_safe_arch", target_feature = "avx"))]
 #[cfg_attr(nightly_doc, doc(cfg(target_feature = "avx")))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_safe_arch")))]
@@ -47,7 +47,7 @@ _reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag:
 #[doc = _tags!(platform)]
 /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
 /// Turns a comparison operator token to the correct constant value.
-#[doc = crate::_doc_location!("sys/arch")]
+#[doc = crate::_doc_meta!{location("sys/arch")}]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 #[cfg(target_feature = "avx")]

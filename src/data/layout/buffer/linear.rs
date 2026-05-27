@@ -7,7 +7,7 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a linear buffer type over contiguous storage backends.
-#[doc = crate::_doc_location!("data/layout")]
+#[doc = crate::_doc_meta!{location("data/layout")}]
 ///
 /// The generated type represents a logical range over contiguous
 /// storage, using an index type to track length and bounds.

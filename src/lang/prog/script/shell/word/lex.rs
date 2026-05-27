@@ -7,7 +7,7 @@ use crate::{ShellWordError, TextScanner, is, unwrap};
 
 #[doc = crate::_tags!(lang parser)]
 /// Splits shell-like input into command words.
-#[doc = crate::_doc_location!("lang/prog/script/shell")]
+#[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ShellLex<'a> {
     scanner: TextScanner<'a>,

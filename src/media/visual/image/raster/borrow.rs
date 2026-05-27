@@ -17,7 +17,7 @@ use crate::{
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed dense raster view over typed samples.
-#[doc = crate::_doc_location!("media/visual/image/raster")]
+#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the concrete borrowed form of [`RasterView`].
 ///
@@ -35,7 +35,7 @@ pub struct RasterRef<'a, T> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed mutable dense raster view over typed samples.
-#[doc = crate::_doc_location!("media/visual/image/raster")]
+#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the concrete borrowed form of [`RasterBuf`].
 ///
@@ -50,7 +50,7 @@ pub struct RasterMut<'a, T> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed byte raster view with explicit row layout.
-#[doc = crate::_doc_location!("media/visual/image/raster")]
+#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the concrete borrowed form of [`RasterViewBytes`].
 ///
@@ -65,7 +65,7 @@ pub struct RasterBytesRef<'a> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed mutable byte raster view with explicit row layout.
-#[doc = crate::_doc_location!("media/visual/image/raster")]
+#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the concrete borrowed form of [`RasterBufBytes`].
 ///

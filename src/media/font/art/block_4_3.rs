@@ -10,7 +10,7 @@ use crate::FontArt;
 
 #[doc = crate::_tags!(font)]
 /// A simple 4x3 Unicode-art font.
-#[doc = crate::_doc_location!("media/font")]
+#[doc = crate::_doc_meta!{location("media/font")}]
 ///
 /// ```text
 /// ▄▀▀▄  ▄█  ▄▀▀▄ ▄▀▀▄ █  █ █▀▀▀ ▄▀▀▄ ▀▀▀█ ▄▀▀▄ ▄▀▀▄

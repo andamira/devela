@@ -13,7 +13,7 @@ use crate::{Thread, ThreadExt};
 
 #[doc = crate::_tags!(concurrency)]
 /// A spinlock providing mutual exclusion without blocking.
-#[doc = crate::_doc_location!("work/sync")]
+#[doc = crate::_doc_meta!{location("work/sync")}]
 ///
 /// Uses an atomic flag for synchronization, with a configurable backoff strategy.
 ///

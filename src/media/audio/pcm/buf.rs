@@ -20,7 +20,7 @@ test_size_of![test_size_of_PcmBuf_planar_i32: PcmBuf<i32, &[&[i32]]> = 24]; // 1
 
 #[doc = crate::_tags!(audio data)]
 /// Typed PCM sample buffer over caller-chosen storage.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// `PcmBuf` pairs sample storage with the [`PcmSpec`] parts needed to interpret
 /// it as PCM audio: sample encoding, channel layout, and sample rate.

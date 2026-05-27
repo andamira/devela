@@ -12,7 +12,7 @@ use crate::{ConstInit, InvalidValue, is, whilst};
 
 #[doc = crate::_tags!(quant)]
 /// The three-valued sign of a number: negative (−1), zero (0), or positive (+1).
-#[doc = crate::_doc_location!("num/quant")]
+#[doc = crate::_doc_meta!{location("num/quant")}]
 ///
 /// This enum models the mathematical signum function and is useful when
 /// representing or manipulating a value's sign independently of its magnitude.

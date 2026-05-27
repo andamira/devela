@@ -10,7 +10,7 @@ use crate::Cast;
 
 #[doc = crate::_tags!(num primitive)]
 /// Offers methods to split a primitive into an array of smaller primitives.
-#[doc = crate::_doc_location!("num/grain")]
+#[doc = crate::_doc_meta!{location("num/grain")}]
 ///
 /// See also the [`Cast`] type for the equivalent *const* methods, and the
 /// [`PrimJoin`][super::PrimJoin] trait for the opposite operations.

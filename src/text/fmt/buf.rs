@@ -14,7 +14,7 @@ crate::_use! {compat::from_utf8}
 
 #[doc = crate::_tags!(fmt)]
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// This is implemented via [`FmtWriter::format`] and [`format_args!`][crate::format_args].
 ///
@@ -46,7 +46,7 @@ pub use format_buf;
 
 #[doc = crate::_tags!(fmt)]
 /// A specialized formatter with a fixed byte buffer and truncation detection.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// It should be faster at runtime than the default formatter.
 #[derive(Debug)]

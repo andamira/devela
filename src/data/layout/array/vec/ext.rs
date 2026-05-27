@@ -11,7 +11,7 @@ impl<T> Sealed for Vec<T> {}
 
 #[doc = crate::_tags!(data_structure)]
 /// Extension trait providing additional methods for [`Vec`].
-#[doc = crate::_doc_location!("data/layout/array")]
+#[doc = crate::_doc_meta!{location("data/layout/array")}]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 #[cfg_attr(nightly_doc, doc(notable_trait))]

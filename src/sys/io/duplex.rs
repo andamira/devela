@@ -9,7 +9,7 @@ impl<T: IoRead + IoWrite> IoDuplex for T {}
 
 #[doc = crate::_tags!(io)]
 /// A duplex byte I/O primitive.
-#[doc = crate::_doc_location!("sys/io")]
+#[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// This trait is blanket-implemented for any type that implements both
 /// [`IoRead`] and [`IoWrite`]. Duplex capability does not imply simultaneous

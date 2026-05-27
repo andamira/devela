@@ -13,7 +13,7 @@ use crate::{
 
 #[doc = crate::_tags!(audio codec)]
 /// RIFF/WAVE operations for PCM-family audio.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 /// `PcmWav` is a namespace for working with WAVE containers whose payload is
 /// raw interleaved PCM-family audio.
 ///

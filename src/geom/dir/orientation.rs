@@ -8,7 +8,7 @@ use crate::{Distance, Position};
 
 #[doc = crate::_tags!(geom dir)]
 /// A unitless directional vector in `D`-dimensional space.
-#[doc = crate::_doc_location!("geom/dir")]
+#[doc = crate::_doc_meta!{location("geom/dir")}]
 ///
 /// Represents **only the direction of movement**, without an absolute
 /// reference point or inherent magnitude. It is **typically normalized**
@@ -30,17 +30,17 @@ pub struct Orientation<T, const D: usize> {
 
 #[doc = crate::_tags!(geom dir)]
 /// A 1-dimensional [`Orientation`].
-#[doc = crate::_doc_location!("geom/dir")]
+#[doc = crate::_doc_meta!{location("geom/dir")}]
 pub type Orientation1<T> = Orientation<T, 1>;
 
 #[doc = crate::_tags!(geom dir)]
 /// A 2-dimensional [`Orientation`].
-#[doc = crate::_doc_location!("geom/dir")]
+#[doc = crate::_doc_meta!{location("geom/dir")}]
 pub type Orientation2<T> = Orientation<T, 2>;
 
 #[doc = crate::_tags!(geom dir)]
 /// A 3-dimensional [`Orientation`].
-#[doc = crate::_doc_location!("geom/dir")]
+#[doc = crate::_doc_meta!{location("geom/dir")}]
 pub type Orientation3<T> = Orientation<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Orientation];

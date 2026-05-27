@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// A macro for constructing a unique sequential identifier generator.
-#[doc = crate::_doc_location!("data/uid")]
+#[doc = crate::_doc_meta!{location("data/uid")}]
 ///
 /// It generates the necessary static instances dynamically.
 ///

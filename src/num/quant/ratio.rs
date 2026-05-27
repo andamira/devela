@@ -10,7 +10,7 @@ use crate::{NumConst, Rem};
 
 #[doc = crate::_tags!(quant)]
 /// A generic ratio representing a proportional relationship between two values.
-#[doc = crate::_doc_location!("num/quant")]
+#[doc = crate::_doc_meta!{location("num/quant")}]
 ///
 /// This type models a mathematical ratio `n/d`, where:
 /// - `N` is the numerator type.

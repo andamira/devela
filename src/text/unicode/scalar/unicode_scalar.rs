@@ -14,7 +14,7 @@ use crate::{Char, char7, char8, char16, charu, charu_niche};
 #[doc = crate::_tags!(text)]
 /// Common trait for Unicode scalar types.
 ///
-#[doc = crate::_doc_location!("text/unicode/scalar")]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
 ///
 /// It's implemented for: [`char`][crate::char],
 /// [`char7`], [`char8`], [`char16`], [`charu`] and [`charu_niche`];

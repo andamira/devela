@@ -11,7 +11,7 @@ use crate::{PcmRawBuf, PcmRawError, PcmSample, PcmSpec, is, read_at, whilst, wri
 
 #[doc = crate::_tags!(audio codec)]
 /// Headerless raw PCM operations.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// Raw PCM has no embedded metadata. Callers must provide a [`PcmSpec`]
 /// describing the byte stream.

@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Macro helper for documentation of re-exported items.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 //
 // IMPROVE: make dependencies safety related to features.
 // MAYBE: new branch for: either a crate or core (for portable-atomic types).

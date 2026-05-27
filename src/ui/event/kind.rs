@@ -9,7 +9,7 @@ use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, Even
 crate::enumset! {
     #[doc = crate::_tags!(event uid)]
     /// A lightweight, data-less identifier for [`EventKind`].
-    #[doc = crate::_doc_location!("ui/event")]
+    #[doc = crate::_doc_meta!{location("ui/event")}]
     ///
     /// Used when only the *category* of the event is relevant and the
     /// payload of the variant is not needed.
@@ -22,7 +22,7 @@ crate::enumset! {
     pub enum EventTag(
         #[doc = crate::_tags!(event data_structure)]
         /// A compact set of [`EventTag`]s.
-        #[doc = crate::_doc_location!("ui/event")]
+        #[doc = crate::_doc_meta!{location("ui/event")}]
         ///
         /// Used to declare, filter, and query coarse event categories.
         pub EventTagSet: u8
@@ -61,12 +61,12 @@ impl Default for EventTag {
 
 #[doc = crate::_tags!(event time maybe)]
 /// A convenience helper for optionally timed event kinds.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 
 #[doc = crate::_tags!(event)]
 /// An enumeration of concrete event variants.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// High-level, typed grouping of input and window interactions.
 /// Backends normalize their raw events into these variants.

@@ -13,7 +13,7 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 #[must_use]
 #[doc = crate::_tags!(text parser)]
 /// A byte scanner over source text.
-#[doc = crate::_doc_location!("text/parse")]
+#[doc = crate::_doc_meta!{location("text/parse")}]
 ///
 /// `TextScanner` provides incremental, allocation-free traversal over a borrowed
 /// text source, exposing byte-oriented operations suitable for building parsers.

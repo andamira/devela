@@ -9,7 +9,7 @@ use crate::ConstInit;
 
 #[doc = crate::_tags!(interaction)]
 /// Keypad keys.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[repr(u8)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]

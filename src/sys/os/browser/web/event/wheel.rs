@@ -11,7 +11,7 @@ use crate::{Timed, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Wheel Event.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// Represents a JavaScript wheel event with browser-native deltas and unit.
 ///

@@ -7,7 +7,7 @@ use crate::RunPhase;
 
 #[doc = crate::_tags!(runtime error)]
 /// Errors returned while driving a runtime step.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum RunDriverError<BE, AE> {
     /// The runtime cannot advance in its current phase.
@@ -20,7 +20,7 @@ pub enum RunDriverError<BE, AE> {
 
 #[doc = crate::_tags!(runtime error)]
 /// Errors returned while driving a runtime frame step.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum RunDriverFrameError<BE, AE, RE, PE> {
     /// The runtime cannot advance in its current phase.

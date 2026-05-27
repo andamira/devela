@@ -6,7 +6,7 @@
 crate::test_size_of![TermCap = 1]; // 8 bits
 #[doc = crate::_tags!(term runtime)]
 /// Terminal capability flag.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///
 /// These flags describe independent terminal features.
 /// Ordered or exclusive properties, such as color depth,

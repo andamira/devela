@@ -10,7 +10,7 @@ use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with,
 
 #[doc = crate::_tags!(iterator namespace)]
 /// Iterator-related namespaced operations.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 #[derive(Debug)]
 pub struct Iter;
 

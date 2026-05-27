@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Imports `from_utf8` and `from_utf8_mut` with a SIMD version, if available.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 ///
 /// # Features
 /// Uses the `dep_simdutf8` feature if enabled:
@@ -60,7 +60,7 @@ pub use _use· as _use;
 
 #[doc = crate::_tags!(internal)]
 /// Imports known helpers or provides compatibility shims.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 ///
 /// Used by dual-purpose source files that must compile both inside devela
 /// and as standalone examples.

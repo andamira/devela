@@ -8,7 +8,7 @@ use crate::{_impl_init, Word, impl_trait, whilst};
 #[must_use]
 #[doc = crate::_tags!(data codec)]
 /// A fixed four-byte binary tag.
-#[doc = crate::_doc_location!("data/codec/bin")]
+#[doc = crate::_doc_meta!{location("data/codec/bin")}]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialOrd, Ord)]
 pub struct BinTag4([u8; 4]);

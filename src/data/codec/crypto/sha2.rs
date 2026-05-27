@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(crypto hash)]
 /// Implements SHA-2 digest methods for a concrete hash type.
-#[doc = crate::_doc_location!("data/codec/crypto")]
+#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
 ///
 /// Supports the SHA-2 32-bit-word core used by SHA-224 and SHA-256, and the
 /// SHA-2 64-bit-word core used by SHA-384, SHA-512, and SHA-512/t variants.

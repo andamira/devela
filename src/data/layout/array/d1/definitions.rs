@@ -7,7 +7,7 @@ use crate::{Bare, Storage};
 
 #[doc = crate::_tags!(data_structure)]
 /// A static 1-dimensional array backed by the core [array] primitive.
-#[doc = crate::_doc_location!("data/layout/array")]
+#[doc = crate::_doc_meta!{location("data/layout/array")}]
 ///
 /// It is generic in respect to its
 /// elements (`T`),

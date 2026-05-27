@@ -11,7 +11,7 @@ use crate::is;
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator using a generic associated lifetime.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// A lending iterator yields items borrowed from its own internal state.
 /// Each call to [`next`][Self::next] creates a temporary borrow of `self`
@@ -245,7 +245,7 @@ pub trait IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can yield items from the back.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// This is the borrowing analogue of : [`IteratorDoubleEnded`][crate::IteratorDoubleEnded].
 pub trait IteratorLendingDoubleEnded: IteratorLending {
@@ -287,7 +287,7 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator with a known remaining length.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// This is the borrowing analogue of [`IteratorExactSize`][crate::IteratorExactSize].
 ///
@@ -321,7 +321,7 @@ pub trait IteratorLendingExactSize: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can inspect the next item without advancing.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// The returned reference is tied to the temporary mutable borrow of `self`
 /// created by this call. Implementations must not advance the iteration state
@@ -388,7 +388,7 @@ pub trait IteratorLendingPeek: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can inspect the next item from the back, without advancing.
-#[doc = crate::_doc_location!("data/access/iter")]
+#[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///
 /// The returned reference is tied to the temporary mutable borrow of `self`
 /// created by this call. Implementations must not modify the iteration state

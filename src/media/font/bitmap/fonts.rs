@@ -11,7 +11,7 @@ use super::FontBitmap;
 
 #[doc = crate::_tags!(font)]
 /// A simple 3x3 bitmap font.
-#[doc = crate::_doc_location!("media/font")]
+#[doc = crate::_doc_meta!{location("media/font")}]
 ///
 /// Notes:
 /// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
@@ -54,7 +54,7 @@ const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
 
 #[doc = crate::_tags!(font)]
 /// A simple 3x5 bitmap font.
-#[doc = crate::_doc_location!("media/font")]
+#[doc = crate::_doc_meta!{location("media/font")}]
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]
@@ -93,7 +93,7 @@ const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
 
 #[doc = crate::_tags!(font)]
 /// A simple 5x6 bitmap font.
-#[doc = crate::_doc_location!("media/font")]
+#[doc = crate::_doc_meta!{location("media/font")}]
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]

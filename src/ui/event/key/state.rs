@@ -7,7 +7,7 @@ use crate::ConstInit;
 
 #[doc = crate::_tags!(interaction)]
 /// Represents the state of a [`Key`][crate::Key].
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyState {

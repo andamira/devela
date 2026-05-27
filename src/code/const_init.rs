@@ -17,7 +17,7 @@
 
 #[doc = crate::_tags!(init)]
 /// A trait for giving a type a useful const-friendly initial value.
-#[doc = crate::_doc_location!("code")]
+#[doc = crate::_doc_meta!{location("code")}]
 ///
 /// # Comparison with `Default`
 ///

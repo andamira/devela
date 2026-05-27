@@ -10,7 +10,7 @@ use crate::{format_buf, is};
 
 #[doc = crate::_tags!(font)]
 /// A simple bitmap font for rendering fixed-size glyphs.
-#[doc = crate::_doc_location!("media/font")]
+#[doc = crate::_doc_meta!{location("media/font")}]
 ///
 /// Each glyph is stored as a bitfield in a generic type and is assumed to have
 /// fixed dimensions (`width` × `height`), a baseline, and an advance metric.

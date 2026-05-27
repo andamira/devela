@@ -7,7 +7,7 @@ use crate::{AsciiLut, Display, FmtResult, FmtWriter, Formatter, StringU8, format
 
 #[doc = crate::_tags!(image term)]
 /// A sixel character.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_meta!{location("media/visual/image")}]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct SixelChar(u8);

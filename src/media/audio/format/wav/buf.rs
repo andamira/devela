@@ -13,7 +13,7 @@ crate::test_size_of![PcmWavBuf_Vec: PcmWavBuf<Vec<u8>> = 72]; // 576 bits
 
 #[doc = crate::_tags!(audio data)]
 /// Parsed WAVE byte buffer over borrowed or owned storage.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// This stores the full WAVE byte region together with the parsed `fmt ` metadata
 /// and the byte span of the `data` payload.

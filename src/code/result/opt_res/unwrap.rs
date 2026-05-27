@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(result)]
 /// An unwrapper macro that works in compile-time.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
 ///

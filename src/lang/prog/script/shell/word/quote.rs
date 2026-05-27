@@ -7,7 +7,7 @@ use crate::{ShellWordError, is, whilst, write_at};
 
 #[doc = crate::_tags!(lang text)]
 /// Quotes shell words for command strings.
-#[doc = crate::_doc_location!("lang/prog/script/shell")]
+#[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ShellQuote {

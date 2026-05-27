@@ -6,7 +6,7 @@
 // MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 #[doc = crate::_tags!(code maybe)]
 /// Helper for using optionally implemented traits, like `Default` or `Clone`.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The first boolean argument says whether `$T` implements the given trait.
 ///
@@ -85,7 +85,7 @@ pub use maybe;
 
 #[doc = crate::_tags!(code maybe primitive)]
 /// Expands to a primitive slot from either a direct carrier or a wrapped outer type.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The first argument is the outside type used for dispatch.
 ///

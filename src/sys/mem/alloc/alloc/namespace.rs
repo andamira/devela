@@ -12,7 +12,7 @@ use crate::{
 
 #[doc = crate::_tags!(allocation namespace)]
 /// Memory-allocation-related operations.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_meta!{location("sys/mem")}]
 ///
 /// See also: [`Mem`][crate::Mem], [`MemExt`][crate::MemExt],
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].

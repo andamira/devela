@@ -8,7 +8,7 @@ use crate::sys::os::browser::WebEventKind;
 
 #[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// Represents a JavaScript mouse event containing relevant properties.
 ///
@@ -47,7 +47,7 @@ impl WebEventMouse {
 
 #[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// Represents a JavaScript pointer event containing relevant properties.
 ///

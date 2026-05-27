@@ -16,8 +16,8 @@
 /// - `size_of(...)`: emits checked type-size metadata through [`_doc_size_of!`].
 /// - `origin(...)`: emits re-export origin metadata for Rust or dependency items.
 ///
-/// [`_doc_location`]: crate::_doc_location
-/// [`_doc_size_of`]: crate::_doc_size_of
+/// [`_doc_location!`]: crate::_doc_location
+/// [`_doc_size_of!`]: crate::_doc_size_of
 ///
 /// # Examples
 /// ```ignore

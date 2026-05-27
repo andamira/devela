@@ -7,7 +7,7 @@ use crate::Ordering;
 
 #[doc = crate::_tags!(runtime time)]
 /// A deterministic logical execution-time counter.
-#[doc = crate::_doc_location!("run/time")]
+#[doc = crate::_doc_meta!{location("run/time")}]
 ///
 /// `RuntimeTick` represents execution time as an explicitly advanced,
 /// monotonically increasing tick count.

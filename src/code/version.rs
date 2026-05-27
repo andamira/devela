@@ -8,7 +8,7 @@ use crate::{Digits, Slice, Str, is, unwrap, whilst, write_at};
 
 #[doc = crate::_tags!(code)]
 /// A compact three-part semantic version core.
-#[doc = crate::_doc_location!("code")]
+#[doc = crate::_doc_meta!{location("code")}]
 ///
 /// Stores the numeric `major.minor.patch` part of a semantic version.
 ///
@@ -145,7 +145,7 @@ impl Version {
 
 #[doc = crate::_tags!(code)]
 /// A semantic version with optional borrowed metadata.
-#[doc = crate::_doc_location!("code")]
+#[doc = crate::_doc_meta!{location("code")}]
 ///
 /// Extends [`Version`] with optional pre-release and build metadata.
 ///

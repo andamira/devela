@@ -7,7 +7,7 @@ use crate::{Cmp, Digits, Display, FmtResult, Formatter, format_buf, is, write_at
 
 #[doc = crate::_tags!(color term)]
 /// Sixel color representation.
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_meta!{location("media/visual/image")}]
 ///
 /// It stores r, g, b components (0-99 each).
 ///

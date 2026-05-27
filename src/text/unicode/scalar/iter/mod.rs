@@ -12,7 +12,7 @@ mod layout; // common methods related to text-layout
 
 #[doc = crate::_tags!(text iterator)]
 /// An iterator over Unicode scalars.
-#[doc = crate::_doc_location!("text/unicode/scalar")]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
 ///
 /// Implements `Iterator<Item = char>` by default, but provides specialized methods
 /// for other scalar types.

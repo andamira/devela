@@ -72,7 +72,7 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
 
 define_error! { composite: fmt(f)
     /// All possible integer operation errors.
-    #[doc = crate::_doc_location!("num/error")]
+    #[doc = crate::_doc_meta!{location("num/error")}]
     pub enum IntError {
         +tag: _tags!(no),
         DOC_NOT_IMPLEMENTED: +const NotImplemented => NotImplemented,
@@ -108,12 +108,12 @@ impl IntError {
 }
 #[doc = crate::_tags!(num result)]
 /// A result of a fallible integer operation.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_meta!{location("num")}]
 pub type IntResult<T> = crate::Result<T, IntError>;
 
 define_error! { composite: fmt(f)
     /// Invalid or problematic values for niche types.
-    #[doc = crate::_doc_location!("num")]
+    #[doc = crate::_doc_meta!{location("num")}]
     pub enum NicheValueError {
         +tag: _tags!(num),
         DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),

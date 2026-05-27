@@ -10,7 +10,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted meta-documentation string.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
@@ -120,7 +120,7 @@ pub use _doc· as _doc;
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for a miri warning.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

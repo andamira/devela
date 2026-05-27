@@ -7,7 +7,7 @@ use crate::KeyMod;
 
 #[doc = crate::_tags!(interaction web)]
 /// Which part of the keyboard the key event originates from.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

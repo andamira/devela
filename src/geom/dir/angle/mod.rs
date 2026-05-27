@@ -18,7 +18,7 @@ pub use kind::AngleKind;
 
 #[doc = crate::_tags!(geom)]
 /// An angle represents a fraction of a full rotation.
-#[doc = crate::_doc_location!("num/geom/dir")]
+#[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
 ///
@@ -88,7 +88,7 @@ impl<T> Angle<T> {
 
 #[doc = crate::_tags!(geom)]
 /// The direction of rotation of an angle.
-#[doc = crate::_doc_location!("num/geom/dir")]
+#[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
 /// In mathematics and most graphics programming contexts, the default direction
 /// for angle measurements is counterclockwise from a defined zero point (usually

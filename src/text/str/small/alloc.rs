@@ -10,7 +10,7 @@ const STRING_SMALL_ALLOC_DEFAULT_CAP: usize = 2 * size_of::<usize>() - 1;
 
 #[doc = crate::_tags!(string)]
 /// A UTF-8 string with inline storage and heap spillover.
-#[doc = crate::_doc_location!("text/str")]
+#[doc = crate::_doc_meta!{location("text/str")}]
 ///
 /// Stores strings of up to `CAP` bytes inline,
 /// and spills to the heap when more capacity is needed.

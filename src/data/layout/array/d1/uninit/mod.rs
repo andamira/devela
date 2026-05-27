@@ -10,7 +10,7 @@ mod methods;
 
 #[doc = crate::_tags!(data_structure)]
 /// A static array allowing uninitialized elements.
-#[doc = crate::_doc_location!("data/layout/array")]
+#[doc = crate::_doc_meta!{location("data/layout/array")}]
 #[derive(Debug, Default)]
 pub struct ArrayUninit<T, const CAP: usize, S: Storage = Bare> {
     data: S::Stored<[MaybeUninit<T>; CAP]>,

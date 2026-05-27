@@ -13,7 +13,7 @@ use crate::{
 
 #[doc = crate::_tags!(runtime)]
 /// Orchestrates stepwise runtime progression over a backend and an app.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 ///
 /// `RunDriver` owns a [`Runtime<T>`] and advances it one step at a time.
 /// For each step it:

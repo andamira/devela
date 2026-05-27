@@ -34,7 +34,7 @@ macro_rules! impl_str_u {
         #[allow(rustdoc::broken_intra_doc_links, reason = "±unsafe")]
         #[doc = crate::_tags!(string)]
         /// A UTF-8 string with fixed capacity that stores length explicitly.
-        #[doc = crate::_doc_location!("text/str")]
+        #[doc = crate::_doc_meta!{location("text/str")}]
         ///
         /// Suited for frequently inspected or manipulated text where constant-time
         /// length access is important. Uses extra space to provide O(1) length operations.

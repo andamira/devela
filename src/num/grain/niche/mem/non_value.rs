@@ -29,7 +29,7 @@ items! { impl_non_value![U 64, usize]; impl_non_value![I 64, isize]; }
 items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 
 /// Implements a `NonValue[I|U]B<V>`.
-#[doc = crate::_doc_location!("num/grain/niche")]
+#[doc = crate::_doc_meta!{location("num/grain/niche")}]
 ///
 /// - `I` or `U` means a signed or unsigned type, respectively.
 /// - `B` represents the bit-size, from [8, 16, 32, 64, 128].
@@ -93,7 +93,7 @@ macro_rules! impl_non_value {
 
             #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal some specific value." ]
-            #[doc = crate::_doc_location!("num/grain/niche")]
+            #[doc = crate::_doc_meta!{location("num/grain/niche")}]
             ///
             #[doc = "It has the same memory layout optimization as [`NonZero<" $IP
             ">`][crate::NonZero], so that `Option<" $name ">` is the same size as `" $name "`."]
@@ -113,7 +113,7 @@ macro_rules! impl_non_value {
             #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal its [`"
             $XTR "`][" $IP "::" $XTR "] value."]
-            #[doc = crate::_doc_location!("num/grain/niche")]
+            #[doc = crate::_doc_meta!{location("num/grain/niche")}]
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstInit`][crate::ConstInit] traits.

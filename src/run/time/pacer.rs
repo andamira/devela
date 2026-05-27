@@ -7,7 +7,7 @@ use crate::TimeSpan;
 
 #[doc = crate::_tags!(runtime time)]
 /// Controls presentation cadence independently of simulation.
-#[doc = crate::_doc_location!("run/time")]
+#[doc = crate::_doc_meta!{location("run/time")}]
 ///
 /// `RunPacer` accumulates elapsed span and decides when presentation is due.
 #[derive(Clone, Copy, Debug, PartialEq)]

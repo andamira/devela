@@ -20,7 +20,7 @@ use ::core::ptr::{
 
 #[doc = crate::_tags!(mem namespace)]
 /// Pointer-related operations.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_meta!{location("sys/mem")}]
 ///
 /// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].
 #[derive(Debug)]

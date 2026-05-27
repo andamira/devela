@@ -12,7 +12,7 @@ use crate::{c_int, c_ulong};
 
 #[doc = crate::_tags!(linux fs)]
 /// Linux `ioctl` constants.
-#[doc = crate::_doc_location!("sys/os/linux/io")]
+#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 #[allow(non_camel_case_types)]
 #[derive(Debug)]
 pub struct LINUX_IOCTL;

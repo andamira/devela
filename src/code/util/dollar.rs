@@ -8,7 +8,7 @@
 ///
 /// This is useful when a macro generates another `macro_rules!` macro
 /// whose matcher or transcriber needs nested repetitions.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The body is written as a temporary macro arm that receives the dollar token,
 /// conventionally named `$d`.

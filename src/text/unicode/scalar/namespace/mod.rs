@@ -17,7 +17,7 @@ mod slice; // Char<&[u8] | &[u8; N]>
 
 #[doc = crate::_tags!(text namespace)]
 /// Unicode scalars-related low-level *const* operations.
-#[doc = crate::_doc_location!("text/unicode/scalar")]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
 ///
 /// # Methods
 /// - [over `char`](#methods-over-char)

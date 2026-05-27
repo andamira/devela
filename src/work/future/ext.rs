@@ -34,7 +34,7 @@ See [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874).
 
 #[doc = crate::_tags!(concurrency runtime)]
 /// Extension trait providing additional methods for [`Future`]s.
-#[doc = crate::_doc_location!("work/future")]
+#[doc = crate::_doc_meta!{location("work/future")}]
 #[rustfmt::skip]
 pub trait FutureExt: Future {
     #[doc = DOC_BLOCK_ON!()]

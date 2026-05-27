@@ -19,7 +19,7 @@ crate::items! {
 
 #[doc = crate::_tags!(linux namespace)]
 /// Linux-related operations.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_meta!{location("sys/os/linux")}]
 ///
 /// # Features
 /// All the methods depend on the features `linux` and `unsafe_syscall`.

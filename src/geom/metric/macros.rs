@@ -16,7 +16,7 @@ crate::_geom_dim_define_macro![($) pos, "a", Position, geom, "geom/metric"];
 
 #[doc = crate::_tags!(geom construction)]
 /// Constructs a [`Region`] from a [`Position`] and an [`Extent`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
 /// Supports:
 /// - direct construction from position and extent expressions,

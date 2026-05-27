@@ -9,7 +9,7 @@ use crate::{ConstInit, unwrap};
 #[doc = crate::_tags!(interaction ffi)]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
 // (The main difference is in the Char variant.)
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[repr(C)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]

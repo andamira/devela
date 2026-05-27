@@ -12,7 +12,7 @@ impl<N: ConstInit, H: ConstInit> ConstInit for Mismatch<N, H> {
 
 #[doc = crate::_tags!(result)]
 /// Represents a mismatch between an expected `need` and an encountered `have`.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// A diagnostic description of a mismatch between an expected requirement and an observed value.
 /// This type does not encode failure semantics on its own.

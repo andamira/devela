@@ -4,7 +4,7 @@
 
 #[doc = crate::_tags!(quant)]
 ///
-#[doc = crate::_doc_location!("num/quant")]
+#[doc = crate::_doc_meta!{location("num/quant")}]
 pub struct Counter<T, S> {
     ///
     pub count: T,

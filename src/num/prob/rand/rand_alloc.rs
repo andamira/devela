@@ -8,7 +8,7 @@ use crate::{Box, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// Randomness extensions that require allocation.
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub trait RandAlloc: Rand {
     /// Seeds a new generator using heap-related addresses.

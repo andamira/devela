@@ -7,7 +7,7 @@ use crate::{FloatConst, Interval};
 
 #[doc = crate::_tags!(geom)]
 /// The kind of [`Angle`][super::Angle], based on its normalized turn.
-#[doc = crate::_doc_location!("num/geom/dir")]
+#[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
 /// The variant values are normalized to the full range of an u8.
 #[must_use]

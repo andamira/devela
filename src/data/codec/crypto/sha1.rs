@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(crypto hash)]
 /// Implements SHA-1 digest methods for a concrete hash type.
-#[doc = crate::_doc_location!("data/codec/crypto")]
+#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
 ///
 /// SHA-1 is provided for compatibility with existing formats and protocols.
 ///

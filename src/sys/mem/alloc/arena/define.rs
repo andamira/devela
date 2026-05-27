@@ -27,7 +27,7 @@ arena! {
 
 #[doc = crate::_tags!(construction allocation)]
 /// A custom memory arena generator.
-#[doc = crate::_doc_location!("sys/mem/alloc")]
+#[doc = crate::_doc_meta!{location("sys/mem/alloc")}]
 ///
 /// # Features
 /// Uses `unsafe_array` to leverage `MaybeUninit` and avoid initializing the full capacity.

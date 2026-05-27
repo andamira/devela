@@ -10,7 +10,7 @@ use crate::{Distance, Orientation};
 
 #[doc = crate::_tags!(geom)]
 /// A location in `D`-dimensional space.
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
 /// Represents an absolute position in a coordinate system.
 ///
@@ -28,17 +28,17 @@ pub struct Position<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Position`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Position1<T> = Position<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Position`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Position2<T> = Position<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Position`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Position3<T> = Position<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Position];

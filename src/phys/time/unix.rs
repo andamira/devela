@@ -16,7 +16,7 @@ use crate::{
 
 #[doc = crate::_tags!(time)]
 /// 64-bit Unix time, supporting negative values.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_doc_meta!{location("phys/time")}]
 ///
 /// Stores the number of seconds relative to the Unix Epoch (`1970-01-01 00:00:00 UTC`).
 #[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord)]
@@ -27,7 +27,7 @@ pub struct TimeUnixI64 {
 
 #[doc = crate::_tags!(time)]
 /// 32-bit Unix time, supporting only non-negative values.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_doc_meta!{location("phys/time")}]
 ///
 /// Stores the number of seconds since the Unix Epoch (`1970-01-01 00:00:00 UTC`).
 ///

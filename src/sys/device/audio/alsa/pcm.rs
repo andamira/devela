@@ -19,7 +19,7 @@ crate::test_size_of![AlsaPcmHandle = 24]; // 192 bits
 
 #[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
-#[doc = crate::_doc_location!("sys/device/audio")]
+#[doc = crate::_doc_meta!{location("sys/device/audio")}]
 #[derive(Debug)]
 pub struct AlsaPcmHandle {
     raw: *mut _raw::snd_pcm_t,

@@ -13,7 +13,7 @@ crate::test_size_of![PcmRawBuf_Vec: PcmRawBuf<Vec<u8>> = 32]; // 256 bits
 
 #[doc = crate::_tags!(audio data)]
 /// Raw PCM byte buffer over borrowed or owned storage.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// Raw PCM contains no header and no embedded metadata. The caller must provide
 /// the [`PcmSpec`] that describes the byte stream.

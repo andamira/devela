@@ -21,7 +21,7 @@ map! {
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a custom static hashmap.
-#[doc = crate::_doc_location!("data/id")]
+#[doc = crate::_doc_meta!{location("data/id")}]
 ///
 /// # Arguments
 /// - `$NAME`:      the name of the new hashmap.

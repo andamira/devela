@@ -7,7 +7,7 @@ use crate::{_impl_init, InvalidUtf8, TextCursor, impl_trait};
 
 #[doc = crate::_tags!(text parser error)]
 /// The category of a text parsing failure.
-#[doc = crate::_doc_location!("text/parse")]
+#[doc = crate::_doc_meta!{location("text/parse")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum TextParseErrorKind {
@@ -64,7 +64,7 @@ impl_trait![fmt::Display for TextParseErrorKind |self, f| {
 
 #[doc = crate::_tags!(text parser error)]
 /// A text parsing failure paired with its cursor location.
-#[doc = crate::_doc_location!("text/parse")]
+#[doc = crate::_doc_meta!{location("text/parse")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct TextParseError {
     /// Cursor at which the failure was detected.

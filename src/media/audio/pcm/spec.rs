@@ -8,7 +8,7 @@ use crate::{_impl_init, AudioChannels, PcmSample, impl_trait, test_size_of};
 test_size_of![PcmSpec = 8]; // 64 bits
 #[doc = crate::_tags!(audio)]
 /// Essential metadata describing a PCM audio stream.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PcmSpec {
     /// bit-depth + numeric type

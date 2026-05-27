@@ -8,7 +8,7 @@
 
 #[doc = crate::_tags!(code uid construction)]
 /// Defines zero-cost, zero-sized, generic *marker* IDs.
-#[doc = crate::_doc_location!("code/marker")]
+#[doc = crate::_doc_meta!{location("code/marker")}]
 ///
 /// These marker types carry no runtime data and serve as compile-time indicators
 /// of state, configuration, or constraints, helping enforce type-level invariants

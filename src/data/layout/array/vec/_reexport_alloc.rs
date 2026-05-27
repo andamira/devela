@@ -12,7 +12,7 @@ _reexport! { rust: alloc::vec, location: "data/layout/array", tag: _tags!(data_s
 #[doc = _tags!(construction data_structure)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
 /// Creates a [`Vec`] containing the arguments.
-#[doc = crate::_doc_location!("data/layout/array")]
+#[doc = crate::_doc_meta!{location("data/layout/array")}]
 ///
 #[doc = "*Re-exported from [`alloc::vec`][macro@alloc::vec]*."]
 #[doc = "\n\n---"]

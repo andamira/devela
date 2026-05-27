@@ -12,7 +12,7 @@ use crate::buffer_linear;
 buffer_linear!(
     #[doc = crate::_tags!(example data_structure)]
     /// A static linear buffer over contiguous storage, made with [`buffer_linear!`].
-    #[doc = crate::_doc_location!("data/layout")]
+    #[doc = crate::_doc_meta!{location("data/layout")}]
     ///
     /// # Methods
     ///
@@ -165,7 +165,7 @@ buffer_linear!(
 buffer_linear!(
     #[doc = crate::_tags!(example data_structure)]
     /// A linear buffer view over contiguous storage, made with [`buffer_linear!`].
-    #[doc = crate::_doc_location!("data/layout")]
+    #[doc = crate::_doc_meta!{location("data/layout")}]
     ///
     /// # Methods
     ///
@@ -246,7 +246,7 @@ buffer_linear!(
 buffer_linear!(
     #[doc = crate::_tags!(example data_structure)]
     /// An owned linear buffer over a [`Vec`], made with [`buffer_linear!`].
-    #[doc = crate::_doc_location!("data/layout")]
+    #[doc = crate::_doc_meta!{location("data/layout")}]
     ///
     /// # Methods
     ///

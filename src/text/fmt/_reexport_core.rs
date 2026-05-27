@@ -71,7 +71,7 @@ _reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
 
 #[doc = crate::_tags!(fmt result)]
 /// The type returned by formatter methods.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// Note that this is not the same as [`core::fmt::Result`], since this one
 /// doesn't hardcode the returned type to `()`.

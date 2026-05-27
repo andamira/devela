@@ -14,7 +14,7 @@ use crate::{ConstInit, impl_trait, is};
 
 #[doc = crate::_tags!(interaction)]
 /// Modifier key codes (when pressed by themselves)
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// These keys modify the behavior of other keys when held down.
 //
@@ -58,7 +58,7 @@ impl KeyMod {
 
 #[doc = crate::_tags!(interaction)]
 /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[repr(transparent)]
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct KeyMods(u16);

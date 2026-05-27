@@ -9,7 +9,7 @@ use E::{NotImplemented, NotSupported};
 
 #[doc = crate::_tags!(num)]
 /// Common trait for numeric types.
-#[doc = crate::_doc_location!("num/dom")]
+#[doc = crate::_doc_meta!{location("num/dom")}]
 ///
 /// # Notes
 /// - Every method has a default implementation that returns [`NotImplemented`].

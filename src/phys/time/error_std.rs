@@ -51,7 +51,7 @@ mod full_composite {
     define_error! { composite: fmt(f)
         #[doc = _tags!(time)]
         /// A time-related composite error.
-        #[doc = crate::_doc_location!("phys/time/source")]
+        #[doc = crate::_doc_meta!{location("phys/time/source")}]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
         #[non_exhaustive]
         pub enum TimeError {

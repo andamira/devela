@@ -39,12 +39,12 @@ crate::structural_mods! { // _mods
         #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
         /// The implementation of waking a task on an executor.
-        #[doc = crate::_doc_location!("work/future")]
+        #[doc = crate::_doc_meta!{location("work/future")}]
         #[doc = "---\n\n---\n\n"]
         pub use crate::_dep::portable_atomic_util::task::Wake as AsyncWake;
         //
         #[doc = crate::_tags!(concurrency atomic runtime atomic_alloc_portable_util)]
-        #[doc = crate::_doc_location!("work/future")]
+        #[doc = crate::_doc_meta!{location("work/future")}]
         #[doc = "---\n\n---\n\n"]
         #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]

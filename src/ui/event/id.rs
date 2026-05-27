@@ -10,7 +10,7 @@ crate::_impl_init![Self(0) => WindowId, DeviceId];
 
 #[doc = crate::_tags!(ui uid)]
 /// A backend-agnostic identifier for a UI window.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// Backends (X11, Wayland, Win32, macOS, terminal, web…) map their native
 /// window or surface handles into a compact, stable `WindowId`.
@@ -32,7 +32,7 @@ impl From<u32> for WindowId {
 
 #[doc = crate::_tags!(interaction uid)]
 /// A backend-agnostic identifier for an input device.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// Backends map native device handles (libinput device, MIDI port, gamepad,
 /// tablet, virtual input stream…) into a stable `DeviceId`.

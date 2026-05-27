@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(color)]
 /// Color vocabulary depth.
-#[doc = crate::_doc_location!("media/visual/color")]
+#[doc = crate::_doc_meta!{location("media/visual/color")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[repr(u8)]
 pub enum ColorDepth {

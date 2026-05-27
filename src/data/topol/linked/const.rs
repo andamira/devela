@@ -8,7 +8,7 @@
 
 #[doc = crate::_tags!(data lifetime)]
 /// A linked list node in a `ConstList`.
-#[doc = crate::_doc_location!("data/topol")]
+#[doc = crate::_doc_meta!{location("data/topol")}]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 struct ConstListItem<'a, T: 'a> {
     /// The item represented by this node.
@@ -19,7 +19,7 @@ struct ConstListItem<'a, T: 'a> {
 
 #[doc = crate::_tags!(data_structure lifetime)]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
-#[doc = crate::_doc_location!("data/topol")]
+#[doc = crate::_doc_meta!{location("data/topol")}]
 ///
 /// A safe, predictable, and lightweight structure, suitable where immutability
 /// is an asset and compile-time guarantees matter more than list manipulation.
@@ -102,7 +102,7 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// Iterates over the contents of a [`ConstList`].
-#[doc = crate::_doc_location!("data/topol")]
+#[doc = crate::_doc_meta!{location("data/topol")}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ConstListIter<'a, T> {

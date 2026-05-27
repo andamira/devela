@@ -11,7 +11,7 @@ use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *queue* data type.
-#[doc = crate::_doc_location!("data/layout/queue")]
+#[doc = crate::_doc_meta!{location("data/layout/queue")}]
 pub trait DataQueue: DataCollection {
     /// Remove an element from the (front of the) queue.
     /// # Errors
@@ -28,7 +28,7 @@ pub trait DataQueue: DataCollection {
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *double-ended queue* data type.
-#[doc = crate::_doc_location!("data/layout/queue")]
+#[doc = crate::_doc_meta!{location("data/layout/queue")}]
 pub trait DataDeque: DataQueue {
     /// Remove an element from the back of the queue.
     /// # Errors

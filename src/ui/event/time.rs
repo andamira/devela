@@ -10,7 +10,7 @@ use crate::{
 
 #[doc = crate::_tags!(event time)]
 /// Selects how an [`EventTimestamp`] should be formatted.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// This controls whether the timestamp is shown as integer milliseconds,
 /// floating-point milliseconds, both representations, or chosen automatically
@@ -42,7 +42,7 @@ impl DebugExt for EventTimestamp {
 
 #[doc = crate::_tags!(event time)]
 /// The time at which the event occurs, stored as single-precision milliseconds.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 ///
 /// Backend dependent and relative to an arbitrary origin.
 ///

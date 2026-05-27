@@ -12,7 +12,7 @@ use crate::{
 
 #[doc = crate::_tags!(text layout namespace)]
 /// Text layout engine configuration.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 ///
 /// `TextLayout` performs one-dimensional layout negotiation between a
 /// symbol stream and an available inline extent. It holds layout policies

@@ -7,7 +7,7 @@ use crate::{ConstInit, Hasher};
 
 #[doc = crate::_tags!(hash)]
 /// A fast 64-bit non-cryptographic hash algorithm.
-#[doc = crate::_doc_location!("data/codec/hash")]
+#[doc = crate::_doc_meta!{location("data/codec/hash")}]
 ///
 #[doc = crate::_doc_vendor!("pengyhash")]
 #[derive(Debug)]

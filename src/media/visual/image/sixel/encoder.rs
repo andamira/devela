@@ -11,7 +11,7 @@ use crate::{SixelChar, SixelColor, SixelPalette};
 
 #[doc = crate::_tags!(image term)]
 /// Encoder for Sixel graphics with fixed buffer output
-#[doc = crate::_doc_location!("media/visual/image")]
+#[doc = crate::_doc_meta!{location("media/visual/image")}]
 ///
 /// # Features
 /// Enabling the `unsafe_sync` and `__dbg` features defines

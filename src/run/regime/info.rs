@@ -9,7 +9,7 @@ crate::items! {
 
     #[doc = crate::_tags!(runtime)]
     /// Runtime system identity metadata.
-    #[doc = crate::_doc_location!("run/regime")]
+    #[doc = crate::_doc_meta!{location("run/regime")}]
     #[derive(Clone, Debug, Default, PartialEq, Eq)]
     #[crate::macro_apply(crate::__doc_show(feature = "alloc"))]
     pub struct RunSystemInfo {

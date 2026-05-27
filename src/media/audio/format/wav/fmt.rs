@@ -9,7 +9,7 @@ crate::test_size_of![PcmWavFmt = 28]; // 224 bits
 
 #[doc = crate::_tags!(audio parser)]
 /// Parsed WAVE `fmt` chunk.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct PcmWavFmt {

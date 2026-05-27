@@ -9,7 +9,7 @@ use crate::{_impl_init, TextCursor, TextUnit};
 
 #[doc = crate::_tags!(text layout result)]
 /// Result of testing whether text fits within an inline extent.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TextFit {
     /// All required symbols fit within the extent.
@@ -28,7 +28,7 @@ _impl_init![Self::None => TextFit];
 
 #[doc = crate::_tags!(text layout result)]
 /// Result of a single text layout step.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 ///
 /// A layout step consumes a prefix of the symbol stream within a given inline extent,
 /// and reports:

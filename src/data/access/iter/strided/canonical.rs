@@ -6,7 +6,7 @@
 crate::iter_strided! {
     #[doc = crate::_tags!(iterator)]
     /// Iterates over a slice using an affine index progression.
-    #[doc = crate::_doc_location!("data/access/iter")]
+    #[doc = crate::_doc_meta!{location("data/access/iter")}]
     /// This is the immutable counterpart of [`StridedIterMut`].
     ///
     /// Elements are accessed according to:
@@ -36,7 +36,7 @@ crate::iter_strided! {
 crate::iter_strided! {
     #[doc = crate::_tags!(iterator)]
     /// Iterates mutably over a slice using an affine index progression.
-    #[doc = crate::_doc_location!("data/access/iter")]
+    #[doc = crate::_doc_meta!{location("data/access/iter")}]
     ///
     /// This is the mutable counterpart of [`StridedIter`].
     ///

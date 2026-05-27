@@ -12,7 +12,7 @@ use crate::{
 
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed byte-backed presentation artifact for X11.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// This is a simple artifact consumed by a private `XPresenter` to upload image
 /// bytes to the target window and optionally clear its redraw flag.
@@ -40,7 +40,7 @@ impl<'a> XPresent<'a> {
 
 #[doc = crate::_tags!(unix runtime)]
 /// A minimal X11 presenter for byte-backed image artifacts.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// `XPresenter` consumes [`XPresent`] artifacts
 /// and applies them to the current X11 frame context.
@@ -152,7 +152,7 @@ impl<'ctx> RunPresent<Event, XFrameCtx<'ctx>> for XPresenter {
 
 #[doc = crate::_tags!(unix runtime)]
 /// Projects a byte-backed X11 image scene into a borrowed presentation artifact.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// It borrows image bytes from the scene and packages them
 /// as an [`XPresent`] for an `XPresenter` to upload.

@@ -13,7 +13,7 @@
 
 #[doc = crate::_tags!(linux code)]
 /// Defines the program entry point and main fn translation layer for Linux systems.
-#[doc = crate::_doc_location!("sys/os/linux")]
+#[doc = crate::_doc_meta!{location("sys/os/linux")}]
 ///
 /// Handles architecture-specific entry point setup and Rust-to-C ABI translation.
 #[doc(hidden)]

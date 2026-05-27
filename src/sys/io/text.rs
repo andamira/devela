@@ -15,7 +15,7 @@ use crate::{IoError, IoWrite};
 
 #[doc = crate::_tags!(io text)]
 /// Reads UTF-8 text from an input surface into caller-provided storage.
-#[doc = crate::_doc_location!("sys/io")]
+#[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// This is the text-layer counterpart to [`IoRead`].
 /// It is intended for sources whose primary semantic payload is text,
@@ -32,7 +32,7 @@ pub trait TextIn {
 
 #[doc = crate::_tags!(io text)]
 /// Emits UTF-8 text to an output surface.
-#[doc = crate::_doc_location!("sys/io")]
+#[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// This is the text-layer counterpart to [`IoWrite`].
 /// It is intended for sinks whose primary semantic payload is text,

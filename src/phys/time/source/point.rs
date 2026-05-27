@@ -9,7 +9,7 @@ use crate::{Duration, Ordering, TimeSpan};
 
 #[doc = crate::_tags!(time)]
 /// A comparable representation of a point on a time-like timeline.
-#[doc = crate::_doc_location!("phys/time/source")]
+#[doc = crate::_doc_meta!{location("phys/time/source")}]
 ///
 /// `TimePoint` defines ordering and forward elapsed-difference semantics
 /// for a concrete timestamp representation.

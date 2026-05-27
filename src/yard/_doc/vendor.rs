@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Shows the `Vendored` doc section and links to the info line.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 ///
 /// See the documentation for [vendored work].
 #[doc = crate::doclink!(custom devela "[vendored work]" "_doc/vendored" @mod)]

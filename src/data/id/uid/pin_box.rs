@@ -7,7 +7,7 @@ use crate::{Box, Pin};
 
 #[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned heap-allocated memory address.
-#[doc = crate::_doc_location!("data/id")]
+#[doc = crate::_doc_meta!{location("data/id")}]
 ///
 /// `IdPinBox` generates a unique ID by pinning a value in heap memory,
 /// ensuring that the ID remains stable and unique based on the memory address.

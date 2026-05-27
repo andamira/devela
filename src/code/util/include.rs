@@ -13,7 +13,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Includes a Rust source file relative to the project's directory.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The contents of the specified file are inserted into the current file
 /// at the location of the macro invocation. This allows you to reuse code
@@ -59,7 +59,7 @@ pub use include_from· as include_from;
 
 #[doc = crate::_tags!(code)]
 /// Declares a module by including a Rust source file relative to the project's directory.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The macro generates a `mod` declaration and inserts the contents of the specified file
 /// into the module. This is a more ergonomic alternative to manually wrapping `include!`
@@ -99,7 +99,7 @@ pub use mod_from· as mod_from;
 
 #[doc = crate::_tags!(code)]
 /// A macro helper to define a module name and path.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// This is used to include files re-exported by lower-level workspace crates,
 /// which add documentation on top of the original one. But there's an [issue][0]

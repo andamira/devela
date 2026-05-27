@@ -10,18 +10,18 @@ use crate::{
 
 #[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or_empty`].
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 #[derive(Eq, PartialEq)]
 pub struct OptionFmt<'t, T>(pub(super) &'t Option<T>);
 
 #[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or`].
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 pub struct OptionFmtOr<'t, T, U>(pub(super) &'t Option<T>, pub(super) U);
 
 #[doc = crate::_tags!(fmt)]
 /// The type returned from [`OptionExt::fmt_or_else`].
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 pub struct OptionFmtOrElse<'t, T, F>(pub(super) &'t Option<T>, pub(super) F);
 
 impl<T> Copy for OptionFmt<'_, T> {}

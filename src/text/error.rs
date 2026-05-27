@@ -54,7 +54,7 @@ impl InvalidUtf8 {
 define_error! { composite: fmt(f)
     #[doc = crate::_tags!(text)]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
-    #[doc = crate::_doc_location!("text")]
+    #[doc = crate::_doc_meta!{location("text")}]
     ///
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
@@ -104,7 +104,7 @@ mod full_composite {
     define_error! { composite: fmt(f)
         +tag: _tags!(text),
         /// A text-related composite error.
-        #[doc = crate::_doc_location!("text")]
+        #[doc = crate::_doc_meta!{location("text")}]
         #[non_exhaustive]
         pub enum TextError {
             DOC_ELEMENT_NOT_FOUND: +const

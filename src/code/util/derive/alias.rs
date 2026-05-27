@@ -8,7 +8,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines attribute aliases usable from [`macro_apply`][crate::macro_apply].
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// These aliases expand to attributes,
 /// so they only apply where attributes are accepted.
@@ -126,7 +126,7 @@ pub use macro_apply_alias;
 
 #[doc = crate::_tags!(code)]
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// These aliases expand through declarative derive macros,
 /// so they apply to items inspected by `macro_derive`.

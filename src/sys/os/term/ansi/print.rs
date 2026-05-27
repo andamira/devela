@@ -31,7 +31,7 @@ See also the [`ansi!`][crate::ansi] macro.
 // std version (overrides linux)
 #[doc = crate::_tags!(term platform)]
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = DOC_ANSI_PRINT!()]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 #[cfg(feature = "std")]
@@ -43,7 +43,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
 // linux version (only if not(std)) (because of the extra conversions)
 #[doc = crate::_tags!(term platform)]
 /// A function to print an ANSI escape `sequence` of bytes to `stdout`
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = DOC_ANSI_PRINT!()]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 #[cfg(not(feature = "std"))]
@@ -54,7 +54,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
 
 #[doc = crate::_tags!(term platform)]
 /// The most efficient print method, exclusive for `std`.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
@@ -63,7 +63,7 @@ pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
 
 #[doc = crate::_tags!(term linux)]
 /// The most efficient print method, exclusive for `linux`.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///
 /// This method avoids having to perform extra error conversions.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]

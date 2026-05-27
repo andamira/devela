@@ -9,7 +9,7 @@ use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit};
 
 #[doc = crate::_tags!(text layout)]
 /// Spatial cohesion rules for a text symbol during layout.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 ///
 /// This enum defines what a layout engine is allowed to do with a symbol
 /// when negotiating limited inline space. It expresses layout permissions only;
@@ -38,7 +38,7 @@ _impl_init![Self::Atomic => TextCohesion];
 
 #[doc = crate::_tags!(text layout quant)]
 /// Mapping between a contiguous text range and its consumed inline space.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 ///
 /// A `TextLayoutSpan` records that a contiguous range of symbols contributed
 /// a given amount of inline space during a layout step.
@@ -87,7 +87,7 @@ impl TextLayoutSpan {
 
 #[doc = crate::_tags!(text layout io)]
 /// Layout participation record for a single text symbol.
-#[doc = crate::_doc_location!("text/layout")]
+#[doc = crate::_doc_meta!{location("text/layout")}]
 ///
 /// A `TextSymbol` describes how a unit of text participates in layout:
 /// how much inline space it consumes and what spatial constraints apply under limited space.

@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// This macro generates a set of structural helper modules that centralize export logic
 /// according to intended visibility and usage. It reduces boilerplate and enforces a

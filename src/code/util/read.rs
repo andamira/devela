@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code mem)]
 /// Read elements from a buffer at the given offset.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// Efficiently reads fixed-width and dynamic-width sequences from a buffer using
 /// direct indexing, avoiding slice conversion boilerplate while keeping the

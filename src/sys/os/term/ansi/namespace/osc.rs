@@ -71,7 +71,7 @@ impl Ansi {
 
 #[doc = crate::_tags!(term)]
 /// An OSC sequence with semicolon-separated fields.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AnsiOsc<'a, const N: usize> {
@@ -141,7 +141,7 @@ impl<'a> AnsiOsc<'a, 1> {
 
 #[doc = crate::_tags!(term)]
 /// A terminal hyperlink using the OSC 8 escape sequence.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///
 /// Formatting this value emits:
 ///

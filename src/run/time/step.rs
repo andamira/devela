@@ -7,7 +7,7 @@ use crate::{RunPhase, RuntimeTick};
 
 #[doc = crate::_tags!(runtime time)]
 /// A per-step snapshot passed to app logic.
-#[doc = crate::_doc_location!("run/time")]
+#[doc = crate::_doc_meta!{location("run/time")}]
 ///
 /// `RunStep` is the minimal envelope of one runtime iteration.
 ///

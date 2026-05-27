@@ -17,7 +17,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             _crate_internals::*,
-            _hidden::*,
+            _hidden::{_doc_vendor, _tags},
         };
     }
     _crate_internals {
@@ -34,6 +34,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         #[doc(hidden)]
         pub use super::{
             vendor::_doc_vendor,
+            fragments::{_ABBR_PCG},
             tags::*,
         };
     }

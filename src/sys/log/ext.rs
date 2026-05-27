@@ -9,7 +9,7 @@ use crate::Box;
 
 #[doc = crate::_tags!(log)]
 /// Extension trait providing additional methods for [`Logger`]s.
-#[doc = crate::_doc_location!("sys/log")]
+#[doc = crate::_doc_meta!{location("sys/log")}]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_log")))]
 pub trait LoggerExt: Logger {
     /// Returns the logger as a `Logger` trait object.

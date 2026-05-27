@@ -9,7 +9,7 @@
 
 #[doc = crate::_tags!(uid)]
 /// Maps backend/native identifiers into stable, compact internal IDs.
-#[doc = crate::_doc_location!("data/id")]
+#[doc = crate::_doc_meta!{location("data/id")}]
 ///
 /// Used throughout the library anywhere a subsystem needs to allocate
 /// a small set of stable identifiers from arbitrary external handles.

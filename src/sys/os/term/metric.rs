@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(term layout ffi)]
 /// The size of the terminal.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///
 /// ## Used by
 /// - `LinuxTermios` and `WindowsConsole`.

@@ -8,7 +8,7 @@ use crate::{__ansi_consts, Ansi, AnsiColor3, Cmp, Digits};
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 8-bit color codes, 256 colors.
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AnsiColor8(pub u8);

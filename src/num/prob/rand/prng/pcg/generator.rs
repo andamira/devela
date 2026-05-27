@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(construction rand)]
 #[doc = concat!["Defines a canonical ", crate::_ABBR_PCG!(), " (Permuted Congruential Generator) ",
 crate::_ABBR_PRNG!(), " type."]]
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// This macro generates a concrete, fixed-width PCG PRNG
 /// with a canonical state transition and output permutation.
@@ -87,7 +87,7 @@ macro_rules! rand_pcg {
                 #[doc = $crate::_tags!(rand)]
                 #[doc = concat!["A ", $obits, "-bit ", $crate::_ABBR_PCG!(), " ",
                 $crate::_ABBR_PRNG!(), "."]]
-                #[doc = $crate::_doc_location!("num/prob/rand")]
+                #[doc = $crate::_doc_meta!{location("num/prob/rand")}]
                 $vis $name, $sbits+$state, $obits+$output, $obytes, $output_fn, $SEED, $MUL, $INC);
             }
             // simpler docs when invoked externally

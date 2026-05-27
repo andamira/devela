@@ -16,7 +16,7 @@ crate::items! {
 
 #[doc = crate::_tags!(web namespace)]
 /// A Web API namespace.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// # Features
 /// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.

@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(rand)]
 /// Core random number generator behavior.
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// `Rand` represents a deterministic source of raw randomness.
 /// It defines a minimal required primitive and provides a broad

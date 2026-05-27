@@ -9,7 +9,7 @@ use crate::{_impl_init, impl_trait};
 
 #[doc = crate::_tags!(audio)]
 /// Numeric encoding of a single PCM sample.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 #[allow(missing_docs)]
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -114,7 +114,7 @@ impl PcmSample {
 
 #[doc = crate::_tags!(audio)]
 /// Rust sample type with a fixed PCM sample encoding.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// This trait connects typed sample buffers such as `&[i16]` or `&mut [f32]`
 /// to their corresponding [`PcmSample`] encoding.

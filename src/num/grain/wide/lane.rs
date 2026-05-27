@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(construction code num)]
 /// Defines a fixed-width lane type.
-#[doc = crate::_doc_location!("num/grain")]
+#[doc = crate::_doc_meta!{location("num/grain")}]
 ///
 /// It has optional implementations for the given integer and floating-point primitive types.
 ///

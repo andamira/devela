@@ -23,7 +23,7 @@ mod codegen {
 
     #[doc = crate::_tags!(fmt debug)]
     /// A formatting wrapper for [`Tuple`]s, implementing `Display` and `Debug`.
-    #[doc = crate::_doc_location!("data/value/tuple")]
+    #[doc = crate::_doc_meta!{location("data/value/tuple")}]
     #[repr(transparent)]
     pub struct TupleFmt<'a, T: Tuple>(&'a T);
 

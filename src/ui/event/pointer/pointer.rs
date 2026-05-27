@@ -10,7 +10,7 @@ use crate::{_impl_init, NonZeroU8, f32bits_niche, set, unwrap};
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents a basic mouse event.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
     /// The x-coordinate of the mouse cursor.
@@ -36,7 +36,7 @@ impl EventMouse {
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents a pointer event (mouse, touch, or pen).
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
     /// The type of pointer (mouse, touch, pen).
@@ -89,7 +89,7 @@ impl EventPointer {
 
 #[doc = crate::_tags!(event interaction)]
 /// Enum representing the type of pointer.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventPointerType {
     /// A mouse pointer.
@@ -117,7 +117,7 @@ _impl_init! { Self::Mouse => EventPointerType }
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents mouse, touch, or pen buttons.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButton {
@@ -158,7 +158,7 @@ impl EventButton {
 set! {
     #[doc = crate::_tags!(event interaction)]
     /// A semantic bitmask of currently held pressable buttons.
-    #[doc = crate::_doc_location!("ui/event")]
+    #[doc = crate::_doc_meta!{location("ui/event")}]
     ///
     /// The bits represent normalized button roles, not raw backend button numbers.
     ///
@@ -201,7 +201,7 @@ set! {
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents the state of a button.
-#[doc = crate::_doc_location!("ui/event")]
+#[doc = crate::_doc_meta!{location("ui/event")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
     /// The button was pressed.

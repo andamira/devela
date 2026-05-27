@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code fmt)]
 /// Groups *`items`* together and expands them as if they were written directly.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// It can be useful to apply an attribute to a group of items.
 ///
@@ -32,7 +32,7 @@ pub use items;
 
 #[doc = crate::_tags!(code fmt)]
 /// *`s`kip `f`ormatting* macro.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// Preserves the formatting of the code provided as arguments, by relying on
 /// the fact that `rustfmt` does not usually apply formatting inside macros.

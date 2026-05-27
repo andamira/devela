@@ -62,7 +62,7 @@ where
 
 #[doc = crate::_tags!(io maybe_std)]
 /// `Empty` ignores any data written via [`IoWrite`], and will always be empty.
-#[doc = crate::_doc_location!("sys/io")]
+#[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// Returning zero bytes when read via [`IoRead`].
 ///
@@ -100,7 +100,7 @@ sf! {
 
 #[doc = crate::_tags!(io maybe_std)]
 /// A reader which yields one byte over and over and over and over and over and...
-#[doc = crate::_doc_location!("sys/io")]
+#[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Empty.html>.
 pub struct IoRepeat {

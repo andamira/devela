@@ -29,7 +29,7 @@ mod tests;
 
 #[doc = crate::_tags!(lifetime namespace)]
 /// Slice-related operations, most of them *const*.
-#[doc = crate::_doc_location!("sys/mem/view")]
+#[doc = crate::_doc_meta!{location("sys/mem/view")}]
 ///
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
@@ -129,7 +129,7 @@ pub struct Slice<T>(crate::PhantomData<T>);
 
 #[doc = crate::_tags!(namespace)]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
-#[doc = crate::_doc_location!("sys/mem/view")]
+#[doc = crate::_doc_meta!{location("sys/mem/view")}]
 ///
 /// # Syntax
 /// `(s = slice, l = lower bound, u = upper bound)`

@@ -13,7 +13,7 @@ use crate::{CStr, Ptr};
 
 #[doc = crate::_tags!(audio linux namespace)]
 /// ALSA operations.
-#[doc = crate::_doc_location!("sys/device/audio")]
+#[doc = crate::_doc_meta!{location("sys/device/audio")}]
 ///
 /// # Availability
 /// Methods that call ALSA are available

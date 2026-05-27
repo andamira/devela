@@ -8,7 +8,7 @@ use crate::{MemHedgeCtrl, MemHedgeError, MemHedgeState, MemReplicaSlice};
 
 #[doc = crate::_tags!(mem concurrency lifetime runtime)]
 /// Binds a hedge-control cell to a replicated logical slice view.
-#[doc = crate::_doc_location!("sys/mem/cell")]
+#[doc = crate::_doc_meta!{location("sys/mem/cell")}]
 ///
 /// `MemHedgeRead` does not spawn workers or perform any platform-specific work.
 /// It only provides the protocol-facing surface that connects:

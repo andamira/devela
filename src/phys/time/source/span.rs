@@ -8,7 +8,7 @@ use crate::TimePoint;
 
 #[doc = crate::_tags!(time)]
 /// /// A comparable span on a time-like timeline.
-#[doc = crate::_doc_location!("phys/time/source")]
+#[doc = crate::_doc_meta!{location("phys/time/source")}]
 ///
 /// `TimeSpan` defines the basic quantity semantics
 /// of an elapsed or interval-like time value.

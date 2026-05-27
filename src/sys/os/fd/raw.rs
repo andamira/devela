@@ -10,7 +10,7 @@ use crate::c_int;
 
 #[doc = crate::_tags!(fs uid)]
 /// Raw file descriptors.
-#[doc = crate::_doc_location!("sys/os/fd")]
+#[doc = crate::_doc_meta!{location("sys/os/fd")}]
 pub type FdRaw = c_int;
 
 crate::structural_mods! { //_mods

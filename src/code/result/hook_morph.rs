@@ -15,7 +15,7 @@
 
 #[doc = crate::_tags!(code value)]
 /// Hooks operations into a value without breaking its flow.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// `Hook` provides a way to intercept a value,
 /// allowing mutation (`hook`) or observation (`tap`) while preserving identity.
@@ -64,7 +64,7 @@ impl<T: Sized> Hook for T {}
 
 #[doc = crate::_tags!(code value)]
 /// Hooks one or more mutation steps into a value and returns it.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// `hook!` binds a value to a local mutable name, applies a sequence of
 /// side-effecting operations to it, and then returns the value.
@@ -124,7 +124,7 @@ pub use hook;
 
 #[doc = crate::_tags!(code value)]
 /// Morphs a value by threading it through a function.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// `Morph` provides a fluent way to pass a value (by value, shared reference,
 /// or exclusive reference) into a transformation and return the result.
@@ -175,7 +175,7 @@ impl<T: ?Sized, R> Morph<R> for T {}
 
 #[doc = crate::_tags!(code value)]
 /// Morphs a value through one or more transformation steps and returns the result.
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// `morph!` expresses a left-to-right transformation pipeline
 /// without explicit intermediate bindings in user code.

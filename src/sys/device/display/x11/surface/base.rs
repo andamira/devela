@@ -9,7 +9,7 @@ use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XWindow};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Pixel-backed X11 drawing surface.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// Owns raster pixels independently of any one rendering policy, and can present
 /// them to an [`XWindow`] using either shared memory or plain client-side upload.
@@ -73,7 +73,7 @@ impl XImageStore for XSurface {
 
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed mutable X11 surface for direct frame rendering.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// This exposes the retained X11 presentation surface for one frame.
 ///

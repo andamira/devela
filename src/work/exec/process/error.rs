@@ -7,7 +7,7 @@ use crate::{ExitStatus, impl_trait};
 
 #[doc = crate::_tags!(platform runtime error)]
 /// Indicates that a process terminated unsuccessfully.
-#[doc = crate::_doc_location!("work/process")]
+#[doc = crate::_doc_meta!{location("work/process")}]
 /// This type is a stable placeholder for the unstable standard library's
 /// [`ExitStatusError`](https://doc.rust-lang.org/std/process/struct.ExitStatusError.html)
 // WAIT: [ExitStatusError](https://github.com/rust-lang/rust/issues/84908)

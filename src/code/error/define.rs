@@ -13,7 +13,7 @@
 
 #[doc = crate::_tags!(construction error)]
 /// Defines individual and composite error types.
-#[doc = crate::_doc_location!("code/error")]
+#[doc = crate::_doc_meta!{location("code/error")}]
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///

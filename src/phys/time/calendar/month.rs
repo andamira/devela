@@ -9,7 +9,7 @@ use Month::*;
 
 #[doc = crate::_tags!(time)]
 /// The months of the year.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_doc_meta!{location("phys/time")}]
 #[repr(u8)]
 #[allow(missing_docs)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Ord, PartialOrd, Hash)]

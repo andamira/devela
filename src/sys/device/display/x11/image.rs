@@ -7,7 +7,7 @@ use super::{XDisplay, XError};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Presentation backing policy for X11 image upload.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// This selects whether image presentation should prefer plain CPU upload,
 /// MIT-SHM upload, or automatically choose the best available path.
@@ -28,7 +28,7 @@ pub enum XImageMode {
 
 #[doc = crate::_tags!(unix runtime)]
 /// X11 image layout selected for byte-backed pixel upload.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 ///
 /// Describes how one logical raster is stored in memory for upload to the X server.
 ///

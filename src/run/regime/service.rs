@@ -11,7 +11,7 @@ use crate::{RunCap, VersionFull};
 
 #[doc = crate::_tags!(runtime)]
 /// Reports runtime service metadata.
-#[doc = crate::_doc_location!("run/regime")]
+#[doc = crate::_doc_meta!{location("run/regime")}]
 ///
 /// A run service is an execution-facing backend, frontend, driver,
 /// or platform adapter that can describe the capabilities it currently exposes.
@@ -42,7 +42,7 @@ pub trait RunService {
 
 #[doc = crate::_tags!(runtime)]
 /// Actively refreshes runtime service capabilities.
-#[doc = crate::_doc_location!("run/regime")]
+#[doc = crate::_doc_meta!{location("run/regime")}]
 ///
 /// This extension trait is for services whose capabilities may require probing,
 /// querying, negotiation, or backend interaction.

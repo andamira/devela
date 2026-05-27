@@ -7,7 +7,7 @@ use crate::{_xorshift_basis, Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// It has a 32-bit state and generates 32-bit numbers.
 ///
@@ -208,7 +208,7 @@ mod impl_rand {
 
 #[doc = crate::_tags!(rand)]
 /// 81 × good triplets for 32-bit xorshift. (243 Bytes)
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 #[doc(hidden)]
 #[rustfmt::skip]
 #[allow(dead_code)]

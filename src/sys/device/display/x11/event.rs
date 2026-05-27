@@ -10,7 +10,7 @@ use crate::{EventButton, EventButtonState, EventButtons, EventKey, EventTimestam
 
 #[doc = crate::_tags!(unix event)]
 /// Wrapper for an XCB event.
-#[doc = crate::_doc_location!("sys/device/display/x11")]
+#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
 #[derive(Debug)]
 pub struct XEvent {
     pub(super) raw: *mut _raw::xcb_generic_event_t,

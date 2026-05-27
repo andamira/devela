@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code construction)]
 /// Defines an enum and an associated type set of its variants.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// It uses the [`set!`][crate::set] macro to create the associated set.
 ///

@@ -11,7 +11,7 @@ use crate::{_impl_init, ConstInit, impl_trait};
 
 #[doc = crate::_tags!(audio io)]
 /// Borrowed description of an audio endpoint.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AudioDevice<'a> {
     /// Backend device identifier.
@@ -54,7 +54,7 @@ impl<'a> AudioDevice<'a> {
 #[cfg(feature = "alloc")]
 #[doc = crate::_tags!(audio io)]
 /// Owned or borrowed description of an audio endpoint.
-#[doc = crate::_doc_location!("sys/device/audio")]
+#[doc = crate::_doc_meta!{location("sys/device/audio")}]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct AudioDeviceCow<'a> {
     /// Backend-specific device identifier.
@@ -69,7 +69,7 @@ pub struct AudioDeviceCow<'a> {
 
 #[doc = crate::_tags!(audio dir)]
 /// Direction capability of an audio endpoint.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// An endpoint may support output as [`Playback`](Self::Playback),
 /// input as [`Capture`](Self::Capture), both directions as
@@ -131,7 +131,7 @@ impl AudioDeviceDir {
 
 #[doc = crate::_tags!(audio dir)]
 /// Direction of an audio stream.
-#[doc = crate::_doc_location!("media/audio")]
+#[doc = crate::_doc_meta!{location("media/audio")}]
 ///
 /// A stream can move audio toward an output endpoint as [`Playback`](Self::Playback),
 /// or from an input endpoint as [`Capture`](Self::Capture).

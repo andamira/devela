@@ -6,7 +6,7 @@
 #[rustfmt::skip]
 #[doc = crate::_tags!(num)]
 /// Provides comparison operations using an operation-first syntax.
-#[doc = crate::_doc_location!("num/fin/ord")]
+#[doc = crate::_doc_meta!{location("num/fin/ord")}]
 ///
 /// A thin macro wrapper over [`Cmp`][crate::Cmp].
 /// Expands directly to the corresponding `Cmp` method.

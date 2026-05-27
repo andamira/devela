@@ -19,7 +19,7 @@ use ::core::str::from_utf8_mut;
 
 #[doc = crate::_tags!(string namespace)]
 /// A string slice namespace.
-#[doc = crate::_doc_location!("text/str")]
+#[doc = crate::_doc_meta!{location("text/str")}]
 ///
 /// # Methods
 /// - [methods namespaced from `core::str`](#corestr-namespaced-methods)

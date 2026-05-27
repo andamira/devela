@@ -8,7 +8,7 @@ use crate::{Orientation, Position};
 
 #[doc = crate::_tags!(geom)]
 /// A separation between two locations in `D`-dimensional space.
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
 /// Represents a displacement vector **without an absolute origin**.
 /// It describes the magnitude of separation between positions.
@@ -27,17 +27,17 @@ pub struct Distance<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Distance`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Distance1<T> = Distance<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Distance`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Distance2<T> = Distance<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Distance`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Distance3<T> = Distance<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Distance];

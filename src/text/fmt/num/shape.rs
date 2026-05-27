@@ -7,7 +7,7 @@ use crate::is;
 
 #[doc = crate::_tags!(fmt num)]
 /// Describes the structural shape of a formatted number.
-#[doc = crate::_doc_location!("text/fmt")]
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 ///
 /// The shape captures the lengths of the numeric regions and prefixes,
 /// independent of padding, alignment, or styling.

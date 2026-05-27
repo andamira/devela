@@ -3,7 +3,7 @@
 #[doc = crate::_tags!(primitive text)]
 /// <span class="stab portability" title="re-exported from rust's `core`">`core`</span>
 /// A 32-bit [Unicode scalar][scalar].
-#[doc = crate::_doc_location!("text/unicode/scalar")]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
 ///
 /// It can represent each and every scalar.
 ///

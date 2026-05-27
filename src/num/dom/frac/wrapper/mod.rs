@@ -13,7 +13,7 @@ mod impl_frac;
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides comprehensive fractional operations on `T`, most of them *const*.
-#[doc = crate::_doc_location!("num/dom")]
+#[doc = crate::_doc_meta!{location("num/dom")}]
 ///
 /// It's implemented for:
 /// - arrays: `[i8; 2]`… `[u128; 2]`; `[Int<i8>; 2]`… `[Int<u128>; 2]`.

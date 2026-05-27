@@ -7,7 +7,7 @@ use crate::{is, whilst};
 
 #[doc = crate::_tags!(crypto hash)]
 /// A fixed-size message digest.
-#[doc = crate::_doc_location!("data/codec/crypto")]
+#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[must_use]
 pub struct Digest<const N: usize>(pub [u8; N]);
@@ -72,7 +72,7 @@ mod impls_traits {
 
 #[doc = crate::_tags!(crypto hash construction)]
 /// Defines a selected cryptographic message-digest state type.
-#[doc = crate::_doc_location!("data/codec/crypto")]
+#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
 ///
 /// Generates a concrete allocation-free, const-friendly digest type from a
 /// whitelisted algorithm selector.

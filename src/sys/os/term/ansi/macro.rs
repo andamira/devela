@@ -59,7 +59,7 @@ ansi![p: bold, ITALIC, cursor_move1(3, 2)].unwrap();
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -99,7 +99,7 @@ macro_rules! ansi {
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -154,7 +154,7 @@ macro_rules! ansi {
 // -----------------------------------------------------------------------------
 #[doc = crate::_tags!(term)]
 /// Concatenates or prints [`Ansi` escape codes][0]
-#[doc = crate::_doc_location!("sys/os/term")]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = _DOC_ANSI!()]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

@@ -8,7 +8,7 @@ use crate::{CharAscii, char7, is};
 crate::set! {
     #[doc = crate::_tags!(text data_structure)]
     /// A finite set of ASCII characters.
-    #[doc = crate::_doc_location!("text")]
+    #[doc = crate::_doc_meta!{location("text")}]
     ///
     /// Represents membership over the 128-byte ASCII space, one bit per byte.
     #[must_use]

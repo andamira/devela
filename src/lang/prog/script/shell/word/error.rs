@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(lang lang)]
 /// An error while parsing or quoting shell words.
-#[doc = crate::_doc_location!("lang/prog/script/shell")]
+#[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ShellWordError {

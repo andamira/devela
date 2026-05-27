@@ -7,7 +7,7 @@ use crate::{Cast, ConstInit, Own, Rand};
 
 #[doc = crate::_tags!(rand)]
 #[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
-#[doc = crate::_doc_location!("num/prob/rand")]
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

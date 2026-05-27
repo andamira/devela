@@ -13,7 +13,7 @@ use crate::{Array, Bare, Storage};
 
 #[doc = crate::_tags!(data_structure)]
 /// A static stack backed by an [`Array`].
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 ///
 /// It is generic in respect to its
 /// elements (`T`),
@@ -137,28 +137,28 @@ pub struct Stack<T, const CAP: usize, IDX, S: Storage = Bare> {
 
 #[doc = crate::_tags!(data_structure)]
 /// A [`Stack`] with an 8-bit index size.
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 #[cfg(feature = "_stack_u8")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_stack_u8")))]
 pub type StackU8<T, const CAP: usize, S = Bare> = Stack<T, CAP, u8, S>;
 
 #[doc = crate::_tags!(data_structure)]
 /// A [`Stack`] with a 16-bit index size.
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 #[cfg(feature = "_stack_u16")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_stack_u16")))]
 pub type StackU16<T, const CAP: usize, S = Bare> = Stack<T, CAP, u16, S>;
 
 #[doc = crate::_tags!(data_structure)]
 /// A [`Stack`] with a 32-bit index size.
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 #[cfg(feature = "_stack_u32")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_stack_u32")))]
 pub type StackU32<T, const CAP: usize, S = Bare> = Stack<T, CAP, u32, S>;
 
 #[doc = crate::_tags!(data_structure)]
 /// A [`Stack`] with a pointer-sized index size.
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 #[cfg(feature = "_stack_usize")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_stack_usize")))]
 pub type StackUsize<T, const CAP: usize, S = Bare> = Stack<T, CAP, usize, S>;
@@ -167,7 +167,7 @@ pub type StackUsize<T, const CAP: usize, S = Bare> = Stack<T, CAP, usize, S>;
 
 #[doc = crate::_tags!(iterator)]
 /// An iterator over [`Stack`] elements.
-#[doc = crate::_doc_location!("data/layout/stack")]
+#[doc = crate::_doc_meta!{location("data/layout/stack")}]
 #[must_use]
 #[allow(missing_debug_implementations, reason = "unsatisfied trait bounds")]
 pub struct StackIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {

@@ -12,7 +12,7 @@ crate::test_size_of![AlsaError = 24]; // 192 bits
 
 #[doc = crate::_tags!(audio linux error)]
 /// ALSA PCM error.
-#[doc = crate::_doc_location!("sys/device/audio")]
+#[doc = crate::_doc_meta!{location("sys/device/audio")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
 pub enum AlsaError {

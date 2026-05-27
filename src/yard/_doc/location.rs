@@ -16,7 +16,7 @@
 // #[cfg(not(doctest))]
 #[doc = crate::_tags!(internal)]
 /// Emits a location annotation for documentation.
-#[doc = crate::_doc_location!("yard")]
+#[doc = crate::_doc_meta!{location("yard")}]
 ///
 /// This macro renders a small location marker (`📍`) followed by the public
 /// API path under `devela`, and optionally the crate where the item is defined.

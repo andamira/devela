@@ -8,7 +8,7 @@ use devela::{Borrow, String, Vec};
 
 #[doc = crate::_tags!(lifetime)]
 /// Defines the relationship between a borrowed type and its owned counterpart.
-#[doc = crate::_doc_location!("sys/mem")]
+#[doc = crate::_doc_meta!{location("sys/mem")}]
 ///
 /// This enables abstracting over allocation strategies in [`MaybeOwned`][crate::MaybeOwned].
 /// Implement this for types where:

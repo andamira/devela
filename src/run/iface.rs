@@ -9,7 +9,7 @@ use crate::{RunControl, RunFrame, RunPhase, RunStep, RuntimeTick};
 
 #[doc = crate::_tags!(runtime)]
 /// App logic driven step-by-step by a runtime.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 ///
 /// A runtime or driver gathers events, builds a [`RunStep`], and calls
 /// [`run_step`][Self::run_step] to let the app update its state.
@@ -33,7 +33,7 @@ pub trait RunApp {
 
 #[doc = crate::_tags!(runtime)]
 /// Minimal backend contract for runtime-driven frontends.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 ///
 /// A `RunBackend` does two things:
 /// - gathers normalized events for the next runtime iteration,
@@ -98,7 +98,7 @@ pub trait RunBackend {
 
 #[doc = crate::_tags!(runtime)]
 /// Rendering logic driven by a runtime frame.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 ///
 /// A runtime or driver builds a [`RunFrame`] and calls
 /// [`run_render`][Self::run_render] to let a renderer project a scene or app
@@ -130,7 +130,7 @@ pub trait RunRender<S: ?Sized, E = (), C = ()> {
 
 #[doc = crate::_tags!(runtime)]
 /// Presentation finalization driven by a runtime.
-#[doc = crate::_doc_location!("run")]
+#[doc = crate::_doc_meta!{location("run")}]
 ///
 /// A runtime or driver calls [`run_present`][Self::run_present]
 /// after rendering to finalize or expose the prepared artifact.

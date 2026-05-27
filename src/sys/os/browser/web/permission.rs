@@ -4,7 +4,7 @@ use crate::{_tags, js_int32};
 
 #[doc = _tags!(web)]
 /// Web API permissions
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions#browser_compatibility>
@@ -80,7 +80,7 @@ impl WebPermission {
 
 #[doc = _tags!(web result)]
 /// Permission query result state.
-#[doc = crate::_doc_location!("sys/os/browser/web")]
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(i8)]
 pub enum WebPermissionState {

@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(lin)]
 /// A static `R×C` shaped matrix backed by an array.
-#[doc = crate::_doc_location!("num/lin")]
+#[doc = crate::_doc_meta!{location("num/lin")}]
 ///
 /// - `T` is the type of elements in the matrix.
 /// - `R` and `C` represent the dimensions in terms of columns and rows.

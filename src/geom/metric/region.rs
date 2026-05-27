@@ -11,7 +11,7 @@ use crate::{Extent, Position, Stride};
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
 /// See also: [`Region1`], [`Region2`], [`Region3`],
 /// [`RegionS`], [`RegionS1`], [`RegionS2`], [`RegionS3`].
@@ -26,42 +26,42 @@ pub struct Region<P, E, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Region`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Region1<P, E> = Region<P, E, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Region`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Region2<P, E> = Region<P, E, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Region`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type Region3<P, E> = Region<P, E, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`] sharing the **S**ame type.
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type RegionS<T, const D: usize> = Region<T, T, D>;
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`RegionS`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type RegionS1<T> = RegionS<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`RegionS`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type RegionS2<T> = RegionS<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`RegionS`].
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 pub type RegionS3<T> = RegionS<T, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Stride`]d [`Region`] defining structured traversal.
-#[doc = crate::_doc_location!("geom/metric")]
+#[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
 /// `RegionStrided` extends `Region` by adding a stride, allowing
 /// structured access to subregions or non-contiguous patterns.

@@ -7,7 +7,7 @@ use crate::{NonZeroU32, Ratio, niche, unwrap};
 
 #[doc = crate::_tags!(time)]
 /// Describes the conceptual scale at which time is expressed or interpreted.
-#[doc = crate::_doc_location!("phys/time")]
+#[doc = crate::_doc_meta!{location("phys/time")}]
 ///
 /// `TimeScale` is lightweight, descriptive metadata. It can be used to label
 /// time sources, parameters, or policies without implying exact duration,

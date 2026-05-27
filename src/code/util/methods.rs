@@ -10,7 +10,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines standalone functions that call associated methods.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// Supports various function qualifiers (const, async, unsafe) and attributes.
 ///

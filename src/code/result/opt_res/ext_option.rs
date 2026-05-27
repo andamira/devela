@@ -12,7 +12,7 @@ impl<T> Sealed for Option<T> {}
 
 #[doc = crate::_tags!(result)]
 /// Extension trait providing additional methods for [`Option`].
-#[doc = crate::_doc_location!("code/result")]
+#[doc = crate::_doc_meta!{location("code/result")}]
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///

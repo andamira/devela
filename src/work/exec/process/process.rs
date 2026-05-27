@@ -18,7 +18,7 @@ impl Sealed for Process {}
 
 #[doc = crate::_tags!(platform concurrency namespace)]
 /// Extension trait providing additional methods for [`Process`]es.
-#[doc = crate::_doc_location!("work/process")]
+#[doc = crate::_doc_meta!{location("work/process")}]
 ///
 /// It offers the standalone functions in `std::process` as associated methods.
 #[rustfmt::skip]

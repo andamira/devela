@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code text namespace)]
 #[doc = concat!["A text-related ", crate::_ABBR_LUT!() , " namespace."]]
-#[doc = crate::_doc_location!("text")]
+#[doc = crate::_doc_meta!{location("text")}]
 #[derive(Debug)]
 pub struct AsciiLut;
 

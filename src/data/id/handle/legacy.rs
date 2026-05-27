@@ -6,7 +6,7 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// Defines a lightweight handle type.
-#[doc = crate::_doc_location!("data/id")]
+#[doc = crate::_doc_meta!{location("data/id")}]
 ///
 /// A *handle* is a lightweight, copyable semantic reference that identifies
 /// an entry within a managed collection, such as an arena, list, or graph.

@@ -11,7 +11,7 @@ use crate::{DataCollection, IndexOutOfBounds, Storage};
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *array* data type.
-#[doc = crate::_doc_location!("data/layout/array")]
+#[doc = crate::_doc_meta!{location("data/layout/array")}]
 ///
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>
 pub trait DataArray: DataCollection {

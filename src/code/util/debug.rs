@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code debug)]
 /// Emits a compile-time warning with a provided message.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// # Example
 /// ```
@@ -63,7 +63,7 @@ pub use const_warn;
 
 #[doc = crate::_tags!(code debug)]
 /// Returns a best-effort name of the enclosing function.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// This is a diagnostic helper based on [`core::any::type_name_of_val`].
 /// The exact format is not guaranteed by Rust, so this macro must not be

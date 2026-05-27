@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code debug)]
 /// *`c`ustomizable [`dbg!`]* macro.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// - By default uses `{:?}` instead of `{:#?}` for formatting.
 /// - By default doesn't show the location (file, line and column).

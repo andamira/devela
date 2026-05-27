@@ -11,7 +11,7 @@ use crate::{TimePoint, TimeScale};
 #[rustfmt::skip]
 #[doc = crate::_tags!(time)]
 /// A source of time points with a canonical numeric projection.
-#[doc = crate::_doc_location!("phys/time/source")]
+#[doc = crate::_doc_meta!{location("phys/time/source")}]
 ///
 /// `TimeSource<P>` separates:
 /// - the **point representation** `P`,
@@ -141,7 +141,7 @@ pub trait TimeSource<P: TimePoint> {
 #[rustfmt::skip]
 #[doc = crate::_tags!(time)]
 /// A configurable source of time points with a canonical numeric projection.
-#[doc = crate::_doc_location!("phys/time/source")]
+#[doc = crate::_doc_meta!{location("phys/time/source")}]
 ///
 /// `TimeSourceCfg<P>` generalizes [`TimeSource`] to source families whose behavior
 /// depends on a runtime configuration value.

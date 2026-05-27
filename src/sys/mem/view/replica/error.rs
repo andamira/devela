@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(error mem)]
 /// Errors produced by replicated layout construction and access.
-#[doc = crate::_doc_location!("sys/mem/view")]
+#[doc = crate::_doc_meta!{location("sys/mem/view")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum MemReplicaError {
     /// The requested replica count `N` is zero.

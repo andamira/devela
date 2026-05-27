@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code platform)]
 /// Sets a panic handler based on the chosen strategy.
-#[doc = crate::_doc_location!("code")]
+#[doc = crate::_doc_meta!{location("code")}]
 ///
 /// - `loop`: Enters an infinite loop, ensuring the program halts without undefined behavior.
 /// - `unreachable`: optimally halts execution based on the target architecture.

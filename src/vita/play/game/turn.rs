@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(game)]
 /// A bounded opportunity for one role or control locus to act.
-#[doc = crate::_doc_location!("vita/play/game")]
+#[doc = crate::_doc_meta!{location("vita/play/game")}]
 ///
 /// Provides a rule-defined acting window.
 ///

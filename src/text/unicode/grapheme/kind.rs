@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(text)]
 /// The kinds of supported graphemes.
-#[doc = crate::_doc_location!("text/unicode/grapheme")]
+#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[allow(non_camel_case_types, missing_docs)]
 pub enum GraphemeKind {

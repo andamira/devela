@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(num primitive)]
 /// Provides *const* primitive casting, joining and splitting operations.
-#[doc = crate::_doc_location!("num/grain")]
+#[doc = crate::_doc_meta!{location("num/grain")}]
 ///
 /// A thin macro wrapper over [`Cast`][crate::Cast].
 /// Expands directly to the corresponding `Cast` method.

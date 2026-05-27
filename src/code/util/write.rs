@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code mem)]
 /// Write elements to a buffer at the given offset.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// Efficiently writes individual elements and sequences to a buffer using direct
 /// assignments, avoiding slice operations while maintaining clean syntax.

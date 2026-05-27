@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(namespace num)]
 /// Provides sorting methods for arrays and slices of `T`.
-#[doc = crate::_doc_location!("data/layout")]
+#[doc = crate::_doc_meta!{location("data/layout")}]
 ///
 /// It implements the following methods for sorting exclusive slices:
 /// [`bubble`][Sort#bubble],

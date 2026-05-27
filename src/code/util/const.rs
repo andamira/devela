@@ -7,7 +7,7 @@
 
 #[doc = crate::_tags!(code construction)]
 /// A helper for constructing macro constants.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// It accepts either a series of expressions or a series of functions.
 ///

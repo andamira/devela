@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(no num)]
 /// Represents the absence of a number.
-#[doc = crate::_doc_location!("num")]
+#[doc = crate::_doc_meta!{location("num")}]
 pub type NoNum = ();
 
 #[cfg(feature = "num")]

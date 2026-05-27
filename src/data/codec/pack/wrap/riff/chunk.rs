@@ -7,7 +7,7 @@ use crate::{BinTag4, Riff, RiffError, is, slice};
 
 #[doc = crate::_tags!(data codec)]
 /// A borrowed RIFF chunk.
-#[doc = crate::_doc_location!("data/codec/pack")]
+#[doc = crate::_doc_meta!{location("data/codec/pack")}]
 ///
 /// This is a view into an existing byte slice. The chunk owns no data and does
 /// not interpret its payload unless asked for container-specific information
@@ -80,7 +80,7 @@ impl<'a> RiffChunk<'a> {
 
 #[doc = crate::_tags!(data codec iterator)]
 /// An iterator over borrowed RIFF chunks.
-#[doc = crate::_doc_location!("data/codec/pack")]
+#[doc = crate::_doc_meta!{location("data/codec/pack")}]
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RiffChunkIter<'a> {

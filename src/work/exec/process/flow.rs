@@ -10,7 +10,7 @@ use crate::{Process, ProcessExt, ShellWordError};
 
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.
-#[doc = crate::_doc_location!("work/process")]
+#[doc = crate::_doc_meta!{location("work/process")}]
 ///
 /// A `CommandFlow` represents one or more [`Command`]s executed as a single unit.
 /// In the current implementation, commands are arranged linearly, connecting
