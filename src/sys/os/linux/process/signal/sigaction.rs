@@ -74,7 +74,7 @@ impl LinuxSigaction {
     }
     /// Returns a new `LinuxSigaction` for a [`SA_SIGINFO`][LINUX_SIGACTION::SA_SIGINFO] handler.
     pub const fn new_siginfo(
-        handler: extern "C" fn(i32, LinuxSiginfo, *mut c_void),
+        handler: extern "C" fn(i32, *mut LinuxSiginfo, *mut c_void),
         flags: usize,
         mask: LinuxSigset,
         restorer: Option<extern "C" fn()>,
@@ -86,6 +86,7 @@ impl LinuxSigaction {
             sa_mask: mask,
         }
     }
+
     /// Returns the simple handler, if set.
     #[cfg(feature = "unsafe_syscall")]
     pub const fn sa_handler(&self) -> Option<extern "C" fn(i32)> {
@@ -98,7 +99,7 @@ impl LinuxSigaction {
     /// Returns the `SA_SIGINFO` handler, if set.
     #[must_use]
     #[cfg(feature = "unsafe_syscall")]
-    pub const fn sa_sigaction(&self) -> Option<extern "C" fn(i32, LinuxSiginfo, *mut c_void)> {
+    pub const fn sa_sigaction(&self) -> Option<extern "C" fn(i32, *mut LinuxSiginfo, *mut c_void)> {
         if self.sa_flags & LINUX_SIGACTION::SA_SIGINFO != 0 {
             Some(unsafe { self.sa_handler.sa_sigaction })
         } else {
@@ -247,7 +248,7 @@ impl Debug for LinuxSiginfo {
 #[repr(C)]
 union LinuxSigactionHandler {
     sa_handler: extern "C" fn(i32),
-    sa_sigaction: extern "C" fn(i32, LinuxSiginfo, *mut c_void),
+    sa_sigaction: extern "C" fn(i32, *mut LinuxSiginfo, *mut c_void),
 }
 
 /// A union representing the signal value.

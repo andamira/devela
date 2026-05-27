@@ -24,30 +24,18 @@ global_asm! {
     "__devela_linux_restore_rt:",
         "mov rax, {RT_SIGRETURN}",
         "syscall",
-    // ".size __devela_linux_restore_rt,.-__devela_linux_restore_rt",
     RT_SIGRETURN = const SYS::RT_SIGRETURN,
 }
 
 // https://git.musl-libc.org/cgit/musl/blame/src/signal/i386/restore.s
 #[cfg(target_arch = "x86")]
 global_asm!(
-    ".global __devela_linux_restore",
-    ".hidden __devela_linux_restore",
-    ".type __devela_linux_restore,@function",
-    "__devela_linux_restore:",
-        "pop eax",
-        "mov eax, {SIGRETURN}",
-        "int 0x80",
-    // ".size __devela_linux_restore,.-__devela_linux_restore",
-
     ".global __devela_linux_restore_rt",
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,@function",
     "__devela_linux_restore_rt:",
         "mov eax, {RT_SIGRETURN}",
         "int 0x80",
-    // ".size __devela_linux_restore_rt,.-__devela_linux_restore_rt",
-    SIGRETURN = const SYS::SIGRETURN,
     RT_SIGRETURN = const SYS::RT_SIGRETURN,
 );
 
@@ -55,34 +43,18 @@ global_asm!(
 #[cfg(target_arch = "arm")]
 global_asm!(
     ".syntax unified", // Use unified syntax for ARM/Thumb
-
-    ".global __devela_linux_restore",
-    ".hidden __devela_linux_restore",
-    ".type __devela_linux_restore,%function",
-    "__devela_linux_restore:",
-        "mov r7, #{SIGRETURN}",
-        "swi 0x0",
-    // ".size __devela_linux_restore,.-__devela_linux_restore",
-
     ".global __devela_linux_restore_rt",
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,%function",
     "__devela_linux_restore_rt:",
         "mov r7, #{RT_SIGRETURN}",
         "swi 0x0",
-    // ".size __devela_linux_restore_rt,.-__devela_linux_restore_rt",
-    SIGRETURN = const SYS::SIGRETURN,
     RT_SIGRETURN = const SYS::RT_SIGRETURN,
 );
 
 // https://git.musl-libc.org/cgit/musl/tree/src/signal/aarch64/restore.s
 #[cfg(target_arch = "aarch64")]
 global_asm!(
-    ".global __devela_linux_restore",
-    ".hidden __devela_linux_restore",
-    ".type __devela_linux_restore,%function",
-    "__devela_linux_restore:",
-        // no implementation provided
     ".global __devela_linux_restore_rt",
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,%function",
