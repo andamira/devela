@@ -90,6 +90,7 @@
         debug_closure_helpers,
         derive_coerce_pointee,
         exclusive_wrapper,
+        float_algebraic,
         float_bits_const,
         fn_align,
         frontmatter,
