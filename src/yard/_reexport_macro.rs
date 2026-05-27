@@ -48,14 +48,13 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from <a title='location in `core`'
-            href=\"https://doc.rust-lang.org/core/"
-            $($($core_path "/")+)? "\">core" $($("::" $core_path)+)? "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(rust core $(:: $( $core_path )::+)? $(
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature, )?
@@ -87,14 +86,13 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from <a title='location in `alloc`'
-            href=\"https://doc.rust-lang.org/alloc/"
-            $($($alloc_path "/")+)? "\">alloc" $($("::" $alloc_path)+)? "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(rust alloc $(:: $( $alloc_path )::+)? $(
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
             nightly_doc,
@@ -125,14 +123,13 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
         #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from <a title='location in `std`'
-            href=\"https://doc.rust-lang.org/std/"
-            $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(rust std $(:: $( $std_path )::+)? $(
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
             nightly_doc,
@@ -164,14 +161,13 @@ macro_rules! _reexport· {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from <a title='location in `std`'
-            href=\"https://doc.rust-lang.org/std/"
-            $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
-        #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(rust std $(:: $( $std_path )::+)? $(
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
             nightly_doc,
@@ -202,15 +198,13 @@ macro_rules! _reexport· {
     //     /// <span class='stab portability' title='re-exported from rust&#39;s `std`
     //     /// or recreated for `no_std`'>`[no_]std`</span>
     //     #[doc = $doc_line] // first doc line
-    //     $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-    //     // rust location
-    //     #[doc = "<sup>re-exported from <a title='location in `std`'
-    //       href=\"https://doc.rust-lang.org/std/"
-    //       $($($std_path "/")+)? "\">std" $($("::" $std_path)+)? "</a>"]
-    //     #[doc = $("`::" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-    //     $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-    //     #[doc = "\n\n---\n\n---"] // final horizontal double line
-    //
+    //     #[doc = $crate::_doc_meta! {
+    //         $( location(re-exported $($location)?), )?
+    //         origin(rust std $(:: $( $std_path )::+)? $(
+    //             ; renamed($item_to_rename as $item_renamed)
+    //         )?),
+    //     }]
+    //     #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
     //
     //     #[cfg_attr(
     //         nightly_doc,
@@ -305,14 +299,13 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_name "` crate'>`" $dep_name "`</span>"]
         #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from the <a title='`" $dep_name "` docs'
-            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
-        #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
-
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(crate $dep_name $(
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         // IMPROVE: can't use like this for portable-atomic | core::atomic,
         // should remove depend from here for the portable-atomic part,
@@ -354,14 +347,14 @@ macro_rules! _reexport· {
         $( $(#[doc = $tag])+ )? // tags
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_str "` crate'>`" $dep_str "`</span>"]
-        #[doc = $doc_line] // first doc line
-        $(#[doc = $crate::_doc_location![re-exported $($location)?]])? // workspace location
-        // rust location
-        #[doc = "<sup>re-exported from the <a title='`" $dep_str "` docs'
-            href=\"https://docs.rs/" $dep_name "\">" $dep_name "</a> crate."]
-        #[doc = $("` (" $item_to_rename "` as `" $item_renamed "`")* "</sup>"] // renamed?
-        $( #[doc = "\n\n"] $(#[doc = $doc_more])+ )? // more docs lines?
-        #[doc = "\n\n---\n\n---"] // final horizontal double line
+        #[doc = $crate::_doc_meta! {
+            $( location(re-exported $($location)?), )?
+            origin(crate $dep_str => $dep_name $(
+            // origin(crate $dep_name $( // simpler form
+                ; renamed($item_to_rename as $item_renamed)
+            )?),
+        }]
+        #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
             $( feature = $module_feature ,)?
@@ -374,6 +367,25 @@ macro_rules! _reexport· {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
+
+    /* local docs tail */
+
+    // Finishes the local documentation emitted by `_reexport!`.
+    (@doc_local_tail) => {
+        // "\n\n<sup>Original docs from the re-exported item follow.</sup>\n\n---\n\n---"
+        concat!(
+            "\n\n---\n\n",
+            "<span class='stab portability' title='Upstream/original documentation'>📜</span><br>"
+        )
+    };
+    (@doc_local_tail $($doc_more:expr)+) => {
+        concat!(
+            "\n\n", $($doc_more, "\n\n",)+
+            // "---\n\n<sup>Original docs from the re-exported item follow.</sup>\n\n---\n\n---")
+            "\n\n---\n\n---\n\n",
+            "<span class='stab portability' title='Upstream/original documentation'>📜</span><br>"
+        )
+    };
 }
 #[doc(inline)]
 pub use _reexport· as _reexport;

@@ -123,3 +123,13 @@
     }
   });
 </script>
+<style>
+/* hidden doctest helpers */
+.docblock .devela-hide-next,
+.docblock .devela-hide-next + * {
+  display: none !important;
+}
+.docblock .example-wrap:has(> pre.rust-example-rendered > code:empty) {
+  display: none;
+}
+</style>

@@ -21,7 +21,10 @@ pub mod _dep;
 // documented internal re-exports
 #[doc(inline)]
 pub use crate::{
-    _doc::_doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn, _doc_vendor},
+    _doc::_doc::{
+        _doc, _doc_availability, _doc_location, _doc_meta, _doc_miri_warn, _doc_size_of,
+        _doc_vendor,
+    },
     yard::{_policy::_devela_policy, _reexport_macro::_reexport, _use::_use},
 };
 

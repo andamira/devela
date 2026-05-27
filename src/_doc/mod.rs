@@ -49,7 +49,10 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     }
     _crate_internals {
         pub(crate) use super::{
-            _doc::{_doc, _doc_availability, _doc_location, _doc_miri_warn},
+            _doc::{
+                _doc, _doc_meta, _doc_availability, _doc_location, _doc_miri_warn, _doc_vendor,
+                _doc_size_of,
+            },
             _links::*,
         };
     }

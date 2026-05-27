@@ -11,7 +11,7 @@ use crate::{_impl_init, RasterChannels, RasterSampleFormat};
 
 #[doc = crate::_tags!(image layout)]
 /// Sample layout and color meaning of raster memory.
-#[doc = crate::_doc_location!("media/visual/image/raster")]
+#[doc = crate::_doc_meta!{location("media/visual/image/raster"), size_of(RasterFormat = 4)}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct RasterFormat {
     /// Channel order, packing, or indexing model.

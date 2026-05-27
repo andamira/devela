@@ -4,11 +4,13 @@
 //
 // TOC
 // - _doc!
+// - _doc_meta!
 // - _doc_availability!
 // - _doc_location!
 // - _doc_miri_warn!
+// - _doc_size_of!
 //
-// TODO: try to use paste! instead of concat!, since it's faster.
+// MAYBE: try to use paste! instead of concat!, since it appears to be faster.
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted meta-documentation string.
@@ -121,6 +123,135 @@ macro_rules! _doc· {
 pub use _doc· as _doc;
 
 #[doc = crate::_tags!(internal)]
+/// Composes a small rustdoc metadata section for an item.
+#[doc = crate::_doc_meta!{location("yard")}]
+///
+/// This macro centralizes the ad-hoc metadata band used near the top of item
+/// documentation. It wraps supported metadata fragments between horizontal
+/// rules and dispatches each section to the corresponding helper.
+///
+/// # Sections
+/// - `location(...)`: emits an item location fragment through [`_doc_location!`].
+/// - `size_of(...)`: emits checked type-size metadata through [`_doc_size_of!`].
+/// - `origin(...)`: emits re-export origin metadata for Rust or dependency items.
+///
+/// # Examples
+/// ```ignore
+/// #[doc = crate::_doc_meta! { location("media/audio"), size_of(PcmSpec = 8) }]
+/// #[doc = crate::_doc_meta! { location(re-exported "code/any"), origin(rust core::any) }]
+/// #[doc = crate::_doc_meta! { location(re-exported "code"), origin(crate "hashbrown") }]
+/// ```
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
+#[macro_export]
+macro_rules! _doc_meta· {
+    /* internal dispatcher: end */
+    (@items) => { "" };
+    (@items ,) => { "" };
+    /* public section: location */
+    (@items location($($args:tt)*) $(, $($rest:tt)*)?) => {
+        concat!(
+            $crate::_doc_location!(%from_meta $($args)*),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+    /* public section: size_of */
+    (@items size_of($ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+        concat!(
+            $crate::_doc_size_of!($ty = $bytes),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+    (@items size_of($name:ident : $ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+        concat!(
+            $crate::_doc_size_of!($name : $ty = $bytes),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+    (@items size_of(abs $name:ident : $ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+        concat!(
+            $crate::_doc_size_of!(abs $name : $ty = $bytes),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+
+    /* public section: origin from Rust core/alloc/std */
+    (@items origin(rust $root:ident $(:: $path:ident)* $(;
+        renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
+        concat!(" ",
+            $crate::_doc_meta!(@emit_origin_rust $root $(:: $path)* ; $($($old as $new),*)?),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+
+    /* public section: origin from external crate */
+    (@items origin(crate $dep:literal
+        $(; renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
+        concat!(" ",
+            $crate::_doc_meta!(@emit_origin_crate $dep; $($($old as $new),*)?),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+
+    /* optional: display name differs from docs.rs crate slug */
+    (@items origin(crate $shown:literal => $docs:literal
+        $(; renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
+        concat!(" ",
+            $crate::_doc_meta!(@emit_origin_crate_as $shown => $docs; $($($old as $new),*)?),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+
+    /* internal emitters */
+    (@emit_origin_rust $root:ident $(:: $path:ident)* ; $($renamed:tt)*) => {
+        concat!(
+            "<sup>re-exported from <a title='location in `", ::core::stringify!($root),
+            "`' href=\"https://doc.rust-lang.org/", ::core::stringify!($root), "/",
+            $( ::core::stringify!($path), "/", )* "\">", ::core::stringify!($root),
+            $("::", ::core::stringify!($path),)* "</a>",
+            $crate::_doc_meta!(@emit_renamed $($renamed)*), "</sup>"
+        )
+    };
+    (@emit_origin_crate $dep:literal; $($renamed:tt)*) => {
+        concat!(
+            "<sup>re-exported from the <a title='docs for `", $dep,
+            "`' href=\"https://docs.rs/", $dep, "\">", $dep, "</a> crate",
+            $crate::_doc_meta!(@emit_renamed $($renamed)*), ".</sup>"
+        )
+    };
+
+    (@emit_origin_crate_as $shown:literal => $docs:literal; $($renamed:tt)*) => {
+        concat!(
+            "<sup>re-exported from the <a title='docs for `", $shown,
+            "`' href=\"https://docs.rs/", $docs, "\">", $shown, "</a> crate",
+            $crate::_doc_meta!(@emit_renamed $($renamed)*), ".</sup>"
+        )
+    };
+    (@emit_renamed) => { "" };
+    (@emit_renamed $($old:ident as $new:ident),+ $(,)?) => {
+        concat!( " ", $( "`::", stringify!($old), "` as `", stringify!($new), "` " ),+)
+    };
+
+    /* diagnostics */
+    (@items $bad:ident($($args:tt)*) $(, $($rest:tt)*)?) => {
+        compile_error!(concat!( "unknown _doc_meta! section: `", stringify!($bad), "`"))
+    };
+
+    /* public entrypoints last */
+    () => { "" };
+    ($($rest:tt)+) => {
+        concat!(
+            "\n\n---\n\n",
+            $crate::_doc_meta!(@items $($rest)+),
+            "\n\n---\n\n",
+        )
+    };
+}
+#[doc(inline)]
+pub use _doc_meta· as _doc_meta;
+
+#[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for conditional availability.
 #[doc = crate::_doc_location!("yard")]
 ///
@@ -229,43 +360,52 @@ pub use _doc_availability· as _doc_availability;
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "to invoke __crate_name from crate of invocation")]
 macro_rules! _doc_location {
-    // for items defined in a workspace crate and aggregated in devela.
+    // TEMP VERSION WAIT until crate _doc_meta refactors are finished
     ($path:literal) => {
+        concat!(
+            "\n\n---\n\n", // TEMP
+            "<sup title='location in `devela`'>",
+            "📍 [`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</sup>",
+            "\n\n---\n\n" // TEMP
+        )
+    };
+    // WAIT for crate refactors
+    // for items defined in a workspace crate and aggregated in devela.
+    (%from_meta $path:literal) => {
         // VERSION more useful for all definitions in a single crate
         concat!(
-            "\n\n---\n\n",
-            "<sup title='home in `devela`'><b>[`📍 ", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
-            "\n\n---\n\n" // final horizontal line
+            "<sup title='location in `devela`'>",
+            "📍 [`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</sup>"
         )
-        // VERSION more useful for definitions split between multiple workspace members
-        // concat!(
-        //     "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
-        //     // "🎅\n\n---\n\n<sup title='defined in `", crate::__crate_name!(), // DEBUG
-        //     "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
-        //     "<sup title='location in `devela`'><b>[`", $path,
-        //     "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
-        //     "\n\n---\n\n" // final horizontal line
-        // )
     };
     // for items defined in a proc-macro workspace crate and aggregated in devela.
     // NOTE: this macro and doclink! has to be copied there without #[macro_export].
     (proc $path:literal) => {
         concat!(
-            "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
-            // "🎅\n\n---\n\n<sup title='defined in `", crate::__crate_name!(), // DEBUG
-            "`'>[`📍`](", $crate::doclink![custom_current_proc_crate @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
-            "\n\n---\n\n" // final horizontal line
+            "<sup title='procedural macro location in `devela`'>",
+            "📍 [`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</sup>"
         )
     };
     // for items re-exported from another crate.
     // called from the _reexport! macro, does not end with \n\n
     (re-exported $path:literal) => {
         concat!(
-            "\n\n<sup title='re-exported from `", crate::__crate_name!(),
-            // "🎅\n\n---\n\n<sup title='re-exported from `", crate::__crate_name!(), // DEBUG
+            "\n\n---\n\n", // TEMP
+            "<sup title='re-exported from `", crate::__crate_name!(),
+            "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
+            "<sup title='location in `devela`'><b>[`", $path,
+            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+        )
+    };
+    (%from_meta re-exported $path:literal) => {
+        concat!(
+            "<sup title='re-exported from `", crate::__crate_name!(),
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
             "<sup title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
@@ -360,3 +500,65 @@ macro_rules! _doc_vendor· {
 }
 #[doc(inline)]
 pub use _doc_vendor· as _doc_vendor;
+
+#[doc = crate::_tags!(internal)]
+/// Emits compact rustdoc metadata for a type's checked stack size.
+#[doc = crate::_doc_meta!{location("yard")}]
+///
+/// The visible fragment shows the expected `size_of::<T>()` value.
+/// A hidden doctest calls [`test_size_of!`][crate::test_size_of]
+/// to verify the size during doctests.
+///
+/// # Forms
+/// - `Type = N`: checks `devela::Type`.
+/// - `Label: Type = N`: shows `Type` but uses `Label` as the metadata label.
+/// - `abs Label: path::Type = N`: uses the type path exactly as written.
+///
+/// # Examples
+/// ```ignore
+/// #[doc = crate::_doc_size_of!(RasterFormat = 4)]
+/// #[doc = crate::_doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
+/// #[doc = crate::_doc_size_of!(abs Local: crate::Local = 8)]
+/// ```
+#[cfg_attr(cargo_primary_package, doc(hidden))]
+#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
+#[macro_export]
+macro_rules! _doc_size_of· {
+    // Named public-root type:
+    //
+    // #[doc = _doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
+    ($ty:ty = $bytes:literal $(,)?) => {
+        $crate::_doc_size_of!(@doc stringify!($ty),
+            concat!("devela::", stringify!($ty)), stringify!($ty), stringify!($bytes))
+    };
+    // Unnamed public-root type:
+    //
+    // #[doc = _doc_size_of!(RasterFormat = 4)]
+    ($name:ident : $ty:ty = $bytes:literal $(,)?) => {
+        $crate::_doc_size_of!(@doc stringify!($name),
+            concat!("devela::", stringify!($ty)), stringify!($ty), stringify!($bytes))
+    };
+    // Explicit path escape hatch:
+    //
+    // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: crate::PcmRawBuf<&[u8]> = 24)]
+    // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: ::devela::PcmRawBuf<&[u8]> = 24)]
+    (abs $name:ident : $ty:ty = $bytes:literal $(,)?) => {
+        $crate::_doc_size_of!(@doc stringify!($name),
+            stringify!($ty), stringify!($ty), stringify!($bytes))
+    };
+    // Core doc emitter.
+    (@doc $label:expr, $test_ty:expr, $shown_ty:expr, $bytes:expr) => {
+        concat!(
+            " <sup title='stack size, checked by hidden doctest'>",
+            // "📦 `", $label, ": size_of::<", $shown_ty, ">() == ", $bytes, "` bytes",
+            "📦 `size_of::<", $shown_ty, ">() == ", $bytes, "` bytes", "</sup>\n\n",
+            "<div hidden class='devela-hide-next'></div>\n\n",
+            "```rust\n",
+            "# devela::test_size_of!(assert ", $test_ty, " = ", $bytes, ");\n",
+            "```\n",
+        )
+    };
+}
+#[doc(inline)]
+pub use _doc_size_of· as _doc_size_of;

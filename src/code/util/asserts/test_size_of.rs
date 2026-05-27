@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(assert)]
 /// Tests the byte-size of a type.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// This is a convenience macro around [`size_of`]
 /// for quickly probing or locking the expected size of a type in tests.
