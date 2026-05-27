@@ -478,7 +478,7 @@ impl Linux {
     /// # Arguments
     /// - `handler`: Function called with the received signal number.
     /// - `signals`: Signal numbers to handle.
-    /// - `flags`: Optional [`LINUX_SIGACTION`] flags.
+    /// - `flags`: Optional [`LINUX_SIGACTION`][crate::LINUX_SIGACTION] flags.
     ///
     /// # Notes
     /// - `SA_RESTORER` and `SA_SIGINFO` are always included internally.
@@ -544,7 +544,7 @@ impl Linux {
     /// # Arguments
     /// - `handler`: Function called with the signal number, signal info, and context.
     /// - `signals`: Signal numbers to handle.
-    /// - `flags`: Optional [`LINUX_SIGACTION`] flags.
+    /// - `flags`: Optional [`LINUX_SIGACTION`][crate::LINUX_SIGACTION] flags.
     ///
     /// # Notes
     /// - `SA_RESTORER` and `SA_SIGINFO` are always included internally.

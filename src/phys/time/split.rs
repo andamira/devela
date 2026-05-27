@@ -102,7 +102,7 @@ pub type TimeSplitHourSecNorm = TimeSplit<(), (), (), u64, u8, u8, (), (), ()>;
 #[doc = crate::_doc_meta!{location("phys/time")}]
 pub type TimeSplitHourNano<H, M, S, MS, US, NS> = TimeSplit<(), (), (), H, M, S, MS, US, NS>;
 #[doc = crate::_tags!(time)]
-/// A time split from hours to seconds, normalized *(128b payload)*.
+/// A time split from hours to nanoseconds, normalized *(128b payload)*.
 #[doc = crate::_doc_meta!{
     location("phys/time"),
     #[cfg(target_pointer_width = "32")]

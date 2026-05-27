@@ -5,12 +5,14 @@
 
 #[cfg(feature = "alloc")]
 crate::items! {
-    use crate::{test_size_of, String};
+    use crate::String;
 
     #[doc = crate::_tags!(runtime)]
     /// Runtime system identity metadata.
     #[doc = crate::_doc_meta!{
         location("run/regime"),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(RunSystemInfo = 36|288),
         #[cfg(target_pointer_width = "64")]
         test_size_of(RunSystemInfo = 72|576),
     }]
