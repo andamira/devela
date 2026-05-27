@@ -117,7 +117,6 @@ macro_rules! impl_non_value {
             ///
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstInit`][crate::ConstInit] traits.
-            #[doc = crate::_DOCLINK_CONST_INIT!()]
             pub type $nm = $crate::$name <{$IP::$XTR}>;
 
             impl Default for $nm {

@@ -1,8 +1,8 @@
-// devela::_dep
+// devela::yard::deps
 //
 #![doc = crate::_tags!(internal)]
-#![doc = crate::_DOC_YARD__DEP!()] // internal
-#![doc = crate::_doc!(modules: crate::yard; _dep)]
+#![doc = crate::_DOC_YARD_DEPS!()] // internal
+#![doc = crate::_doc!(modules: crate::yard; dep)]
 #![doc = crate::_doc!(hr)]
 //
 // TOC

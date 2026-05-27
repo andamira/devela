@@ -1,4 +1,4 @@
-// devela::_doc::_mod_docs
+// devela::yard::_doc::fragments
 //
 //! Docs headings for modules across crates and misc. abbreviations.
 //
@@ -359,5 +359,5 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 15. yard (support structures not part of the public scene)
     _DOC_YARD       = "Internal scaffolding and misc. machinery.";
     _QUO_YARD       = "> This space exists so the rest can be clean.";
-    _DOC_YARD__DEP  = "Re-exported dependencies.";
+    _DOC_YARD_DEPS  = "Re-exported dependencies.";
 }

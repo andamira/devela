@@ -5,32 +5,28 @@
 //
 #![doc = crate::_tags!(internal)]
 #![doc = crate::_DOC_YARD!()] // internal
-#![doc = crate::_doc!(modules: crate; yard: _dep)]
+#![doc = crate::_doc!(modules: crate; yard: dep)]
 #![doc = crate::_doc!(hr)]
 #![doc = crate::_QUO_YARD!()]
 //
 
 mod alias; // aliases for attributes and derives
+mod _doc; // _doc!, _doc_meta!, _doc_location!…
 mod _env; // __dbg!, __std!, _std_core!
 mod _policy; // _devela_policy!
 mod _reexport_macro; // _reexport!
 mod _use; // _use!
 
-pub mod _dep;
+pub mod dep;
 
 // documented internal re-exports
 #[doc(inline)]
-pub use crate::{
-    _doc::_doc::{
-        _doc, _doc_availability, _doc_location, _doc_meta, _doc_miri_warn, _doc_size_of,
-        _doc_vendor,
-    },
-    yard::{_policy::_devela_policy, _reexport_macro::_reexport, _use::_use},
-};
+pub use {_doc::_all::*, _policy::_devela_policy, _reexport_macro::_reexport, _use::_use};
 
 crate::structural_mods! { // _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::{
+            _doc::_crate_internals::*,
             _env::*,
             _reexport_macro::_reexport,
             _use::_use,
@@ -40,6 +36,7 @@ crate::structural_mods! { // _crate_internals, _hidden
         #[doc(hidden)]
         pub use super::{
             alias::*,
+            _doc::_hidden::*,
             _policy::{_devela_policy, __devela_unreachable_unchecked},
             _use::_use_or_shim,
         };

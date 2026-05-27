@@ -1,4 +1,4 @@
-// devela::_doc::_tags
+// devela::yard::_doc::tags
 //
 //! Private tags definitions for visual type categorization in documentation.
 //

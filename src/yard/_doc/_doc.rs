@@ -1,4 +1,4 @@
-// devela::_doc::_doc
+// devela::yard::_doc::_doc
 //
 //! Defines private doc meta helpers.
 //

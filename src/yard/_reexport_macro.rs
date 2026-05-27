@@ -236,7 +236,7 @@ macro_rules! _reexport· {
         pub use ::$dep;
     }};
     (
-      // Re-exports an optional crate (used in */src/yard/_dep.rs)
+      // Re-exports an optional crate (used in */src/yard/dep.rs)
       //
       // $dep_safe:    [safe|unsafe] (affects compilation with "safest" feature)
       // $dep_feat:    the dependency feature that enables it

@@ -36,32 +36,10 @@ crate::items! {
     pub mod vendored;
 }
 
-mod _links; // _DOCLINK_*!
-mod _mod_docs; // _DOC_*!
-mod _tags; // EMOJI_*!, _TAG_*! _tags!
-pub(crate) mod _doc; // _doc!, _doc_availability!, _doc_miri_warn!
-
 // IMPROVE: some could be _crate_internals, currently blocked by define_error! and rand_pcg!
-crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _pub_mods
     _pub_mods {
         #[cfg(feature = "_docs_examples")]
         pub use super::examples::_all::*;
-    }
-    _crate_internals {
-        pub(crate) use super::{
-            _doc::{
-                _doc, _doc_meta, _doc_availability, _doc_location, _doc_miri_warn, _doc_vendor,
-                _doc_size_of,
-            },
-            _links::*,
-        };
-    }
-    _hidden {
-        #[doc(hidden)]
-        pub use super::{
-            _doc::{_doc_vendor},
-            _mod_docs::*,
-            _tags::*,
-        };
     }
 }

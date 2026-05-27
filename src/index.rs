@@ -186,7 +186,7 @@ pub mod work;
 // internal:
 pub mod yard;
 #[doc(hidden)]
-pub use yard::_dep;
+pub use yard::dep as _dep;
 
 pub mod _doc;
 
@@ -270,7 +270,6 @@ mod _crate_internals {
 
     #[rustfmt::skip]
     pub(crate) use super::{
-        _doc::_crate_internals::*,
         code::_crate_internals::*,
         data::_crate_internals::*,
         geom::_crate_internals::*,
@@ -298,7 +297,6 @@ mod _hidden {
     #[rustfmt::skip]
     #[doc(hidden)]
     pub use super::{
-        _doc::_hidden::*,
         code::_hidden::*,
         data::_hidden::*,
         geom::_hidden::*,
