@@ -5,6 +5,10 @@
 // MAYBE
 // - _ORD
 // - _STATE
+//
+// NOTES
+// - icon used by _doc_location: 📍
+// - icon used by _doc_size_of: 📦
 
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]

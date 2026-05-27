@@ -37,7 +37,7 @@ macro_rules! _doc_location {
     ($path:literal) => {
         concat!(
             "\n\n---\n\n", // TEMP
-            "<sup title='location in `devela`'>",
+            "<sup class='_doc_location' title='location in `devela`'>",
             "📍 [`", $path, "`](",
             $crate::doclink![custom devela $path @mod],
             ")</sup>",
@@ -49,7 +49,7 @@ macro_rules! _doc_location {
     (%from_meta $path:literal) => {
         // VERSION more useful for all definitions in a single crate
         concat!(
-            "<sup title='location in `devela`'>",
+            "<sup class='_doc_location' title='location in `devela`'>",
             "📍 [`", $path, "`](",
             $crate::doclink![custom devela $path @mod],
             ")</sup>"
@@ -59,7 +59,7 @@ macro_rules! _doc_location {
     // NOTE: this macro and doclink! has to be copied there without #[macro_export].
     (proc $path:literal) => {
         concat!(
-            "<sup title='procedural macro location in `devela`'>",
+            "<sup class='_doc_location' title='procedural macro location in `devela`'>",
             "📍 [`", $path, "`](",
             $crate::doclink![custom devela $path @mod],
             ")</sup>"
@@ -72,7 +72,7 @@ macro_rules! _doc_location {
             "\n\n---\n\n", // TEMP
             "<sup title='re-exported from `", crate::__crate_name!(),
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
+            "<sup class='_doc_location' title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
         )
     };
@@ -80,7 +80,7 @@ macro_rules! _doc_location {
         concat!(
             "<sup title='re-exported from `", crate::__crate_name!(),
             "`'>[`📍`](", $crate::doclink![custom_current_crate $path, @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
+            "<sup class='_doc_location' title='location in `devela`'><b>[`", $path,
             "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
         )
     };

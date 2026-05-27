@@ -69,6 +69,10 @@ pub use _use· as _use;
 /// Outside devela, it defines inert stand-ins for a fixed whitelist.
 ///
 /// Unsupported names are rejected at compile time.
+///
+/// Used from:
+/// - /src/code/guard.rs
+/// - /src/sys/mem/guard.rs
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

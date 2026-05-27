@@ -1,7 +1,7 @@
 // devela::code::util::asserts::test_size_of
 
 #[doc = crate::_tags!(assert)]
-/// Tests the byte-size of a type.
+/// Tests the byte-size of a type, optionally checking the matching bit count.
 #[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// This is a convenience macro around [`size_of`]
@@ -42,10 +42,10 @@
 macro_rules! test_size_of {
     (
         // Assertion-only mode, for use inside existing tests.
-        assert $ty:ty = $expected:expr $(,)?
+        assert $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?
     ) => {{
         let actual: usize = size_of::<$ty>();
-        let expected: usize = $expected;
+        let expected: usize = $bytes;
         if actual != expected {
             ::core::panic!(
         "size_of::<{}>() mismatch:\n  actual:   {} bytes ({} bits)\n  expected: {} bytes ({} bits)",
@@ -54,12 +54,26 @@ macro_rules! test_size_of {
                 expected, expected.saturating_mul(8),
             );
         }
+        $(
+            let actual_bits: usize = expected.saturating_mul(8);
+            let expected_bits: usize = $bits;
+
+            if actual_bits != expected_bits {
+                ::core::panic!(
+    "size_of::<{}>() bit mismatch:\n  bytes:    {} bytes\n  actual:   {} bits\n  expected: {} bits",
+                    ::core::any::type_name::<$ty>(),
+                    expected,
+                    actual_bits,
+                    expected_bits,
+                );
+            }
+        )?
     }};
     (
         // Batch assertion-only mode.
-        assert { $($ty:ty = $expected:expr;)+ }
+        assert { $($ty:ty = $bytes:literal $(| $bits:literal)?;)+ }
     ) => {{
-        $( $crate::test_size_of![assert $ty = $expected]; )+
+        $( $crate::test_size_of![assert $ty = $bytes $(| $bits)?]; )+
     }};
     (
         // Probe mode, intentionally fails and prints the measured size.
@@ -72,10 +86,10 @@ macro_rules! test_size_of {
     }};
     (
         // Named generated test with expected size.
-        $name:ident : $ty:ty = $expected:expr $(,)?
+        $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?
     ) => {
         #[cfg(test)] #[test] #[allow(nonstandard_style)]
-        fn $name() { $crate::test_size_of![assert $ty = $expected]; }
+        fn $name() { $crate::test_size_of![assert $ty = $bytes $(| $bits)?]; }
     };
     (
         // Named generated probe test.
@@ -86,8 +100,12 @@ macro_rules! test_size_of {
     };
     (
         // Shorthand generated test for simple identifier types.
-        $ty:ident = $expected:expr $(,)?
-    ) => { $crate::paste! { $crate::test_size_of!([<test_size_of_ $ty>] : $ty = $expected); }};
+        $ty:ident = $bytes:literal $(| $bits:literal)? $(,)?
+    ) => {
+        $crate::paste! {
+            $crate::test_size_of!([<test_size_of_ $ty>] : $ty = $bytes $(| $bits)?);
+        }
+    };
     (
         // Shorthand generated probe test for simple identifier types.
         probe $ty:ident $(,)?

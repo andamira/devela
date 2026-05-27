@@ -41,21 +41,24 @@ macro_rules! _doc_meta· {
         )
     };
     /* public section: size_of */
-    (@items size_of($ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+    (@items size_of($ty:ty = $bytes:literal $(| $bits:literal)?)
+        $(, $($rest:tt)*)?) => {
         concat!(
-            $crate::_doc_size_of!($ty = $bytes),
+            $crate::_doc_size_of!($ty = $bytes $(| $bits)?),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
-    (@items size_of($name:ident : $ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+    (@items size_of($name:ident : $ty:ty = $bytes:literal $(| $bits:literal)?)
+        $(, $($rest:tt)*)?) => {
         concat!(
-            $crate::_doc_size_of!($name : $ty = $bytes),
+            $crate::_doc_size_of!($name : $ty = $bytes $(| $bits)?),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
-    (@items size_of(abs $name:ident : $ty:ty = $bytes:literal) $(, $($rest:tt)*)?) => {
+    (@items size_of(abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)?)
+        $(, $($rest:tt)*)?) => {
         concat!(
-            $crate::_doc_size_of!(abs $name : $ty = $bytes),
+            $crate::_doc_size_of!(abs $name : $ty = $bytes $(| $bits)?),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };

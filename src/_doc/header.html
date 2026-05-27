@@ -126,10 +126,9 @@
 <style>
 /* hidden doctest helpers */
 .docblock .devela-hide-next,
-.docblock .devela-hide-next + * {
-  display: none !important;
-}
-.docblock .example-wrap:has(> pre.rust-example-rendered > code:empty) {
-  display: none;
-}
+.docblock .devela-hide-next + * { display: none !important; }
+.docblock .example-wrap:has(> pre.rust-example-rendered > code:empty) { display: none; }
+/* doc metadata */
+.docblock p:has(> sup._doc_location) { margin-bottom: 0; }
+.docblock p:has(> sup._doc_size_of:only-child) { margin-bottom: 0; }
 </style>

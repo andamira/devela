@@ -30,29 +30,32 @@ macro_rules! _doc_size_of· {
     // Named public-root type:
     //
     // #[doc = _doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
-    ($ty:ty = $bytes:literal $(,)?) => {
+    // #[doc = _doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24|192)]
+    ($ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
         $crate::_doc_size_of!(@doc stringify!($ty),
-            concat!("devela::", stringify!($ty)), stringify!($ty), stringify!($bytes))
+            concat!("devela::", stringify!($ty)), stringify!($ty),
+            stringify!($bytes) $(, stringify!($bits))? )
     };
     // Unnamed public-root type:
     //
     // #[doc = _doc_size_of!(RasterFormat = 4)]
-    ($name:ident : $ty:ty = $bytes:literal $(,)?) => {
+    ($name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
         $crate::_doc_size_of!(@doc stringify!($name),
-            concat!("devela::", stringify!($ty)), stringify!($ty), stringify!($bytes))
+            concat!("devela::", stringify!($ty)), stringify!($ty),
+            stringify!($bytes) $(, stringify!($bits))? )
     };
     // Explicit path escape hatch:
     //
     // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: crate::PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: ::devela::PcmRawBuf<&[u8]> = 24)]
-    (abs $name:ident : $ty:ty = $bytes:literal $(,)?) => {
+    (abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
         $crate::_doc_size_of!(@doc stringify!($name),
-            stringify!($ty), stringify!($ty), stringify!($bytes))
+            stringify!($ty), stringify!($ty), stringify!($bytes) $(, stringify!($bits))? )
     };
     // Core doc emitter.
-    (@doc $label:expr, $test_ty:expr, $shown_ty:expr, $bytes:expr) => {
+    (@doc $label:expr, $test_ty:expr, $shown_ty:expr, $bytes:expr $(, $bits:expr)?) => {
         concat!(
-            " <sup title='stack size, checked by hidden doctest'>",
+            "\n\n<sup class='_doc_size_of' title='stack size, checked by hidden doctest'>",
             // "📦 `", $label, ": size_of::<", $shown_ty, ">() == ", $bytes, "` bytes",
             "📦 `size_of::<", $shown_ty, ">() == ", $bytes, "` bytes", "</sup>\n\n",
             "<div hidden class='devela-hide-next'></div>\n\n",

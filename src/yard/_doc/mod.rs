@@ -14,10 +14,12 @@ mod fragments; // _DOC_*!
 mod tags; // _ABBR_!*, _TAG_*!, _tags!
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
+    // re-exported for documentation
     _mods {
         pub use super::{
             _crate_internals::*,
-            _hidden::{_doc_vendor, _tags},
+            // don't document abbrs or tags:
+            _hidden::{_doc_meta, _doc_vendor, _tags},
         };
     }
     _crate_internals {
@@ -25,7 +27,6 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             availability::_doc_availability,
             doc::{_doc, _doc_miri_warn},
             location::_doc_location,
-            meta::_doc_meta,
             size_of::_doc_size_of,
             fragments::*,
         };
@@ -33,8 +34,12 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
     _hidden {
         #[doc(hidden)]
         pub use super::{
+            // needed by _use_or_shim!
             vendor::_doc_vendor,
-            fragments::{_ABBR_PCG},
+            // needed by rand_pcg!
+            meta::_doc_meta,
+            fragments::{_ABBR_PCG, _ABBR_PRNG},
+            // needed by _tags!
             tags::*,
         };
     }
