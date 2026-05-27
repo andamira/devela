@@ -286,7 +286,7 @@ impl Linux {
         unsafe {
             asm!(
                 "mov eax, {GETPID}",
-                "int0x80",
+                "int 0x80",
                 GETPID = const SYS::GETPID,
                 lateout("eax") result,
                 options(nostack)

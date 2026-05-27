@@ -17,6 +17,7 @@ use crate::{LINUX_SYS as SYS, global_asm};
 // https://git.musl-libc.org/cgit/musl/tree/src/signal/x86_64/restore.s
 #[cfg(target_arch = "x86_64")]
 global_asm! {
+    "nop",
     ".global __devela_linux_restore_rt",
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,@function",
@@ -34,8 +35,8 @@ global_asm!(
     ".hidden __devela_linux_restore",
     ".type __devela_linux_restore,@function",
     "__devela_linux_restore:",
-        "popl eax",
-        "movl eax, {SIGRETURN}",
+        "pop eax",
+        "mov eax, {SIGRETURN}",
         "int 0x80",
     // ".size __devela_linux_restore,.-__devela_linux_restore",
 
@@ -43,7 +44,7 @@ global_asm!(
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,@function",
     "__devela_linux_restore_rt:",
-        "movl eax, {RT_SIGRETURN}",
+        "mov eax, {RT_SIGRETURN}",
         "int 0x80",
     // ".size __devela_linux_restore_rt,.-__devela_linux_restore_rt",
     SIGRETURN = const SYS::SIGRETURN,
@@ -59,7 +60,7 @@ global_asm!(
     ".hidden __devela_linux_restore",
     ".type __devela_linux_restore,%function",
     "__devela_linux_restore:",
-        "mov r7, {SIGRETURN}",
+        "mov r7, #{SIGRETURN}",
         "swi 0x0",
     // ".size __devela_linux_restore,.-__devela_linux_restore",
 
@@ -67,7 +68,7 @@ global_asm!(
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,%function",
     "__devela_linux_restore_rt:",
-        "mov r7, {RT_SIGRETURN}",
+        "mov r7, #{RT_SIGRETURN}",
         "swi 0x0",
     // ".size __devela_linux_restore_rt,.-__devela_linux_restore_rt",
     SIGRETURN = const SYS::SIGRETURN,
@@ -86,7 +87,7 @@ global_asm!(
     ".hidden __devela_linux_restore_rt",
     ".type __devela_linux_restore_rt,%function",
     "__devela_linux_restore_rt:",
-        "mov x8, {RT_SIGRETURN}",
+        "mov x8, #{RT_SIGRETURN}",
         "svc 0",
     RT_SIGRETURN = const SYS::RT_SIGRETURN,
 );

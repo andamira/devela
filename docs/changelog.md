@@ -337,6 +337,7 @@
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
 - feature-gate term-related functionality.
+- fix signal restorer & `sys_getpid` in x86.
 
 #### sys::os::term
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`.
