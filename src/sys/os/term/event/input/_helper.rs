@@ -2,6 +2,7 @@
 
 use crate::{_impl_init, EventKind, Position2, is, slice, unwrap, whilst};
 
+crate::test_size_of!(TermInputState = 18 | 144);
 /// Internal parser state.
 #[derive(Clone, Debug, Default)]
 pub(super) enum TermInputState {
@@ -19,6 +20,7 @@ pub(super) enum TermInputState {
 }
 _impl_init! { Self::Ground => TermInputState }
 
+crate::test_size_of!(TermParsed = 32 | 256);
 /// Internal parser result.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) enum TermParsed {
@@ -32,6 +34,7 @@ pub(super) enum TermParsed {
     Unknown,
 }
 
+crate::test_size_of!(TermReply = 6 | 48);
 /// Terminal reply parsed from the input stream.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) enum TermReply {

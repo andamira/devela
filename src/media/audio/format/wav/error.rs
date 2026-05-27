@@ -7,11 +7,9 @@
 use crate::{IoError, IoErrorKind};
 use crate::{PcmRawError, RiffError};
 
-crate::test_size_of![PcmWavError = 4]; // 32 bits
-
 #[doc = crate::_tags!(audio error)]
 /// WAVE encoding and decoding error.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{ location("media/audio"), test_size_of(PcmWavError = 4|32) }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum PcmWavError {
     /// Raw PCM byte/sample conversion failed.

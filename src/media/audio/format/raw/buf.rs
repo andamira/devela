@@ -7,18 +7,24 @@
 use crate::Vec;
 use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
 
-crate::test_size_of![PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24]; // 192 bits
-#[cfg(feature = "alloc")]
-crate::test_size_of![PcmRawBuf_Vec: PcmRawBuf<Vec<u8>> = 32]; // 256 bits
-
 #[doc = crate::_tags!(audio data)]
 /// Raw PCM byte buffer over borrowed or owned storage.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(PcmRawBuf_Slice_x32: PcmRawBuf<&[u8]> = 12|96),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(PcmRawBuf_Slice_x64: PcmRawBuf<&[u8]> = 24|192),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(PcmRawBuf_Vec_x32: PcmRawBuf<Vec<u8>> = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(PcmRawBuf_Vec_x64: PcmRawBuf<Vec<u8>> = 32|256),
+}]
 ///
 /// Raw PCM contains no header and no embedded metadata. The caller must provide
 /// the [`PcmSpec`] that describes the byte stream.
 ///
-/// This is a validated pairing of raw interleaved PCM bytes and a [`PcmSpec`].
+/// This is a validated pairing of raw interleaved PCM bytes and a `PcmSpec`.
 /// It does not own typed samples. Typed materialization is explicit through
 /// [`PcmRaw`] decode helpers.
 ///

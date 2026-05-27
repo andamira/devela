@@ -7,13 +7,15 @@
 use crate::Vec;
 use crate::{PcmRawBuf, PcmSpec, PcmWavError, PcmWavFmt, Riff, RiffChunkIter};
 
-crate::test_size_of![PcmWavBuf_Slice: PcmWavBuf<&[u8]> = 64]; // 512 bits
-#[cfg(feature = "alloc")]
-crate::test_size_of![PcmWavBuf_Vec: PcmWavBuf<Vec<u8>> = 72]; // 576 bits
-
 #[doc = crate::_tags!(audio data)]
 /// Parsed WAVE byte buffer over borrowed or owned storage.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(PcmWavBuf_Slice: PcmWavBuf<&[u8]> = 64|512),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(PcmWavBuf_Vec: PcmWavBuf<Vec<u8>> = 72|576),
+}]
 ///
 /// This stores the full WAVE byte region together with the parsed `fmt ` metadata
 /// and the byte span of the `data` payload.

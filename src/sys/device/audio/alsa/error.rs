@@ -3,16 +3,18 @@
 //! Defines [`AlsaError`].
 //
 
-#[cfg(feature = "alloc")]
+#[cfg(ffi_alsa··)]
 use crate::CStr;
 use crate::{_alsa_raw as _raw, c_int, impl_trait};
 use crate::{PcmLayout, PcmSample, PcmSpec};
 
-crate::test_size_of![AlsaError = 24]; // 192 bits
-
 #[doc = crate::_tags!(audio linux error)]
 /// ALSA PCM error.
-#[doc = crate::_doc_meta!{location("sys/device/audio")}]
+#[doc = crate::_doc_meta!{
+    location("sys/device/audio"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AlsaError = 24|192),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
 pub enum AlsaError {

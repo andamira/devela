@@ -8,11 +8,9 @@ use crate::IoError;
 #[cfg(feature = "std")]
 use crate::IoErrorKind;
 
-crate::test_size_of![PcmRawError = 1]; // 8 bits
-
 #[doc = crate::_tags!(audio error)]
 /// Raw PCM encoding and decoding error.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{location("media/audio"), test_size_of(PcmRawError = 1|8)}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum PcmRawError {
     /// The PCM stream specification is incomplete or invalid.

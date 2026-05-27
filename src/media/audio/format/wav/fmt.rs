@@ -5,11 +5,9 @@
 
 use crate::{AudioChannels, PcmSample, PcmSpec, PcmWav, PcmWavError, is};
 
-crate::test_size_of![PcmWavFmt = 28]; // 224 bits
-
 #[doc = crate::_tags!(audio parser)]
 /// Parsed WAVE `fmt` chunk.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{location("media/audio"), test_size_of(PcmWavFmt = 28|224)}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct PcmWavFmt {
@@ -116,11 +114,9 @@ impl PcmWavFmt {
             PcmWav::FORMAT_PCM | PcmWav::FORMAT_IEEE_FLOAT => {}
             other => return Err(PcmWavError::UnsupportedFormat(other)),
         }
-
         if valid_bits_per_sample == 0 || valid_bits_per_sample > bits_per_sample {
             return Err(PcmWavError::InvalidExtensibleFormat);
         }
-
         let mut fmt = match Self::new(
             subformat_tag,
             channels,
@@ -131,7 +127,6 @@ impl PcmWavFmt {
             Ok(fmt) => fmt,
             Err(err) => return Err(err),
         };
-
         fmt.format_tag = PcmWav::FORMAT_EXTENSIBLE;
         fmt.subformat_tag = subformat_tag;
         fmt.valid_bits_per_sample = valid_bits_per_sample;

@@ -9,7 +9,11 @@ crate::items! {
 
     #[doc = crate::_tags!(runtime)]
     /// Runtime system identity metadata.
-    #[doc = crate::_doc_meta!{location("run/regime")}]
+    #[doc = crate::_doc_meta!{
+        location("run/regime"),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(RunSystemInfo = 72|576),
+    }]
     #[derive(Clone, Debug, Default, PartialEq, Eq)]
     #[crate::macro_apply(crate::__doc_show(feature = "alloc"))]
     pub struct RunSystemInfo {
@@ -22,7 +26,6 @@ crate::items! {
         /// Current host name, if known.
         pub host_name: Option<String>,
     }
-    test_size_of![RunSystemInfo = 72]; // 576 bits
 }
 
 // FUTURE

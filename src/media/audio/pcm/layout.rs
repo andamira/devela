@@ -9,7 +9,10 @@ use crate::{_impl_init, impl_trait};
 
 #[doc = crate::_tags!(audio layout)]
 /// Sample arrangement of a PCM buffer.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    test_size_of(PcmLayout = 1|8),
+}]
 ///
 /// A PCM layout describes how channel samples are placed in memory.
 ///

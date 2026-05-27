@@ -12,15 +12,15 @@
 // - impl exclusive planar
 
 use crate::{AudioChannels, ConstInit, PcmSample, PcmSpec};
-use crate::{PhantomData, is, test_size_of, whilst};
-
-test_size_of![test_size_of_PcmBuf_i8: PcmBuf<i8, &[i8]> = 24]; // 192 bits
-test_size_of![test_size_of_PcmBuf_f64: PcmBuf<f64, &[f64]> = 24]; // 192 bits
-test_size_of![test_size_of_PcmBuf_planar_i32: PcmBuf<i32, &[&[i32]]> = 24]; // 192 bits
+use crate::{PhantomData, is, whilst};
 
 #[doc = crate::_tags!(audio data)]
 /// Typed PCM sample buffer over caller-chosen storage.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    test_size_of(PcmBuf_f64: PcmBuf<i32, &[i32]> = 24|192),
+    test_size_of(PcmBuf_i32_planar: PcmBuf<f64, &[&[f64]]> = 24|192),
+}]
 ///
 /// `PcmBuf` pairs sample storage with the [`PcmSpec`] parts needed to interpret
 /// it as PCM audio: sample encoding, channel layout, and sample rate.

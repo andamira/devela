@@ -124,6 +124,7 @@ impl Digits<usize> {
     }
     #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
+    #[allow(dead_code)]
     #[cfg(target_pointer_width = "32")]
     pub(crate) const fn digit_at_power16(self, divisor: usize) -> u8 {
         Digits(self.0 as u32).digit_at_power16(divisor as u32)

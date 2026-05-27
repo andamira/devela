@@ -9,7 +9,10 @@ use crate::{_impl_init, impl_trait};
 
 #[doc = crate::_tags!(audio)]
 /// Numeric encoding of a single PCM sample.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    test_size_of(PcmSample = 1|8),
+}]
 #[allow(missing_docs)]
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

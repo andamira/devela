@@ -9,7 +9,10 @@ use crate::{EventKey, EventKind, Key, KeyMods};
 
 #[doc = crate::_tags!(term event parser)]
 /// Parses terminal input bytes into normalized events.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term"),
+    test_size_of(TermInputParser = 18|144),
+}]
 ///
 /// `TermInputParser` is a byte-fed state machine. It accepts ordinary bytes,
 /// UTF-8 text, and terminal escape sequences, returning an [`EventKind`] when

@@ -31,16 +31,16 @@ macro_rules! _doc_size_of· {
     //
     // #[doc = _doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24|192)]
-    ($ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
-        $crate::_doc_size_of!(@doc stringify!($ty),
+    ($(#[$meta:meta])* $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
+        $crate::_doc_size_of!(@doc [$(#[$meta])*] stringify!($ty),
             concat!("devela::", stringify!($ty)), stringify!($ty),
             stringify!($bytes) $(, stringify!($bits))? )
     };
     // Unnamed public-root type:
     //
     // #[doc = _doc_size_of!(RasterFormat = 4)]
-    ($name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
-        $crate::_doc_size_of!(@doc stringify!($name),
+    ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
+        $crate::_doc_size_of!(@doc [$(#[$meta])*] stringify!($name),
             concat!("devela::", stringify!($ty)), stringify!($ty),
             stringify!($bytes) $(, stringify!($bits))? )
     };
@@ -48,21 +48,32 @@ macro_rules! _doc_size_of· {
     //
     // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: crate::PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_size_of!(abs PcmRawBuf_Slice: ::devela::PcmRawBuf<&[u8]> = 24)]
-    (abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
-        $crate::_doc_size_of!(@doc stringify!($name),
-            stringify!($ty), stringify!($ty), stringify!($bytes) $(, stringify!($bits))? )
+    ($(#[$meta:meta])* abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(,)?) => {
+        $crate::_doc_size_of!(@doc [$(#[$meta])*] stringify!($name),
+            stringify!($ty), stringify!($ty),
+            stringify!($bytes) $(, stringify!($bits))? )
     };
     // Core doc emitter.
-    (@doc $label:expr, $test_ty:expr, $shown_ty:expr, $bytes:expr $(, $bits:expr)?) => {
+    (@doc [$(#[$meta:meta])*] $label:expr, $test_ty:expr, $shown_ty:expr,
+        $bytes:expr $(, $bits:expr)?) => {
         concat!(
-            "\n\n<sup class='_doc_size_of' title='stack size, checked by hidden doctest'>",
-            // "📦 `", $label, ": size_of::<", $shown_ty, ">() == ", $bytes, "` bytes",
-            "📦 `size_of::<", $shown_ty, ">() == ", $bytes, "` bytes", "</sup>\n\n",
+            "\n\n",
+            "<sup class='_doc_size_of' title='stack size, checked by hidden doctest'>",
+            "📦 `size_of::<", $shown_ty, ">() == ", $bytes, "` bytes",
+            $(" / ", $bits, " bits",)?
+            $crate::_doc_size_of!(@meta $(#[$meta])*),
+            "</sup>\n\n",
             "<div hidden class='devela-hide-next'></div>\n\n",
             "```rust\n",
-            "# devela::test_size_of!(assert ", $test_ty, " = ", $bytes, ");\n",
+            $( "# ", stringify!(#[$meta]), "\n", )*
+            "# devela::test_size_of!(assert ", $test_ty, " = ", $bytes $(,"|", $bits)?, ");\n",
             "```\n",
         )
+    };
+    // Attribute printer helpers.
+    (@meta) => { "" };
+    (@meta $(#[$meta:meta])+) => {
+        concat!("  #️⃣ ", $(stringify!(#[$meta]), " ",)+)
     };
 }
 #[doc(inline)]

@@ -14,12 +14,15 @@ use super::_raw;
 use crate::{AlsaError, AudioChannels, PcmBuf, PcmLayout, PcmSampleType, PcmSpec};
 use crate::{Ptr, c_int, c_uint, is, whilst};
 
-#[cfg(target_pointer_width = "64")]
-crate::test_size_of![AlsaPcmHandle = 24]; // 192 bits
-
 #[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
-#[doc = crate::_doc_meta!{location("sys/device/audio")}]
+#[doc = crate::_doc_meta!{
+    location("sys/device/audio"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(AlsaPcmHandle = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AlsaPcmHandle = 24|192),
+}]
 #[derive(Debug)]
 pub struct AlsaPcmHandle {
     raw: *mut _raw::snd_pcm_t,

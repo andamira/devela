@@ -40,29 +40,13 @@ macro_rules! _doc_meta· {
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
-    /* public section: size_of */
-    (@items size_of($ty:ty = $bytes:literal $(| $bits:literal)?)
-        $(, $($rest:tt)*)?) => {
+    /* public section: test_size_of */
+    (@items $(#[$meta:meta])* test_size_of($($args:tt)*) $(, $($rest:tt)*)?) => {
         concat!(
-            $crate::_doc_size_of!($ty = $bytes $(| $bits)?),
+            $crate::_doc_size_of!($(#[$meta])* $($args)*),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
-    (@items size_of($name:ident : $ty:ty = $bytes:literal $(| $bits:literal)?)
-        $(, $($rest:tt)*)?) => {
-        concat!(
-            $crate::_doc_size_of!($name : $ty = $bytes $(| $bits)?),
-            $crate::_doc_meta!(@items $($($rest)*)?)
-        )
-    };
-    (@items size_of(abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)?)
-        $(, $($rest:tt)*)?) => {
-        concat!(
-            $crate::_doc_size_of!(abs $name : $ty = $bytes $(| $bits)?),
-            $crate::_doc_meta!(@items $($($rest)*)?)
-        )
-    };
-
     /* public section: origin from Rust core/alloc/std */
     (@items origin(rust $root:ident $(:: $path:ident)* $(;
         renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
@@ -71,7 +55,6 @@ macro_rules! _doc_meta· {
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
-
     /* public section: origin from external crate */
     (@items origin(crate $dep:literal
         $(; renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
@@ -122,7 +105,11 @@ macro_rules! _doc_meta· {
 
     /* diagnostics */
     (@items $bad:ident($($args:tt)*) $(, $($rest:tt)*)?) => {
-        compile_error!(concat!( "unknown _doc_meta! section: `", stringify!($bad), "`"))
+        compile_error!(concat!("unknown _doc_meta! section: `", stringify!($bad), "`"))
+    };
+    (@items $($bad:tt)+) => {
+        compile_error!(concat!("could not parse _doc_meta! input near: `",
+            stringify!($($bad)+), "`"))
     };
 
     /* public entrypoints last */
