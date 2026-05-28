@@ -6,21 +6,14 @@ use crate::{
 };
 
 /// # Thread-related methods.
-#[rustfmt::skip]
 impl Linux {
     /// Gets clock resolution for the specified clock.
     ///
     /// It typically returns 1 ns even though the clock resolution may be coarser.
     pub fn clock_getres(clock_id: LinuxClock) -> Result<LinuxTimespec> {
         let mut res = LinuxTimespec::default();
-        let ret = unsafe {
-            Self::sys_clock_getres(clock_id, res.as_mut_ptr())
-        };
-        if ret == 0 {
-            Ok(res)
-        } else {
-            Err(LinuxError::Sys(ret))
-        }
+        let ret = unsafe { Self::sys_clock_getres(clock_id, res.as_mut_ptr()) };
+        if ret == 0 { Ok(res) } else { Err(LinuxError::Sys(ret)) }
     }
 
     /// Gets the current time from the specified clock
@@ -41,7 +34,8 @@ impl Linux {
             } else if n == -ERRNO::EINTR {
                 req = rem; // Retry with remaining time
                 continue;
-            } else { // Actual error
+            } else {
+                // Actual error
                 return Err(LinuxError::Sys(n));
             }
         }
@@ -63,6 +57,8 @@ impl Linux {
     /// See also [`LINUX_EXIT`].
     #[inline(always)]
     pub fn exit(status: c_int) -> ! {
-        unsafe { Linux::sys_exit(status & LINUX_EXIT::MAX); }
+        unsafe {
+            Linux::sys_exit(status & LINUX_EXIT::MAX);
+        }
     }
 }

@@ -103,7 +103,6 @@ impl Linux {
             is![sig < 1 || sig > LINUX_SIG_MAX as i32, return];
             let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
                 // SAFETY: we control both storage and retrieval and check for null.
                 let handler: fn(i32) = unsafe { transmute(handler) };
                 handler(sig);
@@ -179,7 +178,6 @@ impl Linux {
             is![sig < 1 || sig > LINUX_SIG_MAX as i32 || info.is_null(), return];
             let handler = LINUX_SIGINFO_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
-                #[expect(clippy::crosspointer_transmute, reason = "pointer to fn pointer")]
                 // SAFETY: we control both the storage and retrieval and ensure null checks.
                 let handler: fn(i32, &LinuxSiginfo, *mut c_void) = unsafe { transmute(handler) };
 
