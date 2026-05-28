@@ -1,15 +1,27 @@
 // devela::sys::os::term::event::input
+//
+//! Terminal input parsing.
+//
 
 #[cfg(test)]
 mod tests;
 
-mod _helper; // (TermInputState, TermParsed, TermParsedCsi, TermReply), …
 mod parser; // TermInputParser
 
-crate::structural_mods! { // _mods
+// internal
+mod state; // (TermInputState, TermParsed, TermParsedCsi, TermReply)
+mod csi; // impl parse control and csi methods
+mod feed; // impl feed_* methods
+
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             parser::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            state::*,
         };
     }
 }

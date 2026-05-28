@@ -1,8 +1,8 @@
 // devela::sys::os::term::event::input::tests
 
-use super::_helper::*;
 use super::TermInputParser;
 use crate::{EventKey, EventKind, Key, KeyState, pos};
+use crate::{TermParsed, TermReply};
 
 /* helpers */
 

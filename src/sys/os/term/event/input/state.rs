@@ -1,14 +1,15 @@
-// devela::sys::os::term::event::input::_helper
+// devela::sys::os::term::event::input::state
 //
-//! Defines ([`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`]).
+//! Internal state items for `TermInputParser`:
+//! [`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`].
 //
 
-use crate::{_impl_init, EventKind, EventWindow, Key, Position2, is, slice, unwrap, whilst};
+use crate::{_impl_init, EventKind, EventWindow, Key, Position2};
 
 crate::test_size_of!(TermInputState = 18 | 144);
 /// Internal parser state.
 #[derive(Clone, Debug, Default)]
-pub(super) enum TermInputState {
+pub(crate) enum TermInputState {
     /// No partial sequence is active.
     #[default]
     Ground,
@@ -26,7 +27,7 @@ _impl_init! { Self::Ground => TermInputState }
 crate::test_size_of!(TermParsed = 32 | 256);
 /// Internal parser result.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(super) enum TermParsed {
+pub(crate) enum TermParsed {
     /// A normalized user-facing event.
     Event(EventKind),
     /// A terminal reply, usually produced by a query sequence.
@@ -43,7 +44,7 @@ crate::test_size_of!(TermParsedCsi = 8 | 64);
 /// Keeps CSI dispatch free of drop-bearing event types
 /// until the final conversion to [`TermParsed`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum TermParsedCsi {
+pub(crate) enum TermParsedCsi {
     /// No CSI match; continue with the next parser layer.
     Continue,
     /// The sequence was handled, but produced no user-facing event.
@@ -83,37 +84,11 @@ impl TermParsedCsi {
 crate::test_size_of!(TermReply = 6 | 48);
 /// Terminal reply parsed from the input stream.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum TermReply {
+pub(crate) enum TermReply {
     /// Cursor-position report: `ESC [ row ; col R`.
     ///
     /// The position is in terminal cells, meaning x = column and y = row.
     CursorPosition(Position2<u16>),
     /// Device-attributes reply: `ESC [ ... c`.
     DeviceAttributes,
-}
-
-pub(super) const fn is_csi_final(byte: u8) -> bool {
-    byte >= 0x40 && byte <= 0x7E
-}
-pub(super) const fn parse_two_u16(bytes: &[u8], sep: u8) -> Option<(u16, u16)> {
-    let mut split = None;
-    whilst! { i in 0..bytes.len(); {
-        is! { bytes[i] == sep, { split = Some(i); break; }}
-    }}
-    let split = unwrap![some? split];
-    let a = unwrap![some? parse_u16(slice!(bytes, ..split))];
-    let b = unwrap![some? parse_u16(slice!(bytes, split + 1, ..))];
-    Some((a, b))
-}
-pub(super) const fn parse_u16(bytes: &[u8]) -> Option<u16> {
-    is! { bytes.is_empty(), return None }
-    let mut n = 0u16;
-    whilst! { b in 0..bytes.len(); {
-        let byte = bytes[b];
-        is!{ !byte.is_ascii_digit(), return None }
-        n = unwrap![some?
-            unwrap![some? n.checked_mul(10)]
-                .checked_add((byte - b'0') as u16)];
-    }}
-    Some(n)
 }
