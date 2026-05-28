@@ -4,7 +4,7 @@
 //! [`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`].
 //
 
-use crate::{_impl_init, EventKind, EventWindow, Key, Position2};
+use crate::{_impl_init, EventKind, EventMouse, EventWindow, Key, Position2};
 
 crate::test_size_of!(TermInputState = 18 | 144);
 /// Internal parser state.
@@ -38,7 +38,7 @@ pub(crate) enum TermParsed {
     Unknown,
 }
 
-crate::test_size_of!(TermParsedCsi = 8 | 64);
+crate::test_size_of!(TermParsedCsi = 12 | 96);
 /// Const-safe CSI parser result.
 ///
 /// Keeps CSI dispatch free of drop-bearing event types
@@ -51,6 +51,8 @@ pub(crate) enum TermParsedCsi {
     Pending,
     /// A keyboard event.
     Key(Key),
+    /// A mouse event.
+    Mouse(EventMouse),
     /// Terminal focus was gained.
     FocusGained,
     /// Terminal focus was lost.
@@ -69,6 +71,7 @@ impl TermParsedCsi {
             TermParsedCsi::Continue => TermParsed::Unknown,
             TermParsedCsi::Pending => TermParsed::Pending,
             TermParsedCsi::Key(key) => TermParsed::Event(super::TermInputParser::key(key)),
+            TermParsedCsi::Mouse(mouse) => TermParsed::Event(EventKind::Mouse(mouse)),
             TermParsedCsi::FocusGained => {
                 TermParsed::Event(EventKind::Window(EventWindow::FocusGained))
             }

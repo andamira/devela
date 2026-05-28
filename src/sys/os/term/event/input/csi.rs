@@ -1,7 +1,9 @@
 // devela::sys::os::term::event::input::csi_control
 
 use crate::{Char, is, pos, slice, unwrap, whilst};
-use crate::{EventKey, EventKind, Key, KeyMods};
+use crate::{
+    EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, Key, KeyMods,
+};
 use crate::{TermInputParser, TermParsed, TermParsedCsi, TermReply};
 
 impl TermInputParser {
@@ -44,6 +46,10 @@ impl TermInputParser {
             parsed => return parsed.to_term_parsed(),
         }
         match Self::parse_csi_event(args, final_byte) {
+            TermParsedCsi::Continue => {}
+            parsed => return parsed.to_term_parsed(),
+        }
+        match Self::parse_csi_mouse(args, final_byte) {
             TermParsedCsi::Continue => {}
             parsed => return parsed.to_term_parsed(),
         }
@@ -124,6 +130,76 @@ impl TermInputParser {
         // DA reply seed: ESC [ ? ... c or ESC [ ... c
         is! { final_byte == b'c', return TermParsedCsi::Reply(TermReply::DeviceAttributes) }
         TermParsedCsi::Unknown
+    }
+
+    /* mouse */
+
+    const fn parse_csi_mouse(args: &[u8], final_byte: u8) -> TermParsedCsi {
+        let released = match final_byte {
+            b'M' => false,
+            b'm' => true,
+            _ => return TermParsedCsi::Continue,
+        };
+        let Some((cb, cx, cy)) = Self::parse_sgr_mouse_args(args) else {
+            return TermParsedCsi::Continue;
+        };
+        let Some(mouse) = Self::mouse_sgr_event(cb, cx, cy, released) else {
+            return TermParsedCsi::Unknown;
+        };
+        TermParsedCsi::Mouse(mouse)
+    }
+    const fn parse_sgr_mouse_args(bytes: &[u8]) -> Option<(u16, u16, u16)> {
+        is! { bytes.len() < 6 || bytes[0] != b'<', return None } // expects: b"<Cb;Cx;Cy"
+        let body = slice!(bytes, 1, ..);
+        let (mut first, mut second) = (None, None);
+        whilst! { i in 0..body.len(); {
+            if body[i] == b';' {
+                if first.is_none() {
+                    first = Some(i);
+                } else {
+                    second = Some(i);
+                    break;
+                }
+            }
+        }}
+        let first = unwrap![some? first];
+        let second = unwrap![some? second];
+        let cb = unwrap![some? Self::parse_u16(slice!(body, ..first))];
+        let cx = unwrap![some? Self::parse_u16(slice!(body, first + 1, ..second))];
+        let cy = unwrap![some? Self::parse_u16(slice!(body, second + 1, ..))];
+        Some((cb, cx, cy))
+    }
+    const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
+        // normalize coordinates to 0-based cells
+        let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
+        let (motion, button_code) = (cb & 32 != 0, cb & 0b11);
+        let state = if motion {
+            EventButtonState::Moved
+        } else if released {
+            EventButtonState::Released
+        } else {
+            EventButtonState::Pressed
+        };
+        let button = match button_code {
+            0 => Some(EventButton::Left),
+            1 => Some(EventButton::Middle),
+            2 => Some(EventButton::Right),
+            3 => None, // release / no button
+            _ => None,
+        };
+        let buttons = match (state, button) {
+            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Left)) => {
+                EventButtons::new().with(EventButtons::LEFT)
+            }
+            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Right)) => {
+                EventButtons::new().with(EventButtons::RIGHT)
+            }
+            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Middle)) => {
+                EventButtons::new().with(EventButtons::MIDDLE)
+            }
+            _ => EventButtons::new(),
+        };
+        Some(EventMouse::new(x, y, button, state, buttons))
     }
 
     /* misc. helpers */
