@@ -342,7 +342,7 @@
 - make `Linux::scoped_raw_mode` return crate-private `LinuxRawModGuard`.
 
 #### sys::os::term
-- new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`.
+- new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLinux`, `TermMode`, `TermSession`
 - update `Ansi`:
   - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`.
   - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`.

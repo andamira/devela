@@ -7,24 +7,26 @@
 //
 
 mod ansi; // Ansi, AnsiColor3, AnsiColor8
-// mod backend; // WIP TermLinux
-mod cap; // WIP TermCaps
+mod backend; // TermLinux
+mod cap; // TermCaps
 #[cfg(feature = "event")]
 mod event; // TermInputParser
 // mod line; // WIP CLI
 mod metric; // TermSize
 // #[cfg(feature = "term")]
 // mod render; // TermRenderer WIP
+mod session; // TermMode, TermSession
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             ansi::_all::*,
             cap::_all::*,
-            // backend::_all::*,
+            backend::_all::*,
             // line::*,
             metric::*,
             // render::_all::*,
+            session::*,
         };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;

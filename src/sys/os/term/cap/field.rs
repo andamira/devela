@@ -97,4 +97,4 @@ crate::bitfield! {
         }
     }
 }
-impl BitSized<19> for TermCaps {}
+impl BitSized<19> for TermCaps {} // WAIT for bitfield! auto-impl
