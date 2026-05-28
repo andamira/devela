@@ -2,7 +2,8 @@
 
 use crate::{Char, is, pos, slice, unwrap, whilst};
 use crate::{
-    EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, Key, KeyMods,
+    EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, EventWheel,
+    EventWheelUnit, Key, KeyMods,
 };
 use crate::{TermInputParser, TermParsed, TermParsedCsi, TermReply};
 
@@ -143,10 +144,7 @@ impl TermInputParser {
         let Some((cb, cx, cy)) = Self::parse_sgr_mouse_args(args) else {
             return TermParsedCsi::Continue;
         };
-        let Some(mouse) = Self::mouse_sgr_event(cb, cx, cy, released) else {
-            return TermParsedCsi::Unknown;
-        };
-        TermParsedCsi::Mouse(mouse)
+        Self::sgr_pointer_event(cb, cx, cy, released)
     }
     const fn parse_sgr_mouse_args(bytes: &[u8]) -> Option<(u16, u16, u16)> {
         is! { bytes.len() < 6 || bytes[0] != b'<', return None } // expects: b"<Cb;Cx;Cy"
@@ -169,7 +167,34 @@ impl TermInputParser {
         let cy = unwrap![some? Self::parse_u16(slice!(body, second + 1, ..))];
         Some((cb, cx, cy))
     }
+    const fn sgr_pointer_event(cb: u16, cx: u16, cy: u16, released: bool) -> TermParsedCsi {
+        if cb & 64 != 0 {
+            let Some(wheel) = Self::wheel_sgr_event(cb, cx, cy) else {
+                return TermParsedCsi::Unknown;
+            };
+            return TermParsedCsi::Wheel(wheel);
+        }
+        let Some(mouse) = Self::mouse_sgr_event(cb, cx, cy, released) else {
+            return TermParsedCsi::Unknown;
+        };
+        TermParsedCsi::Mouse(mouse)
+    }
+    const fn wheel_sgr_event(cb: u16, cx: u16, cy: u16) -> Option<EventWheel> {
+        // normalize coordinates to 0-based cells
+        let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
+        let (delta_x, delta_y) = match cb & 0b11 {
+            0 => (0, -1), // wheel up
+            1 => (0, 1),  // wheel down
+            2 => (-1, 0), // wheel left
+            3 => (1, 0),  // wheel right
+            _ => return None,
+        };
+        Some(EventWheel::new(delta_x, delta_y, EventWheelUnit::Step, x, y, EventButtons::new()))
+    }
     const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
+        // wheel events are normalized separately as EventWheel
+        is! { cb & 64 != 0, return None }
+
         // normalize coordinates to 0-based cells
         let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
         let (motion, button_code) = (cb & 32 != 0, cb & 0b11);
