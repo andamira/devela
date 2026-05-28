@@ -7,8 +7,6 @@
 /// Macro helper for documentation of re-exported items.
 #[doc = crate::_doc_meta!{location("yard")}]
 //
-// IMPROVE: make dependencies safety related to features.
-// MAYBE: new branch for: either a crate or core (for portable-atomic types).
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 //       the solution is to re-export from core/alloc/std items on each crate.
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
@@ -181,45 +179,6 @@ macro_rules! _reexport· {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-    // INFO: used in the past for the Error trait before becoming available in `core`.
-    // ( // when the item is available in either `no_std` or `std`
-    //   rust : no_std|std $( :: $( $std_path:ident )::+)?,
-    //   $( local_module: $module_feature:literal, )?
-    //   $( location: $($location:literal)+ ,)?
-    //   $( tag: $($tag:expr)+ ,)?
-    //   doc: $doc_line:literal,
-    //   $( +doc: $($doc_more:literal),+, )?
-    //   $( $item:ident ),*
-    //   $(@ $item_to_rename:ident as $item_renamed:ident),*
-    //   $(,)?
-    // ) => { $crate::paste! {
-    //     #[doc(inline)]
-    //     $( $(#[doc = $tag])+ )? // tags
-    //     /// <span class='stab portability' title='re-exported from rust&#39;s `std`
-    //     /// or recreated for `no_std`'>`[no_]std`</span>
-    //     #[doc = $doc_line] // first doc line
-    //     #[doc = $crate::_doc_meta! {
-    //         $( location(re-exported $($location)?), )?
-    //         origin(rust std $(:: $( $std_path )::+)? $(
-    //             ; renamed($item_to_rename as $item_renamed)
-    //         )?),
-    //     }]
-    //     #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
-    //
-    //     #[cfg_attr(
-    //         nightly_doc,
-    //         doc(cfg(all(
-    //             $( feature = $module_feature, )?
-    //             any(feature = "std", feature = "no_std")
-    //         )))
-    //     )]
-    //
-    //     #[cfg(feature = "std")]
-    //     pub use std :: $($( $std_path :: )+)? {
-    //         $( $item ),*
-    //         $( $item_to_rename as $item_renamed ),*
-    //     };
-    // }};
     // -------------------------------------------------------------------------
     (
       /* external dependencies */
@@ -372,7 +331,6 @@ macro_rules! _reexport· {
 
     // Finishes the local documentation emitted by `_reexport!`.
     (@doc_local_tail) => {
-        // "\n\n<sup>Original docs from the re-exported item follow.</sup>\n\n---\n\n---"
         concat!(
             "\n\n---\n\n",
             "<span class='stab portability' title='Upstream/original documentation'>📜</span><br>"
@@ -381,7 +339,6 @@ macro_rules! _reexport· {
     (@doc_local_tail $($doc_more:expr)+) => {
         concat!(
             "\n\n", $($doc_more, "\n\n",)+
-            // "---\n\n<sup>Original docs from the re-exported item follow.</sup>\n\n---\n\n---")
             "\n\n---\n\n---\n\n",
             "<span class='stab portability' title='Upstream/original documentation'>📜</span><br>"
         )

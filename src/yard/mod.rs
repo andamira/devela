@@ -11,7 +11,7 @@
 //
 
 mod alias; // aliases for attributes and derives
-mod _doc; // _doc!, _doc_meta!, _doc_location!…
+mod _doc; // _doc[_<availability|location|meta|size_of|vendor|warn_miri>], _ABBR*, _TAG*, tags!
 mod _env; // __dbg!, __std!, _std_core!
 mod _policy; // _devela_policy!
 mod _reexport_macro; // _reexport!

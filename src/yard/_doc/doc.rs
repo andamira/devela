@@ -1,12 +1,7 @@
-// devela::yard::_doc::_doc
+// devela::yard::_doc::doc
 //
-//! Defines private doc meta helpers.
+//! Defines [`_doc`].
 //
-// TOC
-// - _doc!
-// - _doc_miri_warn!
-//
-// MAYBE: try to use paste! instead of concat!, since it appears to be faster.
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted meta-documentation string.
@@ -17,18 +12,6 @@
 #[macro_export]
 // #[allow(clippy::crate_in_macro_def, reason = "to invoke _std_core from crate of invocation")]
 macro_rules! _doc· {
-    (@meta_start_br) => {
-        "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
-    };
-    (@meta_start_lf) => {
-        "\n\n<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
-    };
-    (@meta_start_nobr) => {
-        "<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
-    };
-    (@meta_end) => { "</span>" };
-    (@meta_end_hr) => { "</span><hr/>" };
-
     // (newline) => { "<br/><br/>" };
     (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" }; // DEPRECATE
     (lf) => { "\n\n" };
@@ -114,33 +97,20 @@ macro_rules! _doc· {
             ),*
         )
     };
+
+    /* start and end wrappers for modules: & extends: */
+    (@meta_start_br) => {
+        "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
+    };
+    (@meta_start_lf) => {
+        "\n\n<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
+    };
+    (@meta_start_nobr) => {
+        "<i style='margin-left:0em;margin-top:-2em;'></i><span style='font-size:90%;word-spacing:0px'>"
+    };
+    // end
+    (@meta_end) => { "</span>" };
+    (@meta_end_hr) => { "</span><hr/>" };
 }
 #[doc(inline)]
 pub use _doc· as _doc;
-
-#[doc = crate::_tags!(internal)]
-/// Generates a formatted documentation string for a miri warning.
-#[doc = crate::_doc_meta!{location("yard")}]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-#[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
-#[macro_export]
-macro_rules! _doc_miri_warn· {
-    (tag) => {
-        concat!(
-            "<span class='stab portability' ",
-            "title='Fails to compile with Miri.'>",
-            "<code>⚠️</code></span>"
-        )
-    };
-    (body $(, url: $url:literal)?) => {
-        concat!(
-            "<div class='warning'>",
-            "Fails to compile with Miri.",
-            $( "<p><em>See <a href = '", $url, "'>", $url, "</a>.</em></p>", )?
-            "</div>"
-        )
-    };
-}
-#[doc(inline)]
-pub use _doc_miri_warn· as _doc_miri_warn;

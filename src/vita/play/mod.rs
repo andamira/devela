@@ -1,7 +1,7 @@
 // devela::vita::play
 //
 #![doc = crate::_DOC_VITA_PLAY!()] // public
-#![doc = crate::_doc!(modules: crate::vita; play)]
+#![doc = crate::_doc!(modules: crate::vita; play: game)]
 #![doc = crate::_doc!(flat:"vita")]
 #![doc = crate::_doc!(hr)]
 //

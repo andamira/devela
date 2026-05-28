@@ -85,7 +85,7 @@
 
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
-- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `read_at!`, `test_size_of!`, `_doc_meta!`, `_doc_size_of!`.
+- new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `read_at!`, `test_size_of!`.
   - vendor `macro_rules_attribute` and `pastey`.
 - remake `fn_name!` and `compile_warn!`.
   - rename `compile_warn!` to `const_warn!`.
@@ -436,10 +436,12 @@
 - new `CommandFlow` and `ProcessExt` method: `command_shell`.
 
 ## yard
+- new macros: `_doc_meta!`, `_doc_size_of!`.
 - new hidden maintenance aliases for item attributes:
   - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `_js_[un]safe_ffi[_doc]`, `_unsafe_syscall_not_miri`.
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
+- rename `_doc_miri_warn!` to `_doc_warn_miri!`.
 - update syntax of `_devela_policy`.
 
 [0.28.0]: https://github.com/andamira/devela/releases/tag/v0.28.0

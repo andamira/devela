@@ -59,13 +59,13 @@ let v: DstValue<dyn Any, DstArray<u128, 2>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```
 */
-#![doc = crate::_doc_miri_warn!(tag)]
+#![doc = crate::_doc_warn_miri!(tag)]
 #![doc = crate::_DOC_DATA_LAYOUT_DST!()] // public
 #![doc = crate::_doc!(modules: crate::data::layout; dst)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-#![doc = crate::_doc_miri_warn!(body,
+#![doc = crate::_doc_warn_miri!(body,
     url: "https://github.com/thepowersgang/stack_dst-rs/issues/14")]
 //!
 #![doc = crate::_doc_vendor!("stack_dst")]

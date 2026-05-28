@@ -12,7 +12,7 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 }
 
 #[doc = crate::_tags!(iterator lifetime)]
-#[doc = crate::_doc_miri_warn!(tag)]
+#[doc = crate::_doc_warn_miri!(tag)]
 /// Iterator over references of command line arguments.
 #[doc = crate::_doc_meta!{location("sys/env")}]
 ///

@@ -72,7 +72,7 @@ pub type TimeSplitYearDayNorm = TimeSplit<u64, u8, u8, (), (), (), (), (), ()>;
 #[doc = crate::_doc_meta!{location("phys/time")}]
 pub type TimeSplitYearSec<Y, MO, D, H, M, S> = TimeSplit<Y, MO, D, H, M, S, (), (), ()>;
 #[doc = crate::_tags!(time)]
-/// A time split from years to seconds, normalized *(size, 104b payload)*.
+/// A time split from years to seconds, normalized *(104b payload)*.
 #[doc = crate::_doc_meta!{
     location("phys/time"),
     #[cfg(target_pointer_width = "32")]
@@ -87,7 +87,7 @@ pub type TimeSplitYearSecNorm = TimeSplit<u64, u8, u8, u8, u8, u8, (), (), ()>;
 #[doc = crate::_doc_meta!{location("phys/time")}]
 pub type TimeSplitHourSec<H, M, S> = TimeSplit<(), (), (), H, M, S, (), (), ()>;
 #[doc = crate::_tags!(time)]
-/// A time split from hours to seconds, normalized *(size, 80b payload)*.
+/// A time split from hours to seconds, normalized *(80b payload)*.
 #[doc = crate::_doc_meta!{
     location("phys/time"),
     #[cfg(target_pointer_width = "32")]
