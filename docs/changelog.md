@@ -339,6 +339,7 @@
 - feature-gate term-related functionality.
 - fix signal restorer & `sys_getpid` in x86.
 - refactor Linux signal handlers around RT sigaction.
+- make `Linux::scoped_raw_mode` return crate-private `LinuxRawModGuard`.
 
 #### sys::os::term
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`.

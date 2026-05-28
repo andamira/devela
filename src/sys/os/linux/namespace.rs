@@ -18,6 +18,9 @@ crate::items! {
     use crate::{LinuxTermios, ScopeGuard, TermSize};
 }
 
+#[cfg(feature = "term")]
+pub(crate) type LinuxRawModeGuard = ScopeGuard<LinuxTermios, fn(LinuxTermios, &()), ()>;
+
 #[doc = crate::_tags!(linux namespace)]
 /// Linux-related operations.
 #[doc = crate::_doc_meta!{location("sys/os/linux")}]
@@ -332,27 +335,14 @@ impl Linux {
     pub fn disable_raw_mode() -> Result<()> { LinuxTermios::disable_raw_mode() }
 
     /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
-    pub fn scoped_raw_mode()
-        -> Result<ScopeGuard<LinuxTermios, impl FnOnce(LinuxTermios, &()), ()>> {
+    pub fn scoped_raw_mode() -> Result<LinuxRawModeGuard> {
         let initial_state = LinuxTermios::get_state()?;
         LinuxTermios::enable_raw_mode()?;
-
-        Ok(ScopeGuard::with(initial_state, (), |state, ()| {
-            LinuxTermios::set_state(state).unwrap();
-        }))
+        Ok(ScopeGuard::with(initial_state, (), Self::restore_linux_termios))
     }
-
-    // pub fn scoped_raw_mode() -> Result<ScopeGuard<LinuxTermios, impl FnOnce(LinuxTermios), &()>> {
-    //     let initial_state = LinuxTermios::get_state()?;
-    //     LinuxTermios::enable_raw_mode()?;
-    //     Ok(ScopeGuard::new(initial_state, |state| {
-    //         LinuxTermios::set_state(state).unwrap();
-    //     }))
-    //
-    //     // Ok(devela::ScopeGuard::new(move || {
-    //     //     LinuxTermios::set_state(initial_state).unwrap();
-    //     // }))
-    // }
+    fn restore_linux_termios(state: LinuxTermios, _: &()) {
+        let _ = LinuxTermios::set_state(state);
+    }
 }
 
 /// # Thread-related methods.
