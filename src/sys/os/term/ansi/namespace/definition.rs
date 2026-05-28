@@ -20,20 +20,20 @@ use crate::__ansi_consts;
 ///
 /// # Methods
 /// ## Escape codes
-/// - [Control prefixes][Self#control-prefixes]
+/// - [Control prefixes](#control-prefixes)
 /// - CSI sequences
-///   - [Screen][Self#screen-escape-codes]
-///   - [Erase][Self#erase-escape-codes]
-///   - [Cursor][Self#cursor-escape-codes]
-///   - [Mouse][Self#mouse-escape-codes]
-///   - [Font effects][Self#font-effects-escape-codes]
-///   - [Color (3-bit)][Self#3-bit-color-escape-codes]
-///   - [Color (8-bit)][Self#8-bit-color-escape-codes]
-///   - [Grey (8-bit) Palette][Self#8-bit-grey-escape-codes]
-///   - [Palette (8-bit)][Self#8-bit-palette-escape-codes]
-///   - [Default][Self#default-color-escape-codes]
-///   - [Color (rgb)][Self#rgb-color-escape-codes]
-/// - [OSC sequences][Self#operating-system-commands]
+///   - [Erase](#erase-escape-codes)
+///   - [Terminal](#screen-escape-codes)
+///   - [Cursor](#cursor-escape-codes)
+///   - [Mouse](#mouse-escape-codes)
+///   - [Font effects](#font-effects-escape-codes)
+///   - [Color (3-bit)](#3-bit-color-escape-codes)
+///   - [Color (8-bit)](#8-bit-color-escape-codes)
+///   - [Grey (8-bit) Palette](#8-bit-grey-escape-codes)
+///   - [Palette (8-bit)](#8-bit-palette-escape-codes)
+///   - [Default](#default-color-escape-codes)
+///   - [Color (rgb)](#rgb-color-escape-codes)
+/// - [OSC sequences](#operating-system-commands)
 ///   - [title](#method.title_all) (OSC 0)
 ///   - [title_icon](#method.icon_title) (OSC 1)
 ///   - [title_window](#method.window_title) (OSC 2)
@@ -107,16 +107,6 @@ impl Ansi {
         ///
         /// Terminates strings in other controls.
         pub const ST: [u8; 2] = "\x1b\\", *b"\x1b\\";
-    }
-}
-
-/// # Screen escape codes
-impl Ansi {
-    __ansi_consts! {
-        /// Code to enable the alternative screen.
-        pub const ENABLE_ALT_SCREEN: [u8; 8] = "\x1b[?1049h", *b"\x1b[?1049h";
-        /// Code to disable the alternative screen.
-        pub const DISABLE_ALT_SCREEN: [u8; 8] = "\x1b[?1049l", *b"\x1b[?1049l";
     }
 }
 

@@ -7,9 +7,10 @@
 
 #[cfg(all(feature = "linux", feature = "event", not(miri)))]
 mod linux;
-// mod macos;
-// mod web;
-// mod windows;
+// mod macos; // TermMacos
+// mod std; // TermStd
+// mod web; // TermWeb
+// mod windows; // TermWindows
 
 crate::structural_mods! { // _mods
     _mods {

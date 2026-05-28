@@ -6,16 +6,18 @@
 // - struct TermLinux
 // - impl TermLinux (public, private)
 // - impl traits
-// - struct TermLinuxRestore (private)
+// - internal helpers:
+//   - set TermLinuxRestoreFlags
+//   - struct TermLinuxRestore
 
 use crate::LinuxRawModeGuard;
+use crate::{Ansi, TermCaps, TermInputParser, TermMode, TermSession, TermSize};
 use crate::{ColorDepth, Debug, EventKind, NonMaxU16, VersionFull, is};
 use crate::{Linux, LinuxError, LinuxResult};
 use crate::{
     RunCap, RunCapColor, RunCapImage, RunCapInput, RunCapText, RunCapWindow, RunService,
     RunServiceProbe,
 };
-use crate::{TermCaps, TermInputParser, TermMode, TermSession, TermSize};
 
 #[doc = crate::_tags!(term linux event)]
 /// Linux terminal frontend.
@@ -53,21 +55,28 @@ impl TermLinux {
         Ok(term)
     }
 
-    /// Enters a scoped raw terminal session.
-    ///
-    /// The previous line discipline is restored when the returned guard is dropped.
-    pub fn session_raw(&mut self) -> LinuxResult<TermSession<impl Sized + Debug + use<>>> {
-        Ok(TermSession::new(TermLinuxRestore::raw()?))
-    }
-
     /// Enters a scoped terminal session.
+    ///
+    /// Applies the requested terminal mode changes and returns a guard that
+    /// restores the changed state when dropped.
+    ///
+    /// Only successfully applied changes are registered for restoration. This
+    /// makes partial setup failures safe: if entering a later mode fails, earlier
+    /// changes are still undone as the restore payload is dropped.
+    ///
+    /// The returned guard does not borrow `self`, so the terminal frontend can
+    /// continue to be used while the session is active.
     pub fn session(
         &mut self,
         mode: TermMode,
-    ) -> LinuxResult<TermSession<impl Sized + Debug + use<>>> {
-        let restore =
-            if mode.has_raw() { TermLinuxRestore::raw()? } else { TermLinuxRestore::none() };
-        Ok(TermSession::new(restore))
+    ) -> LinuxResult<TermSession<impl Drop + Debug + use<>>> {
+        Ok(TermSession::new(TermLinuxRestore::enter(mode)?))
+    }
+    /// Enters a scoped raw terminal session.
+    ///
+    /// This is a convenience wrapper around [`session`][Self::session] with [`TermMode::raw`].
+    pub fn session_raw(&mut self) -> LinuxResult<TermSession<impl Drop + Debug + use<>>> {
+        Ok(TermSession::new(TermLinuxRestore::raw()?))
     }
 
     /// Polls and parses one pending terminal event, if available.
@@ -106,7 +115,6 @@ impl TermLinux {
         Linux::print_bytes(bytes)
     }
     /// Returns the cached terminal capabilities.
-    #[must_use]
     pub const fn term_capabilities(&self) -> TermCaps {
         self.term_caps
     }
@@ -196,12 +204,86 @@ impl RunServiceProbe for TermLinux {
 
 /* internal helpers */
 
+crate::set! {
+    struct TermLinuxRestoreFlags(u8) {
+        RESET_STYLE = 0;
+        SHOW_CURSOR = 1;
+        LEAVE_ALT_SCREEN = 2;
+        DISABLE_BRACKETED_PASTE = 3;
+        DISABLE_MOUSE = 4;
+        DISABLE_SYNC_UPDATE = 5;
+        CLEAR_ON_DROP = 6;
+    }
+}
+
+crate::test_size_of!(TermLinuxRestore = 56 | 448);
 #[derive(Debug)]
 struct TermLinuxRestore {
     _raw: Option<LinuxRawModeGuard>,
+    flags: TermLinuxRestoreFlags,
 }
-#[rustfmt::skip]
 impl TermLinuxRestore {
-    fn none() -> Self { Self { _raw: None } }
-    fn raw() -> LinuxResult<Self> { Ok(Self { _raw: Some(Linux::scoped_raw_mode()?) }) }
+    fn none() -> Self {
+        Self { _raw: None, flags: TermLinuxRestoreFlags::new() }
+    }
+    fn raw() -> LinuxResult<Self> {
+        Self::enter(TermMode::raw())
+    }
+    fn enter(mode: TermMode) -> LinuxResult<Self> {
+        let mut restore = Self::none();
+        if mode.has_raw() {
+            restore._raw = Some(Linux::scoped_raw_mode()?);
+        }
+        if mode.has_alt_screen() {
+            Linux::print_bytes(&Ansi::ENABLE_ALT_SCREEN_B)?;
+            restore.flags = restore.flags.with_leave_alt_screen();
+        }
+        if mode.has_hide_cursor() {
+            Linux::print_bytes(&Ansi::CURSOR_INVISIBLE_B)?;
+            restore.flags = restore.flags.with_show_cursor();
+        }
+        if mode.has_bracketed_paste() {
+            Linux::print_bytes(&Ansi::ENABLE_BRACKETED_PASTE_B)?;
+            restore.flags = restore.flags.with_disable_bracketed_paste();
+        }
+        if mode.has_clear_on_enter() {
+            Linux::print_bytes(&Ansi::ERASE_SCREEN_B)?;
+            Linux::print_bytes(&Ansi::CURSOR_HOME_B)?;
+        }
+        if mode.has_clear_on_drop() {
+            restore.flags = restore.flags.with_clear_on_drop();
+        }
+        if mode.has_sync_update() {
+            Linux::print_bytes(&Ansi::ENABLE_SYNC_UPDATE_B)?;
+            restore.flags = restore.flags.with_disable_sync_update();
+        }
+        Ok(restore)
+    }
+}
+impl Drop for TermLinuxRestore {
+    fn drop(&mut self) {
+        if self.flags.has_reset_style() {
+            let _ = Linux::print_bytes(&Ansi::RESET_B);
+        }
+        if self.flags.has_disable_mouse() {
+            let _ = Linux::print_bytes(&Ansi::MOUSE_X10_DISABLE_B);
+        }
+        if self.flags.has_disable_bracketed_paste() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_BRACKETED_PASTE_B);
+        }
+        if self.flags.has_clear_on_drop() {
+            let _ = Linux::print_bytes(&Ansi::ERASE_SCREEN_B);
+            let _ = Linux::print_bytes(&Ansi::CURSOR_HOME_B);
+        }
+        if self.flags.has_show_cursor() {
+            let _ = Linux::print_bytes(&Ansi::CURSOR_VISIBLE_B);
+        }
+        if self.flags.has_leave_alt_screen() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_ALT_SCREEN_B);
+        }
+        if self.flags.has_disable_sync_update() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_SYNC_UPDATE_B);
+        }
+        // `_raw` drops after this and restores termios.
+    }
 }

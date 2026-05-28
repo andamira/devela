@@ -69,6 +69,7 @@ macro_rules! set· {
         /// Convenience methods derived from each named constant.
         //
         // Note: The first method links to the named constant to serve as a group marker
+        #[allow(dead_code)]
         impl $Set { $crate::paste! { $(
             // for single-bit constants
             #[$crate::compile[all(none($($($end)?)+), xone($(some($start)),+))]]
@@ -106,7 +107,7 @@ macro_rules! set· {
         )* }}
 
         /// Common set methods
-        #[allow(clippy::double_must_use)]
+        #[allow(clippy::double_must_use, dead_code)]
         impl $Set {
             /* per-set private metadata */
             /// The binary width needed to show all declared bits in `Debug`.
@@ -177,7 +178,7 @@ macro_rules! set· {
         }
 
         /// Set operations
-        #[allow(clippy::double_must_use)]
+        #[allow(clippy::double_must_use, dead_code)]
         impl $Set {
             /// Returns `true` if `self` and `other` share any bit.
             $vis const fn intersects(self, other: Self) -> bool {
@@ -215,6 +216,7 @@ macro_rules! set· {
         }
 
         /// Mutating set operations
+        #[allow(dead_code)]
         impl $Set {
             /// Clears the set.
             $vis const fn clear(&mut self) { self.bits = 0; }

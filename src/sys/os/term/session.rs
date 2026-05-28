@@ -63,38 +63,31 @@ crate::set! {
     }
     /// # Presets
     impl {
-        /// Normal terminal session request.
-        pub const DEFAULT: Self = Self::new();
-
-        /// Raw line discipline.
-        pub const RAW_MODE: Self = Self::new().with(Self::RAW);
-
-        /// Raw mode for editor-like input.
-        pub const RAW_EDITOR: Self = Self::new()
-            .with(Self::RAW)
-            .with(Self::BRACKETED_PASTE);
-
-        /// Raw mode for full-screen terminal applications.
-        pub const FULLSCREEN_APP: Self = Self::new()
-            .with(Self::RAW)
-            .with(Self::ALT_SCREEN)
-            .with(Self::HIDE_CURSOR)
-            .with(Self::CLEAR_ON_ENTER);
-
         /// Returns a normal terminal session request.
         #[must_use]
-        pub const fn default_mode() -> Self { Self::DEFAULT }
-
-        /// Returns a raw terminal session request.
+        pub const fn default_mode() -> Self {
+            Self::new()
+        }
+        /// Returns a raw line discipline terminal session request.
         #[must_use]
-        pub const fn raw() -> Self { Self::RAW_MODE }
-
+        pub const fn raw() -> Self {
+            Self::new().with(Self::RAW)
+        }
         /// Returns an editor-like raw terminal session request.
         #[must_use]
-        pub const fn raw_editor() -> Self { Self::RAW_EDITOR }
-
+        pub const fn raw_editor() -> Self {
+            Self::new()
+                .with(Self::RAW)
+                .with(Self::BRACKETED_PASTE)
+        }
         /// Returns a full-screen terminal application session request.
         #[must_use]
-        pub const fn fullscreen_app() -> Self { Self::FULLSCREEN_APP }
+        pub const fn fullscreen_app() -> Self {
+            Self::new()
+                .with(Self::RAW)
+                .with(Self::ALT_SCREEN)
+                .with(Self::HIDE_CURSOR)
+                .with(Self::CLEAR_ON_ENTER)
+        }
     }
 }

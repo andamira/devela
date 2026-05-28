@@ -26,6 +26,7 @@
 ## workspace
 ### examples
 - new example scripts: `current_guard`, `otp`, `scope_guard`.
+- update the `term_linux` example.
 
 ### devela_macros
 - enable safety feature guards.
@@ -344,7 +345,7 @@
 #### sys::os::term
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLinux`, `TermMode`, `TermSession`
 - update `Ansi`:
-  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`.
+  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`, `<EN|DIS>ABLE_BRACKETED_PASTE`, `<EN|DIS>ABLE_SYNC_UPDATE`, `<EN|DIS>ABLE_ALTERNATE_SCREEN_ONLY`.
   - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`.
   - fix `<SET|RESET>_PALETTE`.
 
