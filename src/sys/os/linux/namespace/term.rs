@@ -3,7 +3,7 @@
 use crate::{Linux, LinuxResult as Result};
 use crate::{LinuxTermios, ScopeGuard, TermSize};
 
-pub(crate) type LinuxRawModeGuard = ScopeGuard<LinuxTermios, fn(LinuxTermios, &()), ()>;
+pub(crate) type LinuxTermModeGuard = ScopeGuard<LinuxTermios, fn(LinuxTermios, &()), ()>;
 
 /// # Terminal-related methods.
 #[cfg(feature = "term")]
@@ -29,7 +29,7 @@ impl Linux {
         LinuxTermios::disable_raw_mode()
     }
     /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
-    pub fn scoped_raw_mode() -> Result<LinuxRawModeGuard> {
+    pub fn scoped_raw_mode() -> Result<LinuxTermModeGuard> {
         let initial_state = LinuxTermios::get_state()?;
         LinuxTermios::enable_raw_mode()?;
         Ok(ScopeGuard::with(initial_state, (), Self::restore_linux_termios))

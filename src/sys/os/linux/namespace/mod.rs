@@ -11,7 +11,7 @@ crate::items! {
     mod read;
     mod write;
     #[cfg(feature = "term")]
-    mod term; // (LinuxRawModeGuard)
+    mod term; // (LinuxTermModeGuard)
     mod thread;
     mod signal;
     mod random;
@@ -26,6 +26,6 @@ crate::structural_mods! { // _mods, _crate_internals
     }
     _crate_internals {
         #[cfg(feature = "term")]
-        pub(crate) use super::term::LinuxRawModeGuard;
+        pub(crate) use super::term::LinuxTermModeGuard;
     }
 }

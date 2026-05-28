@@ -10,7 +10,7 @@
 //   - set TermLinuxRestoreFlags
 //   - struct TermLinuxRestore
 
-use crate::LinuxRawModeGuard;
+use crate::LinuxTermModeGuard;
 use crate::{Ansi, TermCaps, TermInputParser, TermMode, TermSession, TermSize};
 use crate::{ColorDepth, Debug, EventKind, NonMaxU16, VersionFull, is};
 use crate::{Linux, LinuxError, LinuxResult};
@@ -226,12 +226,12 @@ crate::set! {
 crate::test_size_of!(TermLinuxRestore = 56 | 448);
 #[derive(Debug)]
 struct TermLinuxRestore {
-    _raw: Option<LinuxRawModeGuard>,
+    guard: Option<LinuxTermModeGuard>,
     flags: TermLinuxRestoreFlags,
 }
 impl TermLinuxRestore {
     fn none() -> Self {
-        Self { _raw: None, flags: TermLinuxRestoreFlags::new() }
+        Self { guard: None, flags: TermLinuxRestoreFlags::new() }
     }
     fn raw() -> LinuxResult<Self> {
         Self::enter(TermMode::raw())
@@ -240,7 +240,7 @@ impl TermLinuxRestore {
         let mut restore = Self::none();
         /* line discipline */
         if mode.has_raw() {
-            restore._raw = Some(Linux::scoped_raw_mode()?);
+            restore.guard = Some(Linux::scoped_raw_mode()?);
         }
 
         /* presentation */
@@ -349,6 +349,6 @@ impl Drop for TermLinuxRestore {
         if self.flags.has_disable_sync_update() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_SYNC_UPDATE_B);
         }
-        // `_raw` drops after this and restores termios.
+        // `guard` drops after this and restores termios.
     }
 }
