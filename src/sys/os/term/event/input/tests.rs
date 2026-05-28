@@ -200,3 +200,30 @@ fn parse_control_punctuation() {
         assert!(k.mods.has_control());
     }
 }
+#[test]
+fn bracketed_paste_delimiters_toggle_paste_state() {
+    let mut p = TermInputParser::new();
+    for &b in b"\x1b[200~" {
+        assert_eq!(p.feed(b), None);
+    }
+    assert!(p.is_pasting());
+    for &b in b"\x1b[201~" {
+        assert_eq!(p.feed(b), None);
+    }
+    assert!(!p.is_pasting());
+}
+#[test]
+fn bracketed_paste_payload_emits_chars_for_now() {
+    let mut p = TermInputParser::new();
+    for &b in b"\x1b[200~" {
+        let _ = p.feed(b);
+    }
+    assert!(matches!(
+        p.feed(b'a'),
+        Some(EventKind::Key(k)) if k.semantic == Key::Char('a')
+    ));
+    for &b in b"\x1b[201~" {
+        let _ = p.feed(b);
+    }
+    assert!(!p.is_pasting());
+}

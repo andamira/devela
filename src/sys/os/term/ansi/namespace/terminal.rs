@@ -20,6 +20,11 @@ impl Ansi {
         /// Code to disable bracketed paste mode.
         pub const DISABLE_BRACKETED_PASTE: [u8; 8] = "\x1b[?2004l", *b"\x1b[?2004l";
 
+        /// Code to enable focus in/out events.
+        pub const ENABLE_FOCUS_EVENTS: [u8; 8] = "\x1b[?1004h", *b"\x1b[?1004h";
+        /// Code to disable focus in/out events.
+        pub const DISABLE_FOCUS_EVENTS: [u8; 8] = "\x1b[?1004l", *b"\x1b[?1004l";
+
         /// Code to enable synchronized update mode.
         pub const ENABLE_SYNC_UPDATE: [u8; 8] = "\x1b[?2026h", *b"\x1b[?2026h";
         /// Code to disable synchronized update mode.

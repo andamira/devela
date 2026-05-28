@@ -1,6 +1,9 @@
 // devela::sys::os::term::event::input::_helper
+//
+//! Defines ([`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`]).
+//
 
-use crate::{_impl_init, EventKind, Position2, is, slice, unwrap, whilst};
+use crate::{_impl_init, EventKind, EventWindow, Key, Position2, is, slice, unwrap, whilst};
 
 crate::test_size_of!(TermInputState = 18 | 144);
 /// Internal parser state.
@@ -34,9 +37,52 @@ pub(super) enum TermParsed {
     Unknown,
 }
 
+crate::test_size_of!(TermParsedCsi = 8 | 64);
+/// Const-safe CSI parser result.
+///
+/// Keeps CSI dispatch free of drop-bearing event types
+/// until the final conversion to [`TermParsed`].
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum TermParsedCsi {
+    /// No CSI match; continue with the next parser layer.
+    Continue,
+    /// The sequence was handled, but produced no user-facing event.
+    Pending,
+    /// A keyboard event.
+    Key(Key),
+    /// Terminal focus was gained.
+    FocusGained,
+    /// Terminal focus was lost.
+    FocusLost,
+    /// An internal terminal reply.
+    Reply(TermReply),
+    /// A complete but unsupported CSI sequence.
+    Unknown,
+}
+impl TermParsedCsi {
+    /// Converts this handled CSI result into the general parser result.
+    ///
+    /// `Continue` maps to `Unknown`; callers should normally handle it before conversion.
+    pub(super) const fn to_term_parsed(self) -> TermParsed {
+        match self {
+            TermParsedCsi::Continue => TermParsed::Unknown,
+            TermParsedCsi::Pending => TermParsed::Pending,
+            TermParsedCsi::Key(key) => TermParsed::Event(super::TermInputParser::key(key)),
+            TermParsedCsi::FocusGained => {
+                TermParsed::Event(EventKind::Window(EventWindow::FocusGained))
+            }
+            TermParsedCsi::FocusLost => {
+                TermParsed::Event(EventKind::Window(EventWindow::FocusLost))
+            }
+            TermParsedCsi::Reply(reply) => TermParsed::Reply(reply),
+            TermParsedCsi::Unknown => TermParsed::Unknown,
+        }
+    }
+}
+
 crate::test_size_of!(TermReply = 6 | 48);
 /// Terminal reply parsed from the input stream.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum TermReply {
     /// Cursor-position report: `ESC [ row ; col R`.
     ///

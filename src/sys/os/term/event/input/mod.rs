@@ -3,7 +3,7 @@
 #[cfg(test)]
 mod tests;
 
-mod _helper; // (TermInputState, TermParsed, TermReply), …
+mod _helper; // (TermInputState, TermParsed, TermParsedCsi, TermReply), …
 mod parser; // TermInputParser
 
 crate::structural_mods! { // _mods

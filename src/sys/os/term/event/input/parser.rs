@@ -11,7 +11,7 @@ use crate::{EventKey, EventKind, Key, KeyMods};
 /// Parses terminal input bytes into normalized events.
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),
-    test_size_of(TermInputParser = 18|144),
+    test_size_of(TermInputParser = 19|152),
 }]
 ///
 /// `TermInputParser` is a byte-fed state machine. It accepts ordinary bytes,
@@ -44,6 +44,7 @@ use crate::{EventKey, EventKind, Key, KeyMods};
 #[derive(Clone, Debug, Default)]
 pub struct TermInputParser {
     state: TermInputState,
+    paste: bool,
 }
 _impl_init! { Self::new() => TermInputParser }
 
@@ -51,7 +52,7 @@ impl TermInputParser {
     /// Returns a new parser in the ground state.
     #[must_use]
     pub const fn new() -> Self {
-        Self { state: TermInputState::Ground }
+        Self { state: TermInputState::Ground, paste: false }
     }
 
     /// Feeds one byte into the parser.
@@ -67,6 +68,19 @@ impl TermInputParser {
     // NOTE: not const because it discards `TermParsed`,
     // whose event path may carry non-const-drop event payloads.
     pub fn feed(&mut self, byte: u8) -> Option<EventKind> {
+        match self.feed_parsed(byte) {
+            TermParsed::Event(ev) => Some(ev),
+            _ => None,
+        }
+    }
+
+    #[cfg(not(feature = "alloc"))]
+    #[cfg_attr(nightly_doc, doc(cfg(not(feature = "alloc"))))]
+    /// Feeds one byte into the parser in const contexts.
+    ///
+    /// This is only available without `alloc`,
+    /// because alloc-enabled events may contain owned values with destructors.
+    pub const fn feed_const(&mut self, byte: u8) -> Option<EventKind> {
         match self.feed_parsed(byte) {
             TermParsed::Event(ev) => Some(ev),
             _ => None,
@@ -241,8 +255,52 @@ impl TermInputParser {
             _ => TermParsed::Unknown,
         }
     }
-    /// Maps a complete CSI sequence to a key event or terminal reply.
-    const fn parse_csi(&self, args: &[u8], final_byte: u8) -> TermParsed {
+
+    /* csi */
+
+    /// Maps a complete CSI sequence to an event, parser state change, or terminal reply.
+    const fn parse_csi(&mut self, args: &[u8], final_byte: u8) -> TermParsed {
+        match self.parse_csi_protocol(args, final_byte) {
+            TermParsedCsi::Continue => {}
+            parsed => return parsed.to_term_parsed(),
+        }
+        match Self::parse_csi_event(args, final_byte) {
+            TermParsedCsi::Continue => {}
+            parsed => return parsed.to_term_parsed(),
+        }
+        match Self::parse_csi_key(args, final_byte) {
+            TermParsedCsi::Continue => {}
+            parsed => return parsed.to_term_parsed(),
+        }
+        self.parse_csi_reply(args, final_byte).to_term_parsed()
+    }
+    /// Handles CSI sequences that change parser/input protocol state.
+    const fn parse_csi_protocol(&mut self, args: &[u8], final_byte: u8) -> TermParsedCsi {
+        match (args, final_byte) {
+            // Bracketed paste begin: ESC [ 200 ~
+            (b"200", b'~') => {
+                self.paste = true;
+                TermParsedCsi::Pending
+            }
+            // Bracketed paste end: ESC [ 201 ~
+            (b"201", b'~') => {
+                self.paste = false;
+                TermParsedCsi::Pending
+            }
+            _ => TermParsedCsi::Continue,
+        }
+    }
+    /// Maps CSI sequences that directly represent normalized events.
+    const fn parse_csi_event(args: &[u8], final_byte: u8) -> TermParsedCsi {
+        match (args, final_byte) {
+            // Focus reporting: ESC [ I / ESC [ O
+            (b"", b'I') => TermParsedCsi::FocusGained,
+            (b"", b'O') => TermParsedCsi::FocusLost,
+            _ => TermParsedCsi::Continue,
+        }
+    }
+    /// Maps CSI keyboard sequences to keys.
+    const fn parse_csi_key(args: &[u8], final_byte: u8) -> TermParsedCsi {
         use Key as K;
         let key = match (args, final_byte) {
             (b"", b'A') => K::Up,
@@ -251,12 +309,18 @@ impl TermInputParser {
             (b"", b'D') => K::Left,
             (b"", b'H') => K::Home,
             (b"", b'F') => K::End,
+
             (b"1" | b"7", b'~') => K::Home,
             (b"4" | b"8", b'~') => K::End,
             (b"2", b'~') => K::Insert,
             (b"3", b'~') => K::Delete,
             (b"5", b'~') => K::PageUp,
             (b"6", b'~') => K::PageDown,
+
+            (b"11", b'~') => K::Fn(1),
+            (b"12", b'~') => K::Fn(2),
+            (b"13", b'~') => K::Fn(3),
+            (b"14", b'~') => K::Fn(4),
             (b"15", b'~') => K::Fn(5),
             (b"17", b'~') => K::Fn(6),
             (b"18", b'~') => K::Fn(7),
@@ -265,27 +329,24 @@ impl TermInputParser {
             (b"21", b'~') => K::Fn(10),
             (b"23", b'~') => K::Fn(11),
             (b"24", b'~') => K::Fn(12),
-            (b"11", b'~') => K::Fn(1),
-            (b"12", b'~') => K::Fn(2),
-            (b"13", b'~') => K::Fn(3),
-            (b"14", b'~') => K::Fn(4),
-            _ => return self.parse_csi_reply(args, final_byte),
+
+            _ => return TermParsedCsi::Continue,
         };
-        TermParsed::Event(Self::key(key))
+        TermParsedCsi::Key(key)
     }
     /// Maps a complete CSI terminal response to an internal reply.
-    const fn parse_csi_reply(&self, args: &[u8], final_byte: u8) -> TermParsed {
+    const fn parse_csi_reply(&self, args: &[u8], final_byte: u8) -> TermParsedCsi {
         // DSR cursor-position reply: ESC [ row ; col R
         if final_byte == b'R' {
             if let Some((row, col)) = parse_two_u16(args, b';') {
-                return TermParsed::Reply(TermReply::CursorPosition(pos![col, row]));
+                return TermParsedCsi::Reply(TermReply::CursorPosition(pos![col, row]));
             }
         }
         // DA reply seed: ESC [ ? ... c or ESC [ ... c
         if final_byte == b'c' {
-            return TermParsed::Reply(TermReply::DeviceAttributes);
+            return TermParsedCsi::Reply(TermReply::DeviceAttributes);
         }
-        TermParsed::Unknown
+        TermParsedCsi::Unknown
     }
 
     /* key */
@@ -306,5 +367,12 @@ impl TermInputParser {
         let mut mods = KeyMods::empty();
         mods.set_control();
         mods
+    }
+
+    /// Returns whether bracketed paste input is currently active.
+    #[must_use]
+    #[allow(dead_code, reason = "for testing")]
+    pub(super) const fn is_pasting(&self) -> bool {
+        self.paste
     }
 }

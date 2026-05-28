@@ -345,8 +345,14 @@
 #### sys::os::term
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLinux`, `TermMode`, `TermSession`
 - update `Ansi`:
-  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`, `<EN|DIS>ABLE_BRACKETED_PASTE`, `<EN|DIS>ABLE_SYNC_UPDATE`, `<EN|DIS>ABLE_ALTERNATE_SCREEN_ONLY`.
   - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`.
+  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`, `DISABLE_MOUSE[_<MOTION|SGR|SGR_PIXELS>]`, `<EN|DIS>ABLE_<ALTERNATE_SCREEN_ONLY|BRACKETED_PASTE|FOCUS_EVENTS|SYNC_UPDATE`.
+  - remove `MOUSE_UTF8`.
+  - rename `MOUSE_X10_<EN|DIS>ABLE` to `<EN|DIS>ABLE_MOUSE_X10`.
+  - rename `MOUSE_SGR_PIXELS` to `ENABLE_MOUSE_SGR_PIXELS`.
+  - rename `MOUSE_TRACKING` to `ENABLE_MOUSE_MOTION`.
+  - rename `MOUSE_SGR` to `ENABLE_MOUSE_SGR`.
+  - rename `MOUSE_NORMAL` to `ENABLE_MOUSE`.
   - fix `<SET|RESET>_PALETTE`.
 
 ## text

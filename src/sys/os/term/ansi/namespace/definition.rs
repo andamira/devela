@@ -14,7 +14,7 @@ use crate::__ansi_consts;
 /// Those without `_B` contain a string slice.
 ///
 /// Functions ending with `_B` return either an array or a byte slice.
-/// Functions without `_B` return either a [`StringNonul`] or a string slice.
+/// Functions without `_B` return either a [`StringNonul`] or [`&str`].
 ///
 /// [`StringNonul`]: crate::StringNonul
 ///

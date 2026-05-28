@@ -23,7 +23,7 @@ use crate::{
 /// Linux terminal frontend.
 #[doc = crate::_doc_meta!{
     location("sys/os/term/backend"),
-    test_size_of(TermLinux = 60|480),
+    test_size_of(TermLinux = 64|512),
 }]
 ///
 /// Coordinates terminal input parsing, scoped sessions, cached terminal
@@ -205,14 +205,21 @@ impl RunServiceProbe for TermLinux {
 /* internal helpers */
 
 crate::set! {
-    struct TermLinuxRestoreFlags(u8) {
-        RESET_STYLE = 0;
-        SHOW_CURSOR = 1;
-        LEAVE_ALT_SCREEN = 2;
-        DISABLE_BRACKETED_PASTE = 3;
-        DISABLE_MOUSE = 4;
-        DISABLE_SYNC_UPDATE = 5;
-        CLEAR_ON_DROP = 6;
+    struct TermLinuxRestoreFlags(u16) {
+        RESET_STYLE              = 0;
+        SHOW_CURSOR              = 1;
+        LEAVE_ALT_SCREEN         = 2;
+        DISABLE_BRACKETED_PASTE  = 3;
+        DISABLE_FOCUS_EVENTS     = 4;
+
+        DISABLE_MOUSE            = 5;
+        DISABLE_MOUSE_DRAG       = 6;
+        DISABLE_MOUSE_MOTION     = 7;
+        DISABLE_MOUSE_SGR        = 8;
+        DISABLE_MOUSE_SGR_PIXELS = 9;
+
+        DISABLE_SYNC_UPDATE      = 10;
+        CLEAR_ON_DROP            = 11;
     }
 }
 
@@ -231,9 +238,12 @@ impl TermLinuxRestore {
     }
     fn enter(mode: TermMode) -> LinuxResult<Self> {
         let mut restore = Self::none();
+        /* line discipline */
         if mode.has_raw() {
             restore._raw = Some(Linux::scoped_raw_mode()?);
         }
+
+        /* presentation */
         if mode.has_alt_screen() {
             Linux::print_bytes(&Ansi::ENABLE_ALT_SCREEN_B)?;
             restore.flags = restore.flags.with_leave_alt_screen();
@@ -242,10 +252,38 @@ impl TermLinuxRestore {
             Linux::print_bytes(&Ansi::CURSOR_INVISIBLE_B)?;
             restore.flags = restore.flags.with_show_cursor();
         }
+
+        /* input reporting */
         if mode.has_bracketed_paste() {
             Linux::print_bytes(&Ansi::ENABLE_BRACKETED_PASTE_B)?;
             restore.flags = restore.flags.with_disable_bracketed_paste();
         }
+        if mode.has_focus_events() {
+            Linux::print_bytes(&Ansi::ENABLE_FOCUS_EVENTS_B)?;
+            restore.flags = restore.flags.with_disable_focus_events();
+        }
+
+        /* mouse: enable encoding before reporting */
+        if mode.has_mouse_sgr_pixels() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_PIXELS_B)?;
+            restore.flags = restore.flags.with_disable_mouse_sgr_pixels();
+        } else if mode.has_mouse_sgr() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_B)?;
+            restore.flags = restore.flags.with_disable_mouse_sgr();
+        }
+        //
+        if mode.has_mouse_motion() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_MOTION_B)?;
+            restore.flags = restore.flags.with_disable_mouse_motion();
+        } else if mode.has_mouse_drag() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_DRAG_B)?;
+            restore.flags = restore.flags.with_disable_mouse_drag();
+        } else if mode.has_mouse() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_B)?;
+            restore.flags = restore.flags.with_disable_mouse();
+        }
+
+        /* screen clearing */
         if mode.has_clear_on_enter() {
             Linux::print_bytes(&Ansi::ERASE_SCREEN_B)?;
             Linux::print_bytes(&Ansi::CURSOR_HOME_B)?;
@@ -253,6 +291,8 @@ impl TermLinuxRestore {
         if mode.has_clear_on_drop() {
             restore.flags = restore.flags.with_clear_on_drop();
         }
+
+        /* output transaction */
         if mode.has_sync_update() {
             Linux::print_bytes(&Ansi::ENABLE_SYNC_UPDATE_B)?;
             restore.flags = restore.flags.with_disable_sync_update();
@@ -262,25 +302,50 @@ impl TermLinuxRestore {
 }
 impl Drop for TermLinuxRestore {
     fn drop(&mut self) {
+        /* style reset */
         if self.flags.has_reset_style() {
             let _ = Linux::print_bytes(&Ansi::RESET_B);
         }
-        if self.flags.has_disable_mouse() {
-            let _ = Linux::print_bytes(&Ansi::MOUSE_X10_DISABLE_B);
-        }
+
+        /* input reporting */
         if self.flags.has_disable_bracketed_paste() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_BRACKETED_PASTE_B);
         }
+        if self.flags.has_disable_focus_events() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_FOCUS_EVENTS_B);
+        }
+
+        /* mouse: disable reporting before encoding */
+        if self.flags.has_disable_mouse_motion() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_MOTION_B);
+        }
+        if self.flags.has_disable_mouse_drag() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_DRAG_B);
+        }
+        if self.flags.has_disable_mouse() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_B);
+        }
+        //
+        if self.flags.has_disable_mouse_sgr_pixels() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_SGR_PIXELS_B);
+        }
+        if self.flags.has_disable_mouse_sgr() {
+            let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_SGR_B);
+        }
+
+        /* screen clearing */
         if self.flags.has_clear_on_drop() {
             let _ = Linux::print_bytes(&Ansi::ERASE_SCREEN_B);
             let _ = Linux::print_bytes(&Ansi::CURSOR_HOME_B);
         }
+        /* presentation */
         if self.flags.has_show_cursor() {
             let _ = Linux::print_bytes(&Ansi::CURSOR_VISIBLE_B);
         }
         if self.flags.has_leave_alt_screen() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_ALT_SCREEN_B);
         }
+        /* output transaction */
         if self.flags.has_disable_sync_update() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_SYNC_UPDATE_B);
         }
