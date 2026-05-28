@@ -16,11 +16,11 @@ mod strip; // impl: Ansi:strip_codes
 mod print; // ansi_print, ansi_print_linux, ansi_print_std
 mod r#macro; // ansi!
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             namespace::*,
-            color::*,
+            color::_all::*,
             print::*,
             r#macro::*,
         };
