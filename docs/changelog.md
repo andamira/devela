@@ -336,11 +336,13 @@
 - replace `impl From<EventMouse> for WebEventMouse` with one `From<Timed<EventMouse, Option<EventTimestamp>>>`.
 
 #### sys::os::linux
+- new items: `LinuxTermios<Input|Output|Control|Local>Flags`.
 - update `LinuxError` conversion to `IoError`.
 - feature-gate term-related functionality.
 - fix signal restorer & `sys_getpid` in x86.
 - refactor Linux signal handlers around RT sigaction.
 - make `Linux::scoped_raw_mode` return crate-private `LinuxTermModeGuard`.
+- make `LINUX_TERMIOS_*` type namespaces private.
 
 #### sys::os::term
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLinux`, `TermMode`, `TermSession`

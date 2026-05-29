@@ -48,6 +48,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
     }
     _crate_internals {
-        pub(crate) use super::namespace::_crate_internals::*;
+        pub(crate) use super::{
+            io::_crate_internals::*,
+            namespace::_crate_internals::*,
+        };
     }
 }

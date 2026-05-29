@@ -1,6 +1,6 @@
-// devela::sys::os::linux::io::term::consts
+// devela::sys::os::linux::io::term::_raw
 //
-//! Terminal mode flags.
+//! Terminal mode raw flags.
 //!
 //! Defines termios input, output, control, and local mode flags used to
 //! configure terminal behavior.
@@ -11,32 +11,32 @@
 // - https://man7.org/linux/man-pages/man1/stty.1.html
 //
 
-#![allow(non_camel_case_types, clippy::zero_prefixed_literal)]
+#![allow(dead_code, non_camel_case_types, clippy::zero_prefixed_literal)]
 
-use core::ffi::c_uint;
+use crate::c_uint;
 
-#[doc = crate::_tags!(linux term)]
+#[doc = crate::_tags!(internal linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] input flags.
 #[derive(Debug)]
-pub struct LINUX_TERMIOS_IFLAG;
+pub(crate) struct LINUX_TERMIOS_IFLAG;
 
-#[doc = crate::_tags!(linux term)]
+#[doc = crate::_tags!(internal linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] output flags.
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 #[derive(Debug)]
-pub struct LINUX_TERMIOS_OFLAG;
+pub(crate) struct LINUX_TERMIOS_OFLAG;
 
-#[doc = crate::_tags!(linux term)]
+#[doc = crate::_tags!(internal linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 #[derive(Debug)]
-pub struct LINUX_TERMIOS_CFLAG;
+pub(crate) struct LINUX_TERMIOS_CFLAG;
 
-#[doc = crate::_tags!(linux term)]
+#[doc = crate::_tags!(internal linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] local flags.
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 #[derive(Debug)]
-pub struct LINUX_TERMIOS_LFLAG;
+pub(crate) struct LINUX_TERMIOS_LFLAG;
 
 impl LINUX_TERMIOS_IFLAG {
     /// Ignore BREAK condition on input.
