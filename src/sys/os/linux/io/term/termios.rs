@@ -22,7 +22,10 @@ use crate::{
 
 #[doc = crate::_tags!(linux term)]
 /// Represents the [`termios`] structure from libc, used to control terminal I/O.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io"),
+    test_size_of(LinuxTermios = 36|288),
+}]
 ///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.

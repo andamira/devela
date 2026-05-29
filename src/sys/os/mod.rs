@@ -19,6 +19,7 @@
 // #[cfg(feature = "android")]
 // pub mod android;
 
+#[doc = crate::_tags!(web)]
 pub mod browser; // Web*
 #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
 mod c; // Libc
@@ -27,13 +28,16 @@ pub mod fd;
 #[cfg(feature = "_linux_abi")]
 crate::__doc_hide! { (feature = "_linux_abi")
 crate::__doc_show! { (feature = "linux")
-    pub mod linux;
-}}
+#[doc = crate::_tags!(linux)]
+pub mod linux; }}
 
+// #[doc = crate::_tags!(apple)]
 // #[cfg(feature = "macos")]
 // pub mod macos;
 #[cfg(feature = "term")]
+#[doc = crate::_tags!(term)]
 pub mod term; // Ansi* Term*
+// #[doc = crate::_tags!(windows)]
 // #[cfg(feature = "windows")]
 // pub mod windows;
 

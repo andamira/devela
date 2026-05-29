@@ -7,13 +7,14 @@
 // - _STATE
 //
 // NOTES
-// - icon used by _doc_location: 📍
-// - icon used by _doc_size_of: 📦
+// - icons used by _doc_location: 📍,
+// - icons used by _doc_size_of: 📦,⚗️,
 
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]
 #[macro_export(local_inner_macros)] // local modifier needed to enable resolution
 macro_rules! _tags {
+    () => {""};
     ($($tag:ident)+) => { concat![$( $crate::_tags![@$tag], " "),+] };
     (@$tag:ident) =>  { $crate::paste! { [<_TAG_ $tag:upper>] !() }};
 }
