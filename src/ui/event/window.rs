@@ -11,7 +11,13 @@ use crate::String;
 
 #[doc = crate::_tags!(event interaction)]
 /// Events related to a window.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    #[cfg(not(feature = "alloc"))]
+    test_size_of(EventWindow = 16|128; niche Option),
+    #[cfg(feature = "alloc")]
+    test_size_of(EventWindow = 24|192; niche Option),
+}]
 ///
 /// Names and payloads are backend-agnostic and focus on
 /// the stable cross-platform meaning of each event.

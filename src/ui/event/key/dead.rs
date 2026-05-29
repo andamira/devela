@@ -12,7 +12,10 @@ use crate::{ConstInit, NonZeroU32, impl_trait, is};
 
 #[doc = crate::_tags!(interaction)]
 /// Dead-key accent operators used during text composition.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(KeyDead = 1|8; niche Option),
+}]
 ///
 /// Modeled after XKB dead keysym from `xkbcommon-keysyms.h`.
 #[repr(u8)]

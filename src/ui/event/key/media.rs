@@ -7,7 +7,10 @@ use crate::ConstInit;
 
 #[doc = crate::_tags!(interaction)]
 /// Media key codes.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(KeyMedia = 1|8; niche Option),
+}]
 ///
 /// These keys are commonly found on multimedia keyboards and remote controls.
 //

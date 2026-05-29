@@ -42,7 +42,10 @@ impl DebugExt for EventTimestamp {
 
 #[doc = crate::_tags!(event time)]
 /// The time at which the event occurs, stored as single-precision milliseconds.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventTimestamp = 4|32; niche Option),
+}]
 ///
 /// Backend dependent and relative to an arbitrary origin.
 ///

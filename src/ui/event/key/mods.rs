@@ -58,7 +58,10 @@ impl KeyMod {
 
 #[doc = crate::_tags!(interaction)]
 /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(KeyMods = 2|16), // option = 4|32
+}]
 #[repr(transparent)]
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct KeyMods(u16);
