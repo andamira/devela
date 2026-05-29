@@ -49,7 +49,7 @@ pub struct LinuxTermios {
     /// …
     pub c_line: u8,
 
-    /// …
+    /// Special control characters.
     pub c_cc: [u8; 19],
 }
 
@@ -83,51 +83,43 @@ impl LinuxTermios {
     }
 }
 
-/// # Linux terminal state operations
+/// # Linux terminal state syscalls
 #[cfg(any_target_arch_linux)]
 #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl LinuxTermios {
-    /// Gets the current termios state into `state`.
-    pub fn get_state() -> Result<LinuxTermios> {
+    /// Reads the current terminal termios state.
+    pub fn read_state() -> Result<LinuxTermios> {
         let mut state = LinuxTermios::new();
         let res = unsafe {
             Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCGETS, state.as_mut_bytes_ptr())
         };
         is![res >= 0, Ok(state), Err(LinuxError::Sys(res))]
     }
-    /// Sets the current termios `state`.
-    pub fn set_state(mut state: LinuxTermios) -> Result<()> {
+    /// Writes this termios state as the current terminal state.
+    pub fn write_state(mut self) -> Result<()> {
         let res = unsafe {
-            Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, state.as_mut_bytes_ptr())
+            Linux::sys_ioctl(LINUX_FILENO::STDIN, LINUX_IOCTL::TCSETS, self.as_mut_bytes_ptr())
         };
         is![res >= 0, Ok(()), Err(LinuxError::Sys(res))]
     }
+    /// Reads the current termios state, mutates it, and writes it back.
+    pub fn update_state(f: impl FnOnce(&mut Self)) -> Result<()> {
+        let mut state = Self::read_state()?;
+        f(&mut state);
+        state.write_state()
+    }
 
-    /// Returns `true` if we're in a terminal context.
+    /// Returns `true` if standard input is attached to a terminal.
     #[must_use]
     pub fn is_terminal() -> bool {
-        match Self::get_state() {
+        match Self::read_state() {
             Ok(_) => true,
             Err(LinuxError::Sys(err)) => err != -LINUX_ERRNO::ENOTTY && err != -LINUX_ERRNO::EINVAL,
             Err(_) => false, // Other errors are not related to terminal checks
         }
     }
-
-    /// Disables raw mode.
-    pub fn disable_raw_mode() -> Result<()> {
-        let mut state = LinuxTermios::get_state()?;
-        state.insert_local_flags(L::ICANON | L::ECHO);
-        LinuxTermios::set_state(state)
-    }
-    /// Enables raw mode.
-    pub fn enable_raw_mode() -> Result<()> {
-        let mut state = Self::get_state()?;
-        state.remove_local_flags(L::ICANON | L::ECHO);
-        LinuxTermios::set_state(state)
-    }
-
-    /// Returns the size of the window, in cells and pixels.
-    pub fn get_winsize() -> Result<TermSize> {
+    /// Reads the terminal window size, in cells and pixels.
+    pub fn read_window_size() -> Result<TermSize> {
         let mut winsize = TermSize::default();
         let res = unsafe {
             Linux::sys_ioctl(
@@ -138,12 +130,150 @@ impl LinuxTermios {
         };
         is![res >= 0, Ok(winsize), Err(LinuxError::Sys(res))]
     }
+
+    /// Enables event-oriented terminal mode.
+    pub fn enable_event_mode() -> Result<()> {
+        Self::update_state(|state| state.make_event())
+    }
+    /// Enables raw terminal mode.
+    pub fn enable_raw_mode() -> Result<()> {
+        Self::update_state(|state| state.make_raw())
+    }
+    /// Best-effort reset to ordinary line-buffered terminal behavior.
+    ///
+    /// This does not restore the exact previous terminal state.
+    /// Prefer a scoped terminal session for exact restoration.
+    pub fn reset_cooked_mode() -> Result<()> {
+        Self::update_state(|state| state.make_cooked_reset())
+    }
+}
+
+/// # Terminal state transforms
+#[rustfmt::skip]
+impl LinuxTermios {
+    /// Makes this state event-oriented.
+    ///
+    /// Event mode disables canonical line buffering and echo, allowing input to
+    /// be read immediately while preserving terminal-generated signals.
+    pub const fn make_event(&mut self) {
+        self.remove_input_flags(I::IXON);
+        self.remove_local_flags(L::ECHO);
+        self.remove_local_flags(L::ICANON);
+        // self.remove_local_flags(L::IEXTEN);
+        self.set_read_min_timeout(1, 0);
+    }
+    /// Makes this state raw.
+    ///
+    /// Raw mode disables canonical input, echo, software flow control, input
+    /// translations, output processing, extensions, and terminal-generated
+    /// signal characters.
+    ///
+    /// In this mode, control keys such as Ctrl-C and Ctrl-Q are delivered as
+    /// input bytes instead of being handled by the terminal line discipline.
+    pub const fn make_raw(&mut self) {
+        self.remove_input_flags(I::BRKINT);
+        self.remove_input_flags(I::ICRNL);
+        self.remove_input_flags(I::INPCK);
+        self.remove_input_flags(I::ISTRIP);
+        self.set_software_flow(false);
+
+        self.remove_output_flags(O::OPOST);
+
+        self.remove_local_flags(L::ECHO);
+        self.remove_local_flags(L::ICANON);
+        self.remove_local_flags(L::IEXTEN);
+        self.remove_local_flags(L::ISIG);
+
+        self.set_char_size(LinuxTermiosCharSize::Bits8);
+        self.set_read_min_timeout(1, 0);
+    }
+    /// Makes this state conventionally line-buffered.
+    ///
+    /// This is a best-effort convenience reset, not an exact restoration of the
+    /// previous terminal state. For exact restoration, use a scoped terminal session.
+    pub const fn make_cooked_reset(&mut self) {
+        // input
+        self.set_software_flow(true);
+        self.set_input_cr_to_lf(true);
+        // local
+        self.set_canonical(true);
+        self.set_echo(true);
+        self.set_signals(true);
+        self.set_extensions(true);
+        self.set_output_processing(true);
+        self.set_read_min_timeout(1, 0);
+    }
+
+    /* local */
+    /// Enables or disables echoing typed input.
+    pub const fn set_echo(&mut self, enabled: bool) {
+        if enabled { self.insert_local_flags(L::ECHO); }
+        else { self.remove_local_flags(L::ECHO); }
+    }
+    /// Enables or disables canonical line buffering.
+    pub const fn set_canonical(&mut self, enabled: bool) {
+        if enabled { self.insert_local_flags(L::ICANON); }
+        else { self.remove_local_flags(L::ICANON); }
+    }
+    /// Enables or disables terminal-generated signal characters.
+    ///
+    /// When enabled, characters such as Ctrl-C and Ctrl-Z are handled by the
+    /// terminal line discipline instead of being delivered as ordinary input.
+    pub const fn set_signals(&mut self, enabled: bool) {
+        if enabled { self.insert_local_flags(L::ISIG); }
+        else { self.remove_local_flags(L::ISIG); }
+    }
+    /// Enables or disables implementation-defined line discipline extensions.
+    pub const fn set_extensions(&mut self, enabled: bool) {
+        if enabled { self.insert_local_flags(L::IEXTEN); }
+        else { self.remove_local_flags(L::IEXTEN); }
+    }
+
+    /* input */
+    /// Enables or disables interrupt generation on BREAK.
+    pub const fn set_break_interrupt(&mut self, enabled: bool) {
+        if enabled { self.insert_input_flags(I::BRKINT); }
+        else { self.remove_input_flags(I::BRKINT); }
+    }
+    /// Enables or disables translating carriage return to newline on input.
+    pub const fn set_input_cr_to_lf(&mut self, enabled: bool) {
+        if enabled { self.insert_input_flags(I::ICRNL); }
+        else { self.remove_input_flags(I::ICRNL); }
+    }
+    /// Enables or disables XON/XOFF software flow control.
+    pub const fn set_software_flow(&mut self, enabled: bool) {
+        if enabled {
+            // decides whether Ctrl-S/Ctrl-Q are intercepted for output flow control
+            self.insert_input_flags(I::IXON);
+            // sends start/stop control characters to the other side when input queues fill
+            self.insert_input_flags(I::IXOFF);
+        } else {
+            self.remove_input_flags(I::IXON);
+            self.remove_input_flags(I::IXOFF);
+        }
+    }
+
+    /* output */
+    /// Enables or disables terminal output post-processing.
+    pub const fn set_output_processing(&mut self, enabled: bool) {
+        if enabled { self.insert_output_flags(O::OPOST); }
+        else { self.remove_output_flags(O::OPOST); }
+    }
+
+    /* control characters */
+    /// Sets noncanonical read blocking behavior.
+    ///
+    /// - `min` is the minimum number of bytes required to satisfy a read.
+    /// - `timeout_deciseconds` is the inter-byte timeout in tenths of a second.
+    pub const fn set_read_min_timeout(&mut self, min: u8, timeout_deciseconds: u8) {
+        self.set_cc(Cc::VMIN, min);
+        self.set_cc(Cc::VTIME, timeout_deciseconds);
+    }
 }
 
 /// # Typed flag accessors
 #[rustfmt::skip]
 impl LinuxTermios {
-
     /// Returns the input flags.
     #[must_use]
     pub const fn input_flags(&self) -> I { I::from_c_uint(self.c_iflag) }
@@ -215,7 +345,6 @@ impl LinuxTermios {
     #[must_use]
     pub const fn char_size(&self) -> LinuxTermiosCharSize {
         let bits = self.c_cflag & C::CSIZE.as_c_uint();
-
         if bits == C::CS6.as_c_uint() {
             LinuxTermiosCharSize::Bits6
         } else if bits == C::CS7.as_c_uint() {

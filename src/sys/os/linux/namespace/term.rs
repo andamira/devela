@@ -15,7 +15,7 @@ impl Linux {
     }
     /// Returns the terminal dimensions.
     pub fn terminal_size() -> Result<TermSize> {
-        LinuxTermios::get_winsize()
+        LinuxTermios::read_window_size()
     }
     /// Enables raw mode.
     ///
@@ -25,12 +25,12 @@ impl Linux {
         LinuxTermios::enable_raw_mode()
     }
     /// Disables raw mode.
-    pub fn disable_raw_mode() -> Result<()> {
-        LinuxTermios::disable_raw_mode()
+    pub fn reset_cooked_mode() -> Result<()> {
+        LinuxTermios::reset_cooked_mode()
     }
     /// Enables raw mode and returns a `ScopeGuard` that restores the original state on drop.
     pub fn scoped_raw_mode() -> Result<LinuxTermModeGuard> {
-        let initial_state = LinuxTermios::get_state()?;
+        let initial_state = LinuxTermios::read_state()?;
         LinuxTermios::enable_raw_mode()?;
         Ok(ScopeGuard::with(initial_state, (), Self::restore_linux_termios))
     }
@@ -38,7 +38,7 @@ impl Linux {
         clippy::trivially_copy_pass_by_ref,
         reason = "matches ScopeGuard's FnOnce(T, &S) callback signature"
     )]
-    fn restore_linux_termios(state: LinuxTermios, (): &()) {
-        let _ = LinuxTermios::set_state(state);
+    fn restore_linux_termios(mut state: LinuxTermios, (): &()) {
+        let _ = state.write_state();
     }
 }
