@@ -37,20 +37,21 @@ crate::set! {
     /// Terminal session mode request.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
-        test_size_of(TermMode = 2|16),
+        test_size_of(TermMode = 4|32),
     }]
+    /// This compact set describes the state changes requested for a scoped [`TermSession`].
     ///
-    /// A compact set of terminal state changes requested for a scoped [`TermSession`].
-    ///
-    /// Backends may ignore unsupported flags,
-    /// but should restore any state they successfully changed.
+    /// # Synchronization
+    /// Line-discipline bits are decoded through [`line_mode`](Self::line_mode)
+    /// and applied by backend session entry code, such as `TermLinuxRestore::enter`.
+    /// Preset constructors and backend entry logic must stay in sync.
     //
     // Only add here things that are:
     // - session-scoped,
     // - useful across ordinary terminal frontends.
     // - explicitly enabled/disabled by the client,
     // - realistically restorable on drop,
-    pub struct TermMode(u16) {
+    pub struct TermMode(u32) {
         /* line discipline */
 
         /// Event-oriented input with normal terminal behavior mostly preserved.
@@ -92,13 +93,15 @@ crate::set! {
 
         /// Synchronized terminal output updates.
         SYNC_UPDATE         = 14;
+        /// Preserve terminal output post-processing.
+        PROCESSED_OUTPUT = 15;
 
         /* future/protocol possible extensions */
 
         // /// Kitty progressive keyboard protocol.
-        // KITTY_KEYBOARD      = 15;
+        // KITTY_KEYBOARD      = 16;
         // /// Kitty drag-and-drop protocol support.
-        // KITTY_DND           = 16;
+        // KITTY_DND           = 17;
     }
     /// # Line mode accessors
     impl {
@@ -106,6 +109,9 @@ crate::set! {
         pub const CBREAK: Self = Self::EVENT;
 
         /// Returns the requested terminal line mode.
+        ///
+        /// `RAW` dominates `EVENT`: raw mode is represented as
+        /// event-capable input plus extra raw processing changes.
         #[must_use]
         pub const fn line_mode(self) -> TermLineMode {
             if self.has(Self::RAW) {
@@ -119,11 +125,11 @@ crate::set! {
         /// Returns `self` with the requested terminal line mode.
         #[must_use]
         pub const fn with_line_mode(self, mode: TermLineMode) -> Self {
-            let mode_cleared = self.without(Self::RAW).without(Self::EVENT);
+            let cleared = self.without(Self::EVENT).without(Self::RAW);
             match mode {
-                TermLineMode::Line => mode_cleared,
-                TermLineMode::Event => mode_cleared.with(Self::EVENT),
-                TermLineMode::Raw => mode_cleared.with(Self::EVENT).with(Self::RAW),
+                TermLineMode::Line => cleared,
+                TermLineMode::Event => cleared.with(Self::EVENT),
+                TermLineMode::Raw => cleared.with(Self::EVENT).with(Self::RAW),
             }
         }
     }
@@ -138,6 +144,7 @@ crate::set! {
         pub const fn event() -> Self { Self::new().with_line_mode(TermLineMode::Event) }
 
         /// Returns a raw terminal session request.
+        // pure raw, OPOST off
         #[must_use]
         pub const fn raw() -> Self { Self::new().with_line_mode(TermLineMode::Raw) }
 
@@ -155,13 +162,17 @@ crate::set! {
         ///
         /// Like [`editor`][Self::editor], but control characters are delivered as input
         /// instead of terminal-generated signals.
+        // raw input + app reports + processed output
         #[must_use]
         pub const fn raw_editor() -> Self {
             Self::raw()
+                .with(Self::PROCESSED_OUTPUT)
                 .with(Self::BRACKETED_PASTE)
                 .with(Self::FOCUS_EVENTS)
                 .with(Self::RESET_STYLE_ON_DROP)
         }
+        // pure raw + fullscreen/pixel-ish/manual output
+        // pub const fn raw_canvas() -> Self { } // FUTURE
     }
 
     /// # Preset modifiers

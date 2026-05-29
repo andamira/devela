@@ -78,7 +78,7 @@ impl LinuxTermios {
     }
     /// Returns a raw mutable byte pointer to self.
     #[must_use]
-    pub fn as_mut_bytes_ptr(&mut self) -> *mut u8 {
+    pub const fn as_mut_bytes_ptr(&mut self) -> *mut u8 {
         self as *mut Self as *mut u8
     }
 }

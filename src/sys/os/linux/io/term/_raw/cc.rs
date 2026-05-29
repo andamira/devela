@@ -1,7 +1,5 @@
 // devela::sys::os::linux::io::term::_raw::cc
 
-#![allow(dead_code, non_camel_case_types, clippy::zero_prefixed_literal)]
-
 use crate::c_uchar;
 
 #[doc = crate::_tags!(linux term)]

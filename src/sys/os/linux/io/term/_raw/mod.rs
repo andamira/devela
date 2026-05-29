@@ -7,6 +7,13 @@
 //! for terminal-backed file descriptors.
 //
 
+#![allow(
+    dead_code,
+    non_camel_case_types,
+    clippy::upper_case_acronyms,
+    clippy::zero_prefixed_literal
+)]
+
 mod input; // LINUX_TERMIOS_IFLAG
 mod output; // LINUX_TERMIOS_OFLAG
 mod control; // LINUX_TERMIOS_CFLAG

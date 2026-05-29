@@ -23,39 +23,39 @@ impl LinuxTermiosCc {
     pub const COUNT: usize = 19; // would be CC::NCCS
 
     /// Interrupt character.
-    pub const VINTR: Self = Self(CC::VINTR as u8);
+    pub const VINTR: Self = Self(CC::VINTR);
     /// Quit character.
-    pub const VQUIT: Self = Self(CC::VQUIT as u8);
+    pub const VQUIT: Self = Self(CC::VQUIT);
     /// Erase character.
-    pub const VERASE: Self = Self(CC::VERASE as u8);
+    pub const VERASE: Self = Self(CC::VERASE);
     /// Kill character.
-    pub const VKILL: Self = Self(CC::VKILL as u8);
+    pub const VKILL: Self = Self(CC::VKILL);
     /// End-of-file character.
-    pub const VEOF: Self = Self(CC::VEOF as u8);
+    pub const VEOF: Self = Self(CC::VEOF);
     /// Timeout value for noncanonical reads.
-    pub const VTIME: Self = Self(CC::VTIME as u8);
+    pub const VTIME: Self = Self(CC::VTIME);
     /// Minimum byte count for noncanonical reads.
-    pub const VMIN: Self = Self(CC::VMIN as u8);
+    pub const VMIN: Self = Self(CC::VMIN);
     /// Switch character.
-    pub const VSWTC: Self = Self(CC::VSWTC as u8);
+    pub const VSWTC: Self = Self(CC::VSWTC);
     /// Start character.
-    pub const VSTART: Self = Self(CC::VSTART as u8);
+    pub const VSTART: Self = Self(CC::VSTART);
     /// Stop character.
-    pub const VSTOP: Self = Self(CC::VSTOP as u8);
+    pub const VSTOP: Self = Self(CC::VSTOP);
     /// Suspend character.
-    pub const VSUSP: Self = Self(CC::VSUSP as u8);
+    pub const VSUSP: Self = Self(CC::VSUSP);
     /// Additional end-of-line character.
-    pub const VEOL: Self = Self(CC::VEOL as u8);
+    pub const VEOL: Self = Self(CC::VEOL);
     /// Reprint unread characters.
-    pub const VREPRINT: Self = Self(CC::VREPRINT as u8);
+    pub const VREPRINT: Self = Self(CC::VREPRINT);
     /// Discard pending output.
-    pub const VDISCARD: Self = Self(CC::VDISCARD as u8);
+    pub const VDISCARD: Self = Self(CC::VDISCARD);
     /// Word erase character.
-    pub const VWERASE: Self = Self(CC::VWERASE as u8);
+    pub const VWERASE: Self = Self(CC::VWERASE);
     /// Literal next character.
-    pub const VLNEXT: Self = Self(CC::VLNEXT as u8);
+    pub const VLNEXT: Self = Self(CC::VLNEXT);
     /// Second additional end-of-line character.
-    pub const VEOL2: Self = Self(CC::VEOL2 as u8);
+    pub const VEOL2: Self = Self(CC::VEOL2);
 
     /// Returns a checked control-character index.
     #[must_use]

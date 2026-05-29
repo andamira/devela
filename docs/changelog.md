@@ -341,13 +341,14 @@
 - fix signal restorer & `sys_getpid` in x86.
 - refactor Linux signal handlers around RT sigaction.
 - update Linux: 
+  - new methods: `scoped_event_mode`, `scoped_termios_update`.
   - rename method: `disable_raw_mode` to `reset_cooked_mode`.
   - make `scoped_raw_mode` method return crate-private `LinuxTermModeGuard`.
 - make `LINUX_TERMIOS_*` type namespaces private.
 
 #### sys::os::linux::io
 - new types: `LinuxTermios<Input|Output|Control|Local>Flags`, `LinuxTermiosCC`, `LinuxTermiosCharSize`.
-- update `LinuxTermos`:
+- update `LinuxTermios`:
   - new methods: `update_state`, `enable_event_mode`, `make_event`, `make_raw`, `make_cooked_reset`, `set_echo`, `set_canonical`, `set_signals`, `set_extensions`, `set_break_interrupt`, `set_input_cr_to_lf`, `set_software_flow`, `set_output_processing`, `set_read_min_timeout`.
   - rename methods: `get_state` to `read_state`, `save_state` to `write_state`, `get_winsize` to `read_window_size`, `disable_raw_mode` to `reset_cooked_mode`
   - update docs.

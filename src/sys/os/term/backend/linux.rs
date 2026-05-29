@@ -11,7 +11,7 @@
 //   - struct TermLinuxRestore
 
 use crate::LinuxTermModeGuard;
-use crate::{Ansi, TermCaps, TermInputParser, TermMode, TermSession, TermSize};
+use crate::{Ansi, TermCaps, TermInputParser, TermLineMode, TermMode, TermSession, TermSize};
 use crate::{ColorDepth, Debug, EventKind, NonMaxU16, VersionFull, is};
 use crate::{Linux, LinuxError, LinuxResult};
 use crate::{
@@ -57,15 +57,18 @@ impl TermLinux {
 
     /// Enters a scoped terminal session.
     ///
-    /// Applies the requested terminal mode changes and returns a guard that
-    /// restores the changed state when dropped.
+    /// Applies the requested terminal `mode` changes and
+    /// returns a guard that restores the changed state when dropped.
     ///
-    /// Only successfully applied changes are registered for restoration. This
-    /// makes partial setup failures safe: if entering a later mode fails, earlier
-    /// changes are still undone as the restore payload is dropped.
+    /// The requested mode is translated by the backend restore payload,
+    /// which records only the changes that must be undone on drop.
     ///
-    /// The returned guard does not borrow `self`, so the terminal frontend can
-    /// continue to be used while the session is active.
+    /// Only successfully applied changes are registered for restoration.
+    /// This makes partial setup failures safe: if entering a later mode fails,
+    /// earlier changes are still undone as the restore payload is dropped.
+    ///
+    /// The returned guard does not borrow `self`, so the terminal
+    /// frontend can continue to be used while the session is active.
     pub fn session(
         &mut self,
         mode: TermMode,
@@ -205,6 +208,10 @@ impl RunServiceProbe for TermLinux {
 /* internal helpers */
 
 crate::set! {
+    /// Terminal escape-sequence restoration flags.
+    ///
+    /// These flags only track ANSI/reporting/presentation cleanup.
+    /// Termios state is restored separately by the stored line-discipline guard.
     struct TermLinuxRestoreFlags(u16) {
         RESET_STYLE              = 0;
         SHOW_CURSOR              = 1;
@@ -224,6 +231,12 @@ crate::set! {
 }
 
 crate::test_size_of!(TermLinuxRestore = 56 | 448);
+/// Linux terminal session restore payload.
+///
+/// This is the synchronization point between [`TermMode`] and Linux-specific
+/// terminal state changes. It applies termios line mode changes and ANSI
+/// reporting/presentation requests, recording the corresponding restoration
+/// work as each step succeeds.
 #[derive(Debug)]
 struct TermLinuxRestore {
     guard: Option<LinuxTermModeGuard>,
@@ -238,9 +251,22 @@ impl TermLinuxRestore {
     }
     fn enter(mode: TermMode) -> LinuxResult<Self> {
         let mut restore = Self::none();
+
         /* line discipline */
-        if mode.has_raw() {
-            restore.guard = Some(Linux::scoped_raw_mode()?);
+        match mode.line_mode() {
+            TermLineMode::Line => {}
+            TermLineMode::Event => {
+                restore.guard = Some(Linux::scoped_event_mode()?);
+            }
+            TermLineMode::Raw => {
+                restore.guard = Some(Linux::scoped_termios_update(|state| {
+                    state.make_raw();
+
+                    if mode.has_processed_output() {
+                        state.set_output_processing(true);
+                    }
+                })?);
+            }
         }
 
         /* presentation */
@@ -271,7 +297,7 @@ impl TermLinuxRestore {
             Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_B)?;
             restore.flags = restore.flags.with_disable_mouse_sgr();
         }
-        //
+
         if mode.has_mouse_motion() {
             Linux::print_bytes(&Ansi::ENABLE_MOUSE_MOTION_B)?;
             restore.flags = restore.flags.with_disable_mouse_motion();
@@ -297,6 +323,7 @@ impl TermLinuxRestore {
             Linux::print_bytes(&Ansi::ENABLE_SYNC_UPDATE_B)?;
             restore.flags = restore.flags.with_disable_sync_update();
         }
+
         Ok(restore)
     }
 }
