@@ -11,7 +11,7 @@ mod backend; // TermLinux
 mod cap; // TermCaps
 #[cfg(feature = "event")]
 mod event; // TermInputParser
-// mod line; // WIP CLI
+mod line; // TermLineMode
 mod metric; // TermSize
 // #[cfg(feature = "term")]
 // mod render; // TermRenderer WIP
@@ -23,7 +23,7 @@ crate::structural_mods! { // _mods, _crate_internals
             ansi::_all::*,
             cap::_all::*,
             backend::_all::*,
-            // line::*,
+            line::_all::*,
             metric::*,
             // render::_all::*,
             session::*,
