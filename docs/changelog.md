@@ -336,7 +336,7 @@
 - replace `impl From<EventMouse> for WebEventMouse` with one `From<Timed<EventMouse, Option<EventTimestamp>>>`.
 
 #### sys::os::linux
-- new items: `LinuxTermios<Input|Output|Control|Local>Flags`.
+- new types: `LinuxTermios<Input|Output|Control|Local>Flags`, `LinuxTermiosCC`, `LinuxTermiosCharSize`.
 - update `LinuxError` conversion to `IoError`.
 - feature-gate term-related functionality.
 - fix signal restorer & `sys_getpid` in x86.

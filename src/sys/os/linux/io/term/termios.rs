@@ -5,6 +5,10 @@
 //! Defines the [`LinuxTermios`] structure used to query and configure terminal
 //! attributes via ioctl operations.
 //
+// TOC
+// - struct LinuxTermios
+// - impls
+// - struct LinuxTermiosCharSize
 
 use crate::c_uint;
 #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
@@ -12,8 +16,8 @@ use crate::{
     LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, Linux, LinuxError, LinuxResult as Result, TermSize, is,
 };
 use crate::{
-    LinuxTermiosControlFlags, LinuxTermiosInputFlags, LinuxTermiosLocalFlags,
-    LinuxTermiosOutputFlags,
+    LinuxTermiosCc as Cc, LinuxTermiosControlFlags as C, LinuxTermiosInputFlags as I,
+    LinuxTermiosLocalFlags as L, LinuxTermiosOutputFlags as O,
 };
 
 #[doc = crate::_tags!(linux term)]
@@ -88,7 +92,6 @@ impl LinuxTermios {
         };
         is![res >= 0, Ok(state), Err(LinuxError::Sys(res))]
     }
-
     /// Sets the current termios `state`.
     pub fn set_state(mut state: LinuxTermios) -> Result<()> {
         let res = unsafe {
@@ -110,13 +113,13 @@ impl LinuxTermios {
     /// Disables raw mode.
     pub fn disable_raw_mode() -> Result<()> {
         let mut state = LinuxTermios::get_state()?;
-        state.insert_local_flags(LinuxTermiosLocalFlags::ICANON | LinuxTermiosLocalFlags::ECHO);
+        state.insert_local_flags(L::ICANON | L::ECHO);
         LinuxTermios::set_state(state)
     }
     /// Enables raw mode.
     pub fn enable_raw_mode() -> Result<()> {
         let mut state = Self::get_state()?;
-        state.remove_local_flags(LinuxTermiosLocalFlags::ICANON | LinuxTermiosLocalFlags::ECHO);
+        state.remove_local_flags(L::ICANON | L::ECHO);
         LinuxTermios::set_state(state)
     }
 
@@ -135,104 +138,139 @@ impl LinuxTermios {
 }
 
 /// # Typed flag accessors
+#[rustfmt::skip]
 impl LinuxTermios {
-    /* input */
+
     /// Returns the input flags.
     #[must_use]
-    pub const fn input_flags(&self) -> LinuxTermiosInputFlags {
-        LinuxTermiosInputFlags::from_c_uint(self.c_iflag)
-    }
+    pub const fn input_flags(&self) -> I { I::from_c_uint(self.c_iflag) }
     /// Replaces the input flags.
-    pub const fn set_input_flags(&mut self, flags: LinuxTermiosInputFlags) {
-        self.c_iflag = flags.as_c_uint();
-    }
+    pub const fn set_input_flags(&mut self, flags: I) { self.c_iflag = flags.as_c_uint(); }
     /// Inserts input flags.
-    pub const fn insert_input_flags(&mut self, flags: LinuxTermiosInputFlags) {
-        self.c_iflag |= flags.as_c_uint();
-    }
+    pub const fn insert_input_flags(&mut self, flags: I) { self.c_iflag |= flags.as_c_uint(); }
     /// Removes input flags.
-    pub const fn remove_input_flags(&mut self, flags: LinuxTermiosInputFlags) {
-        self.c_iflag &= !flags.as_c_uint();
-    }
+    pub const fn remove_input_flags(&mut self, flags: I) { self.c_iflag &= !flags.as_c_uint(); }
     /// Returns whether all the given input flags are set.
     #[must_use]
-    pub const fn has_input_flags(&self, flags: LinuxTermiosInputFlags) -> bool {
+    pub const fn has_input_flags(&self, flags: I) -> bool {
         (self.c_iflag & flags.as_c_uint()) == flags.as_c_uint()
     }
 
-    /* output */
     /// Returns the output flags.
     #[must_use]
-    pub const fn output_flags(&self) -> LinuxTermiosOutputFlags {
-        LinuxTermiosOutputFlags::from_c_uint(self.c_oflag)
-    }
+    pub const fn output_flags(&self) -> O { O::from_c_uint(self.c_oflag) }
     /// Replaces the output flags.
-    pub const fn set_output_flags(&mut self, flags: LinuxTermiosOutputFlags) {
-        self.c_oflag = flags.as_c_uint();
-    }
+    pub const fn set_output_flags(&mut self, flags: O) { self.c_oflag = flags.as_c_uint(); }
     /// Inserts output flags.
-    pub const fn insert_output_flags(&mut self, flags: LinuxTermiosOutputFlags) {
-        self.c_oflag |= flags.as_c_uint();
-    }
+    pub const fn insert_output_flags(&mut self, flags: O) { self.c_oflag |= flags.as_c_uint(); }
     /// Removes output flags.
-    pub const fn remove_output_flags(&mut self, flags: LinuxTermiosOutputFlags) {
-        self.c_oflag &= !flags.as_c_uint();
-    }
+    pub const fn remove_output_flags(&mut self, flags: O) { self.c_oflag &= !flags.as_c_uint(); }
     /// Returns whether all the given output flags are set.
     #[must_use]
-    pub const fn has_output_flags(&self, flags: LinuxTermiosOutputFlags) -> bool {
+    pub const fn has_output_flags(&self, flags: O) -> bool {
         (self.c_oflag & flags.as_c_uint()) == flags.as_c_uint()
     }
 
-    /* control */
     /// Returns the control flags.
     #[must_use]
-    pub const fn control_flags(&self) -> LinuxTermiosControlFlags {
-        LinuxTermiosControlFlags::from_c_uint(self.c_cflag)
-    }
+    pub const fn control_flags(&self) -> C { C::from_c_uint(self.c_cflag) }
     /// Replaces the control flags.
-    pub const fn set_control_flags(&mut self, flags: LinuxTermiosControlFlags) {
-        self.c_cflag = flags.as_c_uint();
-    }
+    pub const fn set_control_flags(&mut self, flags: C) { self.c_cflag = flags.as_c_uint(); }
     /// Inserts control flags.
     ///
     /// For masked fields such as character size, prefer field-specific helpers.
-    pub const fn insert_control_flags(&mut self, flags: LinuxTermiosControlFlags) {
-        self.c_cflag |= flags.as_c_uint();
-    }
+    pub const fn insert_control_flags(&mut self, flags: C) { self.c_cflag |= flags.as_c_uint(); }
     /// Removes control flags.
     ///
     /// For masked fields such as character size, prefer field-specific helpers.
-    pub const fn remove_control_flags(&mut self, flags: LinuxTermiosControlFlags) {
-        self.c_cflag &= !flags.as_c_uint();
-    }
+    pub const fn remove_control_flags(&mut self, flags: C) { self.c_cflag &= !flags.as_c_uint(); }
     /// Returns whether all the given control flags are set.
     #[must_use]
-    pub const fn has_control_flags(&self, flags: LinuxTermiosControlFlags) -> bool {
+    pub const fn has_control_flags(&self, flags: C) -> bool {
         (self.c_cflag & flags.as_c_uint()) == flags.as_c_uint()
     }
 
-    /* local */
     /// Returns the local flags.
     #[must_use]
-    pub const fn local_flags(&self) -> LinuxTermiosLocalFlags {
-        LinuxTermiosLocalFlags::from_c_uint(self.c_lflag)
-    }
+    pub const fn local_flags(&self) -> L { L::from_c_uint(self.c_lflag) }
     /// Replaces the local flags.
-    pub const fn set_local_flags(&mut self, flags: LinuxTermiosLocalFlags) {
-        self.c_lflag = flags.as_c_uint();
-    }
+    pub const fn set_local_flags(&mut self, flags: L) { self.c_lflag = flags.as_c_uint(); }
     /// Inserts local flags.
-    pub const fn insert_local_flags(&mut self, flags: LinuxTermiosLocalFlags) {
-        self.c_lflag |= flags.as_c_uint();
-    }
+    pub const fn insert_local_flags(&mut self, flags: L) { self.c_lflag |= flags.as_c_uint(); }
     /// Removes local flags.
-    pub const fn remove_local_flags(&mut self, flags: LinuxTermiosLocalFlags) {
-        self.c_lflag &= !flags.as_c_uint();
-    }
+    pub const fn remove_local_flags(&mut self, flags: L) { self.c_lflag &= !flags.as_c_uint(); }
     /// Returns whether all the given local flags are set.
     #[must_use]
-    pub const fn has_local_flags(&self, flags: LinuxTermiosLocalFlags) -> bool {
+    pub const fn has_local_flags(&self, flags: L) -> bool {
         (self.c_lflag & flags.as_c_uint()) == flags.as_c_uint()
+    }
+}
+
+/// # Typed mode-field accessors
+impl LinuxTermios {
+    /// Returns the configured character size.
+    #[must_use]
+    pub const fn char_size(&self) -> LinuxTermiosCharSize {
+        let bits = self.c_cflag & C::CSIZE.as_c_uint();
+
+        if bits == C::CS6.as_c_uint() {
+            LinuxTermiosCharSize::Bits6
+        } else if bits == C::CS7.as_c_uint() {
+            LinuxTermiosCharSize::Bits7
+        } else if bits == C::CS8.as_c_uint() {
+            LinuxTermiosCharSize::Bits8
+        } else {
+            LinuxTermiosCharSize::Bits5
+        }
+    }
+    /// Sets the configured character size.
+    pub const fn set_char_size(&mut self, size: LinuxTermiosCharSize) {
+        let mask = C::CSIZE.as_c_uint();
+        self.c_cflag = (self.c_cflag & !mask) | size.to_control_flags().as_c_uint();
+    }
+}
+
+/// # Control-character accessors
+#[rustfmt::skip]
+impl LinuxTermios {
+    /// Returns a terminal control-character value.
+    #[must_use]
+    pub const fn cc(&self, cc: Cc) -> u8 { self.c_cc[cc.index()] }
+    /// Sets a terminal control-character value.
+    pub const fn set_cc(&mut self, cc: Cc, value: u8) { self.c_cc[cc.index()] = value; }
+    /// Returns a shared view of all terminal control-character values.
+    #[must_use]
+    pub const fn cc_array(&self) -> &[u8; Cc::COUNT] { &self.c_cc }
+    /// Returns an exclusive view of all terminal control-character values.
+    #[must_use]
+    pub const fn cc_array_mut(&mut self) -> &mut [u8; Cc::COUNT] { &mut self.c_cc }
+}
+
+#[doc = crate::_tags!(linux term)]
+/// A Linux termios character size.
+#[doc = crate::_doc_meta!{location("sys/os/linux/io/term")}]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(u8)]
+pub enum LinuxTermiosCharSize {
+    /// 5-bit characters.
+    Bits5 = 5,
+    /// 6-bit characters.
+    Bits6 = 6,
+    /// 7-bit characters.
+    Bits7 = 7,
+    /// 8-bit characters. (This the default)
+    #[default]
+    Bits8 = 8,
+}
+impl LinuxTermiosCharSize {
+    /// Returns the corresponding control-flag field value.
+    #[must_use]
+    pub const fn to_control_flags(self) -> C {
+        match self {
+            Self::Bits5 => C::CS5,
+            Self::Bits6 => C::CS6,
+            Self::Bits7 => C::CS7,
+            Self::Bits8 => C::CS8,
+        }
     }
 }

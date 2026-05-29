@@ -3,14 +3,17 @@
 //!
 //
 
+#[cfg(doc)]
+use crate::LinuxTermios;
 use crate::{
     LINUX_TERMIOS_CFLAG as C, LINUX_TERMIOS_IFLAG as I, LINUX_TERMIOS_LFLAG as L,
     LINUX_TERMIOS_OFLAG as O,
 };
 use crate::{c_uint, set};
+
 set! {
     #[doc = crate::_tags!(linux term)]
-    /// [`LinuxTermios`][crate::LinuxTermios] input flags.
+    /// [`LinuxTermios`] input flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
         test_size_of(LinuxTermiosInputFlags = 2|16),
@@ -80,7 +83,7 @@ set! {
 }
 set! {
     #[doc = crate::_tags!(linux term)]
-    /// [`LinuxTermios`][crate::LinuxTermios] output flags.
+    /// [`LinuxTermios`] output flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
         test_size_of(LinuxTermiosOutputFlags = 4|32),
@@ -215,13 +218,13 @@ set! {
 }
 set! {
     #[doc = crate::_tags!(linux term)]
-    /// [`LinuxTermios`][crate::LinuxTermios] control flags.
+    /// [`LinuxTermios`] control flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/linux/io/term"),
         test_size_of(LinuxTermiosControlFlags = 2|16),
     }]
     /// NOTE: `CSIZE`/`CS5`/`CS6`/`CS7`/`CS8` are a masked character-size field,
-    /// not independent flags. Prefer [`LinuxTermios::set_char_size`].
+    /// not independent flags. Prefer [`LinuxTermios::set_char_size`] when changing it.
     pub struct LinuxTermiosControlFlags(u16) {
         /// Character size mask.
         CSIZE  = 4..=5;
@@ -276,7 +279,7 @@ set! {
 }
 set! {
     #[doc = crate::_tags!(linux term)]
-    /// [`LinuxTermios`][crate::LinuxTermios] local flags.
+    /// [`LinuxTermios`] local flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/linux/io/term"),
         test_size_of(LinuxTermiosLocalFlags = 4|32),

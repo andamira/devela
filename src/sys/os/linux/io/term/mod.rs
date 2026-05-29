@@ -7,21 +7,21 @@
 //! for terminal-backed file descriptors.
 //
 
-mod _raw; // (LINUX_TERMIOS_<I|O|C|L>FLAG)
+mod _raw; // (LINUX_TERMIOS_<I|O|C|L>FLAG, LINUX_TERMIOS_CC)
 
-// mod cc; // LinuxTermiosCc
+mod termios; // LinuxTermios, LinuxTermiosCharSize
 mod flags; // LinuxTermios<Input|Output|Control|Local>Flags
-mod termios; // LinuxTermios
+mod cc; // LinuxTermiosCc
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            // cc::*,
-            flags::*,
             termios::*,
+            flags::*,
+            cc::*,
         };
     }
     _crate_internals {
-        pub(crate) use super::_raw::*;
+        pub(crate) use super::_raw::_crate_internals::*;
     }
 }
