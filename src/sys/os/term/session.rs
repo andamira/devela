@@ -3,6 +3,8 @@
 //! Defines [`TermSession`], [`TermMode`].
 //
 
+use crate::TermLineMode;
+
 #[doc = crate::_tags!(term guard)]
 /// Scoped terminal session guard.
 #[doc = crate::_doc_meta!{location("sys/os/term/session")}]
@@ -51,81 +53,126 @@ crate::set! {
     pub struct TermMode(u16) {
         /* line discipline */
 
-        /// Raw line discipline.
-        RAW                 = 0;
+        /// Event-oriented input with normal terminal behavior mostly preserved.
+        EVENT               = 0;
+        /// Raw byte-oriented input with most terminal processing disabled.
+        RAW                 = 1;
 
         /* presentation */
 
         /// Alternate screen buffer.
-        ALT_SCREEN          = 1;
+        ALT_SCREEN          = 2;
         /// Hidden cursor.
-        HIDE_CURSOR         = 2;
+        HIDE_CURSOR         = 3;
         /// Clear terminal on session entry.
-        CLEAR_ON_ENTER      = 3;
+        CLEAR_ON_ENTER      = 4;
         /// Clear terminal on session drop.
-        CLEAR_ON_DROP       = 4;
+        CLEAR_ON_DROP       = 5;
         /// Reset styling on session drop.
-        RESET_STYLE_ON_DROP = 5;
+        RESET_STYLE_ON_DROP = 6;
 
         /* input reporting */
 
         /// Bracketed paste reporting.
-        BRACKETED_PASTE     = 6;
+        BRACKETED_PASTE     = 7;
         /// Focus in/out reporting.
-        FOCUS_EVENTS        = 7;
+        FOCUS_EVENTS        = 8;
         /// Mouse button press/release reporting.
-        MOUSE = 8;
-        /// Mouse drag reporting while a button is held.
-        MOUSE_DRAG = 9;
-        /// Mouse motion reporting, including movement without buttons.
-        MOUSE_MOTION = 10;
+        MOUSE               = 9;
+        /// Mouse drag reporting.
+        MOUSE_DRAG          = 10;
+        /// Mouse motion reporting.
+        MOUSE_MOTION        = 11;
         /// SGR mouse encoding, with cell coordinates.
-        MOUSE_SGR = 11;
+        MOUSE_SGR           = 12;
         /// SGR mouse encoding, with pixel coordinates.
-        MOUSE_SGR_PIXELS = 12;
+        MOUSE_SGR_PIXELS    = 13;
 
         /* output transaction */
 
         /// Synchronized terminal output updates.
-        SYNC_UPDATE         = 13;
+        SYNC_UPDATE         = 14;
 
         /* future/protocol possible extensions */
 
         // /// Kitty progressive keyboard protocol.
-        // KITTY_KEYBOARD      = 14;
+        // KITTY_KEYBOARD      = 15;
         // /// Kitty drag-and-drop protocol support.
-        // KITTY_DND           = 15;
+        // KITTY_DND           = 16;
+    }
+    /// # Line mode accessors
+    impl {
+        /// Traditional name for `EVENT`.
+        pub const CBREAK: Self = Self::EVENT;
+
+        /// Returns the requested terminal line mode.
+        #[must_use]
+        pub const fn line_mode(self) -> TermLineMode {
+            if self.has(Self::RAW) {
+                TermLineMode::Raw
+            } else if self.has(Self::EVENT) {
+                TermLineMode::Event
+            } else {
+                TermLineMode::Line
+            }
+        }
+        /// Returns `self` with the requested terminal line mode.
+        #[must_use]
+        pub const fn with_line_mode(self, mode: TermLineMode) -> Self {
+            let mode_cleared = self.without(Self::RAW).without(Self::EVENT);
+            match mode {
+                TermLineMode::Line => mode_cleared,
+                TermLineMode::Event => mode_cleared.with(Self::EVENT),
+                TermLineMode::Raw => mode_cleared.with(Self::EVENT).with(Self::RAW),
+            }
+        }
     }
     /// # Preset constructors
     impl {
-        /// Returns a normal terminal session request.
+        /// Returns a line-buffered terminal session request.
         #[must_use]
-        pub const fn default_mode() -> Self {
-            Self::new()
-        }
-        /// Returns a raw line discipline terminal session request.
+        pub const fn line() -> Self { Self::new() }
+
+        /// Returns an event-oriented terminal session request.
         #[must_use]
-        pub const fn raw() -> Self {
-            Self::new().with(Self::RAW)
+        pub const fn event() -> Self { Self::new().with_line_mode(TermLineMode::Event) }
+
+        /// Returns a raw terminal session request.
+        #[must_use]
+        pub const fn raw() -> Self { Self::new().with_line_mode(TermLineMode::Raw) }
+
+        /// Returns an editor-like event-oriented terminal session request.
+        ///
+        /// Enables bracketed paste and focus reporting, and resets styling on drop.
+        #[must_use]
+        pub const fn editor() -> Self {
+            Self::event()
+                .with(Self::BRACKETED_PASTE)
+                .with(Self::FOCUS_EVENTS)
+                .with(Self::RESET_STYLE_ON_DROP)
         }
         /// Returns an editor-like raw terminal session request.
+        ///
+        /// Like [`editor`][Self::editor], but control characters are delivered as input
+        /// instead of terminal-generated signals.
+        #[must_use]
         pub const fn raw_editor() -> Self {
             Self::raw()
                 .with(Self::BRACKETED_PASTE)
                 .with(Self::FOCUS_EVENTS)
                 .with(Self::RESET_STYLE_ON_DROP)
         }
-        /// Returns a full-screen terminal application session request.
-        pub const fn fullscreen_app() -> Self {
-            Self::raw_editor()
-                .with(Self::ALT_SCREEN)
+    }
+
+    /// # Preset modifiers
+    impl {
+        /// Returns `self` with full-screen presentation flags.
+        pub const fn fullscreen(self) -> Self {
+            self.with(Self::ALT_SCREEN)
                 .with(Self::HIDE_CURSOR)
                 .with(Self::CLEAR_ON_ENTER)
                 .with(Self::RESET_STYLE_ON_DROP)
         }
-    }
-    /// # Preset modifiers
-    impl {
         /// Returns `self` with normal mouse press/release reporting.
         ///
         /// Uses SGR cell-coordinate encoding. Mouse motion is not enabled.

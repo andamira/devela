@@ -13,7 +13,7 @@ use devela::*;
 fn main() -> LinuxResult<()> {
     let mut term = TermLinux::open()?;
     let caps = term.probe_capabilities()?;
-    let _session = term.session(TermMode::fullscreen_app().mouse())?;
+    let _session = term.session(TermMode::editor().mouse())?;
 
     term.print(b"TermLinux raw session\r\n")?;
     println!("size: {:?}", term.size());
@@ -31,6 +31,5 @@ fn main() -> LinuxResult<()> {
             }
         }
     }
-
     Ok(())
 }
