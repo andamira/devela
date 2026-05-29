@@ -419,6 +419,7 @@
   - `from_utf8_bytes_with_len_unchecked` to `from_utf8_prefix_unchecked`.
   - `decode_utf8` to `_from_utf8_prefix_trusted`.
 
+## ui
 ### ui::event
 - new types: `EventButtons`, `EventTagSet`, `EventWheelUnit`.
 - new alias `EventKindTimed`.
@@ -428,6 +429,7 @@
 - remove the `timestamp` field from: `EventKey`, `EventKeyFfi`, `EventMouse`, `EventPointer`, `EventWheel`.
 - update `EventMouse`:
   - change the `buttons` field to use `EventButtons`.
+  - add a `mods` field.
 - update `EventButtonState`: make `Pressed` the default.
 - update `Event`:
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
@@ -441,8 +443,10 @@
 - update `EventKind`:
   - add `Wheel` variant.
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
+- update `EventPointer`:
+  - add fields: `buttons`, `mods`.
 - update `EventWheel`:
-  - add fields: `unit`, `buttons`.
+  - add fields: `unit`, `buttons`, `mods`.
   - add many convenience methods.
 
 ## work

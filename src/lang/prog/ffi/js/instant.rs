@@ -8,7 +8,10 @@ use crate::{js_number, js_uint32};
 
 #[doc = crate::_tags!(runtime time)]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js"),
+    test_size_of(JsInstant = 8|64),
+}]
 ///
 /// The internal representation is a double-precision floating-point millisecond value.
 #[repr(C)]
@@ -63,7 +66,10 @@ mod impls {
 
 #[doc = crate::_tags!(runtime time uid)]
 /// A handle to a JavaScript timeout.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js"),
+    test_size_of(JsTimeout = 4|32),
+}]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
 #[repr(C)]

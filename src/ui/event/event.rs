@@ -13,7 +13,7 @@ use crate::{
 /// A fully-typed event with optional timing and metadata.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
-    test_size_of(Event = 56|448; niche Option),
+    test_size_of(Event = 64|512; niche Option),
 }]
 ///
 /// `Event` separates three notions of time/state:

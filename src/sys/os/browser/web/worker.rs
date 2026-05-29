@@ -15,7 +15,10 @@ use crate::{AsyncPoll, Web, js_uint32};
 
 #[doc = crate::_tags!(web uid)]
 /// A handle to a JavaScript Web Worker.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web"),
+    test_size_of(WebWorker = 4|32),
+}]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
 #[repr(transparent)]

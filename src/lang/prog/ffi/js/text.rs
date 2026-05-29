@@ -6,7 +6,10 @@ use crate::Web;
 
 #[doc = crate::_tags!(runtime text layout)]
 /// Text Metrics.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js"),
+    test_size_of(JsTextRenderMetrics = 12|96),
+}]
 ///
 /// Represents the size of rendered text, measured by [`Web::measure_text`].
 ///
@@ -24,7 +27,10 @@ pub struct JsTextRenderMetrics {
 
 #[doc = crate::_tags!(runtime text layout)]
 /// Full Text Metrics.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js"),
+    test_size_of(JsTextRenderMetricsFull = 48|384),
+}]
 ///
 /// Represents the size of rendered text, measured by [`Web::measure_text_full`].
 ///

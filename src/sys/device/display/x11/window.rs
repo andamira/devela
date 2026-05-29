@@ -18,7 +18,11 @@ pub(crate) struct XWindowState {
 
 #[doc = crate::_tags!(unix uid guard)]
 /// X11 top-level drawable host and presentation target.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(XWindow = 16|128),
+}]
 ///
 /// Represents a top-level window backed by an X11 drawable. Holds the XCB identifiers
 /// required to manage the window, its graphics context, and its basic geometry.

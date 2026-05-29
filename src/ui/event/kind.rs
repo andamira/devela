@@ -70,9 +70,9 @@ impl Default for EventTag {
 #[doc = crate::_doc_meta!{
     location("ui/event"),
     #[cfg(not(feature = "alloc"))]
-    test_size_of(EventKindTimed = 36|288; niche Option),
-    #[cfg(feature = "alloc")]
     test_size_of(EventKindTimed = 40|320; niche Option),
+    #[cfg(feature = "alloc")]
+    test_size_of(EventKindTimed = 48|384; niche Option),
 }]
 pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 
@@ -80,7 +80,10 @@ pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 /// An enumeration of concrete event variants.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
-    test_size_of(EventKind = 32|256; niche Option),
+    #[cfg(not(feature = "alloc"))]
+    test_size_of(EventKind = 36|288; niche Option),
+    #[cfg(feature = "alloc")]
+    test_size_of(EventKind = 40|320; niche Option),
 }]
 ///
 /// High-level, typed grouping of input and window interactions.

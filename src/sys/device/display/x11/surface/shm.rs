@@ -23,7 +23,11 @@ pub(crate) struct XShmCaps {
 
 #[doc = crate::_tags!(unix runtime)]
 /// MIT-SHM-backed pixel buffer for X11 image upload.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(XShmBuffer = 48|384),
+}]
 ///
 /// Owns one shared-memory mapping together with the X11 SHM segment attachment
 /// used to upload image bytes efficiently.

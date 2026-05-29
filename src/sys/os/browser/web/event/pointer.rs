@@ -8,7 +8,11 @@ use crate::sys::os::browser::WebEventKind;
 
 #[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(WebEventMouse = 32|256; niche Option),
+}]
 ///
 /// Represents a JavaScript mouse event containing relevant properties.
 ///
@@ -97,6 +101,7 @@ mod impls {
     use crate::{
         EventButton, EventButtons, EventButtonState, EventKind, EventKindTimed, EventMouse,
         EventTimestamp, JsInstant, NonZeroU8, Timed, WebEventKind, WebEventMouse, is, js_number,
+        KeyMods,
     };
 
     /* mouse */
@@ -110,6 +115,7 @@ mod impls {
                 button: EventButton::from_web(self.button),
                 state: EventButtonState::from_web(self.etype),
                 buttons: EventButtons::from_bits(self.buttons),
+                mods: KeyMods::empty(), // TEMP
             });
             let timestamp = Some(EventTimestamp::from_js(self.timestamp));
             EventKindTimed::new(kind, timestamp)

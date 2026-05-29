@@ -24,7 +24,7 @@ pub(crate) enum TermInputState {
 }
 _impl_init! { Self::Ground => TermInputState }
 
-crate::test_size_of!(TermParsed = 32 | 256);
+crate::test_size_of!(TermParsed = 40 | 320);
 /// Internal parser result.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) enum TermParsed {

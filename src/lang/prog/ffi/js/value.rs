@@ -10,7 +10,11 @@ use devela::{js_bool, js_number, js_uint32};
 
 #[doc = crate::_tags!(runtime value)]
 /// A JavaScript value for FFI communication.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(JsValue = 24|192; niche Option),
+}]
 #[non_exhaustive]
 #[derive(Clone, Debug, PartialEq)]
 #[allow(missing_docs)]

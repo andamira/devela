@@ -5,13 +5,17 @@
 
 use crate::lang::prog::ffi::js::{JsInstant, js_number};
 use crate::ui::event::{
-    EventButtons, EventKind, EventKindTimed, EventTimestamp, EventWheel, EventWheelUnit,
+    EventButtons, EventKind, EventKindTimed, EventTimestamp, EventWheel, EventWheelUnit, KeyMods,
 };
 use crate::{Timed, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Wheel Event.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web"),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(WebEventWheel = 48|384; niche Option),
+}]
 ///
 /// Represents a JavaScript wheel event with browser-native deltas and unit.
 ///
@@ -69,6 +73,7 @@ impl WebEventWheel {
             x: self.x as i32,
             y: self.y as i32,
             buttons: EventButtons::from_bits(self.buttons),
+            mods: KeyMods::empty(), // TEMP
         });
         let timestamp = Some(EventTimestamp::from_js(self.timestamp));
         EventKindTimed::new(kind, timestamp)

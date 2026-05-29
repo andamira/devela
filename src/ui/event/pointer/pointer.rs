@@ -4,7 +4,7 @@
 //! [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //
 
-use crate::{_impl_init, NonZeroU8, f32bits_niche, set, unwrap};
+use crate::{_impl_init, KeyMods, NonZeroU8, f32bits_niche, set, unwrap};
 
 /* definitions */
 
@@ -12,7 +12,7 @@ use crate::{_impl_init, NonZeroU8, f32bits_niche, set, unwrap};
 /// Represents a basic mouse event.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
-    test_size_of(EventMouse = 12|96; niche Option),
+    test_size_of(EventMouse = 16|128; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventMouse {
@@ -22,18 +22,22 @@ pub struct EventMouse {
     pub y: i32,
     /// The mouse button involved in the event.
     pub button: Option<EventButton>,
-    /// The state of the mouse button (pressed, released, moved).
+    /// The state of the mouse button (Pressed, Released, Moved).
     pub state: EventButtonState,
     /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
     pub buttons: EventButtons,
+    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    pub mods: KeyMods,
 }
-_impl_init! { Self::new(0, 0, None, EventButtonState::INIT, EventButtons::INIT) => EventMouse }
+_impl_init! {
+    Self::new(0, 0, None, EventButtonState::INIT, EventButtons::INIT, KeyMods::INIT) => EventMouse
+}
 #[rustfmt::skip]
 impl EventMouse {
-    /// Returns a normalized wheel-scroll event.
+    /// Returns a normalized mouse event.
     pub const fn new(x: i32, y: i32, button: Option<EventButton>,
-        state: EventButtonState, buttons: EventButtons,) -> Self {
-        Self { x, y, button, state, buttons }
+        state: EventButtonState, buttons: EventButtons, mods: KeyMods) -> Self {
+        Self { x, y, button, state, buttons, mods }
     }
 }
 
@@ -41,8 +45,7 @@ impl EventMouse {
 /// Represents a pointer event (mouse, touch, or pen).
 #[doc = crate::_doc_meta!{
     location("ui/event"),
-    test_size_of(EventPointer = 32|256; niche Option),
-    // test_size_of(EventPointer = 40|320; niche Option), // FUTURE with phase
+    test_size_of(EventPointer = 36|288; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
@@ -68,21 +71,29 @@ pub struct EventPointer {
     pub twist: u16,
     /// The button involved.
     pub button: Option<EventButton>,
-    /// The state of the pointer (pressed, released, moved).
+    /// The state of the pointer (Pressed, Released, Moved).
     pub state: EventButtonState,
+    /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
+    pub buttons: EventButtons,
+    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    pub mods: KeyMods,
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,
 }
-_impl_init! { Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0,
-f32bits_niche::INIT, 0, 0, 0, None, EventButtonState::INIT) => EventPointer }
+_impl_init! {
+    Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0, f32bits_niche::INIT, 0, 0, 0, None,
+    EventButtonState::INIT, EventButtons::INIT, KeyMods::INIT) => EventPointer
+}
 #[rustfmt::skip]
 impl EventPointer {
-    /// Returns a normalized wheel-scroll event.
+    /// Returns a normalized pointer event.
     #[allow(clippy::too_many_arguments)]
     pub const fn new(kind: EventPointerType, id: u32, x: i32, y: i32, dx: i32, dy: i32,
-        pressure: f32bits_niche, tilt_x: i8, tilt_y: i8, twist: u16,
-        button: Option<EventButton>, state: EventButtonState) -> Self {
-        Self { kind, id, x, y, dx, dy, pressure, tilt_x, tilt_y, twist, button, state }
+        pressure: f32bits_niche, tilt_x: i8, tilt_y: i8, twist: u16, button: Option<EventButton>,
+        state: EventButtonState, buttons: EventButtons, mods: KeyMods) -> Self {
+        Self {
+            kind, id, x, y, dx, dy, pressure, tilt_x, tilt_y, twist, button, state, buttons, mods
+        }
     }
     /// Gets the pressure.
     pub const fn get_pressure(&self) -> f32 {

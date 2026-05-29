@@ -189,7 +189,16 @@ impl TermInputParser {
             3 => (1, 0),  // wheel right
             _ => return None,
         };
-        Some(EventWheel::new(delta_x, delta_y, EventWheelUnit::Step, x, y, EventButtons::new()))
+        let mods = KeyMods::empty(); // TEMP
+        Some(EventWheel::new(
+            delta_x,
+            delta_y,
+            EventWheelUnit::Step,
+            x,
+            y,
+            EventButtons::new(),
+            mods,
+        ))
     }
     const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
         // wheel events are normalized separately as EventWheel
@@ -224,7 +233,8 @@ impl TermInputParser {
             }
             _ => EventButtons::new(),
         };
-        Some(EventMouse::new(x, y, button, state, buttons))
+        let mods = KeyMods::empty(); // TEMP
+        Some(EventMouse::new(x, y, button, state, buttons, mods))
     }
 
     /* misc. helpers */

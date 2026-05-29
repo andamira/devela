@@ -3,7 +3,7 @@
 //! Defines [`EventWheel`] [`EventWheelUnit`].
 //
 
-use crate::{_impl_init, EventButtons, Position2};
+use crate::{_impl_init, EventButtons, KeyMods, Position2};
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents a normalized wheel-scroll event.
@@ -38,16 +38,20 @@ pub struct EventWheel {
     pub x: i32,
     /// The x-coordinate of the cursor during the event.
     pub y: i32,
-    /// A bitmask of currently pressed buttons.
+    /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle, …, …).
     pub buttons: EventButtons,
+    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    pub mods: KeyMods,
 }
-_impl_init! { Self::new(0, 0, EventWheelUnit::INIT, 0, 0, EventButtons::INIT) => EventWheel }
+_impl_init! {
+    Self::new(0, 0, EventWheelUnit::INIT, 0, 0, EventButtons::INIT, KeyMods::INIT) => EventWheel
+}
 #[rustfmt::skip]
 impl EventWheel {
     /// Returns a normalized wheel-scroll event.
     pub const fn new(delta_x: i32, delta_y: i32, unit: EventWheelUnit,
-        x: i32, y: i32, buttons: EventButtons) -> Self {
-        Self { delta_x, delta_y, unit, x, y, buttons }
+        x: i32, y: i32, buttons: EventButtons, mods: KeyMods) -> Self {
+        Self { delta_x, delta_y, unit, x, y, buttons, mods }
     }
 
     /// Returns both normalized scroll deltas as `(x, y)`.
