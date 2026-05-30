@@ -212,9 +212,28 @@ impl XkbState {
         // XkbKeyInfo::new(self.key_semantic(keycode), self.key_physical(keycode), self.key_mods())
     }
 
-    // WAIT: until libxkbcommon ≥ 1.12 becomes widely deployed.
-    // NOTE: https://github.com/xkbcommon/libxkbcommon/issues/583
-    // #[inline(always)]
+    // WAIT:XKB-MODS INFO: https://github.com/xkbcommon/libxkbcommon/issues/583
+    //
+    // Currently we derive KeyMods from the raw X11 event `state` mask because
+    // widely deployed distro versions may still carry libxkbcommon < 1.8/1.10.
+    //
+    // - >= 1.8.0: fixes xkbcommon#583, where modifiers could remain
+    //   permanently set after latch interactions, and improves virtual-modifier
+    //   queries through xkb_state_mod_* APIs.
+    // - >= 1.10.0: modifier masks are explicitly treated as opaque by upstream;
+    //   callers should query modifier state through xkbcommon APIs instead of
+    //   interpreting raw mask bits.
+    // - >= 1.12.x / 1.13.x: safe practical target once common stable distro
+    //   releases ship it without backports.
+    //
+    // Check readiness by verifying the stable package versions of:
+    // Debian stable, Ubuntu LTS/current, Fedora stable, Arch, Alpine stable.
+    // Also add a build-script/pkg-config probe before switching unconditionally.
+    //
+    // Intended replacement:
+    // - cache XkbModIndices from the keymap;
+    // - use xkb_state_mod_index_is_active(..., XKB_STATE_MODS_EFFECTIVE);
+    // - make translate_key(keycode) no longer receive the raw X11 state mask.
     // pub fn key_mods(&self) -> KeyMods {
     //     let mut m = KeyMods::empty();
     //     // basic modifiers
@@ -231,7 +250,7 @@ impl XkbState {
     //     if self.mod_active(self.mod_idx.level5)  { m.set_level5(); }
     //     m
     // }
-    // helper to check effective modifier state
+    // // helper to check effective modifier state
     // #[inline(always)]
     // fn mod_active(&self, idx: u32) -> bool {
     //     idx != _raw::XKB_MOD_INVALID && unsafe {
@@ -239,17 +258,24 @@ impl XkbState {
     //             _raw::xkb_state_component::XKB_STATE_MODS_EFFECTIVE) } != 0
     // }
 
-    /// Converts an X11 modifier bitmask into a [`KeyMods`] representation.
+    /// Converts an X11 core modifier bitmask into [`KeyMods`].
+    ///
+    /// This is a compatibility path. It interprets the conventional X11
+    /// modifier slots directly (`Mod1` ≈ Alt, `Mod4` ≈ Super, `Mod5` ≈ AltGr).
+    ///
+    /// Prefer the XKB effective-modifier path
+    /// once the minimum supported libxkbcommon version is high enough.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
         let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::empty());
         is![x.is_set_mask(_raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_CONTROL), m.set_control()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];
+        // X11 conventional modifier slots:
         is![x.is_set_mask(_raw::XCB_MOD_MASK_1), m.set_alt()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_2), m.set_num_lock()];
-        // is![x.is_set_mask(_raw::XCB_MOD_MASK_3), unimplemented!()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_3), m.set_scroll_lock()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_4), m.set_super()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_4), m.set_alt_gr()];
+        is![x.is_set_mask(_raw::XCB_MOD_MASK_5), m.set_alt_gr()];
         m
     }
 

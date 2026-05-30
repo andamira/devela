@@ -288,6 +288,8 @@
 - update `XDisplay`:
   - add fields: `image_format`, `shm_caps`.
   - add methods: `bits_per_pixel`, `scanline_pad_bits`, `bytes_per_line`, `has_shm`.
+  - correctly parse KeyMods for mouse and wheel events.
+- fix `XkbState::key_mods` conversion.
 - fix `XWindow::clear_redraw`.
 
 ### sys::env

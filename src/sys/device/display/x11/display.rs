@@ -349,7 +349,7 @@ impl XDisplay {
             let y = ev.event_y.into();
             let timestamp = xev.timestamp();
             let buttons = XEvent::map_button_mask(ev.state);
-            let mods = KeyMods::empty(); // TEMP
+            let mods = self.xkb.key_mods(ev.state);
             let unit = EventWheelUnit::Step;
             // X11 raw button 4..7 become EventWheel { unit: Step, ... }
             match ev.detail {
@@ -373,7 +373,7 @@ impl XDisplay {
         } else if let Some(ev) = xev.as_raw_motion() {
             let buttons = XEvent::map_button_mask(ev.state);
             let button = EventButton::primary_from_mask(buttons);
-            let mods = KeyMods::empty(); // TEMP
+            let mods = self.xkb.key_mods(ev.state);
             return Event::from_window(
                 ev.event,
                 Kind::Mouse(EventMouse {
