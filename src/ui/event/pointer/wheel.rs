@@ -38,9 +38,12 @@ pub struct EventWheel {
     pub x: i32,
     /// The x-coordinate of the cursor during the event.
     pub y: i32,
-    /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle, …, …).
+    /// A bitmask of currently pressed buttons.
     pub buttons: EventButtons,
-    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    /// Keyboard modifiers held during the event, when reported by the backend.
+    ///
+    /// Terminal backends may not report every modifier combination
+    /// because some are reserved by the terminal emulator.
     pub mods: KeyMods,
 }
 _impl_init! {

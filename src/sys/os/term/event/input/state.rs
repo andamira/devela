@@ -24,6 +24,9 @@ pub(crate) enum TermInputState {
 }
 _impl_init! { Self::Ground => TermInputState }
 
+#[cfg(not(feature = "alloc"))]
+crate::test_size_of!(TermParsed = 36 | 288);
+#[cfg(feature = "alloc")]
 crate::test_size_of!(TermParsed = 40 | 320);
 /// Internal parser result.
 #[derive(Clone, Debug, PartialEq, Eq)]

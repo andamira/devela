@@ -39,6 +39,19 @@ use crate::{_impl_init, EventKind, Key, TermInputState, TermParsed};
 /// - basic Control-letter combinations
 /// - common CSI navigation and editing keys
 /// - cursor-position and device-attribute replies, internally
+///
+/// # Terminal limits
+///
+/// Terminal input is normalized from the byte stream reported by the active
+/// terminal emulator. Some information may be unavailable because terminals
+/// often reserve key or mouse combinations for selection, menus, shortcuts, or
+/// scrollback behavior before the application receives them.
+///
+/// In SGR mouse mode, terminal reports can encode Shift, Alt/Meta, and Control
+/// modifier bits. `TermInputParser` preserves those bits when present, but
+/// applications should not assume every terminal will report every modifier
+/// combination. In particular, Shift-click and Control-click are commonly
+/// intercepted or repurposed by terminal emulators.
 #[derive(Clone, Debug, Default)]
 pub struct TermInputParser {
     pub(super) state: TermInputState,

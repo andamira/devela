@@ -24,9 +24,12 @@ pub struct EventMouse {
     pub button: Option<EventButton>,
     /// The state of the mouse button (Pressed, Released, Moved).
     pub state: EventButtonState,
-    /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
+    /// A bitmask of currently pressed buttons.
     pub buttons: EventButtons,
-    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    /// Keyboard modifiers held during the event, when reported by the backend.
+    ///
+    /// Terminal backends may not report every modifier combination
+    /// because some are reserved by the terminal emulator.
     pub mods: KeyMods,
 }
 _impl_init! {
@@ -73,9 +76,12 @@ pub struct EventPointer {
     pub button: Option<EventButton>,
     /// The state of the pointer (Pressed, Released, Moved).
     pub state: EventButtonState,
-    /// A bitmask of currently pressed buttons (`1`: left, `2`: right, `4`: middle).
+    /// A bitmask of currently pressed buttons.
     pub buttons: EventButtons,
-    /// A bitmask of currently pressed modifier keys (Shift, Alt, Control, …).
+    /// Keyboard modifiers held during the event, when reported by the backend.
+    ///
+    /// Terminal backends may not report every modifier combination
+    /// because some are reserved by the terminal emulator.
     pub mods: KeyMods,
     // /// The phase of the pointer (useful for touch events).
     // pub phase: EventPointerPhase,

@@ -167,6 +167,13 @@ impl TermInputParser {
         let cy = unwrap![some? Self::parse_u16(slice!(body, second + 1, ..))];
         Some((cb, cx, cy))
     }
+    const fn sgr_mouse_mods(cb: u16) -> KeyMods {
+        let mut mods = KeyMods::empty();
+        is! { cb & 4 != 0, mods.set_shift() }
+        is! { cb & 8 != 0, mods.set_alt() }
+        is! { cb & 16 != 0, mods.set_control() }
+        mods
+    }
     const fn sgr_pointer_event(cb: u16, cx: u16, cy: u16, released: bool) -> TermParsedCsi {
         if cb & 64 != 0 {
             let Some(wheel) = Self::wheel_sgr_event(cb, cx, cy) else {
@@ -189,7 +196,7 @@ impl TermInputParser {
             3 => (1, 0),  // wheel right
             _ => return None,
         };
-        let mods = KeyMods::empty(); // TEMP
+        let mods = Self::sgr_mouse_mods(cb);
         Some(EventWheel::new(
             delta_x,
             delta_y,
@@ -233,7 +240,7 @@ impl TermInputParser {
             }
             _ => EventButtons::new(),
         };
-        let mods = KeyMods::empty(); // TEMP
+        let mods = Self::sgr_mouse_mods(cb);
         Some(EventMouse::new(x, y, button, state, buttons, mods))
     }
 

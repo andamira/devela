@@ -12,7 +12,7 @@
 
 use super::TermInputParser;
 use crate::{EventButton, EventButtonState, EventButtons, EventMouse, EventWheel, EventWheelUnit};
-use crate::{EventKey, EventKind, Key, KeyState, pos};
+use crate::{EventKey, EventKind, Key, KeyMods, KeyState, pos};
 use crate::{TermParsed, TermReply};
 
 mod control {
@@ -166,6 +166,17 @@ mod csi_keys_replies {
         }
         assert_eq!(parsed, TermParsed::Reply(TermReply::DeviceAttributes));
     }
+    #[test]
+    fn csi_with_unexpected_final_byte_is_unknown_at_final_byte() {
+        let mut p = TermInputParser::new();
+        assert_eq!(p.feed_parsed(0x1b), TermParsed::Pending);
+        assert_eq!(p.feed_parsed(b'['), TermParsed::Pending);
+        assert_eq!(p.feed_parsed(b'<'), TermParsed::Pending);
+        // `x` is a valid CSI final-byte position, so the CSI sequence ends here.
+        assert_eq!(p.feed_parsed(b'x'), TermParsed::Unknown);
+        // Remaining bytes are ground input, not part of the malformed CSI anymore.
+        assert_eq!(p.feed_parsed(b';'), TermParsed::Event(TermInputParser::key(Key::Char(';'))));
+    }
 }
 mod ascii_utf8 {
     use super::*;
@@ -244,6 +255,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -255,6 +267,7 @@ mod mouse {
             Some(EventButton::Middle),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::MIDDLE),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -266,6 +279,7 @@ mod mouse {
             Some(EventButton::Right),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::RIGHT),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -277,6 +291,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Released,
             EventButtons::new(),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -288,6 +303,7 @@ mod mouse {
             None,
             EventButtonState::Released,
             EventButtons::new(),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -299,6 +315,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -310,6 +327,7 @@ mod mouse {
             Some(EventButton::Middle),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::MIDDLE),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -321,6 +339,7 @@ mod mouse {
             Some(EventButton::Right),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::RIGHT),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -332,6 +351,7 @@ mod mouse {
             None,
             EventButtonState::Moved,
             EventButtons::new(),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -343,6 +363,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty(),
         );
     }
     #[test]
@@ -353,43 +374,91 @@ mod mouse {
         assert_eq!(feed_parsed_seq(&mut p, b"\x1b[<0;10;20;30M"), TermParsed::Unknown,);
     }
     #[test]
-    fn csi_with_unexpected_final_byte_is_unknown_at_final_byte() {
-        let mut p = TermInputParser::new();
-        assert_eq!(p.feed_parsed(0x1b), TermParsed::Pending);
-        assert_eq!(p.feed_parsed(b'['), TermParsed::Pending);
-        assert_eq!(p.feed_parsed(b'<'), TermParsed::Pending);
-        // `x` is a valid CSI final-byte position, so the CSI sequence ends here.
-        assert_eq!(p.feed_parsed(b'x'), TermParsed::Unknown);
-        // Remaining bytes are ground input, not part of the malformed CSI anymore.
-        assert_eq!(p.feed_parsed(b';'), TermParsed::Event(TermInputParser::key(Key::Char(';'))));
+    fn sgr_mouse_shift_modifier() {
+        assert_sgr_mouse(
+            b"\x1b[<4;10;20M",
+            9,
+            19,
+            Some(EventButton::Left),
+            EventButtonState::Pressed,
+            EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty().with_shift(),
+        );
+    }
+    #[test]
+    fn sgr_mouse_alt_modifier() {
+        assert_sgr_mouse(
+            b"\x1b[<8;10;20M",
+            9,
+            19,
+            Some(EventButton::Left),
+            EventButtonState::Pressed,
+            EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty().with_alt(),
+        );
+    }
+    #[test]
+    fn sgr_mouse_control_modifier() {
+        assert_sgr_mouse(
+            b"\x1b[<16;10;20M",
+            9,
+            19,
+            Some(EventButton::Left),
+            EventButtonState::Pressed,
+            EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty().with_control(),
+        );
+    }
+    #[test]
+    fn sgr_mouse_combined_modifiers() {
+        assert_sgr_mouse(
+            b"\x1b[<28;10;20M", // 4 + 8 + 16
+            9,
+            19,
+            Some(EventButton::Left),
+            EventButtonState::Pressed,
+            EventButtons::new().with(EventButtons::LEFT),
+            KeyMods::empty().with_shift().with_alt().with_control(),
+        );
     }
 }
 mod wheel {
     use super::*;
     #[test]
     fn sgr_wheel_up() {
-        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19);
+        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19, KeyMods::empty());
     }
     #[test]
     fn sgr_wheel_down() {
-        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19);
+        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19, KeyMods::empty());
     }
     #[test]
     fn sgr_wheel_left() {
-        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19);
+        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19, KeyMods::empty());
     }
     #[test]
     fn sgr_wheel_right() {
-        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19);
+        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19, KeyMods::empty());
     }
     #[test]
     fn sgr_wheel_coordinates_are_normalized_to_zero_based() {
-        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0);
+        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0, KeyMods::empty());
     }
     #[test]
     fn sgr_wheel_release_final_is_still_parsed() {
         // Odd but harmless: the wheel family is identified by Cb, not by M/m.
-        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19);
+        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19, KeyMods::empty());
+    }
+    #[test]
+    fn sgr_wheel_with_shift_modifier() {
+        // 64 wheel + 4 shift + 0 up
+        assert_sgr_wheel(b"\x1b[<68;10;20M", 0, -1, 9, 19, KeyMods::empty().with_shift());
+    }
+
+    #[test]
+    fn sgr_wheel_with_control_modifier() {
+        // 64 wheel + 16 control + 1 down
+        assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KeyMods::empty().with_control());
     }
 }
 
@@ -443,6 +512,7 @@ mod _helper {
         button: Option<EventButton>,
         state: EventButtonState,
         buttons: EventButtons,
+        mods: KeyMods,
     ) {
         let mut p = TermInputParser::new();
         let m = mouse_from(feed_seq(&mut p, bytes).expect("expected mouse event"));
@@ -451,8 +521,16 @@ mod _helper {
         assert_eq!(m.button, button);
         assert_eq!(m.state, state);
         assert_eq!(m.buttons, buttons);
+        assert_eq!(m.mods, mods);
     }
-    pub(super) fn assert_sgr_wheel(bytes: &[u8], delta_x: i32, delta_y: i32, x: i32, y: i32) {
+    pub(super) fn assert_sgr_wheel(
+        bytes: &[u8],
+        delta_x: i32,
+        delta_y: i32,
+        x: i32,
+        y: i32,
+        mods: KeyMods,
+    ) {
         let mut p = TermInputParser::new();
         let w = wheel_from(feed_seq(&mut p, bytes).expect("expected wheel event"));
         assert_eq!(w.delta_x, delta_x);
@@ -461,5 +539,6 @@ mod _helper {
         assert_eq!(w.x, x);
         assert_eq!(w.y, y);
         assert_eq!(w.buttons, EventButtons::new());
+        assert_eq!(w.mods, mods);
     }
 }

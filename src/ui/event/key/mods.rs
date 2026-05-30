@@ -64,7 +64,7 @@ impl KeyMod {
 }]
 #[repr(transparent)]
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct KeyMods(u16);
+pub struct KeyMods(u16); // TODO implement with set!
 impl ConstInit for KeyMods {
     const INIT: Self = Self(0);
 }
@@ -128,6 +128,15 @@ impl KeyMods {
     pub const fn is_repeating(self) -> bool { self.0 & Self::REPEATING != 0 }
     /// Queries if a key event is composing (IME input).
     pub const fn is_composing(self) -> bool { self.0 & Self::COMPOSING != 0 }
+
+    /* with-* builders */
+
+    /// Returns self with the *Control* modifier inserted.
+    pub const fn with_control(mut self) -> Self { self.0 |= Self::CONTROL; self }
+    /// Returns self with the *Shift* modifier inserted.
+    pub const fn with_shift(mut self) -> Self { self.0 |= Self::SHIFT; self }
+    /// Returns self with the *Alt* modifier inserted.
+    pub const fn with_alt(mut self) -> Self { self.0 |= Self::ALT; self }
 
     /* setters */
 
