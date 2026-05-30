@@ -26,7 +26,7 @@
 ## workspace
 ### examples
 - new example scripts: `current_guard`, `otp`, `scope_guard`.
-- update the `term_linux` example.
+- update the examples: `term_linux`, `web_api`, `web_workers`.
 
 ### devela_macros
 - enable safety feature guards.
@@ -329,6 +329,8 @@
 - new type `WebEventWheel`.
 - update `WebEventKind`:
   - add `Wheel` variant, update associated values.
+- add new `mods` field to: `WebEventMouse`, `WebEventWheel` and `WebEventPointer`.
+- add new `button` and `buttons` fields to: `WebEventPointer`.
 - bring here impls from `ui::event`.
 - feature-gate with `event` the event-related impls.
 - rename all methods `[from|to]_js*` to `[from|to]_web*`.
@@ -433,6 +435,7 @@
   - change the `buttons` field to use `EventButtons`.
   - add a `mods` field.
 - update `EventButtonState`: make `Pressed` the default.
+- update `EventButton`, fix method `to_web`.
 - update `Event`:
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventTag`:
@@ -450,6 +453,7 @@
 - update `EventWheel`:
   - add fields: `unit`, `buttons`, `mods`.
   - add many convenience methods.
+- update `KeyMods`, add methods: `from_web`, `to_web`.
 
 ## work
 - new `work` submodules: `exec`, `plan`, `task`.

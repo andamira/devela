@@ -66,7 +66,7 @@ export async function initWasm(wasmPath, imports = {}) {
     if (selector === "document") return document;
     return document.querySelector(selector);
   }
-  // Helper function to map event names to `WebEventKind` indices, matching Rust's repr.
+  // Maps event names to `WebEventKind` indices, matching Rust's repr.
   function get_event_kind(eventName) {
     const eventMap = {
       "click": 1,
@@ -84,6 +84,21 @@ export async function initWasm(wasmPath, imports = {}) {
     };
     return eventMap[eventName] ?? 0; // Default to 255 for unknown events
   }
+  /** Returns KeyMods web bitmask for a DOM input event. */
+  const event_mods = (e) => {
+    let mods = 0;
+    if (e.ctrlKey)  mods |= 1 << 0;
+    if (e.shiftKey) mods |= 1 << 1;
+    if (e.altKey)   mods |= 1 << 2;
+    if (e.metaKey)  mods |= 1 << 3;
+    if (e.getModifierState) {
+      if (e.getModifierState("AltGraph"))   mods |= 1 << 4;
+      if (e.getModifierState("CapsLock"))   mods |= 1 << 5;
+      if (e.getModifierState("NumLock"))    mods |= 1 << 6;
+      if (e.getModifierState("ScrollLock")) mods |= 1 << 7;
+    }
+    return mods;
+  };
 
   /* Bindings */
 
@@ -173,11 +188,12 @@ export async function initWasm(wasmPath, imports = {}) {
         const event = str_decode(eventPtr, eventLen);
         const callback = (e) => {
           const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
-          const buttons = e.buttons; // Bitmask of currently held buttons
+          const buttons = e.buttons;
+          const mods = event_mods(e);
           const etype = get_event_kind(e.type);
           const time_stamp = e.timeStamp;
           wasm.exports.wasm_callback_mouse(callbackPtr,
-            button, buttons, e.clientX, e.clientY, etype, time_stamp);
+            e.clientX, e.clientY, button, buttons, mods, etype, time_stamp);
         };
         api_events._callbacks.set(callbackPtr, callback);
         element.addEventListener(event, callback);
@@ -187,14 +203,17 @@ export async function initWasm(wasmPath, imports = {}) {
         if (!element) { console.error(`Element not found for pointer listener`); return; }
         const event = str_decode(eventPtr, eventLen);
         const callback = (e) => {
+          const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
+          const buttons = e.buttons;
+          const mods = event_mods(e);
           const etype = get_event_kind(e.type);
           const time_stamp = e.timeStamp;
-          // NOTE: if we manage mouse events the mouse callback doesn't get triggered
+          // NOTE: if we manage mouse pointer events, the mouse callback doesn't get triggered
           if (e.pointerType !== "mouse") {
             e.preventDefault(); // STOP mouse event from firing
-            wasm.exports.wasm_callback_pointer(
-              callbackPtr, e.pointerId, e.clientX, e.clientY, e.pressure,
-              e.tiltX, e.tiltY, e.twist || 0, etype, time_stamp);
+            wasm.exports.wasm_callback_pointer(callbackPtr,
+              e.pointerId, e.clientX, e.clientY, e.pressure,
+              e.tiltX, e.tiltY, e.twist || 0, button, button, mods, etype, time_stamp);
           }
         };
         api_events._callbacks.set(callbackPtr, callback);
@@ -206,6 +225,7 @@ export async function initWasm(wasmPath, imports = {}) {
         const event = str_decode(eventPtr, eventLen);
         const callback = (e) => {
             const buttons = e.buttons;
+            const mods = event_mods(e);
             const time_stamp = e.timeStamp;
             wasm.exports.wasm_callback_wheel(
               callbackPtr, e.clientX, e.clientY, e.deltaX, e.deltaY,

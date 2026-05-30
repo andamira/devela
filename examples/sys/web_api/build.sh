@@ -28,9 +28,18 @@ echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""
 echo "$ $BUILD_CMD"
 #
 export RUSTFLAGS=$RUSTFLAGS
-# IMPROVE: show compiler errors
-WASM_PATH=$(${BUILD_CMD} --message-format=json \
-	| jq -r 'select(.filenames != null) | .filenames[] | select(endswith(".wasm"))' )
+
+BUILD_JSON="$(mktemp)"
+trap 'rm -f "$BUILD_JSON"' EXIT
+if ! ${BUILD_CMD} --message-format=json-diagnostic-rendered-ansi > "$BUILD_JSON"; then
+	jq -r 'select(.reason == "compiler-message") | .message.rendered // empty' "$BUILD_JSON" >&2
+	exit 1
+fi
+WASM_PATH="$(jq -r '
+	select(.reason == "compiler-artifact" and .filenames != null)
+	| .filenames[]
+	| select(endswith(".wasm"))
+' "$BUILD_JSON" | tail -n 1)"
 
 
 # WEB DIR

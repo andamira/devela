@@ -13,7 +13,6 @@ use crate::{Timed, is};
 /// A web API Wheel Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
-    #[cfg(target_pointer_width = "64")]
     test_size_of(WebEventWheel = 48|384; niche Option),
 }]
 ///
@@ -36,19 +35,23 @@ use crate::{Timed, is};
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct WebEventWheel {
     /// The X-coordinate of the wheel event relative to the viewport.
-    pub x: js_number,
+    pub x: js_number, // 8 bytes
     /// The Y-coordinate of the wheel event relative to the viewport.
-    pub y: js_number,
+    pub y: js_number, // 8 bytes
     /// The horizontal wheel delta reported by the browser.
-    pub delta_x: js_number,
+    pub delta_x: js_number, // 8 bytes
     /// The vertical wheel delta reported by the browser.
-    pub delta_y: js_number,
+    pub delta_y: js_number, // 8 bytes
+
     /// A bitmask of currently held buttons during the wheel event.
-    pub buttons: u8,
+    pub buttons: u8, // 1 byte
+    /// A bitmask of active keyboard modifiers during the mouse event.
+    pub mods: KeyMods, // 2 bytes
     /// The browser-reported unit associated to `delta_x` and `delta_y`.
-    pub unit: EventWheelUnit,
+    pub unit: EventWheelUnit, // 1 byte
+    // 4 byte gap
     /// The JavaScript event timestamp.
-    pub timestamp: JsInstant,
+    pub timestamp: JsInstant, // 8 bytes
 }
 impl WebEventWheel {
     /// Returns a new [`WebEventWheel`].
@@ -58,10 +61,20 @@ impl WebEventWheel {
         delta_x: js_number,
         delta_y: js_number,
         buttons: u8,
+        mods: KeyMods,
         unit: EventWheelUnit,
         timestamp: JsInstant,
     ) -> Self {
-        Self { x, y, delta_x, delta_y, buttons, unit, timestamp }
+        Self {
+            x,
+            y,
+            delta_x,
+            delta_y,
+            buttons,
+            mods,
+            unit,
+            timestamp,
+        }
     }
 
     /// Converts `WebEventWheel` to `EventKindTimed`.
@@ -73,7 +86,7 @@ impl WebEventWheel {
             x: self.x as i32,
             y: self.y as i32,
             buttons: EventButtons::from_bits(self.buttons),
-            mods: KeyMods::empty(), // TEMP
+            mods: self.mods,
         });
         let timestamp = Some(EventTimestamp::from_js(self.timestamp));
         EventKindTimed::new(kind, timestamp)
@@ -90,6 +103,7 @@ impl WebEventWheel {
             delta_x: from.value.delta_x as js_number,
             delta_y: from.value.delta_y as js_number,
             buttons: from.value.buttons.bits(),
+            mods: from.value.mods,
             unit: from.value.unit,
             timestamp,
         }

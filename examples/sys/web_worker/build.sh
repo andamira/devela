@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela::examples::sys::web_worker::build.sh
+# devela/examples/sys/web_worker/build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -16,21 +16,30 @@ WASM_NAME="${CRATE_NAME}.wasm"
 JS_LIB_DIR="../../../src/sys/os/browser/web/api/"
 JS_LIB_NAME="web_api.js"
 # JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/sys/os/browser/web/api/${JS_LIB_NAME}"
-
 PROFILE="release"
 WEB_DIR="./public_html/"
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
 
-cargo build --profile release --target wasm32-unknown-unknown
+rustup target add wasm32-unknown-unknown
 
 # BUILD
 echo "$ export RUSTFLAGS=\"$RUSTFLAGS\""
 echo "$ $BUILD_CMD"
 #
 export RUSTFLAGS=$RUSTFLAGS
-WASM_PATH=$(${BUILD_CMD} --message-format=json \
-	| jq -r 'select(.filenames != null) | .filenames[] | select(endswith(".wasm"))' )
+
+BUILD_JSON="$(mktemp)"
+trap 'rm -f "$BUILD_JSON"' EXIT
+if ! ${BUILD_CMD} --message-format=json-diagnostic-rendered-ansi > "$BUILD_JSON"; then
+	jq -r 'select(.reason == "compiler-message") | .message.rendered // empty' "$BUILD_JSON" >&2
+	exit 1
+fi
+WASM_PATH="$(jq -r '
+	select(.reason == "compiler-artifact" and .filenames != null)
+	| .filenames[]
+	| select(endswith(".wasm"))
+' "$BUILD_JSON" | tail -n 1)"
 
 
 # WEB DIR
