@@ -44,9 +44,6 @@ pub use devela_macros as macros;
 _reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
 }
-_reexport! { optional_crate (unsafe) "dep_bytemuck", "bytemuck", bytemuck,
-    doc: "Small utilities for casting between plain data types."
-}
 _reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust's standard `HashMap` and `HashSet`.",
     features: "alloc"

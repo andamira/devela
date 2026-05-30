@@ -2,7 +2,6 @@
 //
 //! Defines [`MemPod`].
 //
-// See also: <https://docs.rs/bytemuck/latest/bytemuck/trait.Pod.html>
 
 use ::core::{mem::MaybeUninit, num::*};
 

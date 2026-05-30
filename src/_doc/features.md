@@ -245,10 +245,7 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `dep_all`: enables all the optional dependencies.
 
 There are also the following groups of dependencies:
-- `alloc_deps`: enables: `alloc`, `dep_allocator_api2`.
-- `linux_deps`: enables: `linux`, `dep_atomic`, `dep_bytemuck`, `dep_nc`, `dep_rustix`.
-- `text_deps`: enables: `text`, `dep_const_str`, `dep_memchr`, `dep_regex_lite`, `dep_stringzilla`, `dep_unicode_segmentation`, `dep_unicode_width`.
-- `work_deps`: enables `work`, `dep_atomic`, `dep_portable_atomic`, `dep_rayon`, `dep_tokio`.
+- `work_deps`: enables `work`, `dep_atomic`, `dep_portable_atomic`.
 
 
 ### Nightly flags

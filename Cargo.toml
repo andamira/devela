@@ -192,13 +192,13 @@ __force_miri_dst = [] # inhibits disabling miri on several modules
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	"bytemuck?/extern_crate_alloc", "jiff?/alloc",
+	"jiff?/alloc",
 	"memchr?/alloc", "portable-atomic-util?/alloc",
 	"serde?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "log?/std",
+	"atomic?/std", "jiff?/std", "log?/std",
 	"memchr?/std", "portable-atomic-util?/std", "raw-cpuid?/std",
 	"serde?/std", "simdutf8?/std", "wide?/std",
 ]
@@ -291,10 +291,7 @@ vita = []
 ui = ["event", "layout"]
 	event = []
 	layout = []
-work = [
-	"process", "sync", "thread",
-	"bytemuck?/zeroable_atomics",
-]
+work = ["process", "sync", "thread"]
 	# exec
 		process = []
 		thread = []
@@ -515,7 +512,7 @@ _linux_abi = [] # constants, repr structs, syscall vocabulary
 
 # In sync with ./build/main/dep_all & ./src/yard/_dep.rs
 dep_all = [ # enables all 13 optional external dependencies:
-	"dep_atomic", "dep_bytemuck",
+	"dep_atomic",
 	"dep_hashbrown", "dep_jiff",
 	"dep_memchr",
 	"dep_portable_atomic", "dep_portable_atomic_util",
@@ -530,7 +527,6 @@ work_deps  = ["work", "dep_atomic", "dep_portable_atomic"]
 
 # individual dependencies features
 dep_atomic = ["dep:atomic"]                                                       # work::sync
-dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                            # sys::mem
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									  # data::key
 dep_jiff = ["dep:jiff", "alloc"]                                                  # phys::time
 dep_log = ["dep:log"]                                                             # sys::log
@@ -563,10 +559,9 @@ dep_wide = ["dep:wide"]                                                         
 
 devela_macros = { workspace = true }
 
-#* optional external dependencies (14opt) *#
+#* optional external dependencies (13opt) *#
 
 atomic = { workspace = true, optional = true }
-bytemuck = { workspace = true, optional = true }
 hashbrown = { workspace = true, optional = true }
 jiff = { workspace = true, optional = true }
 log = { workspace = true, optional = true }
@@ -593,12 +588,6 @@ devela_macros      = { version = "0.28.0-wip", path = "./crates/macros" }
 version = "0.6.1" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
 default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
-
-[workspace.dependencies.bytemuck] # https://crates.io/crates/bytemuck (unsafe)
-version = "1.25" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
-default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
-features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
-	"zeroable_maybe_uninit"]
 
 [workspace.dependencies.hashbrown] # https://crates.io/crates/hashbrown (unsafe)
 version = "0.17" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
@@ -885,7 +874,6 @@ check-cfg = [ # Allowed configuration flags:
 			#
 			# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 			# WAIT: [re-export](https://github.com/rust-lang/rust/issues/116909#issuecomment-2595319840)
-			# NOTE: dep features: ["bytemuck?/nightly_float"]
 			"cfg(nightly_float)", # f16, f128
 			#
 			# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)

@@ -53,10 +53,6 @@ pub struct LinuxTermios {
     pub c_cc: [u8; 19],
 }
 
-#[crate::macro_apply(crate::__doc_show(feature = "dep_bytemuck"))]
-#[cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))]
-unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
-
 /// # Raw representation helpers
 impl LinuxTermios {
     /// Returns a new empty struct.

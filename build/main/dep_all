@@ -3,7 +3,7 @@
 //
 // NOTE: make sure to recompile `../tools/check.rs` after modifying this file.
 [
-    "dep_atomic", "dep_bytemuck",
+    "dep_atomic",
     "dep_hashbrown", "dep_jiff",
     "dep_log", "dep_memchr",
     "dep_portable_atomic", "dep_portable_atomic_util",
