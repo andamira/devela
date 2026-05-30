@@ -9,6 +9,6 @@
     "dep_portable_atomic", "dep_portable_atomic_util",
     "dep_rand_core", "dep_raw_cpuid",
     "dep_safe_arch",
-    "dep_serde", "dep_simdutf8",
+    "dep_simdutf8",
     "dep_wide",
 ]

@@ -38,7 +38,7 @@ pub extern crate std as _std;
 
 pub use devela_macros as macros;
 
-/* 13 optional dependencies */
+/* 12 optional dependencies */
 // In sync with /Cargo.toml::dep_all & /build/main/dep_all
 
 _reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
@@ -73,9 +73,6 @@ _reexport! { optional_crate (unsafe) "dep_raw_cpuid", "raw-cpuid", raw_cpuid,
 }
 _reexport! { optional_crate (unsafe) "dep_safe_arch", "safe_arch", safe_arch,
     doc: "Exposes arch-specific intrinsics as safe functions."
-}
-_reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
-    doc: "A generic serialization/deserialization framework."
 }
 _reexport! { optional_crate (unsafe) "dep_simdutf8", "simdutf8", simdutf8,
     doc: "Blazingly fast API-compatible UTF-8 validation for Rust using SIMD extensions."
