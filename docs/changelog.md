@@ -435,7 +435,12 @@
   - change the `buttons` field to use `EventButtons`.
   - add a `mods` field.
 - update `EventButtonState`: make `Pressed` the default.
-- update `EventButton`, fix method `to_web`.
+- update `EventButton`:
+  - change `Other` repr to u8.
+  - add variants: `X1`, `X2`, `X3`, `X4`, `X5`.
+  - rename method `primary_from_mask` to `from_one_bit_mask`.
+  - new method `to_mask`.
+  - fix method `to_web`.
 - update `Event`:
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventTag`:

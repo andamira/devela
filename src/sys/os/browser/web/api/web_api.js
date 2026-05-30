@@ -213,7 +213,7 @@ export async function initWasm(wasmPath, imports = {}) {
             e.preventDefault(); // STOP mouse event from firing
             wasm.exports.wasm_callback_pointer(callbackPtr,
               e.pointerId, e.clientX, e.clientY, e.pressure,
-              e.tiltX, e.tiltY, e.twist || 0, button, button, mods, etype, time_stamp);
+              e.tiltX, e.tiltY, e.twist || 0, button, buttons, mods, etype, time_stamp);
           }
         };
         api_events._callbacks.set(callbackPtr, callback);
@@ -229,7 +229,7 @@ export async function initWasm(wasmPath, imports = {}) {
             const time_stamp = e.timeStamp;
             wasm.exports.wasm_callback_wheel(
               callbackPtr, e.clientX, e.clientY, e.deltaX, e.deltaY,
-              buttons, e.deltaMode, time_stamp);
+              buttons, mods, e.deltaMode, time_stamp);
         };
         api_events._callbacks.set(callbackPtr, callback);
         element.addEventListener(event, callback);

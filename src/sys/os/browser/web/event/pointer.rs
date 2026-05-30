@@ -16,6 +16,13 @@ use crate::{KeyMods, WebEventKind};
 /// Represents a JavaScript mouse event containing relevant properties.
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent>
+///
+/// # Compatibility
+///
+/// Browser Back/Forward mouse buttons are backend-dependent.
+/// Chromium exposes them as DOM mouse events, while Firefox may consume them
+/// for history navigation before the page receives `mousedown`/`mouseup`.
+// WAIT: [firefox-back-forward-buttons](https://bugzilla.mozilla.org/show_bug.cgi?id=1933746)
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct WebEventMouse {
@@ -119,8 +126,7 @@ impl WebEventPointer {
 mod impls {
     use crate::{
         EventButton, EventButtons, EventButtonState, EventKind, EventKindTimed, EventMouse,
-        EventTimestamp, JsInstant, NonZeroU8, Timed, WebEventKind, WebEventMouse, is, js_number,
-        KeyMods,
+        EventTimestamp, JsInstant, KeyMods, Timed, WebEventKind, WebEventMouse, is, js_number,
     };
 
     /* mouse */
@@ -167,13 +173,20 @@ mod impls {
 
     impl EventButton {
         /// Converts a web API button index in [`WebEventMouse`] into `EventButton`.
+        //
         pub const fn from_web(js_button: u8) -> Option<Self> {
             match js_button {
                 0 => Some(EventButton::Left),
                 1 => Some(EventButton::Middle),
                 2 => Some(EventButton::Right),
+                3 => Some(EventButton::X1),
+                4 => Some(EventButton::X2),
+                //
+                5 => Some(EventButton::X3),
+                6 => Some(EventButton::X4),
+                7 => Some(EventButton::X5),
                 255 => None, // (== -1_i8) represents "no button"
-                n => Some(EventButton::Other(NonZeroU8::new(n).unwrap())),
+                n => Some(EventButton::Other(n)),
             }
         }
         /// Converts an EventButton to a JavaScript button index in [`WebEventMouse`].
@@ -182,7 +195,13 @@ mod impls {
                 EventButton::Left => 0,
                 EventButton::Middle => 1,
                 EventButton::Right => 2,
-                EventButton::Other(n) => n.get(),
+                EventButton::X1 => 3,
+                EventButton::X2 => 4,
+                //
+                EventButton::X3 => 5,
+                EventButton::X4 => 6,
+                EventButton::X5 => 7,
+                EventButton::Other(n) => n,
             }
         }
     }

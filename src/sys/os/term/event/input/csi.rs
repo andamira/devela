@@ -175,7 +175,7 @@ impl TermInputParser {
         mods
     }
     const fn sgr_pointer_event(cb: u16, cx: u16, cy: u16, released: bool) -> TermParsedCsi {
-        if cb & 64 != 0 {
+        if Self::sgr_is_wheel(cb) {
             let Some(wheel) = Self::wheel_sgr_event(cb, cx, cy) else {
                 return TermParsedCsi::Unknown;
             };
@@ -186,7 +186,58 @@ impl TermInputParser {
         };
         TermParsedCsi::Mouse(mouse)
     }
+    const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
+        is! { Self::sgr_is_wheel(cb), return None } // cold
+
+        // normalize coordinates to 0-based cells
+        let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
+        let motion = cb & 32 != 0;
+        let state = if motion {
+            EventButtonState::Moved
+        } else if released {
+            EventButtonState::Released
+        } else {
+            EventButtonState::Pressed
+        };
+        let button = Self::sgr_mouse_button(cb);
+        let buttons = Self::sgr_mouse_buttons(state, button);
+        let mods = Self::sgr_mouse_mods(cb);
+        Some(EventMouse::new(x, y, button, state, buttons, mods))
+    }
+    const fn sgr_mouse_button(cb: u16) -> Option<EventButton> {
+        let code = cb & 0b11;
+        if cb & 128 != 0 {
+            return match code {
+                0 => Some(EventButton::X1),
+                1 => Some(EventButton::X2),
+                2 => Some(EventButton::X3),
+                3 => Some(EventButton::X4),
+                _ => None,
+            };
+        }
+        is! { Self::sgr_is_wheel(cb), return None } // cold
+        match code {
+            0 => Some(EventButton::Left),
+            1 => Some(EventButton::Middle),
+            2 => Some(EventButton::Right),
+            3 => None,
+            _ => None,
+        }
+    }
+    const fn sgr_mouse_buttons(
+        state: EventButtonState,
+        button: Option<EventButton>,
+    ) -> EventButtons {
+        match (state, button) {
+            (EventButtonState::Pressed | EventButtonState::Moved, Some(button)) => button.to_mask(),
+            _ => EventButtons::new(),
+        }
+    }
+
+    // Xterm encodes wheel buttons by adding 64. Some terminals use 66/67 for
+    // horizontal wheel tilt. We normalize 64..67 as wheel up/down/left/right.
     const fn wheel_sgr_event(cb: u16, cx: u16, cy: u16) -> Option<EventWheel> {
+        is! { !Self::sgr_is_wheel(cb), return None } // cold
         // normalize coordinates to 0-based cells
         let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
         let (delta_x, delta_y) = match cb & 0b11 {
@@ -196,7 +247,6 @@ impl TermInputParser {
             3 => (1, 0),  // wheel right
             _ => return None,
         };
-        let mods = Self::sgr_mouse_mods(cb);
         Some(EventWheel::new(
             delta_x,
             delta_y,
@@ -204,44 +254,12 @@ impl TermInputParser {
             x,
             y,
             EventButtons::new(),
-            mods,
+            Self::sgr_mouse_mods(cb),
         ))
     }
-    const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
-        // wheel events are normalized separately as EventWheel
-        is! { cb & 64 != 0, return None }
-
-        // normalize coordinates to 0-based cells
-        let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
-        let (motion, button_code) = (cb & 32 != 0, cb & 0b11);
-        let state = if motion {
-            EventButtonState::Moved
-        } else if released {
-            EventButtonState::Released
-        } else {
-            EventButtonState::Pressed
-        };
-        let button = match button_code {
-            0 => Some(EventButton::Left),
-            1 => Some(EventButton::Middle),
-            2 => Some(EventButton::Right),
-            3 => None, // release / no button
-            _ => None,
-        };
-        let buttons = match (state, button) {
-            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Left)) => {
-                EventButtons::new().with(EventButtons::LEFT)
-            }
-            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Right)) => {
-                EventButtons::new().with(EventButtons::RIGHT)
-            }
-            (EventButtonState::Pressed | EventButtonState::Moved, Some(EventButton::Middle)) => {
-                EventButtons::new().with(EventButtons::MIDDLE)
-            }
-            _ => EventButtons::new(),
-        };
-        let mods = Self::sgr_mouse_mods(cb);
-        Some(EventMouse::new(x, y, button, state, buttons, mods))
+    const fn sgr_is_wheel(cb: u16) -> bool {
+        // accepts horizontal wheel while being conservative
+        cb & 64 != 0 && cb & 128 == 0
     }
 
     /* misc. helpers */

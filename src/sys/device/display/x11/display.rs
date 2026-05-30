@@ -372,7 +372,7 @@ impl XDisplay {
             }
         } else if let Some(ev) = xev.as_raw_motion() {
             let buttons = XEvent::map_button_mask(ev.state);
-            let button = EventButton::primary_from_mask(buttons);
+            let button = EventButton::from_one_bit_mask(buttons);
             let mods = self.xkb.key_mods(ev.state);
             return Event::from_window(
                 ev.event,

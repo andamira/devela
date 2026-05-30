@@ -4,7 +4,7 @@
 //! [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //
 
-use crate::{_impl_init, KeyMods, NonZeroU8, f32bits_niche, set, unwrap};
+use crate::{_impl_init, KeyMods, f32bits_niche, set};
 
 /* definitions */
 
@@ -156,8 +156,18 @@ pub enum EventButton {
     Right,
     /// Middle mouse button (usually the scroll wheel button).
     Middle,
+    /// The first auxiliary mouse button, commonly "back".
+    X1,
+    /// The second auxiliary mouse button, commonly "forward".
+    X2,
+    /// The third auxiliary mouse button.
+    X3,
+    /// The fourth auxiliary mouse button.
+    X4,
+    /// The fifth auxiliary mouse button.
+    X5,
     /// Additional buttons (e.g., side buttons on advanced mice).
-    Other(NonZeroU8),
+    Other(u8),
 }
 _impl_init! { Self::Left => EventButton }
 impl EventButton {
@@ -167,18 +177,38 @@ impl EventButton {
             1 => Some(Self::Left),
             2 => Some(Self::Middle),
             3 => Some(Self::Right),
-            _ => Some(Self::Other(unwrap![some? NonZeroU8::new(number)])),
+            _ => Some(Self::Other(number)),
         }
     }
 
-    /// Returns some primary button (left, right, middle) from the mask, if only one is set.
+    /// Returns the button represented by the mask, if exactly one button is set.
     #[inline(always)]
-    pub const fn primary_from_mask(mask: EventButtons) -> Option<EventButton> {
+    pub const fn from_one_bit_mask(mask: EventButtons) -> Option<EventButton> {
         match mask.bits() {
             1 => Some(EventButton::Left),
             2 => Some(EventButton::Right),
             4 => Some(EventButton::Middle),
+            8 => Some(EventButton::X1),
+            16 => Some(EventButton::X2),
+            32 => Some(EventButton::X3),
+            64 => Some(EventButton::X4),
+            128 => Some(EventButton::X5),
             _ => None,
+        }
+    }
+    /// Returns this button as a held-button mask, if it has a normalized role.
+    #[inline(always)]
+    pub const fn to_mask(self) -> EventButtons {
+        match self {
+            Self::Left => EventButtons::new().with(EventButtons::LEFT),
+            Self::Right => EventButtons::new().with(EventButtons::RIGHT),
+            Self::Middle => EventButtons::new().with(EventButtons::MIDDLE),
+            Self::X1 => EventButtons::new().with(EventButtons::X1),
+            Self::X2 => EventButtons::new().with(EventButtons::X2),
+            Self::X3 => EventButtons::new().with(EventButtons::X3),
+            Self::X4 => EventButtons::new().with(EventButtons::X4),
+            Self::X5 => EventButtons::new().with(EventButtons::X5),
+            Self::Other(_) => EventButtons::new(),
         }
     }
 }
@@ -202,14 +232,20 @@ set! {
     /// Unsupported buttons are left cleared.
     ///
     /// # Backend notes
-    /// - **X11** currently sets only `LEFT`, `RIGHT`, and `MIDDLE`,
-    ///   because the current X11 state-mask mapping only exposes those three.
-    /// - **Web** can naturally carry `LEFT`, `RIGHT`, `MIDDLE`, `X1`, and `X2`
-    ///   from the DOM `buttons` bitmask.
+    /// - **Web** can naturally carry `LEFT`, `RIGHT`, `MIDDLE`, `X1`, and `X2`.
+    /// - **X11 core** currently sets only `LEFT`, `RIGHT`, and `MIDDLE`;
+    ///   buttons 4 and 5 are treated as wheel input in the current backend.
+    /// - **Terminal SGR** reports primary buttons, wheel motion, and some
+    ///   extended button encodings. This library normalizes the first supported
+    ///   non-primary button encodings into `X1..X5` when unambiguous.
     /// - Other backends may populate only the subset they can observe.
     ///
     /// This type is semantic and cross-platform.
     /// Backend-specific numbering should be translated at the backend edge.
+    //
+    // Firefox may consume browser Back/Forward mouse buttons before dispatching
+    // DOM mouse events, so button=3/4 and buttons=8/16 may never reach web code.
+    // WAIT: [firefox-back-forward-buttons](https://bugzilla.mozilla.org/show_bug.cgi?id=1933746)
     pub struct EventButtons(u8) {
         /// The primary left button.
         LEFT = 0;
