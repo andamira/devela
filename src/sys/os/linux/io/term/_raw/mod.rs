@@ -1,11 +1,4 @@
 // devela::sys::os::linux::io::term::_raw
-//
-//! Terminal I/O control ABI definitions.
-//!
-//! Provides Linux terminal control structures and constants used to
-//! configure line discipline, input/output modes, and control behavior
-//! for terminal-backed file descriptors.
-//
 
 #![allow(
     dead_code,

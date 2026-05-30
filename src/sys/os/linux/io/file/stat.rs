@@ -11,9 +11,12 @@
 
 use crate::{c_long, c_uint, c_ulong};
 
-#[doc = crate::_tags!(linux fs)]
+#[doc = crate::_tags!(linux fs abi)]
 /// File status structure matching libc's stat ([man 2 stat])
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io"),
+    test_size_of(LinuxStat = 144|1152),
+}]
 ///
 /// [man 2 stat]: https://man7.org/linux/man-pages/man2/stat.2.html
 #[repr(C)]

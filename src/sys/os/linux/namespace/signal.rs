@@ -1,43 +1,10 @@
 // devela::sys::os::linux::namespace::signal
 
+use crate::{AtomicOrdering, Ptr, c_int, c_void, is, transmute};
 use crate::{
-    AtomicOrdering, AtomicPtr, LINUX_SIGACTION as SIGACTION, LINUX_SIGNAL as SIGNAL, Linux,
-    LinuxSigaction, LinuxSiginfo, LinuxSigset, Ptr, c_void, is, transmute,
+    LINUX_SIG_HANDLERS, LINUX_SIGACTION as SIGACTION, LINUX_SIGINFO_HANDLERS, Linux,
+    LinuxSigaction, LinuxSiginfo, LinuxSignalSet, LinuxSigset,
 };
-
-/// Highest supported standard Linux signal number.
-///
-/// Signal numbers are used directly as table indices, so slot `0` is unused.
-/// Handler tables must therefore have length `LINUX_SIG_MAX + 1`.
-const LINUX_SIG_MAX: usize = 31;
-
-/// Number of slots in the signal-handler tables.
-const LINUX_SIG_TABLE_LEN: usize = LINUX_SIG_MAX + 1;
-
-/// Simple Rust handlers indexed by signal number.
-///
-/// This table stores user-provided `fn(i32)` handlers registered through
-/// [`Linux::sig_handler`]. They are not installed directly as kernel handlers.
-/// Instead, the RT signal trampoline calls a siginfo-shaped adapter,
-/// and that adapter looks up the simple handler here.
-///
-/// The stored pointer is the function's code address, erased through a raw pointer
-/// for atomic storage. A null value means no simple handler is installed for that signal.
-static LINUX_SIG_HANDLERS: [AtomicPtr<()>; LINUX_SIG_TABLE_LEN] =
-    [const { AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_TABLE_LEN];
-
-/// RT/siginfo-shaped Rust handlers indexed by signal number.
-///
-/// This is the canonical dispatch table used by the kernel-facing `SA_SIGINFO`
-/// trampoline. Entries registered through [`Linux::sig_handler_info`] point
-/// to the user-provided info handler directly. Entries registered through
-/// [`Linux::sig_handler`] point to a small adapter that discards the extra
-/// signal information and then dispatches through [`LINUX_SIG_HANDLERS`].
-///
-/// The stored pointer is the function's code address, erased through a raw pointer
-/// for atomic storage. A null value means no siginfo handler is installed for that signal.
-static LINUX_SIGINFO_HANDLERS: [AtomicPtr<()>; LINUX_SIG_TABLE_LEN] =
-    [const { AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_TABLE_LEN];
 
 // RT signal-restorer routine defined in architecture-specific assembly.
 //
@@ -59,7 +26,7 @@ impl Linux {
     /// # Arguments
     /// - `handler`: Function called with the received signal number.
     /// - `signals`: Signal numbers to handle.
-    /// - `flags`: Optional [`LINUX_SIGACTION`][crate::LINUX_SIGACTION] flags.
+    /// - `flags`: Optional `LinuxSigactionFlags`.
     ///
     /// # Notes
     /// - `SA_RESTORER` and `SA_SIGINFO` are always included internally.
@@ -71,7 +38,7 @@ impl Linux {
     /// ```no_run
     /// # #[cfg(feature = "std")] {
     /// use devela::{AtomicBool, AtomicI32, AtomicOrdering, Thread, ThreadExt};
-    /// use devela::{Linux, LINUX_SIGNAL};
+    /// use devela::{Linux, LinuxSignalSet};
     ///
     /// static GOT_SIGNAL: AtomicBool = AtomicBool::new(false);
     /// static LAST_SIGNAL: AtomicI32 = AtomicI32::new(0);
@@ -82,13 +49,16 @@ impl Linux {
     /// }
     ///
     /// fn main() {
-    ///     Linux::sig_handler(handler, &[LINUX_SIGNAL::SIGINT, LINUX_SIGNAL::SIGWINCH], None);
+    ///     let sigint = LinuxSignalSet::SIGINT.as_c_int();
+    ///     let sigwinch = LinuxSignalSet::SIGWINCH.as_c_int();
+    ///     Linux::sig_handler(handler, &[sigint, sigwinch], None);
+    ///
     ///     println!("press Ctrl+C or resize the terminal");
     ///     loop {
     ///         if GOT_SIGNAL.swap(false, AtomicOrdering::SeqCst) {
     ///             let sig = LAST_SIGNAL.load(AtomicOrdering::SeqCst);
     ///             println!("received signal {sig}");
-    ///             if sig == LINUX_SIGNAL::SIGINT {
+    ///             if sig == sigint {
     ///                 break;
     ///             }
     ///         }
@@ -98,18 +68,20 @@ impl Linux {
     /// }
     /// # }
     /// ```
-    pub fn sig_handler(handler: fn(i32), signals: &[i32], flags: Option<&[usize]>) {
-        fn simple_adapter(sig: i32, _info: &LinuxSiginfo, _context: *mut c_void) {
-            is![sig < 1 || sig > LINUX_SIG_MAX as i32, return];
+    // pub fn sig_handler(handler: fn(c_int), signals: LinuxSignalSet, flags: Option<LinuxSigactionFlags>) {
+    pub fn sig_handler(handler: fn(c_int), signals: &[i32], flags: Option<&[usize]>) {
+        #[allow(clippy::manual_range_contains)]
+        fn simple_adapter(sig: c_int, _info: &LinuxSiginfo, _context: *mut c_void) {
+            is![sig < LinuxSignalSet::MIN || sig > LinuxSignalSet::MAX, return];
             let handler = LINUX_SIG_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
                 // SAFETY: we control both storage and retrieval and check for null.
-                let handler: fn(i32) = unsafe { transmute(handler) };
+                let handler: fn(c_int) = unsafe { transmute(handler) };
                 handler(sig);
             }
         }
         for &sig in signals {
-            if Linux::is_catchable_signal(sig) {
+            if LinuxSignalSet::is_catchable_signal(sig) {
                 LINUX_SIG_HANDLERS[sig as usize].store(handler as *mut (), AtomicOrdering::SeqCst);
             }
         }
@@ -124,7 +96,7 @@ impl Linux {
     /// # Arguments
     /// - `handler`: Function called with the signal number, signal info, and context.
     /// - `signals`: Signal numbers to handle.
-    /// - `flags`: Optional [`LINUX_SIGACTION`][crate::LINUX_SIGACTION] flags.
+    /// - `flags`: Optional `LinuxSigactionFlags`.
     ///
     /// # Notes
     /// - `SA_RESTORER` and `SA_SIGINFO` are always included internally.
@@ -137,7 +109,7 @@ impl Linux {
     /// ```no_run
     /// # #[cfg(feature = "std")] {
     /// use devela::{AtomicBool, AtomicI32, AtomicOrdering, Thread, ThreadExt, c_void};
-    /// use devela::{Linux, LinuxSiginfo, LINUX_SIGNAL, LINUX_SIGACTION};
+    /// use devela::{Linux, LinuxSigactionFlags, LinuxSiginfo, LinuxSignalSet};
     ///
     /// static GOT_SIGNAL: AtomicBool = AtomicBool::new(false);
     /// static LAST_SIGNAL: AtomicI32 = AtomicI32::new(0);
@@ -150,11 +122,10 @@ impl Linux {
     /// }
     ///
     /// fn main() {
-    ///     Linux::sig_handler_info(
-    ///         handler,
-    ///         &[LINUX_SIGNAL::SIGINT],
-    ///         Some(&[LINUX_SIGACTION::SA_RESTART]),
-    ///     );
+    ///     let sigint = LinuxSignalSet::SIGINT.as_c_int();
+    ///     let restart = LinuxSigactionFlags::SA_RESTART.as_c_size_t();
+    ///     Linux::sig_handler_info(handler, &[sigint], Some(&[restart]));
+    ///
     ///     println!("press Ctrl+C");
     ///     loop {
     ///         if GOT_SIGNAL.swap(false, AtomicOrdering::SeqCst) {
@@ -174,8 +145,9 @@ impl Linux {
         signals: &[i32],
         flags: Option<&[usize]>,
     ) {
+        #[allow(clippy::manual_range_contains)]
         extern "C" fn c_handler_siginfo(sig: i32, info: *mut LinuxSiginfo, context: *mut c_void) {
-            is![sig < 1 || sig > LINUX_SIG_MAX as i32 || info.is_null(), return];
+            is![sig < LinuxSignalSet::MIN || sig > LinuxSignalSet::MAX || info.is_null(), return];
             let handler = LINUX_SIGINFO_HANDLERS[sig as usize].load(AtomicOrdering::SeqCst);
             if !handler.is_null() {
                 // SAFETY: we control both the storage and retrieval and ensure null checks.
@@ -208,7 +180,7 @@ impl Linux {
         let sigaction = LinuxSigaction::new_siginfo(c_handler_siginfo,
             combined_flags, mask, Some(__devela_linux_restore_rt));
         for &sig in signals {
-            if Linux::is_catchable_signal(sig) {
+            if LinuxSignalSet::is_catchable_signal(sig) {
                 LINUX_SIGINFO_HANDLERS[sig as usize]
                     .store(handler as *mut (), AtomicOrdering::SeqCst);
                 unsafe {
@@ -217,15 +189,5 @@ impl Linux {
                 }
             }
         }
-    }
-    /// Returns whether `sig` can be installed as a user signal handler.
-    ///
-    /// Accepts only supported standard Linux signal numbers and excludes
-    /// `SIGKILL` and `SIGSTOP`, which the kernel never allows to be caught.
-    const fn is_catchable_signal(sig: i32) -> bool {
-        (sig as usize) >= 1
-            && (sig as usize) <= LINUX_SIG_MAX
-            && sig != SIGNAL::SIGKILL
-            && sig != SIGNAL::SIGSTOP
     }
 }

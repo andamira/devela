@@ -37,6 +37,8 @@ macro_rules! _define_symbol_tags {
 _define_symbol_tags! {
     /* thematic */
 
+    // Representation shaped by a foreign, platform, or kernel ABI boundary.
+    _TAG_ABI, "ABI-shaped representation", "🔻";
     // Abstract algebraic structures and laws.
     // Covers groups, rings, modules, algebras, and related operations,
     // independent of representation or numeric evaluation.
@@ -168,6 +170,8 @@ _define_symbol_tags! {
     // Covers schedulers, tasks, async runtimes, and progression of active systems.
     // Excludes structural invocation semantics.
     _TAG_RUNTIME, "Runtime", "⬡";
+    // Signal-related process, terminal, or runtime control.
+    _TAG_SIGNAL, "Signal", "📶";
     _TAG_STRING, "String storage and views", "🧶"; // (yarn)
     // Symbolic representations and manipulation of expressions.
     // Focuses on form and rewriting, not truth evaluation or inference.

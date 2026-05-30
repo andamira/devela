@@ -20,7 +20,7 @@ use crate::{
     LinuxTermiosLocalFlags as L, LinuxTermiosOutputFlags as O,
 };
 
-#[doc = crate::_tags!(linux term)]
+#[doc = crate::_tags!(linux term abi)]
 /// Represents the [`termios`] structure from libc, used to control terminal I/O.
 #[doc = crate::_doc_meta!{
     location("sys/os/linux/io"),

@@ -1,7 +1,4 @@
 // devela::sys::os::linux::io::term::flags
-//
-//!
-//
 
 #[cfg(doc)]
 use crate::LinuxTermios;
