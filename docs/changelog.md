@@ -165,6 +165,9 @@
 - new submodules: `calc`, `embed`, `kernel`, `phrase`.
 - remove submodule: `dsl`.
 
+##### lang::prog::ffi::c
+- new type aliases: `size_t`, `ssize_t`.
+
 ##### lang::prog::ffi::js
 - rename `JsTextMetrics*` to `JsTextRenderMetrics*`.
 
