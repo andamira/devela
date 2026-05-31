@@ -7,7 +7,7 @@ use crate::TermLineMode;
 
 #[doc = crate::_tags!(term guard)]
 /// Scoped terminal session guard.
-#[doc = crate::_doc_meta!{location("sys/os/term/session")}]
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///
 /// Keeps backend-specific restoration state alive until dropped.
 ///
@@ -36,7 +36,7 @@ crate::set! {
     #[doc = crate::_tags!(term runtime set)]
     /// Terminal session mode request.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/session"),
+        location("sys/os/term"),
         test_size_of(TermMode = 4|32),
     }]
     /// This compact set describes the state changes requested for a scoped [`TermSession`].

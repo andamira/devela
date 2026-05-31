@@ -81,13 +81,13 @@ impl LinuxSigaction {
     /// for a [`SA_SIGINFO`][LinuxSigactionFlags::SA_SIGINFO] handler.
     pub const fn new_siginfo(
         handler: extern "C" fn(i32, *mut LinuxSiginfo, *mut c_void),
-        flags: usize,
+        flags: LinuxSigactionFlags,
         mask: LinuxSigset,
         restorer: Option<extern "C" fn()>,
     ) -> Self {
         Self {
             sa_handler: LinuxSigactionHandler { sa_sigaction: handler },
-            sa_flags: flags,
+            sa_flags: flags.as_c_size_t(),
             sa_restorer: restorer,
             sa_mask: mask,
         }

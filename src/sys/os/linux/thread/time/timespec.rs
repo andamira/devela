@@ -12,7 +12,7 @@ use crate::{
 
 use crate::TimeDelta;
 
-#[doc = crate::_tags!(linux time)]
+#[doc = crate::_tags!(linux time abi)]
 /// Represents the [`timespec`] structure from libc. Time in seconds and nanoseconds.
 #[doc = crate::_doc_meta!{location("sys/os/linux/thread")}]
 ///

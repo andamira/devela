@@ -19,7 +19,7 @@ use crate::{
     RunServiceProbe,
 };
 
-#[doc = crate::_tags!(term linux event)]
+#[doc = crate::_tags!(term linux)]
 /// Linux terminal frontend.
 #[doc = crate::_doc_meta!{
     location("sys/os/term/backend"),

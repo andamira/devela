@@ -3,19 +3,19 @@
 //! Defines [`LinuxSignalSet`], [`LinuxSigset`].
 //
 
-use crate::{LINUX_SIGNAL as S, c_int, c_size_t};
+use crate::{c_int, c_size_t};
 
-crate::set! {
-    #[doc = crate::_tags!(linux signal)]
-    /// A compact semantic set of standard Linux signals.
+crate::enumset! {
+    #[doc = crate::_tags!(linux signal member)]
+    /// A linux signal
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/session"),
-        test_size_of(LinuxSignalSet = 4|32),
+        location("sys/os/linux/process"),
+        test_size_of(LinuxSignal = 1|8; niche Option),
     }]
-    /// This is not the raw Linux `sigset_t` mask. Signal bits are stored
-    /// compactly from zero: `SIGHUP` is bit `0`, `SIGINT` is bit `1`, and so on.
+    /// The enum discriminants are zero-based semantic indices, not raw Linux
+    /// signal numbers. Use [`as_c_int`][Self::as_c_int] for the raw signal number.
     //
-    // For the terminal, the key ones are:
+    // For the terminal, the key signals are:
     // - SIGINT    // Ctrl+C
     // - SIGQUIT   // Ctrl+\
     // - SIGTSTP   // Ctrl+Z
@@ -23,72 +23,184 @@ crate::set! {
     // - SIGTTOU   // background terminal write
     // - SIGWINCH  // terminal resize
     // - SIGHUP    // terminal/session hangup
-    pub struct LinuxSignalSet(u32) {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    pub enum LinuxSignal(
+        #[doc = crate::_tags!(linux signal set)]
+        /// A compact semantic set of standard Linux signals.
+        #[doc = crate::_doc_meta!{
+            location("sys/os/linux/process"),
+            test_size_of(LinuxSignalSet = 4|32),
+        }]
+        /// This is not the raw Linux `sigset_t` mask. Signal bits are stored
+        /// compactly from zero: `SIGHUP` is bit `0`, `SIGINT` is bit `1`, …
+        pub LinuxSignalSet: u32
+    ) {
         /// Terminal hangup or controlling process ended.
-        SIGHUP = 0;
+        SIGHUP // = 0
         /// Keyboard interrupt, usually `Ctrl+C`.
-        SIGINT = 1;
+        SIGINT, // = 1
         /// Keyboard quit, usually `Ctrl+\`; often produces a core dump.
-        SIGQUIT = 2;
+        SIGQUIT, // = 2
         /// Illegal CPU instruction.
-        SIGILL = 3;
+        SIGILL, // = 3
         /// Trace or breakpoint trap, commonly used by debuggers.
-        SIGTRAP = 4;
+        SIGTRAP, // = 4
         /// Process abort, usually from `abort()`.
-        SIGABRT = 5;
+        SIGABRT, // = 5
         /// Bus error, usually invalid or misaligned memory access.
-        SIGBUS = 6;
+        SIGBUS, // = 6
         /// Floating-point exception, such as division by zero in some contexts.
-        SIGFPE = 7;
+        SIGFPE, // = 7
         /// Uncatchable forced termination.
-        SIGKILL = 8;
+        SIGKILL, // = 8
         /// User-defined signal 1.
-        SIGUSR1 = 9;
+        SIGUSR1, // = 9
         /// Invalid memory reference, usually a segmentation fault.
-        SIGSEGV = 10;
-        /// User-defined signal 1.
-        SIGUSR2 = 11;
+        SIGSEGV, // = 10
+        /// User-defined signal 2.
+        SIGUSR2, // = 11
         /// Broken pipe, usually writing to a pipe or socket with no reader.
-        SIGPIPE = 12;
+        SIGPIPE, // = 12
         /// Alarm timer expired, usually from `alarm()`.
-        SIGALRM = 13;
+        SIGALRM, // = 13
         /// Polite termination request, commonly sent by `kill` or service managers.
-        SIGTERM = 14;
+        SIGTERM, // = 14
         /// Stack fault signal, obsolete on most modern Linux systems.
-        SIGSTKFLT = 15;
+        SIGSTKFLT, // = 15
         /// Child process stopped, continued, or exited.
-        SIGCHLD = 16;
+        SIGCHLD, // = 16
         /// Continue a stopped process.
-        SIGCONT = 17;
+        SIGCONT, // = 17
         /// Uncatchable stop signal.
-        SIGSTOP = 18;
+        SIGSTOP, // = 18
         /// Terminal stop, usually `Ctrl+Z`.
-        SIGTSTP = 19;
+        SIGTSTP, // = 19
         /// Background process tried to read from the terminal.
-        SIGTTIN = 20;
+        SIGTTIN, // = 20
         /// Background process tried to write to the terminal.
-        SIGTTOU = 21;
+        SIGTTOU, // = 21
         /// Urgent condition on a socket.
-        SIGURG = 22;
+        SIGURG, // = 22
         /// CPU time limit exceeded.
-        SIGXCPU = 23;
+        SIGXCPU, // = 23
         /// File size limit exceeded.
-        SIGXFSZ = 24;
+        SIGXFSZ, // = 24
         /// Virtual interval timer expired.
-        SIGVTALRM = 25;
+        SIGVTALRM, // = 25
         /// Profiling timer expired.
-        SIGPROF = 26;
+        SIGPROF, // = 26
         /// Terminal or window size changed.
-        SIGWINCH = 27;
+        SIGWINCH, // = 27
         /// Asynchronous I/O event is available.
-        SIGIO = 28;
+        SIGIO, // = 28
         /// Power failure or power-management event.
-        SIGPWR = 29;
+        SIGPWR, // = 29
         /// Bad system call, often from seccomp filtering.
-        SIGSYS = 30;
+        SIGSYS, // = 30
     }
-    /// Aliases
-    impl {
+    // Constants
+    impl enum {
+        /// All supported standard Linux signals, in signal-number order.
+        pub const ALL: [Self; Self::VARIANTS] = [
+            Self::SIGHUP, Self::SIGINT, Self::SIGQUIT, Self::SIGILL,
+            Self::SIGTRAP, Self::SIGABRT, Self::SIGBUS, Self::SIGFPE,
+            Self::SIGKILL, Self::SIGUSR1, Self::SIGSEGV, Self::SIGUSR2,
+            Self::SIGPIPE, Self::SIGALRM, Self::SIGTERM, Self::SIGSTKFLT,
+            Self::SIGCHLD, Self::SIGCONT, Self::SIGSTOP, Self::SIGTSTP,
+            Self::SIGTTIN, Self::SIGTTOU, Self::SIGURG, Self::SIGXCPU,
+            Self::SIGXFSZ, Self::SIGVTALRM, Self::SIGPROF, Self::SIGWINCH,
+            Self::SIGIO, Self::SIGPWR, Self::SIGSYS,
+        ];
+        /// Lowest supported standard Linux signal number.
+        pub const MIN_NUMBER: c_int = 1;
+        /// Highest supported standard Linux signal number.
+        pub const MAX_NUMBER: c_int = Self::SIGSYS.as_c_int();
+        /// Number of slots needed when indexing directly by raw signal number.
+        ///
+        /// Slot `0` is unused.
+        pub(crate) const TABLE_LEN: usize = Self::MAX_NUMBER as usize + 1;
+        const __: () = {
+            assert!(LinuxSignal::SIGHUP.as_c_int() == 1);
+            assert!(LinuxSignal::SIGINT.as_c_int() == 2);
+            assert!(LinuxSignal::SIGWINCH.as_c_int() == 28);
+            assert!(LinuxSignal::SIGSYS.as_c_int() == 31);
+
+            assert!(LinuxSignal::SIGHUP.as_index() == 0);
+            assert!(LinuxSignal::SIGINT.as_index() == 1);
+            assert!(LinuxSignal::SIGWINCH.as_index() == 27);
+            assert!(LinuxSignal::SIGSYS.as_index() == 30);
+
+            assert!(LinuxSignal::MAX_NUMBER == 31);
+            assert!(LinuxSignal::TABLE_LEN == 32);
+        };
+    }
+    // Methods
+    impl enum {
+        /// Returns the raw Linux signal number.
+        #[must_use]
+        pub const fn as_c_int(self) -> c_int { self as c_int + 1 }
+        /// Returns the zero-based set/mask index for this signal.
+        #[must_use]
+        pub const fn as_index(self) -> usize { self as usize }
+        /// Returns a signal from a raw Linux signal number.
+        #[must_use]
+        pub const fn from_c_int(signal: c_int) -> Option<Self> {
+            match signal {
+                1 => Some(Self::SIGHUP),
+                2 => Some(Self::SIGINT),
+                3 => Some(Self::SIGQUIT),
+                4 => Some(Self::SIGILL),
+                5 => Some(Self::SIGTRAP),
+                6 => Some(Self::SIGABRT),
+                7 => Some(Self::SIGBUS),
+                8 => Some(Self::SIGFPE),
+                9 => Some(Self::SIGKILL),
+                10 => Some(Self::SIGUSR1),
+                11 => Some(Self::SIGSEGV),
+                12 => Some(Self::SIGUSR2),
+                13 => Some(Self::SIGPIPE),
+                14 => Some(Self::SIGALRM),
+                15 => Some(Self::SIGTERM),
+                16 => Some(Self::SIGSTKFLT),
+                17 => Some(Self::SIGCHLD),
+                18 => Some(Self::SIGCONT),
+                19 => Some(Self::SIGSTOP),
+                20 => Some(Self::SIGTSTP),
+                21 => Some(Self::SIGTTIN),
+                22 => Some(Self::SIGTTOU),
+                23 => Some(Self::SIGURG),
+                24 => Some(Self::SIGXCPU),
+                25 => Some(Self::SIGXFSZ),
+                26 => Some(Self::SIGVTALRM),
+                27 => Some(Self::SIGPROF),
+                28 => Some(Self::SIGWINCH),
+                29 => Some(Self::SIGIO),
+                30 => Some(Self::SIGPWR),
+                31 => Some(Self::SIGSYS),
+                _ => None,
+            }
+        }
+        /// Returns whether this signal can be caught by a user handler.
+        #[must_use]
+        pub const fn is_catchable(self) -> bool {
+            !matches!(self, Self::SIGKILL | Self::SIGSTOP)
+        }
+        /// Returns whether the raw signal number is supported.
+        #[must_use]
+        pub const fn is_standard_number(signal: c_int) -> bool {
+            Self::from_c_int(signal).is_some()
+        }
+        /// Returns whether the raw signal number can be caught by a user handler.
+        #[must_use]
+        pub const fn is_catchable_number(signal: c_int) -> bool {
+            match Self::from_c_int(signal) {
+                Some(signal) => signal.is_catchable(),
+                None => false,
+            }
+        }
+    }
+    // Aliases
+    impl enum {
         /// IOT trap. Compatibility alias for [`SIGABRT`][Self::SIGABRT].
         pub const SIGIOT: Self = Self::SIGABRT;
         /// Compatibility alias for [`SIGCHLD`][Self::SIGCHLD].
@@ -99,107 +211,47 @@ crate::set! {
         // ///
         // /// This is not the BSD terminal status signal commonly associated with `Ctrl+T`.
         // pub const SIGINFO: Self = Self::SIGPWR;
-        //
         // /// Obsolete compatibility alias for [`SIGSYS`][Self::SIGSYS].
         // pub const SIGUNUSED: Self = Self::SIGSYS;
     }
-    impl {
-        /// Lowest supported standard Linux signal number.
-        pub const MIN: c_int = 1;
-        /// Highest supported standard Linux signal number.
-        pub const MAX: c_int = S::SIGSYS;
 
-        /// Returns whether `signal` is in the supported standard Linux range.
+    impl set {
+        /// Returns a singleton set containing `signal`.
         #[must_use]
-        pub const fn is_standard_signal(signal: c_int) -> bool {
-            signal >= Self::MIN && signal <= Self::MAX
+        pub const fn from_signal(signal: LinuxSignal) -> Self {
+            signal.to_set()
         }
-
-        /// Returns whether `signal` can be installed as a user handler.
+        /// Returns the only signal in this set, if it contains exactly one.
         #[must_use]
-        pub const fn is_catchable_signal(signal: c_int) -> bool {
-            Self::is_standard_signal(signal)
-                && signal != crate::LINUX_SIGNAL::SIGKILL
-                && signal != crate::LINUX_SIGNAL::SIGSTOP
-        }
-
-        /// Returns a set containing one raw Linux signal number.
-        ///
-        /// Returns an empty set if `signal` is outside the supported range.
-        pub const fn from_c_int(signal: c_int) -> Self {
-            if Self::is_standard_signal(signal) {
-                Self::from_bits(1_u32 << ((signal - 1) as u32))
-            } else {
-                Self::new()
-            }
-        }
-
-        /// Returns the raw Linux signal number if this set contains exactly one signal.
-        #[must_use]
-        pub const fn to_c_int(self) -> Option<c_int> {
+        pub const fn to_signal(self) -> Option<LinuxSignal> {
             let bits = self.bits();
             if bits != 0 && bits.is_power_of_two() {
-                Some(bits.trailing_zeros() as c_int + 1)
+                LinuxSignal::from_c_int(bits.trailing_zeros() as c_int + 1)
             } else {
                 None
             }
         }
-        /// Returns this set as a raw Linux signal number, or `0` if not exactly one signal.
-        ///
-        /// Signal number `0` is used here as an invalid sentinel for this semantic set.
-        #[must_use]
-        pub const fn as_c_int(self) -> c_int {
-            match self.to_c_int() {
-                Some(signal) => signal,
-                None => 0,
+        /// Calls `f` for each signal in this set.
+        pub fn for_each(self, mut f: impl FnMut(LinuxSignal)) {
+            for signal in LinuxSignal::ALL {
+                if signal.is_in(self) { f(signal); }
             }
         }
-        /// Returns this semantic set encoded as a raw Linux signal mask.
-        pub const fn to_sigset(self) -> LinuxSigset {
-            LinuxSigset::from_signal_set(self)
+        /// Calls `f` for each catchable signal in this set.
+        pub fn for_each_catchable(self, mut f: impl FnMut(LinuxSignal)) {
+            self.catchable_only().for_each(|signal| f(signal));
         }
-        const _ASSERT_RAW_VALUES: () = {
-            assert!(Self::SIGHUP.as_c_int()    == S::SIGHUP);
-            assert!(Self::SIGINT.as_c_int()    == S::SIGINT);
-            assert!(Self::SIGQUIT.as_c_int()   == S::SIGQUIT);
-            assert!(Self::SIGILL.as_c_int()    == S::SIGILL);
-            assert!(Self::SIGTRAP.as_c_int()   == S::SIGTRAP);
-            assert!(Self::SIGABRT.as_c_int()   == S::SIGABRT);
-            assert!(Self::SIGIOT.as_c_int()    == S::SIGIOT);
-            assert!(Self::SIGBUS.as_c_int()    == S::SIGBUS);
-            assert!(Self::SIGFPE.as_c_int()    == S::SIGFPE);
-            assert!(Self::SIGKILL.as_c_int()   == S::SIGKILL);
-            assert!(Self::SIGUSR1.as_c_int()   == S::SIGUSR1);
-            assert!(Self::SIGSEGV.as_c_int()   == S::SIGSEGV);
-            assert!(Self::SIGUSR2.as_c_int()   == S::SIGUSR2);
-            assert!(Self::SIGPIPE.as_c_int()   == S::SIGPIPE);
-            assert!(Self::SIGALRM.as_c_int()   == S::SIGALRM);
-            assert!(Self::SIGTERM.as_c_int()   == S::SIGTERM);
-            assert!(Self::SIGSTKFLT.as_c_int() == S::SIGSTKFLT);
-            assert!(Self::SIGCHLD.as_c_int()   == S::SIGCHLD);
-            assert!(Self::SIGCLD.as_c_int()    == S::SIGCLD);
-            assert!(Self::SIGCONT.as_c_int()   == S::SIGCONT);
-            assert!(Self::SIGSTOP.as_c_int()   == S::SIGSTOP);
-            assert!(Self::SIGTSTP.as_c_int()   == S::SIGTSTP);
-            assert!(Self::SIGTTIN.as_c_int()   == S::SIGTTIN);
-            assert!(Self::SIGTTOU.as_c_int()   == S::SIGTTOU);
-            assert!(Self::SIGURG.as_c_int()    == S::SIGURG);
-            assert!(Self::SIGXCPU.as_c_int()   == S::SIGXCPU);
-            assert!(Self::SIGXFSZ.as_c_int()   == S::SIGXFSZ);
-            assert!(Self::SIGVTALRM.as_c_int() == S::SIGVTALRM);
-            assert!(Self::SIGPROF.as_c_int()   == S::SIGPROF);
-            assert!(Self::SIGWINCH.as_c_int()  == S::SIGWINCH);
-            assert!(Self::SIGIO.as_c_int()     == S::SIGIO);
-            assert!(Self::SIGPOLL.as_c_int()   == S::SIGPOLL);
-            assert!(Self::SIGPWR.as_c_int()    == S::SIGPWR);
-            // assert!(Self::SIGINFO.as_c_int()   == S::SIGINFO);
-            assert!(Self::SIGSYS.as_c_int()    == S::SIGSYS);
-            // assert!(Self::SIGUNUSED.as_c_int() == S::SIGUNUSED);
-            assert!(Self::from_c_int(S::SIGHUP).has(Self::SIGHUP));
-            assert!(Self::from_c_int(S::SIGSYS).has(Self::SIGSYS));
-            assert!(Self::from_c_int(0).is_empty());
-            assert!(Self::from_c_int(32).is_empty());
-        };
+
+        /// Returns whether all signals in this set are catchable.
+        #[must_use]
+        pub const fn all_catchable(self) -> bool {
+            !self.has(Self::SIGKILL) && !self.has(Self::SIGSTOP)
+        }
+        /// Returns this set without without signals that cannot be caught.
+        #[must_use]
+        pub const fn catchable_only(self) -> Self {
+            self.without(Self::SIGKILL).without(Self::SIGSTOP)
+        }
     }
 }
 impl From<LinuxSignalSet> for LinuxSigset {
@@ -213,7 +265,7 @@ impl From<LinuxSigset> for LinuxSignalSet {
     }
 }
 
-#[doc = crate::_tags!(linux signal abi)]
+#[doc = crate::_tags!(linux signal set abi)]
 /// A raw Linux kernel signal mask.
 #[doc = crate::_doc_meta!{
     location("sys/os/linux/process"),
@@ -241,11 +293,11 @@ pub struct LinuxSigset {
 #[rustfmt::skip]
 impl LinuxSigset {
     /// Number of bits in one raw mask word.
-    pub const WORD_BITS: c_size_t = usize::BITS as usize;
+    pub const WORD_BITS: usize = usize::BITS as usize;
     /// Highest supported standard Linux signal number.
-    pub const MAX_SIGNAL: c_size_t = LinuxSignalSet::MAX as usize;
+    pub const MAX_SIGNAL: usize = LinuxSignal::MAX_NUMBER as usize;
     /// Number of raw mask words needed for the supported signal range.
-    pub const WORDS: c_size_t = Self::MAX_SIGNAL.div_ceil(Self::WORD_BITS);
+    pub const WORDS: usize = Self::MAX_SIGNAL.div_ceil(Self::WORD_BITS);
 
     /// Returns an empty signal mask.
     pub const fn empty() -> Self { Self { sig: [0; Self::WORDS] } }
@@ -264,55 +316,49 @@ impl LinuxSigset {
         LinuxSignalSet::from_bits(self.sig[0] as u32)
     }
     /// Returns a copy with `signal` added.
-    ///
-    /// Ignores unsupported signal numbers.
-    pub const fn with_signal(mut self, signal: c_int) -> Self {
-        if LinuxSignalSet::is_standard_signal(signal) {
-            let bit = signal as usize - 1;
-            let word = bit / Self::WORD_BITS;
-            let shift = bit % Self::WORD_BITS;
-            self.sig[word] |= 1usize << shift;
-        }
+    #[must_use]
+    pub const fn with_signal(mut self, signal: LinuxSignal) -> Self {
+        let bit = signal.as_index();
+        let word = bit / Self::WORD_BITS;
+        let shift = bit % Self::WORD_BITS;
+        self.sig[word] |= 1usize << shift;
         self
     }
     /// Returns a copy with `signal` removed.
     ///
     /// Ignores unsupported signal numbers.
-    pub const fn without_signal(mut self, signal: c_int) -> Self {
-        if LinuxSignalSet::is_standard_signal(signal) {
-            let bit = signal as usize - 1;
-            let word = bit / Self::WORD_BITS;
-            let shift = bit % Self::WORD_BITS;
-            self.sig[word] &= !(1usize << shift);
-        }
+    pub const fn without_signal(mut self, signal: LinuxSignal) -> Self {
+        let bit = signal.as_index();
+        let word = bit / Self::WORD_BITS;
+        let shift = bit % Self::WORD_BITS;
+        self.sig[word] &= !(1usize << shift);
         self
     }
     /// Returns whether this raw mask contains `signal`.
     #[must_use]
-    pub const fn has_signal(self, signal: c_int) -> bool {
-        if LinuxSignalSet::is_standard_signal(signal) {
-            let bit = signal as usize - 1;
-            let word = bit / Self::WORD_BITS;
-            let shift = bit % Self::WORD_BITS;
-            self.sig[word] & (1usize << shift) != 0
-        } else {
-            false
-        }
+    pub const fn has_signal(self, signal: LinuxSignal) -> bool {
+        let bit = signal.as_index();
+        let word = bit / Self::WORD_BITS;
+        let shift = bit % Self::WORD_BITS;
+        self.sig[word] & (1usize << shift) != 0
     }
     /// Adds `signal` to this raw mask.
-    ///
-    /// # Panics
-    /// Panics if `signal` is not supported.
-    pub fn insert_signal(&mut self, signal: c_int) {
-        assert!(LinuxSignalSet::is_standard_signal(signal));
+    pub fn insert_signal(&mut self, signal: LinuxSignal) {
         *self = self.with_signal(signal);
     }
     /// Removes `signal` from this raw mask.
     ///
     /// # Panics
     /// Panics if `signal` is not a supported standard Linux signal.
-    pub fn remove_signal(&mut self, signal: c_int) {
-        assert!(LinuxSignalSet::is_standard_signal(signal));
+    pub fn remove_signal(&mut self, signal: LinuxSignal) {
         *self = self.without_signal(signal);
+    }
+    /// Returns a copy with the raw signal number added, if supported.
+    #[must_use]
+    pub const fn with_signal_number(self, signal: c_int) -> Self {
+        match LinuxSignal::from_c_int(signal) {
+            Some(signal) => self.with_signal(signal),
+            None => self,
+        }
     }
 }

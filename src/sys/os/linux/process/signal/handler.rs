@@ -5,17 +5,12 @@
 
 #[cfg(doc)]
 use crate::Linux;
-use crate::{AtomicPtr, LinuxSiginfo, LinuxSignalSet, Ptr, c_void};
+use crate::{AtomicPtr, LinuxSiginfo, LinuxSignal, Ptr, c_void};
 
 #[cfg(target_pointer_width = "32")]
 crate::test_size_of!(LinuxSigactionHandler = 4 | 32);
 #[cfg(target_pointer_width = "64")]
 crate::test_size_of!(LinuxSigactionHandler = 8 | 64);
-
-const LINUX_SIG_HANDLER_TABLE_LEN: usize = LinuxSignalSet::MAX as usize + 1;
-const __: () = {
-    assert![LINUX_SIG_HANDLER_TABLE_LEN == 32];
-};
 
 /// A union representing either a simple handler or a `SA_SIGINFO` handler.
 #[repr(C)]
@@ -33,8 +28,8 @@ pub(crate) union LinuxSigactionHandler {
 ///
 /// The stored pointer is the function's code address, erased through a raw pointer
 /// for atomic storage. A null value means no simple handler is installed for that signal.
-pub(crate) static LINUX_SIG_HANDLERS: [AtomicPtr<()>; LINUX_SIG_HANDLER_TABLE_LEN] =
-    [const { AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_HANDLER_TABLE_LEN];
+pub(crate) static LINUX_SIG_HANDLERS: [AtomicPtr<()>; LinuxSignal::TABLE_LEN] =
+    [const { AtomicPtr::new(Ptr::null_mut()) }; LinuxSignal::TABLE_LEN];
 
 /// RT/siginfo-shaped Rust handlers indexed by signal number.
 ///
@@ -46,5 +41,5 @@ pub(crate) static LINUX_SIG_HANDLERS: [AtomicPtr<()>; LINUX_SIG_HANDLER_TABLE_LE
 ///
 /// The stored pointer is the function's code address, erased through a raw pointer
 /// for atomic storage. A null value means no siginfo handler is installed for that signal.
-pub(crate) static LINUX_SIGINFO_HANDLERS: [AtomicPtr<()>; LINUX_SIG_HANDLER_TABLE_LEN] =
-    [const { AtomicPtr::new(Ptr::null_mut()) }; LINUX_SIG_HANDLER_TABLE_LEN];
+pub(crate) static LINUX_SIGINFO_HANDLERS: [AtomicPtr<()>; LinuxSignal::TABLE_LEN] =
+    [const { AtomicPtr::new(Ptr::null_mut()) }; LinuxSignal::TABLE_LEN];

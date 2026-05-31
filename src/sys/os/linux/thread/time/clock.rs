@@ -9,7 +9,7 @@
 use crate::{Duration, Linux, LinuxTimespec};
 use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 
-#[doc = crate::_tags!(linux time)]
+#[doc = crate::_tags!(linux time uid)]
 /// [`Linux`][crate::Linux] clock identifiers.
 ///
 /// Used for [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.

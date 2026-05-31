@@ -9,7 +9,7 @@
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-pub mod raw; // FdRaw
+mod raw; // FdRaw
 
 crate::structural_mods! { // _mods, _reexports
     _mods {

@@ -13,7 +13,7 @@ mod action; // LinuxSigaction
 mod flags; // LinuxSigactionFlags
 mod handler; // (LinuxSigactionHandler), LINUX_SIG[INFO]_HANDLERS
 mod info; // LinuxSiginfo, (LinuxSigval)
-mod set; // LinuxSignalSet, LinuxSigset
+mod set; // LinuxSignal, LinuxSignalSet, LinuxSigset
 
 #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 crate::items! {

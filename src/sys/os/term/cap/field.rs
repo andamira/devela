@@ -15,6 +15,8 @@ crate::bitfield! {
     }]
     ///
     /// Stores independent terminal feature flags plus the maximum known color depth.
+    ///
+    /// See also [`TermCap`].
     pub struct TermCaps(u32) {
         /* input */
         /// Keyboard input.

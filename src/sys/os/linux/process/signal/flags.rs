@@ -9,7 +9,7 @@ use crate::{LINUX_SIGACTION as A, c_size_t, set};
 
 set! {
     #[doc = crate::_tags!(linux signal set)]
-    /// [`LinuxSigaction`] input flags.
+    /// Input flags for [`LinuxSigaction`].
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
         test_size_of(LinuxSigactionFlags = 1|8),
@@ -70,5 +70,10 @@ set! {
             assert!(Self::SA_RESTORER.as_c_size_t()  == A::SA_RESTORER);
             assert!(Self::SA_SIGINFO.as_c_size_t()   == A::SA_SIGINFO);
         };
+    }
+}
+impl From<Option<LinuxSigactionFlags>> for LinuxSigactionFlags {
+    fn from(flags: Option<LinuxSigactionFlags>) -> Self {
+        flags.unwrap_or_else(Self::new)
     }
 }
