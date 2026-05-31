@@ -165,11 +165,9 @@ impl Linux {
         signals.for_each_catchable(|signal| {
             let raw = signal.as_c_int();
             LINUX_SIGINFO_HANDLERS[raw as usize].store(handler as *mut (), SeqCst);
-            let result = unsafe {
+            let _res = unsafe {
                 Linux::sys_rt_sigaction(raw, &sigaction, Ptr::null_mut(), LinuxSigset::size())
             };
-            #[cfg(feature = "std")]
-            eprintln!("rt_sigaction({raw}) = {result:?}"); // DEBUG
         });
     }
 }

@@ -253,6 +253,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     // 9 (temporal structure and staging of program execution)
     _DOC_RUN               = "Temporal coordination and staging of a running system.";
     _QUO_RUN               = "> Where execution exists, progresses, and becomes concrete.";
+    _DOC_RUN_APP           = "Application-level runtime semantics.";
     _DOC_RUN_CYCLE         = "Phases and transitions of a running system.";
     _DOC_RUN_TIME          = "Temporal structure and progression within a run.";
     _DOC_RUN_TIME_LOOP     = "Composed policies for advancing time within a run.";

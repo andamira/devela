@@ -254,10 +254,14 @@
 
 ## run
 - new types: `RunDriver`, `RunDriverError`, `RunDriverFrameError`.
+- new submodule `run::app`.
 - update `RunRender` and `RunPresent`:
   - support borrowed render artifacts with GATs.
   - make them use a borrowed `RunFrame`.
   - make `RunRender`'s `S: ?Sized`.
+
+### run::app
+- new type: `AppControl`.
 
 ### run::regime
 - new type: `RunCapColor`, `RunCapText`.
@@ -452,21 +456,22 @@
 - update `Event`:
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventTag`:
-  - derive `Copy`.
-  - add `Wheel` variant.
-  - define with `enumset!`.
+  - add variants: Control, `Wheel`.
   - add methods: `is_wheel`, `some_wheel`.
+  - define with `enumset!`.
+  - derive `Copy`.
+- update `EventKind`:
+  - add variants: `Control`, `Wheel`.
+  - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventKey`:
   - add methods: `new`, `press`, `modified_press`, `text`, `modified_text`, `with_state`, `with_mods`.
-- update `EventKind`:
-  - add `Wheel` variant.
-  - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
+- update `KeyMods`: add methods: `from_web`, `to_web`.
 - update `EventPointer`:
   - add fields: `buttons`, `mods`.
 - update `EventWheel`:
   - add fields: `unit`, `buttons`, `mods`.
   - add many convenience methods.
-- update `KeyMods`, add methods: `from_web`, `to_web`.
+- update `EventWindow`: remove variants: `Continue`, `EndOfInput`.
 
 ## work
 - new `work` submodules: `exec`, `plan`, `task`.

@@ -10,7 +10,7 @@ use crate::{Extent, Position};
 use crate::String;
 
 #[doc = crate::_tags!(event interaction)]
-/// Events related to a window.
+/// Events related to a window, viewport, or presentation surface.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
     #[cfg(not(feature = "alloc"))]
@@ -20,7 +20,7 @@ use crate::String;
 }]
 ///
 /// Names and payloads are backend-agnostic and focus on
-/// the stable cross-platform meaning of each event.
+/// stable cross-platform surface semantics.
 //
 // - https://docs.rs/sdl2/latest/sdl2/event/enum.WindowEvent.html
 // - https://docs.rs/crossterm/latest/crossterm/event/enum.Event.html
@@ -28,13 +28,13 @@ use crate::String;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum EventWindow {
     /* geometry */
-    /// The window's size changed.
+    /// The window or viewport size changed.
     ///
     /// Carries the new `[width, height]` when the backend provides it.
     // NOTE in SDL: https://stackoverflow.com/a/55076700/940200
     // SizeChanged(UiSize),
     Resized(Option<Extent<u32, 2>>),
-    /// The window's position changed.
+    /// The window or viewport position changed.
     ///
     /// Carries the new `[x, y]` when available.
     Moved(Option<Position<i32, 2>>),
@@ -50,10 +50,10 @@ pub enum EventWindow {
     /// The system or window manager requested that the window close.
     CloseRequested,
 
-    /// The window became visible (mapped / shown).
+    /// The window became visible.
     Shown,
 
-    /// The window became hidden (unmapped / obscured).
+    /// The window became hidden.
     Hidden,
 
     /// The window needs its contents repainted.
@@ -82,19 +82,10 @@ pub enum EventWindow {
     Left,
 
     /* text / clipboard */
-    /// Paste text.
+    /// Text was pasted into the window.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     Paste(String),
-
-    /* input stream signals (terminal) */
-    /// The application resumed after being paused (e.g. SIGCONT).
-    // https://github.com/dankamongmen/notcurses/blob/master/doc/man/man3/notcurses_input.3.md#nckey_signal
-    Continue,
-
-    /// End-of-input condition (EOF).
-    // https://github.com/dankamongmen/notcurses/blob/master/doc/man/man3/notcurses_input.3.md#nckey_eof
-    EndOfInput,
 }
 impl ConstInit for EventWindow {
     const INIT: Self = Self::FocusLost;
@@ -182,12 +173,5 @@ impl EventWindow {
     #[cfg(feature = "alloc")]
     pub const fn is_text_input(&self) -> bool {
         matches!(self, Self::Paste(_))
-    }
-
-    /* input stream signals (terminal) */
-
-    /// True if this event is a terminal/stream-control event.
-    pub const fn is_stream_signal(&self) -> bool {
-        matches!(self, Self::Continue | Self::EndOfInput)
     }
 }

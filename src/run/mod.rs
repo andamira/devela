@@ -13,6 +13,7 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: cycle, regime, time); // state
 }
 
+pub mod app; // AppControl
 pub mod cycle; // RunCycle, RunControl, RunPhase
 mod driver; // RunDriver
 mod iface; // RunApp
@@ -29,6 +30,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _pub_mods {
         pub use super::{
+            app::_all::*,
             cycle::_all::*,
             regime::_all::*,
             // state::_all::*,

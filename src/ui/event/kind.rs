@@ -3,7 +3,7 @@
 //! Defines [`EventTag`], [`EventTagSet`], [`EventKindTimed`], [`EventKind`].
 //
 
-use crate::{ConstInit, MaybeTimed};
+use crate::{AppControl, ConstInit, MaybeTimed};
 use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
 
 crate::enumset! {
@@ -41,10 +41,12 @@ crate::enumset! {
         Mouse,
         /// A pointing-device event (mouse, pen, stylus, touch).
         Pointer,
-        ///  A wheel event.
+        /// A wheel event.
         Wheel,
-        /// A window-related event (focus, resize, etc.).
+        /// An event related to a window, viewport, or presentation surface.
         Window,
+        /// Application-level control notice.
+        Control,
     }
     impl set #[doc = "Common event category groups."] {
         /// Events caused by direct user input.
@@ -115,6 +117,10 @@ pub enum EventKind {
 
     /// A window event.
     Window(EventWindow),
+
+    /// External control notice directed at the application.
+    Control(AppControl),
+    /* */
     // /// A gamepad event.
     // Gamepad(GamepadEvent),
 
@@ -149,6 +155,7 @@ impl EventKind {
             Self::Pointer(_) => EventTag::Pointer,
             Self::Wheel(_) => EventTag::Wheel,
             Self::Window(_) => EventTag::Window,
+            Self::Control(_) => EventTag::Control,
         }
     }
 }
@@ -162,10 +169,6 @@ impl EventKind {
     /// Whether there's some event.
     #[must_use] #[inline(always)]
     pub const fn is_some(&self) -> bool { !matches![self, EventKind::None] }
-
-    /// Whether it's a window event.
-    #[must_use] #[inline(always)]
-    pub const fn is_window(&self) -> bool { matches![self, EventKind::Window(_)] }
 
     /// Whether it's a keyboard event.
     #[must_use] #[inline(always)]
@@ -183,17 +186,20 @@ impl EventKind {
     #[must_use] #[inline(always)]
     pub const fn is_wheel(&self) -> bool { matches![self, EventKind::Wheel(_)] }
 
+    /// Whether it's a window event.
+    #[must_use] #[inline(always)]
+    pub const fn is_window(&self) -> bool { matches![self, EventKind::Window(_)] }
+
+    /// Whether it's a control event.
+    #[must_use] #[inline(always)]
+    pub const fn is_control(&self) -> bool { matches![self, EventKind::Control(_)] }
+
     // /// Returns `true` if it's a keyboard event.
     // pub const fn is_midi(&self) -> bool { matches![self, EventKind::Midi(_)] }
 
     // /// Returns `true` if it's a mouse event.
     // pub const fn is_gamepad(&self) -> bool { matches![self, EventKind::Gamepad(_)] }
 
-    /// Returns some window event, if that's the kind.
-    #[must_use] #[inline(always)]
-    pub const fn some_window(&self) -> Option<&EventWindow> {
-        if let EventKind::Window(e) = &self { Some(e) } else { None }
-    }
     /// Returns some keyboard event, if that's the kind.
     #[must_use] #[inline(always)]
     pub const fn some_key(&self) -> Option<&EventKey> {
@@ -213,6 +219,16 @@ impl EventKind {
     #[must_use] #[inline(always)]
     pub const fn some_wheel(&self) -> Option<&EventWheel> {
         if let EventKind::Wheel(e) = &self { Some(e) } else { None }
+    }
+    /// Returns some window event, if that's the kind.
+    #[must_use] #[inline(always)]
+    pub const fn some_window(&self) -> Option<&EventWindow> {
+        if let EventKind::Window(e) = &self { Some(e) } else { None }
+    }
+    /// Returns some control event, if that's the kind.
+    #[must_use] #[inline(always)]
+    pub const fn some_control(&self) -> Option<&AppControl> {
+        if let EventKind::Control(e) = &self { Some(e) } else { None }
     }
     // /// Returns some gamepad event, if that's the kind.
     // pub const fn some_gamepad(&self) -> Option<&GamepadEvent> {
