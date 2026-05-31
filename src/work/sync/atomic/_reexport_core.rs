@@ -8,7 +8,7 @@ use crate::{_reexport, _tags};
 
 // enums
 _reexport! { rust: core::sync::atomic, location: "work/sync/atomic",
-    tag: _tags!(concurrency atomic),
+    tag: _tags!(concurrency atomic ord),
     doc: "Atomic memory ordering.",
     @Ordering as AtomicOrdering
 }

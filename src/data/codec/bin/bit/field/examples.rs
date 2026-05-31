@@ -4,7 +4,7 @@
 //
 
 crate::bitfield! {
-    #[doc = crate::_tags!(example bit data_structure)]
+    #[doc = crate::_tags!(example bit mem data_structure)]
     /// A compact packet header.
     #[doc = crate::_doc_meta!{location("data/codec")}]
     ///

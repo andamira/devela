@@ -7,7 +7,7 @@ use crate::{ConstInit, MaybeTimed};
 use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
 
 crate::enumset! {
-    #[doc = crate::_tags!(event uid)]
+    #[doc = crate::_tags!(event uid member)]
     /// A lightweight, data-less identifier for [`EventKind`].
     #[doc = crate::_doc_meta!{
         location("ui/event"),

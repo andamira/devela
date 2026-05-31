@@ -44,7 +44,7 @@
 - bump `wide` to 1.3.
 
 ## docs
-- new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|PARSER|SIGNAL|STRING]`.
+- new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|SET|SIGNAL|STRING]`.
 - rename tag `_TAG_GEOM_DIR` to `_TAG_DIR`.
 - make example-generated `*Example` items visible in the docs.
 
@@ -166,7 +166,7 @@
 - remove submodule: `dsl`.
 
 ##### lang::prog::ffi::c
-- new type aliases: `c_size_t`, `c_ssize_t`.
+- new type aliases: `c_bool`, `c_size_t`, `c_ssize_t`.
 
 ##### lang::prog::ffi::js
 - rename `JsTextMetrics*` to `JsTextRenderMetrics*`.

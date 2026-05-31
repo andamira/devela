@@ -12,7 +12,7 @@ use crate::{ConstInit, impl_trait, is};
 
 /* definitions */
 
-#[doc = crate::_tags!(interaction)]
+#[doc = crate::_tags!(interaction member)]
 /// Modifier key codes (when pressed by themselves)
 #[doc = crate::_doc_meta!{location("ui/event")}]
 ///
@@ -56,7 +56,7 @@ impl KeyMod {
     pub const IsoLevel3Shift: KeyMod = KeyMod::AltGr;
 }
 
-#[doc = crate::_tags!(interaction)]
+#[doc = crate::_tags!(interaction set)]
 /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
 #[doc = crate::_doc_meta!{
     location("ui/event"),

@@ -30,7 +30,6 @@
 use devela::enumint;
 
 enumint![
-    #[doc = devela::_tags!(example data_structure)]
     /// An example compact `i8` enum from -126 to 126, generated with [`enumint!`].
     pub EnumintI8Example, i8, -126, 126
 ];

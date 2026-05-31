@@ -2,11 +2,11 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num),
+_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num ord),
     doc: "A helper struct for reverse ordering.",
     Reverse
 }
-_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num result),
+_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num ord result),
     doc: "The result of a comparison between two values.",
     Ordering
 }
@@ -21,12 +21,12 @@ _reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num),
     PartialEq
 }
 
-_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num),
+_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num ord),
     doc: "Trait for types that form a
         [total order](https://en.wikipedia.org/wiki/Total_order). (Derivable)",
     Ord
 }
-_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num),
+_reexport! { rust: core::cmp, location: "num/fin/ord", tag: _tags!(num ord),
     doc: "Trait for types that form a
         [partial order](https://en.wikipedia.org/wiki/Partial_order). (Derivable)",
     PartialOrd

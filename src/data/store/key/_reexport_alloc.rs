@@ -4,15 +4,15 @@ use crate::{_reexport, _tags};
 
 /* from `alloc` */
 
-_reexport! { rust: alloc::collections, location: "data/id", tag: _tags!(data_structure),
+_reexport! { rust: alloc::collections, location: "data/id", tag: _tags!(data_structure ord),
     doc: "An ordered map based on a B-Tree.",
     BTreeMap
 }
-_reexport! { rust: alloc::collections::btree_map, location: "data/id",
+_reexport! { rust: alloc::collections::btree_map, location: "data/id", tag: _tags!(data_structure ord),
     doc: "An entry of an ordered map based on a B-Tree.",
     @Entry as BTreeMapEntry
 }
-_reexport! { rust: alloc::collections, location: "data/id", tag: _tags!(data_structure),
+_reexport! { rust: alloc::collections, location: "data/id", tag: _tags!(data_structure ord set),
     doc: "An ordered set based on a B-Tree.",
     BTreeSet
 }

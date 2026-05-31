@@ -25,7 +25,7 @@ mod nightly_simd {
     /* traits */
 
     // cmp
-    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num),
+    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num ord),
         doc: "Parallel `Ord`.",
         SimdOrd
     }
@@ -33,7 +33,7 @@ mod nightly_simd {
         doc: "Parallel `PartialEq`.",
         SimdPartialEq
     }
-    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num),
+    _reexport! { rust: core::simd::cmp, location: "num/grain", tag: _tags!(num ord),
         doc: "Parallel PartialOrd.",
         SimdPartialOrd
     }

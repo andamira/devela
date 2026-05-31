@@ -3,7 +3,7 @@
 //! Defines [`TermCap`].
 //
 
-#[doc = crate::_tags!(term runtime)]
+#[doc = crate::_tags!(term runtime member)]
 /// Terminal capability flag.
 #[doc = crate::_doc_meta!{location("sys/os/term")}]
 ///

@@ -4,7 +4,7 @@
 //
 
 #[rustfmt::skip]
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(logic ord)]
 /// Provides comparison operations using an operation-first syntax.
 #[doc = crate::_doc_meta!{location("num/fin/ord")}]
 ///

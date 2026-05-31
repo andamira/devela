@@ -6,7 +6,7 @@
 use crate::{CharAscii, char7, is};
 
 crate::set! {
-    #[doc = crate::_tags!(text data_structure)]
+    #[doc = crate::_tags!(text set)]
     /// A finite set of ASCII characters.
     #[doc = crate::_doc_meta!{location("text")}]
     ///

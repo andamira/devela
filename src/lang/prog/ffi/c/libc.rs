@@ -2,6 +2,11 @@
 
 #![allow(non_camel_case_types)]
 
+#[doc = crate::_tags!(primitive logic)]
+/// Equivalent to C99 `_Bool` / `<stdbool.h>` `bool`.
+#[doc = crate::_doc_meta!{location("lang/ffi/c")}]
+pub type c_bool = bool;
+
 #[doc = crate::_tags!(primitive num)]
 /// Equivalent to C's `mode_t` type.
 #[doc = crate::_doc_meta!{location("lang/ffi/c")}]

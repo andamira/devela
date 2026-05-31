@@ -3,7 +3,7 @@
 //! An enum with an associated bit set.
 //
 
-#[doc = crate::_tags!(code construction)]
+#[doc = crate::_tags!(code construction member set bit)]
 /// Defines an enum and an associated type set of its variants.
 #[doc = crate::_doc_meta!{location("code/util")}]
 ///

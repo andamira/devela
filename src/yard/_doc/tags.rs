@@ -69,8 +69,8 @@ _define_symbol_tags! {
     // Focuses on representation and transport of information,
     // not on its semantic meaning or mathematical structure.
     _TAG_DATA, "Data", "🪪"; // (id-card)
-    // Containers and collections that organize multiple values.
-    // Emphasizes structure over individual value semantics.
+    // Containers, collections, and their structural accessors.
+    // Emphasizes organization and access over individual value semantics.
     _TAG_DATA_STRUCTURE, "Data structure (collection)", "🗃️";
     // Diagnostics, introspection, debugging intent.
     _TAG_DEBUG, "Debugging", "🐛";
@@ -137,6 +137,11 @@ _define_symbol_tags! {
     // Memory form / representation (layout, bits, alignment, validity),
     // independent of allocation strategy. Excludes allocation strategy and lifetime semantics.
     _TAG_MEM, "Memory representation", "🫗"; // (glass pouring)
+    // Individual elements belonging to a set, family, enum-set, or closed domain.
+    // Use for selectable members, variants, capabilities, states, or symbols
+    // when their main role is membership in a corresponding collection or algebra.
+    // Not for arbitrary fields, values, or Rust enums merely because they are enums.
+    _TAG_MEMBER, "Member of a set or family", "∈";
     // Items used primarily as method namespaces or operation groupings.
     // Not intended to carry semantic state of their own.
     _TAG_NAMESPACE, "Utility namespace", "🛠️";
@@ -150,6 +155,11 @@ _define_symbol_tags! {
     _TAG_NON_STANDARD, "Non-standard", "⚠️";
     // Numeric structures, operations, and mathematical computation.
     _TAG_NUM, "Numeric structures and computation", "⅀";
+    // Order-based semantics, comparisons, sorted structures, or ranked traversal.
+    // Covers total/partial ordering, min/max, range queries, sorted maps/sets,
+    // priority queues, and binary-search-oriented APIs.
+    // Not for types merely implementing `Ord` as a convenience bound.
+    _TAG_ORD, "Ordering semantics", "≤";
     // Transforming input streams or symbolic sequences into structured meaning.
     // Covers scanners, parsers, parser states, parse errors, and grammar readers.
     // Excludes raw text storage and formatting.
@@ -170,6 +180,10 @@ _define_symbol_tags! {
     // Covers schedulers, tasks, async runtimes, and progression of active systems.
     // Excludes structural invocation semantics.
     _TAG_RUNTIME, "Runtime", "⬡";
+    // Membership-based set semantics.
+    // Covers finite sets, bit sets, enum sets, flag sets, and set-like collections.
+    // Use with `bit` when the representation is a bit mask.
+    _TAG_SET, "Set semantics", "⊆";
     // Signal-related process, terminal, or runtime control.
     _TAG_SIGNAL, "Signal", "📶";
     _TAG_STRING, "String storage and views", "🧶"; // (yarn)

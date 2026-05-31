@@ -20,7 +20,7 @@ use crate::{is, paste};
 #[cfg(nightly_float)]
 use ::core::{f16, f128};
 
-#[doc = crate::_tags!(logic namespace)]
+#[doc = crate::_tags!(logic ord namespace)]
 /// Provides comparing methods for `T`.
 #[doc = crate::_doc_meta!{location("num/fin/ord")}]
 ///

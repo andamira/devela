@@ -49,7 +49,7 @@ pub type js_uint32 = u32;
 
 /* boolean */
 
-#[doc = crate::_tags!(primitive)]
+#[doc = crate::_tags!(primitive logic)]
 /// A JavaScript boolean (`true` / `false`).
 #[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
 pub type js_bool = bool;

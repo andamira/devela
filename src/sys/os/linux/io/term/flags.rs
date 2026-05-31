@@ -9,7 +9,7 @@ use crate::{
 use crate::{c_uint, set};
 
 set! {
-    #[doc = crate::_tags!(linux term)]
+    #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] input flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
@@ -79,7 +79,7 @@ set! {
     }
 }
 set! {
-    #[doc = crate::_tags!(linux term)]
+    #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] output flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),
@@ -214,7 +214,7 @@ set! {
     }
 }
 set! {
-    #[doc = crate::_tags!(linux term)]
+    #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] control flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/linux/io/term"),
@@ -275,7 +275,7 @@ set! {
     }
 }
 set! {
-    #[doc = crate::_tags!(linux term)]
+    #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] local flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/linux/io/term"),

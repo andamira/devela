@@ -8,7 +8,7 @@ use crate::LinuxSigaction;
 use crate::{LINUX_SIGACTION as A, c_size_t, set};
 
 set! {
-    #[doc = crate::_tags!(linux signal)]
+    #[doc = crate::_tags!(linux signal set)]
     /// [`LinuxSigaction`] input flags.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),

@@ -7,7 +7,7 @@ use crate::{BitSized, ColorDepth, TermCap};
 
 crate::bitfield! {
     #[must_use]
-    #[doc = crate::_tags!(term runtime)]
+    #[doc = crate::_tags!(term runtime set bit)]
     /// Terminal capability bits.
     #[doc = crate::_doc_meta!{
         location("sys/os/term"),

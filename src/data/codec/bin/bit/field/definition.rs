@@ -3,7 +3,7 @@
 //! Defines [`bitfield!`]
 //
 
-#[doc = crate::_tags!(construction bit data_structure)]
+#[doc = crate::_tags!(construction bit mem)]
 /// Defines a compact packed-field wrapper backed by an unsigned integer.
 #[doc = crate::_doc_meta!{location("data/codec")}]
 ///

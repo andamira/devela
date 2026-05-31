@@ -65,6 +65,15 @@ macro_rules! _doc_location {
             ")</sup>"
         )
     };
+    // for items defined in a proc-macro workspace crate and aggregated in devela.
+    (%from_meta proc $path:literal) => {
+        concat!(
+            "<sup class='_doc_location' title='procedural macro location in `devela`'>",
+            "📍 [`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</sup>"
+        )
+    };
     // for items re-exported from another crate.
     // called from the _reexport! macro, does not end with \n\n
     (re-exported $path:literal) => {

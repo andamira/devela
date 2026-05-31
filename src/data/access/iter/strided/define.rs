@@ -3,7 +3,7 @@
 //! Defines [`iter_strided`].
 //
 
-#[doc = crate::_tags!(iterator)]
+#[doc = crate::_tags!(construction iterator)]
 /// Generates a strided iterator type over a slice.
 #[doc = crate::_doc_meta!{location("data/access/iter")}]
 ///

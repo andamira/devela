@@ -72,7 +72,7 @@ pub struct RunCapImage {
 }
 
 set! {
-    #[doc = crate::_tags!(runtime interaction)]
+    #[doc = crate::_tags!(runtime interaction set)]
     /// Runtime input capabilities.
     #[doc = crate::_doc_meta!{
         location("run/regime"),
@@ -93,7 +93,7 @@ set! {
 }
 
 set! {
-    #[doc = crate::_tags!(runtime)]
+    #[doc = crate::_tags!(runtime set)]
     /// Runtime system capabilities.
     #[doc = crate::_doc_meta!{
         location("run/regime"),
@@ -122,7 +122,7 @@ set! {
 }
 
 set! {
-    #[doc = crate::_tags!(runtime text)]
+    #[doc = crate::_tags!(runtime text set)]
     /// Runtime text capabilities.
     #[doc = crate::_doc_meta!{
         location("run/regime"),

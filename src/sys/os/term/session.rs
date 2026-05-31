@@ -33,7 +33,7 @@ impl<R> TermSession<R> {
 }
 
 crate::set! {
-    #[doc = crate::_tags!(term runtime)]
+    #[doc = crate::_tags!(term runtime set)]
     /// Terminal session mode request.
     #[doc = crate::_doc_meta!{
         location("sys/os/term/session"),

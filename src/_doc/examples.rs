@@ -37,11 +37,15 @@ pub mod id_seq;
 crate::structural_mods! { // _pub_mods
     _pub_mods {
         #[doc(inline)]
+        #[doc = crate::_tags!(example num niche)]
         pub use super::enumint::*;
 
         #[doc(inline)]
-        #[doc = crate::_tags!(example code)]
-        pub use super::enumset::*;
+        #[doc = crate::_tags!(example code member)]
+        pub use super::enumset::EnumExample;
+        #[doc(inline)]
+        #[doc = crate::_tags!(example code set)]
+        pub use super::enumset::EnumSetExample;
 
         #[doc(inline)]
         #[doc = crate::_tags!(example uid construction)]

@@ -15,7 +15,7 @@ pub use data_types::*;
 mod data_types {
     /* scalars */
 
-    #[doc = crate::_tags!(primitive)]
+    #[doc = crate::_tags!(primitive logic)]
     /// A GLSL boolean.
     #[doc = crate::_doc_meta!{location("lang/prog/ffi/glsl")}]
     pub type g_bool = bool;

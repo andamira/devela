@@ -3,7 +3,7 @@
 //! Defines [`ShellWordError`].
 //
 
-#[doc = crate::_tags!(lang lang)]
+#[doc = crate::_tags!(lang error_composite)]
 /// An error while parsing or quoting shell words.
 #[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
 #[non_exhaustive]

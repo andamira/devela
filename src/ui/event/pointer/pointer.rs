@@ -214,7 +214,7 @@ impl EventButton {
 }
 
 set! {
-    #[doc = crate::_tags!(event interaction)]
+    #[doc = crate::_tags!(event interaction set)]
     /// A semantic bitmask of currently held pressable buttons.
     #[doc = crate::_doc_meta!{
         location("ui/event"),
