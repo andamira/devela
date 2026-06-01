@@ -329,28 +329,33 @@ mod mouse {
     #[test]
     fn sgr_auxiliary_button_x1_press() {
         assert_sgr_mouse(b"\x1b[<128;10;20M", 9, 19, Some(Button::X1),
-            State::Pressed, Buttons::new().with(Buttons::X1), KM);
+            State::Pressed, BS.with(Buttons::X1), KM);
     }
     #[test]
     fn sgr_auxiliary_button_x1_shift_drag() {
         // 128 + 32 motion + 4 shift + 0
         assert_sgr_mouse(b"\x1b[<164;10;20M", 9, 19, Some(Button::X1),
-            State::Moved, Buttons::new().with(Buttons::X1), KM.with_shift());
+            State::Moved, BS.with(Buttons::X1), KM.with_shift());
     }
     #[test]
     fn sgr_auxiliary_button_x2_press() {
         assert_sgr_mouse(b"\x1b[<129;10;20M", 9, 19, Some(Button::X2),
-            State::Pressed, Buttons::new().with(Buttons::X2), KM);
+            State::Pressed, BS.with(Buttons::X2), KM);
     }
     #[test]
     fn sgr_auxiliary_button_x3_press() {
         assert_sgr_mouse(b"\x1b[<130;10;20M", 9, 19, Some(Button::X3),
-            State::Pressed, Buttons::new().with(Buttons::X3), KM);
+            State::Pressed, BS.with(Buttons::X3), KM);
     }
     #[test]
     fn sgr_auxiliary_button_x4_press() {
         assert_sgr_mouse(b"\x1b[<131;10;20M", 9, 19, Some(Button::X4),
-            State::Pressed, Buttons::new().with(Buttons::X4), KM);
+            State::Pressed, BS.with(Buttons::X4), KM);
+    }
+    #[test]
+    fn sgr_mouse_accepts_large_pixel_coordinates() {
+        assert_sgr_mouse(b"\x1b[<0;1234;567M", 1233, 566, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM);
     }
 }
 #[rustfmt::skip]
@@ -391,6 +396,10 @@ mod wheel {
     fn sgr_wheel_with_control_modifier() {
         // 64 wheel + 16 control + 1 down
         assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KM.with_control());
+    }
+    #[test]
+    fn sgr_wheel_accepts_large_pixel_coordinates() {
+        assert_sgr_wheel(b"\x1b[<65;1234;567M", 0, 1, 1233, 566, KM);
     }
 }
 
@@ -470,7 +479,7 @@ mod _helper {
         assert_eq!(w.unit, EventWheelUnit::Step);
         assert_eq!(w.x, x);
         assert_eq!(w.y, y);
-        assert_eq!(w.buttons, EventButtons::new());
+        assert_eq!(w.buttons, BS);
         assert_eq!(w.mods, mods);
     }
 }

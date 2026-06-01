@@ -45,6 +45,9 @@ crate::set! {
     /// Line-discipline bits are decoded through [`line_mode`](Self::line_mode)
     /// and applied by backend session entry code, such as `TermLinuxRestore::enter`.
     /// Preset constructors and backend entry logic must stay in sync.
+    ///
+    /// In `MOUSE_SGR_PIXELS` mode, terminal mouse coordinates are reported as
+    /// 0-based pixel positions in `EventMouse` and `EventWheel`.
     //
     // Only add here things that are:
     // - session-scoped,
@@ -184,33 +187,56 @@ crate::set! {
                 .with(Self::CLEAR_ON_ENTER)
                 .with(Self::RESET_STYLE_ON_DROP)
         }
+
         /// Returns `self` with normal mouse press/release reporting.
         ///
-        /// Uses SGR cell-coordinate encoding. Mouse motion is not enabled.
+        /// Uses SGR cell-coordinate encoding.
+        /// Mouse motion is not enabled.
         #[must_use]
         pub const fn mouse(self) -> Self {
             self.with(Self::MOUSE).with(Self::MOUSE_SGR)
         }
-        /// Returns `self` with normal mouse press/release reporting in pixel coordinates.
+        /// Returns `self` with mouse press/release reporting, preferring pixel coordinates.
         ///
-        /// Uses SGR-pixels encoding. Mouse motion is not enabled.
+        /// Enables SGR cell encoding as a fallback for terminals that ignore SGR-pixels.
+        /// Mouse motion is not enabled.
         #[must_use]
         pub const fn mouse_pixels(self) -> Self {
-            self.with(Self::MOUSE).with(Self::MOUSE_SGR_PIXELS)
+            self.with(Self::MOUSE).with(Self::MOUSE_SGR).with(Self::MOUSE_SGR_PIXELS)
         }
+
         /// Returns `self` with mouse drag reporting.
         ///
-        /// Reports movement while a button is held. Free mouse motion is not enabled.
+        /// Reports movement while a button is held.
+        /// Mouse motion is not enabled.
         #[must_use]
         pub const fn mouse_drag(self) -> Self {
             self.with(Self::MOUSE_DRAG).with(Self::MOUSE_SGR)
         }
+        /// Returns `self` with mouse drag reporting, preferring pixel coordinates.
+        ///
+        /// Enables SGR cell encoding as a fallback for terminals that ignore SGR-pixels.
+        /// Mouse motion is not enabled.
+        #[must_use]
+        pub const fn mouse_drag_pixels(self) -> Self {
+            self.with(Self::MOUSE_DRAG).with(Self::MOUSE_SGR).with(Self::MOUSE_SGR_PIXELS)
+        }
+
         /// Returns `self` with full mouse motion reporting.
         ///
         /// This can produce many events and should usually be enabled deliberately.
         #[must_use]
         pub const fn mouse_motion(self) -> Self {
             self.with(Self::MOUSE_MOTION).with(Self::MOUSE_SGR)
+        }
+        /// Returns `self` with full mouse motion reporting, preferring pixel coordinates.
+        ///
+        /// This can produce many events and should usually be enabled deliberately.
+        ///
+        /// Enables SGR cell encoding as a fallback for terminals that ignore SGR-pixels.
+        #[must_use]
+        pub const fn mouse_motion_pixels(self) -> Self {
+            self.with(Self::MOUSE_MOTION).with(Self::MOUSE_SGR).with(Self::MOUSE_SGR_PIXELS)
         }
     }
 }

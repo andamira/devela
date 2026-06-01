@@ -186,7 +186,8 @@ impl TermInputParser {
         // wheel events are normalized separately as EventWheel
         is! { Self::sgr_is_wheel(cb), return None } // cold
 
-        // normalize coordinates to 0-based cells
+        // normalize terminal coordinates to 0-based units.
+        // In SGR mode these are cells; in SGR-pixels mode these are pixels.
         let (x, y) = (cx.saturating_sub(1) as i32, cy.saturating_sub(1) as i32);
         let motion = cb & 32 != 0;
         let state = if motion {

@@ -290,12 +290,14 @@ impl TermLinuxRestore {
         }
 
         /* mouse: enable encoding before reporting */
+        // with fallback:
+        if mode.has_mouse_sgr() {
+            Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_B)?;
+            restore.flags = restore.flags.with_disable_mouse_sgr();
+        }
         if mode.has_mouse_sgr_pixels() {
             Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_PIXELS_B)?;
             restore.flags = restore.flags.with_disable_mouse_sgr_pixels();
-        } else if mode.has_mouse_sgr() {
-            Linux::print_bytes(&Ansi::ENABLE_MOUSE_SGR_B)?;
-            restore.flags = restore.flags.with_disable_mouse_sgr();
         }
 
         if mode.has_mouse_motion() {
@@ -352,7 +354,7 @@ impl Drop for TermLinuxRestore {
         if self.flags.has_disable_mouse() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_B);
         }
-        //
+
         if self.flags.has_disable_mouse_sgr_pixels() {
             let _ = Linux::print_bytes(&Ansi::DISABLE_MOUSE_SGR_PIXELS_B);
         }
