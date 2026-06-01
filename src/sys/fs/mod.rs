@@ -9,7 +9,8 @@
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-mod path; // PathExt, Path*, sys::path::*
+// pub mod app; // WIP
+pub mod path; // PathExt, Path*, sys::path::*
 
 #[cfg(feature = "std")]
 crate::items! {
@@ -21,14 +22,21 @@ crate::items! {
 
 // mod ext; // FileExt // WIP
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        pub use super::{path::_all::*};
-
         #[cfg(feature = "std")]
-        pub use super::{namespace::*, fs_path::*};
+        pub use super::{
+            namespace::*,
+            fs_path::*,
+        };
 
         // pub use super::ext::*; // WIP
+    }
+    _pub_mods {
+        pub use super::{
+            // app::all_::*,
+            path::_all::*,
+        };
     }
     _reexports {
         #[cfg(feature = "std")]

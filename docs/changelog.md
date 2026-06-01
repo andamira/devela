@@ -308,6 +308,7 @@
 
 ### sys::fs
 - rename `PathPrefix` to `PathWindowsPrefix`, `PathPrefixComponent` to `PathWindowsPrefixComponent`.
+- make `path` submodule public.
 
 ### sys::io
 - new traits `TextIn`, `TextOut`.

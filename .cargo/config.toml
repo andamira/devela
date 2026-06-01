@@ -127,6 +127,8 @@ cln = "clippy -F=no_std"
 clnu = "clippy -F=no_std,unsafe"
 # Linux targets:
 # $ cargo cl_x64l -F linux,unsafe_ffi
+cl32 = "cl_x32l"
+cl64 = "cl_x64l"
 cl_x32l = "cl --target i686-unknown-linux-gnu"
 cl_x64l = "cl --target x86_64-unknown-linux-gnu"
 cl_a32l = "cl --target armv7-unknown-linux-gnueabihf"
@@ -175,6 +177,10 @@ td = "test --doc" #+w
 # $ sudo apt install gcc-multilib libc6-dev-i386
 # USAGE:
 # $ cargo t_x32l -F linux,unsafe_ffi
+t32 = "t_x32l"
+t64 = "t_x64l"
+td32 = "td_x32l"
+td64 = "td_x64l"
 t_x32l = "t --target i686-unknown-linux-gnu"
 t_x64l = "t --target x86_64-unknown-linux-gnu"
 td_x32l = "td --target i686-unknown-linux-gnu"

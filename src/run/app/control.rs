@@ -59,7 +59,7 @@ crate::enumset! {
     }
 }
 
-#[cfg(all(feature = "_linux_abi"))]
+#[cfg(feature = "_linux_abi")]
 mod impl_linux {
     use crate::{
         AppControl, AppControlSet, AtomicOrdering::SeqCst, AtomicPtr, Linux, LinuxSigactionFlags,

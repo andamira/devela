@@ -3,11 +3,11 @@ This is derived work from the
 including the following modifications:
 
 - make the trait `dyn` compatible.
-- rename `AppStrategyArgs` to `AppData`.
-- unify all `Xdg` structs into `DirXdg`.
-- unify all `Apple` structs into `DirApple`.
-- unify all `Windows` structs into `DirWindows`.
-- unify `BaseStrategy` and `AppStrategy` into `DirEnv`.
+- rename `AppStrategyArgs` to `AppConfig`.
+- unify all `Xdg` structs into `AppXdg`.
+- unify all `Apple` structs into `AppApple`.
+- unify all `Windows` structs into `AppWindows`.
+- unify `BaseStrategy` and `AppStrategy` into `AppEnv`.
 - replace `Result` with `Option`, remove `HomeDirError`.
 - validate `AppData` construction, made fields private.
 - make Apple bundle ID match the `directories` crate.

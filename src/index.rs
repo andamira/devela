@@ -103,6 +103,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
+        // random_source,
         refcell_try_map,
         result_option_map_or_default,
         str_as_str,
