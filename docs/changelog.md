@@ -338,7 +338,7 @@
 - update `WebEventKind`:
   - add `Wheel` variant, update associated values.
 - add new `mods` field to: `WebEventMouse`, `WebEventWheel` and `WebEventPointer`.
-- add new `button` and `buttons` fields to: `WebEventPointer`.
+- add new `kind`, `button` and `buttons` fields to: `WebEventPointer`.
 - bring here impls from `ui::event`.
 - feature-gate with `event` the event-related impls.
 - rename all methods `[from|to]_js*` to `[from|to]_web*`.
@@ -346,6 +346,8 @@
 - replace `ui::event::EventMouse` methods: `[from|to]_js` with `WebEventMouse` methods: `to_kind_timed`, `from_event_mouse_timed`.
 - replace `impl From<WebEventMouse> for EventMouse` with one `for EventKindTimed`.
 - replace `impl From<EventMouse> for WebEventMouse` with one `From<Timed<EventMouse, Option<EventTimestamp>>>`.
+- impl `WebEventPointer` methods: from_event_pointer_timed and to_kind_timed.
+- allow receiving duplicated mouse and pointer web events.
 
 #### sys::os::linux
 - update `LinuxError` conversion to `IoError`.
@@ -475,6 +477,7 @@
   - add fields: `unit`, `buttons`, `mods`.
   - add many convenience methods.
 - update `EventWindow`: remove variants: `Continue`, `EndOfInput`.
+- rename `EventPointerType` to `EventPointerKind`.
 
 ## work
 - new `work` submodules: `exec`, `plan`, `task`.

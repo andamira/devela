@@ -123,10 +123,13 @@ pub extern "C" fn main() {
     Web::event_add_listener("#example_canvas_1", WebEventKind::Click, canvas_click);
     // mouse
     Web::event_add_listener_mouse("window", WebEventKind::MouseDown, my_mouse_callback);
-    // wheel
-    Web::event_add_listener_wheel("window", WebEventKind::Wheel, my_wheel_callback);
+    // Web::event_add_listener_mouse("window", WebEventKind::MouseMove, my_mouse_callback);
     // pointer
     Web::event_add_listener_pointer("window", WebEventKind::PointerDown, my_pointer_callback);
+    // Web::event_add_listener_pointer("window", WebEventKind::PointerUp, my_pointer_callback);
+    // Web::event_add_listener_pointer("window", WebEventKind::PointerMove, my_pointer_callback);
+    // wheel
+    Web::event_add_listener_wheel("window", WebEventKind::Wheel, my_wheel_callback);
 
     // panic!("let's trigger a panic");
 }
@@ -155,15 +158,15 @@ pub extern "C" fn canvas_click() {
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
     let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "MOUSE: {event:?}"]);
+    console::log(fmt![?buf, "MOUSE: {:?}", event]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
     let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "POINT: {event:?}"]);
+    console::log(fmt![?buf, "POINT: {:?}", event]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_wheel_callback(event: WebEventWheel) {
     let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "WHEEL: {event:?}"]);
+    console::log(fmt![?buf, "WHEEL: {:?}", event]);
 }

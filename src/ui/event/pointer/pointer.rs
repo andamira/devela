@@ -1,6 +1,6 @@
 // devela::ui::event::pointer::pointer
 //
-//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`].
+//! Defines [`EventMouse`], [`EventPointer`], [`EventPointerKind`].
 //
 
 use crate::{_impl_init, EventButton, EventButtonState, EventButtons, KeyMods, f32bits_niche};
@@ -52,7 +52,7 @@ impl EventMouse {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EventPointer {
     /// The type of pointer (mouse, touch, pen).
-    pub kind: EventPointerType,
+    pub kind: EventPointerKind,
     /// Unique ID for touch and pen inputs (e.g., multi-touch gestures).
     pub id: u32,
     /// The x-coordinate of the pointer.
@@ -86,14 +86,14 @@ pub struct EventPointer {
     // pub phase: EventPointerPhase,
 }
 _impl_init! {
-    Self::new(EventPointerType::INIT, 0, 0, 0, 0, 0, f32bits_niche::INIT, 0, 0, 0, None,
+    Self::new(EventPointerKind::INIT, 0, 0, 0, 0, 0, f32bits_niche::INIT, 0, 0, 0, None,
     EventButtonState::INIT, EventButtons::INIT, KeyMods::INIT) => EventPointer
 }
 #[rustfmt::skip]
 impl EventPointer {
     /// Returns a normalized pointer event.
     #[allow(clippy::too_many_arguments)]
-    pub const fn new(kind: EventPointerType, id: u32, x: i32, y: i32, dx: i32, dy: i32,
+    pub const fn new(kind: EventPointerKind, id: u32, x: i32, y: i32, dx: i32, dy: i32,
         pressure: f32bits_niche, tilt_x: i8, tilt_y: i8, twist: u16, button: Option<EventButton>,
         state: EventButtonState, buttons: EventButtons, mods: KeyMods) -> Self {
         Self {
@@ -114,7 +114,7 @@ impl EventPointer {
 /// Enum representing the type of pointer.
 #[doc = crate::_doc_meta!{location("ui/event")}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum EventPointerType {
+pub enum EventPointerKind {
     /// A mouse pointer.
     Mouse,
     /// A touch pointer.
@@ -122,7 +122,7 @@ pub enum EventPointerType {
     /// A pen pointer.
     Pen,
 }
-_impl_init! { Self::Mouse => EventPointerType }
+_impl_init! { Self::Mouse => EventPointerKind }
 
 // /// Represents the phase of a pointer (useful for touch events).
 // #[doc = crate::_doc_meta!{location("ui/event")}]

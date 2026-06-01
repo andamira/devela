@@ -6,7 +6,7 @@
 
 use crate::transmute;
 use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number};
-use crate::{EventWheelUnit, KeyMods};
+use crate::{EventPointerKind, EventWheelUnit, KeyMods};
 use crate::{Web, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel};
 
 /// # Web API Events
@@ -144,16 +144,17 @@ impl Web {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize, id: js_int32,
-        x: js_number, y: js_number, pressure: js_number, tilt_x: js_int32, tilt_y: js_int32,
-        twist: js_int32, button: js_int32, buttons: js_int32, mods: js_int32,
-        etype: js_int32, timestamp: js_number) {
+        kind: js_int32, x: js_number, y: js_number, pressure: js_number,
+        tilt_x: js_int32, tilt_y: js_int32, twist: js_int32, button: js_int32, buttons: js_int32,
+        mods: js_int32, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(WebEventPointer) = unsafe { transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
+        let kind = EventPointerKind::from_web(kind as u8);
         let etype = WebEventKind::from_repr(etype as u8);
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8, twist as u16,
-            button as u8, buttons as u8, mods, etype, timestamp));
+        callback(WebEventPointer::new(x, y, pressure, id, kind, tilt_x as i8, tilt_y as i8,
+            twist as u16, button as u8, buttons as u8, mods, etype, timestamp));
     }
     /// WebAssembly wheel event callback dispatcher.
     ///

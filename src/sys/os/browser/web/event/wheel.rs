@@ -31,6 +31,9 @@ use crate::{Timed, is};
 /// See also [`EventWheel`], [`EventWheelUnit`].
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent>
+//
+// WAIT: [Wheel-scrolling missing 1st event](https://bugzilla.mozilla.org/show_bug.cgi?id=1969373)
+// WAIT: […stops working with XInput2](https://bugzilla.mozilla.org/show_bug.cgi?id=1182700)
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct WebEventWheel {

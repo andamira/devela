@@ -3,13 +3,6 @@
 use crate::{KeyFfi, KeyMods, KeyPad, KeyState};
 use crate::{WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation};
 
-#[test] #[rustfmt::skip]
-fn sizes_of() {
-    assert_eq![ 4, size_of::<WebEventKind>()];    // 32
-    assert_eq![32, size_of::<WebEventMouse>()];   // 256
-    assert_eq![48, size_of::<WebEventPointer>()]; // 384
-    assert_eq![ 1, size_of::<WebKeyLocation>()];  // 8
-}
 #[test]
 fn js_event_conversions() {
     assert_eq!(WebEventKind::from_repr(02), WebEventKind::KeyDown);

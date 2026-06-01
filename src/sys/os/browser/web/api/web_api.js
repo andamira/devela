@@ -99,6 +99,14 @@ export async function initWasm(wasmPath, imports = {}) {
     }
     return mods;
   };
+  /** Returns EventPointerKind web code. */
+  function event_pointer_kind(e) {
+    switch (e.pointerType) {
+      case "touch": return 1;
+      case "pen":   return 2;
+      default:      return 0;
+    }
+  }
 
   /* Bindings */
 
@@ -187,7 +195,7 @@ export async function initWasm(wasmPath, imports = {}) {
         if (!element) { console.error(`Element not found for mouse listener`); return; }
         const event = str_decode(eventPtr, eventLen);
         const callback = (e) => {
-          const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
+          const button = e.type === "mousemove" ? -1 : e.button; // -1 (255) for no clicks
           const buttons = e.buttons;
           const mods = event_mods(e);
           const etype = get_event_kind(e.type);
@@ -203,18 +211,15 @@ export async function initWasm(wasmPath, imports = {}) {
         if (!element) { console.error(`Element not found for pointer listener`); return; }
         const event = str_decode(eventPtr, eventLen);
         const callback = (e) => {
-          const button = e.type === "mousemove" ? -1 : e.button; // -1 for no clicks
+          const button = e.type === "pointermove" ? -1 : e.button; // -1 (255) for no clicks
           const buttons = e.buttons;
           const mods = event_mods(e);
+          const kind = event_pointer_kind(e);
           const etype = get_event_kind(e.type);
           const time_stamp = e.timeStamp;
-          // NOTE: if we manage mouse pointer events, the mouse callback doesn't get triggered
-          if (e.pointerType !== "mouse") {
-            e.preventDefault(); // STOP mouse event from firing
-            wasm.exports.wasm_callback_pointer( // must match the extern "C" signature exactly
-              callbackPtr, e.pointerId, e.clientX, e.clientY, e.pressure,
-              e.tiltX, e.tiltY, e.twist || 0, button, buttons, mods, etype, time_stamp);
-          }
+          wasm.exports.wasm_callback_pointer( // must match the extern "C" signature exactly
+            callbackPtr, e.pointerId, kind, e.clientX, e.clientY, e.pressure,
+            e.tiltX, e.tiltY, e.twist || 0, button, buttons, mods, etype, time_stamp);
         };
         api_events._callbacks.set(callbackPtr, callback);
         element.addEventListener(event, callback);
