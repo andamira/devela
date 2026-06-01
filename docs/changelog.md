@@ -466,7 +466,9 @@
   - add methods: `has_tag`, `is_in`, `is_wheel`, `some_wheel`.
 - update `EventKey`:
   - add methods: `new`, `press`, `modified_press`, `text`, `modified_text`, `with_state`, `with_mods`.
-- update `KeyMods`: add methods: `from_web`, `to_web`.
+- update `KeyMods`:
+  - add methods: `from_web`, `to_web`.
+  - change implementation to use `set!`.
 - update `EventPointer`:
   - add fields: `buttons`, `mods`.
 - update `EventWheel`:

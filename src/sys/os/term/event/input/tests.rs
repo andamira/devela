@@ -255,7 +255,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -267,7 +267,7 @@ mod mouse {
             Some(EventButton::Middle),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::MIDDLE),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -279,7 +279,7 @@ mod mouse {
             Some(EventButton::Right),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::RIGHT),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -291,7 +291,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Released,
             EventButtons::new(),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -303,7 +303,7 @@ mod mouse {
             None,
             EventButtonState::Released,
             EventButtons::new(),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -315,7 +315,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -327,7 +327,7 @@ mod mouse {
             Some(EventButton::Middle),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::MIDDLE),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -339,7 +339,7 @@ mod mouse {
             Some(EventButton::Right),
             EventButtonState::Moved,
             EventButtons::new().with(EventButtons::RIGHT),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -351,7 +351,7 @@ mod mouse {
             None,
             EventButtonState::Moved,
             EventButtons::new(),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -363,7 +363,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty(),
+            KeyMods::new(),
         );
     }
     #[test]
@@ -382,7 +382,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty().with_shift(),
+            KeyMods::new().with_shift(),
         );
     }
     #[test]
@@ -394,7 +394,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty().with_alt(),
+            KeyMods::new().with_alt(),
         );
     }
     #[test]
@@ -406,7 +406,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty().with_control(),
+            KeyMods::new().with_control(),
         );
     }
     #[test]
@@ -418,7 +418,7 @@ mod mouse {
             Some(EventButton::Left),
             EventButtonState::Pressed,
             EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::empty().with_shift().with_alt().with_control(),
+            KeyMods::new().with_shift().with_alt().with_control(),
         );
     }
 }
@@ -426,39 +426,39 @@ mod wheel {
     use super::*;
     #[test]
     fn sgr_wheel_up() {
-        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_down() {
-        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_left() {
-        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_right() {
-        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_coordinates_are_normalized_to_zero_based() {
-        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_release_final_is_still_parsed() {
         // Odd but harmless: the wheel family is identified by Cb, not by M/m.
-        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19, KeyMods::empty());
+        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19, KeyMods::new());
     }
     #[test]
     fn sgr_wheel_with_shift_modifier() {
         // 64 wheel + 4 shift + 0 up
-        assert_sgr_wheel(b"\x1b[<68;10;20M", 0, -1, 9, 19, KeyMods::empty().with_shift());
+        assert_sgr_wheel(b"\x1b[<68;10;20M", 0, -1, 9, 19, KeyMods::new().with_shift());
     }
 
     #[test]
     fn sgr_wheel_with_control_modifier() {
         // 64 wheel + 16 control + 1 down
-        assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KeyMods::empty().with_control());
+        assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KeyMods::new().with_control());
     }
 }
 
@@ -484,7 +484,7 @@ mod _helper {
         assert_eq!(k.semantic, expected);
         assert_eq!(k.physical, expected);
         assert_eq!(k.state, KeyState::Press);
-        assert_eq!(k.mods, crate::KeyMods::empty());
+        assert_eq!(k.mods, crate::KeyMods::new());
     }
     pub(super) fn feed_parsed_seq(parser: &mut TermInputParser, bytes: &[u8]) -> TermParsed {
         let mut out = TermParsed::Pending;

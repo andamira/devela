@@ -259,7 +259,7 @@ mod impls {
         ///
         /// Only the web-representable low byte is preserved.
         pub const fn to_web(self) -> u8 {
-            (self.to_bits() & 0x00FF) as u8
+            (self.bits() & 0x00FF) as u8
         }
     }
 }

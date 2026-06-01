@@ -46,7 +46,7 @@ impl EventKey {
     }
     /// Creates a key press whose semantic and physical keys are the same.
     pub const fn press(key: Key) -> Self {
-        Self::new(key, key, KeyMods::empty(), KeyState::Press)
+        Self::new(key, key, KeyMods::new(), KeyState::Press)
     }
     /// Creates a modified key press whose semantic and physical keys are the same.
     pub const fn modified_press(key: Key, mods: KeyMods) -> Self {
@@ -54,7 +54,7 @@ impl EventKey {
     }
     /// Creates a text-producing key press with unknown physical origin.
     pub const fn text(c: char) -> Self {
-        Self::new(Key::Char(c), Key::Unknown, KeyMods::empty(), KeyState::Press)
+        Self::new(Key::Char(c), Key::Unknown, KeyMods::new(), KeyState::Press)
     }
     /// Creates a modified text-producing key press with unknown physical origin.
     pub const fn modified_text(c: char, mods: KeyMods) -> Self {

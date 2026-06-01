@@ -266,7 +266,7 @@ impl XkbState {
     /// Prefer the XKB effective-modifier path
     /// once the minimum supported libxkbcommon version is high enough.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
-        let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::empty());
+        let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::new());
         is![x.is_set_mask(_raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_CONTROL), m.set_control()];
         is![x.is_set_mask(_raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];

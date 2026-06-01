@@ -33,7 +33,7 @@ impl TermInputParser {
         }
     }
     pub(super) const fn mods_control() -> KeyMods {
-        let mut mods = KeyMods::empty();
+        let mut mods = KeyMods::new();
         mods.set_control();
         mods
     }
@@ -168,7 +168,7 @@ impl TermInputParser {
         Some((cb, cx, cy))
     }
     const fn sgr_mouse_mods(cb: u16) -> KeyMods {
-        let mut mods = KeyMods::empty();
+        let mut mods = KeyMods::new();
         is! { cb & 4 != 0, mods.set_shift() }
         is! { cb & 8 != 0, mods.set_alt() }
         is! { cb & 16 != 0, mods.set_control() }
