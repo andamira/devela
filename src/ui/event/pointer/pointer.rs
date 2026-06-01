@@ -3,7 +3,7 @@
 //! Defines [`EventMouse`], [`EventPointer`], [`EventPointerType`].
 //
 
-use crate::{_impl_init, EventButton, EventButtonState, EventButtons, KeyMods, f32bits_niche, set};
+use crate::{_impl_init, EventButton, EventButtonState, EventButtons, KeyMods, f32bits_niche};
 
 /* definitions */
 

@@ -192,8 +192,8 @@ export async function initWasm(wasmPath, imports = {}) {
           const mods = event_mods(e);
           const etype = get_event_kind(e.type);
           const time_stamp = e.timeStamp;
-          wasm.exports.wasm_callback_mouse(callbackPtr,
-            e.clientX, e.clientY, button, buttons, mods, etype, time_stamp);
+          wasm.exports.wasm_callback_mouse( // must match the extern "C" signature exactly
+            callbackPtr, e.clientX, e.clientY, button, buttons, mods, etype, time_stamp);
         };
         api_events._callbacks.set(callbackPtr, callback);
         element.addEventListener(event, callback);
@@ -211,8 +211,8 @@ export async function initWasm(wasmPath, imports = {}) {
           // NOTE: if we manage mouse pointer events, the mouse callback doesn't get triggered
           if (e.pointerType !== "mouse") {
             e.preventDefault(); // STOP mouse event from firing
-            wasm.exports.wasm_callback_pointer(callbackPtr,
-              e.pointerId, e.clientX, e.clientY, e.pressure,
+            wasm.exports.wasm_callback_pointer( // must match the extern "C" signature exactly
+              callbackPtr, e.pointerId, e.clientX, e.clientY, e.pressure,
               e.tiltX, e.tiltY, e.twist || 0, button, buttons, mods, etype, time_stamp);
           }
         };
@@ -227,7 +227,7 @@ export async function initWasm(wasmPath, imports = {}) {
             const buttons = e.buttons;
             const mods = event_mods(e);
             const time_stamp = e.timeStamp;
-            wasm.exports.wasm_callback_wheel(
+            wasm.exports.wasm_callback_wheel( // must match the extern "C" signature exactly
               callbackPtr, e.clientX, e.clientY, e.deltaX, e.deltaY,
               buttons, mods, e.deltaMode, time_stamp);
         };

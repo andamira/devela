@@ -1,6 +1,6 @@
-// devela::sys::os::browser::web::event
+// devela::sys::os::browser::web::event::tests
 
-use crate::{KeyFfi, KeyPad, KeyState};
+use crate::{KeyFfi, KeyMods, KeyPad, KeyState};
 use crate::{WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation};
 
 #[test] #[rustfmt::skip]
@@ -66,4 +66,25 @@ fn key_ffi_from_web_key() {
     assert_eq!(KeyFfi::from_web_key(" ", WebKeyLocation::Standard), Some(KeyFfi::Space));
     assert_eq!(KeyFfi::from_web_key("a", WebKeyLocation::Standard), Some(KeyFfi::Char('a' as u32)));
     assert_eq!(KeyFfi::from_web_key("é", WebKeyLocation::Standard), Some(KeyFfi::Char('é' as u32)));
+}
+
+#[test]
+fn keymods_web_roundtrip_low_byte() {
+    let mods = KeyMods::from_web(0b1111_1111);
+    assert_eq!(mods.to_web(), 0b1111_1111);
+    assert!(mods.has_control());
+    assert!(mods.has_shift());
+    assert!(mods.has_alt());
+    assert!(mods.has_super());
+    assert!(mods.has_alt_gr());
+    assert!(mods.has_caps_lock());
+    assert!(mods.has_num_lock());
+    assert!(mods.has_scroll_lock());
+}
+#[test]
+fn keymods_web_drops_non_web_flags() {
+    let mut mods = KeyMods::new();
+    mods.set_repeating();
+    mods.set_composing();
+    assert_eq!(mods.to_web(), 0);
 }

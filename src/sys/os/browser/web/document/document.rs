@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::document
+// devela::sys::os::browser::web::document::document
 //
 //! Defines [`WebDocument`].
 //

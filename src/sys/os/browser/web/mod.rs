@@ -11,8 +11,7 @@
 mod time; // impls for JsInstant and JsTimeout
 
 mod api; // Web (js & rust files)
-mod document; // WebDocument
-mod element; // WebElement
+mod document; // WebDocument, WebElement
 #[cfg(feature = "event")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "event")))]
 mod event; // WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation
@@ -26,7 +25,6 @@ crate::structural_mods! { // _mods
         pub use super::{
             api::*,
             document::*,
-            element::*,
             permission::*,
             window::*,
             worker::*,

@@ -80,7 +80,7 @@ impl Web {
     /// Attaches a Rust function as a `wheel event` listener on an `element`.
     ///
     /// The callback receives [`WebEventWheel`] with raw browser deltas, unit,
-    /// held-button mask, and viewport-relative coordinates.
+    /// held-button mask, active modifiers, and viewport-relative coordinates.
     pub fn event_add_listener_wheel(element: &str, event: WebEventKind,
         callback: extern "C" fn(WebEventWheel)) {
         unsafe {
@@ -131,7 +131,7 @@ impl Web {
         let timestamp = JsInstant::from_millis_f64(timestamp);
         callback(WebEventMouse::new(x, y, button as u8, buttons as u8, mods, etype, timestamp));
     }
-    /// WebAssembly mouse event callback dispatcher.
+    /// WebAssembly pointer event callback dispatcher.
     ///
     /// - Called from JavaScript when a pointer event is fired.
     /// - Passes the `WebEventPointer` struct to the Rust callback.
