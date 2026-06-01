@@ -8,7 +8,7 @@
 //
 // NOTES
 // - icons used by _doc_location: 📍,
-// - icons used by _doc_size_of: 📦,⚗️,
+// - icons used by _doc_test_size_of: 📦,⚗️,
 
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]

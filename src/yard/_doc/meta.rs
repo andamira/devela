@@ -13,15 +13,15 @@
 ///
 /// # Sections
 /// - `location(...)`: emits an item location fragment through [`_doc_location!`].
-/// - `size_of(...)`: emits checked type-size metadata through [`_doc_size_of!`].
+/// - `test_size_of(...)`: emits checked type-size metadata through [`_doc_test_size_of!`].
 /// - `origin(...)`: emits re-export origin metadata for Rust or dependency items.
 ///
 /// [`_doc_location!`]: crate::_doc_location
-/// [`_doc_size_of!`]: crate::_doc_size_of
+/// [`_doc_test_size_of!`]: crate::_doc_test_size_of
 ///
 /// # Examples
 /// ```ignore
-/// #[doc = crate::_doc_meta! { location("media/audio"), size_of(PcmSpec = 8) }]
+/// #[doc = crate::_doc_meta! { location("media/audio"), test_size_of(PcmSpec = 8) }]
 /// #[doc = crate::_doc_meta! { location(re-exported "code/any"), origin(rust core::any) }]
 /// #[doc = crate::_doc_meta! { location(re-exported "code"), origin(crate "hashbrown") }]
 /// ```
@@ -43,7 +43,7 @@ macro_rules! _doc_meta· {
     /* public section: test_size_of */
     (@items $(#[$meta:meta])* test_size_of($($args:tt)*) $(, $($rest:tt)*)?) => {
         concat!(
-            $crate::_doc_size_of!($(#[$meta])* $($args)*),
+            $crate::_doc_test_size_of!($(#[$meta])* $($args)*),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
