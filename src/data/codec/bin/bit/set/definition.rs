@@ -19,6 +19,7 @@ macro_rules! set· {
                 $f:ident = $( $start:tt $(..= $end:tt)? ),+ $(,)?;
             )*
         }
+        $( traits( $( ! $no_trait:ident ),* $(,)? ); )?
         $( // optional impl blocks
             $(#[$impl_attrs:meta])*
             impl { $($user_impl:item)* }
@@ -27,7 +28,7 @@ macro_rules! set· {
         $crate::set!(%guard_allowed_type $Set, $T);
 
         $( #[$struct_attrs] )*
-        #[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        #[derive(Clone, Copy)]
         $vis struct $Set { bits: $T }
         $(
             $( #[$impl_attrs] )*
@@ -111,7 +112,7 @@ macro_rules! set· {
         impl $Set {
             /* per-set private metadata */
             /// The binary width needed to show all declared bits in `Debug`.
-            pub(crate) const _SET_DEBUG_WIDTH: usize = {
+            pub(crate) const _SET_BIT_WIDTH: usize = {
                 let bits = Self::all().bits;
                 if bits == 0 { 1 } else { (<$T>::BITS - bits.leading_zeros()) as usize }
             };
@@ -121,9 +122,9 @@ macro_rules! set· {
                 if bits == 0 { 0 } else { (<$T>::BITS - bits.leading_zeros()) as usize }
             };
             /// The octal digit width needed to show all declared bits.
-            pub(crate) const _SET_OCTAL_WIDTH: usize = Self::_SET_DEBUG_WIDTH.div_ceil(3);
+            pub(crate) const _SET_OCTAL_WIDTH: usize = Self::_SET_BIT_WIDTH.div_ceil(3);
             /// The hexadecimal digit width needed to show all declared bits.
-            pub(crate) const _SET_HEX_WIDTH: usize = Self::_SET_DEBUG_WIDTH.div_ceil(4);
+            pub(crate) const _SET_HEX_WIDTH: usize = Self::_SET_BIT_WIDTH.div_ceil(4);
             // _FIELD_COUNT, _SINGLE_COUNT, _GROUP_COUNT, _FIELD_NAMES
 
             /* public methods */
@@ -230,43 +231,84 @@ macro_rules! set· {
 
         /* impl traits */
 
+        $( #[$crate::compile[nota(PartialEq $(, $no_trait)*)]] )?
+        impl ::core::cmp::PartialEq for $Set {
+            fn eq(&self, other: &Self) -> bool { self.bits == other.bits }
+        }
+        $( #[$crate::compile[all(nota(Eq $(, $no_trait)*), nota(PartialEq $(, $no_trait)*))]] )?
+        impl ::core::cmp::Eq for $Set {}
+
+        $( #[$crate::compile[nota(PartialOrd $(, $no_trait)*)]] )?
+        impl ::core::cmp::PartialOrd for $Set {
+            fn partial_cmp(&self, other: &Self) -> Option<::core::cmp::Ordering> {
+                self.bits.partial_cmp(&other.bits)
+            }
+        }
+        $( #[$crate::compile[all(
+            nota(Ord $(, $no_trait)*),
+            nota(PartialOrd $(, $no_trait)*),
+            nota(Eq $(, $no_trait)*),
+            nota(PartialEq $(, $no_trait)*)
+        )]] )?
+        impl ::core::cmp::Ord for $Set {
+            fn cmp(&self, other: &Self) -> ::core::cmp::Ordering {
+                self.bits.cmp(&other.bits)
+            }
+        }
+        $( #[$crate::compile[nota(Hash $(, $no_trait)*)]] )?
+        impl ::core::hash::Hash for $Set {
+            fn hash<H: ::core::hash::Hasher>(&self, state: &mut H) {
+                self.bits.hash(state)
+            }
+        }
+
         impl $crate::BitSized<{ $Set::_SET_BIT_SIZE }> for $Set {}
         impl $crate::ConstInit for $Set { const INIT: Self = Self::new(); }
+        $( #[$crate::compile[nota(Default $(, $no_trait)*)]] )?
+        impl Default for $Set { fn default() -> Self { Self::new() } }
+
         // formatting
         $crate::impl_trait! { fmt::Debug for
+            $( #[$crate::compile[nota(Debug $(, $no_trait)*)]] )?
             /// Formats the set as a prefixed binary mask over its declared bit domain.
             $Set |self, f| write!(f, concat!(stringify!($Set),
-                "(0b{:0w$b})"), self.bits, w = Self::_SET_DEBUG_WIDTH) }
+                "(0b{:0w$b})"), self.bits, w = Self::_SET_BIT_WIDTH) }
         $crate::impl_trait! { fmt::Display for
+            $( #[$crate::compile[nota(Display $(, $no_trait)*)]] )?
             /// Formats the set as a prefixed binary mask over its declared bit domain.
-            $Set |self, f| write!(f, "0b{:0w$b}", self.bits, w = Self::_SET_DEBUG_WIDTH)
+            $Set |self, f| write!(f, "0b{:0w$b}", self.bits, w = Self::_SET_BIT_WIDTH)
         }
         $crate::impl_trait! { fmt::Binary for
+            $( #[$crate::compile[nota(Binary $(, $no_trait)*)]] )?
             /// Formats the set as a binary mask over its declared bit domain.
             $Set |self, f|
-                if f.alternate() { write!(f, "0b{:0w$b}", self.bits, w = Self::_SET_DEBUG_WIDTH) }
-                else { write!(f, "{:0w$b}", self.bits, w = Self::_SET_DEBUG_WIDTH) }
+                if f.alternate() { write!(f, "0b{:0w$b}", self.bits, w = Self::_SET_BIT_WIDTH) }
+                else { write!(f, "{:0w$b}", self.bits, w = Self::_SET_BIT_WIDTH) }
         }
         $crate::impl_trait! { fmt::Octal for
+            $( #[$crate::compile[nota(Octal $(, $no_trait)*)]] )?
             /// Formats the set as an octal mask over its declared bit domain.
             $Set |self, f|
                 if f.alternate() { write!(f, "0o{:0w$o}", self.bits, w = Self::_SET_OCTAL_WIDTH) }
                 else { write!(f, "{:0w$o}", self.bits, w = Self::_SET_OCTAL_WIDTH) }
         }
         $crate::impl_trait! { fmt::LowerHex for
+            $( #[$crate::compile[nota(LowerHex $(, $no_trait)*)]] )?
             /// Formats the set as a hexadecimal mask over its declared bit domain.
             $Set |self, f|
                 if f.alternate() { write!(f, "0x{:0w$x}", self.bits, w = Self::_SET_HEX_WIDTH) }
                 else { write!(f, "{:0w$x}", self.bits, w = Self::_SET_HEX_WIDTH) }
         }
         $crate::impl_trait! { fmt::UpperHex for
+            $( #[$crate::compile[nota(UpperHex $(, $no_trait)*)]] )?
             /// Formats the set as a hexadecimal mask over its declared bit domain.
             $Set |self, f|
                 if f.alternate() { write!(f, "0x{:0w$X}", self.bits, w = Self::_SET_HEX_WIDTH) }
                 else { write!(f, "{:0w$X}", self.bits, w = Self::_SET_HEX_WIDTH) }
         }
 
-        impl $crate::DebugExt for $Set {
+        $( #[$crate::compile[nota(DebugExt $(, $no_trait)*)]] )?
+        impl $crate::DebugExt for $Set where $Set: $crate::Debug {
             type Ctx = $crate::ReprMode;
             fn fmt_with(&self, f: &mut $crate::Formatter<'_>, ctx: &Self::Ctx)
                 -> $crate::FmtResult<()> {
@@ -275,7 +317,7 @@ macro_rules! set· {
                     $crate::ReprMode::Named => { self._fmt_named(f) }
                     $crate::ReprMode::RawNamed => {
                         write!(f, concat!(stringify!($Set), "("))?;
-                        write!(f, "0b{:0width$b}", self.bits, width = Self::_SET_DEBUG_WIDTH)?;
+                        write!(f, "0b{:0width$b}", self.bits, width = Self::_SET_BIT_WIDTH)?;
                         write!(f, "; ")?;
                         self._fmt_named_inner(f)?;
                         write!(f, ")")

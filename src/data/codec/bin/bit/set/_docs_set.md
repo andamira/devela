@@ -1,13 +1,45 @@
 Each named constant represents one or more bits.
+
 Constants may be defined from single bit indices,
 inclusive bit ranges, or comma-separated mixtures of both.
 
-The generated struct derives
-`Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
+# Generated type surface
 
-One or more custom `impl { ... }` blocks may be provided after the declarations.
-They are emitted before all generated associated constants and methods,
-and may still refer to them through `Self`.
+## Traits and operators
+
+The generated struct always derives `Clone` and `Copy`.
+
+By default, the macro also implements common value traits:
+`Debug`, `DebugExt`, `Default`, `PartialEq`, `Eq`, `PartialOrd`, `Ord` and `Hash`.
+
+- `DebugExt` is generated with a `Self: Debug` bound, so suppressing the generated
+  `Debug` implementation still works when `Debug` is provided by the caller.
+
+It also implements formatting traits for viewing the raw set bits:
+`Display`, `Binary`, `Octal`, `LowerHex` and `UpperHex`.
+
+Selected generated trait implementations may be suppressed with a
+`traits(!Trait, ...)` section after the declarations:
+
+`traits(!Debug, !DebugExt, !Default);`
+
+This is useful when the caller wants to provide a custom implementation,
+derive the trait externally, or keep the generated type surface smaller.
+
+The macro also implements the standard bitwise/set operators and their
+assignment variants: `BitOr`, `BitOrAssign`, `BitAnd`, `BitAndAssign`,
+`BitXor`, `BitXorAssign`, `Sub`, `SubAssign` and `Not`.
+
+These operators form the canonical algebraic surface of the set and cannot be
+suppressed with `traits(...)`.
+
+## Custom impl blocks
+
+One or more custom `impl { ... }` blocks may be provided after the declarations
+and optional `traits(...)` section.
+
+Custom impl blocks are emitted before all generated associated constants and
+methods, and may still refer to them through `Self`.
 
 # Generated methods
 
@@ -67,7 +99,7 @@ For constants declared as a single bit, it also generates:
 For grouped constants, use `contains_name()` for “all bits are present”
 and `intersects_name()` for “at least one bit is present”.
 
-# Example
+# Examples
 ```
 # use devela::set;
 set! {
@@ -88,6 +120,10 @@ set! {
         /// A grouped constant from mixed bits and ranges.
         MIXED = 0, 3..=5, 7;
     }
+
+    // Suppresses selected generated trait implementations.
+    traits(!Default, !Hash);
+
     /// Custom semantic helpers emitted before generated methods.
     impl {
         /// A custom named combination.
@@ -110,10 +146,11 @@ assert!(!s.has_a());
 ```
 
 - Some examples of structs defined with the `set!` macro are:
-  [`AsciiSet`] and [`EventButtons`].
+  [`AsciiSet`], [`EventButtons`], [`RunCapInput`].
 - Another macro that leverages `set!` is:
   [`enumset!`][crate::enumset].
 
 [`AsciiSet`]: crate::AsciiSet
 [`EventButtons`]: crate::EventButtons
+[`RunCapInput`]: crate::RunCapInput
 [`enumset!`]: crate::enumset
