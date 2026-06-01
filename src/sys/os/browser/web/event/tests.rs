@@ -1,7 +1,7 @@
 // devela::sys::os::browser::web::event::tests
 
 use crate::{KeyFfi, KeyMods, KeyPad, KeyState};
-use crate::{WebEventKind, WebEventMouse, WebEventPointer, WebKeyLocation};
+use crate::{WebEventKind, WebKeyLocation};
 
 #[test]
 fn js_event_conversions() {

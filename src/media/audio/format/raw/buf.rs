@@ -12,11 +12,11 @@ use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
 #[doc = crate::_doc_meta!{
     location("media/audio"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(PcmRawBuf_Slice_x32: PcmRawBuf<&[u8]> = 12|96),
+    test_size_of(PcmRawBuf_Slice_x32: PcmRawBuf<&[u8]> = 16|128),
     #[cfg(target_pointer_width = "64")]
     test_size_of(PcmRawBuf_Slice_x64: PcmRawBuf<&[u8]> = 24|192),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(PcmRawBuf_Vec_x32: PcmRawBuf<Vec<u8>> = 16|128),
+    test_size_of(PcmRawBuf_Vec_x32: PcmRawBuf<Vec<u8>> = 20|160),
     #[cfg(target_pointer_width = "64")]
     test_size_of(PcmRawBuf_Vec_x64: PcmRawBuf<Vec<u8>> = 32|256),
 }]

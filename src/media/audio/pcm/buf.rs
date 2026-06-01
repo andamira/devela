@@ -18,7 +18,13 @@ use crate::{PhantomData, is, whilst};
 /// Typed PCM sample buffer over caller-chosen storage.
 #[doc = crate::_doc_meta!{
     location("media/audio"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(PcmBuf_f64: PcmBuf<i32, &[i32]> = 16|128),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(PcmBuf_i32_planar: PcmBuf<f64, &[&[f64]]> = 16|128),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(PcmBuf_f64: PcmBuf<i32, &[i32]> = 24|192),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(PcmBuf_i32_planar: PcmBuf<f64, &[&[f64]]> = 24|192),
 }]
 ///

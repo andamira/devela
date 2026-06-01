@@ -13,6 +13,9 @@ use crate::{
 /// A fully-typed event with optional timing and metadata.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(Event = 60|480; niche Option),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(Event = 64|512; niche Option),
 }]
 ///

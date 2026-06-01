@@ -153,8 +153,8 @@ impl Web {
         let kind = EventPointerKind::from_web(kind as u8);
         let etype = WebEventKind::from_repr(etype as u8);
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventPointer::new(x, y, pressure, id, kind, tilt_x as i8, tilt_y as i8,
-            twist as u16, button as u8, buttons as u8, mods, etype, timestamp));
+        callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8,
+            twist as u16, kind, button as u8, buttons as u8, mods, etype, timestamp));
     }
     /// WebAssembly wheel event callback dispatcher.
     ///

@@ -67,6 +67,10 @@ impl WebEventMouse {
 /// A web API Pointer Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
+    // test_size_of(WebEventPointer = 48|384; niche Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(WebEventPointer = 52|416; niche Option),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(WebEventPointer = 56|448; niche Option),
 }]
 ///
@@ -96,6 +100,7 @@ impl WebEventMouse {
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct WebEventPointer {
+    // 24 bytes
     /// The X-coordinate of the pointer event relative to the viewport.
     pub x: js_number, // 8 bytes
     /// The Y-coordinate of the pointer event relative to the viewport.
@@ -103,19 +108,22 @@ pub struct WebEventPointer {
     /// The pressure applied to the pointer (0.0 to 1.0 for most devices).
     pub pressure: js_number, // 8 bytes
 
+    // 8 bytes
     /// Unique identifier for the pointer device.
     pub id: js_int32, // 4 bytes
-    /// The kind of pointer device.
-    pub kind: EventPointerKind,
     /// The tilt of the stylus along the X-axis (-90° to 90°).
     pub tilt_x: i8, // 1 bytes
     /// The tilt of the stylus along the Y-axis (-90° to 90°).
     pub tilt_y: i8, // 1 bytes
     /// The rotation of the stylus around its own axis (0° to 359°).
-    pub twist: u16, // 2 bytes
+    pub twist: u16, // 2 bytes, 9 bits
+
+    // 1 bytes + 7 padding
+    /// The kind of pointer device.
+    pub kind: EventPointerKind, // 1 byte, 2 bits
 
     /// The pointer button that triggered the event.
-    pub button: u8, // 1 byte
+    pub button: u8, // 1 byte, 3 bits
     /// A bitmask of buttons currently being held down during the pointer event.
     pub buttons: u8, // 1 byte
     /// A bitmask of active keyboard modifiers during the pointer event.
@@ -133,9 +141,9 @@ impl WebEventPointer {
         x: js_number, y: js_number,
         pressure: js_number,
         id: js_int32,
-        kind: EventPointerKind,
         tilt_x: i8, tilt_y: i8,
         twist: u16,
+        kind: EventPointerKind,
         button: u8, buttons: u8,
         mods: KeyMods,
         etype: WebEventKind,
