@@ -15,6 +15,9 @@ use crate::{EventButton, EventButtonState, EventButtons, EventMouse, EventWheel,
 use crate::{EventKey, EventKind, Key, KeyMods, KeyState, pos};
 use crate::{TermParsed, TermReply};
 
+const BS: EventButtons = EventButtons::new();
+const KM: KeyMods = KeyMods::new();
+
 mod control {
     use super::*;
 
@@ -244,127 +247,56 @@ mod paste {
     }
 }
 mod focus {} // TODO
+#[rustfmt::skip]
 mod mouse {
-    use super::*;
+    use super::{*, EventButton as Button, EventButtonState as State, EventButtons as Buttons};
+
     #[test]
     fn sgr_left_press() {
-        assert_sgr_mouse(
-            b"\x1b[<0;10;20M",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<0;10;20M", 9, 19, Some(Button::Left),
+        State::Pressed, BS.with(Buttons::LEFT), KM);
     }
     #[test]
     fn sgr_middle_press() {
-        assert_sgr_mouse(
-            b"\x1b[<1;10;20M",
-            9,
-            19,
-            Some(EventButton::Middle),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::MIDDLE),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<1;10;20M", 9, 19, Some(Button::Middle),
+        State::Pressed, BS.with(Buttons::MIDDLE), KM);
     }
     #[test]
     fn sgr_right_press() {
-        assert_sgr_mouse(
-            b"\x1b[<2;10;20M",
-            9,
-            19,
-            Some(EventButton::Right),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::RIGHT),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<2;10;20M", 9, 19, Some(Button::Right),
+        State::Pressed, BS.with(Buttons::RIGHT), KM);
     }
     #[test]
     fn sgr_left_release() {
-        assert_sgr_mouse(
-            b"\x1b[<0;10;20m",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Released,
-            EventButtons::new(),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<0;10;20m", 9, 19, Some(Button::Left), State::Released, BS, KM);
     }
     #[test]
     fn sgr_release_without_specific_button() {
-        assert_sgr_mouse(
-            b"\x1b[<3;10;20m",
-            9,
-            19,
-            None,
-            EventButtonState::Released,
-            EventButtons::new(),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<3;10;20m", 9, 19, None, State::Released, BS, KM);
     }
     #[test]
     fn sgr_left_drag_motion() {
-        assert_sgr_mouse(
-            b"\x1b[<32;10;20M",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Moved,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<32;10;20M", 9, 19, Some(Button::Left),
+        State::Moved, BS.with(Buttons::LEFT), KM);
     }
     #[test]
     fn sgr_middle_drag_motion() {
-        assert_sgr_mouse(
-            b"\x1b[<33;10;20M",
-            9,
-            19,
-            Some(EventButton::Middle),
-            EventButtonState::Moved,
-            EventButtons::new().with(EventButtons::MIDDLE),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<33;10;20M", 9, 19, Some(Button::Middle),
+        State::Moved, BS.with(Buttons::MIDDLE), KM);
     }
     #[test]
     fn sgr_right_drag_motion() {
-        assert_sgr_mouse(
-            b"\x1b[<34;10;20M",
-            9,
-            19,
-            Some(EventButton::Right),
-            EventButtonState::Moved,
-            EventButtons::new().with(EventButtons::RIGHT),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<34;10;20M", 9, 19, Some(Button::Right),
+            State::Moved, BS.with(Buttons::RIGHT), KM);
     }
     #[test]
     fn sgr_plain_motion_without_button() {
-        assert_sgr_mouse(
-            b"\x1b[<35;10;20M",
-            9,
-            19,
-            None,
-            EventButtonState::Moved,
-            EventButtons::new(),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<35;10;20M", 9, 19, None, State::Moved, BS, KM);
     }
     #[test]
     fn sgr_coordinates_are_normalized_to_zero_based() {
-        assert_sgr_mouse(
-            b"\x1b[<0;1;1M",
-            0,
-            0,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new(),
-        );
+        assert_sgr_mouse(b"\x1b[<0;1;1M", 0, 0, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM);
     }
     #[test]
     fn malformed_sgr_mouse_is_unknown() {
@@ -375,90 +307,90 @@ mod mouse {
     }
     #[test]
     fn sgr_mouse_shift_modifier() {
-        assert_sgr_mouse(
-            b"\x1b[<4;10;20M",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new().with_shift(),
-        );
+        assert_sgr_mouse(b"\x1b[<4;10;20M", 9, 19, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM.with_shift());
     }
     #[test]
     fn sgr_mouse_alt_modifier() {
-        assert_sgr_mouse(
-            b"\x1b[<8;10;20M",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new().with_alt(),
-        );
+        assert_sgr_mouse(b"\x1b[<8;10;20M", 9, 19, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM.with_alt());
     }
     #[test]
     fn sgr_mouse_control_modifier() {
-        assert_sgr_mouse(
-            b"\x1b[<16;10;20M",
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new().with_control(),
-        );
+        assert_sgr_mouse(b"\x1b[<16;10;20M", 9, 19, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM.with_control());
     }
     #[test]
     fn sgr_mouse_combined_modifiers() {
-        assert_sgr_mouse(
-            b"\x1b[<28;10;20M", // 4 + 8 + 16
-            9,
-            19,
-            Some(EventButton::Left),
-            EventButtonState::Pressed,
-            EventButtons::new().with(EventButtons::LEFT),
-            KeyMods::new().with_shift().with_alt().with_control(),
-        );
+        // 4 + 8 + 16
+        assert_sgr_mouse(b"\x1b[<28;10;20M", 9, 19, Some(Button::Left),
+            State::Pressed, BS.with(Buttons::LEFT), KM.with_shift().with_alt().with_control());
+    }
+    #[test]
+    fn sgr_auxiliary_button_x1_press() {
+        assert_sgr_mouse(b"\x1b[<128;10;20M", 9, 19, Some(Button::X1),
+            State::Pressed, Buttons::new().with(Buttons::X1), KM);
+    }
+    #[test]
+    fn sgr_auxiliary_button_x1_shift_drag() {
+        // 128 + 32 motion + 4 shift + 0
+        assert_sgr_mouse(b"\x1b[<164;10;20M", 9, 19, Some(Button::X1),
+            State::Moved, Buttons::new().with(Buttons::X1), KM.with_shift());
+    }
+    #[test]
+    fn sgr_auxiliary_button_x2_press() {
+        assert_sgr_mouse(b"\x1b[<129;10;20M", 9, 19, Some(Button::X2),
+            State::Pressed, Buttons::new().with(Buttons::X2), KM);
+    }
+    #[test]
+    fn sgr_auxiliary_button_x3_press() {
+        assert_sgr_mouse(b"\x1b[<130;10;20M", 9, 19, Some(Button::X3),
+            State::Pressed, Buttons::new().with(Buttons::X3), KM);
+    }
+    #[test]
+    fn sgr_auxiliary_button_x4_press() {
+        assert_sgr_mouse(b"\x1b[<131;10;20M", 9, 19, Some(Button::X4),
+            State::Pressed, Buttons::new().with(Buttons::X4), KM);
     }
 }
+#[rustfmt::skip]
 mod wheel {
     use super::*;
+
     #[test]
     fn sgr_wheel_up() {
-        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<64;10;20M", 0, -1, 9, 19, KM);
     }
     #[test]
     fn sgr_wheel_down() {
-        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<65;10;20M", 0, 1, 9, 19, KM);
     }
     #[test]
     fn sgr_wheel_left() {
-        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<66;10;20M", -1, 0, 9, 19, KM);
     }
     #[test]
     fn sgr_wheel_right() {
-        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<67;10;20M", 1, 0, 9, 19, KM);
     }
     #[test]
     fn sgr_wheel_coordinates_are_normalized_to_zero_based() {
-        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<64;1;1M", 0, -1, 0, 0, KM);
     }
     #[test]
     fn sgr_wheel_release_final_is_still_parsed() {
         // Odd but harmless: the wheel family is identified by Cb, not by M/m.
-        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19, KeyMods::new());
+        assert_sgr_wheel(b"\x1b[<65;10;20m", 0, 1, 9, 19, KM);
     }
     #[test]
     fn sgr_wheel_with_shift_modifier() {
         // 64 wheel + 4 shift + 0 up
-        assert_sgr_wheel(b"\x1b[<68;10;20M", 0, -1, 9, 19, KeyMods::new().with_shift());
+        assert_sgr_wheel(b"\x1b[<68;10;20M", 0, -1, 9, 19, KM.with_shift());
     }
-
     #[test]
     fn sgr_wheel_with_control_modifier() {
         // 64 wheel + 16 control + 1 down
-        assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KeyMods::new().with_control());
+        assert_sgr_wheel(b"\x1b[<81;10;20M", 0, 1, 9, 19, KM.with_control());
     }
 }
 

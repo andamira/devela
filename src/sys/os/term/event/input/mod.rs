@@ -10,7 +10,7 @@ mod parser; // TermInputParser
 
 // internal
 mod state; // (TermInputState, TermParsed, TermParsedCsi, TermReply)
-mod csi; // impl parse control and csi methods
+mod csi; // impl parse control and csi methods for keys and mouse
 mod feed; // impl feed_* methods
 
 crate::structural_mods! { // _mods, _crate_internals

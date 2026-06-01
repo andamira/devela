@@ -238,8 +238,8 @@ crate::enumset! {
             }
         }
         /// Calls `f` for each catchable signal in this set.
-        pub fn for_each_catchable(self, mut f: impl FnMut(LinuxSignal)) {
-            self.catchable_only().for_each(|signal| f(signal));
+        pub fn for_each_catchable(self, f: impl FnMut(LinuxSignal)) {
+            self.catchable_only().for_each(f);
         }
 
         /// Returns whether all signals in this set are catchable.
@@ -316,7 +316,6 @@ impl LinuxSigset {
         LinuxSignalSet::from_bits(self.sig[0] as u32)
     }
     /// Returns a copy with `signal` added.
-    #[must_use]
     pub const fn with_signal(mut self, signal: LinuxSignal) -> Self {
         let bit = signal.as_index();
         let word = bit / Self::WORD_BITS;
@@ -354,7 +353,6 @@ impl LinuxSigset {
         *self = self.without_signal(signal);
     }
     /// Returns a copy with the raw signal number added, if supported.
-    #[must_use]
     pub const fn with_signal_number(self, signal: c_int) -> Self {
         match LinuxSignal::from_c_int(signal) {
             Some(signal) => self.with_signal(signal),

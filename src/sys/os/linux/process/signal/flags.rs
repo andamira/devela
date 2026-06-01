@@ -74,6 +74,6 @@ set! {
 }
 impl From<Option<LinuxSigactionFlags>> for LinuxSigactionFlags {
     fn from(flags: Option<LinuxSigactionFlags>) -> Self {
-        flags.unwrap_or_else(Self::new)
+        flags.unwrap_or_default()
     }
 }

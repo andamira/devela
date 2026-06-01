@@ -60,6 +60,7 @@ impl TermInputParser {
         }
         self.parse_csi_reply(args, final_byte).to_term_parsed()
     }
+
     /// Handles CSI sequences that change parser/input protocol state.
     const fn parse_csi_protocol(&mut self, args: &[u8], final_byte: u8) -> TermParsedCsi {
         match (args, final_byte) {
@@ -84,6 +85,18 @@ impl TermInputParser {
             (b"", b'O') => TermParsedCsi::FocusLost,
             _ => TermParsedCsi::Continue,
         }
+    }
+    ///
+    const fn parse_csi_mouse(args: &[u8], final_byte: u8) -> TermParsedCsi {
+        let released = match final_byte {
+            b'M' => false,
+            b'm' => true,
+            _ => return TermParsedCsi::Continue,
+        };
+        let Some((cb, cx, cy)) = Self::parse_sgr_mouse_args(args) else {
+            return TermParsedCsi::Continue;
+        };
+        Self::sgr_pointer_event(cb, cx, cy, released)
     }
     /// Maps CSI keyboard sequences to keys.
     const fn parse_csi_key(args: &[u8], final_byte: u8) -> TermParsedCsi {
@@ -133,19 +146,8 @@ impl TermInputParser {
         TermParsedCsi::Unknown
     }
 
-    /* mouse */
+    /* mouse/pointer/wheel helpers */
 
-    const fn parse_csi_mouse(args: &[u8], final_byte: u8) -> TermParsedCsi {
-        let released = match final_byte {
-            b'M' => false,
-            b'm' => true,
-            _ => return TermParsedCsi::Continue,
-        };
-        let Some((cb, cx, cy)) = Self::parse_sgr_mouse_args(args) else {
-            return TermParsedCsi::Continue;
-        };
-        Self::sgr_pointer_event(cb, cx, cy, released)
-    }
     const fn parse_sgr_mouse_args(bytes: &[u8]) -> Option<(u16, u16, u16)> {
         is! { bytes.len() < 6 || bytes[0] != b'<', return None } // expects: b"<Cb;Cx;Cy"
         let body = slice!(bytes, 1, ..);
@@ -167,13 +169,6 @@ impl TermInputParser {
         let cy = unwrap![some? Self::parse_u16(slice!(body, second + 1, ..))];
         Some((cb, cx, cy))
     }
-    const fn sgr_mouse_mods(cb: u16) -> KeyMods {
-        let mut mods = KeyMods::new();
-        is! { cb & 4 != 0, mods.set_shift() }
-        is! { cb & 8 != 0, mods.set_alt() }
-        is! { cb & 16 != 0, mods.set_control() }
-        mods
-    }
     const fn sgr_pointer_event(cb: u16, cx: u16, cy: u16, released: bool) -> TermParsedCsi {
         if Self::sgr_is_wheel(cb) {
             let Some(wheel) = Self::wheel_sgr_event(cb, cx, cy) else {
@@ -186,7 +181,9 @@ impl TermInputParser {
         };
         TermParsedCsi::Mouse(mouse)
     }
+
     const fn mouse_sgr_event(cb: u16, cx: u16, cy: u16, released: bool) -> Option<EventMouse> {
+        // wheel events are normalized separately as EventWheel
         is! { Self::sgr_is_wheel(cb), return None } // cold
 
         // normalize coordinates to 0-based cells
@@ -204,8 +201,16 @@ impl TermInputParser {
         let mods = Self::sgr_mouse_mods(cb);
         Some(EventMouse::new(x, y, button, state, buttons, mods))
     }
+    const fn sgr_mouse_mods(cb: u16) -> KeyMods {
+        let mut mods = KeyMods::new();
+        is! { cb & 4 != 0, mods.set_shift() }
+        is! { cb & 8 != 0, mods.set_alt() }
+        is! { cb & 16 != 0, mods.set_control() }
+        mods
+    }
     const fn sgr_mouse_button(cb: u16) -> Option<EventButton> {
         let code = cb & 0b11;
+        is! { Self::sgr_is_wheel(cb), return None } // cold
         if cb & 128 != 0 {
             return match code {
                 0 => Some(EventButton::X1),
@@ -215,7 +220,6 @@ impl TermInputParser {
                 _ => None,
             };
         }
-        is! { Self::sgr_is_wheel(cb), return None } // cold
         match code {
             0 => Some(EventButton::Left),
             1 => Some(EventButton::Middle),
@@ -233,9 +237,10 @@ impl TermInputParser {
             _ => EventButtons::new(),
         }
     }
-
-    // Xterm encodes wheel buttons by adding 64. Some terminals use 66/67 for
-    // horizontal wheel tilt. We normalize 64..67 as wheel up/down/left/right.
+    #[rustfmt::skip]
+    // SGR mouse uses the 64 family for wheel-like reports in the subset we
+    // normalize as up/down/left/right wheel motion. The 128 family is kept for
+    // extended auxiliary buttons and must not be swallowed as wheel input.
     const fn wheel_sgr_event(cb: u16, cx: u16, cy: u16) -> Option<EventWheel> {
         is! { !Self::sgr_is_wheel(cb), return None } // cold
         // normalize coordinates to 0-based cells
@@ -247,20 +252,12 @@ impl TermInputParser {
             3 => (1, 0),  // wheel right
             _ => return None,
         };
-        Some(EventWheel::new(
-            delta_x,
-            delta_y,
-            EventWheelUnit::Step,
-            x,
-            y,
-            EventButtons::new(),
-            Self::sgr_mouse_mods(cb),
-        ))
+        Some(EventWheel::new(delta_x, delta_y, EventWheelUnit::Step, x, y,
+            EventButtons::new(), Self::sgr_mouse_mods(cb)))
     }
-    const fn sgr_is_wheel(cb: u16) -> bool {
-        // accepts horizontal wheel while being conservative
-        cb & 64 != 0 && cb & 128 == 0
-    }
+    #[rustfmt::skip]
+    // accepts horizontal wheel while being conservative
+    const fn sgr_is_wheel(cb: u16) -> bool { cb & 64 != 0 && cb & 128 == 0 }
 
     /* misc. helpers */
 
