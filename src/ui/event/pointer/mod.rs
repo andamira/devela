@@ -3,12 +3,14 @@
 //! Pointer events.
 //
 
-mod pointer; // EventMouse, EventPointer[Type], EventButton[s|State]
-mod wheel; // EventWheel,
+mod button; // EventButton[s|State]
+mod pointer; // EventMouse, EventPointer[Type]
+mod wheel; // EventWheel[Unit]
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            button::*,
             pointer::*,
             wheel::*,
         };

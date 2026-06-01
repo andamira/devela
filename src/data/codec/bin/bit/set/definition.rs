@@ -239,9 +239,10 @@ macro_rules! set· {
         impl ::core::cmp::Eq for $Set {}
 
         $( #[$crate::compile[nota(PartialOrd $(, $no_trait)*)]] )?
+        #[allow(clippy::non_canonical_partial_ord_impl, reason = "would always need Ord")]
         impl ::core::cmp::PartialOrd for $Set {
             fn partial_cmp(&self, other: &Self) -> Option<::core::cmp::Ordering> {
-                self.bits.partial_cmp(&other.bits)
+                self.bits.partial_cmp(&other.bits) // Some(self.cmp(other))
             }
         }
         $( #[$crate::compile[all(

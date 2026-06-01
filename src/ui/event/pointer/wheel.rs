@@ -1,4 +1,4 @@
-// devela::ui::event::pointer
+// devela::ui::event::pointer::wheel
 //
 //! Defines [`EventWheel`] [`EventWheelUnit`].
 //
