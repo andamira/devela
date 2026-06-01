@@ -103,7 +103,7 @@
         more_qualified_paths,
         offset_of_enum,
         offset_of_slice,
-        // random_source,
+        // random_source, //
         refcell_try_map,
         result_option_map_or_default,
         str_as_str,
@@ -114,7 +114,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_extract_if, new_zeroed_alloc, vec_deque_truncate_front,)
+    feature(box_vec_non_null, btree_extract_if, new_zeroed_alloc, vec_deque_truncate_front,)
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]

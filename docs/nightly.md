@@ -58,6 +58,7 @@ See also
         = `nightly_doc` flag
 
 - 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
+- 1.??: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
