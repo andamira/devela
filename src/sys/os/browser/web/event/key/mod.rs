@@ -3,12 +3,11 @@
 //!
 //
 
-// impls
-mod ffi;
-mod media;
-mod pad;
+mod ffi; // impl:KeyFfi
+mod media; // impl:KeyMedia
+mod pad; // impl:KeyPad
 
-mod location; // WebKeyLocation
+mod location; // WebKeyLocation, impl:KeyMod,KeyMods
 
 crate::structural_mods! { // _mods
     _mods {

@@ -20,16 +20,18 @@ mod permission; // WebPermission, WebPermissionState
 mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            api::*,
-            document::*,
+            api::_all::*,
+            document::_all::*,
             permission::*,
             window::*,
             worker::*,
         };
         #[cfg(feature = "event")]
-        pub use super::event::*;
+        pub use super::event::_all::*;
+    }
+    _crate_internals {
     }
 }

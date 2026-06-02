@@ -67,5 +67,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub(crate) use super::linux::_crate_internals::*;
         #[cfg(feature = "term")]
         pub(crate) use super::term::_crate_internals::*;
+        pub(crate) use super::browser::_crate_internals::*;
     }
 }

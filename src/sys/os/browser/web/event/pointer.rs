@@ -1,77 +1,25 @@
 // devela::sys::os::browser::web::event::pointer
 //
-//! Defines [`WebEventMouse`], [`WebEventPointer`].
+//! Defines [`WebEventPointer`].
 //
+// TOC
+// struct WebEventPointer
+// impl WebEventPointer
+// impl EventPointerKind
+// struct WebPointerCode
 
-use crate::lang::prog::ffi::js::{JsInstant, js_int32, js_number};
-use crate::{EventPointerKind, KeyMods, WebEventKind};
-
-#[doc = crate::_tags!(event web)]
-/// A web API Mouse Event.
-#[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
-    test_size_of(WebEventMouse = 32|256; niche Option),
-}]
-///
-/// Represents a JavaScript mouse event containing relevant properties.
-///
-/// - <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent>
-///
-/// # Compatibility
-///
-/// Browser Back/Forward mouse buttons are backend-dependent.
-///
-/// Chromium exposes them as DOM mouse events (`button` 3/4, `buttons` 8/16).
-/// Firefox currently may consume them for history navigation before the page
-/// receives `mousedown`/`mouseup`.
-//
-// WAIT: [firefox-back-forward-buttons](https://bugzilla.mozilla.org/show_bug.cgi?id=1933746)
-#[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub struct WebEventMouse {
-    /// The X-coordinate of the mouse event relative to the viewport.
-    pub x: js_number, // 8 bytes
-    /// The Y-coordinate of the mouse event relative to the viewport.
-    pub y: js_number, // 8 bytes
-
-    /// The mouse button that triggered the event (`0`: left, `1`: middle, `2`: right).
-    ///
-    /// If the event was a movement without a button click, this is `-1` (255)
-    pub button: u8, // 1 byte
-    /// A bitmask of buttons currently being held down (`1`: left, `2`: right, `4`: middle).
-    pub buttons: u8, // 1 byte
-    /// A bitmask of active keyboard modifiers during the mouse event.
-    pub mods: KeyMods, // 2 bytes
-    /// The type of mouse event (Click, MouseDown, MouseMove, etc.).
-    pub etype: WebEventKind, // 4 bytes
-
-    /// The JavaScript event timestamp.
-    pub timestamp: JsInstant, // 8 bytes
-}
-impl WebEventMouse {
-    /// Returns a new [`WebEventMouse`].
-    pub const fn new(
-        x: js_number,
-        y: js_number,
-        button: u8,
-        buttons: u8,
-        mods: KeyMods,
-        etype: WebEventKind,
-        timestamp: JsInstant,
-    ) -> Self {
-        Self { x, y, button, buttons, mods, etype, timestamp }
-    }
-}
+use crate::lang::prog::ffi::js::{JsInstant, JsNumFmt, js_int32, js_number};
+use crate::{
+    EventButton, EventButtonState, EventButtons, EventKind, EventKindTimed, EventPointer,
+    EventPointerKind, EventTimestamp, KeyMods, Timed, WebEventKind, f32bits_niche,
+};
+use crate::{impl_trait, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
-    // test_size_of(WebEventPointer = 48|384; niche Option),
-    #[cfg(target_pointer_width = "32")]
-    test_size_of(WebEventPointer = 52|416; niche Option),
-    #[cfg(target_pointer_width = "64")]
-    test_size_of(WebEventPointer = 56|448; niche Option),
+    test_size_of(WebEventPointer = 48|384; niche Option),
 }]
 ///
 /// Represents a JavaScript pointer event containing relevant properties.
@@ -98,9 +46,9 @@ impl WebEventMouse {
 // WAIT: - [sActivePointersIds gets 0](https://bugzilla.mozilla.org/show_bug.cgi?id=1904865)
 // WAIT: - [pen input is misrepresented](https://bugzilla.mozilla.org/show_bug.cgi?id=1953665)
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct WebEventPointer {
-    // 24 bytes
+    //: 24 bytes
     /// The X-coordinate of the pointer event relative to the viewport.
     pub x: js_number, // 8 bytes
     /// The Y-coordinate of the pointer event relative to the viewport.
@@ -108,7 +56,7 @@ pub struct WebEventPointer {
     /// The pressure applied to the pointer (0.0 to 1.0 for most devices).
     pub pressure: js_number, // 8 bytes
 
-    // 8 bytes
+    //: 8 bytes
     /// Unique identifier for the pointer device.
     pub id: js_int32, // 4 bytes
     /// The tilt of the stylus along the X-axis (-90° to 90°).
@@ -118,22 +66,36 @@ pub struct WebEventPointer {
     /// The rotation of the stylus around its own axis (0° to 359°).
     pub twist: u16, // 2 bytes, 9 bits
 
-    // 1 bytes + 7 padding
-    /// The kind of pointer device.
-    pub kind: EventPointerKind, // 1 byte, 2 bits
-
-    /// The pointer button that triggered the event.
-    pub button: u8, // 1 byte, 3 bits
+    //: 16 bytes
+    // Encodes pointer kind and triggering button in one byte.
+    // This is a compact internal representation, not the raw DOM shape.
+    code: WebPointerCode, // 1 byte
     /// A bitmask of buttons currently being held down during the pointer event.
     pub buttons: u8, // 1 byte
     /// A bitmask of active keyboard modifiers during the pointer event.
     pub mods: KeyMods, // 2 bytes
     /// The type of pointer event (PointerDown, PointerMove, etc.).
     pub etype: WebEventKind, // 4 bytes
-
     /// The JavaScript event timestamp.
     pub timestamp: JsInstant, // 8 bytes
 }
+impl_trait! { fmt::Debug for WebEventPointer |self, f| {
+    f.debug_struct("WebEventPointer")
+        .field("x", &JsNumFmt::<2>(self.x))
+        .field("y", &JsNumFmt::<2>(self.y))
+        .field("pressure", &JsNumFmt::<3>(self.pressure))
+        .field("id", &self.id)
+        .field("tilt_x", &self.tilt_x)
+        .field("tilt_y", &self.tilt_y)
+        .field("twist", &self.twist)
+        .field("kind", &self.kind())
+        .field("button", &self.button())
+        .field("buttons", &EventButtons::from_bits(self.buttons))
+        .field("mods", &self.mods)
+        .field("etype", &self.etype)
+        .field("timestamp", &self.timestamp)
+        .finish()
+}}
 impl WebEventPointer {
     /// Returns a new [`WebEventPointer`].
     #[allow(clippy::too_many_arguments)] #[rustfmt::skip]
@@ -149,73 +111,82 @@ impl WebEventPointer {
         etype: WebEventKind,
         timestamp: JsInstant,
     ) -> Self {
-        Self { x, y, pressure, id, kind, tilt_x, tilt_y, twist,
-            button, buttons, mods, etype, timestamp, }
+        let code = WebPointerCode::new()
+            .with_kind(kind.to_web())
+            .with_button(Self::encode_web_button(button));
+        Self { x, y, pressure, id, tilt_x, tilt_y, twist, code, buttons, mods, etype, timestamp }
+    }
+    /// Returns the pointer-device kind.
+    pub const fn kind(self) -> EventPointerKind {
+        EventPointerKind::from_web(self.code.get_kind())
+    }
+    /// Returns the compact web pointer-kind code.
+    pub const fn web_kind(self) -> u8 {
+        self.code.get_kind()
+    }
+    /// Returns `self` with the pointer-device kind replaced.
+    pub const fn with_kind(mut self, kind: EventPointerKind) -> Self {
+        self.code.set_kind(kind.to_web());
+        self
+    }
+
+    /// Returns the normalized triggering button, or `None` when no button changed.
+    pub const fn button(self) -> Option<EventButton> {
+        EventButton::from_web(self.web_button())
+    }
+    /// Returns the raw DOM-compatible `button` value.
+    ///
+    /// Returns `255` for DOM `button = -1`, meaning no button changed.
+    pub const fn web_button(self) -> u8 {
+        Self::decode_web_button(self.code.get_button())
+    }
+    /// Returns `self` with the normalized triggering button replaced.
+    pub const fn with_button(mut self, button: Option<EventButton>) -> Self {
+        let web_button = match button {
+            Some(button) => button.to_web(),
+            None => 255,
+        };
+        self.code.set_button(Self::encode_web_button(web_button));
+        self
+    }
+    /// Returns `self` with the raw DOM-compatible `button` value replaced.
+    pub const fn with_web_button(mut self, button: u8) -> Self {
+        self.code.set_button(Self::encode_web_button(button));
+        self
+    }
+
+    /* helpers */
+    const WEB_BUTTON_NONE: u8 = 15;
+    const fn encode_web_button(button: u8) -> u8 {
+        match button {
+            255 => Self::WEB_BUTTON_NONE,
+            0..=14 => button,
+            _ => Self::WEB_BUTTON_NONE,
+        }
+    }
+    const fn decode_web_button(code: u8) -> u8 {
+        match code {
+            Self::WEB_BUTTON_NONE => 255,
+            n => n,
+        }
     }
 }
 
-#[rustfmt::skip]
-mod impls {
-    use crate::{
-        EventButton, EventButtons, EventButtonState, EventKind, EventKindTimed, EventMouse,
-        EventPointer, EventPointerKind, EventTimestamp, JsInstant, KeyMods, Timed, WebEventKind,
-        WebEventMouse, WebEventPointer, f32bits_niche, is, js_int32, js_number,
-    };
-
-    /* mouse */
-
-    impl WebEventMouse {
-        /// Converts `WebEventMouse` to `EventKindTimed`.
-        pub const fn to_kind_timed(self) -> EventKindTimed {
-            let kind = EventKind::Mouse(EventMouse {
-                x: self.x as i32,
-                y: self.y as i32,
-                button: EventButton::from_web(self.button),
-                state: EventButtonState::from_web(self.etype),
-                buttons: EventButtons::from_bits(self.buttons),
-                mods: self.mods,
-            });
-            let timestamp = Some(EventTimestamp::from_js(self.timestamp));
-            EventKindTimed::new(kind, timestamp)
-        }
-        /// Converts a timed normalized `EventMouse` back to `WebEventMouse`.
-        pub const fn from_event_mouse_timed(from: Timed<EventMouse, Option<EventTimestamp>>)
-            -> WebEventMouse {
-            let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
-            WebEventMouse {
-                x: from.value.x as js_number,
-                y: from.value.y as js_number,
-                button: is![let Some(b) = from.value.button, b.to_web(), 255], // IMPROVE to_web
-                buttons: from.value.buttons.bits(), // already a bitmask, directly compatible
-                mods: from.value.mods,
-                etype: from.value.state.to_web_as_mouse(),
-                timestamp,
-            }
-        }
-    }
-    impl From<WebEventMouse> for EventKindTimed {
-        fn from(from: WebEventMouse) -> Self { from.to_kind_timed() }
-    }
-    impl From<Timed<EventMouse, Option<EventTimestamp>>> for WebEventMouse {
-        fn from(from: Timed<EventMouse, Option<EventTimestamp>>) -> Self {
-            Self::from_event_mouse_timed(from)
-        }
-    }
-
-    /* pointer */
-
-    impl WebEventPointer {
+impl WebEventPointer {
     /// Converts `WebEventPointer` to `EventKindTimed`.
     pub const fn to_kind_timed(self) -> EventKindTimed {
         let kind = EventKind::Pointer(EventPointer::new(
-            self.kind,
+            self.kind(),
             self.id as u32,
-            self.x as i32, self.y as i32,
-            0, 0,
+            self.x as i32,
+            self.y as i32,
+            0,
+            0,
             f32bits_niche::new(self.pressure as f32),
-            self.tilt_x, self.tilt_y,
+            self.tilt_x,
+            self.tilt_y,
             self.twist,
-            EventButton::from_web(self.button),
+            self.button(),
             EventButtonState::from_web(self.etype),
             EventButtons::from_bits(self.buttons),
             self.mods,
@@ -224,147 +195,68 @@ mod impls {
         EventKindTimed::new(kind, timestamp)
     }
     /// Converts a timed normalized `EventPointer` back to `WebEventPointer`.
-    pub const fn from_event_pointer_timed(from: Timed<EventPointer, Option<EventTimestamp>>)
-        -> WebEventPointer {
-            let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
-            WebEventPointer {
-                x: from.value.x as js_number,
-                y: from.value.y as js_number,
-                pressure: from.value.get_pressure() as js_number,
-                id: from.value.id as js_int32,
-                kind: from.value.kind,
-                tilt_x: from.value.tilt_x,
-                tilt_y: from.value.tilt_y,
-                twist: from.value.twist,
-                button: is![let Some(b) = from.value.button, b.to_web(), 255],
-                buttons: from.value.buttons.bits(),
-                mods: from.value.mods,
-                etype: from.value.state.to_web_as_pointer(),
-                timestamp,
-            }
+    pub const fn from_event_pointer_timed(
+        from: Timed<EventPointer, Option<EventTimestamp>>,
+    ) -> WebEventPointer {
+        let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
+        WebEventPointer::new(
+            from.value.x as js_number,
+            from.value.y as js_number,
+            from.value.get_pressure() as js_number,
+            from.value.id as js_int32,
+            from.value.tilt_x,
+            from.value.tilt_y,
+            from.value.twist,
+            from.value.kind,
+            is![let Some(b) = from.value.button, b.to_web(), 255],
+            from.value.buttons.bits(),
+            from.value.mods,
+            from.value.state.to_web_as_pointer(),
+            timestamp,
+        )
+    }
+}
+impl From<WebEventPointer> for EventKindTimed {
+    fn from(from: WebEventPointer) -> Self {
+        from.to_kind_timed()
+    }
+}
+impl From<Timed<EventPointer, Option<EventTimestamp>>> for WebEventPointer {
+    fn from(from: Timed<EventPointer, Option<EventTimestamp>>) -> Self {
+        Self::from_event_pointer_timed(from)
+    }
+}
+
+impl EventPointerKind {
+    /// Converts a compact web pointer kind into `EventPointerKind`.
+    pub const fn from_web(kind: u8) -> Self {
+        match kind {
+            1 => EventPointerKind::Touch,
+            2 => EventPointerKind::Pen,
+            _ => EventPointerKind::Mouse,
         }
     }
-    impl From<WebEventPointer> for EventKindTimed {
-        fn from(from: WebEventPointer) -> Self {
-            from.to_kind_timed()
+    /// Converts `EventPointerKind` into a compact web pointer kind.
+    pub const fn to_web(self) -> u8 {
+        match self {
+            EventPointerKind::Mouse => 0,
+            EventPointerKind::Touch => 1,
+            EventPointerKind::Pen => 2,
         }
     }
-    impl From<Timed<EventPointer, Option<EventTimestamp>>> for WebEventPointer {
-        fn from(from: Timed<EventPointer, Option<EventTimestamp>>) -> Self {
-            Self::from_event_pointer_timed(from)
-        }
-    }
+}
 
-    impl EventPointerKind {
-        /// Converts a compact web pointer kind into `EventPointerKind`.
-        pub const fn from_web(kind: u8) -> Self {
-            match kind {
-                1 => EventPointerKind::Touch,
-                2 => EventPointerKind::Pen,
-                _ => EventPointerKind::Mouse,
-            }
-        }
-        /// Converts `EventPointerKind` into a compact web pointer kind.
-        pub const fn to_web(self) -> u8 {
-            match self {
-                EventPointerKind::Mouse => 0,
-                EventPointerKind::Touch => 1,
-                EventPointerKind::Pen => 2,
-            }
-        }
-    }
-
-    /* button */
-
-    impl EventButton {
-        /// Converts a web API button index in [`WebEventMouse`] into `EventButton`.
-        //
-        pub const fn from_web(js_button: u8) -> Option<Self> {
-            match js_button {
-                0 => Some(EventButton::Left),
-                1 => Some(EventButton::Middle),
-                2 => Some(EventButton::Right),
-                3 => Some(EventButton::X1),
-                4 => Some(EventButton::X2),
-                //
-                5 => Some(EventButton::X3),
-                6 => Some(EventButton::X4),
-                7 => Some(EventButton::X5),
-                255 => None, // (== -1_i8) represents "no button"
-                n => Some(EventButton::Other(n)),
-            }
-        }
-        /// Converts an EventButton to a JavaScript button index in [`WebEventMouse`].
-        pub const fn to_web(self) -> u8 {
-            match self {
-                EventButton::Left => 0,
-                EventButton::Middle => 1,
-                EventButton::Right => 2,
-                EventButton::X1 => 3,
-                EventButton::X2 => 4,
-                //
-                EventButton::X3 => 5,
-                EventButton::X4 => 6,
-                EventButton::X5 => 7,
-                EventButton::Other(n) => n,
-            }
-        }
-    }
-
-    // IMPROVE: MAYBE impl try_ methods
-    impl EventButtonState {
-        /// Converts a `WebEventKind` into `EventButtonState`.
-        pub const fn from_web(js_event: WebEventKind) -> Self {
-            use {WebEventKind as J, EventButtonState as E};
-            match js_event {
-                J::Click | J::MouseDown | J::PointerDown => E::Pressed,
-                J::MouseUp | J::PointerUp => E::Released,
-                _ => E::Moved,
-            }
-        }
-        /// Converts a `EventButtonState` into a `WebEventKind`.
-        pub const fn to_web_as_mouse(self) -> WebEventKind {
-            use {WebEventKind as J, EventButtonState as E};
-            match self {
-                E::Pressed => J::MouseDown,
-                E::Released => J::MouseUp,
-                E::Moved => J::MouseMove,
-            }
-        }
-        /// Converts a `EventButtonState` into a `WebEventKind`.
-        pub const fn to_web_as_pointer(self) -> WebEventKind {
-            use {WebEventKind as J, EventButtonState as E};
-            match self {
-                E::Pressed => J::PointerDown,
-                E::Released => J::PointerUp,
-                E::Moved => J::PointerMove,
-            }
-        }
-    }
-
-    /* key modifiers */
-
-    impl KeyMods {
-        /// Constructs `KeyMods` from a compact web modifier bitmask.
+crate::bitfield! {
+    /// Internal compact encoding for pointer kind and triggering button.
+    struct WebPointerCode(u8) {
+        /// Compact pointer kind: `0` mouse, `1` touch, `2` pen.
+        KIND = 0..=1;
+        /// Compact triggering-button code.
         ///
-        /// Bit layout:
-        /// - 0: Control
-        /// - 1: Shift
-        /// - 2: Alt
-        /// - 3: Super / Meta
-        /// - 4: AltGraph
-        /// - 5: CapsLock
-        /// - 6: NumLock
-        /// - 7: ScrollLock
-        pub const fn from_web(bits: u8) -> Self {
-            Self::from_bits(bits as u16)
-        }
-
-        /// Converts `KeyMods` into a compact web modifier bitmask.
-        ///
-        /// Only the web-representable low byte is preserved.
-        pub const fn to_web(self) -> u8 {
-            (self.bits() & 0x00FF) as u8
-        }
+        /// This is not the raw DOM `button` value. In particular,
+        /// DOM `button = -1` is encoded with a private sentinel.
+        BUTTON = 2..=5;
+        /// Reserved bits for future pointer metadata.
+        RESERVED = 6..=7;
     }
 }

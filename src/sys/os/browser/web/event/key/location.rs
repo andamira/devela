@@ -2,8 +2,12 @@
 //
 //! Defines [`WebKeyLocation`].
 //
+// TOC
+// enum WebKeyLocation
+// impl KeyMod
+// impl KeyMods
 
-use crate::KeyMod;
+use crate::{KeyMod, KeyMods};
 
 #[doc = crate::_tags!(interaction web)]
 /// Which part of the keyboard the key event originates from.
@@ -119,5 +123,29 @@ impl KeyMod {
             K::AltGr => ("AltGraph", L::Standard),
             K::IsoLevel5Shift => ("Level5Shift", L::Standard),
         }
+    }
+}
+
+impl KeyMods {
+    /// Constructs `KeyMods` from a compact web modifier bitmask.
+    ///
+    /// Bit layout:
+    /// - 0: Control
+    /// - 1: Shift
+    /// - 2: Alt
+    /// - 3: Super / Meta
+    /// - 4: AltGraph
+    /// - 5: CapsLock
+    /// - 6: NumLock
+    /// - 7: ScrollLock
+    pub const fn from_web(bits: u8) -> Self {
+        Self::from_bits(bits as u16)
+    }
+
+    /// Converts `KeyMods` into a compact web modifier bitmask.
+    ///
+    /// Only the web-representable low byte is preserved.
+    pub const fn to_web(self) -> u8 {
+        (self.bits() & 0x00FF) as u8
     }
 }

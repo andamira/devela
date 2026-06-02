@@ -1,13 +1,22 @@
 // devela::lang::prog::ffi::js::_helper
 //
-//! Defines internal JS helpers: [`_js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
+//! Defines internal JS helpers:
+//! [`JsNumFmt`], [`_js_doc!`], [`_js_extern!`], [`_js_method_str_alloc!`].
 //
 // TOC
 // - _js_doc!
 // - _js_extern!
 // - _js_method_str_alloc!
 
-use crate::{__doc_show, _js_safe_ffi, _js_unsafe_ffi, macro_apply};
+use crate::{__doc_show, _js_safe_ffi, _js_unsafe_ffi, js_number, macro_apply};
+
+/// Formats a JavaScript number with fixed decimal precision.
+pub(crate) struct JsNumFmt<const P: usize>(pub js_number);
+impl<const P: usize> core::fmt::Debug for JsNumFmt<P> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{:.*}", P, self.0)
+    }
+}
 
 /// Helper for Web API doc links.
 #[rustfmt::skip]

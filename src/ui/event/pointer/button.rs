@@ -8,11 +8,17 @@ use crate::{_impl_init, set};
 /* definitions */
 
 #[doc = crate::_tags!(event interaction member)]
-/// Represents mouse, touch, or pen buttons.
+/// A normalized pressable pointer/mouse button.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
     test_size_of(EventButton = 2|16; niche Option),
 }]
+/// `Left`, `Middle`, and `Right` represent the three primary conventional buttons.
+/// `X1..X5` represent additional auxiliary button slots when a backend can report them.
+///
+/// These variants name normalized button slots, not guaranteed user actions.
+/// For example, `X1` is often used as “back”, `X2` as “forward”, and on
+/// Pointer Events a pen eraser may be reported through an auxiliary slot.
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButton {

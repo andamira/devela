@@ -1,13 +1,13 @@
-// devela::sys::os::browser::web::event::pointer
+// devela::sys::os::browser::web::event::wheel
 //
 //! Defines [`WebEventWheel`].
 //
 
-use crate::lang::prog::ffi::js::{JsInstant, js_number};
+use crate::lang::prog::ffi::js::{JsInstant, JsNumFmt, js_number};
 use crate::ui::event::{
     EventButtons, EventKind, EventKindTimed, EventTimestamp, EventWheel, EventWheelUnit, KeyMods,
 };
-use crate::{Timed, is};
+use crate::{Timed, impl_trait, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Wheel Event.
@@ -35,7 +35,7 @@ use crate::{Timed, is};
 // WAIT: [Wheel-scrolling missing 1st event](https://bugzilla.mozilla.org/show_bug.cgi?id=1969373)
 // WAIT: […stops working with XInput2](https://bugzilla.mozilla.org/show_bug.cgi?id=1182700)
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct WebEventWheel {
     /// The X-coordinate of the wheel event relative to the viewport.
     pub x: js_number, // 8 bytes
@@ -56,8 +56,21 @@ pub struct WebEventWheel {
     /// The JavaScript event timestamp.
     pub timestamp: JsInstant, // 8 bytes
 }
+impl_trait! { fmt::Debug for WebEventWheel |self, f| {
+    f.debug_struct("WebEventWheel")
+        .field("x", &JsNumFmt::<2>(self.x))
+        .field("y", &JsNumFmt::<2>(self.y))
+        .field("delta_x", &JsNumFmt::<2>(self.delta_x))
+        .field("delta_y", &JsNumFmt::<2>(self.delta_y))
+        .field("buttons", &EventButtons::from_bits(self.buttons))
+        .field("mods", &self.mods)
+        .field("unit", &self.unit)
+        .field("timestamp", &self.timestamp)
+        .finish()
+}}
 impl WebEventWheel {
     /// Returns a new [`WebEventWheel`].
+    #[allow(clippy::too_many_arguments)]
     pub const fn new(
         x: js_number,
         y: js_number,
@@ -78,6 +91,15 @@ impl WebEventWheel {
             unit,
             timestamp,
         }
+    }
+
+    /// Returns the normalized held-button set.
+    pub const fn buttons(self) -> EventButtons {
+        EventButtons::from_bits(self.buttons)
+    }
+    /// Returns the raw DOM `buttons` bitmask.
+    pub const fn web_buttons(self) -> u8 {
+        self.buttons
     }
 
     /// Converts `WebEventWheel` to `EventKindTimed`.

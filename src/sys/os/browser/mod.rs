@@ -20,9 +20,13 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "web")))]
 pub mod web; // Web[Document|Element|Event*|Permission*|Window*|Worker*]…
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
         #[cfg(all(feature = "web", not(windows)))]
         pub use super::web::_all::*;
+    }
+    _crate_internals {
+        #[cfg(all(feature = "web", not(windows)))]
+        pub(crate) use super::web::_crate_internals::*;
     }
 }

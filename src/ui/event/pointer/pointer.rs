@@ -113,7 +113,6 @@ impl EventPointer {
 #[doc = crate::_tags!(event interaction)]
 /// Enum representing the type of pointer.
 #[doc = crate::_doc_meta!{location("ui/event")}]
-#[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventPointerKind {
     /// A mouse pointer.
