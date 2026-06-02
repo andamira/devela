@@ -22,7 +22,7 @@ crate::structural_mods! { // _mods, _crate_internals
             namespace::*,
             color::_all::*,
             print::*,
-            r#macro::*,
+            r#macro::_all::*,
         };
     }
     _crate_internals {
