@@ -3,16 +3,13 @@
 //! Thread sleeping functionality.
 //
 
-mod macros; // sleep4!
-
-// WIPZONE
-// pub use sleeper::*;
-// pub use spin::*;
+mod r#macro; // sleep4!
+// pub use sleeper::*; // WIP
+// pub use spin::*; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::macros::*;
-        // WIPZONE
+        pub use super::r#macro::*;
         // mod sleeper; // Sleeper
         // mod spin; // Spin
     }

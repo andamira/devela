@@ -489,6 +489,11 @@
 - update `cmd!` to parse single string literals as shell words.
 - new `CommandFlow` and `ProcessExt` method: `command_shell`.
 
+#### work::exec::thread
+- update `sleep4!`:
+  - support no_std sleeping in linux.
+  - support receiving seconds as floating-point.
+
 ## yard
 - new macros: `_doc_meta!`, `_doc_test_size_of!`.
 - new hidden maintenance aliases for item attributes:

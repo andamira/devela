@@ -6,30 +6,30 @@
 #![doc = crate::_doc!(extends: thread)]
 //
 
+mod sleep; // sleep4!
+
 #[cfg(feature = "std")]
 crate::items! {
     mod _reexport_std;
 
     mod ext; // ThreadExt
-    mod sleep; // sleep4!
 
-    // WIPZONE
-    // mod local; // ThreadLocal
-    // mod manager_2; // ThreadManager, ThreadWork
-    // mod pool;
-    // mod semaphore; // Semaphore
+    // mod local; // ThreadLocal WIP
+    // mod manager_2; // ThreadManager, ThreadWork WIP
+    // mod pool; // WIP
+    // mod semaphore; // Semaphore WIP
 }
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
+        pub use super::{
+            sleep::*,
+        };
         #[cfg(feature = "std")]
         pub use super::{
             ext::*,
-            sleep::*,
-
-            // WIPZONE
             // local::*;
-            // manager_2::*; // WIP
+            // manager_2::*;
             // pool::*;
             // semaphore::*;
         };
