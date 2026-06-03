@@ -1,97 +1,80 @@
 // devela::sys::mem::view::slice::tests
-//
-// TODO: test panics
 
-use crate::Slice;
+use crate::{
+    IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize, IteratorLendingPeek,
+    SliceIter, SliceIterMut,
+};
 
 #[test]
-fn range_to() {
-    assert_eq!(Slice::range_to(&[1, 2, 3], 2), &[1, 2][..]);
-    assert_eq!(Slice::range_to(&[1, 2, 3], 0), &[] as &[i32]);
-    assert_eq!(Slice::range_to_checked(&[1, 2, 3], 2), Some(&[1, 2][..]));
-    assert_eq!(Slice::range_to_checked(&[1, 2, 3], 0), Some(&[] as &[i32]));
-    assert_eq!(Slice::range_to_checked(&[1, 2, 3], 5), None);
-    //
-    assert_eq!(Slice::range_to_mut(&mut [1, 2, 3], 2), &mut [1, 2][..]);
-    assert_eq!(Slice::range_to_mut(&mut [1, 2, 3], 0), &mut [] as &mut [i32]);
-    assert_eq!(Slice::range_to_mut_checked(&mut [1, 2, 3], 2), Some(&mut [1, 2][..]));
-    assert_eq!(Slice::range_to_mut_checked(&mut [1, 2, 3], 0), Some(&mut [] as &mut [i32]));
-    assert_eq!(Slice::range_to_mut_checked(&mut [1, 2, 3], 5), None);
+fn slice_iter_peek_respects_back() {
+    let array = [1, 2];
+    let mut it = SliceIter::new(&array);
+    assert_eq!(it.len(), 2);
+    assert_eq!(it.peek(), Some(&1));
+    assert_eq!(it.next_back(), Some(&2));
+    assert_eq!(it.len(), 1);
+    assert_eq!(it.peek(), Some(&1));
+    assert_eq!(it.next_back(), Some(&1));
+    assert_eq!(it.len(), 0);
+    assert_eq!(it.peek(), None);
+    assert_eq!(it.next(), None);
+    assert_eq!(it.next_back(), None);
 }
-
 #[test]
-fn range_from() {
-    assert_eq!(Slice::range_from(&[1, 2, 3], 1), &[2, 3][..]);
-    assert_eq!(Slice::range_from(&[1, 2, 3], 3), &[] as &[i32]);
-    assert_eq!(Slice::range_from_checked(&[1, 2, 3], 1), Some(&[2, 3][..]));
-    assert_eq!(Slice::range_from_checked(&[1, 2, 3], 3), Some(&[] as &[i32]));
-    assert_eq!(Slice::range_from_checked(&[1, 2, 3], 5), None);
-    //
-    assert_eq!(Slice::range_from_mut(&mut [1, 2, 3], 1), &mut [2, 3][..]);
-    assert_eq!(Slice::range_from_mut(&mut [1, 2, 3], 3), &mut [] as &mut [i32]);
-    assert_eq!(Slice::range_from_mut_checked(&mut [1, 2, 3], 1), Some(&mut [2, 3][..]));
-    assert_eq!(Slice::range_from_mut_checked(&mut [1, 2, 3], 3), Some(&mut [] as &mut [i32]));
-    assert_eq!(Slice::range_from_mut_checked(&mut [1, 2, 3], 5), None);
+fn slice_iter_mixed_front_back_order() {
+    let array = [10, 20, 30, 40];
+    let mut it = SliceIter::new(&array);
+    assert_eq!(it.size_hint(), (4, Some(4)));
+    assert_eq!(it.peek(), Some(&10));
+    assert_eq!(it.next(), Some(&10));
+    assert_eq!(it.size_hint(), (3, Some(3)));
+    assert_eq!(it.next_back(), Some(&40));
+    assert_eq!(it.peek(), Some(&20));
+    assert_eq!(it.size_hint(), (2, Some(2)));
+    assert_eq!(it.next_back(), Some(&30));
+    assert_eq!(it.next(), Some(&20));
+    assert_eq!(it.size_hint(), (0, Some(0)));
+    assert!(it.is_empty());
+    assert_eq!(it.peek(), None);
+    assert_eq!(it.next(), None);
+    assert_eq!(it.next_back(), None);
 }
-
 #[test]
-fn range() {
-    assert_eq!(Slice::range(&[1, 2, 3], 1, 3), &[2, 3][..]);
-    assert_eq!(Slice::range(&[1, 2, 3], 0, 0), &[] as &[i32]);
-    assert_eq!(Slice::range_checked(&[1, 2, 3], 1, 3), Some(&[2, 3][..]));
-    assert_eq!(Slice::range_checked(&[1, 2, 3], 0, 0), Some(&[] as &[i32]));
-    assert_eq!(Slice::range_checked(&[1, 2, 3], 2, 1), None);
-    assert_eq!(Slice::range_checked(&[1, 2, 3], 0, 5), None);
-    //
-    assert_eq!(Slice::range_mut(&mut [1, 2, 3], 1, 3), &mut [2, 3][..]);
-    assert_eq!(Slice::range_mut(&mut [1, 2, 3], 0, 0), &mut [] as &mut [i32]);
-    assert_eq!(Slice::range_mut_checked(&mut [1, 2, 3], 1, 3), Some(&mut [2, 3][..]));
-    assert_eq!(Slice::range_mut_checked(&mut [1, 2, 3], 0, 0), Some(&mut [] as &mut [i32]));
-    assert_eq!(Slice::range_mut_checked(&mut [1, 2, 3], 2, 1), None);
-    assert_eq!(Slice::range_mut_checked(&mut [1, 2, 3], 0, 5), None);
+fn slice_iter_empty() {
+    let array: [u8; 0] = [];
+    let mut it = SliceIter::new(&array);
+    assert_eq!(it.size_hint(), (0, Some(0)));
+    assert!(it.is_empty());
+    assert_eq!(it.peek(), None);
+    assert_eq!(it.next(), None);
+    assert_eq!(it.next_back(), None);
 }
-
 #[test]
-fn take_first() {
-    assert_eq!(Slice::take_first(&[1, 2, 3], 2), &[1, 2][..]);
-    assert_eq!(Slice::take_first(&[1, 2, 3], 0), &[] as &[i32]);
-    assert_eq!(Slice::take_first_checked(&[1, 2, 3], 2), Some(&[1, 2][..]));
-    assert_eq!(Slice::take_first_checked(&[1, 2, 3], 0), Some(&[] as &[i32]));
-    assert_eq!(Slice::take_first_checked(&[1, 2, 3], 5), None);
-    //
-    assert_eq!(Slice::take_first_mut(&mut [1, 2, 3], 2), &mut [1, 2][..]);
-    assert_eq!(Slice::take_first_mut(&mut [1, 2, 3], 0), &mut [] as &mut [i32]);
-    assert_eq!(Slice::take_first_mut_checked(&mut [1, 2, 3], 2), Some(&mut [1, 2][..]));
-    assert_eq!(Slice::take_first_mut_checked(&mut [1, 2, 3], 0), Some(&mut [] as &mut [i32]));
-    assert_eq!(Slice::take_first_mut_checked(&mut [1, 2, 3], 5), None);
+fn slice_iter_mut_mixed_front_back_mutation() {
+    let mut array = [1, 2, 3, 4];
+    {
+        let mut it = SliceIterMut::new(&mut array);
+        assert_eq!(it.size_hint(), (4, Some(4)));
+        *it.next().unwrap() += 10; // 1 -> 11
+        assert_eq!(it.size_hint(), (3, Some(3)));
+        *it.next_back().unwrap() += 40; // 4 -> 44
+        assert_eq!(it.size_hint(), (2, Some(2)));
+        *it.next_back().unwrap() += 30; // 3 -> 33
+        assert_eq!(it.size_hint(), (1, Some(1)));
+        *it.next().unwrap() += 20; // 2 -> 22
+        assert_eq!(it.size_hint(), (0, Some(0)));
+        assert!(it.is_empty());
+        assert!(it.next().is_none());
+        assert!(it.next_back().is_none());
+    }
+    assert_eq!(array, [11, 22, 33, 44]);
 }
-
 #[test]
-fn take_last() {
-    assert_eq!(Slice::take_last(&[1, 2, 3], 2), &[2, 3][..]);
-    assert_eq!(Slice::take_last(&[1, 2, 3], 3), &[1, 2, 3][..]);
-    assert_eq!(Slice::take_last_checked(&[1, 2, 3], 2), Some(&[2, 3][..]));
-    assert_eq!(Slice::take_last_checked(&[1, 2, 3], 3), Some(&[1, 2, 3][..]));
-    assert_eq!(Slice::take_last_checked(&[1, 2, 3], 5), None);
-    //
-    assert_eq!(Slice::take_last_mut(&mut [1, 2, 3], 2), &mut [2, 3][..]);
-    assert_eq!(Slice::take_last_mut(&mut [1, 2, 3], 3), &mut [1, 2, 3][..]);
-    assert_eq!(Slice::take_last_mut_checked(&mut [1, 2, 3], 2), Some(&mut [2, 3][..]));
-    assert_eq!(Slice::take_last_mut_checked(&mut [1, 2, 3], 3), Some(&mut [1, 2, 3][..]));
-    assert_eq!(Slice::take_last_mut_checked(&mut [1, 2, 3], 5), None);
-}
-
-#[test]
-fn take_omit_last() {
-    assert_eq!(Slice::take_omit_last(&[1, 2, 3], 1), &[1, 2][..]);
-    assert_eq!(Slice::take_omit_last(&[1, 2, 3], 3), &[] as &[i32]);
-    assert_eq!(Slice::take_omit_last_checked(&[1, 2, 3], 1), Some(&[1, 2][..]));
-    assert_eq!(Slice::take_omit_last_checked(&[1, 2, 3], 3), Some(&[] as &[i32]));
-    assert_eq!(Slice::take_omit_last_checked(&[1, 2, 3], 5), None);
-    //
-    assert_eq!(Slice::take_omit_last_mut(&mut [1, 2, 3], 1), &mut [1, 2][..]);
-    assert_eq!(Slice::take_omit_last_mut(&mut [1, 2, 3], 3), &mut [] as &mut [i32]);
-    assert_eq!(Slice::take_omit_last_mut_checked(&mut [1, 2, 3], 1), Some(&mut [1, 2][..]));
-    assert_eq!(Slice::take_omit_last_mut_checked(&mut [1, 2, 3], 3), Some(&mut [] as &mut [i32]));
-    assert_eq!(Slice::take_omit_last_mut_checked(&mut [1, 2, 3], 5), None);
+fn slice_iter_mut_empty() {
+    let mut array: [u8; 0] = [];
+    let mut it = SliceIterMut::new(&mut array);
+    assert_eq!(it.size_hint(), (0, Some(0)));
+    assert!(it.is_empty());
+    assert!(it.next().is_none());
+    assert!(it.next_back().is_none());
 }

@@ -9,7 +9,13 @@ use crate::{
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over a shared slice.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: SliceIter<'_, char> = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: SliceIter<'_, char> = 32|256),
+}]
 ///
 /// Yields elements by reference in index order. Produces `&T` without copying.
 #[derive(Debug)]
@@ -58,11 +64,7 @@ impl<'s, T> IteratorLendingDoubleEnded for SliceIter<'s, T> {
 }
 impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
     fn peek<'a>(&'a mut self) -> Option<Self::Item<'a>> {
-        if self.front >= self.slice.len() {
-            None
-        } else {
-            Some(&self.slice[self.front])
-        }
+        if self.front >= self.back { None } else { Some(&self.slice[self.front]) }
     }
 }
 
@@ -70,11 +72,18 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over an exclusive slice.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: SliceIterMut<'_, char> = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: SliceIterMut<'_, char> = 32|256),
+}]
 ///
 /// Yields `&mut T` references in index order.
-/// The returned references may outlive the iterator borrow taken by `next`
-/// and may coexist as long as the underlying slice is not accessed through other means.
+///
+/// The returned reference is tied to the temporary mutable borrow of the iterator
+/// taken by `next`, matching the [`IteratorLending`] contract.
 ///
 /// # Examples
 /// ```

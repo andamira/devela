@@ -7,7 +7,13 @@ use crate::{MemReplicaError, Slice, is, unwrap, whilst};
 
 #[doc = crate::_tags!(mem lifetime)]
 /// Mutable replicated view over a backing slice.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: MemReplicaSlice<'_, [u8; 1024], 2> = 32|256),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: MemReplicaSlice<'_, [u8; 1024], 2> = 64|512),
+}]
 ///
 /// `MemReplicaSlice` stores logical elements in an interleaved physical layout
 /// such that each logical index maps to `N` channel-separated replica slots.
