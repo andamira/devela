@@ -25,10 +25,7 @@ fn bytes() {
 }
 
 #[test]
-#[cfg(any(
-    /* 1) */ feature = "std",
-    /* 2) */ all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
-))]
+#[crate::macro_apply(crate::_std_or_linux_syscall)]
 fn print_non_const() {
     fn dyn_args(x: u8, y: u8) {
         let _ = ansi![@p: cursor_save cursor_move1(x, y) cursor_restore];

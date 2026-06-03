@@ -64,7 +64,7 @@ macro_rules! sleep4 {
 #[doc = crate::_doc_meta!{location("work/thread")}]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
-#[cfg(all(feature = "linux", not(feature = "std"), not(miri)))]
+#[crate::macro_apply(crate::_linux_syscall_not_std)]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "linux", feature = "std"))))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! sleep4 {

@@ -35,7 +35,7 @@ See also the [`ansi!`][crate::ansi] macro.
 #[doc = DOC_ANSI_PRINT!()]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
 #[cfg(feature = "std")]
-// #[cfg(not(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)))]
+// #[crate::macro_apply(crate::_std_not_linux_syscall)]
 pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Io::stdout().write_all(sequence)
 }
@@ -46,8 +46,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
 #[doc = crate::_doc_meta!{location("sys/os/term")}]
 #[doc = DOC_ANSI_PRINT!()]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", feature = "linux"))))]
-#[cfg(not(feature = "std"))]
-#[cfg(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[crate::macro_apply(crate::_linux_syscall_not_std)]
 pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Linux::print_bytes(sequence).map_err(crate::LinuxError::to_io)
 }
@@ -67,7 +66,7 @@ pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
 ///
 /// This method avoids having to perform extra error conversions.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
-#[cfg(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux))]
+#[crate::macro_apply(crate::_linux_syscall)]
 pub fn ansi_print_linux(sequence: &[u8]) -> crate::LinuxResult<()> {
     crate::Linux::print_bytes(sequence)
 }

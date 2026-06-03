@@ -496,8 +496,7 @@
 
 ## yard
 - new macros: `_doc_meta!`, `_doc_test_size_of!`.
-- new hidden maintenance aliases for item attributes:
-  - `__doc_<show|hide>`, `__cfg_item_[un]safe[_hide]`, `_js_[un]safe_ffi[_doc]`, `_unsafe_syscall_not_miri`.
+- new hidden maintenance aliases for item attributes.
 - update `_use_or_shim!` to add `_doc!` macro support.
 - split a new `_doc_vendor!` macro out of `_doc!`
 - rename `_doc_miri_warn!` to `_doc_warn_miri!`.
