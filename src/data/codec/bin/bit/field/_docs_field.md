@@ -17,7 +17,50 @@ For a generated set type `Bitfield`, the macro defines the following methods.
 - `new()`
 - `from_bits(bits)`
 - `bits()`
+- `mask()`
 - `all()`
+
+## Core predicates
+- `is_empty()`
+- `is_full()`
+- `fields_are_zero()`
+- `fields_are_full()`
+- `contains_mask()`
+- `has_extra_bits()`
+
+## Core modifiers
+- `clear()`
+- `clear_fields()`
+- `without_fields()`
+- `with_mask()`
+- `with_mask_if()`
+- `without_mask()`
+- `without_mask_if()`
+
+## Per-field methods
+
+For each named field `NAME`, the macro generates:
+- `get_name()`
+- `with_name()`
+- `try_with_name()`
+- `set_name()`
+- `try_set_name()`
+- `clear_name()`
+- `is_name_zero()`
+- `is_name_max()`
+
+- `name_start()`
+- `name_end()`
+- `name_width()`
+- `name_max()`
+
+## Reserved field names
+
+Some field names are reserved because their generated methods
+would collide with common methods. Avoid:
+- `FIELDS`
+- `MASK`
+- `MASK_IF`
 
 # Examples
 ```

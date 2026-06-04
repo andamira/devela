@@ -19,7 +19,7 @@ fn main() -> LinuxResult<()> {
 
     term.print(b"TermLinux raw session\r\n")?;
     println!("size: {:?}", term.size());
-    println!("term caps: {:?}", term.term_capabilities());
+    println!("term caps: {}", term.term_capabilities());
     println!("run caps: {:?}", term.run_capabilities());
     term.print(b"\r\nPress keys. Ctrl-Q exits.\r\n")?;
 

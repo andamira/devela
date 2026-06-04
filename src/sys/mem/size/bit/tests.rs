@@ -71,15 +71,12 @@ crate::bitfield! {
     }
 }
 
-// This is what `bitfield!` could generate automatically.
-impl crate::BitSized<16> for TestHeader {}
-
 #[test]
 fn bitfield_can_advertise_storage_bit_size() {
-    assert_eq!(<TestHeader as BitSized<16>>::BIT_SIZE, 16);
-    assert_eq!(<TestHeader as BitSized<16>>::MIN_BYTE_SIZE, 2);
+    assert_eq!(<TestHeader as BitSized<13>>::BIT_SIZE, 13);
+    assert_eq!(<TestHeader as BitSized<13>>::MIN_BYTE_SIZE, 2);
 
     let h = TestHeader::new().with_kind(3).with_len(120).with_flag(1);
-    assert_eq!(h.bit_size(), 16);
+    assert_eq!(h.bit_size(), 13);
     assert_eq!(h.min_byte_size(), 2);
 }
