@@ -210,6 +210,7 @@
 - make `Float`'s std methods const: `ceil`, `floor`, `mul_add`, `round_ties_away`, `round_ties_even`.
 
 #### num::fin::bit
+- new type `BitSpan`.
 - update `Bitwise`:
   - rename checked methods to have `_checked` suffix.
   - rename `set_checked_value_checked_range` to `set_value_range_checked_strict` and fix.

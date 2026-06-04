@@ -13,12 +13,14 @@ mod tests;
 mod _docs;
 
 mod ops; // BitOps
+mod span; // BitSpan
 mod wise; // Bitwise
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             ops::*,
+            span::*,
             wise::*,
         };
     }

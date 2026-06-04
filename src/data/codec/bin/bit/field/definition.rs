@@ -61,11 +61,12 @@ macro_rules! bitfield· {
         ///
         /// These constants represent each field's occupied bit range, not a field value.
         ///
-        /// Use them with mask-level methods such as [`contains_mask`], [`with_mask`] and [`without_mask`].
+        /// Use them with mask-level methods such as
+        /// [`contains_mask`], [`with_mask`] and [`without_mask`].
         ///
-        /// [`contains`]: Self::contains
-        /// [`with`]: Self::with
-        /// [`without`]: Self::without
+        /// [`contains_mask`]: Self::contains_mask
+        /// [`with_mask`]: Self::with_mask
+        /// [`without_mask`]: Self::without_mask
         impl $Bitfield { $crate::paste! { $(
             // single-bit fields
             #[$crate::compile[none($($end)?)]]
@@ -353,18 +354,13 @@ macro_rules! bitfield· {
             $vis const fn [<get_ $f:lower>](self) -> $T {
                 $crate::Bitwise::<$T>(self.bits).get_value_range(($start) as u32, ($end) as u32).0
             }
-            /// Returns `self` with the field value replaced.
-            ///
-            /// The value is masked to fit the field width.
+            /// Returns `self` with the field value replaced, masking it to fit the field width.
             #[must_use] #[allow(clippy::double_must_use)] #[allow(dead_code)]
             $vis const fn [<with_ $f:lower>](self, value: $T) -> Self {
                 Self { bits: $crate::Bitwise::<$T>(self.bits)
                     .set_value_range(value, ($start) as u32, ($end) as u32).0 }
             }
-            /// Returns `self` with the checked field value replaced.
-            ///
-            /// # Errors
-            /// Returns an error if `value` does not fit within the field width.
+            /// Returns `self` with the checked field value replaced, if it fits.
             #[allow(dead_code)]
             $vis const fn [<try_with_ $f:lower>](self, value: $T)
                 -> $crate::Result<Self, $crate::MismatchedCapacity> {
@@ -376,25 +372,20 @@ macro_rules! bitfield· {
                     Err($crate::MismatchedBounds::MismatchedCapacity {
                         bound: _, value: _, limit: _ }) => {
                         Err($crate::MismatchedCapacity::too_large(value as usize,
-                            Self::[<$f:lower _max>]() as usize))
+                            Self::[<_ $f _MAX>] as usize))
                     },
                     // Guarded by generated compile-time assertions.
                     Err(_) => unreachable!(),
                 }
             }
 
-            /// Replaces the field value.
-            ///
-            /// The value is masked to fit the field width.
+            /// Replaces the field value, masking it to fit the field width.
             #[allow(dead_code)]
             $vis const fn [<set_ $f:lower>](&mut self, value: $T) {
                 self.bits = $crate::Bitwise::<$T>(self.bits)
                     .set_value_range(value, ($start) as u32, ($end) as u32).0;
             }
-            /// Replaces the field value if it fits.
-            ///
-            /// # Errors
-            /// Returns an error if `value` does not fit within the field width.
+            /// Replaces the field value, if it fits.
             #[allow(dead_code)]
             $vis const fn [<try_set_ $f:lower>](&mut self, value: $T)
                 -> $crate::Result<(), $crate::MismatchedCapacity> {
@@ -426,20 +417,17 @@ macro_rules! bitfield· {
             //     if condition { self.[<with_ $f:lower>](value) } else { self }
             // }
 
-            /* public metadata methods */
-
-            /// Returns the start bit of this field.
-            #[must_use] #[allow(dead_code)]
-            $vis const fn [<$f:lower _start>]() -> u32 { Self::[<_ $f _START>] }
-            /// Returns the end bit of this field.
-            #[must_use] #[allow(dead_code)]
-            $vis const fn [<$f:lower _end>]() -> u32 { Self::[<_ $f _END>] }
-            /// Returns the bit width of this field.
-            #[must_use] #[allow(dead_code)]
-            $vis const fn [<$f:lower _width>]() -> u32 { Self::[<_ $f _WIDTH>] }
-            /// Returns the maximum value that fits in this field.
-            #[must_use] #[allow(dead_code)]
-            $vis const fn [<$f:lower _max>]() -> $T { Self::[<_ $f _MAX>] }
+            /// Returns metadata for this field.
+            #[must_use]
+            #[allow(dead_code)]
+            $vis const fn [<$f:lower _span>]() -> $crate::BitSpan<$T> {
+                $crate::BitSpan::<$T>::from_parts(
+                    Self::[<_ $f _START>],
+                    Self::[<_ $f _END>],
+                    Self::[<_ $f _MASK>],
+                    Self::[<_ $f _MAX>],
+                )
+            }
 
             /* private metadata constants */
 
