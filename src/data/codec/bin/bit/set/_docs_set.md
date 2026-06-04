@@ -99,6 +99,12 @@ For constants declared as a single bit, it also generates:
 For grouped constants, use `contains_name()` for “all bits are present”
 and `intersects_name()` for “at least one bit is present”.
 
+## Reserved set names
+
+Some set names are reserved because their generated methods
+would collide with common methods. Avoid:
+- `IF`
+
 # Examples
 ```
 # use devela::set;

@@ -149,6 +149,7 @@ macro_rules! set· {
             /// Returns `true` if all the declared bits are set.
             #[must_use]
             $vis const fn is_full(self) -> bool { self.bits == Self::all().bits }
+
             /// Returns `true` if all bits in `other` are also set in `self`.
             #[must_use]
             $vis const fn contains(self, other: Self) -> bool { self.is_superset(other) }
@@ -229,7 +230,7 @@ macro_rules! set· {
             $vis const fn toggle(&mut self, other: Self) { self.bits ^= other.bits; }
         }
 
-        /* impl traits */
+        /* impl utility traits */
 
         $( #[$crate::compile[nota(PartialEq $(, $no_trait)*)]] )?
         impl ::core::cmp::PartialEq for $Set {
@@ -268,7 +269,8 @@ macro_rules! set· {
         $( #[$crate::compile[nota(Default $(, $no_trait)*)]] )?
         impl Default for $Set { fn default() -> Self { Self::new() } }
 
-        // formatting
+        /* impl formatting traits */
+
         $crate::impl_trait! { fmt::Debug for
             $( #[$crate::compile[nota(Debug $(, $no_trait)*)]] )?
             /// Formats the set as a prefixed binary mask over its declared bit domain.
