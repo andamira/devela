@@ -12,9 +12,13 @@ mod linux;
 // mod web; // TermWeb
 // mod windows; // TermWindows
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         #[cfg(all(feature = "linux", feature = "event", not(miri)))]
-        pub use super::linux::*;
+        pub use super::linux::_all::*;
+    }
+    _crate_internals {
+        #[cfg(all(feature = "linux", feature = "event", not(miri)))]
+        pub use super::linux::_crate_internals::*;
     }
 }

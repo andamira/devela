@@ -3,7 +3,7 @@
 //! Defines [`TermCaps`].
 //
 
-use crate::{BitSized, ColorDepth, TermCap};
+use crate::{ColorDepth, TermCap};
 
 crate::bitfield! {
     #[must_use]
@@ -20,43 +20,54 @@ crate::bitfield! {
     pub struct TermCaps(u32) {
         /* input */
         /// Keyboard input.
-        KEYBOARD           = 0;
-        /// Mouse input reporting.
-        MOUSE              = 1;
-        /// Focus-in/focus-out reporting.
-        FOCUS              = 2;
-        /// Bracketed paste reporting.
-        BRACKETED_PASTE    = 3;
-        /// Terminal resize reporting.
-        RESIZE             = 4;
+        KEYBOARD = 0;
+        /// Mouse press/release.
+        MOUSE = 1;
+        /// Mouse drag.
+        MOUSE_DRAG = 2;
+        /// Mouse motion.
+        MOUSE_MOTION = 3;
+        /// SGR mouse cell-coordinate mode.
+        MOUSE_SGR = 4;
+        /// SGR mouse pixel-coordinate mode.
+        MOUSE_SGR_PIXELS = 5;
+        /// Focus-in/focus-out.
+        FOCUS = 6;
+        /// Bracketed paste.
+        BRACKETED_PASTE    = 7;
+        /// Terminal resize.
+        RESIZE             = 8;
+
         /* output */
         /// ANSI/VT escape sequences.
-        ANSI               = 5;
+        ANSI               = 9;
         /// Cursor movement and visibility control.
-        CURSOR             = 6;
+        CURSOR             = 10;
         /// SGR styling, such as bold, reset, and colors.
-        STYLE              = 7;
+        STYLE              = 11;
         /// Alternate screen buffer.
-        ALT_SCREEN         = 8;
+        ALT_SCREEN         = 12;
         /// Synchronized output updates.
-        SYNC_UPDATE        = 9;
+        SYNC_UPDATE        = 13;
+
         /* image */
         /// Sixel image output.
-        SIXEL              = 10;
+        SIXEL              = 14;
         /// Kitty graphics protocol image output.
-        KITTY_IMAGE        = 11;
+        KITTY_IMAGE        = 15;
         /// iTerm2 inline image output.
-        ITERM_IMAGE        = 12;
+        ITERM_IMAGE        = 16;
+
         /* query replies */
         /// Device-attributes query replies.
-        QUERY_DEVICE_ATTRS = 13;
+        QUERY_DEVICE_ATTRS = 17;
         /// Cursor-position query replies.
-        QUERY_CURSOR_POS   = 14;
+        QUERY_CURSOR_POS   = 18;
         /// Color query replies.
-        QUERY_COLOR        = 15;
+        QUERY_COLOR        = 19;
 
         /// Terminal color depth.
-        COLOR_DEPTH        = 16..=18;
+        COLOR_DEPTH        = 20..=22; // 3-bit
     }
     impl {
         /// Returns an empty terminal capability set.
@@ -90,6 +101,14 @@ crate::bitfield! {
             self.bits() & cap.bit() != 0
         }
         /// Returns a copy with `cap` enabled.
+        pub const fn set_cap(&mut self, cap: TermCap) {
+            *self = self.with_cap(cap);
+        }
+        /// Returns a copy with `cap` enabled.
+        pub const fn unset_cap(&mut self, cap: TermCap) {
+            *self = self.without_cap(cap);
+        }
+        /// Returns a copy with `cap` enabled.
         pub const fn with_cap(self, cap: TermCap) -> Self {
             Self::from_bits(self.bits() | cap.bit())
         }
@@ -99,4 +118,3 @@ crate::bitfield! {
         }
     }
 }
-impl BitSized<19> for TermCaps {} // WAIT for bitfield! auto-impl

@@ -5,7 +5,7 @@ use crate::{Char, CharIter, Key, TermInputParser, TermInputState, TermParsed, sl
 // internal feed_* methods
 impl TermInputParser {
     /// Advances the parser by one byte and returns the internal parse result.
-    pub(super) const fn feed_parsed(&mut self, byte: u8) -> TermParsed {
+    pub(crate) const fn feed_parsed(&mut self, byte: u8) -> TermParsed {
         match self.state {
             TermInputState::Ground => self.feed_ground(byte),
             TermInputState::Esc => self.feed_esc(byte),

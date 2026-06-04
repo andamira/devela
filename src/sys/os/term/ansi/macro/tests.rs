@@ -24,8 +24,10 @@ fn bytes() {
     const_assert![eq_buf & [27, 91, 50, 59, 51, 72], ansi![b: cursor_MOve1(3, 2)]];
 }
 
-#[test]
+// NOTE: #[test] has to appear last in order to prevent an error when neither feature is enabled:
+// "error[E0425]: cannot find function `print_non_const` in this scope"
 #[crate::macro_apply(crate::_std_or_linux_syscall)]
+#[test]
 fn print_non_const() {
     fn dyn_args(x: u8, y: u8) {
         let _ = ansi![@p: cursor_save cursor_move1(x, y) cursor_restore];

@@ -17,16 +17,28 @@ pub enum TermCap {
     /// Keyboard input.
     Keyboard,
 
-    /// Mouse input reporting.
+    /// Mouse press/release.
     Mouse,
 
-    /// Focus-in/focus-out reporting.
+    /// Mouse drag.
+    MouseDrag,
+
+    /// Mouse motion.
+    MouseMotion,
+
+    /// SGR mouse cell-coordinate mode.
+    MouseSgr,
+
+    /// SGR mouse pixel-coordinate mode.
+    MouseSgrPixels,
+
+    /// Focus-in/focus-out.
     Focus,
 
-    /// Bracketed paste reporting.
+    /// Bracketed paste.
     BracketedPaste,
 
-    /// Terminal resize reporting.
+    /// Terminal resize.
     Resize,
 
     /* output */

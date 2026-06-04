@@ -32,7 +32,10 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::event::_all::*;
     }
     _crate_internals {
-        pub(crate) use super::ansi::_crate_internals::*;
+        pub(crate) use super::{
+            ansi::_crate_internals::*,
+            backend::_crate_internals::*,
+        };
         #[cfg(feature = "event")]
         pub(crate) use super::event::_crate_internals::*;
     }

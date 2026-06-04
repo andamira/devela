@@ -2,7 +2,8 @@
 //
 // TOC
 // - mod control
-// - mod csi_keys_replies
+// - mod csi_keys
+// - mod csi_replies
 // - mod ascii_utf8
 // - mod paste
 // - mod focus WIP
@@ -10,10 +11,9 @@
 // - mod wheel
 // - mod _helper
 
-use super::TermInputParser;
 use crate::{EventButton, EventButtonState, EventButtons, EventMouse, EventWheel, EventWheelUnit};
 use crate::{EventKey, EventKind, Key, KeyMods, KeyState, pos};
-use crate::{TermParsed, TermReply};
+use crate::{TermDecModeStatus, TermInputParser, TermParsed, TermReply};
 
 const BS: EventButtons = EventButtons::new();
 const KM: KeyMods = KeyMods::new();
@@ -108,10 +108,9 @@ mod control {
         }
     }
 }
-mod csi_keys_replies {
+mod csi_keys {
     use super::*;
 
-    /* keys */
     #[test]
     fn csi_arrows() {
         assert_key(b"\x1b[A", Key::Up);
@@ -138,7 +137,10 @@ mod csi_keys_replies {
         assert_key(b"\x1b[2~", Key::Insert);
         assert_key(b"\x1b[3~", Key::Delete);
     }
-    /* replies */
+}
+mod csi_replies {
+    use super::*;
+
     #[test]
     fn csi_cursor_position_reply() {
         let mut p = TermInputParser::new();
@@ -168,6 +170,36 @@ mod csi_keys_replies {
             parsed = p.feed_parsed(b);
         }
         assert_eq!(parsed, TermParsed::Reply(TermReply::DeviceAttributes));
+    }
+    #[test]
+    fn decrpm_private_mode_reply_reset() {
+        let mut p = TermInputParser::new();
+        let mut parsed = TermParsed::Pending;
+        for &b in b"\x1b[?1016;2$y" {
+            parsed = p.feed_parsed(b);
+        }
+        assert_eq!(
+            parsed,
+            TermParsed::Reply(TermReply::DecPrivateMode {
+                mode: 1016,
+                status: TermDecModeStatus::Reset,
+            })
+        );
+    }
+    #[test]
+    fn decrpm_private_mode_reply_not_recognized() {
+        let mut p = TermInputParser::new();
+        let mut parsed = TermParsed::Pending;
+        for &b in b"\x1b[?1016;0$y" {
+            parsed = p.feed_parsed(b);
+        }
+        assert_eq!(
+            parsed,
+            TermParsed::Reply(TermReply::DecPrivateMode {
+                mode: 1016,
+                status: TermDecModeStatus::NotRecognized,
+            })
+        );
     }
     #[test]
     fn csi_with_unexpected_final_byte_is_unknown_at_final_byte() {

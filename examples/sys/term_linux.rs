@@ -12,14 +12,15 @@ use devela::*;
 
 fn main() -> LinuxResult<()> {
     let mut term = TermLinux::open()?;
-    let caps = term.probe_capabilities()?;
-    let _session = term.session(TermMode::event().mouse_pixels())?;
+    let caps = term.probe_term_capabilities()?;
+    // let _session = term.session(TermMode::event().mouse_pixels())?;
     // let _session = term.session(TermMode::event().mouse_motion_pixels())?;
+    let _session = term.session(TermMode::event().mouse_drag_pixels())?;
 
     term.print(b"TermLinux raw session\r\n")?;
     println!("size: {:?}", term.size());
     println!("term caps: {:?}", term.term_capabilities());
-    println!("run caps: {caps:?}");
+    println!("run caps: {:?}", term.run_capabilities());
     term.print(b"\r\nPress keys. Ctrl-Q exits.\r\n")?;
 
     loop {

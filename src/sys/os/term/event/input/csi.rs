@@ -5,7 +5,7 @@ use crate::{
     EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, EventWheel,
     EventWheelUnit, Key, KeyMods,
 };
-use crate::{TermInputParser, TermParsed, TermParsedCsi, TermReply};
+use crate::{TermDecModeStatus, TermInputParser, TermParsed, TermParsedCsi, TermReply};
 
 impl TermInputParser {
     /* control  */
@@ -141,9 +141,26 @@ impl TermInputParser {
                 return TermParsedCsi::Reply(TermReply::CursorPosition(pos![col, row]));
             }
         }
+        // DECRPM: ESC [ ? mode ; status $ y
+        if final_byte == b'y' {
+            if let Some((mode, status)) = Self::parse_dec_private_mode_reply(args) {
+                return TermParsedCsi::Reply(TermReply::DecPrivateMode { mode, status });
+            }
+        }
         // DA reply seed: ESC [ ? ... c or ESC [ ... c
         is! { final_byte == b'c', return TermParsedCsi::Reply(TermReply::DeviceAttributes) }
         TermParsedCsi::Unknown
+    }
+    const fn parse_dec_private_mode_reply(args: &[u8]) -> Option<(u16, TermDecModeStatus)> {
+        // Expects args from: ESC [ ? 1016 ; 2 $ y
+        // args = b"?1016;2$"
+        is! { args.len() < 5, return None }
+        is! { args[0] != b'?', return None }
+        is! { args[args.len() - 1] != b'$', return None }
+        let body = slice![args, 1, ..args.len() - 1];
+        let (mode, raw_status) = unwrap![some? Self::parse_two_u16(body, b';')];
+        let status = unwrap![some? TermDecModeStatus::from_u16(raw_status)];
+        Some((mode, status))
     }
 
     /* mouse/pointer/wheel helpers */

@@ -1,7 +1,7 @@
 // devela::sys::os::term::event::input::state
 //
 //! Internal state items for `TermInputParser`:
-//! [`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`].
+//! [`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`], [`TermDecModeStatus`].
 //
 
 use crate::{_impl_init, EventKind, EventMouse, EventWheel, EventWindow, Key, Position2};
@@ -101,4 +101,35 @@ pub(crate) enum TermReply {
     CursorPosition(Position2<u16>),
     /// Device-attributes reply: `ESC [ ... c`.
     DeviceAttributes,
+    /// DEC private mode report: `ESC [ ? mode ; status $ y`.
+    DecPrivateMode { mode: u16, status: TermDecModeStatus },
+}
+
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+pub(crate) enum TermDecModeStatus {
+    NotRecognized = 0,
+    Set = 1,
+    Reset = 2,
+    PermanentlySet = 3,
+    PermanentlyReset = 4,
+}
+impl TermDecModeStatus {
+    pub(crate) const fn from_u16(value: u16) -> Option<Self> {
+        match value {
+            0 => Some(Self::NotRecognized),
+            1 => Some(Self::Set),
+            2 => Some(Self::Reset),
+            3 => Some(Self::PermanentlySet),
+            4 => Some(Self::PermanentlyReset),
+            _ => None,
+        }
+    }
+    pub(crate) const fn is_supported(self) -> bool {
+        !matches!(self, Self::NotRecognized)
+    }
+    // pub(crate) const fn is_set(self) -> bool {
+    //     matches!(self, Self::Set | Self::PermanentlySet)
+    // }
 }
