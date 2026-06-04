@@ -4,30 +4,30 @@
 //
 
 #[doc = crate::_tags!(code mem)]
-/// Read elements from a buffer at the given offset.
+/// Read values from a buffer at an explicit offset.
 #[doc = crate::_doc_meta!{location("code/util")}]
 ///
-/// Efficiently reads fixed-width and dynamic-width sequences from a buffer using
-/// direct indexing, avoiding slice conversion boilerplate while keeping the
-/// access pattern explicit.
+/// Reads fixed-width arrays or gathers values into a destination sequence using
+/// direct indexing. The source buffer expression is evaluated once before the
+/// read operation is expanded.
 ///
-/// - Supports fixed-width unrolled reads with `@N` syntax.
-/// - Supports dynamic-width reads into a destination sequence with `@dst`.
-/// - Updates offset variables automatically with `+=offset`.
-/// - Works with any indexable source and destination sequence.
+/// Returns either the gathered array or the final offset, depending on the form.
 ///
-/// # Panics
-/// Panics if reading would exceed the source bounds, or if writing into a
-/// destination sequence would exceed its bounds.
-///
-/// # Behavior
-/// - With `@N`, returns an array containing `N` elements read from the source.
-/// - With `@expr`, writes into `expr[0..dst.len()]` and returns the final offset.
-/// - With `+= $offset`, the offset identifier is updated to the new position.
-/// - With `$offset`, the offset expression is used as the starting position but
-///   is not updated.
+/// # Forms
+/// - `read_at!(buf, offset, @N)` reads `N` values and returns an array.
+/// - `read_at!(buf, += offset, @N)` also advances `offset` by `N`.
+/// - `read_at!(buf, offset, @dst)` fills `dst` from index `0..dst.len()` and returns the final offset.
+/// - `read_at!(buf, += offset, @dst)` also stores the final offset back into `offset`.
 ///
 /// Supported fixed widths are `0..=8`, `16`, `32`, and `64`.
+///
+/// # Panics
+/// Panics if reading exceeds the source bounds, or if writing into a destination
+/// sequence exceeds its bounds.
+///
+/// # Notes
+/// The source may be any indexable expression. Dynamic destination reads require `dst`
+/// to be a mutable indexable place. The `+=` offset must be an assignable place expression.
 ///
 /// # Examples
 /// ```
@@ -56,53 +56,74 @@
 /// assert_eq!(&out, b"WAVE");
 /// ```
 /// # See also
-/// [`write_at!`] is the dual operation: it scatters sequence elements into a
-/// buffer at an offset, while `read_at!` gathers sequence elements from one.
+/// [`write_at!`] scatters values into a buffer using the same explicit-offset
+/// pattern that `read_at!` uses to gather values from one.
 ///
-/// This pair is useful for small binary codecs, parsers, emitters…
-/// where an explicit offset is clearer than introducing a cursor type.
+/// Together they are useful for small binary codecs, parsers, and emitters,
+/// where an offset is clearer than introducing a cursor type.
 ///
 /// [`write_at!`]: crate::write_at
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! read_at· {
-    ($buf:ident, += $offset:ident, $($elem:tt)*) => {{
-        let mut __offset = $offset;
-        let __out = $crate::read_at!(% $buf, __offset, $($elem)*);
-        $offset = __offset;
-        __out
-    }};
-    ($buf:ident, $offset:expr, $($elem:tt)*) => {{
-        let mut __offset = $offset;
-        $crate::read_at!(% $buf, __offset, $($elem)*)
-    }};
+    ($buf:ident, += $offset:expr, $($elem:tt)*) => {
+        {
+            let mut __offset = $offset;
+            let __out = $crate::read_at!(% $buf, __offset, $($elem)*);
+            $offset = __offset;
+            __out
+        }
+    };
+    ($buf:ident, $offset:expr, $($elem:tt)*) => {
+        {
+            let mut __offset = $offset;
+            $crate::read_at!(% $buf, __offset, $($elem)*)
+        }
+    };
+    ($buf:expr, += $offset:expr, $($elem:tt)*) => {
+        {
+            let __buf = &$buf;
+            let mut __offset = $offset;
+            let __out = $crate::read_at!(% __buf, __offset, $($elem)*);
+            $offset = __offset;
+            __out
+        }
+    };
+    ($buf:expr, $offset:expr, $($elem:tt)*) => {
+        {
+            let __buf = &$buf;
+            let mut __offset = $offset;
+            $crate::read_at!(% __buf, __offset, $($elem)*)
+        }
+    };
     /* private arms */
     // fixed-width sequence gather
-    (% $buf:ident, $offset:ident, @0) => { [] };
-    (% $buf:ident, $offset:ident, @1) => { $crate::read_at!(%unr $buf, $offset, 1) };
-    (% $buf:ident, $offset:ident, @2) => { $crate::read_at!(%unr $buf, $offset, 2) };
-    (% $buf:ident, $offset:ident, @3) => { $crate::read_at!(%unr $buf, $offset, 3) };
-    (% $buf:ident, $offset:ident, @4) => { $crate::read_at!(%unr $buf, $offset, 4) };
-    (% $buf:ident, $offset:ident, @5) => { $crate::read_at!(%unr $buf, $offset, 5) };
-    (% $buf:ident, $offset:ident, @6) => { $crate::read_at!(%unr $buf, $offset, 6) };
-    (% $buf:ident, $offset:ident, @7) => { $crate::read_at!(%unr $buf, $offset, 7) };
-    (% $buf:ident, $offset:ident, @8) => { $crate::read_at!(%unr $buf, $offset, 8) };
-    (% $buf:ident, $offset:ident, @16) => { $crate::read_at!(%unr $buf, $offset, 16) };
-    (% $buf:ident, $offset:ident, @32) => { $crate::read_at!(%unr $buf, $offset, 32) };
-    (% $buf:ident, $offset:ident, @64) => { $crate::read_at!(%unr $buf, $offset, 64) };
+    (% $buf:ident, $off:ident, @0) => { [] };
+    (% $buf:ident, $off:ident, @1) => { $crate::read_at!(%unr $buf, $off, 1) };
+    (% $buf:ident, $off:ident, @2) => { $crate::read_at!(%unr $buf, $off, 2) };
+    (% $buf:ident, $off:ident, @3) => { $crate::read_at!(%unr $buf, $off, 3) };
+    (% $buf:ident, $off:ident, @4) => { $crate::read_at!(%unr $buf, $off, 4) };
+    (% $buf:ident, $off:ident, @5) => { $crate::read_at!(%unr $buf, $off, 5) };
+    (% $buf:ident, $off:ident, @6) => { $crate::read_at!(%unr $buf, $off, 6) };
+    (% $buf:ident, $off:ident, @7) => { $crate::read_at!(%unr $buf, $off, 7) };
+    (% $buf:ident, $off:ident, @8) => { $crate::read_at!(%unr $buf, $off, 8) };
+    (% $buf:ident, $off:ident, @16) => { $crate::read_at!(%unr $buf, $off, 16) };
+    (% $buf:ident, $off:ident, @32) => { $crate::read_at!(%unr $buf, $off, 32) };
+    (% $buf:ident, $off:ident, @64) => { $crate::read_at!(%unr $buf, $off, 64) };
+    //
     (% $buf:ident, $off:ident, @$n:literal $($t:tt)*) => {
         compile_error!("unsupported fixed read width; expected 0..=8, 16, 32, or 64")
     };
-    (% unr $buf:ident, $offset:ident, $n:tt) => {{
-        let __out = $crate::punroll![$n [] |i| $buf[$offset + i]];
-        $offset += $n;
+    (% unr $buf:ident, $off:ident, $n:tt) => {{
+        let __out = $crate::punroll![$n [] |i| $buf[$off + i]];
+        $off += $n;
         __out
     }};
     // dynamic-width sequence gather into destination
-    (% $buf:ident, $offset:ident, @$dst:expr) => {{
+    (% $buf:ident, $off:ident, @$dst:expr) => {{
         let __dst = &mut $dst;
-        $crate::whilst! { i in 0..__dst.len(); { __dst[i] = $buf[$offset]; $offset += 1; }}
-        $offset
+        $crate::whilst! { i in 0..__dst.len(); { __dst[i] = $buf[$off]; $off += 1; }}
+        $off
     }};
 }
 pub use read_at· as read_at;

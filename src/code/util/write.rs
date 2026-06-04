@@ -4,35 +4,52 @@
 //
 
 #[doc = crate::_tags!(code mem)]
-/// Write elements to a buffer at the given offset.
+/// Write elements into a buffer at an explicit offset.
 #[doc = crate::_doc_meta!{location("code/util")}]
 ///
-/// Efficiently writes individual elements and sequences to a buffer using direct
-/// assignments, avoiding slice operations while maintaining clean syntax.
+/// Writes individual values, sequences, and UTF-8 scalar bytes using direct indexing.
+/// The buffer expression is evaluated once before the write sequence is expanded.
 ///
 /// Returns the final offset after writing.
 ///
-/// - Updates offset variables automatically when an identifier is provided.
-/// - Works with any indexable type (arrays, vectors, etc.).
-/// - Supports spreading sequences with `@expr` syntax.
-/// - Supports fixed-width unrolled sequence spreading with `@N expr` syntax.
-/// - Supports writing Unicode scalar values as UTF-8 bytes with `#expr` syntax.
+// - Updates the offset place when using `+=`.
+// - Works with any indexable type (arrays, vectors, etc.).
+// - Supports spreading sequences with `@expr` syntax.
+// - Supports fixed-width unrolled sequence spreading with `@N expr` syntax.
+// - Supports writing Unicode scalar values as UTF-8 bytes with `#expr` syntax.
+//
+// # Panics
+// Panics if writing would exceed the buffer bounds.
+//
+// # Behavior
+// - With `+= $offset`, the offset identifier is updated to the new
+//   position, and that final position is returned.
+// - With `$offset`, the offset expression is used as the starting
+//   position but is not updated. The final position is still returned.
+// - With `@expr`, the expression is treated as a sequence and spread
+//   using its runtime `.len()`.
+// - With `@N`, the first `N` indexed elements are written through an unrolled expansion.
+// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
+// - The return value can be ignored by using the macro as a statement.
+//
+// Supported fixed widths are `1..=8`, `16`, `32`, and `64`.
+//
+/// # Forms
+/// - `write_at!(buf, offset, ...)` writes from `offset` and returns the final offset.
+/// - `write_at!(buf, += offset, ...)` also stores the final offset back into `offset`.
+/// - `value` writes one value.
+/// - `@seq` writes all indexed elements of `seq`, using `seq.len()`.
+/// - `@N seq` writes the first `N` indexed elements of `seq` with an unrolled expansion.
+/// - `#scalar` encodes a Unicode scalar value as UTF-8 bytes.
+///
+/// Supported fixed widths are `0..=8`, `16`, `32`, and `64`.
 ///
 /// # Panics
-/// Panics if writing would exceed the buffer bounds.
+/// Panics if writing exceeds the buffer bounds.
 ///
-/// # Behavior
-/// - With `+= $offset`, the offset identifier is updated to the new
-///   position, and that final position is returned.
-/// - With `$offset`, the offset expression is used as the starting
-///   position but is not updated. The final position is still returned.
-/// - With `@expr`, the expression is treated as a sequence and spread
-///   using its runtime `.len()`.
-/// - With `@N`, the first `N` indexed elements are written through an unrolled expansion.
-/// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
-/// - The return value can be ignored by using the macro as a statement.
-///
-/// Supported fixed widths are `1..=8`, `16`, `32`, and `64`.
+/// # Notes
+/// The buffer must be a mutable indexable place. The `+=` offset must be an
+/// assignable place expression.
 ///
 /// # Examples
 /// ```
@@ -90,33 +107,57 @@
 /// assert_eq!(&chars[..], &['_', '_', 'c', 'h', 'a', 'r', 's', '_']);
 /// ```
 /// # See also
-/// [`read_at!`] is the dual operation: it gathers sequence elements from a
-/// buffer at an offset, while `write_at!` scatters sequence elements into one.
+/// [`read_at!`] gathers values from a buffer using the same explicit-offset
+/// pattern that `write_at!` uses to scatter values into one.
 ///
-/// This pair is useful for small binary codecs, parsers, emitters…
-/// where an explicit offset is clearer than introducing a cursor type.
+/// Together they are useful for small binary codecs, parsers, and emitters,
+/// where an offset is clearer than introducing a cursor type.
 ///
 /// [`read_at!`]: crate::read_at
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! write_at· {
-    ($buf:ident, += $offset:ident, $($elem:tt)*) => {{
-        let mut __offset = $offset;
-        #[allow(unused_assignments)]
+    ($buf:ident, += $offset:expr, $($elem:tt)*) => {{
+        #[allow(unused_mut, unused_assignments)]
         {
+            let mut __offset = $offset;
             $crate::write_at!(% $buf, __offset, $($elem)*);
             $offset = __offset;
+            __offset
         }
-        __offset
     }};
     ($buf:ident, $offset:expr, $($elem:tt)*) => {{
-        let mut __offset = $offset;
-        $crate::write_at!(% $buf, __offset, $($elem)*);
-        __offset
+        #[allow(unused_mut, unused_assignments)]
+        {
+            let mut __offset = $offset;
+            $crate::write_at!(% $buf, __offset, $($elem)*);
+            __offset
+        }
+    }};
+    ($buf:expr, += $offset:expr, $($elem:tt)*) => {{
+        #[allow(unused_mut, unused_assignments)]
+        {
+            let __buf = &mut $buf;
+            let mut __offset = $offset;
+            $crate::write_at!(% __buf, __offset, $($elem)*);
+            $offset = __offset;
+            __offset
+        }
+    }};
+    ($buf:expr, $offset:expr, $($elem:tt)*) => {{
+        #[allow(unused_mut, unused_assignments)]
+        {
+            let __buf = &mut $buf;
+            let mut __offset = $offset;
+            $crate::write_at!(% __buf, __offset, $($elem)*);
+            __offset
+        }
     }};
     /* private arms */
     // fixed-width sequence spread
-    (% $buf:ident, $off:ident, @0 $($t:tt)*) => { $crate::write_at!(% $buf, $off, $($rest)*); };
+    (% $buf:ident, $off:ident, @0 $seq:expr $(, $($t:tt)*)? ) => {{
+        $( $crate::write_at!(% $buf, $off, $($t)*); )?
+    }};
     (% $buf:ident, $off:ident, @1 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 1 $($t)*); };
     (% $buf:ident, $off:ident, @2 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 2 $($t)*); };
     (% $buf:ident, $off:ident, @3 $($t:tt)*) => { $crate::write_at!(%unr $buf, $off, 3 $($t)*); };
@@ -132,43 +173,43 @@ macro_rules! write_at· {
     // (% $buf:ident, $off:ident, @$n:literal $($t:tt)*) => {
     //     compile_error!("unsupported fixed write width; expected 0..=8, 16, 32, or 64")
     // };
-    (% unr $buf:ident, $offset:ident, $n:tt $seq:expr $(, $($rest:tt)*)? ) => {{
-        let seq = $seq;
-        $crate::punroll![$n |i| { $buf[$offset] = seq[i]; $offset += 1; }];
-        $( $crate::write_at!(% $buf, $offset, $($rest)*); )?
+    (% unr $buf:ident, $off:ident, $n:tt $seq:expr $(, $($rest:tt)*)? ) => {{
+        let __seq = &$seq;
+        $crate::punroll![$n |i| { $buf[$off] = __seq[i]; $off += 1; }];
+        $( $crate::write_at!(% $buf, $off, $($rest)*); )?
     }};
     // dynamic-width sequence spread
-    (% $buf:ident, $offset:ident, @$seq:expr, $($rest:tt)*) => {{
-        let seq = $seq;
-        $crate::whilst! { i in 0..seq.len(); { $buf[$offset] = seq[i]; $offset += 1; }}
-        $crate::write_at!(% $buf, $offset, $($rest)*);
+    (% $buf:ident, $off:ident, @$seq:expr, $($rest:tt)*) => {{
+        let __seq = &$seq;
+        $crate::whilst! { i in 0..__seq.len(); { $buf[$off] = __seq[i]; $off += 1; }}
+        $crate::write_at!(% $buf, $off, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, @$seq:expr) => {{
-        let seq = $seq;
-        $crate::whilst! { i in 0..seq.len(); { $buf[$offset] = seq[i]; $offset += 1; }}
+    (% $buf:ident, $off:ident, @$seq:expr) => {{
+        let __seq = &$seq;
+        $crate::whilst! { i in 0..__seq.len(); { $buf[$off] = __seq[i]; $off += 1; }}
     }};
     // UTF-8 scalar
-    (% $buf:ident, $offset:ident, #$ch:expr, $($rest:tt)*) => {{
-        $crate::write_at!(%utf8_char $buf, $offset, $ch);
-        $crate::write_at!(% $buf, $offset, $($rest)*);
+    (% $buf:ident, $off:ident, #$ch:expr, $($rest:tt)*) => {{
+        $crate::write_at!(%utf8_char $buf, $off, $ch);
+        $crate::write_at!(% $buf, $off, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, #$ch:expr) => {{
-        $crate::write_at!(%utf8_char $buf, $offset, $ch);
+    (% $buf:ident, $off:ident, #$ch:expr) => {{
+        $crate::write_at!(%utf8_char $buf, $off, $ch);
     }};
-    (% utf8_char $buf:ident, $offset:ident, $ch:expr) => {{
-        $offset += $crate::__unicode_scalar_write_utf8_at![$buf, $offset, $ch];
+    (% utf8_char $buf:ident, $off:ident, $ch:expr) => {{
+        $off += $crate::__unicode_scalar_write_utf8_at![$buf, $off, $ch];
     }};
     // generic element
-    (% $buf:ident, $offset:ident, $elem:expr, $($rest:tt)*) => {{
-        $buf[$offset] = $elem;
-        $offset += 1;
-        $crate::write_at!(% $buf, $offset, $($rest)*);
+    (% $buf:ident, $off:ident, $elem:expr, $($rest:tt)*) => {{
+        $buf[$off] = $elem;
+        $off += 1;
+        $crate::write_at!(% $buf, $off, $($rest)*);
     }};
-    (% $buf:ident, $offset:ident, $elem:expr) => {{
-        $buf[$offset] = $elem;
-        $offset += 1;
+    (% $buf:ident, $off:ident, $elem:expr) => {{
+        $buf[$off] = $elem;
+        $off += 1;
     }};
-    (% $buf:ident, $offset:ident $(,)?) => {};
+    (% $buf:ident, $off:ident $(,)?) => {};
 }
 pub use write_at· as write_at;
 

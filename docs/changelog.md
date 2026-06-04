@@ -102,6 +102,7 @@
 - update `impl_trait!` to support custom attributes.
 - update `unwrap!`: add missing arms: `ok_or?`, `sok_or?`.
 - update `write_at!`:
+  - accept the buffer as an expresion.
   - make it return the offset.
   - add `#expr` syntax support for writing unicode scalar values as UTF-8 bytes.
   - add special support for fixed-width unrolled spread sequences.
