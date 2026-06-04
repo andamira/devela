@@ -13,8 +13,7 @@ mod cap; // TermCaps
 mod event; // TermInputParser
 mod line; // TermLineMode
 mod metric; // TermSize
-// #[cfg(feature = "term")]
-// mod render; // TermRenderer WIP
+mod render; // TermRenderer
 mod session; // TermMode, TermSession
 
 crate::structural_mods! { // _mods, _crate_internals
@@ -25,7 +24,7 @@ crate::structural_mods! { // _mods, _crate_internals
             backend::_all::*,
             line::_all::*,
             metric::*,
-            // render::_all::*,
+            render::_all::*,
             session::*,
         };
         #[cfg(feature = "event")]
