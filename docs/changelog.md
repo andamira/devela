@@ -386,7 +386,9 @@
   - rename `MOUSE_SGR` to `ENABLE_MOUSE_SGR`.
   - rename `MOUSE_NORMAL` to `ENABLE_MOUSE`.
   - fix `<SET|RESET>_PALETTE`.
-- update `ansi!`: type-check the fallback backend print arms.
+- update `ansi!`:
+  - add support to write to a renderer.
+  - type-check the fallback backend print arms.
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.

@@ -8,6 +8,8 @@ crate::CONST! {
 - the `p!` arm is the same as `p:`, followed by `.unwrap()`.
 - the `@p:` arm accepts dynamic command arguments and returns a print result.
 - the `@p!` arm is the same as `@p:`, followed by `.unwrap()`.
+- the `renderer=>` arm accepts only static command arguments and pushes them into a renderer.
+- the `@renderer=>` arm accepts dynamic command arguments and pushes them into a renderer.
 
 ## Printing backends
 
@@ -24,10 +26,30 @@ For example, this still checks that `bold` and `reset` exist:
 ```ignore
 use devela::ansi;
 ansi![p: bold, reset].unwrap();
-```
+````
 
 The dynamic print arm also validates command names and argument types,
 but does not evaluate dynamic arguments in fallback mode.
+
+## Renderer output
+
+The renderer arms push ANSI bytes into the given renderer using `try_push_bytes`.
+
+The static renderer arm concatenates all commands first:
+
+```ignore
+ansi![renderer=> reset, cursor_move1(1, 1)]?;
+```
+
+The dynamic renderer arm pushes each command in order:
+
+```ignore
+ansi![@renderer=> cursor_move1(col, row), colors(fg, bg)]?;
+```
+
+The renderer destination should be a cheap receiver expression, such as `r`,
+`self.renderer`, or `renderers[i]`. In the dynamic renderer arm the destination
+expression is used once per command.
 
 ## Notes
 
@@ -39,8 +61,10 @@ but does not evaluate dynamic arguments in fallback mode.
 - the static arms make use of the [`const_join!`] macro for concatenation.
 - the real print backends call the appropriate [`ansi_print`] function variant.
 - the fallback print backend returns `Ok(())` with an [`Infallible`] error type.
+- the renderer arms call the renderer's `try_push_bytes` method.
 
 # Examples
+
 ```
 # use devela::{ansi, const_assert};
 assert_eq![&[27, 91, 49, 109], ansi![b: bold]];
@@ -70,8 +94,25 @@ let col = 3;
 // In fallback mode this validates the commands without evaluating dynamic effects.
 ansi![@p: cursor_move1(col, row), reset].unwrap();
 ```
+
+Renderer examples:
+```ignore
+use devela::{ansi, Ansi};
+
+fn draw(r: &mut GameRenderer, row: u16, col: u16) -> DrawResult {
+    // Equivalent to: r.try_push_bytes(ansi![b: reset])?;
+    ansi![r=> reset]?;
+
+    // Equivalent to: r.try_push_bytes(&Ansi::CURSOR_MOVE1_B(col, row))?;
+    ansi![@r=> cursor_move1(col, row)]?;
+
+    Ok(())
+}
+```
+
 [`const_join!`]: crate::const_join
 [`ansi_print`]: crate::ansi_print
 [`Infallible`]: crate::Infallible
+
 "#;
 }

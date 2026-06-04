@@ -34,6 +34,9 @@ macro_rules! _ansi_define {
             (s: $d($arg:tt)*) => {
                 $d crate::Str::__utf8_bytes_to_str($d crate::ansi![b: $d($arg)*])
             };
+
+            /* printing */
+
             // prints static commands (prints all commands concatenated)
             (p: $d($arg:tt)*) => {
                 $d crate::$print_method($d crate::ansi![b: $d($arg)*])
@@ -61,6 +64,42 @@ macro_rules! _ansi_define {
             (@p! $d($arg:tt)*) => {
                 $d crate::ansi![@p: $d($arg)*].unwrap()
             };
+
+            /* rendering */
+
+            // writes static commands into a renderer
+            ($d dst:expr => $d($arg:tt)*) => {{
+                ($d dst).try_push_bytes($d crate::ansi![b: $d($arg)*]).map(|_| ())
+            }};
+            // + unwrap()
+            ($d dst:expr =>! $d($arg:tt)*) => {
+                $d crate::ansi![$d dst => $d($arg)*].unwrap()
+            };
+            // + unwrap()
+            (! $d dst:expr => $d($arg:tt)*) => {
+                $d crate::ansi![$d dst => $d($arg)*].unwrap()
+            };
+            // writes dynamic commands into a renderer
+            (@$d dst:expr => $d($command:ident $d(($d($arg:expr),*))? $d(,)?)+) => {{
+                #[allow(unused_mut)]
+                let mut __result = Ok(());
+                $d(
+                    if __result.is_ok() {
+                        __result = $d crate::paste! {
+                            ($d dst).try_push_bytes(
+                                &$d crate::Ansi::[<$d command:upper _B>] $d(($d($arg),*))?
+                            ).map(|_| ())
+                        };
+                    }
+                )+
+                __result
+            }};
+            // + unwrap()
+            (@! $d dst:expr => $d($arg:tt)*) => {
+                $d crate::ansi![@$d dst => $d($arg)*].unwrap()
+            };
+
+
         }
         #[doc(inline)]
         pub use ansi· as ansi;
@@ -85,7 +124,9 @@ macro_rules! _ansi_define {
             (s: $d($arg:tt)*) => {
                 $d crate::Str::__utf8_bytes_to_str($d crate::ansi![b: $d($arg)*])
             };
+
             /* printing fallbacks */
+
             (p: $d($arg:tt)*) => {{
                 let _ = $d crate::ansi![b: $d ($arg)*];
                 Ok::<(), core::convert::Infallible>(())
@@ -106,6 +147,40 @@ macro_rules! _ansi_define {
             (@p! $d($arg:tt)*) => {{
                 $d crate::ansi![@p: $d($arg)*].unwrap()
             }};
+
+            /* rendering */
+
+            // writes static commands into a renderer
+            ($d dst:expr => $d($arg:tt)*) => {{
+                ($d dst).try_push_bytes($d crate::ansi![b: $d($arg)*]).map(|_| ())
+            }};
+            // + unwrap()
+            ($d dst:expr =>! $d($arg:tt)*) => {
+                $d crate::ansi![$d dst => $d($arg)*].unwrap()
+            };
+            // + unwrap()
+            (! $d dst:expr => $d($arg:tt)*) => {
+                $d crate::ansi![$d dst => $d($arg)*].unwrap()
+            };
+            // writes dynamic commands into a renderer
+            (@$d dst:expr => $d($command:ident $d(($d($arg:expr),*))? $d(,)?)+) => {{
+                #[allow(unused_mut)]
+                let mut __result = Ok(());
+                $d(
+                    if __result.is_ok() {
+                        __result = $d crate::paste! {
+                            ($d dst).try_push_bytes(
+                                &$d crate::Ansi::[<$d command:upper _B>] $d(($d($arg),*))?
+                            ).map(|_| ())
+                        };
+                    }
+                )+
+                __result
+            }};
+            // + unwrap()
+            (@! $d dst:expr => $d($arg:tt)*) => {
+                $d crate::ansi![@$d dst => $d($arg)*].unwrap()
+            };
         }
         #[doc(inline)]
         pub use ansi· as ansi;
