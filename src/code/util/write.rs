@@ -12,28 +12,6 @@
 ///
 /// Returns the final offset after writing.
 ///
-// - Updates the offset place when using `+=`.
-// - Works with any indexable type (arrays, vectors, etc.).
-// - Supports spreading sequences with `@expr` syntax.
-// - Supports fixed-width unrolled sequence spreading with `@N expr` syntax.
-// - Supports writing Unicode scalar values as UTF-8 bytes with `#expr` syntax.
-//
-// # Panics
-// Panics if writing would exceed the buffer bounds.
-//
-// # Behavior
-// - With `+= $offset`, the offset identifier is updated to the new
-//   position, and that final position is returned.
-// - With `$offset`, the offset expression is used as the starting
-//   position but is not updated. The final position is still returned.
-// - With `@expr`, the expression is treated as a sequence and spread
-//   using its runtime `.len()`.
-// - With `@N`, the first `N` indexed elements are written through an unrolled expansion.
-// - With `#expr` syntax, the expression is encoded as a UTF-8 scalar value.
-// - The return value can be ignored by using the macro as a statement.
-//
-// Supported fixed widths are `1..=8`, `16`, `32`, and `64`.
-//
 /// # Forms
 /// - `write_at!(buf, offset, ...)` writes from `offset` and returns the final offset.
 /// - `write_at!(buf, += offset, ...)` also stores the final offset back into `offset`.
@@ -48,8 +26,8 @@
 /// Panics if writing exceeds the buffer bounds.
 ///
 /// # Notes
-/// The buffer must be a mutable indexable place. The `+=` offset must be an
-/// assignable place expression.
+/// - The buffer must be a mutable indexable place.
+/// - The `+=` offset must be an assignable place expression.
 ///
 /// # Examples
 /// ```
@@ -110,10 +88,14 @@
 /// [`read_at!`] gathers values from a buffer using the same explicit-offset
 /// pattern that `write_at!` uses to scatter values into one.
 ///
-/// Together they are useful for small binary codecs, parsers, and emitters,
-/// where an offset is clearer than introducing a cursor type.
+/// Together they are useful for small binary codecs, parsers, and emitters
+/// where fixed offsets are clearer than cursor movement.
+///
+/// [`ByteCursor`] provides cursor-based access over ordered byte regions.
+/// Prefer it when several byte operations form a sequential traversal.
 ///
 /// [`read_at!`]: crate::read_at
+/// [`ByteCursor`]: crate::ByteCursor
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! write_at· {
@@ -287,13 +269,13 @@ mod tests {
         assert_eq![pos, 6];
         assert_eq![&dst[2..6], b"fmt "];
     }
-    // /**
-    // ```compile_fail
-    // let src = [1u8, 2, 3, 4, 5, 6, 7, 8, 9];
-    // let mut dst = [0u8; 9];
-    // let _ = devela::write_at!(dst, 0, @9 src);
-    // ```
-    // **/
-    // #[allow(dead_code)]
-    // fn unsupported_fixed_arity() {}
+    /**
+    ```compile_fail
+    let src = [1u8, 2, 3, 4, 5, 6, 7, 8, 9];
+    let mut dst = [0u8; 9];
+    let _ = devela::write_at!(dst, 0, @9 src);
+    ```
+    **/
+    #[allow(dead_code)]
+    fn unsupported_fixed_arity() {}
 }

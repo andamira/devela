@@ -26,8 +26,9 @@
 /// sequence exceeds its bounds.
 ///
 /// # Notes
-/// The source may be any indexable expression. Dynamic destination reads require `dst`
-/// to be a mutable indexable place. The `+=` offset must be an assignable place expression.
+/// - The source may be any indexable expression.
+/// - Dynamic destination reads require `dst` to be a mutable indexable place.
+/// - The `+=` offset must be an assignable **place** expression.
 ///
 /// # Examples
 /// ```
@@ -59,10 +60,14 @@
 /// [`write_at!`] scatters values into a buffer using the same explicit-offset
 /// pattern that `read_at!` uses to gather values from one.
 ///
-/// Together they are useful for small binary codecs, parsers, and emitters,
-/// where an offset is clearer than introducing a cursor type.
+/// Together they are useful for small binary codecs, parsers, and emitters
+/// where fixed offsets are clearer than cursor movement.
+///
+/// [`ByteCursor`] provides cursor-based access over ordered byte regions.
+/// Prefer it when several byte operations form a sequential traversal.
 ///
 /// [`write_at!`]: crate::write_at
+/// [`ByteCursor`]: crate::ByteCursor
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! read_at· {

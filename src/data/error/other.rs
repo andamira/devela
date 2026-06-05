@@ -16,6 +16,7 @@
 //   - NotEnoughElements
 //   - NotEnoughSpace
 //   - PartiallyAdded
+//   - UnexpectedEof
 // - composite data-related error types:
 //   - DataNotEnough:    NotEnoughElements, NotEnoughSpace
 //   - MismatchedBounds: MismatchedCapacity, IndexOutOfBounds, MismatchedIndices
@@ -83,16 +84,16 @@ define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
     } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
 }
 define_error! { individual:
-    /// Optionally contains the minimum number of elements needed.
+    /// Optionally contains the minimum required number of elements.
     pub struct NotEnoughElements(pub Option<usize>);
     #[derive(Default)], +location: "data/error", +tag: _tags!(data),
     DOC_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.",
     self+f => if let Some(n) = self.0 {
-        write!(f, "Not enough elements. Needs at least `{n}` elements.")
+        write!(f, "Not enough elements. Requires at least `{n}` elements.")
     } else { f.write_str("Not enough elements.") }
 }
 define_error! { individual:
-    /// Optionally contains the number of free spaces needed.
+    /// Optionally contains the minimum required free capacity.
     ///
     /// This error represents a contingent failure: the operation may succeed
     /// after a change of state that frees or increases available space.
@@ -100,15 +101,26 @@ define_error! { individual:
     #[derive(Default)], +location: "data/error", +tag: _tags!(data),
     DOC_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.",
     self+f => if let Some(n) = self.0 {
-        write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
+        write!(f, "Not enough space. Requires at least `{n}` free slots.")
     } else { f.write_str("Not enough space.") }
 }
 define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
-    /// Optionally contains the number of elements added.
+    /// Optionally contains the number of elements that were added.
     #[derive(Default)], +location: "data/error", +tag: _tags!(data),
     DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.",
-    self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
-    } else { f.write_str("Only a subset of elements could be added.") }
+    self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements were added.")
+    } else { f.write_str("Only a subset of elements was added.") }
+}
+define_error! { individual:
+    /// Optionally contains the minimum required number of readable bytes.
+    pub struct UnexpectedEof(pub Option<usize>);
+    #[derive(Default)], +location: "data/error", +tag: _tags!(data),
+    DOC_UNEXPECTED_EOF = "The input ended before the operation could complete.",
+    self+f => if let Some(n) = self.0 {
+        write!(f, "Unexpected end of input. Requires at least `{n}` readable bytes.")
+    } else {
+        f.write_str("Unexpected end of input.")
+    }
 }
 
 /* composite errors */

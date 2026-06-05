@@ -113,6 +113,9 @@
 - new macro: `word!`.
 - new trait: `Word`.
 
+### data::access
+- new type: [`ByteCursor`].
+
 ### data::codec
 - new submodules: `bin`, `detect`, `pack`, `symbol`.
 - move `hash::check` to `integrity`.
@@ -136,6 +139,9 @@
 
 #### data::codec::encode
 - remove `encode` vendored items: `CodecBe`, `CodecLe`, `CodecIf`, `CodecFlags`, `CodecJoin`, `CodecLen`, `CodecLenValue`, `Decodable`, `Encodable`, `EncodableLen`.
+
+### data::error
+- new type: [`UnexpectedEof`].
 
 ### data::id
 - rename `define_handle!` to `handle!`
