@@ -23,7 +23,7 @@ use crate::__ansi_consts;
 /// - [Control prefixes](#control-prefixes)
 /// - CSI sequences
 ///   - [Erase](#erase-escape-codes)
-///   - [Terminal](#terminal-escape codes)
+///   - [Terminal](#terminal-escape-codes)
 ///   - [Terminal mode reports](#terminal-mode-report-escape-codes)
 ///   - [DEC private mode query, DCRQM](#)
 ///   - [Cursor](#cursor-escape-codes)

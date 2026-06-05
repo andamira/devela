@@ -2,9 +2,8 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{
-    LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, Linux, LinuxError, LinuxResult as Result, Str,
-};
+use crate::{LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, Linux, LinuxError, LinuxResult};
+use crate::{Str, is};
 
 /// # Read-related methods.
 #[rustfmt::skip]
@@ -13,7 +12,7 @@ impl Linux {
     pub fn has_input() -> bool { Self::available_bytes().unwrap_or(0) > 0 }
 
     /// Returns the number of bytes available to be read from *stdin*.
-    pub fn available_bytes() -> Result<usize> {
+    pub fn available_bytes() -> LinuxResult<usize> {
         let mut n = 0;
         let result = unsafe {
             Linux::sys_ioctl(FILENO::STDIN, IOCTL::FIONREAD, &mut n as *mut i32 as *mut u8)
@@ -22,7 +21,7 @@ impl Linux {
     }
 
     /// Gets a single byte from *stdin*.
-    pub fn get_byte() -> Result<u8> {
+    pub fn get_byte() -> LinuxResult<u8> {
         let mut c = 0;
         loop {
             let n = unsafe { Linux::sys_read(FILENO::STDIN, &mut c as *mut u8, 1) };
@@ -55,7 +54,7 @@ impl Linux {
     /// - `Ok(char)` if a valid UTF-8 character is read.
     /// - `Err(LinuxError::InvalidUtf8)` if the bytes are not valid UTF-8.
     /// - `Err(LinuxError::NoInput)` if the UTF-8 sequence is valid but empty.
-    pub fn get_char() -> Result<char> {
+    pub fn get_char() -> LinuxResult<char> {
         let bytes = Linux::get_utf8_bytes()?;
         let s = unsafe { Str::from_utf8_unchecked(&bytes) };
         s.chars().next().ok_or(LinuxError::NoInput)
@@ -76,7 +75,7 @@ impl Linux {
     }
 
     /// Gets a UTF-8 encoded byte sequence from *stdin* representing a `char`.
-    pub fn get_utf8_bytes() -> Result<[u8; 4]> {
+    pub fn get_utf8_bytes() -> LinuxResult<[u8; 4]> {
         let mut bytes = [0u8; 4];
         let len;
         // read the first byte to determine the length of the character
@@ -95,14 +94,25 @@ impl Linux {
         Ok(bytes)
     }
 
-    /// Reads all available bytes from stdin.
+    /// Reads immediately available stdin bytes into `buf`.
+    ///
+    /// Returns `0` if no bytes are currently available.
+    pub fn read_available(buf: &mut [u8]) -> LinuxResult<usize> {
+        is! { buf.is_empty(), return Ok(0) }
+        let count = Linux::available_bytes()?.min(buf.len());
+        is! { count == 0, return Ok(0) }
+        let n = unsafe { Linux::sys_read(FILENO::STDIN, buf.as_mut_ptr(), count) };
+        is! { n < 0, Err(LinuxError::Sys(n)), Ok(n as usize) }
+    }
+
+    /// Reads all available bytes from stdin into an allocated buffer.
     ///
     /// # Returns
     /// - `Ok(Vec<u8>)` containing the bytes read.
     /// - `Err(isize)` if the read fails, returning the error code.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-    pub fn read_available_bytes() -> Result<Vec<u8>> {
+    pub fn read_available_alloc() -> LinuxResult<Vec<u8>> {
         let count = Linux::available_bytes()?;
         if count == 0 { return Ok(Vec::new()); }
         let mut buffer = crate::vec_![0u8; count];
@@ -118,7 +128,8 @@ impl Linux {
     /// let mut name_buffer = [0_u8; 32];
     /// let name: &str = Linux::prompt::<32>("Enter your name: ", &mut name_buffer).unwrap();
     /// ```
-    pub fn prompt<'i, const CAP: usize>(text: &str, buffer: &'i mut [u8; CAP]) -> Result<&'i str> {
+    pub fn prompt<'i, const CAP: usize>(text: &str, buffer: &'i mut [u8; CAP])
+        -> LinuxResult<&'i str> {
         Linux::print(text)?; Linux::get_line(buffer)
     }
 
@@ -130,7 +141,7 @@ impl Linux {
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_line::<32>(&mut buf).unwrap();
     /// ```
-    pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> Result<&str> {
+    pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> LinuxResult<&str> {
         Linux::get_str(buffer, '\n')
     }
 
@@ -142,7 +153,7 @@ impl Linux {
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_str::<32>(&mut buf, '\n').unwrap();
     /// ```
-    pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> Result<&str> {
+    pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> LinuxResult<&str> {
         let mut index = 0;
         loop {
             if let Ok(c) = Linux::get_char() {

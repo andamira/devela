@@ -5,7 +5,9 @@ use crate::{
     EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, EventWheel,
     EventWheelUnit, Key, KeyMods,
 };
-use crate::{TermDecModeStatus, TermInputParser, TermParsed, TermParsedCsi, TermReply};
+use crate::{
+    TermDecModeStatus, TermInputParser, TermInputState, TermParsed, TermParsedCsi, TermReply,
+};
 
 impl TermInputParser {
     /* control  */
@@ -320,5 +322,11 @@ impl TermInputParser {
     #[allow(dead_code)]
     pub(super) const fn is_pasting(&self) -> bool {
         self.paste
+    }
+
+    /// Returns whether a lone `ESC` is pending.
+    #[must_use]
+    pub(crate) const fn is_pending_escape(&self) -> bool {
+        matches!(self.state, TermInputState::Esc)
     }
 }

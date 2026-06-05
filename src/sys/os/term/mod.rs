@@ -14,7 +14,7 @@ mod event; // TermInputParser
 mod line; // TermLineMode
 mod metric; // TermSize
 mod render; // TermRenderer
-mod session; // TermMode, TermSession
+mod session; // TermSession, TermPollPolicy, TermMode
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

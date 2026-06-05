@@ -1,9 +1,9 @@
 // devela::sys::os::term::session
 //
-//! Defines [`TermSession`], [`TermMode`].
+//! Defines [`TermSession`], [`TermPollPolicy`], [`TermMode`].
 //
 
-use crate::TermLineMode;
+use crate::{Duration, TermLineMode};
 
 #[doc = crate::_tags!(term guard)]
 /// Scoped terminal session guard.
@@ -30,6 +30,33 @@ impl<R> TermSession<R> {
     pub fn into_restore(self) -> R {
         self.restore
     }
+}
+
+#[doc = crate::_tags!(term event)]
+/// Terminal event polling policy.
+#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub enum TermPollPolicy {
+    /// Non-blocking. Preserves pending partial input sequences.
+    ///
+    /// A lone `ESC` remains pending until more bytes arrive
+    /// or it is flushed by another policy.
+    Pending,
+
+    /// Non-blocking. Resolves pending lone `ESC` after ready bytes are drained.
+    ///
+    /// Best for games and frame loops.
+    #[default]
+    Immediate,
+
+    /// Non-blocking. Resolves pending lone `ESC` after `Duration`.
+    ///
+    /// Best for interactive text UIs that want to distinguish fast escape
+    /// sequences from a deliberate Escape key.
+    Timeout(Duration),
+
+    /// Blocking. Waits until an event is available.
+    Blocking,
 }
 
 crate::set! {
