@@ -113,6 +113,9 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
     }
     _hidden {
         #[doc(hidden)]
-        pub use devela_macros::__macro_derive_helpers;
+        pub use {
+            super::asserts::_hidden::*,
+            devela_macros::__macro_derive_helpers,
+        };
     }
 }
