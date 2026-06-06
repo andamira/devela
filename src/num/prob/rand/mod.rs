@@ -33,7 +33,7 @@
 // mod from_rand; // FromRand
 // mod noise; // Structured deterministic randomness
 mod prng; // concrete PRNGs
-mod rand; // Rand
+mod rand; // Rand, RandTry
 
 #[cfg(feature = "alloc")]
 mod rand_alloc; // RandAlloc

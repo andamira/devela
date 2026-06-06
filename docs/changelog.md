@@ -245,6 +245,7 @@
 - new module `phys::prob::markov`.
 
 #### num::prob::rand
+- new trait `RandTry`.
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`.
 
@@ -366,13 +367,15 @@
 - allow receiving duplicated mouse and pointer web events.
 
 #### sys::os::linux
+- new type `LinuxRandomMode`.
 - update `LinuxError` conversion to `IoError`.
 - feature-gate term-related functionality.
 - refactor Linux signal handlers around RT sigaction.
-- update Linux: 
-  - new methods: `scoped_event_mode`, `scoped_termios_update`.
+- update `Linux`:
+  - new methods: `random_*_with`, `scoped_event_mode`, `scoped_termios_update`.
   - rename method: `disable_raw_mode` to `reset_cooked_mode`.
   - make `scoped_raw_mode` method return crate-private `LinuxTermModeGuard`.
+  - make the default random mode cryptographically secure.
 
 #### sys::os::linux::io
 - new types: `LinuxTermios<Input|Output|Control|Local>Flags`, `LinuxTermiosCC`, `LinuxTermiosCharSize`.

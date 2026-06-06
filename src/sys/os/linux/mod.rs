@@ -19,13 +19,15 @@
 
 // mod container; // WIP
 mod error; // LinuxError, LinuxResult, LINUX_<ERRNO|EXIT>
-#[doc = crate::_tags!(io)]
-pub mod io; // LinuxStat, LinuxTermios, LINUX_<FILENO|IOCTL|TERMIOS_*|…>-
 mod namespace; // Linux
-#[doc = crate::_tags!()]
-pub mod process; // LinuxSig<action|set|siginfo>, LINUX_SIG<ACTION|AIGNAL>
+mod rand; // LinuxRandomMode
 crate::_unsafe_syscall_not_miri! {
 mod syscalls; } // LINUX_SYS
+
+#[doc = crate::_tags!(io)]
+pub mod io; // LinuxStat, LinuxTermios, LINUX_<FILENO|IOCTL|TERMIOS_*|…>-
+#[doc = crate::_tags!()]
+pub mod process; // LinuxSig<action|set|siginfo>, LINUX_SIG<ACTION|AIGNAL>
 #[doc = crate::_tags!(time)]
 pub mod thread; // Linux<Clock|Instant|Time|Timespec>
 
@@ -35,6 +37,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             // container::*,
             error::*,
             namespace::Linux,
+            rand::*,
         };
         #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub use super::syscalls::_all::*;
