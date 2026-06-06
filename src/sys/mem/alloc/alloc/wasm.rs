@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc
+// devela::sys::mem::alloc::wasm
 //
 //! Defines [`WasmAlloc`].
 //
@@ -32,7 +32,8 @@ impl WasmAlloc {
     /// Initial value for `WasmAlloc`.
     pub const INIT: Self = WasmAlloc;
 }
-/// This is safe in single-threaded WASM environments bug invalid in multi-threaded contexts.
+/// This is safe in single-threaded WASM environments,
+/// but invalid in multi-threaded contexts.
 unsafe impl Sync for WasmAlloc {}
 
 #[rustfmt::skip]
@@ -77,7 +78,7 @@ static mut WASM_ALLOC_STATE: Option<(NonZeroUsize, usize)> = None;
 #[cfg(target_arch = "wasm32")]
 #[allow(clippy::deref_addrof, reason = "safe reference to static mut")]
 unsafe fn alloc_impl(layout: MemLayout) -> Option<*mut u8> {
-    // SAFETY: Single-threaded WASM, the static is only referenced here, the function not reentrant.
+    // SAFETY: Single-threaded WASM, static is only referenced here, function not reentrant.
     // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
     let state_ref = unsafe { &mut *&raw mut WASM_ALLOC_STATE };
     let (neg_offset, neg_bound) = state_ref.get_or_insert_with(|| {

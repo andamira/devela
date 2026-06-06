@@ -2,10 +2,9 @@
 //
 //! Defines [`LinuxSiginfo`] and (`LinuxSigval`).
 //
+// IMPROVE: add LinuxSiginfoCode
 
-#[cfg(feature = "unsafe_syscall")]
-use crate::impl_trait;
-use crate::{Debug, FmtResult, Formatter, c_void};
+use crate::{c_void, impl_trait};
 
 #[doc = crate::_tags!(linux signal abi)]
 /// Additional information about a signal.
@@ -48,7 +47,7 @@ impl LinuxSiginfo {
     /// Returns the error number (if applicable).
     pub fn errno(&self) -> i32 { self.si_errno }
     /// Returns the signal code.
-    pub fn code(&self) -> i32 { self.si_code } // IMPROVE: return si_codes
+    pub fn code(&self) -> i32 { self.si_code }
     /// Returns the sender's PID.
     pub fn pid(&self) -> i32 { self.si_pid }
     /// Returns the sender's UID.
@@ -66,25 +65,20 @@ impl LinuxSiginfo {
     #[cfg(feature = "unsafe_syscall")]
     pub fn value_ptr(&self) -> *mut c_void { unsafe { self.si_value.ptr } }
 }
-#[rustfmt::skip]
-impl Debug for LinuxSiginfo {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-        write!(f, "LinuxSiginfo {{ ")?;
-        write!(f, "si_signo: {}, ", self.si_signo)?;
-        write!(f, "si_errno: {}, ", self.si_errno)?;
-        write!(f, "si_code: {}, ", self.si_code)?;
-        write!(f, "si_pid: {}, ", self.si_pid)?;
-        write!(f, "si_uid: {}, ", self.si_uid)?;
-        write!(f, "si_status: {}, ", self.si_status)?;
-        write!(f, "si_addr: {:?}, ", self.si_addr)?;
-        write!(f, "si_band: {}, ", self.si_band)?;
-        // IMPROVE: use si_codes
-        #[cfg(feature = "unsafe_syscall")]
-        write!(f, "si_value: LinuxSigval {{ sival_int: {}, sival_ptr: {:?} }}",
-            unsafe { self.si_value.int }, unsafe { self.si_value.ptr })?;
-        write!(f, " }}")
-    }
-}
+impl_trait! { fmt::Debug for LinuxSiginfo |self, f| {
+    let mut fmt = f.debug_struct("LinuxSiginfo");
+    fmt.field("si_signo", &self.si_signo)
+        .field("si_errno", &self.si_errno)
+        .field("si_code", &self.si_code)
+        .field("si_pid", &self.si_pid)
+        .field("si_uid", &self.si_uid)
+        .field("si_status", &self.si_status)
+        .field("si_addr", &self.si_addr)
+        .field("si_band", &self.si_band);
+    #[cfg(feature = "unsafe_syscall")]
+    fmt.field("si_value", &self.si_value);
+    fmt.finish()
+}}
 
 #[cfg(target_pointer_width = "32")]
 crate::test_size_of!(LinuxSigval = 4 | 32);
@@ -102,5 +96,10 @@ union LinuxSigval {
 }
 #[cfg(feature = "unsafe_syscall")]
 impl_trait![fmt::Debug for LinuxSigval |self, f|
-    write!(f, "LinuxSigval {{ int: {}, ptr: {:?} }}", unsafe { self.int }, unsafe { self.ptr })
+    write!(
+        f,
+        "LinuxSigval {{ sival_int: {}, sival_ptr: {:?} }}",
+        unsafe { self.int },
+        unsafe { self.ptr },
+    )
 ];

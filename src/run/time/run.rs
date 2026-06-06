@@ -7,7 +7,13 @@ use crate::{RunCycle, RunPhase, RuntimeTick};
 
 #[doc = crate::_tags!(runtime)]
 /// A handle to the live execution context of a running system.
-#[doc = crate::_doc_meta!{location("run/time")}]
+#[doc = crate::_doc_meta!{
+    location("run/time"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: Runtime<()> = 12|96),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: Runtime<()> = 16|128),
+}]
 ///
 /// `Runtime` stores the long-lived state that defines an active run:
 /// - its committed regime,

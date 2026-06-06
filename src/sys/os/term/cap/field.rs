@@ -34,40 +34,40 @@ crate::bitfield! {
         /// Focus-in/focus-out.
         FOCUS = 6;
         /// Bracketed paste.
-        BRACKETED_PASTE    = 7;
+        BRACKETED_PASTE = 7;
         /// Terminal resize.
-        RESIZE             = 8;
+        RESIZE = 8;
 
         /* output */
         /// ANSI/VT escape sequences.
-        ANSI               = 9;
+        ANSI = 9;
         /// Cursor movement and visibility control.
-        CURSOR             = 10;
+        CURSOR = 10;
         /// SGR styling, such as bold, reset, and colors.
-        STYLE              = 11;
+        STYLE = 11;
         /// Alternate screen buffer.
-        ALT_SCREEN         = 12;
+        ALT_SCREEN = 12;
         /// Synchronized output updates.
-        SYNC_UPDATE        = 13;
+        SYNC_UPDATE = 13;
 
         /* image */
         /// Sixel image output.
-        SIXEL              = 14;
+        SIXEL = 14;
         /// Kitty graphics protocol image output.
-        KITTY_IMAGE        = 15;
+        KITTY_IMAGE = 15;
         /// iTerm2 inline image output.
-        ITERM_IMAGE        = 16;
+        ITERM_IMAGE = 16;
 
         /* query replies */
         /// Device-attributes query replies.
         QUERY_DEVICE_ATTRS = 17;
         /// Cursor-position query replies.
-        QUERY_CURSOR_POS   = 18;
+        QUERY_CURSOR_POS = 18;
         /// Color query replies.
-        QUERY_COLOR        = 19;
+        QUERY_COLOR = 19;
 
         /// Terminal color depth.
-        COLOR_DEPTH        = 20..=22; // 3-bit
+        COLOR_DEPTH = 20..=22; // 3-bit
     }
     impl {
         /// Returns an empty terminal capability set.

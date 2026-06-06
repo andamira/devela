@@ -15,7 +15,7 @@ use crate::{__ansi_consts, Ansi, AnsiColor3, AnsiColor8, Digits};
 /// Complete ANSI color selection
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),
-    test_size_of(AnsiColor = 4|32),
+    test_size_of(AnsiColor = 4|32; niche Option),
 }]
 /// Covers all terminal color modes:
 /// - no color / default

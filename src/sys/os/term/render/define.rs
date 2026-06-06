@@ -5,7 +5,7 @@
 
 use crate::TermSize;
 
-#[doc = crate::_tags!(term linux)]
+#[doc = crate::_tags!(term runtime)]
 /// Terminal renderer over caller-provided byte-frame storage.
 #[doc = crate::_doc_meta!{
     location("sys/os/term/backend"),
@@ -37,50 +37,48 @@ use crate::TermSize;
 ///
 /// # Methods
 ///
-/// - Core
-///   - from_buf
-///   - into_buf
-///   - buf, _mut
-///   - replace_buf
-///   - size
-///   - set_size
-///   - cols
-///   - rows
-///   - bytes_written
-///   - frames_presented
-/// - Io
-///   - present
+/// - [Core](#method.Core).
+///   - [from_buf](#method.from_buf).
+///   - [into_buf](#method.into_buf).
+///   - [buf](#method.buf) ([*mut*](#method.buf_mut)).
+///   - [replace_buf](#method.replace_buf).
+///   - [size](#method.size).
+///   - [set_size](#method.set_size).
+///   - [cols](#method.cols).
+///   - [rows](#method.rows).
+///   - [bytes_written](#method.bytes_written).
+///   - [frames_presented](#method.frames_presented).
+/// - [Io](#method.Io).
+///   - [present](#method.present).
 /// - Owned Vector
-///   - with_buf_len
-///   - replace_with_vec_len
-///   - try_replace_with_vec_len_copy
+///   - [with_buf_len](#method.with_buf_len).
+///   - [replace_with_vec_len](#method.replace_with_vec_len).
+///   - [try_replace_with_vec_len_copy](#method.try_replace_with_vec_len_copy).
 /// - Shared reference
-///   - capacity
-///   - buffered, _len
-///   - is_empty
-///   - is_full
-///   - try_replace_buf_copy
+///   - [capacity](#method.capacity).
+///   - [buffered](#method.buffered) ([*len*](#method.buffered_len)).
+///   - [is_empty](#method.is_empty).
+///   - [is_full](#method.is_full).
+///   - [try_replace_buf_copy](#method.try_replace_buf_copy).
 /// - Exclusive reference
-///   - clear_buffer
-///   - try_push_bytes
-///   - try_push_str
-///   - try_finish_frame
-///   - try_clear_screen
-///   - try_clear_line
-///   - try_cursor_home
-///   - try_cursor_hide
-///   - try_cursor_show
-///   - try_cursor_move_to
-///   - try_cursor_move_to0
-///   - try_style_reset
-///   - try_style_bold
-///   - try_color_fg
-///   - try_color_bg
-///   - try_colors
-///   - try_text_at
-///   - try_text_at0
-///   - try_hline_at0
-///   - try_vline_at0
+///   - [clear_buffer](#method.clear_buffer).
+///   - [try_push_bytes](#method.try_push_bytes).
+///   - [try_push_str](#method.try_push_str).
+///   - [try_finish_frame](#method.try_finish_frame).
+///   - [try_clear_screen](#method.try_clear_screen).
+///   - [try_clear_line](#method.try_clear_line).
+///   - [try_cursor_home](#method.try_cursor_home).
+///   - [try_cursor_hide](#method.try_cursor_hide).
+///   - [try_cursor_show](#method.try_cursor_show).
+///   - [try_cursor_move_to](#method.try_cursor_move_to) ([*0*](#method.try_cursor_move_to0)).
+///   - [try_style_reset](#method.try_style_reset).
+///   - [try_style_bold](#method.try_style_bold).
+///   - [try_color_fg](#method.try_color_fg).
+///   - [try_color_bg](#method.try_color_bg).
+///   - [try_colors](#method.try_colors).
+///   - [try_text_at](#method.try_text_at) ([*0*](#method.try_text_at0)).
+///   - [try_hline_at0](#method.try_hline_at0).
+///   - [try_vline_at0](#method.try_vline_at0).
 ///
 /// # Examples
 /// ```no_run

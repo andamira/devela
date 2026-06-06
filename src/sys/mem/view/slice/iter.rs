@@ -12,9 +12,9 @@ use crate::{
 #[doc = crate::_doc_meta!{
     location("sys/mem/view"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: SliceIter<'_, char> = 16|128),
+    test_size_of(__: SliceIter<'_, char> = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: SliceIter<'_, char> = 32|256),
+    test_size_of(__: SliceIter<'_, char> = 32|256; niche Option),
 }]
 ///
 /// Yields elements by reference in index order. Produces `&T` without copying.

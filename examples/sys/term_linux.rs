@@ -4,6 +4,7 @@
 //! name = "term_linux"
 //! [dependencies.devela]
 //! path = "../.."
+//! # git = "https://github.com/andamira/devela"
 //! features = ["linux", "term", "event"]
 //! ```
 // devela/examples/sys/term_linux.rs
@@ -13,7 +14,6 @@ use devela::*;
 fn main() -> LinuxResult<()> {
     let mut term = TermLinux::open()?;
     let caps = term.probe_term_capabilities()?;
-    // let _session = term.session(TermMode::event().mouse_pixels())?;
     // let _session = term.session(TermMode::event().mouse_motion_pixels())?;
     let _session = term.session(TermMode::event().mouse_drag_pixels())?;
 

@@ -12,15 +12,15 @@ mod _reexport_std;
 
 // #[cfg(feature = "std")]
 // mod http; // WIP
-
-// mod imap;
-// mod fpt;
-// mod smtp;
+// mod imap; // WIP
+// mod fpt; // WIP
+// mod smtp; // WIP
+// mod telegram; // WIP
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         // #[cfg(feature = "std")]
-        // pub use super::http::*; // WIP
+        // pub use super::http::*;
     }
     _reexports {
         pub use super::_reexport_core::*;

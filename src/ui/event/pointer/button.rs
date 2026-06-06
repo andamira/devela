@@ -3,7 +3,7 @@
 //! Defines [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //
 
-use crate::{_impl_init, set};
+use crate::{_impl_init, impl_trait, is, set};
 
 /* definitions */
 
@@ -86,6 +86,23 @@ impl EventButton {
     }
 }
 
+#[doc = crate::_tags!(event interaction)]
+/// Represents the state of a button.
+#[doc = crate::_doc_meta!{location("ui/event")}]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub enum EventButtonState {
+    /// The button was pressed.
+    ///
+    /// This is the default.
+    #[default]
+    Pressed,
+    /// The button was released.
+    Released,
+    /// The pointer moved without a button press/release.
+    Moved,
+}
+_impl_init! { Self::Pressed => EventButtonState }
+
 set! {
     #[doc = crate::_tags!(event interaction set)]
     /// A semantic bitmask of currently held pressable buttons.
@@ -137,21 +154,16 @@ set! {
         /// The fifth auxiliary button, when available.
         X5 = 7;
     }
+    traits(!Debug);
 }
-
-#[doc = crate::_tags!(event interaction)]
-/// Represents the state of a button.
-#[doc = crate::_doc_meta!{location("ui/event")}]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub enum EventButtonState {
-    /// The button was pressed.
-    ///
-    /// This is the default.
-    #[default]
-    Pressed,
-    /// The button was released.
-    Released,
-    /// The pointer moved without a button press/release.
-    Moved,
-}
-_impl_init! { Self::Pressed => EventButtonState }
+impl_trait! { fmt::Debug for EventButtons |self, f| {
+    let l = is![self.has_left(), "L", "-"];
+    let r = is![self.has_right(), "R", "-"];
+    let m = is![self.has_middle(), "M", "-"];
+    let x1 = is![self.has_x1(), "1", "-"];
+    let x2 = is![self.has_x2(), "2", "-"];
+    let x3 = is![self.has_x3(), "3", "-"];
+    let x4 = is![self.has_x4(), "4", "-"];
+    let x5 = is![self.has_x5(), "5", "-"];
+    write![f, "{l}{r}{m}{x1}{x2}{x3}{x4}{x5}"]
+} }
