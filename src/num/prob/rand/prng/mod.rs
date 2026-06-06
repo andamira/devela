@@ -6,8 +6,9 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod shift; // XorShift[8|16|32|64|128], XorShift128p, rand_xorshift!
 mod pcg; // Pcg[8|16|32|64|128], rand_pcg!
+mod shift; // XorShift[8|16|32|64|128], XorShift128p, rand_xorshift!
+mod splitmix; // SplitMix64
 
 #[cfg(feature = "rand")]
 crate::items! {
@@ -27,6 +28,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         pub use super::{
             pcg::_all::*,
             shift::_all::*,
+            splitmix::*,
         };
 
         #[cfg(feature = "rand")]

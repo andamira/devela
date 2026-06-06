@@ -241,7 +241,7 @@ macro_rules! rand_pcg {
                 $crate::Own::new(next, value)
             }
 
-            /// Fills the given buffer
+            /// Fills the given buffer.
             pub const fn fill_bytes(&mut self, buffer: &mut [u8]) {
                 use $crate::{Slice, slice};
                 let mut i = 0;
@@ -250,11 +250,11 @@ macro_rules! rand_pcg {
                     let bytes = r.to_le_bytes();
                     let remaining = buffer.len() - i;
                     if remaining >= $obytes {
-                        // dest[i..i + $obytes].copy_from_slice(&bytes);
+                        // buffer[i..i + $obytes].copy_from_slice(&bytes);
                         Slice::copy(slice!(mut buffer, i, ..i + $obytes), &bytes);
                         i += $obytes;
                     } else {
-                        // dest[i..].copy_from_slice(&bytes[..remaining]);
+                        // buffer[i..].copy_from_slice(&bytes[..remaining]);
                         Slice::copy(slice!(mut buffer, i, ..), slice!(&bytes, ..remaining));
                         break;
                     }

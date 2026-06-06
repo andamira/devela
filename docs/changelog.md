@@ -246,6 +246,7 @@
 
 #### num::prob::rand
 - new trait `RandTry`.
+- new type `SplitMix64`.
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`.
 
