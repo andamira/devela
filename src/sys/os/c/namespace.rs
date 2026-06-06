@@ -39,6 +39,12 @@ impl Libc {
     pub const MAP_SHARED: c_int = 0x01;
     /// POSIX mmap failure sentinel returned on error.
     pub const MAP_FAILED: *mut c_void = !0 as *mut c_void;
+    /// POSIX mmap flag: mapping is private to this process.
+    pub const MAP_PRIVATE: c_int = 0x02;
+    /// Linux mmap flag: mapping is not backed by a file.
+    pub const MAP_ANONYMOUS: c_int = 0x20;
+    /// Linux mmap flag: do not reserve swap space for this mapping.
+    pub const MAP_NORESERVE: c_int = 0x4000;
 }
 
 /// Convenience helpers for libc return values.

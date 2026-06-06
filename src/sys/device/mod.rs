@@ -1,7 +1,7 @@
 // devela::sys::device
 //
 #![doc = crate::_DOC_SYS_DEVICE!()] // public
-#![doc = crate::_doc!(modules: crate::sys; device: display)] // audio, midi
+#![doc = crate::_doc!(modules: crate::sys; device: audio, display)] // gpu, midi
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 #![doc = crate::_QUO_SYS_DEVICE!()]

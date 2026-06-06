@@ -10,7 +10,13 @@ use crate::{
 
 #[doc = crate::_tags!(allocation)]
 /// A simple, single-threaded bump allocator.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
+#[doc = crate::_doc_meta!{
+    location("sys/mem"),
+    #[cfg(target_pointer_size = "32")]
+    test_size_of(BumpAlloc = 8|64),
+    #[cfg(target_pointer_size = "64")]
+    test_size_of(BumpAlloc = 16|128),
+}]
 ///
 /// - Allocates memory linearly from a fixed memory region.
 /// - Does not support deallocation.

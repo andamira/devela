@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: alloc)]
 //
 
-mod alloc; // Alloc, ::alloc::alloc::*
+mod alloc; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc, ::alloc::alloc::*
 mod arena; // arena!
 mod storage; // Bare, BareBox, Boxed, Storage
 

@@ -333,6 +333,9 @@
 ### sys::mem
 - rename `define_arena!` to `arena!`.
 
+#### sys::mem::alloc
+- new type `LinuxMmapAlloc`.
+
 ### sys::mem::cell
 - new types: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
 

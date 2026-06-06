@@ -14,20 +14,27 @@ mod namespace;
 
 #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", feature = "unsafe_layout"))))]
-mod bump;
+mod bump; // BumpAlloc
+
+#[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
+#[cfg(all(target_os = "linux", any(feature = "unsafe_ffi", feature = "std")))]
+mod linux; // LinuxMmapAlloc
 
 #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
 #[cfg_attr(
     nightly_doc,
     doc(cfg(all(feature = "alloc", feature = "unsafe_layout", target_arch = "wasm32")))
 )]
-mod wasm;
+mod wasm; // WasmAlloc
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::namespace::*;
         #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
         pub use super::{bump::*, wasm::*};
+        #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
+        #[cfg(all(target_os = "linux", any(feature = "unsafe_ffi", feature = "std")))]
+        pub use super::linux::*;
     }
     _reexports {
         #[cfg(feature = "alloc")]
