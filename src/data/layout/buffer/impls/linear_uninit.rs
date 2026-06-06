@@ -116,6 +116,12 @@ macro_rules! __buffer_linear_impl_uninit {
                     unsafe { self.storage[self._len_usize()].assume_init_drop(); }
                 }
             }
+            /// Resets the buffer of `Copy` elements.
+            // For `T: Copy`, no destructors need to run. Updating `len` is enough:
+            // slots outside `0..len` are no longer part of the initialized range.
+            pub const fn clear_copy(&mut self) where T: Copy {
+                self.len = Self::_idx_zero();
+            }
 
             /// Drops the last element without returning it.
             pub fn drop_back(&mut self) -> bool {
@@ -137,10 +143,25 @@ macro_rules! __buffer_linear_impl_uninit {
                     unsafe { self.storage[self._len_usize()].assume_init_drop(); }
                 }
             }
+            /// Shortens the buffer of `Copy` elements.
+            ///
+            /// If `new_len >= len`, this is a no-op.
+            // For `T: Copy`, no destructors need to run. Updating `len` is enough:
+            // slots outside `0..len` are no longer part of the initialized range.
+            pub const fn truncate_copy(&mut self, new_len: $I) where T: Copy {
+                if $crate::MaybeNiche(new_len).lt(self.len) { self._set_len(new_len); }
+            }
             /// Primitive-index variant of [`truncate`][Self::truncate],
             #[inline(always)]
             pub fn truncate_prim(&mut self, new_len: $P) -> Result<(), $crate::InvalidValue> {
                 self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
+                Ok(())
+            }
+            /// Primitive-index variant of [`truncate_copy`][Self::truncate_copy],
+            #[inline(always)]
+            pub const fn truncate_prim_copy(&mut self, new_len: $P)
+                -> Result<(), $crate::InvalidValue> where T: Copy {
+                self.truncate_copy($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
                 Ok(())
             }
 

@@ -112,7 +112,6 @@ macro_rules! __buffer_linear_impl_array {
                 self.len = self._len_inc();
                 Ok(())
             }
-
             /// Appends a copy of `value` to the back of the buffer.
             ///
             /// Returns `Err(value)` if the buffer is full.
@@ -235,7 +234,7 @@ macro_rules! __buffer_linear_impl_array {
                 let len = self._len_usize(); $crate::Slice::range_to(&self.storage, len)
             }
             /// Returns the active logical range as an exclusive slice.
-            pub fn as_mut_slice(&mut self) -> &mut [T] {
+            pub const fn as_mut_slice(&mut self) -> &mut [T] {
                 let len = self._len_usize(); $crate::Slice::range_to_mut(&mut self.storage, len)
             }
 

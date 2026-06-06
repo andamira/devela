@@ -42,7 +42,7 @@ macro_rules! __buffer_linear_impl_option {
                 Self::_new(storage, Self::_usize_to_idx(N))
             }
 
-            /// Creates a buffer from a fully initialized array of copiable elements.
+            /// Creates a buffer of `Copy` elements from a fully initialized array.
             /// # Panic
             /// Panics if `N > CAP`.
             pub const fn from_array_copy<const N: usize>(src: [T; N]) -> Self where T: Copy {
@@ -125,6 +125,11 @@ macro_rules! __buffer_linear_impl_option {
                 $crate::whilst! { i in 0..self._len_usize(); { self.storage[i] = None; }}
                 self.len = Self::_idx_zero();
             }
+            /// Clears the buffer of `Copy` elements.
+            pub const fn clear_copy(&mut self) where T: Copy {
+                $crate::whilst! { i in 0..self._len_usize(); { self.storage[i] = None; }}
+                self.len = Self::_idx_zero();
+            }
 
             /// Truncates the buffer to `new_len`, dropping excess elements.
             ///
@@ -135,6 +140,29 @@ macro_rules! __buffer_linear_impl_option {
                     self.storage[i] = None;
                 }}
                 self._set_len(new_len);
+            }
+            /// Truncates the buffer of `Copy` elements to `new_len`.
+            ///
+            /// If `new_len >= len` this is a no-op.
+            pub const fn truncate_copy(&mut self, new_len: $I) where T: Copy {
+                if $crate::MaybeNiche(new_len).ge($crate::MaybeNiche(self.len())) { return; }
+                $crate::whilst! { i in Self::_idx_to_usize(new_len), ..self._len_usize(); {
+                    self.storage[i] = None;
+                }}
+                self._set_len(new_len);
+            }
+            /// Primitive-index variant of [`truncate`][Self::truncate],
+            #[inline(always)]
+            pub fn truncate_prim(&mut self, new_len: $P) -> Result<(), $crate::InvalidValue> {
+                self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
+                Ok(())
+            }
+            /// Primitive-index variant of [`truncate_copy`][Self::truncate_copy],
+            #[inline(always)]
+            pub const fn truncate_prim_copy(&mut self, new_len: $P)
+                -> Result<(), $crate::InvalidValue> where T: Copy {
+                self.truncate_copy($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
+                Ok(())
             }
 
             /* push */
@@ -148,7 +176,6 @@ macro_rules! __buffer_linear_impl_option {
                 self.len = self._len_inc();
                 Ok(())
             }
-
             /// Appends a copy of `value` to the back of the buffer.
             ///
             /// Returns `Err(value)` if the buffer is full.
@@ -171,7 +198,6 @@ macro_rules! __buffer_linear_impl_option {
                 self.len = Self::_usize_to_idx(len + count);
                 count
             }
-
             /// Appends as many copied elements from `src` as fit.
             ///
             /// Returns the number of elements appended.
@@ -278,9 +304,8 @@ macro_rules! __buffer_linear_impl_option {
             pub const fn as_slice(&self) -> &[Option<T>] {
                 $crate::Slice::range_to(&self.storage, self._len_usize())
             }
-
             /// Returns the active logical range as a mutable slice.
-            pub fn as_mut_slice(&mut self) -> &mut [Option<T>] {
+            pub const fn as_mut_slice(&mut self) -> &mut [Option<T>] {
                 let len_usize = self._len_usize();
                 $crate::Slice::range_to_mut(&mut self.storage, len_usize)
             }

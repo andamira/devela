@@ -186,7 +186,7 @@ macro_rules! __buffer_linear_impl_slice_mut {
                 $crate::Slice::range_to(&self.storage, self._len_usize())
             }
             /// Returns the active logical range as a mutable slice.
-            pub fn as_mut_slice(&mut self) -> &mut [T] {
+            pub const fn as_mut_slice(&mut self) -> &mut [T] {
                 let len_usize = self._len_usize();
                 $crate::Slice::range_to_mut(&mut self.storage, len_usize)
             }

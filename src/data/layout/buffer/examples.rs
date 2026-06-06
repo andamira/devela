@@ -41,8 +41,9 @@ buffer_linear!(
     ///     [`is_full`](#method.is_full).
     //
     ///   - Logical range control:
-    ///     [`clear`](#method.clear),
-    ///     [`truncate`](#method.truncate), *([_prim](#method.truncate_prim))*.
+    ///     [`clear`](#method.clear) *([_copy](#method.clear_copy),
+    ///     [`truncate`](#method.truncate), *([_copy](#method.truncate_copy),
+    ///     [_prim](#method.truncate_prim), [_prim_copy](#method.truncate_prim_copy))*.
     ///   - Push:
     ///     [`push_back`](#method.push_back) *([_copy](#method.push_back_copy))*.
     ///     [`push_slice`](#method.push_slice)

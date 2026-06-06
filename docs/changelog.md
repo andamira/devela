@@ -147,7 +147,11 @@
 - rename `define_handle!` to `handle!`
 
 ### data::layout
-- update `buffer_linear!` to add index type guards and optimize zero-index creation.
+- update `buffer_linear!`:
+  - add index type guards and optimize zero-index creation.
+  - new methods for option and uninit impls: `clear_copy`, `truncate_copy`, `truncate_prim_copy`.
+  - new method for option impl: `truncate_prim`.
+  - made const fn all static `as_slice_mut` functions.
 - rename `DstQueuePopHandle` to `DstQueuePopGuard`.
 
 ### data::topol
