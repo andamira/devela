@@ -33,12 +33,10 @@
 // mod from_rand; // FromRand
 // mod noise; // Structured deterministic randomness
 mod prng; // concrete PRNGs
-mod rand; // Rand, RandTry
+mod rand; // Rand, RandTry, RandSeedable, RandSeedableTry
 
-#[cfg(feature = "alloc")]
-mod rand_alloc; // RandAlloc
 #[cfg(feature = "std")]
-mod rand_std; // RandStd
+mod rand_std; // RandStd TEMP
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
@@ -48,8 +46,6 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             prng::_all::*,
             rand::*,
         };
-        #[cfg(feature = "alloc")]
-        pub use super::rand_alloc::RandAlloc;
         #[cfg(feature = "std")]
         pub use super::rand_std::RandStd;
     }

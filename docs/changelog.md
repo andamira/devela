@@ -247,6 +247,7 @@
 #### num::prob::rand
 - new trait `RandTry`.
 - new type `SplitMix64`.
+- remove the trait `RandAlloc`.
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`.
 
@@ -337,6 +338,9 @@
 
 #### sys::mem::alloc
 - new type `LinuxMmapAlloc`.
+- update `Alloc`:
+  - add methods: `random_weak_u64`, `random_weak_bytes`.
+  - impl `RandTry`.
 
 ### sys::mem::cell
 - new types: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
