@@ -293,9 +293,24 @@ macro_rules! impl_maybe {
             #[must_use] #[inline(always)]
             pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
 
-            /// Compile-time equality comparison.
+            /// Returns `true` if `self == other`.
             #[must_use] #[inline(always)]
             pub const fn eq(self, other: Self) -> bool { self.prim() == other.prim() }
+            /// Returns `true` if `self != other`.
+            #[must_use] #[inline(always)]
+            pub const fn ne(self, other: Self) -> bool { self.prim() != other.prim() }
+            /// Returns `true` if `self < other`.
+            #[must_use] #[inline(always)]
+            pub const fn lt(self, other: Self) -> bool { self.prim() < other.prim() }
+            /// Returns `true` if `self <= other`.
+            #[must_use] #[inline(always)]
+            pub const fn le(self, other: Self) -> bool { self.prim() <= other.prim() }
+            /// Returns `true` if `self > other`.
+            #[must_use] #[inline(always)]
+            pub const fn gt(self, other: Self) -> bool { self.prim() > other.prim() }
+            /// Returns `true` if `self >= other`.
+            #[must_use] #[inline(always)]
+            pub const fn ge(self, other: Self) -> bool { self.prim() >= other.prim() }
 
             /* representation access */
 

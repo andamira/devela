@@ -229,6 +229,7 @@
 - new macro `niche!`.
 - remove macros: `nm!`, `nv!`, `nz!`.
 - rename `NonExtremeI*` to `NonMin*` and `NonExtremeU*` to `NonMax*`.
+- add more comparsion methods to `MaybeNiche`: `ne`, `gt`, `ge`, `lt`, `le`.
 
 #### num::grain::wide
 - update `lane!`:
