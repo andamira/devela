@@ -36,7 +36,7 @@ mod prng; // concrete PRNGs
 mod rand; // Rand, RandTry, RandSeedable, RandSeedableTry
 
 #[cfg(feature = "std")]
-mod rand_std; // RandStd TEMP
+mod std; // StdRand
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
@@ -47,7 +47,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             rand::*,
         };
         #[cfg(feature = "std")]
-        pub use super::rand_std::RandStd;
+        pub use super::std::StdRand;
     }
     _crate_internals {
         pub(crate) use super::prng::_crate_internals::*;

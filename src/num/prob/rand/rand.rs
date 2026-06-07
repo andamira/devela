@@ -3,8 +3,6 @@
 //! Defines [`Rand`].
 //
 
-// use crate::Infallible;
-
 #[doc = crate::_tags!(rand)]
 /// Fallible source of raw random data.
 #[doc = crate::_doc_meta!{location("num/prob/rand")}]
@@ -13,8 +11,8 @@
 /// such as OS calls, hardware RNGs, host APIs, finite buffers,
 /// and fallible adapters.
 ///
-/// Infallible sources use [`Infallible`] as their error type and
-/// automatically implement [`Rand`].
+/// Infallible sources use [`Infallible`][crate::Infallible] as their error type.
+// and automatically implement [`Rand`]. TODO
 pub trait RandTry {
     /*** required ***/
 
