@@ -512,7 +512,9 @@
 - rename `Task*` items to `Async*`.
 
 #### work::exec::process
-- update `cmd!` to parse single string literals as shell words.
+- update `cmd!`:
+  - support parsing single string literals as shell words.
+  - require the @ prefix to split a single string literal.
 - new `CommandFlow` and `ProcessExt` method: `command_shell`.
 
 #### work::exec::thread

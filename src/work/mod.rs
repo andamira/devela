@@ -18,7 +18,7 @@ pub mod future;
 pub mod sync;
 pub mod task;
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             exec::_all::*,
@@ -30,5 +30,8 @@ crate::structural_mods! { // _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_WORK_MODULES;
+    }
+    _hidden {
+        pub use super::exec::_hidden::*;
     }
 }

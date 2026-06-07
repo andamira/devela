@@ -307,6 +307,7 @@ mod _hidden {
         num::_hidden::*,
         sys::_hidden::*,
         text::_hidden::*,
+        work::_hidden::*,
         yard::_hidden::*,
     };
 }

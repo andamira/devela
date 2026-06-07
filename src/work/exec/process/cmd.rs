@@ -8,95 +8,146 @@
 #[doc = crate::_doc_meta!{location("work/process")}]
 ///
 /// Grammar (informal):
-/// - The `=>` operator constructs a linear flow, connecting each command's
-///   stdout to the stdin of the next.
-/// - Each segment is a command invocation:
-///   - The first expression is the program.
-///   - Remaining expressions are arguments to that program.
-/// - A single segment is treated as a command flow of length 1.
+/// - The `=>` operator constructs a linear flow,
+///   connecting each command's stdout to the stdin of the next.
+/// - Each direct command segment consists of:
+///   - The first expression as the program.
+///   - Any remaining expressions as arguments to that program.
+/// - Prefixing a string literal with `@` splits it
+///   into a program and arguments using shell word syntax.
+/// - A single command segment forms a command flow of length 1.
 ///
 /// Semantics:
 /// - This macro does not invoke a shell.
 /// - Commands are spawned directly through the OS process API.
-/// - No expansion, globbing, redirection, variables, or pipes are performed.
-/// - Explicit segments like `cmd!("echo", "hello world")` are passed as argv words.
-/// - Single string-literal segments like `cmd!("echo 'hello world'")` require
-///   the `shell` feature and are split using shell word syntax.
+/// - Direct segments pass their expressions unchanged as argv words.
+/// - `@` segments only perform shell-style word splitting and quoting.
+/// - No variable expansion, globbing, redirection, command substitution,
+///   or shell operators are performed.
+///
+/// The `@` syntax requires the `shell` feature.
 ///
 /// # Examples
 /// ```
-/// # use devela::{cmd};
+/// # use devela::cmd;
 /// # #[cfg(not(miri))] {
 /// let arg1 = "-F";
 /// let cmd2 = "grep";
 ///
-/// // a single command. E.g.: `ls -F .`
+/// // A single direct command.
 /// cmd!("ls").run();
 /// cmd!("ls", arg1, ".").run();
 /// cmd!("ls", "-F", ".").run();
 ///
+/// // A literal split into a program and arguments.
 /// #[cfg(feature = "shell")]
-/// cmd!("ls -F .").run();
+/// cmd!(@ "ls -F .").run();
 ///
+/// // Quoting controls argument boundaries.
 /// #[cfg(feature = "shell")]
-/// cmd!(r#"echo "hello world""#).run();
+/// cmd!(@ r#"echo "hello world""#).run();
 ///
-/// // Still no shell expansion:
+/// // Shell expansion is not performed.
 /// #[cfg(feature = "shell")]
-/// cmd!(r#"echo "$HOME" "*.rs""#).run(); // literal "$HOME" and "*.rs"
+/// cmd!(@ r#"echo "$HOME" "*.rs""#).run(); // literal "$HOME" and "*.rs"
 ///
-/// // multiple piped commands. E.g.: `ps aux | grep lib | wc -l`
+/// // Multiple piped commands: `ps aux | grep lib | wc -l`.
 /// cmd!("ps", "aux" => cmd2, "lib" => "wc", "-l").run();
-/// cmd!("ps aux" => "grep lib" => "wc -l").run();
 ///
-/// // NOTE: This is invalid. The program will be treated as `"ls -F"`, not `"ls"`,
-/// // because splitting only happens when the *entire segment* is a single literal:
-/// // cmd!("ls -F", "."); // ❌ invalid, no splitting will happen
+/// #[cfg(feature = "shell")]
+/// cmd!(@ "ps aux" => @ "grep lib" => @ "wc -l").run();
+///
+/// // Direct and split segments may be combined.
+/// #[cfg(feature = "shell")]
+/// cmd!("printf", "hello world" => @ r#"grep "hello world""# => "wc", "-l").run();
 /// # }
 /// ```
+///
+/// # No implicit splitting
+///
+/// Without `@`, a string is treated as one argv word:
+/// ```no_run
+/// # use devela::cmd;
+/// # #[cfg(not(miri))] {
+/// cmd!("ls -F").run();      // executes a program named `ls -F`
+/// cmd!("ls -F", ".").run(); // executes `ls -F` with `.` as its argument
+/// # }
+/// ```
+/// Use `cmd!(@ "ls -F")` when shell-word splitting is intended.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cmd {
-    // Entry point for a single-command flow.
+    // Entry point for a shell-parsed single-command flow.
+    //   cmd!(@ "program arg")
+    (@ $cmd:literal $(,)?) => {{
+        $crate::CommandFlow::new($crate::cmd!(%cmd @ $cmd))
+    }};
+    // Entry point for a shell-parsed first command in a multi-command flow.
+    //   cmd!(@ "a b" => c, d)
+    (@ $first:literal => $($rest:tt)+) => {{
+        let flow = $crate::CommandFlow::new($crate::cmd!(%cmd @ $first));
+        $crate::cmd!(%flow flow => $($rest)+)
+    }};
+    // Entry point for a direct multi-command flow.
+    //   cmd!(a, b => c, d => e)
+    ($($first:expr),+ => $($rest:tt)+) => {{
+        let flow = $crate::CommandFlow::new($crate::cmd!(%cmd $($first),+));
+        $crate::cmd!(%flow flow => $($rest)+)
+    }};
+    // Entry point for a direct single-command flow.
+    //   cmd!(a)
     //   cmd!(a, b)
     ($($args:expr),+ $(,)?) => {{
         $crate::CommandFlow::new($crate::cmd!(%cmd $($args),+))
     }};
-    // Entry point for a multi-command flow.
-    //   cmd!(a, b => c, d => e)
-    ($($first:expr),+ $(=> $($rest:expr),+ )+) => {{
-        let p = $crate::CommandFlow::new($crate::cmd!(%cmd $($first),+)); // build the first
-        $crate::cmd!(%flow p $(=> $($rest),+ )+) // fold the rest
+    // Unsupported case.
+    () => { compile_error!("`cmd!` needs at least one command") };
+    // Appends a shell-parsed command and continues folding.
+    (%flow $flow:expr => @ $next:literal => $($rest:tt)+) => {{
+        let flow = $flow.then($crate::cmd!(%cmd @ $next));
+        $crate::cmd!(%flow flow => $($rest)+)
     }};
-    // unsupported cases:
-    () => { compile_error!("`cmd!` needs at least one command"); };
-    //
-    // Recursively folds => separated segments into a command flow.
-    (%flow $flow:expr => $($next:expr),+ $(=> $($rest:expr),+ )*) => {{
-        let p = $flow.then($crate::cmd!(%cmd $($next),+)); // append the next
-        $crate::cmd!(%flow p $(=> $($rest),+ )*) // repeat for the rest
+    // Appends the final shell-parsed command.
+    (%flow $flow:expr => @ $next:literal $(,)?) => {{
+        $flow.then($crate::cmd!(%cmd @ $next))
     }};
-    // Stops the recursive fold and returns the fully built command flow.
-    (%flow $flow:expr) => { $flow };
-    // Command constructor: A single string literal is split on whitespace.
-    (%cmd $cmd:literal) => {{
-        #[cfg(feature = "shell")]
-        {
-            use $crate::ProcessExt as _;
-            $crate::Process::command_shell($cmd).expect("invalid command literal")
-        }
-        #[cfg(not(feature = "shell"))]
-        {
-            compile_error!(
-                "`cmd!(\"...\")` single-literal splitting requires the `shell` feature; \
-                 use `cmd!(program, args...)` or enable `shell`"
-            );
-        }
+    // Appends a direct command and continues folding.
+    (%flow $flow:expr => $($next:expr),+ => $($rest:tt)+) => {{
+        let flow = $flow.then($crate::cmd!(%cmd $($next),+));
+        $crate::cmd!(%flow flow => $($rest)+)
     }};
-    // Command constructor: First expr is the program, the rest are arguments.
+    // Appends the final direct command.
+    (%flow $flow:expr => $($next:expr),+ $(,)?) => {{
+        $flow.then($crate::cmd!(%cmd $($next),+))
+    }};
+    // Constructs a command by splitting one literal with shell-word rules.
+    (%cmd @ $cmd:literal) => {{
+        $crate::__cmd_shell!($cmd)
+    }};
+    // Constructs a command directly from a program and zero or more arguments.
     (%cmd $prog:expr $(, $arg:expr)* $(,)?) => {{
-        let mut c = $crate::Command::new($prog); $( c.arg($arg); )* c
+        let mut command = $crate::Command::new($prog);
+        $(command.arg($arg);)*
+        command
     }};
 }
 #[doc(inline)]
 pub use cmd;
+
+#[cfg(feature = "shell")]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __cmd_shell {
+    ($cmd:literal) => {{
+        use $crate::ProcessExt as _;
+        $crate::Process::command_shell($cmd).expect("invalid command literal")
+    }};
+}
+#[cfg(not(feature = "shell"))]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __cmd_shell {
+    ($cmd:literal) => {{ compile_error!("`cmd!(@ \"...\")` requires devela's `shell` feature") }};
+}
+#[doc(hidden)]
+pub use __cmd_shell;

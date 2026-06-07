@@ -17,11 +17,11 @@ crate::items! {
     mod process; // ProcessExt
 }
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods, _reexports, _hidden
     _mods {
         #[cfg(feature = "std")]
         pub use super::{
-            cmd::*,
+            cmd::cmd,
             error::*,
             flow::*,
             output::*,
@@ -30,8 +30,11 @@ crate::structural_mods! { // _mods, _reexports
     }
     _reexports {
         #[cfg(feature = "std")]
-        pub use {
-            super::_reexport_std::*,
-        };
+        pub use super::_reexport_std::*;
+    }
+    _hidden {
+        #[doc(hidden)]
+        #[cfg(feature = "std")]
+        pub use super::cmd::__cmd_shell;
     }
 }

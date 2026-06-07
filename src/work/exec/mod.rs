@@ -13,7 +13,7 @@ pub mod process;
 pub mod thread;
 // pub mod worker;
 
-crate::structural_mods! { // _pub_mods
+crate::structural_mods! { // _pub_mods, _hidden
     _pub_mods {
         pub use super::{
             // container::_all::*,
@@ -23,5 +23,8 @@ crate::structural_mods! { // _pub_mods
             thread::_all::*,
             // worker::_all::*,
         };
+    }
+    _hidden {
+        pub use super::process::_hidden::*;
     }
 }
