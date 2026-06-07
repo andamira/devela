@@ -2,6 +2,16 @@
 
 use crate::{_reexport, _tags};
 
+#[doc = crate::_tags!(result no error)]
+/// A result type whose error case can never occur.
+#[doc = crate::_doc_meta!{location("code/result")}]
+pub type InfallibleResult<T> = Result<T, Infallible>;
+
+/* `core::convert` */
+
+_reexport! { rust: core::convert, location: "code/result", tag: _tags!(no error),
+doc: "The error type for errors that can never occur.", Infallible }
+
 /* `core::option` */
 
 _reexport! { rust: core::option, location: "code/result", tag: _tags!(niche),

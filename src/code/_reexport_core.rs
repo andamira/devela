@@ -13,9 +13,7 @@ doc: "A common trait that allows explicit creation of a duplicate value. (Deriva
 
 /* `core::convert` */
 
-// enums
-_reexport! { rust: core::convert, location: "code", tag: _tags!(no error),
-doc: "The error type for errors that can never happen.", Infallible }
+// NOTE: Infallible is re-exported from code::result
 
 // traits
 _reexport! { rust: core::convert, location: "code", tag: _tags!(lifetime),
