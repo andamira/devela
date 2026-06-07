@@ -247,6 +247,7 @@
 #### num::prob::rand
 - new trait `RandTry`.
 - new types `RandQualities`, `SplitMix64`, `StdRand`.
+- change the `Rand` trait to depend on `RandTry`.
 - remove the traits: `RandAlloc`, `RandStd`.
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`.

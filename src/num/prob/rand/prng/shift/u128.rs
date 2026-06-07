@@ -185,7 +185,7 @@ impl RandTry for XorShift128 {
     type Error = Infallible;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 128;
-    const RAND_QUALITIES: RandQualities = RandQualities::PRNG;
+    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
     fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
     fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
         self.fill_bytes(buffer); Ok(())
@@ -195,21 +195,21 @@ impl RandTry for XorShift128 {
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::XorShift128;
+    use super::*;
     use crate::_dep::rand_core::{SeedableRng, TryRng};
 
     impl TryRng for XorShift128 {
-        type Error = crate::Infallible;
+        type Error = Infallible;
 
         /// Returns the next random `u32` from truncating `next_u64`.
-        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
             Ok(self.next_u64() as u32)
         }
         /// Returns the next random `u64`.
-        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
             Ok(self.next_u64())
         }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
             self.fill_bytes(dst);
             Ok(())
         }

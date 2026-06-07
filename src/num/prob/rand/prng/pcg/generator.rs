@@ -18,6 +18,9 @@ crate::_ABBR_PRNG!(), " type."]]
 /// The generator stores two internal state values (state and inc), each twice
 /// the output width, for a total internal state of four times the output width.
 ///
+/// The 8- and 16-bit PCG variants are classified as weak PRNGs due to their limited
+/// per-stream state and period. The 32- and 64-bit variants use the general PRNG profile.
+///
 /// # Generated items
 /// For the defined PRNG type, this macro generates:
 /// - the PRNG struct with internal state.
@@ -418,7 +421,7 @@ macro_rules! rand_pcg {
             type Error = $crate::Infallible;
             const RAND_OUTPUT_BITS: u32 = 32;
             const RAND_STATE_BITS: u32 = 128;
-            const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
+            const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::PRNG;
 
             fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u32> {
                 Ok(self.next_u32())
@@ -457,7 +460,7 @@ macro_rules! rand_pcg {
             type Error = $crate::Infallible;
             const RAND_OUTPUT_BITS: u32 = 64;
             const RAND_STATE_BITS: u32 = 256;
-            const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
+            const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::PRNG;
 
             fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u32> {
                 Ok(self.next_u64() as u32)

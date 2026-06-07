@@ -10,6 +10,9 @@
 //!
 //! - Original paper: <https://www.jstatsoft.org/article/view/v008i14>
 //!
+//! All Xorshift generators in this module are classified as weak PRNGs due to
+//! their linear structure and, for smaller variants, limited state and period.
+//!
 //! [Xorshift]: https://en.wikipedia.org/wiki/Xorshift
 //
 

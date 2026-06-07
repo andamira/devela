@@ -302,21 +302,21 @@ impl RandTry for Xyza8b {
 #[cfg(feature = "dep_rand_core")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
-    use super::{Xyza8a, Xyza8b};
+    use super::*;
     use crate::_dep::rand_core::{SeedableRng, TryRng};
 
     impl TryRng for Xyza8a {
-        type Error = crate::Infallible;
+        type Error = Infallible;
 
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
             Ok(self.next_u32())
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
             Ok(self.next_u64())
         }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
             self.fill_bytes(dst);
             Ok(())
         }
@@ -328,17 +328,17 @@ mod impl_rand {
         }
     }
     impl TryRng for Xyza8b {
-        type Error = crate::Infallible;
+        type Error = Infallible;
 
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        fn try_next_u32(&mut self) -> Result<u32, Self::Error> {
+        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
             Ok(self.next_u32())
         }
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        fn try_next_u64(&mut self) -> Result<u64, Self::Error> {
+        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
             Ok(self.next_u64())
         }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Self::Error> {
+        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
             self.fill_bytes(dst);
             Ok(())
         }
