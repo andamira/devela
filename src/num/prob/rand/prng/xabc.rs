@@ -3,7 +3,8 @@
 //!
 //
 
-use crate::{ConstInit, Infallible, InfallibleResult, Own, RandQualities, RandTry, whilst};
+use crate::{ConstInit, Own, whilst};
+use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
@@ -175,18 +176,24 @@ impl Xabc {
     }
 }
 
-#[rustfmt::skip]
-impl RandTry for Xabc {
-    type Error = Infallible;
-    const RAND_OUTPUT_BITS: u32 = 8;
-    const RAND_STATE_BITS: u32 = 32;
-    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
-    fn rand_try_next_u8(&mut self) -> InfallibleResult<u8> { Ok(self.next_u8()) }
-    fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
-    fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
-    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
-        self.fill_bytes(buffer); Ok(())
+crate::items! {
+    impl RandTry for Xabc {
+        type Error = Infallible;
+        const RAND_OUTPUT_BITS: u32 = 8;
+        const RAND_STATE_BITS: u32 = 32;
+        const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+        fn rand_try_next_u8(&mut self) -> InfallibleResult<u8> { Ok(self.next_u8()) }
+        fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
+        fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
+        fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
+        fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
+            self.fill_bytes(buffer); Ok(())
+        }
+    }
+    impl RandSeedable for Xabc {
+        type RandSeed = [u8; 3];
+        #[inline(always)]
+        fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(seed) }
     }
 }
 

@@ -3,9 +3,8 @@
 //! 128-bit + version of XorShift.
 //
 
-use crate::{
-    Cast, ConstInit, Infallible, InfallibleResult, Own, RandQualities, RandTry, Slice, slice,
-};
+use crate::{Cast, ConstInit, Own, Slice, read_at, slice};
+use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift128+` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -164,71 +163,24 @@ impl XorShift128p {
     /// The seeds will be joined in little endian order.
     pub const fn new16_u8(seeds: [u8; 16]) -> Self {
         let s = seeds;
-        Self::new([
-            u64::from_le_bytes([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),
-            u64::from_le_bytes([s[8], s[9], s[10], s[11], s[12], s[13], s[14], s[15]]),
-        ])
+        Self::new([u64::from_le_bytes(read_at![s, 0, @8]), u64::from_le_bytes(read_at![s, 8, @8])])
     }
 }
 
-#[rustfmt::skip]
-impl RandTry for XorShift128p {
-    type Error = Infallible;
-    const RAND_OUTPUT_BITS: u32 = 64;
-    const RAND_STATE_BITS: u32 = 128;
-    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
-    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
-        self.fill_bytes(buffer); Ok(())
-    }
-}
-
-#[cfg(feature = "dep_rand_core")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
-mod impl_rand {
-    use super::*;
-    use crate::_dep::rand_core::{SeedableRng, TryRng};
-
-    impl TryRng for XorShift128p {
+crate::items! {
+    impl RandTry for XorShift128p {
         type Error = Infallible;
-
-        /// Returns the next random `u32` from truncating `next_u64`.
-        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
-            Ok(self.next_u64() as u32)
-        }
-        /// Returns the next random `u64`.
-        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
-            Ok(self.next_u64())
-        }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
-            self.fill_bytes(dst);
-            Ok(())
+        const RAND_OUTPUT_BITS: u32 = 64;
+        const RAND_STATE_BITS: u32 = 128;
+        const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+        fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
+        fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
+            self.fill_bytes(buffer); Ok(())
         }
     }
-    impl SeedableRng for XorShift128p {
-        type Seed = [u8; 16];
-
-        /// When seeded with zero this implementation uses the default seed
-        /// value as the cold path.
-        fn from_seed(seed: Self::Seed) -> Self {
-            let mut seed_u64s = [0u64; 2];
-            if seed == [0; 16] {
-                Self::cold_path_default()
-            } else {
-                for i in 0..2 {
-                    seed_u64s[i] = u64::from_le_bytes([
-                        seed[i * 8],
-                        seed[i * 8 + 1],
-                        seed[i * 8 + 2],
-                        seed[i * 8 + 3],
-                        seed[i * 8 + 4],
-                        seed[i * 8 + 5],
-                        seed[i * 8 + 6],
-                        seed[i * 8 + 7],
-                    ]);
-                }
-                Self::new_unchecked(seed_u64s)
-            }
-        }
+    impl RandSeedable for XorShift128p {
+        type RandSeed = [u8; 16];
+        #[inline(always)]
+        fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new16_u8(seed) }
     }
 }

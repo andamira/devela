@@ -3,7 +3,9 @@
 //! Defines [`SplitMix64`].
 //
 
-use crate::{ConstInit, Infallible, InfallibleResult, RandQualities, RandTry, Slice, slice};
+use crate::{
+    ConstInit, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry, Slice, slice,
+};
 
 #[doc = crate::_tags!(rand)]
 /// SplitMix64 pseudo-random number generator.
@@ -99,5 +101,12 @@ impl RandTry for SplitMix64 {
     fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
         self.fill_bytes(buffer);
         Ok(())
+    }
+}
+impl RandSeedable for SplitMix64 {
+    type RandSeed = [u8; 8];
+    #[inline(always)]
+    fn rand_from_seed(seed: Self::RandSeed) -> Self {
+        Self::new(u64::from_le_bytes(seed))
     }
 }

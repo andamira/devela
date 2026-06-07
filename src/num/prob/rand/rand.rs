@@ -1,9 +1,50 @@
 // devela::num::prob::rand::rand
 //
-//! Defines [`RandTry`], [`Rand`].
+//! Defines [`RandSeedable`], [`RandTry`], [`Rand`].
 //
 
 use crate::{Cast, Infallible, RandQualities};
+
+#[doc = crate::_tags!(rand)]
+/// Construction from explicit seed material or another random source.
+#[doc = crate::_doc_meta!{location("num/prob/rand")}]
+///
+/// `RandSeedable` defines a portable byte-backed seed representation and
+/// provides construction from explicit seed material or another random source.
+///
+/// Multi-byte values encoded in seeds use little-endian order, preserving
+/// reproducibility across target endianness.
+pub trait RandSeedable: Sized {
+    /// Byte-backed seed material accepted by this type.
+    type RandSeed: Clone + Default + AsRef<[u8]> + AsMut<[u8]>;
+    // type RandSeed: Default + AsMut<[u8]>;
+
+    /// Constructs this type from explicit seed material.
+    fn rand_from_seed(seed: Self::RandSeed) -> Self;
+
+    /// Attempts to construct this type by drawing seed material from `source`.
+    fn rand_try_from_source<R>(source: &mut R) -> Result<Self, R::Error>
+    where
+        R: RandTry + ?Sized,
+    {
+        let mut seed = Self::RandSeed::default();
+        source.rand_try_fill_bytes(seed.as_mut())?;
+        Ok(Self::rand_from_seed(seed))
+    }
+
+    /// Constructs this type by drawing seed material from an infallible source.
+    #[must_use]
+    #[inline(always)]
+    fn rand_from_source<R>(source: &mut R) -> Self
+    where
+        R: Rand + ?Sized,
+    {
+        match Self::rand_try_from_source(source) {
+            Ok(value) => value,
+            Err(error) => match error {},
+        }
+    }
+}
 
 #[doc = crate::_tags!(rand)]
 /// Fallible source of raw random data.

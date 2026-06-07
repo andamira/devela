@@ -3,9 +3,8 @@
 //! 128-bit version of XorShift.
 //
 
-use crate::{
-    Cast, ConstInit, Infallible, InfallibleResult, Own, RandQualities, RandTry, Slice, slice,
-};
+use crate::{Cast, ConstInit, Own, Slice, slice};
+use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift128` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -180,15 +179,23 @@ impl XorShift128 {
     }
 }
 
-#[rustfmt::skip]
-impl RandTry for XorShift128 {
-    type Error = Infallible;
-    const RAND_OUTPUT_BITS: u32 = 64;
-    const RAND_STATE_BITS: u32 = 128;
-    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
-    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
-        self.fill_bytes(buffer); Ok(())
+crate::items! {
+    impl RandTry for XorShift128 {
+        type Error = Infallible;
+        const RAND_OUTPUT_BITS: u32 = 64;
+        const RAND_STATE_BITS: u32 = 128;
+        const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+        fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
+        fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
+            self.fill_bytes(buffer); Ok(())
+        }
+    }
+    impl RandSeedable for XorShift128 {
+        type RandSeed = [u8; 16];
+        #[inline(always)]
+        fn rand_from_seed(seed: Self::RandSeed) -> Self {
+            Self::new16_u8(seed)
+        }
     }
 }
 
@@ -221,20 +228,7 @@ mod impl_rand {
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
         fn from_seed(seed: Self::Seed) -> Self {
-            let mut seed_u32s = [0u32; 4];
-            if seed == [0; 16] {
-                Self::cold_path_default()
-            } else {
-                for i in 0..4 {
-                    seed_u32s[i] = u32::from_le_bytes([
-                        seed[i * 4],
-                        seed[i * 4 + 1],
-                        seed[i * 4 + 2],
-                        seed[i * 4 + 3],
-                    ]);
-                }
-                Self::new_unchecked(seed_u32s)
-            }
+            Self::new16_u8(seed)
         }
     }
 }

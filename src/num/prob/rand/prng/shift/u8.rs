@@ -3,9 +3,8 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{
-    _xorshift_basis, ConstInit, Infallible, InfallibleResult, Own, RandQualities, RandTry, whilst,
-};
+use crate::{_xorshift_basis, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{ConstInit, Own, whilst};
 
 #[doc = crate::_tags!(rand)]
 /// The `XorShift8` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -138,18 +137,26 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
     }
 }
 
-#[rustfmt::skip]
-impl<const A: usize, const B: usize, const C: usize> RandTry for XorShift8<A, B, C> {
-    type Error = Infallible;
-    const RAND_OUTPUT_BITS: u32 = 8;
-    const RAND_STATE_BITS: u32 = 8;
-    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
-    fn rand_try_next_u8(&mut self) -> InfallibleResult<u8> { Ok(self.next_u8()) }
-    fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
-    fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
-    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
-        self.fill_bytes(buffer); Ok(())
+crate::items! {
+    impl<const A: usize, const B: usize, const C: usize> RandTry for XorShift8<A, B, C> {
+        type Error = Infallible;
+        const RAND_OUTPUT_BITS: u32 = 8;
+        const RAND_STATE_BITS: u32 = 8;
+        const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+        fn rand_try_next_u8(&mut self) -> InfallibleResult<u8> { Ok(self.next_u8()) }
+        fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
+        fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
+        fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
+        fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
+            self.fill_bytes(buffer); Ok(())
+        }
+    }
+    impl<const A: usize, const B: usize, const C: usize> RandSeedable for XorShift8<A, B, C> {
+        type RandSeed = [u8; 1];
+        #[inline(always)]
+        fn rand_from_seed(seed: Self::RandSeed) -> Self {
+            Self::new(seed[0])
+        }
     }
 }
 
@@ -181,11 +188,7 @@ mod impl_rand {
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
         fn from_seed(seed: Self::Seed) -> Self {
-            if seed[0] == 0 {
-                Self::cold_path_default()
-            } else {
-                Self::new_unchecked(seed[0])
-            }
+            Self::new(seed[0])
         }
     }
 }

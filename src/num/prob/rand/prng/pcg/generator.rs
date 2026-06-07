@@ -345,6 +345,15 @@ macro_rules! rand_pcg {
                 }
             }
         }
+        impl $crate::RandSeedable for $name {
+            type RandSeed = [u8; 4];
+            #[inline(always)]
+            fn rand_from_seed(seed: Self::RandSeed) -> Self {
+                let state = u16::from_le_bytes($crate::read_at![seed, 0, @2]);
+                let stream = u16::from_le_bytes($crate::read_at![seed, 2, @2]);
+                Self::new(state, stream)
+            }
+        }
     };
     (%impls u16 $name:ident) => {
         impl $name {
@@ -371,10 +380,10 @@ macro_rules! rand_pcg {
             const RAND_STATE_BITS: u32 = 64;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
 
-            fn rand_try_next_u16(&mut self) -> $crate::InfallibleResult<u64> {
+            fn rand_try_next_u16(&mut self) -> $crate::InfallibleResult<u16> {
                 Ok(self.next_u16())
             }
-            fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u64> {
+            fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u32> {
                 Ok(self.next_u32())
             }
             fn rand_try_next_u64(&mut self) -> $crate::InfallibleResult<u64> {
@@ -394,6 +403,15 @@ macro_rules! rand_pcg {
                         if v < zone { return Ok(v % upper); }
                     }
                 }
+            }
+        }
+        impl $crate::RandSeedable for $name {
+            type RandSeed = [u8; 8];
+            #[inline(always)]
+            fn rand_from_seed(seed: Self::RandSeed) -> Self {
+                let state = u32::from_le_bytes($crate::read_at![seed, 0, @4]);
+                let stream = u32::from_le_bytes($crate::read_at![seed, 4, @4]);
+                Self::new(state, stream)
             }
         }
     };
@@ -441,6 +459,15 @@ macro_rules! rand_pcg {
                 }
             }
         }
+        impl $crate::RandSeedable for $name {
+            type RandSeed = [u8; 16];
+            #[inline(always)]
+            fn rand_from_seed(seed: Self::RandSeed) -> Self {
+                let state = u64::from_le_bytes($crate::read_at![seed, 0, @8]);
+                let stream = u64::from_le_bytes($crate::read_at![seed, 8, @8]);
+                Self::new(state, stream)
+            }
+        }
     };
     (%impls u64 $name:ident) => {
         impl $name {
@@ -473,6 +500,15 @@ macro_rules! rand_pcg {
                     let v = self.next_u64();
                     if v < zone { return Ok(v % upper); }
                 }
+            }
+        }
+        impl $crate::RandSeedable for $name {
+            type RandSeed = [u8; 32];
+            #[inline(always)]
+            fn rand_from_seed(seed: Self::RandSeed) -> Self {
+                let state = u128::from_le_bytes($crate::read_at![seed, 0, @16]);
+                let stream = u128::from_le_bytes($crate::read_at![seed, 16, @16]);
+                Self::new(state, stream)
             }
         }
     };

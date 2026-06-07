@@ -3,7 +3,8 @@
 //! 16-bit Linear Congruential Generator
 //
 
-use crate::{Cast, ConstInit, Infallible, InfallibleResult, Own, RandQualities, RandTry};
+use crate::{Cast, ConstInit, Own};
+use crate::{Infallible, InfallibleResult, RandQualities, RandTry, RandSeedable};
 
 #[doc = crate::_tags!(rand)]
 #[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
@@ -128,18 +129,24 @@ impl Lcg16 {
     }
 }
 
-#[rustfmt::skip]
-impl RandTry for Lcg16 {
-    type Error = Infallible;
-    const RAND_OUTPUT_BITS: u32 = 64;
-    const RAND_STATE_BITS: u32 = 64;
-    const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
-    fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
-    fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
-    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
-        self.fill_bytes(buffer);
-        Ok(())
+crate::items! {
+    impl RandTry for Lcg16 {
+        type Error = Infallible;
+        const RAND_OUTPUT_BITS: u32 = 64;
+        const RAND_STATE_BITS: u32 = 64;
+        const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+        fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
+        fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
+        fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
+        fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
+            self.fill_bytes(buffer);
+            Ok(())
+        }
+    }
+    impl RandSeedable for Lcg16 {
+        type RandSeed = [u8; 2];
+        #[inline(always)]
+        fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(u16::from_le_bytes(seed)) }
     }
 }
 

@@ -245,7 +245,7 @@
 - new module `phys::prob::markov`.
 
 #### num::prob::rand
-- new traits: `FromRand`, `FromRandTry`, `RandTry`.
+- new traits: `FromRand`, `FromRandTry`, `RandSeedable`, `RandTry`.
 - new types `RandQualities`, `SplitMix64`, `StdRand`.
 - change the `Rand` trait to depend on `RandTry`.
 - remove the traits: `RandAlloc`, `RandStd`.

@@ -1,5 +1,13 @@
 // devela::num::prob::rand::pcg::tests
 
+#![allow(unused)]
+
+use crate::rand_pcg;
+
+rand_pcg![Pcg8: (u8)];
+rand_pcg![Pcg16: (u16)];
+rand_pcg![Pcg64: (u64)];
+
 mod pcg32 {
     use crate::Pcg32;
 
