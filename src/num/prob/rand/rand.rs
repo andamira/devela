@@ -17,7 +17,7 @@ use crate::RandQualities;
 /// Infallible sources use [`Infallible`][crate::Infallible] as their error type.
 // and automatically implement [`Rand`]. TODO
 pub trait RandTry {
-    /*** required ***/
+    /* required */
 
     /// Error returned when complete random data could not be produced.
     type Error;

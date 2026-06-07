@@ -3,7 +3,7 @@
 //! Defines [`SplitMix64`].
 //
 
-use crate::{ConstInit, Infallible, RandQualities, RandTry, Slice, slice};
+use crate::{ConstInit, Infallible, InfallibleResult, RandQualities, RandTry, Slice, slice};
 
 #[doc = crate::_tags!(rand)]
 /// SplitMix64 pseudo-random number generator.
@@ -73,7 +73,7 @@ impl SplitMix64 {
             let bytes = r.to_le_bytes();
             let remaining = buffer.len() - i;
             if remaining >= 8 {
-                // buffer[i..i + $obytes].copy_from_slice(&bytes);
+                // buffer[i..i + 8].copy_from_slice(&bytes);
                 Slice::copy(slice!(mut buffer, i, ..i + 8), &bytes);
                 i += 8;
             } else {
@@ -85,8 +85,6 @@ impl SplitMix64 {
     }
 }
 
-type Result<T> = crate::Result<T, Infallible>;
-
 #[rustfmt::skip]
 impl RandTry for SplitMix64 {
     type Error = Infallible;
@@ -94,11 +92,11 @@ impl RandTry for SplitMix64 {
     const RAND_STATE_BITS: u32 = 64;
     const RAND_QUALITIES: RandQualities = RandQualities::PRNG;
     #[inline(always)]
-    fn rand_try_next_u64(&mut self) -> Result<u64> {
+    fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> {
         Ok(self.next_u64())
     }
     #[inline(always)]
-    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> Result<()> {
+    fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
         self.fill_bytes(buffer);
         Ok(())
     }
