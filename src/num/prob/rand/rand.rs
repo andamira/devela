@@ -3,13 +3,16 @@
 //! Defines [`Rand`].
 //
 
+use crate::RandQualities;
+
 #[doc = crate::_tags!(rand)]
 /// Fallible source of raw random data.
 #[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///
-/// `RandTry` is the core trait for random sources that may fail,
-/// such as OS calls, hardware RNGs, host APIs, finite buffers,
-/// and fallible adapters.
+/// `RandTry` is the core trait for random sources that may fail, such as
+/// OS calls, hardware RNGs, host APIs, finite buffers, and fallible adapters.
+///
+/// Source behavior and suitability are described by [`RandQualities`].
 ///
 /// Infallible sources use [`Infallible`][crate::Infallible] as their error type.
 // and automatically implement [`Rand`]. TODO
@@ -30,77 +33,19 @@ pub trait RandTry {
     /// in the value itself should use `0`.
     const RAND_STATE_BITS: u32;
 
+    /// Semantic qualities of this random source.
+    const RAND_QUALITIES: RandQualities;
+
     /// Attempts to produce the next 64 bits of randomness.
     fn rand_try_next_u64(&mut self) -> Result<u64, Self::Error>;
 
     /*** provided ***/
 
-    /* characteristics */
-
-    /// Whether the source is deterministic.
-    ///
-    /// A deterministic source produces a stream determined by its current state.
-    /// This does not imply that the state is public, seedable, or reproducible.
-    const RAND_IS_DETERMINISTIC: bool = false;
-
-    /// Whether the source can reproduce streams from explicit seed material.
-    ///
-    /// This is normally true for seedable PRNGs and false for OS, hardware,
-    /// address-derived, and host-provided sources.
-    const RAND_IS_REPRODUCIBLE: bool = false;
-
-    /// Whether the source is intended for cryptographic use.
-    ///
-    /// This is a semantic claim by the implementor, not a proof.
-    const RAND_IS_CRYPTOGRAPHIC: bool = false;
-
-    /// Whether the source is known to be weak.
-    ///
-    /// Weak sources may still be useful for fallback seeding, tests, jitter,
-    /// address diffusion, or non-security variation.
-    const RAND_IS_WEAK: bool = false;
-
-    /// Whether the source depends on state outside the value itself.
-    ///
-    /// OS, hardware, host, file-descriptor, and runtime-provided sources
-    /// should normally set this to `true`.
-    const RAND_IS_EXTERNAL: bool = false;
-
-    /// Whether the source may block while producing random data.
-    ///
-    /// Sources that return an error instead of blocking should use `false`.
-    /// Ordinary in-memory generators normally keep the default.
-    const RAND_MAY_BLOCK: bool = false;
-
-    /// Returns whether the source is deterministic.
+    /// Returns the semantic qualities of this random source.
+    #[must_use]
     #[inline(always)]
-    fn rand_is_deterministic(&self) -> bool {
-        Self::RAND_IS_DETERMINISTIC
-    }
-    /// Returns whether the source can reproduce streams from explicit seed material.
-    #[inline(always)]
-    fn rand_is_reproducible(&self) -> bool {
-        Self::RAND_IS_REPRODUCIBLE
-    }
-    /// Returns whether the source is intended for cryptographic use.
-    #[inline(always)]
-    fn rand_is_cryptographic(&self) -> bool {
-        Self::RAND_IS_CRYPTOGRAPHIC
-    }
-    /// Returns whether the source is known to be weak.
-    #[inline(always)]
-    fn rand_is_weak(&self) -> bool {
-        Self::RAND_IS_WEAK
-    }
-    /// Returns whether the source depends on state outside the value itself.
-    #[inline(always)]
-    fn rand_is_external(&self) -> bool {
-        Self::RAND_IS_EXTERNAL
-    }
-    /// Returns whether the source may block while producing random data.
-    #[inline(always)]
-    fn rand_may_block(&self) -> bool {
-        Self::RAND_MAY_BLOCK
+    fn rand_qualities(&self) -> RandQualities {
+        Self::RAND_QUALITIES
     }
 
     /* derived primitives and byte access */

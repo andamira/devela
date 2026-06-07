@@ -3,7 +3,7 @@
 //! Defines [`SplitMix64`].
 //
 
-use crate::{ConstInit, Infallible, RandTry, Slice, slice};
+use crate::{ConstInit, Infallible, RandQualities, RandTry, Slice, slice};
 
 #[doc = crate::_tags!(rand)]
 /// SplitMix64 pseudo-random number generator.
@@ -92,12 +92,7 @@ impl RandTry for SplitMix64 {
     type Error = Infallible;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 64;
-    const RAND_IS_DETERMINISTIC: bool = true;
-    const RAND_IS_REPRODUCIBLE: bool = true;
-    const RAND_IS_CRYPTOGRAPHIC: bool = false;
-    const RAND_IS_WEAK: bool = false;
-    const RAND_IS_EXTERNAL: bool = false;
-    const RAND_MAY_BLOCK: bool = false;
+    const RAND_QUALITIES: RandQualities = RandQualities::PRNG;
     #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64> {
         Ok(self.next_u64())

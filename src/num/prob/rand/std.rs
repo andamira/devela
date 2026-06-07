@@ -3,7 +3,7 @@
 //! Defines [`RandStd`].
 //
 
-use crate::{Hasher, HasherBuild, Infallible, Rand, RandTry, RandomState};
+use crate::{Hasher, HasherBuild, Infallible, RandQualities, RandTry, RandomState};
 
 #[cfg(feature = "std")]
 #[doc = crate::_tags!(rand)]
@@ -53,12 +53,7 @@ impl RandTry for StdRand {
 
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;
-    const RAND_IS_DETERMINISTIC: bool = false;
-    const RAND_IS_REPRODUCIBLE: bool = false;
-    const RAND_IS_CRYPTOGRAPHIC: bool = false;
-    const RAND_IS_WEAK: bool = false;
-    const RAND_IS_EXTERNAL: bool = true;
-    const RAND_MAY_BLOCK: bool = false;
+    const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL;
 
     #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64, Self::Error> {

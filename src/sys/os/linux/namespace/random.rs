@@ -1,7 +1,7 @@
 // devela::sys::os::linux::namespace::random
 
-use crate::{LINUX_ERRNO, Linux, LinuxError, LinuxRandomMode, LinuxResult as Result, RandTry};
-use crate::{c_uint, is};
+use crate::{LINUX_ERRNO, Linux, LinuxError, LinuxRandomMode, LinuxResult as Result};
+use crate::{RandQualities, RandTry, c_uint, is};
 
 /// Generates a couple of `random_*` functions for each given integer primitive
 macro_rules! _sys_os_linux_impl_random_fns {
@@ -99,12 +99,7 @@ impl RandTry for Linux {
     type Error = LinuxError;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;
-    const RAND_IS_DETERMINISTIC: bool = false;
-    const RAND_IS_REPRODUCIBLE: bool = false;
-    const RAND_IS_CRYPTOGRAPHIC: bool = true;
-    const RAND_IS_WEAK: bool = false;
-    const RAND_IS_EXTERNAL: bool = true;
-    const RAND_MAY_BLOCK: bool = false;
+    const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL.with_cryptographic();
     #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64> {
         Linux::random_u64()

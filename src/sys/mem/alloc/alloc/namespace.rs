@@ -10,7 +10,7 @@ use crate::{
     MemLayout,
 };
 #[cfg(feature = "alloc")]
-use crate::{Box, Infallible, RandTry, SplitMix64};
+use crate::{Box, Infallible, RandQualities, RandTry, SplitMix64};
 
 #[doc = crate::_tags!(allocation namespace)]
 /// Memory-allocation-related operations.
@@ -115,12 +115,8 @@ impl RandTry for Alloc {
     type Error = Infallible;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;
-    const RAND_IS_DETERMINISTIC: bool = false;
-    const RAND_IS_REPRODUCIBLE: bool = false;
-    const RAND_IS_CRYPTOGRAPHIC: bool = false;
-    const RAND_IS_WEAK: bool = true;
-    const RAND_IS_EXTERNAL: bool = true;
-    const RAND_MAY_BLOCK: bool = false;
+    const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL.with_entropy_weak();
+
     #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64, Self::Error> {
         Ok(Alloc::random_weak_u64())

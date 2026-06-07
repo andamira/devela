@@ -30,10 +30,11 @@
 //! except for [`Pcg32`] and [`XorShift128p`], which are always compiled.
 //
 
-// mod from_rand; // FromRand
+// mod from; // FromRand
 // mod noise; // Structured deterministic randomness
 mod prng; // concrete PRNGs
-mod rand; // Rand, RandTry, RandSeedable, RandSeedableTry
+mod rand; // Rand, RandTry, WIP: RandSeedable, RandSeedableTry
+mod qual; // RandQualities
 
 #[cfg(feature = "std")]
 mod std; // StdRand
@@ -41,10 +42,11 @@ mod std; // StdRand
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
-            // from_rand::*,
+            // from::*,
             // noise::*,
             prng::_all::*,
             rand::*,
+            qual::*,
         };
         #[cfg(feature = "std")]
         pub use super::std::StdRand;
