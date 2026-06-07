@@ -48,7 +48,7 @@ unsafe impl GlobalAlloc for LinuxMmapAlloc {
     /// Allocates memory with the given layout.
     #[allow(unused_variables, reason = "cross-platform")]
     unsafe fn alloc(&self, layout: MemLayout) -> *mut u8 {
-        return unsafe { linux_mmap_alloc_impl(layout) }.unwrap_or(Ptr::null_mut());
+        unsafe { linux_mmap_alloc_impl(layout) }.unwrap_or(Ptr::null_mut())
     }
 
     /// Allocates zeroed memory with the given layout.

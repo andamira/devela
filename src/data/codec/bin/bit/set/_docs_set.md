@@ -153,10 +153,11 @@ assert!(!s.has_a());
 
 - Some examples of structs defined with the `set!` macro are:
   [`AsciiSet`], [`EventButtons`], [`RunCapInput`].
-- Another macro that leverages `set!` is:
-  [`enumset!`][crate::enumset].
+- Another macro that leverages `set!` is: [`enumset!`].
+- See also the [`bitfield!`] macro.
 
 [`AsciiSet`]: crate::AsciiSet
 [`EventButtons`]: crate::EventButtons
 [`RunCapInput`]: crate::RunCapInput
 [`enumset!`]: crate::enumset
+[`bitfield!`]: crate::bitfield

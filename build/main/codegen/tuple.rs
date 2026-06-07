@@ -421,7 +421,7 @@ impl<_0: Debug> TupleDebug for (_0,) {{
 }}
 impl<_0: Display> TupleDisplay for (_0,) {{
     fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {{
-        write!(f, "({{}},)", &self.0)
+        write!(f, "({{}},)", self.0)
     }}
 }}"#)?;
 
@@ -596,8 +596,8 @@ impl<_0: Display> TupleDisplay for (_0,) {{
         w0!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Display, ")?; }
         w0!(f, "> TupleDisplay for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
         w!(f, ") {{\n{TAB1}fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {{")?;
-            w!(f, "{TAB2}write!(f, \"({{}}\", &self.0)?;")?;
-                for i in 1..arity { w!(f, "{TAB2}write!(f, \", {{}}\", &self.{i})?;")?; }
+            w!(f, "{TAB2}write!(f, \"({{}}\", self.0)?;")?;
+                for i in 1..arity { w!(f, "{TAB2}write!(f, \", {{}}\", self.{i})?;")?; }
             w!(f, "{TAB2}write!(f, \")\")")?;
         w!(f, "{TAB1}}}\n}}")?;
     }

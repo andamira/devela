@@ -94,7 +94,6 @@ impl<B> TermRenderer<B> {
     /* terminal extent */
 
     /// Returns the terminal size known by the renderer.
-    #[must_use]
     pub const fn size(&self) -> TermSize {
         self.size
     }

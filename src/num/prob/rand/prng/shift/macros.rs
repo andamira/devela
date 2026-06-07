@@ -47,7 +47,6 @@ macro_rules! rand_xorshift· {
         }
     }};
 }
-#[doc = crate::_tags!(rand)]
 #[doc(inline)]
 pub use rand_xorshift· as rand_xorshift;
 

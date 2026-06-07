@@ -151,6 +151,7 @@ impl<T: Clone> Default for EnumExample<'_, '_, T> {
     }
 }
 
+#[allow(clippy::assertions_on_constants)]
 fn main() {
     let v1 = EnumExample::<()>::Variant1([3, 2, 1]);
     #[cfg(feature = "std")]
@@ -167,5 +168,6 @@ fn main() {
     assert![v4.is_in(EnumSetExample::BORROW_OR_ALLOC)];
     #[cfg(feature = "std")]
     assert![v2.is_in(EnumSetExample::BORROW_OR_ALLOC)];
+
     assert![EnumExample::<()>::HAS_CUSTOM_IMPLS];
 }

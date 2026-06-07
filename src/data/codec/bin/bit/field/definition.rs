@@ -134,7 +134,9 @@ macro_rules! bitfield· {
             }
             /// Returns `true` if any bit outside the declared field mask is set.
             #[must_use] #[allow(dead_code)]
-            pub const fn has_extra_bits(self) -> bool { self.bits & !Self::_BITFIELD_MASK != 0 }
+            pub const fn has_extra_bits(self) -> bool {
+                (self.bits & Self::_BITFIELD_MASK) != self.bits
+            }
 
             /// Clears all bits.
             #[allow(dead_code)]
