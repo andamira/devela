@@ -71,7 +71,7 @@
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_98`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_98), feature())]
+#![cfg_attr(nightly_stable_1_98, feature(result_option_map_or_default,))]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
@@ -106,7 +106,6 @@
         optimize_attribute,
         random, //random_source,
         refcell_try_map,
-        result_option_map_or_default,
         str_as_str,
         substr_range,
         supertrait_item_shadowing,

@@ -50,6 +50,13 @@ See also
 - 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 - 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
 
+# 1.98 will be stable on [2026-08-20](https://releases.rs/docs/1.98.0/) `nightly_stable_1_98`
+> - <https://github.com/rust-lang/rust/milestone/144>
+<!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
+> - <https://github.com/rust-lang/rust/releases/tag/1.98.0>
+
+- 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
@@ -98,7 +105,6 @@ See also
 - 1.??: `·`[random_source](https://github.com/rust-lang/rust/pull/157168)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
