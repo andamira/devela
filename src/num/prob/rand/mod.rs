@@ -5,30 +5,50 @@
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //!
-//! This module defines several types:
-//! - RNG algorithms specialized for 8-bit devices:
-//!   [`Xabc`], [`Xyza8a`], [`Xyza8b`].
-//! - [`Lcg16`] 16-bit Linear Congruential Generator.
-//! - Classic *XorShift* algorithms and variations with a smaller state.
-//!   - [`XorShift8`], [`XorShift16`], [`XorShift32`], [`XorShift64`],
-//!     [`XorShift128`], [`XorShift128p`].
-//!   - [`Xoroshiro128pp`].
-//!   - [`rand_xorshift!`].
-//! - *Permuted Congruential Generator* algorithms:
-//!     - [`Pcg32`].
+//! Random sources, value construction, qualities, and pseudo-random generators.
 //!
-//! The RNGs implement `Copy` for convenience and versatility.
-//! Be careful to not duplicate the state by accident.
+//! # Traits
 //!
-//! The `Default` implementation uses a fixed seed for convenience.
-//! Use a custom seed for unique random sequences.
+//! - [`RandTry`] and [`Rand`] define fallible and infallible random sources.
+//! - [`RandQualities`] describes source behavior and suitability.
+// - [`RandSeedable`] and [`RandSeedableTry`] construct generators from explicit
+//   seed material or another random source.
+//! - [`FromRandTry`] and [`FromRand`] construct random values.
 //!
-//! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
+//! # Canonical generators
+//!
+//! Devela keeps two complementary PRNGs always available:
+//! - [`Pcg32`] is the canonical general-purpose generator.
+//! - [`SplitMix64`] is the canonical seed mixer and expander,
+//!   and also provides a compact 64-bit random stream.
+//!
+//! Other generators cover specialized, small-state, legacy, and comparative uses.
+//! Their [`RandQualities`] indicate known limitations and suitability.
+//!
+//! All PRNG types implement [`Copy`]. Copying a PRNG duplicates its current
+//! state, so both copies produce the same stream until advanced differently.
+//!
+//! Some generators are retained for small-device, legacy, educational, or
+//! comparative uses despite known generator-side limitations. These are
+//! classified with [`RandQualities::WEAK_PRNG`].
+//!
+//! `Default` and [`ConstInit`][crate::ConstInit] use fixed seeds and are therefore
+//! reproducible. Use explicit or externally sourced seed material when distinct
+//! streams are required.
+//!
+//! # Seed representation
+//!
+//! Byte-backed seeds interpret multi-byte values in little-endian order.
+//! This keeps equal seed bytes reproducible across target endianness.
 //!
 //! # Features
-#![doc = concat!["All ", crate::_ABBR_PRNG!(), "s require the `rand` feature,"]]
-//! except for [`Pcg32`] and [`XorShift128p`], which are always compiled.
+//!
+//! - [`Pcg32`] and [`SplitMix64`] are always available.
+//! - The `rand` feature enables the extended PRNG palette and generator macros.
+//! - The `std` feature enables [`StdRand`].
 //
+
+mod _helper; // (_impl_dep_rand_core)
 
 mod from; // FromRandTry, FromRand
 // mod noise; // Structured deterministic randomness
@@ -52,9 +72,15 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         pub use super::std::StdRand;
     }
     _crate_internals {
-        pub(crate) use super::prng::_crate_internals::*;
+        pub(crate) use super::{
+            prng::_crate_internals::*,
+        };
     }
     _hidden {
-        pub(crate) use super::prng::_hidden::*;
+        #[doc(hidden)]
+        pub(crate) use super::{
+            _helper::*,
+            prng::_hidden::*,
+        };
     }
 }

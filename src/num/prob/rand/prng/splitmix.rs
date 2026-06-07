@@ -110,3 +110,4 @@ impl RandSeedable for SplitMix64 {
         Self::new(u64::from_le_bytes(seed))
     }
 }
+crate::__impl_dep_rand_core!(SplitMix64);

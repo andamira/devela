@@ -167,48 +167,12 @@ crate::items! {
     for XorShift16<BASIS, A, B, C> {
         type RandSeed = [u8; 2];
         #[inline(always)]
-        fn rand_from_seed(seed: Self::RandSeed) -> Self {
-            Self::new(u16::from_le_bytes(seed))
-        }
+        /// When seeded with zero this implementation uses the default seed value as the cold path.
+        fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(u16::from_le_bytes(seed)) }
     }
 }
-
-#[cfg(feature = "dep_rand_core")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
-mod impl_rand {
-    use super::*;
-    use crate::_dep::rand_core::{SeedableRng, TryRng};
-
-    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> TryRng
-        for XorShift16<BASIS, A, B, C>
-    {
-        type Error = Infallible;
-
-        /// Returns the next 2 × random `u16` combined as a single `u32`.
-        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
-            Ok(self.next_u32())
-        }
-        /// Returns the next 4 × random `u16` combined as a single `u64`.
-        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
-            Ok(self.next_u64())
-        }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
-            self.fill_bytes(dst);
-            Ok(())
-        }
-    }
-    impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> SeedableRng
-        for XorShift16<BASIS, A, B, C>
-    {
-        type Seed = [u8; 2];
-
-        /// When seeded with zero this implementation uses
-        /// the default seed value as the cold path.
-        fn from_seed(seed: Self::Seed) -> Self {
-            Self::new(u16::from_le_bytes(seed))
-        }
-    }
-}
+crate::__impl_dep_rand_core!(XorShift16
+    <const BASIS: usize, const A: usize, const B: usize, const C: usize>);
 
 #[doc = crate::_tags!(rand)]
 /// 4 × good triplets for 16-bit xorshift. (243 Bytes)

@@ -9,7 +9,7 @@
 //   - private items and helpers
 
 use crate::{Cast, ConstInit, Own, Slice, slice, whilst};
-use crate::{Infallible, InfallibleResult, RandQualities, RandTry, RandSeedable};
+use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 /* public definitions */
 
@@ -264,6 +264,7 @@ crate::items! {
     impl RandSeedable for Xoroshiro128pp {
         type RandSeed = [u8; 16];
         #[inline(always)]
+        /// When seeded with zero this implementation uses the default seed value as the cold path.
         fn rand_from_seed(seed: Self::RandSeed) -> Self {
             match Self::new16_u8(seed) {
                 Some(rng) => rng,
@@ -272,39 +273,7 @@ crate::items! {
         }
     }
 }
-
-#[cfg(feature = "dep_rand_core")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))]
-mod impl_rand {
-    use super::*;
-    use crate::_dep::rand_core::{SeedableRng, TryRng};
-
-    impl TryRng for Xoroshiro128pp {
-        type Error = Infallible;
-
-        /// Returns the next random `u32`.
-        fn try_next_u32(&mut self) -> InfallibleResult<u32> {
-            Ok(self.next_u32())
-        }
-        /// Returns the next random `u64`.
-        fn try_next_u64(&mut self) -> InfallibleResult<u64> {
-            Ok(self.next_u64())
-        }
-        fn try_fill_bytes(&mut self, dst: &mut [u8]) -> InfallibleResult<()> {
-            self.fill_bytes(dst);
-            Ok(())
-        }
-    }
-    impl SeedableRng for Xoroshiro128pp {
-        type Seed = [u8; 16];
-
-        /// When seeded with zero this implementation uses the default seed
-        /// value as the cold path.
-        fn from_seed(seed: Self::Seed) -> Self {
-            Self::rand_from_seed(seed)
-        }
-    }
-}
+crate::__impl_dep_rand_core!(Xoroshiro128pp);
 
 /* private items and helpers */
 

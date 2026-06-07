@@ -34,6 +34,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         pub(crate) use super::rand::_crate_internals::*;
     }
     _hidden {
-        pub(crate) use super::rand::_hidden::*;
+        pub use super::rand::_hidden::*;
     }
 }
