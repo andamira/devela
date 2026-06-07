@@ -1,9 +1,9 @@
 // devela::num::prob::rand::rand
 //
-//! Defines [`Rand`].
+//! Defines [`RandTry`], [`Rand`].
 //
 
-use crate::{Infallible, RandQualities};
+use crate::{Cast, Infallible, RandQualities};
 
 #[doc = crate::_tags!(rand)]
 /// Fallible source of raw random data.
@@ -50,6 +50,12 @@ pub trait RandTry {
 
     /* derived primitives and byte access */
 
+    /// Attempts to produce the next random `u128`.
+    #[inline(always)]
+    fn rand_try_next_u128(&mut self) -> Result<u128, Self::Error> {
+        let pair = [self.rand_try_next_u64()?, self.rand_try_next_u64()?];
+        Ok(Cast::<u128>::from_u64_le(pair))
+    }
     /// Attempts to produce the next random `u32`.
     #[inline(always)]
     fn rand_try_next_u32(&mut self) -> Result<u32, Self::Error> {
@@ -59,6 +65,11 @@ pub trait RandTry {
     #[inline(always)]
     fn rand_try_next_u16(&mut self) -> Result<u16, Self::Error> {
         Ok(self.rand_try_next_u64()? as u16)
+    }
+    /// Attempts to produce the next random `u8`.
+    #[inline(always)]
+    fn rand_try_next_u8(&mut self) -> Result<u8, Self::Error> {
+        Ok(self.rand_try_next_u16()? as u8)
     }
     /// Attempts to produce a random boolean.
     #[inline(always)]
@@ -150,6 +161,11 @@ pub trait Rand: RandTry<Error = Infallible> {
 
     /* derived primitives and byte access */
 
+    /// Returns the next random `u128`.
+    #[inline(always)]
+    fn rand_next_u128(&mut self) -> u128 {
+        match self.rand_try_next_u128() { Ok(v) => v, Err(e) => match e {} }
+    }
     /// Returns the next random `u64`.
     #[inline(always)]
     fn rand_next_u64(&mut self) -> u64 {
@@ -164,6 +180,11 @@ pub trait Rand: RandTry<Error = Infallible> {
     #[inline(always)]
     fn rand_next_u16(&mut self) -> u16 {
         match self.rand_try_next_u16() { Ok(v) => v, Err(e) => match e {} }
+    }
+    /// Returns the next random `u8`.
+    #[inline(always)]
+    fn rand_next_u8(&mut self) -> u8 {
+        match self.rand_try_next_u8() { Ok(v) => v, Err(e) => match e {} }
     }
     /// Produces a random boolean.
     #[inline(always)]

@@ -325,15 +325,10 @@ macro_rules! rand_pcg {
             const RAND_STATE_BITS: u32 = 32;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
 
-            fn rand_try_next_u16(&mut self) -> $crate::InfallibleResult<u16> {
-                Ok(self.next_u16())
-            }
-            fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u32> {
-                Ok(self.next_u32())
-            }
-            fn rand_try_next_u64(&mut self) -> $crate::InfallibleResult<u64> {
-                Ok(self.next_u64())
-            }
+            fn rand_try_next_u8(&mut self) -> $crate::InfallibleResult<u8> { Ok(self.next_u8()) }
+            fn rand_try_next_u16(&mut self) -> $crate::InfallibleResult<u16> { Ok(self.next_u16()) }
+            fn rand_try_next_u32(&mut self) -> $crate::InfallibleResult<u32> { Ok(self.next_u32()) }
+            fn rand_try_next_u64(&mut self) -> $crate::InfallibleResult<u64> { Ok(self.next_u64()) }
             fn rand_try_fill_bytes(&mut self, dest: &mut [u8]) -> $crate::InfallibleResult<()> {
                 Ok(self.fill_bytes(dest))
             }

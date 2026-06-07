@@ -30,10 +30,10 @@
 //! except for [`Pcg32`] and [`XorShift128p`], which are always compiled.
 //
 
-mod from; // FromRand, FromRandTry
+mod from; // FromRandTry, FromRand
 // mod noise; // Structured deterministic randomness
 mod prng; // concrete PRNGs
-mod rand; // Rand, RandTry, WIP: RandSeedable, RandSeedableTry
+mod rand; // RandSeedable, RandTry, Rand
 mod qual; // RandQualities
 
 #[cfg(feature = "std")]

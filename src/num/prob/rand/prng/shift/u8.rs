@@ -144,6 +144,7 @@ impl<const A: usize, const B: usize, const C: usize> RandTry for XorShift8<A, B,
     const RAND_OUTPUT_BITS: u32 = 8;
     const RAND_STATE_BITS: u32 = 8;
     const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
+    fn rand_try_next_u8(&mut self) -> InfallibleResult<u8> { Ok(self.next_u8()) }
     fn rand_try_next_u16(&mut self) -> InfallibleResult<u16> { Ok(self.next_u16()) }
     fn rand_try_next_u32(&mut self) -> InfallibleResult<u32> { Ok(self.next_u32()) }
     fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> { Ok(self.next_u64()) }
