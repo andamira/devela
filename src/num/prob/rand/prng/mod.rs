@@ -7,7 +7,7 @@
 //
 
 mod pcg; // Pcg[8|16|32|64|128], rand_pcg!
-mod shift; // XorShift[8|16|32|64|128], XorShift128p, rand_xorshift!
+mod shift; // XorShift[8|16|32|64|128], XorShift128p, (rand_xorshift!)
 mod splitmix; // SplitMix64
 
 #[cfg(feature = "rand")]

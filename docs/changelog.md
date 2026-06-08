@@ -252,6 +252,7 @@
 - remove the traits: `RandAlloc`, `RandStd`.
 - rename `define_pcg!` to `rand_pcg!`
 - rename `define_xorshift!` to `rand_xorshift!`.
+- feature-gate `XorShift128p`.
 
 ## phys
 - new module `phys::subs`.

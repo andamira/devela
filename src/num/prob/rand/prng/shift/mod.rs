@@ -16,8 +16,6 @@
 //! [Xorshift]: https://en.wikipedia.org/wiki/Xorshift
 //
 
-mod u128p; // XorShift128p (canonical)
-
 #[cfg(feature = "rand")]
 crate::items! {
     mod u8;   // ( 3,  4,  2)   (customizable)
@@ -25,15 +23,13 @@ crate::items! {
     mod u32;  // ( 5, 17, 13)   (customizable, canonical default)
     mod u64;  // (13,  7, 17)   (customizable, canonical default)
     mod u128; // (11,  8, 19)   (canonical)
+    mod u128p; // XorShift128+  (canonical)
 }
 #[cfg(feature = "rand")]
 mod macros;
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
-        pub use super::{
-            u128p::XorShift128p,
-        };
         #[cfg(feature = "rand")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
         pub use super::{
@@ -43,6 +39,7 @@ crate::structural_mods! { // _mods, _hidden
             u32::XorShift32,
             u64::XorShift64,
             u128::XorShift128,
+            u128p::XorShift128p,
         };
     }
     _crate_internals {
