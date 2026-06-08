@@ -97,6 +97,7 @@
         int_format_into,
         impl_trait_in_assoc_type,
         isqrt,
+        layout_for_ptr,
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
