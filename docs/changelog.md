@@ -33,6 +33,7 @@
 - remove `enumint` example.
 - improve integration tests.
 - new helper fns: `deny_tokens`, `error_tokens`, `warn_tokens`.
+- update `compile_attr` to avoid reparsing input items.
 
 ## build
 - new native section to detect native library availability.

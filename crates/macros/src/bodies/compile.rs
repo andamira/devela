@@ -34,12 +34,16 @@ pub(crate) fn body_compile_attr(args: TokenStream, input: TokenStream) -> TokenS
     let condition = args.remove(0);
 
     if compile_eval(condition) {
-        let mut expanded = String::new();
-        for attr in &args {
-            write!(&mut expanded, "#[{}] ", attr).unwrap();
+        let mut expanded = TokenStream::new();
+        for attr in args {
+            expanded.extend(
+                format!("#[{attr}]")
+                    .parse::<TokenStream>()
+                    .expect("Couldn't parse compile_attr attribute"),
+            );
         }
-        expanded.push_str(&input.to_string());
-        expanded.parse().expect("Couldn't parse as a TokenStream")
+        expanded.extend(input);
+        expanded
     } else {
         input
     }
