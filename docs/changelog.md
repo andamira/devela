@@ -160,6 +160,7 @@
 - rename `ConstListIterator` to `ConstListIter`; add new const-fn `next` method.
 
 #### data storage::key
+new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 - rename `define_static_map!` to `map!`
 
 ### data::value

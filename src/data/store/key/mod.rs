@@ -15,14 +15,14 @@ mod _reexport_alloc;
 mod _reexport_dep;
 
 mod map; // map!
-// mod set;
+mod set; // SparseSet[Array|Error], LinuxSparseSet
 // mod trie;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             map::*,
-            // set::*,
+            set::*,
             // trie::*,
         };
     }
