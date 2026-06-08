@@ -8,8 +8,9 @@ repository = "https://github.com/andamira/devela/tree/main/crates/sentinel"
 version = "0.1.0"
 edition = "2024"
 
-[dependencies]
-devela = { path = "../.." }
+[dependencies.devela]
+path = "../.."
+features = ["dep_rand_core"]
 
 [features]
 test_feature = []

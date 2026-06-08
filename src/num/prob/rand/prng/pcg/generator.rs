@@ -289,6 +289,8 @@ macro_rules! rand_pcg {
                 }
             }
         }
+
+        $crate::__impl_dep_rand_core!($name);
     }};
 
     /* specific impls for the given output bit-size */

@@ -78,7 +78,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
     }
     _hidden {
         #[doc(hidden)]
-        pub(crate) use super::{
+        pub use super::{
             _helper::*,
             prng::_hidden::*,
         };

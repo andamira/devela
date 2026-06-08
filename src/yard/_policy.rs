@@ -73,6 +73,25 @@ macro_rules! _devela_policy· {
     // enforcing devela-specific safety or debug behavior.
     (unreachable) => { $crate::__devela_unreachable_unchecked() };
 
+    /* item-level attribute policy */
+
+    // Emits one item directly for external crates,
+    // but attaches devela-only attributes when compiled by a devela workspace member.
+    // (item_attr devela { $(#[$attr:meta])* } $item:item) => {
+    //     // external crates: emit item without devela-only attributes
+    //     #[$crate::compile(not(env(__DEVELA_MEMBER)))]
+    //     $item
+    //
+    //     // devela workspace members: attach devela-only attributes
+    //     #[$crate::compile(env(__DEVELA_MEMBER))]
+    //     $(#[$attr])*
+    //     $item
+    // };
+    (item_attr devela { $(#[$attr:meta])* } $item:item) => {
+        #[$crate::compile_attr(env(__DEVELA_MEMBER) $(, $attr)*)]
+        $item
+    };
+
     /* namespace-level policy */
 
     // Defines a policy-controlled module whose contents differ between
