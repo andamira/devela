@@ -86,9 +86,8 @@ impl<'a> HttpResponseHead<'a> {
     /// Returns an error when the configured version has no HTTP/1 textual
     /// representation or a configured header value is invalid.
     pub const fn http1_encoded_len(self) -> Result<usize, HttpError> {
-        let version = match self.version.http1_token() {
-            Some(version) => version,
-            None => return Err(HttpError::InvalidVersion),
+        let Some(version) = self.version.http1_token() else {
+            return Err(HttpError::InvalidVersion);
         };
         let reason = match self.status.reason() {
             Some(reason) => reason,
@@ -124,9 +123,8 @@ impl<'a> HttpResponseHead<'a> {
         if dst.len() < needed {
             return Err(HttpError::NotEnoughSpace(needed));
         }
-        let version = match self.version.http1_token() {
-            Some(version) => version,
-            None => return Err(HttpError::InvalidVersion),
+        let Some(version) = self.version.http1_token() else {
+            return Err(HttpError::InvalidVersion);
         };
         let reason = match self.status.reason() {
             Some(reason) => reason,

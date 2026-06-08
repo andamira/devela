@@ -40,9 +40,8 @@ impl<'a> HttpRequestLine<'a> {
         let Some(method_str) = scan.slice_str(method_range) else {
             return Err(HttpError::InvalidMethod);
         };
-        let method = match HttpMethod::parse(method_str) {
-            Ok(method) => method,
-            Err(_) => return Err(HttpError::InvalidMethod),
+        let Ok(method) = HttpMethod::parse(method_str) else {
+            return Err(HttpError::InvalidMethod);
         };
         let target_bytes = scan.slice(target_range);
         is! { !Self::is_valid_target(target_bytes), return Err(HttpError::InvalidTarget) }

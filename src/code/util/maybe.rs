@@ -3,9 +3,9 @@
 //! Defines [`maybe!`], [`maybe_slot!`].
 //
 
-// MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
+// IMPROVE:MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 #[doc = crate::_tags!(code maybe)]
-/// Helper for using optionally implemented traits, like `Default` or `Clone`.
+/// Macro helper for using optionally implemented traits, like `Default` or `Clone`.
 #[doc = crate::_doc_meta!{location("code/util")}]
 ///
 /// The first boolean argument says whether `$T` implements the given trait.

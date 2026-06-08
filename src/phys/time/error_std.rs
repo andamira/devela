@@ -19,7 +19,7 @@ define_error! { individual:
     +location: "phys/time",
     +tag: _tags!(time),
     DOC_SYSTEM_TIME_ERROR =
-    "Returned from the `duration_since` and `elapsed` methods on `SystemTime`.\n\n
+    "Returned from `duration_since` and `elapsed` on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
     self+f => write!(f, "SystemTimeError difference: {:?}", self.0)
 }

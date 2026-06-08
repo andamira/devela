@@ -395,11 +395,8 @@ macro_rules! _dep_wide_use {
         use $crate::_dep::wide::u16x32 as Wide;
 
         // common
-        #[allow(unused_imports)]
-        use $crate::_dep::wide::{
-            AlignTo as WideAlignTo, CmpEq as WideCmpEq, CmpGe as WideCmpGe, CmpGt as WideCmpGt,
-            CmpLe as WideCmpLe, CmpLt as WideCmpLt, CmpNe as WideCmpNe,
-        };
+        #[expect(unused_imports)]
+        use $crate::_dep::wide::AlignTo as WideAlignTo;
     };
 }
 #[doc(hidden)]
