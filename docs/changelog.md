@@ -48,6 +48,7 @@
 - new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|SET|SIGNAL|STRING]`.
 - rename tag `_TAG_GEOM_DIR` to `_TAG_DIR`.
 - make example-generated `*Example` items visible in the docs.
+- enable `doc_cfg` for all doctest crates under `nightly_doc`.
 
 ## features & flags
 - new features: `alsa`, `shell`, `web`, `_linux_abi`, `__disable_native_libs`.

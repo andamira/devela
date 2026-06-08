@@ -86,7 +86,6 @@
 ///
 /// ### Static buffer (default)
 /// ```
-/// # #![cfg_attr(nightly_doc, feature(doc_cfg))] // reason = _devela_policy! emmiting doc(cfg)
 /// # use devela::buffer_linear;
 /// buffer_linear!(
 ///     /// Static linear buffer.
@@ -100,7 +99,6 @@
 ///
 /// ### View buffer
 /// ```
-/// # #![cfg_attr(nightly_doc, feature(doc_cfg))]
 /// # use devela::buffer_linear;
 /// buffer_linear!(
 ///     /// Read-only linear view.
@@ -114,7 +112,6 @@
 ///
 /// ### Alloc buffer
 /// ```
-/// # #![cfg_attr(nightly_doc, feature(doc_cfg))] // reason = _devela_policy! emmiting doc(cfg)
 /// # #[cfg(feature = "__std")] extern crate alloc;
 /// # #[cfg(feature = "__std")] {
 /// # use devela::buffer_linear;

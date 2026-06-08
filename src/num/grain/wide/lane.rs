@@ -18,7 +18,6 @@
 ///
 /// # Examples
 /// ```
-/// # #![cfg_attr(nightly_doc, feature(doc_cfg))]
 /// # #![cfg_attr(nightly_simd, feature(portable_simd))]
 /// # use devela::lane;
 /// // 1. Auto lane definition

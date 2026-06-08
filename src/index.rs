@@ -30,6 +30,7 @@
 // ```
 // (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
 //  ../build/main/features.rs::FLAGS_NIGHTLY) && ../src/base/core/src/index.rs
+#![cfg_attr(nightly_doc, doc(test(attr(feature(doc_cfg)))))] // enable for all doctests
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))] // configured below
 #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
