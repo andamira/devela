@@ -277,6 +277,8 @@ sys = ["io"] # EXCLUDED: "os"
 		# midi = []
 	# fs
 	io = []
+	net = ["http"]
+		http = []
 	# os
 		# browser
 			web = ["js", "unsafe_ffi"]
@@ -426,6 +428,7 @@ _docs_min = [ # the minimum scope to document every item independent of alloc/st
 			# display
 				"x11",
 		# sys
+			"net",
 			# os
 				# browser
 					"web",

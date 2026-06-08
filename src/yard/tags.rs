@@ -169,6 +169,10 @@ _define_symbol_tags! {
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
     // Items whose main surface is about Rust primitive carriers.
     _TAG_PRIMITIVE, "Related to Rust primitives and their carriers", "⚙️";
+    // Rules, messages, and state transitions of an interoperable communication contract.
+    // Covers protocol vocabularies, framing, negotiation, and endpoint behavior.
+    // Excludes generic transports, codecs, parsers, static formats, and ABIs.
+    _TAG_PROTOCOL, "Communication protocol", "⇄";
     // Quantitative relations and measured magnitudes.
     // Implies numeric structure, but focuses on measurement and comparison.
     _TAG_QUANT, "Quantitative relations", "📏";

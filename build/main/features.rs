@@ -327,7 +327,7 @@ mod reflection {
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
-        features: &["sys", "io",
+        features: &["sys", "io", "net", "http",
             /* os: */ "linux", "term", "windows"]
     };
         // pub const MEM: FlagsFeatures = FlagsFeatures {

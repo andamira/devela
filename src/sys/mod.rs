@@ -54,6 +54,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         pub(crate) use super::{
             arch::_crate_internals::*,
             device::_crate_internals::*,
+            net::_crate_internals::*,
             os::_crate_internals::*,
         };
     }

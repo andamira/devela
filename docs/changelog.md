@@ -45,13 +45,13 @@
 - bump `wide` to 1.3.
 
 ## docs
-- new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|SET|SIGNAL|STRING]`.
+- new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|PROTOCOL|SET|SIGNAL|STRING]`.
 - rename tag `_TAG_GEOM_DIR` to `_TAG_DIR`.
 - make example-generated `*Example` items visible in the docs.
 - enable `doc_cfg` for all doctest crates under `nightly_doc`.
 
 ## features & flags
-- new features: `alsa`, `shell`, `web`, `_linux_abi`, `__disable_native_libs`.
+- new features: `alsa`, `http`, `net`, `shell`, `web`, `_linux_abi`, `__disable_native_libs`.
 - new flags: `devela_macros_warnings`, `devela_macros_errors`, `ffi_xcb_shm··`.
 - remove features: `bit`, `mem`, `_value_*`.
 - auto-enable feature `unsafe_ffi` via: `web`, `x11`.
@@ -355,6 +355,10 @@
 
 ### sys::mem::size
 - refactor the `bit` submodule.
+
+### sys::net::http
+- new module.
+- new types: `Http`, `HttpError`, `HttpMethod`, `HttpRequestLine`, `HttpResponseHead`, `HttpStatus`, `HttpStatusClass`, `HttpVersion`.
 
 ### sys::os
 - remove macros: `os_print!`, `os_println!`, `os_eprint!`, `os_eprintln!`.

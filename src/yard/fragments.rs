@@ -294,6 +294,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_MEM_VIEW_BORROW = "Borrowed data and ownership-relaxed views.";
     _DOC_SYS_MEM_VIEW_SLICE  = "Contiguous views into memory.";
     _DOC_SYS_NET         = "Networking functionality.";
+    _DOC_SYS_NET_HTTP    = "The HTTP protocol.";
     _DOC_SYS_OS          = "Operating systems and supervisors.";
     _DOC_SYS_OS_BROWSER      = "Browser supervisory environment.";
     _DOC_SYS_OS_BROWSER_WEB  = "Web APIs interfacing.";
