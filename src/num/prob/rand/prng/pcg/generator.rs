@@ -280,7 +280,7 @@ macro_rules! rand_pcg {
             ///
             /// Uses rejection sampling to avoid modulo bias.
             #[must_use]
-            pub fn next_bounded(&mut self, bound: $output) -> $output {
+            pub const fn next_bounded(&mut self, bound: $output) -> $output {
                 debug_assert!(bound > 0);
                 let threshold = bound.wrapping_neg() % bound;
                 loop {

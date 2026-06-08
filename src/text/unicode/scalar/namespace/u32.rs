@@ -1,26 +1,131 @@
 // devela::text::unicode::scalar::namespace::u32
 
-use crate::{AsciiLut, Char};
+use crate::{AsciiLut, Char, Pcg32};
 
 /// # Methods over `u32`.
 #[rustfmt::skip]
 impl Char<u32> {
-    /* private helpers */
+    /* private encoding helpers */
 
     #[doc(hidden)]
-    /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte (`10xxxxxx`).
-    pub const CONT_MASK: u32 = 0b0011_1111;
+    /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte.
+    pub const CONT_MASK: u32 = 0b0011_1111; // NOTE: used by __unicode_scalar_write_utf8_at!
 
-    /// The maximum value of a Unicode code point.
-    const MAX_UNICODE: u32 = 0x10_FFFF;
+    /* Unicode boundaries */
 
-    /// The value of the first Unicode surrogate code point.
-    const SURROGATE_START: u32 = 0xD800;
+    /// Maximum Unicode code point.
+    pub const MAX_CODE_POINT: u32 = 0x10_FFFF;
 
-    /// The value of the last Unicode surrogate code point.
-    const SURROGATE_END: u32 = 0xDFFF;
+    /// Number of Unicode scalar values.
+    pub const SCALAR_COUNT: u32 = Self::MAX_CODE_POINT + 1 - Self::SURROGATE_COUNT;
+    /// Number of Unicode surrogate code points.
+    pub const SURROGATE_COUNT: u32 = Self::SURROGATE_END - Self::SURROGATE_START + 1;
 
-    /* public methods */
+    /// First Unicode surrogate code point.
+    pub const SURROGATE_START: u32 = 0xD800;
+    /// Last Unicode surrogate code point.
+    pub const SURROGATE_END: u32 = 0xDFFF;
+
+    /// Last high-surrogate code point, also called a leading surrogate.
+    pub const SURROGATE_HIGH_END: u32 = 0xDBFF;
+    /// First low-surrogate code point, also called a trailing surrogate.
+    pub const SURROGATE_LOW_START: u32 = 0xDC00;
+
+    /// Maps a dense Unicode scalar rank to its scalar value.
+    ///
+    /// Scalar indices are contiguous in `0..SCALAR_COUNT`, with the surrogate
+    /// range omitted from the resulting values.
+    ///
+    /// # Panics
+    /// Panics if `rank >= SCALAR_COUNT`.
+    #[must_use]
+    #[inline(always)]
+    pub const fn scalar_from_rank(rank: u32) -> u32 {
+        assert!(rank < Self::SCALAR_COUNT);
+        if rank < Self::SURROGATE_START { rank } else { rank + Self::SURROGATE_COUNT }
+    }
+
+    /// Returns the dense scalar rank of this value,
+    /// or `None` if it is not a Unicode scalar value.
+    pub const fn scalar_rank(self) -> Option<u32> {
+        if !self.is_valid_scalar() {
+            None
+        } else if self.0 < Self::SURROGATE_START {
+            Some(self.0)
+        } else {
+            Some(self.0 - Self::SURROGATE_COUNT)
+        }
+    }
+
+    /// Checks whether the value is a Unicode code point.
+    ///
+    /// A valid Unicode code point is any integer in the range: `0..=MAX_CODE_POINT`.
+    ///
+    /// This includes surrogate code points which are
+    /// valid code points but cannot be represented as Unicode scalars.
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::Char;
+    /// assert!(Char('A' as u32).is_valid_code()); // regular character
+    /// assert!(Char(0x00).is_valid_code());       // NULL is valid
+    /// assert!(Char(0x10FFFF).is_valid_code());   // maximum Unicode code point
+    /// // surrogates are valid code points:
+    /// assert!(Char(0xD800).is_valid_code());     // high surrogate
+    /// assert!(Char(0xDFFF).is_valid_code());     // low surrogate
+    /// // invalid:
+    /// assert!(!Char(0x110000).is_valid_code());  // above max Unicode
+    /// ```
+    #[must_use] #[inline(always)]
+    pub const fn is_valid_code(self) -> bool {
+        self.0 <= Self::MAX_CODE_POINT
+    }
+
+    /// Checks whether the value is a Unicode scalar value representable as [`char`].
+    ///
+    /// This excludes surrogate code points, which are invalid in UTF-8
+    /// and cannot be represented as Unicode scalars.
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::Char;
+    /// assert!(Char('A' as u32).is_valid_scalar()); // regular character
+    /// assert!(Char(0x00).is_valid_scalar());       // NULL is valid
+    /// assert!(Char(0x10FFFF).is_valid_scalar());   // maximum Unicode scalar
+    /// // invalid:
+    /// assert!(!Char(0xD800).is_valid_scalar());    // high surrogate
+    /// assert!(!Char(0xDFFF).is_valid_scalar());    // low surrogate
+    /// assert!(!Char(0x110000).is_valid_scalar());  // above max Unicode
+    /// ```
+    #[must_use]
+    #[inline(always)]
+    pub const fn is_valid_scalar(self) -> bool {
+        self.is_valid_code() && !self.is_surrogate()
+    }
+
+    /// Returns `true` if the value is a Unicode [surrogate][0] code point.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#surrogate_code_point
+    #[must_use] #[inline(always)]
+    pub const fn is_surrogate(self) -> bool {
+        self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_END
+    }
+
+    /// Returns `true` if the value is a Unicode [high surrogate][0] code point.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#high_surrogate_code_point
+    #[must_use] #[inline(always)]
+    pub const fn is_surrogate_high(self) -> bool {
+        self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_HIGH_END
+    }
+
+    /// Returns `true` if the value is a Unicode [low surrogate][0] code point.
+    ///
+    /// [0]: https://www.unicode.org/glossary/#low_surrogate_code_point
+    #[must_use] #[inline(always)]
+    pub const fn is_surrogate_low(self) -> bool {
+        self.0 >= Self::SURROGATE_LOW_START && self.0 <= Self::SURROGATE_END
+    }
 
     /// Returns the bytes required to store the given Unicode code point in a non-UTF encoding.
     ///
@@ -87,58 +192,6 @@ impl Char<u32> {
         } else {
             1
         }
-    }
-
-    /// Checks if the value is a valid Unicode code point.
-    ///
-    /// A valid Unicode code point is any integer in the range:
-    /// - `U+0000` to `U+10FFFF` (inclusive)
-    ///
-    /// This includes surrogate code points (`U+D800` to `U+DFFF`), which are
-    /// valid code points but cannot be represented as Unicode scalars.
-    ///
-    /// # Examples
-    /// ```
-    /// # use devela::Char;
-    /// assert!(Char('A' as u32).is_valid_code()); // regular character
-    /// assert!(Char(0x00).is_valid_code());       // NULL is valid
-    /// assert!(Char(0x10FFFF).is_valid_code());   // maximum Unicode code point
-    /// // surrogates are valid code points:
-    /// assert!(Char(0xD800).is_valid_code());     // high surrogate
-    /// assert!(Char(0xDFFF).is_valid_code());     // low surrogate
-    /// // invalid:
-    /// assert!(!Char(0x110000).is_valid_code());  // above max Unicode
-    /// ```
-    #[must_use] #[inline(always)]
-    pub const fn is_valid_code(self) -> bool {
-        self.0 <= Self::MAX_UNICODE
-    }
-
-    /// Checks if the value is a valid Unicode scalar (a Rust's [`char`]).
-    ///
-    /// A valid Unicode scalar value is any integer in the ranges:
-    /// - `U+0000` to `U+D7FF` (inclusive), or
-    /// - `U+E000` to `U+10FFFF` (inclusive)
-    ///
-    /// This excludes surrogate code points (`U+D800` to `U+DFFF`), which are
-    /// invalid in UTF-8 and cannot be represented as Unicode scalars.
-    ///
-    /// # Examples
-    /// ```
-    /// # use devela::Char;
-    /// assert!(Char('A' as u32).is_valid_scalar()); // regular character
-    /// assert!(Char(0x00).is_valid_scalar());       // NULL is valid
-    /// assert!(Char(0x10FFFF).is_valid_scalar());   // maximum Unicode scalar
-    /// // invalid:
-    /// assert!(!Char(0xD800).is_valid_scalar());    // high surrogate
-    /// assert!(!Char(0xDFFF).is_valid_scalar());    // low surrogate
-    /// assert!(!Char(0x110000).is_valid_scalar());  // above max Unicode
-    /// ```
-    #[must_use]
-    #[inline(always)]
-    pub const fn is_valid_scalar(self) -> bool {
-        (self.0 < Self::SURROGATE_START)
-            || (self.0 > Self::SURROGATE_END && self.is_valid_code())
     }
 
     /// Checks if the given value is a 7-bit ASCII character (U+0000..=U+007F).
@@ -294,24 +347,6 @@ impl Char<u32> {
         ]
     }
 
-    /// Returns `true` if the given value is a Unicode [surrogate][0] code point.
-    ///
-    /// [0]: https://www.unicode.org/glossary/#surrogate_code_point
-    #[must_use] #[inline(always)]
-    pub const fn is_surrogate(self) -> bool { matches!(self.0, 0xD800..=0xDFFF) }
-
-    /// Returns `true` if the given value is a Unicode [leading surrogate][0] code point.
-    ///
-    /// [0]: https://www.unicode.org/glossary/#high_surrogate_code_point
-    #[must_use] #[inline(always)]
-    pub const fn is_surrogate_high(self) -> bool { matches!(self.0, 0xD800..=0xDBFF) }
-
-    /// Returns `true` if the given value is a Unicode [trailing surrogate][0] code point.
-    ///
-    /// [0]: https://www.unicode.org/glossary/#low_surrogate_code_point
-    #[must_use] #[inline(always)]
-    pub const fn is_surrogate_low(self) -> bool { matches!(self.0, 0xDC00..=0xDFFF) }
-
     //
 
     /// Returns the ASCII `&'static str` representation of the value, or `""` if non-ASCII.
@@ -363,6 +398,19 @@ impl Char<u32> {
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn write_utf8_to_unchecked(self, buf: &mut [u8]) -> usize {
         __unicode_scalar_write_utf8_at![buf, 0, self.0]
+    }
+
+    /// Returns a Unicode scalar selected from the next output of `rng`.
+    #[must_use] #[inline(always)]
+    pub const fn random_next(rng: &mut Pcg32) -> u32 {
+        let rank = rng.next_bounded(Self::SCALAR_COUNT);
+        Self::scalar_from_rank(rank)
+    }
+
+    /// Returns a Unicode scalar deterministically selected from `seed`.
+    #[must_use] #[inline(always)]
+    pub const fn random_from_seed(seed: u64) -> u32 {
+        Self::random_next(&mut Pcg32::new(seed, 0))
     }
 }
 

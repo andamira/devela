@@ -3,7 +3,7 @@
 //! Defines [`FromRand`] and [`FromRandTry`].
 //
 
-use crate::{Cast, Rand, RandTry, Result};
+use crate::{Cast, Char, Rand, RandTry, Result};
 
 #[doc = crate::_tags!(rand construction)]
 /// Fallible construction from a source of randomness.
@@ -52,11 +52,8 @@ impl FromRandTry for char {
     /// This includes unassigned, private-use, control, and non-printing scalars.
     #[inline]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
-        const SCALAR_COUNT: u64 = 0x10_F800;
-        const SURROGATE_START: u32 = 0xD800;
-        const SURROGATE_COUNT: u32 = 0x800;
-        let index = rng.rand_try_below(SCALAR_COUNT)? as u32;
-        let scalar = if index < SURROGATE_START { index } else { index + SURROGATE_COUNT };
+        let i = rng.rand_try_below(Char::SCALAR_COUNT as u64)? as u32;
+        let scalar = if i < Char::SURROGATE_START { i } else { i + Char::SURROGATE_COUNT };
         match char::from_u32(scalar) {
             Some(ch) => Ok(ch),
             None => unreachable!("mapped value is always a valid Unicode scalar"),
@@ -70,7 +67,7 @@ impl FromRandTry for u8 {
     /// Returns a value uniformly distributed across all `u8` values.
     #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
-        rng.rand_try_next_u16().map(|n| n as u8)
+        rng.rand_try_next_u8()
     }
 }
 impl FromRandTry for u16 {
@@ -113,7 +110,7 @@ impl FromRandTry for i8 {
     /// Returns a value uniformly distributed across all `i16` values.
     #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
-        rng.rand_try_next_u16().map(|n| n as i8)
+        rng.rand_try_next_u8().map(|n| n as i8)
     }
 }
 impl FromRandTry for i16 {

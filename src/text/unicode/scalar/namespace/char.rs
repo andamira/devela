@@ -3,7 +3,7 @@
 // TOC
 // - methods over char
 
-use crate::{AsciiLut, Char, is, unwrap};
+use crate::{AsciiLut, Char, Pcg32, is, unwrap};
 
 /// # Methods over `char`
 #[rustfmt::skip]
@@ -142,5 +142,20 @@ impl Char<char> {
     #[must_use] #[inline(always)]
     pub const fn to_ascii_fold_unchecked(self) -> char {
         unwrap![some_or self.to_ascii_fold(), self.0]
+    }
+
+    /// Returns a Unicode scalar selected from the next output of `rng`.
+    #[must_use] #[inline(always)]
+    pub const fn random_next(rng: &mut Pcg32) -> char {
+        let code = Char::<u32>::random_next(rng);
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: we receive a validated Unicode scalar
+            unsafe { char::from_u32_unchecked(code) }
+        } _ => { unwrap![some_guaranteed_or_ub char::from_u32(code)] }}
+    }
+    /// Returns a Unicode scalar deterministically selected from `seed`.
+    #[must_use] #[inline(always)]
+    pub const fn random_from_seed(seed: u64) -> char {
+        Self::random_next(&mut Pcg32::new(seed, 0))
     }
 }

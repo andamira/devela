@@ -12,6 +12,7 @@ mod bit; // BitOps, Bitwise
 // mod graph;
 pub mod logic; // ConstBool, False, True, const_bool!
 pub mod ord; // Cmp, cmp!, Order
+// mod rank;
 // mod seq;
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
@@ -22,6 +23,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             bit::_all::*,
             // comb::_all::*,
             // graph::_all::*,
+            // rank::*,
             // seq::_all::*,
         };
     }

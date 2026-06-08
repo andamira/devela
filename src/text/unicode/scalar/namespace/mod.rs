@@ -19,6 +19,14 @@ mod slice; // Char<&[u8] | &[u8; N]>
 /// Unicode scalars-related low-level *const* operations.
 #[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
 ///
+/// # Terminology
+/// - A **code point** is an integer in `U+0000..=U+10FFFF`.
+/// - A **surrogate** is a code point in `U+D800..=U+DFFF`.
+/// - A **Unicode scalar value** is a code point that is not a surrogate.
+///   Rust's [`char`] represents exactly this set.
+/// - A **scalar rank** is the zero-based position of a scalar value in the
+///   ordered set of all Unicode scalar values, with the surrogate range omitted.
+///
 /// # Methods
 /// - [over `char`](#methods-over-char)
 ///   - [len_utf8](#method.len_utf8).
