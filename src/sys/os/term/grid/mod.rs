@@ -8,12 +8,14 @@
 
 mod color; // TermColor[s|Kind|Mode]
 mod style; // TermStyle[Ext]
+mod termel; // Termel
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             color::*,
             style::*,
+            termel::*,
         };
     }
 }

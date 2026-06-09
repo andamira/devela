@@ -230,11 +230,8 @@ impl TermColors {
     pub const fn bits(self) -> u64 { self.bits }
 
     /// Returns the foreground color.
-    #[must_use]
     pub const fn fg(self) -> TermColor { TermColor::from_bits(self.bits as u32) }
-
     /// Returns the background color.
-    #[must_use]
     pub const fn bg(self) -> TermColor { TermColor::from_bits((self.bits >> 32) as u32) }
 
     /// Returns this pair with a new foreground color.
@@ -245,7 +242,6 @@ impl TermColors {
 
     /// Replaces the foreground color.
     pub const fn set_fg(&mut self, fg: TermColor) { self.bits = Self::new(fg, self.bg()).bits; }
-
     /// Replaces the background color.
     pub const fn set_bg(&mut self, bg: TermColor) { self.bits = Self::new(self.fg(), bg).bits; }
 
