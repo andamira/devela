@@ -2,6 +2,16 @@
 //
 //! Implements `Bitwise` for the integer primitives.
 //
+// TOC
+// - traits
+// - mask constructors
+// - get
+// - set
+// - unset
+// - flip
+// - reverse
+// - count
+// - find
 
 use super::super::_docs::*;
 #[allow(unused_imports, reason = "MismatchedCapacity only used for docs")]
@@ -587,6 +597,12 @@ macro_rules! _num_fin_bit_ops_wise_impl_prims {
                 }
             }
         }
+        // TODO
+        // #[doc = concat!["# Find ops for `", stringify!($t), "`."]]
+        // impl Bitwise::<$t> {
+        //     /* find first */
+        //
+        // }
     };
 }
 _num_fin_bit_ops_wise_impl_prims![];

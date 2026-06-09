@@ -62,6 +62,9 @@ would collide with common methods. Avoid:
 - `MASK`
 - `MASK_IF`
 
+The names `EMPTY` and `FULL` are discouraged for fields
+because `bitfield!` generates the methods `is_empty` and `is_full`.
+
 # Examples
 ```
 # use devela::bitfield;

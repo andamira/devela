@@ -104,7 +104,6 @@ macro_rules! bitfield· {
             #[must_use] #[allow(dead_code)]
             $vis const fn mask() -> $T { Self::_BITFIELD_MASK }
 
-
             /// Returns a bitfield value with every declared field bit set.
             #[must_use] #[allow(clippy::double_must_use, dead_code)]
             $vis const fn all() -> Self { Self { bits: Self::_BITFIELD_MASK } }

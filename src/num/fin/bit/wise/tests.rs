@@ -3,6 +3,7 @@
 // TOC
 // - bit_mask_range
 // - bit_ops
+// - bit displacement…
 
 use crate::{Bitwise, Bitwise as Bg};
 
@@ -64,3 +65,30 @@ fn bit_ops() {
     assert_eq![Some(3), b.find_last_zero_range(2, 5)];
     assert_eq![None, b.find_last_zero_range(4, 7)];
 }
+// TODO
+// /* bit displacement */
+// #[test]
+// fn copy_range_to_u8() {
+//     let b = Bitwise(0b0001_1100u8);
+//     assert_eq![0b0111_1100, b.copy_range_to_checked(2, 4, 4).unwrap().0];
+// }
+// #[test]
+// fn move_range_to_u8() {
+//     let b = Bitwise(0b0001_1100u8);
+//     assert_eq![0b0111_0000, b.move_range_to_checked(2, 4, 4).unwrap().0];
+// }
+// #[test]
+// fn move_range_by_overlapping_u8() {
+//     let b = Bitwise(0b0001_1100u8);
+//     assert_eq![0b0011_1000, b.move_range_by_checked(2, 4, 1).unwrap().0];
+// }
+// #[test]
+// fn scroll_range_right_u8() {
+//     let b = Bitwise(0b0000_1111u8);
+//     assert_eq![0b0011_1100, b.scroll_range_checked(0, 7, 2, false).unwrap().0];
+// }
+// #[test]
+// fn scroll_range_left_u8() {
+//     let b = Bitwise(0b1111_0000u8);
+//     assert_eq![0b0011_0000, b.scroll_range_checked(4, 7, -2, false).unwrap().0];
+// }

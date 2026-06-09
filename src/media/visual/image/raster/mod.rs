@@ -10,6 +10,7 @@ mod borrow; // (4) <Raster[Bytes]<Mut|Ref>>
 mod format; // (1+5) RasterFormat, (<Raster[Alpha|[Packed]Channels|SampleFormat|Transfer]>)
 mod layout; // (1) RasterLayout
 // mod macros; // (1) raster! WIP
+// mod ops; // Raster operations WIP
 mod traits; // (7) Raster<[Buf|View][Bytes]>, <Raster<Sample|View>Packed>>
 
 crate::structural_mods! { // _mods
@@ -19,6 +20,7 @@ crate::structural_mods! { // _mods
             format::*,
             layout::*,
             // macros::*,
+            // ops::_all::*,
             traits::*,
         };
     }
