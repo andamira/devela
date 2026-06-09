@@ -1,6 +1,6 @@
 // devela::sys::os::term::ansi::namespace::color
 
-use crate::{__ansi_consts, Ansi, AnsiColor3, AnsiColor8, Cmp, Digits};
+use crate::{__ansi_consts, Ansi, AnsiColor3, AnsiColor8, AnsiOsc, Cmp, Digits};
 
 // the bare color escape codes
 mod C {
@@ -11,17 +11,6 @@ mod C {
     pub(crate) const C8: [u8; 4] = *b"8;5;";
     pub(crate) const RGB: [u8; 4] = *b"8;2;";
 }
-
-/// # Default color escape codes
-///
-/// Resets foreground or background color to the terminal default.
-#[rustfmt::skip]
-impl Ansi { __ansi_consts! {
-    /// Code to reset the background color to the terminal default.
-    pub const DEFAULT_BG: [u8; 5] = "\x1b[49m", *b"\x1b[49m";
-    /// Code to reset the foreground color to the terminal default.
-    pub const DEFAULT_FG: [u8; 5] = "\x1b[39m", *b"\x1b[39m";
-}}
 
 /// # 3-bit Color escape codes
 #[rustfmt::skip]
@@ -310,6 +299,15 @@ impl Ansi {
 #[rustfmt::skip]
 impl Ansi {
     __ansi_consts! {
+        /// Queries the current value of a palette entry. (OSC 4)
+        pub const fn QUERY_PALETTE(index: u8) -> [u8; 10] {
+            let i = Digits(index).digits10();
+            [
+                b'\x1b', b']', b'4', b';',
+                i[0], i[1], i[2],
+                b';', b'?', b'\x07',
+            ]
+        }
         /// Sets the given palette color. (OSC 4)
         // \x1b]4;{index};rgb:{rr:02x}/{gg:02x}/{bb:02x}\x07
         pub const fn SET_PALETTE(index: u8, color: [u8; 3]) -> [u8; 21] {
@@ -378,3 +376,41 @@ impl Ansi { __ansi_consts! {
         ]
     }
 }}
+
+/// # Default rendition colors
+#[rustfmt::skip]
+impl Ansi {
+    __ansi_consts! {
+        /// Code to select the terminal's current default background color.
+        pub const DEFAULT_BG: [u8; 5] = "\x1b[49m", *b"\x1b[49m";
+    }
+    /// Queries the terminal's dynamic default foreground color. (OSC 10)
+    pub const fn default_fg_query() -> AnsiOsc<'static, 1> {
+        AnsiOsc::new("10", ["?"])
+    }
+    /// Restores the configured default foreground color. (OSC 110)
+    pub const fn default_fg_reset() -> AnsiOsc<'static, 0> {
+        AnsiOsc::new("110", [])
+    }
+    __ansi_consts! {
+        /// Code to select the terminal's current default foreground color.
+        pub const DEFAULT_FG: [u8; 5] = "\x1b[39m", *b"\x1b[39m";
+    }
+    /// Queries the terminal's dynamic default background color. (OSC 11)
+    pub const fn default_bg_query() -> AnsiOsc<'static, 1> {
+        AnsiOsc::new("11", ["?"])
+    }
+    /// Restores the configured default background color. (OSC 111)
+    pub const fn default_bg_reset() -> AnsiOsc<'static, 0> {
+        AnsiOsc::new("111", [])
+    }
+
+    /// Queries the terminal's cursor color. (OSC 12)
+    pub const fn cursor_color_query() -> AnsiOsc<'static, 1> {
+        AnsiOsc::new("12", ["?"])
+    }
+    /// Restores the configured cursor color. (OSC 112)
+    pub const fn cursor_color_reset() -> AnsiOsc<'static, 0> {
+        AnsiOsc::new("112", [])
+    }
+}

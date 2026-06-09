@@ -1,6 +1,6 @@
 // devela::sys::os::term::ansi::namespace::definition
 
-use super::{Ansi, AnsiLink};
+use crate::{Ansi, AnsiColor8, AnsiLink};
 
 #[test]
 fn write_ansi_code_n() {
@@ -68,4 +68,9 @@ fn ansi_clipboard_base64_write_to() {
     let mut buf = [0u8; 32];
     let len = clip.write_to(&mut buf).unwrap();
     assert_eq!(&buf[..len], b"\x1b]52;c;aGVsbG8=\x1b\\");
+}
+#[test]
+fn underline_colors() {
+    assert_eq!(Ansi::UNDERLINE_COLOR8(AnsiColor8(7)), *b"\x1b[58;5;007m",);
+    assert_eq!(Ansi::UNDERLINE_RGB([1, 23, 255]), *b"\x1b[58;2;001;023;255m",);
 }

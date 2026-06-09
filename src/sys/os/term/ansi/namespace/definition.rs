@@ -18,22 +18,26 @@ use crate::__ansi_consts;
 ///
 /// [`StringNonul`]: crate::StringNonul
 ///
-/// # Methods
+/// # Constants and Methods
 /// ## Escape codes
 /// - [Control prefixes](#control-prefixes)
 /// - CSI sequences
 ///   - [Erase](#erase-escape-codes)
 ///   - [Terminal](#terminal-escape-codes)
-///   - [Terminal mode reports](#terminal-mode-report-escape-codes)
+///     - [Mode reports](#terminal-mode-report-escape-codes)
 ///   - [Cursor](#cursor-escape-codes)
 ///   - [Mouse](#mouse-escape-codes)
 ///   - [Font effects](#font-effects-escape-codes)
-///   - [Default](#default-color-escape-codes)
-///   - [Color (3-bit)](#3-bit-color-escape-codes)
-///   - [Color (8-bit)](#8-bit-color-escape-codes)
-///   - [Grey (8-bit) Palette](#8-bit-grey-escape-codes)
-///   - [Palette (8-bit)](#8-bit-palette-escape-codes)
-///   - [Color (rgb)](#rgb-color-escape-codes)
+///     - [Not very well supported](#not-very-well-supported-font-effects-escape-codes)
+///     - [Extended underline escape codes](#extended-underline-escape-codes)
+///     - [Underline color escape codes](#underline-color-escape-codes)
+///   - Color
+///     - [Color (3-bit)](#3-bit-color-escape-codes)
+///     - [Color (8-bit)](#8-bit-color-escape-codes)
+///     - [Grey (8-bit) Palette](#8-bit-grey-escape-codes)
+///     - [Palette (8-bit)](#8-bit-palette-colors)
+///     - [Color (rgb)](#rgb-color-escape-codes)
+///     - [Default rendition colors](#default-rendition-colors)
 /// - [OSC sequences](#operating-system-commands)
 ///   - [title](#method.title_all) (OSC 0)
 ///   - [title_icon](#method.icon_title) (OSC 1)

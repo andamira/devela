@@ -1,6 +1,6 @@
 // devela::sys::os::term::ansi::namespace::font_mouse
 
-use crate::{__ansi_consts, Ansi};
+use crate::{__ansi_consts, Ansi, AnsiColor8, Digits};
 
 /// # Font effects escape codes
 //
@@ -127,3 +127,49 @@ impl Ansi {
         [b'\x1b', b'[', b'1', b'0' + index, b'm']
     }
 }
+
+/// # Underline color escape codes
+#[rustfmt::skip]
+impl Ansi {
+    __ansi_consts! {
+        /// Code to restore the underline color to the terminal default.
+        ///
+        /// The default underline color follows the foreground color.
+        pub const DEFAULT_UNDERLINE_COLOR: [u8; 5] = "\x1b[59m", *b"\x1b[59m";
+    }
+    /// Code to set the underline color to an 8-bit palette `color`.
+    pub const fn UNDERLINE_COLOR8(color: AnsiColor8) -> [u8; 11] {
+        let c = color.to_ascii();
+        [
+            b'\x1b', b'[', b'5', b'8', b';', b'5', b';',
+            c[0], c[1], c[2],
+            b'm',
+        ]
+    }
+    /// Code to set the underline color to `[r, g, b]` values.
+    pub const fn UNDERLINE_RGB(color: [u8; 3]) -> [u8; 19] {
+        let [r, g, b] = color;
+        let [r, g, b] = [
+            Digits(r).digits10(),
+            Digits(g).digits10(),
+            Digits(b).digits10(),
+        ];
+        [
+            b'\x1b', b'[', b'5', b'8', b';', b'2', b';',
+            r[0], r[1], r[2], b';',
+            g[0], g[1], g[2], b';',
+            b[0], b[1], b[2],
+            b'm',
+        ]
+    }
+}
+
+// NOTE: missing rare/historical escape codes:
+// - 26     proportional spacing
+// - 50     disable proportional spacing
+// - 60     ideogram underline / right-side line
+// - 61     double ideogram underline / right-side line
+// - 62     ideogram overline / left-side line
+// - 63     double ideogram overline / left-side line
+// - 64     ideogram stress marking
+// - 65     cancel ideogram attributes
