@@ -3,12 +3,12 @@
 //! Raster operations
 //
 
-mod rotate; // Generic dense raster rotation
+// mod rotate; // Generic dense raster rotation
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::{
-            rotate::*,
-        };
+        // pub use super::{
+        //     rotate::*,
+        // };
     }
 }

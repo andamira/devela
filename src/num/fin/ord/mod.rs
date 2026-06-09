@@ -22,6 +22,5 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
         pub use super::_reexport_core::*;
     }
     _crate_internals {
-        pub(crate) use super::order::_crate_internals::*;
     }
 }

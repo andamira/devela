@@ -228,6 +228,9 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
   - rename checked methods to have `_checked` suffix.
   - rename `set_checked_value_checked_range` to `set_value_range_checked_strict` and fix.
 
+#### num::fin::bit
+- update `Order` with row-col methods.
+
 ### num::grain
 - rename `Primitive*` traits to `Prim*`.
 - rename `define_lane!` to `lane!`
