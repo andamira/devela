@@ -36,7 +36,7 @@ impl TermelOccupancy {
 
 crate::bitfield! {
     #[doc = crate::_tags!(term text layout bit)]
-    /// Compact terminal-cell occupancy metadata for a [`Termel`].
+    /// Compact terminal-cell occupancy metadata for a [`Termel`][crate::Termel].
     #[doc = crate::_doc_meta!{
         location("sys/os/term/grid"),
         test_size_of(TermelMeta = 1),
