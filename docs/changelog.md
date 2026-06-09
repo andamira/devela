@@ -422,7 +422,7 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
   - type-check the fallback backend print arms.
 
 #### sys::os::term::grid
-- new items: `TermColor`, `TermColors`, `TermColorKind`, `TermColorMode`, `TermStyle`, `TermStyleExt`, `Termel`.
+- new items: `TermColor`, `TermColors`, `TermColorKind`, `TermColorMode`, `TermOccupancy`, `TermStyle`, `TermStyleExt`, `Termel`, TermelMeta,
 
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.
