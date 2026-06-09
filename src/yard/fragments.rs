@@ -301,6 +301,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
     _DOC_SYS_OS_TERM     = "Terminal supervisory environment and ANSI/TTY interfacing.";
+    _DOC_SYS_OS_TERM_GRID = "Terminal cell elements, grids, and composition.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 11. text (symbolic sequences with cultural weight)

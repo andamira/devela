@@ -421,6 +421,9 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
   - add support to write to a renderer.
   - type-check the fallback backend print arms.
 
+#### sys::os::term::grid
+- new items: `TermColor`, `TermColors`, `TermColorKind`, `TermColorMode`, `TermStyle`, `TermStyleExt`.
+
 ## text
 - new submodules: `codec`, `draw`, `generate`, `measure`, `unicode`.
 - move submodule `char::ascii` to `ascii` and make public.
