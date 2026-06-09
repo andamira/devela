@@ -412,7 +412,8 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 - new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLineMode`, `TermLinux`, `TermMode`, `TermPollPolicy`, `TermRenderer`, `TermSession`.
 - update `Ansi`:
   - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`, `QUERY_DEC_PRIVATE_MODE_N`.
-  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`, `DISABLE_MOUSE[_<MOTION|SGR|SGR_PIXELS>]`, `<EN|DIS>ABLE_<ALTERNATE_SCREEN_ONLY|BRACKETED_PASTE|FOCUS_EVENTS|SYNC_UPDATE`, `QUERY_*`.
+  - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `FONT`, `HYPERLINK_CLOSE`, `DISABLE_MOUSE[_<MOTION|SGR|SGR_PIXELS>]`, `<EN|DIS>ABLE_<ALTERNATE_SCREEN_ONLY|BRACKETED_PASTE|FOCUS_EVENTS|SYNC_UPDATE`, `QUERY_*`.
+- new font-related constants: `HIDDEN[_OFF]`, `BLINK_FAST`, `FRAKTUR`, `FRAME`, `ENCIRCLE`, `FRAME_ENCIRCLE_OFF`, `OVERLINE[_OFF]`, `<SUPER|SUB>SCRIPT`, `BASELINE`, `UNDERLINE_<DOUBLE|CURLY|DOTTED|DASHED|DOUBLE_ECMA>`.
   - remove `MOUSE_UTF8`.
   - rename `MOUSE_X10_<EN|DIS>ABLE` to `<EN|DIS>ABLE_MOUSE_X10`.
   - rename `MOUSE_SGR_PIXELS` to `ENABLE_MOUSE_SGR_PIXELS`.

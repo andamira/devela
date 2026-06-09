@@ -51,6 +51,7 @@ pub fn ansi_print(sequence: &[u8]) -> IoResult<()> {
     crate::Linux::print_bytes(sequence).map_err(crate::LinuxError::to_io)
 }
 
+#[doc(hidden)]
 #[doc = crate::_tags!(term platform)]
 /// The most efficient print method, exclusive for `std`.
 #[doc = crate::_doc_meta!{location("sys/os/term")}]
@@ -60,6 +61,7 @@ pub fn ansi_print_std(sequence: &[u8]) -> IoResult<()> {
     crate::Io::stdout().write_all(sequence)
 }
 
+#[doc(hidden)]
 #[doc = crate::_tags!(term linux)]
 /// The most efficient print method, exclusive for `linux`.
 #[doc = crate::_doc_meta!{location("sys/os/term")}]

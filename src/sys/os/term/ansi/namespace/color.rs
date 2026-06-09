@@ -1,146 +1,149 @@
-// devela::sys::os::term::ansi::color::bit8
-//
-//! ANSI codes related to 8-bit palette color.
-//
+// devela::sys::os::term::ansi::namespace::color
 
-use super::C;
-use crate::{__ansi_consts, Ansi, AnsiColor3, Cmp, Digits};
+use crate::{__ansi_consts, Ansi, AnsiColor3, AnsiColor8, Cmp, Digits};
 
-#[doc = crate::_tags!(term color)]
-/// ANSI 8-bit color codes, 256 colors.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
-#[repr(transparent)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct AnsiColor8(pub u8);
+// the bare color escape codes
+mod C {
+    pub(crate) const FG: u8 = b'3';
+    pub(crate) const BG: u8 = b'4';
+    pub(crate) const BRI_FG: u8 = b'9';
+    pub(crate) const BRI_BG: [u8; 2] = *b"10";
+    pub(crate) const C8: [u8; 4] = *b"8;5;";
+    pub(crate) const RGB: [u8; 4] = *b"8;2;";
+}
 
+/// # Default color escape codes
+///
+/// Resets foreground or background color to the terminal default.
 #[rustfmt::skip]
-impl AnsiColor8 {
-    /// Creates a new `AnsiColor8` from an `AnsiColor3`.
-    #[must_use]
-    pub const fn new(color: AnsiColor3) -> Self { Self(color as u8) }
+impl Ansi { __ansi_consts! {
+    /// Code to reset the background color to the terminal default.
+    pub const DEFAULT_BG: [u8; 5] = "\x1b[49m", *b"\x1b[49m";
+    /// Code to reset the foreground color to the terminal default.
+    pub const DEFAULT_FG: [u8; 5] = "\x1b[39m", *b"\x1b[39m";
+}}
 
-    /// Creates a new `AnsiColor8` from an `AnsiColor3` treated as *bright*.
-    #[must_use]
-    pub const fn bright(color: AnsiColor3) -> Self { Self(color as u8 + 8) }
+/// # 3-bit Color escape codes
+#[rustfmt::skip]
+impl Ansi {
+    __ansi_consts! {
+        /// Code to set the the foreground `color`.
+        pub const fn COLOR_FG(color: AnsiColor3) -> [u8; 5] {
+            [b'\x1b', b'[', C::FG, color.to_ascii(), b'm']
+        }
+        /// Code to set the the foreground `color` bright.
+        pub const fn COLOR_FG_BRIGHT(color: AnsiColor3) -> [u8; 5] {
+            [b'\x1b', b'[', C::BRI_FG, color.to_ascii(), b'm']
+        }
 
-    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube.
-    /// The `r`, `g`, and `b` parameters should be in the range `0..=5`.
-    ///
-    /// Returns `None` if any parameter is `> 5`.
-    #[must_use]
-    pub const fn cube(r: u8, g: u8, b: u8) -> Option<Self> {
-        match (r, g, b) {
-            (0..=5, 0..=5, 0..=5) => Some(Self(16 + 36 * r + 6 * g + b)),
-            _ => None,
+        /// Code to set the the background `color`.
+        pub const fn COLOR_BG(color: AnsiColor3) -> [u8; 5] {
+            [b'\x1b', b'[', C::BG, color.to_ascii(), b'm']
         }
-    }
-    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube with
-    /// `r`, `g`, `b` values between `0` and `5`.
-    ///
-    /// Returns the `fallback` color if any parameter is `> 5`.
-    #[must_use]
-    pub const fn cube_or(r: u8, g: u8, b: u8, fallback: Self) -> Self {
-        match (r, g, b) {
-            (0..=5, 0..=5, 0..=5) => Self(16 + 36 * r + 6 * g + b),
-            _ => fallback,
+        /// Code to set the the background `color` bright.
+        pub const fn COLOR_BG_BRIGHT(color: AnsiColor3) -> [u8; 6] {
+            [b'\x1b', b'[', C::BRI_BG[0], C::BRI_BG[1], color.to_ascii(), b'm']
         }
-    }
-    /// Creates a new `AnsiColor8` from a 216-color 6x6x6 RGB cube by wrapping values.
-    ///
-    /// Out-of-bounds values wrap via `% 6` (e.g., `6` → `0`, `7` → `1`).
-    /// This is branchless and the fastest method.
-    #[must_use]
-    pub const fn cube_wrap(r: u8, g: u8, b: u8) -> Self {
-        Self(16 + 36 * (r % 6) + 6 * (g % 6) + (b % 6))
-    }
 
-    /* Standard 24-color grayscale (faster, contiguous ANSI codes) */
+        /// Code to set the foreground color to `fg` and the background to `bg`.
+        pub const fn COLORS(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
+            [ b'\x1b', b'[', C::FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
+        }
+        /// Code to set the foreground color to bright `fg` and the background to bright `bg`.
+        pub const fn COLORS_BRIGHT(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
+            [
+                b'\x1b', b'[',
+                C::BRI_FG, fg.to_ascii(), b';', C::BRI_BG[0], C::BRI_BG[1], bg.to_ascii(),
+                b'm',
+            ]
+        }
 
-    /// Creates a new `AnsiColor8` from a 24-color grayscale `value`, between
-    /// `0` (almost black) and `23` (almost white).
-    ///
-    /// Returns `None` if `value > 23`.
-    #[must_use]
-    pub const fn gray(value: u8) -> Option<Self> {
-        match value {
-            0..=23 => Some(Self(value + 232)),
-            _ => None,
+        /// Code to set the foreground color to bright `fg` and the background to `bg`.
+        pub const fn COLORS_BRIGHT_FG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
+            [ b'\x1b', b'[', C::BRI_FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
         }
-    }
-    /// Creates a new `AnsiColor8` from a 24-color grayscale `value` between
-    /// `0` (almost black) and `23` (almost white).
-    ///
-    /// Returns the `fallback` color if `value > 23`.
-    #[must_use]
-    pub const fn gray_or(value: u8, fallback: Self) -> Self {
-        match value {
-            0..=23 => Self(value + 232),
-            _ => fallback,
-        }
-    }
-    /// Creates a grayscale color by wrapping `value` via `% 24`.
-    ///
-    /// Values map to ANSI codes 232..=255 (e.g., `24` → `0`, `25` → `1`).
-    ///
-    /// This is branchless and the fastest method.
-    #[must_use]
-    pub const fn gray_wrap(value: u8) -> Self { Self(232 + (value % 24)) }
 
-    /* Extended 26-color grayscale with pure black/white (slower, non-contiguous)*/
-
-    /// Creates a new `AnsiColor8` from a 26-color grayscale `value`
-    /// between `0` (pure black) and `25` (pure white).
-    ///
-    /// Returns `None` if `value > 23`.
-    #[must_use]
-    pub const fn bw(value: u8) -> Option<Self> {
-        match value {
-            0 => Some(Self::new(AnsiColor3::Black)),
-            1..=24 => Some(Self(value - 1 + 232)),
-            25 => Some(Self::new(AnsiColor3::White)),
-            _ => None,
+        /// Code to set the foreground color to `fg` and the background to bright `bg`.
+        pub const fn COLORS_BRIGHT_BG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
+            [
+                b'\x1b', b'[',
+                C::FG, fg.to_ascii(), b';', C::BRI_BG[0], C::BRI_BG[1], bg.to_ascii(),
+                b'm',
+            ]
         }
-    }
-    /// Creates a new `AnsiColor8` from a 26-color grayscale `value`
-    /// between `0` (pure black) and `25` (pure white).
-    ///
-    /// Returns the `fallback` color if `value > 25`.
-    #[must_use]
-    pub const fn bw_or(value: u8, fallback: Self) -> Self {
-        match value {
-            0 => Self::new(AnsiColor3::Black),
-            1..=24 => Self(value - 1 + 232),
-            25 => Self::new(AnsiColor3::White),
-            _ => fallback,
-        }
-    }
-    /// Creates a grayscale color by wrapping `value` via `% 26`, with exact black/white.
-    ///
-    /// - `0` → pure black (`AnsiColor3::Black`).
-    /// - `25` → pure white (`AnsiColor3::White`).
-    /// - Other values wrap (e.g., `26` → `0`, `27` → `1`).
-    #[must_use]
-    pub const fn bw_wrap(value: u8) -> Self {
-        let wrapped = value % 26;
-        match wrapped {
-            0 => Self::new(AnsiColor3::Black),
-            25 => Self::new(AnsiColor3::White),
-            _ => Self(wrapped - 1 + 232),
-        }
-    }
-
-    /// Returns the ASCII byte representation of the 8-bit color number, with leading zeros.
-    #[must_use]
-    pub const fn to_ascii(&self) -> [u8; 3] { Digits(self.0).digits10() }
-}
-impl From<AnsiColor3> for AnsiColor8 {
-    fn from(value: AnsiColor3) -> Self {
-        Self::new(value)
     }
 }
-impl From<u8> for AnsiColor8 {
-    fn from(value: u8) -> Self {
-        Self(value)
+// # 3-bit Color escape codes constants
+#[rustfmt::skip]
+impl Ansi {
+    __ansi_consts! {
+        /// Code to set the foreground color to black.
+        pub const BLACK: [u8; 5] = "\x1b[30m", *b"\x1b[30m";
+        /// Code to set the foreground color to red.
+        pub const RED: [u8; 5] = "\x1b[31m", *b"\x1b[31m";
+        /// Code to set the foreground color to green.
+        pub const GREEN: [u8; 5] = "\x1b[32m", *b"\x1b[32m";
+        /// Code to set the foreground color to yellow.
+        pub const YELLOW: [u8; 5] = "\x1b[33m", *b"\x1b[33m";
+        /// Code to set the foreground color to blue.
+        pub const BLUE: [u8; 5] = "\x1b[34m", *b"\x1b[34m";
+        /// Code to set the foreground color to magenta.
+        pub const MAGENTA: [u8; 5] = "\x1b[35m", *b"\x1b[35m";
+        /// Code to set the foreground color to cyan.
+        pub const CYAN: [u8; 5] = "\x1b[36m", *b"\x1b[36m";
+        /// Code to set the foreground color to white.
+        pub const WHITE: [u8; 5] = "\x1b[37m", *b"\x1b[37m";
+
+        /// Code to set the background color to black.
+        pub const BLACK_BG: [u8; 5] = "\x1b[40m", *b"\x1b[40m";
+        /// Code to set the background color to red.
+        pub const RED_BG: [u8; 5] = "\x1b[41m", *b"\x1b[41m";
+        /// Code to set the background color to green.
+        pub const GREEN_BG: [u8; 5] = "\x1b[42m", *b"\x1b[42m";
+        /// Code to set the background color to yellow.
+        pub const YELLOW_BG: [u8; 5] = "\x1b[43m", *b"\x1b[43m";
+        /// Code to set the background color to blue.
+        pub const BLUE_BG: [u8; 5] = "\x1b[44m", *b"\x1b[44m";
+        /// Code to set the background color to magenta.
+        pub const MAGENTA_BG: [u8; 5] = "\x1b[45m", *b"\x1b[45m";
+        /// Code to set the background color to cyan.
+        pub const CYAN_BG: [u8; 5] = "\x1b[46m", *b"\x1b[46m";
+        /// Code to set the background color to white.
+        pub const WHITE_BG: [u8; 5] = "\x1b[47m", *b"\x1b[47m";
+
+        /// Code to set the foreground color to bright black.
+        pub const BRIGHT_BLACK: [u8; 5] = "\x1b[90m", *b"\x1b[90m";
+        /// Code to set the foreground color to bright red.
+        pub const BRIGHT_RED: [u8; 5] = "\x1b[91m", *b"\x1b[91m";
+        /// Code to set the foreground color to bright green.
+        pub const BRIGHT_GREEN: [u8; 5] = "\x1b[92m", *b"\x1b[92m";
+        /// Code to set the foreground color to bright yellow.
+        pub const BRIGHT_YELLOW: [u8; 5] = "\x1b[93m", *b"\x1b[93m";
+        /// Code to set the foreground color to bright blue.
+        pub const BRIGHT_BLUE: [u8; 5] = "\x1b[94m", *b"\x1b[94m";
+        /// Code to set the foreground color to bright magenta.
+        pub const BRIGHT_MAGENTA: [u8; 5] = "\x1b[95m", *b"\x1b[95m";
+        /// Code to set the foreground color to bright cyan.
+        pub const BRIGHT_CYAN: [u8; 5] = "\x1b[96m", *b"\x1b[96m";
+        /// Code to set the foreground color to bright white.
+        pub const BRIGHT_WHITE: [u8; 5] = "\x1b[97m", *b"\x1b[97m";
+
+        /// Code to set the background color to bright black.
+        pub const BRIGHT_BLACK_BG: [u8; 6] = "\x1b[100m", *b"\x1b[100m";
+        /// Code to set the background color to bright red.
+        pub const BRIGHT_RED_BG: [u8; 6] = "\x1b[101m", *b"\x1b[101m";
+        /// Code to set the background color to bright green.
+        pub const BRIGHT_GREEN_BG: [u8; 6] = "\x1b[102m", *b"\x1b[102m";
+        /// Code to set the background color to bright yellow.
+        pub const BRIGHT_YELLOW_BG: [u8; 6] = "\x1b[103m", *b"\x1b[103m";
+        /// Code to set the background color to bright blue.
+        pub const BRIGHT_BLUE_BG: [u8; 6] = "\x1b[104m", *b"\x1b[104m";
+        /// Code to set the background color to bright magenta.
+        pub const BRIGHT_MAGENTA_BG: [u8; 6] = "\x1b[105m", *b"\x1b[105m";
+        /// Code to set the background color to bright cyan.
+        pub const BRIGHT_CYAN_BG: [u8; 6] = "\x1b[106m", *b"\x1b[106m";
+        /// Code to set the background color to bright white.
+        pub const BRIGHT_WHITE_BG: [u8; 6] = "\x1b[107m", *b"\x1b[107m";
     }
 }
 
@@ -330,3 +333,48 @@ impl Ansi {
         pub const RESET_PALETTE_ALL: [u8; 6] = "\x1b]104\x07", *b"\x1b]104\x07";
     }
 }
+
+/// # RGB Color escape codes
+#[rustfmt::skip]
+impl Ansi { __ansi_consts! {
+    /// Code to set the foreground color to `fg: [r, g, b]` values,
+    /// and the background to `bg: [r, g, b]`.
+    // \x1b[38;2;R;G;B;48;2;R;G;Bm
+    pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 36] {
+        const X: [u8; 4] = C::RGB;
+        let [fR, fG, fB] = fg;
+        let [bR, bG, bB] = bg;
+        let [fR, fG, fB] = [Digits(fR).digits10(), Digits(fG).digits10(), Digits(fB).digits10()];
+        let [bR, bG, bB] = [Digits(bR).digits10(), Digits(bG).digits10(), Digits(bB).digits10()];
+        [
+            b'\x1b', b'[', C::FG, X[0], X[1], X[2], X[3], // \x1b[38;2;
+            fR[0], fR[1], fR[2], b';', fG[0], fG[1], fG[2], b';', fB[0], fB[1], fB[2], b';',
+            C::BG, X[0], X[1], X[2], X[3], // 48;2;
+            bR[0], bR[1], bR[2], b';', bG[0], bG[1], bG[2], b';', bB[0], bB[1], bB[2], b'm',
+        ]
+    }
+    /// Code to set the foreground color to `fg: [r, g, b]` values.
+    pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
+        const X: [u8; 4] = C::RGB;
+        let [r, g, b] = fg;
+        let [r, g, b] = [Digits(r).digits10(), Digits(g).digits10(), Digits(b).digits10()];
+        [
+            b'\x1b', b'[',
+            C::FG, X[0], X[1], X[2], X[3],
+            r[0], r[1], r[2], b';', g[0], g[1], g[2], b';', b[0], b[1], b[2],
+            b'm'
+        ]
+    }
+    /// Code to set the background color to `bg: [r, g, b]` values.
+    pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
+        const X: [u8; 4] = C::RGB;
+        let [r, g, b] = bg;
+        let [r, g, b] = [Digits(r).digits10(), Digits(g).digits10(), Digits(b).digits10()];
+        [
+            b'\x1b', b'[',
+            C::BG, X[0], X[1], X[2], X[3],
+            r[0], r[1], r[2], b';', g[0], g[1], g[2], b';', b[0], b[1], b[2],
+            b'm',
+        ]
+    }
+}}
