@@ -14,6 +14,7 @@ mod event; // TermInputParser
 pub mod grid; // Terminal cell elements, grids, and composition
 mod line; // TermLineMode
 mod metric; // TermSize
+mod pen; // TermPen
 mod render; // TermRenderer
 mod session; // TermSession, TermPollPolicy, TermMode
 
@@ -25,6 +26,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             cap::_all::*,
             line::_all::*,
             metric::*,
+            pen::*,
             render::_all::*,
             session::*,
         };

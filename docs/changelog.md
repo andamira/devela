@@ -412,7 +412,7 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 - fix signal restorer & `sys_getpid` in x86.
 
 #### sys::os::term
-- new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLineMode`, `TermLinux`, `TermMode`, `TermPollPolicy`, `TermRenderer`, `TermSession`.
+- new types: `AnsiLink`, `AnsiOsc`, `TermCap`, `TermCaps`, `TermInputParser`, `TermLineMode`, `TermLinux`, `TermMode`, `TermPen`, `TermPollPolicy`, `TermRenderer`, `TermSession`.
 - update `Ansi`:
   - add new functions: `title`, `title_icon`, `title_window`, `link`, `link_with_id`, `clipboard_base64`, `clipboard_query`, `clipboard_query_clipboard`, `QUERY_DEC_PRIVATE_MODE_N`, `DEFAULT_UNDERLINE_COLOR`, `UNDERLINE_<COLOR8|RGB>`, `default_<fg|bg>_<query|reset>`, `cursor_color_<query|reset>`.
   - add new constants: `ESC`, `BEL`, `OSC`, `SS3`, `ST`, `HYPERLINK_CLOSE`, `DISABLE_MOUSE[_<MOTION|SGR|SGR_PIXELS>]`, `<EN|DIS>ABLE_<ALTERNATE_SCREEN_ONLY|BRACKETED_PASTE|FOCUS_EVENTS|SYNC_UPDATE`, `QUERY_*`.

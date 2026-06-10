@@ -6,14 +6,15 @@
 #[cfg(test)]
 mod tests;
 
-mod definition; // TermGrid
+mod r#struct; // TermGrid
 /* impls */
 mod core;
+mod draw;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            r#struct::*,
         };
     }
 }

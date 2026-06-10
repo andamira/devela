@@ -25,7 +25,6 @@ impl<E, S: AsRef<[E]>> TermGrid<E, S> {
         Ok(Self { storage, extent, len, _element: PhantomData })
     }
     /// Returns the grid extent in columns and rows.
-    #[must_use]
     pub const fn extent(&self) -> Extent2<usize> { self.extent }
 
     /// Returns the number of columns.

@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::grid::definition
+// devela::sys::os::term::grid::grid::struct
 //
 //! Defines [`TermGrid`].
 //
@@ -43,6 +43,16 @@ use crate::{Extent2, PhantomData};
 /// - [Copy-oriented operations](#copy-oriented-operations)
 ///   - [fill](#method.fill).
 ///   - [get_copy](#method.get_copy) ([*xy*](#method.get_xy_copy)).
+///
+/// - [Region drawing](#region-drawing)
+///   - [fill_region](#method.fill_region).
+///   - [hline](#method.hline).
+///   - [vline](#method.vline).
+///   - [frame](#method.frame).
+///
+/// - [Grid transfer](#grid-transfer)
+///   - [blit_at](#method.blit_at).
+///   - [blit_region_at](#method.blit_region_at).
 //
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
