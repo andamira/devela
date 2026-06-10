@@ -51,6 +51,7 @@ mod methods; // methods_as_fns!
 mod read; // read_at!
 mod structural; // structural_mods!
 mod type_count; // type_count!
+mod use_as; // use_as!
 mod whilst; // whilst!
 mod write; // write_at!
 
@@ -83,6 +84,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             read::read_at,
             structural::structural_mods,
             type_count::type_count,
+            use_as::use_as,
             whilst::whilst,
             write::write_at,
         };
