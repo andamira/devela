@@ -18,7 +18,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             color::*,
             error::*,
-            grid::*,
+            grid::_all::*,
             meta::*,
             style::*,
             termel::*,

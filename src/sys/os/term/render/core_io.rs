@@ -1,4 +1,9 @@
 // devela::sys::os::term::render::core_io
+//
+// TOC
+// - impl core state
+// - impl I/O
+// - impl traits
 
 use crate::{TermRenderer, TermSize};
 use core::fmt;
@@ -23,28 +28,7 @@ pub(super) fn present_bytes(bytes: &[u8]) -> crate::IoResult<()> {
 
 /* impls */
 
-#[crate::macro_apply(crate::_std_or_linux_syscall)]
-impl<B: AsRef<[u8]>> TermRenderer<B> {
-    /// Presents the active byte frame to the terminal.
-    ///
-    /// Writes the active buffered bytes, clears the active frame,
-    /// and updates byte/frame metrics.
-    ///
-    /// This is the only terminal I/O method on the renderer.
-    /// It does not append reset, cursor, or screen-control sequences.
-    /// Add those explicitly before calling this method.
-    pub fn present(&mut self) -> crate::IoResult<()> {
-        if self.len != 0 {
-            let len = self.len;
-            present_bytes(self.buffered())?;
-            self.bytes_written = self.bytes_written.saturating_add(len as u64);
-            self.len = 0;
-            self.frames_presented = self.frames_presented.saturating_add(1);
-        }
-        Ok(())
-    }
-}
-
+/// # Core state
 impl<B> TermRenderer<B> {
     /// Creates a renderer from byte-frame storage and terminal dimensions.
     ///
@@ -124,6 +108,31 @@ impl<B> TermRenderer<B> {
         self.frames_presented
     }
 }
+
+/// # I/O
+#[crate::macro_apply(crate::_std_or_linux_syscall)]
+impl<B: AsRef<[u8]>> TermRenderer<B> {
+    /// Presents the active byte frame to the terminal.
+    ///
+    /// Writes the active buffered bytes, clears the active frame,
+    /// and updates byte/frame metrics.
+    ///
+    /// This is the only terminal I/O method on the renderer.
+    /// It does not append reset, cursor, or screen-control sequences.
+    /// Add those explicitly before calling this method.
+    pub fn present(&mut self) -> crate::IoResult<()> {
+        if self.len != 0 {
+            let len = self.len;
+            present_bytes(self.buffered())?;
+            self.bytes_written = self.bytes_written.saturating_add(len as u64);
+            self.len = 0;
+            self.frames_presented = self.frames_presented.saturating_add(1);
+        }
+        Ok(())
+    }
+}
+
+/* impl traits */
 
 impl<B: AsRef<[u8]> + AsMut<[u8]>> fmt::Write for TermRenderer<B> {
     fn write_str(&mut self, s: &str) -> fmt::Result {

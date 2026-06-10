@@ -37,34 +37,34 @@ use crate::TermSize;
 ///
 /// # Methods
 ///
-/// - [Core](#method.Core).
+/// - **Construction and storage**
 ///   - [from_buf](#method.from_buf).
+///   - [with_buf_len](#method.with_buf_len) <sup>`alloc`</sup>.
 ///   - [into_buf](#method.into_buf).
 ///   - [buf](#method.buf) ([*mut*](#method.buf_mut)).
 ///   - [replace_buf](#method.replace_buf).
+///   - [replace_with_vec_len](#method.replace_with_vec_len) <sup>`alloc`</sup>.
+///   - [try_replace_buf_copy](#method.try_replace_buf_copy).
+///   - [try_replace_with_vec_len_copy](#method.try_replace_with_vec_len_copy) <sup>`alloc`</sup>.
+/// - **Frame state**
 ///   - [size](#method.size).
 ///   - [set_size](#method.set_size).
 ///   - [cols](#method.cols).
 ///   - [rows](#method.rows).
-///   - [bytes_written](#method.bytes_written).
-///   - [frames_presented](#method.frames_presented).
-/// - [Io](#method.Io).
-///   - [present](#method.present).
-/// - Owned Vector
-///   - [with_buf_len](#method.with_buf_len).
-///   - [replace_with_vec_len](#method.replace_with_vec_len).
-///   - [try_replace_with_vec_len_copy](#method.try_replace_with_vec_len_copy).
-/// - Shared reference
 ///   - [capacity](#method.capacity).
 ///   - [buffered](#method.buffered) ([*len*](#method.buffered_len)).
 ///   - [is_empty](#method.is_empty).
 ///   - [is_full](#method.is_full).
-///   - [try_replace_buf_copy](#method.try_replace_buf_copy).
-/// - Exclusive reference
+///   - [bytes_written](#method.bytes_written).
+///   - [frames_presented](#method.frames_presented).
+/// - **Byte-frame writing**
 ///   - [clear_buffer](#method.clear_buffer).
 ///   - [try_push_bytes](#method.try_push_bytes).
 ///   - [try_push_str](#method.try_push_str).
+///   - [try_push_char](#method.try_push_char).
+///   - [try_push_charu](#method.try_push_charu).
 ///   - [try_finish_frame](#method.try_finish_frame).
+/// - **Terminal commands**
 ///   - [try_clear_screen](#method.try_clear_screen).
 ///   - [try_clear_line](#method.try_clear_line).
 ///   - [try_cursor_home](#method.try_cursor_home).
@@ -73,12 +73,18 @@ use crate::TermSize;
 ///   - [try_cursor_move_to](#method.try_cursor_move_to) ([*0*](#method.try_cursor_move_to0)).
 ///   - [try_style_reset](#method.try_style_reset).
 ///   - [try_style_bold](#method.try_style_bold).
+///   - [try_style_enable](#method.try_style_enable).
+///   - [try_style_transition](#method.try_style_transition).
 ///   - [try_color_fg](#method.try_color_fg).
 ///   - [try_color_bg](#method.try_color_bg).
 ///   - [try_colors](#method.try_colors).
 ///   - [try_text_at](#method.try_text_at) ([*0*](#method.try_text_at0)).
 ///   - [try_hline_at0](#method.try_hline_at0).
 ///   - [try_vline_at0](#method.try_vline_at0).
+/// - **Grid rendering***
+///   - [try_render_grid](#method.try_render_grid) ([*at*](#method.try_render_grid_at)).
+/// - **I/O**
+///   - [present](#method.present).
 ///
 /// # Examples
 /// ```no_run

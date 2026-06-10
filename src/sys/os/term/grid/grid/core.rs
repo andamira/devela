@@ -1,56 +1,13 @@
-// devela::sys::os::term::grid::grid
+// devela::sys::os::term::grid::grid::core
 //
-//! Defines [`TermGrid`].
+//! Core methods for `TermGrid`.
 //
+// - Construction and structural access
+// - Mutable Access
+// - Copy oriented operations
 
-use crate::{Extent2, Order, PhantomData, Position2, TermGridError};
+use crate::{Extent2, Order, PhantomData, Position2, TermGrid, TermGridError};
 
-#[doc = crate::_tags!(term data_structure)]
-/// A dense row-major grid of terminal-space elements.
-#[doc = crate::_doc_meta!{location("sys/os/term/grid")}]
-///
-/// The grid occupies the first `width × height` elements of its storage.
-/// Any remaining storage is retained but lies outside the grid.
-///
-/// # Methods
-///
-/// - [Construction and structural access](#construction-and-structural-access)
-///   - [new](#method.new).
-///   - [extent](#method.extent).
-///   - [width](#method.width).
-///   - [height](#method.height).
-///   - [len](#method.len).
-///   - [is_empty](#method.is_empty).
-///   - [storage](#method.storage)
-///     ([*into*](#method.into_storage), [*slice*](#method.storage_slice)).
-///   - [as_slice](#method.as_slice).
-///   - [spare_len](#method.spare_len).
-///
-/// - [Coordinate queries](#coordinate-queries)
-///   - [contains](#method.contains).
-///   - [index_of](#method.index_of).
-///   - [position_of](#method.position_of).
-///   - [get](#method.get) ([*xy*](#method.get_xy)).
-///   - [row](#method.row).
-///
-/// - [Mutable access](#mutable-access)
-///   - [as_mut_slice](#method.as_mut_slice).
-///   - [storage_slice_mut](#method.storage_slice_mut).
-///   - [get_mut](#method.get_mut) ([*xy*](#method.get_xy_mut)).
-///   - [row_mut](#method.row_mut).
-///   - [set](#method.set) ([*xy*](#method.set_xy)).
-///
-/// - [Copy-oriented operations](#copy-oriented-operations)
-///   - [fill](#method.fill).
-///   - [get_copy](#method.get_copy) ([*xy*](#method.get_xy_copy)).
-#[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct TermGrid<E, S> {
-    storage: S,
-    extent: Extent2<usize>,
-    len: usize,
-    _element: PhantomData<fn() -> E>,
-}
 /// # Construction and structural access
 #[rustfmt::skip]
 impl<E, S: AsRef<[E]>> TermGrid<E, S> {
@@ -149,6 +106,7 @@ impl<E, S: AsRef<[E]>> TermGrid<E, S> {
         Some(&self.as_slice()[start..start + width])
     }
 }
+
 /// # Mutable access
 #[rustfmt::skip]
 impl<E, S: AsRef<[E]> + AsMut<[E]>> TermGrid<E, S> {
@@ -189,17 +147,17 @@ impl<E, S: AsRef<[E]> + AsMut<[E]>> TermGrid<E, S> {
     /// Replaces the element at `pos`.
     ///
     /// Returns `false` when the position lies outside the grid.
-    pub fn set(&mut self, pos: Position2<usize>, element: E) -> bool {
+    pub fn set(&mut self, pos: Position2<usize>, element: impl Into<E>) -> bool {
         match self.get_mut(pos) {
-            Some(dst) => { *dst = element; true }
+            Some(dst) => { *dst = element.into(); true }
             None => false,
         }
     }
     /// Replaces the element at the given coordinates.
     ///
     /// Returns `false` when the coordinates lie outside the grid.
-    pub fn set_xy(&mut self, x: usize, y: usize, element: E) -> bool {
-        self.set(Position2::new([x, y]), element)
+    pub fn set_xy(&mut self, x: usize, y: usize, element: impl Into<E>) -> bool {
+        self.set(Position2::new([x, y]), element.into())
     }
 }
 
@@ -209,69 +167,14 @@ impl<E: Copy, S: AsRef<[E]> + AsMut<[E]>> TermGrid<E, S> {
     pub fn fill(&mut self, element: E) {
         self.as_mut_slice().fill(element);
     }
-
     /// Returns a copy of the element at `pos`.
     #[must_use]
     pub fn get_copy(&self, pos: Position2<usize>) -> Option<E> {
         self.get(pos).copied()
     }
-
     /// Returns a copy of the element at the given coordinates.
     #[must_use]
     pub fn get_xy_copy(&self, x: usize, y: usize) -> Option<E> {
         self.get_xy(x, y).copied()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::{ext, pos};
-
-    #[test]
-    fn construction_and_geometry() {
-        let storage = [0u8; 16];
-        let grid = TermGrid::new(storage, ext!(3usize, 4usize)).unwrap();
-        assert_eq!(grid.extent(), ext!(3, 4));
-        assert_eq!(grid.width(), 3);
-        assert_eq!(grid.height(), 4);
-        assert_eq!(grid.len(), 12);
-        assert_eq!(grid.spare_len(), 4);
-        assert_eq!(grid.as_slice(), &[0; 12]);
-    }
-    #[test]
-    fn insufficient_storage() {
-        let error = TermGrid::new([0u8; 5], ext!(3usize, 2usize)).unwrap_err();
-        assert_eq!(error, TermGridError::NotEnoughElements { required: 6, available: 5 },);
-    }
-    #[test]
-    fn coordinate_mapping() {
-        let grid = TermGrid::new([0u8; 12], ext!(4usize, 3usize)).unwrap();
-        assert_eq!(grid.index_of(pos!(0usize, 0usize)), Some(0));
-        assert_eq!(grid.index_of(pos!(3usize, 2usize)), Some(11));
-        assert_eq!(grid.index_of(pos!(4usize, 2usize)), None);
-        assert_eq!(grid.position_of(0), Some(pos!(0usize, 0usize)));
-        assert_eq!(grid.position_of(11), Some(pos!(3usize, 2usize)));
-        assert_eq!(grid.position_of(12), None);
-    }
-    #[test]
-    fn access_and_rows() {
-        let mut grid = TermGrid::new([0, 1, 2, 3, 4, 5], ext!(3usize, 2usize)).unwrap();
-        assert_eq!(grid.get_xy(1, 0), Some(&1));
-        assert_eq!(grid.get_xy(2, 1), Some(&5));
-        assert_eq!(grid.get_xy(3, 0), None);
-        assert_eq!(grid.row(0), Some(&[0, 1, 2][..]));
-        assert_eq!(grid.row(1), Some(&[3, 4, 5][..]));
-        assert_eq!(grid.row(2), None);
-        assert!(grid.set_xy(1, 1, 9));
-        assert!(!grid.set_xy(3, 1, 9));
-        assert_eq!(grid.row(1), Some(&[3, 9, 5][..]));
-    }
-    #[test]
-    fn fill_only_affects_active_grid() {
-        let mut grid = TermGrid::new([1u8; 8], ext!(3usize, 2usize)).unwrap();
-        grid.fill(7);
-        assert_eq!(grid.as_slice(), &[7; 6]);
-        assert_eq!(grid.storage_slice(), &[7, 7, 7, 7, 7, 7, 1, 1]);
     }
 }

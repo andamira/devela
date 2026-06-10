@@ -2,6 +2,11 @@
 //
 //! Defines [`Termel`].
 //
+// TOC
+// - struct Termel
+// - impl constructors and acccesors
+// - impl conversions from tuples
+// - tests
 
 use crate::{TermColor, TermColors, TermStyle, Textel};
 
@@ -19,6 +24,7 @@ pub struct Termel<T, S = TermStyle, C = TermColors, M = ()> {
     colors: C,
     meta: M,
 }
+/* constructors */
 impl<T, S, C> Termel<T, S, C, ()> {
     /// Creates a terminal element from its components, without metadata.
     pub const fn new(textel: Textel<T>, style: S, colors: C) -> Self {
@@ -45,6 +51,7 @@ impl<T> Termel<T> {
         Self::from_value(value, TermStyle::new(), TermColors::DEFAULT)
     }
 }
+// constructors and accessors
 #[rustfmt::skip]
 impl<T, S, C, M> Termel<T, S, C, M> {
     /// Creates a terminal element from its components.
@@ -122,6 +129,7 @@ impl<T, S, C, M> Termel<T, S, C, M> {
     pub fn into_parts(self) -> (Textel<T>, S, C, M) {
         (self.textel, self.style, self.colors, self.meta) }
 }
+/// # Methods from TermColors
 #[rustfmt::skip]
 impl<T, S, M> Termel<T, S, TermColors, M> {
     /// Returns the foreground color.
@@ -136,6 +144,37 @@ impl<T, S, M> Termel<T, S, TermColors, M> {
     /// Replaces the background color.
     pub const fn with_bg(self, bg: TermColor) -> Termel<T, S, TermColors, M> where Self: Copy {
         Termel::new_meta(self.textel, self.style, self.colors.with_bg(bg), self.meta)
+    }
+}
+
+/* conversions from tuples */
+
+type Vscm<V, S, C, M> = (V, S, C, M);
+impl<V, S, C, M> From<Vscm<V, S, C, M>> for Termel<V, S, C, M> {
+    fn from(vscm: Vscm<V, S, C, M>) -> Self {
+        let (v, s, c, m) = vscm;
+        Self::from_value_meta(v, s, c, m)
+    }
+}
+type Vsc<V, S, C> = (V, S, C);
+impl<V, S, C> From<Vsc<V, S, C>> for Termel<V, S, C, ()> {
+    fn from(vsc: Vsc<V, S, C>) -> Self {
+        let (v, s, c) = vsc;
+        Self::from_value(v, s, c)
+    }
+}
+type Vc<V, C> = (V, C);
+impl<V, C> From<Vc<V, C>> for Termel<V, TermStyle, C, ()> {
+    fn from(vc: Vc<V, C>) -> Self {
+        let (v, c) = vc;
+        Self::from_value(v, TermStyle::new(), c)
+    }
+}
+type Vs<V, S> = (V, S);
+impl<V, S> From<Vs<V, S>> for Termel<V, S, TermColors, ()> {
+    fn from(vs: Vs<V, S>) -> Self {
+        let (v, s) = vs;
+        Self::from_value(v, s, TermColors::DEFAULT)
     }
 }
 

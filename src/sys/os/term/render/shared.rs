@@ -2,6 +2,7 @@
 
 use crate::TermRenderer;
 
+/// # Shared byte-frame access
 impl<B: AsRef<[u8]>> TermRenderer<B> {
     /// Returns the byte-frame capacity.
     #[must_use]

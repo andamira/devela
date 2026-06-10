@@ -10,10 +10,11 @@ mod define; // TermRenderer
 
 // impls
 mod core_io;
-#[cfg(feature = "alloc")]
-mod owned;
 mod shared;
 mod exclusive;
+#[cfg(feature = "alloc")]
+mod owned;
+mod grid;
 
 crate::structural_mods! { // _mods
     _mods {

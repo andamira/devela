@@ -2,6 +2,7 @@
 
 use crate::{Ansi, AnsiColor, NotEnoughSpace, TermRenderer, whilst};
 
+/// # Mutable byte-frame construction
 impl<B: AsRef<[u8]> + AsMut<[u8]>> TermRenderer<B> {
     /// Clears the active frame without modifying the underlying bytes.
     pub const fn clear_buffer(&mut self) -> &mut Self {
@@ -39,7 +40,7 @@ impl<B: AsRef<[u8]> + AsMut<[u8]>> TermRenderer<B> {
 
     /// Finishes a full-screen frame.
     pub fn try_finish_frame(&mut self) -> Result<&mut Self, NotEnoughSpace> {
-        self.try_style_reset()?;
+        self.try_format_reset()?;
         self.try_cursor_show()
     }
     /// Clears the whole terminal screen.
@@ -74,8 +75,8 @@ impl<B: AsRef<[u8]> + AsMut<[u8]>> TermRenderer<B> {
         self.try_cursor_move_to(x.saturating_add(1), y.saturating_add(1))
     }
 
-    /// Resets terminal style.
-    pub fn try_style_reset(&mut self) -> Result<&mut Self, NotEnoughSpace> {
+    /// Resets all terminal presentation attributes and colors to their defaults.
+    pub fn try_format_reset(&mut self) -> Result<&mut Self, NotEnoughSpace> {
         self.try_push_bytes(&Ansi::RESET_B)
     }
     /// Enables bold style.

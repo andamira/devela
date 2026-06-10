@@ -2,6 +2,7 @@
 
 use crate::{TermRenderer, Vec, is, vec_};
 
+/// # Owned byte storage
 impl TermRenderer<Vec<u8>> {
     /// Creates an allocated renderer with `bytes` initialized storage.
     ///
