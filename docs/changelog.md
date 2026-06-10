@@ -99,7 +99,7 @@
   - remove support for deriving `Default` for the enum.
   - new enum methods: `to_set`, `is_in`.
   - replace `bitfield!` with `set!`.
-- update `if!`:
+- update `is!`:
   - support branch-local statement semicolons and empty then/else arms.
 - update `impl_trait!` to support custom attributes.
 - update `unwrap!`: add missing arms: `ok_or?`, `sok_or?`.

@@ -76,48 +76,60 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! is {
-    ($cond:expr, $then:expr) => { $crate::is!(%if $cond, { $then }) };
-    ($cond:expr, $then:expr;) => { $crate::is!(%if $cond, { $then; }) };
-    ($cond:expr, $then:expr, $else:expr) => { $crate::is!(%if $cond, { $then }, { $else }) };
-    ($cond:expr, $then:expr;, $else:expr) => { $crate::is!(%if $cond, { $then; }, { $else }) };
-    ($cond:expr, $then:expr, $else:expr;) => { $crate::is!(%if $cond, { $then }, { $else; }) };
-    ($cond:expr, $then:expr;, $else:expr;) => { $crate::is!(%if $cond, { $then; }, { $else; }) };
-    ($cond:expr, $then:expr,) => { $crate::is!(%if $cond, { $then }, {}) };
-    ($cond:expr, $then:expr; ,) => { $crate::is!(%if $cond, { $then; }, {}) };
-    ($cond:expr, , $else:expr) => { $crate::is!(%if $cond, {}, { $else }) };
-    ($cond:expr, , $else:expr;) => { $crate::is!(%if $cond, {}, { $else; }) };
+    /* if */
+    ($cond:expr, $then:expr) => {
+        $crate::is!(%if $cond, { $then }) };
+    ($cond:expr, $then:expr;) => {
+        $crate::is!(%if $cond, { let _ = $then; }) };
+    ($cond:expr, $then:expr, $else:expr) => {
+        $crate::is!(%if $cond, { $then }, { $else }) };
+    ($cond:expr, $then:expr;, $else:expr) => {
+        $crate::is!(%if $cond, { let _ = $then; }, { $else }) };
+    ($cond:expr, $then:expr, $else:expr;) => {
+        $crate::is!(%if $cond, { $then }, { $else; }) };
+    ($cond:expr, $then:expr;, $else:expr;) => {
+        $crate::is!(%if $cond, { let _ = $then; }, { let _ = $else; }) };
+    ($cond:expr, $then:expr,) => {
+        $crate::is!(%if $cond, { $then }, {}) };
+    ($cond:expr, $then:expr; ,) => {
+        $crate::is!(%if $cond, { let _ = $then; }, {}) };
+    ($cond:expr, , $else:expr) => {
+        $crate::is!(%if $cond, {}, { $else }) };
+    ($cond:expr, , $else:expr;) => {
+        $crate::is!(%if $cond, {}, { let _ = $else; }) };
 
-    (let $pat:pat = $cond:expr, $then:expr) => { $crate::is!(%let $pat = $cond, { $then }) };
-    (let $pat:pat = $cond:expr, $then:expr;) => { $crate::is!(%let $pat = $cond, { $then; }) };
+    /* if let */
+    (let $pat:pat = $cond:expr, $then:expr) => {
+        $crate::is!(%let $pat = $cond, { $then }) };
+    (let $pat:pat = $cond:expr, $then:expr;) => {
+        $crate::is!(%let $pat = $cond, { let _ = $then; }) };
     (let $pat:pat = $cond:expr, $then:expr, $else:expr) => {
         $crate::is!(%let $pat = $cond, { $then }, { $else }) };
     (let $pat:pat = $cond:expr, $then:expr;, $else:expr) => {
-        $crate::is!(%let $pat = $cond, { $then; }, { $else }) };
+        $crate::is!(%let $pat = $cond, { let _ = $then; }, { $else }) };
     (let $pat:pat = $cond:expr, $then:expr, $else:expr;) => {
-        $crate::is!(%let $pat = $cond, { $then }, { $else; }) };
+        $crate::is!(%let $pat = $cond, { $then }, { let _ = $else; }) };
     (let $pat:pat = $cond:expr, $then:expr;, $else:expr;) => {
-        $crate::is!(%let $pat = $cond, { $then; }, { $else; }) };
+        $crate::is!(%let $pat = $cond, { let _ = $then; }, { let _ = $else; }) };
     (let $pat:pat = $cond:expr, $then:expr,) => {
         $crate::is!(%let $pat = $cond, { $then }, {}) };
     (let $pat:pat = $cond:expr, $then:expr; ,) => {
-        $crate::is!(%let $pat = $cond, { $then; }, {}) };
+        $crate::is!(%let $pat = $cond, { let _ = $then; }, {}) };
     (let $pat:pat = $cond:expr, , $else:expr) => {
         $crate::is!(%let $pat = $cond, {}, { $else }) };
     (let $pat:pat = $cond:expr, , $else:expr;) => {
-        $crate::is!(%let $pat = $cond, {}, { $else; }) };
+        $crate::is!(%let $pat = $cond, {}, { let _ = $else; }) };
 
+    /* internals */
     (% if $cond:expr, $then:block) => {
         #[allow(clippy::question_mark, reason = "to remain const-friendly")]
-        if $cond $then
-    };
+        if $cond $then };
     (% if $cond:expr, $then:block, $else:block) => {
         if $cond $then else $else
     };
-
     (% let $pat:pat = $cond:expr, $then:block) => {
         #[allow(clippy::question_mark, reason = "to remain const-friendly")]
-        if let $pat = $cond $then
-    };
+        if let $pat = $cond $then };
     (% let $pat:pat = $cond:expr, $then:block, $else:block) => {
         if let $pat = $cond $then else $else
     };
