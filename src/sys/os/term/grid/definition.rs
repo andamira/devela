@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::grid::struct
+// devela::sys::os::term::grid::definition
 //
 //! Defines [`TermGrid`].
 //
@@ -39,6 +39,10 @@ use crate::{Extent2, PhantomData};
 ///   - [get_mut](#method.get_mut) ([*xy*](#method.get_xy_mut)).
 ///   - [row_mut](#method.row_mut).
 ///   - [set](#method.set) ([*xy*](#method.set_xy)).
+///
+/// - [Text drawing](#text-drawing)
+///   - [write_str_at](#method.write_str_at)
+///   - [write_str_xy](#method.write_str_xy)
 ///
 /// - [Copy-oriented operations](#copy-oriented-operations)
 ///   - [fill](#method.fill).

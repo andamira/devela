@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::grid::draw
+// devela::sys::os::term::grid::impls::draw
 //
 //! Grid-region drawing and transfer operations.
 //

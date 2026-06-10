@@ -6,19 +6,24 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod tests;
+
 mod color; // TermColor[s|Kind|Mode]
+mod definition; // TermGrid
 mod error; // TermGridError
-mod grid; // TermGrid
 mod meta; // TermelMeta, TermOccupancy
 mod style; // TermStyle[Ext]
 mod termel; // Termel
+
+mod impls; // impls for TermGrid
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             color::*,
+            definition::*,
             error::*,
-            grid::_all::*,
             meta::*,
             style::*,
             termel::*,
