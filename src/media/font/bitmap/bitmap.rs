@@ -1,48 +1,39 @@
 // devela::media::bitmap::bitmap
 //
-//! Defines the [`FontBitmap`] struct.
+//! Defines [`FontBitmap`].
 //
-// TODO
-// - wrapping.
-// - max width.
 
-use crate::{format_buf, is};
+use crate::{Debug, FmtResult, Formatter};
+use crate::{format_buf, whilst};
 
 #[doc = crate::_tags!(font)]
-/// A simple bitmap font for rendering fixed-size glyphs.
-#[doc = crate::_doc_meta!{location("media/font")}]
+/// A fixed-size bitmap font packed into glyph words.
+#[doc = crate::_doc_meta!{
+    location("media/font"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: FontBitmap<()> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: FontBitmap<()> = 48|384),
+}]
 ///
-/// Each glyph is stored as a bitfield in a generic type and is assumed to have
-/// fixed dimensions (`width` × `height`), a baseline, and an advance metric.
+/// Glyph bits are stored row-major from the least-significant bit:
+/// left to right, then top to bottom.
 ///
-/// The glyphs are arranged sequentially starting from `first_glyph`.
-///
-/// The font supports drawing text into both mono and RGBA buffers,
-/// as well as using a custom per-pixel color function.
-#[derive(Clone, PartialEq, Eq, Hash)] //, Debug,
+/// `baseline` is a zero-based glyph row. Drawing at `y` places that row at `y`.
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct FontBitmap<'glyphs, T> {
-    /// A slice of glyphs.
-    pub glyphs: &'glyphs [T],
-    /// The first char in `glyphs`.
-    pub first_glyph: char,
+    glyphs: &'glyphs [T],
+    first_glyph: char,
+    extra_glyphs: &'glyphs [(char, T)],
 
-    /// A slice of extra paired glyphs.
-    pub extra_glyphs: &'glyphs [(char, T)],
-
-    /// The width of each glyph in pixels.
-    pub width: u8,
-    /// The height of each glyph in pixels.
-    pub height: u8,
-    /// Where the base line sits in the height.
-    pub baseline: u8,
-    /// Horizontal space to advance after each glyph.
-    pub advance_x: u8,
-    /// Vertical space to advance after each new line.
-    pub advance_y: u8,
+    width: u8,
+    height: u8,
+    baseline: u8,
+    advance_x: u8,
+    advance_y: u8,
 }
-
-impl<T> core::fmt::Debug for FontBitmap<'_, T> {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+impl<T> Debug for FontBitmap<'_, T> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
         let mut buf = [0u8; 128];
         let name = format_buf![&mut buf, "FontBitmap<{}>", stringify!(T)].unwrap();
         f.debug_struct(name)
@@ -58,124 +49,197 @@ impl<T> core::fmt::Debug for FontBitmap<'_, T> {
     }
 }
 
-impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
-    /// Returns the rendered text width.
+#[rustfmt::skip]
+impl<'glyphs, T> FontBitmap<'glyphs, T> {
+    /// Creates a checked bitmap font.
+    ///
+    /// # Panics
+    /// Panics if its dimensions, baseline, or glyph storage are invalid.
+    #[must_use]
+    pub const fn new(glyphs: &'glyphs [T], first_glyph: char, width: u8, height: u8, baseline: u8,
+        advance_x: u8, advance_y: u8) -> Self {
+        let glyph_bits = width as usize * height as usize;
+        assert!(width != 0 && height != 0, "bitmap glyph dimensions must be non-zero");
+        assert!(baseline < height, "bitmap font baseline must be inside the glyph");
+        assert!(glyph_bits <= 64, "bitmap glyph exceeds 64 bits");
+        assert!(size_of::<T>() >= (glyph_bits + 7) / 8, "bitmap glyph storage is too small");
+        Self {
+            glyphs, first_glyph, extra_glyphs: &[], width, height, baseline, advance_x, advance_y
+        }
+    }
+    /// Adds individually mapped glyphs.
+    #[must_use]
+    pub const fn with_extra_glyphs(mut self, extra_glyphs: &'glyphs [(char, T)]) -> Self {
+        self.extra_glyphs = extra_glyphs;
+        self
+    }
+
+    /* data */
+
+    /// Returns the sequential glyphs.
+    #[must_use]
+    pub const fn glyphs(&self) -> &[T] { self.glyphs }
+    /// Returns the first sequential glyph character.
+    #[must_use]
+    pub const fn first_glyph(&self) -> char { self.first_glyph }
+    /// Returns the individually mapped glyphs.
+    #[must_use]
+    pub const fn extra_glyphs(&self) -> &[(char, T)] { self.extra_glyphs }
+
+    /* metrics */
+
+    /// Returns the glyph width.
+    #[must_use]
+    pub const fn width(&self) -> u8 { self.width }
+    /// Returns the glyph height.
+    #[must_use]
+    pub const fn height(&self) -> u8 { self.height }
+
+    /// Returns the zero-based baseline row.
+    #[must_use]
+    pub const fn baseline(&self) -> u8 { self.baseline }
+
+    /// Returns the horizontal glyph advance.
+    #[must_use]
+    pub const fn advance_x(&self) -> u8 { self.advance_x }
+    /// Returns the vertical line advance.
+    #[must_use]
+    pub const fn advance_y(&self) -> u8 { self.advance_y }
+
+    /// Returns the bits used by each glyph.
+    #[must_use]
+    pub const fn glyph_bits(&self) -> usize { self.width as usize * self.height as usize }
+
+    /* lookup */
+
+    /// Returns a reference to the glyph for `c`.
+    ///
+    /// The sequential range takes precedence over extra mappings.
+    #[must_use]
+    pub const fn glyph_ref(&self, c: char) -> Option<&T> {
+        let code = c as u32;
+        let first = self.first_glyph as u32;
+        if code >= first {
+            let index = (code - first) as usize;
+            if index < self.glyphs.len() { return Some(&self.glyphs[index]); }
+        }
+        whilst! { i in 0..self.extra_glyphs.len(); {
+            if self.extra_glyphs[i].0 as u32 == code { return Some(&self.extra_glyphs[i].1); }
+        }}
+        None
+    }
+    /// Returns whether a glyph exists for `c`.
+    #[must_use]
+    pub const fn has_glyph(&self, c: char) -> bool {
+        match self.glyph_ref(c) { Some(_) => true, None => false }
+    }
+
+    /* measurement */
+
+    /// Returns the horizontal advance after single-line `text`.
+    #[must_use]
+    pub fn text_advance(&self, text: &str) -> usize {
+        text.chars().count().saturating_mul(self.advance_x as usize)
+    }
+
+    /// Returns the fixed-glyph span of single-line `text`.
+    #[must_use]
     pub fn text_width(&self, text: &str) -> usize {
-        text.chars().count() * self.advance_x as usize
+        let count = text.chars().count();
+        if count == 0 { 0 }
+        else {
+            (count - 1).saturating_mul(self.advance_x as usize).saturating_add(self.width as usize)
+        }
     }
+}
 
-    /// Returns the height of any glyph.
-    pub const fn height(&self) -> u8 {
-        self.height
-    }
-    /// Returns the width of any glyph.
-    pub const fn width(&self) -> u8 {
-        self.width
-    }
-
-    /// Draws grayscale text into a one-byte-per-pixel buffer.
+#[rustfmt::skip]
+impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
+    /// Draws text into a one-byte-per-pixel buffer.
     pub fn draw_mono(&self, buffer: &mut [u8], width: usize, x: isize, y: isize, text: &str) {
+        if width == 0 { return; }
         let height = buffer.len() / width;
         self.for_each_pixel_with_local(x, y, text, |pixel_x, pixel_y, _, _, _| {
-            if pixel_x >= 0 && pixel_x < width as isize && pixel_y >= 0 && pixel_y < height as isize
-            {
-                let offset = (pixel_y as usize) * width + (pixel_x as usize);
-                buffer[offset] = 1;
+            if pixel_x >= 0 && pixel_y >= 0 {
+                let pixel_x = pixel_x as usize;
+                let pixel_y = pixel_y as usize;
+                if pixel_x < width && pixel_y < height {
+                    buffer[pixel_y * width + pixel_x] = 1;
+                }
             }
         });
     }
-
-    /// Draws RGBA text into a 4-bytes-per-pixel buffer.
-    pub fn draw_rgba(
-        &self,
-        buffer: &mut [u8],
-        width: usize,
-        x: isize,
-        y: isize,
-        text: &str,
-        color: [u8; 4],
-    ) {
-        let height = buffer.len() / (width * 4);
+    /// Draws RGBA text into a four-byte-per-pixel buffer.
+    pub fn draw_rgba(&self, buffer: &mut [u8], width: usize, x: isize, y: isize,
+        text: &str, color: [u8; 4]) {
+        let Some(stride) = width.checked_mul(4) else { return; };
+        if stride == 0 { return; }
+        let height = buffer.len() / stride;
         self.for_each_pixel_with_local(x, y, text, |pixel_x, pixel_y, _, _, _| {
-            if pixel_x >= 0 && pixel_x < width as isize && pixel_y >= 0 && pixel_y < height as isize
-            {
-                let offset = ((pixel_y as usize) * width + (pixel_x as usize)) * 4;
-                buffer[offset..offset + 4].copy_from_slice(&color);
+            if pixel_x >= 0 && pixel_y >= 0 {
+                let pixel_x = pixel_x as usize;
+                let pixel_y = pixel_y as usize;
+                if pixel_x < width && pixel_y < height {
+                    let offset = pixel_y * stride + pixel_x * 4;
+                    buffer[offset..offset + 4].copy_from_slice(&color);
+                }
             }
         });
     }
-
-    /// Draws RGBA text with a custom color function.
-    ///
-    /// The provided closure is called for each "on" pixel and receives the glyph‑local
-    /// x and y coordinates (i.e. within the glyph) and the index of the current character.
-    /// It should return a `[u8; 4]` color (RGBA) for that pixel.
-    pub fn draw_rgba_with<F>(
-        &self,
-        buffer: &mut [u8],
-        width: usize,
-        x: isize,
-        y: isize,
-        text: &str,
-        mut color_fn: F,
-    ) where
-        F: FnMut(usize, usize, usize) -> [u8; 4],
-    {
-        let height = buffer.len() / (width * 4);
-        self.for_each_pixel_with_local(
-            x,
-            y,
-            text,
-            |global_x, global_y, local_x, local_y, char_index| {
-                if global_x >= 0
-                    && global_x < width as isize
-                    && global_y >= 0
-                    && global_y < height as isize
-                {
-                    let color = color_fn(local_x, local_y, char_index);
-                    let offset = ((global_y as usize) * width + (global_x as usize)) * 4;
-                    buffer[offset..offset + 4].copy_from_slice(&color);
+    /// Draws RGBA text using a per-pixel color function.
+    pub fn draw_rgba_with<F>(&self, buffer: &mut [u8], width: usize, x: isize, y: isize,
+        text: &str, mut color_fn: F) where F: FnMut(usize, usize, usize) -> [u8; 4] {
+        let Some(stride) = width.checked_mul(4) else { return; };
+        if stride == 0 { return; }
+        let height = buffer.len() / stride;
+        self.for_each_pixel_with_local(x, y, text,
+            |pixel_x, pixel_y, local_x, local_y, char_index| {
+                if pixel_x >= 0 && pixel_y >= 0 {
+                    let pixel_x = pixel_x as usize;
+                    let pixel_y = pixel_y as usize;
+                    if pixel_x < width && pixel_y < height {
+                        let offset = pixel_y * stride + pixel_x * 4;
+                        let color = color_fn(local_x, local_y, char_index);
+                        buffer[offset..offset + 4].copy_from_slice(&color);
+                    }
                 }
             },
         );
     }
-}
 
-// private methods
-impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
-    /// Iterates over every pixel that should be drawn for the given text.
-    ///
-    /// The closure receives:
-    /// - `global_x` and `global_y`: the final buffer coordinates.
-    /// - `local_x` and `local_y`: the coordinates within the current glyph.
-    /// - `char_index`: the index of the current character in the text.
     fn for_each_pixel_with_local<F>(&self, x: isize, y: isize, text: &str, mut f: F)
-    where
-        F: FnMut(isize, isize, usize, usize, usize),
-    {
-        let mut x_pos = x;
-        let mut char_index = 0;
+    where F: FnMut(isize, isize, usize, usize, usize) {
+        let (mut x_pos, mut char_index) = (x, 0);
         for c in text.chars() {
-            if let Some(glyph_index) = (c as usize).checked_sub(self.first_glyph as usize) {
-                if glyph_index < self.glyphs.len() {
-                    let glyph: u64 = self.glyphs[glyph_index].into();
-                    for row in 0..self.height {
-                        let global_y = y + row as isize - self.baseline as isize;
-                        is![global_y < 0, continue];
-                        for col in 0..self.width {
-                            let global_x = x_pos + col as isize;
-                            let bit_pos = row * self.width + col;
-                            // this would read rows top to bottom, draw pixels left to right
-                            // (self.height - 1 - row) * self.width + (self.width - 1 - col);
-                            if (glyph & (1 << bit_pos)) != 0 {
-                                f(global_x, global_y, col as usize, row as usize, char_index);
-                            }
+            if let Some(glyph) = self.glyph(c) {
+                let glyph: u64 = glyph.into();
+                for row in 0..self.height {
+                    let global_y = y.saturating_add(row as isize)
+                        .saturating_sub(self.baseline as isize);
+                    for col in 0..self.width {
+                        let bit = row * self.width + col;
+                        if glyph & (1 << bit) != 0 {
+                            let global_x = x_pos.saturating_add(col as isize);
+                            f(global_x, global_y, col as usize, row as usize, char_index);
                         }
                     }
                 }
             }
-            x_pos += self.advance_x as isize;
+            x_pos = x_pos.saturating_add(self.advance_x as isize);
             char_index += 1;
         }
+    }
+}
+#[rustfmt::skip]
+impl<T: Copy> FontBitmap<'_, T> {
+    /// Returns the glyph for `c`.
+    #[must_use]
+    pub const fn glyph(&self, c: char) -> Option<T> {
+        match self.glyph_ref(c) { Some(glyph) => Some(*glyph), None => None }
+    }
+    /// Returns the glyph for `c`, or `fallback`.
+    #[must_use]
+    pub const fn glyph_or(&self, c: char, fallback: T) -> T {
+        match self.glyph(c) { Some(glyph) => glyph, None => fallback }
     }
 }

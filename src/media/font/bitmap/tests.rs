@@ -2,6 +2,48 @@
 
 use super::*;
 
+const GLYPHS: [u8; 2] = [
+    0b_0001, // A
+    0b_0010, // B
+];
+const EXTRAS: [(char, u8); 2] = [
+    ('Ω', 0b_0100),
+    ('A', 0b_1111), // must not override the sequential glyph
+];
+
+const FONT: FontBitmap<u8> =
+    FontBitmap::new(&GLYPHS, 'A', 2, 2, 1, 3, 3).with_extra_glyphs(&EXTRAS);
+
+#[test]
+fn lookup() {
+    assert_eq!(FONT.glyph('A'), Some(0b_0001));
+    assert_eq!(FONT.glyph('B'), Some(0b_0010));
+    assert_eq!(FONT.glyph('Ω'), Some(0b_0100));
+    assert_eq!(FONT.glyph('C'), None);
+
+    assert!(FONT.has_glyph('Ω'));
+    assert!(!FONT.has_glyph('X'));
+    assert_eq!(FONT.glyph_or('X', 0b_1000), 0b_1000);
+}
+
+#[test]
+fn metrics() {
+    assert_eq!(FONT.text_advance(""), 0);
+    assert_eq!(FONT.text_width(""), 0);
+
+    assert_eq!(FONT.text_advance("A"), 3);
+    assert_eq!(FONT.text_width("A"), 2);
+
+    assert_eq!(FONT.text_advance("AB"), 6);
+    assert_eq!(FONT.text_width("AB"), 5);
+}
+
+#[test]
+#[should_panic(expected = "storage is too small")]
+fn rejects_small_storage() {
+    let _ = FontBitmap::<u8>::new(&[], ' ', 5, 5, 4, 6, 6);
+}
+
 #[test]
 #[rustfmt::skip]
 fn draw_mono_fonts() {

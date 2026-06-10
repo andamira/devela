@@ -200,6 +200,9 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 - new traits: `PcmDrain`, `PcmSampleType`, `PcmSink`, `PcmSinkPlanar`, `PcmSource`, `PcmSourcePlanar`, `PcmStream`.
 - new types: `PcmBuf`, `PcmLayout`, `PcmSample`, `PcmSampleType`, `PcmSpec`.
 
+### media::font
+- overhaul `FontBitmap`.
+
 #### media::visual::color
 - new type `ColorDepth`.
 - make the `Color` trait not depend on the `color` feature.

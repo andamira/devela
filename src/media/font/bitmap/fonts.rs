@@ -17,16 +17,8 @@ use super::FontBitmap;
 /// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 /// - upper and lower case characters are the same.
 /// - 'S' == '5' and  'Z' == '2'.
-pub const FONT_BIT_3_3: FontBitmap<u16> = FontBitmap {
-    glyphs: &FONT_BIT_3_3_GLYPHS,
-    first_glyph: ' ',
-    extra_glyphs: &[],
-    width: 3,
-    height: 3,
-    baseline: 2,
-    advance_x: 4,
-    advance_y: 4,
-};
+pub const FONT_BIT_3_3: FontBitmap<u16> = FontBitmap::new(&FONT_BIT_3_3_GLYPHS, ' ', 3, 3, 2, 4, 4);
+
 // The question mark glyph is also used for when there's no specific glyph.
 const QUESTION_3_3: u16 = 0b_010_110_111;
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
@@ -58,16 +50,8 @@ const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_3_5: FontBitmap<u16> = FontBitmap {
-    glyphs: &FONT_BIT_3_5_GLYPHS,
-    first_glyph: ' ',
-    extra_glyphs: &[],
-    width: 3,
-    height: 5,
-    baseline: 4,
-    advance_x: 4,
-    advance_y: 6,
-};
+pub const FONT_BIT_3_5: FontBitmap<u16> = FontBitmap::new(&FONT_BIT_3_5_GLYPHS, ' ', 3, 5, 4, 4, 6);
+
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
 const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
     0x_0000, 0x_2092, 0x_002d, 0x_5f7d, 0x_279e, //   ! " # $
@@ -97,16 +81,8 @@ const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_5_6: FontBitmap<u32> = FontBitmap {
-    glyphs: &FONT_BIT_5_6_GLYPHS,
-    first_glyph: ' ',
-    extra_glyphs: &[],
-    width: 5,
-    height: 6,
-    baseline: 5,
-    advance_x: 6,
-    advance_y: 8,
-};
+pub const FONT_BIT_5_6: FontBitmap<u32> = FontBitmap::new(&FONT_BIT_5_6_GLYPHS, ' ', 5, 6, 5, 6, 8);
+
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
 const FONT_BIT_5_6_GLYPHS: [u32; 95] = [
     0x_00000000, 0x_08021084, 0x_0000294a, 0x_15f52bea, 0x_08fa38be, //   ! " # $
