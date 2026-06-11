@@ -118,7 +118,10 @@
     all(nightly_stable_later, feature = "alloc"),
     feature(box_vec_non_null, btree_extract_if, new_zeroed_alloc, vec_deque_truncate_front,)
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
+#![cfg_attr(
+    all(nightly_stable_later, feature = "std"),
+    feature(once_wait, local_key_cell_update, path_is_empty,)
+)]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 //
 // documentation

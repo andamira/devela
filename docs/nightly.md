@@ -88,6 +88,7 @@ See also
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
+- 1.??: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
