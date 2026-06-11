@@ -87,8 +87,8 @@
 - new type `ReprMode`.
 
 ### code::ops
-- rename the legacy range types with the `Legacy` suffix.
 - re-export the new range types.
+- remove re-exports for legacy range types.
 
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.

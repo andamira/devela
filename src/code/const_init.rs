@@ -176,10 +176,10 @@ mod impl_core {
         NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
         NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
         // ops
-        Bound, ControlFlow,
+        ControlFlow, Bound,
+        RangeFull, RangeTo, // WAIT:new-range-api
+        // range
         Range, RangeFrom, RangeInclusive, RangeToInclusive,
-            RangeFull, RangeTo, // WAIT:new-range-api
-        RangeLegacy, RangeFromLegacy, RangeInclusiveLegacy, RangeToInclusiveLegacy,
         // panic
         PanicAssertUnwindSafe,
         // range WAIT:1.96
@@ -188,6 +188,10 @@ mod impl_core {
         ParseIntErrorKind,
         // time
         Duration,
+    };
+    use ::core::ops::{
+        Range as RangeLegacy, RangeFrom as RangeFromLegacy,
+        RangeInclusive as RangeInclusiveLegacy, RangeToInclusive as RangeToInclusiveLegacy,
     };
     // NOTE: atomic types are implemented in devela::work::sync::atomic
 

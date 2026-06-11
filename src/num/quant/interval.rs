@@ -9,10 +9,13 @@
 //   - impl traits
 // - tests
 
-use crate::{Bound, RangeFromLegacy, RangeInclusiveLegacy, RangeLegacy, RangeToInclusiveLegacy};
+use crate::{Bound, Range, RangeFrom, RangeInclusive, RangeToInclusive};
 use crate::{Boundary1d, ConstInit, is};
-use crate::{Range, RangeFrom, RangeInclusive, RangeToInclusive};
-use crate::{RangeFull, RangeTo}; // WAIT: Legacy // new range api
+use crate::{RangeFull, RangeTo}; // WAIT:new-range-api
+use ::core::ops::{
+    Range as RangeLegacy, RangeFrom as RangeFromLegacy, RangeInclusive as RangeInclusiveLegacy,
+    RangeToInclusive as RangeToInclusiveLegacy,
+};
 
 #[doc = crate::_tags!(quant)]
 /// Creates an [`Interval`] using extended range notation.
