@@ -57,10 +57,5 @@ _reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterato
 _reexport! { rust: core::iter, extra_flags:(nightly_coro),
     location: "data/access/iter", tag: _tags!(iterator runtime),
     doc: "Creates an iterator where each iteration calls the provided coroutine.",
-    @from_coroutine as iter_from_coroutine
-}
-_reexport! { rust: core::iter, extra_flags:(nightly_coro),
-    location: "data/access/iter", tag: _tags!(iterator runtime),
-    doc: "Creates an iterator where each iteration calls the provided coroutine.",
     @FromCoroutine as IterFromCoroutine
 }

@@ -121,7 +121,10 @@
 
 ### data::access
 - new type: [`ByteCursor`].
-- stop re-exporting: `Iter<Chain|Cloned|Copied|Cycle|Empty|Enumerate|Filter|FilterMap|FlatMap|Flatten|FromFn|Fuse|Inspect|Map|MapWhile|Once|OnceWith|Peekable|Repeat|RepeatN|RepeatWith|Rev|Scan|Skip|SkipWhile|StepBy|Successors|Take|TakeWhile|Zip>.
+
+#### data::access::iter
+- new `Iter` method: `from_coroutine`.
+- stop re-exporting: `Iter<Chain|Cloned|Copied|Cycle|Empty|Enumerate|Filter|FilterMap|FlatMap|Flatten|FromFn|Fuse|Inspect|Map|MapWhile|Once|OnceWith|Peekable|Repeat|RepeatN|RepeatWith|Rev|Scan|Skip|SkipWhile|StepBy|Successors|Take|TakeWhile|Zip>`, `iter_from_coroutine`.
 
 ### data::codec
 - new submodules: `bin`, `detect`, `pack`, `symbol`.

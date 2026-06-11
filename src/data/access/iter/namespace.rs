@@ -4,8 +4,8 @@
 //
 // WAIT: [iter_chain](https://github.com/rust-lang/rust/issues/125964)
 
-// #[cfg(nightly_coro)]
-// use core::iter::from_coroutine;
+#[cfg(nightly_coro)]
+use core::iter::from_coroutine;
 use core::iter::{empty, from_fn, once, once_with, repeat, repeat_n, repeat_with, successors, zip};
 
 #[doc = crate::_tags!(iterator namespace)]
@@ -23,18 +23,17 @@ impl Iter {
         empty()
     }
 
-    // WAIT: https://github.com/rust-lang/rust/pull/135687
-    // /// Creates a new iterator where each iteration calls the provided coroutine.
-    // ///
-    // /// See `core::iter::`[`from_corooutine`].
-    // #[cfg(nightly_coro)]
-    // #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
-    // pub fn from_coroutine<G>(coroutine: G) -> core::iter::FromCoroutine<G>
-    // where
-    //     G: crate::Coroutine<Return = ()> + Unpin,
-    // {
-    //     from_coroutine
-    // }
+    /// Creates a new iterator where each iteration calls the provided coroutine.
+    ///
+    /// See `core::iter::`[`from_coroutine`].
+    #[cfg(nightly_coro)]
+    #[cfg_attr(nightly_doc, doc(cfg(nightly_coro)))]
+    pub fn from_coroutine<G>(coroutine: G) -> ::core::iter::FromCoroutine<G>
+    where
+        G: crate::Coroutine<Return = ()> + Unpin,
+    {
+        from_coroutine(coroutine)
+    }
 
     /// Creates an iterator that calls the given closure `F: FnMut() -> Option<T>`.
     ///
