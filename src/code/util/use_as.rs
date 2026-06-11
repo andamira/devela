@@ -15,7 +15,10 @@
 ///
 /// An optional visibility may precede the source path.
 ///
-/// # Example
+/// # Examples
+///
+/// This imports `Debug` as `Dbg`, `DebugList` as `ListFmt`,
+/// `AtomicBool` as `Abool` and `AtomicUsize` as `Usize`.
 /// ```
 /// devela::use_as! {
 ///     +Debug: devela::{_ as Dbg, List as ListFmt},
@@ -32,10 +35,8 @@
 ///     }
 /// }
 /// ```
-///
-/// This imports `Debug` as `Dbg`, `DebugList` as `ListFmt`,
-/// `AtomicBool` as `Abool` and `AtomicUsize` as `Usize`.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! use_as {
     ($( +$prefix:ident: $vis:vis $($path:ident)::+::{ $($items:tt)* } ),+ $(,)?) => {
         $( $crate::use_as![%[$prefix] [$vis] [$($path)::+] [] $($items)*]; )+
