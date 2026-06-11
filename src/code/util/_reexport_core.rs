@@ -45,11 +45,16 @@ doc: "Asserts that two expressions are equal to each other.", assert_eq }
 _reexport! { rust: core, location: "code/util", tag: _tags!(assert),
 doc: "Asserts that two expressions are not equal to each other.", assert_ne }
 _reexport! { rust: core, location: "code/util", tag: _tags!(assert),
+doc: "Asserts that an expression matches the provided pattern.", assert_matches }
+//
+_reexport! { rust: core, location: "code/util", tag: _tags!(assert),
 doc: "Asserts that a boolean expression is true at runtime.", debug_assert }
 _reexport! { rust: core, location: "code/util", tag: _tags!(assert),
 doc: "Asserts that two expressions are equal to each other.", debug_assert_eq }
 _reexport! { rust: core, location: "code/util", tag: _tags!(assert),
 doc: "Asserts that two expressions are not equal to each other.", debug_assert_ne }
+_reexport! { rust: core, location: "code/util", tag: _tags!(assert),
+doc: "Asserts that an expression matches the provided pattern.", debug_assert_matches }
 
 // cfg
 _reexport! { rust: core, location: "code/util",

@@ -11,6 +11,7 @@
 // - mod wheel
 // - mod _helper
 
+use crate::assert_matches;
 use crate::{EventButton, EventButtonState, EventButtons, EventMouse, EventWheel, EventWheelUnit};
 use crate::{EventKey, EventKind, Key, KeyMods, KeyState, pos};
 use crate::{TermDecModeStatus, TermInputParser, TermParsed, TermReply};
@@ -268,10 +269,10 @@ mod paste {
         for &b in b"\x1b[200~" {
             let _ = p.feed(b);
         }
-        assert!(matches!(
+        assert_matches!(
             p.feed(b'a'),
             Some(EventKind::Key(k)) if k.semantic == Key::Char('a')
-        ));
+        );
         for &b in b"\x1b[201~" {
             let _ = p.feed(b);
         }

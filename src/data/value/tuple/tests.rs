@@ -1,6 +1,7 @@
 // devela::data::value::tuple::tests
 
-use super::*;
+use super::{Tuple, TupleElement, TupleElementMut, TupleElementRef};
+use crate::assert_matches;
 
 type TestTuple = (i32, f32, &'static str, bool);
 
@@ -76,7 +77,7 @@ fn tuple_prepend() {
 
 #[test]
 fn tuple_nth() {
-    assert![matches![TUPLE.nth(2), Some(TupleElement::_2("Hello"))]];
+    assert_matches![TUPLE.nth(2), Some(TupleElement::_2("Hello"))];
 
     // alternative form
     match TUPLE.nth(2) {
@@ -90,17 +91,17 @@ fn tuple_nth_clone() {
     struct Clonable;
     let tuple = (10, 20.5, Clonable, true);
 
-    assert![matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))]];
-    assert![matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))]];
+    assert_matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))];
+    assert_matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))];
 }
 #[test]
 fn tuple_nth_ref() {
-    assert![matches![TUPLE.nth_ref(2), Some(TupleElementRef::_2(&"Hello"))]];
+    assert_matches![TUPLE.nth_ref(2), Some(TupleElementRef::_2(&"Hello"))];
 }
 #[test] #[rustfmt::skip]
 fn tuple_nth_mut() {
     let mut tuple = TUPLE;
-    assert![matches![tuple.nth_mut(2), Some(TupleElementMut::_2(&mut "Hello"))]];
+    assert_matches![tuple.nth_mut(2), Some(TupleElementMut::_2(&mut "Hello"))];
 }
 
 #[test] #[rustfmt::skip]

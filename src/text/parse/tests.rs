@@ -8,7 +8,7 @@
 // - predicate-driven adapters
 // - UTF-8 scanning
 
-use crate::{AsciiSet, TextParseErrorKind, TextRange, TextScanner, charu};
+use crate::{AsciiSet, TextParseErrorKind, TextRange, TextScanner, assert_matches, charu};
 
 fn str_at<'a>(scanner: &TextScanner<'a>, range: TextRange) -> &'a str {
     scanner.slice_str(range).unwrap()
@@ -312,7 +312,7 @@ fn quoted_decode_invalid_escape() {
     let err = s.decode_quoted_basic_into(range, &mut out).unwrap_err();
 
     assert_eq!(err.at.index.as_usize(), 1);
-    assert!(matches!(err.kind, TextParseErrorKind::InvalidEscape));
+    assert_matches!(err.kind, TextParseErrorKind::InvalidEscape);
 }
 
 #[test]
@@ -327,7 +327,7 @@ fn quoted_decode_trailing_backslash() {
     let err = s.decode_quoted_basic_into(range, &mut out).unwrap_err();
 
     assert_eq!(err.at.index.as_usize(), 2);
-    assert!(matches!(err.kind, TextParseErrorKind::UnterminatedQuote));
+    assert_matches!(err.kind, TextParseErrorKind::UnterminatedQuote);
 }
 
 #[test]

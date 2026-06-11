@@ -1,7 +1,7 @@
 // devela::sys::os::term::render::tests
 
 use super::*;
-use crate::{AnsiColor, AnsiColor3, NotEnoughSpace};
+use crate::{AnsiColor, AnsiColor3, NotEnoughSpace, assert_matches};
 
 #[test]
 fn array_storage_starts_empty() {
@@ -33,7 +33,7 @@ fn clear_buffer_keeps_storage_reusable() {
 #[test]
 fn push_bytes_reports_not_enough_space() {
     let mut r = TermRenderer::from_buf([0u8; 4], 80, 24);
-    assert!(matches!(r.try_push_bytes(b"abcde"), Err(NotEnoughSpace(Some(5)))));
+    assert_matches!(r.try_push_bytes(b"abcde"), Err(NotEnoughSpace(Some(5))));
     assert_eq!(r.buffered(), b"");
 }
 #[test]
