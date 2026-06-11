@@ -48,6 +48,9 @@
 //! - The `std` feature enables [`StdRand`].
 //
 
+#[cfg(test)]
+mod tests;
+
 mod _helper; // (_impl_dep_rand_core)
 
 mod from; // FromRandTry, FromRand

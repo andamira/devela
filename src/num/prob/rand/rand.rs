@@ -3,7 +3,7 @@
 //! Defines [`RandSeedable`], [`RandTry`], [`Rand`].
 //
 
-use crate::{Cast, Infallible, RandQualities};
+use crate::{Cast, Infallible, RandQualities, is, whilst};
 
 #[doc = crate::_tags!(rand)]
 /// Construction from explicit seed material or another random source.
@@ -145,9 +145,7 @@ pub trait RandTry {
         let zone = u64::MAX - (u64::MAX % upper);
         loop {
             let v = self.rand_try_next_u64()?;
-            if v < zone {
-                return Ok(v % upper);
-            }
+            is! { v < zone, return Ok(v % upper) }
         }
     }
     /// Attempts to return a uniformly random integer in `low..high`.
@@ -174,13 +172,73 @@ pub trait RandTry {
     ///
     /// Uses the Fisher–Yates algorithm.
     fn rand_try_shuffle<T>(&mut self, slice: &mut [T]) -> Result<(), Self::Error> {
+        /*
         let mut i = slice.len();
         while i > 1 {
             i -= 1;
             let j = self.rand_try_below((i + 1) as u64)? as usize;
             slice.swap(i, j);
         }
+        */
+
+        whilst! { i in rev 1..slice.len(); {
+            let j = self.rand_try_below((i + 1) as u64)? as usize;
+            slice.swap(i, j);
+        }}
         Ok(())
+    }
+
+    /* selection helpers */
+
+    /// Attempts to choose one valid item using reservoir sampling.
+    ///
+    /// This is uniform over all valid items and uses one pass.
+    fn rand_try_choose_reservoir<I, F>(
+        &mut self,
+        iter: I,
+        mut valid: F,
+    ) -> Result<Option<I::Item>, Self::Error>
+    where
+        I: IntoIterator,
+        F: FnMut(&I::Item) -> bool,
+    {
+        let (mut seen, mut picked) = (0u64, None);
+        for item in iter {
+            if valid(&item) {
+                seen = seen.checked_add(1).expect("too many valid random candidates");
+                is! { self.rand_try_below(seen)? == 0, picked = Some(item) }
+            }
+        }
+        Ok(picked)
+    }
+    /// Attempts to choose one valid item using random scores.
+    ///
+    /// Each valid item receives a random score. The highest score wins.
+    /// Ties are resolved uniformly.
+    fn rand_try_choose_scored<I, F>(
+        &mut self,
+        iter: I,
+        mut valid: F,
+    ) -> Result<Option<I::Item>, Self::Error>
+    where
+        I: IntoIterator,
+        F: FnMut(&I::Item) -> bool,
+    {
+        let (mut picked, mut best_score, mut ties) = (None, 0u64, 0u64);
+        for item in iter {
+            if valid(&item) {
+                let score = self.rand_try_next_u64()?;
+                if picked.is_none() || score > best_score {
+                    picked = Some(item);
+                    best_score = score;
+                    ties = 1;
+                } else if score == best_score {
+                    ties = ties.checked_add(1).expect("too many tied random candidates");
+                    is! { self.rand_try_below(ties)? == 0, picked = Some(item) }
+                }
+            }
+        }
+        Ok(picked)
     }
 }
 
@@ -257,6 +315,7 @@ pub trait Rand: RandTry<Error = Infallible> {
     fn rand_range(&mut self, low: u64, high: u64) -> u64 {
         match self.rand_try_range(low, high) { Ok(v) => v, Err(e) => match e {} }
     }
+
     /* common discrete helpers */
 
     /// Rolls a fair die with a number of `sides`.
@@ -272,5 +331,25 @@ pub trait Rand: RandTry<Error = Infallible> {
     #[inline(always)]
     fn rand_shuffle<T>(&mut self, slice: &mut [T]) {
         match self.rand_try_shuffle(slice) { Ok(()) => {} Err(e) => match e {} }
+    }
+
+    /* selection helpers */
+
+    /// Chooses one valid item using reservoir sampling.
+    ///
+    /// This is uniform over all valid items and uses one pass.
+    #[inline(always)]
+    fn rand_choose_reservoir<I, F>(&mut self, iter: I, valid: F) -> Option<I::Item>
+    where I: IntoIterator, F: FnMut(&I::Item) -> bool {
+        match self.rand_try_choose_reservoir(iter, valid) { Ok(v) => v, Err(e) => match e {} }
+    }
+    /// Chooses one valid item using random scores.
+    ///
+    /// Each valid item receives a random score. The highest score wins.
+    /// Ties are resolved uniformly.
+    #[inline(always)]
+    fn rand_choose_scored<I, F>(&mut self, iter: I, valid: F) -> Option<I::Item>
+    where I: IntoIterator, F: FnMut(&I::Item) -> bool {
+        match self.rand_try_choose_scored(iter, valid) { Ok(v) => v, Err(e) => match e {} }
     }
 }
