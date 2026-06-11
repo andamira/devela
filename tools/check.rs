@@ -233,6 +233,7 @@ type Result<T> = core::result::Result<T, Box<dyn core::error::Error>>;
 fn main() -> Result<()> {
     let args = get_args()?;
     let msrv = is![args.no_msrv, "".into(), get_msrv().unwrap_or("".into())];
+    println!("resolved MSRV from Cargo.toml: {msrv}");
 
     let cmd = "check";
 

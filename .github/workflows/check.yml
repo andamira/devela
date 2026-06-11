@@ -97,13 +97,37 @@ jobs:
         with:
             submodules: true
 
+      - name: "check MSRV is synced with Cargo.toml"
+        shell: bash
+        run: |
+          cargo_msrv=$(python3 - <<'PY'
+          import tomllib
+          with open("Cargo.toml", "rb") as f:
+              toml = tomllib.load(f)
+          rv = toml.get("package", {}).get("rust-version")
+          if isinstance(rv, dict) and rv.get("workspace") is True:
+              rv = toml.get("workspace", {}).get("package", {}).get("rust-version")
+          if not rv:
+              rv = toml.get("workspace", {}).get("package", {}).get("rust-version")
+          if not rv:
+              raise SystemExit("missing `rust-version` in Cargo.toml")
+          print(rv)
+          PY
+          )
+          if [ "$cargo_msrv" != "${{ matrix.msrv }}" ]; then
+            echo "MSRV mismatch:"
+            echo "  Cargo.toml: $cargo_msrv"
+            echo "  check.yml:  ${{ matrix.msrv }}"
+            exit 1
+          fi
+
       - name: "Install ${{ matrix.msrv }}"
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.msrv }}
 
       - name: "cargo +${{ matrix.msrv }} check -F all,std,unsafe,__dbg"
-        run: cargo check -F all,std,unsafe,__dbg
+        run: cargo +${{ matrix.msrv }} check -F all,std,unsafe,__dbg
 
       - name: "cargo +${{ matrix.msrv }} check -F all,safe,__dbg"
-        run: cargo check -F all,safe,__dbg
+        run: cargo +${{ matrix.msrv }} check -F all,safe,__dbg
