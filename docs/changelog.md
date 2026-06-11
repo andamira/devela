@@ -17,7 +17,7 @@
 
 ## infra
 ### cargo
-- bump MSRV to 1.95.0.
+- bump MSRV to 1.96.0.
 
 ### tools
 - update `check.rs`: downgrade devela version to 0.26.0.

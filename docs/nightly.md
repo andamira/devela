@@ -23,20 +23,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.96 will be stable on [2026-05-28](https://releases.rs/docs/1.96.0/) `nightly_stable_1_96`
-> - <https://github.com/rust-lang/rust/milestone/142>
-<!-- > - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.96.0> -->
-
-- 1.96: ` `[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
-- 1.96: `·`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
-- 1.96: `·`[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
-- 1.96: `·`[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
-- 1.96: `·`[new_range_api](https://github.com/rust-lang/rust/pull/154620) (new_range_api)
-- 1.96: `·`[new_range_from_api](https://github.com/rust-lang/rust/pull/153380) (new_range_api)
-- 1.96: `·`[new_range_to_inclusive_api](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
-- 1.96: ` `[step_nonzero_impl](https://github.com/rust-lang/rust/pull/127534)
-
 # 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
 > - <https://github.com/rust-lang/rust/milestone/144>
 <!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
@@ -50,12 +36,32 @@ See also
 - 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 - 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
 
+
 # 1.98 will be stable on [2026-08-20](https://releases.rs/docs/1.98.0/) `nightly_stable_1_98`
-> - <https://github.com/rust-lang/rust/milestone/144>
+> - <https://github.com/rust-lang/rust/milestone/145>
 <!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
 > - <https://github.com/rust-lang/rust/releases/tag/1.98.0>
 
 - 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
+
+
+# 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
+> - <https://github.com/rust-lang/rust/milestone/146>
+<!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
+
+
+# 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
+> - <https://github.com/rust-lang/rust/milestone/147>
+<!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
+
+
+# 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
+> - <https://github.com/rust-lang/rust/milestone/148>
+<!-- > - <https://blog.rust-lang.org/2026/12/24/Rust-1.101.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
+
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 

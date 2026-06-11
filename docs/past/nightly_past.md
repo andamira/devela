@@ -8,6 +8,20 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.96 became stable on [2026-05-28](https://releases.rs/docs/1.96.0/)
+> - <https://github.com/rust-lang/rust/milestone/142>
+> - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.96.0>
+
+- 1.96: `→`[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
+- 1.96: `→`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
+- 1.96: ` `[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
+- 1.96: ` `[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
+- 1.96: `→`[new_range_api](https://github.com/rust-lang/rust/pull/154620) (new_range_api)
+- 1.96: `→`[new_range_from_api](https://github.com/rust-lang/rust/pull/153380) (new_range_api)
+- 1.96: `→`[new_range_to_inclusive_api](https://github.com/rust-lang/rust/pull/152304) (new_range_api)
+- 1.96: ` `[step_nonzero_impl](https://github.com/rust-lang/rust/pull/127534)
+
 # 1.95 became be stable on [2026-04-16](https://releases.rs/docs/1.95.0/)
 > - <https://github.com/rust-lang/rust/milestone/140>
 > - <https://blog.rust-lang.org/2026/04/16/Rust-1.95.0>

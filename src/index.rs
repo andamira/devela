@@ -44,20 +44,6 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_96`: core, alloc, std…
-#![cfg_attr(
-    nightly_stable_1_96,
-    feature(
-        assert_matches,
-        control_flow_ok,
-        new_range_api,
-        new_range_from_api,
-        new_range_to_inclusive_api,
-    )
-)]
-// #![cfg_attr(all(nightly_stable_1_96, feature = "alloc"), feature())]
-// #![cfg_attr(all(nightly_stable_1_96, feature = "std"), feature())]
-// ----------------------------
 // `nightly_stable_1_97`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_97,
