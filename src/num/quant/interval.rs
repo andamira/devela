@@ -9,10 +9,10 @@
 //   - impl traits
 // - tests
 
-use crate::{
-    Bound, Boundary1d, ConstInit, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo,
-    RangeToInclusive, is,
-};
+use crate::{Bound, RangeFromLegacy, RangeInclusiveLegacy, RangeLegacy, RangeToInclusiveLegacy};
+use crate::{Boundary1d, ConstInit, is};
+use crate::{Range, RangeFrom, RangeInclusive, RangeToInclusive};
+use crate::{RangeFull, RangeTo}; // WAIT: Legacy // new range api
 
 #[doc = crate::_tags!(quant)]
 /// Creates an [`Interval`] using extended range notation.
@@ -66,6 +66,8 @@ use crate::{
 /// interval![..=10];   // (-∞, 10]
 /// interval![1..];     // [1, ∞)
 /// ```
+///
+/// See also [`Interval`].
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
@@ -426,12 +428,35 @@ mod impl_traits {
 
     /* infallible conversions */
 
+    // LEGACY RANGE API
     // lower-closed
-    impl<T> From<RangeInclusive<T>> for Interval<T> {
-        fn from(r: RangeInclusive<T>) -> Self {
+    impl<T> From<RangeInclusiveLegacy<T>> for Interval<T> {
+        fn from(r: RangeInclusiveLegacy<T>) -> Self {
             let (start, end) = r.into_inner();
             Self::closed(start, end)
         }
+    }
+    impl<T> From<RangeLegacy<T>> for Interval<T> {
+        fn from(r: RangeLegacy<T>) -> Self { Self::closed_open(r.start, r.end) }
+    }
+    impl<T> From<RangeFromLegacy<T>> for Interval<T> {
+        fn from(r: RangeFromLegacy<T>) -> Self { Self::closed_unbounded(r.start) }
+    }
+    // lower-unbounded
+    impl<T> From<RangeFull> for Interval<T> { // WAIT:new-range-api
+        fn from(_: RangeFull) -> Self { Self::unbounded() }
+    }
+    impl<T> From<RangeTo<T>> for Interval<T> { // WAIT:new-range-api
+        fn from(r: RangeTo<T>) -> Self { Self::unbounded_open(r.end) }
+    }
+    impl<T> From<RangeToInclusiveLegacy<T>> for Interval<T> {
+        fn from(r: RangeToInclusiveLegacy<T>) -> Self { Self::unbounded_closed(r.end) }
+    }
+
+    // NEW RANGE API
+    // lower-closed
+    impl<T> From<RangeInclusive<T>> for Interval<T> {
+        fn from(r: RangeInclusive<T>) -> Self { Self::closed(r.start, r.last) }
     }
     impl<T> From<Range<T>> for Interval<T> {
         fn from(r: Range<T>) -> Self { Self::closed_open(r.start, r.end) }
@@ -440,22 +465,23 @@ mod impl_traits {
         fn from(r: RangeFrom<T>) -> Self { Self::closed_unbounded(r.start) }
     }
     // lower-unbounded
-    impl<T> From<RangeFull> for Interval<T> {
-        fn from(_: RangeFull) -> Self { Self::unbounded() }
-    }
-    impl<T> From<RangeTo<T>> for Interval<T> {
-        fn from(r: RangeTo<T>) -> Self { Self::unbounded_closed(r.end) }
-    }
+    // impl<T> From<RangeFull> for Interval<T> { // WAIT:new-range-api
+    //     fn from(_: RangeFull) -> Self { Self::unbounded() }
+    // }
+    // impl<T> From<RangeTo<T>> for Interval<T> { // WAIT:new-range-api
+    //     fn from(r: RangeTo<T>) -> Self { Self::unbounded_open(r.end) }
+    // }
     impl<T> From<RangeToInclusive<T>> for Interval<T> {
-        fn from(r: RangeToInclusive<T>) -> Self { Self::unbounded_open(r.end) }
+        fn from(r: RangeToInclusive<T>) -> Self { Self::unbounded_closed(r.last) }
     }
 
     /* fallible conversions */
 
+    // LEGACY RANGE API
     // lower-closed
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for RangeInclusive<T> {
+    impl<T> TryFrom<Interval<T>> for RangeInclusiveLegacy<T> {
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
@@ -466,7 +492,7 @@ mod impl_traits {
     }
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for Range<T> {
+    impl<T> TryFrom<Interval<T>> for RangeLegacy<T> {
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
@@ -477,7 +503,7 @@ mod impl_traits {
     }
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for RangeFrom<T> {
+    impl<T> TryFrom<Interval<T>> for RangeFromLegacy<T> {
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
@@ -489,7 +515,7 @@ mod impl_traits {
     // lower-unbounded
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for RangeFull {
+    impl<T> TryFrom<Interval<T>> for RangeFull { // WAIT:new-range-api
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
@@ -500,7 +526,7 @@ mod impl_traits {
     }
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for RangeTo<T> {
+    impl<T> TryFrom<Interval<T>> for RangeTo<T> { // WAIT:new-range-api
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
@@ -511,11 +537,81 @@ mod impl_traits {
     }
     /// # Errors
     /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
-    impl<T> TryFrom<Interval<T>> for RangeToInclusive<T> {
+    impl<T> TryFrom<Interval<T>> for RangeToInclusiveLegacy<T> {
         type Error = IncompatibleBounds;
         fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
             match (interval.lower, interval.upper) {
                 (Bound::Unbounded, Bound::Included(end)) => Ok(..=end),
+                _ => Err(IncompatibleBounds),
+            }
+        }
+    }
+
+    // NEW RANGE API
+    // lower-closed
+    /// # Errors
+    /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    impl<T> TryFrom<Interval<T>> for RangeInclusive<T> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+            match (interval.lower, interval.upper) {
+                (Bound::Included(start), Bound::Included(end)) => Ok(Self { start, last: end }),
+                _ => Err(IncompatibleBounds),
+            }
+        }
+    }
+    /// # Errors
+    /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    impl<T> TryFrom<Interval<T>> for Range<T> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+            match (interval.lower, interval.upper) {
+                (Bound::Included(start), Bound::Excluded(end)) => Ok(Self { start, end }),
+                _ => Err(IncompatibleBounds),
+            }
+        }
+    }
+    /// # Errors
+    /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    impl<T> TryFrom<Interval<T>> for RangeFrom<T> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+            match (interval.lower, interval.upper) {
+                (Bound::Included(start), Bound::Unbounded) => Ok(Self { start }),
+                _ => Err(IncompatibleBounds),
+            }
+        }
+    }
+    // lower-unbounded
+    // /// # Errors
+    // /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    // impl<T> TryFrom<Interval<T>> for RangeFull { // WAIT:new-range-api
+    //     type Error = IncompatibleBounds;
+    //     fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+    //         match (interval.lower, interval.upper) {
+    //             (Bound::Unbounded, Bound::Unbounded) => Ok(..),
+    //             _ => Err(IncompatibleBounds),
+    //         }
+    //     }
+    // }
+    // /// # Errors
+    // /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    // impl<T> TryFrom<Interval<T>> for RangeTo<T> { // WAIT:new-range-api
+    //     type Error = IncompatibleBounds;
+    //     fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+    //         match (interval.lower, interval.upper) {
+    //             (Bound::Unbounded, Bound::Excluded(end)) => Ok(..end),
+    //             _ => Err(IncompatibleBounds),
+    //         }
+    //     }
+    // }
+    /// # Errors
+    /// Returns [`IncompatibleBounds`] if the bounds are not compatible.
+    impl<T> TryFrom<Interval<T>> for RangeToInclusive<T> {
+        type Error = IncompatibleBounds;
+        fn try_from(interval: Interval<T>) -> Result<Self, IncompatibleBounds> {
+            match (interval.lower, interval.upper) {
+                (Bound::Unbounded, Bound::Included(end)) => Ok(Self { last: end }),
                 _ => Err(IncompatibleBounds),
             }
         }
@@ -638,8 +734,24 @@ mod impl_traits {
 #[cfg(test)]
 #[rustfmt::skip]
 mod tests {
-    use super::{Interval, interval};
+    use super::*;
 
+    #[test]
+    fn interval_conversions() {
+        // upper ranges
+        assert_eq!(Interval::from(..10), Interval::unbounded_open(10));
+        assert_eq!(Interval::from(..=10), Interval::unbounded_closed(10));
+        assert_eq!(Interval::from(RangeToInclusive::from(..=10)), Interval::unbounded_closed(10));
+
+        // fallible conversions
+        let i = Interval::unbounded_closed(10);
+        let r: RangeToInclusive<i32> = i.try_into().unwrap();
+        assert_eq!(r, RangeToInclusive { last: 10 });
+        //
+        let i = Interval::unbounded_open(10);
+        let r: RangeTo<i32> = i.try_into().unwrap();
+        assert_eq!(r, ..10);
+    }
     #[test]
     #[allow(unused_parens, reason = "testing expressions")]
     fn interval_macro_expr() {

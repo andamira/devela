@@ -177,7 +177,9 @@ mod impl_core {
         NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
         // ops
         Bound, ControlFlow,
-        Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+        Range, RangeFrom, RangeInclusive, RangeToInclusive,
+            RangeFull, RangeTo, // WAIT:new-range-api
+        RangeLegacy, RangeFromLegacy, RangeInclusiveLegacy, RangeToInclusiveLegacy,
         // panic
         PanicAssertUnwindSafe,
         // range WAIT:1.96
@@ -244,13 +246,25 @@ mod impl_core {
 
     // ops
     _impl_init![<T> Self::Unbounded => Bound<T> ];
-    _impl_init![<B: ConstInit, C: ConstInit>
-        Self::Continue(C::INIT) => ControlFlow<B, C> ];
+    _impl_init![<B: ConstInit, C: ConstInit> Self::Continue(C::INIT) => ControlFlow<B, C> ];
+
+    // new range api
     _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => Range<T>];
     _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFrom<T>];
-    _impl_init![Self => RangeFull];
-    _impl_init![<T: ConstInit> Self::new(T::INIT, T::INIT) => RangeInclusive<T>];
-    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeTo<T>, RangeToInclusive<T>];
+    // _impl_init![Self => RangeFull]; // WAIT:new-range-api
+    _impl_init![<T: ConstInit> Self { start: T::INIT, last: T::INIT } => RangeInclusive<T>];
+    // _impl_init![<T: ConstInit> Self { last: T::INIT } => RangeTo<T>]; // WAIT:new-range-api
+    _impl_init![<T: ConstInit> Self { last: T::INIT } => RangeToInclusive<T>];
+
+    // legacy range api
+    _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => RangeLegacy<T>];
+    _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFromLegacy<T>];
+    _impl_init![Self => RangeFull]; // WAIT:new-range-api
+    _impl_init![<T: ConstInit> Self::new(T::INIT, T::INIT) => RangeInclusiveLegacy<T>];
+    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeTo<T>]; // WAIT:new-range-api
+    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeToInclusiveLegacy<T>];
+
+
     #[cfg(nightly_coro)]
     _impl_init![<Y: ConstInit, R: ConstInit>
         Self::Yielded(Y::INIT) => crate::CoroutineState<Y, R> ];

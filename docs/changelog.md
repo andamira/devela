@@ -86,6 +86,10 @@
 - new trait `IndexRepr`.
 - new type `ReprMode`.
 
+### code::ops
+- rename the legacy range types with the `Legacy` suffix.
+- re-export the new range types.
+
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
 - new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `read_at!`, `test_size_of!`, `use_as!`.

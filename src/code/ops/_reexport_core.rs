@@ -12,18 +12,43 @@ doc: "Used to tell an operation whether it should exit early or go on as usual."
 
 /* structs */
 
+// legacy range API
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "A range bounded inclusively below and exclusively above (`start..end`).", Range }
+doc: "Legacy `core::ops` range for `start..end`.",
+@Range as RangeLegacy}
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "A range only bounded inclusively below (`start..`).", RangeFrom }
+doc: "Legacy `core::ops` range for `start..`.",
+@RangeFrom as RangeFromLegacy }
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "An unbounded range (`..`).", RangeFull }
+doc: "An unbounded range (`..`).",
+RangeFull } // WAIT:new-range-api
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "A range bounded inclusively below and above (`start..=end`).", RangeInclusive }
+doc: "Legacy `core::ops` range for `start..=end`.",
+@RangeInclusive as RangeInclusiveLegacy }
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "A range only bounded exclusively above (`..end`).", RangeTo }
+doc: "A range bounded exclusively above (`..end`).",
+RangeTo } // WAIT:new-range-api
 _reexport! { rust: core::ops, location: "code/ops", tag: _tags!(quant),
-doc: "A range only bounded inclusively above (`..=end`).", RangeToInclusive }
+doc: "Legacy `core::ops` range for `..=end`.",
+@RangeToInclusive as RangeToInclusiveLegacy}
+
+// new range API
+_reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+doc: "A range value bounded inclusively below and exclusively above (`start..end`).",
+Range }
+_reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+doc: "A range value bounded inclusively below (`start..`).",
+RangeFrom }
+// _reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+// doc: "An unbounded range (`..`).", RangeFull } // WAIT:new-range-api
+_reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+doc: "A range value bounded inclusively below and above (`start..=end`).",
+RangeInclusive }
+// _reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+// doc: "A range bounded exclusively above (`..end`).", RangeTo } // WAIT:new-range-api
+_reexport! { rust: core::range, location: "code/ops", tag: _tags!(quant),
+doc: "A range value bounded inclusively above (`..=end`).",
+RangeToInclusive }
 
 /* traits */
 

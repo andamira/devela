@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_CODE_OPS!()] // public
 #![doc = crate::_doc!(modules: crate::code; ops)]
 #![doc = crate::_doc!(flat:"code")]
-#![doc = crate::_doc!(extends: ops)]
+#![doc = crate::_doc!(extends: ops, range)]
 //
 
 mod _reexport_core;
