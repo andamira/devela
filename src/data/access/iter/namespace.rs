@@ -19,7 +19,7 @@ impl Iter {
     /// Creates an iterator that yields nothing.
     ///
     /// See `core::iter::`[`empty`].
-    pub const fn empty<T>() -> crate::IterEmpty<T> {
+    pub const fn empty<T>() -> ::core::iter::Empty<T> {
         empty()
     }
 
@@ -39,7 +39,7 @@ impl Iter {
     /// Creates an iterator that calls the given closure `F: FnMut() -> Option<T>`.
     ///
     /// See `core::iter::`[`from_fn`].
-    pub fn from_fn<T, F>(f: F) -> crate::IterFromFn<F>
+    pub fn from_fn<T, F>(f: F) -> ::core::iter::FromFn<F>
     where
         F: FnMut() -> Option<T>,
     {
@@ -49,14 +49,14 @@ impl Iter {
     /// Creates an iterator that yields an element exactly once.
     ///
     /// See `core::iter::`[`once`].
-    pub fn once<T>(value: T) -> crate::IterOnce<T> {
+    pub fn once<T>(value: T) -> ::core::iter::Once<T> {
         once(value)
     }
 
     /// Creates an iterator that lazily generates a value exactly once.
     ///
     /// See `core::iter::`[`once_with`].
-    pub fn once_with<A, F>(make: F) -> crate::IterOnceWith<F>
+    pub fn once_with<A, F>(make: F) -> ::core::iter::OnceWith<F>
     where
         F: FnOnce() -> A,
     {
@@ -66,7 +66,7 @@ impl Iter {
     /// Creates an iterator that endlessly repeats a single element.
     ///
     /// See `core::iter::`[`repeat`].
-    pub fn repeat<T>(elt: T) -> crate::IterRepeat<T>
+    pub fn repeat<T>(elt: T) -> ::core::iter::Repeat<T>
     where
         T: Clone,
     {
@@ -76,7 +76,7 @@ impl Iter {
     /// Creates a new iterator that repeats a single element a given number of times.
     ///
     /// See `core::iter::`[`repeat_n`].
-    pub fn repeat_n<T>(element: T, count: usize) -> crate::IterRepeatN<T>
+    pub fn repeat_n<T>(element: T, count: usize) -> ::core::iter::RepeatN<T>
     where
         T: Clone,
     {
@@ -86,7 +86,7 @@ impl Iter {
     /// Creates an iterator that endlessly repeats calling `F: FnMut() -> A`.
     ///
     /// See `core::iter::`[`repeat_with`].
-    pub fn repeat_with<A, F>(repeater: F) -> crate::IterRepeatWith<F>
+    pub fn repeat_with<A, F>(repeater: F) -> ::core::iter::RepeatWith<F>
     where
         F: FnMut() -> A,
     {
@@ -96,7 +96,7 @@ impl Iter {
     /// Creates an iterator where each successive item is computed based on the previous.
     ///
     /// See `core::iter::`[`successors`].
-    pub fn successors<T, F>(first: Option<T>, succ: F) -> crate::IterSuccessors<T, F>
+    pub fn successors<T, F>(first: Option<T>, succ: F) -> ::core::iter::Successors<T, F>
     where
         F: FnMut(&T) -> Option<T>,
     {
@@ -109,7 +109,7 @@ impl Iter {
     pub fn zip<A, B>(
         a: A,
         b: B,
-    ) -> crate::IterZip<<A as IntoIterator>::IntoIter, <B as IntoIterator>::IntoIter>
+    ) -> ::core::iter::Zip<<A as IntoIterator>::IntoIter, <B as IntoIterator>::IntoIter>
     where
         A: IntoIterator,
         B: IntoIterator,

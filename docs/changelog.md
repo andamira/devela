@@ -121,6 +121,7 @@
 
 ### data::access
 - new type: [`ByteCursor`].
+- stop re-exporting: `Iter<Chain|Cloned|Copied|Cycle|Empty|Enumerate|Filter|FilterMap|FlatMap|Flatten|FromFn|Fuse|Inspect|Map|MapWhile|Once|OnceWith|Peekable|Repeat|RepeatN|RepeatWith|Rev|Scan|Skip|SkipWhile|StepBy|Successors|Take|TakeWhile|Zip>.
 
 ### data::codec
 - new submodules: `bin`, `detect`, `pack`, `symbol`.
