@@ -61,6 +61,8 @@ mod qual; // RandQualities
 
 #[cfg(feature = "std")]
 mod std; // StdRand
+#[cfg(any(test, feature = "rand"))]
+mod fake; // RandFake
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
@@ -73,6 +75,8 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
         };
         #[cfg(feature = "std")]
         pub use super::std::StdRand;
+        #[cfg(any(test, feature = "rand"))]
+        pub use super::fake::RandFake;
     }
     _crate_internals {
         pub(crate) use super::{

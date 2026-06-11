@@ -266,7 +266,7 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 
 #### num::prob::rand
 - new traits: `FromRand`, `FromRandTry`, `RandSeedable`, `RandTry`.
-- new types `RandQualities`, `SplitMix64`, `StdRand`.
+- new types: `RandFake`, `RandQualities`, `SplitMix64`, `StdRand`.
 - change the `Rand` trait to depend on `RandTry`.
 - remove the traits: `RandAlloc`, `RandStd`.
 - rename `define_pcg!` to `rand_pcg!`
