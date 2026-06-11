@@ -28,6 +28,9 @@
 - new example scripts: `current_guard`, `otp`, `scope_guard`.
 - update the examples: `term_linux`, `web_api`, `web_workers`.
 
+### devela_ffi
+- new experimental crate for ffi interop.
+
 ### devela_macros
 - enable safety feature guards.
 - remove `enumint` example.

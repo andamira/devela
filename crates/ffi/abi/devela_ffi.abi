@@ -1,0 +1,7 @@
+# abi/devela_ffi.abi
+#
+# name                   return          args
+devela_abi_version       u32             void
+devela_add_i32           i32             i32:a, i32:b
+devela_bytes_len         devela_status   const_u8_ptr:bytes, usize:len, usize_ptr:out_len
+devela_error_string      cstr            devela_status:status

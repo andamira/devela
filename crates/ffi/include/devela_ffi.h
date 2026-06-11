@@ -1,0 +1,38 @@
+#ifndef DEVELA_FFI_H
+#define DEVELA_FFI_H
+
+#include <stdint.h>
+#include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef int32_t devela_status;
+
+enum {
+    DEVELA_OK = 0,
+    DEVELA_NO_EVENT = 1,
+
+    DEVELA_ERR_NULL = -1,
+    DEVELA_ERR_INVALID = -2,
+    DEVELA_ERR_PANIC = -3,
+    DEVELA_ERR_UNSUPPORTED = -4
+};
+
+uint32_t devela_abi_version(void);
+int32_t  devela_add_i32(int32_t a, int32_t b);
+
+devela_status devela_bytes_len(
+    const uint8_t *bytes,
+    size_t len,
+    size_t *out_len
+);
+
+const char *devela_error_string(devela_status status);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

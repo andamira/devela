@@ -1,0 +1,44 @@
+# devela_ffi manifest
+# ==============================================================================
+[workspace]
+[package]
+name = "devela_ffi"
+description = "Experimental C ABI bridge and foreign-language examples for devela."
+repository = "https://github.com/andamira/devela/tree/main/crates/ffi"
+# documentation = "https://docs.rs/devela_ffi"
+
+# version.workspace = true
+# rust-version.workspace = true
+# edition.workspace = true
+# authors.workspace = true
+# license.workspace = true
+edition = "2024"
+
+publish = false
+include = [
+	"/Cargo.toml",
+	# "/LICENSE*",
+	"/src/**/*.rs", "/src/**/*.md",
+	# "/build/**/*",
+	# "/include/*.*",
+	# "/odin/*.*",
+]
+
+[lib]
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[features]
+
+alloc = ["devela/alloc"]
+std = ["devela/std"]
+
+linux = ["devela/linux"]
+term = ["devela/term"]
+event = ["devela/event"]
+
+[dependencies.devela]
+path = "../.."
+features = ["unsafe_ffi"]
+
+[profile.release]
+panic = "abort"

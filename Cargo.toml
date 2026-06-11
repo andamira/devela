@@ -60,7 +60,7 @@ resolver = "3"
 #   ║ └╼devela_postbuild   : post-build processing
 #   ╏
 members = [ # In sync with ./build/main/environment.rs
-	"crates/macros",
+	"crates/macros", # "crates/ffi",
 	".", # ← root package
 	# "build/post",
 ]
