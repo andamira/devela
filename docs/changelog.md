@@ -1,7 +1,7 @@
 # devela changelog
 
-[0.28.0-wip] unreleased
-=======================
+[0.28.0] 2026-06-12
+===================
 
 > One must still have chaos in oneself to give birth to a dancing star.
 > — Friedrich Nietzsche
