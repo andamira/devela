@@ -121,7 +121,7 @@
 
 ### geom
 #### metric
-- rename `Extent` field `size` → `dim` for consitency.
+- rename `Extent` field `size` → `dim` for consistency.
 - add missing attributes `must_use` and `repr(transparent)`.
 - remove type aliases: `Extent2d`, `Extent3d`, `Region2d`, `Region3d`.
 - remove `metric` feature-gate for `Distance`, `Extent` and `Position`.
