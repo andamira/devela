@@ -13,7 +13,21 @@
 ///
 /// The tail is not stored. It is derived as `(head + len) % capacity`.
 ///
-// WIP
+/// ## Implemented backends
+///
+/// Currently implemented:
+/// - **static `array`**
+///   Fully initialized array storage (`[T; CAP]`).
+///   All slots always contain a valid `T`; `len` controls which slots are
+///   logically visible.
+/// - **static `option`**
+///   Array of options (`[Option<T>; CAP]`).
+///   Occupied logical slots are `Some`; unused physical slots are `None`.
+///
+/// Reserved for later:
+/// - **static `uninit`**
+/// - **view backends**
+/// - **alloc backends**
 ///
 /// ## Index type requirements
 ///
@@ -26,33 +40,57 @@
 /// Primitive unsigned integers and supported niche wrappers are accepted
 /// through [`MaybeNiche`][crate::MaybeNiche].
 ///
+///
 /// ## Storage backends
 ///
 /// Backends are opt-in and selected after the struct declaration.
 ///
+/// - **`array`**
+///   Fully initialized array storage (`[T; CAP]`).
+///
+///   This backend separates *initialization* from *logical membership*:
+///   every physical slot stores a valid `T`, while `len` determines which
+///   elements are visible through the ring API.
+///
+///   Operations that move values out of the array require either:
+///   - copying (`*_copy`),
+///   - an explicit replacement (`*_with`),
+///   - or a convenience replacement (`*_default`, `*_init`).
+///
 /// - **`option`**
 ///   Array of options (`[Option<T>; CAP]`).
-///   Occupied logical slots are `Some`; unused physical slots are `None`.
 ///
-// WIP
+///   This backend stores occupancy explicitly: occupied logical slots are
+///   `Some(T)`, and unused physical slots are `None`.
 ///
-/// ## Example
+///   It supports moving arbitrary `T` values in and out
+///   without requiring replacement values.
 ///
+///
+/// ## Examples
 /// ```
 /// # use devela::buffer_ring;
 /// buffer_ring!(
-///     /// Static option-backed ring.
+///     /// Static ring buffer.
 ///     pub struct RingU8: (u8);
-///     option
+///     array, option
 /// );
 ///
-/// let mut ring = RingU8::<i32, [Option<i32>; 4]>::new();
-/// ring.push_back(10).unwrap();
-/// ring.push_back(20).unwrap();
+/// let mut array_ring = RingU8::<i32, [i32; 4]>::new_init();
+/// array_ring.push_back(10).unwrap();
+/// array_ring.push_back(20).unwrap();
 ///
-/// assert_eq!(ring.pop_front(), Some(10));
-/// assert_eq!(ring.peek_front(), Some(&20));
+/// assert_eq!(array_ring.pop_front_copy(), Some(10));
+/// assert_eq!(array_ring.peek_front(), Some(&20));
+///
+/// let mut option_ring = RingU8::<i32, [Option<i32>; 4]>::new();
+/// option_ring.push_back(10).unwrap();
+/// option_ring.push_back(20).unwrap();
+///
+/// assert_eq!(option_ring.pop_front(), Some(10));
+/// assert_eq!(option_ring.peek_front(), Some(&20));
 /// ```
+///
 /// See also:
 /// [`BufferRingStaticExample`][crate::BufferRingStaticExample],
 //
@@ -130,12 +168,13 @@ macro_rules! buffer_ring {
     (%impls_static $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* $impl:ident) => { // last impl
         $crate::buffer_ring!(%impl1_static $(#[$i])* $name : $I, $P ; $impl);
     };
-    // static: array TODO
-    (%impls_static $_name:ident : $_I:ty, $_P:ty ; $(#[$_i:meta])* array , $($_rest:tt)*) => {
-        compile_error!("buffer_ring!: static `array` impl is not implemented yet");
+    // static: array
+    (%impls_static $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* array , $($rest:tt)*) => {
+        $crate::__buffer_ring_impl_array!($(#[$i])* $name, $I, $P);
+        $crate::buffer_ring!(%impls_static $name : $I, $P ; $($rest)*);
     };
-    (%impl1_static $(#[$_i:meta])* $_name:ident : $_I:ty, $_P:ty ; array) => {
-        compile_error!("buffer_ring!: static `array` impl is not implemented yet");
+    (%impl1_static $(#[$i:meta])* $name:ident : $I:ty, $P:ty ; array) => {
+        $crate::__buffer_ring_impl_array!($(#[$i])* $name, $I, $P);
     };
     // static: option
     (%impls_static $name:ident : $I:ty, $P:ty ; $(#[$i:meta])* option , $($rest:tt)*) => {

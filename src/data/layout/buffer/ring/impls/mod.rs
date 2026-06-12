@@ -1,9 +1,6 @@
 // devela::data::layout::buffer::ring::impls
-//
-//!
-//
 
-// mod array; // __buffer_ring_impl_array!
+mod array; // __buffer_ring_impl_array!
 // mod uninit; // __buffer_ring_impl_uninit!
 mod option; // __buffer_ring_impl_option!
 //

@@ -1,7 +1,4 @@
 // devela::data::layout::buffer::linear::impls
-//
-//!
-//
 
 mod array; // __buffer_linear_impl_array!
 mod uninit; // __buffer_linear_impl_uninit!

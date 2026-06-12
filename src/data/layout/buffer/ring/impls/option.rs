@@ -341,6 +341,7 @@ macro_rules! __buffer_ring_impl_option {
                 }
                 value
             }
+
             /// Removes and returns a value from the back of the ring.
             pub fn pop_back(&mut self) -> Option<T> {
                 if self.is_empty() { return None; }
@@ -393,12 +394,25 @@ macro_rules! __buffer_ring_impl_option {
                 let physical = self._physical_usize(Self::_idx_to_usize(index));
                 self.storage[physical].as_ref()
             }
+            /// Primitive-index variant of [`get`][Self::get].
+            pub const fn get_prim(&self, index: $P)
+                -> Result<Option<&T>, $crate::InvalidValue> {
+                Ok(self.get($crate::unwrap![ok? Self::_prim_to_idx(index)]))
+            }
+
             /// Returns an exclusive reference to the element at logical `index`.
-            pub fn get_mut(&mut self, index: $I) -> Option<&mut T> {
+            pub const fn get_mut(&mut self, index: $I) -> Option<&mut T> {
                 if Self::_idx_ge(index, self.len()) { return None; }
                 let physical = self._physical_usize(Self::_idx_to_usize(index));
                 self.storage[physical].as_mut()
             }
+            /// Primitive-index variant of [`get_mut`][Self::get_mut].
+            pub const fn get_mut_prim(&mut self, index: $P)
+                -> Result<Option<&mut T>, $crate::InvalidValue> {
+                Ok(self.get_mut($crate::unwrap![ok? Self::_prim_to_idx(index)]))
+            }
+
+            /* swap */
 
             /// Removes and returns the value at logical `index`,
             /// filling the gap with the logical back element.

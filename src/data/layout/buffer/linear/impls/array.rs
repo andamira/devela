@@ -6,17 +6,17 @@ macro_rules! __buffer_linear_impl_array {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
-        /// Fully initialized array.
+        /// Fully initialized linear array.
         ///
         /// # Invariants
-        /// - All CAP slots always contain a valid T
-        /// - len controls logical membership, not initialization
-        /// - Dropping the array drops all CAP elements
+        /// - All CAP slots always contain a valid `T`.
+        /// - `len` controls logical membership, not initialization.
+        /// - Dropping the array drops all `CAP` elements.
         ///
         /// Consequences
-        /// - Cannot move out `T` safely
-        /// - Pop must be Copy or Clone
-        /// - Shrinking len does not affect drop behavior
+        /// - Cannot move out `T` safely.
+        /// - Popping by value needs `Copy` or `Clone`.
+        /// - Shrinking `len` does not affect drop behavior.
         #[rustfmt::skip]
         impl<T, const CAP: usize> $name<T, [T; CAP]> {
             /* construct */
