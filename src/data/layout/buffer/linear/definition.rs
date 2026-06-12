@@ -1,8 +1,6 @@
-// devela::data::layout::buffer::linear
+// devela::data::layout::buffer::linear::definition
 //
 //! Defines [`buffer_linear!`].
-//!
-//! > A semantic machine that overlays occupancy semantics over contiguous storage.
 //
 
 #[doc = crate::_tags!(construction data_structure)]
@@ -132,11 +130,10 @@
 /// buffer_linear!(pub struct BufferSplit: view (u8););
 /// buffer_linear!(impl BufferSplit: view (u8); slice, slice_mut);
 /// ```
-/// See also: [`BufferStaticExample`][crate::data::layout::BufferStaticExample],
-/// [`BufferViewExample`][crate::data::layout::BufferViewExample],
-/// [`BufferAllocExample`].
-#[doc = crate::doclink!(custom devela
-    "[`BufferAllocExample`]" "data/layout/struct.BufferAllocExample.html")]
+/// See also:
+/// [`BufferLinearStaticExample`][crate::BufferLinearStaticExample],
+/// [`BufferLinearViewExample`][crate::BufferLinearViewExample],
+/// [`BufferLinearAllocExample`][crate::BufferLinearAllocExample].
 //
 // NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[macro_export]
@@ -352,7 +349,6 @@ macro_rules! buffer_linear {
         const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
             $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
         }
-
         /// Returns the given primitive value as an index type,
         /// converting invalid inputs to the closest valid number.
         #[inline(always)]

@@ -1,8 +1,9 @@
-// devela::data::layout::buffer::examples
+// devela::data::layout::buffer::linear::examples
 //
 // TOC
-// - BufferStaticExample
-// - BufferViewExample
+// - BufferLinearStaticExample
+// - BufferLinearViewExample
+// - BufferLinearAllocExample
 //
 // NOTES
 // - doclinks use #method notation to ensure they wont link to /zall version.
@@ -12,18 +13,27 @@ use crate::buffer_linear;
 buffer_linear!(
     #[doc = crate::_tags!(example data_structure)]
     /// A static linear buffer over contiguous storage, made with [`buffer_linear!`].
-    #[doc = crate::_doc_meta!{location("data/layout")}]
+    #[doc = crate::_doc_meta!{
+        location("data/layout"),
+        test_size_of(__: BufferLinearStaticExample<(), [(); 8]> = 1|8),
+        test_size_of(__: BufferLinearStaticExample<u8, [u8; 8]> = 9|72),
+        test_size_of(__: BufferLinearStaticExample<i32, [i32; 8]> = 36|288),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(__: BufferLinearStaticExample<char, &[i32]> = 12|96),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(__: BufferLinearStaticExample<char, &[i32]> = 24|192),
+    }]
     ///
     /// # Methods
     ///
-    /// - [common methods](#impl-BufferStaticExample<T,+S>)
+    /// - [common methods](#impl-BufferLinearStaticExample<T,+S>)
     // %common_tracked:
     ///   - Size:
     ///     [`len`](#method.len) *([_prim](#method.len_prim))*,
     ///     [`is_empty`](#method.is_empty).
     //
     ///
-    /// - [Fully initialized array](#impl-BufferStaticExample<T,+[T;+CAP]>)
+    /// - [Fully initialized array](#impl-BufferLinearStaticExample<T,+[T;+CAP]>)
     /// (`array`)
     ///   - Constructors:
     ///     [`new`](#method.new) *([_init](#method.new_init))*,
@@ -69,7 +79,7 @@ buffer_linear!(
     ///     [`visit_slice`](#method.visit_slice) *([_mut](#method.visit_mut_slice))*.
     //
     // --------------------------------------------------------------------------
-    /// - [Partially initialized array](#impl-BufferStaticExample<T,+[MaybeUninit<T>;+CAP]>)
+    /// - [Partially initialized array](#impl-BufferLinearStaticExample<T,+[MaybeUninit<T>;+CAP]>)
     /// (`uninit`)<sup title="unsafe implementation">⚠</sup>
     ///   - Constructors:
     ///     [`new`](#method.new-1),
@@ -101,8 +111,6 @@ buffer_linear!(
     ///     [`peek_back`](#method.peek_back-1) *([_mut](#method.peek_mut_back-1))*.
     ///   - Get:
     ///     [`get`](#method.get-1) *([_mut](#method.get_mut-1))*.
-    ///   - Swap:
-    ///     [`swap_remove`](#method.swap_remove), *([_copy](#method.swap_remove_copy))*.
     ///   - Views:
     ///     [`as_slice`](#method.as_slice-2) *([_mut](#method.as_mut_slice-2))*,
     // %common_iter_visit:
@@ -113,7 +121,7 @@ buffer_linear!(
     ///     [`visit_slice`](#method.visit_slice-2) *([_mut](#method.visit_mut_slice-2))*.
     //
     // --------------------------------------------------------------------------
-    /// - [Fully initialized array of options](#impl-BufferStaticExample<T,+[Option<T>;+CAP]>)
+    /// - [Fully initialized array of options](#impl-BufferLinearStaticExample<T,+[Option<T>;+CAP]>)
     /// (`option`)
     ///   - Constructors:
     ///     [`new`](#method.new-2),
@@ -148,14 +156,15 @@ buffer_linear!(
     ///   - Get:
     ///     [`get`](#method.get-2) *([_mut](#method.get_mut-2))*.
     ///   - Swap:
-    ///     [`swap_remove`](#method.swap_remove) *([_copy](#method.swap_remove_copy))*.
+    ///     [`swap_remove`](#method.swap_remove) *([_prim](#method.swap_remove_prim),
+    ///     [_copy](#method.swap_remove_copy), [_copy_prim](#method.swap_remove_copy_prim))*.
     ///   - Views:
     ///     [`as_slice`](#method.as_slice) *([_mut](#method.as_mut_slice))*,
     ///     [`iter`](#method.iter) *([_mut](#method.iter_mut))*.
     ///   - Visitation:
     ///     [`visit_each`](#method.visit_each) *([_mut](#method.visit_each_mut))*,
     ///     [`visit_slice`](#method.visit_slice) *([_mut](#method.visit_mut_slice))*.
-    pub struct BufferStaticExample: static (crate::NonValueU8<{u8::MAX}>);
+    pub struct BufferLinearStaticExample: static (crate::NonValueU8<{u8::MAX}>);
     array,
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
@@ -170,13 +179,13 @@ buffer_linear!(
     ///
     /// # Methods
     ///
-    /// - [common methods](#impl-BufferViewExample<'a,+T,+S>)
+    /// - [common methods](#impl-BufferLinearViewExample<'a,+T,+S>)
     // %common_tracked:
     ///   - Size:
     ///     [`len`](#method.len) *([_prim](#method.len_prim))*,
     ///     [`is_empty`](#method.is_empty).
     ///
-    /// - [Exclusive slice](#impl-BufferViewExample<'a,+T,+%26mut+[T]>) (`slice_mut`)
+    /// - [Exclusive slice](#impl-BufferLinearViewExample<'a,+T,+%26mut+[T]>) (`slice_mut`)
     ///   - Constructors:
     ///     [`try_new`](#method.try_new),
     ///     [`new_truncated`](#method.new_truncated)
@@ -214,7 +223,7 @@ buffer_linear!(
     ///     [`visit_slice`](#method.visit_slice) *([_mut](#method.visit_mut_slice))*.
     //
     // --------------------------------------------------------------------------
-    /// - [Shared slice](#impl-BufferViewExample<'a,+T,+%26[T]>) (`slice`)
+    /// - [Shared slice](#impl-BufferLinearViewExample<'a,+T,+%26[T]>) (`slice`)
     ///   - Constructors:
     ///     [`try_from_slice`](#method.try_from_slice-1),
     ///     [`from_slice_with`](#method.from_slice_with-1),
@@ -238,7 +247,7 @@ buffer_linear!(
     ///   - Visitation:
     ///     [`visit_each`](#method.visit_each-1),
     ///     [`visit_slice`](#method.visit_slice-1).
-    pub struct BufferViewExample: view (crate::NonValueU8<{u8::MAX}>);
+    pub struct BufferLinearViewExample: view (crate::NonValueU8<{u8::MAX}>);
     slice_mut,
     slice,
 );
@@ -251,7 +260,7 @@ buffer_linear!(
     ///
     /// # Methods
     ///
-    /// - [Dynamically sized array](#impl-BufferAllocExample<T,+Vec<T>>)
+    /// - [Dynamically sized array](#impl-BufferLinearAllocExample<T,+Vec<T>>)
     /// (`vec`)
     ///   - Constructors:
     ///     [`new`](#method.new) *([_init](#method.new_init))*,
@@ -290,6 +299,34 @@ buffer_linear!(
     ///     [`visit_slice`](#method.visit_slice) *([_mut](#method.visit_mut_slice))*.
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "_docs_examples")))]
-    pub struct BufferAllocExample: alloc (crate::NonValueU8<{u8::MAX}>);
+    pub struct BufferLinearAllocExample: alloc (crate::NonValueU8<{u8::MAX}>);
     vec,
 );
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn array() {
+        let mut buf = BufferLinearStaticExample::<i32, [i32; 8]>::new_init();
+        buf.push_back(10).unwrap();
+        buf.push_back(20).unwrap();
+        assert_eq!(buf.as_slice(), &[10, 20]);
+    }
+    #[test]
+    fn option() {
+        let mut buf = BufferLinearStaticExample::<i32, [Option<i32>; 8]>::new();
+        buf.push_back(10).unwrap();
+        buf.push_back(20).unwrap();
+        assert_eq!(buf.as_slice(), &[Some(10), Some(20)]);
+    }
+    #[test]
+    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
+    fn uninit() {
+        let mut buf = BufferLinearStaticExample::<i32, [crate::MaybeUninit<i32>; 8]>::new();
+        buf.push_back(10).unwrap();
+        buf.push_back(20).unwrap();
+        assert_eq!(buf.as_slice(), &[10, 20]);
+    }
+}

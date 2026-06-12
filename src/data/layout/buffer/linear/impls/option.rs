@@ -6,9 +6,7 @@ macro_rules! __buffer_linear_impl_option {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
 
         impl<T, const CAP: usize> Default for $name<T, [Option<T>; CAP]> {
-            fn default() -> Self {
-                Self::new()
-            }
+            fn default() -> Self { Self::new() }
         }
 
         $(#[$impl_attr])*
@@ -65,10 +63,11 @@ macro_rules! __buffer_linear_impl_option {
                 /// - `storage[0..len]` are `Some`
                 /// - `storage[len..CAP]` are `None`
                 pub const unsafe fn from_array_unchecked(array: [Option<T>; CAP], len: $I) -> Self {
-                    debug_assert!(Self::_idx_ge(len, Self::CAP));
+                    debug_assert!(Self::_idx_le(len, Self::CAP));
                     Self::_new(array, $crate::MaybeNiche(len))
                 }
             }
+            // MAYBE: from_array_unchecked_prim
 
             /// Creates a buffer from an array of options, validating the linear invariant.
             ///
@@ -135,7 +134,7 @@ macro_rules! __buffer_linear_impl_option {
             ///
             /// If `new_len >= len` this is a no-op.
             pub fn truncate(&mut self, new_len: $I) {
-                if new_len >= self.len() { return; }
+                if Self::_idx_ge(new_len, self.len()) { return; }
                 $crate::whilst! { i in Self::_idx_to_usize(new_len), ..self._len_usize(); {
                     self.storage[i] = None;
                 }}
@@ -252,7 +251,6 @@ macro_rules! __buffer_linear_impl_option {
                 if Self::_idx_ge(index, self.len()) { return None; }
                 self.storage[Self::_idx_to_usize(index)].as_ref()
             }
-
             /// Returns an exclusive reference to the element at `index`,
             /// or `None` if out of bounds.
             pub const fn get_mut(&mut self, index: $I) -> Option<&mut T> {
@@ -266,11 +264,11 @@ macro_rules! __buffer_linear_impl_option {
             ///
             /// Decrements `len`. Does not preserve order.
             pub fn swap_remove(&mut self, index: $I) -> Option<T> {
-                if index >= self.len() { return None; }
+                if Self::_idx_ge(index, self.len()) { return None; }
                 let last = self._len_dec().repr();
                 self._set_len(last);
                 let last_usize = Self::_idx_to_usize(last);
-                if index == last {
+                if Self::_idx_eq(index, last) {
                     self.storage[last_usize].take()
                 } else {
                     let index_usize = Self::_idx_to_usize(index);
@@ -278,6 +276,11 @@ macro_rules! __buffer_linear_impl_option {
                     self.storage[index_usize] = self.storage[last_usize].take();
                     value
                 }
+            }
+            /// Primitive-index variant of [`swap_remove`][Self::swap_remove].
+            pub fn swap_remove_prim(&mut self, index: $P)
+                -> Result<Option<T>, $crate::InvalidValue> {
+                Ok(self.swap_remove($crate::unwrap![ok? Self::_prim_to_idx(index)]))
             }
 
             /// Removes and returns the value at `index`, filling the gap with the last element.
@@ -289,13 +292,21 @@ macro_rules! __buffer_linear_impl_option {
                 self._set_len(last);
                 let last_usize = Self::_idx_to_usize(last);
                 if Self::_idx_eq(index, last) {
-                    self.storage[last_usize]
+                    let value = self.storage[last_usize];
+                    self.storage[last_usize] = None;
+                    value
                 } else {
                     let index_usize = Self::_idx_to_usize(index);
                     let value = self.storage[index_usize];
                     self.storage[index_usize] = self.storage[last_usize];
+                    self.storage[last_usize] = None;
                     value
                 }
+            }
+            /// Primitive-index variant of [`swap_remove_copy`][Self::swap_remove_copy].
+            pub fn swap_remove_copy_prim(&mut self, index: $P)
+                -> Result<Option<T>, $crate::InvalidValue> where T: Copy {
+                Ok(self.swap_remove_copy($crate::unwrap![ok? Self::_prim_to_idx(index)]))
             }
 
             /* views */
@@ -328,7 +339,6 @@ macro_rules! __buffer_linear_impl_option {
                 let len = self._len_usize();
                 self.storage[..len].iter() // SAFETY: prefix elements are all Some(T)
                     .for_each(|x| f($crate::unwrap![some_guaranteed_or_ub x.as_ref()]));
-
             }
             /// Visits each initialized element mutably without exposing borrow identity.
             pub fn visit_each_mut<F>(&mut self, f: F) where for<'v> F: Fn(&'v mut T) {

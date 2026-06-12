@@ -7,7 +7,6 @@
 #![doc = crate::_QUO_DATA_LAYOUT!()]
 //
 
-mod buffer; // buffer_linear!
 mod collection; // DataCollection
 mod queue;
 mod sort; // Sort
@@ -15,6 +14,7 @@ mod stack;
 // mod view;
 
 pub mod array;
+pub mod buffer; // buffer_linear!, buffer_ring!, Buffer*Example
 // pub mod table;
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
@@ -25,7 +25,6 @@ pub mod dst;
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            buffer::_all::*,
             collection::*,
             queue::_all::*,
             sort::_all::*,
@@ -36,6 +35,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             array::_all::*,
+            buffer::_all::*,
             // table::_all::*,
         };
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
