@@ -3,13 +3,25 @@
 [0.28.0-wip] unreleased
 =======================
 
->
->
+> One must still have chaos in oneself to give birth to a dancing star.
+> — Friedrich Nietzsche
 
 ```
+This release consolidates a wide platform-facing cycle of devela, expanding
+terminal, web, X11, audio, raster, event, runtime, and system foundations,
+while pruning older surfaces and tightening the crate toward a clearer 0.29.
 ```
 
-# Key changes:
+## Key changes:
+
+- msrv bump: minimum supported rust version increased to 1.96.0.
+- platform foundations: expand Linux, terminal, X11, web, and FFI support.
+- media groundwork: expand audio, image, raster, font, and color abstractions.
+- data/text cleanup: add cursors, packing, crypto, scanners, and string utilities.
+- event unification: normalize keyboard, mouse, pointer, window, and timing events.
+- terminal runtime: add sessions, input parsing, capabilities, grids, and rendering.
+- macro refinement: improve generator macros, set utilities, diagnostics, and helpers.
+- feature/build cleanup: clarify gates, target reflection, native detection, and tooling.
 
 ------------------------------------------------------------------------------
 

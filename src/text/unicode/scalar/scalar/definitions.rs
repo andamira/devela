@@ -96,12 +96,15 @@ pub struct char16(pub(super) NonSurrogateU16);
 
 #[doc = crate::_tags!(text)]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
+#[doc = crate::_doc_meta!{
+    location("text/unicode/scalar"),
+    test_size_of(charu = 4),
+}]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///
 /// `Option<charu>` occupies extra space (8 bytes),
-/// priritizing speed over memory. For the opposite trade-off see [`charu_niche`].
+/// prioritizing speed over memory. For the opposite trade-off see [`charu_niche`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[must_use]
@@ -112,7 +115,10 @@ pub struct charu(pub(super) NonNiche<u32>);
 #[doc = crate::_tags!(text)]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
 /// and niche-memory optimization.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
+#[doc = crate::_doc_meta!{
+    location("text/unicode/scalar"),
+    test_size_of(charu_niche = 4; niche Option),
+}]
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///

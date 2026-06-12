@@ -4,7 +4,7 @@
 ===================
 
 > The creation of a thousand forests is in one acorn.
-> — Emerson
+> — Ralph Waldo Emerson
 
 ```
 This release reunifies devela's split base layers back into the main crate,
