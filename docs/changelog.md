@@ -93,6 +93,9 @@
 - re-export the new range types.
 - remove re-exports for legacy range types.
 
+### code::result
+- stop re-exporting: `<Option|Result><IntoIter|Iter|IterMut>`.
+
 ### code::util
 - new attr-macros: `macro_apply`, `macro_derive`, `macro_derive_with`.
 - new decl-macros: `macro_apply_alias!`, `macro_derive_alias!`, `macro_dollar!`, `maybe_slot!`, `paste!`, `read_at!`, `test_size_of!`, `use_as!`.
@@ -166,6 +169,7 @@
   - new method for option impl: `truncate_prim`.
   - made const fn all static `as_slice_mut` functions.
 - rename `DstQueuePopHandle` to `DstQueuePopGuard`.
+- stop re-exporting: `<Option|Result><IntoIter|Iter|IterMut>`.
 
 ### data::topol
 - rename `ConstListIterator` to `ConstListIter`; add new const-fn `next` method.
@@ -343,13 +347,16 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
   - add `TARGET`, `FAMILIES`, `ENV`, `ABI`, `ENDIAN`, and `POINTER_WIDTH`.
   - derive `DLL_*` and `EXE_*` constants from target information.
   - align `ARCH`, `OS`, `FAMILY`, `VENDOR`, with Cargo/rustc target cfg values.
+- stop re-exporting: `Iter<Args|ArgsOs|Vars|VarsOs>`.
 
-### sys::fs
+#### sys::fs::path
+- make module public.
 - rename `PathPrefix` to `PathWindowsPrefix`, `PathPrefixComponent` to `PathWindowsPrefixComponent`.
-- make `path` submodule public.
+- stop re-exporting: `Iter<SplitPaths|PathAncestors|PathComponents|Path>, PathDisplay`.
 
 ### sys::io
 - new traits `TextIn`, `TextOut`.
+- stop re-exporting: `Std<in|err|out>Lock`.
 
 ### sys::log
 - new modules `sys::log::{bench, trace}`.
@@ -364,17 +371,20 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
   - add methods: `random_weak_u64`, `random_weak_bytes`.
   - impl `RandTry`.
 
-### sys::mem::cell
+#### sys::mem::cell
 - new types: `MemHedgeCtrl`, `MemHedgeError`, `MemHedgeRead`, `MemHedgeState`.
 
-### sys::mem::view
+#### sys::mem::view
 - update `Slice`: add methods: `get`, `get_mut`:
 - new types: `MemReplicaError`, `MemReplicaSlice`.
 
-### sys::mem::size
+#### sys::mem::size
 - refactor the `bit` submodule.
 
-### sys::net::http
+### sys::net
+- stop re-exporting: `TcpIncoming`.
+
+#### sys::net::http
 - new module.
 - new types: `Http`, `HttpError`, `HttpMethod`, `HttpRequestLine`, `HttpResponseHead`, `HttpStatus`, `HttpStatusClass`, `HttpVersion`.
 

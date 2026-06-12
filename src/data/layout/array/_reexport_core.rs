@@ -2,10 +2,6 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: core::array, location: "data/layout/array", tag: _tags!(iterator),
-    doc: "A by-value [array] iterator.",
-    @IntoIter as ArrayIntoIter
-}
 _reexport! { rust: core::array, location: "data/layout/array", tag: _tags!(data_structure),
     doc: "Creates an array `[T; N]`, where each `T` is returned from `cb` from its index.",
     @from_fn as array_from_fn

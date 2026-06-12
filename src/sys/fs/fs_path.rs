@@ -43,8 +43,9 @@ pub struct FsPath {
 mod methods {
     use crate::{
         Cow, Env, FileMetadata, FilePermissions, FileType, Fs, FsPath, IoError, IoErrorKind,
-        IoResult, Path, PathBuf, PathDisplay, SystemTime,
+        IoResult, Path, PathBuf, SystemTime,
     };
+    use ::std::path::Display as PathDisplay;
 
     /// # General methods.
     #[rustfmt::skip]

@@ -129,7 +129,8 @@ impl TextOut for crate::String {
 #[cfg(feature = "std")]
 mod impl_std {
     use crate::{IoError, IoWrite, TextOut};
-    use crate::{Stderr, StderrLock, Stdout, StdoutLock};
+    use crate::{Stderr, Stdout};
+    use ::std::io::{StderrLock, StdoutLock};
 
     /// Emits UTF-8 text to the process standard output stream.
     impl TextOut for Stdout {

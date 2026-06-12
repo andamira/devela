@@ -7,10 +7,6 @@ use crate::{_reexport, _tags};
 
 /* std structs */
 
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network iterator),
-    doc: "An iterator that infinitely accepts connections on a [`TcpListener`].",
-    @Incoming as TcpIncoming
-}
 _reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
     doc: "A TCP socket server, listening for connections.",
     TcpListener

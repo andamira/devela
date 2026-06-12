@@ -17,12 +17,16 @@ use crate::{
         args, args_os, current_dir, current_exe, home_dir, join_paths, set_current_dir,
         split_paths, temp_dir, var, var_os, vars, vars_os,
     },
-    IoResult, IterArgs, IterArgsOs, IterSplitPaths, IterVars, IterVarsOs, JoinPathsError, OsStr,
-    OsString, Path, PathBuf, VarError,
+    IoResult, JoinPathsError, OsStr, OsString, Path, PathBuf, VarError,
 };
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
 use crate::{IterArgsOsRef, args_os_ref_iter};
+#[cfg(feature = "std")]
+use ::std::env::{
+    Args as IterArgs, ArgsOs as IterArgsOs, SplitPaths as IterSplitPaths, Vars as IterVars,
+    VarsOs as IterVarsOs,
+};
 
 #[doc = crate::_tags!(namespace)]
 /// A namespaced wrapper for `std::env` functions and constants.

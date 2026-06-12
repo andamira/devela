@@ -103,24 +103,12 @@ _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
     Stderr
 }
 _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
-    doc: "A locked reference to the [`Stderr`] handle.",
-    StderrLock
-}
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "A handle to the standard input stream of a process.",
     Stdin
 }
 _reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
-    doc: "A locked reference to the [`Stdin`] handle.",
-    StdinLock
-}
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "A handle to the global standard output stream of the current process.",
     Stdout
-}
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
-    doc: "A locked reference to the [`Stdout`] handle.",
-    StdoutLock
 }
 _reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
     doc: "Reader adapter which limits the bytes read from an underlying reader.",
