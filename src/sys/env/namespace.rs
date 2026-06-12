@@ -22,11 +22,6 @@ use crate::{
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(feature = "std", feature = "unsafe_ffi"))]
 use crate::{IterArgsOsRef, args_os_ref_iter};
-#[cfg(feature = "std")]
-use ::std::env::{
-    Args as IterArgs, ArgsOs as IterArgsOs, SplitPaths as IterSplitPaths, Vars as IterVars,
-    VarsOs as IterVarsOs,
-};
 
 #[doc = crate::_tags!(namespace)]
 /// A namespaced wrapper for `std::env` functions and constants.
@@ -167,17 +162,23 @@ impl Env {
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 impl Env {
-    /// Returns the arguments that this program was started with.
+    /// Returns the process arguments as [`String`]s.
     ///
-    /// See [args].
+    /// Return type: [`std::env::Args`].
+    ///
+    /// See also [`std::env::args`].
     #[inline(always)]
-    pub fn args() -> IterArgs {
+    pub fn args() -> ::std::env::Args {
         args()
     }
 
-    /// See [args_os].
+    /// Returns the process arguments as [`OsString`]s.
+    ///
+    /// Return type: [`std::env::ArgsOs`].
+    ///
+    /// See also [`std::env::args_os`].
     #[inline(always)]
-    pub fn args_os() -> IterArgsOs {
+    pub fn args_os() -> ::std::env::ArgsOs {
         args_os()
     }
 
@@ -198,7 +199,7 @@ impl Env {
 impl Env {
     /// Fetches the environment variable key from the current process.
     ///
-    /// See [var].
+    /// See also [`std::env::var`].
     pub fn var<K: AsRef<OsStr>>(key: K) -> Result<String, VarError> {
         var(key)
     }
@@ -206,14 +207,16 @@ impl Env {
     /// Returns an iterator of (variable, value) pairs of strings,
     /// for all the environment variables of the current process.
     ///
-    /// See [vars].
-    pub fn vars() -> IterVars {
+    /// Return type: [`std::env::Vars`].
+    ///
+    /// See also: [`std::env::vars`].
+    pub fn vars() -> ::std::env::Vars {
         vars()
     }
 
     /// Fetches the environment variable key from the current process.
     ///
-    /// See [var_os].
+    /// See [`std::env::var_os`].
     pub fn var_os<K: AsRef<OsStr>>(key: K) -> Option<OsString> {
         var_os(key)
     }
@@ -221,8 +224,10 @@ impl Env {
     /// Returns an iterator of (variable, value) pairs of OS strings,
     /// for all the environment variables of the current process.
     ///
-    /// See [vars_os].
-    pub fn vars_os() -> IterVarsOs {
+    /// Return type: [`std::env::VarsOs`].
+    ///
+    /// See [`std::env::vars_os`].
+    pub fn vars_os() -> ::std::env::VarsOs {
         vars_os()
     }
 
@@ -230,7 +235,7 @@ impl Env {
     /// of the currently running process.
     ///
     /// # Safety
-    /// See [remove_var].
+    /// See [`std::env::remove_var`].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
@@ -241,7 +246,7 @@ impl Env {
     /// for the currently running process.
     ///
     /// # Safety
-    /// See [set_var].
+    /// See [`std::env::set_var`].
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
@@ -255,28 +260,28 @@ impl Env {
 impl Env {
     /// Returns the full filesystem path of the current running executable.
     ///
-    /// See [current_exe].
+    /// See [`std::env::current_exe`].
     pub fn current_exe() -> IoResult<PathBuf> {
         current_exe()
     }
 
     /// Returns the current working directory.
     ///
-    /// See [current_dir].
+    /// See [`std::env::current_dir`].
     pub fn current_dir() -> IoResult<PathBuf> {
         current_dir()
     }
 
     /// Changes the current working directory to the specified path.
     ///
-    /// See [set_current_dir].
+    /// See [`std::env::set_current_dir`].
     pub fn set_current_dir<P: AsRef<Path>>(path: P) -> IoResult<()> {
         set_current_dir(path)
     }
 
     /// Returns the path of the current user's home directory if known.
     ///
-    /// See [home_dir].
+    /// See [`std::env::home_dir`].
     #[allow(deprecated, reason = "WAIT for official undeprecation")]
     pub fn home_dir() -> Option<PathBuf> {
         home_dir()
@@ -284,14 +289,14 @@ impl Env {
 
     /// Returns the path of a temporary directory.
     ///
-    /// See [temp_dir].
+    /// See [`std::env::temp_dir`].
     pub fn temp_dir() -> PathBuf {
         temp_dir()
     }
 
     /// Joins a collection of [Path]s appropriately for the `PATH` environment variable.
     ///
-    /// See [join_paths].
+    /// See [`std::env::join_paths`].
     pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
     where
         I: IntoIterator<Item = T>,
@@ -302,8 +307,8 @@ impl Env {
 
     /// Parses input according to platform conventions for the `PATH` environment variable.
     ///
-    /// See [split_paths].
-    pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> IterSplitPaths<'_> {
+    /// See [`std::env::split_paths`].
+    pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> ::std::env::SplitPaths<'_> {
         split_paths(unparsed)
     }
 }

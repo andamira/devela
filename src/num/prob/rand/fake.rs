@@ -61,7 +61,7 @@ impl<const N: usize> RandFake<N, false> {
     /// Converts this source into panicking mode.
     ///
     /// In panicking mode, exhaustion panics instead of returning
-    /// [`NotEnoughElements`]. This makes the source implement [`Rand`].
+    /// [`NotEnoughElements`]. This makes the source implement [`Rand`][crate::Rand].
     pub const fn panicking(self) -> RandFake<N, true> {
         RandFake { values: self.values, index: self.index }
     }

@@ -3,7 +3,7 @@
 //! Text writing operations for [`TermGrid`].
 //
 
-use crate::{Position2, TermColors, TermGrid, TermPen, TermStyle, Termel};
+use crate::{Position2, TermGrid, TermPen, Termel};
 
 /// # Text drawing
 #[rustfmt::skip]

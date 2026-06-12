@@ -16,8 +16,6 @@ pub mod path; // PathExt, Path*, sys::path::*
 crate::items! {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     mod namespace; // Fs
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    mod fs_path; // FsPath
 }
 
 // mod ext; // FileExt // WIP
@@ -27,9 +25,7 @@ crate::structural_mods! { // _mods, _pub_mods
         #[cfg(feature = "std")]
         pub use super::{
             namespace::*,
-            fs_path::*,
         };
-
         // pub use super::ext::*; // WIP
     }
     _pub_mods {

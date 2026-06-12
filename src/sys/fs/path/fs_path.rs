@@ -45,7 +45,6 @@ mod methods {
         Cow, Env, FileMetadata, FilePermissions, FileType, Fs, FsPath, IoError, IoErrorKind,
         IoResult, Path, PathBuf, SystemTime,
     };
-    use ::std::path::Display as PathDisplay;
 
     /// # General methods.
     #[rustfmt::skip]
@@ -154,11 +153,15 @@ mod methods {
         ///
         /// If `path` is absolute, it replaces the current path.
         ///
-        /// Calls `std::path::`[`PathBuf::push`] under the hood.
+        /// Calls `PathBuf::`[`push`][PathBuf::push] under the hood.
         pub fn push<P: AsRef<Path>>(&mut self, path: P) { self.path.push(path); }
 
-        /// Returns an object that implements [`Display`][core::fmt::Display].
-        pub fn display(&self) -> PathDisplay<'_> { self.as_path().display() }
+        /// Returns an object that implements the [`Display`][core::fmt::Display] trait.
+        ///
+        /// Return type: [`std::path::Display`].
+        ///
+        /// Calls `Path::`[`display`][Path::display] under the hood.
+        pub fn display(&self) -> ::std::path::Display<'_> { self.as_path().display() }
 
         /// Yields a [`&str`] slice if the FsPath is valid unicode.
         pub fn to_str(&self) -> Option<&str> { self.path.to_str() }
