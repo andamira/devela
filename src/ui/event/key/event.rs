@@ -83,7 +83,10 @@ mod ffi {
 
     #[doc = crate::_tags!(event interaction ffi)]
     /// An FFI-safe version of [`EventKey`].
-    #[doc = crate::_doc_meta!{location("ui/event")}]
+    #[doc = crate::_doc_meta!{
+        location("ui/event"),
+        test_size_of(EventKeyFfi = 20|160; niche Option),
+    }]
     #[repr(C)]
     #[allow(missing_docs)]
     #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]

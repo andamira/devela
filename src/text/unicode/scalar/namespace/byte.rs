@@ -39,7 +39,6 @@ impl Char<u8> {
         let width = self.len_utf8_unchecked();
         is![width == 0, None, Some(width)]
     }
-
     /// Returns the expected UTF-8 byte length based on the given first byte, or `0` if invalid.
     ///
     /// LUT based (256-byte array).
@@ -47,7 +46,6 @@ impl Char<u8> {
     pub const fn len_utf8_unchecked(self) -> usize {
         Self::UTF8_CHAR_LEN[self.0 as usize] as usize
     }
-
     /// Returns the expected UTF-8 byte length based on the given first byte, or `None` if invalid.
     ///
     /// Match based, for when memory accesses are more expensive than branches.
@@ -61,7 +59,6 @@ impl Char<u8> {
             _ => None, // invalid leading byte
         }
     }
-
     /// Returns the expected UTF-8 byte length based on the given first byte.
     ///
     /// Match based, for when memory accesses are more expensive than branches.

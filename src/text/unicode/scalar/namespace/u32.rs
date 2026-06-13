@@ -110,7 +110,6 @@ impl Char<u32> {
     pub const fn is_surrogate(self) -> bool {
         self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_END
     }
-
     /// Returns `true` if the value is a Unicode [high surrogate][0] code point.
     ///
     /// [0]: https://www.unicode.org/glossary/#high_surrogate_code_point
@@ -118,7 +117,6 @@ impl Char<u32> {
     pub const fn is_surrogate_high(self) -> bool {
         self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_HIGH_END
     }
-
     /// Returns `true` if the value is a Unicode [low surrogate][0] code point.
     ///
     /// [0]: https://www.unicode.org/glossary/#low_surrogate_code_point
@@ -140,7 +138,6 @@ impl Char<u32> {
             _ => 3,
         }
     }
-
     /// Returns the number of bytes required to encode the given Unicode scalar as UTF-8.
     ///
     /// Returns `None` if it's not a valid Unicode scalar.
@@ -148,7 +145,6 @@ impl Char<u32> {
     pub const fn len_utf8(self) -> Option<usize> {
         if self.is_valid_scalar() { Some(self.len_utf8_unchecked()) } else { None }
     }
-
     /// Returns the UTF-8 byte length of the current Unicode scalar **without validation**.
     ///
     /// Assumes the code is a valid Unicode scalar.
@@ -178,7 +174,6 @@ impl Char<u32> {
             1
         }
     }
-
     /// Returns the monospace display width using faster calculation.
     ///
     /// Uses optimized checks that cover common cases but may incorrectly
