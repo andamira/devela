@@ -1,4 +1,4 @@
-// devela::num::prob::rand::prng::shift::u8
+// devela/src/num/prob/rand/prng/shift/u8.rs
 //
 //! 8-bit versions of XorShift.
 //

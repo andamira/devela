@@ -1,4 +1,4 @@
-// devela::yard::_doc::size_of
+// devela/src/yard/_doc/size_of.rs
 //
 //! Defines [`_doc_test_size_of!`].
 //

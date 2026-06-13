@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::namespace::byte
+// devela/src/text/unicode/scalar/namespace/byte.rs
 
 use crate::{Char, is};
 

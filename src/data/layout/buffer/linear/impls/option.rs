@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::impls::linear_option
+// devela/src/data/layout/buffer/linear/impls/option.rs
 
 #[doc(hidden)]
 #[macro_export]

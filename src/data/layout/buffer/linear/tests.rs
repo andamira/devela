@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::linear::tests
+// devela/src/data/layout/buffer/linear/tests.rs
 
 use super::*;
 

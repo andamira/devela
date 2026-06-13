@@ -1,4 +1,4 @@
-// devela::sys::os::term::event
+// devela/src/sys/os/term/event/mod.rs
 
 mod input;
 // mod signal;

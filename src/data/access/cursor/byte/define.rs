@@ -1,4 +1,4 @@
-// devela::data::access::cursor::byte
+// devela/src/data/access/cursor/byte/define.rs
 //
 //! Defines [`ByteCursor`], and [`ByteCursorError`].
 //

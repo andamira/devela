@@ -1,4 +1,4 @@
-// devela::num::quant::value
+// devela/src/num/quant/value.rs
 //
 //! Defines [`ValueQuant`].
 //

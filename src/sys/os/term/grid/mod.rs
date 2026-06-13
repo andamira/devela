@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid
+// devela/src/sys/os/term/grid/mod.rs
 //
 #![doc = crate::_DOC_SYS_OS_TERM_GRID!()] // public
 #![doc = crate::_doc!(modules: crate::sys::os::term; grid)]

@@ -1,4 +1,4 @@
-// devela::num::dom::int::gcd
+// devela/src/num/dom/int/gcd.rs
 //
 //! (Extended) Greatest Common Divisor return type.
 //

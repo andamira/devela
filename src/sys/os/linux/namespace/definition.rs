@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace::definition
+// devela/src/sys/os/linux/namespace/definition.rs
 //
 //! Defines the [`Linux`] namespace.
 //

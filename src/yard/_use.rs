@@ -1,4 +1,4 @@
-// devela::yard::_use
+// devela/src/yard/_use.rs
 //
 //! Defines the internal meta helpers: [`_use`], [`_use_or_shim`].
 //

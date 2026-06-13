@@ -1,4 +1,4 @@
-// devela::phys::time::calendar
+// devela/src/phys/time/calendar/mod.rs
 //
 //! Month and Weekday types.
 //

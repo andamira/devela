@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::storage::boxed
+// devela/src/sys/mem/alloc/storage/boxed.rs
 //
 //! *Boxed* storage
 //

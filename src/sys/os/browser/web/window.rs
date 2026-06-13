@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::window
+// devela/src/sys/os/browser/web/window.rs
 //
 //! Defines [`WebWindow`], [`WebWindowState`].
 //!

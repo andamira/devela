@@ -1,4 +1,4 @@
-// devela::num::grain::niche::mem
+// devela/src/num/grain/niche/mem/mod.rs
 //
 //! Numeric types for memory-efficient representations.
 //

@@ -1,4 +1,4 @@
-// devela::code::util::const
+// devela/src/code/util/const.rs
 //
 //! Defines the [CONST!] macro.
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::impls::text
+// devela/src/sys/os/term/grid/impls/text.rs
 //
 //! Text writing operations for [`TermGrid`].
 //

@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::namespace::u16
+// devela/src/text/unicode/scalar/namespace/u16.rs
 
 use crate::Char;
 

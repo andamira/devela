@@ -1,4 +1,4 @@
-// devela::num::grain::cast::namespace::split
+// devela/src/num/grain/cast/namespace/split.rs
 //
 //! Functions to split a primitive into an array of smaller primitives.
 //

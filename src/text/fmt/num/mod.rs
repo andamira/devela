@@ -1,4 +1,4 @@
-// devela::text::fmt::num
+// devela/src/text/fmt/num/mod.rs
 //
 //! Formatting numbers.
 //

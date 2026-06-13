@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::buf
+// devela/src/media/audio/pcm/buf.rs
 //
 //! Defines [`PcmBuf`].
 //

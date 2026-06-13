@@ -1,4 +1,4 @@
-// devela::sys::os::term::backend::linux
+// devela/src/sys/os/term/backend/linux/mod.rs
 //
 //! Linux terminal backend.
 //

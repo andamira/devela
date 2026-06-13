@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque::methods
+// devela/src/data/layout/queue/destaque/methods/mod.rs
 //
 //! Double-ended queue + double-ended stack.
 //

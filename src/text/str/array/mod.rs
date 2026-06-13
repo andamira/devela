@@ -1,4 +1,4 @@
-// devela::text::str::array
+// devela/src/text/str/array/mod.rs
 //
 //!
 //

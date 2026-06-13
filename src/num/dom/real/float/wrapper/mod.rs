@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::wrapper
+// devela/src/num/dom/real/float/wrapper/mod.rs
 //
 //! Floating-point wrapper struct.
 //

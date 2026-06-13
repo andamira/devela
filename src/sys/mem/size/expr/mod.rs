@@ -1,4 +1,4 @@
-// devela::sys::mem::size::expr
+// devela/src/sys/mem/size/expr/mod.rs
 //
 // Original source code by Joshua Nelson, licensed as BSD-3,
 // https://crates.io/crates/size-of-trait/1.1.3

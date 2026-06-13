@@ -1,4 +1,4 @@
-// devela::media::font
+// devela/src/media/font/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_FONT!()] // public
 #![doc = crate::_doc!(modules: crate::media; font)]

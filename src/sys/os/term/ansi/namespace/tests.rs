@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::namespace::definition
+// devela/src/sys/os/term/ansi/namespace/tests.rs
 
 use crate::{Ansi, AnsiColor8, AnsiLink};
 

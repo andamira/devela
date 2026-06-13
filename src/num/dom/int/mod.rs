@@ -1,4 +1,4 @@
-// devela::num::dom::int
+// devela/src/num/dom/int/mod.rs
 //
 #![doc = crate::_DOC_NUM_DOM_INT!()] // public
 #![doc = crate::_doc!(modules: crate::num::dom; int)]

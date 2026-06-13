@@ -1,4 +1,4 @@
-// devela::code::util::maybe
+// devela/src/code/util/maybe.rs
 //
 //! Defines [`maybe!`], [`maybe_slot!`].
 //

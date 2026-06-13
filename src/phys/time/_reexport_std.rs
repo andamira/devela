@@ -1,4 +1,4 @@
-// devela::phys::time::_reexport_std
+// devela/src/phys/time/_reexport_std.rs
 
 #[cfg(doc)]
 use crate::SystemTime;

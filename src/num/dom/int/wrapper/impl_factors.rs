@@ -1,4 +1,4 @@
-// devela::num::dom::int::wrapper::impl_factors
+// devela/src/num/dom/int/wrapper/impl_factors.rs
 //
 //! Implements factors-related methods for [`Int`].
 //

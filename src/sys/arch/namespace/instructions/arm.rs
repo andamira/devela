@@ -1,4 +1,4 @@
-// devela::sys::arch::instructions:arm
+// devela/src/sys/arch/namespace/instructions/arm.rs
 //
 //! Implements processor instruction calls for arm.
 //

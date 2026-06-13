@@ -1,4 +1,4 @@
-// devela::sys::net::http::error
+// devela/src/sys/net/http/error.rs
 //
 //! Defines [`HttpError`].
 //

@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::types::primitives
+// devela/src/lang/prog/ffi/js/primitives.rs
 
 #![allow(non_camel_case_types, non_upper_case_globals)]
 

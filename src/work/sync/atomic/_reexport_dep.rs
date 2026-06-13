@@ -1,4 +1,4 @@
-// devela::work::sync::atomic::_reexport_dep
+// devela/src/work/sync/atomic/_reexport_dep.rs
 //
 //! Re-exports items [portable-atomic](https://docs.rs/portable-atomic),
 //! and the [`Atomic`] type from the [atomic](https://docs.rs/atomic) crate.

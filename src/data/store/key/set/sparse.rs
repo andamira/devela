@@ -1,4 +1,4 @@
-// devela::data::store::key::set::sparse
+// devela/src/data/store/key/set/sparse.rs
 //
 //! Dense/sparse integer sets.
 //

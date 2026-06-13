@@ -1,4 +1,4 @@
-// devela::media::audio::format::wav
+// devela/src/media/audio/format/wav/mod.rs
 //
 //! RIFF/WAVE support for PCM-family audio.
 //!

@@ -1,4 +1,4 @@
-// devela::sys::mem::cell::hedge::read
+// devela/src/sys/mem/cell/hedge/read.rs
 //
 //! Defines [`MemHedgeRead`].
 //

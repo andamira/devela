@@ -1,4 +1,4 @@
-// devela::sys::os::linux::process::signal::_raw::action
+// devela/src/sys/os/linux/process/signal/_raw/action.rs
 //
 //! Defines [`LINUX_SIGACTION`].
 //

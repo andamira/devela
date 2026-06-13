@@ -1,4 +1,4 @@
-// devela::work::exec::process::error
+// devela/src/work/exec/process/error.rs
 //
 //! Defines [`ExitStatusError`].
 //

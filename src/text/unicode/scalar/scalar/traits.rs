@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::impls::traits
+// devela/src/text/unicode/scalar/scalar/traits.rs
 //
 //! implementations of core traits
 //

@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::machine::tests::state
+// devela/src/text/unicode/grapheme/scanner/machine/tests/state.rs
 
 #[cfg(feature = "__std")]
 use super::{super::GraphemeMachineState, trie::UNICODE_GRAPHEME_CLUSTER_TESTS};

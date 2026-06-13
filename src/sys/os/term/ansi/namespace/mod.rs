@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::definition
+// devela/src/sys/os/term/ansi/namespace/mod.rs
 //
 //! Defines [`Ansi`].
 //

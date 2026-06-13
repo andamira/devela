@@ -1,4 +1,4 @@
-// devela::lang::hum::form
+// devela/src/lang/hum/form/mod.rs
 //
 //! Word formation (morphology)
 //

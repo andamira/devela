@@ -1,4 +1,4 @@
-// devela::text::layout::termel
+// devela/src/text/layout/textel.rs
 //
 //! Defines [`Textel`].
 //

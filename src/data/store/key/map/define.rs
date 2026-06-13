@@ -1,4 +1,4 @@
-// devela::data::store::key::map::define
+// devela/src/data/store/key/map/define.rs
 //
 //! Defines the [`map!`] macro.
 //

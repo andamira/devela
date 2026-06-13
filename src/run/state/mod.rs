@@ -1,4 +1,4 @@
-// devela::run::state
+// devela/src/run/state/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_RUN_STATE!()] // public

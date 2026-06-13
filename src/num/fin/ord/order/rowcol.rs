@@ -1,4 +1,4 @@
-// devela::num::fin::ord::order::rowcol
+// devela/src/num/fin/ord/order/rowcol.rs
 //
 //! Dense row-major and column-major ordinal encodings.
 //!

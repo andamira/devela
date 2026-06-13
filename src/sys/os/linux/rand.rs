@@ -1,4 +1,4 @@
-// devela::sys::os::linux::error::error
+// devela/src/sys/os/linux/rand.rs
 //
 //! Defines [`LinuxRandomMode`].
 //

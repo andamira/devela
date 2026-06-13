@@ -1,4 +1,4 @@
-// devela::data::layout::table
+// devela/src/data/layout/table/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_DATA_LAYOUT_TABLE!()] // public

@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::document
+// devela/src/sys/os/browser/web/document/mod.rs
 //
 //!
 //

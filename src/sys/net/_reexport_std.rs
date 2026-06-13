@@ -1,4 +1,4 @@
-// devela::sys::net::_reexport_std
+// devela/src/sys/net/_reexport_std.rs
 
 #[cfg(doc)]
 use crate::SocketAddr;

@@ -1,4 +1,4 @@
-// devela::sys::io::text
+// devela/src/sys/io/text.rs
 //
 //! Defines [`TextIn`], [`TextOut`].
 //

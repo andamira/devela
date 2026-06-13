@@ -1,4 +1,4 @@
-// devela::num::prob::rand::prng::shift
+// devela/src/num/prob/rand/prng/shift/mod.rs
 //
 //! Pseudo-random number generators based on [Xorshift].
 //!

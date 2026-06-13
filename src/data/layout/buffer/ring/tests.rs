@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring::tests
+// devela/src/data/layout/buffer/ring/tests.rs
 
 use super::*;
 

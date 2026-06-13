@@ -1,4 +1,4 @@
-// devela::media::audio::format::raw::tests
+// devela/src/media/audio/format/raw/tests.rs
 
 use crate::{AudioChannels, PcmRaw, PcmRawBuf, PcmRawError, PcmSample, PcmSpec};
 

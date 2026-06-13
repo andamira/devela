@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb::impls
+// devela/src/media/visual/color/rgb/impls/mod.rs
 //
 //!
 //

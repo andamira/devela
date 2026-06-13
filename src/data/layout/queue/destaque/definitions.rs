@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque::definitions
+// devela/src/data/layout/queue/destaque/definitions.rs
 //
 //! Double-ended queues are linear lists for which any accesses are made from
 //! either end.

@@ -1,4 +1,4 @@
-// devela::geom::metric::extent
+// devela/src/geom/metric/extent.rs
 //
 //! Defines [`Extent`][1|2|3].
 //!

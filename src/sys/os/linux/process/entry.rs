@@ -1,4 +1,4 @@
-// devela::sys::os::linux::entry
+// devela/src/sys/os/linux/process/entry.rs
 //
 //! Configures the global assembly for target-architecture-specific program entry points.
 //!

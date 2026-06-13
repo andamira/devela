@@ -1,4 +1,4 @@
-// devela::sys::os::term::backend::linux::buf
+// devela/src/sys/os/term/backend/linux/buf.rs
 //
 //! Defines (`TermLinuxInputBuf`).
 //

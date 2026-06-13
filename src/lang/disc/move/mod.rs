@@ -1,4 +1,4 @@
-// devela::lang::disc::move
+// devela/src/lang/disc/move/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC_MOVE!()] // public

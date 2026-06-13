@@ -1,4 +1,4 @@
-// devela::data::codec::pack::archive
+// devela/src/data/codec/pack/archive/mod.rs
 //
 //! Multi-resource packages.
 //

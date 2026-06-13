@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::alias
+// devela/src/num/dom/real/float/alias.rs
 //
 //! Defines [`fsize`].
 //

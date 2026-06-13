@@ -1,4 +1,4 @@
-// devela::code::util::asserts::static::const
+// devela/src/code/util/asserts/static/const.rs
 //
 //! Compile-time assertions.
 //

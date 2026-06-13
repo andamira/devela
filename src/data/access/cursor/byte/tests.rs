@@ -1,4 +1,4 @@
-// devela::data::access::cursor::tests
+// devela/src/data/access/cursor/byte/tests.rs
 
 use crate::{ByteCursor, NotEnoughSpace, UnexpectedEof};
 

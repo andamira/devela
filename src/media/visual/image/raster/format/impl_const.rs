@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format::impl_constants
+// devela/src/media/visual/image/raster/format/impl_const.rs
 
 use crate::{
     RasterAlpha as Alpha, RasterChannels as Channels, RasterFormat, RasterPackedChannels as Packed,

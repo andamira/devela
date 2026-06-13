@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace
+// devela/src/sys/os/linux/namespace/mod.rs
 //
 //! Defines the [`Linux`] namespace.
 //

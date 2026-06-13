@@ -1,4 +1,4 @@
-// devela::build
+// devela/src/build/mod.rs
 //
 //! Build-related utilities.
 //

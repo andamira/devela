@@ -1,4 +1,4 @@
-// devela::geom::affine::point
+// devela/src/geom/affine/point/mod.rs
 //
 //! A geometrical point.
 //

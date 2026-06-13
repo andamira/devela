@@ -1,4 +1,4 @@
-// devela::phys::time::source
+// devela/src/phys/time/source/mod.rs
 //
 //! Time sources.
 //!

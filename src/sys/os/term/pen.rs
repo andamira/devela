@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::pen
+// devela/src/sys/os/term/pen.rs
 //
 //! Defines [`TermPen`].
 //

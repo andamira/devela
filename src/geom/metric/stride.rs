@@ -1,4 +1,4 @@
-// devela::geom::metric::stride
+// devela/src/geom/metric/stride.rs
 //
 //! Defines [`Stride`].
 //

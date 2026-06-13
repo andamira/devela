@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::iter::str
+// devela/src/text/unicode/scalar/iter/str.rs
 
 use crate::{Char, CharIter, char7, char8, char16, charu, is, slice};
 

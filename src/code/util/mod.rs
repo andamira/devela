@@ -1,4 +1,4 @@
-// devela::code::util
+// devela/src/code/util/mod.rs
 //
 #![doc = crate::_DOC_CODE_UTIL!()] // public
 #![doc = crate::_doc!(modules: crate::code; util)]

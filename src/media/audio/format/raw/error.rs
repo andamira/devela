@@ -1,4 +1,4 @@
-// devela::media::audio::format::raw::error
+// devela/src/media/audio/format/raw/error.rs
 //
 //! Defines [`PcmRawError`].
 //

@@ -1,4 +1,4 @@
-// devela::code::util::include
+// devela/src/code/util/include.rs
 //
 //! Defines the [`include_from!`], [`mod_from!`] and [`mod_path!`] macros.
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::worker
+// devela/src/sys/os/browser/web/worker.rs
 //
 //! Defines [`WebWorker`], [`WebWorkerError`], [`WebWorkerJob`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::events.js
+// devela/src/sys/os/browser/web/js/events.js
 // (in sync with ../api/events.rs)
 
 import { strDecode, queryElement } from "./shared.js";

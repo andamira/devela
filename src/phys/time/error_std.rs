@@ -1,4 +1,4 @@
-// devela::phys::time::error_std
+// devela/src/phys/time/error_std.rs
 //
 //! Time-related errors.
 //

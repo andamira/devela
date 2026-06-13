@@ -1,4 +1,4 @@
-// devela::media::audio::format::wav::error
+// devela/src/media/audio/format/wav/error.rs
 //
 //! Defines [`PcmWavError`].
 //

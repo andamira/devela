@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::wrapper::tests_f32
+// devela/src/num/dom/real/float/wrapper/tests_f32.rs
 //
 //! Tests for `Float<f32>`.
 //

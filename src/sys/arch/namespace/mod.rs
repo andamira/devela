@@ -1,4 +1,4 @@
-// devela::sys::arch::namespace
+// devela/src/sys/arch/namespace/mod.rs
 //
 //! Defines the [`Arch`] namespace.
 //

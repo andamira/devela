@@ -1,4 +1,4 @@
-// devela::ui::event::key
+// devela/src/ui/event/key/mod.rs
 //
 //! Defines [`EventKey`], [`KeyState`].
 //

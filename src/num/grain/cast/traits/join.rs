@@ -1,4 +1,4 @@
-// devela::num::grain::cast::traits::join
+// devela/src/num/grain/cast/traits/join.rs
 //
 //! construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //

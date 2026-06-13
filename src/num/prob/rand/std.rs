@@ -1,4 +1,4 @@
-// devela::num::prob::rand::std
+// devela/src/num/prob/rand/std.rs
 //
 //! Defines [`RandStd`].
 //

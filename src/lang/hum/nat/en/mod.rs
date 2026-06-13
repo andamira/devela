@@ -1,4 +1,4 @@
-// devela::lang::hum::nat::en
+// devela/src/lang/hum/nat/en/mod.rs
 //
 //! English language.
 //

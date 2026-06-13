@@ -1,4 +1,4 @@
-// devela::data::layout::array::d2::methods::general
+// devela/src/data/layout/array/d2/methods/general.rs
 //
 //! 2-dimensional array general methods.
 //

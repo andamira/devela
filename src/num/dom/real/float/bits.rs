@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::bits
+// devela/src/num/dom/real/float/bits.rs
 //
 //! Defines [`f32bits`]|`_niche`, [`f64bits`]|`_niche`.
 //

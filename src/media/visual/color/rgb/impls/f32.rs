@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb::impls::f32
+// devela/src/media/visual/color/rgb/impls/f32.rs
 //
 //!
 //

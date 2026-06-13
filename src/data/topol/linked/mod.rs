@@ -1,4 +1,4 @@
-// devela::data::topol::linked
+// devela/src/data/topol/linked/mod.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL_LINKED!()] // private
 #![doc = crate::_doc!(modules: crate::data::topol; linked)]

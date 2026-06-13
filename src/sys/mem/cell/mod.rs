@@ -1,4 +1,4 @@
-// devela::sys::mem::cell
+// devela/src/sys/mem/cell/mod.rs
 //
 #![doc = crate::_DOC_SYS_MEM_CELL!()] // pulic
 #![doc = crate::_doc!(modules: crate::sys::mem; cell)]

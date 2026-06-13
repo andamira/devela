@@ -1,4 +1,4 @@
-// devela::data::value::kind::kind
+// devela/src/data/value/kind/kind.rs
 //
 //! Defines [`ValueKind`].
 //

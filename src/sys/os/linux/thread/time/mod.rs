@@ -1,4 +1,4 @@
-// devela::sys::os::linux::thread::time
+// devela/src/sys/os/linux/thread/time/mod.rs
 //
 //! Timekeeping ABI definitions.
 //!

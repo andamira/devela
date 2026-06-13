@@ -1,4 +1,4 @@
-// devela::data::layout::stack
+// devela/src/data/layout/stack/mod.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT_STACK!()] // private
 #![doc = crate::_doc!(modules: crate::data::layout; stack)]

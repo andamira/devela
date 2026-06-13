@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::namespace::test
+// devela/src/text/unicode/scalar/namespace/tests.rs
 
 use crate::Char;
 

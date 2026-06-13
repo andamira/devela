@@ -1,4 +1,4 @@
-// devela::data::layout::array::d1::methods
+// devela/src/data/layout/array/d1/methods/mod.rs
 //
 //! 1-dimensional array methods
 //

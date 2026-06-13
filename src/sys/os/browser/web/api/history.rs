@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::api::namespace
+// devela/src/sys/os/browser/web/api/history.rs
 // (in sync with ../js/history.js)
 //
 //! Implements the web history & location API.

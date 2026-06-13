@@ -1,4 +1,4 @@
-// devela::data::uid::seq
+// devela/src/data/id/uid/seq.rs
 //
 //! Defines [`id_seq!`], for sequential unique IDs. An identity allocator.
 //

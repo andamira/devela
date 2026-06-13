@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace::thread
+// devela/src/sys/os/linux/namespace/thread.rs
 
 use crate::{
     Duration, LINUX_ERRNO as ERRNO, LINUX_EXIT, Linux, LinuxClock, LinuxError,

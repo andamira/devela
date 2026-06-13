@@ -1,4 +1,4 @@
-// devela::media::doc::pdf
+// devela/src/media/doc/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_DOC!()]
 #![doc = crate::_doc!(modules: crate::media; doc)]

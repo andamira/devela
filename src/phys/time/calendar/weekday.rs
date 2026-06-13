@@ -1,4 +1,4 @@
-// devela::phys::time::calendar::week
+// devela/src/phys/time/calendar/weekday.rs
 //
 //!
 //

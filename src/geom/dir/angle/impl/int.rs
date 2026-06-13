@@ -1,4 +1,4 @@
-// devela::geom::dir::angle::impl::int
+// devela/src/geom/dir/angle/impl/int.rs
 //
 //!
 //

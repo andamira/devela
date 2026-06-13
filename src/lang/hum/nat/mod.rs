@@ -1,4 +1,4 @@
-// devela::lang::hum::nat
+// devela/src/lang/hum/nat/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_NAT!()] // public

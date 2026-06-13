@@ -1,4 +1,4 @@
-// devela::text::ascii::digits::_docs
+// devela/src/text/ascii/digits/_docs.rs
 
 use crate::CONST;
 

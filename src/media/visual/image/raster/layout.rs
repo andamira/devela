@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::layout
+// devela/src/media/visual/image/raster/layout.rs
 //
 //! Defines [`RasterLayout`].
 //

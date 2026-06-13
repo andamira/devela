@@ -1,4 +1,4 @@
-// devela::text::error
+// devela/src/text/error.rs
 //
 #![doc = crate::_DOC_TEXT_ERROR!()] // public
 #![doc = crate::_doc!(modules: crate::text; error)]

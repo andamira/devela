@@ -1,4 +1,4 @@
-// devela::data::topol::graph::edge
+// devela/src/data/topol/graph/edge.rs
 
 macro_rules! impl_graph_edge {
     // $IDX:  the index primitive type. E.g. u8.

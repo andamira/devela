@@ -1,4 +1,4 @@
-// devela::data::layout::array::ext
+// devela/src/data/layout/array/ext.rs
 //
 //! Defines [`ArrayFmt`] and [`ArrayExt`].
 //

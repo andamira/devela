@@ -1,4 +1,4 @@
-// devela::code::_reexport_core
+// devela/src/code/_reexport_core.rs
 //
 //! General reexported items, except macros and overloadable operators.
 //

@@ -1,4 +1,4 @@
-// devela::yard::alias
+// devela/src/yard/alias.rs
 //
 //! Defines maintenance aliases for item attributes.
 //

@@ -1,4 +1,4 @@
-// devela::lang::disc::narr
+// devela/src/lang/disc/narr/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC_NARR!()] // public

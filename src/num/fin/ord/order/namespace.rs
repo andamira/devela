@@ -1,4 +1,4 @@
-// devela::num::fin::ord::order::namespace
+// devela/src/num/fin/ord/order/namespace.rs
 //
 //! Defines [`Order`].
 //

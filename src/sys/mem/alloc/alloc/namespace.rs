@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::namespace
+// devela/src/sys/mem/alloc/alloc/namespace.rs
 //
 //! Defines the [`Alloc`] namespace.
 //

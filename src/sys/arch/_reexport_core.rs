@@ -1,4 +1,4 @@
-// devela::sys::arch::_reexport_core
+// devela/src/sys/arch/_reexport_core.rs
 
 use crate::{_reexport, _tags};
 

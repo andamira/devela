@@ -1,4 +1,4 @@
-// devela::sys::os::linux::fns::syscalls::shared_docs
+// devela/src/sys/os/linux/syscalls/shared_docs.rs
 //
 //! Defines constants for shared documentation for linux syscalls.
 //

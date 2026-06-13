@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::linear
+// devela/src/data/layout/buffer/linear/mod.rs
 //
 //! Defines linear buffers.
 //!

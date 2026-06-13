@@ -1,4 +1,4 @@
-// devela::num::dom::traits::constants
+// devela/src/num/dom/traits/constants.rs
 //
 //! Defines [`NumConst`] and implements it for primitives.
 //

@@ -1,4 +1,4 @@
-// devela::sys::net::http::status
+// devela/src/sys/net/http/status.rs
 //
 //! Defines [`HttpStatusClass`], [`HttpStatus`].
 //

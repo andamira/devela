@@ -1,4 +1,4 @@
-// devela::text::str::namespace::definition
+// devela/src/text/str/namespace/definition.rs
 //
 //! Defines [`Str`].
 

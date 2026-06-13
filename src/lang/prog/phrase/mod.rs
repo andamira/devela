@@ -1,4 +1,4 @@
-// devela::lang::prog::phrase
+// devela/src/lang/prog/phrase/mod.rs
 //
 #![doc = crate::_DOC_LANG_PROG_PHRASE!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog; phrase)]

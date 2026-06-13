@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::present
+// devela/src/sys/device/display/x11/runtime/present.rs
 //
 //! Defines [`XPresent`], [`XPresenter`] [`XRasterRender`].
 //

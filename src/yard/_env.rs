@@ -1,4 +1,4 @@
-// devela::yard::_env
+// devela/src/yard/_env.rs
 //
 //! Defines private helpers related to the environment.
 //!

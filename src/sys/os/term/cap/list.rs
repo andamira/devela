@@ -1,4 +1,4 @@
-// devela::sys::os::term::cap::list
+// devela/src/sys/os/term/cap/list.rs
 //
 //! Defines [`TermCap`].
 //

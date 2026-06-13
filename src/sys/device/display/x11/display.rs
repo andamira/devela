@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::display
+// devela/src/sys/device/display/x11/display.rs
 //
 //! Defines [`XDisplay`].
 //

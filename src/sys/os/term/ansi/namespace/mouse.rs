@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::namespace::mouse
+// devela/src/sys/os/term/ansi/namespace/mouse.rs
 
 use crate::{__ansi_consts, Ansi};
 

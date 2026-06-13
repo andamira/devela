@@ -1,4 +1,4 @@
-// devela::num::prob::rand::_helper
+// devela/src/num/prob/rand/_helper.rs
 //
 //! Defines (`__impl_dep_rand_core!`)
 //

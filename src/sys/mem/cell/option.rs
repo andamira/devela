@@ -1,4 +1,4 @@
-// devela::sys::mem::cell::option
+// devela/src/sys/mem/cell/option.rs
 //
 //! Defines [`CellOptionExt`].
 //

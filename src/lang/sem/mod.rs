@@ -1,4 +1,4 @@
-// devela::lang::sem
+// devela/src/lang/sem/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_SEM!()] // public

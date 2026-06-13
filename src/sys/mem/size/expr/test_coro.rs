@@ -1,4 +1,4 @@
-// devela::sys::mem::size::expr::test_coro
+// devela/src/sys/mem/size/expr/test_coro.rs
 
 #[cfg(not(miri))]
 #[test]

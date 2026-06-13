@@ -1,4 +1,4 @@
-// devela::data::codec::pack::wrap::riff
+// devela/src/data/codec/pack/wrap/riff/mod.rs
 //
 //! Resource Interchange File Format.
 //

@@ -1,4 +1,4 @@
-// devela::code::util::deprecate
+// devela/src/code/util/deprecate.rs
 //
 //! Defines [`deprecate_feature`].
 //

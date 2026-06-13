@@ -1,4 +1,4 @@
-// devela::code::util::capture
+// devela/src/code/util/capture.rs
 //
 //! Defines [`capture_first!`], [`capture_last!`] and [`capture_tail_tuple!`].
 //

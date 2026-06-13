@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::arena::define
+// devela/src/sys/mem/alloc/arena/define.rs
 //
 //! Defines [`arena`].
 //

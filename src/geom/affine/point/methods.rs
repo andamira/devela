@@ -1,4 +1,4 @@
-// devela::geom::affine::point::methods
+// devela/src/geom/affine/point/methods.rs
 //
 //!
 //

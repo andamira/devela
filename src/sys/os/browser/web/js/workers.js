@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::workers.js
+// devela/src/sys/os/browser/web/js/workers.js
 // (in sync with ../api/workers.rs)
 
 import { strDecode, strEncode } from "./shared.js";

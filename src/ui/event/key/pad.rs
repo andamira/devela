@@ -1,4 +1,4 @@
-// devela::ui::event::key::pad
+// devela/src/ui/event/key/pad.rs
 //
 //! Defines [`KeyPad`].
 //

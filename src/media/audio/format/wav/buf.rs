@@ -1,4 +1,4 @@
-// devela::media::audio::format::wav::buf
+// devela/src/media/audio/format/wav/buf.rs
 //
 //! Defines [`PcmWavBuf`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::term::event::input::parser
+// devela/src/sys/os/term/event/input/parser.rs
 //
 //! Defines [`TermInputParser`].
 //

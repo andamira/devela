@@ -1,4 +1,4 @@
-// devela::data::codec::hash::_reexport_std
+// devela/src/data/codec/hash/_reexport_std.rs
 
 use crate::{_reexport, _tags};
 

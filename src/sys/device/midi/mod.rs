@@ -1,4 +1,4 @@
-// devela::sys::device::midi
+// devela/src/sys/device/midi/mod.rs
 //
 //! Midi functionality.
 //

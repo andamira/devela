@@ -1,4 +1,4 @@
-// devela::sys::os::linux::thread::time::timespec
+// devela/src/sys/os/linux/thread/time/timespec.rs
 //
 //! Time value representation.
 //!

@@ -1,4 +1,4 @@
-// devela::num::prob::rand::xyza8
+// devela/src/num/prob/rand/prng/xyza8.rs
 //
 //!
 

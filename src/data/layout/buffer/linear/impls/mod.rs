@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::linear::impls
+// devela/src/data/layout/buffer/linear/impls/mod.rs
 
 mod array; // __buffer_linear_impl_array!
 mod uninit; // __buffer_linear_impl_uninit!

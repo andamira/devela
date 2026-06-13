@@ -1,4 +1,4 @@
-// devela::data::codec::bit::bin::set::definition
+// devela/src/data/codec/bin/bit/set/definition.rs
 //
 //! Defines [`set!`]
 //

@@ -1,4 +1,4 @@
-// devela::phys::time::source::span
+// devela/src/phys/time/source/span.rs
 //
 //! Defines [`TimeSpan`].
 //

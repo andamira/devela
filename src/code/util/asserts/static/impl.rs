@@ -1,1 +1,1 @@
-// devela::code::util::asserts::static::impl
+// devela/src/code/util/asserts/static/impl.rs

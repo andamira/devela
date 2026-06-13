@@ -1,4 +1,4 @@
-// devela::sys::arch::wasm
+// devela/src/sys/arch/wasm/mod.rs
 //
 //! WASM architecture functionality.
 //

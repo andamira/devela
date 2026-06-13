@@ -1,4 +1,4 @@
-// devela::sys::mem::size::bit::tests
+// devela/src/sys/mem/size/bit/tests.rs
 
 #![allow(unused)]
 

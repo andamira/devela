@@ -1,4 +1,4 @@
-// devela::build::main::codegen
+// devela/build/main/codegen/mod.rs
 //
 //! Code generation during the build process.
 //

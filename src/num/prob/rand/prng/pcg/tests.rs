@@ -1,4 +1,4 @@
-// devela::num::prob::rand::pcg::tests
+// devela/src/num/prob/rand/prng/pcg/tests.rs
 
 #![allow(unused)]
 

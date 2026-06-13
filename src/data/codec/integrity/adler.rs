@@ -1,4 +1,4 @@
-// devela::data::codec::integrity::adler
+// devela/src/data/codec/integrity/adler.rs
 //
 //! Defines [`Adler32`].
 //

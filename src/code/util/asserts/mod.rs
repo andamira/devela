@@ -1,4 +1,4 @@
-// devela::code::util::asserts
+// devela/src/code/util/asserts/mod.rs
 //
 //! Assertion utilities.
 //

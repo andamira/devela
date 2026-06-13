@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::machine::tests::trie
+// devela/src/text/unicode/grapheme/scanner/machine/tests/trie.rs
 
 pub(super) struct SegmentationTest {
     pub desc: &'static str,

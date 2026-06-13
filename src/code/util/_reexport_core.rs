@@ -1,4 +1,4 @@
-// devela::code::util::_reexport_core
+// devela/src/code/util/_reexport_core.rs
 //
 //! Reexported macros and hints.
 //

@@ -1,4 +1,4 @@
-// devela::work::exec::process::flow
+// devela/src/work/exec/process/flow.rs
 //
 //! Defines [`CommandFlow`].
 //

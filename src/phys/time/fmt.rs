@@ -1,4 +1,4 @@
-// devela::phys::time::fmt
+// devela/src/phys/time/fmt.rs
 //
 //! Defines [`Timecode`].
 //

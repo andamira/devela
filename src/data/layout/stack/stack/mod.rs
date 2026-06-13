@@ -1,4 +1,4 @@
-// devela::data::layout::stack::stack
+// devela/src/data/layout/stack/stack/mod.rs
 //
 //! A type that can be used as a single-ended stack.
 //

@@ -1,4 +1,4 @@
-// devela::sys::mem::view::borrow
+// devela/src/sys/mem/view/borrow/mod.rs
 //
 #![doc = crate::_DOC_SYS_MEM_VIEW_BORROW!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; borrow)]

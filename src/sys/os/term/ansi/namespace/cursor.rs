@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::namespace::cursor
+// devela/src/sys/os/term/ansi/namespace/cursor.rs
 
 use crate::{__ansi_consts, Ansi, Digits, StringNonul, slice, write_at};
 

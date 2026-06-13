@@ -1,4 +1,4 @@
-// devela::text::fmt
+// devela/src/text/fmt/mod.rs
 //
 #![doc = crate::_DOC_TEXT_FMT!()] // public
 #![doc = crate::_doc!(modules: crate::text; fmt)]

@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque
+// devela/src/data/layout/queue/destaque/mod.rs
 //
 //! A type that can be used as a double-ended queue and a double-ended stack.
 //

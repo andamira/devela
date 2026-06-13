@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::performance.js
+// devela/src/sys/os/browser/web/js/performance.js
 
 import { strDecode } from "./shared.js";
 

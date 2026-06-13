@@ -1,4 +1,4 @@
-// devela::code::util::cdbg
+// devela/src/code/util/cdbg.rs
 //
 //! Defines the custom debug macro [`cdbg!`].
 //

@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::grapheme
+// devela/src/text/unicode/grapheme/grapheme.rs
 //
 //! Defines the [`Grapheme`] trait.
 //

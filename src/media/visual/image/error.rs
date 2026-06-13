@@ -1,4 +1,4 @@
-// devela::media::visual::image::error
+// devela/src/media/visual/image/error.rs
 //
 //!
 //

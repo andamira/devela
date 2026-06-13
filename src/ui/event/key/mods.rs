@@ -1,4 +1,4 @@
-// devela::ui::event::key::dif
+// devela/src/ui/event/key/mods.rs
 //
 //! Defines [`KeyMod`], [`KeyMods`].
 //

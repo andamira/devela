@@ -1,4 +1,4 @@
-// devela::data::store::key::map::entry
+// devela/src/data/store/key/map/entry.rs
 //
 //!
 //

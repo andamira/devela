@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb::impls::u8alpha
+// devela/src/media/visual/color/rgb/impls/u8alpha.rs
 
 use super::*;
 use crate::{Norm, Rgb8, RgbF32, RgbF64, Rgba8, Rgba16, RgbaF32, RgbaF64};

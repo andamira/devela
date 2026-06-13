@@ -1,4 +1,4 @@
-// devela::vita::love
+// devela/src/vita/love/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_LOVE!()] // public

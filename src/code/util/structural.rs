@@ -1,4 +1,4 @@
-// devela::code::util::structural
+// devela/src/code/util/structural.rs
 //
 //! Defines the [`structural_mods!`] macro.
 //

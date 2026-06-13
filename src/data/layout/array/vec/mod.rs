@@ -1,4 +1,4 @@
-// devela::data::layout::array::vec
+// devela/src/data/layout/array/vec/mod.rs
 //
 //! Dynamic arrays.
 //!

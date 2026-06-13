@@ -1,4 +1,4 @@
-// devela::data::codec::pack::wrap::riff::namespace
+// devela/src/data/codec/pack/wrap/riff/namespace.rs
 //
 //! Defines [`Riff`].
 //

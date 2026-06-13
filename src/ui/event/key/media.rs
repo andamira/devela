@@ -1,4 +1,4 @@
-// devela::ui::event::key::media
+// devela/src/ui/event/key/media.rs
 //
 //! Defines [`KeyMedia`].
 //

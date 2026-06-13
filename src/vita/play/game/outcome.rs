@@ -1,4 +1,4 @@
-// devela::vita::play::game::outcome
+// devela/src/vita/play/game/outcome.rs
 
 #[doc = crate::_tags!(game result)]
 /// A resolved result recognized by the rules of play.

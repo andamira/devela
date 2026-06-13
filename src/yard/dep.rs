@@ -1,4 +1,4 @@
-// devela::yard::deps
+// devela/src/yard/dep.rs
 //
 #![doc = crate::_tags!(internal)]
 #![doc = crate::_DOC_YARD_DEPS!()] // internal

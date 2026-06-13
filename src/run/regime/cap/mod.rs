@@ -1,4 +1,4 @@
-// devela::run::regime::cap
+// devela/src/run/regime/cap/mod.rs
 //
 //! Runtime capabilities.
 //

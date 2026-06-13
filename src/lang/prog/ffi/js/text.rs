@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::types::text
+// devela/src/lang/prog/ffi/js/text.rs
 
 #[cfg(doc)]
 #[cfg(feature = "web")]

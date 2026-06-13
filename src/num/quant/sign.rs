@@ -1,4 +1,4 @@
-// devela::num::quant::sign
+// devela/src/num/quant/sign.rs
 //
 //! Defines the [`Sign`] of a number.
 //

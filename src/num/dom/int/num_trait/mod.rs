@@ -1,4 +1,4 @@
-// devela::num::dom::int::num_trait
+// devela/src/num/dom/int/num_trait/mod.rs
 //
 //! Defines the `NumInt` trait.
 //

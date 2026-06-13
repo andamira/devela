@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::term
+// devela/src/sys/os/linux/io/term/mod.rs
 //
 //! Terminal I/O control ABI definitions.
 //!

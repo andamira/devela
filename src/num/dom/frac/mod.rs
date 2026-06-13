@@ -1,4 +1,4 @@
-// devela::num::frac
+// devela/src/num/dom/frac/mod.rs
 //
 //! Fractional functionality.
 //

@@ -1,4 +1,4 @@
-// devela::text::layout::symbol
+// devela/src/text/layout/symbol.rs
 //
 //! Defines [`TextCohesion`], [`TextLayoutSpan`], [`TextSymbol`].
 //!

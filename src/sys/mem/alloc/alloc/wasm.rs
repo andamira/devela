@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::wasm
+// devela/src/sys/mem/alloc/alloc/wasm.rs
 //
 //! Defines [`WasmAlloc`].
 //

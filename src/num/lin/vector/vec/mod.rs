@@ -1,4 +1,4 @@
-// devela::num::lin::vector::vec
+// devela/src/num/lin/vector/vec/mod.rs
 //
 //!
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace::write
+// devela/src/sys/os/linux/namespace/write.rs
 
 use crate::{LINUX_FILENO as FILENO, Linux, LinuxError, LinuxResult as Result, MaybeUninit, c_int};
 

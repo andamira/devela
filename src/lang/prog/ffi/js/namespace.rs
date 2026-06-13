@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::namespace
+// devela/src/lang/prog/ffi/js/namespace.rs
 //
 //! Defines the [`Js`] namespace.
 //

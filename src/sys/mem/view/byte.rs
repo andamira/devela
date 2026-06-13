@@ -1,4 +1,4 @@
-// devela::sys::mem::view::byte
+// devela/src/sys/mem/view/byte.rs
 //
 //! Defines the [`MaybeByte`] alias.
 //

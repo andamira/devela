@@ -1,4 +1,4 @@
-// devela::num::grain::wide::_reexport_core
+// devela/src/num/grain/wide/_reexport_core.rs
 //
 // DOCS: https://doc.rust-lang.org/stable/core/simd/
 // WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)

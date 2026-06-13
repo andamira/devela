@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace::signal
+// devela/src/sys/os/linux/namespace/signal.rs
 
 use crate::{AtomicOrdering::SeqCst, Ptr, c_int, c_void, is, transmute};
 use crate::{

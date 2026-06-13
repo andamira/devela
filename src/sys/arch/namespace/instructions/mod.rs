@@ -1,4 +1,4 @@
-// devela::sys::arch::namespace::instructions
+// devela/src/sys/arch/namespace/instructions/mod.rs
 //
 //! Architecture specific instructions.
 //

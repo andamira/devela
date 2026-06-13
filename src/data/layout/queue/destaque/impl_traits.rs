@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque::impl_traits
+// devela/src/data/layout/queue/destaque/impl_traits.rs
 //
 //!
 //

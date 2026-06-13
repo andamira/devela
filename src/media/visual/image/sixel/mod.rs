@@ -1,4 +1,4 @@
-// devela::media::visual::image::sixel
+// devela/src/media/visual/image/sixel/mod.rs
 //
 //! [Sixel] encoding functionality.
 //!

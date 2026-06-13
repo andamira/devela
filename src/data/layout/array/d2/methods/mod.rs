@@ -1,4 +1,4 @@
-// devela::data::layout::array::d2::methods
+// devela/src/data/layout/array/d2/methods/mod.rs
 //
 //! 2-dimensional array methods
 //

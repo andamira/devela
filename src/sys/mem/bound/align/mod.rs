@@ -1,4 +1,4 @@
-// devela::sys::mem::bound::align
+// devela/src/sys/mem/bound/align/mod.rs
 //
 //! Memory alignment bounds.
 //

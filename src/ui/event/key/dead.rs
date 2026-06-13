@@ -1,4 +1,4 @@
-// devela::ui::event::key::dead
+// devela/src/ui/event/key/dead.rs
 //
 //! Defines [`KeyDead`].
 //

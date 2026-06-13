@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format::packed
+// devela/src/media/visual/image/raster/format/packed.rs
 //
 //! Defines [`RasterPackedChannels`].
 //

@@ -1,4 +1,4 @@
-// devela::num::fin::ord::cmp
+// devela/src/num/fin/ord/cmp/mod.rs
 //
 //! Items to help comparing.
 //

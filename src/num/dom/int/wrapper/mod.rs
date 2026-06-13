@@ -1,4 +1,4 @@
-// devela::num::dom::int::wrapper
+// devela/src/num/dom/int/wrapper/mod.rs
 //
 //! Integer wrapper struct.
 //

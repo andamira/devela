@@ -1,4 +1,4 @@
-// devela::sys::log::const
+// devela/src/sys/log/slog.rs
 //
 //! Defines [`LoggerStatic`] and [`slog`].
 //

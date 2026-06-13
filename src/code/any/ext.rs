@@ -1,4 +1,4 @@
-// devela::code::any::ext
+// devela/src/code/any/ext.rs
 //
 //! Defines the [`AnyExt`] trait.
 //

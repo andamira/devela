@@ -1,4 +1,4 @@
-// devela::run::app::control
+// devela/src/run/app/control.rs
 //
 //! Defines [`AppControl`].
 //

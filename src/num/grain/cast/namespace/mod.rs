@@ -1,4 +1,4 @@
-// devela::num::grain::cast::namespace
+// devela/src/num/grain/cast/namespace/mod.rs
 //
 //! Helpers for converting between primitives.
 //

@@ -1,4 +1,4 @@
-// devela::data::id::handle
+// devela/src/data/id/handle/examples.rs
 //
 //! Defines [`handle!`] macro.
 //

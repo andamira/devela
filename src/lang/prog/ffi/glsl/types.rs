@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::glsl
+// devela/src/lang/prog/ffi/glsl/types.rs
 //
 //! GLSL types.
 //

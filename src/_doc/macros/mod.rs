@@ -1,4 +1,4 @@
-// devela::_doc::macros
+// devela/src/_doc/macros/mod.rs
 //
 //! Guidelines and information about macros.
 //

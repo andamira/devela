@@ -1,4 +1,4 @@
-// devela::data::layout::dst::tests::queue
+// devela/src/data/layout/dst/tests/queue.rs
 
 use crate::data::{DstArray, DstQueue};
 

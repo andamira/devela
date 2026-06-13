@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::table
+// devela/src/text/unicode/grapheme/scanner/trie.rs
 
 use crate::charu;
 

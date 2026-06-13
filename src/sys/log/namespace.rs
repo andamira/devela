@@ -1,4 +1,4 @@
-// devela::sys::log::namespace
+// devela/src/sys/log/namespace.rs
 
 use super::{LogLevelFilter, Logger, LoggerSetError};
 #[cfg(feature = "std")]

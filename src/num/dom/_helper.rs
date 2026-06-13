@@ -1,4 +1,4 @@
-// devela::num::dom::_helper
+// devela/src/num/dom/_helper.rs
 //
 //! Defines: `_num_dom_impl_arith`, `_num_dom_upcast_arith`, `_num_dom_upcasted_mul_add`.
 //

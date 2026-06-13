@@ -1,4 +1,4 @@
-// devela::text::parse::_reexport_core
+// devela/src/text/parse/_reexport_core.rs
 
 use crate::{_reexport, _tags};
 

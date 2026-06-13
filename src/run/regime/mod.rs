@@ -1,4 +1,4 @@
-// devela::run::regime
+// devela/src/run/regime/mod.rs
 //
 #![doc = crate::_DOC_RUN_REGIME!()] // public
 #![doc = crate::_doc!(modules: crate::run; regime)]

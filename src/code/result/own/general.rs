@@ -1,4 +1,4 @@
-// devela::code::result::own::general
+// devela/src/code/result/own/general.rs
 //
 //!
 //

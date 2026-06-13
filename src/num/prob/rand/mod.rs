@@ -1,4 +1,4 @@
-// devela::num::prob::rand
+// devela/src/num/prob/rand/mod.rs
 //
 #![doc = crate::_DOC_NUM_PROB_RAND!()] // public
 #![doc = crate::_doc!(modules: crate::num::prob; rand)]

@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::scalar::definitions
+// devela/src/text/unicode/scalar/scalar/definitions.rs
 //
 //! Define [`char7`], [`char8`], [`char16`], [`charu`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::term::backend::linux::term
+// devela/src/sys/os/term/backend/linux/term.rs
 //
 //! Defines [`TermLinux`].
 //

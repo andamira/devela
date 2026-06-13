@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::core
+// devela/src/text/parse/scanner/core.rs
 
 #[cfg(doc)]
 use crate::TextParseErrorKind;

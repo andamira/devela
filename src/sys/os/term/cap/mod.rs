@@ -1,4 +1,4 @@
-// devela::sys::os::term::cap
+// devela/src/sys/os/term/cap/mod.rs
 //
 //! Terminal capabilities.
 //

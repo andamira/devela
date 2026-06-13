@@ -1,4 +1,4 @@
-// devela::lang::prog::script::shell::word::error
+// devela/src/lang/prog/script/shell/word/error.rs
 //
 //! Defines [`ShellWordError`].
 //

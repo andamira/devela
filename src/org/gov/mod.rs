@@ -1,4 +1,4 @@
-// devela::org::gov
+// devela/src/org/gov/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_GOV!()] // public

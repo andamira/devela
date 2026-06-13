@@ -1,4 +1,4 @@
-// devela::org::econ
+// devela/src/org/econ/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_ECON!()] // public

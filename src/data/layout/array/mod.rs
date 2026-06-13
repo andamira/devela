@@ -1,4 +1,4 @@
-// devela::data::layout::array
+// devela/src/data/layout/array/mod.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT_ARRAY!()] // public
 #![doc = crate::_doc!(modules: crate::data::layout; array)]

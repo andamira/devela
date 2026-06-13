@@ -1,4 +1,4 @@
-// devela::geom
+// devela/src/geom/mod.rs
 //
 #![doc = crate::_DOC_GEOM!()] // public, root
 #![doc = crate::_DOC_GEOM_MODULES!()]

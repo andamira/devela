@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring
+// devela/src/data/layout/buffer/ring/mod.rs
 //
 //! Ring buffers.
 //

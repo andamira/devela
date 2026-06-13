@@ -1,4 +1,4 @@
-// devela::num::quant::ratio
+// devela/src/num/quant/ratio.rs
 //
 //! Defines [`Ratio`].
 //

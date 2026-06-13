@@ -1,4 +1,4 @@
-// devela::vita::play::game::phase
+// devela/src/vita/play/game/phase.rs
 
 #[doc = crate::_tags!(game)]
 /// A named subdivision within a turn or cycle of play.

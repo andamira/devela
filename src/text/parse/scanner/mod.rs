@@ -1,4 +1,4 @@
-// devela::text::parse::scanner
+// devela/src/text/parse/scanner/mod.rs
 //
 //! Defines [`TextScanner`]
 //

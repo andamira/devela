@@ -1,4 +1,4 @@
-// devela::sys::os::linux::consts::syscall::riscv
+// devela/src/sys/os/linux/syscalls/consts/riscv.rs
 //
 //!
 //

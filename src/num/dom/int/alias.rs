@@ -1,4 +1,4 @@
-// devela::num::dom::int::alias
+// devela/src/num/dom/int/alias.rs
 
 #![allow(non_camel_case_types)]
 

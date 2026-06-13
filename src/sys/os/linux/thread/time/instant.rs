@@ -1,4 +1,4 @@
-// devela::sys::os::linux::thread::time::instant
+// devela/src/sys/os/linux/thread/time/instant.rs
 //
 //! Defines [`LinuxInstant`], [`LinuxTime`].
 //

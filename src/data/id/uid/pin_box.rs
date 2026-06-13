@@ -1,4 +1,4 @@
-// devela::data::id::uid::pin_box
+// devela/src/data/id/uid/pin_box.rs
 //
 //! Defines [`IdPinBox`].
 //

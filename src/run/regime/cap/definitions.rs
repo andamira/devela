@@ -1,4 +1,4 @@
-// devela::run::regime::cap::definitions
+// devela/src/run/regime/cap/definitions.rs
 //
 //! Runtime capabilities.
 //

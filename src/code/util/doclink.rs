@@ -1,4 +1,4 @@
-// devela::code::util::doclink
+// devela/src/code/util/doclink.rs
 //
 //! Defines [`doclink!`].
 //

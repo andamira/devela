@@ -1,4 +1,4 @@
-// devela::lang::hum::syntax
+// devela/src/lang/hum/syntax/mod.rs
 //
 //! Sentence structure.
 //

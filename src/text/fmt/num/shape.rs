@@ -1,4 +1,4 @@
-// devela::text::fmt::num::shape
+// devela/src/text/fmt/num/shape.rs
 //
 //! Defines [`FmtNumShape`].
 //

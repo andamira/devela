@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::string
+// devela/src/text/unicode/grapheme/string.rs
 //
 //! Defines [`GraphemeString`].
 //

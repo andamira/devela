@@ -1,4 +1,4 @@
-// devela::data::access::iter::strided::define
+// devela/src/data/access/iter/strided/define.rs
 //
 //! Defines [`iter_strided`].
 //

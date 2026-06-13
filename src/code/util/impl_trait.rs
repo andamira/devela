@@ -1,4 +1,4 @@
-// devela::code::util::impl_trait
+// devela/src/code/util/impl_trait.rs
 //
 //! Defines [`impl_trait`].
 //

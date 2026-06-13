@@ -1,4 +1,4 @@
-// devela::sys::os::linux::process::signal
+// devela/src/sys/os/linux/process/signal/mod.rs
 //
 //! Signal handling ABI definitions.
 //!

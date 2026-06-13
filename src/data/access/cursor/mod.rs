@@ -1,4 +1,4 @@
-// devela::data::access::cursor
+// devela/src/data/access/cursor/mod.rs
 //
 //!
 //

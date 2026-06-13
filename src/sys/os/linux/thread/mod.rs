@@ -1,4 +1,4 @@
-// devela::sys::os::linux::thread
+// devela/src/sys/os/linux/thread/mod.rs
 //
 //! Linux-specific extensions to [`std::thread`].
 //

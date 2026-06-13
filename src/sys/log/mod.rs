@@ -1,4 +1,4 @@
-// devela::sys::log
+// devela/src/sys/log/mod.rs
 //
 #![doc = crate::_DOC_SYS_LOG!()] // public
 #![doc = crate::_doc!(modules: crate::sys; log)]

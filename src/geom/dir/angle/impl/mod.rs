@@ -1,4 +1,4 @@
-// devela::geom::dir::angle::impl
+// devela/src/geom/dir/angle/impl/mod.rs
 
 #[cfg(test)]
 mod test_int;

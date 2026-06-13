@@ -1,4 +1,4 @@
-// devela::vita::play::game::turn
+// devela/src/vita/play/game/session.rs
 
 #[doc = crate::_tags!(game)]
 /// A bounded instance of enacted play.

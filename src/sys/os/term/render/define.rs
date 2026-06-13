@@ -1,4 +1,4 @@
-// devela::sys::os::term::render::define
+// devela/src/sys/os/term/render/define.rs
 //
 //! Defines [`TermRenderer`].
 //

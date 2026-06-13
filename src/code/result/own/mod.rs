@@ -1,4 +1,4 @@
-// devela::code::result::own
+// devela/src/code/result/own/mod.rs
 //
 //! Defines [`Own`].
 //

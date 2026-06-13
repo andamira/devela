@@ -1,4 +1,4 @@
-// devela::lang::repr
+// devela/src/lang/repr/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_REPR!()] // public

@@ -1,4 +1,4 @@
-// devela::sys::mem::size::bit::impls
+// devela/src/sys/mem/size/bit/impls.rs
 //
 // TOC
 // - imports

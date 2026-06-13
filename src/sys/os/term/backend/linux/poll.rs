@@ -1,4 +1,4 @@
-// devela::sys::os::term::backend::linux::poll
+// devela/src/sys/os/term/backend/linux/poll.rs
 //
 //! Implements polling methods for  [`TermLinux`].
 //

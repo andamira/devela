@@ -1,4 +1,4 @@
-// devela::num::fin::bit::ops::wise::impls
+// devela/src/num/fin/bit/wise/impls.rs
 //
 //! Implements `Bitwise` for the integer primitives.
 //

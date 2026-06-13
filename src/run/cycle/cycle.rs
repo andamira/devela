@@ -1,4 +1,4 @@
-// devela::run::cycle::cycle
+// devela/src/run/cycle/cycle.rs
 //
 //! Defines [`RunControl`], [`RunPhase`], [`RunCycle`].
 //

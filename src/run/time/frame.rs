@@ -1,4 +1,4 @@
-// devela::run::time::frame
+// devela/src/run/time/frame.rs
 //
 //! Defines [`RunFrame`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::term::_raw::cc
+// devela/src/sys/os/linux/io/term/_raw/cc.rs
 
 use crate::c_uchar;
 

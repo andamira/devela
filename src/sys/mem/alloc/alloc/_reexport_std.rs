@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::_reexport_std
+// devela/src/sys/mem/alloc/alloc/_reexport_std.rs
 
 use crate::{_reexport, _tags};
 

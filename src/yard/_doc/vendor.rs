@@ -1,4 +1,4 @@
-// devela::yard::_doc::vendor
+// devela/src/yard/_doc/vendor.rs
 //
 //! Defines [`_doc_vendor!`].
 //

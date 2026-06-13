@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring::definition
+// devela/src/data/layout/buffer/ring/definition.rs
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a ring buffer type over contiguous storage backends.

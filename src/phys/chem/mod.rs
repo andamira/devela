@@ -1,4 +1,4 @@
-// devela::phys::chem
+// devela/src/phys/chem/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_CHEM!()] // public

@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::wrapper::definition
+// devela/src/num/dom/real/float/wrapper/definition.rs
 //
 //! Defines [`Float`].
 //

@@ -1,4 +1,4 @@
-// devela::code::util::unroll
+// devela/src/code/util/unroll.rs
 //
 //! Re-exports the code-generated [`unroll!`] macro.
 //

@@ -1,4 +1,4 @@
-// devela::data::id::uid::pin
+// devela/src/data/id/uid/pin.rs
 //
 //! Defines [`IdPin`].
 //

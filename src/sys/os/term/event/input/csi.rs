@@ -1,4 +1,4 @@
-// devela::sys::os::term::event::input::csi_control
+// devela/src/sys/os/term/event/input/csi.rs
 
 use crate::{Char, is, pos, slice, unwrap, whilst};
 use crate::{

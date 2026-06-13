@@ -1,4 +1,4 @@
-// devela::yard::fragments
+// devela/src/yard/fragments.rs
 //
 //! Docs headings for modules across crates and misc. abbreviations.
 //

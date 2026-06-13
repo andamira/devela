@@ -1,4 +1,4 @@
-// devela::work::exec::thread::sleep::macro
+// devela/src/work/exec/thread/sleep/macro.rs
 
 crate::CONST! {
     _DOCS_SLEEP4 = r#"

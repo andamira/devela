@@ -1,4 +1,4 @@
-// devela::vita::mind
+// devela/src/vita/mind/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_MIND!()] // public

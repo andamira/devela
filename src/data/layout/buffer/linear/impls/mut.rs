@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::impls::linear_slice_mut
+// devela/src/data/layout/buffer/linear/impls/mut.rs
 
 #[doc(hidden)]
 #[macro_export]

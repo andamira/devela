@@ -1,4 +1,4 @@
-// devela::num::grain::wide::examples
+// devela/src/num/grain/wide/examples.rs
 //
 //! Defines [`Lane4_i32Example`].
 //

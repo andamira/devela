@@ -1,4 +1,4 @@
-// devela::media::audio::acoustic
+// devela/src/media/audio/acoustic/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_AUDIO_ACOUSTIC!()]
 #![doc = crate::_doc!(modules: crate::media::audio; acoustic)]

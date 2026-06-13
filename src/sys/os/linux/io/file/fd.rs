@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::file::fd
+// devela/src/sys/os/linux/io/file/fd.rs
 //
 //! File-descriptor identity and positioning.
 //!

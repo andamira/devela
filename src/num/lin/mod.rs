@@ -1,4 +1,4 @@
-// devela::num::lin
+// devela/src/num/lin/mod.rs
 //
 #![doc = crate::_DOC_NUM_LIN!()] // public
 #![doc = crate::_doc!(modules: crate::num; lin)]

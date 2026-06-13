@@ -1,4 +1,4 @@
-// devela::sys::log::config
+// devela/src/sys/log/config.rs
 
 use super::{LogLevel, LogLevelFilter};
 

@@ -1,4 +1,4 @@
-// devela::code::ops::call::semantics
+// devela/src/code/ops/call/semantics.rs
 //
 //! Structural axes for reasoning about invocation semantics and dispatch
 //

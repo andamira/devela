@@ -1,4 +1,4 @@
-// devela::data::codec::crypto::error
+// devela/src/data/codec/crypto/error.rs
 //
 //! Defines [`CryptoError`].
 //

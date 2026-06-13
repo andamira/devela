@@ -1,4 +1,4 @@
-// devela::sys::mem::size
+// devela/src/sys/mem/size/mod.rs
 //
 //! Memory size functionality.
 //

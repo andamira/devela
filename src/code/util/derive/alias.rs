@@ -1,4 +1,4 @@
-// devela::code::util::derive
+// devela/src/code/util/derive/alias.rs
 //
 //! Attribute adapters for declarative macros.
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::error
+// devela/src/sys/os/linux/error/mod.rs
 //
 //! Linux error handling ABI and typed representations.
 //

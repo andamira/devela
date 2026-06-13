@@ -1,4 +1,4 @@
-// devela::code::intro
+// devela/src/code/intro/mod.rs
 //
 //! Introspection.
 //

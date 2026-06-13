@@ -1,4 +1,4 @@
-// devela::data::error::other
+// devela/src/data/error/other.rs
 //
 //! Data-related errors.
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::impls::core
+// devela/src/sys/os/term/grid/impls/core.rs
 //
 //! Core methods for `TermGrid`.
 //

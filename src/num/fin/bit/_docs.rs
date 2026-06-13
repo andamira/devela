@@ -1,4 +1,4 @@
-// devela::num::fin::bit::_docs
+// devela/src/num/fin/bit/_docs.rs
 //
 //! Defines constants for shared documentation on
 //! [`BitOps`][crate::BitOps] and [`Bitwise`][crate::Bitwise].

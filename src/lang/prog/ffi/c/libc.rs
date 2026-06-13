@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::c::libc
+// devela/src/lang/prog/ffi/c/libc.rs
 
 #![allow(non_camel_case_types)]
 

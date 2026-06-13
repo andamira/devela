@@ -1,4 +1,4 @@
-// devela::lang::hum::art
+// devela/src/lang/hum/art/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_ART!()] // public

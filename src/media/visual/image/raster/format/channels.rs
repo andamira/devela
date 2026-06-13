@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format::channels
+// devela/src/media/visual/image/raster/format/channels.rs
 //
 //! Defines [`RasterChannels`].
 //

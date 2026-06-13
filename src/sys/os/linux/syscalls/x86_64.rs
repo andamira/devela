@@ -1,4 +1,4 @@
-// devela::io::linux::syscalls:x86_64
+// devela/src/sys/os/linux/syscalls/x86_64.rs
 //
 //! Implements linux syscalls for x86_64.
 //

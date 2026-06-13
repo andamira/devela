@@ -1,4 +1,4 @@
-// devela::sys::display::x11::_raw::iccm
+// devela/src/sys/device/display/x11/_raw/icccm.rs
 //
 //! ICCCM window-manager hint structures (`Xutil.h`).
 //!

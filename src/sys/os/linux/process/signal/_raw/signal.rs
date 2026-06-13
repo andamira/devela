@@ -1,4 +1,4 @@
-// devela::sys::os::linux::process::signal::_raw::signal
+// devela/src/sys/os/linux/process/signal/_raw/signal.rs
 //
 //! Defines [`LINUX_SIGNAL`].
 //

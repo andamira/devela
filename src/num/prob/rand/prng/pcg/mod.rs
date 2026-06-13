@@ -1,4 +1,4 @@
-// devela::num::prob::rand::pcg
+// devela/src/num/prob/rand/prng/pcg/mod.rs
 //
 #![doc = concat![crate::_ABBR_PCG!(), "s."]]
 //

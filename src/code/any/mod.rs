@@ -1,4 +1,4 @@
-// devela::code::any
+// devela/src/code/any/mod.rs
 //
 #![doc = crate::_DOC_CODE_ANY!()] // private
 #![doc = crate::_doc!(modules: crate::code; any)]

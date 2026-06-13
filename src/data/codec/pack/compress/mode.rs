@@ -1,4 +1,4 @@
-// devela::data::codec::pack::compress::mode
+// devela/src/data/codec/pack/compress/mode.rs
 
 #[doc = crate::_tags!(codec)]
 /// The type of compression applied to data.

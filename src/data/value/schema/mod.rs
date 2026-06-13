@@ -1,4 +1,4 @@
-// devela::data::codec::schema
+// devela/src/data/value/schema/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_SCHEMA!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; schema)]

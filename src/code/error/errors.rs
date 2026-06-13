@@ -1,4 +1,4 @@
-// devela::code::error::errors
+// devela/src/code/error/errors.rs
 //
 //! Defines the most general error types.
 //

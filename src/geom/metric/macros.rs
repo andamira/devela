@@ -1,4 +1,4 @@
-// devela::geom::metric::macros
+// devela/src/geom/metric/macros.rs
 //
 //! Defines [`dis!`], [`ext!`], [`pos`], [`region!`].
 //

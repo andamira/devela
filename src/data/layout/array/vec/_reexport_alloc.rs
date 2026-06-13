@@ -1,4 +1,4 @@
-// devela::data::layout::array::vec::_reexport_alloc
+// devela/src/data/layout/array/vec/_reexport_alloc.rs
 
 use crate::{_reexport, _tags};
 

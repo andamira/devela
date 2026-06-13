@@ -1,4 +1,4 @@
-// devela::code::util::asserts::test_size_of
+// devela/src/code/util/asserts/test_size_of.rs
 
 #[doc = crate::_tags!(assert mem)]
 /// Tests the stack size of a type.

@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::family_kind
+// devela/src/text/unicode/grapheme/kind.rs
 //
 //! Defines [`GraphemeKind`].
 //

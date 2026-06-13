@@ -1,4 +1,4 @@
-// devela::data::layout::dst
+// devela/src/data/layout/dst/buffer.rs
 
 use crate::{Array, ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
 

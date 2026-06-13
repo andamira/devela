@@ -1,4 +1,4 @@
-// devela::lang::prog::script::shell::word
+// devela/src/lang/prog/script/shell/word/quote.rs
 //
 //! Shell word parsing and quoting.
 //

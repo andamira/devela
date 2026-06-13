@@ -1,4 +1,4 @@
-// devela::sys::mem::cell::_reexport_core
+// devela/src/sys/mem/cell/_reexport_core.rs
 
 use crate::{_reexport, _tags};
 

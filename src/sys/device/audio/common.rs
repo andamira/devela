@@ -1,4 +1,4 @@
-// devela::sys::device::audio::common
+// devela/src/sys/device/audio/common.rs
 //
 //! Defines [`AudioDevice`], [`AudioDeviceCow`], [`AudioDeviceDir`], [`AudioStreamDir`].
 //

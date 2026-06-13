@@ -1,4 +1,4 @@
-// devela::phys::subs
+// devela/src/phys/subs/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_SUBS!()] // public

@@ -1,4 +1,4 @@
-// devela::data::codec::pack::wrap
+// devela/src/data/codec/pack/wrap/mod.rs
 //
 //! Structured wrappers and chunked containers.
 //

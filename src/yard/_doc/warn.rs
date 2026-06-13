@@ -1,4 +1,4 @@
-// devela::yard::_doc::warn
+// devela/src/yard/_doc/warn.rs
 //
 //! Defines [`_doc_warn_miri`].
 //

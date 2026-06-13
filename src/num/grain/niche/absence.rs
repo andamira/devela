@@ -1,4 +1,4 @@
-// devela::num::grain::niche::absence
+// devela/src/num/grain/niche/absence.rs
 //
 //! Absence of niche constraints and commitments.
 //!

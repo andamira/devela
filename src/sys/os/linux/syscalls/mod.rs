@@ -1,4 +1,4 @@
-// devela::sys::os::linux::syscalls
+// devela/src/sys/os/linux/syscalls/mod.rs
 //
 //! Linux syscalls.
 //

@@ -1,4 +1,4 @@
-// devela::text::ascii::char
+// devela/src/text/ascii/char.rs
 //
 //! Defines [`CharAscii`].
 //

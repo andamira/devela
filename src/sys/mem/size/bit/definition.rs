@@ -1,4 +1,4 @@
-// devela::sys::mem::size::bit::definition
+// devela/src/sys/mem/size/bit/definition.rs
 //
 //! Defines [`BitSized`].
 //

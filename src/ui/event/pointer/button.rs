@@ -1,4 +1,4 @@
-// devela::ui::event::pointer::button
+// devela/src/ui/event/pointer/button.rs
 //
 //! Defines [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //

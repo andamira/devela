@@ -1,4 +1,4 @@
-// devela::num::fin::ord::cmp
+// devela/src/num/fin/ord/cmp/tests.rs
 
 use super::Cmp;
 

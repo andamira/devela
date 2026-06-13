@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::value
+// devela/src/lang/prog/ffi/js/value.rs
 //
 //! Defines [`JsValue`].
 //

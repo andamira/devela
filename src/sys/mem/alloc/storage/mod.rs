@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::storage
+// devela/src/sys/mem/alloc/storage/mod.rs
 //
 //! The [`Storage`] trait allows data structures to abstract over how data is stored,
 //! enabling specialization by storage strategy (e.g. stack vs heap).

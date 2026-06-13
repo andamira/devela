@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::time
+// devela/src/sys/os/browser/web/time.rs
 
 use crate::{_js_doc, JsInstant, JsTimeout, js_uint32};
 use crate::{TimeDelta, Web, WebWindow};

@@ -1,4 +1,4 @@
-// devela::ui::event::time
+// devela/src/ui/event/time.rs
 //
 //! Defines [`EventTimestampMode`], [`EventTimestamp`].
 //

@@ -1,4 +1,4 @@
-// devela::num::lin::vector::vec::num
+// devela/src/num/lin/vector/vec/num.rs
 //
 //!
 //

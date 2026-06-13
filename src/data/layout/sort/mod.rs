@@ -1,4 +1,4 @@
-// devela::data::layout::sort
+// devela/src/data/layout/sort/mod.rs
 //
 //! Sorting functionality.
 //

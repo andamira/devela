@@ -1,4 +1,4 @@
-// devela::phys::astro
+// devela/src/phys/astro/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_ASTRO!()] // public

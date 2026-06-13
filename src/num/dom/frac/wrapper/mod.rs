@@ -1,4 +1,4 @@
-// devela::num::dom::frac::wrapper
+// devela/src/num/dom/frac/wrapper/mod.rs
 //
 //! Fraction-related wrapper struct.
 //

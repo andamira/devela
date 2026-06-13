@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::color::color
+// devela/src/sys/os/term/ansi/color.rs
 //
 //! Defines [`AnsiColor`], [`AnsiColor3`], [`AnsiColor8`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::surface::shm
+// devela/src/sys/device/display/x11/surface/shm.rs
 //
 //! Defines [`XShmCaps`], [`XShmBuffer`].
 

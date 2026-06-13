@@ -1,4 +1,4 @@
-// devela::lang::hum::vocal
+// devela/src/lang/hum/vocal/mod.rs
 //
 //! Sound systems (phonetics, phonology, prosody).
 //

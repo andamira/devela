@@ -1,4 +1,4 @@
-// devela::num::prob::rand::qual
+// devela/src/num/prob/rand/qual.rs
 //
 //! Defines [`RandQualities`].
 //

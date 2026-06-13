@@ -1,4 +1,4 @@
-// devela::code::error::define
+// devela/src/code/error/define.rs
 //
 //! Defines [`define_error!`].
 //

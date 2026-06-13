@@ -1,4 +1,4 @@
-// devela::phys::wave::tests
+// devela/src/phys/wave/tests.rs
 
 #[cfg(feature = "alloc")]
 mod alloc {

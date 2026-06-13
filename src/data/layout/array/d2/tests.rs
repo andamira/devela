@@ -1,4 +1,4 @@
-// devela::data::layout::array::d2::tests
+// devela/src/data/layout/array/d2/tests.rs
 
 use super::*;
 

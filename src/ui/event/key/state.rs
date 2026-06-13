@@ -1,4 +1,4 @@
-// devela::ui::event::key::state
+// devela/src/ui/event/key/state.rs
 //
 //! Defines [`KeyState`].
 //

@@ -1,4 +1,4 @@
-// devela::text::str::ext::alloc
+// devela/src/text/str/ext/alloc.rs
 //
 //! Defines the [`StringExt`] trait.
 //

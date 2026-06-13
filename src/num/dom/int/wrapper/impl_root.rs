@@ -1,4 +1,4 @@
-// devela::num::dom::int::wrapper::impl_root
+// devela/src/num/dom/int/wrapper/impl_root.rs
 //
 //! Implements root related methods for [`Int`].
 //

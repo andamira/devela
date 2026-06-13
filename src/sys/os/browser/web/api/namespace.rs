@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::api::namespace
+// devela/src/sys/os/browser/web/api/namespace.rs
 // (in sync with ../js/*.js)
 //
 //! Defines the [`Web`] namespace.

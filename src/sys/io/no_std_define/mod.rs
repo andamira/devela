@@ -1,4 +1,4 @@
-// devela::sys::io::no_std_define
+// devela/src/sys/io/no_std_define/mod.rs
 //
 //! Reimplementations of I/O functionality for `no_std`.
 //

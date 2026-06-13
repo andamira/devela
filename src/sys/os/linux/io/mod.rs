@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io
+// devela/src/sys/os/linux/io/mod.rs
 //
 //! Linux-specific extensions to [`std::io`].
 //

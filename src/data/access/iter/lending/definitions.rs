@@ -1,4 +1,4 @@
-// devela::data::access::iter::lending::definitions
+// devela/src/data/access/iter/lending/definitions.rs
 //
 //! Defines [`IteratorLending`],
 //! [`IteratorLendingDoubleEnded`],

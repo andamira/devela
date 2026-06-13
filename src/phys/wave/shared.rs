@@ -1,4 +1,4 @@
-// devela::phys::wave::shared
+// devela/src/phys/wave/shared.rs
 
 #[doc = crate::_tags!(wave)]
 /// Distinguishes the role of a component in wavelet analysis.

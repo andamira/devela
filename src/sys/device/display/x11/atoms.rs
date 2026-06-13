@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::atoms
+// devela/src/sys/device/display/x11/atoms.rs
 //
 //! Defines [`XAtoms`].
 //

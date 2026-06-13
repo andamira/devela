@@ -1,4 +1,4 @@
-// devela::sys::mem::bound::pin::_reexport_core
+// devela/src/sys/mem/bound/pin/_reexport_core.rs
 
 use crate::{_reexport, _tags};
 

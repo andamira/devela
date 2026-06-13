@@ -1,4 +1,4 @@
-// devela::lang::hum::code
+// devela/src/lang/hum/code/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_CODE!()] // public

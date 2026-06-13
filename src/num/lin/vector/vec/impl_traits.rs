@@ -1,4 +1,4 @@
-// devela::num::lin::vector::vec::impl_traits
+// devela/src/num/lin/vector/vec/impl_traits.rs
 //
 //!
 //

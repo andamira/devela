@@ -1,4 +1,4 @@
-// devela::text::str::namespace
+// devela/src/text/str/namespace/mod.rs
 //
 //! Defines the [`Str`] namespace.
 //

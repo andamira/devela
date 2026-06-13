@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::linear::examples
+// devela/src/data/layout/buffer/linear/examples.rs
 //
 // TOC
 // - BufferLinearStaticExample

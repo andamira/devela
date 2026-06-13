@@ -1,4 +1,4 @@
-// devela::text::fmt::cat
+// devela/src/text/fmt/cat.rs
 //
 //! Defines [`fmtcat!`].
 //

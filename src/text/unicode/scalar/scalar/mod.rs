@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::scalar
+// devela/src/text/unicode/scalar/scalar/mod.rs
 //
 //!
 //

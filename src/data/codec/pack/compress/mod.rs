@@ -1,4 +1,4 @@
-// devela::data::codec::pack::compress
+// devela/src/data/codec/pack/compress/mod.rs
 //
 //! Size-reducing codecs.
 //

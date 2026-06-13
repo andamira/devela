@@ -1,4 +1,4 @@
-// devela::num::prob::rand::xabc
+// devela/src/num/prob/rand/prng/xabc.rs
 //
 //!
 //

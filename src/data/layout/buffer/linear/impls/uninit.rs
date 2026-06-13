@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::impls::linear_uninit
+// devela/src/data/layout/buffer/linear/impls/uninit.rs
 
 #[doc(hidden)]
 #[macro_export]

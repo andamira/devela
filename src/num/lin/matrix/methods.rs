@@ -1,4 +1,4 @@
-// devela::num::lin::matrix::methods
+// devela/src/num/lin/matrix/methods.rs
 //
 //! Methods for matrices.
 //

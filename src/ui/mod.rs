@@ -1,4 +1,4 @@
-// devela::ui
+// devela/src/ui/mod.rs
 //
 #![doc = crate::_DOC_UI!()] // public, root
 #![doc = crate::_DOC_UI_MODULES!()]

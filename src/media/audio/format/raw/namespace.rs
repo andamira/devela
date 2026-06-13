@@ -1,4 +1,4 @@
-// devela::media::audio::format::raw::namespace
+// devela/src/media/audio/format/raw/namespace.rs
 //
 //! Defines [`PcmRaw`].
 //

@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::borrow
+// devela/src/media/visual/image/raster/borrow.rs
 //
 //! Borrowed concrete raster views.
 //

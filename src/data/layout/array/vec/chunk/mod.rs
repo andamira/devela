@@ -1,4 +1,4 @@
-// devela::data::layout::array::vec::chunk
+// devela/src/data/layout/array/vec/chunk/mod.rs
 //
 //
 // IMPROVE: bring benchmarks

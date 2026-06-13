@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::iter
+// devela/src/sys/mem/view/slice/iter.rs
 //
 //! Defines [`SliceIter`], [`SliceIterMut`].
 //

@@ -1,4 +1,4 @@
-// devela::text::fmt::namespace
+// devela/src/text/fmt/namespace.rs
 //
 //! [`Fmt`] namespace.
 //

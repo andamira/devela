@@ -1,4 +1,4 @@
-// devela::data::layout::stack::stack::methods_own
+// devela/src/data/layout/stack/stack/methods/own.rs
 //
 //! owning stack const operations, in compile-time
 //! depends on T: Copy, S: Bare

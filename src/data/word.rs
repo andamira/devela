@@ -1,4 +1,4 @@
-// devela::data::value::word
+// devela/src/data/word.rs
 //
 //! Defines [`Word`], [`word!`].
 //

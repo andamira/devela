@@ -1,4 +1,4 @@
-// devela::index
+// devela/src/index.rs
 //
 //! A development substrate of coherence.
 //

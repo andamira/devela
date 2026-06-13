@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::join
+// devela/src/sys/mem/view/slice/join.rs
 //
 //! Defines the [`const_join!`] macro.
 //

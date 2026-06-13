@@ -1,4 +1,4 @@
-// devela::num::prob::rand::prng::shift::u128
+// devela/src/num/prob/rand/prng/shift/u128p.rs
 //
 //! 128-bit + version of XorShift.
 //

@@ -1,4 +1,4 @@
-// devela::data::store::key
+// devela/src/data/store/key/mod.rs
 //
 #![doc = crate::_DOC_DATA_STORE_KEY!()] // public
 #![doc = crate::_doc!(modules: crate::data::store; key)]

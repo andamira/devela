@@ -1,4 +1,4 @@
-// devela::code::util::enumset
+// devela/src/code/util/enumset.rs
 //
 //! An enum with an associated bit set.
 //

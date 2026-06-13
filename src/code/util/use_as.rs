@@ -1,4 +1,4 @@
-// devela::code::util::use_as
+// devela/src/code/util/use_as.rs
 //
 //! Defines [`use_as!`].
 //

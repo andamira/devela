@@ -1,4 +1,4 @@
-// devela::data::layout::sort::impl_primitives
+// devela/src/data/layout/sort/primitives.rs
 //
 //! Implements compile-time sorting algorithms for arrays of primitives.
 //

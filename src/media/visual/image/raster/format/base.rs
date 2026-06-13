@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format::base
+// devela/src/media/visual/image/raster/format/base.rs
 //
 //! Defines [`RasterFormat`], (`RasterAlpha`, `RasterTransfer`).
 //

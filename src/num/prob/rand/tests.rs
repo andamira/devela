@@ -1,4 +1,4 @@
-// devela::num::prob::rand::tests
+// devela/src/num/prob/rand/tests.rs
 
 use crate::Rand;
 

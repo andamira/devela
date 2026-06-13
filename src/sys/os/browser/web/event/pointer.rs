@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::event::pointer
+// devela/src/sys/os/browser/web/event/pointer.rs
 //
 //! Defines [`WebEventPointer`].
 //

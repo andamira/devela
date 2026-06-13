@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::linear::definition
+// devela/src/data/layout/buffer/linear/definition.rs
 //
 //! Defines [`buffer_linear!`].
 //

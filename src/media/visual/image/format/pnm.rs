@@ -1,4 +1,4 @@
-// devela::media::visual::image::format::pnm
+// devela/src/media/visual/image/format/pnm.rs
 //
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 //

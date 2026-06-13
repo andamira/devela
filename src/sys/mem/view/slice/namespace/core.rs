@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::namespace::core
+// devela/src/sys/mem/view/slice/namespace/core.rs
 
 use crate::{Slice, is};
 use ::core::slice::{from_mut, from_ref};

@@ -1,4 +1,4 @@
-// devela::code::util::items
+// devela/src/code/util/items.rs
 //
 //! Defines skip formatting macros ([`items`], [`sf`]).
 //

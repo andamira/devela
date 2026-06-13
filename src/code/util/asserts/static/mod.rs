@@ -1,4 +1,4 @@
-// devela::code::util::asserts::static
+// devela/src/code/util/asserts/static/mod.rs
 //
 //! Static assertions.
 //

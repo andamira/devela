@@ -1,4 +1,4 @@
-// devela::lang::prog::script::shell::tests
+// devela/src/lang/prog/script/shell/word/tests.rs
 
 use crate::{ShellLex, ShellQuote, ShellWordError};
 

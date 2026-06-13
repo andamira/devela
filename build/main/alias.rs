@@ -1,4 +1,4 @@
-// devela::build::main::alias
+// devela/build/main/alias.rs
 //
 //! Aliases of combinations of configuration features.
 //

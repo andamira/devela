@@ -1,4 +1,4 @@
-// devela::data::collection
+// devela/src/data/layout/collection.rs
 //
 //! Defines the [`DataCollection`] abstract data type.
 //

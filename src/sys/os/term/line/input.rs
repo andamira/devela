@@ -1,4 +1,4 @@
-// devela::sys::os::term::line::input
+// devela/src/sys/os/term/line/input.rs
 //
 //! Terminal line input modes.
 //

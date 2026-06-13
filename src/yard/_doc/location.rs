@@ -1,4 +1,4 @@
-// devela::yard::_doc::location
+// devela/src/yard/_doc/location.rs
 //
 //! Defines [`_doc_location!`].
 //

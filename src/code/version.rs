@@ -1,4 +1,4 @@
-// devela::code::version
+// devela/src/code/version.rs
 //
 //! Defines [`Version`] and [`VersionFull`].
 //

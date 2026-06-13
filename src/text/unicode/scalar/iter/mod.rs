@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::iter
+// devela/src/text/unicode/scalar/iter/mod.rs
 //
 //! Defines the [`CharIter`] iterator.
 //

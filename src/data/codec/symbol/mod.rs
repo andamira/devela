@@ -1,4 +1,4 @@
-// devela::data::codec::symbol
+// devela/src/data/codec/symbol/mod.rs
 //
 //! Symbolic codes that encode data into visual marks.
 //

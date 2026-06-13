@@ -1,4 +1,4 @@
-// devela::lang::prog::script
+// devela/src/lang/prog/script/mod.rs
 //
 #![doc = crate::_DOC_LANG_PROG_SCRIPT!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog; script: shell)]

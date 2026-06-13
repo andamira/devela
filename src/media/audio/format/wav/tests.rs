@@ -1,4 +1,4 @@
-// devela::media::audio::format::wav::tests
+// devela/src/media/audio/format/wav/tests.rs
 //
 // TOC
 // - mod fixture

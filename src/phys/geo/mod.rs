@@ -1,4 +1,4 @@
-// devela::phys::geo
+// devela/src/phys/geo/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_GEO!()] // public

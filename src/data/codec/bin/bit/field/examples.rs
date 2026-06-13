@@ -1,4 +1,4 @@
-// devela::data::codec::bit::bin::field::examples
+// devela/src/data/codec/bin/bit/field/examples.rs
 //
 //! Defines [`BitfieldExample`]
 //

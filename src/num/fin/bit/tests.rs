@@ -1,4 +1,4 @@
-// devela::num::fin::bit::tests
+// devela/src/num/fin/bit/tests.rs
 
 #[cfg(feature = "std")]
 use crate::{Bitwise, Panic};

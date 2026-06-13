@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::ext_float
+// devela/src/num/dom/real/float/ext_float.rs
 //
 //! Extention trait for floating-point primitives.
 //

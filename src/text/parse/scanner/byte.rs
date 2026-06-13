@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::byte
+// devela/src/text/parse/scanner/byte.rs
 
 use crate::{TextCursor, TextParseError, TextRange, TextScanner, TextUnit};
 use crate::{is, whilst};

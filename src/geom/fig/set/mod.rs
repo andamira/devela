@@ -1,4 +1,4 @@
-// devela::geom::fig::set
+// devela/src/geom/fig/set/mod.rs
 //
 #![doc = crate::_DOC_GEOM_FIG_SET!()] // public
 #![doc = crate::_doc!(modules: crate::geom::fig; set)]

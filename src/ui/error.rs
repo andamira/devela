@@ -1,4 +1,4 @@
-// devela::ui::error
+// devela/src/ui/error.rs
 //
 //!
 //

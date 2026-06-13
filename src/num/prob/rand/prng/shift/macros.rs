@@ -1,4 +1,4 @@
-// devela::num::prob::rand::prng::shift::macros
+// devela/src/num/prob/rand/prng/shift/macros.rs
 //
 //! Defines [`rand_xorshift!`],  ([`_xorshift_basis!`]).
 //

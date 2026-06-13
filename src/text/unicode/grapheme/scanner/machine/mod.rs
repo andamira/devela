@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::machine
+// devela/src/text/unicode/grapheme/scanner/machine/mod.rs
 //
 //! Defines [`GraphemeMachine`].
 //

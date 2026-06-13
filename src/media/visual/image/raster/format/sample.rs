@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format::sample
+// devela/src/media/visual/image/raster/format/sample.rs
 //
 //! Defines [`RasterSampleFormat`].
 //

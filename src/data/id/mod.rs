@@ -1,4 +1,4 @@
-// devela::data::id
+// devela/src/data/id/mod.rs
 //
 #![doc = crate::_DOC_DATA_ID!()] // public
 #![doc = crate::_doc!(modules: crate::data; id)]

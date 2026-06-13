@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::definition
+// devela/src/sys/os/term/grid/definition.rs
 //
 //! Defines [`TermGrid`].
 //

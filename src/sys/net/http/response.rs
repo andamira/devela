@@ -1,4 +1,4 @@
-// devela::sys::net::http::response
+// devela/src/sys/net/http/response.rs
 //
 //! Defines [`HttpResponseHead`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::window.js
+// devela/src/sys/os/browser/web/js/window.js
 
 import { strDecode, strEncodeInto } from "./shared.js";
 

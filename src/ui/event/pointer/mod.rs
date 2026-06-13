@@ -1,4 +1,4 @@
-// devela::ui::event::pointer
+// devela/src/ui/event/pointer/mod.rs
 //
 //! Pointer events.
 //

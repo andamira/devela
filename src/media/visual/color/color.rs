@@ -1,4 +1,4 @@
-// devela::media::visual::color::color
+// devela/src/media/visual/color/color.rs
 //
 //! Defines the [`Color`] trait.
 //

@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::event::button
+// devela/src/sys/os/browser/web/event/button.rs
 //
 //! Implement conversions from/into web event types.
 //

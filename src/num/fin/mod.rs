@@ -1,4 +1,4 @@
-// devela::num::fin
+// devela/src/num/fin/mod.rs
 //
 #![doc = crate::_DOC_NUM_FIN!()] // public
 #![doc = crate::_doc!(modules: crate::num; fin: logic, ord)]

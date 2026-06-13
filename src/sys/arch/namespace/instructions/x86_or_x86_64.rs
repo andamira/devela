@@ -1,4 +1,4 @@
-// devela::sys::arch::instructions:x86_or_x86_64
+// devela/src/sys/arch/namespace/instructions/x86_or_x86_64.rs
 //
 //! Implements processor instructions for both x86 and x86_64.
 //

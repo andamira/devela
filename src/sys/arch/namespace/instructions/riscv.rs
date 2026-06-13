@@ -1,4 +1,4 @@
-// devela::sys::arch::instructions:riscv
+// devela/src/sys/arch/namespace/instructions/riscv.rs
 //
 //! Implements processor instruction calls for both riscv32 and riscv64.
 //

@@ -1,4 +1,4 @@
-// devela::lang::hum::write
+// devela/src/lang/hum/write/mod.rs
 //
 //! Writing systems, ortopgraphy.
 //!

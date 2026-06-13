@@ -1,4 +1,4 @@
-// devela::work::task::coro
+// devela/src/work/task/coro/mod.rs
 //
 #![doc = crate::_DOC_WORK_TASK_CORO!()] // public
 #![doc = crate::_doc!(modules: crate::work::task; coro)]

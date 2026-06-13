@@ -1,4 +1,4 @@
-// devela::data::codec::bit::bin::set
+// devela/src/data/codec/bin/bit/set/mod.rs
 
 #[cfg(any(test, doctest))]
 mod tests;

@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner
+// devela/src/text/unicode/grapheme/scanner/mod.rs
 //
 //! An scanner/segmentator of extended grapheme clusters.
 //

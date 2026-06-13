@@ -1,4 +1,4 @@
-// devela::num::lin::matrix::tests
+// devela/src/num/lin/matrix/tests.rs
 //
 //!
 //

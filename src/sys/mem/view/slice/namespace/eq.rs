@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::namespace::eq
+// devela/src/sys/mem/view/slice/namespace/eq.rs
 
 use crate::{Slice, is, whilst};
 

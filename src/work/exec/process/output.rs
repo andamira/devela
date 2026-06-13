@@ -1,4 +1,4 @@
-// devela::work::exec::process::output
+// devela/src/work/exec/process/output.rs
 //
 //! Defines the [`OutputExt`] trait.
 //

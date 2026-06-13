@@ -1,4 +1,4 @@
-// devela::text::generate
+// devela/src/text/generate/mod.rs
 //
 #![doc = crate::_DOC_TEXT_GENERATE!()] // public
 #![doc = crate::_doc!(modules: crate::text; generate)]

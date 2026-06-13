@@ -1,4 +1,4 @@
-// devela::sys::mem::view::borrow::ownership
+// devela/src/sys/mem/view/borrow/ownership.rs
 //
 //! Defines the [`Ownership`] trait.
 //

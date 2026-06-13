@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::namespace
+// devela/src/sys/mem/view/slice/namespace/mod.rs
 //
 //! Defines the [`Slice`] namespace.
 //

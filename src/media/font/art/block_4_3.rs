@@ -1,4 +1,4 @@
-// devela::media::font::art::block_4_3
+// devela/src/media/font/art/block_4_3.rs
 //
 // - https://en.wikipedia.org/wiki/ASCII#Character_set
 //

@@ -1,4 +1,4 @@
-// devela::text::str::small::alloc
+// devela/src/text/str/small/alloc.rs
 //
 //! Defines [`StringSmallAlloc`].
 //

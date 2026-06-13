@@ -1,4 +1,4 @@
-// devela::sys::device::display
+// devela/src/sys/device/display/mod.rs
 //
 #![doc = crate::_DOC_SYS_DEVICE_DISPLAY!()] // public
 #![doc = crate::_doc!(modules: crate::sys::device; display: x11)]

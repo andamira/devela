@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::surface
+// devela/src/sys/device/display/x11/surface/mod.rs
 
 mod base; // XSurfaceFrame, (XSurface), (XSurfaceStorage)
 mod cpu; // XCpuBuffer

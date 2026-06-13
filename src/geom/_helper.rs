@@ -1,4 +1,4 @@
-// devela::geom::_helper
+// devela/src/geom/_helper.rs
 //
 //! Defines helpers for implementing common methods on geometric types.
 //

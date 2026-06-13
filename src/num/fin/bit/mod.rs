@@ -1,4 +1,4 @@
-// devela::num::fin::bit
+// devela/src/num/fin/bit/mod.rs
 //
 #![doc = crate::_DOC_NUM_FIN_BIT!()] // private
 #![doc = crate::_doc!(modules: crate::num; bit)]

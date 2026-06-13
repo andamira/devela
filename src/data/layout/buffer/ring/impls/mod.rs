@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring::impls
+// devela/src/data/layout/buffer/ring/impls/mod.rs
 
 mod array; // __buffer_ring_impl_array!
 // mod uninit; // __buffer_ring_impl_uninit!

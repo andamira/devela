@@ -1,4 +1,4 @@
-// devela::text::layout::result
+// devela/src/text/layout/result.rs
 //
 //! Defines [`TextFit`], [`TextLayoutStep`].
 //!

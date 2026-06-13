@@ -1,4 +1,4 @@
-// devela::num::grain::prim
+// devela/src/code/marker/prim.rs
 //
 //! Marker traits for primitives.
 //

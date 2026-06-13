@@ -1,4 +1,4 @@
-// devela::lang::hum::i18n::tag
+// devela/src/lang/hum/i18n/tag/mod.rs
 //
 //! Language tags (BCP 47).
 //

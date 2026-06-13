@@ -1,4 +1,4 @@
-// devela::examples::code::enumint
+// devela/examples/code/enumint.rs
 //
 //! Shows how to use the [`enumint!`] declarative macro.
 //!

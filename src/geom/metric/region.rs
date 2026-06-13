@@ -1,4 +1,4 @@
-// devela::geom::metric::distance
+// devela/src/geom/metric/region.rs
 //
 //! Defines [`Region`][S][1|2|3], [`RegionStrided`].
 //

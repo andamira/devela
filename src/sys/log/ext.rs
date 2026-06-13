@@ -1,4 +1,4 @@
-// devela::sys::log::ext
+// devela/src/sys/log/ext.rs
 //
 //! Defines [`LoggerExt`].
 //

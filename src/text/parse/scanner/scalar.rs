@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::scalar
+// devela/src/text/parse/scanner/scalar.rs
 
 use crate::{Char, TextRange, TextScanner, TextUnit, charu, is, slice, unwrap, whilst};
 

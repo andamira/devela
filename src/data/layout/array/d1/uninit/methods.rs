@@ -1,4 +1,4 @@
-// devela::data::layout:array::d1::uninit::methods
+// devela/src/data/layout/array/d1/uninit/methods.rs
 
 use crate::{
     ArrayUninit, IndexOutOfBounds, MaybeUninit, Mem,

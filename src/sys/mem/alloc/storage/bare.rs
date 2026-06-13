@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::storage::bare
+// devela/src/sys/mem/alloc/storage/bare.rs
 //
 //! *Bare* storage doesn't affect its contents
 //

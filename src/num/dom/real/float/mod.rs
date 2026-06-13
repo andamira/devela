@@ -1,4 +1,4 @@
-// devela::num::dom::real::float
+// devela/src/num/dom/real/float/mod.rs
 //
 #![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
 #![doc = crate::_doc!(modules: crate::num::dom::real; float)]

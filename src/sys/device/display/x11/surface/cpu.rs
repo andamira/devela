@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::surface::cpu
+// devela/src/sys/device/display/x11/surface/cpu.rs
 //
 //! Defines [`XCpuBuffer`].
 //

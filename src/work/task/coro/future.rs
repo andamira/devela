@@ -1,4 +1,4 @@
-// devela::work::task::coro::future
+// devela/src/work/task/coro/future.rs
 //
 //! An experimental, minimal, single-threaded, coroutine implementation.
 //!

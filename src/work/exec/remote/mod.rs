@@ -1,4 +1,4 @@
-// devela::work::exec::remote
+// devela/src/work/exec/remote/mod.rs
 //
 #![doc = crate::_DOC_WORK_EXEC_REMOTE!()] // public
 #![doc = crate::_doc!(modules: crate::work::exec; remote)]

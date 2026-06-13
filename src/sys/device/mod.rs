@@ -1,4 +1,4 @@
-// devela::sys::device
+// devela/src/sys/device/mod.rs
 //
 #![doc = crate::_DOC_SYS_DEVICE!()] // public
 #![doc = crate::_doc!(modules: crate::sys; device: audio, display)] // gpu, midi

@@ -1,4 +1,4 @@
-// devela::sys::hw
+// devela/src/sys/hw/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_SYS_HW!()] // public

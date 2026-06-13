@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::event::key
+// devela/src/sys/os/browser/web/event/key/mod.rs
 //
 //!
 //

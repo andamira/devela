@@ -1,4 +1,4 @@
-// devela::work::exec::thread::sleep
+// devela/src/work/exec/thread/sleep/mod.rs
 //
 //! Thread sleeping functionality.
 //

@@ -1,4 +1,4 @@
-// devela::sys::mem::view::borrow::_reexport_alloc
+// devela/src/sys/mem/view/borrow/_reexport_alloc.rs
 
 use crate::{_reexport, _tags};
 

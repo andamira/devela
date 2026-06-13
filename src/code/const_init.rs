@@ -1,4 +1,4 @@
-// devela::code::const_init
+// devela/src/code/const_init.rs
 //
 //! Defines the [`ConstInit`] trait and implements it for many types.
 // NOTE: most implementations are scattered around the codebase.

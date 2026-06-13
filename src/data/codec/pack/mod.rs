@@ -1,4 +1,4 @@
-// devela::data::codec::pack
+// devela/src/data/codec/pack/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_PACK!()] // private
 #![doc = crate::_doc!(modules: crate::data::codec; pack)]

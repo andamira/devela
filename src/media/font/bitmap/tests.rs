@@ -1,4 +1,4 @@
-// devela::media::bitmap::tests
+// devela/src/media/font/bitmap/tests.rs
 
 use super::*;
 

@@ -1,4 +1,4 @@
-// devela::phys::time::error
+// devela/src/phys/time/error.rs
 
 use crate::{_TAG_TIME, define_error};
 

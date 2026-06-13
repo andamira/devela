@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc
+// devela/src/sys/mem/alloc/alloc/mod.rs
 //
 #![doc = crate::_DOC_SYS_MEM_ALLOC!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; alloc)]

@@ -1,4 +1,4 @@
-// devela::num::error
+// devela/src/num/error/mod.rs
 //
 #![doc = crate::_DOC_NUM_ERROR!()] // public
 #![doc = crate::_doc!(modules: crate::num; error)]

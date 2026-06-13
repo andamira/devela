@@ -1,4 +1,4 @@
-// devela::lang::hum::i18n
+// devela/src/lang/hum/i18n/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_I18N!()] // public

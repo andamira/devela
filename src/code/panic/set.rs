@@ -1,4 +1,4 @@
-// devela::code::panic::set
+// devela/src/code/panic/set.rs
 //
 //! Defines the [`set_panic_handler!`] macro.
 //

@@ -1,4 +1,4 @@
-// devela::num::dom::real::float::_docs
+// devela/src/num/dom/real/float/_docs.rs
 //
 //! Defines constants for shared documentation on [`Float`] and [`FloatExt`].
 #![doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]

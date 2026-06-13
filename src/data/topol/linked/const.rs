@@ -1,4 +1,4 @@
-// devela::data::topol::linked:const
+// devela/src/data/topol/linked/const.rs
 //
 //! Defines [`ConstList`], [`ConstListIter`].
 //

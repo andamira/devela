@@ -1,4 +1,4 @@
-// devela::sys::os::linux::error::consts
+// devela/src/sys/os/linux/error/consts.rs
 //
 //! Linux error and exit status constants.
 //!

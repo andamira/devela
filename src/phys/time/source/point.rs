@@ -1,4 +1,4 @@
-// devela::phys::time::source::point
+// devela/src/phys/time/source/point.rs
 //
 //! Defines [`TimePoint`].
 //

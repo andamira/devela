@@ -1,4 +1,4 @@
-// devela::data::codec::hash::fx
+// devela/src/data/codec/hash/fx.rs
 
 use crate::{ConstInit, Hash, Hasher, HasherBuildDefault};
 

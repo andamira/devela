@@ -1,4 +1,4 @@
-// devela::lang::hum::denote
+// devela/src/lang/hum/denote/mod.rs
 //
 //! Denotation, reference, semantics.
 //

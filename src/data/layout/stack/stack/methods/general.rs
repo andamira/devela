@@ -1,4 +1,4 @@
-// devela::data::collections::stack::methods::general
+// devela/src/data/layout/stack/stack/methods/general.rs
 
 use crate::{
     Array, Bare, Cmp, DataNotEnough, MismatchedCapacity, NotEnoughElements, NotEnoughSpace, Stack,

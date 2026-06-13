@@ -1,4 +1,4 @@
-// devela::data::access::iter::strided
+// devela/src/data/access/iter/strided/mod.rs
 //
 //!
 //

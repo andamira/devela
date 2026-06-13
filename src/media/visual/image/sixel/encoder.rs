@@ -1,4 +1,4 @@
-// devela::media::visual::image::sixel::encoder
+// devela/src/media/visual/image/sixel/encoder.rs
 //
 //! Defines [`SixelEncoder`].
 //

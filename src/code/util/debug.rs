@@ -1,4 +1,4 @@
-// devela::code::util::debug
+// devela/src/code/util/debug.rs
 //
 //! Defines [`const_warn!`], [`fn_name`].
 //

@@ -1,4 +1,4 @@
-// devela::vita::play::game::legacy
+// devela/src/vita/play/game/legacy.rs
 
 #[doc = crate::_tags!(game)]
 /// Persistent continuity that carries across multiple sessions of play.

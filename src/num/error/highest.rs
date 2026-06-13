@@ -1,4 +1,4 @@
-// devela::num::error::highest
+// devela/src/num/error/highest.rs
 //
 //! Defines [`NumError`], [`NumResult`].
 //

@@ -1,4 +1,4 @@
-// devela::geom::dir::macros
+// devela/src/geom/dir/macros.rs
 //
 //! Defines: [`ori!`].
 //

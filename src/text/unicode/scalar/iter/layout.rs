@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::iter::layout
+// devela/src/text/unicode/scalar/iter/layout.rs
 
 use crate::{
     CharIter,

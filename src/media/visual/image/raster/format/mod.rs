@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::format
+// devela/src/media/visual/image/raster/format/mod.rs
 //
 //! Raster image formats.
 //

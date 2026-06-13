@@ -1,4 +1,4 @@
-// devela::data::codec::integrity
+// devela/src/data/codec/integrity/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_INTEGRITY!()] // private
 #![doc = crate::_doc!(modules: crate::data::codec; integrity)]

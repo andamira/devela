@@ -1,4 +1,4 @@
-// devela::sys::mem::view::borrow::alloc
+// devela/src/sys/mem/view/borrow/backing.rs
 //
 //! Defines the [`Backing`] enum.
 //

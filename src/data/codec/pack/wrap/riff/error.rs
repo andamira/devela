@@ -1,4 +1,4 @@
-// devela::data::codec::pack::wrap::riff::error
+// devela/src/data/codec/pack/wrap/riff/error.rs
 //
 //! Defines [`RiffError`].
 //

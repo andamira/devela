@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::error
+// devela/src/sys/device/display/x11/error.rs
 //
 //! Defines [`XError`].
 //

@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::iter::bytes
+// devela/src/text/unicode/scalar/iter/bytes.rs
 
 use crate::{Char, CharIter, char7, char8, char16, charu, is, unwrap};
 

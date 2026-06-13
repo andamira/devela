@@ -1,4 +1,4 @@
-// devela::code::result::opt_res::unwrap
+// devela/src/code/result/opt_res/unwrap.rs
 //
 //! Defines [`unwrap!`].
 //

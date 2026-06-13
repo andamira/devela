@@ -1,4 +1,4 @@
-// devela::num::fin::ord::cmp::wrapper
+// devela/src/num/fin/ord/cmp/wrapper.rs
 //
 //! Helper wrapper for comparing.
 //

@@ -1,4 +1,4 @@
-// devela::media::visual::color::palette
+// devela/src/media/visual/color/palette/mod.rs
 //
 //!
 //

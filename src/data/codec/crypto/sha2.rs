@@ -1,4 +1,4 @@
-// devela::data::codec::crypto::sha
+// devela/src/data/codec/crypto/sha2.rs
 //
 //! Defines SHA2 secure hash algorithms.
 //

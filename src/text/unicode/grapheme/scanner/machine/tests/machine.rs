@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::machine::tests::machine
+// devela/src/text/unicode/grapheme/scanner/machine/tests/machine.rs
 
 use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, init_array};
 

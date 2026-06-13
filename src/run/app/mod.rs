@@ -1,4 +1,4 @@
-// devela::run::app
+// devela/src/run/app/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_RUN_APP!()] // private

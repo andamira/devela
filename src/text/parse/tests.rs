@@ -1,4 +1,4 @@
-// devela::text::parse::tests
+// devela/src/text/parse/tests.rs
 //
 // TOC
 // - construction, views, and cursor state

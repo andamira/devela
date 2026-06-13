@@ -1,4 +1,4 @@
-// devela::ui::event::target
+// devela/src/ui/event/target.rs
 //
 //! Defines [`EventTarget`].
 //

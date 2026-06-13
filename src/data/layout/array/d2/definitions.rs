@@ -1,4 +1,4 @@
-// devela::data::layout::array::d2::definitions
+// devela/src/data/layout/array/d2/definitions.rs
 //
 //! 2-dimensional array definitions
 //

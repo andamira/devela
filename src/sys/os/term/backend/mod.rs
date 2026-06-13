@@ -1,4 +1,4 @@
-// devela::sys::os::term::backend
+// devela/src/sys/os/term/backend/mod.rs
 //
 //! Terminal backend adapters.
 //!

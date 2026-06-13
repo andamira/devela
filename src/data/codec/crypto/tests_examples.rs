@@ -1,4 +1,4 @@
-// devela::data::codec::crypto::tests_sha
+// devela/src/data/codec/crypto/tests_examples.rs
 //
 // TOC
 // - define test example hashes

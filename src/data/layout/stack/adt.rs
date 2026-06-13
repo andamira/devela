@@ -1,4 +1,4 @@
-// devela::data::layout::stack::adt
+// devela/src/data/layout/stack/adt.rs
 //
 //! Defines the [`DataStack`] & [`DataDesta`] abstract data types.
 //

@@ -1,4 +1,4 @@
-// devela::data::store::key::set::linux_sparse
+// devela/src/data/store/key/set/linux_sparse.rs
 //
 //! Linux mmap-backed sparse sets.
 //

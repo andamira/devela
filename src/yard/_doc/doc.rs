@@ -1,4 +1,4 @@
-// devela::yard::_doc::doc
+// devela/src/yard/_doc/doc.rs
 //
 //! Defines [`_doc`].
 //

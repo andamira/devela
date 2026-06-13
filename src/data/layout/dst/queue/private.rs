@@ -1,4 +1,4 @@
-// devela::data::layout::dst::queue::private
+// devela/src/data/layout/dst/queue/private.rs
 //
 //! DstQueue private API
 //

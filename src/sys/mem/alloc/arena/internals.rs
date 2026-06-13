@@ -1,4 +1,4 @@
-// devela::sys::mem::arena::arena::internals
+// devela/src/sys/mem/alloc/arena/internals.rs
 //
 //! Defines [`__Arena`].
 //!

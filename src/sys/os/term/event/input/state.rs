@@ -1,4 +1,4 @@
-// devela::sys::os::term::event::input::state
+// devela/src/sys/os/term/event/input/state.rs
 //
 //! Internal state items for `TermInputParser`:
 //! [`TermInputState`], [`TermParsed`], [`TermParsedCsi`], [`TermReply`], [`TermDecModeStatus`].

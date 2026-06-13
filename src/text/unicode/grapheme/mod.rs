@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme
+// devela/src/text/unicode/grapheme/mod.rs
 //
 #![doc = crate::_DOC_TEXT_UNICODE_GRAPHEME!()] // public
 #![doc = crate::_doc!(modules: crate::text::unicode; grapheme)]

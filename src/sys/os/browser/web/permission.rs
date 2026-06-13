@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::permission
+// devela/src/sys/os/browser/web/permission.rs
 
 use crate::{_tags, js_int32};
 

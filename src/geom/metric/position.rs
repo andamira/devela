@@ -1,4 +1,4 @@
-// devela::geom::metric::position
+// devela/src/geom/metric/position.rs
 //
 //! Defines [`Position`][1|2|3].
 //!

@@ -1,4 +1,4 @@
-// devela::sys::os::term::event::input
+// devela/src/sys/os/term/event/input/mod.rs
 //
 //! Terminal input parsing.
 //

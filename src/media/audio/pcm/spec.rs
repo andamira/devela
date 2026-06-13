@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::spec
+// devela/src/media/audio/pcm/spec.rs
 //
 //! Defines [`PcmSpec`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::mem::view::replica::tests
+// devela/src/sys/mem/view/replica/tests.rs
 
 use super::{MemReplicaError as E, MemReplicaSlice};
 

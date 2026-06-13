@@ -1,4 +1,4 @@
-// devela::code::intro::define
+// devela/src/code/intro/define.rs
 //
 //! Defines the [`Introspect`] struct.
 //

@@ -1,4 +1,4 @@
-// devela::ui::event
+// devela/src/ui/event/mod.rs
 //
 #![doc = crate::_DOC_UI_EVENT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; event)]

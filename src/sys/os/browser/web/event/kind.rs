@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::event::kind
+// devela/src/sys/os/browser/web/event/kind.rs
 //
 //! Defines [`WebEventKind`].
 //

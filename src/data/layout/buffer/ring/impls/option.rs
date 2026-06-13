@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring::impls::option
+// devela/src/data/layout/buffer/ring/impls/option.rs
 
 #[doc(hidden)]
 #[macro_export]

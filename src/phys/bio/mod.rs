@@ -1,4 +1,4 @@
-// devela::phys::bio
+// devela/src/phys/bio/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_BIO!()] // public

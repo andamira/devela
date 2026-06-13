@@ -1,4 +1,4 @@
-// devela::text::fmt::buf
+// devela/src/text/fmt/buf.rs
 //
 //! Defines [`FmtWriter`] and [`format_buf!`].
 //

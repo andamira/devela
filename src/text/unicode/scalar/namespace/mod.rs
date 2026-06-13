@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::namespace
+// devela/src/text/unicode/scalar/namespace/mod.rs
 //
 //! Defines the [`Char`] namespace.
 //

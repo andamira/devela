@@ -1,4 +1,4 @@
-// devela::num::prob::rand::prng::shift::u32
+// devela/src/num/prob/rand/prng/shift/u32.rs
 //
 //! 32-bit version of XorShift.
 //

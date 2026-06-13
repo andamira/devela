@@ -1,4 +1,4 @@
-// devela::sys::device::audio::alsa
+// devela/src/sys/device/audio/alsa/mod.rs
 //
 // #![doc = crate::_DOC_SYS_DEVICE_AUDIO!()]
 //! Advanced Linux Sound Architecture (ALSA).

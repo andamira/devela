@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::ext
+// devela/src/sys/mem/view/slice/ext.rs
 //
 //! Defines [`SliceExt`].
 //

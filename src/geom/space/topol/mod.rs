@@ -1,4 +1,4 @@
-// devela::geom::space::topol
+// devela/src/geom/space/topol/mod.rs
 //
 #![doc = crate::_DOC_GEOM_SPACE_TOPOL!()] // public
 #![doc = crate::_doc!(modules: crate::geom::space; topol)]

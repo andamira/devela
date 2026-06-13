@@ -1,4 +1,4 @@
-// devela::sys::os::linux::process::signal::action
+// devela/src/sys/os/linux/process/signal/action.rs
 //
 //! Signal action configuration and delivery metadata.
 //!

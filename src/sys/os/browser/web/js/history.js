@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::history.js
+// devela/src/sys/os/browser/web/js/history.js
 // (in sync with ../api/history.rs)
 
 import { strDecode } from "./shared.js";

@@ -1,4 +1,4 @@
-// devela::sys::mem::view::replica::error
+// devela/src/sys/mem/view/replica/error.rs
 //
 //! Defines [`MemReplicaError`].
 //

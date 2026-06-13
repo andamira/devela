@@ -1,4 +1,4 @@
-// devela::sys::os::linux::consts::syscall::arm
+// devela/src/sys/os/linux/syscalls/consts/arm.rs
 //
 //!
 //

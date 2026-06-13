@@ -1,4 +1,4 @@
-// devela::lang::prog::script::shell::lex
+// devela/src/lang/prog/script/shell/word/lex.rs
 //
 //! Defines [`ShellLex`].
 //

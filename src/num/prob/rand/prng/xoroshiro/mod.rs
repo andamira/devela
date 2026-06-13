@@ -1,4 +1,4 @@
-// devela::num::prob::rand::xoroshiro
+// devela/src/num/prob/rand/prng/xoroshiro/mod.rs
 //
 //! Pseudo-random number generators based on [Xoroxhiro].
 //!

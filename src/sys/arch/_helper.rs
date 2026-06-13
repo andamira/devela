@@ -1,4 +1,4 @@
-// devela::sys::arch::_helpers
+// devela/src/sys/arch/_helper.rs
 //
 //! Defines the `_ARCH!` constant.
 //!

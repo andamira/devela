@@ -1,4 +1,4 @@
-// devela::text::ascii::digits::tests
+// devela/src/text/ascii/digits/tests.rs
 
 use super::Digits;
 

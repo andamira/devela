@@ -1,4 +1,4 @@
-// devela::sys::mem::namespace
+// devela/src/sys/mem/namespace.rs
 //
 //! Defines the [`Mem`] namespace.
 //

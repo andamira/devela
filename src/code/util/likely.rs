@@ -1,4 +1,4 @@
-// devela::code::util::likely
+// devela/src/code/util/likely.rs
 //
 //! Defines [`likely`], [`unlikely`].
 //

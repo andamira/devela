@@ -1,4 +1,4 @@
-// devela::examples::sys::web_worker::main
+// devela/examples/sys/web_worker/main.rs
 //
 //! A Web API canvas example.
 //

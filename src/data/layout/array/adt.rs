@@ -1,4 +1,4 @@
-// devela::data::layout::array::adt
+// devela/src/data/layout/array/adt.rs
 //
 //! [`DataArray`] abstract data type
 //

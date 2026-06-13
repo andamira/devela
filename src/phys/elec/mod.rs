@@ -1,4 +1,4 @@
-// devela::phys::elec
+// devela/src/phys/elec/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_ELEC!()] // public

@@ -1,4 +1,4 @@
-// devela::data::layout::array::d1::methods::general
+// devela/src/data/layout/array/d1/methods/general.rs
 //
 //! 1-dimensional array general methods (Storage-independent).
 //

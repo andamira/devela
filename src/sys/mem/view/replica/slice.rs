@@ -1,4 +1,4 @@
-// devela::sys::mem::view::replica::slice
+// devela/src/sys/mem/view/replica/slice.rs
 //
 //! Defines [`MemReplicaError`], [`MemReplicaSlice`].
 //

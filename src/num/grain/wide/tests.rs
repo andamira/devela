@@ -1,4 +1,4 @@
-// devela::num::grain::wide::tests
+// devela/src/num/grain/wide/tests.rs
 
 use super::lane;
 

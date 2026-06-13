@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::number
+// devela/src/text/parse/scanner/number.rs
 //
 // FUTURE TODO
 // - take_ascii_i64

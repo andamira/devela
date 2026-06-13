@@ -1,4 +1,4 @@
-// devela::data::layout::stack::stack::methods
+// devela/src/data/layout/stack/stack/methods/mod.rs
 //
 //! Stacks.
 //

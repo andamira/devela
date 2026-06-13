@@ -1,4 +1,4 @@
-// devela::sys::fs
+// devela/src/sys/fs/mod.rs
 //
 #![doc = crate::_DOC_SYS_FS!()] // public
 #![doc = crate::_doc!(modules: crate::sys; fs)]

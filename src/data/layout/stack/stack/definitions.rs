@@ -1,4 +1,4 @@
-// devela::data::layout::stack::stack::definitions
+// devela/src/data/layout/stack/stack/definitions.rs
 //
 //! Stacks ar linear lists for which all accesses are made from one end.
 //!

@@ -1,4 +1,4 @@
-// devela::sys::fs::path
+// devela/src/sys/fs/path/mod.rs
 //
 #![doc = crate::_DOC_SYS_FS_PATH!()] // private
 #![doc = crate::_doc!(modules: crate::sys::fs; path)]

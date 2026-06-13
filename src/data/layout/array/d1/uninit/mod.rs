@@ -1,4 +1,4 @@
-// devela::data::layout:array::d1::uninit
+// devela/src/data/layout/array/d1/uninit/mod.rs
 //
 //!
 //

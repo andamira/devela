@@ -1,4 +1,4 @@
-// devela::media::visual::color::luminance
+// devela/src/media/visual/color/luminance.rs
 //
 //! Defines the [`Lum`] type and aliases:
 //! [`Luminance`], [`Lightness`], [`Luma`], `LinearLightness`.

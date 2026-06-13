@@ -1,4 +1,4 @@
-// devela::geom::dir::angle::kind
+// devela/src/geom/dir/angle/kind.rs
 //
 //! Defines [`AngleKind`].
 //

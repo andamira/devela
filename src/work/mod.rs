@@ -1,4 +1,4 @@
-// devela::work
+// devela/src/work/mod.rs
 //
 #![doc = crate::_DOC_WORK!()] // public
 #![doc = crate::_DOC_WORK_MODULES!()]

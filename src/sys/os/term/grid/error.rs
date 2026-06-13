@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::error
+// devela/src/sys/os/term/grid/error.rs
 //
 //! Defines [`TermGridError`].
 //

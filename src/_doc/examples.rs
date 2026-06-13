@@ -1,4 +1,4 @@
-// devela::_doc::examples
+// devela/src/_doc/examples.rs
 //
 #![doc = crate::_tags!(example)]
 //! Documented examples.

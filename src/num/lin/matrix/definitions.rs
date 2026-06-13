@@ -1,4 +1,4 @@
-// devela::num::lin::matrix::definitions
+// devela/src/num/lin/matrix/definitions.rs
 //
 //! Defines [`Matrix`].
 //

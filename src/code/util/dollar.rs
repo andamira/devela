@@ -1,4 +1,4 @@
-// devela::code::util::dollar
+// devela/src/code/util/dollar.rs
 //
 //! Defines [`macro_dollar!`].
 //

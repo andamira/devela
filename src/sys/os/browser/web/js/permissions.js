@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::permissions.js
+// devela/src/sys/os/browser/web/js/permissions.js
 
 import { strDecode } from "./shared.js";
 

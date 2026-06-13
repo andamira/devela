@@ -1,4 +1,4 @@
-// devela::run::time
+// devela/src/run/time/mod.rs
 //
 #![doc = crate::_DOC_RUN_TIME!()] // public
 #![doc = crate::_doc!(modules: crate::run; time)]

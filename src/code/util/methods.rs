@@ -1,4 +1,4 @@
-// devela::code::util::methods
+// devela/src/code/util/methods.rs
 //
 //! Defines [`methods_as_fns`].
 //

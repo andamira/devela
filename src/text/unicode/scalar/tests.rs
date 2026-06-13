@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::tests
+// devela/src/text/unicode/scalar/tests.rs
 //
 //! These fns tests all the character types
 //

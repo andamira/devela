@@ -1,4 +1,4 @@
-// devela::examples::work::coro_manager
+// devela/examples/work/coro_manager.rs
 //!
 
 use devela::{CoroManager, serr, sok};

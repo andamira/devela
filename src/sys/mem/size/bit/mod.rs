@@ -1,4 +1,4 @@
-// devela::sys::mem::size::bit
+// devela/src/sys/mem/size/bit/mod.rs
 //
 //! Functionality related to memory bit size.
 //

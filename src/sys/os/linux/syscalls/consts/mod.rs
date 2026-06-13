@@ -1,4 +1,4 @@
-// devela::sys::os::linux::syscall::consts
+// devela/src/sys/os/linux/syscalls/consts/mod.rs
 //
 //! Defines the syscall numbers for each target.
 //

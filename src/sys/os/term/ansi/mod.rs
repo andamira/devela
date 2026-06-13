@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi
+// devela/src/sys/os/term/ansi/mod.rs
 //
 //! ANSI escape codes.
 //!

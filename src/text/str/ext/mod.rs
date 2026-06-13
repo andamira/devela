@@ -1,4 +1,4 @@
-// devela::text::str::ext
+// devela/src/text/str/ext/mod.rs
 //
 //! Defines [`StrExt`], [`StringExt`].
 //

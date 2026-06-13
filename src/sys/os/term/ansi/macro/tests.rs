@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::macro::tests
+// devela/src/sys/os/term/ansi/macro/tests.rs
 
 use crate::{ansi, const_assert};
 

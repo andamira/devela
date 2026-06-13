@@ -1,4 +1,4 @@
-// devela::num::fin::ord::namespace
+// devela/src/num/fin/ord/order/mod.rs
 //
 //! Algorithms and structures that depend on relative position rather than magnitude alone.
 //

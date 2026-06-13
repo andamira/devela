@@ -1,4 +1,4 @@
-// devela::text::translit
+// devela/src/text/translit/mod.rs
 //
 #![doc = crate::_DOC_TEXT_TRANSLIT!()] // public, root
 #![doc = crate::_doc!(modules: crate::text; translit)]

@@ -1,4 +1,4 @@
-// devela::num::dom::int::int::_docs
+// devela/src/num/dom/int/_docs.rs
 //
 //! Defines constants for shared documentation on [`Int`] and [`NumInt`].
 #![doc = crate::doclink!(custom devela "[`NumInt`]" "num/trait.NumInt.html")]

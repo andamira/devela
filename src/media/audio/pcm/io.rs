@@ -1,4 +1,4 @@
-// devela::media::audio::pcm::io
+// devela/src/media/audio/pcm/io.rs
 //
 //! Defines [`PcmStream`], [`PcmDrain`],
 //! [`PcmSink`], [`PcmSinkPlanar`], [`PcmSource`], [`PcmSourcePlanar`].

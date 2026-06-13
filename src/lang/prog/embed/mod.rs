@@ -1,4 +1,4 @@
-// devela::lang::prog::embed
+// devela/src/lang/prog/embed/mod.rs
 //
 #![doc = crate::_DOC_LANG_PROG_EMBED!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog; embed)]

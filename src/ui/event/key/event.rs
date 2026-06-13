@@ -1,4 +1,4 @@
-// devela::ui::event::key::event
+// devela/src/ui/event/key/event.rs
 //
 //! Defines [`EventKey`], [`EventKeyFfi`].
 //

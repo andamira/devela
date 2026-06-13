@@ -1,4 +1,4 @@
-// devela::sys::arch::_reexport_dep
+// devela/src/sys/arch/_reexport_dep.rs
 
 #[allow(unused_imports, reason = "dep_safe_arc feature-gate")]
 use crate::{_reexport, _tags};

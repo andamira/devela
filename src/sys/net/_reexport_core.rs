@@ -1,4 +1,4 @@
-// devela::sys::net::_reexport_core
+// devela/src/sys/net/_reexport_core.rs
 
 #[allow(unused_imports)]
 use crate::{_reexport, _tags};

@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::macro::_docs
+// devela/src/sys/os/term/ansi/macro/_docs.rs
 
 crate::CONST! {
     pub(super) _DOC_ANSI = r#"

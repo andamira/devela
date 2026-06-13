@@ -1,4 +1,4 @@
-// devela::text::fmt::num::conf
+// devela/src/text/fmt/num/group.rs
 //
 //! Defines [`FmtNumGroup`].
 //

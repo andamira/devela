@@ -1,4 +1,4 @@
-// devela::sys::os::term::line
+// devela/src/sys/os/term/line/mod.rs
 //
 //! Terminal line modes, prompts, and interactive input.
 //

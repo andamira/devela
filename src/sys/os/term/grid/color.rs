@@ -1,4 +1,4 @@
-// devela::sys::os::term::grid::color
+// devela/src/sys/os/term/grid/color.rs
 //
 //! Defines , [`TermColorKind`], [`TermColorMode`], [`TermColor`], [`TermColors`].
 //

@@ -1,4 +1,4 @@
-// devela::sys::fs::fs_path
+// devela/src/sys/fs/path/fs_path.rs
 //
 //! Defines the `FsPath` wrapper.
 //

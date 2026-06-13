@@ -1,4 +1,4 @@
-// devela::vita::play::game::action
+// devela/src/vita/play/game/action.rs
 
 #[doc = crate::_tags!(game)]
 /// A declared move or operation recognized by the rules of play.

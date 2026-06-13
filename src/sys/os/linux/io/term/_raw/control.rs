@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::term::_raw::control
+// devela/src/sys/os/linux/io/term/_raw/control.rs
 
 use crate::c_uint;
 

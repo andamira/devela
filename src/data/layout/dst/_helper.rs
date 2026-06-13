@@ -1,4 +1,4 @@
-// devela::data::layout::dst::_helper
+// devela/src/data/layout/dst/_helper.rs
 //
 //! Helper functions.
 //

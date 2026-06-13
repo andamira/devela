@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::layout
+// devela/src/text/unicode/grapheme/scanner/layout.rs
 
 use crate::{GraphemeMachine, GraphemeScanner, TextCohesion::Atomic, TextSymbol, charu, is};
 

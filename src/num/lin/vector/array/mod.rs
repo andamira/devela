@@ -1,4 +1,4 @@
-// devela::num::lin::vector::array
+// devela/src/num/lin/vector/array/mod.rs
 //
 //!
 //

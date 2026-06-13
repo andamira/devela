@@ -1,4 +1,4 @@
-// devela::data::value
+// devela/src/data/value/mod.rs
 //
 #![doc = crate::_DOC_DATA_VALUE!()] // public
 #![doc = crate::_doc!(modules: crate::data; value: tuple)]

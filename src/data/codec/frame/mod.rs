@@ -1,4 +1,4 @@
-// devela::data::codec::frame
+// devela/src/data/codec/frame/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_FRAME!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; frame)]

@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::file
+// devela/src/sys/os/linux/io/file/mod.rs
 //
 //! File-descriptor–centric ABI surface.
 //!

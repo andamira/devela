@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque::methods::general
+// devela/src/data/layout/queue/destaque/methods/general.rs
 
 use crate::{
     Array, Bare, Cmp, DataNotEnough, Destaque, DestaqueIter, MismatchedCapacity, NotEnoughElements,

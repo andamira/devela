@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::file::ioctl
+// devela/src/sys/os/linux/io/file/ioctl.rs
 //
 //! Extended file-descriptor control operations.
 //!

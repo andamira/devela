@@ -1,4 +1,4 @@
-// devela::media
+// devela/src/media/mod.rs
 //
 #![doc = crate::_DOC_MEDIA!()] // public, root
 #![doc = crate::_DOC_MEDIA_MODULES!()]

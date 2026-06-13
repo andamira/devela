@@ -1,4 +1,4 @@
-// devela::num::dom::traits::ref
+// devela/src/num/dom/traits/ref.rs
 //
 //! Defines the [`NumRef`] trait.
 //

@@ -1,4 +1,4 @@
-// devela::sys::mem::view::borrow::maybe
+// devela/src/sys/mem/view/borrow/maybe.rs
 //
 //! Defines [`MaybeOwned`].
 //

@@ -1,4 +1,4 @@
-// devela::text::str::namespace::split
+// devela/src/text/str/namespace/split.rs
 //
 //! Implements split methods for [`Str`].
 //

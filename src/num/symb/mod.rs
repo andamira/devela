@@ -1,4 +1,4 @@
-// devela::num::symb
+// devela/src/num/symb/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_NUM_SYMB!()] // public

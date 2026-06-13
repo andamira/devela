@@ -1,4 +1,4 @@
-// devela::work::sync::_reexport_std
+// devela/src/work/sync/_reexport_std.rs
 //
 //!
 //

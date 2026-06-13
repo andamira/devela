@@ -1,4 +1,4 @@
-// devela::org::inst
+// devela/src/org/inst/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_INST!()] // public

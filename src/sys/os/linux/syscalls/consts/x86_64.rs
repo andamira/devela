@@ -1,4 +1,4 @@
-// devela::sys::os::linux::consts::syscall::x86_64
+// devela/src/sys/os/linux/syscalls/consts/x86_64.rs
 //
 //!
 //

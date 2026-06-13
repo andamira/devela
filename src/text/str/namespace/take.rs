@@ -1,4 +1,4 @@
-// devela::text::str::namespace::take
+// devela/src/text/str/namespace/take.rs
 //
 //! Implements take methods for [`Str`].
 //

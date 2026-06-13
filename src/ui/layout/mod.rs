@@ -1,4 +1,4 @@
-// devela::ui::layout
+// devela/src/ui/layout/mod.rs
 //
 #![doc = crate::_DOC_UI_LAYOUT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; layout)]

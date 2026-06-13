@@ -1,4 +1,4 @@
-// devela::num::dom::int::fns
+// devela/src/num/dom/int/fns.rs
 
 #[allow(unused)]
 #[cfg(not(feature = "std"))]

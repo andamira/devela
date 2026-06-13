@@ -1,4 +1,4 @@
-// devela::sys::os::term::render::shared
+// devela/src/sys/os/term/render/shared.rs
 
 use crate::TermRenderer;
 

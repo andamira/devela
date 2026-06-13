@@ -1,4 +1,4 @@
-// devela::_doc
+// devela/src/_doc/mod.rs
 //
 //! Extra documentation about the library.
 #![doc = crate::_doc!(modules: crate; _doc: examples, features, macros, nightly, vendored)]

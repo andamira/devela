@@ -1,4 +1,4 @@
-// devela::text::ascii::digits::u128
+// devela/src/text/ascii/digits/u128.rs
 
 use super::*;
 use crate::{AsciiLut, is, whilst};

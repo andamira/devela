@@ -1,4 +1,4 @@
-// devela::sys::net::http
+// devela/src/sys/net/http/mod.rs
 //
 #![doc = crate::_DOC_SYS_NET!()] // public
 #![doc = crate::_doc!(modules: crate::sys::net; http)]

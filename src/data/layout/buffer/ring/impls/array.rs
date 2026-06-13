@@ -1,4 +1,4 @@
-// devela::data::layout::buffer::ring::impls::array
+// devela/src/data/layout/buffer/ring/impls/array.rs
 
 #[doc(hidden)]
 #[macro_export]

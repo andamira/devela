@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::traits
+// devela/src/media/visual/image/raster/traits.rs
 //
 //!
 //

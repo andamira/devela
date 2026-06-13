@@ -1,4 +1,4 @@
-// devela::media::audio
+// devela/src/media/audio/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_AUDIO!()] // public
 #![doc = crate::_doc!(modules: crate::media; audio)] // acoustic, format, music, synth

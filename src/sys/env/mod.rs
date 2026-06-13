@@ -1,4 +1,4 @@
-// devela::sys::env
+// devela/src/sys/env/mod.rs
 //
 #![doc = crate::_DOC_SYS_ENV!()] // public
 #![doc = crate::_doc!(modules: crate::sys; env)]

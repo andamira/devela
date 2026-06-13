@@ -1,4 +1,4 @@
-// devela::num::grain
+// devela/src/num/grain/mod.rs
 //
 #![doc = crate::_DOC_NUM_GRAIN!()] // public
 #![doc = crate::_doc!(modules: crate::num; grain: niche, wide)]

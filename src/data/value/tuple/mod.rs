@@ -1,4 +1,4 @@
-// devela::data::value::tuple
+// devela/src/data/value/tuple/mod.rs
 //
 //! Heterogeneous data structures, random-access, sequentially allocated and statically sized.
 //

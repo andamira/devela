@@ -1,4 +1,4 @@
-// devela::yard
+// devela/src/yard/mod.rs
 //
 #![cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #![cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

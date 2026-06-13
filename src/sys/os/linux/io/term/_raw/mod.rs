@@ -1,4 +1,4 @@
-// devela::sys::os::linux::io::term::_raw
+// devela/src/sys/os/linux/io/term/_raw/mod.rs
 
 #![allow(
     dead_code,

@@ -1,4 +1,4 @@
-// devela::sys::os::term::render::slice
+// devela/src/sys/os/term/render/exclusive.rs
 
 use crate::{Ansi, AnsiColor, NotEnoughSpace, TermRenderer, whilst};
 

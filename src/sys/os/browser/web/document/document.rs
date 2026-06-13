@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::document::document
+// devela/src/sys/os/browser/web/document/document.rs
 //
 //! Defines [`WebDocument`].
 //

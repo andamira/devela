@@ -1,4 +1,4 @@
-// devela::text::translit::ascii::fns
+// devela/src/text/translit/ascii/fns.rs
 
 use crate::{Translit, UnicodeScalar, is, whilst};
 

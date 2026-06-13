@@ -1,4 +1,4 @@
-// devela::code::util::derive
+// devela/src/code/util/derive/mod.rs
 
 #[cfg(test)]
 mod tests;

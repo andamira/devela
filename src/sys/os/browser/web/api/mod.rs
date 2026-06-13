@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::api
+// devela/src/sys/os/browser/web/api/mod.rs
 //
 //! The web API Javascript ←→ Rust bridge interface.
 //

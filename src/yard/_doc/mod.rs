@@ -1,4 +1,4 @@
-// devela::yard::_doc
+// devela/src/yard/_doc/mod.rs
 //
 //! Defines private doc meta helpers.
 //

@@ -1,4 +1,4 @@
-// devela::text::str::_reexport
+// devela/src/text/str/_reexport_core.rs
 
 #![allow(unused_imports)]
 

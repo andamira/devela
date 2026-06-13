@@ -1,4 +1,4 @@
-// devela::text::ascii::digits::u16
+// devela/src/text/ascii/digits/u16.rs
 
 use super::*;
 use crate::{AsciiLut, is};

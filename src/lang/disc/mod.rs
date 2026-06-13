@@ -1,4 +1,4 @@
-// devela::lang::disc
+// devela/src/lang/disc/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC!()] // public

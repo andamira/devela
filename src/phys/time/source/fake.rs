@@ -1,4 +1,4 @@
-// devela::phys::time::source::fake
+// devela/src/phys/time/source/fake.rs
 //
 //! Defines [`TimeFake`], [`TimeFakeRef`].
 //

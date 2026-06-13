@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::api::events
+// devela/src/sys/os/browser/web/api/events.rs
 // (in sync with ../js/events.js)
 //
 //! Implements the web events API.

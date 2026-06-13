@@ -1,4 +1,4 @@
-// devela::media::font::bitmap
+// devela/src/media/font/bitmap/mod.rs
 //
 //! Bitmap fonts
 //

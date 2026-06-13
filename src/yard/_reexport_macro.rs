@@ -1,4 +1,4 @@
-// devela::code::util::_reexport_macro
+// devela/src/yard/_reexport_macro.rs
 //
 //! private reexport meta helper
 //

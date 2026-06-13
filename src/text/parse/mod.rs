@@ -1,4 +1,4 @@
-// devela::text::parse
+// devela/src/text/parse/mod.rs
 //
 //! String parsing without structured semantics.
 //

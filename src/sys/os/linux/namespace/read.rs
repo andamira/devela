@@ -1,4 +1,4 @@
-// devela::sys::os::linux::namespace::read
+// devela/src/sys/os/linux/namespace/read.rs
 
 #[cfg(feature = "alloc")]
 use crate::Vec;

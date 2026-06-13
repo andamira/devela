@@ -1,4 +1,4 @@
-// devela::sys::mem::bound::cswap
+// devela/src/sys/mem/bound/cswap.rs
 //
 //! Defines the [`cswap!`] macro.
 //

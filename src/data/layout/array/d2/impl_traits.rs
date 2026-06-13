@@ -1,4 +1,4 @@
-// devela::data::layout::array::d2::impl_traits
+// devela/src/data/layout/array/d2/impl_traits.rs
 //
 //! 2-dimensional array trait impls
 //

@@ -1,4 +1,4 @@
-// devela::sys::mem::ext
+// devela/src/sys/mem/ext.rs
 //
 //! Defines [`MemExt`], An extension trait for memory management over `T`.
 //

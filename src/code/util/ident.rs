@@ -1,4 +1,4 @@
-// devela::code::util::ident
+// devela/src/code/util/ident.rs
 //
 //! identifier related macro functionality
 //

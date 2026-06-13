@@ -1,4 +1,4 @@
-// devela::num::lin::vector
+// devela/src/num/lin/vector/definitions.rs
 //
 //! Linear algebra vectors.
 //!

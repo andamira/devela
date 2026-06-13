@@ -1,4 +1,4 @@
-// devela::num::lin::matrix
+// devela/src/num/lin/matrix/mod.rs
 //
 //! Matrices.
 //

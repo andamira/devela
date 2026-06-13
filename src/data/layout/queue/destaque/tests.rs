@@ -1,4 +1,4 @@
-// devela::data::layout::queue::destaque::tests
+// devela/src/data/layout/queue/destaque/tests.rs
 
 use super::*;
 

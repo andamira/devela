@@ -1,4 +1,4 @@
-// devela::data::codec::hash::fnv
+// devela/src/data/codec/hash/fnv.rs
 
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 

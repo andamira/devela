@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::runtime
+// devela/src/sys/device/display/x11/runtime/mod.rs
 
 mod frontend; // (XBackend), (XFrameCtx), XFrontend
 mod present; // XPresent, (XPresenter), XRasterRender

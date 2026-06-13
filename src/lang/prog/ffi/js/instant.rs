@@ -1,4 +1,4 @@
-// devela::lang::prog::ffi::js::instant
+// devela/src/lang/prog/ffi/js/instant.rs
 //
 //! Defines [`JsInstant`], [`JsTimeout`].
 //

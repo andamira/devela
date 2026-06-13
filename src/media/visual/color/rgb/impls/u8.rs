@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb::impls::u8
+// devela/src/media/visual/color/rgb/impls/u8.rs
 
 use crate::{Norm, Rgb8, Rgb16, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
 #[cfg(doc)]

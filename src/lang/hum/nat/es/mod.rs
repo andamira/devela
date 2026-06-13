@@ -1,4 +1,4 @@
-// devela::lang::hum::nat::es
+// devela/src/lang/hum/nat/es/mod.rs
 //
 //! Spanish language.
 //

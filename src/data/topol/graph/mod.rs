@@ -1,4 +1,4 @@
-// devela::data::collections::graph
+// devela/src/data/topol/graph/mod.rs
 //
 //! Graphs are collections of vertices and edges, backed by two arrays or two `Vec`s.
 //!

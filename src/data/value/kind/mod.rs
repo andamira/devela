@@ -1,4 +1,4 @@
-// devela::data::value::kind
+// devela/src/data/value/kind/mod.rs
 //
 
 mod four; // ValueKind4

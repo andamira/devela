@@ -1,4 +1,4 @@
-// devela::data::codec::crypto
+// devela/src/data/codec/crypto/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_CRYPTO!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; crypto)]

@@ -1,4 +1,4 @@
-// devela::media::visual::color::rgb
+// devela/src/media/visual/color/rgb/mod.rs
 //
 //! RGB color space
 //

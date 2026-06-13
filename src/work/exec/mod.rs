@@ -1,4 +1,4 @@
-// devela::work::exec
+// devela/src/work/exec/mod.rs
 //
 #![doc = crate::_DOC_WORK_EXEC!()] // public
 #![doc = crate::_doc!(modules: crate::work; exec: process, thread)] // …

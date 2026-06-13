@@ -1,4 +1,4 @@
-// devela::sys::mem::bound::align::aligned
+// devela/src/sys/mem/bound/align/aligned.rs
 //
 //! Defines [`MemAligned`].
 //

@@ -1,4 +1,4 @@
-// devela::media::visual::image::raster::ops
+// devela/src/media/visual/image/raster/ops/mod.rs
 //
 //! Raster operations
 //

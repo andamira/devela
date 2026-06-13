@@ -1,4 +1,4 @@
-// devela::data::codec::crypto::md5
+// devela/src/data/codec/crypto/md5.rs
 //
 //! Defines [`Md5`].
 //

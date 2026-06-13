@@ -1,4 +1,4 @@
-// devela::data::access::iter::strided::tests
+// devela/src/data/access/iter/strided/tests.rs
 
 #![allow(dead_code)]
 

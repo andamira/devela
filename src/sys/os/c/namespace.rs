@@ -1,4 +1,4 @@
-// devela::sys::os::c::namespace
+// devela/src/sys/os/c/namespace.rs
 //
 //! Defines [`Libc`].
 //

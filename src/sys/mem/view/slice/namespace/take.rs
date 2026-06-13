@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::namespace::bytes
+// devela/src/sys/mem/view/slice/namespace/take.rs
 
 use crate::Slice;
 

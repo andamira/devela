@@ -1,4 +1,4 @@
-// devela::data::value::kind::four
+// devela/src/data/value/kind/four.rs
 //
 //! Defines [`ValueKind4`].
 //

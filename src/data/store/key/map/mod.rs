@@ -1,4 +1,4 @@
-// devela::data::store::key::map
+// devela/src/data/store/key/map/mod.rs
 //
 //! Defines the [`map!`] macro and the [`StaticEntry`] enum.
 //

@@ -1,4 +1,4 @@
-// devela::code::util::whilst
+// devela/src/code/util/whilst.rs
 //
 //! Defines the [`whilst!`] macro.
 //

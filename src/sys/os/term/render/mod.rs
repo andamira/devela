@@ -1,4 +1,4 @@
-// devela::sys::os::term::render
+// devela/src/sys/os/term/render/mod.rs
 //
 //! Terminal byte-frame rendering.
 //

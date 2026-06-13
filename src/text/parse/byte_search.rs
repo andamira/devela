@@ -1,4 +1,4 @@
-// devela::text::parse::byte_search
+// devela/src/text/parse/byte_search.rs
 //
 //! Naive versions of `memchr` fns
 //

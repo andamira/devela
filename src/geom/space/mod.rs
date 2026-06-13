@@ -1,4 +1,4 @@
-// devela::geom::space
+// devela/src/geom/space/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_SPACE!()] // public

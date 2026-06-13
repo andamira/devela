@@ -1,4 +1,4 @@
-// devela::data::layout::queue
+// devela/src/data/layout/queue/mod.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT_QUEUE!()] // private
 #![doc = crate::_doc!(modules: crate::data::layout; queue)]

@@ -1,4 +1,4 @@
-// devela::num::fin::bit::ops
+// devela/src/num/fin/bit/ops.rs
 //
 //! Defines the [`BitOps`] trait.
 //

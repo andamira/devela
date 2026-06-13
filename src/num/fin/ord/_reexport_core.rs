@@ -1,4 +1,4 @@
-// devela::num::fin::ord::_reexport_core
+// devela/src/num/fin/ord/_reexport_core.rs
 
 use crate::{_reexport, _tags};
 

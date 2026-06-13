@@ -1,4 +1,4 @@
-// devela::data::layout::stack::stack::impl_traits
+// devela/src/data/layout/stack/stack/impl_traits.rs
 //
 //!
 //

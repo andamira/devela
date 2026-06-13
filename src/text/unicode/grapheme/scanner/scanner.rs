@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::scanner
+// devela/src/text/unicode/grapheme/scanner/scanner.rs
 //
 //!
 //

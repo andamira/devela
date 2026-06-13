@@ -1,4 +1,4 @@
-// devela::text::unicode::grapheme::scanner::machine::state
+// devela/src/text/unicode/grapheme/scanner/machine/state.rs
 
 use crate::{GraphemePropCb, GraphemePropInCb, GraphemeProps, Mem, impl_trait};
 

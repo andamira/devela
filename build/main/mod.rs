@@ -1,4 +1,4 @@
-// devela::build::main
+// devela/build/main/mod.rs
 //
 //! Build-time configuration and code generation.
 //!

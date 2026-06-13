@@ -1,4 +1,4 @@
-// devela::text::translit::namespace
+// devela/src/text/translit/namespace.rs
 //
 //! Defines the [`Translit`] namespace.
 //

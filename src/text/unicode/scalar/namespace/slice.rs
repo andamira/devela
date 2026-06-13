@@ -1,4 +1,4 @@
-// devela::text::unicode::scalar::namespace::slice
+// devela/src/text/unicode/scalar/namespace/slice.rs
 //
 // TOC
 // - methods over &[u8]

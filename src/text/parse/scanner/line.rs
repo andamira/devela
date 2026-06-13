@@ -1,4 +1,4 @@
-// devela::text::parse::scanner::line
+// devela/src/text/parse/scanner/line.rs
 
 use crate::{TextRange, TextScanner};
 use crate::{is, whilst};

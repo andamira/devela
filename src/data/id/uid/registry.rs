@@ -1,4 +1,4 @@
-// devela::data::id::uid::registry
+// devela/src/data/id/uid/registry.rs
 //
 //! Defines [`IdRegistry`]
 //!

@@ -1,4 +1,4 @@
-// devela::sys::device::display::x11::window
+// devela/src/sys/device/display/x11/window.rs
 //
 //! Defines [`XWindow`].
 //

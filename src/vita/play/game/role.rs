@@ -1,4 +1,4 @@
-// devela::vita::play::game::role
+// devela/src/vita/play/game/role.rs
 
 #[doc = crate::_tags!(game)]
 /// A rule-bearing identity or seat in play.

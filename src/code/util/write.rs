@@ -1,4 +1,4 @@
-// devela::code::util::write
+// devela/src/code/util/write.rs
 //
 //! Defines the [write_at!] macro.
 //

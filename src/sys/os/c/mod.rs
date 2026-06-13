@@ -1,4 +1,4 @@
-// devela::sys::os::c
+// devela/src/sys/os/c/mod.rs
 //
 //! Libc
 //

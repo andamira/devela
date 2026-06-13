@@ -1,4 +1,4 @@
-// devela::data::codec::detect
+// devela/src/data/codec/detect/mod.rs
 //
 //! Format detection.
 //

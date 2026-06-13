@@ -1,4 +1,4 @@
-// devela::sys::arch::namespace::dep_safe_arch
+// devela/src/sys/arch/namespace/dep_safe_arch.rs
 //
 //
 //! Implements [`Arch`] methods depending on `dep_safe_arch`.

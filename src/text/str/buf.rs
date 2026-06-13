@@ -1,4 +1,4 @@
-// devela::text::str:buf
+// devela/src/text/str/buf.rs
 //
 //! Defines [`StrBuf`].
 //

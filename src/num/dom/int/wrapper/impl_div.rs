@@ -1,4 +1,4 @@
-// devela::num::dom::int::wrapper::impl_div
+// devela/src/num/dom/int/wrapper/impl_div.rs
 //
 //! Implements division-related methods for [`Int`].
 //

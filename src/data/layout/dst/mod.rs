@@ -1,4 +1,4 @@
-// devela::data::layout::dst
+// devela/src/data/layout/dst/mod.rs
 /*!
 This module adds support for storing dynamically-sized types within fixed-size
 allocations.

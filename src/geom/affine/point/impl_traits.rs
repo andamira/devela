@@ -1,4 +1,4 @@
-// devela::geom::affine::point::core_traits
+// devela/src/geom/affine/point/impl_traits.rs
 //
 //!
 //

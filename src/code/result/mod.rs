@@ -1,4 +1,4 @@
-// devela::code::result
+// devela/src/code/result/mod.rs
 //
 #![doc = crate::_DOC_CODE_RESULT!()] // public
 #![doc = crate::_doc!(modules: crate::code; result)]

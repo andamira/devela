@@ -1,4 +1,4 @@
-// devela::data::topol::node::node
+// devela/src/data/topol/node/node.rs
 //
 //
 //! Nodes are a basic unit used to build more complex structures,

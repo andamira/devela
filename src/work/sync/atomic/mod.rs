@@ -1,4 +1,4 @@
-// devela::work::sync::atomic
+// devela/src/work/sync/atomic/mod.rs
 //
 #![doc = crate::_DOC_WORK_SYNC_ATOMIC!()] // public
 #![doc = crate::_doc!(modules: crate::work::sync; atomic)]

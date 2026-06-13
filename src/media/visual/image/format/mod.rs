@@ -1,4 +1,4 @@
-// devela::media::visual::image::format
+// devela/src/media/visual/image/format/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL_IMAGE_FORMAT!()] // public
 #![doc = crate::_doc!(modules: crate::media::visual::image; format)]

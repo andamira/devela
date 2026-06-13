@@ -1,4 +1,4 @@
-// devela::num::fin::bit::wise::tests
+// devela/src/num/fin/bit/wise/tests.rs
 //
 // TOC
 // - bit_mask_range

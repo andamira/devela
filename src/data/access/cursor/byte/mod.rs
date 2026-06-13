@@ -1,4 +1,4 @@
-// devela::data::access::cursor
+// devela/src/data/access/cursor/byte/mod.rs
 //
 //! Cursor-based access over ordered byte regions.
 //

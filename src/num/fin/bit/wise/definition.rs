@@ -1,4 +1,4 @@
-// devela::num::fin::bit::wise::definition
+// devela/src/num/fin/bit/wise/definition.rs
 //
 //! Defines the [`Bitwise`] namespace.
 //

@@ -1,4 +1,4 @@
-// devela::num::prob::rand::splitmix
+// devela/src/num/prob/rand/prng/splitmix.rs
 //
 //! Defines [`SplitMix64`].
 //

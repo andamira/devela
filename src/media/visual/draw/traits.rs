@@ -1,4 +1,4 @@
-// devela::media::visual::draw::traits
+// devela/src/media/visual/draw/traits.rs
 //
 //! Defines [`Canvas`], [`CanvasRead`], [`CanvasTextel`].
 //

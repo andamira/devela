@@ -1,4 +1,4 @@
-// devela::text::fmt::_reexport_alloc
+// devela/src/text/fmt/_reexport_alloc.rs
 
 use crate::{_reexport, _tags};
 

@@ -1,4 +1,4 @@
-// devela::_doc::vendored
+// devela/src/_doc/vendored/mod.rs
 //
 //!
 // In sync with:

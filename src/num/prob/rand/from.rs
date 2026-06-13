@@ -1,4 +1,4 @@
-// devela::num::prob::rand::from
+// devela/src/num/prob/rand/from.rs
 //
 //! Defines [`FromRand`] and [`FromRandTry`].
 //

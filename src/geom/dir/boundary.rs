@@ -1,4 +1,4 @@
-// devela::geom::dir::boundary
+// devela/src/geom/dir/boundary.rs
 //
 //! Defines: [`Boundary1d`], [`Boundary2d`], [`Boundary3d`].
 //!

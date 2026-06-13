@@ -1,4 +1,4 @@
-// devela::sys::net::http::namespace
+// devela/src/sys/net/http/namespace.rs
 //
 //! Defines [`Http`], [`HttpMethod`].
 //

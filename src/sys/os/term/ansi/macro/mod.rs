@@ -1,4 +1,4 @@
-// devela::sys::os::term::ansi::macro
+// devela/src/sys/os/term/ansi/macro/mod.rs
 //
 //! Defines the [`ansi!`] macro.
 //

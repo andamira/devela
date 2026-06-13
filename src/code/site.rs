@@ -1,4 +1,4 @@
-// devela::code::site
+// devela/src/code/site.rs
 //
 //! Defines [`CodeLocation`], [`CodeSpan`].
 //

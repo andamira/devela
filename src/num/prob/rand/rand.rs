@@ -1,4 +1,4 @@
-// devela::num::prob::rand::rand
+// devela/src/num/prob/rand/rand.rs
 //
 //! Defines [`RandSeedable`], [`RandTry`], [`Rand`].
 //

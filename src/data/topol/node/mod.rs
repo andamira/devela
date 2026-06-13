@@ -1,4 +1,4 @@
-// devela::data::topol::node
+// devela/src/data/topol/node/mod.rs
 //
 #![doc = crate::_DOC_DATA_NODE!()] // public
 #![doc = crate::_doc!(modules: crate::data; node)]

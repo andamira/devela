@@ -1,4 +1,4 @@
-// devela::geom::fig
+// devela/src/geom/fig/mod.rs
 //
 #![doc = crate::_DOC_GEOM_FIG!()] // public
 #![doc = crate::_doc!(modules: crate::geom; fig)]

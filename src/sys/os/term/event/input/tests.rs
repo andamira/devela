@@ -1,4 +1,4 @@
-// devela::sys::os::term::event::input::tests
+// devela/src/sys/os/term/event/input/tests.rs
 //
 // TOC
 // - mod control

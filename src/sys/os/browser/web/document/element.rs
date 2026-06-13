@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::document::element
+// devela/src/sys/os/browser/web/document/element.rs
 //
 //! Defines [`WebElement`], [`WebElementIter`].
 //

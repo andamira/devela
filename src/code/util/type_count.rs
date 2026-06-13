@@ -1,4 +1,4 @@
-// devela::code::util::type_count
+// devela/src/code/util/type_count.rs
 //
 //! Counting types.
 //

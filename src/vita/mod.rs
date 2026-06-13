@@ -1,4 +1,4 @@
-// devela::vita
+// devela/src/vita/mod.rs
 //
 #![doc = crate::_DOC_VITA!()] // public, root
 #![doc = crate::_DOC_VITA_MODULES!()]

@@ -1,4 +1,4 @@
-// devela::sys::device::audio::alsa::tests
+// devela/src/sys/device/audio/alsa/tests.rs
 
 use crate::{Alsa, AlsaError, AudioChannels, PcmSample, PcmSpec};
 

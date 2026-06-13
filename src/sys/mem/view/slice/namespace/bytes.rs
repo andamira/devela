@@ -1,4 +1,4 @@
-// devela::sys::mem::view::slice::namespace::bytes
+// devela/src/sys/mem/view/slice/namespace/bytes.rs
 
 #[cfg(any(doc, unsafe··))]
 use crate::Ptr;

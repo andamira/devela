@@ -1,4 +1,4 @@
-// devela::lang::hum::i18n::locale
+// devela/src/lang/hum/i18n/locale/mod.rs
 //
 //! Identifiers and properties that define a language–region context for localization.
 //!

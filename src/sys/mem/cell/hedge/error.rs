@@ -1,4 +1,4 @@
-// devela::sys::mem::cell::hedge::error
+// devela/src/sys/mem/cell/hedge/error.rs
 //
 //! Defines [`MemHedgeError`].
 //

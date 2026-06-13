@@ -1,4 +1,4 @@
-// devela::sys::os::term::render::grid
+// devela/src/sys/os/term/render/grid.rs
 //
 //! Terminal-grid encoding extensions for [`TermRenderer`].
 //

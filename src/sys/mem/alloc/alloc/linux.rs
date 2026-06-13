@@ -1,4 +1,4 @@
-// devela::sys::mem::alloc::linux
+// devela/src/sys/mem/alloc/alloc/linux.rs
 //
 //! Defines [`LinuxMmapAlloc`].
 

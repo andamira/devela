@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::js::document.js
+// devela/src/sys/os/browser/web/js/document.js
 
 import { strEncodeInto } from "./shared.js";
 

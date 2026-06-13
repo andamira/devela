@@ -1,4 +1,4 @@
-// devela::text::str::small
+// devela/src/text/str/small/mod.rs
 //
 //! Inline-first UTF-8 string storage with spillover.
 //

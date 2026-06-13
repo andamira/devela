@@ -1,4 +1,4 @@
-// devela::sys::os::browser::web::event::key::media
+// devela/src/sys/os/browser/web/event/key/media.rs
 //
 //! Implements methods for [`KeyMedia`].
 //

@@ -1,4 +1,4 @@
-// devela::text::ascii::lut
+// devela/src/text/ascii/lut.rs
 //
 //! Defines the [`AsciiLut`] namespace.
 //
