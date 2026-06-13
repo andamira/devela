@@ -1,5 +1,5 @@
 // devela::sys::os::browser::web::api::events
-// (in sync with ./web_api.js)
+// (in sync with ../js/events.js)
 //
 //! Implements the web events API.
 //

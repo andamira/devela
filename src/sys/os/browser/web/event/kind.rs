@@ -20,7 +20,7 @@ use crate::{KeyState, is};
 /// ---
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Event>
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget>
-// NOTE: In sync with web_api.js::get_event_kind()
+// NOTE: In sync with ../js/events.js::getEventKind()
 #[repr(C)]
 #[non_exhaustive]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]

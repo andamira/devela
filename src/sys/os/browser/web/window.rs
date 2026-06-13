@@ -112,6 +112,7 @@ impl WebWindow {
     /// Cancels a request for an animation frame.
     pub fn cancel_animation_frame(id: js_uint32) { window_cancel_animation_frame(id); }
 }
+// (in sync with ./js/window.js)
 _js_extern! {
     [module: "api_window"]
     unsafe fn window_state(data: *mut u8);

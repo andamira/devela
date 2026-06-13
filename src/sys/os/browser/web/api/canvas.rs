@@ -1,5 +1,5 @@
 // devela::sys::os::browser::web::api::canvas
-// (in sync with ./web_api.js)
+// (in sync with ../js/canvas.js)
 //
 //! Implements the web canvas API.
 //

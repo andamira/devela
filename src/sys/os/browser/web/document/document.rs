@@ -44,6 +44,7 @@ impl WebDocument {
         content_type, document_content_type
     }
 }
+// (in sync with ../js/document.js)
 _js_extern! {
     [module: "api_document"]
     safe fn document_is_compat_mode() -> js_bool;

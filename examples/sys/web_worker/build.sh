@@ -5,19 +5,24 @@
 # $ apt install jq
 #
 ## install alternative tools
-# $ apt install uglifyjs
+# $ apt install esbuild terser
 # $ cargo install wasm-opt
 
 set -e
 
 # CONFIG
 CRATE_NAME="web_worker" # in sync with Cargo.toml, public_html/index.html
-WASM_NAME="${CRATE_NAME}.wasm"
-JS_LIB_DIR="../../../src/sys/os/browser/web/api/"
-JS_LIB_NAME="web_api.js"
-# JS_LIB_URL="https://raw.githubusercontent.com/andamira/devela/refs/heads/main/src/sys/os/browser/web/api/${JS_LIB_NAME}"
 PROFILE="release"
 WEB_DIR="./public_html/"
+#
+WASM_NAME="${CRATE_NAME}.wasm"
+WASM_MODE="${WASM_MODE:-copy}" # copy|opt
+#
+JS_ENTRY_NAME="api.js"
+JS_LIB_DIR="../../../src/sys/os/browser/web/js/"
+JS_OUT_DIR="${WEB_DIR}devela/"
+JS_MODE="${JS_MODE:-copy}" # copy|min|bundle
+#
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
 
@@ -47,22 +52,64 @@ mkdir -p $WEB_DIR
 
 
 # WASM
-echo "cp $WASM_PATH $WEB_DIR$WASM_NAME"
-cp "$WASM_PATH" "$WEB_DIR/$WASM_NAME"
-#
-# alternative:
-# wasm-opt -Oz --strip-debug --strip-producers -o "$WEB_DIR/$WASM_NAME" "${WASM_PATH}"
+case "$WASM_MODE" in
+	copy)
+		echo "cp $WASM_PATH $WEB_DIR$WASM_NAME"
+		cp "$WASM_PATH" "$WEB_DIR/$WASM_NAME"
+		;;
+	opt)
+		command -v wasm-opt >/dev/null 2>&1 || {
+			echo "error: wasm-opt not found. Install it or use WASM_MODE=copy." >&2
+			exit 1
+		}
+		echo "wasm-opt -Oz $WASM_PATH -> $WEB_DIR$WASM_NAME"
+		wasm-opt -Oz -all --strip-debug --strip-producers \
+			-o "$WEB_DIR/$WASM_NAME" "$WASM_PATH"
+		;;
+	*)
+		echo "error: unknown WASM_MODE '$WASM_MODE'. Use: copy, opt." >&2
+		exit 1
+		;;
+esac
 
 
 # JS_LIB
-echo " to $WEB_DIR$JS_LIB_NAME"
-cp "${JS_LIB_DIR}${JS_LIB_NAME}" "${WEB_DIR}"
-#
-# alternative:
-# uglifyjs "${JS_LIB_DIR}${JS_LIB_NAME}" -o "${WEB_DIR}${JS_LIB_NAME}"
-#
-# alternative:
-# curl -s "${JS_LIB_URL}" > "${WEB_DIR}${JS_LIB_NAME}"
+rm -rf "$JS_OUT_DIR"
+mkdir -p "$JS_OUT_DIR"
+
+case "$JS_MODE" in
+	copy)
+		echo "cp -r ${JS_LIB_DIR}*.js $JS_OUT_DIR"
+		cp "${JS_LIB_DIR}"*.js "$JS_OUT_DIR"
+		;;
+	min)
+		command -v terser >/dev/null 2>&1 || {
+			echo "error: terser not found. Install it or use JS_MODE=copy." >&2
+			exit 1
+		}
+		for src in "${JS_LIB_DIR}"*.js; do
+			file="$(basename "$src")"
+			echo "terser $src -> ${JS_OUT_DIR}${file}"
+			terser "$src" -c -o "${JS_OUT_DIR}${file}"
+		done
+		;;
+	bundle)
+		command -v esbuild >/dev/null 2>&1 || {
+			echo "error: esbuild not found. Install it or use JS_MODE=copy." >&2
+			exit 1
+		}
+		echo "esbuild ${JS_LIB_DIR}${JS_ENTRY_NAME} -> ${JS_OUT_DIR}${JS_ENTRY_NAME}"
+		esbuild "${JS_LIB_DIR}${JS_ENTRY_NAME}" \
+			--bundle \
+			--format=esm \
+			--minify \
+			--outfile="${JS_OUT_DIR}${JS_ENTRY_NAME}"
+		;;
+	*)
+		echo "error: unknown JS_MODE '$JS_MODE'. Use: copy, min, bundle." >&2
+		exit 1
+		;;
+esac
 
 
 # CLEAN PERMISSIONS

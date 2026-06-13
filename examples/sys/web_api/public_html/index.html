@@ -7,10 +7,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <title>Rust Js Web API example</title>
     <script type="module">
-      import { initWasm } from "./web_api.js";
+      import { initWasm } from "./devela/api.js";
       window.addEventListener("DOMContentLoaded", async () => {
-          window.wasmInstance = await initWasm("web_api.wasm");
-          console.log("WASM initialized:", window.wasmInstance);
+        window.wasmInstance = await initWasm("web_api.wasm");
+        console.log("WASM initialized:", window.wasmInstance);
       });
     </script>
     <style>

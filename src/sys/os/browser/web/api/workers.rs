@@ -1,5 +1,5 @@
 // devela::sys::os::browser::web::api::workers
-// (in sync with ./web_api.js)
+// (in sync with ../js/workers.js)
 //
 //! Implements the web workers API.
 //
