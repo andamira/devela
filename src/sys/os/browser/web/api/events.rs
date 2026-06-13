@@ -144,8 +144,9 @@ impl Web {
         let repeat = repeat != 0;
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
+        let Some(state) = etype.to_key_state(repeat) else { return };
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventKey::new(key as u32, location, repeat, mods, etype, timestamp));
+        callback(WebEventKey::new(key as u32, state, location, mods, timestamp));
     }
     /// WebAssembly mouse event callback dispatcher.
     ///

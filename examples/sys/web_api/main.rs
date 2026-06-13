@@ -165,13 +165,7 @@ pub extern "C" fn canvas_click() {
 #[unsafe(no_mangle)] #[rustfmt::skip]
 pub extern "C" fn my_key_callback(event: WebEventKey) {
     let buf = unsafe { &mut *&raw mut BUF };
-    if event.has_key_scalar() {
-        console::log(fmt![?buf, "KEY: {:?} scalar={} mods={:?} repeat={}",
-            event.etype, event.key, event.mods, event.repeat]);
-    } else {
-        console::log(fmt![?buf, "KEY: {:?} non-text location={:?} mods={:?} repeat={}",
-            event.etype, event.location, event.mods, event.repeat]);
-    }
+    console::log(fmt![?buf, "KEY: {:?}", event]);
 }
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {

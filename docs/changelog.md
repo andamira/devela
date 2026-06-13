@@ -33,6 +33,7 @@
 
 ##### sys::os::browser::web
 - new type `WebEventKey`.
+- move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - modularize browser JS bindings.
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

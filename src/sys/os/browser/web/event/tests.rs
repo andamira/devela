@@ -1,6 +1,6 @@
 // devela/src/sys/os/browser/web/event/tests.rs
 
-use crate::{KeyFfi, KeyMods, KeyPad, KeyState};
+use crate::{Key, KeyMods, KeyPad, KeyState};
 use crate::{WebEventKind, WebKeyLocation};
 
 #[test]
@@ -27,38 +27,35 @@ fn js_event_to_key_state() {
 }
 
 #[test]
-fn key_ffi_to_web_code() {
-    assert_eq!(KeyFfi::Enter.to_web_code(), ("Enter", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Space.to_web_code(), ("Space", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Fn(5).to_web_code(), ("F5", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Pad(KeyPad::Num0).to_web_code(), ("Numpad0", WebKeyLocation::NumPad));
-    assert_eq!(KeyFfi::Char('é' as u32).to_web_key(), ("Unknown", WebKeyLocation::Standard));
+fn key_to_web_code() {
+    assert_eq!(Key::Enter.to_web_code(), ("Enter", WebKeyLocation::Standard));
+    assert_eq!(Key::Space.to_web_code(), ("Space", WebKeyLocation::Standard));
+    assert_eq!(Key::Fn(5).to_web_code(), ("F5", WebKeyLocation::Standard));
+    assert_eq!(Key::Pad(KeyPad::Num0).to_web_code(), ("Numpad0", WebKeyLocation::NumPad));
+    assert_eq!(Key::Char('é').to_web_key(), ("Unknown", WebKeyLocation::Standard));
 }
 #[test]
-fn key_ffi_from_web_code() {
-    assert_eq!(KeyFfi::from_web_code("Enter", WebKeyLocation::Standard), Some(KeyFfi::Enter));
-    assert_eq!(KeyFfi::from_web_code("F5", WebKeyLocation::Standard), Some(KeyFfi::Fn(5)));
-    assert_eq!(
-        KeyFfi::from_web_code("Numpad0", WebKeyLocation::NumPad),
-        Some(KeyFfi::Pad(KeyPad::Num0))
-    );
-    assert_eq!(KeyFfi::from_web_code("Unknown", WebKeyLocation::Standard), None);
+fn key_from_web_code() {
+    assert_eq!(Key::from_web_code("Enter", WebKeyLocation::Standard), Some(Key::Enter));
+    assert_eq!(Key::from_web_code("F5", WebKeyLocation::Standard), Some(Key::Fn(5)));
+    assert_eq!(Key::from_web_code("Numpad0", WebKeyLocation::NumPad), Some(Key::Pad(KeyPad::Num0)));
+    assert_eq!(Key::from_web_code("Unknown", WebKeyLocation::Standard), None);
 }
 /* semantic */
 #[test]
-fn key_ffi_to_web_key() {
-    assert_eq!(KeyFfi::Enter.to_web_key(), ("Enter", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Space.to_web_key(), (" ", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Char('a' as u32).to_web_key(), ("a", WebKeyLocation::Standard));
-    assert_eq!(KeyFfi::Char('é' as u32).to_web_key(), ("Unknown", WebKeyLocation::Standard));
-    // assert_eq!(KeyFfi::Char('é' as u32).to_web_key(), ("é", WebKeyLocation::Standard)); // IMPROVE
+fn key_to_web_key() {
+    assert_eq!(Key::Enter.to_web_key(), ("Enter", WebKeyLocation::Standard));
+    assert_eq!(Key::Space.to_web_key(), (" ", WebKeyLocation::Standard));
+    assert_eq!(Key::Char('a').to_web_key(), ("a", WebKeyLocation::Standard));
+    assert_eq!(Key::Char('é').to_web_key(), ("Unknown", WebKeyLocation::Standard));
+    // assert_eq!(Key::Char('é' as u32).to_web_key(), ("é", WebKeyLocation::Standard)); // IMPROVE
 }
 #[test]
-fn key_ffi_from_web_key() {
-    assert_eq!(KeyFfi::from_web_key("Enter", WebKeyLocation::Standard), Some(KeyFfi::Enter));
-    assert_eq!(KeyFfi::from_web_key(" ", WebKeyLocation::Standard), Some(KeyFfi::Space));
-    assert_eq!(KeyFfi::from_web_key("a", WebKeyLocation::Standard), Some(KeyFfi::Char('a' as u32)));
-    assert_eq!(KeyFfi::from_web_key("é", WebKeyLocation::Standard), Some(KeyFfi::Char('é' as u32)));
+fn key_from_web_key() {
+    assert_eq!(Key::from_web_key("Enter", WebKeyLocation::Standard), Some(Key::Enter));
+    assert_eq!(Key::from_web_key(" ", WebKeyLocation::Standard), Some(Key::Space));
+    assert_eq!(Key::from_web_key("a", WebKeyLocation::Standard), Some(Key::Char('a')));
+    assert_eq!(Key::from_web_key("é", WebKeyLocation::Standard), Some(Key::Char('é')));
 }
 
 #[test]
