@@ -99,6 +99,7 @@ See also
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
+- 1.??: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
@@ -167,7 +168,7 @@ See also
 
 # Experimental features:
 - [local_waker](https://github.com/rust-lang/rust/issues/118959)
-- [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727)
+- [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727) from:proc_macro_hygiene
 - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
  ` `- <https://rust-lang.github.io/rfcs/2580-ptr-meta.html>
     - [related issues](https://github.com/rust-lang/rust/issues?q=state%3Aopen%20label%3A%22F-ptr_metadata%22)
