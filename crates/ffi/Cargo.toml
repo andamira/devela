@@ -42,3 +42,7 @@ features = ["unsafe_ffi"]
 
 [profile.release]
 panic = "abort"
+
+[[bin]]
+name = "ffi_bindgen"
+path = "src/bin/ffi_bindgen.rs"

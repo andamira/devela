@@ -3,7 +3,7 @@
 package main
 
 import "core:fmt"
-import ffi "../../odin"
+import ffi "../../pkg/odin/load"
 
 main :: proc() {
     lib, ok := ffi.load()

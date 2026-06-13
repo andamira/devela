@@ -9,6 +9,10 @@ PROFILE="release"
 LIB_DIR="./libs"
 BUILD_CMD="cargo build --profile $PROFILE"
 
+# GENERATE BINDINGS
+echo "$ cargo run --quiet --bin ffi_bindgen"
+cargo run --quiet --bin ffi_bindgen
+
 # BUILD
 echo "$ $BUILD_CMD"
 

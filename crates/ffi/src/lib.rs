@@ -11,7 +11,14 @@ use devela::c_char;
 // #[cfg(feature = "linux")]
 // mod term;
 
-///
+/// ABI status values.
+//
+// In sync with:
+// - src/bin/devela_ffi_bindgen.rs: STATUS_CONSTANTS
+// - generated include/devela_ffi.h
+// - generated odin/common/gen_common.odin
+//
+// Values are part of the public C ABI.
 pub type devela_status = i32;
 pub const DEVELA_OK: devela_status = 0;
 pub const DEVELA_NO_EVENT: devela_status = 1;

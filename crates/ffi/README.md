@@ -5,14 +5,7 @@ Experimental C ABI bridge for selected [`devela`](https://github.com/andamira/de
 This crate builds Rust code as system libraries that can be used from C, Odin,
 and other languages that can call a C ABI.
 
-It currently provides a small smoke-test ABI for checking:
-
-- scalar arguments and return values
-- pointer + length arguments
-- out pointers
-- returned C strings
-- link-time imports
-- runtime symbol loading
+It currently provides a small smoke-test ABI.
 
 ## Build
 

@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include "../../include/devela_ffi.h"
+#include "../../pkg/c/devela_ffi.h"
 
 int main(void) {
     uint32_t version = devela_abi_version();

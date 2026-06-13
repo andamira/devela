@@ -3,7 +3,7 @@
 package main
 
 import "core:fmt"
-import ffi "../../odin"
+import ffi "../../pkg/odin/import"
 
 main :: proc() {
     version := ffi.devela_abi_version()

@@ -1,18 +1,19 @@
 // Runtime symbol loading.
 
-package devela_ffi
+package devela_ffi_load
 
 import "core:dynlib"
 import "core:fmt"
+import common "../common"
 
-Library :: struct {
-    handle: dynlib.Library,
+Devela_Status :: common.Devela_Status
 
-    abi_version:  Abi_Version_Proc,
-    add_i32:      Add_I32_Proc,
-    bytes_len:    Bytes_Len_Proc,
-    error_string: Error_String_Proc,
-}
+DEVELA_OK              :: common.DEVELA_OK
+DEVELA_NO_EVENT        :: common.DEVELA_NO_EVENT
+DEVELA_ERR_NULL        :: common.DEVELA_ERR_NULL
+DEVELA_ERR_INVALID     :: common.DEVELA_ERR_INVALID
+DEVELA_ERR_PANIC       :: common.DEVELA_ERR_PANIC
+DEVELA_ERR_UNSUPPORTED :: common.DEVELA_ERR_UNSUPPORTED
 
 library_path :: proc() -> string {
     when ODIN_OS == .Linux {
@@ -38,23 +39,11 @@ load :: proc() -> (lib: Library, ok: bool) {
         return {}, false
     }
 
-    raw_abi_version, ok2  := dynlib.symbol_address(handle, "devela_abi_version")
-    raw_add_i32, ok3      := dynlib.symbol_address(handle, "devela_add_i32")
-    raw_bytes_len, ok4    := dynlib.symbol_address(handle, "devela_bytes_len")
-    raw_error_string, ok5 := dynlib.symbol_address(handle, "devela_error_string")
-
-    if !(ok2 && ok3 && ok4 && ok5) {
+    lib, ok = load_fns(handle)
+    if !ok {
         dynlib.unload_library(handle)
         fmt.eprintln("devela_ffi: failed to load one or more symbols")
         return {}, false
-    }
-
-    lib = Library {
-        handle       = handle,
-        abi_version  = cast(Abi_Version_Proc)raw_abi_version,
-        add_i32      = cast(Add_I32_Proc)raw_add_i32,
-        bytes_len    = cast(Bytes_Len_Proc)raw_bytes_len,
-        error_string = cast(Error_String_Proc)raw_error_string,
     }
 
     return lib, true
