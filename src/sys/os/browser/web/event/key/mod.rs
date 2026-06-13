@@ -7,11 +7,13 @@ mod ffi; // impl:KeyFfi
 mod media; // impl:KeyMedia
 mod pad; // impl:KeyPad
 
+mod key; // WebEventKey
 mod location; // WebKeyLocation, impl:KeyMod,KeyMods
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            key::*,
             location::*,
         };
     }

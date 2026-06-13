@@ -14,6 +14,7 @@ use crate::{KeyMod, KeyMods};
 #[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
+#[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum WebKeyLocation {
     /// The key is not identified as being located in a particular area of the keyboard. (Default)

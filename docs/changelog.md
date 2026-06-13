@@ -18,6 +18,7 @@
 ### examples
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
+  - show keyboard events.
 
 ---
 
@@ -31,7 +32,7 @@
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
 ##### sys::os::browser::web
+- new type `WebEventKey`.
 - modularize browser JS bindings.
-
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

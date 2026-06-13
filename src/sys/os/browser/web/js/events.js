@@ -38,6 +38,15 @@ function eventMods(e) {
   return mods;
 }
 
+// Returns a Unicode scalar for single-scalar KeyboardEvent.key values.
+// Returns 0 for non-text keys such as "Enter", "Shift", "ArrowLeft".
+function eventKeyScalar(e) {
+  if (!e.key) return 0;
+  const scalars = Array.from(e.key);
+  if (scalars.length !== 1) return 0;
+  return scalars[0].codePointAt(0) || 0;
+}
+
 // Returns EventPointerKind web code.
 function eventPointerKind(e) {
   switch (e.pointerType) {
@@ -121,6 +130,35 @@ export function makeEventsApi(env) {
       }
       element.removeEventListener(event, callback);
       callbacksJs.delete(key);
+    },
+    //
+    event_addListenerKey: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {
+      const { selector, event, element } =
+        decodeTargetAndEvent(env, ePtr, eLen, eventPtr, eventLen);
+      if (!element) {
+        console.error(`Element not found for key listener on '${selector}'`);
+        return;
+      }
+      const callback = (e) => {
+        const key = eventKeyScalar(e);
+        const location = e.location | 0;
+        const repeat = e.repeat ? 1 : 0;
+        const mods = eventMods(e);
+        const etype = getEventKind(e.type);
+        const timeStamp = e.timeStamp;
+        env.wasm.exports.wasm_callback_key(
+          callbackPtr,
+          key,
+          location,
+          repeat,
+          mods,
+          etype,
+          timeStamp,
+        );
+      };
+      const key = listenerKey(selector, event, callbackPtr);
+      callbacks.set(key, callback);
+      element.addEventListener(event, callback);
     },
     //
     event_addListenerMouse: (ePtr, eLen, eventPtr, eventLen, callbackPtr) => {

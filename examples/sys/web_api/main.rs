@@ -10,8 +10,8 @@
 
 use devela::{JsConsole as console, Wasm, WasmAlloc, format_buf as fmt, set_panic_handler};
 use devela::{
-    Web, WebDocument as document, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel,
-    WebWindow as window,
+    Web, WebDocument as document, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer,
+    WebEventWheel, WebWindow as window,
 };
 
 set_panic_handler![web];
@@ -121,13 +121,20 @@ pub extern "C" fn main() {
 
     // Add an event listener to the canvas for clicks
     Web::event_add_listener("#example_canvas_1", WebEventKind::Click, canvas_click);
+
+    // keys
+    Web::event_add_listener_key("window", WebEventKind::KeyDown, my_key_callback);
+    Web::event_add_listener_key("window", WebEventKind::KeyUp, my_key_callback);
+
     // mouse
     Web::event_add_listener_mouse("window", WebEventKind::MouseDown, my_mouse_callback);
     // Web::event_add_listener_mouse("window", WebEventKind::MouseMove, my_mouse_callback);
+
     // pointer
     Web::event_add_listener_pointer("window", WebEventKind::PointerDown, my_pointer_callback);
     // Web::event_add_listener_pointer("window", WebEventKind::PointerUp, my_pointer_callback);
     // Web::event_add_listener_pointer("window", WebEventKind::PointerMove, my_pointer_callback);
+
     // wheel
     Web::event_add_listener_wheel("window", WebEventKind::Wheel, my_wheel_callback);
 
@@ -155,6 +162,17 @@ pub extern "C" fn canvas_click() {
     Web::fill_text(fmt![?buf, "time: {time}ms"], 60.0, 100.0);
 }
 
+#[unsafe(no_mangle)] #[rustfmt::skip]
+pub extern "C" fn my_key_callback(event: WebEventKey) {
+    let buf = unsafe { &mut *&raw mut BUF };
+    if event.has_key_scalar() {
+        console::log(fmt![?buf, "KEY: {:?} scalar={} mods={:?} repeat={}",
+            event.etype, event.key, event.mods, event.repeat]);
+    } else {
+        console::log(fmt![?buf, "KEY: {:?} non-text location={:?} mods={:?} repeat={}",
+            event.etype, event.location, event.mods, event.repeat]);
+    }
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
     let buf = unsafe { &mut *&raw mut BUF };

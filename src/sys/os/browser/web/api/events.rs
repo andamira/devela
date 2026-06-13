@@ -7,7 +7,9 @@
 use crate::transmute;
 use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number};
 use crate::{EventPointerKind, EventWheelUnit, KeyMods};
-use crate::{Web, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel};
+use crate::{
+    Web, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel, WebKeyLocation,
+};
 
 /// # Web API Events
 ///
@@ -52,6 +54,18 @@ impl Web {
         }
     }
     //
+    #[doc = _js_doc!("EventTarget", "addEventListener")]
+    /// Attaches a Rust function as a `keyboard event` listener on an `element`.
+    ///
+    /// The callback receives [`WebEventKey`] with key scalar, location, repeat flag,
+    /// modifiers, event kind, and timestamp.
+    pub fn event_add_listener_key(element: &str, event: WebEventKind,
+        callback: extern "C" fn(WebEventKey)) {
+        unsafe {
+            event_add_listener_key(element.as_ptr(), element.len(),
+                event.as_str().as_ptr(), event.as_str().len(), callback as usize);
+        }
+    }
     #[doc = _js_doc!("EventTarget", "addEventListener")]
     /// Attaches a Rust function as a `mouse event` listener on an `element`.
     ///
@@ -112,6 +126,26 @@ impl Web {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn() = unsafe { transmute(callback) };
         callback();
+    }
+    /// WebAssembly keyboard event callback dispatcher.
+    ///
+    /// - Called from JavaScript when a keyboard event is fired.
+    /// - Passes the `WebEventKey` struct to the Rust callback.
+    ///
+    /// # Safety
+    /// - `callback_ptr` must be a valid function pointer.
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback_key(callback_ptr: usize,
+        key: js_int32, location: js_int32, repeat: js_int32, mods: js_int32,
+        etype: js_int32, timestamp: js_number) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn(WebEventKey) = unsafe { transmute(callback) };
+        let location = WebKeyLocation::from_repr(location as u8);
+        let repeat = repeat != 0;
+        let mods = KeyMods::from_web(mods as u8);
+        let etype = WebEventKind::from_repr(etype as u8);
+        let timestamp = JsInstant::from_millis_f64(timestamp);
+        callback(WebEventKey::new(key as u32, location, repeat, mods, etype, timestamp));
     }
     /// WebAssembly mouse event callback dispatcher.
     ///
@@ -190,6 +224,8 @@ _js_extern! {
         event_ptr: *const u8, event_len: usize, js_fn_ptr: *const u8, js_fn_len: usize
     );
     //
+    unsafe fn "event_addListenerKey" event_add_listener_key(element_ptr: *const u8,
+        element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
     unsafe fn "event_addListenerMouse" event_add_listener_mouse(element_ptr: *const u8,
         element_len: usize, event_ptr: *const u8, event_len: usize, callback_ptr: usize);
     unsafe fn "event_addListenerPointer" event_add_listener_pointer(element_ptr: *const u8,
