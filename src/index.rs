@@ -89,6 +89,8 @@
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
+        new_range_api,
+        nonzero_from_str_radix,
         offset_of_enum,
         offset_of_slice,
         optimize_attribute,
@@ -102,7 +104,13 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(box_vec_non_null, btree_extract_if, new_zeroed_alloc, vec_deque_truncate_front,)
+    feature(
+        box_as_ptr,
+        box_vec_non_null,
+        btree_extract_if,
+        new_zeroed_alloc,
+        vec_deque_truncate_front,
+    )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
