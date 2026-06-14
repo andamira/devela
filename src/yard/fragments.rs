@@ -323,12 +323,16 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_UNICODE_GRAPHEME = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
 
     // 12. ui (interaction structures, presentation state, and input semantics)
-    _DOC_UI         = "Interactive surfaces, input semantics, and presentation state.";
+    _DOC_UI         = "Human-facing interaction, presentation state, and semantic projection.";
     _QUO_UI         = "> How humans interact with what exists.";
-    _DOC_UI_EVENT   = "User interface events-related functionality.";
-    _DOC_UI_INTENT  = "Declarative user and device intent resolved against runtime capabilities.";
-    _DOC_UI_LAYOUT  = "Interactive spatial arrangement and negotiation.";
-    _DOC_UI_VIEW    = "Stateful interactive projections.";
+    _DOC_UI_EVENT   = "Normalized interaction and window events entering the UI frame.";
+    _DOC_UI_FRAME   = "Immediate UI authorship, scoped identity, and retained facts across frames.";
+    _DOC_UI_INTENT  = "Desired UI configuration before capability-bound realization.";
+    _DOC_UI_LAYOUT  = "Canonical spatial vocabulary for deterministic arrangement.";
+    _DOC_UI_ROUTE   = "Routing interaction through hit regions, focus, active state, and capture.";
+    _DOC_UI_SEM     = "Human-facing meaning for roles, actions, descriptions, and navigation.";
+    _DOC_UI_VIEW    = "Cell, graphic, and document projections of UI state.";
+    _DOC_UI_WIDGET  = "Semantic controls expressed through frame-local authorship.";
 
     // 13. vita (practices, capacities, and meanings of lived life)
     _DOC_VITA       = "Lived practices of embodied beings.";

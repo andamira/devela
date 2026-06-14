@@ -12,14 +12,15 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui: event); // intent, layout, view
 }
 
-#[cfg(ui··)]
-crate::__doc_hide! { (ui··)
-    mod error;
-}
+// mod error; // RETHINK
+mod frame; // WIP
 mod intent; // WIP
-#[cfg(feature = "layout")]
+// #[cfg(feature = "layout")]
 mod layout; // WIP
-mod view; // stateful interactive projections WIP
+mod route; // WIP
+mod sem; // WIP
+mod view; // WIP
+mod widget; // WIP
 
 #[cfg(feature = "event")]
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
@@ -27,17 +28,20 @@ pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeSt
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
+            // error::*,
             intent::*,
+            layout::*,
+            route::*,
+            sem::*,
             view::*,
+            widget::*,
         };
-        #[cfg(ui··)]
-        pub use super::error::*; // RETHINK
     }
     _pub_mods {
         #[cfg(feature = "event")]
         pub use super::event::_all::*;
-        #[cfg(feature = "layout")]
-        pub use super::layout::_all::*;
+        // #[cfg(feature = "layout")]
+        // pub use super::layout::_all::*;
     }
     _crate_internals {
         pub(crate) use super::_DOC_UI_MODULES;

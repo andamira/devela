@@ -7,7 +7,9 @@ use super::*;
 use crate::{ConstInit, impl_trait, unwrap};
 
 #[doc = crate::_tags!(interaction ffi)]
-/// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
+/// An FFI-safe version of [`Key`], used in
+/// [`EventKeyFfi`][crate::EventKeyFfi],
+/// [`WebEventKey`][crate::WebEventKey].
 // (The main difference is in the Char variant.)
 #[doc = crate::_doc_meta!{
     location("ui/event"),

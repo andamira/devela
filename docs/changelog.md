@@ -36,4 +36,8 @@
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - modularize browser JS bindings.
 
+## ui
+- new submodules: `frame`, `route`, `sem`, `widget`.
+
+
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

@@ -15,10 +15,7 @@ crate::_use! { basic::from_utf8 }
     test_size_of(WebEventKey = 32|256; niche Option),
 }]
 ///
-/// Represents a JavaScript `KeyboardEvent` in a compact callback-friendly form.
-///
-/// `key` is the Unicode scalar value of `KeyboardEvent.key` when it contains
-/// exactly one Unicode scalar, or `0` for non-text keys such as `Enter`.
+/// Represents a JavaScript `KeyboardEvent` in a callback-friendly form.
 #[repr(C)]
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct WebEventKey {
