@@ -323,16 +323,19 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_TEXT_UNICODE_GRAPHEME = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
 
     // 12. ui (interaction structures, presentation state, and input semantics)
-    _DOC_UI         = "Human-facing interaction, presentation state, and semantic projection.";
-    _QUO_UI         = "> How humans interact with what exists.";
-    _DOC_UI_EVENT   = "Normalized interaction and window events entering the UI frame.";
-    _DOC_UI_FRAME   = "Immediate UI authorship, scoped identity, and retained facts across frames.";
-    _DOC_UI_INTENT  = "Desired UI configuration before capability-bound realization.";
-    _DOC_UI_LAYOUT  = "Canonical spatial vocabulary for deterministic arrangement.";
-    _DOC_UI_ROUTE   = "Routing interaction through hit regions, focus, active state, and capture.";
-    _DOC_UI_SEM     = "Human-facing meaning for roles, actions, descriptions, and navigation.";
-    _DOC_UI_VIEW    = "Cell, graphic, and document projections of UI state.";
-    _DOC_UI_WIDGET  = "Semantic controls expressed through frame-local authorship.";
+    _DOC_UI = "Human-facing interaction, presentation state, and semantic projection.";
+    _QUO_UI = "> How humans interact with what exists.";
+    _DOC_UI_EVENT  = "Normalized interaction and window events entering the UI frame.";
+    _DOC_UI_FRAME  = "Immediate UI authorship, scoped identity, and retained facts across frames.";
+    _DOC_UI_INTENT = "Desired UI configuration before capability-bound realization.";
+    _DOC_UI_LAYOUT = "Canonical spatial vocabulary for deterministic arrangement.";
+    _DOC_UI_ROUTE  = "Routing interaction through regions, focus, active state, and capture.";
+    _DOC_UI_SEM    = "Human-facing meaning for roles, actions, descriptions, and navigation.";
+    _DOC_UI_VIEW   = "Projection of UI state into concrete presentation forms.";
+    _DOC_UI_VIEW_FORM    = "Cell, graphic, and document forms of UI projection.";
+    _DOC_UI_VIEW_PROFILE = "Presentation profiles for fitting logical views into output space.";
+    _DOC_UI_VIEW_SCALE   = "Pixel, density, and text scaling units for view projection.";
+    _DOC_UI_WIDGET = "Semantic controls expressed through frame-local authorship.";
 
     // 13. vita (practices, capacities, and meanings of lived life)
     _DOC_VITA       = "Lived practices of embodied beings.";
