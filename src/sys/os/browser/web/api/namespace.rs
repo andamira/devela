@@ -1,5 +1,5 @@
 // devela/src/sys/os/browser/web/api/namespace.rs
-// (in sync with ../js/*.js)
+// In sync with ../js/*.js
 //
 //! Defines the [`Web`] namespace.
 //
@@ -67,7 +67,7 @@ impl Web {
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-// (in sync with ../js/permissions.js)
+// In sync with ../js/permissions.js
 impl Web {
     #[doc = _js_doc!("Permissions", "query")]
     /// Queries the status of a given permission.
@@ -92,7 +92,7 @@ _js_extern! {
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
-// (in sync with ../js/performance.js)
+// In sync with ../js/performance.js
 impl Web {
     #[doc = _js_doc!("Performance", "now")]
     /// Retrieves a high-resolution timestamp in milliseconds.

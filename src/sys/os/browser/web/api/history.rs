@@ -1,5 +1,5 @@
 // devela/src/sys/os/browser/web/api/history.rs
-// (in sync with ../js/history.js)
+// In sync with ../js/history.js
 //
 //! Implements the web history & location API.
 //

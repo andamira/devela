@@ -1,5 +1,5 @@
 // devela/src/sys/os/browser/web/api/canvas.rs
-// (in sync with ../js/canvas.js)
+// In sync with ../js/canvas.js
 //
 //! Implements the web canvas API.
 //

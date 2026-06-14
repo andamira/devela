@@ -1,4 +1,5 @@
 // devela/src/sys/os/browser/web/js/window.js
+// In sync with ../window.rs
 
 import { strDecode, strEncodeInto } from "./shared.js";
 
@@ -33,7 +34,7 @@ export function makeWindowApi(env) {
     // state
     window_state: (dataPtr) => {
       const view = new DataView(env.wasm.exports.memory.buffer);
-      let off = dataPtr; // in sync with ../window.rs::WebWindowState::__ASSERT_FIELD_OFFSETS
+      let off = dataPtr; // In sync with ../window.rs::WebWindowState::__ASSERT_FIELD_OFFSETS
       // window: 16 bytes
       view.setUint32(off, window.innerWidth, true); off += 4;  // inner_size.w
       view.setUint32(off, window.innerHeight, true); off += 4; // inner_size.h

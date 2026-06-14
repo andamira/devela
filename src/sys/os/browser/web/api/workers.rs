@@ -1,5 +1,5 @@
 // devela/src/sys/os/browser/web/api/workers.rs
-// (in sync with ../js/workers.js)
+// In sync with ../js/workers.js
 //
 //! Implements the web workers API.
 //

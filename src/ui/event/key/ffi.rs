@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{ConstInit, unwrap};
+use crate::{ConstInit, impl_trait, unwrap};
 
 #[doc = crate::_tags!(interaction ffi)]
 /// An FFI-safe version of [`Key`], used in [`EventKeyFfi`][crate::EventKeyFfi].
@@ -16,7 +16,7 @@ use crate::{ConstInit, unwrap};
 #[repr(C)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Default, PartialEq, Eq, Hash)]
 pub enum KeyFfi {
     // common control keys
     Backspace, Enter, Tab, Escape, Space,
@@ -95,6 +95,18 @@ pub enum KeyFfi {
 }
 impl ConstInit for KeyFfi {
     const INIT: Self = Self::Unknown;
+}
+impl_trait! { fmt::Debug for KeyFfi |self, f| self.to_key().fmt(f) }
+
+impl KeyFfi {
+    /// Converts `Key` to `KeyFfi`.
+    pub const fn from_key(from: Key) -> KeyFfi {
+        Key::to_ffi(from)
+    }
+    /// Converts `KeyFfi` to `Key`.
+    pub const fn to_key(self) -> Key {
+        Key::from_ffi(self)
+    }
 }
 
 impl Key {

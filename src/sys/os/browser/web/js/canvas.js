@@ -1,5 +1,5 @@
 // devela/src/sys/os/browser/web/js/canvas.js
-// (in sync with ../api/canvas.rs)
+// In sync with ../api/canvas.rs
 
 import { strDecode, requireCtx } from "./shared.js";
 

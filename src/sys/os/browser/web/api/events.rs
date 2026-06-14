@@ -1,12 +1,12 @@
 // devela/src/sys/os/browser/web/api/events.rs
-// (in sync with ../js/events.js)
+// In sync with ../js/events.js
 //
 //! Implements the web events API.
 //
 
 use crate::transmute;
-use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number};
-use crate::{EventPointerKind, EventWheelUnit, KeyMods};
+use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number, js_uint32};
+use crate::{EventPointerKind, EventWheelUnit, Key, KeyMods};
 use crate::{
     Web, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel, WebKeyLocation,
 };
@@ -136,18 +136,21 @@ impl Web {
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback_key(callback_ptr: usize,
-        key: js_int32, location: js_int32, repeat: js_int32, mods: js_int32,
-        etype: js_int32, timestamp: js_number) {
+        semantic: js_uint32, physical: js_uint32, location: js_int32, repeat: js_int32,
+        mods: js_int32, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
         let callback: extern "C" fn(WebEventKey) = unsafe { transmute(callback) };
-        let location = WebKeyLocation::from_repr(location as u8);
         let repeat = repeat != 0;
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
         let Some(state) = etype.to_key_state(repeat) else { return };
+        let location = WebKeyLocation::from_repr(location as u8);
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventKey::new(key as u32, state, location, mods, timestamp));
+        let semantic = Key::from_web_compact_key(semantic, location).to_ffi();
+        let physical = Key::from_web_compact_code(physical, location).to_ffi();
+        callback(WebEventKey::new(semantic, physical, mods, state, timestamp));
     }
+
     /// WebAssembly mouse event callback dispatcher.
     ///
     /// - Called from JavaScript when a mouse event is fired.
