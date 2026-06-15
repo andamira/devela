@@ -1,4 +1,4 @@
-// devela::ui::frame::tests
+// devela/ui/frame/tests.rs
 
 use super::*;
 

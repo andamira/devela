@@ -52,4 +52,7 @@
 ### ui::semantic
 - new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
 
+### ui::view
+- new types: `UiLayer`, `UiView`, `UiViewFlags`.
+
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

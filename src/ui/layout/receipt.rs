@@ -1,4 +1,4 @@
-// devela::ui::layout::receipt
+// devela/ui/layout/receipt.rs
 //
 //! Defines [`Layout1d`], [`LayoutReceipt`].
 //

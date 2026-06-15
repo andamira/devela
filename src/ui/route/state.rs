@@ -1,4 +1,4 @@
-// devela::ui::route::state
+// devela/ui/route/state.rs
 //
 //! Defines [`RouteActive`], [`RouteCapture`], [`RouteFocus`], [`RouteHot`].
 //

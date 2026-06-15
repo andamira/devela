@@ -332,7 +332,7 @@ It is also mirrored at the crate root through a hidden `all_` module.";
     _DOC_UI_ROUTE    = "Routing interaction through regions, focus, active state, and capture.";
     _DOC_UI_SEMANTIC = "Human-facing meaning for roles, actions, descriptions, and navigation.";
     _DOC_UI_VIEW     = "Projection of UI state into concrete presentation forms.";
-    _DOC_UI_VIEW_FORM    = "Cell, graphic, and document forms of UI projection.";
+    _DOC_UI_VIEW_FORM    = "Cell, document, graphic, and message forms of UI projection.";
     _DOC_UI_VIEW_PROFILE = "Presentation profiles for fitting logical views into output space.";
     _DOC_UI_VIEW_SCALE   = "Pixel, density, and text scaling units for view projection.";
     _DOC_UI_WIDGET = "Semantic controls expressed through frame-local authorship.";

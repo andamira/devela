@@ -1,4 +1,4 @@
-// devela::ui::layout::unit
+// devela/ui/layout/unit.rs
 //
 //! Defines metric aliases and [`Lunit`].
 //

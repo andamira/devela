@@ -14,7 +14,7 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 
 // mod error;
 mod intent; // WIP Desired UI configuration before capability-bound realization
-mod view; // WIP Projection of UI state into concrete presentation forms
+mod view; // Projection of UI state into concrete presentation forms
 mod widget; // WIP Semantic controls expressed through frame-local authorship
 
 #[cfg(feature = "event")]
@@ -29,17 +29,17 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // error::*,
-            intent::*,
-            view::*,
-            widget::*,
+            intent::_all::*,
+            view::_all::*,
+            widget::_all::*,
         };
     }
     _pub_mods {
         pub use super::{
-            frame::*,
-            layout::*,
-            route::*,
-            semantic::*,
+            frame::_all::*,
+            layout::_all::*,
+            route::_all::*,
+            semantic::_all::*,
         };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;

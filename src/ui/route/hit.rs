@@ -1,4 +1,4 @@
-// devela::ui::route::hit
+// devela/ui/route/hit.rs
 //
 //! Defines [`HitRegion`].
 //
