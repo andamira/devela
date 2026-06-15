@@ -37,7 +37,7 @@
 - modularize browser JS bindings.
 
 ## ui
-- new submodules: `frame`, `route`, `sem`, `widget`.
+- new submodules: `frame`, `route`, `semantic`, `widget`.
 
 ### ui::frame
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
@@ -49,5 +49,7 @@
 ### ui::route
 - new types: `HitRegion`, `RouteActive`, `RouteCapture`, `RouteFocus`, `RouteHot`.
 
+### ui::semantic
+- new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0
