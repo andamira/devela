@@ -46,5 +46,8 @@
 - new types: `Layout1d`, `LayoutReceipt`, `Lunit`.
 - new aliases: `Extent2`, `Position2`, `RegionS2`, `Stride2`.
 
+### ui::route
+- new types: `HitRegion`, `RouteActive`, `RouteCapture`, `RouteFocus`, `RouteHot`.
+
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

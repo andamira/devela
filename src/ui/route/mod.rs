@@ -6,9 +6,17 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod tests;
+
+mod hit; // HitRegion
+mod state; // RouteActive, RouteCapture, RouteFocus, RouteHot
+
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        // };
+        pub use super::{
+            hit::*,
+            state::*,
+        };
     }
 }

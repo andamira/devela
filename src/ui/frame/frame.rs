@@ -9,6 +9,9 @@ use crate::{UiId, UiKey, UiScope};
 /// Immediate UI frame context.
 #[doc = crate::_doc_meta!{
     location("ui/frame"),
+    #[cfg(pointer_target_width = "32")]
+    test_size_of(UiFrame = 12|96; niche Option),
+    #[cfg(pointer_target_width = "64")]
     test_size_of(UiFrame = 16|128; niche Option),
 }]
 #[must_use]
