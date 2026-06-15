@@ -58,7 +58,10 @@
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_98`: core, alloc, std…
-#![cfg_attr(nightly_stable_1_98, feature(result_option_map_or_default,))]
+#![cfg_attr(
+    nightly_stable_1_98,
+    feature(float_algebraic, nonzero_from_str_radix, result_option_map_or_default,)
+)]
 #![cfg_attr(all(nightly_stable_1_98, feature = "alloc"), feature(box_as_ptr,))]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
@@ -77,7 +80,6 @@
         debug_closure_helpers,
         derive_coerce_pointee,
         exclusive_wrapper,
-        float_algebraic,
         float_bits_const,
         fn_align,
         frontmatter,
@@ -90,7 +92,6 @@
         macro_metavar_expr_concat,
         more_qualified_paths,
         new_range_api,
-        nonzero_from_str_radix,
         offset_of_enum,
         offset_of_slice,
         optimize_attribute,

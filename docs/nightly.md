@@ -43,6 +43,8 @@ See also
 > - <https://github.com/rust-lang/rust/releases/tag/1.98.0>
 
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
+- 1.98: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
+- 1.98: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 
 
@@ -86,7 +88,6 @@ See also
 - 1.??: `·`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `·`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
-- 1.??: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
 - 1.??: `·`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
@@ -105,7 +106,6 @@ See also
 - 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/pull/152304) from:new_range_api
-- 1.??: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
