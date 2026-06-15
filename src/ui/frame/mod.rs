@@ -6,9 +6,17 @@
 #![doc = crate::_doc!(hr)]
 //
 
+mod id; // UiId, UiKey, UiScope
+mod frame; // UiFrame, UiPhase
+// mod mem; // UiMemory
+// mod cache; // UiCache
+// mod output; // UiOutput
+
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        // };
+        pub use super::{
+            id::*,
+            frame::*,
+        };
     }
 }

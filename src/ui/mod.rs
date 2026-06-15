@@ -13,7 +13,6 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 }
 
 // mod error; // RETHINK
-mod frame; // WIP
 mod intent; // WIP
 // #[cfg(feature = "layout")]
 mod layout; // WIP
@@ -22,6 +21,7 @@ mod sem; // WIP
 mod view; // WIP
 mod widget; // WIP
 
+pub mod frame; // UiFrame, UiId, UiKey, UiPhase, UiScope
 #[cfg(feature = "event")]
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
 
@@ -38,6 +38,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
     }
     _pub_mods {
+        pub use super::{
+            frame::*,
+        };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;
         // #[cfg(feature = "layout")]

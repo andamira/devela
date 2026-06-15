@@ -37,6 +37,7 @@
 - modularize browser JS bindings.
 
 ## ui
+- new types `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
 - new submodules: `frame`, `route`, `sem`, `widget`.
 
 
