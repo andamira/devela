@@ -11,6 +11,7 @@ use crate::{UiId, UiKey, UiScope};
     location("ui/frame"),
     test_size_of(UiFrame = 16|128; niche Option),
 }]
+#[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct UiFrame {
     phase: UiPhase,
@@ -53,6 +54,7 @@ impl UiFrame {
 
 #[doc = crate::_tags!(ui time)]
 /// Phase of UI frame processing.
+#[must_use]
 #[doc = crate::_doc_meta!{location("ui/frame")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum UiPhase {

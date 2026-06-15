@@ -6,6 +6,9 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod tests;
+
 mod id; // UiId, UiKey, UiScope
 mod frame; // UiFrame, UiPhase
 // mod mem; // UiMemory

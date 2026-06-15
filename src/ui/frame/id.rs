@@ -11,6 +11,7 @@ use crate::{NonMaxU64, SplitMix64, unwrap};
     location("ui/frame"),
     test_size_of(UiKey = 8|64; niche Option),
 }]
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct UiKey(NonMaxU64);
@@ -25,6 +26,7 @@ impl UiKey {
         Self(NonMaxU64::new_lossy(raw))
     }
     /// Returns the raw integer value.
+    #[must_use]
     pub const fn raw(self) -> u64 {
         self.0.get()
     }
@@ -36,6 +38,7 @@ impl UiKey {
     location("ui/frame"),
     test_size_of(UiId = 8|64; niche Option),
 }]
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct UiId(NonMaxU64);
@@ -50,6 +53,7 @@ impl UiId {
         Self(NonMaxU64::new_lossy(raw))
     }
     /// Returns the raw integer value.
+    #[must_use]
     pub const fn raw(self) -> u64 {
         self.0.get()
     }
@@ -61,6 +65,7 @@ impl UiId {
     location("ui/frame"),
     test_size_of(UiScope = 8|64),
 }]
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct UiScope {

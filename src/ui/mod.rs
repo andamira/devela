@@ -9,28 +9,27 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
-    crate::_doc!(modules: crate; ui: event); // intent, layout, view
+    crate::_doc!(modules: crate; ui: event, frame, layout); // intent, layout, view
 }
 
 // mod error; // RETHINK
 mod intent; // WIP
 // #[cfg(feature = "layout")]
-mod layout; // WIP
 mod route; // WIP
 mod sem; // WIP
 mod view; // WIP
 mod widget; // WIP
 
-pub mod frame; // UiFrame, UiId, UiKey, UiPhase, UiScope
 #[cfg(feature = "event")]
 pub mod event; // Event[Button[State]|Key[State]|Kind|Mouse|Pointer[Type]|TimeStamp|Wheel], Key*
+pub mod frame; // UiFrame, UiId, UiKey, UiPhase, UiScope
+pub mod layout; // Layout1d, LayoutReceipt, Lunit, …
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // error::*,
             intent::*,
-            layout::*,
             route::*,
             sem::*,
             view::*,
@@ -40,6 +39,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             frame::*,
+            layout::*,
         };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;

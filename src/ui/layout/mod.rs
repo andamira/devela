@@ -6,14 +6,17 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod d1; // Layout1d WIP
-// mod unit; // Lunit WIP
+#[cfg(test)]
+mod tests;
+
+mod receipt; // Layout1d
+mod unit; // Lunit, aliases: Layout<Pos*|Ext*|Rec|Region|Stride*|>
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     d1::*,
-        //     unit::*,
-        // };
+        pub use super::{
+            receipt::*,
+            unit::*,
+        };
     }
 }

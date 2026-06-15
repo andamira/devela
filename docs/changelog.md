@@ -37,8 +37,14 @@
 - modularize browser JS bindings.
 
 ## ui
-- new types `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
 - new submodules: `frame`, `route`, `sem`, `widget`.
+
+### ui::frame
+- new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
+
+### ui::layout
+- new types: `Layout1d`, `LayoutReceipt`, `Lunit`.
+- new aliases: `Extent2`, `Position2`, `RegionS2`, `Stride2`.
 
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0
