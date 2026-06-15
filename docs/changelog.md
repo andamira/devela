@@ -44,7 +44,7 @@
 
 ### ui::layout
 - new types: `Layout1d`, `LayoutReceipt`, `Lunit`.
-- new aliases: `Extent2`, `Position2`, `RegionS2`, `Stride2`.
+- new aliases: `UiExt`, `UiPos`, `UiRect`, `UiStride`.
 
 ### ui::route
 - new types: `HitRegion`, `RouteActive`, `RouteCapture`, `RouteFocus`, `RouteHot`.
@@ -53,6 +53,6 @@
 - new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
 
 ### ui::view
-- new types: `UiLayer`, `UiView`, `UiViewFlags`.
+- new types: `UiLayer`, `UiView`, `UiViewFlags` `UiViewForm`.
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

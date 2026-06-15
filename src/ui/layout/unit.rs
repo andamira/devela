@@ -10,16 +10,16 @@ use crate::{
 
 #[doc = crate::_tags!(layout)]
 /// A 2-dimensional layout extent.
-pub type LayoutExt = crate::Extent2<Lunit>;
+pub type UiExt = crate::Extent2<Lunit>;
 #[doc = crate::_tags!(layout)]
 /// A 2-dimensional layout position.
-pub type LayoutPos = crate::Position2<Lunit>;
+pub type UiPos = crate::Position2<Lunit>;
 #[doc = crate::_tags!(layout)]
 /// A 2-dimensional layout region.
-pub type LayoutRect = crate::RegionS2<Lunit>;
+pub type UiRect = crate::RegionS2<Lunit>;
 #[doc = crate::_tags!(layout)]
 /// A 2-dimensional layout stride.
-pub type LayoutStride = crate::Stride2<Lunit>;
+pub type UiStride = crate::Stride2<Lunit>;
 
 #[doc = crate::_tags!(layout)]
 /// Scalar unit of UI layout negotiation.

@@ -3,7 +3,7 @@
 //! Defines [`Layout1d`], [`LayoutReceipt`].
 //
 
-use crate::{Cmp, Interval, LayoutRect, Lunit, Ordering, UiId};
+use crate::{Cmp, Interval, Lunit, Ordering, UiId, UiRect};
 
 #[doc = crate::_tags!(layout)]
 /// One-axis result of spatial negotiation.
@@ -92,11 +92,11 @@ pub struct LayoutReceipt {
     /// Resolved UI identity.
     id: UiId,
     /// The layout positioned extension.
-    rect: LayoutRect,
+    rect: UiRect,
 }
 impl LayoutReceipt {
     /// Constructs a layout receipt from an identity and region.
-    pub const fn new(id: UiId, rect: LayoutRect) -> Self {
+    pub const fn new(id: UiId, rect: UiRect) -> Self {
         Self { id, rect }
     }
     /// Returns the UI identity.
@@ -104,7 +104,7 @@ impl LayoutReceipt {
         self.id
     }
     /// Returns the assigned layout region.
-    pub const fn rect(self) -> LayoutRect {
+    pub const fn rect(self) -> UiRect {
         self.rect
     }
 }

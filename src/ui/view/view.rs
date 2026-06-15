@@ -3,7 +3,7 @@
 //! Defines [`UiViewFlags`], [`UiView`].
 //
 
-use crate::{LayoutRect, UiId, UiLayer};
+use crate::{UiId, UiLayer, UiRect};
 
 crate::set! {
     #[doc = crate::_tags!(ui set)]
@@ -42,7 +42,7 @@ crate::set! {
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct UiView {
     id: UiId,
-    rect: LayoutRect,
+    rect: UiRect,
     layer: UiLayer,
     flags: UiViewFlags,
 }
@@ -51,12 +51,12 @@ impl UiView {
     /* constructors */
 
     /// Constructs a visual record on the base layer with no flags.
-    pub const fn new(id: UiId, rect: LayoutRect) -> Self {
+    pub const fn new(id: UiId, rect: UiRect) -> Self {
         Self { id, rect, layer: UiLayer::BASE, flags: UiViewFlags::new() }
     }
 
     /// Constructs a visual record from all parts.
-    pub const fn from_parts(id: UiId, rect: LayoutRect, layer: UiLayer, flags: UiViewFlags)
+    pub const fn from_parts(id: UiId, rect: UiRect, layer: UiLayer, flags: UiViewFlags)
         -> Self { Self { id, rect, layer, flags } }
 
     /* queries */
@@ -67,7 +67,7 @@ impl UiView {
 
     /// Returns the visual rectangle.
     #[must_use]
-    pub const fn rect(&self) -> LayoutRect { self.rect }
+    pub const fn rect(&self) -> UiRect { self.rect }
 
     /// Returns the visual ordering layer.
     #[must_use]
@@ -88,7 +88,7 @@ impl UiView {
 
     /// Returns this view with another rectangle.
     #[must_use]
-    pub const fn with_rect(self, rect: LayoutRect) -> Self { Self { rect, ..self } }
+    pub const fn with_rect(self, rect: UiRect) -> Self { Self { rect, ..self } }
 
     /// Returns this view with another layer.
     #[must_use]

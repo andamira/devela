@@ -3,7 +3,7 @@
 //! Defines [`HitRegion`].
 //
 
-use crate::{LayoutRect, UiId};
+use crate::{UiId, UiRect};
 
 #[doc = crate::_tags!(ui)]
 /// Frame-local region that can receive routed interaction.
@@ -21,12 +21,12 @@ pub struct HitRegion {
     id: UiId,
 
     /// Interactive layout region.
-    rect: LayoutRect,
+    rect: UiRect,
 }
 
 impl HitRegion {
     /// Constructs a hit region from an identity and layout region.
-    pub const fn new(id: UiId, rect: LayoutRect) -> Self {
+    pub const fn new(id: UiId, rect: UiRect) -> Self {
         Self { id, rect }
     }
     /// Returns the UI identity.
@@ -34,7 +34,7 @@ impl HitRegion {
         self.id
     }
     /// Returns the interactive layout region.
-    pub const fn rect(self) -> LayoutRect {
+    pub const fn rect(self) -> UiRect {
         self.rect
     }
 }
