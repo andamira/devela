@@ -60,7 +60,12 @@
 // `nightly_stable_1_98`: core, alloc, std…
 #![cfg_attr(
     nightly_stable_1_98,
-    feature(float_algebraic, nonzero_from_str_radix, result_option_map_or_default,)
+    feature(
+        float_algebraic,
+        int_format_into,
+        nonzero_from_str_radix,
+        result_option_map_or_default,
+    )
 )]
 #![cfg_attr(all(nightly_stable_1_98, feature = "alloc"), feature(box_as_ptr,))]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
@@ -83,7 +88,6 @@
         float_bits_const,
         fn_align,
         frontmatter,
-        int_format_into,
         impl_trait_in_assoc_type,
         isqrt,
         layout_for_ptr,
@@ -98,6 +102,7 @@
         random, //random_source,
         refcell_try_map,
         str_as_str,
+        // str_from_utf16_endian,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,

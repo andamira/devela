@@ -44,6 +44,7 @@ See also
 
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
 - 1.98: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
+- 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.98: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 
@@ -119,6 +120,7 @@ See also
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
+- 1.??: `·`[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912) WAIT
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
@@ -162,7 +164,6 @@ See also
 - 1.??: ` `[custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: ` `[float_algebraic](https://github.com/rust-lang/rust/issues/136469)
 - 1.??: ` `[generic_atomic](https://github.com/rust-lang/rust/issues/130539)
-- 1.??: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.??: ` `[integer_atomics](https://github.com/rust-lang/rust/issues/99069)
 - 1.??: ` `[mpmc_channel](https://github.com/rust-lang/rust/issues/126840)
 - 1.??: ` `[passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
