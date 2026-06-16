@@ -53,6 +53,10 @@
 - new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
 
 ### ui::view
-- new types: `UiLayer`, `UiView`, `UiViewFlags` `UiViewForm`.
+- new types: `UiLayer`, `UiView`, `UiViewFlags`, `UiViewForm`.
+
+### ui::widget
+- new types: `UiButton`, `UiResponse`, `UiResponseFlags`.
+
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0

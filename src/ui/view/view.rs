@@ -89,23 +89,22 @@ impl UiView {
     /// Returns this view with another rectangle.
     #[must_use]
     pub const fn with_rect(self, rect: UiRect) -> Self { Self { rect, ..self } }
-
     /// Returns this view with another layer.
     #[must_use]
     pub const fn with_layer(self, layer: UiLayer) -> Self { Self { layer, ..self } }
 
+
     /// Returns this view with another flag set.
     #[must_use]
-    pub const fn with_flags(self, flags: UiViewFlags) -> Self { Self { flags, ..self } }
-
-    /// Returns this view with `flag` included.
+    pub const fn replace_flags(self, flags: UiViewFlags) -> Self { Self { flags, ..self } }
+    /// Returns this view with `flags` included.
     #[must_use]
-    pub const fn with_flag(self, flag: UiViewFlags) -> Self {
-        Self { flags: self.flags.with(flag), ..self }
+    pub const fn with_flags(self, flags: UiViewFlags) -> Self {
+        Self { flags: self.flags.with(flags), ..self }
     }
-    /// Returns this view with `flag` removed.
+    /// Returns this view with `flags` removed.
     #[must_use]
-    pub const fn without_flag(self, flag: UiViewFlags) -> Self {
-        Self { flags: self.flags.without(flag), ..self }
+    pub const fn without_flags(self, flags: UiViewFlags) -> Self {
+        Self { flags: self.flags.without(flags), ..self }
     }
 }

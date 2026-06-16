@@ -6,9 +6,17 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod tests;
+
+mod button; // UiButton
+mod response; // UiResponse, UiResponseFlags
+
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        // };
+        pub use super::{
+            button::*,
+            response::*,
+        };
     }
 }

@@ -29,6 +29,8 @@ pub struct UiEntry {
 
 #[rustfmt::skip]
 impl UiEntry {
+    /* constructors */
+
     /// Constructs a semantic entry.
     pub const fn new(id: UiId, role: UiRole) -> Self {
         Self { id, role, actions: UiActions::new(), flags: UiFlags::new() }
@@ -37,6 +39,8 @@ impl UiEntry {
     pub const fn from_parts(id: UiId, role: UiRole, actions: UiActions, flags: UiFlags) -> Self {
         Self { id, role, actions, flags }
     }
+
+    /* queries */
 
     /// Returns the UI identity.
     #[must_use]
@@ -51,16 +55,44 @@ impl UiEntry {
     #[must_use]
     pub const fn flags(self) -> UiFlags { self.flags }
 
-    /// Returns this entry with updated actions.
-    #[must_use]
-    pub const fn with_actions(self, actions: UiActions) -> Self { Self { actions, ..self } }
-    /// Returns this entry with updated flags.
-    #[must_use]
-    pub const fn with_flags(self, flags: UiFlags) -> Self { Self { flags, ..self } }
+    /* modifiers */
 
-    /// Returns this entry with one action included.
+    /// Returns this entry with another action set.
+    #[must_use]
+    pub const fn replace_actions(self, actions: UiActions) -> Self { Self { actions, ..self } }
+    /// Returns this entry with `actions` included.
+    #[must_use]
+    pub const fn with_actions(self, actions: UiActions) -> Self {
+        Self { actions: self.actions.with(actions), ..self }
+    }
+    /// Returns this entry with `actions` removed.
+    #[must_use]
+    pub const fn without_actions(self, actions: UiActions) -> Self {
+        Self { actions: self.actions.without(actions), ..self }
+    }
+
+    /// Returns this entry with an `action` included.
     #[must_use]
     pub const fn with_action(self, action: UiAction) -> Self {
         Self { actions: self.actions.with(action.to_set()), ..self }
+    }
+    /// Returns this entry with an `action` removed.
+    #[must_use]
+    pub const fn without_action(self, action: UiAction) -> Self {
+        Self { actions: self.actions.without(action.to_set()), ..self }
+    }
+
+    /// Returns this entry with another flag set.
+    #[must_use]
+    pub const fn replace_flags(self, flags: UiFlags) -> Self { Self { flags, ..self } }
+    /// Returns this entry with `flags` included.
+    #[must_use]
+    pub const fn with_flags(self, flags: UiFlags) -> Self {
+        Self { flags: self.flags.with(flags), ..self }
+    }
+    /// Returns this entry with `flags` removed.
+    #[must_use]
+    pub const fn without_flags(self, flags: UiFlags) -> Self {
+        Self { flags: self.flags.without(flags), ..self }
     }
 }

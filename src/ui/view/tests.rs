@@ -23,10 +23,10 @@ fn view_new_uses_base_layer_and_empty_flags() {
 }
 #[test]
 fn view_flags_control_visibility() {
-    let view = UiView::new(UiId::new(8), UiRect::default()).with_flag(UiViewFlags::HIDDEN);
+    let view = UiView::new(UiId::new(8), UiRect::default()).with_flags(UiViewFlags::HIDDEN);
     assert!(view.is_hidden());
     assert!(!view.is_visible());
-    let view = view.without_flag(UiViewFlags::HIDDEN);
+    let view = view.without_flags(UiViewFlags::HIDDEN);
     assert!(!view.is_hidden());
     assert!(view.is_visible());
 }
