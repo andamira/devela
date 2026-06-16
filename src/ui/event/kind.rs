@@ -3,8 +3,10 @@
 //! Defines [`EventTag`], [`EventTagSet`], [`EventKindTimed`], [`EventKind`].
 //
 
-use crate::{AppControl, ConstInit, MaybeTimed};
-use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
+use crate::{AppControl, ConstInit};
+use crate::{EventKey, EventMouse, EventPointer, EventWheel, EventWindow};
+#[cfg(feature = "time")]
+use crate::{EventTimestamp, MaybeTimed};
 
 crate::enumset! {
     #[doc = crate::_tags!(event uid member)]
@@ -76,6 +78,7 @@ impl Default for EventTag {
     #[cfg(feature = "alloc")]
     test_size_of(EventKindTimed = 48|384; niche Option),
 }]
+#[cfg(feature = "time")]
 pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 
 #[doc = crate::_tags!(event)]

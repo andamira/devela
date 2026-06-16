@@ -3,9 +3,10 @@
 //! Defines [`EventTimestampMode`], [`EventTimestamp`].
 //
 
+#[cfg(feature = "time")]
+use crate::TimeSplitNorm;
 use crate::{
-    ConstInit, DebugExt, Duration, FmtResult, Formatter, TimeSplitNorm, f32bits, f32bits_niche,
-    impl_trait,
+    ConstInit, DebugExt, Duration, FmtResult, Formatter, f32bits, f32bits_niche, impl_trait,
 };
 
 #[doc = crate::_tags!(event time)]
@@ -166,6 +167,7 @@ impl EventTimestamp {
     }
 
     /// Formats the timestamp using a full `TimeSplit` from years down to nanoseconds.
+    #[cfg(feature = "time")]
     pub fn fmt_split_full(&self, f: &mut Formatter) -> FmtResult<()> {
         let split = TimeSplitNorm::from_duration(self.as_duration());
         write!(f, "{}mo {}d {:02}h:{:02}m:{:02}s {:03}ms {:03}us {:03}ns",

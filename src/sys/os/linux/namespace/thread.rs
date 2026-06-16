@@ -1,30 +1,53 @@
 // devela/src/sys/os/linux/namespace/thread.rs
 
+#[cfg(feature = "time")]
 use crate::{
-    Duration, LINUX_ERRNO as ERRNO, LINUX_EXIT, Linux, LinuxClock, LinuxError,
-    LinuxResult as Result, LinuxTimespec, c_int, is,
+    Duration, LINUX_ERRNO as ERRNO, LinuxClock, LinuxError, LinuxResult, LinuxTimespec, is,
 };
+use crate::{LINUX_EXIT, Linux, c_int};
 
 /// # Thread-related methods.
+impl Linux {
+    /// Returns the current process number.
+    #[must_use]
+    #[inline(always)]
+    pub fn getpid() -> c_int {
+        unsafe { Linux::sys_getpid() }
+    }
+
+    /// Terminates the process with a normalized exit `status` (0–255).
+    ///
+    /// See also [`LINUX_EXIT`].
+    #[inline(always)]
+    pub fn exit(status: c_int) -> ! {
+        unsafe {
+            Linux::sys_exit(status & LINUX_EXIT::MAX);
+        }
+    }
+}
+
+/// # Time-related methods.
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl Linux {
     /// Gets clock resolution for the specified clock.
     ///
     /// It typically returns 1 ns even though the clock resolution may be coarser.
-    pub fn clock_getres(clock_id: LinuxClock) -> Result<LinuxTimespec> {
+    pub fn clock_getres(clock_id: LinuxClock) -> LinuxResult<LinuxTimespec> {
         let mut res = LinuxTimespec::default();
         let ret = unsafe { Self::sys_clock_getres(clock_id, res.as_mut_ptr()) };
         if ret == 0 { Ok(res) } else { Err(LinuxError::Sys(ret)) }
     }
 
     /// Gets the current time from the specified clock
-    pub fn clock_gettime(clock_id: LinuxClock) -> Result<LinuxTimespec> {
+    pub fn clock_gettime(clock_id: LinuxClock) -> LinuxResult<LinuxTimespec> {
         let mut tp = LinuxTimespec::default();
         let ret = unsafe { Self::sys_clock_gettime(clock_id, tp.as_mut_ptr()) };
         is![ret == 0, Ok(tp), Err(LinuxError::Sys(ret))]
     }
 
     /// Suspends execution of calling thread for the given `duration`.
-    pub fn sleep(duration: Duration) -> Result<()> {
+    pub fn sleep(duration: Duration) -> LinuxResult<()> {
         let mut req = LinuxTimespec::with_saturating_duration(duration);
         let mut rem = LinuxTimespec::default();
         loop {
@@ -41,24 +64,7 @@ impl Linux {
         }
     }
     /// Suspends execution of calling thread for the given `milliseconds`.
-    pub fn sleep_ms(milliseconds: u64) -> Result<()> {
+    pub fn sleep_ms(milliseconds: u64) -> LinuxResult<()> {
         Linux::sleep(Duration::from_millis(milliseconds))
-    }
-
-    /// Returns the current process number.
-    #[must_use]
-    #[inline(always)]
-    pub fn getpid() -> c_int {
-        unsafe { Linux::sys_getpid() }
-    }
-
-    /// Terminates the process with a normalized exit `status` (0–255).
-    ///
-    /// See also [`LINUX_EXIT`].
-    #[inline(always)]
-    pub fn exit(status: c_int) -> ! {
-        unsafe {
-            Linux::sys_exit(status & LINUX_EXIT::MAX);
-        }
     }
 }

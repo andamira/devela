@@ -72,7 +72,7 @@ CARGO_WORKSPACE_DIR = { value = "", relative = true, force = true }
 # They need the rust sources and desired targets installed. E.g.:
 # ```sh
 # rustup component add rust-src
-# rustup target add riscv64imac-unknown-none-elf
+# rustup target add riscv32imac-unknown-none-elf riscv64imac-unknown-none-elf armv7-unknown-linux-gnueabihf aarch64-unknown-linux-gnu
 # ```
 # Architecture prefixes:
 #   x: X86 (32/64)
@@ -133,9 +133,10 @@ cl_x32l = "cl --target i686-unknown-linux-gnu"
 cl_x64l = "cl --target x86_64-unknown-linux-gnu"
 cl_a32l = "cl --target armv7-unknown-linux-gnueabihf"
 cl_a64l = "cl --target aarch64-unknown-linux-gnu"
-#cl_r32l = "cl --target riscv32gc-unknown-linux-gnu" # tier-3
+#cl_r32l = "cl --target riscv32gc-unknown-linux-gnu" # tier-3, not available
 cl_r32l = "cl --target riscv32imac-unknown-none-elf" # ~ temp replacement
-cl_r64l = "cl --target riscv64gc-unknown-linux-gnu"
+# cl_r64l = "cl --target riscv64gc-unknown-linux-gnu" # tier-3, not available
+cl_r64l = "cl --target riscv64imac-unknown-none-elf" # ~ temp replacement
 # Non-linux (no-std or bare-metal):
 cl_a32n = "cl --target thumbv7em-none-eabihf"
 cl_r64n = "cl --target riscv64gc-unknown-none-elf"

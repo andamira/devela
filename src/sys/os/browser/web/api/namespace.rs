@@ -9,9 +9,11 @@ use crate::_js_extern;
 #[cfg(not(feature = "safe_lang"))]
 crate::items! {
     use crate::{WebDocument, WebPermission, WebPermissionState, WebWindow};
-    use crate::{_js_doc, js_int32, js_number, JsInstant};
+    use crate::{_js_doc, js_int32};
     #[cfg(feature = "event")]
     use crate::{WebEventKind, js_uint32};
+    #[cfg(feature = "time")]
+    use crate::{JsInstant, js_number};
 }
 
 #[doc = crate::_tags!(web namespace)]
@@ -89,6 +91,7 @@ _js_extern! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
+#[cfg(feature = "time")]
 #[cfg(not(feature = "safe_lang"))]
 #[cfg(all(feature = "unsafe_ffi", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
@@ -109,6 +112,7 @@ impl Web {
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }
 }
+#[cfg(feature = "time")]
 _js_extern! {
     [ module: "api_performance" ]
     safe fn "now" performance_now() -> js_number;

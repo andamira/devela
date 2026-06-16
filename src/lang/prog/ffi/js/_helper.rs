@@ -8,13 +8,18 @@
 // - _js_extern!
 // - _js_method_str_alloc!
 
-use crate::{__doc_show, _js_safe_ffi, _js_unsafe_ffi, js_number, macro_apply};
+use crate::{__doc_show, _js_safe_ffi, _js_unsafe_ffi, macro_apply};
 
-/// Formats a JavaScript number with fixed decimal precision.
-pub(crate) struct JsNumFmt<const P: usize>(pub js_number);
-impl<const P: usize> core::fmt::Debug for JsNumFmt<P> {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{:.*}", P, self.0)
+crate::items! {
+    use crate::js_number;
+
+    /// Formats a JavaScript number with fixed decimal precision.
+    #[allow(unused, reason = "depends on time and web, for now")]
+    pub(crate) struct JsNumFmt<const P: usize>(pub js_number);
+    impl<const P: usize> core::fmt::Debug for JsNumFmt<P> {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            write!(f, "{:.*}", P, self.0)
+        }
     }
 }
 

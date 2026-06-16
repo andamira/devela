@@ -82,22 +82,29 @@
 #[cfg(feature = "std")]
 mod _reexport_std;
 
+#[cfg(feature = "time")]
 mod impl_source;
 
+#[cfg(feature = "time")]
 mod point; // TimePoint
+#[cfg(feature = "time")]
 mod source; // TimeSource, TimeSourceCfg
+#[cfg(feature = "time")]
 mod span; // TimeSpan
 
+#[cfg(feature = "time")]
 #[cfg(target_has_atomic = "64")]
 mod fake; // TimeFake, TimeFakeRef
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
+        #[cfg(feature = "time")]
         pub use super::{
             point::*,
             source::*,
             span::*,
         };
+        #[cfg(feature = "time")]
         #[cfg(target_has_atomic = "64")]
         pub use super::fake::*;
     }
@@ -105,9 +112,12 @@ crate::structural_mods! { // _mods, _reexports
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
 
-        // intra-crate
+        /* intra-crate */
+        #[cfg(feature = "time")]
         #[cfg(all(feature = "js", not(windows)))]
         pub use crate::JsInstant;
+
+        #[cfg(feature = "time")]
         #[cfg(all(feature = "linux", feature = "unsafe_syscall"))]
         pub use crate::{LinuxInstant, LinuxTime};
     }

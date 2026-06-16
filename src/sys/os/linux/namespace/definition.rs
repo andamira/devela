@@ -15,6 +15,7 @@
 /// - [write](#write-related-methods)
 /// - [term](#terminal-related-methods)
 /// - [thread](#thread-related-methods)
+/// - [time](#time-related-methods)
 /// - [signal](#signaling-related-methods)
 /// - [random](#randomness-related-methods)
 /// - syscalls:
@@ -23,6 +24,7 @@
 ///   - [device and special I/O](#syscalls-device-and-special-io)
 ///   - [IPC](#syscalls-ipc)
 ///   - [process control](#syscalls-process-control)
-///   - [timing and signal handling](#syscalls-timing-and-signal-handling)
+///   - [signal handling](#syscalls-signal-handling)
+///   - [timing handling](#syscalls-time-handling)
 #[derive(Debug)]
 pub struct Linux;

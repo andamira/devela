@@ -8,6 +8,7 @@
 //! - <https://developer.mozilla.org/en-US/docs/Web/API>.
 //
 
+#[cfg(feature = "time")]
 mod time; // impls for JsInstant and JsTimeout
 
 mod api; // Web (js & rust files)

@@ -12,7 +12,7 @@ crate::items! {
     mod write;
     #[cfg(feature = "term")]
     mod term; // (LinuxTermModeGuard)
-    mod thread;
+    mod thread; // thread, time
     mod signal;
     mod random;
     // syscalls are implemented in ../syscalls/

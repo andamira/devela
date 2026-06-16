@@ -18,6 +18,7 @@
 ## features & flags
 - new features: `code_all`, `data_all`, `geom_all`, `lang_all`, `media_all`, `num_all`, `org_all`, `phys_all`, `run_all`, `sys_all`, `text_all`, `ui_all`, `vita_all`, `widget`, `work_all`.
 - remove features: `layout`.
+- add more feature gates for: `time`, `ui`.
 
 ## documentation
 - clarify public module and hidden scope features.

@@ -6,10 +6,10 @@
 // - https://syscalls.mebeim.net/?table=x86/32/ia32/latest
 
 use super::{LinuxOffset, shared_docs::*};
-use crate::{
-    LINUX_SYS as SYS, Linux, LinuxClock, LinuxSigaction, LinuxStat, LinuxTimespec, asm, c_char,
-    c_int, c_uchar, c_uint, c_ulong,
-};
+use crate::{LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
+#[cfg(feature = "time")]
+use crate::{LinuxClock, LinuxTimespec};
+use crate::{asm, c_char, c_int, c_uchar, c_uint, c_ulong};
 
 /// # Syscalls: File descriptors.
 impl Linux {
@@ -314,7 +314,8 @@ impl Linux {
     }
 }
 
-/// # Syscalls: Timing and signal handling.
+/// # Syscalls: Time handling.
+#[cfg(feature = "time")]
 impl Linux {
     #[must_use]
     #[doc = _DOC_SYS_CLOCK_GETRES!()]
@@ -369,6 +370,9 @@ impl Linux {
         }
         result
     }
+}
+/// # Syscalls: signal handling.
+impl Linux {
     #[must_use]
     #[doc = _DOC_SYS_RT_SIGACTION!()]
     pub unsafe fn sys_rt_sigaction(

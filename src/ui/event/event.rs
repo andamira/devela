@@ -3,10 +3,12 @@
 //! Defines [`Event`].
 //
 
+#[cfg(feature = "time")]
+use crate::EventKindTimed;
 use crate::{_impl_init, NonZeroU64};
 use crate::{
-    DeviceId, EventKey, EventKind, EventKindTimed, EventMouse, EventPointer, EventTag, EventTagSet,
-    EventTarget, EventTimestamp, EventWheel, EventWindow, WindowId,
+    DeviceId, EventKey, EventKind, EventMouse, EventPointer, EventTag, EventTagSet, EventTarget,
+    EventTimestamp, EventWheel, EventWindow, WindowId,
 };
 
 #[doc = crate::_tags!(event)]
@@ -116,6 +118,7 @@ impl Event {
     ///
     /// `processed` and `count` are left unset and should be filled by the engine.
     #[inline(always)]
+    #[cfg(feature = "time")]
     pub fn from_kind_timed_with(target: EventTarget, kind: EventKindTimed) -> Event {
         Self { kind: kind.value, target, emitted: kind.time, processed: None, count: None }
     }
@@ -265,6 +268,7 @@ impl From<EventKind> for Event {
         }
     }
 }
+#[cfg(feature = "time")]
 impl From<EventKindTimed> for Event {
     fn from(kind: EventKindTimed) -> Event {
         Self {

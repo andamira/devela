@@ -8,6 +8,7 @@
 // mod clock; // RunClock RunDelta
 mod frame; // RunFrame
 // mod loop;
+#[cfg(feature = "time")]
 mod pacer; // RunPacer
 mod run; // Runtime
 mod step; // RunStep
@@ -19,10 +20,13 @@ crate::structural_mods! { // _mods
             // clock::*,
             frame::*,
             // loop::*,
-            pacer::*,
             run::*,
             step::*,
             tick::*,
+        };
+        #[cfg(feature = "time")]
+        pub use super::{
+            pacer::*,
         };
     }
 }
