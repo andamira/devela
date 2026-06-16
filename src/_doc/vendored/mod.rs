@@ -8,7 +8,7 @@
 //!
 //
 
-/// Detailed list of modifications in adapted work.
+// Detailed list of modifications in adapted work.
 //
 // MIT OR Apache-2.0
 crate::_doc_vendor! { mod: "argv", argv }

@@ -39,116 +39,27 @@ By default the crate is `no_std` compatible without allocation.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with or substitute of `std`.
 
+
 ### Module features
 
-Enabling a parent module enables all its sub-modules,
-except for `os`.
+Visible module features are grouped by public meaning.
 
-They set automatic compile flags named `*··`, used for reflection.
-For example, `num··` will be set if any num submodule feature is enabled.
+A bare root-module feature, such as `ui`, `media`, or `num`, enables the
+canonical public substrate of that module. It should remain useful on its own
+and should avoid pulling adjunct layers that are not always needed.
 
-- `all`: enables all the root modules and extra submodules.
+Each root module also has a public `*_all` feature, such as `ui_all`,
+`media_all`, or `num_all`. This enables the complete public family associated
+with that module, including its public adjunct features.
 
-<!-- NOTE some links only work with inlined notation -->
-Root modules & public sub-modules features:
-- [`code`]
-- [`data`]
-  - `codec`:
-    - [`hash`]:
-- [`geom`]: geometry.
-  - [`affine`]:
-  - [`dir`]:
-  - [`fig`]:
-  - `metric`:
-  - `rel`:
-  - `space`:
-- [`lang`]:
-  - `ffi`: glsl, js.
-- [`media`]
-  - [`audio`]:
-  - [`font`]:
-  - [`visual`]:
-    - [`color`]:
-    - `draw`:
-    - [`image`]:
-- [`num`]:
-  - [`dom`]:
-  - [`fin`]:
-  - [`grain`]:
-  - [`lin`]:
-  - [`prob`]:
-  - [`quant`]:
-  - `symb`:
-- [`phys`]:
-  - `bio`:
-  - `chem`:
-  - `elec`:
-  - `mech`:
-  - [`time`]
-  - [`unit`]:
-  - [`wave`][crate::phys::wave]: wavelets.
-- [`run`]:
-  - `frame`:
-  - `setup`:
-- [`sys`]: enables all `sys` sub-features (except for `os`).
-  - [`device`]
-  - [`io`]: no_std `io` implementations.
-  - [`os`]:
-    - [`linux`]
-    - `windows`
-- [`text`]
-- [`ui`]
-  - [`event`]
-  - `layout`
-- [`work`]
-  - `future`:
-  - `process`:
-  - `sync`:
+A public adjunct feature may live under a module namespace while remaining
+independently gated when it represents a meaningful supported layer. Examples:
+`event`, `widget`, `font`, `image`, `time`, `process`.
 
-[`code`]:         crate::code
-  [`error`]:      mod@crate::code::error
-[`data`]:         crate::data
-  [`hash`]:       crate::data::codec::hash
-[`geom`]:         crate::geom
-  [`affine`]:     crate::geom::affine
-  [`dir`]:        crate::geom::dir
-  [`fig`]:        crate::geom::fig
-  <!-- [`metric`]:     crate::geom::metric -->
-  <!-- [`rel`]:        crate::geom::rel -->
-  <!-- [`space`]:      crate::geom::space -->
-[`lang`]:         crate::lang
-[`media`]:        crate::media
-  [`audio`]:      crate::media::audio
-  [`font`]:       crate::media::font
-  [`visual`]:     crate::media::visual
-  [`color`]:      crate::media::visual::color
-  <!-- [`draw`]:       crate::media::visual::draw -->
-  [`image`]:      crate::media::visual::image
-[`num`]:          crate::num
-  [`dom`]:        crate::num::dom
-  [`fin`]:        crate::num::fin
-  [`grain`]:      crate::num::grain
-  [`lin`]:        crate::num::lin
-  [`prob`]:       crate::num::prob
-  [`quant`]:      crate::num::quant
-  <!-- [`symb`]:       crate::num::symb -->
-[`phys`]:         crate::phys
-  [`time`]:       crate::phys::time
-[`run`]:          crate::run
-[`sys`]:          crate::sys
-  [`device`]:     crate::sys::device
-  [`io`]:         crate::sys::io
-  [`os`]:         crate::sys::os
-    [`linux`]:    crate::sys::os::linux
-[`text`]:         crate::text
-  [`str`]:        mod@crate::text::str
-[`ui`]:           crate::ui
-  [`event`]:      crate::ui::event
-  <!-- [`layout`]:     crate::ui::layout -->
-[`work`]:         crate::work
-  [`future`]:     crate::work::future
-  [`process`]:    crate::work::exec::process
-  [`sync`]:       crate::work::sync
+The root `all` feature enables the public `*_all` feature of each root module.
+
+Module-family reflection flags named with the `··` suffix are set
+when any feature in the corresponding public family is enabled.
 
 
 ### Safety features
@@ -202,32 +113,45 @@ To be able to use any unsafe functionality it's necessary to:
 
 ### Scope features
 
-These semi-hidden features allows to fine-tune extra scope.
-Enabling them will likely worsen compilation times.
+Scope features are semi-hidden features used to expand implementation coverage,
+documentation coverage, generated code, or internal capability breadth.
 
-Documentation scope
-- `_docs[_min|_nodep]`: enables the most complete (or custom) version of the documentation.
+They are usually prefixed with `_`. Enabling them may increase compilation time significantly.
+
+Public `*_all` module features, such as `data_all`, are not scope features.
+They enable complete public feature families. Hidden `_module_all` features,
+such as `_data_all`, are internal scope expansions.
+
+#### Documentation scope
+
+- `_docs[_min|_nodep]`: enables the most complete or customized documentation
+  configuration.
 
 #### `code` scope
 
-Implement the [`unroll!`] macro for some maximum recursion (64 by default).
-- `_unroll[_128|_256|_512|_1024|_2048]`.
+Implements the [`unroll!`] macro for a selected maximum recursion depth (64 by default).
+
+- `_unroll[_128|_256|_512|_1024|_2048]`
 
 #### `data` scope
 
-Enable specific implementations of data collections
-[`Destaque`], [`Stack`]:
-- `_collections_all`:
-  - `_destaque_all`:
-    - `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
-  `_stack_all`:
-    `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
+Expands internal data-structure coverage and generated implementations.
 
-They also set the corresponding flags:
+- `_data_all`: enables all hidden data scope expansions.
+- `_collections_all`: enables hidden collection implementation families.
+- `_tuple[_24|_36|_48|_72]`: implements the [`Tuple`] trait for a selected
+  maximum arity (12 by default).
+
+Temporary collection scope features for [`Destaque`] and [`Stack`]:
+
+- `_destaque_all`: `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
+- `_stack_all`: `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
+
+These collection scope features are temporary and will be removed
+once the corresponding generator macros replace precompiled variants.
+
+They also set the corresponding reflection flags:
 `_destaque··`, `_graph··`, `_node··`, `_stack··`.
-
-Implement the [`Tuple`] trait for some maximum arity (12 by default).
-- `_tuple[_24|_36|_48|_72]`.
 
 [`unroll!`]: crate::code::util::unroll
 [`Destaque`]: crate::data::Destaque

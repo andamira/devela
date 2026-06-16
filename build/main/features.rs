@@ -341,7 +341,7 @@ mod reflection {
     pub const UI: FlagsFeatures = FlagsFeatures {
         ref_flags: &["ui··"],
         features: &[
-            "ui", "event", "layout",
+            "ui", "ui_core", "event", "widget",
         ]
     };
     pub const VITA: FlagsFeatures = FlagsFeatures {

@@ -12,28 +12,37 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui: event, frame, layout, route, semantic);
 }
 
-// mod error;
-mod intent; // WIP Desired UI configuration before capability-bound realization
-mod view; // Projection of UI state into concrete presentation forms
-mod widget; // Semantic controls expressed through frame-local authorship
-
 #[cfg(feature = "event")]
 pub mod event; // Normalized interaction and window events entering the UI frame
-pub mod frame; // Immediate UI authorship, scoped identity, and retained facts across frames
-pub mod layout; // Canonical spatial vocabulary for deterministic arrangement
-pub mod route; // Routing interaction through regions, focus, active state, and capture
-pub mod semantic; // Human-facing meaning for roles, actions, descriptions, and navigation
+
+#[cfg(feature = "ui")]
+crate::items! {
+    // mod error;
+    mod intent; // WIP Desired UI configuration before capability-bound realization
+    mod view; // Projection of UI state into concrete presentation forms
+
+    pub mod frame; // Immediate UI authorship, scoped identity, and retained facts across frames
+    pub mod layout; // Canonical spatial vocabulary for deterministic arrangement
+    pub mod route; // Routing interaction through regions, focus, active state, and capture
+    pub mod semantic; // Human-facing meaning for roles, actions, descriptions, and navigation
+}
+
+#[cfg(feature = "widget")]
+mod widget; // Semantic controls expressed through frame-local authorship
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
+        #[cfg(feature = "ui")]
         pub use super::{
             // error::*,
             intent::_all::*,
             view::_all::*,
-            widget::_all::*,
         };
+        #[cfg(feature = "widget")]
+        pub use super::widget::_all::*;
     }
     _pub_mods {
+        #[cfg(feature = "ui")]
         pub use super::{
             frame::_all::*,
             layout::_all::*,

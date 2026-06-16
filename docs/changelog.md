@@ -15,7 +15,14 @@
 
 # Project
 
-### examples
+## features & flags
+- new features: `code_all`, `data_all`, `geom_all`, `lang_all`, `media_all`, `num_all`, `org_all`, `phys_all`, `run_all`, `sys_all`, `text_all`, `ui_all`, `vita_all`, `widget`, `work_all`.
+- remove features: `layout`.
+
+## documentation
+- clarify public module and hidden scope features.
+
+## examples
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
   - show keyboard events.

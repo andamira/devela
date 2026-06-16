@@ -144,7 +144,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 152/300 (148 remaining), 104 visible, 48 hidden
+[features] # 166/300 (134 remaining), 118 visible, 48 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -211,23 +211,32 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # In sync with ./tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 14 modules (and their submodules)
-	"code", "data", "geom", "lang", "media",
-	"num", "org", "phys", "run", "sys",
-	"text", "ui", "vita", "work",
+    "code_all", "data_all", "geom_all", "lang_all",
+    "media_all", "num_all", "org_all", "phys_all",
+    "run_all", "sys_all", "text_all", "ui_all",
+    "vita_all", "work_all",
 ]
+
 code = []
-data = ["hash"]
+code_all = ["code"]
+
+data = []
+data_all = ["data", "hash"]
 	# codec
 		hash = [] # HashFnv, HashPengy
 		# crypto = []
 		# pack = []
 			# riff = []
 	# list = []
-geom = ["fig"]
+
+geom = []
+geom_all = ["fig"]
 	# dir = []
 	fig = []
 	# space
-lang = ["glsl", "js", "shell"]
+
+lang = []
+lang_all = ["lang", "glsl", "js", "shell"]
 	# hum = []
 		# i18n = []
 	# repr = []
@@ -238,7 +247,9 @@ lang = ["glsl", "js", "shell"]
 		# script = ["shell"]
 			shell = []
 		# template = []
-media = ["audio", "font", "visual"]
+
+media = []
+media_all = ["media", "audio", "font", "visual"]
 	audio = []
 	# doc = []
 	font = []
@@ -246,7 +257,9 @@ media = ["audio", "font", "visual"]
 		color = []
 		draw = []
 		image = []
-num = ["int", "lin", "rand"]
+
+num = []
+num_all = ["num", "int", "lin", "rand"]
 	# dom
 		int = [] # Int TEMP
 		# real
@@ -255,14 +268,22 @@ num = ["int", "lin", "rand"]
 	# prob
 		rand = []
 	# symb = []
+
 org = []
+org_all = ["org"]
 	#
-phys = ["time", "unit", "wave"]
+
+phys = []
+phys_all = ["phys", "time", "unit", "wave"]
 	time = []
 	unit = []
 	wave = [] # wavelets
+
 run = []
-sys = ["io"] # EXCLUDED: "os"
+run_all = ["run"]
+
+sys = []
+sys_all = ["sys", "io"] # EXCLUDED: "os"
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -284,14 +305,22 @@ sys = ["io"] # EXCLUDED: "os"
 		linux = ["_linux_abi", "unsafe_syscall"]
 		term = [] # media::image::sixel
 		windows = []
-text = ["grapheme", "translit"]
+
+text = []
+text_all = ["text", "grapheme", "translit"]
 	grapheme = []
 	translit = []
+
 vita = []
-ui = ["event", "layout"]
+vita_all = []
+
+ui = []
+ui_all = ["ui", "event", "widget"]
 	event = []
-	layout = []
-work = ["process", "sync", "thread"]
+	widget = ["ui"]
+
+work = []
+work_all = ["work", "process", "sync", "thread"]
 	# exec
 		process = []
 		thread = []
