@@ -103,6 +103,7 @@
         refcell_try_map,
         str_as_str,
         // str_from_utf16_endian,
+        strip_circumfix,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
