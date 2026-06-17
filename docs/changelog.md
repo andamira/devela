@@ -21,6 +21,8 @@
 - add more feature gates for: `time`, `ui`.
 
 ## documentation
+- make `all` and `all_` root modules public.
+- remove `zall` and `zall_` public root modules.
 - clarify public module and hidden scope features.
 
 ## examples

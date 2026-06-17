@@ -69,8 +69,6 @@ They offer a convenient way to opt in and out of safety in a granular fashion.
 - `unsafe_*` features enable the use of unsafe by *purpose*.
 - `safe_*` features disable the use of unsafe per *module*.
 
-Enabling any of them sets either the `safe··` or `unsafe··` flag.
-
 To be able to use any unsafe functionality it's necessary to:
 1. enable the corresponding `unsafe` feature.
 2. don't enable that module's `safe` feature.
@@ -148,10 +146,7 @@ Temporary collection scope features for [`Destaque`] and [`Stack`]:
 - `_stack_all`: `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
 These collection scope features are temporary and will be removed
-once the corresponding generator macros replace precompiled variants.
-
-They also set the corresponding reflection flags:
-`_destaque··`, `_graph··`, `_node··`, `_stack··`.
+once the corresponding generator macros replace them.
 
 [`unroll!`]: crate::code::util::unroll
 [`Destaque`]: crate::data::Destaque
@@ -162,9 +157,8 @@ They also set the corresponding reflection flags:
 ### Dependency features
 
 - Optional external dependencies.
-- Re-exported from the [`_dep`][crate::_dep] root module.
+- Re-exported from the hidden [`devela::_dep`] root module.
 - Can be enabled with the `dep_crate_name` feature in snake_case.
-- Enabling any of them sets the `_dep··` flag.
 
 - `dep_all`: enables all the optional dependencies.
 
@@ -173,8 +167,6 @@ There are also the following groups of dependencies:
 
 
 ### Nightly flags
-
-Enabling any of them sets the `nightly··` reflection flag.
 
 Usage example:
 ```sh
@@ -188,9 +180,9 @@ RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
   - `nightly_float`: enables [`f16`, `f128`].
   - `nightly_simd`: enables [`portable_simd`].
-  - `nightly_stable`: enables stabilized features marked to be released *soon*:
+  - `nightly_stable`: enables stabilized features marked to be released *soon*™:
     - `nightly_stable_{MSRV +1 | +2}`: the next 2 versions
-    - `nightly_stable_later`: later than that but *soon enough*.
+    - `nightly_stable_later`: later than that but hopefully *soon enough*.
 
 [`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509

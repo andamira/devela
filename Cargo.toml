@@ -283,7 +283,7 @@ run = []
 run_all = ["run"]
 
 sys = []
-sys_all = ["sys", "io"] # EXCLUDED: "os"
+sys_all = ["sys", "io", "net"] # EXCLUDED: "device", "os"
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -320,7 +320,7 @@ ui_all = ["ui", "event", "widget"]
 	widget = ["ui"]
 
 work = []
-work_all = ["work", "process", "sync", "thread"]
+work_all = ["work", "process", "thread", "sync"]
 	# exec
 		process = []
 		thread = []

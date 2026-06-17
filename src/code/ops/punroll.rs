@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Compile-time pattern unroll over a width of `0..=8 || pow(2) <= 64`.
-#[doc = crate::_doc_meta!{location("core/ops")}]
+#[doc = crate::_doc_meta!{location("code/ops")}]
 ///
 /// Three forms are supported:
 /// - `punroll![N |i| stmt]`    Emits `stmt` once per index, with `i` bound each time.

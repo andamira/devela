@@ -6,7 +6,7 @@
 // - BufferLinearAllocExample
 //
 // NOTES
-// - doclinks use #method notation to ensure they wont link to /zall version.
+// - doclinks use #method notation to ensure they wont link to /all version.
 
 use crate::buffer_linear;
 

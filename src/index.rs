@@ -193,11 +193,11 @@ pub mod _doc;
 
 /* structural re-exports */
 
-#[doc(hidden)]
-pub use zall_ as all_;
 #[rustfmt::skip]
-#[doc = crate::_DOC_ZALL_!()]
-pub mod zall_ {
+#[doc = crate::_DOC_ALL_!()]
+#[doc = crate::_doc!(br+hr)] // gives way to the first root module
+#[doc = crate::_DOC_ALL_PLUS_!()]
+pub mod all_ {
     macro_rules! _COMMON_DOC { ($mod:literal) => { concat!(" ",
         crate::_doc!(root:$mod), "\n\nAll `", $mod,"` module's items flat re-exported.") }; }
     #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), _COMMON_DOC!("code")]]
@@ -234,12 +234,12 @@ pub mod zall_ {
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }
 
-// public items, feature-gated, visible at their origin and in `zall`:
+// public items, feature-gated, visible at their origin and in `all`:
 // WAIT: [doc(canonica)](https://github.com/rust-lang/rfcs/issues/3011)
 #[doc(hidden)]
-pub use {zall as all, zall::*}; // keep devela::all::* accesor hidden
-#[doc = crate::_DOC_ZALL!()]
-pub mod zall {
+pub use all::*;
+#[doc = crate::_DOC_ALL!()]
+pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]

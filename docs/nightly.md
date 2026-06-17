@@ -26,7 +26,7 @@ See also
 # 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
 > - <https://github.com/rust-lang/rust/milestone/144>
 <!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
-> - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.97.0> -->
 
 - 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
 - 1.97: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
@@ -40,7 +40,7 @@ See also
 # 1.98 will be stable on [2026-08-20](https://releases.rs/docs/1.98.0/) `nightly_stable_1_98`
 > - <https://github.com/rust-lang/rust/milestone/145>
 <!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
-> - <https://github.com/rust-lang/rust/releases/tag/1.98.0>
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.98.0> -->
 
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
 - 1.98: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
@@ -50,19 +50,19 @@ See also
 
 
 # 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
-> - <https://github.com/rust-lang/rust/milestone/146>
+<!-- > - <https://github.com/rust-lang/rust/milestone/146> -->
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
 
 # 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
-> - <https://github.com/rust-lang/rust/milestone/147>
+<!-- > - <https://github.com/rust-lang/rust/milestone/147> -->
 <!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
-> - <https://github.com/rust-lang/rust/milestone/148>
+<!-- > - <https://github.com/rust-lang/rust/milestone/148> -->
 <!-- > - <https://blog.rust-lang.org/2026/12/24/Rust-1.101.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
 

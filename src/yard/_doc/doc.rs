@@ -20,10 +20,10 @@ macro_rules! _doc· {
     (br+hr) => { "<br/><hr/>" };
     (hr) => { "<hr/>" };
 
-    // link to zall_::* associated module
+    // link to all_::* associated module
     (flat: $mod:literal) => {
         concat!["<a title='See the flat view of the `", $mod, "` module' href='",
-            $crate::doclink![custom_current_crate concat!["zall_/_", $mod], @mod], "'>◉</a>"]//◉◦•
+            $crate::doclink![custom_current_crate concat!["all_/_", $mod], @mod], "'>◉</a>"]//◉◦•
     };
     // link to the root * associated module
     (root: $mod:literal) => {

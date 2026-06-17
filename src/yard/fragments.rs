@@ -29,21 +29,14 @@ crate::CONST! { hidden macro_export,
 
     /* misc. root modules */
 
-    _DOC_ZALL  = "<hr/>All crate items re-exported in a single flat namespace.\n\n
-<br/>This flat view appears here as `zall`, and it is also mirrored at the
-crate root through a hidden `all` module. Every item in this namespace
-is already forwarded upward, since public modules automatically
-re-export their contents to their parent.
+    _DOC_ALL  = "All crate items re-exported in a single flat namespace.\n\n
+<br/>Every item in this namespace is forwarded upward, since every public
+module automatically re-export their contents to their parent.";
 
-The name `zall` ensures rustdoc search shows each item's original
-full path rather than the earlier-sorted `all` re-export.";
-
-    _DOC_ZALL_ = "All crate items re-exported, grouped by their root modules.\n\n
-<br/>Each root module appears here and provides its own flat view of all its
-public children. Together, they offer a structured alternative to the
-fully flat `zall` namespace.
-
-It is also mirrored at the crate root through a hidden `all_` module.";
+    _DOC_ALL_ = "All crate items re-exported, grouped by their root modules.";
+    _DOC_ALL_PLUS_ = "\n\nEach root module appears here and provides
+its own flat view of all its public children. Together, they offer
+a structured alternative to the fully flat `all` namespace.";
 
     /* thematic modules tree */
 
