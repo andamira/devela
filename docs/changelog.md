@@ -34,6 +34,9 @@
 
 # Modules
 
+### code::util
+- extend `whilst!` with indexed slice iteration.
+
 #### data::layout::buffer
 - new macro `buffer_ring!`.
 - update `buffer_linear!`:

@@ -46,9 +46,45 @@
 /// assert_eq!(steps, 4); // pre-step executed per iteration
 /// assert_eq!(sum, 6); // 3 + 2 + 1
 /// ```
-/// - A **`for`-like** loop, iterating over integer or floating-point ranges:
+///
+/// - A **`for`-like** loop, iterating over indexed storage or numeric ranges:
 /// ```
 /// # use devela::whilst;
+///
+/// /* slices */
+///
+/// // Exclusive slice/array element iteration
+/// let mut vals = [0; 4];
+/// whilst![x in &mut vals; *x += 1];
+/// assert_eq!(vals, [1, 1, 1, 1]);
+///
+/// // Explicit index + exclusive element
+/// let mut vals = [0; 4];
+/// whilst![i, x in &mut vals; *x = i];
+/// assert_eq!(vals, [0, 1, 2, 3]);
+///
+/// // Shared element iteration
+/// let vals = [1, 2, 3, 4];
+/// let mut sum = 0;
+/// whilst![x in &vals; sum += *x];
+/// assert_eq!(sum, 10);
+///
+/// // Explicit index + shared element
+/// let vals = [1, 2, 3, 4];
+/// let mut weighted = 0;
+/// whilst![i, x in &vals; weighted += i * *x];
+/// assert_eq!(weighted, 20);
+///
+/// // For-like forms use `label:;` for labeled breaks.
+/// let mut vals = [0; 4];
+/// whilst!['fill:; i, x in &mut vals; {
+///     if i == 2 { break 'fill; }
+///     *x = i;
+/// }];
+/// assert_eq!(vals, [0, 1, 0, 0]);
+///
+/// /* numeric ranges */
+///
 /// let mut vals = [0; 4];
 /// whilst![x in 0..4; vals[x] = x];
 /// assert_eq!(vals, [0, 1, 2, 3]);
@@ -101,6 +137,10 @@ macro_rules! whilst {
         $(let mut $var $(:$var_ty)? = $init;)?
         $($label:)? while $condition { $($pre;)? $body; $($post;)? }
     };
+    ( // label:; nested loop form
+    $label:lifetime: ; $($rest:tt)+) => {
+        $label: { $crate::whilst![$($rest)+] }
+    };
     ( // label:? condition; { pre?; post? } body
     $($label:lifetime:)?
     $condition:expr ; { $( $pre:expr)? ; $( $post:expr)? } $body:expr
@@ -121,10 +161,75 @@ macro_rules! whilst {
     ) => {
         $($label:)? while $condition { $body; }
     };
+
+    (
+    /* slice/array iteration */
+
+    // exclusive element iteration, with explicit index
+    $idx:ident, $elem:ident in &mut $slice:expr; $body:expr
+    ) => {{
+        let mut $idx = 0usize;
+        let __len = ($slice).len();
+        while $idx < __len {
+            let $elem = &mut ($slice)[$idx];
+            $body;
+            $idx += 1;
+        }
+    }};
+    ( // exclusive element iteration, with hidden index
+    $elem:ident in &mut $slice:expr; $body:expr
+    ) => { $crate::whilst![__i__, $elem in &mut $slice; $body] };
+    ( // shared element iteration, with explicit index
+    $idx:ident, $elem:ident in &$slice:expr; $body:expr
+    ) => {{
+        let mut $idx = 0usize;
+        let __len = ($slice).len();
+        while $idx < __len {
+            let $elem = &($slice)[$idx];
+            $body;
+            $idx += 1;
+        }
+    }};
+    ( // shared element iteration, with hidden index
+    $elem:ident in &$slice:expr; $body:expr
+    ) => { $crate::whilst![__i__, $elem in &$slice; $body] };
+
     (
 
     /* `for` syntax */
 
+    // iteration over exclusive slice
+    $($label:lifetime:)?
+    $elem:ident in &mut $slice:expr; $body:expr) => {
+        $crate::whilst![$($label:)? __i__, $elem in &mut $slice; $body]
+    };
+    (
+    // iteration over exclusive slice, with explicit index
+    $($label:lifetime:)?
+    $idx:ident, $elem:ident in &mut $slice:expr; $body:expr) => {{
+        let mut $idx = 0usize;
+        $($label:)? while $idx < ($slice).len() {
+            let $elem = &mut ($slice)[$idx];
+            $body;
+            $idx += 1;
+        }
+    }};
+    ( // iteration over shared slice
+    $($label:lifetime:)?
+     $elem:ident in &$slice:expr; $body:expr) => {
+        $crate::whilst![$($label:)? __i__, $elem in &$slice; $body]
+    };
+    ( // iteration over shared slice, with explicit index
+    $($label:lifetime:)?
+    $idx:ident, $elem:ident in &$slice:expr; $body:expr) => {{
+        let mut $idx = 0usize;
+        $($label:)? while $idx < ($slice).len() {
+            let $elem = &($slice)[$idx];
+            $body;
+            $idx += 1;
+        }
+    }};
+    (
     // backward (in rev)
     $($label:lifetime:)?
     $var:ident in rev $min:literal .. $max:expr; $body:expr) => {
@@ -225,7 +330,7 @@ mod tests {
     use crate::is;
 
     #[test]
-    fn test_whilst() {
+    fn whilst() {
         let mut b = 0;
         whilst![x = 0; x < 10; {;x += 1} b+=2];
         assert_eq![b, 20];
@@ -244,8 +349,11 @@ mod tests {
         // with loop label
         let mut b = 0;
         let mut y = 0;
-        whilst!['outer: ; y < 10; {; y += 1} {b+=2; if b == 7 { break 'outer;}}];
-        assert_eq![b, 20];
+        whilst!['outer: ; y < 10; {; y += 1} {
+            b += 2;
+            if b == 8 { break 'outer; }
+        }];
+        assert_eq![b, 8];
 
         // omit steps
         let mut b = 0;
@@ -260,7 +368,7 @@ mod tests {
     }
 
     #[test]
-    fn test_whilst_let() {
+    fn whilst_let() {
         let mut val = Some(3);
         let mut sum = 0;
         whilst![let Some(x) = val; {
@@ -281,7 +389,7 @@ mod tests {
     }
 
     #[test]
-    fn test_whilst_array() {
+    fn whilst_array() {
         // forward count
         let mut arr = [0u8; 5];
         let mut i = 0;
@@ -303,7 +411,7 @@ mod tests {
 
     #[test]
     #[rustfmt::skip]
-    fn test_whilst_for_syntax() {
+    fn whilst_for_syntax() {
         /* forward */
         // start:literal
         let mut b = 0; whilst![x in 0..5; b+=1]; assert_eq![b, 5];
@@ -336,9 +444,41 @@ mod tests {
         assert_eq!(sum, 5 + 4 + 3 + 2 + 1 + 0);
     }
     #[test]
+    fn whilst_for_syntax_slice() {
+        // exclusive element, hidden index
+        let mut vals = [0u8; 4];
+        whilst![x in &mut vals; *x += 1];
+        assert_eq!(vals, [1, 1, 1, 1]);
+
+        // exclusive element, explicit index
+        let mut vals = [0usize; 4];
+        whilst![i, x in &mut vals; *x = i];
+        assert_eq!(vals, [0, 1, 2, 3]);
+
+        // shared element, hidden index
+        let vals = [1u8, 2, 3, 4];
+        let mut sum = 0u8;
+        whilst![x in &vals; sum += *x];
+        assert_eq!(sum, 10);
+
+        // shared element, explicit index
+        let vals = [1usize, 2, 3, 4];
+        let mut sum = 0usize;
+        whilst![i, x in &vals; sum += i * *x];
+        assert_eq!(sum, 20); // 0*1 + 1*2 + 2*3 + 3*4
+
+        // label forwarding through wrapper syntax
+        let mut vals = [0usize; 4];
+        whilst!['fill:; i, x in &mut vals; {
+            if i == 2 { break 'fill; }
+            *x = i;
+        }];
+        assert_eq!(vals, [0, 1, 0, 0]);
+    }
+    #[test]
     #[rustfmt::skip]
     #[cfg(feature = "__std")]
-    fn test_whilst_for_syntax_alloc() {
+    fn whilst_for_syntax_alloc() {
         /* forward */
 
         let mut values = vec![];
