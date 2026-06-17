@@ -8,9 +8,10 @@
 //
 
 mod fcntl; // LINUX_F_CMD
-mod fd; // LinuxFd, (LINUX_<AT|FILENO|O_FLAGS|SEEK>)
+mod fd; // LinuxFd, LinuxSeekFrom, (LINUX_<AT|FILENO|O_FLAGS|SEEK>)
 mod ioctl; // LINUX_IOCTL
 mod open; // LinuxOpenOptions
+mod pipe; // LinuxPipe, LinuxPipeFlags
 mod stat; // LinuxStat, LINUX_S_IFMT
 
 crate::structural_mods! { // _mods, crate_internals
@@ -20,6 +21,7 @@ crate::structural_mods! { // _mods, crate_internals
             fd::_all::*,
             ioctl::*,
             open::*,
+            pipe::*,
             stat::*,
         };
     }

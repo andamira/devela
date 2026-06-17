@@ -4,11 +4,15 @@
 //
 
 mod _raw; // Raw Linux file-descriptor constants.
-mod definition; // LinuxFd
+mod fd; // LinuxFd
+mod seek; // LinuxSeekFrom
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::definition::*;
+        pub use super::{
+            fd::*,
+            seek::*,
+        };
     }
     _crate_internals {
         pub(crate) use super::{

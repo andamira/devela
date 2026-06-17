@@ -122,4 +122,7 @@ _reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!() _TAG_ER
     doc: "A list specifying general categories of I/O error.",
     @ErrorKind as IoErrorKind
 }
-// @SeekFrom as IoSeekFrom
+_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+    doc: "A cursor position used by [`IoSeek`].",
+    @SeekFrom as IoSeekFrom
+}

@@ -29,10 +29,14 @@ impl<S: IoSeek + ?Sized> IoSeek for &mut S {
 }
 
 #[doc = crate::_tags!(io maybe_std)]
-/// Enumeration of possible methods to seek within an I/O object.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
-/// It is used by the [`IoSeek`] trait.
+/// A cursor position used by [`IoSeek`].
+#[doc = crate::_doc_meta!{
+    location("sys/io"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(IoSeekFrom = 12|96),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(IoSeekFrom = 16|128),
+}]
 #[derive(Copy, PartialEq, Eq, Clone, Debug)]
 pub enum IoSeekFrom {
     /// Sets the offset to the provided number of bytes.

@@ -15,6 +15,9 @@ use crate::{c_long, c_uint, c_ulong};
 /// File status structure matching libc's stat ([man 2 stat])
 #[doc = crate::_doc_meta!{
     location("sys/os/linux/io"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(LinuxStat = 76|608),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(LinuxStat = 144|1152),
 }]
 ///

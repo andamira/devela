@@ -3,9 +3,8 @@
 //! File-descriptor-oriented Linux operations.
 //
 
-use crate::{
-    CStr, FdRaw, LINUX_AT, LINUX_ERRNO, Linux, LinuxError, LinuxFd, LinuxOpenOptions, LinuxResult,
-};
+use crate::{CStr, FdRaw, LINUX_AT, LINUX_ERRNO, LinuxError, LinuxResult, c_int, c_off_t};
+use crate::{Linux, LinuxFd, LinuxOpenOptions, LinuxPipe, LinuxPipeFlags, LinuxSeekFrom};
 
 /// # File-descriptor-related methods.
 #[rustfmt::skip]
@@ -55,6 +54,29 @@ impl Linux {
         else { Ok(unsafe { LinuxFd::from_raw(new_fd) }) }
     }
 
+    /// Creates an anonymous pipe.
+    ///
+    /// The returned descriptors are closed during `exec`.
+    pub fn pipe_fd() -> LinuxResult<LinuxPipe> {
+        Self::pipe_fd_with(LinuxPipeFlags::CLOEXEC)
+    }
+    /// Creates an anonymous pipe with the given flags.
+    pub fn pipe_fd_with(flags: LinuxPipeFlags) -> LinuxResult<LinuxPipe> {
+        let mut fds = [0 as FdRaw; 2];
+        let n = unsafe { Self::sys_pipe2(fds.as_mut_ptr(), flags.bits()) };
+        if n < 0 { return Err(LinuxError::Sys(n as isize)); }
+        let read = unsafe { LinuxFd::from_raw(fds[0]) };
+        let write = unsafe { LinuxFd::from_raw(fds[1]) };
+        Ok(LinuxPipe { read, write })
+    }
+
+    /// Repositions the file offset for a descriptor.
+    pub fn seek_fd(fd: FdRaw, pos: LinuxSeekFrom) -> LinuxResult<c_off_t> {
+        let (offset, whence) = pos.raw();
+        let n = unsafe { Self::sys_lseek(fd, offset, whence) };
+        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(n) }
+    }
+
     /// Reads bytes from a file descriptor.
     ///
     /// Retries if interrupted before reading any bytes.
@@ -71,6 +93,18 @@ impl Linux {
             }
         }
     }
+    /// Reads exactly enough bytes to fill `buf`.
+    ///
+    /// Returns an error if EOF is reached before the buffer is full.
+    pub fn read_fd_exact(fd: FdRaw, mut buf: &mut [u8]) -> LinuxResult<()> {
+        while !buf.is_empty() {
+            let n = Self::read_fd(fd, buf)?;
+            if n == 0 { return Err(LinuxError::Other("unexpected end of file")); }
+            buf = &mut buf[n..];
+        }
+        Ok(())
+    }
+
     /// Writes bytes to a file descriptor.
     ///
     /// Retries if interrupted before writing any bytes.

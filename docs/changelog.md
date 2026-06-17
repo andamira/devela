@@ -54,15 +54,19 @@
   - remove `alloc` feature-gates.
   - make all methods const.
 
+### sys::io
+- re-export missing `IoSeekFrom` from std.
+
 ##### sys::os::browser::web
 - new type `WebEventKey`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - modularize browser JS bindings.
 
 #### sys::os::linux
-- new types: `LinuxFd`, `LinuxOpenOptions`, `LINUX_AT`.
+- new types: `LinuxFd`, `LinuxOpenOptions`, `LinuxPipe`, `LinuxPipeFlags`, `LinuxSeekFrom`.
+- add private types: `LINUX_AT`.
+- delete private types: `AT_FDCWD`.
 - make crate-private: `LINUX_FILENO`, `LINUX_O_FLAGS`, `LINUX_SEEK`.
-- delete: `AT_FDCWD`.
 - update `Linux`:
   - new methods: `open_fd`, `open_fd_at`, `close_fd`, `read_fd`, `write_fd`, `write_fd_all`, `syscall_openat`.
   - re-implement stdio read and write methods.

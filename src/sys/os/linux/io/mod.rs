@@ -3,9 +3,9 @@
 //! Linux-specific extensions to [`std::io`].
 //
 
-mod file; // LinuxStat, LINUX_[F_CMD|FILENO|IOCTL|O_FLAGS|S_IFMT|SEEK]
+mod file; // LinuxFd, LinuxPipe, LinuxStat, (LINUX_<AT|F_CMD|FILENO|IOCTL|O_FLAGS|S_IFMT|SEEK>)
 #[cfg(feature = "term")]
-mod term; // LinuxTermios, LINUX_TERMIOS
+mod term; // LinuxTermios, (LINUX_TERMIOS)
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
