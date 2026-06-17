@@ -15,6 +15,9 @@
 
 # Project
 
+## worskspace
+- add cargo aliases: `c_<x|a|r><32|64>l`.
+
 ## features & flags
 - new features: `code_all`, `data_all`, `geom_all`, `lang_all`, `media_all`, `num_all`, `org_all`, `phys_all`, `run_all`, `sys_all`, `text_all`, `ui_all`, `vita_all`, `widget`, `work_all`.
 - remove features: `layout`.
@@ -63,6 +66,9 @@
 - update `Linux`:
   - new methods: `open_fd`, `open_fd_at`, `close_fd`, `read_fd`, `write_fd`, `write_fd_all`, `syscall_openat`.
   - re-implement stdio read and write methods.
+
+#### sys::os::term
+- make `ansi` module public.
 
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `widget`.

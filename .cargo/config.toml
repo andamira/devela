@@ -116,6 +116,16 @@ cr = "check --release"
 cu = "check -F=std"
 cn = "check -F=no_std,safe"
 cnu = "check -F=unsafe"
+# Linux targets:
+c_x32l = "c --target i686-unknown-linux-gnu"
+c_x64l = "c --target x86_64-unknown-linux-gnu"
+c_a32l = "c --target armv7-unknown-linux-gnueabihf"
+c_a64l = "c --target aarch64-unknown-linux-gnu"
+#c_r32l = "c --target riscv32gc-unknown-linux-gnu" # tier-3, not available
+c_r32l = "c --target riscv32imac-unknown-none-elf" # ~ temp replacement
+# c_r64l = "c --target riscv64gc-unknown-linux-gnu" # tier-3, not available
+c_r64l = "c --target riscv64imac-unknown-none-elf" # ~ temp replacement
+
 
 # CLIPPY
 cl = "clippy" #+w

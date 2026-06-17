@@ -1,7 +1,7 @@
 // devela/src/sys/os/linux/mod.rs
 //
 #![doc = crate::_DOC_SYS_OS_LINUX!()] // public
-#![doc = crate::_doc!(modules: crate::sys::os; linux)]
+#![doc = crate::_doc!(modules: crate::sys::os; linux: io, process, thread)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: os)]
 //!

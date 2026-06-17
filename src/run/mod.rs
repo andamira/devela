@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "safe_run", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_RUN_MODULES =
-    crate::_doc!(modules: crate; run: cycle, regime, time); // state
+    crate::_doc!(modules: crate; run: app, cycle, regime, time); // state
 }
 
 pub mod app; // AppControl

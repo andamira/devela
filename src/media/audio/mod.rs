@@ -1,7 +1,7 @@
 // devela/src/media/audio/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_AUDIO!()] // public
-#![doc = crate::_doc!(modules: crate::media; audio)] // acoustic, format, music, synth
+#![doc = crate::_doc!(modules: crate::media; audio: format, pcm)] // acoustic, music, synth
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //

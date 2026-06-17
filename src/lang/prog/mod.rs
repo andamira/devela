@@ -1,7 +1,7 @@
 // devela/src/lang/prog/mod.rs
 //
 #![doc = crate::_DOC_LANG_PROG!()] // public
-#![doc = crate::_doc!(modules: crate::lang; prog: ffi)] //
+#![doc = crate::_doc!(modules: crate::lang; prog: ffi, script)] //
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(extends: ffi)]
 //!

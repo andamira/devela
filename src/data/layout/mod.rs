@@ -1,7 +1,7 @@
 // devela/src/data/layout/mod.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
-#![doc = crate::_doc!(modules: crate::data; layout: array, dst)]
+#![doc = crate::_doc!(modules: crate::data; layout: array, buffer, dst)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, vec)]
 #![doc = crate::_QUO_DATA_LAYOUT!()]

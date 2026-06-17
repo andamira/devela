@@ -1,12 +1,12 @@
 // devela/src/sys/os/term/mod.rs
 //
 #![doc = crate::_DOC_SYS_OS_TERM!()] // public
-#![doc = crate::_doc!(modules: crate::sys::os; term: grid)]
+#![doc = crate::_doc!(modules: crate::sys::os; term: ansi, grid)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
 
-mod ansi; // Ansi, AnsiColor3, AnsiColor8
+pub mod ansi; // Ansi, AnsiColor3, AnsiColor8
 mod backend; // TermLinux
 mod cap; // TermCaps
 #[cfg(feature = "event")]
@@ -21,7 +21,6 @@ mod session; // TermSession, TermPollPolicy, TermMode
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            ansi::_all::*,
             backend::_all::*,
             cap::_all::*,
             line::_all::*,
@@ -35,6 +34,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _pub_mods {
         pub use super::{
+            ansi::_all::*,
             grid::_all::*,
         };
     }
