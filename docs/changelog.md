@@ -44,6 +44,13 @@
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
+#### media::visual::image
+- upate `ImageError`; add new variant: `InsufficientBuffer`.
+- update `Pnm`:
+  - implement all classic PNM variants P1..P6.
+  - remove `alloc` feature-gates.
+  - make all methods const.
+
 ##### sys::os::browser::web
 - new type `WebEventKey`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.

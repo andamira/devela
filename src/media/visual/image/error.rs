@@ -22,6 +22,14 @@ pub enum ImageError {
     // InvalidImageSize(Mismatch<SizeUsize, SizeUsize>), // TODO
     InvalidImageSize(Option<(usize, usize)>), // TEMP
 
+    /// The provided output buffer has fewer bytes than required.
+    InsufficientBuffer {
+        /// The number of bytes required to complete the operation.
+        needed: usize,
+        /// The number of bytes available in the provided buffer.
+        available: usize,
+    },
+
     /// Invalid pixel value.
     InvalidPixel, // IMPROVE add optional data
 
@@ -57,6 +65,9 @@ mod core_impls {
             use ImageError as E;
             match self {
                 E::InvalidImageSize(o) => write!(f, "InvalidImageSize: {o:?}"),
+                E::InsufficientBuffer { needed: n, available: a } => {
+                    write!(f, "InsufficientBuffer: {{ needed: {n}, available: {a} }}")
+                }
                 E::InvalidMagicNumber => write!(f, "Invalid magic number."),
                 E::InvalidPixel => write!(f, "Invalid pixel."),
                 //

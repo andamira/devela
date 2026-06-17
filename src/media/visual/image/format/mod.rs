@@ -7,17 +7,17 @@
 //
 
 // mod jpg; // FUTURE
+mod netpbm; // Pnm
 // #[cfg(feature = "alloc"] // TEMP
 // mod png; // WIP
-mod pnm; // WIP
 // mod qoi; // WIP
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // jpg::*,
-            // png::*,
-            pnm::*,
+            netpbm::_all::*,
+            // png::_all::*,
             // qoi::*,
         };
     }
