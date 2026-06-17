@@ -6,10 +6,10 @@
 // - https://syscalls.mebeim.net/?table=riscv/64/rv64/latest
 
 use super::{LinuxOffset, shared_docs::*};
-use crate::{AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
+use crate::{LINUX_AT, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
 #[cfg(feature = "time")]
 use crate::{LinuxClock, LinuxTimespec};
-use crate::{asm, c_char, c_int, c_uchar, c_uint, c_ulong};
+use crate::{asm, c_char, c_int, c_mode_t, c_uchar, c_uint, c_ulong};
 
 /// # Syscalls: File descriptors.
 impl Linux {
@@ -58,7 +58,31 @@ impl Linux {
                 "li a7, {OPENAT}",
                 "ecall",
                 OPENAT = const SYS::OPENAT,
-                in("a0") AT_FDCWD,
+                in("a0") LINUX_AT::FDCWD,
+                in("a1") path,
+                in("a2") flags,
+                in("a3") mode,
+                lateout("a0") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = _DOC_SYS_OPENAT!()]
+    pub unsafe fn sys_openat(
+        dirfd: c_int,
+        path: *const c_char,
+        flags: c_int,
+        mode: c_mode_t,
+    ) -> c_int {
+        let result: c_int;
+        unsafe {
+            asm!(
+                "li a7, {OPENAT}",
+                "ecall",
+                OPENAT = const SYS::OPENAT,
+                in("a0") dirfd,
                 in("a1") path,
                 in("a2") flags,
                 in("a3") mode,
@@ -198,7 +222,7 @@ impl Linux {
                 "li a3, 0",     // flags = 0
                 "ecall",
                 NEWFSTATAT = const SYS::NEWFSTATAT,
-                AT_FDCWD = const AT_FDCWD,
+                AT_FDCWD = const LINUX_AT::FDCWD,
                 path = in(reg) path,
                 statbuf = in(reg) statbuf,
                 lateout("a0") result,

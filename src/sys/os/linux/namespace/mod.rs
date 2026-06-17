@@ -8,8 +8,9 @@ mod definition; // Linux
 // impls
 #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 crate::items! {
-    mod read;
-    mod write;
+    mod r#in;
+    mod out;
+    mod file;
     #[cfg(feature = "term")]
     mod term; // (LinuxTermModeGuard)
     mod thread; // thread, time

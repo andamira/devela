@@ -14,6 +14,7 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::term::_all::*;
     }
     _crate_internals {
+        pub use super::file::_crate_internals::*;
         #[cfg(feature = "term")]
         pub use super::term::_crate_internals::*;
     }

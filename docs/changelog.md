@@ -56,6 +56,14 @@
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - modularize browser JS bindings.
 
+#### sys::os::linux
+- new types: `LinuxFd`, `LinuxOpenOptions`, `LINUX_AT`.
+- make crate-private: `LINUX_FILENO`, `LINUX_O_FLAGS`, `LINUX_SEEK`.
+- delete: `AT_FDCWD`.
+- update `Linux`:
+  - new methods: `open_fd`, `open_fd_at`, `close_fd`, `read_fd`, `write_fd`, `write_fd_all`, `syscall_openat`.
+  - re-implement stdio read and write methods.
+
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `widget`.
 

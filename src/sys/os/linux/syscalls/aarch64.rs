@@ -6,10 +6,10 @@
 // - https://syscalls.mebeim.net/?table=arm64/64/aarch64/latest
 
 use super::{LinuxOffset, shared_docs::*};
-use crate::{AT_FDCWD, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
+use crate::{LINUX_AT, LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
 #[cfg(feature = "time")]
 use crate::{LinuxClock, LinuxTimespec};
-use crate::{asm, c_char, c_int, c_uchar, c_uint, c_ulong};
+use crate::{asm, c_char, c_int, c_mode_t, c_uchar, c_uint, c_ulong};
 
 /// # Syscalls: File descriptors.
 impl Linux {
@@ -50,15 +50,25 @@ impl Linux {
         result
     }
     #[must_use]
-    #[doc = _DOC_SYS_OPEN!()] // NOTE: OPENAT also in the other arches
-    pub unsafe fn sys_open(path: *const c_char, flags: c_int, mode: c_uint) -> c_int {
+    #[doc = _DOC_SYS_OPEN!()]
+    pub unsafe fn sys_open(path: *const c_char, flags: c_int, mode: c_mode_t) -> c_int {
+        unsafe { Self::sys_openat(LINUX_AT::FDCWD, path, flags, mode) }
+    }
+    #[must_use]
+    #[doc = _DOC_SYS_OPENAT!()]
+    pub unsafe fn sys_openat(
+        dirfd: c_int,
+        path: *const c_char,
+        flags: c_int,
+        mode: c_mode_t,
+    ) -> c_int {
         let result: c_int;
         unsafe {
             asm!(
                 "mov x8, {OPENAT}",
                 "svc 0",
                 OPENAT = const SYS::OPENAT,
-                in("x0") AT_FDCWD, // emulate open by using current working directory
+                in("x0") dirfd,
                 in("x1") path,
                 in("x2") flags,
                 in("x3") mode,
@@ -167,7 +177,7 @@ impl Linux {
                 "mov x8, {NEWFSTATAT}",
                 "svc 0",
                 NEWFSTATAT = const SYS::NEWFSTATAT,
-                in("x0") AT_FDCWD, // emulate stat by using current working directory
+                in("x0") LINUX_AT::FDCWD, // emulate stat by using current working directory
                 in("x1") fd,
                 in("x2") statbuf,
                 in("x3") 0, // flags = 0 to mimic stat behavior

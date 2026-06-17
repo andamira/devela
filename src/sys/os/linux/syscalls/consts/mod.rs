@@ -44,9 +44,3 @@ pub type LINUX_SYS = x86_64::LINUX_SYS_X86_64;
 /// the Linux kernel ABI always uses 64-bit offsets for syscalls. This matches the
 /// behavior of `-D_FILE_OFFSET_BITS=64` in userspace.
 pub(crate) type LinuxOffset = i64;
-
-#[allow(dead_code, reason = "only used in aarch64 for now")]
-/// Special value for openat, newopenatat.
-///
-/// Makes pathname be interpreted relative to the current directory.
-pub(crate) const AT_FDCWD: crate::c_int = -100;

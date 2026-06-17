@@ -12,7 +12,7 @@ use super::{LinuxOffset, shared_docs::*};
 use crate::{LINUX_SYS as SYS, Linux, LinuxSigaction, LinuxStat};
 #[cfg(feature = "time")]
 use crate::{LinuxClock, LinuxTimespec};
-use crate::{asm, c_char, c_int, c_uchar, c_uint, c_ulong};
+use crate::{asm, c_char, c_int, c_mode_t, c_uchar, c_uint, c_ulong};
 
 /// # Syscalls: File descriptors.
 impl Linux {
@@ -69,6 +69,32 @@ impl Linux {
                 in("rsi") flags,
                 in("rdx") mode,
                 lateout("rax") result,
+                options(nostack)
+            );
+        }
+        result
+    }
+    #[must_use]
+    #[doc = _DOC_SYS_OPENAT!()]
+    pub unsafe fn sys_openat(
+        dirfd: c_int,
+        path: *const c_char,
+        flags: c_int,
+        mode: c_mode_t,
+    ) -> c_int {
+        let result: c_int;
+        unsafe {
+            asm!(
+                "mov rax, {OPENAT}",
+                "syscall",
+                OPENAT = const SYS::OPENAT,
+                in("rdi") dirfd,
+                in("rsi") path,
+                in("rdx") flags,
+                in("r10") mode,
+                lateout("rax") result,
+                lateout("rcx") _,
+                lateout("r11") _,
                 options(nostack)
             );
         }

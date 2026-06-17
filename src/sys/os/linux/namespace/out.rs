@@ -1,8 +1,8 @@
-// devela/src/sys/os/linux/namespace/write.rs
+// devela/src/sys/os/linux/namespace/out.rs
 
-use crate::{LINUX_FILENO as FILENO, Linux, LinuxError, LinuxResult as Result, MaybeUninit, c_int};
+use crate::{LINUX_FILENO as FILENO, Linux, LinuxResult as Result, MaybeUninit, c_int};
 
-/// # Write-related methods.
+/// # Stdout/stderr-related methods.
 #[rustfmt::skip]
 impl Linux {
     /* core helpers */
@@ -10,20 +10,14 @@ impl Linux {
     const STACK_BUFFER_LEN: usize = 512; // PIPE_BUF is typically 4096 but 512 is safe
 
     /// Writes all bytes to a file descriptor, handling partial writes.
-    fn write_all(fd: c_int, mut buf: &[u8]) -> Result<()> {
-        while !buf.is_empty() {
-            let n = unsafe { Linux::sys_write(fd, buf.as_ptr(), buf.len()) };
-            if n < 0 { return Err(LinuxError::Sys(n)); }
-            buf = &buf[n as usize..];
-        }
-        Ok(())
+    fn write_all(fd: c_int, buf: &[u8]) -> Result<()> {
+        Self::write_fd_all(fd, buf)
     }
-    /// Writes all bytes to stdout. Returns error on syscall failure.
-    fn write_all_unchecked(fd: c_int, mut buf: &[u8]) {
-        while !buf.is_empty() {
-            let n = unsafe { Linux::sys_write(fd, buf.as_ptr(), buf.len()) };
-            if n <= 0 { panic!("write failed with return value {n}"); }
-            buf = &buf[n as usize..];
+
+    /// Writes all bytes to a file descriptor, panicking on failure.
+    fn write_all_unchecked(fd: c_int, buf: &[u8]) {
+        if let Err(err) = Self::write_fd_all(fd, buf) {
+            panic!("write failed: {err:?}");
         }
     }
 

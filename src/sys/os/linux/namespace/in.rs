@@ -1,11 +1,11 @@
-// devela/src/sys/os/linux/namespace/read.rs
+// devela/src/sys/os/linux/namespace/in.rs
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
 use crate::{LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, Linux, LinuxError, LinuxResult};
 use crate::{Str, is};
 
-/// # Read-related methods.
+/// # Stdin-related methods
 #[rustfmt::skip]
 impl Linux {
     /// Checks if there is input available to read from stdin.
@@ -101,23 +101,19 @@ impl Linux {
         is! { buf.is_empty(), return Ok(0) }
         let count = Linux::available_bytes()?.min(buf.len());
         is! { count == 0, return Ok(0) }
-        let n = unsafe { Linux::sys_read(FILENO::STDIN, buf.as_mut_ptr(), count) };
-        is! { n < 0, Err(LinuxError::Sys(n)), Ok(n as usize) }
+        Linux::read_fd(FILENO::STDIN, &mut buf[..count])
     }
 
     /// Reads all available bytes from stdin into an allocated buffer.
-    ///
-    /// # Returns
-    /// - `Ok(Vec<u8>)` containing the bytes read.
-    /// - `Err(isize)` if the read fails, returning the error code.
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     pub fn read_available_alloc() -> LinuxResult<Vec<u8>> {
         let count = Linux::available_bytes()?;
-        if count == 0 { return Ok(Vec::new()); }
+        is! { count == 0, return Ok(Vec::new()) }
         let mut buffer = crate::vec_![0u8; count];
-        let n = unsafe { Linux::sys_read(FILENO::STDIN, buffer.as_mut_ptr(), count) };
-        if n < 0 { Err(LinuxError::Sys(n)) } else { buffer.truncate(n as usize); Ok(buffer) }
+        let n = Linux::read_fd(FILENO::STDIN, &mut buffer)?;
+        buffer.truncate(n);
+        Ok(buffer)
     }
 
     /// Prompts the user for a string from *stdin*, backed by a `buffer`.

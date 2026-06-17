@@ -1,21 +1,67 @@
-// devela/src/sys/os/linux/io/file/fd.rs
+// devela/src/sys/os/linux/io/file/fd/_raw.rs
 //
-//! File-descriptor identity and positioning.
+//! Raw Linux file-descriptor constants.
 //!
-//! Contains constants related to file descriptor numbers, open flags, and seek operations.
-//!
-//! Defines [`LINUX_FILENO`], [`LINUX_O_FLAGS`], [`LINUX_SEEK`].
+//! Defines [`LINUX_AT`], [`LINUX_FILENO`], [`LINUX_O_FLAGS`], [`LINUX_SEEK`].
 //
 
-#![allow(non_camel_case_types)]
+#![allow(dead_code, non_camel_case_types)]
 
 use crate::c_int;
 
-#[doc = crate::_tags!(linux fs)]
+#[doc = crate::_tags!(linux fs abi)]
+/// Linux `AT_*` constants for `*at` syscalls.
+#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[derive(Debug)]
+pub(crate) struct LINUX_AT;
+impl LINUX_AT {
+    /// Use the current working directory for relative paths.
+    pub const FDCWD: c_int = -100;
+
+    /// Do not follow symbolic links.
+    pub const SYMLINK_NOFOLLOW: c_int = 0x100;
+
+    /// Remove a directory instead of unlinking a file.
+    ///
+    /// Used by `unlinkat`.
+    pub const REMOVEDIR: c_int = 0x200;
+
+    /// Follow symbolic links.
+    pub const SYMLINK_FOLLOW: c_int = 0x400;
+
+    /// Suppress terminal automount traversal.
+    pub const NO_AUTOMOUNT: c_int = 0x800;
+
+    /// Allow an empty relative pathname.
+    pub const EMPTY_PATH: c_int = 0x1000;
+
+    /// Mask for `statx` synchronization flags.
+    pub const STATX_SYNC_TYPE: c_int = 0x6000;
+
+    /// Let `statx` behave like `stat`.
+    pub const STATX_SYNC_AS_STAT: c_int = 0x0000;
+
+    /// Force synchronization for `statx`.
+    pub const STATX_FORCE_SYNC: c_int = 0x2000;
+
+    /// Do not synchronize for `statx`.
+    pub const STATX_DONT_SYNC: c_int = 0x4000;
+
+    /// Apply operation recursively to a subtree.
+    pub const RECURSIVE: c_int = 0x8000;
+
+    /// Test effective IDs instead of real IDs.
+    ///
+    /// Used by `faccessat`. Has the same raw value as [`REMOVEDIR`][Self::REMOVEDIR],
+    /// but belongs to a different syscall context.
+    pub const EACCESS: c_int = 0x200;
+}
+
+#[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 #[derive(Debug)]
-pub struct LINUX_FILENO;
+pub(crate) struct LINUX_FILENO;
 impl LINUX_FILENO {
     /// Standard input.
     pub const STDIN: c_int = 0;
@@ -25,7 +71,7 @@ impl LINUX_FILENO {
     pub const STDERR: c_int = 2;
 }
 
-#[doc = crate::_tags!(linux fs)]
+#[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] file creation and status flags.
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 ///
@@ -34,7 +80,7 @@ impl LINUX_FILENO {
 // - /usr/include/asm-generic/fcntl.h
 // - /usr/include/linux/fcntl.h
 #[derive(Debug)]
-pub struct LINUX_O_FLAGS;
+pub(crate) struct LINUX_O_FLAGS;
 impl LINUX_O_FLAGS {
     /* basic access */
 
@@ -106,7 +152,7 @@ impl LINUX_O_FLAGS {
     pub const RESOLVE_IN_ROOT: c_int = 0o2_000_000_000;
 }
 
-#[doc = crate::_tags!(linux fs)]
+#[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
 #[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
 //
@@ -114,7 +160,7 @@ impl LINUX_O_FLAGS {
 // - /usr/include/unistd.h
 // - /usr/include/bits/fcntl-linux.h
 #[derive(Debug)]
-pub struct LINUX_SEEK;
+pub(crate) struct LINUX_SEEK;
 impl LINUX_SEEK {
     /// Seek from start of file.
     pub const SET: c_int = 0;

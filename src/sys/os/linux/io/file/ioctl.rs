@@ -2,7 +2,8 @@
 //
 //! Extended file-descriptor control operations.
 //!
-//! Provides ioctl request encoding, direction and size macros, and Linux-specific ioctl constants.
+//! Provides ioctl request encoding, direction and size macros,
+//! and Linux-specific ioctl constants.
 //!
 //! Defines [`LINUX_IOCTL`].
 //

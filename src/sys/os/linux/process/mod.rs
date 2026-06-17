@@ -5,7 +5,7 @@
 
 crate::_unsafe_syscall_not_miri! {
 mod entry; } // linux_entry!
-mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, LINUX_[SIGACTION|SIGNAL]
+mod signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, (LINUX_[SIGACTION|SIGNAL])
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

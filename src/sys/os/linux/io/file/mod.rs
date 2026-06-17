@@ -8,17 +8,24 @@
 //
 
 mod fcntl; // LINUX_F_CMD
-mod fd; // LINUX_[FILENO|O_FLAGS|SEEK]
+mod fd; // LinuxFd, (LINUX_<AT|FILENO|O_FLAGS|SEEK>)
 mod ioctl; // LINUX_IOCTL
+mod open; // LinuxOpenOptions
 mod stat; // LinuxStat, LINUX_S_IFMT
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, crate_internals
     _mods {
         pub use super::{
             fcntl::*,
-            fd::*,
+            fd::_all::*,
             ioctl::*,
+            open::*,
             stat::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            fd::_crate_internals::*,
         };
     }
 }

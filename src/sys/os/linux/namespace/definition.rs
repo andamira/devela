@@ -11,8 +11,9 @@
 /// All the methods depend on the features `linux` and `unsafe_syscall`.
 ///
 /// # Methods
-/// - [read](#read-related-methods)
-/// - [write](#write-related-methods)
+/// - [in](#stdin-related-methods)
+/// - [out](#stdout-related-methods)
+/// - [file](#file-descriptor-related-methods)
 /// - [term](#terminal-related-methods)
 /// - [thread](#thread-related-methods)
 /// - [time](#time-related-methods)

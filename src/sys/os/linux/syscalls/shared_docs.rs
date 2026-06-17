@@ -12,187 +12,164 @@ crate::CONST! { pub(super),
 
 _DOC_SYS_READ = r#"Performs a [read] syscall.
 
-Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
+Reads up to `count` bytes from file descriptor `fd` into `buf`.
+
+This is a low-level ABI wrapper. Prefer [`Linux::read_fd`] for normal use.
 
 [read]: https://www.man7.org/linux/man-pages/man2/read.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_FILENO};
-let mut buf: [u8; 1024] = [0; 1024];
-let bytes_read: isize = unsafe {
-    Linux::sys_read(LINUX_FILENO::STDIN, buf.as_mut_ptr(), buf.len())
-};
-assert![bytes_read > 0];
-```
-
 # Safety
-TODO
+- `fd` must be a valid open file descriptor.
+- `buf` must be valid for writes of `count` bytes.
+- `buf` must remain valid for the duration of the syscall.
+- The caller must handle partial reads, `EINTR`, `EAGAIN`, and end-of-file.
 "#;
 
 _DOC_SYS_WRITE = r#"Performs a [write] syscall.
 
-Writes `count` bytes from a buffer `buf` into a file descriptor `fd`.
+Writes up to `count` bytes from `buf` into file descriptor `fd`.
 
-If a write() is interrupted by a signal handler before any bytes
-are written, then the call fails with the error EINTR; if it is
-interrupted after at least one byte has been written, the call
-succeeds, and returns the number of bytes written.
+If a write is interrupted by a signal handler before any bytes are written, then
+the call fails with `EINTR`. If it is interrupted after at least one byte has
+been written, the call succeeds and returns the number of bytes written.
+
+This is a low-level ABI wrapper. Prefer [`Linux::write_fd`] or
+[`Linux::write_fd_all`] for normal use.
 
 [write]: https://www.man7.org/linux/man-pages/man2/write.2.html
 
-# Examples
-```
-# use devela::{Linux, LINUX_FILENO};
-let buf = "Hello\n".as_bytes();
-let bytes_written: isize = unsafe {
-    Linux::sys_write(LINUX_FILENO::STDOUT, buf.as_ptr(), buf.len())
-};
-assert![bytes_written > 0];
-```
-
 # Safety
-TODO
+- `fd` must be a valid open file descriptor.
+- `buf` must be valid for reads of `count` bytes.
+- `buf` must remain valid for the duration of the syscall.
+- The caller must handle partial writes, `EINTR`, `EAGAIN`, and zero progress.
 "#;
 
 _DOC_SYS_OPEN = r#"Performs an [open] syscall.
 
-Opens the file specified by `path` with given `flags` and `mode`.
+Opens the file specified by `path` with the given `flags` and `mode`.
+
+This is a low-level ABI wrapper. Prefer [`Linux::open_fd`] for normal use.
 
 [open]: https://www.man7.org/linux/man-pages/man2/open.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_FILENO, LINUX_O_FLAGS};
-let path = b"/tmp/test\0".as_ptr().cast();
-let fd = unsafe {
-    Linux::sys_open(path, LINUX_O_FLAGS::RDWR | LINUX_O_FLAGS::CREAT, 0o644)
-};
-assert!(fd > 0);
-```
+# Safety
+- `path` must point to a valid null-terminated string.
+- `flags` and `mode` must be valid for the target path and operation.
+- On success, the returned descriptor is owned by the caller and must be closed.
+"#;
+
+_DOC_SYS_OPENAT = r#"Performs an [openat] syscall.
+
+Opens the file specified by `path` relative to the directory file descriptor
+`dirfd`, using the given `flags` and `mode`.
+
+This is a low-level ABI wrapper. Prefer [`Linux::open_fd_at`] for normal use.
+
+[openat]: https://www.man7.org/linux/man-pages/man2/openat.2.html
 
 # Safety
-- path must point to valid null-terminated string
-- Caller must ensure proper file permissions
+- `path` must point to a valid null-terminated string.
+- `dirfd` must be valid when `path` is relative, unless it uses the current
+  working directory sentinel.
+- `flags` and `mode` must be valid for the target path and operation.
+- On success, the returned descriptor is owned by the caller and must be closed.
 "#;
 
 _DOC_SYS_CLOSE = r#"Performs a [close] syscall.
 
 Closes the file descriptor `fd`.
 
+This is a low-level ABI wrapper. Prefer [`Linux::close_fd`] for normal use.
+
 [close]: https://www.man7.org/linux/man-pages/man2/close.2.html
 
-# Examples
-```no_run
-# use devela::Linux;
-let fd = 3; // Example descriptor
-let result = unsafe { Linux::sys_close(fd) };
-assert_eq!(result, 0);
-```
-
 # Safety
-- `fd` must be valid open file descriptor
-- No further operations should use `fd` after closing
+- `fd` must be a valid open file descriptor.
+- No further operation may use `fd` after it is closed.
+- The caller must not retry `close` blindly after an error, because the
+  descriptor may already have been released and reused.
 "#;
 
 _DOC_SYS_LSEEK = r#"Performs an [lseek] syscall.
 
-Repositions file offset for `fd` based on `whence`:
-- `SEEK_SET` - absolute `offset`
-- `SEEK_CUR` - relative to current
-- `SEEK_END` - relative to end
+Repositions the file offset for `fd` according to `whence`.
+
+This is a low-level ABI wrapper. Prefer a typed seek wrapper when available.
 
 [lseek]: https://www.man7.org/linux/man-pages/man2/lseek.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_SEEK};
-let fd = 3; // Example descriptor
-let offset = unsafe { Linux::sys_lseek(fd, 1024, LINUX_SEEK::SET) };
-assert!(offset >= 0);
-```
-
 # Safety
-- `fd` must be open and seekable
-- Invalid offsets may return EINVAL
+- `fd` must be a valid open file descriptor.
+- `fd` must refer to a seekable object.
+- `whence` must be a valid Linux seek mode.
+- `offset` must be valid for the selected seek mode.
+- The caller must handle invalid offsets, sparse-file holes, and non-seekable
+  descriptors.
 "#;
 
 _DOC_SYS_DUP = r#"Performs a [dup] syscall.
 
-Duplicates file descriptor `oldfd` to lowest-numbered available fd.
+Duplicates file descriptor `oldfd` to the lowest-numbered available descriptor.
+
+This is a low-level ABI wrapper. Prefer a typed descriptor-cloning wrapper when
+available.
 
 [dup]: https://www.man7.org/linux/man-pages/man2/dup.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_FILENO};
-let new_fd = unsafe { Linux::sys_dup(LINUX_FILENO::STDOUT) };
-assert!(new_fd > 0);
-```
-
 # Safety
-- `oldfd` must be valid open file descriptor
+- `oldfd` must be a valid open file descriptor.
+- On success, the returned descriptor is owned by the caller and must be closed.
+- The duplicated descriptor shares the same open file description, including
+  file offset and file status flags.
 "#;
 
 _DOC_SYS_DUP2 = r#"Performs a [dup2] syscall.
 
-Duplicates `oldfd` to specific `newfd`, closing `newfd` first if open.
+Duplicates `oldfd` to the descriptor number `newfd`, closing `newfd` first if it
+is already open.
+
+This is a low-level ABI wrapper. Use only when exact descriptor-number control
+is required.
 
 [dup2]: https://www.man7.org/linux/man-pages/man2/dup2.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_FILENO};
-let new_fd = unsafe {
-    Linux::sys_dup2(LINUX_FILENO::STDOUT, 10) // Duplicate stdout to fd 10
-};
-assert_eq!(new_fd, 10);
-```
-
 # Safety
-- Both descriptors must be valid
-- May unexpectedly close `newfd` if already open
+- `oldfd` must be a valid open file descriptor.
+- `newfd` must be either a valid descriptor number or equal to `oldfd`.
+- If `newfd` is open and differs from `oldfd`, it may be closed by this call.
+- On success, `newfd` becomes an owned duplicate that must eventually be closed,
+  unless ownership is deliberately transferred elsewhere.
 "#;
 
 _DOC_SYS_FCNTL = r#"Performs a [fcntl] syscall.
 
-Manipulates file descriptor properties (duplication, flags, locks).
+Manipulates file descriptor properties such as duplication, flags, and locks.
+
+This is a low-level ABI wrapper. Prefer a typed fd-state wrapper when available.
 
 [fcntl]: https://www.man7.org/linux/man-pages/man2/fcntl.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_F_CMD, LINUX_FILENO};
-let fd = 3; // Example descriptor
-let flags = unsafe { Linux::sys_fcntl(fd, LINUX_F_CMD::GETFL, 0) };
-```
-
 # Safety
-- Operation must match expected argument type
-- Lock operations require careful process coordination
+- `fd` must be a valid open file descriptor.
+- `cmd` must be a valid Linux `fcntl` command.
+- `arg` must have the representation expected by `cmd`.
+- Locking commands require process-wide coordination to avoid races and
+  deadlocks.
 "#;
-
 
 /* Filesystem */// stat, fstat, getdents
 
 _DOC_SYS_STAT = r#"Performs a [stat] syscall.
 
-Gets file status for `path` into `statbuf` (follows symlinks).
+Gets file status for `path` into `statbuf`, following symbolic links.
 
 [stat]: https://www.man7.org/linux/man-pages/man2/stat.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LinuxStat};
-let path = b"/etc/passwd\0".as_ptr().cast();
-let mut stat = LinuxStat::default();
-unsafe { Linux::sys_stat(path, &mut stat) };
-assert!(stat.st_size > 0);
-```
-
 # Safety
-- `path` must be valid null-terminated string
-- `statbuf` must have full struct alignment
+- `path` must point to a valid null-terminated string.
+- `statbuf` must be valid for writes of one `LinuxStat`.
+- `statbuf` must have the alignment required by `LinuxStat`.
 "#;
 
 _DOC_SYS_FSTAT = r#"Performs an [fstat] syscall.
@@ -201,239 +178,191 @@ Gets file status for open descriptor `fd` into `statbuf`.
 
 [fstat]: https://www.man7.org/linux/man-pages/man2/fstat.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LinuxStat};
-let mut stat = LinuxStat::default();
-let fd = 3; // Example descriptor
-unsafe { Linux::sys_fstat(fd, &mut stat) };
-assert!(stat.st_mode & 0o777 > 0);
-```
-
 # Safety
-- `fd` must be valid open descriptor
-- Same alignment requirements as `stat`
+- `fd` must be a valid open file descriptor.
+- `statbuf` must be valid for writes of one `LinuxStat`.
+- `statbuf` must have the alignment required by `LinuxStat`.
 "#;
 
 _DOC_SYS_GETDENTS = r#"Performs a [getdents] syscall.
 
-Reads directory entries from `fd` into `dirp` buffer of size `count`.
+Reads directory entries from directory descriptor `fd` into `dirp`.
 
 [getdents]: https://www.man7.org/linux/man-pages/man2/getdents.2.html
 
-# Examples
-```no_run
-# use devela::Linux;
-let mut buf: [u8; 2048] = [0; 2048];
-let dir_fd = 3; // Example descriptor
-let entries = unsafe {
-    Linux::sys_getdents(dir_fd, buf.as_mut_ptr(), buf.len())
-};
-assert!(entries > 0);
-```
-
 # Safety
-- `fd` must be valid directory file descriptor
-- Buffer must have sufficient size for directory entries
+- `fd` must be a valid open directory file descriptor.
+- `dirp` must be valid for writes of `count` bytes.
+- `dirp` must remain valid for the duration of the syscall.
+- The caller must parse the returned variable-length directory records according
+  to the Linux ABI.
 "#;
+
 
 /* Device and special I/O */// ioctl
 
 _DOC_SYS_IOCTL = r#"Performs an [ioctl] syscall.
 
-Performs a generic I/O control operation (ioctl) on the given file descriptor.
+Performs a generic I/O control operation on the given file descriptor.
 
-The operation to perform and the data to use is determined by the `request`
-argument, which is a device-specific request code, and the `argp` argument,
-which is a pointer to the data.
+The operation to perform and the data to use are determined by `request` and
+`argp`.
 
 [ioctl]: https://www.man7.org/linux/man-pages/man2/ioctl.2.html
 
 # Safety
-TODO
+- `fd` must be a valid open file descriptor for the target device or object.
+- `request` must be valid for that descriptor.
+- `argp` must be null or point to the exact data layout expected by `request`.
+- The pointed-to data must remain valid for the duration of the syscall.
+- The caller must uphold any device-specific aliasing, initialization, and
+  lifetime requirements.
 "#;
+
 
 /* IPC */// pipe, pipe2
 
 _DOC_SYS_PIPE = r#"Performs a [pipe] syscall.
 
-Creates unidirectional pipe channel. Writes to `pipefd[1]`, reads from `pipefd[0]`.
+Creates a unidirectional pipe. The first descriptor is the read end and the
+second descriptor is the write end.
 
 [pipe]: https://www.man7.org/linux/man-pages/man2/pipe.2.html
 
-# Examples
-```no_run
-# use devela::Linux;
-let mut fds = [0; 2];
-unsafe { Linux::sys_pipe(fds.as_mut_ptr()) };
-assert!(fds[0] > 0 && fds[1] > 0);
-```
-
 # Safety
-- Buffer must hold exactly 2 integers
-- Must close both ends when done
+- `pipefd` must be valid for writes of two `c_int` values.
+- On success, both returned descriptors are owned by the caller and must be
+  closed.
+- The caller must avoid leaking either end if later initialization fails.
 "#;
 
 _DOC_SYS_PIPE2 = r#"Performs a [pipe2] syscall.
 
-Creates pipe with flags (e.g. `LINUX_O_FLAGS::NONBLOCK`).
+Creates a pipe with Linux pipe flags.
+
+This is a low-level ABI wrapper. Prefer a typed pipe wrapper when available.
 
 [pipe2]: https://www.man7.org/linux/man-pages/man2/pipe2.2.html
 
-# Examples
-```no_run
-# use devela::{Linux, LINUX_O_FLAGS};
-let mut fds = [0; 2];
-unsafe { Linux::sys_pipe2(fds.as_mut_ptr(), LINUX_O_FLAGS::NONBLOCK) };
-```
-
 # Safety
-- Same as `pipe` plus valid flags
+- `pipefd` must be valid for writes of two `c_int` values.
+- `flags` must contain only flags accepted by `pipe2`.
+- On success, both returned descriptors are owned by the caller and must be
+  closed.
+- The caller must avoid leaking either end if later initialization fails.
 "#;
+
 
 /* Process control */// exit, getpid, getrandom
 
 _DOC_SYS_EXIT = r#"Performs an [exit] syscall.
 
-Terminate the process with an exit status.
+Terminates the current process with an exit status.
 
 [exit]: https://www.man7.org/linux/man-pages/man2/exit.2.html
 
-# Examples
-```
-# use devela::Linux;
-# #[cfg(target_os = "linux")]
-unsafe { Linux::sys_exit(0) };
-```
-
 # Safety
-TODO
+- This syscall does not return.
+- Destructors, buffered I/O flushing, thread cleanup, and normal Rust unwinding
+  will not run.
+- The caller must ensure immediate process termination is acceptable.
 "#;
 
 _DOC_SYS_GETPID = r#"Performs a [getpid] syscall.
 
-Get process identification.
+Returns the process identifier of the calling process.
 
 [getpid]: https://www.man7.org/linux/man-pages/man2/getpid.2.html
 
-# Examples
-```no_run
-# use devela::Linux;
-# #[cfg(target_os = "linux")]
-let pid: i32 = unsafe { Linux::sys_getpid() };
-```
-
 # Safety
-TODO
+This syscall has no pointer, ownership, or memory-safety preconditions.
+It is marked unsafe only because it uses the raw syscall interface.
 "#;
 
 _DOC_SYS_GETRANDOM = r#"Performs a [getrandom] syscall.
 
-Obtain a series of random bytes.
+Obtains random bytes from the kernel random source.
 
 [getrandom]: https://www.man7.org/linux/man-pages/man2/getrandom.2.html
-
-# Examples
-```no_run
-# use devela::Linux;
-let mut r = 0u8;
-# #[cfg(target_os = "linux")]
-unsafe { Linux::sys_getrandom(&mut r as *mut u8, 1, 0) };
-```
 
 # Flags
 
 - `GRND_RANDOM` = 0x001
 
-  Use the `/dev/random` (blocking) source instead of the `/dev/urandom`
-  (non-blocking) source to obtain randomness.
-
-  If this flag is specified, the call may block, potentially for quite some
-  time, even after the randomness source has been initialized. If it is not
-  specified, the call can only block when the system has just booted and the
-  randomness source has not yet been initialized.
+  Use the `/dev/random` source instead of the `/dev/urandom` source.
 
 - `GRND_NONBLOCK` = 0x002
 
-  Instead of blocking, return to the caller immediately if no data is available.
+  Return immediately if no data is available.
 
 - `GRND_INSECURE` = 0x0004
 
   Write random data that may not be cryptographically secure.
 
 # Safety
-TODO
+- `buf` must be valid for writes of `buflen` bytes.
+- `buf` must remain valid for the duration of the syscall.
+- `flags` must contain only flags accepted by `getrandom`.
+- The caller must handle short reads, blocking behavior, and retry policy.
 "#;
+
 
 /* Timing and signal handling */// clock_[getres|gettime|…], nanosleep, rt_sigaction
 
 _DOC_SYS_CLOCK_GETRES = r#"Performs a [clock_getres] syscall.
 
-Finds the resolution (precision) of the specified clock `clock_id`
-and stores it in the timespec structure pointed to by `tp`.
+Finds the resolution of `clock_id` and stores it in `tp`.
 
 [clock_getres]: https://www.man7.org/linux/man-pages/man2/clock_getres.2.html
 
 # Safety
-TODO
+- `tp` must be null or valid for writes of one `LinuxTimespec`.
+- If non-null, `tp` must have the alignment required by `LinuxTimespec`.
+- `clock_id` must be valid for Linux.
 "#;
 
 _DOC_SYS_CLOCK_GETTIME = r#"Performs a [clock_gettime] syscall.
 
-Retrieves the time of the specified clock `clock_id`
-and stores it in the timespec structure pointed to by `res`.
-
-Returns the syscall return value (0 for success, -1 for error with errno set).
+Retrieves the time of `clock_id` and stores it in `tp`.
 
 [clock_gettime]: https://www.man7.org/linux/man-pages/man2/clock_gettime.2.html
 
-# Examples
-```
-# use devela::{Linux, LinuxTimespec, LinuxClock};
-let mut tp = LinuxTimespec::default();
-# #[cfg(target_os = "linux")]
-assert_eq![0, unsafe { Linux::sys_clock_gettime(LinuxClock::Realtime, &mut tp) }];
-```
-
 # Safety
-TODO
+- `tp` must be valid for writes of one `LinuxTimespec`.
+- `tp` must have the alignment required by `LinuxTimespec`.
+- `clock_id` must be valid for Linux.
 "#;
 
 _DOC_SYS_NANOSLEEP = r#"Performs a [nanosleep] syscall.
 
-Suspend execution of calling thread.
+Suspends execution of the calling thread.
 
-Suspension will last until either the time interval specified in `*req`
-has elapsed or a signal is delivered to the calling thread, in which
-case the remaining time will be stored in `rem`.
-
-Returns the syscall return value.
+The suspension lasts until the requested interval elapses or a signal interrupts
+the sleep. If interrupted and `rem` is non-null, the remaining time is written
+there.
 
 [nanosleep]: https://www.man7.org/linux/man-pages/man2/nanosleep.2.html
 
-# Examples
-```
-# use devela::{Duration, Linux, LinuxTimespec};
-let mut req = LinuxTimespec::try_from(Duration::from_millis(99)).unwrap();
-let mut rem = LinuxTimespec::default();
-# #[cfg(target_os = "linux")]
-assert_eq![0, unsafe { Linux::sys_nanosleep(&mut req, &mut rem) }];
-```
-
 # Safety
-TODO
+- `req` must point to a valid `LinuxTimespec`.
+- `rem` must be null or valid for writes of one `LinuxTimespec`.
+- Both pointers must remain valid for the duration of the syscall.
+- `req` must represent a valid nonnegative sleep duration.
 "#;
 
 _DOC_SYS_RT_SIGACTION = r#"Performs an [rt_sigaction] syscall.
 
-Examine and change a signal action.
+Examines or changes a signal action.
 
 [rt_sigaction]: https://man7.org/linux/man-pages/man2/rt_sigaction.2.html
 
-# Flags
-
 # Safety
-TODO
+- `signum` must identify a signal whose action may be inspected or changed.
+- `act` must be null or point to a valid Linux signal-action structure.
+- `oldact` must be null or valid for writes of one Linux signal-action
+  structure.
+- `sigsetsize` must match the kernel ABI expected for the target architecture.
+- The installed handler, mask, and flags must obey signal-safety requirements.
 "#;
 
 }
