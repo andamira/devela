@@ -3,6 +3,7 @@
 //! An scanner/segmentator of extended grapheme clusters.
 //
 
+mod iter; // GraphemeIter
 mod machine; // GraphemeBoundary, GraphemeMachine
 mod properties; // GraphemeProps, GraphemePropCb, GraphemePropInCb
 mod scanner; // GraphemeScanner
@@ -14,6 +15,7 @@ mod layout; // text-layout methods for GraphemeScanner
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            iter::GraphemeIter,
             machine::{GraphemeBoundary, GraphemeMachine},
             properties::{GraphemePropCb, GraphemePropInCb, GraphemeProps},
             scanner::GraphemeScanner,

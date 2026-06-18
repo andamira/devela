@@ -22,7 +22,8 @@
 /// - [text traversal methods](#text-traversal-methods)
 ///   - [chars](#method.chars),
 ///   - [char_count](#method.char_count),
-///   - [graphemes_in](#method.graphemes_in), ([*charu*](#method.graphemes_charu_in)),
+///   - [graphemes](#method.graphemes), ([*in*](#method.graphemes_in)),
+///     [*charu*](#method.graphemes_charu), [*charu_in*](#method.graphemes_charu_in)),
 ///   - [grapheme_count](#method.grapheme_count).
 ///
 /// - [equality and boundary methods](#equality-and-boundary-methods)

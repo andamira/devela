@@ -9,7 +9,7 @@ use ::core::str::from_utf8_mut;
 
 use crate::{CharIter, InvalidUtf8, Str};
 #[cfg(feature = "grapheme")]
-use crate::{GraphemeBoundary, GraphemeMachine, GraphemeScanner, charu, is};
+use crate::{GraphemeBoundary, GraphemeIter, GraphemeMachine, GraphemeScanner, charu, is};
 #[allow(unused_imports, reason = "±unsafe")]
 use {
     crate::unwrap,
@@ -118,6 +118,19 @@ impl Str {
 
     /* graphemes */
 
+    /// Returns an iterator over grapheme-boundary actions and Unicode scalars.
+    #[inline(always)]
+    #[cfg(feature = "grapheme")]
+    pub const fn graphemes(string: &str) -> GraphemeIter<'_, char> {
+        GraphemeIter::<char>::new(string)
+    }
+    /// Returns an iterator over grapheme-boundary actions and [`charu`] scalars.
+    #[inline(always)]
+    #[cfg(feature = "grapheme")]
+    pub const fn graphemes_charu(string: &str) -> GraphemeIter<'_, charu> {
+        GraphemeIter::<charu>::new_charu(string)
+    }
+
     /// Returns a grapheme-boundary scanner over `string`.
     ///
     /// The caller provides the machine so the scan can continue across buffers.
@@ -144,10 +157,9 @@ impl Str {
     #[must_use]
     #[cfg(feature = "grapheme")]
     pub const fn grapheme_count(string: &str) -> usize {
-        let mut machine = GraphemeMachine::new();
-        let mut scanner = machine.next_charu_from_str(string);
+        let mut iter = Self::graphemes_charu(string);
         let mut count = 0;
-        while let Some((boundary, _)) = scanner.next() {
+        while let Some((boundary, _)) = iter.next() {
             is! { boundary.eq(GraphemeBoundary::Split), count += 1 }
         }
         count

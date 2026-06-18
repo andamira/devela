@@ -23,8 +23,7 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 ///
 /// `TextScanner` provides incremental, allocation-free traversal over a borrowed
 /// text source, exposing byte-oriented operations suitable for building parsers.
-///
-/// Owns traversal state and delegates stateless string/slice operations
+/// It Owns traversal state and delegates stateless string/slice operations
 /// to [`Str`][] and [`Slice`] where possible.
 ///
 /// # Methods

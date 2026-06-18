@@ -16,6 +16,10 @@ mod layout; // common methods related to text-layout
 ///
 /// Implements `Iterator<Item = char>` by default, but provides specialized methods
 /// for other scalar types.
+///
+/// For grapheme-level iteration see [`GraphemeIter`].
+///
+/// [`GraphemeIter`]: crate::GraphemeIter
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CharIter<'a, Source> {

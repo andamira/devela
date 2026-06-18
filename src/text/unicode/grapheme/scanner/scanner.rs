@@ -12,7 +12,7 @@ use crate::{
 };
 
 #[doc = crate::_tags!(text iterator)]
-/// Scans text and detects grapheme cluster boundaries during iteration.
+/// Borrows grapheme segmentation state while scanning a string slice.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme"),
     #[cfg(target_pointer_width = "32")]
@@ -23,6 +23,8 @@ use crate::{
 ///
 /// Can process different text representations (`&str`, `&[u8]`) while
 /// tracking grapheme cluster boundaries through a `GraphemeMachine`.
+///
+/// This is the borrowing counterpart to [`GraphemeIter`][crate::GraphemeIter].
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct GraphemeScanner<'a, C> {
     machine: &'a mut GraphemeMachine,
