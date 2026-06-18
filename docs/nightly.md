@@ -47,6 +47,7 @@ See also
 - 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.98: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
+- 1.98: `·`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
 
 
 # 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
@@ -121,7 +122,6 @@ See also
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `?`[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912) WAIT
-- 1.??: `·`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
 - 1.??: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
