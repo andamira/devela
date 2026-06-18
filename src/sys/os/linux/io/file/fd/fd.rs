@@ -3,11 +3,10 @@
 //! Defines [`LinuxFd`].
 //
 
-use crate::{
-    FdRaw, IoRead, IoResult, IoWrite, Linux, LinuxResult, LinuxSeekFrom, ManuallyDrop, Mem, c_off_t,
-};
+use crate::{FdRaw, Linux, LinuxError, LinuxResult, LinuxSeekFrom, LinuxStat, c_off_t};
 #[cfg(any(feature = "std", feature = "io"))]
 use crate::{IoError, IoErrorKind, IoSeek, IoSeekFrom};
+use crate::{IoRead, IoResult, IoWrite, ManuallyDrop, Mem, is};
 
 const INVALID_FD: FdRaw = -1;
 
@@ -43,6 +42,23 @@ impl LinuxFd {
         let fd = self.fd;
         Mem::forget(self);
         fd
+    }
+    /// Gets file status for this descriptor.
+    pub fn stat_raw(&self) -> LinuxResult<LinuxStat> {
+        Linux::stat_fd(self.fd)
+    }
+
+    /// Returns the size of this descriptor's file, if representable as `usize`.
+    pub fn len_raw(&self) -> LinuxResult<usize> {
+        Linux::stat_fd(self.fd)?.size_usize().ok_or(LinuxError::Other("file size out of range"))
+    }
+    /// Returns whether this descriptor refers to a regular file.
+    pub fn is_file_raw(&self) -> LinuxResult<bool> {
+        Ok(self.stat_raw()?.is_file())
+    }
+    /// Returns whether this descriptor refers to a directory.
+    pub fn is_dir_raw(&self) -> LinuxResult<bool> {
+        Ok(self.stat_raw()?.is_dir())
     }
 
     /// Closes this descriptor.
@@ -81,7 +97,7 @@ impl LinuxFd {
         let mut total = 0;
         while !buf.is_empty() {
             let n = self.read_raw(buf)?;
-            if n == 0 { break; }
+            is! { n == 0, break; }
             total += n;
             buf = &mut buf[n..];
         }

@@ -12,7 +12,7 @@ mod fd; // LinuxFd, LinuxSeekFrom, (LINUX_<AT|FILENO|O_FLAGS|SEEK>)
 mod ioctl; // LINUX_IOCTL
 mod open; // LinuxOpenOptions
 mod pipe; // LinuxPipe, LinuxPipeFlags
-mod stat; // LinuxStat, LINUX_S_IFMT
+mod stat; // LinuxStat, LinuxFileType, (LINUX_S_IFMT)
 
 crate::structural_mods! { // _mods, crate_internals
     _mods {
@@ -22,12 +22,13 @@ crate::structural_mods! { // _mods, crate_internals
             ioctl::*,
             open::*,
             pipe::*,
-            stat::*,
+            stat::_all::*,
         };
     }
     _crate_internals {
         pub(crate) use super::{
             fd::_crate_internals::*,
+            stat::_crate_internals::*,
         };
     }
 }

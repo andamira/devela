@@ -169,8 +169,8 @@ impl Linux {
 /// # Syscalls: Filesystem.
 impl Linux {
     #[must_use]
-    #[doc = _DOC_SYS_STAT!()] // NOTE: there's NEWFSTATAT for x86_64 as well
-    pub unsafe fn sys_stat(fd: c_int, statbuf: *mut LinuxStat) -> isize {
+    #[doc = _DOC_SYS_STAT!()]
+    pub unsafe fn sys_stat(path: *const c_char, statbuf: *mut LinuxStat) -> isize {
         let result: isize;
         unsafe {
             asm!(
@@ -178,7 +178,7 @@ impl Linux {
                 "svc 0",
                 NEWFSTATAT = const SYS::NEWFSTATAT,
                 in("x0") LINUX_AT::FDCWD, // emulate stat by using current working directory
-                in("x1") fd,
+                in("x1") path,
                 in("x2") statbuf,
                 in("x3") 0, // flags = 0 to mimic stat behavior
                 lateout("x0") result,

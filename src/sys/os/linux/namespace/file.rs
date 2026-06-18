@@ -3,14 +3,17 @@
 //! File-descriptor-oriented Linux operations.
 //
 
-use crate::{CStr, FdRaw, LINUX_AT, LINUX_ERRNO, LinuxError, LinuxResult, c_off_t};
-use crate::{Linux, LinuxFd, LinuxOpenOptions, LinuxPipe, LinuxPipeFlags, LinuxSeekFrom};
+use crate::{CStr, FdRaw, MaybeUninit, c_off_t};
+use crate::{LINUX_AT, LINUX_ERRNO, Linux, LinuxError, LinuxResult};
+use crate::{LinuxFd, LinuxOpenOptions, LinuxPipe, LinuxPipeFlags, LinuxSeekFrom, LinuxStat};
 #[cfg(feature = "alloc")]
-use crate::{LinuxStat, Vec, vec_};
+use crate::{Vec, vec_};
 
 /// # File-descriptor-related methods.
 #[rustfmt::skip]
 impl Linux {
+    /* open, close and duplicate */
+
     /// Opens a path as an owned Linux file descriptor.
     ///
     /// Uses `openat` with `AT_FDCWD`, so relative paths
@@ -42,6 +45,7 @@ impl Linux {
         if fd < 0 { Err(LinuxError::Sys(fd as isize)) }
         else { Ok(unsafe { LinuxFd::from_raw(fd) }) }
     }
+
     /// Closes a file descriptor.
     ///
     /// This does not retry on failure.
@@ -49,12 +53,34 @@ impl Linux {
         let n = unsafe { Self::sys_close(fd) };
         if n < 0 { Err(LinuxError::Sys(n)) } else { Ok(()) }
     }
+
     /// Duplicates a file descriptor into a new owned descriptor.
     pub fn dup_fd(fd: FdRaw) -> LinuxResult<LinuxFd> {
         let new_fd = unsafe { Self::sys_dup(fd) };
         if new_fd < 0 { Err(LinuxError::Sys(new_fd as isize)) }
         else { Ok(unsafe { LinuxFd::from_raw(new_fd) }) }
     }
+
+    /* path */
+
+    /// Returns whether a path exists.
+    pub fn path_exists(path: &CStr) -> bool {
+        Self::stat_path(path).is_ok()
+    }
+    /// Returns whether a path points to a regular file.
+    pub fn path_is_file(path: &CStr) -> LinuxResult<bool> {
+        Ok(Self::stat_path(path)?.is_file())
+    }
+    /// Returns whether a path points to a directory.
+    pub fn path_is_dir(path: &CStr) -> LinuxResult<bool> {
+        Ok(Self::stat_path(path)?.is_dir())
+    }
+    /// Returns the size of a path in bytes, if representable as `usize`.
+    pub fn path_size(path: &CStr) -> LinuxResult<usize> {
+        Self::stat_path(path)?.size_usize().ok_or(LinuxError::Other("file size out of range"))
+    }
+
+    /* pipe */
 
     /// Creates an anonymous pipe.
     ///
@@ -76,12 +102,7 @@ impl Linux {
         Self::pipe_fd_with(LinuxPipeFlags::CLOEXEC.with(LinuxPipeFlags::NONBLOCK))
     }
 
-    /// Repositions the file offset for a descriptor.
-    pub fn seek_fd(fd: FdRaw, pos: LinuxSeekFrom) -> LinuxResult<c_off_t> {
-        let (offset, whence) = pos.raw();
-        let n = unsafe { Self::sys_lseek(fd, offset, whence) };
-        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(n) }
-    }
+    /* read & seek */
 
     /// Reads bytes from a file descriptor.
     ///
@@ -90,13 +111,9 @@ impl Linux {
         if buf.is_empty() { return Ok(0) }
         loop {
             let n = unsafe { Self::sys_read(fd, buf.as_mut_ptr(), buf.len()) };
-            if n >= 0 {
-                return Ok(n as usize);
-            } else if n == -LINUX_ERRNO::EINTR {
-                continue;
-            } else {
-                return Err(LinuxError::Sys(n));
-            }
+            if n >= 0 { return Ok(n as usize); }
+            else if n == -LINUX_ERRNO::EINTR { continue; }
+            else { return Err(LinuxError::Sys(n)); }
         }
     }
     /// Reads exactly enough bytes to fill `buf`.
@@ -136,6 +153,32 @@ impl Linux {
         Ok(buf)
     }
 
+    /// Repositions the file offset for a descriptor.
+    pub fn seek_fd(fd: FdRaw, pos: LinuxSeekFrom) -> LinuxResult<c_off_t> {
+        let (offset, whence) = pos.raw();
+        let n = unsafe { Self::sys_lseek(fd, offset, whence) };
+        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(n) }
+    }
+
+    /* stat */
+
+    /// Gets file status for an open file descriptor.
+    pub fn stat_fd(fd: FdRaw) -> LinuxResult<LinuxStat> {
+        let mut stat = MaybeUninit::<LinuxStat>::uninit();
+        let n = unsafe { Self::sys_fstat(fd, stat.as_mut_ptr()) };
+        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(unsafe { stat.assume_init() }) }
+    }
+    /// Gets file status for a path.
+    ///
+    /// Follows symbolic links.
+    pub fn stat_path(path: &CStr) -> LinuxResult<LinuxStat> {
+        let mut stat = MaybeUninit::<LinuxStat>::uninit();
+        let n = unsafe { Self::sys_stat(path.as_ptr(), stat.as_mut_ptr()) };
+        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(unsafe { stat.assume_init() }) }
+    }
+
+    /* write & append */
+
     /// Writes bytes to a file descriptor.
     ///
     /// Retries if interrupted before writing any bytes.
@@ -143,13 +186,9 @@ impl Linux {
         if buf.is_empty() { return Ok(0) }
         loop {
             let n = unsafe { Self::sys_write(fd, buf.as_ptr(), buf.len()) };
-            if n >= 0 {
-                return Ok(n as usize);
-            } else if n == -LINUX_ERRNO::EINTR {
-                continue;
-            } else {
-                return Err(LinuxError::Sys(n));
-            }
+            if n >= 0 { return Ok(n as usize); }
+            else if n == -LINUX_ERRNO::EINTR { continue; }
+            else { return Err(LinuxError::Sys(n)); }
         }
     }
     /// Writes all bytes to a file descriptor, handling partial writes.

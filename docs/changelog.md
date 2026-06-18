@@ -63,10 +63,10 @@
 - modularize browser JS bindings.
 
 #### sys::os::linux
-- new types: `LinuxFd`, `LinuxOpenOptions`, `LinuxPipe`, `LinuxPipeFlags`, `LinuxSeekFrom`.
+- new types: `LinuxFd`, `LinuxFileType`, `LinuxOpenOptions`, `LinuxPipe`, `LinuxPipeFlags`, `LinuxSeekFrom`.
 - add private types: `LINUX_AT`.
 - delete private types: `AT_FDCWD`.
-- make crate-private: `LINUX_FILENO`, `LINUX_O_FLAGS`, `LINUX_SEEK`.
+- make crate-private: `LINUX_FILENO`, `LINUX_O_FLAGS`, `LINUX_S_IFMT`, `LINUX_SEEK`.
 - update `Linux`:
   - new methods: `open_fd`, `open_fd_at`, `close_fd`, `read_fd`, `write_fd`, `write_fd_all`, `syscall_openat`.
   - re-implement stdio read and write methods.
