@@ -40,6 +40,9 @@
 ### code::util
 - extend `whilst!` with indexed slice iteration.
 
+#### data::access::route
+- new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
+
 #### data::layout::buffer
 - new macro `buffer_ring!`.
 - update `buffer_linear!`:

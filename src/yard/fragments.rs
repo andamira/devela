@@ -51,13 +51,15 @@ a structured alternative to the fully flat `all` namespace.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
 
     // 2. data (structure without interpretation)
-    _DOC_DATA              = "Data handling and manipulation.";
-    _QUO_DATA              = "> How values are organized and accessed.";
+    _DOC_DATA               = "Data handling and manipulation.";
+    _QUO_DATA               = "> How values are organized and accessed.";
     _DOC_DATA_ACCESS         = "Mechanisms of reachability and traversal.";
     _QUO_DATA_ACCESS         = "> Reachability without relocation.";
     _DOC_DATA_ACCESS_ADDRESS = "Addressability and directed reachability.";
     _DOC_DATA_ACCESS_CURSOR  = "Explicit traversal over ordered data.";
     _DOC_DATA_ACCESS_ITER    = "Composable external iteration.";
+    _DOC_DATA_ACCESS_ROUTE   = "Segmented access routes.";
+    // _QUO_DATA_ACCESS_ROUTE   = "> Ordered reachability before resolution.";
     _DOC_DATA_CODEC         = "Data encoding and decoding abstractions.";
     _QUO_DATA_CODEC         = "> Structured, algorithmic transformations of data representations.";
     _DOC_DATA_CODEC_BIN     = "Binary representation atoms.";
