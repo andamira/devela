@@ -5,7 +5,7 @@ use ::core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
 use ::core::slice::{from_raw_parts, from_raw_parts_mut};
 
-/// # `core::slice` namespaced methods.
+/// # Core slice operations.
 #[rustfmt::skip]
 impl<T> Slice<T> {
     /// Clones all elements from `src` into `dst`.
@@ -68,7 +68,6 @@ impl<T> Slice<T> {
     ///
     /// See also `Ptr::`[`slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
     #[inline(always)]
-    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     #[cfg(all(not(feature = "safe_mem"), unsafe··))]
     pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
         // SAFETY: Caller must uphold the safety contract.
@@ -82,7 +81,6 @@ impl<T> Slice<T> {
     ///
     /// See also `Ptr::`[`slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
     #[inline(always)]
-    #[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
     #[cfg(all(not(feature = "safe_mem"), unsafe··))]
     pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
         // SAFETY: Caller must uphold the safety contract.

@@ -1,4 +1,4 @@
-// devela/src/sys/mem/view/slice/namespace/tests.rs
+// devela/src/sys/mem/view/slice/namespace/_tests.rs
 
 use crate::Slice;
 
