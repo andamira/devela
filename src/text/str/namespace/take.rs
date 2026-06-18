@@ -1,7 +1,4 @@
 // devela/src/text/str/namespace/take.rs
-//
-//! Implements take methods for [`Str`].
-//
 
 use crate::{Str, unwrap};
 

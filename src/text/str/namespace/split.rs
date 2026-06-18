@@ -1,7 +1,4 @@
 // devela/src/text/str/namespace/split.rs
-//
-//! Implements split methods for [`Str`].
-//
 
 use crate::{Cmp, Str};
 

@@ -19,7 +19,7 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             iter::*,
-            namespace::*,
+            namespace::_all::*,
             scalar::_all::*,
             unicode_scalar::*,
         };

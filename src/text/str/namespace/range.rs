@@ -1,7 +1,4 @@
 // devela/src/text/str/namespace/range.rs
-//
-//! Implements range methods for [`Str`].
-//
 
 use crate::{Str, is, unwrap};
 

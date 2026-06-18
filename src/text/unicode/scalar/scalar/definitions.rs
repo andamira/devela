@@ -122,7 +122,7 @@ pub struct charu(pub(super) NonNiche<u32>);
 ///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///
-/// `Option<charu_niche>` is the same size as `charu_niche` (4 bytes),
+/// `Option<charu_niche>` is the same size as `charu_niche`,
 /// prioritizing memory over speed. For the opposite trade-off see [`charu`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value

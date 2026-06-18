@@ -78,6 +78,10 @@
 #### sys::os::term
 - make `ansi` module public.
 
+### text::str
+- update `Str`:
+  - add methods: `eq`, `starts_with[_char]`, `ends_with[_char]`, `strip_<prefix|suffix>[_char]`, `strip_circumfix[_chars]`.
+
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `widget`.
 
