@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    FdRaw, IoRead, IoResult, IoWrite, Linux, LinuxResult, LinuxSeekFrom, ManuallyDrop, c_off_t,
+    FdRaw, IoRead, IoResult, IoWrite, Linux, LinuxResult, LinuxSeekFrom, ManuallyDrop, Mem, c_off_t,
 };
 #[cfg(any(feature = "std", feature = "io"))]
 use crate::{IoError, IoErrorKind, IoSeek, IoSeekFrom};
@@ -41,7 +41,7 @@ impl LinuxFd {
     #[must_use]
     pub fn into_raw(self) -> FdRaw {
         let fd = self.fd;
-        core::mem::forget(self);
+        Mem::forget(self);
         fd
     }
 
@@ -73,6 +73,19 @@ impl LinuxFd {
     /// Reads exactly enough bytes to fill `buf`.
     pub fn read_exact_raw(&mut self, buf: &mut [u8]) -> LinuxResult<()> {
         Linux::read_fd_exact(self.fd, buf)
+    }
+    /// Reads into `buf` until EOF or until `buf` is full.
+    ///
+    /// Returns the number of bytes read.
+    pub fn read_to_buf_raw(&mut self, mut buf: &mut [u8]) -> LinuxResult<usize> {
+        let mut total = 0;
+        while !buf.is_empty() {
+            let n = self.read_raw(buf)?;
+            if n == 0 { break; }
+            total += n;
+            buf = &mut buf[n..];
+        }
+        Ok(total)
     }
 
     /// Writes bytes to this descriptor.

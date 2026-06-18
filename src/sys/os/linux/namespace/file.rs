@@ -3,8 +3,10 @@
 //! File-descriptor-oriented Linux operations.
 //
 
-use crate::{CStr, FdRaw, LINUX_AT, LINUX_ERRNO, LinuxError, LinuxResult, c_int, c_off_t};
+use crate::{CStr, FdRaw, LINUX_AT, LINUX_ERRNO, LinuxError, LinuxResult, c_off_t};
 use crate::{Linux, LinuxFd, LinuxOpenOptions, LinuxPipe, LinuxPipeFlags, LinuxSeekFrom};
+#[cfg(feature = "alloc")]
+use crate::{LinuxStat, Vec, vec_};
 
 /// # File-descriptor-related methods.
 #[rustfmt::skip]
@@ -69,6 +71,10 @@ impl Linux {
         let write = unsafe { LinuxFd::from_raw(fds[1]) };
         Ok(LinuxPipe { read, write })
     }
+    /// Creates a close-on-exec nonblocking anonymous pipe.
+    pub fn pipe_fd_nonblock() -> LinuxResult<LinuxPipe> {
+        Self::pipe_fd_with(LinuxPipeFlags::CLOEXEC.with(LinuxPipeFlags::NONBLOCK))
+    }
 
     /// Repositions the file offset for a descriptor.
     pub fn seek_fd(fd: FdRaw, pos: LinuxSeekFrom) -> LinuxResult<c_off_t> {
@@ -104,6 +110,31 @@ impl Linux {
         }
         Ok(())
     }
+    /// Reads a file from the beginning into `buf`.
+    ///
+    /// Stops at EOF or when `buf` is full, and returns the number of bytes read.
+    pub fn read_file_buf(path: &CStr, buf: &mut [u8]) -> LinuxResult<usize> {
+        let mut fd = Self::open_fd(path, LinuxOpenOptions::read_only())?;
+        fd.read_to_buf_raw(buf)
+    }
+    /// Reads exactly enough bytes from a file to fill `buf`.
+    pub fn read_file_exact(path: &CStr, buf: &mut [u8]) -> LinuxResult<()> {
+        let mut fd = Self::open_fd(path, LinuxOpenOptions::read_only())?;
+        fd.read_exact_raw(buf)
+    }
+    /// Reads an entire regular file into an allocated buffer.
+    #[cfg(feature = "alloc")]
+    pub fn read_file_alloc(path: &CStr) -> LinuxResult<Vec<u8>> {
+        let mut fd = Self::open_fd(path, LinuxOpenOptions::read_only())?;
+        let mut stat = LinuxStat::default();
+        let n = unsafe { Self::sys_fstat(fd.as_raw(), &mut stat) };
+        if n < 0 { return Err(LinuxError::Sys(n as isize)); }
+        let len = stat.st_size as usize;
+        let mut buf = vec_![0u8; len];
+        let read = fd.read_to_buf_raw(&mut buf)?;
+        buf.truncate(read);
+        Ok(buf)
+    }
 
     /// Writes bytes to a file descriptor.
     ///
@@ -129,5 +160,19 @@ impl Linux {
             buf = &buf[n..];
         }
         Ok(())
+    }
+    /// Writes all bytes to a file.
+    ///
+    /// Creates the file if missing and truncates it if it already exists.
+    pub fn write_file(path: &CStr, bytes: &[u8]) -> LinuxResult<()> {
+        let mut fd = Self::open_fd(path, LinuxOpenOptions::write_only().create() .truncate())?;
+        fd.write_all_raw(bytes)
+    }
+    /// Appends all bytes to a file.
+    ///
+    /// Creates the file if missing.
+    pub fn append_file(path: &CStr, bytes: &[u8]) -> LinuxResult<()> {
+        let mut fd = Self::open_fd(path, LinuxOpenOptions::write_only().create().append())?;
+        fd.write_all_raw(bytes)
     }
 }
