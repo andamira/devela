@@ -43,6 +43,8 @@ pub struct Pnm;
 
 #[rustfmt::skip]
 impl Pnm {
+    /* queries */
+
     /// Returns the image extent declared by the PNM header.
     ///
     /// Supports P1 through P6.
@@ -59,6 +61,8 @@ impl Pnm {
         h.sample_len()
     }
 
+    /* decode */
+
     /// Decodes a PNM image into unpacked `u8` samples.
     ///
     /// Returns the decoded image extent and channel count.
@@ -74,7 +78,7 @@ impl Pnm {
     pub const fn decode_u8(bytes: &[u8], out: &mut [u8]) -> ImageResult<(Extent2<usize>, u8)> {
         let header = unwrap![ok? Self::read_header(bytes)];
         let needed = unwrap![ok? header.sample_len()];
-        if out.len() != needed { return Err(InsufficientBuffer { needed, available: out.len() }); }
+        if out.len() < needed { return Err(InsufficientBuffer { needed, available: out.len() }); }
         if header.max_value > 255 { return Err(InvalidPixel); }
         match header.format {
             P1 | P2 | P3 => unwrap![ok? Self::decode_ascii_u8(bytes, header, out)],
@@ -84,7 +88,7 @@ impl Pnm {
         Ok((header.extent(), header.format.channels()))
     }
 
-    /* P1...P6 */
+    /* encode P1...P6 */
 
     /// Encodes unpacked bitmap samples as ASCII PBM P1 into caller-provided storage.
     ///

@@ -9,7 +9,8 @@
 #![cfg_attr(feature = "safe_image", forbid(unsafe_code))]
 
 mod error;
-pub mod format; // WIP Png, Pnm, Qoi, …
+mod info; // ImageInfo, ImageFrame<Info|Span>
+pub mod format; // Pnm, WIP Jpeg, Png, Qoi…
 pub mod raster; // Raster[[Buf|View][Bytes]], Raster<Sample|View>Packed, raster!
 
 #[cfg(feature = "term")]
@@ -19,6 +20,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
         pub use super::{
             error::*,
+            info::*,
         };
     }
     _pub_mods {

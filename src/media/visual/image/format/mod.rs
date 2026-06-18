@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod jpg; // FUTURE
+// mod jpeg; // FUTURE
 mod netpbm; // Pnm
 // #[cfg(feature = "alloc"] // TEMP
 // mod png; // WIP

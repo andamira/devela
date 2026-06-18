@@ -9,7 +9,7 @@
 // - struct PnmHeader
 
 use crate::ImageError::{InsufficientBuffer, InvalidImageSize, InvalidMagicNumber, InvalidPixel};
-use crate::{ByteCursor, Extent2, ImageResult, Mem, is, unwrap, whilst};
+use crate::{ByteCursor, Digits, Extent2, ImageResult, Mem, is, unwrap, whilst};
 use PnmFormat::{P1, P2, P3, P4, P5, P6};
 
 // misc. fns
@@ -119,15 +119,18 @@ impl<'a> PnmCursor<&'a mut [u8]> {
         }
     }
     /// Writes `n` as decimal ASCII.
+    ///
+    /// Writes nothing and does not advance on insufficient space.
     const fn usize(&mut self, n: usize) -> ImageResult<()> {
-        let mut div = 1usize;
-        while n / div >= 10 {
-            div = unwrap![some_ok_or? div.checked_mul(10), InvalidPixel];
+        let pos = self.pos();
+        let written = Digits(n).write_digits10(self.cur.as_mut_slice(), pos);
+        if written == 0 {
+            return Err(InsufficientBuffer {
+                needed: Digits(n).count_digits10() as usize,
+                available: self.remaining_len(),
+            });
         }
-        while div > 0 {
-            unwrap![ok? self.byte(b'0' + ((n / div) % 10) as u8)];
-            div /= 10;
-        }
+        self.cur.set_pos(pos + written);
         Ok(())
     }
     /// Writes the common PNM magic and extent header prefix.
@@ -152,11 +155,8 @@ impl<'a> PnmCursor<&'a mut [u8]> {
         while i < samples.len() {
             unwrap![ok? self.usize(samples[i] as usize)];
             i += 1;
-            if i % row_samples == 0 {
-                unwrap![ok? self.byte(b'\n')];
-            } else {
-                unwrap![ok? self.byte(b' ')];
-            }
+            if i.is_multiple_of(row_samples) { unwrap![ok? self.byte(b'\n')]; }
+            else { unwrap![ok? self.byte(b' ')]; }
         }
         Ok(())
     }
@@ -167,11 +167,8 @@ impl<'a> PnmCursor<&'a mut [u8]> {
         while i < bits.len() {
             unwrap![ok? self.byte(b'0' + bits[i])];
             i += 1;
-            if i % width == 0 {
-                unwrap![ok? self.byte(b'\n')];
-            } else {
-                unwrap![ok? self.byte(b' ')];
-            }
+            if i.is_multiple_of(width) { unwrap![ok? self.byte(b'\n')]; }
+            else { unwrap![ok? self.byte(b' ')]; }
         }
         Ok(())
     }

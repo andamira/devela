@@ -51,7 +51,8 @@
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
 #### media::visual::image
-- upate `ImageError`; add new variant: `InsufficientBuffer`.
+- new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
+- udpate `ImageError`; add new variant: `InsufficientBuffer`.
 - update `Pnm`:
   - implement all classic PNM variants P1..P6.
   - remove `alloc` feature-gates.
