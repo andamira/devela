@@ -17,7 +17,10 @@ mod tests;
 #[doc = crate::_tags!(text)]
 #[doc = concat!["Streaming ", crate::_ABBR_EGC!(), " boundary detector."]]
 /// Streaming grapheme cluster boundary detector.
-#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
+#[doc = crate::_doc_meta!{
+    location("text/unicode/grapheme"),
+    test_size_of(GraphemeMachine = 3|24; niche Option),
+}]
 ///
 /// Sequentially processes Unicode code points,
 /// returning whether each starts a new cluster or continues the current one.

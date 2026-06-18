@@ -13,7 +13,13 @@ use crate::{
 
 #[doc = crate::_tags!(text iterator)]
 /// Scans text and detects grapheme cluster boundaries during iteration.
-#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
+#[doc = crate::_doc_meta!{
+    location("text/unicode/grapheme"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: GraphemeScanner<'_, char> = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: GraphemeScanner<'_, char> = 24|192; niche Option),
+}]
 ///
 /// Can process different text representations (`&str`, `&[u8]`) while
 /// tracking grapheme cluster boundaries through a `GraphemeMachine`.

@@ -19,9 +19,11 @@
 ///     [*unchecked*](#method.from_utf8_unchecked),
 ///     [*unchecked_mut*](#method.from_utf8_unchecked_mut)).
 ///
-/// - [character traversal methods](#character-traversal-methods)
+/// - [text traversal methods](#text-traversal-methods)
 ///   - [chars](#method.chars),
-///   - [char_count](#method.char_count).
+///   - [char_count](#method.char_count),
+///   - [graphemes_in](#method.graphemes_in), ([*charu*](#method.graphemes_charu_in)),
+///   - [grapheme_count](#method.grapheme_count).
 ///
 /// - [equality and boundary methods](#equality-and-boundary-methods)
 ///   - [eq](#method.eq),
@@ -31,9 +33,11 @@
 ///   - [strip_suffix](#method.strip_suffix) ([*char*](#method.strip_suffix_char)),
 ///   - [strip_circumfix](#method.strip_circumfix) ([*chars*](#method.strip_circumfix_chars)).
 ///
-/// - [writing and repetition methods](#writing-and-repetition-methods)
+/// - [text writing methods](#text-writing-methods)
 ///   - [repeat_into](#method.repeat_into) ([*slice*](#method.repeat_into_slice)),
 ///   - [new_counter](#method.new_counter).
+///   - [translit_ascii_into](#method.translit_ascii_into)
+///     ([*or*](#method.translit_ascii_into_or)).
 ///
 /// - [`range*` API methods](#range-api-methods-for-returning-substrings):<br/>
 ///   - [range](#method.range)

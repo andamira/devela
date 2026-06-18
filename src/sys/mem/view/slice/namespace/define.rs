@@ -99,6 +99,6 @@
 /// - [specific methods for byte slices](#methods-for-byte-slices)
 /// - [`eq` methods for slices of (slices of) primitives](#method.eq)
 ///
-/// See also: [`slice!`] and [`SliceExt`][crate::SliceExt].
+/// See also: [`slice!`][crate::slice] and [`SliceExt`][crate::SliceExt].
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);

@@ -1,4 +1,4 @@
 // devela/src/text/translit/ascii/mod.rs
 
-mod fns;
+mod impls;
 mod table;

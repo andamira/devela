@@ -1,19 +1,20 @@
 // devela/src/text/str/namespace/utf8_traversal.rs
-
-use crate::{CharIter, InvalidUtf8, Str};
-
-#[allow(unused_imports, reason = "±unsafe")]
-use {
-    crate::unwrap,
-    ::core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
-};
-
-// TODO: IMPROVE:
+//
+// IMPROVE:
 // - one default, (simd == api if possible)
 // - other faster-simdversion if possible (no care about api, errors)
 // can't import either or, has to be both, for this module…
 use ::core::str::from_utf8_mut;
 // crate::_use! {basic::from_utf8} // MAYBE not needed
+
+use crate::{CharIter, InvalidUtf8, Str};
+#[cfg(feature = "grapheme")]
+use crate::{GraphemeBoundary, GraphemeMachine, GraphemeScanner, charu, is};
+#[allow(unused_imports, reason = "±unsafe")]
+use {
+    crate::unwrap,
+    ::core::str::{from_utf8_unchecked, from_utf8_unchecked_mut},
+};
 
 /// # UTF-8 conversion methods.
 impl Str {
@@ -99,18 +100,56 @@ impl Str {
     }
 }
 
-/// # Character traversal methods.
+/// # Text traversal methods.
 impl Str {
+    /* chars */
+
     /// Returns an iterator over the Unicode scalars.
     #[inline(always)]
     pub const fn chars(string: &str) -> CharIter<'_, &str> {
         CharIter::<&str>::new(string)
     }
-
     /// Returns the total number of Unicode scalars.
     #[must_use]
     #[inline(always)]
     pub const fn char_count(string: &str) -> usize {
         CharIter::<&str>::new(string).count()
+    }
+
+    /* graphemes */
+
+    /// Returns a grapheme-boundary scanner over `string`.
+    ///
+    /// The caller provides the machine so the scan can continue across buffers.
+    #[inline(always)]
+    #[cfg(feature = "grapheme")]
+    pub const fn graphemes_in<'a>(
+        machine: &'a mut GraphemeMachine,
+        string: &'a str,
+    ) -> GraphemeScanner<'a, char> {
+        machine.next_char_from_str(string)
+    }
+    /// Returns a grapheme-boundary scanner over `string`.
+    ///
+    /// The caller provides the machine so the scan can continue across buffers.
+    #[inline(always)]
+    #[cfg(feature = "grapheme")]
+    pub const fn graphemes_charu_in<'a>(
+        machine: &'a mut GraphemeMachine,
+        string: &'a str,
+    ) -> GraphemeScanner<'a, charu> {
+        machine.next_charu_from_str(string)
+    }
+    /// Returns the number of grapheme clusters in `string`.
+    #[must_use]
+    #[cfg(feature = "grapheme")]
+    pub const fn grapheme_count(string: &str) -> usize {
+        let mut machine = GraphemeMachine::new();
+        let mut scanner = machine.next_charu_from_str(string);
+        let mut count = 0;
+        while let Some((boundary, _)) = scanner.next() {
+            is! { boundary.eq(GraphemeBoundary::Split), count += 1 }
+        }
+        count
     }
 }

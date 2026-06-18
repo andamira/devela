@@ -4,7 +4,7 @@
 //
 
 #[cfg(doc)]
-use crate::Str;
+use crate::{Slice, Str};
 
 #[doc = crate::_tags!(namespace)]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.

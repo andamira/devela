@@ -1,11 +1,22 @@
 // devela/src/text/str/namespace/writing.rs
 
+#[cfg(feature = "translit")]
+use crate::Translit;
 #[allow(unused_imports, reason = "±unsafe")]
 use crate::unwrap;
 use crate::{Digits, Str, is, slice, whilst};
 
-/// # Writing and repetition methods
+/// # Text writing methods
 impl Str {
+    /* private utilities */
+
+    #[doc(hidden)]
+    /// The cold path that returns an empty string slice.
+    #[cold] #[rustfmt::skip]
+    pub const fn new_cold_empty() -> &'static str { "" }
+
+    /* repetititon */
+
     /// Repeats a `string` a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     /// # Examples
@@ -58,6 +69,8 @@ impl Str {
             unsafe { Str::from_utf8_unchecked(slice![buffer, ..index]) }
         } _ => { unwrap![ok Str::from_utf8(slice![buffer, ..index])] }}
     }
+
+    /* counter */
 
     /// Returns a [`&str`] backed by a `buffer`, where you always know each
     /// character's position.
@@ -113,10 +126,26 @@ impl Str {
         }
     }
 
-    /* private utilities */
+    /* transliteration */
 
-    #[doc(hidden)]
-    /// The cold path that returns an empty string slice.
-    #[cold] #[rustfmt::skip]
-    pub const fn new_cold_empty() -> &'static str { "" }
+    /// Writes an ASCII transliteration of `string` into `dst`.
+    ///
+    /// Unmapped scalars are omitted.
+    ///
+    /// Returns the number of bytes written, or `None` if `dst` is too small.
+    #[inline(always)]
+    #[cfg(feature = "translit")]
+    pub fn translit_ascii_into(string: &str, dst: &mut [u8]) -> Option<usize> {
+        Translit::write_ascii(string, dst)
+    }
+
+    /// Writes an ASCII transliteration of `string` into `dst`, using `fallback`
+    /// for unmapped scalars.
+    ///
+    /// Returns the number of bytes written, or `None` if `dst` is too small.
+    #[inline(always)]
+    #[cfg(feature = "translit")]
+    pub fn translit_ascii_into_or(string: &str, dst: &mut [u8], fallback: &str) -> Option<usize> {
+        Translit::write_ascii_or(string, dst, fallback)
+    }
 }
