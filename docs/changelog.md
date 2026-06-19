@@ -102,7 +102,7 @@
 - new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
 
 ### ui::text
-- new types: `TextInput[Action|Config|Outcome|Reject|View]`.
+- new types: `TextInput[Action|Config|Outcome|Reject|View]`, `TextInputKeymap[Preset]`.
 
 ### ui::view
 - new types: `UiLayer`, `UiView`, `UiViewFlags`, `UiViewForm`.

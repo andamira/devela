@@ -1,8 +1,12 @@
 // devela/src/ui/text/_tests.rs
+//
+// TOC
+// - misc
+// - alloc
+// - event
 
-use super::{
-    TextInput, TextInputAction as A, TextInputConfig, TextInputOutcome as O, TextInputReject as R,
-};
+use crate::TextInput;
+use crate::{TextInputAction as A, TextInputConfig, TextInputOutcome as O, TextInputReject as R};
 
 #[test]
 fn inline_storage_edits() {
@@ -27,17 +31,6 @@ fn borrowed_storage_edits() {
     assert_eq!(input.apply(A::MoveStart), O::Changed);
     assert_eq!(input.apply(A::Delete), O::Changed);
     assert_eq!(input.as_str(), "€");
-}
-#[cfg(feature = "alloc")]
-#[test]
-fn alloc_storage_edits() {
-    use crate::String;
-    let mut input = TextInput::from_string(String::from("ab"));
-    assert_eq!(input.apply(A::MoveLeft), O::Changed);
-    assert_eq!(input.apply(A::Insert('€')), O::Changed);
-    assert_eq!(input.as_str(), "a€b");
-    assert_eq!(input.apply(A::Delete), O::Changed);
-    assert_eq!(input.as_str(), "a€");
 }
 #[test]
 fn configured_max_bytes_rejects() {
@@ -176,15 +169,90 @@ fn borrowed_storage_keeps_written_bytes() {
     }
     assert_eq!(&buf[..4], &[0xE2, 0x82, 0xAC, 0]);
 }
-#[test]
+
 #[cfg(feature = "alloc")]
-fn alloc_try_set_cursor_accepts_only_utf8_boundaries() {
-    use crate::String;
-    let mut input = TextInput::from_string(String::from("a€"));
-    assert!(input.try_set_cursor(1));
-    assert_eq!(input.cursor(), 1);
-    assert!(!input.try_set_cursor(2));
-    assert_eq!(input.cursor(), 1);
-    assert!(input.try_set_cursor(4));
-    assert_eq!(input.cursor(), 4);
+mod alloc {
+    use super::*;
+
+    #[test]
+    fn alloc_storage_edits() {
+        use crate::String;
+        let mut input = TextInput::from_string(String::from("ab"));
+        assert_eq!(input.apply(A::MoveLeft), O::Changed);
+        assert_eq!(input.apply(A::Insert('€')), O::Changed);
+        assert_eq!(input.as_str(), "a€b");
+        assert_eq!(input.apply(A::Delete), O::Changed);
+        assert_eq!(input.as_str(), "a€");
+    }
+    #[test]
+    fn alloc_try_set_cursor_accepts_only_utf8_boundaries() {
+        use crate::String;
+        let mut input = TextInput::from_string(String::from("a€"));
+        assert!(input.try_set_cursor(1));
+        assert_eq!(input.cursor(), 1);
+        assert!(!input.try_set_cursor(2));
+        assert_eq!(input.cursor(), 1);
+        assert!(input.try_set_cursor(4));
+        assert_eq!(input.cursor(), 4);
+    }
+}
+
+#[cfg(feature = "event")]
+mod event {
+    use super::*;
+    use crate::{EventKey as E, Key, KeyMods, KeyState, TextInputKeymap};
+
+    #[test]
+    fn default_keymap_maps_plain_text() {
+        assert_eq!(A::from_key_event(&E::text('x')), Some(A::Insert('x')));
+        assert_eq!(A::from_key_event(&E::press(Key::Space)), Some(A::Insert(' ')));
+    }
+    #[test]
+    fn default_keymap_maps_basic_editing_keys() {
+        assert_eq!(A::from_key_event(&E::press(Key::Backspace)), Some(A::Backspace));
+        assert_eq!(A::from_key_event(&E::press(Key::Delete)), Some(A::Delete));
+        //
+        assert_eq!(A::from_key_event(&E::press(Key::Left)), Some(A::MoveLeft));
+        assert_eq!(A::from_key_event(&E::press(Key::Right)), Some(A::MoveRight));
+        assert_eq!(A::from_key_event(&E::press(Key::Home)), Some(A::MoveStart));
+        assert_eq!(A::from_key_event(&E::press(Key::End)), Some(A::MoveEnd));
+        //
+        assert_eq!(A::from_key_event(&E::press(Key::Enter)), Some(A::Accept));
+        assert_eq!(A::from_key_event(&E::press(Key::Escape)), Some(A::Cancel));
+    }
+    #[test]
+    fn default_keymap_ignores_key_release() {
+        let ev = E::press(Key::Left).with_state(KeyState::Release);
+        assert_eq!(A::from_key_event(&ev), None);
+    }
+    #[test]
+    fn default_keymap_does_not_insert_control_text() {
+        let mut ctrl = KeyMods::new();
+        ctrl.set_control();
+        assert_eq!(A::from_key_event(&E::modified_text('a', ctrl)), None);
+        assert_eq!(A::from_key_event(&E::modified_text('c', ctrl)), Some(A::Cancel));
+    }
+    #[test]
+    fn emacs_keymap_maps_basic_shortcuts() {
+        let mut ctrl = KeyMods::new();
+        ctrl.set_control();
+        let map = TextInputKeymap::EMACS;
+        assert_eq!(A::from_key_event_with(&E::modified_text('a', ctrl), map), Some(A::MoveStart));
+        assert_eq!(A::from_key_event_with(&E::modified_text('e', ctrl), map), Some(A::MoveEnd));
+        assert_eq!(A::from_key_event_with(&E::modified_text('b', ctrl), map), Some(A::MoveLeft));
+        assert_eq!(A::from_key_event_with(&E::modified_text('f', ctrl), map), Some(A::MoveRight));
+        assert_eq!(A::from_key_event_with(&E::modified_text('d', ctrl), map), Some(A::Delete));
+        assert_eq!(A::from_key_event_with(&E::modified_text('h', ctrl), map), Some(A::Backspace));
+        assert_eq!(A::from_key_event_with(&E::modified_text('g', ctrl), map), Some(A::Cancel));
+    }
+    #[test]
+    fn mapped_key_event_edits_text_input() {
+        let mut input = TextInput::<[u8; 8]>::new();
+        let action = A::from_key_event(&E::text('a')).unwrap();
+        assert_eq!(input.apply(action), O::Changed);
+        assert_eq!(input.as_str(), "a");
+        let action = A::from_key_event(&E::press(Key::Backspace)).unwrap();
+        assert_eq!(input.apply(action), O::Changed);
+        assert_eq!(input.as_str(), "");
+    }
 }

@@ -62,19 +62,15 @@ impl UiView {
     /* queries */
 
     /// Returns the UI identity.
-    #[must_use]
     pub const fn id(&self) -> UiId { self.id }
 
     /// Returns the visual rectangle.
-    #[must_use]
     pub const fn rect(&self) -> UiRect { self.rect }
 
     /// Returns the visual ordering layer.
-    #[must_use]
     pub const fn layer(&self) -> UiLayer { self.layer }
 
     /// Returns the visual flags.
-    #[must_use]
     pub const fn flags(&self) -> UiViewFlags { self.flags }
 
     /// Returns whether the view is visually hidden.
@@ -87,23 +83,18 @@ impl UiView {
     /* modifiers */
 
     /// Returns this view with another rectangle.
-    #[must_use]
     pub const fn with_rect(self, rect: UiRect) -> Self { Self { rect, ..self } }
     /// Returns this view with another layer.
-    #[must_use]
     pub const fn with_layer(self, layer: UiLayer) -> Self { Self { layer, ..self } }
 
 
     /// Returns this view with another flag set.
-    #[must_use]
     pub const fn replace_flags(self, flags: UiViewFlags) -> Self { Self { flags, ..self } }
     /// Returns this view with `flags` included.
-    #[must_use]
     pub const fn with_flags(self, flags: UiViewFlags) -> Self {
         Self { flags: self.flags.with(flags), ..self }
     }
     /// Returns this view with `flags` removed.
-    #[must_use]
     pub const fn without_flags(self, flags: UiViewFlags) -> Self {
         Self { flags: self.flags.without(flags), ..self }
     }

@@ -151,9 +151,8 @@ impl<B> TextInput<B> {
     }
     pub(crate) fn next_char_boundary(s: &str, cursor: usize) -> usize {
         is! { cursor >= s.len(), return cursor }
-        for (i, _) in s[cursor..].char_indices().skip(1) {
-            return cursor + i;
-        }
-        s.len()
+        let mut indices = s[cursor..].char_indices();
+        let _ = indices.next(); // current character boundary
+        if let Some((i, _)) = indices.next() { cursor + i } else { s.len() }
     }
 }

@@ -27,9 +27,7 @@ impl UiLayer {
     pub const fn raw(self) -> i16 { self.0 }
 
     /// Returns the next higher layer.
-    #[must_use]
     pub const fn above(self) -> Self { Self(self.0 + 1) }
     /// Returns the next lower layer.
-    #[must_use]
     pub const fn below(self) -> Self { Self(self.0 - 1) }
 }

@@ -114,7 +114,7 @@ macro_rules! enumset· {
         }
 
         /// # Associated set methods
-        #[allow(dead_code)]
+        #[allow(clippy::double_must_use, dead_code)]
         impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
             /// The total number of *declared* variants.
             $enum_vis const VARIANTS: usize = $crate::paste! { [<_$enum_name _private>]::VARIANTS };
