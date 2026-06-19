@@ -9,7 +9,7 @@
 #[cfg(test)]
 mod _tests;
 
-// mod config; // WIP: Text[Break|Width|Elide]Mode, TextSymbolConfig
+mod config; // Text<Break|Width|Elide>Mode, TextSymbolConfig
 mod engine; // TextLayout
 // mod line; // WIP: TextLineIter
 mod result; // TextFit, TextLayoutStep
@@ -20,7 +20,7 @@ mod textel; // Textel
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // config::*,
+            config::*,
             engine::*,
             // line::*,
             result::*,

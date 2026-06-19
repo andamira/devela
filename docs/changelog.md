@@ -78,6 +78,9 @@
 #### sys::os::term
 - make `ansi` module public.
 
+### text::layout
+- new types: `TextBreakMode` `TextWidthMode` `TextElideMode`, `TextSymbolConfig`.
+
 ### text::str
 - update `Str`:
   - add methods: `eq`, `starts_with[_char]`, `ends_with[_char]`, `strip_<prefix|suffix>[_char]`, `strip_circumfix[_chars]`, `translit_ascii_into[_or]`, `graphemes[_charu][_in]`, `grapheme_count`.
