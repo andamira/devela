@@ -3,8 +3,9 @@
 //! Defines [`TextFit`], [`TextLayoutStep`].
 //
 
-use crate::{CharIter, Slice, TextSymbol, TextUnit, is, unwrap};
+use crate::{CharIter, Slice, is, unwrap};
 use crate::{TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutSpan, TextLayoutStep};
+use crate::{TextLineIter, TextSymbol, TextUnit};
 
 #[doc = crate::_tags!(text layout namespace)]
 /// Text layout engine configuration.
@@ -180,5 +181,25 @@ impl TextLayout {
             len += 1;
         }
         len
+    }
+
+    /// Creates a fixed-width line iterator over `symbols`.
+    #[must_use]
+    pub const fn line_iter<'a>(
+        &'a self,
+        symbols: &'a [TextSymbol],
+        width: TextUnit,
+    ) -> TextLineIter<'a> {
+        TextLineIter::new(self, symbols, width)
+    }
+    /// Creates a fixed-width line iterator over `symbols`, starting at `cursor`.
+    #[must_use]
+    pub const fn line_iter_from<'a>(
+        &'a self,
+        symbols: &'a [TextSymbol],
+        cursor: TextCursor,
+        width: TextUnit,
+    ) -> TextLineIter<'a> {
+        TextLineIter::from_cursor(self, symbols, cursor, width)
     }
 }

@@ -11,7 +11,7 @@ mod _tests;
 
 mod config; // Text<Break|Width|Elide>Mode, TextSymbolConfig
 mod engine; // TextLayout
-// mod line; // WIP: TextLineIter
+mod line; // TextLineIter
 mod result; // TextFit, TextLayoutStep
 mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol
 mod textel; // Textel
@@ -22,7 +22,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             config::*,
             engine::*,
-            // line::*,
+            line::*,
             result::*,
             symbol::*,
             textel::*,

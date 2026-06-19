@@ -79,7 +79,7 @@
 - make `ansi` module public.
 
 ### text::layout
-- new types: `TextBreakMode` `TextWidthMode` `TextElideMode`, `TextSymbolConfig`.
+- new types: `TextBreakMode`, `TextLineIter`, `TextWidthMode`, `TextElideMode`, `TextSymbolConfig`.
 
 ### text::str
 - update `Str`:
