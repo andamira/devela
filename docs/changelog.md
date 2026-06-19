@@ -86,7 +86,7 @@
 - new type `GraphemeIter`.
 
 ## ui
-- new submodules: `frame`, `route`, `semantic`, `widget`.
+- new submodules: `frame`, `route`, `semantic`, `text`, `view`, `widget`.
 
 ### ui::frame
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
@@ -100,6 +100,9 @@
 
 ### ui::semantic
 - new types: `UiRole`, `UiAction`, `UiActions`, `UiFlags`, `UiEntry`, `UiText`.
+
+### ui::text
+- new types: `TextInput[Action|Config|Outcome|Reject|View]`.
 
 ### ui::view
 - new types: `UiLayer`, `UiView`, `UiViewFlags`, `UiViewForm`.

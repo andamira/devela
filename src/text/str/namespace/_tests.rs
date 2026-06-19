@@ -2,7 +2,9 @@
 
 // IMPROVE: add tests for missing methods from: range, split, take.
 
-use crate::{GraphemeBoundary, GraphemeIter, Str, const_assert};
+use crate::Str;
+#[cfg(feature = "grapheme")]
+use crate::{GraphemeBoundary, GraphemeIter, const_assert};
 
 #[test]
 fn str_strip_prefix_suffix_circumfix() {
@@ -21,6 +23,7 @@ fn str_strip_char_prefix_suffix_circumfix() {
     assert_eq!(Str::strip_circumfix_chars("«ok»", '«', '»'), Some("ok"));
 }
 #[test]
+#[cfg(feature = "grapheme")]
 fn grapheme_iter_char() {
     let input = "H€🧑‍🌾";
     let mut iter = GraphemeIter::<char>::new(input);
@@ -32,6 +35,7 @@ fn grapheme_iter_char() {
     assert_eq!(iter.next(), None);
 }
 #[test]
+#[cfg(feature = "grapheme")]
 const fn grapheme_iter_charu_count() {
     const COUNT: usize = Str::grapheme_count("H€🧑‍🌾");
     const_assert!(eq COUNT, 3);

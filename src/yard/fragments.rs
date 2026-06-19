@@ -30,13 +30,11 @@ crate::CONST! { hidden macro_export,
     /* misc. root modules */
 
     _DOC_ALL  = "All crate items re-exported in a single flat namespace.\n\n
-<br/>Every item in this namespace is forwarded upward, since every public
-module automatically re-export their contents to their parent.";
+<br/>Every item in this namespace is forwarded upward, as every other public module does.";
 
     _DOC_ALL_ = "All crate items re-exported, grouped by their root modules.";
     _DOC_ALL_PLUS_ = "\n\nEach root module appears here and provides
-its own flat view of all its public children. Together, they offer
-a structured alternative to the fully flat `all` namespace.";
+its own flat view of all its public children.";
 
     /* thematic modules tree */
 
@@ -326,6 +324,7 @@ a structured alternative to the fully flat `all` namespace.";
     _DOC_UI_LAYOUT   = "Canonical spatial vocabulary for deterministic arrangement.";
     _DOC_UI_ROUTE    = "Routing interaction through regions, focus, active state, and capture.";
     _DOC_UI_SEMANTIC = "Human-facing meaning for roles, actions, descriptions, and navigation.";
+    _DOC_UI_TEXT     = "Interactive text editing state.";
     _DOC_UI_VIEW     = "Projection of UI state into concrete presentation forms.";
     _DOC_UI_VIEW_FORM    = "Cell, document, graphic, and message forms of UI projection.";
     _DOC_UI_VIEW_PROFILE = "Presentation profiles for fitting logical views into output space.";

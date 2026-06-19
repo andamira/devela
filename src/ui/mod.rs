@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_UI_MODULES =
-    crate::_doc!(modules: crate; ui: event, frame, layout, route, semantic, view, widget);
+    crate::_doc!(modules: crate; ui: event, frame, layout, route, semantic, text, view, widget);
 }
 
 #[cfg(feature = "event")]
@@ -28,6 +28,8 @@ pub mod layout; // Canonical spatial vocabulary for deterministic arrangement
 pub mod route; // Routing interaction through regions, focus, active state, and capture
 #[cfg(feature = "ui")]
 pub mod semantic; // Human-facing meaning for roles, actions, descriptions, and navigation
+#[cfg(feature = "ui")]
+pub mod text; // Interactive text editing state.
 #[cfg(feature = "ui")]
 pub mod view; // Projection of UI state into concrete presentation forms
 
@@ -49,6 +51,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             layout::_all::*,
             route::_all::*,
             semantic::_all::*,
+            text::_all::*,
             view::_all::*,
         };
         #[cfg(feature = "event")]
