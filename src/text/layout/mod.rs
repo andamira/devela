@@ -15,7 +15,7 @@ mod line; // TextLineIter
 mod result; // TextFit, TextLayoutStep
 mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol
 mod textel; // Textel
-// mod wrap; // WIP: TextBreakKind, TextLine, TextSegment[Kind]
+mod wrap; // TextBreakKind, TextLine, TextSegment[Kind]
 
 crate::structural_mods! { // _mods
     _mods {
@@ -26,7 +26,7 @@ crate::structural_mods! { // _mods
             result::*,
             symbol::*,
             textel::*,
-            // wrap::*,
+            wrap::_all::*,
         };
     }
 }
