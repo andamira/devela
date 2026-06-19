@@ -1,18 +1,17 @@
 // devela/src/text/layout/engine.rs
 //
 //! Defines [`TextFit`], [`TextLayoutStep`].
-//!
-//! > Everything that does layout.
 //
 
-use crate::{
-    _impl_init, CharIter, Slice, TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutSpan,
-    TextLayoutStep, TextSymbol, TextUnit, is, unwrap,
-};
+use crate::{CharIter, Slice, TextSymbol, TextUnit, is, unwrap};
+use crate::{TextCohesion, TextCursor, TextFit, TextIndex, TextLayoutSpan, TextLayoutStep};
 
 #[doc = crate::_tags!(text layout namespace)]
 /// Text layout engine configuration.
-#[doc = crate::_doc_meta!{location("text/layout")}]
+#[doc = crate::_doc_meta!{
+    location("text/layout"),
+    test_size_of(TextLayout = 0),
+}]
 ///
 /// `TextLayout` performs one-dimensional layout negotiation between a
 /// symbol stream and an available inline extent. It holds layout policies
@@ -21,7 +20,6 @@ use crate::{
 /// Layout proceeds incrementally via repeated layout steps.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TextLayout;
-_impl_init![Self => TextLayout];
 
 impl TextLayout {
     /// Performs a single inline layout step.
@@ -174,8 +172,7 @@ impl TextLayout {
         F: FnMut(usize, char) -> TextSymbol,
     {
         let mut it = CharIter::<&str>::new(text);
-        let mut i = 0;
-        let mut len = 0;
+        let (mut i, mut len) = (0, 0);
         while let Some(ch) = it.next_char() {
             is![len == out.len(), break];
             out[len] = f(i, ch);

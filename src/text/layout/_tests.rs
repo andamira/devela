@@ -1,8 +1,7 @@
-// devela/src/text/layout/tests.rs
+// devela/src/text/layout/_tests.rs
 
 use super::*;
-use crate::ConstInit;
-use crate::{TextCursor, TextIndex, TextUnit};
+use crate::{ConstInit, TextCursor, TextIndex, TextUnit};
 
 type TextLayoutSpans = [TextLayoutSpan; 4];
 

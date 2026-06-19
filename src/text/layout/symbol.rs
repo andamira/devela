@@ -9,7 +9,10 @@ use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit};
 
 #[doc = crate::_tags!(text layout)]
 /// Spatial cohesion rules for a text symbol during layout.
-#[doc = crate::_doc_meta!{location("text/layout")}]
+#[doc = crate::_doc_meta!{
+    location("text/layout"),
+    test_size_of(TextCohesion = 1|8),
+}]
 ///
 /// This enum defines what a layout engine is allowed to do with a symbol
 /// when negotiating limited inline space. It expresses layout permissions only;
@@ -38,7 +41,10 @@ _impl_init![Self::Atomic => TextCohesion];
 
 #[doc = crate::_tags!(text layout quant)]
 /// Mapping between a contiguous text range and its consumed inline space.
-#[doc = crate::_doc_meta!{location("text/layout")}]
+#[doc = crate::_doc_meta!{
+    location("text/layout"),
+    test_size_of(TextLayoutSpan = 12|96),
+}]
 ///
 /// A `TextLayoutSpan` records that a contiguous range of symbols contributed
 /// a given amount of inline space during a layout step.
@@ -63,22 +69,18 @@ impl TextLayoutSpan {
     pub const fn with_range(range: TextRange, units: TextUnit) -> Self {
         Self { range, units }
     }
-
     /// Creates a span from symbol indices and consumed units.
     pub const fn from_prim(start: TextUnit, end: TextUnit, units: TextUnit) -> Self {
         Self::new(TextIndex(start), TextIndex(end), units)
     }
-
     /// Returns the start index.
     pub const fn start(self) -> TextIndex {
         self.range.start
     }
-
     /// Returns the end index.
     pub const fn end(self) -> TextIndex {
         self.range.end
     }
-
     /// Returns the interval from `start` to `end`.
     pub const fn interval(self) -> Interval<TextIndex> {
         Interval::closed_open(self.start(), self.end())
@@ -87,7 +89,10 @@ impl TextLayoutSpan {
 
 #[doc = crate::_tags!(text layout io)]
 /// Layout participation record for a single text symbol.
-#[doc = crate::_doc_meta!{location("text/layout")}]
+#[doc = crate::_doc_meta!{
+    location("text/layout"),
+    test_size_of(TextSymbol = 8|64),
+}]
 ///
 /// A `TextSymbol` describes how a unit of text participates in layout:
 /// how much inline space it consumes and what spatial constraints apply under limited space.

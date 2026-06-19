@@ -7,13 +7,13 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _tests;
 
 // mod config; // WIP: Text[Break|Width|Elide]Mode, TextSymbolConfig
 mod engine; // TextLayout
 // mod line; // WIP: TextLineIter
 mod result; // TextFit, TextLayoutStep
-mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol,
+mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol
 mod textel; // Textel
 // mod wrap; // WIP: TextBreakKind, TextLine, TextSegment[Kind]
 

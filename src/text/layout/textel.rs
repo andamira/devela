@@ -5,11 +5,15 @@
 
 #[doc = crate::_tags!(text data_structure)]
 /// A textual element carried by a rendering cell.
-#[doc = crate::_doc_meta!{location("text/layout")}]
+#[doc = crate::_doc_meta!{
+    location("text/layout"),
+    test_size_of(Textel<u8> = 1|8),
+}]
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct Textel<T>(pub T);
+
 #[rustfmt::skip]
 impl<T> Textel<T> {
     /// Creates a textual element.
