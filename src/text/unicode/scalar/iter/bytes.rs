@@ -1,6 +1,6 @@
 // devela/src/text/unicode/scalar/iter/bytes.rs
 
-use crate::{Char, CharIter, char7, char8, char16, charu, is, unwrap};
+use crate::{Char, CharIter, char7, char8, char16, charu, is, slice, unwrap};
 
 /// Methods available when constructed from a byte slice.
 impl<'a> CharIter<'a, &[u8]> {
@@ -213,7 +213,7 @@ impl<'a> CharIter<'a, &[u8]> {
     #[must_use] #[rustfmt::skip]
     pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
-        let (ch, len) = unwrap![some? charu::from_utf8_prefix(self.bytes)];
+        let (ch, len) = unwrap![some? charu::from_utf8_prefix(slice![self.bytes, self.pos, ..])];
         self.pos += len as usize;
         Some(ch)
     }
@@ -235,7 +235,8 @@ impl<'a> CharIter<'a, &[u8]> {
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
     pub const unsafe fn next_charu_unchecked(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
-        let (ch, len) = unsafe { charu::from_utf8_prefix_unchecked(self.bytes) };
+        let s = slice![self.bytes, self.pos, ..];
+        let (ch, len) = unsafe { charu::from_utf8_prefix_unchecked(s) };
         self.pos += len as usize;
         Some(ch)
     }
@@ -273,5 +274,36 @@ impl<'a> CharIter<'a, &[u8]> {
         let (ch, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         self.pos += len;
         Some(ch)
+    }
+
+    /* peek methods */
+
+    /// Returns the next Unicode scalar without advancing the iterator.
+    ///
+    /// This is implemented via `Char::`[`to_char`][Char::to_char].
+    #[must_use]
+    pub const fn peek_char(&self) -> Option<char> {
+        is![self.pos >= self.bytes.len(), return None];
+        let Some((ch, _)) = Char(self.bytes).to_char(self.pos) else { return None };
+        Some(ch)
+    }
+    /// Returns the next Unicode scalar as UTF-8 bytes without advancing the iterator.
+    ///
+    /// This is implemented by validating the next scalar, then copying its source bytes.
+    #[must_use]
+    #[rustfmt::skip]
+    pub const fn peek_charu(&self) -> Option<charu> {
+        is![self.pos >= self.bytes.len(), return None];
+        let (ch, _) = unwrap![some? charu::from_utf8_prefix(slice![self.bytes, self.pos, ..])];
+        Some(ch)
+    }
+    /// Returns the next Unicode scalar value without advancing the iterator.
+    ///
+    /// This is implemented via `Char::`[`to_scalar`][Char::to_scalar].
+    #[must_use]
+    pub const fn peek_scalar(&self) -> Option<u32> {
+        is![self.pos >= self.bytes.len(), return None];
+        let Some((cp, _)) = Char(self.bytes).to_scalar(self.pos) else { return None };
+        Some(cp)
     }
 }

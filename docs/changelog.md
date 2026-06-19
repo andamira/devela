@@ -79,7 +79,7 @@
 - make `ansi` module public.
 
 ### text::layout
-- new types: `TextBreakMode`, `TextLineIter`, `TextWidthMode`, `TextElideMode`, `TextSymbolConfig`.
+- new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextWidthMode`.
 
 ### text::str
 - update `Str`:
@@ -87,6 +87,9 @@
 
 ### text::unicode
 - new type `GraphemeIter`.
+- update `CharIter`:
+  - add methods: `byte_pos`, `as_bytes`, `as_str`, `remaining_bytes`, `is_empty`, `peek_char`, `peek_charu`, `peek_scalar`.
+- fix `next_charu*` methods over byte slice impl.
 
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `text`, `view`, `widget`.

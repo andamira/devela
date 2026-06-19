@@ -3,7 +3,7 @@
 //! Defines the [`CharIter`] iterator.
 //
 
-use crate::{IteratorFused, PhantomData};
+use crate::{IteratorFused, PhantomData, slice};
 
 mod bytes; // methods over &[u8]
 mod str; // methods over &str
@@ -30,6 +30,26 @@ pub struct CharIter<'a, Source> {
 impl<'a, Source> CharIter<'a, Source> {
     pub(crate) const fn _new(bytes: &'a [u8], pos: usize) -> Self {
         Self { bytes, pos, _source: PhantomData }
+    }
+    /// Returns the current byte position.
+    #[must_use]
+    pub const fn byte_pos(&self) -> usize {
+        self.pos
+    }
+    /// Returns the remaining bytes.
+    #[must_use]
+    pub const fn as_bytes(&self) -> &'a [u8] {
+        slice![self.bytes, self.pos, ..]
+    }
+    /// Returns the number of remaining bytes.
+    #[must_use]
+    pub const fn remaining_bytes(&self) -> usize {
+        self.bytes.len() - self.pos
+    }
+    /// Returns `true` if there are no more bytes to decode.
+    #[must_use]
+    pub const fn is_empty(&self) -> bool {
+        self.pos >= self.bytes.len()
     }
 }
 

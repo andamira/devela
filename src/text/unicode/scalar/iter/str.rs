@@ -1,5 +1,7 @@
 // devela/src/text/unicode/scalar/iter/str.rs
 
+#[allow(unused, reason = "±unsafe")]
+use crate::unwrap;
 use crate::{Char, CharIter, char7, char8, char16, charu, is, slice};
 
 /// Methods available when constructed from a string slice.
@@ -27,6 +29,21 @@ impl<'a> CharIter<'a, &str> {
 
     /* misc. */
 
+    /// Returns the remaining string slice.
+    ///
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    #[must_use]
+    #[rustfmt::skip]
+    pub const fn as_str(&self) -> &'a str {
+        let s = slice![self.bytes, self.pos, ..];
+        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            // SAFETY: `self.bytes` came from `&str`, and `self.pos`
+            // is only advanced by valid UTF-8 scalar lengths.
+            unsafe { core::str::from_utf8_unchecked(s) }
+            } _ => { unwrap![ok_guaranteed_or_ub core::str::from_utf8(s)] }
+        }
+    }
     /// Returns the total number of Unicode scalars, consuming the iterator.
     pub const fn count(mut self) -> usize {
         let mut counter = 0;
@@ -64,9 +81,7 @@ impl<'a> CharIter<'a, &str> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         let ch = { cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
             unsafe { char::from_u32_unchecked(cp) } // SAFETY: we come from &str so it's valid
-            } _ => {
-                crate::unwrap![some? char::from_u32(cp)]
-            }}
+            } _ => { unwrap![some? char::from_u32(cp)] }}
         };
         self.pos += len;
         Some(ch)
@@ -189,6 +204,39 @@ impl<'a> CharIter<'a, &str> {
         let (cp, len) = Char(self.bytes).to_scalar_unchecked(self.pos);
         self.pos += len;
         Some(cp)
+    }
+
+    /* peek methods */
+
+    /// Returns the next Unicode scalar without advancing the iterator.
+    /// # Features
+    /// Uses the `unsafe_str` feature to skip validation checks.
+    #[must_use]
+    #[rustfmt::skip]
+    pub const fn peek_char(&self) -> Option<char> {
+        is![self.pos >= self.bytes.len(), return None];
+        let (cp, _) = Char(self.bytes).to_scalar_unchecked(self.pos);
+        let ch = { cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
+            unsafe { char::from_u32_unchecked(cp) } // SAFETY: we come from &str so it's valid
+            } _ => { unwrap![some? char::from_u32(cp)] }}
+        };
+        Some(ch)
+    }
+    /// Returns the next Unicode scalar value without advancing the iterator.
+    #[must_use]
+    #[rustfmt::skip]
+    pub const fn peek_scalar(&self) -> Option<u32> {
+        is![self.pos >= self.bytes.len(), return None];
+        let (cp, _) = Char(self.bytes).to_scalar_unchecked(self.pos);
+        Some(cp)
+    }
+    /// Returns the next Unicode scalar as UTF-8 bytes without advancing the iterator.
+    #[must_use]
+    #[rustfmt::skip]
+    pub const fn peek_charu(&self) -> Option<charu> {
+        is![self.pos >= self.bytes.len(), return None];
+        let len = Char(self.bytes[self.pos]).len_utf8_unchecked();
+        Some(charu::_from_utf8_prefix_trusted(slice![self.bytes, self.pos, ..], len))
     }
 
     /* find_* methods */
