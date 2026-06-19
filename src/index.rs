@@ -66,6 +66,7 @@
         nonzero_from_str_radix,
         result_option_map_or_default,
         strip_circumfix,
+        substr_range,
     )
 )]
 #![cfg_attr(
@@ -106,7 +107,6 @@
         random, //random_source,
         refcell_try_map,
         str_as_str,
-        substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
     )
