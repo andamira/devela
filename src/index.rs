@@ -68,7 +68,10 @@
         strip_circumfix,
     )
 )]
-#![cfg_attr(all(nightly_stable_1_98, feature = "alloc"), feature(box_as_ptr,))]
+#![cfg_attr(
+    all(nightly_stable_1_98, feature = "alloc"),
+    feature(box_as_ptr, str_from_utf16_endian,)
+)]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
@@ -103,7 +106,6 @@
         random, //random_source,
         refcell_try_map,
         str_as_str,
-        // str_from_utf16_endian,
         substr_range,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
