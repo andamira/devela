@@ -9,18 +9,18 @@
 #[cfg(test)]
 mod _tests;
 
-mod config; // Text<Break|Width|Elide>Mode, TextSymbolConfig
+mod cell; // TextCellWidthMode
 mod engine; // TextLayout
 mod line; // TextLineIter
 mod result; // TextFit, TextLayoutStep
-mod symbol; // TextCohesion, TextLayoutSpan, TextSymbol
+mod symbol; // Text<Break|Elide>Mode, TextCohesion, TextLayoutSpan, TextSymbol[Config]
 mod textel; // Textel
-mod wrap; // TextBreakKind, TextLine, TextSegment[Kind]
+mod wrap; // TextBreakKind, TextLine, TextSegment[Kind], TextWrapIter
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            config::*,
+            cell::*,
             engine::*,
             line::*,
             result::*,

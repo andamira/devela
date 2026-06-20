@@ -37,7 +37,6 @@ fn atomic_full_fit() {
     assert_eq!(step.fit, TextFit::Full);
     assert!(step.carry.is_none());
 }
-
 /// Example: Atomic overflow
 #[test]
 fn atomic_partial_fit() {
@@ -53,7 +52,6 @@ fn atomic_partial_fit() {
     assert_eq!(step.fit, TextFit::Partial);
     assert_eq!(step.carry.unwrap().index.0, 1);
 }
-
 /// Example: Breakable partial consumption
 #[test]
 fn breakable_partial_consumption() {
@@ -66,7 +64,6 @@ fn breakable_partial_consumption() {
     assert_eq!(step.fit, TextFit::Partial);
     assert_eq!(step.carry.unwrap().index.0, 0);
 }
-
 /// Example: Elidable symbol skipped
 #[test]
 fn elidable_is_skipped() {
@@ -81,7 +78,6 @@ fn elidable_is_skipped() {
     assert_eq!(spans[0].units, 5);
     assert_eq!(step.fit, TextFit::Full);
 }
-
 /// Example: Nothing fits
 #[test]
 fn nothing_fits() {
