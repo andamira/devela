@@ -94,7 +94,7 @@ impl TextCursor {
 }
 
 #[must_use]
-#[doc = crate::_tags!(text)]
+#[doc = crate::_tags!(text quant)]
 /// A half-open range within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_meta!{
     location("text"),

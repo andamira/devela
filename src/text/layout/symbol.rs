@@ -6,7 +6,7 @@
 //! > Everything about symbols and how they are produced.
 //
 
-use crate::{_impl_init, Interval, TextCellWidthMode, TextIndex, TextRange, TextUnit};
+use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit, TextelWidthMode};
 
 #[doc = crate::_tags!(text layout)]
 /// Boundary policy for deriving layout symbols from text.
@@ -171,7 +171,7 @@ pub struct TextSymbolConfig {
     pub break_mode: TextBreakMode,
 
     /// Inline width policy for derived symbols.
-    pub width_mode: TextCellWidthMode,
+    pub width_mode: TextelWidthMode,
 
     /// Elision policy for derived symbols.
     pub elide_mode: TextElideMode,
@@ -186,14 +186,14 @@ impl TextSymbolConfig {
     /// Default text symbol configuration.
     pub const DEFAULT: Self = Self {
         break_mode: TextBreakMode::Whitespace,
-        width_mode: TextCellWidthMode::Mono,
+        width_mode: TextelWidthMode::Mono,
         elide_mode: TextElideMode::None,
     };
     /// Creates a new text symbol configuration.
     #[must_use]
     pub const fn new(
         break_mode: TextBreakMode,
-        width_mode: TextCellWidthMode,
+        width_mode: TextelWidthMode,
         elide_mode: TextElideMode,
     ) -> Self {
         Self { break_mode, width_mode, elide_mode }
@@ -207,12 +207,12 @@ impl TextSymbolConfig {
     /// Creates a grapheme-based monospace configuration.
     #[must_use]
     pub const fn grapheme_mono() -> Self {
-        Self::new(TextBreakMode::Grapheme, TextCellWidthMode::Mono, TextElideMode::None)
+        Self::new(TextBreakMode::Grapheme, TextelWidthMode::Mono, TextElideMode::None)
     }
     /// Creates a word-based monospace configuration.
     #[must_use]
     pub const fn word_mono() -> Self {
-        Self::new(TextBreakMode::Word, TextCellWidthMode::Mono, TextElideMode::None)
+        Self::new(TextBreakMode::Word, TextelWidthMode::Mono, TextElideMode::None)
     }
     /// Returns this configuration with a different break mode.
     #[must_use]
@@ -222,7 +222,7 @@ impl TextSymbolConfig {
     }
     /// Returns this configuration with a different width mode.
     #[must_use]
-    pub const fn with_width_mode(mut self, width_mode: TextCellWidthMode) -> Self {
+    pub const fn with_width_mode(mut self, width_mode: TextelWidthMode) -> Self {
         self.width_mode = width_mode;
         self
     }

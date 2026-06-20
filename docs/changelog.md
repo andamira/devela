@@ -77,9 +77,11 @@
 
 #### sys::os::term
 - make `ansi` module public.
+- update `Termel` to adapt to the new `Textel`.
 
 ### text::layout
-- new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextCellWidthMode`.
+- new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.
+- update `Textel` with a new `meta` field and methods.
 
 ### text::str
 - update `Str`:

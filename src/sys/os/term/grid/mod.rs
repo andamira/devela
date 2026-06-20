@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _tests;
 
 mod color; // TermColor[s|Kind|Mode]
 mod definition; // TermGrid
