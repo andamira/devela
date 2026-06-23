@@ -82,6 +82,7 @@
 - make `ansi` module public.
 - update `Termel` to adapt to the new `Textel`.
 - reimplement `TermLinuxInputBuf` using `BufferRingU8`.
+- route `TermLinux` polling through `EventQueue`.
 
 ### text::layout
 - new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.

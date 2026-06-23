@@ -123,10 +123,9 @@ impl TermLinux {
                     // For now we ignore them.
                     TermParsed::Reply(_) => {}
                     // User-facing input during probing.
-                    //
-                    // If TermLinux eventually has an event queue, this is the place
-                    // to preserve it instead of dropping it.
-                    TermParsed::Event(_) => {}
+                    TermParsed::Event(ev) => {
+                        let _ = self.queue_event_kind(ev);
+                    }
                     TermParsed::Pending | TermParsed::Unknown => {}
                 }
             } else {

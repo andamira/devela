@@ -3,7 +3,7 @@
 //! Linux terminal backend.
 //
 
-mod term; // TermLinux
+mod define; // TermLinux
 mod poll; // impl polling
 mod cap; // impl capabilities
 mod impl_trait; // impl TermBackend
@@ -14,8 +14,8 @@ mod restore; // TermLinuxRestore
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
+            define::TermLinux,
             restore::TermLinuxRestore,
-            term::TermLinux,
         };
     }
     _crate_internals {

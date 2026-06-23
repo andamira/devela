@@ -1,12 +1,16 @@
-// devela/src/sys/os/term/backend/linux/term.rs
+// devela/src/sys/os/term/backend/linux/define.rs
 //
 //! Defines [`TermLinux`].
 //
 
+use crate::EventQueue;
 use crate::{Debug, Linux, LinuxResult, RunCap, RunService, TermCaps, TermSize, VersionFull};
 #[cfg(feature = "time")]
 use crate::{LinuxError, RunServiceProbe};
 use crate::{TermInputParser, TermLinuxInputBuf, TermLinuxRestore, TermMode, TermSession};
+
+/// Default semantic event queue capacity for Linux terminal events.
+const TERM_EVENT_QUEUE_CAP: usize = 4;
 
 /// Default byte capacity for Linux terminal input batching.
 const TERM_INPUT_BUF_CAP: usize = 64;
@@ -16,9 +20,9 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TermLinux = 128|1024),
+    test_size_of(TermLinux = 372|2976),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TermLinux = 128|1024),
+    test_size_of(TermLinux = 392|3136),
 }]
 /// Owns terminal input parsing, scoped session control, cached terminal and
 /// runtime capabilities, and the last known terminal size over the lower-level
@@ -27,6 +31,7 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 pub struct TermLinux {
     pub(super) parser: TermInputParser,
     pub(super) input_buf: TermLinuxInputBuf<TERM_INPUT_BUF_CAP>,
+    pub(super) events: EventQueue<TERM_EVENT_QUEUE_CAP>,
     pub(super) term_caps: TermCaps,
     pub(super) run_cap: RunCap,
     pub(super) size: Option<TermSize>,
@@ -43,6 +48,7 @@ impl TermLinux {
         let mut term = Self {
             parser: TermInputParser::new(),
             input_buf: TermLinuxInputBuf::new(),
+            events: EventQueue::new(),
             term_caps: TermCaps::ANSI_BASE,
             run_cap: RunCap::default(),
             size,

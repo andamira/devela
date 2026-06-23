@@ -4,8 +4,11 @@
 //
 
 #[cfg(feature = "time")]
-use crate::Duration;
-use crate::{EventKind, Linux, LinuxResult, TermLinux, TermPollPolicy, is};
+use crate::{Duration, EventTimestamp, LinuxInstant, TimeSource};
+use crate::{Event, EventKind, Linux, LinuxResult, TermLinux, TermPollPolicy, is};
+
+#[cfg(feature = "time")]
+const TERM_ESC_BLOCKING_TIMEOUT: Duration = Duration::from_millis(10);
 
 /// # Event polling
 impl TermLinux {
@@ -62,22 +65,89 @@ impl TermLinux {
             return Ok(self.parser.flush_escape());
         }
     }
-    /// Blocks until an event is available.
+    /// Blocks until a terminal event is available.
+    ///
+    /// Buffered events are returned first. Newly read bytes are parsed through
+    /// the semantic event queue, preserving the same construction
+    /// and timestamping path used by non-blocking polling.
+    ///
+    /// With `time`, a pending lone `ESC` is briefly disambiguated
+    /// before being emitted as an Escape event.
     pub fn wait_event(&mut self) -> LinuxResult<EventKind> {
         loop {
-            is! { let Some(ev) = self.poll_event()?, return Ok(ev) }
+            is! { let Some(ev) = self.poll_buffered_event(), return Ok(ev) }
             let byte = Linux::get_byte()?;
-            is! { let Some(ev) = self.parser.feed(byte), return Ok(ev) }
+            let _ = self.feed_byte_to_event_queue(byte);
+            is! { let Some(ev) = self.pop_event_kind(), return Ok(ev) }
+            // Drain ready bytes so multibyte input and escape sequences can finish.
+            while self.input_buf.refill_from_stdin()? != 0 {
+                self.fill_event_queue_from_input();
+                is! { let Some(ev) = self.pop_event_kind(), return Ok(ev) }
+            }
+            // Resolve a standalone ESC without bypassing the semantic event queue.
+            if self.parser.is_pending_escape() {
+                #[cfg(feature = "time")]
+                {
+                    Linux::sleep(TERM_ESC_BLOCKING_TIMEOUT)?;
+                    if self.input_buf.refill_from_stdin()? != 0 {
+                        self.fill_event_queue_from_input();
+                        is! { let Some(ev) = self.pop_event_kind(), return Ok(ev) }
+                    }
+                }
+                if let Some(ev) = self.parser.flush_escape() {
+                    let queued = self.queue_event_kind(ev);
+                    debug_assert!(queued);
+                    is! { let Some(ev) = self.pop_event_kind(), return Ok(ev) }
+                }
+            }
         }
     }
+}
 
-    /* internal helpers */
+// Internal helpers
+impl TermLinux {
+    #[cfg(feature = "time")]
+    fn event_from_kind(&self, kind: EventKind) -> Event {
+        let ns = <LinuxInstant as TimeSource<u64>>::time_now();
+        let ms = (ns / 1_000_000).min(u32::MAX as u64) as u32;
+        Event::new(kind, Some(EventTimestamp::from_millis_u32(ms)))
+    }
+    #[cfg(not(feature = "time"))]
+    fn event_from_kind(&self, kind: EventKind) -> Event {
+        Event::new(kind, None)
+    }
 
-    /// Feeds buffered bytes until one event is completed or the buffer is empty.
-    fn poll_buffered_event(&mut self) -> Option<EventKind> {
-        while let Some(byte) = self.input_buf.pop_front() {
-            is! { let Some(ev) = self.parser.feed(byte), return Some(ev) }
+    /// Feeds one byte into the parser and queues a completed event, if any.
+    ///
+    /// Returns `true` if an event was queued.
+    #[inline]
+    fn feed_byte_to_event_queue(&mut self, byte: u8) -> bool {
+        is! { let Some(ev) = self.parser.feed(byte), self.queue_event_kind(ev), false }
+    }
+    /// Feeds buffered bytes into the parser
+    /// until the semantic event queue is full or the byte buffer is empty.
+    fn fill_event_queue_from_input(&mut self) {
+        while !self.events.is_full() {
+            let Some(byte) = self.input_buf.pop_front() else { break };
+            let queued = self.feed_byte_to_event_queue(byte);
+            debug_assert!(!queued || !self.events.is_empty());
         }
-        None
+    }
+    /// Returns one queued event, filling the queue from buffered input if needed.
+    fn poll_buffered_event(&mut self) -> Option<EventKind> {
+        is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
+        self.fill_event_queue_from_input();
+        self.pop_event_kind()
+    }
+    /// Queues one terminal event kind as a global event.
+    ///
+    /// Returns `false` if the semantic event queue is full.
+    pub(super) fn queue_event_kind(&mut self, kind: EventKind) -> bool {
+        let ev = self.event_from_kind(kind);
+        self.events.try_push(ev).is_ok()
+    }
+    /// Pops the oldest queued terminal event kind.
+    fn pop_event_kind(&mut self) -> Option<EventKind> {
+        self.events.pop().map(|ev| ev.kind)
     }
 }
