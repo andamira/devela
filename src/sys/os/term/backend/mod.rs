@@ -5,7 +5,7 @@
 //! Connects terminal semantics to concrete host environments.
 //
 
-#[cfg(all(feature = "linux", feature = "event", not(miri)))]
+#[cfg(all(feature = "linux", not(miri)))]
 mod linux;
 // mod macos; // TermMacos
 // mod std; // TermStd
@@ -17,11 +17,11 @@ crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::r#trait::*;
 
-        #[cfg(all(feature = "linux", feature = "event", not(miri)))]
+        #[cfg(all(feature = "linux", not(miri)))]
         pub use super::linux::_all::*;
     }
     _crate_internals {
-        #[cfg(all(feature = "linux", feature = "event", not(miri)))]
+        #[cfg(all(feature = "linux", not(miri)))]
         pub use super::linux::_crate_internals::*;
     }
 }

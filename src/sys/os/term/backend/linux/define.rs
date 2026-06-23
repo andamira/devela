@@ -87,16 +87,13 @@ impl TermLinux {
     ///
     /// The returned guard does not borrow `self`, so the terminal
     /// frontend can continue to be used while the session is active.
-    pub fn session(
-        &mut self,
-        mode: TermMode,
-    ) -> LinuxResult<TermSession<impl Drop + Debug + use<>>> {
+    pub fn session(&mut self, mode: TermMode) -> LinuxResult<TermSession<TermLinuxRestore>> {
         Ok(TermSession::new(TermLinuxRestore::enter(mode)?))
     }
     /// Enters a scoped raw terminal session.
     ///
     /// This is a convenience wrapper around [`session`][Self::session] with [`TermMode::raw`].
-    pub fn session_raw(&mut self) -> LinuxResult<TermSession<impl Drop + Debug + use<>>> {
+    pub fn session_raw(&mut self) -> LinuxResult<TermSession<TermLinuxRestore>> {
         Ok(TermSession::new(TermLinuxRestore::raw()?))
     }
 

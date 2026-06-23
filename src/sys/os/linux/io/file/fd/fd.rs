@@ -136,7 +136,7 @@ impl IoWrite for LinuxFd {
     }
 }
 #[cfg(any(feature = "std", feature = "io"))]
-impl crate::IoSeek for LinuxFd {
+impl IoSeek for LinuxFd {
     fn seek(&mut self, pos: IoSeekFrom) -> IoResult<u64> {
         let pos = match pos {
             IoSeekFrom::Start(offset) => {

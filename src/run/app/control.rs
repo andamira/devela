@@ -8,12 +8,19 @@ use crate::is;
 crate::enumset! {
     #[doc = crate::_tags!(runtime event)]
     /// External control notice directed at an application.
-    #[doc = crate::_doc_meta!{ location("run/app/control") }]
+    #[doc = crate::_doc_meta!{
+        location("run/app"),
+        test_size_of(AppControl = 1|8; niche Option),
+
+    }]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub enum AppControl(
         #[doc = crate::_tags!(runtime signal set)]
         /// A set of application control notices.
-        #[doc = crate::_doc_meta!{ location("run/app/control") }]
+        #[doc = crate::_doc_meta!{
+            location("run/app"),
+            test_size_of(AppControlSet = 2|16),
+        }]
         pub AppControlSet: u16
     ) {
         /// User requested interruption, usually `Ctrl+C`.
