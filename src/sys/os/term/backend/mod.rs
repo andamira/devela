@@ -9,11 +9,14 @@
 mod linux;
 // mod macos; // TermMacos
 // mod std; // TermStd
+mod r#trait; // TermBackend
 // mod web; // TermWeb
 // mod windows; // TermWindows
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
+        pub use super::r#trait::*;
+
         #[cfg(all(feature = "linux", feature = "event", not(miri)))]
         pub use super::linux::_all::*;
     }

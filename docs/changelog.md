@@ -76,6 +76,8 @@
   - re-implement stdio read and write methods.
 
 #### sys::os::term
+- new trait: `TermBackend`.
+- new types: `TermLinuxRestore`.
 - make `ansi` module public.
 - update `Termel` to adapt to the new `Textel`.
 

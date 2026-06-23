@@ -29,15 +29,18 @@ crate::set! {
     }
 }
 
-crate::test_size_of!(TermLinuxRestore = 56 | 448);
 /// Linux terminal session restore payload.
+#[doc = crate::_doc_meta!{
+    location("sys/os/term"),
+    test_size_of(TermLinuxRestore = 56 | 448),
+}]
 ///
 /// This is the synchronization point between [`TermMode`] and Linux-specific
 /// terminal state changes. It applies termios line mode changes and ANSI
 /// reporting/presentation requests, recording the corresponding restoration
 /// work as each step succeeds.
 #[derive(Debug)]
-pub(crate) struct TermLinuxRestore {
+pub struct TermLinuxRestore {
     guard: Option<LinuxTermModeGuard>,
     flags: TermLinuxRestoreFlags,
 }

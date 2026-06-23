@@ -6,18 +6,21 @@
 mod term; // TermLinux
 mod poll; // impl polling
 mod cap; // impl capabilities
+mod impl_trait; // impl TermBackend
 
 mod buf; // (TermLinuxInputBuf)
-mod restore; // (TermLinuxRestore, TermLinuxRestoreFlags)
+mod restore; // TermLinuxRestore
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::term::*;
+        pub use super::{
+            restore::TermLinuxRestore,
+            term::TermLinux,
+        };
     }
     _crate_internals {
-        pub use super::{
-            buf::*,
-            restore::*,
+        pub(crate) use super::{
+            buf::TermLinuxInputBuf,
         };
     }
 }
