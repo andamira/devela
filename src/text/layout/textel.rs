@@ -62,7 +62,6 @@ impl<T, M> Textel<T, M> {
     #[must_use]
     pub fn into_value(self) -> T { self.value }
     /// Returns this textel with a different value.
-    #[must_use]
     pub fn with_value<U>(self, value: U) -> Textel<U, M> {
         Textel::new_meta(value, self.meta)
     }
@@ -81,7 +80,6 @@ impl<T, M> Textel<T, M> {
     #[must_use]
     pub fn into_meta(self) -> M { self.meta }
     /// Returns this textel with different metadata.
-    #[must_use]
     pub fn with_meta<N>(self, meta: N) -> Textel<T, N> {
         Textel::new_meta(self.value, meta)
     }

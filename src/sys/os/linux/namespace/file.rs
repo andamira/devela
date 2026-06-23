@@ -92,7 +92,7 @@ impl Linux {
     pub fn pipe_fd_with(flags: LinuxPipeFlags) -> LinuxResult<LinuxPipe> {
         let mut fds = [0 as FdRaw; 2];
         let n = unsafe { Self::sys_pipe2(fds.as_mut_ptr(), flags.bits()) };
-        if n < 0 { return Err(LinuxError::Sys(n as isize)); }
+        if n < 0 { return Err(LinuxError::Sys(n)); }
         let read = unsafe { LinuxFd::from_raw(fds[0]) };
         let write = unsafe { LinuxFd::from_raw(fds[1]) };
         Ok(LinuxPipe { read, write })
@@ -166,7 +166,7 @@ impl Linux {
     pub fn stat_fd(fd: FdRaw) -> LinuxResult<LinuxStat> {
         let mut stat = MaybeUninit::<LinuxStat>::uninit();
         let n = unsafe { Self::sys_fstat(fd, stat.as_mut_ptr()) };
-        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(unsafe { stat.assume_init() }) }
+        if n < 0 { Err(LinuxError::Sys(n)) } else { Ok(unsafe { stat.assume_init() }) }
     }
     /// Gets file status for a path.
     ///
@@ -174,7 +174,7 @@ impl Linux {
     pub fn stat_path(path: &CStr) -> LinuxResult<LinuxStat> {
         let mut stat = MaybeUninit::<LinuxStat>::uninit();
         let n = unsafe { Self::sys_stat(path.as_ptr(), stat.as_mut_ptr()) };
-        if n < 0 { Err(LinuxError::Sys(n as isize)) } else { Ok(unsafe { stat.assume_init() }) }
+        if n < 0 { Err(LinuxError::Sys(n)) } else { Ok(unsafe { stat.assume_init() }) }
     }
 
     /* write & append */

@@ -5,7 +5,7 @@
 //! Defines [`LINUX_AT`], [`LINUX_FILENO`], [`LINUX_O_FLAGS`], [`LINUX_SEEK`].
 //
 
-#![allow(dead_code, non_camel_case_types)]
+#![allow(dead_code, non_camel_case_types, clippy::upper_case_acronyms)]
 
 use crate::c_int;
 

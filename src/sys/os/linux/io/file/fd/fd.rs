@@ -97,7 +97,7 @@ impl LinuxFd {
         let mut total = 0;
         while !buf.is_empty() {
             let n = self.read_raw(buf)?;
-            is! { n == 0, break; }
+            is![n == 0, break];
             total += n;
             buf = &mut buf[n..];
         }

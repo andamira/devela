@@ -3,7 +3,7 @@
 //! Defines [`LINUX_S_IFMT`].
 //
 
-#![allow(dead_code, non_camel_case_types)]
+#![allow(dead_code, non_camel_case_types, clippy::upper_case_acronyms)]
 
 use crate::c_uint;
 

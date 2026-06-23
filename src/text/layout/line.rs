@@ -47,7 +47,6 @@ impl<'a> TextLineIter<'a> {
     }
 
     /// Returns the current continuation cursor.
-    #[must_use]
     pub const fn cursor(&self) -> TextCursor {
         self.cursor
     }

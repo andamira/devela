@@ -73,10 +73,8 @@ impl<T, S, C, M> Termel<T, S, C, M> {
     }
 
     /// Returns the textual element.
-    #[must_use]
     pub const fn textel(&self) -> &Textel<T, M> { &self.textel }
     /// Returns an exclusive reference to the textual element.
-    #[must_use]
     pub const fn textel_mut(&mut self) -> &mut Textel<T, M> { &mut self.textel }
     /// Returns the textual value.
     #[must_use]
