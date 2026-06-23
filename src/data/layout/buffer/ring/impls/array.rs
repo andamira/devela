@@ -24,22 +24,17 @@ macro_rules! __buffer_ring_impl_array {
         impl<T, const CAP: usize> $name<T, [T; CAP]> {
             /* construct */
 
-            /// Creates an empty ring from already initialized storage.
-            pub const fn new(array: [T; CAP]) -> Self {
-                Self::_new(array, Self::_idx_zero(), Self::_idx_zero())
-            }
-            /// Creates an empty ring initialized with `T::INIT`.
+            /// Creates an empty ring with backing storage initialized from `T::INIT`.
             pub const fn new_init() -> Self where T: $crate::ConstInit {
                 Self::_new([T::INIT; CAP], Self::_idx_zero(), Self::_idx_zero())
             }
-
             /// Creates an empty ring from already initialized storage.
             pub const fn from_array_empty(array: [T; CAP]) -> Self {
-                Self::new(array)
+                Self::_new(array, Self::_idx_zero(), Self::_idx_zero())
             }
             /// Creates a full ring from already initialized storage.
             pub const fn from_array_full(array: [T; CAP]) -> Self {
-                Self::_new(array, Self::_idx_zero(), Self::_usize_to_idx(CAP))
+                Self::_new(array, Self::_idx_zero(), Self::_usize_to_midx(CAP))
             }
             /// Creates a ring from an array and explicit ring state.
             ///
@@ -60,9 +55,9 @@ macro_rules! __buffer_ring_impl_array {
                 let head = if len_usize == 0 {
                     Self::_idx_zero()
                 } else {
-                    Self::_usize_to_idx(head_usize)
+                    Self::_usize_to_midx(head_usize)
                 };
-                Some(Self::_new(array, head, Self::_usize_to_idx(len_usize)))
+                Some(Self::_new(array, head, Self::_usize_to_midx(len_usize)))
             }
             /// Primitive-index variant of [`from_array_ring`][Self::from_array_ring].
             pub fn from_array_ring_prim(array: [T; CAP], head: $P, len: $P) -> Option<Self> {
@@ -79,7 +74,7 @@ macro_rules! __buffer_ring_impl_array {
                 $crate::whilst! { i in 0..src.len(); {
                     storage[i] = src[i].clone();
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(src.len())))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(src.len())))
             }
             /// Creates a ring by copying all elements from `src`,
             /// after initializing the remaining capacity with `init`.
@@ -89,7 +84,7 @@ macro_rules! __buffer_ring_impl_array {
                 $crate::whilst! { i in 0..src.len(); {
                     storage[i] = src[i];
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(src.len())))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(src.len())))
             }
 
             /* size & capacity */
@@ -121,6 +116,78 @@ macro_rules! __buffer_ring_impl_array {
                 -> Result<(), $crate::InvalidValue> {
                 self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
                 Ok(())
+            }
+
+            /* spare */
+
+            /// Returns the current contiguous spare capacity at the back of the ring.
+            #[must_use]
+            pub const fn spare_back_capacity(&self) -> usize {
+                if self.is_full() { 0 }
+                else {
+                    let (tail, head, len) =
+                        (self._tail_usize(), self._head_usize(), self._len_usize());
+                    if len == 0 || tail >= head { CAP - tail } else { head - tail }
+                }
+            }
+            /// Returns the contiguous spare storage available at the back of the ring.
+            ///
+            /// The returned slice is part of the initialized backing array but is not yet
+            /// part of the logical ring contents. Write into this slice, then call
+            /// [`commit_back_slice`][Self::commit_back_slice] with the number of written
+            /// elements.
+            ///
+            /// The slice may be shorter than
+            /// [`remaining_capacity`][Self::remaining_capacity] when the ring wraps before
+            /// the physical end of the backing array.
+            #[must_use]
+            pub fn spare_back_slice_mut(&mut self) -> &mut [T] {
+                if self.is_full() { return &mut []; }
+                let (tail, head, len) = (self._tail_usize(), self._head_usize(), self._len_usize());
+                let end = if len == 0 || tail >= head { CAP } else { head };
+                &mut self.storage[tail..end]
+            }
+            /// Extends the logical back of the ring by `count` contiguous elements.
+            ///
+            /// This commits elements previously written into
+            /// [`spare_back_slice_mut`][Self::spare_back_slice_mut].
+            ///
+            /// Returns `Err(contiguous_remaining)` if `count` exceeds the current
+            /// contiguous spare slice length.
+            pub const fn commit_back_slice(&mut self, count: $I) -> Result<(), $I> {
+                let count_usize = Self::_idx_to_usize(count);
+                let spare = self.spare_back_capacity();
+                if count_usize > spare { return Err(Self::_usize_to_idx(spare)); }
+                self.len = Self::_usize_to_midx(self._len_usize() + count_usize);
+                Ok(())
+            }
+            /// Primitive-index variant of [`commit_back_slice`][Self::commit_back_slice].
+            ///
+            /// Returns `Err(contiguous_remaining)` if `count` exceeds the current
+            /// contiguous spare slice length, or if `count` cannot be represented by the
+            /// index type.
+            pub const fn commit_back_slice_prim(&mut self, count: $P) -> Result<(), $P> {
+                let Ok(count_idx) = Self::_prim_to_idx(count) else {
+                    return Err(self.remaining_capacity_prim());
+                };
+                match self.commit_back_slice(count_idx) {
+                    Ok(()) => Ok(()),
+                    Err(rem) => Err(Self::_idx_to_prim(rem)),
+                }
+            }
+            /// `usize` variant of [`commit_back_slice`][Self::commit_back_slice].
+            ///
+            /// Returns `Err(contiguous_remaining)` if `count` exceeds the current
+            /// contiguous spare slice length, or if `count` cannot be represented by the
+            /// index type.
+            pub const fn commit_back_slice_usize(&mut self, count: usize) -> Result<(), usize> {
+                let Ok(count_idx) = $crate::MaybeNiche::<$I>::try_from_usize(count) else {
+                    return Err(self.spare_back_capacity());
+                };
+                match self.commit_back_slice(count_idx.repr()) {
+                    Ok(()) => Ok(()),
+                    Err(rem) => Err(Self::_idx_to_usize(rem)),
+                }
             }
 
             /* push: back */
@@ -155,7 +222,7 @@ macro_rules! __buffer_ring_impl_array {
                     let physical = Self::_wrap_usize(self._tail_usize() + i);
                     self.storage[physical] = src[i].clone();
                 }}
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Appends as many copied elements from `src` as fit at the back.
@@ -167,7 +234,7 @@ macro_rules! __buffer_ring_impl_array {
                     let physical = Self::_wrap_usize(self._tail_usize() + i);
                     self.storage[physical] = src[i];
                 }}
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Appends all copied elements from `src`, or none if insufficient capacity.
@@ -190,7 +257,7 @@ macro_rules! __buffer_ring_impl_array {
                 if self.is_full() { return Err(value); }
                 let head = self._prev_head_usize();
                 self.storage[head] = value;
-                self.head = Self::_usize_to_idx(head);
+                self.head = Self::_usize_to_midx(head);
                 self.len = self._len_inc();
                 Ok(())
             }
@@ -201,7 +268,7 @@ macro_rules! __buffer_ring_impl_array {
                 if self.is_full() { return Err(value); }
                 let head = self._prev_head_usize();
                 self.storage[head] = value;
-                self.head = Self::_usize_to_idx(head);
+                self.head = Self::_usize_to_midx(head);
                 self.len = self._len_inc();
                 Ok(())
             }
@@ -220,8 +287,8 @@ macro_rules! __buffer_ring_impl_array {
                     let physical = Self::_wrap_usize(new_head + i);
                     self.storage[physical] = src[i].clone();
                 }}
-                self.head = Self::_usize_to_idx(new_head);
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.head = Self::_usize_to_midx(new_head);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Prepends as many copied elements from `src` as fit at the front.
@@ -238,8 +305,8 @@ macro_rules! __buffer_ring_impl_array {
                     let physical = Self::_wrap_usize(new_head + i);
                     self.storage[physical] = src[i];
                 }}
-                self.head = Self::_usize_to_idx(new_head);
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.head = Self::_usize_to_midx(new_head);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Prepends all copied elements from `src`, or none if insufficient capacity.
@@ -262,7 +329,7 @@ macro_rules! __buffer_ring_impl_array {
                 let value = self.storage[head].clone();
                 self.len = self._len_dec();
                 if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1)); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
                 Some(value)
             }
             /// Removes and returns a copied value from the front of the ring.
@@ -272,7 +339,7 @@ macro_rules! __buffer_ring_impl_array {
                 let value = self.storage[head];
                 self.len = self._len_dec();
                 if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1)); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
                 Some(value)
             }
             /// Removes and returns a value from the front,
@@ -283,7 +350,7 @@ macro_rules! __buffer_ring_impl_array {
                 let value = $crate::Mem::replace(&mut self.storage[head], replacement);
                 self.len = self._len_dec();
                 if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1)); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
                 Some(value)
             }
             /// Removes and returns a value from the front,
@@ -301,7 +368,7 @@ macro_rules! __buffer_ring_impl_array {
                 self.storage[head] = replacement;
                 self.len = self._len_dec();
                 if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1)); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
                 Some(value)
             }
             /// Removes and returns a copied value from the front,

@@ -1,5 +1,25 @@
 // devela/src/data/layout/buffer/ring/definition.rs
 
+buffer_ring!(
+    #[doc = crate::_tags!(data_structure)]
+    /// A fixed-capacity ring buffer using `u8` indices.
+    #[doc = crate::_doc_meta!{location("data/layout/buffer")}]
+    ///
+    /// This is the canonical small ring buffer type for queues and short
+    /// circular buffers with capacities up to `255`.
+    ///
+    /// It is generated with [`buffer_ring!`] and implements the static
+    /// `array` and `option` storage backends.
+    ///
+    /// Use the `array` backend for fully initialized storage such as `[u8; CAP]`.
+    /// Use the `option` backend for moving arbitrary values through
+    /// `[Option<T>; CAP]` without replacement values.
+    ///
+    /// See [`BufferRingStaticExample`] for the full generated method surface.
+    pub struct BufferRingU8: (u8);
+    array, option
+);
+
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a ring buffer type over contiguous storage backends.
 #[doc = crate::_doc_meta!{location("data/layout")}]
@@ -18,8 +38,8 @@
 /// Currently implemented:
 /// - **static `array`**
 ///   Fully initialized array storage (`[T; CAP]`).
-///   All slots always contain a valid `T`; `len` controls which slots are
-///   logically visible.
+///   All slots always contain a valid `T`;
+///   `len` controls which slots are logically visible.
 /// - **static `option`**
 ///   Array of options (`[Option<T>; CAP]`).
 ///   Occupied logical slots are `Some`; unused physical slots are `None`.
@@ -60,8 +80,8 @@
 /// - **`option`**
 ///   Array of options (`[Option<T>; CAP]`).
 ///
-///   This backend stores occupancy explicitly: occupied logical slots are
-///   `Some(T)`, and unused physical slots are `None`.
+///   This backend stores occupancy explicitly: occupied logical slots
+///   are `Some(T)`, and unused physical slots are `None`.
 ///
 ///   It supports moving arbitrary `T` values in and out
 ///   without requiring replacement values.
@@ -83,7 +103,7 @@
 /// assert_eq!(array_ring.pop_front_copy(), Some(10));
 /// assert_eq!(array_ring.peek_front(), Some(&20));
 ///
-/// let mut option_ring = RingU8::<i32, [Option<i32>; 4]>::new();
+/// let mut option_ring = RingU8::<i32, [Option<i32>; 4]>::new_empty();
 /// option_ring.push_back(10).unwrap();
 /// option_ring.push_back(20).unwrap();
 ///
@@ -268,16 +288,20 @@ macro_rules! buffer_ring {
         #[inline(always)]
         const fn _head_usize(&self) -> usize { self.head.to_usize_saturating() }
 
-        /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-        #[inline(always)]
-        const fn _usize_to_idx_sat(from: usize) -> $crate::MaybeNiche<$I> {
-            $crate::MaybeNiche::<$I>::from_usize_saturating(from)
-        }
-
         /// Returns the given usize value as a MaybeNiche wrapped index type.
         #[inline(always)]
-        const fn _usize_to_idx(from: usize) -> $crate::MaybeNiche<$I> {
+        const fn _usize_to_midx(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
+        }
+        /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
+        #[inline(always)]
+        const fn _usize_to_midx_sat(from: usize) -> $crate::MaybeNiche<$I> {
+            $crate::MaybeNiche::<$I>::from_usize_saturating(from)
+        }
+        /// Returns the given usize value as an index type.
+        #[inline(always)]
+        const fn _usize_to_idx(from: usize) -> $I {
+            Self::_usize_to_midx(from).repr()
         }
         /// Returns the given index value as a usize.
         #[inline(always)]
@@ -338,7 +362,7 @@ macro_rules! buffer_ring {
         /// The fixed capacity of the ring as the index type.
         pub const CAP: $I = {
             let _ = Self::_CHECK_INVARIANTS; // ensure proper eval order
-            Self::_usize_to_idx(CAP).repr()
+            Self::_usize_to_midx(CAP).repr()
         };
         /// The fixed capacity of the ring as the primitive type.
         pub const CAP_PRIM: $P = Self::_idx_to_prim(Self::CAP);

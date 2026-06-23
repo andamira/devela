@@ -44,7 +44,8 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 #### data::layout::buffer
-- new macro `buffer_ring!`.
+- new types: `BufferRingU8`, `BufferRingStaticExample`.
+- new macro: `buffer_ring!`.
 - update `buffer_linear!`:
   - new impl `option` methods: `swap_remove_prim`, `swap_remove_copy_prim`.
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.

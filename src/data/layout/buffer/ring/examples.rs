@@ -23,7 +23,7 @@ buffer_ring!(
     /// - [Fully initialized array](#impl-BufferRingStaticExample<T,+[T;+CAP]>)
     /// (`array`)
     ///   - Constructors:
-    ///     [new](#method.new) *([_init](#method.new_init))*,
+    ///     [new_init](#method.new_init),
     ///     from_array *([_empty](#method.from_array_empty), [_full](#method.from_array_full),
     ///       [_ring](#method.from_array_ring), [_ring_prim](#method.from_array_ring_prim))*,
     ///     from_slice *([_clone](#method.from_slice_clone), [_copy](#method.from_slice_copy))*.
@@ -38,6 +38,9 @@ buffer_ring!(
     ///   - Logical range control:
     ///     [clear](#method.clear) *([_copy](#method.clear_copy))*,
     ///     [truncate](#method.truncate), *([_prim](#method.truncate_prim))*.
+    ///   - Spare:
+    ///     [spare_back_slice_mut](#method.spare_back_slice_mut),
+    ///     [commit_back_slice](#method.commit_back) *([_prim](#method.commit_back_slice_prim))*.
     ///   - Push:
     ///     [push_back](#method.push_back) *([_copy](#method.push_back_copy))*,
     ///     [push_back_slice](#method.push_back_slice) *([_copy](#method.push_back_slice_copy),
@@ -128,7 +131,7 @@ buffer_ring!(
     /// - [Fully initialized array of options](#impl-BufferRingStaticExample<T,+[Option<T>;+CAP]>)
     /// (`option`)
     ///   - Constructors:
-    ///     [new](#method.new-2) *([_prim](#method.new_prim))*,
+    ///     [new_empty](#method.new_empty),
     ///     from_array *([_ring](#method.from_array_ring),
     ///       [_ring_prim](#method.from_array_ring_prim), [_linear](#method.from_array_linear),
     ///       [_clone](#method.from_array_clone), [_copy](#method.from_array_copy))*,

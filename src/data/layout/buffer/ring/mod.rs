@@ -8,7 +8,7 @@ mod tests;
 #[cfg(any(test, feature = "_docs_examples"))]
 mod examples; // BufferRingStaticExample
 
-mod definition; // buffer_ring!
+mod definition; // buffer_ring!, BufferRingU8
 mod impls; // hidden macros for buffer variants
 
 crate::structural_mods! { // _mods

@@ -95,7 +95,7 @@ mod option {
 
     #[test]
     fn basic_fifo() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         assert!(buf.is_empty());
         assert_eq!(buf.capacity_prim(), 4);
         assert_eq!(buf.push_back(10), Ok(()));
@@ -110,7 +110,7 @@ mod option {
     }
     #[test]
     fn wraparound_order() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         assert_eq!(buf.push_back(1), Ok(()));
         assert_eq!(buf.push_back(2), Ok(()));
         assert_eq!(buf.push_back(3), Ok(()));
@@ -125,7 +125,7 @@ mod option {
     }
     #[test]
     fn as_slices_wraparound() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         for n in [1, 2, 3] {
             buf.push_back(n).unwrap();
         }
@@ -151,7 +151,7 @@ mod option {
     }
     #[test]
     fn push_back_slice_wraparound() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         buf.push_back_slice_copy(&[1, 2, 3]);
         assert_eq!(buf.pop_front(), Some(1));
         assert_eq!(buf.push_back_slice_copy(&[4, 5, 6]), 2);
@@ -160,21 +160,21 @@ mod option {
     }
     #[test]
     fn push_back_slice_copy_exact() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         assert_eq!(buf.push_back_slice_copy_exact(&[1, 2, 3]), Ok(()));
         assert_eq!(buf.push_back_slice_copy_exact(&[4, 5]), Err(1));
         assert_ring_option_eq(&buf, &[1, 2, 3]);
     }
     #[test]
     fn push_front_slice_wraparound() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         assert_eq!(buf.push_back_slice_copy(&[10, 20]), 2);
         assert_eq!(buf.push_front_slice_copy(&[1, 2, 3]), 2);
         assert_ring_option_eq(&buf, &[1, 2, 10, 20]);
     }
     #[test]
     fn swap_remove() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         buf.push_back_slice_copy(&[1, 2, 3, 4]);
         assert_eq!(buf.swap_remove_prim(1), Ok(Some(2)));
         assert_eq!(buf.len_prim(), 3);
@@ -183,7 +183,7 @@ mod option {
     }
     #[test]
     fn clear_resets_head_after_wrap() {
-        let mut buf = RingOption::new();
+        let mut buf = RingOption::new_empty();
         buf.push_back_slice_copy(&[1, 2, 3]);
         assert_eq!(buf.pop_front(), Some(1));
         buf.push_back(4).unwrap();

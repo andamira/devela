@@ -6,7 +6,7 @@ macro_rules! __buffer_ring_impl_option {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
 
         impl<T, const CAP: usize> Default for $name<T, [Option<T>; CAP]> {
-            fn default() -> Self { Self::new() }
+            fn default() -> Self { Self::new_empty() }
         }
 
         $(#[$impl_attr])*
@@ -28,11 +28,13 @@ macro_rules! __buffer_ring_impl_option {
         impl<T, const CAP: usize> $name<T, [Option<T>; CAP]> {
             /* construct */
 
-            /// Creates an empty ring.
-            pub const fn new() -> Self {
+            /// Creates an empty ring over optional storage.
+            ///
+            /// This constructor belongs to the `option` storage backend, where logical
+            /// occupancy is represented by `Some` and `None` slots.
+            pub const fn new_empty() -> Self {
                 Self::_new([const { None }; CAP], Self::_idx_zero(), Self::_idx_zero())
             }
-
             /// Creates a ring from an array of options and explicit ring state.
             ///
             /// Returns `None` if the occupied slots do not match `head` and `len`.
@@ -64,8 +66,8 @@ macro_rules! __buffer_ring_impl_option {
                 }}
                 Some(Self::_new(
                     array,
-                    Self::_usize_to_idx(head_usize),
-                    Self::_usize_to_idx(len_usize),
+                    Self::_usize_to_midx(head_usize),
+                    Self::_usize_to_midx(len_usize),
                 ))
             }
             /// Primitive-index variant of [`from_array_ring`][Self::from_array_ring].
@@ -93,7 +95,7 @@ macro_rules! __buffer_ring_impl_option {
                 $crate::whilst! { i in len,..CAP; {
                     if array[i].is_some() { return None; }
                 }}
-                Some(Self::_new(array, Self::_idx_zero(), Self::_usize_to_idx(len)))
+                Some(Self::_new(array, Self::_idx_zero(), Self::_usize_to_midx(len)))
             }
 
             /// Creates a ring by cloning all elements from `src`.
@@ -103,7 +105,7 @@ macro_rules! __buffer_ring_impl_option {
                 $crate::whilst! { i in 0..src.len(); {
                     storage[i] = Some(src[i].clone());
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(src.len())))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(src.len())))
             }
             /// Creates a ring by copying all elements from `src`.
             pub const fn from_slice_copy(src: &[T]) -> Option<Self> where T: Copy {
@@ -112,7 +114,7 @@ macro_rules! __buffer_ring_impl_option {
                 $crate::whilst! { i in 0..src.len(); {
                     storage[i] = Some(src[i]);
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(src.len())))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(src.len())))
             }
 
             /// Creates a ring by cloning all elements from an array.
@@ -122,16 +124,17 @@ macro_rules! __buffer_ring_impl_option {
                 $crate::whilst! { i in 0..N; {
                     storage[i] = Some(src[i].clone());
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(N)))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(N)))
             }
             /// Creates a ring by copying all elements from an array.
-            pub const fn from_array_copy<const N: usize>(src: [T; N]) -> Option<Self> where T: Copy {
+            pub const fn from_array_copy<const N: usize>(src: [T; N])
+                -> Option<Self> where T: Copy {
                 if N > CAP { return None; }
                 let mut storage = [const { None }; CAP];
                 $crate::whilst! { i in 0..N; {
                     storage[i] = Some(src[i]);
                 }}
-                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_idx(N)))
+                Some(Self::_new(storage, Self::_idx_zero(), Self::_usize_to_midx(N)))
             }
 
             /* size & capacity */
@@ -198,7 +201,7 @@ macro_rules! __buffer_ring_impl_option {
                     let physical = Self::_wrap_usize(self._tail_usize() + i);
                     self.storage[physical] = Some(src[i].clone());
                 }}
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Appends as many elements copied from `src` as fit at the back of the ring.
@@ -211,7 +214,7 @@ macro_rules! __buffer_ring_impl_option {
                     let physical = Self::_wrap_usize(self._tail_usize() + i);
                     self.storage[physical] = Some(src[i]);
                 }}
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Appends all copied from `src` at the back of the ring,
@@ -236,7 +239,7 @@ macro_rules! __buffer_ring_impl_option {
                 if self.is_full() { return Err(value); }
                 let head = self._prev_head_usize();
                 self.storage[head] = Some(value);
-                self.head = Self::_usize_to_idx(head);
+                self.head = Self::_usize_to_midx(head);
                 self.len = self._len_inc();
                 Ok(())
             }
@@ -247,7 +250,7 @@ macro_rules! __buffer_ring_impl_option {
                 if self.is_full() { return Err(value); }
                 let head = self._prev_head_usize();
                 self.storage[head] = Some(value);
-                self.head = Self::_usize_to_idx(head);
+                self.head = Self::_usize_to_midx(head);
                 self.len = self._len_inc();
                 Ok(())
             }
@@ -272,8 +275,8 @@ macro_rules! __buffer_ring_impl_option {
                     let physical = Self::_wrap_usize(new_head + i);
                     self.storage[physical] = Some(src[i].clone());
                 }}
-                self.head = Self::_usize_to_idx(new_head);
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.head = Self::_usize_to_midx(new_head);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Prepends as many copied elements from `src` as fit.
@@ -296,8 +299,8 @@ macro_rules! __buffer_ring_impl_option {
                     let physical = Self::_wrap_usize(new_head + i);
                     self.storage[physical] = Some(src[i]);
                 }}
-                self.head = Self::_usize_to_idx(new_head);
-                self.len = Self::_usize_to_idx(self._len_usize() + count);
+                self.head = Self::_usize_to_midx(new_head);
+                self.len = Self::_usize_to_midx(self._len_usize() + count);
                 count
             }
             /// Prepends all copied elements from `src`, or none if insufficient capacity.
@@ -323,7 +326,7 @@ macro_rules! __buffer_ring_impl_option {
                 if self.is_empty() {
                     self.head = Self::_idx_zero();
                 } else {
-                    self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1));
+                    self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1));
                 }
                 value
             }
@@ -337,7 +340,7 @@ macro_rules! __buffer_ring_impl_option {
                 if self.is_empty() {
                     self.head = Self::_idx_zero();
                 } else {
-                    self.head = Self::_usize_to_idx(Self::_wrap_usize(head + 1));
+                    self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1));
                 }
                 value
             }
@@ -432,7 +435,8 @@ macro_rules! __buffer_ring_impl_option {
                 value
             }
             /// Primitive-index variant of [`swap_remove`][Self::swap_remove].
-            pub fn swap_remove_prim(&mut self, index: $P) -> Result<Option<T>, $crate::InvalidValue> {
+            pub fn swap_remove_prim(&mut self, index: $P)
+                -> Result<Option<T>, $crate::InvalidValue> {
                 Ok(self.swap_remove($crate::unwrap![ok? Self::_prim_to_idx(index)]))
             }
 
