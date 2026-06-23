@@ -16,9 +16,9 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TermLinux = 136|1088),
+    test_size_of(TermLinux = 128|1024),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TermLinux = 144|1152),
+    test_size_of(TermLinux = 128|1024),
 }]
 /// Owns terminal input parsing, scoped session control, cached terminal and
 /// runtime capabilities, and the last known terminal size over the lower-level

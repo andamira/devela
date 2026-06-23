@@ -44,8 +44,6 @@
 //! and do not share memory except through `SharedArrayBuffer`.
 //
 
-use crate::{__doc_show, macro_apply};
-
 mod _helper; // _js_doc!, _js_extern!, js_method_str_alloc!
 
 mod console; // JsConsole

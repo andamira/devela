@@ -81,6 +81,7 @@
 - new types: `TermLinuxRestore`.
 - make `ansi` module public.
 - update `Termel` to adapt to the new `Textel`.
+- reimplement `TermLinuxInputBuf` using `BufferRingU8`.
 
 ### text::layout
 - new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.
@@ -98,6 +99,9 @@
 
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `text`, `view`, `widget`.
+
+### ui::event
+- reimplement `EventQueue` using `BufferRingU8`.
 
 ### ui::frame
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.

@@ -70,6 +70,7 @@ impl ImageFrameSpan {
     ///
     /// Invalid spans may overflow in [`Self::end`].
     #[must_use]
+    #[expect(unused, reason = "WIP")]
     pub(crate) const fn new_unchecked(frame: ImageFrameInfo, offset: usize, len: usize) -> Self {
         Self { frame, offset, len }
     }

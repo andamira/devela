@@ -32,7 +32,10 @@ crate::set! {
 /// Linux terminal session restore payload.
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),
-    test_size_of(TermLinuxRestore = 56 | 448),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(TermLinuxRestore = 48|384),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(TermLinuxRestore = 56|448),
 }]
 ///
 /// This is the synchronization point between [`TermMode`] and Linux-specific

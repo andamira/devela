@@ -30,7 +30,7 @@ pub(crate) struct XWindowConfigureDelta {
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11"),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(XDisplay = 240|1920; niche Option),
+    test_size_of(XDisplay = 248|1984; niche Option),
 }]
 ///
 /// Wraps an `xcb_connection_t` and its associated screen information.

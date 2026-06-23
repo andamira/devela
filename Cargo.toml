@@ -283,7 +283,7 @@ run = []
 run_all = ["run"]
 
 sys = []
-sys_all = ["sys", "io", "net"] # EXCLUDED: "device", "os"
+sys_all = ["sys", "io", "net"] # EXCLUDED: "device", (os: "web", "linux", "term", "windows")
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]

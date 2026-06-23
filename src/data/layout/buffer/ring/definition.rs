@@ -15,7 +15,8 @@ buffer_ring!(
     /// Use the `option` backend for moving arbitrary values through
     /// `[Option<T>; CAP]` without replacement values.
     ///
-    /// See [`BufferRingStaticExample`] for the full generated method surface.
+    /// See [`BufferRingStaticExample`][crate::BufferRingStaticExample]
+    /// for the full generated method surface.
     pub struct BufferRingU8: (u8);
     array, option
 );

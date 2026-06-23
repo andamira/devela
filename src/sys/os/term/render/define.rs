@@ -9,6 +9,9 @@ use crate::TermSize;
 /// Terminal renderer over caller-provided byte-frame storage.
 #[doc = crate::_doc_meta!{
     location("sys/os/term/backend"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: TermRenderer<&mut[u8]> = 36|288),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(__: TermRenderer<&mut[u8]> = 48|384),
 }]
 /// `TermRenderer<B>` treats `B` as initialized, contiguous byte storage through
