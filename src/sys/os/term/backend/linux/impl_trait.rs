@@ -30,7 +30,7 @@ impl TermBackend for TermLinux {
     fn term_capabilities(&self) -> TermCaps {
         TermLinux::term_capabilities(self)
     }
-    #[cfg(feature = "time")]
+    #[cfg(all(feature = "event", feature = "time"))]
     fn probe_term_capabilities(&mut self) -> LinuxResult<TermCaps> {
         TermLinux::probe_term_capabilities(self)
     }

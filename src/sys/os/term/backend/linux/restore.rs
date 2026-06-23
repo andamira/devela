@@ -29,6 +29,7 @@ crate::set! {
     }
 }
 
+#[doc = crate::_tags!(term linux guard)]
 /// Linux terminal session restore payload.
 #[doc = crate::_doc_meta!{
     location("sys/os/term"),

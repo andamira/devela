@@ -3,7 +3,7 @@
 //! Implements capability methods for  [`TermLinux`].
 //
 
-#[cfg(feature = "time")]
+#[cfg(all(feature = "event", feature = "time"))]
 use crate::{Ansi, Linux, TermCap, TermDecModeStatus, TermParsed, TermReply, is};
 use crate::{ColorDepth, LinuxResult, NonMaxU16, TermCaps, TermLinux, TermSize};
 use crate::{RunCap, RunCapColor, RunCapImage, RunCapInput, RunCapText, RunCapWindow};
@@ -28,7 +28,7 @@ impl TermLinux {
     /// Available with the `time` feature,
     /// because probing uses bounded waits for terminal replies.
     // IMPROVE: add more queries
-    #[cfg(feature = "time")]
+    #[cfg(all(feature = "event", feature = "time"))]
     pub fn probe_term_capabilities(&mut self) -> LinuxResult<TermCaps> {
         let _guard = Linux::scoped_event_mode()?;
         let mut caps = TermCaps::new();
@@ -61,13 +61,12 @@ impl TermLinux {
         self.term_caps = caps;
         Ok(caps)
     }
-    // pub fn probe_term_capabilities_nowait(&mut self) -> LinuxResult<TermCaps> { } // MAYBE
 
     /// Probes terminal capabilities, refreshes size, and recomputes runtime capabilities.
     ///
     /// # Features
     /// Available with the `time` feature, because terminal probing uses bounded waits.
-    #[cfg(feature = "time")]
+    #[cfg(all(feature = "event", feature = "time"))]
     pub fn probe_run_capabilities(&mut self) -> LinuxResult<RunCap> {
         let _ = self.probe_term_capabilities()?;
         self.refresh_run_capabilities()
@@ -83,13 +82,13 @@ impl TermLinux {
 
 // Private helpers
 impl TermLinux {
-    ///
-    #[cfg(feature = "time")]
+    /// Returns whether the terminal reports support for a DEC private mode.
+    #[cfg(all(feature = "event", feature = "time"))]
     fn query_dec_private_mode_supported(&mut self, mode: u16) -> LinuxResult<bool> {
         Ok(self.query_dec_private_mode(mode)?.is_some_and(|s| s.is_supported()))
     }
-    ///
-    #[cfg(feature = "time")]
+    /// Sends a DEC private mode status query and reads the matching reply.
+    #[cfg(all(feature = "event", feature = "time"))]
     fn query_dec_private_mode(&mut self, mode: u16) -> LinuxResult<Option<TermDecModeStatus>> {
         let mut query = [0u8; 10];
         let query = Ansi::QUERY_DEC_PRIVATE_MODE_N_B(&mut query, mode);
@@ -103,7 +102,7 @@ impl TermLinux {
     /// `ESC [ ? mode ; status $ y`.
     ///
     /// Returns `Ok(None)` on timeout or when another reply is received.
-    #[cfg(feature = "time")]
+    #[cfg(all(feature = "event", feature = "time"))]
     fn read_dec_private_mode_reply(&mut self, mode: u16) -> LinuxResult<Option<TermDecModeStatus>> {
         // Conservative probe timeout:
         // 40 × 1ms keeps startup responsive while giving terminal replies time to arrive.

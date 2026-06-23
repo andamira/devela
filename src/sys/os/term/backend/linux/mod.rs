@@ -4,12 +4,15 @@
 //
 
 mod define; // TermLinux
-mod poll; // impl polling
-mod cap; // impl capabilities
-mod impl_trait; // impl TermBackend
-
-mod buf; // (TermLinuxInputBuf)
 mod restore; // TermLinuxRestore
+#[cfg(feature = "event")]
+mod buf; // (TermLinuxInputBuf)
+
+// impls
+mod impl_trait; // impl TermBackend
+mod cap; // impl capabilities
+#[cfg(feature = "event")]
+mod poll; // impl polling
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
@@ -19,6 +22,7 @@ crate::structural_mods! { // _mods, _crate_internals
         };
     }
     _crate_internals {
+        #[cfg(feature = "event")]
         pub(crate) use super::{
             buf::TermLinuxInputBuf,
         };
