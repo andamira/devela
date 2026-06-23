@@ -5,7 +5,7 @@
 
 use crate::{Cmp, Position2, RegionS2, TermGrid, whilst};
 
-#[inline] #[rustfmt::skip]
+#[inline(always)] #[rustfmt::skip]
 const fn clip_region(region: RegionS2<usize>, width: usize, height: usize)
     -> Option<(usize, usize, usize, usize)> {
     let [x, y] = region.pos.dim;

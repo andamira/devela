@@ -1,7 +1,7 @@
 // devela/src/sys/os/term/event/mod.rs
 
 mod input;
-// mod signal;
+// mod signal; // WIP TermSignal
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

@@ -324,8 +324,9 @@ impl TermInputParser {
         self.paste
     }
 
-    /// Returns whether a lone `ESC` is pending.
+    /// Returns whether the parser is holding a lone `ESC`.
     #[must_use]
+    #[cfg_attr(not(all(feature = "linux", feature = "time")), expect(dead_code))]
     pub(crate) const fn is_pending_escape(&self) -> bool {
         matches!(self.state, TermInputState::Esc)
     }

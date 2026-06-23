@@ -3,11 +3,9 @@
 //! Implements capability methods for  [`TermLinux`].
 //
 
-use crate::{
-    Ansi, ColorDepth, NonMaxU16, TermCap, TermCaps, TermDecModeStatus, TermLinux, TermParsed,
-    TermReply, TermSize, is,
-};
-use crate::{Linux, LinuxResult};
+#[cfg(feature = "time")]
+use crate::{Ansi, Linux, TermCap, TermDecModeStatus, TermParsed, TermReply, is};
+use crate::{ColorDepth, LinuxResult, NonMaxU16, TermCaps, TermLinux, TermSize};
 use crate::{RunCap, RunCapColor, RunCapImage, RunCapInput, RunCapText, RunCapWindow};
 
 /// # Capabilities
@@ -16,11 +14,21 @@ impl TermLinux {
     pub const fn term_capabilities(&self) -> TermCaps {
         self.term_caps
     }
+    /// Returns the last known runtime capabilities.
+    pub const fn run_capabilities(&self) -> RunCap {
+        self.run_cap
+    }
+
     /// Probes terminal protocol capabilities exposed by the current terminal endpoint.
     ///
     /// When running inside a terminal multiplexer such as `tmux`, this probes the
     /// multiplexer pseudo-terminal, not necessarily the outer terminal emulator.
+    ///
+    /// # Features
+    /// Available with the `time` feature,
+    /// because probing uses bounded waits for terminal replies.
     // IMPROVE: add more queries
+    #[cfg(feature = "time")]
     pub fn probe_term_capabilities(&mut self) -> LinuxResult<TermCaps> {
         let _guard = Linux::scoped_event_mode()?;
         let mut caps = TermCaps::new();
@@ -53,31 +61,35 @@ impl TermLinux {
         self.term_caps = caps;
         Ok(caps)
     }
+    // pub fn probe_term_capabilities_nowait(&mut self) -> LinuxResult<TermCaps> { } // MAYBE
 
-    /// Returns the last known runtime capabilities.
-    pub const fn run_capabilities(&self) -> RunCap {
-        self.run_cap
+    /// Probes terminal capabilities, refreshes size, and recomputes runtime capabilities.
+    ///
+    /// # Features
+    /// Available with the `time` feature, because terminal probing uses bounded waits.
+    #[cfg(feature = "time")]
+    pub fn probe_run_capabilities(&mut self) -> LinuxResult<RunCap> {
+        let _ = self.probe_term_capabilities()?;
+        self.refresh_run_capabilities()
     }
+
     /// Refreshes runtime capabilities from cached terminal capabilities and current size.
     pub fn refresh_run_capabilities(&mut self) -> LinuxResult<RunCap> {
         self.refresh_size()?;
         self.run_cap = Self::derive_run_capabilities(self.term_caps, self.size);
         Ok(self.run_cap)
     }
-    /// Probes terminal capabilities, refreshes size, and recomputes runtime capabilities.
-    pub fn probe_run_capabilities(&mut self) -> LinuxResult<RunCap> {
-        let _ = self.probe_term_capabilities()?;
-        self.refresh_run_capabilities()
-    }
 }
 
 // Private helpers
 impl TermLinux {
     ///
+    #[cfg(feature = "time")]
     fn query_dec_private_mode_supported(&mut self, mode: u16) -> LinuxResult<bool> {
         Ok(self.query_dec_private_mode(mode)?.is_some_and(|s| s.is_supported()))
     }
     ///
+    #[cfg(feature = "time")]
     fn query_dec_private_mode(&mut self, mode: u16) -> LinuxResult<Option<TermDecModeStatus>> {
         let mut query = [0u8; 10];
         let query = Ansi::QUERY_DEC_PRIVATE_MODE_N_B(&mut query, mode);
@@ -91,6 +103,7 @@ impl TermLinux {
     /// `ESC [ ? mode ; status $ y`.
     ///
     /// Returns `Ok(None)` on timeout or when another reply is received.
+    #[cfg(feature = "time")]
     fn read_dec_private_mode_reply(&mut self, mode: u16) -> LinuxResult<Option<TermDecModeStatus>> {
         // Conservative probe timeout:
         // 40 × 1ms keeps startup responsive while giving terminal replies time to arrive.

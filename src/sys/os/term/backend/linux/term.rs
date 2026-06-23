@@ -3,12 +3,10 @@
 //! Defines [`TermLinux`].
 //
 
-use crate::{Debug, VersionFull};
-use crate::{Linux, LinuxError, LinuxResult};
-use crate::{RunCap, RunService, RunServiceProbe};
-use crate::{
-    TermCaps, TermInputParser, TermLinuxInputBuf, TermLinuxRestore, TermMode, TermSession, TermSize,
-};
+use crate::{Debug, Linux, LinuxResult, RunCap, RunService, TermCaps, TermSize, VersionFull};
+#[cfg(feature = "time")]
+use crate::{LinuxError, RunServiceProbe};
+use crate::{TermInputParser, TermLinuxInputBuf, TermLinuxRestore, TermMode, TermSession};
 
 /// Default byte capacity for Linux terminal input batching.
 const TERM_INPUT_BUF_CAP: usize = 64;
@@ -16,7 +14,7 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 #[doc = crate::_tags!(term linux)]
 /// Linux terminal frontend.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term/backend"),
+    location("sys/os/term"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TermLinux = 136|1088),
     #[cfg(target_pointer_width = "64")]
@@ -106,6 +104,7 @@ impl RunService for TermLinux {
         VersionFull::new(0, 0, 1)
     }
 }
+#[cfg(feature = "time")]
 impl RunServiceProbe for TermLinux {
     type Error = LinuxError;
     fn run_capabilities_refresh(&mut self) -> Result<RunCap, Self::Error> {

@@ -3,7 +3,9 @@
 //! Defines [`TermSession`], [`TermPollPolicy`], [`TermMode`].
 //
 
-use crate::{Duration, TermLineMode};
+#[cfg(feature = "time")]
+use crate::Duration;
+use crate::TermLineMode;
 
 #[doc = crate::_tags!(term guard)]
 /// Scoped terminal session guard.
@@ -34,7 +36,16 @@ impl<R> TermSession<R> {
 
 #[doc = crate::_tags!(term event)]
 /// Terminal event polling policy.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term"),
+    #[cfg(feature = "time")]
+    test_size_of(TermPollPolicy = 16),
+    #[cfg(not(feature = "time"))]
+    test_size_of(TermPollPolicy = 1),
+}]
+///
+/// # Features
+/// The `Timeout` variant is available with the `time` feature.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TermPollPolicy {
     /// Non-blocking. Preserves pending partial input sequences.
@@ -49,10 +60,11 @@ pub enum TermPollPolicy {
     #[default]
     Immediate,
 
-    /// Non-blocking. Resolves pending lone `ESC` after `Duration`.
+    /// Waits for `Duration` only when an ambiguous `ESC` sequence is pending.
     ///
     /// Best for interactive text UIs that want to distinguish fast escape
     /// sequences from a deliberate Escape key.
+    #[cfg(feature = "time")]
     Timeout(Duration),
 
     /// Blocking. Waits until an event is available.

@@ -126,6 +126,7 @@ impl TermDecModeStatus {
             _ => None,
         }
     }
+    #[cfg_attr(not(all(feature = "linux", feature = "time")), expect(dead_code))]
     pub(crate) const fn is_supported(self) -> bool {
         !matches!(self, Self::NotRecognized)
     }
