@@ -3,7 +3,7 @@
 //! Terminal backend traits.
 //
 
-use crate::{Debug, TermCaps, TermMode, TermSession, TermSize};
+use crate::{Debug, TermCaps, TermMode, TermSize};
 #[cfg(feature = "event")]
 use crate::{EventKind, TermPollPolicy};
 
@@ -14,8 +14,8 @@ pub trait TermBackend: Sized {
     /// Backend error type.
     type Error;
 
-    /// Backend session restoration payload.
-    type Restore: Debug;
+    /// Guard type returned when entering a terminal session.
+    type Session: Debug;
 
     /* required methods */
 
@@ -23,7 +23,7 @@ pub trait TermBackend: Sized {
     fn open() -> Result<Self, Self::Error>;
 
     /// Enters a scoped terminal session.
-    fn session(&mut self, mode: TermMode) -> Result<TermSession<Self::Restore>, Self::Error>;
+    fn session(&mut self, mode: TermMode) -> Result<Self::Session, Self::Error>;
 
     /// Writes bytes to the terminal output stream.
     fn print(&mut self, bytes: &[u8]) -> Result<(), Self::Error>;
@@ -46,7 +46,7 @@ pub trait TermBackend: Sized {
 
     /// Enters a scoped raw terminal session.
     #[inline(always)]
-    fn session_raw(&mut self) -> Result<TermSession<Self::Restore>, Self::Error> {
+    fn session_raw(&mut self) -> Result<Self::Session, Self::Error> {
         self.session(TermMode::raw())
     }
     /// Probes terminal protocol capabilities.

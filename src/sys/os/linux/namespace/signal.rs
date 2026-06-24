@@ -1,10 +1,11 @@
 // devela/src/sys/os/linux/namespace/signal.rs
 
-use crate::{AtomicOrdering::SeqCst, Ptr, c_int, c_void, is, transmute};
+use crate::{AppControl, AppControlSet};
+use crate::{AtomicOrdering::SeqCst, AtomicPtr, Ptr, c_int, c_void, is, transmute};
 use crate::{
     LINUX_SIG_HANDLERS, LINUX_SIGINFO_HANDLERS, Linux, LinuxSigaction, LinuxSigactionFlags,
-    LinuxSiginfo, LinuxSignal, LinuxSignalSet, LinuxSigset,
 };
+use crate::{LinuxSiginfo, LinuxSignal, LinuxSignalSet, LinuxSigset};
 
 // RT signal-restorer routine defined in architecture-specific assembly.
 //
@@ -14,8 +15,47 @@ unsafe extern "C" {
     safe fn __devela_linux_restore_rt();
 }
 
-/// # Signaling-related methods.
+/// # Signal handling
+///
+/// These methods install process-wide Linux signal actions. Signal disposition is
+/// global to the process, so registering a handler for the same signal may
+/// replace an earlier registration.
 impl Linux {
+    /// Registers Linux handlers for application control notices.
+    ///
+    /// This is a semantic wrapper over [`sig_handler`][Self::sig_handler]. It translates
+    /// matching Linux signals into [`AppControl`] values before calling `handler`.
+    ///
+    /// This installs process-wide signal handlers for the signals represented by `controls`.
+    /// Registering another handler for the same signals may replace this path, and calling
+    /// this method again replaces the single app-control callback used by this adapter.
+    ///
+    /// # Notes
+    /// - Only controls with a Linux signal mapping are registered.
+    /// - `SIGKILL` and `SIGSTOP` cannot be caught.
+    /// - The callback runs from a signal handler; keep it small and prefer atomics.
+    pub fn app_control_handler(
+        handler: fn(AppControl),
+        controls: AppControlSet,
+        flags: impl Into<LinuxSigactionFlags>,
+    ) {
+        static HANDLER: AtomicPtr<()> = AtomicPtr::new(Ptr::null_mut());
+        fn adapter(sig: c_int) {
+            let Some(control) = LinuxSignal::from_c_int(sig).and_then(LinuxSignal::to_app_control)
+            else {
+                return;
+            };
+            let handler = HANDLER.load(SeqCst);
+            if !handler.is_null() {
+                // SAFETY: stored from a `fn(AppControl)` and checked for null.
+                let handler: fn(AppControl) = unsafe { transmute(handler) };
+                handler(control);
+            }
+        }
+        HANDLER.store(handler as *mut (), SeqCst);
+        Self::sig_handler(adapter, controls.to_linux_signals(), flags.into());
+    }
+
     /// Registers multiple signals using a simple handler function.
     ///
     /// This is a convenience wrapper over [`sig_handler_info`][Self::sig_handler_info].

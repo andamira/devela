@@ -9,10 +9,12 @@
 //! ```
 // devela/examples/sys/term_linux.rs
 
-use devela::*;
+use devela::all::*;
 
 fn main() -> LinuxResult<()> {
     let mut term = TermLinux::open()?;
+    term.listen_signals(AppControlSet::Interrupt | AppControlSet::Terminate);
+
     // let _session = term.session(TermMode::event().mouse_motion_pixels())?;
     let _session = term.session(TermMode::event().mouse_drag_pixels())?;
 
@@ -25,10 +27,14 @@ fn main() -> LinuxResult<()> {
     loop {
         if let Some(ev) = term.poll_event()? {
             println!("{ev:?}");
-            if let EventKind::Key(k) = ev {
-                if k.mods.has_control() && matches!(k.semantic, Key::Char('q') | Key::Q) {
+            match ev {
+                EventKind::Control(AppControl::Interrupt | AppControl::Terminate) => break,
+                EventKind::Key(k)
+                    if k.mods.has_control() && matches!(k.semantic, Key::Char('q') | Key::Q) =>
+                {
                     break;
                 }
+                _ => (),
             }
         }
     }

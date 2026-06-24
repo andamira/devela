@@ -17,7 +17,7 @@
 /// - [term](#terminal-related-methods)
 /// - [thread](#thread-related-methods)
 /// - [time](#time-related-methods)
-/// - [signal](#signaling-related-methods)
+/// - [signal](#signal-handling)
 /// - [random](#randomness-related-methods)
 /// - syscalls:
 ///   - [file-descriptors](#syscalls-file-descriptors)

@@ -63,15 +63,20 @@ crate::enumset! {
                 is! { control.is_in(self), f(control) }
             }
         }
+        /// Calls `f` for each control notice in this set, while it returns `true`.
+        pub fn for_each_while(self, mut f: impl FnMut(AppControl) -> bool) {
+            for control in AppControl::ALL {
+                if control.is_in(self) && !f(control) {
+                    break;
+                }
+            }
+        }
     }
 }
 
 #[cfg(feature = "_linux_abi")]
 mod impl_linux {
-    use crate::{
-        AppControl, AppControlSet, AtomicOrdering::SeqCst, AtomicPtr, Linux, LinuxSigactionFlags,
-        LinuxSignal, LinuxSignalSet, Ptr, c_int, transmute, whilst,
-    };
+    use crate::{AppControl, AppControlSet, LinuxSignal, LinuxSignalSet, whilst};
 
     impl AppControl {
         /// Returns the Linux signal normally used to deliver this control notice.
@@ -123,32 +128,6 @@ mod impl_linux {
                 // Self::SIGWINCH => None,
                 _ => None,
             }
-        }
-    }
-    impl Linux {
-        /// Registers a handler for portable application control notices.
-        pub fn app_control_handler(
-            handler: fn(AppControl),
-            controls: AppControlSet,
-            flags: impl Into<LinuxSigactionFlags>,
-        ) {
-            static HANDLER: AtomicPtr<()> = AtomicPtr::new(Ptr::null_mut());
-
-            fn adapter(sig: c_int) {
-                let Some(control) =
-                    LinuxSignal::from_c_int(sig).and_then(LinuxSignal::to_app_control)
-                else {
-                    return;
-                };
-                let handler = HANDLER.load(SeqCst);
-                if !handler.is_null() {
-                    // SAFETY: stored from a `fn(AppControl)` and checked for null.
-                    let handler: fn(AppControl) = unsafe { transmute(handler) };
-                    handler(control);
-                }
-            }
-            HANDLER.store(handler as *mut (), SeqCst);
-            Self::sig_handler(adapter, controls.to_linux_signals(), flags.into());
         }
     }
 }

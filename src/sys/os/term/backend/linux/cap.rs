@@ -123,7 +123,7 @@ impl TermLinux {
                     TermParsed::Reply(_) => {}
                     // User-facing input during probing.
                     TermParsed::Event(ev) => {
-                        let _ = self.queue_event_kind(ev);
+                        let _ = self.queue_event(ev);
                     }
                     TermParsed::Pending | TermParsed::Unknown => {}
                 }

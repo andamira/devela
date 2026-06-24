@@ -29,6 +29,8 @@
 - clarify public module and hidden scope features.
 
 ## examples
+- update example: `term_linux`:
+  - showcase signal handling.
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
   - show keyboard events.
@@ -85,6 +87,7 @@
 - update `TermLinux`
   - route polling through `EventQueue`.
   - remove the `event` feature gate when possible.
+  - add methods: `listen_signals`, `listen_app_controls`, `listen_resize`.
 
 ### text::layout
 - new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.

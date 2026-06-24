@@ -5,7 +5,9 @@
 
 #[cfg(feature = "time")]
 use crate::{Duration, EventTimestamp, LinuxInstant, TimeSource};
-use crate::{Event, EventKind, Linux, LinuxResult, TermLinux, TermPollPolicy, is};
+use crate::{Event, EventKind, EventWindow};
+use crate::{Linux, LinuxResult, TermLinux, TermPollPolicy};
+use crate::{ext, is};
 
 #[cfg(feature = "time")]
 const TERM_ESC_BLOCKING_TIMEOUT: Duration = Duration::from_millis(10);
@@ -95,7 +97,7 @@ impl TermLinux {
                     }
                 }
                 if let Some(ev) = self.parser.flush_escape() {
-                    let queued = self.queue_event_kind(ev);
+                    let queued = self.queue_event(ev);
                     debug_assert!(queued);
                     is! { let Some(ev) = self.pop_event_kind(), return Ok(ev) }
                 }
@@ -122,7 +124,7 @@ impl TermLinux {
     /// Returns `true` if an event was queued.
     #[inline]
     fn feed_byte_to_event_queue(&mut self, byte: u8) -> bool {
-        is! { let Some(ev) = self.parser.feed(byte), self.queue_event_kind(ev), false }
+        is! { let Some(ev) = self.parser.feed(byte), self.queue_event(ev), false }
     }
     /// Feeds buffered bytes into the parser
     /// until the semantic event queue is full or the byte buffer is empty.
@@ -133,8 +135,38 @@ impl TermLinux {
             debug_assert!(!queued || !self.events.is_empty());
         }
     }
+    fn fill_event_queue_from_app_controls(&mut self) {
+        let controls = Self::take_app_controls();
+        controls.for_each_while(|control| {
+            let queued = self.queue_event(EventKind::Control(control));
+            debug_assert!(queued || self.events.is_full());
+            !self.events.is_full()
+        });
+    }
+    fn fill_event_queue_from_resize(&mut self) {
+        is! { !Self::take_resize(), return }
+        match self.refresh_size() {
+            Ok(Some(size)) => {
+                let extent = ext![size.cols as u32, size.rows as u32];
+                let queued =
+                    self.queue_event(EventKind::Window(EventWindow::Resized(Some(extent))));
+                debug_assert!(queued || self.events.is_full());
+            }
+            Ok(None) | Err(_) => {
+                let queued = self.queue_event(EventKind::Window(EventWindow::Resized(None)));
+                debug_assert!(queued || self.events.is_full());
+            }
+        }
+    }
     /// Returns one queued event, filling the queue from buffered input if needed.
     fn poll_buffered_event(&mut self) -> Option<EventKind> {
+        // events already queued have top priority
+        is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
+        // control notices have priority over newly parsed input
+        self.fill_event_queue_from_app_controls();
+        is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
+        // resize notices are also external semantic events
+        self.fill_event_queue_from_resize();
         is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
         self.fill_event_queue_from_input();
         self.pop_event_kind()
@@ -142,7 +174,7 @@ impl TermLinux {
     /// Queues one terminal event kind as a global event.
     ///
     /// Returns `false` if the semantic event queue is full.
-    pub(super) fn queue_event_kind(&mut self, kind: EventKind) -> bool {
+    pub(super) fn queue_event(&mut self, kind: EventKind) -> bool {
         let ev = self.event_from_kind(kind);
         self.events.try_push(ev).is_ok()
     }

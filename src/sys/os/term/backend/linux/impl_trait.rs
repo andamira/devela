@@ -10,12 +10,12 @@ use crate::{TermBackend, TermCaps, TermMode, TermSession, TermSize};
 
 impl TermBackend for TermLinux {
     type Error = LinuxError;
-    type Restore = TermLinuxRestore;
+    type Session = TermSession<TermLinuxRestore>;
 
     fn open() -> LinuxResult<Self> {
         TermLinux::open()
     }
-    fn session(&mut self, mode: TermMode) -> LinuxResult<TermSession<TermLinuxRestore>> {
+    fn session(&mut self, mode: TermMode) -> LinuxResult<Self::Session> {
         Ok(TermSession::new(TermLinuxRestore::enter(mode)?))
     }
     fn print(&mut self, bytes: &[u8]) -> LinuxResult<()> {

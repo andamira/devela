@@ -13,6 +13,8 @@ mod impl_trait; // impl TermBackend
 mod cap; // impl capabilities
 #[cfg(feature = "event")]
 mod poll; // impl polling
+#[cfg(feature = "event")]
+mod signal; // impl app control signal handling
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
