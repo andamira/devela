@@ -98,19 +98,7 @@ crate::enumset! {
         /// Bad system call, often from seccomp filtering.
         SIGSYS, // = 30
     }
-    // Constants
-    impl enum {
-        /// All supported standard Linux signals, in signal-number order.
-        pub const ALL: [Self; Self::VARIANTS] = [
-            Self::SIGHUP, Self::SIGINT, Self::SIGQUIT, Self::SIGILL,
-            Self::SIGTRAP, Self::SIGABRT, Self::SIGBUS, Self::SIGFPE,
-            Self::SIGKILL, Self::SIGUSR1, Self::SIGSEGV, Self::SIGUSR2,
-            Self::SIGPIPE, Self::SIGALRM, Self::SIGTERM, Self::SIGSTKFLT,
-            Self::SIGCHLD, Self::SIGCONT, Self::SIGSTOP, Self::SIGTSTP,
-            Self::SIGTTIN, Self::SIGTTOU, Self::SIGURG, Self::SIGXCPU,
-            Self::SIGXFSZ, Self::SIGVTALRM, Self::SIGPROF, Self::SIGWINCH,
-            Self::SIGIO, Self::SIGPWR, Self::SIGSYS,
-        ];
+    impl enum #[doc = "# Constants"] {
         /// Lowest supported standard Linux signal number.
         pub const MIN_NUMBER: c_int = 1;
         /// Highest supported standard Linux signal number.
@@ -134,8 +122,7 @@ crate::enumset! {
             assert!(LinuxSignal::TABLE_LEN == 32);
         };
     }
-    // Methods
-    impl enum {
+    impl enum #[doc = "# Methods"] {
         /// Returns the raw Linux signal number.
         #[must_use]
         pub const fn as_c_int(self) -> c_int { self as c_int + 1 }
@@ -199,8 +186,7 @@ crate::enumset! {
             }
         }
     }
-    // Aliases
-    impl enum {
+    impl enum #[doc = "# Aliases"] {
         /// IOT trap. Compatibility alias for [`SIGABRT`][Self::SIGABRT].
         pub const SIGIOT: Self = Self::SIGABRT;
         /// Compatibility alias for [`SIGCHLD`][Self::SIGCHLD].
@@ -229,12 +215,6 @@ crate::enumset! {
                 LinuxSignal::from_c_int(bits.trailing_zeros() as c_int + 1)
             } else {
                 None
-            }
-        }
-        /// Calls `f` for each signal in this set.
-        pub fn for_each(self, mut f: impl FnMut(LinuxSignal)) {
-            for signal in LinuxSignal::ALL {
-                if signal.is_in(self) { f(signal); }
             }
         }
         /// Calls `f` for each catchable signal in this set.

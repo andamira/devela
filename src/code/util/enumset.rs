@@ -16,16 +16,30 @@
 /// before all generated associated constants and methods,
 /// and may still refer to them through `Self`.
 ///
+/// The enum may contain unit, tuple, and struct variants.
+/// Every variant gets a corresponding associated set constant,
+/// and enum values can be converted to their singleton set with `to_set`.
+///
+/// When all declared variants are unit variants, the enum also gets `ALL`,
+/// and the associated set gets enum-value iteration methods:
+/// `iter`, `for_each`, and `for_each_while`.
+///
+/// For enums with tuple or struct variants, enum-value iteration is not
+/// generated because the set stores only variant presence, not payload data.
+///
 /// # Limitations
 /// - Deriving [`Default`] on the generated enum is not currently supported,
 ///   and has to be manually implemented instead.
 /// - Outer attributes for custom impl blocks are placed
 ///   after the `impl enum` or `impl set` marker.
 ///
-/// # Examples
-/// See also [`EnumExample`][crate::EnumExample] and [`EnumSetExample`][crate::EnumSetExample],
-/// generated in the [enumset][crate::_doc::examples::enumset] example.
+/// ## Reserved variant names
 ///
+/// Some set names are reserved because their generated methods
+/// would collide with common methods. Avoid:
+/// - `IF`, `VARIANT`.
+///
+/// # Examples
 /// ```
 /// # use devela::enumset;
 /// enumset! {
@@ -56,6 +70,31 @@
 /// es.insert(MyEnumSet::Variant1);
 /// assert![es.contains(MyEnumSet::Variant1)];
 /// ```
+///
+/// Unit-only enums also support enum-value iteration:
+/// ```
+/// # use devela::enumset;
+/// enumset! {
+///     #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+///     pub enum Mode(pub ModeSet: u8) {
+///         Read,
+///         Write,
+///         Exec,
+///     }
+/// }
+/// let set = ModeSet::Read.with(ModeSet::Exec);
+/// let mut count = 0;
+/// set.for_each(|mode| {
+///     assert!(mode.is_in(set));
+///     count += 1;
+/// });
+/// assert_eq!(count, 2);
+/// assert_eq!(Mode::ALL, [Mode::Read, Mode::Write, Mode::Exec]);
+/// ```
+///
+/// See also [`EnumExample`][crate::EnumExample] and [`EnumSetExample`][crate::EnumSetExample],
+/// generated in the [enumset][crate::_doc::examples::enumset] example.
+///
 #[doc(hidden)]
 #[macro_export]
 macro_rules! enumset· {
@@ -69,7 +108,7 @@ macro_rules! enumset· {
         // $set_ty:    the inner unsigned integer primitive for the bit set (u8, u16, u32…).
         $( #[$enum_attr:meta] )*
         $enum_vis:vis enum $enum_name:ident
-            $( < $($gen:tt),* $(,)? > )? // optional generics and lifetimes
+            $( <$($gen:tt),* $(,)?> )? // optional generics and lifetimes
             // attributes, visibility, name and inner type of the set, between ():
             ( $( #[$set_attr:meta] )* $set_vis:vis $set_name:ident: $set_ty:ty )
             $([where $($where:tt)+ $(,)? ] $(,)? )? // optional where clauses, between []
@@ -95,7 +134,7 @@ macro_rules! enumset· {
         $( #[$enum_attr] )*
         // #[doc = "\n\nSee also the associated type set of variants [`" $set_name "`]."]
         #[allow(missing_debug_implementations, reason = "custom impl")]
-        $enum_vis enum $enum_name $( < $($gen),* > )? $(where $($where)+)? {
+        $enum_vis enum $enum_name $( <$($gen),*> )? $(where $($where)+)? {
             $(
                 $( #[$variant_attr] )*
                 $variant_name
@@ -106,16 +145,16 @@ macro_rules! enumset· {
         }
         /* impl enum methods */
         $crate::__enumset_impl_enum_blocks! {
-            [$( < $($gen),* > )?] [$enum_name] [$( < $($gen),* > )?] [$( where $($where)+ )?]
+            [$( <$($gen),*> )?] [$enum_name] [$( <$($gen),*> )?] [$( where $($where)+ )?]
             $(
                 [$( #[$impl_enum_attrs] )*]
                 { $($impl_enum)* }
             )*
         }
 
-        /// # Associated set methods
+        /// # Variant-set methods
         #[allow(clippy::double_must_use, dead_code)]
-        impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
+        impl $( <$($gen),*> )? $enum_name $( <$($gen),*> )? $( where $($where)* )? {
             /// The total number of *declared* variants.
             $enum_vis const VARIANTS: usize = $crate::paste! { [<_$enum_name _private>]::VARIANTS };
 
@@ -173,6 +212,110 @@ macro_rules! enumset· {
                 )*
             }
         }
+
+        /// # Associated set methods
+        impl $set_name {
+            /* queries accepting enum variants */
+
+            /// Returns `true` if the set contains the variant of `value`.
+            #[must_use]
+            $set_vis const fn contains_variant$(<$($gen),*>)?(self, value: &$enum_name$(<$($gen),*>)?)
+            -> bool $( where $($where)+ )? {
+                self.contains(value.to_set())
+            }
+            /// An alias of [`contains_variant`](Self::contains_variant).
+            #[must_use]
+            $set_vis const fn has_variant$(<$($gen),*>)?(self, value: &$enum_name$(< $($gen),*>)?)
+                -> bool $( where $($where)+ )? {
+                self.contains_variant(value)
+            }
+
+            /* pure set transforms accepting enum variants */
+
+            /// Returns `self` with the variant of `value` inserted.
+            #[must_use]
+            $set_vis const fn with_variant$(<$($gen),*>)?(self, value: &$enum_name$(< $($gen),*>)?)
+                -> Self $( where $($where)+ )? {
+                self.with(value.to_set())
+            }
+            /// Returns `self` with the variant of `value` removed.
+            #[must_use]
+            $set_vis const fn without_variant$(<$($gen),*>)?(self, value: &$enum_name$(<$($gen),*>)?)
+                -> Self $( where $($where)+ )? {
+                self.without(value.to_set())
+            }
+            /// Returns `self` with the variant of `value` toggled.
+            #[must_use]
+            $set_vis const fn toggled_variant$(<$($gen),*>)?(self, value: &$enum_name$(<$($gen),*>)?)
+                -> Self $( where $($where)+ )? {
+                self.toggled(value.to_set())
+            }
+
+            /* in-place mutation accepting enum variants */
+
+            /// Inserts the variant of `value`.
+            $set_vis const fn insert_variant$(<$($gen),*>)?(&mut self, value: &$enum_name$(<$($gen),*>)?)
+                $( where $($where)+ )? {
+                self.insert(value.to_set());
+            }
+            /// Removes the variant of `value`.
+            $set_vis const fn remove_variant$(<$($gen),*>)?(&mut self, value: &$enum_name$(<$($gen),*>)?)
+                $( where $($where)+ )? {
+                self.remove(value.to_set());
+            }
+            /// Toggles the variant of `value`.
+            $set_vis const fn toggle_variant$(<$($gen),*>)?(&mut self, value:&$enum_name$(<$($gen),*>)?)
+                $( where $($where)+ )? {
+                self.toggle(value.to_set());
+            }
+
+            /* set-constant iteration, always valid */
+
+            /// Calls `f` for each associated set constant present in this set.
+            $set_vis fn for_each_set(self, mut f: impl FnMut(Self)) {
+                $(
+                    if self.contains(Self::$variant_name) { f(Self::$variant_name); }
+                )*
+            }
+            /// Calls `f` for each associated set constant present in this set while it returns `true`.
+            ///
+            /// Returns `true` if all set constants were visited,
+            /// or `false` if iteration stopped early.
+            $set_vis fn for_each_set_while(self, mut f: impl FnMut(Self) -> bool) -> bool {
+                $(
+                    if self.contains(Self::$variant_name) && !f(Self::$variant_name) {
+                        return false;
+                    }
+                )*
+                true
+            }
+        }
+
+        // enum-value iteration, only if unit-only
+        $crate::__enumset_impl_unit_iter! {
+            [$enum_vis] [$enum_name] [$set_name]
+            [$( < $($gen),* > )?]
+            [$( < $($gen),* > )?]
+            [$( where $($where)+ )?]
+            {
+                $(
+                    $( #[$variant_attr] )*
+                    $variant_name
+                    $(( $($tuple_type),* ))?
+                    $({ $( $(#[$field_attr])* $field_name : $field_type),* })?
+                    $(= $discriminant)?
+                ),*
+            }
+        }
+
+        impl $(<$($gen),*>)? From<$enum_name $(<$($gen),*>)?> for $set_name $(where $($where)+)? {
+            /// Converts an enum value into its singleton variant set.
+            fn from(value: $enum_name $(<$($gen),*>)?) -> Self { value.to_set() }
+        }
+        impl $(<$($gen),*>)? From<&$enum_name $(<$($gen),*>)?> for $set_name $(where $($where)+)? {
+            /// Converts an enum value into its singleton variant set.
+            fn from(value: &$enum_name $(<$($gen),*>)?) -> Self { value.to_set() }
+        }
     };
 }
 #[doc(inline)]
@@ -207,49 +350,90 @@ macro_rules! __enumset_impl_enum_blocks {
         }
     };
 }
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __enumset_impl_unit_iter {
+    (
+        [$enum_vis:vis] [$enum_name:ident] [$set_name:ident]
+        [$($impl_gen:tt)*] [$($ty_gen:tt)*] [$($where:tt)*]
+        {
+            $(
+                $( #[$variant_attr:meta] )*
+                $variant_name:ident
+                $(= $discriminant:expr)?
+            ),* $(,)?
+        }
+    ) => {
+        /// # Unit-only variant iteration
+        ///
+        /// Generated only when all declared variants are unit variants.
+        impl $($impl_gen)* $enum_name $($ty_gen)* $($where)* {
+            /// All declared variants, in declaration order.
+            $enum_vis const ALL: [Self; Self::VARIANTS] = [$( Self::$variant_name ),*];
+        }
+        /// # Unit-only variant iteration
+        ///
+        /// Generated only when all declared variants are unit variants.
+        impl $set_name {
+            /// Iterates over the enum variants present in this set.
+            pub fn iter(self) -> impl Iterator<Item = $enum_name $($ty_gen)*> {
+                $enum_name::ALL.into_iter().filter(move |variant| variant.is_in(self))
+            }
+            /// Calls `f` for each variant present in this set.
+            pub fn for_each(self, mut f: impl FnMut($enum_name $($ty_gen)*)) {
+                for variant in $enum_name::ALL {
+                    if variant.is_in(self) { f(variant); }
+                }
+            }
+            /// Calls `f` for each enum variant present in this set while it returns `true`.
+            ///
+            /// Returns `true` if all variants were visited, or `false` if iteration stopped early.
+            pub fn for_each_while(self, mut f: impl FnMut($enum_name $($ty_gen)*) -> bool) -> bool {
+                for variant in $enum_name::ALL {
+                    if variant.is_in(self) && !f(variant) { return false; }
+                }
+                true
+            }
+        }
+    };
+    // Non-unit enum: do not generate enum-value iteration.
+    ($($tt:tt)*) => {};
+}
 
 #[cfg(test)]
 mod tests {
-    #![allow(unused)]
+    #![allow(dead_code)]
+    use crate::enumset;
 
-    crate::enumset! {
-        enum TestEnum(pub TestEnumSet: u8) {
+    enumset! {
+        enum TestEnum(TestEnumSet: u8) {
             A,
             B(bool),
             C { x: u8 },
         }
     }
     #[test]
-    fn enumset_uses_set_macro() {
+    fn uses_set_macro() {
         assert_eq!(TestEnum::VARIANTS, 3);
-
         assert_eq!(TestEnumSet::A.bits(), 0b001);
         assert_eq!(TestEnumSet::B.bits(), 0b010);
         assert_eq!(TestEnumSet::C.bits(), 0b100);
-
         assert_eq!(TestEnum::empty_set().bits(), 0);
         assert_eq!(TestEnum::full_set().bits(), 0b111);
-
         let ab = TestEnumSet::A.union(TestEnumSet::B);
         assert!(ab.contains(TestEnumSet::A));
         assert!(ab.contains(TestEnumSet::B));
         assert!(!ab.contains(TestEnumSet::C));
-
         let mut s = TestEnumSet::A;
-
         s.insert(TestEnumSet::B);
         assert_eq!(s.bits(), 0b011);
-
         s.remove(TestEnumSet::A);
         assert_eq!(s.bits(), 0b010);
-
         s.toggle(TestEnumSet::C);
         assert_eq!(s.bits(), 0b110);
-
         s.clear();
         assert_eq!(s.bits(), 0);
         assert!(s.is_empty());
-
         assert_eq!((TestEnumSet::A | TestEnumSet::B).bits(), 0b011);
         assert_eq!((TestEnumSet::A | TestEnumSet::B) & TestEnumSet::B, TestEnumSet::B);
         assert_eq!((TestEnumSet::A | TestEnumSet::B) - TestEnumSet::A, TestEnumSet::B);
@@ -257,7 +441,7 @@ mod tests {
         assert_eq!((!TestEnumSet::A).bits(), 0b110);
     }
     #[test]
-    fn enumset_is_in_set() {
+    fn is_in_set() {
         let a = TestEnum::A;
         let b = TestEnum::B(true);
         let c = TestEnum::C { x: 7 };
@@ -270,8 +454,8 @@ mod tests {
         assert!(!c.is_in(TestEnumSet::A | TestEnumSet::B));
     }
     #[test]
-    fn enumset_generics() {
-        crate::enumset! {
+    fn generics() {
+        enumset! {
             enum GenEnum<'a, T>(pub GenEnumSet: u8) {
                 A(T),
                 B(&'a str),
@@ -285,4 +469,84 @@ mod tests {
         let a = GenEnum::A(());
         assert!(a.is_a());
     }
+    #[test]
+    fn generic_payload_variant_methods() {
+        enumset! {
+            #[derive(Clone, Copy, Debug)]
+            enum E<'a, T>(pub ES: u8) [where T: Copy] {
+                A(&'a T),
+                B { value: T },
+            }
+        }
+        let x = 7u8;
+        let a = E::A(&x);
+        let b = E::B { value: x };
+        let mut set = ES::default();
+        assert!(!set.contains_variant(&a));
+        set.insert_variant(&a);
+        assert!(set.contains_variant(&a));
+        assert!(set.has_variant(&a));
+        set = set.with_variant(&b);
+        assert!(set.contains_variant(&b));
+        set.remove_variant(&a);
+        assert!(!set.contains_variant(&a));
+        set.toggle_variant(&b);
+        assert!(!set.contains_variant(&b));
+        assert!(set.with_variant(&a).without_variant(&a).is_empty());
+        assert!(set.toggled_variant(&a).contains_variant(&a));
+    }
+    #[test]
+    fn generic_payload_from_enum() {
+        enumset! {
+            #[derive(Clone, Copy, Debug)]
+            enum E<'a, T>(pub ES: u8) [where T: Copy] {
+                A(&'a T),
+                B(T),
+            }
+        }
+        let x = 3u8;
+        let a = E::A(&x);
+        let b = E::B(x);
+        let sa: ES = a.into();
+        let sb: ES = (&b).into();
+        assert!(sa.contains(ES::A));
+        assert!(sb.contains(ES::B));
+    }
+    #[test]
+    fn unit_only_iteration() {
+        enumset! {
+            #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+            enum Mode(pub ModeSet: u8) {
+                Read,
+                Write,
+                Exec,
+            }
+        }
+        assert_eq!(Mode::ALL, [Mode::Read, Mode::Write, Mode::Exec]);
+        let set = ModeSet::Read.with(ModeSet::Exec);
+        let mut seen = [false; 3];
+        set.for_each(|m| match m {
+            Mode::Read => seen[0] = true,
+            Mode::Write => seen[1] = true,
+            Mode::Exec => seen[2] = true,
+        });
+        assert_eq!(seen, [true, false, true]);
+        let mut count = 0;
+        let completed = set.for_each_while(|_| {
+            count += 1;
+            false
+        });
+        assert!(!completed);
+        assert_eq!(count, 1);
+    }
+
+    /**
+    ```compile_fail
+    # use devela::enumset;
+    enumset! { enum E(pub ES: u8) { A(bool) } }
+    let _ = E::ALL;
+    ```
+    **/
+    #[allow(dead_code)]
+    fn unit_only_constant() {}
 }

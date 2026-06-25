@@ -41,6 +41,12 @@
 
 ### code::util
 - extend `whilst!` with indexed slice iteration.
+- update `enumset!`:
+- impl methods for the associated set:
+  - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
+  - unit-only methods: `iter`, `for_each[_while]`.
+- impl for the associated enum, unit-only constant: `ALL`.
+- impl `From<enum>` for the associated set.
 
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.

@@ -3,8 +3,6 @@
 //! Defines [`AppControl`].
 //
 
-use crate::is;
-
 crate::enumset! {
     #[doc = crate::_tags!(runtime event)]
     /// External control notice directed at an application.
@@ -41,36 +39,6 @@ crate::enumset! {
         Logout,
         /// System is shutting down.
         Shutdown,
-    }
-    impl enum {
-        /// All application control notices, in declaration order.
-        pub const ALL: [Self; Self::VARIANTS] = [
-            Self::Interrupt,
-            Self::Quit,
-            Self::Terminate,
-            Self::Hangup,
-            Self::Suspend,
-            Self::Resume,
-            Self::Close,
-            Self::Logout,
-            Self::Shutdown,
-        ];
-    }
-    impl set {
-        /// Calls `f` for each control notice in this set.
-        pub fn for_each(self, mut f: impl FnMut(AppControl)) {
-            for control in AppControl::ALL {
-                is! { control.is_in(self), f(control) }
-            }
-        }
-        /// Calls `f` for each control notice in this set, while it returns `true`.
-        pub fn for_each_while(self, mut f: impl FnMut(AppControl) -> bool) {
-            for control in AppControl::ALL {
-                if control.is_in(self) && !f(control) {
-                    break;
-                }
-            }
-        }
     }
 }
 
