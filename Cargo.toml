@@ -990,6 +990,7 @@ doc-scrape-examples = false
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
+
 # data
 [[example]]
 name = "id_pin"
@@ -999,12 +1000,14 @@ doc-scrape-examples = false
 [[example]]
 name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
+
 # sys
 [[example]]
 name = "term_linux"
 path = "examples/sys/term_linux.rs"
 required-features = ["linux", "term", "event"]
 doc-scrape-examples = false
+
 # work
 [[example]]
 name = "coro_manager" # NOTE: in docs
@@ -1013,14 +1016,20 @@ required-features = ["alloc"]
 
 # example scripts inside /src/*
 # ==============================================================================
+
+# code
 [[example]]
 name = "scope_guard"
 path = "src/code/guard.rs"
 required-features = ["std"]
+
+# data
 [[example]]
 name = "otp"
 path = "src/data/codec/crypto/otp.rs"
 required-features = ["std", "time"]
+
+# sys
 [[example]]
 name = "current_guard"
 path = "src/sys/mem/guard.rs"

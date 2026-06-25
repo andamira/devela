@@ -29,7 +29,7 @@
 - clarify public module and hidden scope features.
 
 ## examples
-- remove examples: `enumset`.
+- remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
 - update examples: `web_api`, `web_workers`:

@@ -1,6 +1,38 @@
-/target
+# Rust
+
+target/
 Cargo.lock
-/examples/lang/*/public_html/*
+# !examples/**/Cargo.lock
+
+# Local crate/workspace scratch
+
+/crates/issues/
+
+# Native / FFI / generated artifacts
+
+/crates/ffi/libs/
+
+/crates/ffi/examples/c_link/main
+/crates/ffi/examples/c_load/main
+/crates/ffi/examples/odin_import/main
+/crates/ffi/examples/odin_load/main
+/crates/ffi/examples/**/*.exe
+
+**/examples/**/libs/
+**/examples/**/bin/
+**/examples/**/*.o
+**/examples/**/*.so
+**/examples/**/*.a
+**/examples/**/*.dll
+**/examples/**/*.dylib
+**/examples/**/*.exe
+
+# Web example generated output
+
+**/examples/**/public_html/*.wasm
+**/examples/**/public_html/devela/
+
+# Local tool overrides
+
 /tools/x-env-local.sh
 /tools/x-env-local-nightly.sh
-/_info

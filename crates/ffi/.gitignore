@@ -1,8 +1,0 @@
-/libs/
-/target/
-
-/examples/c_link/main
-/examples/c_load/main
-/examples/odin_import/main
-/examples/odin_load/main
-/examples/**/*.exe
