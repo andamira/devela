@@ -83,6 +83,5 @@ assert_eq!(count, 2);
 assert_eq!(Mode::ALL, [Mode::Read, Mode::Write, Mode::Exec]);
 ```
 
-See also [`EnumExample`][crate::EnumExample] and [`EnumSetExample`][crate::EnumSetExample],
-generated in the [enumset][crate::_doc::examples::enumset] example.
+See also [`EnumExample`][crate::EnumExample] and [`EnumSetExample`][crate::EnumSetExample].
 

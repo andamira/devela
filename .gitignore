@@ -8,6 +8,10 @@ Cargo.lock
 
 /crates/issues/
 
+# Media generated artifacts
+
+**/examples/**/*.wav
+
 # Native / FFI / generated artifacts
 
 /crates/ffi/libs/

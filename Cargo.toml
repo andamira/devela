@@ -105,7 +105,8 @@ include = [
 	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html", "/src/**/*.js",
 	## documentation
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
-	## examples shown from /src/_doc
+	## examples included from /src/_doc
+	# (omitted local examples are stripped from the packaged manifest)
 	"/examples/code/enumint.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
@@ -1002,6 +1003,14 @@ name = "id_seq" # NOTE: in docs
 path = "examples/data/id_seq.rs"
 
 # sys
+[[example]]
+name = "alsa"
+path = "examples/sys/device/audio/alsa.rs"
+required-features = ["alsa", "std"]
+# [[example]]
+# name = "alsa_linux"
+# path = "examples/sys/device/audio/alsa.rs"
+# required-features = ["alsa", "linux"]
 [[example]]
 name = "term_linux"
 path = "examples/sys/os/term/linux.rs"

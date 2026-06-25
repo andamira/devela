@@ -30,6 +30,7 @@
 
 ## examples
 - refactor examples directory tree.
+- new examples: `alsa`.
 - remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
