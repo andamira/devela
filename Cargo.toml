@@ -107,7 +107,6 @@ include = [
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
 	## examples shown from /src/_doc
 	"/examples/code/enumint.rs",
-	"/examples/code/enumset.rs",
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 	## programs
@@ -991,9 +990,6 @@ doc-scrape-examples = false
 [[example]]
 name = "enumint" # NOTE: in docs
 path = "examples/code/enumint.rs"
-[[example]]
-name = "enumset" # NOTE: in docs
-path = "examples/code/enumset.rs"
 # data
 [[example]]
 name = "id_pin"

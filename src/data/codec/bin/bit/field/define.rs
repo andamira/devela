@@ -1,4 +1,4 @@
-// devela/src/data/codec/bin/bit/field/definition.rs
+// devela/src/data/codec/bin/bit/field/define.rs
 //
 //! Defines [`bitfield!`]
 //

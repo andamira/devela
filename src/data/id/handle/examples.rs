@@ -1,6 +1,6 @@
 // devela/src/data/id/handle/examples.rs
 //
-//! Defines [`handle!`] macro.
+//! Defines [`HandleSpanExample`].
 //
 // TODO
 // - IndexHandleExample
