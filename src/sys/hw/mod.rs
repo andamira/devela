@@ -7,25 +7,21 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod camera; //
-// mod hid; // Evdev* WIP
-// mod opengl; //
-// mod scan; //
-// mod sensor; //
-// mod serial; //
-// mod storage; //
-// mod usb; //
+// mod block; // Block storage
+// mod capture; // Image/surface capture hardware
+// mod hid; // Human interface devices WIP Evdev*
+// mod link; // Communication links
+// mod sensor; // Measurement sensors
+// mod usb; // USB bus/devices
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::hid::_all::*; // WIP
         // pub use super::{
-        //     camera::_all::*,
-        //     opengl::_all::*,
-        //     scan::_all::*,
+        //     block::_all::*,
+        //     capture::_all::*,
+        //     hid::_all::*,
+        //     link::_all::*,
         //     sensor::_all::*,
-        //     serial::_all::*,
-        //     storage::_all::*,
         //     usb::_all::*,
         // };
     }

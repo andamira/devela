@@ -1,4 +1,4 @@
-// devela/examples/sys/web_api/main.rs
+// devela/examples/sys/os/browser/api/main.rs
 //
 //! A Javascript Web API canvas example.
 //

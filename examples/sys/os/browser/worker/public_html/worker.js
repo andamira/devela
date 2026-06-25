@@ -1,4 +1,4 @@
-// devela/examples/sys/web_worker/public_html/worker.js
+// devela/examples/sys/os/browser/worker/public_html/worker.js
 //
 //! Worker script that evaluates JavaScript and handles messages
 //

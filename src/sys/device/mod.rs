@@ -6,6 +6,12 @@
 #![doc = crate::_doc!(hr)]
 #![doc = crate::_QUO_SYS_DEVICE!()]
 //!
+//! Usable runtime device interfaces exposed by the host.
+//!
+//! This includes physical, virtual, OS-mediated, server-backed, and sandboxed
+//! endpoints such as audio streams, display backends, and input/output devices.
+//! Items are classified here by the live capability they provide to a running
+//! program, not by the underlying hardware or protocol.
 //
 
 pub mod audio; // {alsa}

@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela/examples/sys/web_api/build.sh
+# devela/examples/sys/os/browser/api/build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -20,7 +20,7 @@ WASM_MODE="${WASM_MODE:-copy}" # copy|opt
 #
 JS_ENTRY_NAME="api.js"
 JS_MODE="${JS_MODE:-copy}" # copy|min|bundle
-JS_LIB_DIR="../../../src/sys/os/browser/web/js/"
+JS_LIB_DIR="../../../../../src/sys/os/browser/web/js/"
 JS_OUT_DIR="${WEB_DIR}devela/"
 
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"

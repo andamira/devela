@@ -13,12 +13,11 @@ crate::CONST! { pub(crate) _DOC_SYS_MODULES =
     crate::_doc!(modules: crate; sys: arch, device, env, fs, io, log, mem, net, os); // hw
 }
 
-mod hw; // {audio, …} WIP
-
 pub mod arch; // Arch, *asm, detect_*, m128* m256*
-pub mod device; //
+pub mod device; // Live system device interfaces {alsa, x11}
 pub mod env; // App*, Arg*, Env
 pub mod fs; // Fs, FsPath, PathExt
+mod hw; // Low-level hardware and driver-facing system interfaces WIP
 pub mod io; // Io*
 pub mod log; // Log*
 pub mod mem; // Mem,

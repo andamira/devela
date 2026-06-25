@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela/examples/sys/web_worker/build.sh
+# devela/examples/sys/os/browser/worker/build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -19,7 +19,7 @@ WASM_NAME="${CRATE_NAME}.wasm"
 WASM_MODE="${WASM_MODE:-copy}" # copy|opt
 #
 JS_ENTRY_NAME="api.js"
-JS_LIB_DIR="../../../src/sys/os/browser/web/js/"
+JS_LIB_DIR="../../../../../src/sys/os/browser/web/js/"
 JS_OUT_DIR="${WEB_DIR}devela/"
 JS_MODE="${JS_MODE:-copy}" # copy|min|bundle
 #

@@ -15,5 +15,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             define::enumset,
         };
+        #[cfg(feature = "_docs_examples")]
+        pub use super::examples::*;
     }
 }

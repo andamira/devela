@@ -71,7 +71,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
             derive::{macro_apply_alias, macro_derive_alias},
             doclink::doclink,
             dollar::macro_dollar,
-            enumset::enumset,
+            enumset::_all::*,
             ident::ident_const_index,
             impl_trait::impl_trait,
             include::{include_from, mod_from, mod_path},

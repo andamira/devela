@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<!-- devela/examples/sys/web_worker/public_html/index.html -->
+<!-- devela/examples/sys/os/browser/api/public_html/index.html -->
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-    <title>Rust Js Web API Workers example</title>
+    <title>Rust Js Web API example</title>
     <script type="module">
       import { initWasm } from "./devela/api.js";
       window.addEventListener("DOMContentLoaded", async () => {
-        window.wasmInstance = await initWasm("web_worker.wasm");
+        window.wasmInstance = await initWasm("web_api.wasm");
         console.log("WASM initialized:", window.wasmInstance);
       });
     </script>
@@ -18,7 +18,8 @@
     </style>
   </head>
   <body>
-    <h1>Rust Js Web API Workers example</h1>
+    <title>Rust Js Web API example</title>
     <p>Please open the browser console (F12 or Ctrl+Shift+I) to see the example output.</p>
+    <canvas id="example_canvas_1" width="500" height="500"></canvas>
   </body>
 </html>

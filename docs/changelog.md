@@ -29,6 +29,7 @@
 - clarify public module and hidden scope features.
 
 ## examples
+- refactor examples directory tree.
 - remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.

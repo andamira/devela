@@ -3,11 +3,11 @@
 //! [package]
 //! name = "term_linux"
 //! [dependencies.devela]
-//! path = "../.."
+//! path = "../../../.."
 //! # git = "https://github.com/andamira/devela"
 //! features = ["linux", "term", "event"]
 //! ```
-// devela/examples/sys/term_linux.rs
+// devela/examples/sys/os/term/linux.rs
 
 use devela::all::*;
 
