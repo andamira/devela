@@ -1,7 +1,7 @@
-// devela/src/num/error/mod.rs
+// devela/src/error/num/mod.rs
 //
-#![doc = crate::_DOC_NUM_ERROR!()] // public
-#![doc = crate::_doc!(modules: crate::num; error)]
+#![doc = crate::_DOC_ERROR_NUM!()] // public
+#![doc = crate::_doc!(modules: crate::error; num)]
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //

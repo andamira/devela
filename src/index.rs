@@ -173,22 +173,24 @@ pub(crate) use __crate_name;
 
 /* root modules */
 
-pub mod code;
-pub mod data;
-pub mod geom;
-pub mod lang;
-pub mod media;
-pub mod num;
-pub mod org;
-pub mod phys;
-pub mod run;
-pub mod sys;
-pub mod text;
-pub mod ui;
-pub mod vita;
-pub mod work;
+pub mod code; // Code structure, generation, and reflective machinery.
+pub mod data; // Stored values, access patterns, and structural organization.
+pub mod error; // Explicit fallibility and recovery semantics.
+pub mod geom; // Spatial forms, relations, and transformations.
+pub mod lang; // Meaning, grammar, expression, and interpretation.
+pub mod media; // Perceivable artifacts, formats, and synthesis.
+pub mod num; // Magnitude, order, uncertainty, and formal computation.
+pub mod org; // Collective structures and supra-individual agency.
+pub mod phys; // Measured reality, units, matter, energy, and time.
+pub mod run; // Runtime staging, progression, and application state.
+pub mod sys; // Host systems, devices, memory, I/O, and OS boundaries.
+pub mod text; // Symbolic sequences, encodings, and textual structure.
+pub mod ui; // Interaction, presentation state, and semantic controls.
+pub mod vita; // Lived practices, capacities, embodiment, and play.
+pub mod work; // Tasks, execution loci, scheduling, and synchronization.
 // internal:
-pub mod yard;
+pub mod yard; // Scaffolding, taxonomy, and documentation support.
+
 #[doc(hidden)]
 pub use yard::dep as _dep;
 
@@ -207,6 +209,8 @@ pub mod all_ {
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
     #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), _COMMON_DOC!("data")]]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
+    #[doc = concat![crate::_DOC_ERROR!(), crate::_DOC_ERROR_MODULES!(), _COMMON_DOC!("error")]]
+    pub mod _error { #[allow(unused)] pub use super::super::error::_all::*; }
     #[doc = concat![crate::_DOC_GEOM!(), crate::_DOC_GEOM_MODULES!(), _COMMON_DOC!("geom")]]
     pub mod _geom { #[allow(unused)] pub use super::super::geom::_all::*; }
     #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), _COMMON_DOC!("lang")]]
@@ -250,6 +254,7 @@ pub mod all {
         _doc::_all::*,
         code::_all::*,
         data::_all::*,
+        error::_all::*,
         geom::_all::*,
         lang::_all::*,
         media::_all::*,
@@ -276,6 +281,7 @@ mod _crate_internals {
     pub(crate) use super::{
         code::_crate_internals::*,
         data::_crate_internals::*,
+        error::_crate_internals::*,
         geom::_crate_internals::*,
         lang::_crate_internals::*,
         media::_crate_internals::*,
@@ -303,6 +309,7 @@ mod _hidden {
     pub use super::{
         code::_hidden::*,
         data::_hidden::*,
+        // error::_hidden::*,
         geom::_hidden::*,
         media::_hidden::*,
         num::_hidden::*,

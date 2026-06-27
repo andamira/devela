@@ -9,12 +9,11 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, error, id, layout, store, topol, value);
+    crate::_doc!(modules: crate; data: access, codec, id, layout, store, topol, value);
 }
 
 pub mod access; // Mechanisms of reachability and traversal
 pub mod codec; // Data encoding and decoding abstractions
-pub mod error; // Data-related error types
 pub mod id; // Identity abstractions for stable and contextual distinction
 pub mod layout; // Structural arrangement of elements in memory or sequence
 pub mod store; // Retained data stores and retrieval semantics
@@ -33,7 +32,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         pub use super::{
             access::_all::*,
             codec::_all::*,
-            error::*,
             id::_all::*,
             layout::_all::*,
             store::_all::*,

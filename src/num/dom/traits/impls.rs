@@ -5,14 +5,14 @@
 
 #[cfg(not(feature = "std"))]
 use crate::is;
+use crate::{Add, Div, Mul, Neg, Rem, Sub, paste};
 #[allow(unused_imports)]
-use crate::num::{
+use crate::{
     Num,
     NumError::{self, Invalid, Unspecified},
     NumResult as Result,
-    grain::niche::*,
+    num::grain::niche::*,
 };
-use crate::{Add, Div, Mul, Neg, Rem, Sub, paste};
 
 // $p:   the primitive type
 macro_rules! impl_num {

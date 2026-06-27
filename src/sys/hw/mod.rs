@@ -11,6 +11,7 @@
 // mod capture; // Image/surface capture hardware
 // mod hid; // Human interface devices WIP Evdev*
 // mod link; // Communication links
+// mod pin; // Pin-level hardware interfaces
 // mod sensor; // Measurement sensors
 // mod usb; // USB bus/devices
 
@@ -21,6 +22,7 @@ crate::structural_mods! { // _mods
         //     capture::_all::*,
         //     hid::_all::*,
         //     link::_all::*,
+        //     pin::_all::*,
         //     sensor::_all::*,
         //     usb::_all::*,
         // };

@@ -1,4 +1,4 @@
-// devela/src/data/error/capacity.rs
+// devela/src/error/data/capacity.rs
 //
 //! Defines [`MismatchedCapacity`].
 //
@@ -37,7 +37,7 @@ define_error! { individual:
         /// The capacity limit involved in the check, if known.
         pub limit: Option<usize>,
     }
-    +location: "data/error",
+    +location: "error/data",
     +tag: _TAG_DATA!(),
     DOC_MISMATCHED_CAPACITY = "The operation did not satisfy a finite capacity constraint.",
     self+f => match (self.bound, self.value, self.limit) {

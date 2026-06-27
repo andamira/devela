@@ -4,13 +4,13 @@
 #![doc = crate::_DOC_CODE_MODULES!()]
 #![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(extends:
-    any, clone, convert, default, error, hint, marker, ops, panic, result)]
+    any, clone, convert, default, hint, marker, ops, panic, result)]
 //
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_CODE_MODULES =
-    crate::_doc!(modules: crate; code: error, marker, ops, panic, result, util);
+    crate::_doc!(modules: crate; code: marker, ops, panic, result, util);
 }
 
 mod _reexport_core;
@@ -22,11 +22,10 @@ mod intro; // Introspect
 mod site; // CodeLocation, CodeSpan
 mod version; // Version
 
-pub mod error; // AllError, modular errors
 pub mod marker; // core::marker, TypeResource, TypeResourced, type_marker!, type_resource!
 pub mod ops; // ::core::ops::*
 pub mod panic; // Panic, set_panic_handler!
-pub mod result; // AllError, Mismatch, OptRes, ValueQuant, serr, sok, …
+pub mod result; // Mismatch, OptRes, ValueQuant, serr, sok, …
 pub mod util; // (utility macros and functions)
 
 util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
@@ -42,7 +41,6 @@ util::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
     }
     _pub_mods {
         pub use super::{
-            error::_all::*,
             marker::_all::*,
             ops::_all::*,
             panic::_all::*,

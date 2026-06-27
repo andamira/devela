@@ -1,4 +1,4 @@
-// devela/src/num/error/definitions.rs
+// devela/src/error/num/definitions.rs
 //
 //!
 //
@@ -22,40 +22,40 @@ use crate::{
 /* individual errors */
 
 define_error![individual: pub struct NoInverse;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_NO_INVERSE = "An inverse doesn't exist.",
     self+f => f.write_str(DOC_NO_INVERSE!()),
 ];
 define_error![individual: pub struct MismatchedSizes;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_MISMATCHED_SIZES = "The provided values are not compatible in size.",
     self+f => f.write_str(DOC_MISMATCHED_SIZES!()),
 ];
 define_error![individual: pub struct IncompatibleBounds;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_INCOMPATIBLE_BOUNDS = "The given bounds are incompatible.
 E.g. lower bound exceeds upper bound.", // IMPROVE +docs
     self+f => f.write_str("The given bounds are incompatible."),
 ];
 
 define_error![individual: pub struct NonNegativeRequired;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_NON_NEGATIVE_REQUIRED = "A non-negative value is required.",
     self+f => f.write_str(DOC_NON_NEGATIVE_REQUIRED!()),
 ];
 define_error![individual: pub struct PositiveRequired;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_POSITIVE_REQUIRED = "A positive value is required.",
     self+f => f.write_str(DOC_POSITIVE_REQUIRED!()),
 ];
 define_error![individual: pub struct NonZeroRequired;
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_NON_ZERO_REQUIRED = "A non-zero value is required.",
     self+f => f.write_str(DOC_NON_ZERO_REQUIRED!()),
 ];
 
 define_error![individual: pub struct Overflow(pub Option<Sign>);
-    #[derive(Default)], +location: "num/error", +tag: _tags!(num),
+    #[derive(Default)], +location: "error/num", +tag: _tags!(num),
     DOC_OVERFLOW = "An arithmetic overflow error, with an optional associated sign.",
     self+f => if let Some(sign) = self.0 {
         match sign {
@@ -72,7 +72,7 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
 
 define_error! { composite: fmt(f)
     /// All possible integer operation errors.
-    #[doc = crate::_doc_meta!{location("num/error")}]
+    #[doc = crate::_doc_meta!{location("error/num")}]
     pub enum IntError {
         +tag: _tags!(no),
         DOC_NOT_IMPLEMENTED: +const NotImplemented => NotImplemented,

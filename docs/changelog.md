@@ -62,6 +62,11 @@
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
+## error
+- new root module.
+- move `<data|num|text>::error` to `error::<data|num|text>`.
+- move `code::error` contents here.
+
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
 - udpate `ImageError`; add new variant: `InsufficientBuffer`.

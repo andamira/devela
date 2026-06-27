@@ -1,4 +1,4 @@
-// devela/src/code/error/define.rs
+// devela/src/error/macros.rs
 //
 //! Defines [`define_error!`].
 //
@@ -13,7 +13,7 @@
 
 #[doc = crate::_tags!(construction error)]
 /// Defines individual and composite error types.
-#[doc = crate::_doc_meta!{location("code/error")}]
+#[doc = crate::_doc_meta!{location("error")}]
 ///
 /// It can also implement `From` and `TryFrom` traits between them.
 ///

@@ -9,11 +9,10 @@
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
-    crate::_doc!(modules: crate; num: dom, error, fin, grain, lin, prob, quant); // symb
+    crate::_doc!(modules: crate; num: dom, fin, grain, lin, prob, quant); // symb
 }
 
 pub mod dom; // Numeric domains and value representations
-pub mod error; // Numeric-related error types.
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values
 #[cfg(feature = "lin")]
@@ -28,7 +27,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             dom::_all::*,
-            error::_all::*,
             fin::_all::*,
             grain::_all::*,
             // optim::_all::*,

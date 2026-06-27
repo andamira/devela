@@ -1,7 +1,7 @@
-// devela/src/text/error.rs
+// devela/src/error/text.rs
 //
-#![doc = crate::_DOC_TEXT_ERROR!()] // public
-#![doc = crate::_doc!(modules: crate::text; error)]
+#![doc = crate::_DOC_ERROR_TEXT!()] // public
+#![doc = crate::_doc!(modules: crate::error; text)]
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(hr)]
 //
@@ -19,7 +19,7 @@ use ::core::str::Utf8Error; // replaced with InvalidUtf8
 /* individual errors */
 
 define_error! { individual: pub struct InvalidChar(char);
-    +location: "text", +tag: _tags!(text),
+    +location: "error/text", +tag: _tags!(text),
     DOC_INVALID_CHAR = "An invalid given character was found.",
     self+f => write!(f, "An invalid {:?} character was found.", self.0)
 }
@@ -31,7 +31,7 @@ define_error! { individual:
         /// The length of the error in bytes, if known.
         pub error_len: Option<usize>
     }
-    +location: "text", +tag: _tags!(string),
+    +location: "error/text", +tag: _tags!(string),
     DOC_INVALID_UTF8 = "Invalid UTF-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {
@@ -54,7 +54,7 @@ impl InvalidUtf8 {
 define_error! { composite: fmt(f)
     #[doc = crate::_tags!(text)]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
-    #[doc = crate::_doc_meta!{location("text")}]
+    #[doc = crate::_doc_meta!{location("error/text")}]
     ///
     /// Used in methods of:
     /// [`StringNonul`][crate::StringNonul], and `StringU*`.
@@ -104,7 +104,7 @@ mod full_composite {
     define_error! { composite: fmt(f)
         +tag: _tags!(text),
         /// A text-related composite error.
-        #[doc = crate::_doc_meta!{location("text")}]
+        #[doc = crate::_doc_meta!{location("error/text")}]
         #[non_exhaustive]
         pub enum TextError {
             DOC_ELEMENT_NOT_FOUND: +const

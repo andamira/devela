@@ -1,4 +1,4 @@
-// devela/src/data/error/mod.rs
+// devela/src/error/data/mod.rs
 //
 //! Data-related errors.
 //

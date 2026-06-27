@@ -38,17 +38,16 @@ its own flat view of all its public children.";
 
     /* thematic modules tree */
 
-    // 1. code (the internal language of the library)
+    // 1. code (the grammar beneath the crate)
     _DOC_CODE            = "Reflective code synthesis.";
     _DOC_CODE_ANY        = "Dynamic typing and reflection.";
-    _DOC_CODE_ERROR      = "Errors, backtraces and structured handling.";
     _DOC_CODE_MARKER     = "Marker types, traits, and macros.";
     _DOC_CODE_OPS        = "Overloadable operators.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
-    _DOC_CODE_RESULT     = "Parameterized outcome and resolution types.";
+    _DOC_CODE_RESULT     = "Generic outcome and resolution types.";
     _DOC_CODE_UTIL       = "Utility macros and hint functions.";
 
-    // 2. data (structure without interpretation)
+    // 2. data (structure before interpretation)
     _DOC_DATA               = "Data handling and manipulation.";
     _QUO_DATA               = "> How values are organized and accessed.";
     _DOC_DATA_ACCESS         = "Mechanisms of reachability and traversal.";
@@ -68,7 +67,6 @@ its own flat view of all its public children.";
     _DOC_DATA_CODEC_HASH    = "Hash functions and hashers for compact data fingerprints.";
     _DOC_DATA_CODEC_INTEGRITY = "Integrity checks and correction codes.";
     _DOC_DATA_CODEC_PACK    = "Packed data representations";
-    _DOC_DATA_ERROR         = "Data-related error types.";
     _DOC_DATA_ID            = "Identity abstractions for stable and contextual distinction.";
     _QUO_DATA_ID            = "> Distinction preserved across change.";
     _DOC_DATA_ID_UID        = "Abstractions for producing and stabilizing unique identities.";
@@ -97,7 +95,16 @@ its own flat view of all its public children.";
     _DOC_DATA_VALUE_SCHEMA  = "Schemas for encoded values.";
     _DOC_DATA_WORD          = "Raw-representable data words.";
 
-    // 3. geom (the grammar of space)
+    // 3. error (where failure becomes explicit)
+    _DOC_ERROR        = "Failure types, result aliases, and recovery semantics";
+    _DOC_ERROR_KIND   = "Reusable failure categories and error atoms.";
+    _DOC_ERROR_DATA   = "Data-related error types and result aliases.";
+    _DOC_ERROR_NUM    = "Numeric error types and result aliases.";
+    _DOC_ERROR_MEDIA  = "Media-related error types and result aliases.";
+    _DOC_ERROR_TEXT   = "Text-related error types and result aliases.";
+    _DOC_ERROR_SYS    = "System and backend error boundaries.";
+
+    // 4. geom (the grammar of space)
     _DOC_GEOM              = "Geometric types, operations, and spatial constructs.";
     _DOC_GEOM_AFFINE       = "Structure of space under translation and linear combination.";
     _DOC_GEOM_AFFINE_FRAME = "Affine reference frames and coordinate systems.";
@@ -126,7 +133,7 @@ its own flat view of all its public children.";
     _DOC_GEOM_SPACE_PART   = "Spatial partitioning, subdivision, and tessellation.";
     _DOC_GEOM_SPACE_TOPOL  = "Topological properties of space such as connectivity and boundaries.";
 
-    // 4. lang (structures of meaning, expression, and interpretation across domains)
+    // 5. lang (meaning taking form)
     _DOC_LANG               = "Language structure and meaning across domains.";
     _DOC_LANG_DISC          = "Discourse and expression.";
     _DOC_LANG_DISC_MOVE     = "Discourse moves, intents, prompts, replies.";
@@ -163,8 +170,8 @@ its own flat view of all its public children.";
     _DOC_LANG_REPR_TEXT        = "Text-authored representation languages.";
     _DOC_LANG_SEM              = "Semantic relations, independent of form and execution.";
 
-    // 5. media (artifacts meant to be perceived)
-    _DOC_MEDIA              = "Media representation, processing, and synthesis.";
+    // 6. media (artifacts made perceivable)
+    _DOC_MEDIA              = "Media formats, representation, and synthesis";
     _DOC_MEDIA_AUDIO          = "Sound representation and synthesis.";
     _DOC_MEDIA_AUDIO_ACOUSTIC = "Sound propagation and acoustic spaces.";
     _DOC_MEDIA_AUDIO_EFFECT     = "Audio signal transformations and effects.";
@@ -188,13 +195,12 @@ its own flat view of all its public children.";
     _DOC_MEDIA_VISUAL_IMAGE_RASTER = "Raster image storage, views, and access traits.";
     _DOC_MEDIA_VISUAL_VIDEO = "Video stream representation and processing.";
 
-    // 6. num (formal systems of magnitude, order, and uncertainty)
-    _DOC_NUM             = "Numerical types, structures, and operations.";
+    // 7. num (formal relations of magnitude and uncertainty)
+    _DOC_NUM             = "Numeric abstractions and formal computation.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
     _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
     _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
     _DOC_NUM_DOM_INT     = "Integer types and operations.";
-    _DOC_NUM_ERROR       = "Numeric-related error types.";
     _DOC_NUM_FIN         = "Finite and discrete numeric structures.";
     _DOC_NUM_FIN_BIT     = "Bitwise operations.";
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
@@ -217,7 +223,7 @@ its own flat view of all its public children.";
     _DOC_NUM_QUANT_POWER = "Exponentiation, roots, logarithms, and triadic power relations.";
     _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
 
-    // 7. org (patterns of agency beyond the individual)
+    // 8. org (agency beyond the individual)
     _DOC_ORG         = "Coordination and structure of collective action.";
     _DOC_ORG_AGENT   = "Intentional entities capable of action and coordination.";
     _DOC_ORG_ECON    = "Exchange, incentives, and flows of value within collectives.";
@@ -227,7 +233,7 @@ its own flat view of all its public children.";
     _DOC_ORG_NORM    = "Shared social norms and informal behavioral expectations.";
     _DOC_ORG_ROLE    = "Roles, responsibilities, and positions within coordinated action.";
 
-    // 8. phys (measured reality constrained by nature)
+    // 9. phys (nature made measurable)
     _DOC_PHYS             = "Physical quantities, units, and models of the natural world.";
     _DOC_PHYS_ASTRO       = "Astronomy-related abstractions.";
     _DOC_PHYS_BIO         = "Biology-related abstractions.";
@@ -243,13 +249,17 @@ its own flat view of all its public children.";
     _DOC_PHYS_UNIT        = "Physical units of measure and unit prefixes.";
     _DOC_PHYS_WAVE        = "Wave primitives, wavelets.";
 
-    // 9 (temporal structure and staging of program execution)
+    // 10. run (where execution becomes actual)
     _DOC_RUN               = "Temporal coordination and staging of a running system.";
     _QUO_RUN               = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_APP           = "Application-level runtime semantics.";
     _DOC_RUN_CYCLE         = "Phases and transitions of a running system.";
     _DOC_RUN_TIME          = "Temporal structure and progression within a run.";
     _DOC_RUN_TIME_LOOP     = "Composed policies for advancing time within a run.";
+    _DOC_RUN_PLAN          = "Policies for staging runtime progression.";
+    _DOC_RUN_PLAN_SCHED    = "Scheduling of run-level signals, ticks, and staged activity.";
+    _DOC_RUN_PLAN_BUDGET   = "Constraints on how much run-level activity may advance in one step.";
+    _DOC_RUN_PLAN_LANE     = "Runtime lanes for grouping staged activity by semantic flow.";
     _DOC_RUN_REGIME        = "The committed configuration of a running environment.";
     _DOC_RUN_REGIME_CAP    = "Declared runtime capabilities available to a running system.";
     _DOC_RUN_STATE         = "The mutable state of a running system.";
@@ -257,7 +267,7 @@ its own flat view of all its public children.";
     _DOC_RUN_STATE_LOG     = "Sequential records of runtime state evolution.";
     _DOC_RUN_STATE_SCENE   = "A bounded runtime situation defining active state and transitions.";
 
-    // 10. sys (the contract with the host)
+    // 11. sys (the pact with the host)
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DEVICE      = "Live system device interfaces.";
@@ -297,12 +307,11 @@ its own flat view of all its public children.";
     _DOC_SYS_OS_TERM_GRID = "Terminal cell elements, grids, and composition.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
-    // 11. text (symbolic sequences with cultural weight)
-    _DOC_TEXT            = "Symbolic sequences, encodings, and text processing.";
+    // 12. text (cultural symbols held in sequence)
+    _DOC_TEXT            = "Symbolic sequences, encodings, and textual structure.";
     _DOC_TEXT_ASCII      = "ASCII characters, sets, digits and tables";
     _DOC_TEXT_CODEC      = "Text codecs, alphabets, and transmission codes.";
     _DOC_TEXT_DRAW       = "Drawing with textual symbols.";
-    _DOC_TEXT_ERROR      = "Text-related error types.";
     _DOC_TEXT_FMT        = "Text and string formatting.";
     _DOC_TEXT_GENERATE   = "Procedures that produce text.";
     _DOC_TEXT_LAYOUT     = "Spatial arrangement of text within available extent.";
@@ -315,8 +324,8 @@ its own flat view of all its public children.";
     _DOC_TEXT_UNICODE_SCALAR   = "Unicode scalar values and operations.";
     _DOC_TEXT_UNICODE_GRAPHEME = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
 
-    // 12. ui (interaction structures, presentation state, and input semantics)
-    _DOC_UI = "Human-facing interaction, presentation state, and semantic projection.";
+    // 13. ui (contact between human and system)
+    _DOC_UI = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI = "> How humans interact with what exists.";
     _DOC_UI_EVENT    = "Normalized interaction and window events entering the UI frame.";
     _DOC_UI_FRAME    = "Immediate UI authorship, scoped identity, and retained facts across frames.";
@@ -331,7 +340,7 @@ its own flat view of all its public children.";
     _DOC_UI_VIEW_SCALE   = "Pixel, density, and text scaling units for view projection.";
     _DOC_UI_WIDGET = "Semantic controls expressed through frame-local authorship.";
 
-    // 13. vita (practices, capacities, and meanings of lived life)
+    // 14. vita (life as capacity and practice)
     _DOC_VITA       = "Lived practices of embodied beings.";
     _DOC_VITA_BODY  = "Embodied capability, health, and physical limits of living beings.";
     _DOC_VITA_CRAFT = "Practical, learned ways of shaping material reality to support life.";
@@ -341,7 +350,7 @@ its own flat view of all its public children.";
     _DOC_VITA_PLAY  = "Expression, play, and shared enjoyment beyond necessity or survival.";
     _DOC_VITA_PLAY_GAME = "Games across cultures.";
 
-    // 14. work (effort structured over time)
+    // 15. work (effort given executable form)
     _DOC_WORK              = "Computational work, its coordination, and its execution.";
     _DOC_WORK_EXEC         = "Execution loci that host and run work.";
     _DOC_WORK_EXEC_FIBER   = "User-space suspended execution carriers.";
@@ -360,8 +369,8 @@ its own flat view of all its public children.";
     _DOC_WORK_SYNC_ATOMIC  = "Atomic coordination primitives.";
     _DOC_WORK_SYNC_MPSC    = "Multi-producer, single-consumer channels.";
 
-    // 15. yard (support structures not part of the public scene)
-    _DOC_YARD       = "Internal scaffolding and misc. machinery.";
+    // 16. yard (where the crate tends itself)
+    _DOC_YARD       = "Scaffolding, taxonomy, and documentation support.";
     _QUO_YARD       = "> This space exists so the rest can be clean.";
     _DOC_YARD_DEPS  = "Re-exported dependencies.";
 }

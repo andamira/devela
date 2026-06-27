@@ -17,7 +17,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,geom,lang,media,num,org,phys,run,sys,text,ui,work)
+#   - Module            (all,code,data,error,geom,lang,media,num,org,phys,run,sys,text,ui,work,yard)
 #   - Safety            (safest,safe,unsafe,…)
 #   - Scope             (_*)
 #     - default         (_max,_maxest)
@@ -229,6 +229,9 @@ data_all = ["data", "hash"]
 			# riff = []
 	# list = []
 
+# error = []
+# error_all = []
+
 geom = []
 geom_all = ["fig"]
 	# dir = []
@@ -354,6 +357,7 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 	safe_build = []
 	safe_code = []
 	safe_data = []
+	# safe_error = []
 	safe_geom = []
 	safe_lang = []
 	safe_media = [
@@ -377,6 +381,7 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 	safe_ui = []
 	safe_vita = []
 	safe_work = []
+	# safe_yard = []
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	"devela_macros/unsafe",

@@ -9,12 +9,11 @@
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
-    crate::_doc!(modules: crate; text: ascii, error, fmt, layout, parse, str, unicode);
+    crate::_doc!(modules: crate; text: ascii, fmt, layout, parse, str, unicode);
 }
 
 pub mod ascii; // AsciiSet, CharAscii
 // mod draw; // WIP Drawing with text.
-pub mod error; // Invalid[Char|Text|Utf8], TextError, TextResult
 pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
 // mod generate; // WIP Procedures that produce text.
 pub mod layout; // TextLayout*, …
@@ -37,7 +36,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         #[doc(inline)]
         pub use super::{
             ascii::*,
-            error::*,
             fmt::_all::*,
             layout::_all::*,
             parse::_all::*,

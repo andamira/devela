@@ -3,8 +3,7 @@
 //! Defines the [`OutputExt`] trait.
 //
 
-use crate::text::InvalidUtf8;
-use crate::work::exec::process::{ExitStatusError, Output};
+use crate::{ExitStatusError, InvalidUtf8, Output};
 
 /// Marker trait to prevent downstream implementations of the [`OutputExt`] trait.
 trait Sealed {}
