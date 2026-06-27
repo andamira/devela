@@ -40,6 +40,8 @@ pub enum AlsaError {
     FrameCountExceeded { read_or_written: usize, requested: usize },
     /// Too many channels for the fixed channel-pointer buffer.
     TooManyChannels { count: usize, max: usize },
+    /// Native ALSA support was not compiled in.
+    Unavailable,
 }
 impl AlsaError {
     /// Creates an ALSA error from a raw negative error code.
@@ -136,4 +138,5 @@ impl_trait![fmt::Display+Error for AlsaError |self, f| match *self {
         write![f, "ALSA PCM operation exceeded requested frames: got {read_or_written}, requested {requested}"],
     Self::TooManyChannels { count, max } =>
         write![f, "Too many PCM channels: got {count}, maximum supported here is {max}"],
+    Self::Unavailable => f.write_str("ALSA native library `asound` was not found)"),
 }];

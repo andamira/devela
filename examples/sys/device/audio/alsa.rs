@@ -19,7 +19,15 @@ const SECONDS: usize = 3;
 const CHUNK_FRAMES: usize = 512;
 const CAPTURE_WAV: &str = "capture.wav";
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() {
+    if let Err(err) = try_main() {
+        eprintln!("alsa_lab: {err}");
+        std::process::exit(1);
+    }
+}
+fn try_main() -> Result<(), Box<dyn Error>> {
+    Alsa::require_available()?;
+
     let action = std::env::args().nth(1).unwrap_or_else(|| "roundtrip".into());
     match action.as_str() {
         "devices" => list_devices()?,

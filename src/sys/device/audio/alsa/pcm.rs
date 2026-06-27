@@ -40,7 +40,6 @@ impl Drop for AlsaPcmHandle {
     }
 }
 
-#[cfg(ffi_alsa··)]
 #[rustfmt::skip]
 mod impl_traits {
     use super::*;
@@ -200,6 +199,51 @@ impl AlsaPcmHandle {
     ) -> Result<(), AlsaError> {
         self.validate_pcm(&pcm, PcmLayout::Planar)?;
         self.read_all_planar_pcm(pcm)
+    }
+}
+
+// Public ALSA surface preserved when the native backend is unavailable.
+#[cfg(not(ffi_alsa··))]
+crate::items! {
+    macro_rules! _unavailable { () => { Err(AlsaError::Unavailable) }; }
+    #[allow(missing_docs, unused_variables)]
+    impl AlsaPcmHandle {
+        /* configuration */
+        pub fn configure_interleaved(&mut self, spec: PcmSpec)
+            -> Result<PcmSpec, AlsaError> { _unavailable!() }
+        pub fn configure_planar(&mut self, spec: PcmSpec)
+            -> Result<PcmSpec, AlsaError> { _unavailable!() }
+        pub fn prepare(&mut self) -> Result<(), AlsaError> { _unavailable!() }
+        pub fn drain(&mut self) -> Result<(), AlsaError> { _unavailable!() }
+        pub fn discard(&mut self) -> Result<(), AlsaError> { _unavailable!() }
+        /* interleaved playback */
+        pub fn write<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>)
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn write_from<T: PcmSampleType>(&mut self, data: &[T])
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn write_all<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[T]>)
+            -> Result<(), AlsaError> { _unavailable!() }
+        pub fn write_all_from<T: PcmSampleType>(&mut self, data: &[T])
+            -> Result<(), AlsaError> { _unavailable!() }
+        /* planar playback */
+        pub fn write_planar<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[&[T]]>)
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn write_all_planar<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &[&[T]]>)
+            -> Result<(), AlsaError> { _unavailable!() }
+        /* interleaved capture */
+        pub fn read<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [T]>)
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn read_into<T: PcmSampleType>(&mut self, data: &mut [T])
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn read_all<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [T]>)
+            -> Result<(), AlsaError> { _unavailable!() }
+        pub fn read_all_into<T: PcmSampleType>(&mut self, data: &mut [T])
+            -> Result<(), AlsaError> { _unavailable!() }
+        /* planar capture */
+        pub fn read_planar<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [&mut [T]]>)
+            -> Result<usize, AlsaError> { _unavailable!() }
+        pub fn read_all_planar<T: PcmSampleType>(&mut self, pcm: PcmBuf<T, &mut [&mut [T]]>)
+            -> Result<(), AlsaError> { _unavailable!() }
     }
 }
 

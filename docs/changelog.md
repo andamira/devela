@@ -73,6 +73,11 @@
 ### sys::io
 - re-export missing `IoSeekFrom` from std.
 
+##### sys::device::audio::alsa
+- new `Alsa` method: `require_available`.
+- add `AlsaError` error variant `Unavailable`.
+- keep ALSA handle methods and PCM trait impls visible without `asound`.
+
 ##### sys::os::browser::web
 - new type `WebEventKey`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.

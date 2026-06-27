@@ -20,12 +20,18 @@ use crate::{CStr, Ptr};
 /// when the native `asound` library is discoverable at build time.
 #[derive(Debug)]
 pub struct Alsa;
+
 impl Alsa {
     /// Returns whether the native ALSA library was found at build time.
     pub const fn is_available() -> bool {
         cfg!(ffi_alsa··)
     }
+    /// Returns `Ok` if native ALSA support was compiled in.
+    pub const fn require_available() -> Result<(), AlsaError> {
+        if Self::is_available() { Ok(()) } else { Err(AlsaError::Unavailable) }
+    }
 }
+
 #[cfg(ffi_alsa··)]
 impl Alsa {
     /// Opens an ALSA PCM device.
@@ -115,5 +121,20 @@ impl Alsa {
             }
             Ok(())
         }
+    }
+}
+
+// Public ALSA surface preserved when the native backend is unavailable.
+#[cfg(not(ffi_alsa··))]
+crate::items! {
+    macro_rules! _unavailable { () => { Err(AlsaError::Unavailable) }; }
+    #[allow(missing_docs, unused_variables)]
+    impl Alsa {
+        pub fn open_pcm(id: &CStr, dir: AudioStreamDir)
+            -> Result<AlsaPcmHandle, AlsaError> { _unavailable!() }
+        pub fn open_default_playback() -> Result<AlsaPcmHandle, AlsaError> { _unavailable!() }
+        pub fn open_default_capture() -> Result<AlsaPcmHandle, AlsaError> { _unavailable!() }
+        pub fn for_each_pcm_device(f: impl FnMut(AudioDevice<'_>) -> Result<(), AlsaError>)
+            -> Result<(), AlsaError> { _unavailable!() }
     }
 }
