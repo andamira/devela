@@ -201,6 +201,7 @@ its own flat view of all its public children.";
     _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
     _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
     _DOC_NUM_DOM_INT     = "Integer types and operations.";
+    _DOC_NUM_EXPR        = "Symbolic numeric forms and manipulation.";
     _DOC_NUM_FIN         = "Finite and discrete numeric structures.";
     _DOC_NUM_FIN_BIT     = "Bitwise operations.";
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
@@ -221,7 +222,7 @@ its own flat view of all its public children.";
     _DOC_NUM_QUANT_CONT  = "Continuity, calculus.";
     _DOC_NUM_QUANT_SCALE = "Scaling, remapping, and magnitude transformation of numeric values.";
     _DOC_NUM_QUANT_POWER = "Exponentiation, roots, logarithms, and triadic power relations.";
-    _DOC_NUM_SYMB        = "Symbolic numeric forms and manipulation.";
+    _DOC_NUM_SIGNAL      = "Numerical signals and value evolution over domains.";
 
     // 8. org (agency beyond the individual)
     _DOC_ORG         = "Coordination and structure of collective action.";
@@ -308,7 +309,7 @@ its own flat view of all its public children.";
     _DOC_SYS_OS_WINDOWS  = "Windows-specific definitions.";
 
     // 12. text (cultural symbols held in sequence)
-    _DOC_TEXT            = "Symbolic sequences, encodings, and textual structure.";
+    _DOC_TEXT            = "Symbolic sequences, encodings, and text processing.";
     _DOC_TEXT_ASCII      = "ASCII characters, sets, digits and tables";
     _DOC_TEXT_CODEC      = "Text codecs, alphabets, and transmission codes.";
     _DOC_TEXT_DRAW       = "Drawing with textual symbols.";

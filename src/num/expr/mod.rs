@@ -1,8 +1,8 @@
-// devela/src/num/symb/mod.rs
+// devela/src/num/expr/mod.rs
 //
 #![doc = crate::_tags!(wip)]
-#![doc = crate::_DOC_NUM_SYMB!()] // public
-#![doc = crate::_doc!(modules: crate::num; symb)]
+#![doc = crate::_DOC_NUM_EXPR!()] // public
+#![doc = crate::_doc!(modules: crate::num; expr)]
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //

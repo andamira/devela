@@ -184,7 +184,7 @@ pub mod org; // Collective structures and supra-individual agency.
 pub mod phys; // Measured reality, units, matter, energy, and time.
 pub mod run; // Runtime staging, progression, and application state.
 pub mod sys; // Host systems, devices, memory, I/O, and OS boundaries.
-pub mod text; // Symbolic sequences, encodings, and textual structure.
+pub mod text; // Symbolic sequences, encodings, and text processing.
 pub mod ui; // Interaction, presentation state, and semantic controls.
 pub mod vita; // Lived practices, capacities, embodiment, and play.
 pub mod work; // Tasks, execution loci, scheduling, and synchronization.

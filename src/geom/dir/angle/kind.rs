@@ -5,7 +5,7 @@
 
 use crate::{FloatConst, Interval};
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(geom dir)]
 /// The kind of [`Angle`][super::Angle], based on its normalized turn.
 #[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
@@ -14,7 +14,7 @@ use crate::{FloatConst, Interval};
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Hash)]
 pub enum AngleKind {
-    /// = 0º = 360º (1τ = 2π), a full turn, or no turn.
+    /// = 0º = 360º (1τ), a full turn, or no turn.
     #[default]
     Full,
 

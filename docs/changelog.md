@@ -75,6 +75,9 @@
   - remove `alloc` feature-gates.
   - make all methods const.
 
+## num
+- new submodule `signal`.
+
 ### sys::io
 - re-export missing `IoSeekFrom` from std.
 

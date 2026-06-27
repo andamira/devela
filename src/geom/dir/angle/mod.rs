@@ -16,7 +16,7 @@ mod r#impl;
 mod kind;
 pub use kind::AngleKind;
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(geom dir)]
 /// An angle represents a fraction of a full rotation.
 #[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
@@ -86,7 +86,7 @@ impl<T> Angle<T> {
     }
 }
 
-#[doc = crate::_tags!(geom)]
+#[doc = crate::_tags!(geom dir)]
 /// The direction of rotation of an angle.
 #[doc = crate::_doc_meta!{location("num/geom/dir")}]
 ///
