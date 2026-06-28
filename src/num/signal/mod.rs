@@ -6,24 +6,25 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod curve; // Curves, envelopes, and interpolated forms
-// mod emit; // Signal emitters and produced streams
+mod curve; // Curves, envelopes, and interpolated forms
+mod emit; // Signal emitters and produced streams
 // mod filter; // Domain-generic filtering and smoothing
-// mod phase; // Phase, cycles, and periodic progression
-// mod sample; // Sampling, stepping, and discrete realization
-// mod transform; // Signal mapping, modulation, and transformation
+mod phase; // Phase, cycles, and periodic progression
+mod sample; // Sampling, stepping, and discrete realization
+mod transform; // Signal mapping, modulation, and transformation
 // mod weave; // Signal weaving, composition, and interconnection
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
-        // pub use super::{
-        //     // curve::_all::*,
-        //     // emit::_all::*,
-        //     // filter::_all::*,
-        //     // sample::_all::*,
-        //     // transform::_all::*,
-        //     // weave::_all::*,
-        // };
+        pub use super::{
+            curve::CurveRamp,
+            emit::{SignalNext, SignalConst, SignalFn},
+            // filter::_all::*,
+            phase::{Phase, PhaseStep, PhaseAccum},
+            sample::{SignalAt},
+            transform::{SignalClamp, SignalMap, SignalScale, SignalZip},
+            // weave::_all::*,
+        };
     }
     _pub_mods {
         // pub use super::{

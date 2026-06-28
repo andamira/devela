@@ -188,7 +188,7 @@ _define_symbol_tags! {
     // Covers finite sets, bit sets, enum sets, flag sets, and set-like collections.
     // Use with `bit` when the representation is a bit mask.
     _TAG_SET, "Set semantics", "⊆";
-    // Signal-related process, terminal, or runtime control.
+    // Propagated signal semantics: sampled streams, notifications, or control signals.
     _TAG_SIGNAL, "Signal", "📶";
     _TAG_STRING, "String storage and views", "🧶"; // (yarn)
     // Symbolic representations and manipulation of expressions.

@@ -75,8 +75,10 @@
   - remove `alloc` feature-gates.
   - make all methods const.
 
-## num
-- new submodule `signal`.
+### num::signal
+- new module.
+- new traits: `SignalAt`, `SignalNext`.
+- new types: `CurveRamp`, `Phase[Step|Accum]`, `Signal<Clamp|Const|Fn|Map|Scale|Zip>`.
 
 ### sys::io
 - re-export missing `IoSeekFrom` from std.
