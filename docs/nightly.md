@@ -42,9 +42,11 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.98.0> -->
 
+- 1.98: `·`[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
 - 1.98: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
 - 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
+- 1.98: ` `[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
 - 1.98: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 - 1.98: `a`[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912)
@@ -198,6 +200,7 @@ See also
 - [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)
 
 # Meta tracking issues:
+- [alloc::io and core::io](https://github.com/rust-lang/rust/issues/154046)
 - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)
   - [stabilize arbitrary self types v2](https://github.com/rust-lang/rust/pull/135881)
 - [branch hints](https://github.com/rust-lang/rust/issues/26179)
@@ -206,6 +209,7 @@ See also
 - [feature-metadata](https://github.com/rust-lang/cargo/issues/14157)
 - [impl Trait](https://github.com/rust-lang/rust/issues/63066)
 - [int_roundings](https://github.com/rust-lang/rust/issues/88581)
+- [min-publish-age](https://github.com/rust-lang/cargo/issues/17009#issuecomment-4801017878)
 - [MaybeUninit methods for arrays](https://github.com/rust-lang/rust/issues/96097)
 - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
 - [User control over cargo warnings](https://github.com/rust-lang/cargo/issues/12235)

@@ -61,6 +61,7 @@
 #![cfg_attr(
     nightly_stable_1_98,
     feature(
+        atomic_from_mut,
         float_algebraic,
         int_format_into,
         nonzero_from_str_radix,
