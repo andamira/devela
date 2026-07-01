@@ -126,18 +126,20 @@
 //
 // #![cfg_attr(nightly_doc, doc(auto_cfg = false))]
 // NOTE: that doc attribute hiding only works in nightly
-#![cfg_attr(nightly_doc, doc(auto_cfg(hide( // do not document:
-    miri,
-    // development features
-    feature = "__dbg", feature = "__std", feature = "__publish",
-    // positive safety features
-    feature = "safe", feature = "safe_build", feature = "safe_code", feature = "safe_data",
-    feature = "safe_geom", feature = "safe_lang", feature = "safe_media", feature = "safe_audio",
-    feature = "safe_color", feature = "safe_draw", feature = "safe_font", feature = "safe_image",
-    feature = "safe_num", feature = "safe_org", feature = "safe_phys", feature = "safe_time",
-    feature = "safe_run", feature = "safe_sys", feature = "safe_io", feature = "safe_mem",
-    feature = "safe_text", feature = "safe_ui", feature = "safe_vita", feature = "safe_work",
-))))]
+#![cfg_attr(nightly_doc, doc(auto_cfg(
+    hide(miri),
+    hide(feature, values(
+        // development features
+        "__dbg", "__std", "__publish",
+        // positive safety features
+        "safe", "safe_build", "safe_code", "safe_data",
+        "safe_geom", "safe_lang", "safe_media", "safe_audio",
+        "safe_color", "safe_draw", "safe_font", "safe_image",
+        "safe_num", "safe_org", "safe_phys", "safe_time",
+        "safe_run", "safe_sys", "safe_io", "safe_mem",
+        "safe_text", "safe_ui", "safe_vita", "safe_work",
+    )),
+)))]
 
 /* crate safeguards */
 

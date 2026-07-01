@@ -12,7 +12,7 @@
 
 mod common; // AudioDevice, AudioDeviceDir
 
-crate::__doc_hide! { (ffi_alsa··) // crate::__docshow! { (feature = "alsa")
+crate::__doc_auto_hide! { ((ffi_alsa··))
     #[cfg(feature = "alsa")]
     #[cfg(not(feature = "safe_sys"))]
     mod alsa;

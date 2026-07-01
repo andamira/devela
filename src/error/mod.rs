@@ -35,6 +35,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
         };
     }
     _pub_mods {
+        #[doc(inline)]
         pub use super::{
             data::_all::*,
             // media::_all::*,

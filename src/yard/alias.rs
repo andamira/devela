@@ -6,17 +6,36 @@
 crate::macro_apply_alias! {
     /* docs */
 
-    /// Shows a cfg tree on nightly documentation.
+    /// Emits an explicit rustdoc cfg marker.
+    ///
+    /// Overrides `doc(auto_cfg)`. Not affected by `auto_cfg(hide/show)`.
     pub __doc_show($cfg_tree:meta) = #[cfg_attr(nightly_doc, doc(cfg($cfg_tree)))];
 
-    /// Hides a cfg item from nightly `auto_cfg` documentation.
+    /// Hides auto-generated cfg markers.
+    ///
+    /// Affects only `doc(auto_cfg)`, not explicit `doc(cfg(...))`.
+    /// Pass the contents of `hide(...)` as one parenthesized group.
     //
-    // <https://rust-lang.github.io/rfcs/3631-rustdoc-cfgs-handling.html>
-    //
-    // NOTE: `doc(auto_cfg(hide(…)))` may fail when emitted directly beside the
-    // `#[cfg(…)]` from the same alias expansion. Route it through `macro_apply`
-    // so rustdoc observes the hide directive as a separate attribute expansion.
-    pub __doc_hide($cfg_item:meta) = #[cfg_attr(nightly_doc, doc(auto_cfg(hide($cfg_item))))];
+    // - <https://rust-lang.github.io/rfcs/3631-rustdoc-cfgs-handling.html>
+    // - <https://doc.rust-lang.org/rustdoc/unstable-features.html#docauto_cfghide>
+    pub __doc_auto_hide($group:tt) = #[cfg_attr(nightly_doc, doc(auto_cfg(hide $group)))];
+
+    /// Re-allows inherited-hidden auto-generated cfg markers.
+    ///
+    /// This does not emit a marker by itself; use `__doc_cfg` for that.
+    /// Pass the contents of `show(...)` as one parenthesized group.
+    pub __doc_auto_show($group:tt) =
+        #[cfg_attr(nightly_doc, doc(auto_cfg(show $group)))];
+
+    /// Hides one or more feature values from auto-generated cfg markers.
+    pub __doc_auto_hide_features($values:tt) =
+        #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values $values))))];
+
+    /// Re-allows inherited-hidden feature values in auto-generated cfg markers.
+    ///
+    /// This does not emit a marker by itself.
+    pub __doc_auto_show_features($values:tt) =
+        #[cfg_attr(nightly_doc, doc(auto_cfg(show(feature, values $values))))];
 
     /* safety */
 
@@ -30,13 +49,11 @@ crate::macro_apply_alias! {
     /// Compiles an item for the safe/default path, and hides the safety features from docs.
     pub __cfg_item_safe_hide($safe:literal, $unsafe:literal) =
         #[cfg(any(feature = $safe, not(feature = $unsafe)))]
-        #[$crate::macro_apply($crate::__doc_hide(feature = $unsafe))]
-        #[$crate::macro_apply($crate::__doc_hide(feature = $safe))];
+        #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values($safe, $unsafe)))))];
     /// Compiles an item for the explicit unsafe path, and hides the safety features from docs.
     pub __cfg_item_unsafe_hide($safe:literal, $unsafe:literal) =
         #[cfg(all(not(feature = $safe), feature = $unsafe))]
-        #[$crate::macro_apply($crate::__doc_hide(feature = $unsafe))]
-        #[$crate::macro_apply($crate::__doc_hide(feature = $safe))];
+        #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values($safe, $unsafe)))))];
 
     /// Compiles an item for the explicit unsafe path, and shows the unsafe features in docs.
     pub __cfg_item_unsafe_show($safe:literal, $unsafe:literal) =

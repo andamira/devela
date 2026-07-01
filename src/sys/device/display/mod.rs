@@ -16,7 +16,7 @@
 
 #[cfg(feature = "x11")]
 #[cfg(not(feature = "safe_sys"))]
-crate::__doc_hide! { (ffi_xcb_shm··)
+crate::__doc_auto_hide! { ((ffi_xcb_shm··))
     pub mod x11;
 }
 
