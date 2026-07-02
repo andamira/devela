@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _tests;
 
 mod receipt; // Layout1d, LayoutReceipt
 mod unit; // Lunit, aliases: Layout<Pos*|Ext*|Rec|Region|Stride*|>

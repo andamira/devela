@@ -1,18 +1,23 @@
-// devela/ui/layout/tests.rs
+// devela/ui/layout/_tests.rs
 
 use super::*;
 
 #[test]
 fn lunit_checked_arithmetic() {
-    assert_eq!(Lunit::new(2).checked_add(Lunit::new(3)), Some(Lunit::new(5)));
-    assert_eq!(Lunit::MAX.checked_add(Lunit::new(1)), None);
-    assert_eq!(Lunit::new(5).checked_sub(Lunit::new(3)), Some(Lunit::new(2)));
-    assert_eq!(Lunit::new(3).checked_sub(Lunit::new(5)), None);
+    assert_eq!(Lunit::new(2).che_add(Lunit::new(3)), Some(Lunit::new(5)));
+    assert_eq!(Lunit::MAX.che_add(Lunit::new(1)), None);
+    assert_eq!(Lunit::new(5).che_sub(Lunit::new(3)), Some(Lunit::new(2)));
+    assert_eq!(Lunit::new(3).che_sub(Lunit::new(5)), Some(Lunit::new(-2)));
 }
 #[test]
 fn lunit_saturating_arithmetic() {
-    assert_eq!(Lunit::MAX.saturating_add(Lunit::new(1)), Lunit::MAX);
-    assert_eq!(Lunit::new(0).saturating_sub(Lunit::new(1)), Lunit::ZERO);
+    assert_eq!(Lunit::MAX.sat_add(Lunit::new(1)), Lunit::MAX);
+    assert_eq!(Lunit::new(0).sat_sub(Lunit::new(1)), Lunit::new(-1));
+}
+#[test]
+fn lunit_zero_floor_arithmetic() {
+    assert_eq!(Lunit::new(0).sat_sub_floor_zero(Lunit::new(1)), Lunit::ZERO);
+    assert_eq!(Lunit::new(3).sat_sub_floor_zero(Lunit::new(5)), Lunit::ZERO);
 }
 #[test]
 fn layout1d_remaining_fit_and_overflow() {

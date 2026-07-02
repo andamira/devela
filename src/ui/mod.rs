@@ -15,8 +15,6 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 #[cfg(feature = "event")]
 pub mod event; // Normalized interaction and window events entering the UI frame
 
-// #[cfg(feature = "ui")]
-// mod error;
 #[cfg(feature = "ui")]
 mod intent; // WIP Desired UI configuration before capability-bound realization
 
@@ -40,7 +38,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(feature = "ui")]
         pub use super::{
-            // error::*,
             intent::_all::*,
         };
     }

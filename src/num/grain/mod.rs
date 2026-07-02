@@ -7,6 +7,7 @@
 //
 
 mod cast; // Cast, PrimCast, PrimJoin, PrimSplit, cast!
+mod lim; // Bounded numeric carriers and range-preserving arithmetic
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, Non<Max|Min|Value>*, nm!, nv!, nz!
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 pub mod wide; // lane!
@@ -16,6 +17,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         #[doc(inline)]
         pub use super::{
             cast::_all::*,
+            lim::_all::*,
             prim::*,
         };
     }

@@ -15,7 +15,7 @@ use crate::{Cmp, Interval, Lunit, Ordering, UiId, UiRect};
 /// consumed by a placement.
 ///
 /// # Invariants
-/// `used <= avail`.
+/// `0 <= used <= avail`.
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Layout1d {
@@ -49,33 +49,30 @@ impl Layout1d {
 
     /* queries */
 
-    
     /// Returns the total available extent.
     pub const fn avail(&self) -> Lunit { self.avail }
     /// Returns the extent actually consumed by the placement.
     pub const fn used(&self) -> Lunit { self.used }
 
     /// Returns the remaining free extent after placement.
-    pub const fn remaining(&self) -> Lunit { self.avail.sub(self.used) }
+    pub const fn remaining(&self) -> Lunit { self.avail.sat_sub_floor_zero(self.used) }
     /// Returns whether `requested` fits within the available extent.
     pub const fn fits(&self, requested: Lunit) -> bool {
         Cmp(requested.cmp(self.avail)).ne(Ordering::Greater)
     }
 
     /// Returns the overflow of `requested` beyond the available extent.
-    pub const fn overflow(&self, requested: Lunit) -> Lunit {
-        requested.saturating_sub(self.avail)
-    }
+    pub const fn overflow(&self, requested: Lunit) -> Lunit { requested.sat_sub_floor_zero(self.avail) }
 
     /// Returns the interval occupied at `offset`.
     #[must_use]
     pub const fn placed_interval(&self, offset: Lunit) -> Interval<Lunit> {
-        Interval::closed_open(offset, offset.add(self.used))
+        Interval::closed_open(offset, offset.sat_add(self.used))
     }
     /// Returns the remaining interval after placement at `offset`.
     #[must_use]
     pub const fn remaining_interval(&self, offset: Lunit) -> Interval<Lunit> {
-        Interval::closed_open(offset.add(self.used), offset.add(self.avail))
+        Interval::closed_open(offset.sat_add(self.used), offset.sat_add(self.avail))
     }
 }
 

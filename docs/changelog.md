@@ -75,6 +75,9 @@
   - remove `alloc` feature-gates.
   - make all methods const.
 
+### num::grain
+- new macro `bound_int!`.
+
 ### num::signal
 - new module.
 - new traits: `SignalAt`, `SignalNext`.

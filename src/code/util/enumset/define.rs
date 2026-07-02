@@ -127,6 +127,7 @@ macro_rules! enumset· {
         }
 
         /// # Associated set methods
+        #[allow(clippy::double_must_use)]
         impl $set_name {
             /* queries accepting enum variants */
 

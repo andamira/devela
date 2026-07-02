@@ -146,7 +146,7 @@ mod tests {
         let mut a=0; punroll![5 |i|a+=i]; assert_eq!(a, 0+1+2+3+4);
     }
     #[test] fn array() {
-        let a: [i32; 0] = punroll![0[] |i|i*2]; assert_eq!(a, []); //
+        let a: [i32; 0] = punroll![0[] |i|i*2]; assert_eq!(a, [0;0]); //
         let a = punroll![1[] |i|i*2]; assert_eq!(a, [0]);
         let a = punroll![2[] |i|i*2]; assert_eq!(a, [0,2]);
         let a = punroll![3[] |i|i*2]; assert_eq!(a, [0,2,4]);
