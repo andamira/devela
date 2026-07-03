@@ -12,7 +12,7 @@ mod basic;
 mod ops;
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 #[doc = crate::_tags!(time)]
 /// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.

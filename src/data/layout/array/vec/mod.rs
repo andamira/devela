@@ -16,7 +16,7 @@ mod ext; // VecExt
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            chunk::*,
+            chunk::_all::*,
             ext::*,
         };
         // pub use super::d2::_all::*;

@@ -7,10 +7,10 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 mod receipt; // Layout1d, LayoutReceipt
-mod unit; // Lunit, aliases: Layout<Pos*|Ext*|Rec|Region|Stride*|>
+mod unit; // Lunit, aliases: Ui<Ext|Pos|Rect|Stride|>
 
 crate::structural_mods! { // _mods
     _mods {

@@ -8,8 +8,7 @@
 
 #![allow(clippy::excessive_precision, reason = "constants defined with 81 decimals")]
 
-use super::definition::Float;
-use crate::FloatConst;
+use crate::{Float, FloatConst};
 // #[cfg(nightly_float)]
 // use ::core::{f16, f128};
 

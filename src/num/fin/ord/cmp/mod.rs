@@ -4,17 +4,17 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
+mod define; // Cmp
 mod macros; // cmp!
-mod wrapper; // Cmp
 
 crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
+            define::Cmp,
             macros::cmp,
-            wrapper::Cmp,
         };
     }
 }

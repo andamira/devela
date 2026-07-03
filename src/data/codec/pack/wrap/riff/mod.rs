@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod chunk; // RiffChunk, RiffChunkIter
 mod error; // RiffError

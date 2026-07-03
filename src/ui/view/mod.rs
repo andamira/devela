@@ -7,8 +7,9 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
+// mod cue; // Interactive visual cues for view presentation
 mod form; // WIP UiViewForm: cell, document, graphic and message projection forms
 mod layer; // UiLayer
 mod profile; // WIP Presentation profiles for fitting logical views into output space
@@ -18,6 +19,7 @@ mod view; // UiView, UiViewFlags
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            // cue::_all::*,
             form::_all::*,
             layer::*,
             profile::_all::*,

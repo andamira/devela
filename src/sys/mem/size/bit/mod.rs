@@ -4,16 +4,16 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
-mod definition; // BitSized
+mod define; // BitSized
 mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            definition::*,
+            define::*,
         };
     }
 }

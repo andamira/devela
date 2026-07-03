@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod id; // UiId, UiKey, UiScope
 mod frame; // UiFrame, UiPhase

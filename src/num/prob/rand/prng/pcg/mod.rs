@@ -3,10 +3,10 @@
 #![doc = concat![crate::_ABBR_PCG!(), "s."]]
 //
 
-mod generator; // rand_pcg!
-
 #[cfg(test)]
-mod tests;
+mod _test;
+
+mod generator; // rand_pcg!
 
 crate::structural_mods! { // _mods
     _mods {

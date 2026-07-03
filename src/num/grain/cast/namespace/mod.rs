@@ -3,7 +3,7 @@
 //! Helpers for converting between primitives.
 //
 
-mod definition; // Cast
+mod define; // Cast
 
 // impls
 mod cast;
@@ -13,7 +13,7 @@ mod split;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            define::*,
         };
     }
 }

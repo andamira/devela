@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod base; // Base*
 // mod new_base; // WIP

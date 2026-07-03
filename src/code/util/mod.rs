@@ -27,7 +27,7 @@
 mod _reexport_core;
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!

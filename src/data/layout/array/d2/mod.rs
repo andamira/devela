@@ -3,15 +3,16 @@
 //! 2-dimensional array
 //
 
+#[cfg(test)]
+mod _test;
+
 mod impl_traits;
 mod methods;
-#[cfg(test)]
-mod tests;
 
-mod definitions; // Array2d
+mod define; // Array2d
 
 crate::structural_mods! { // _mod
     _mods {
-        pub use super::definitions::*;
+        pub use super::define::*;
     }
 }

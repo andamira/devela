@@ -8,7 +8,7 @@
 // - https://dev-doc.rust-lang.org/stable/unstable-book/library-features/tuple-trait.html
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
 mod codegen {

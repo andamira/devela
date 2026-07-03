@@ -49,7 +49,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod _helper; // (_impl_dep_rand_core)
 

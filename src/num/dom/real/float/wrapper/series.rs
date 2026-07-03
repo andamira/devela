@@ -8,8 +8,7 @@
 //
 // TODO: f16, 128
 
-use super::definition::Float;
-use crate::{is, paste, whilst};
+use crate::{Float, is, paste, whilst};
 
 /// Implements methods independently of any features
 ///

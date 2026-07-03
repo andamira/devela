@@ -7,14 +7,14 @@
 //
 
 mod highest; // RETHINK
-mod definitions;
+mod define;
 
 crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
             highest::*,
-            definitions::*,
+            define::*,
         };
     }
 }

@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 mod define; // TextInput[Config|Action|Reject|View]
 // impls

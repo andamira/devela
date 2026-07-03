@@ -8,7 +8,7 @@
 // - versions differ only in having support for printing, and in the Ansi print method called.
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod _docs; // _DOC_ANSI
 mod define; // _ansi_define

@@ -7,7 +7,7 @@
 //
 
 #[cfg(any(test, feature = "_docs_examples"))]
-mod tests_examples; // {Sha1, Sha256, Sha512, Sha224, Sha384…}
+mod _test_example; // {Sha1, Sha256, Sha512, Sha224, Sha384…}
 
 mod _helper; // (_crypto_impl_hmac, _crypto_impl_otp, _hex)
 
@@ -27,7 +27,7 @@ crate::structural_mods! { // _mods, crate_internals, _hidden
             otp::Otp,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::tests_examples::*;
+        pub use super::_test_example::*;
     }
     _crate_internals {
         pub(crate) use super::{

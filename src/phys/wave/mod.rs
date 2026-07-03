@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod shared; // WaveletHaar, WaveletUnitRole
 

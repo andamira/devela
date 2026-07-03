@@ -3,10 +3,10 @@
 //! Runtime capabilities.
 //
 
-mod definitions; // RunCap[Audio|Color|Image|Input|System|Window]
+mod define; // RunCap[Audio|Color|Image|Input|System|Window]
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::definitions::*;
+        pub use super::define::*;
     }
 }

@@ -11,7 +11,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod buf; // PcmWavBuf
 mod error; // PcmWavError

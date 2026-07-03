@@ -7,7 +7,7 @@
 // - methods over u16
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod char; // Char<char>
 mod u16; // Char<u16>

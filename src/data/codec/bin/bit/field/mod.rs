@@ -1,10 +1,10 @@
 // devela/src/data/codec/bin/bit/field/mod.rs
 
 #[cfg(any(test, doctest))]
-mod _tests;
+mod _test;
 
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // BitfieldExample
+mod _example; // BitfieldExample
 
 mod define; // bitfield!
 
@@ -15,6 +15,6 @@ crate::structural_mods! { // _mods
             define::bitfield,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
 }

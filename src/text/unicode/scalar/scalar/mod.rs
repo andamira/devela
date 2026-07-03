@@ -3,7 +3,7 @@
 //!
 //
 
-mod definitions; // char7, char8, char16, charu
+mod define; // char7, char8, char16, charu
 
 mod shared; // shared methods
 mod traits; // common traits
@@ -17,7 +17,7 @@ mod utf8;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definitions::*,
+            define::*,
         };
     }
 }

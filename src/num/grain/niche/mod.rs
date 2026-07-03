@@ -84,7 +84,7 @@ crate::structural_mods! { // _mods, _reexports, _hidden
         pub use super::{
             absence::*,
             macros::{niche, niche_prim},
-            mem::*,
+            mem::_all::*,
             // norm::*,
         };
     }

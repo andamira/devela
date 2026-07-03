@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod _helper; // (PnmCursor, PnmFormat, PnmHeader)
 mod _impls; // (impl Pnm)

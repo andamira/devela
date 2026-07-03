@@ -4,14 +4,14 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
-mod definitions; // IteratorLending[DoubleEnded|ExactSize|Peek]
+mod define; // IteratorLending[DoubleEnded|ExactSize|Peek]
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            definitions::*,
+            define::*,
         };
     }
 }

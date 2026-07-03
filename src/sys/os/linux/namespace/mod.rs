@@ -3,7 +3,7 @@
 //! Defines the [`Linux`] namespace.
 //
 
-mod definition; // Linux
+mod define; // Linux
 
 // impls
 #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
@@ -22,7 +22,7 @@ crate::items! {
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            definition::Linux,
+            define::Linux,
         };
     }
     _crate_internals {

@@ -4,19 +4,19 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // BufferRingStaticExample
+mod _example; // BufferRingStaticExample
 
-mod definition; // buffer_ring!, BufferRingU8
+mod define; // buffer_ring!, BufferRingU8
 mod impls; // hidden macros for buffer variants
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            define::*,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
 }

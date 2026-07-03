@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: slice)]
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod ext; // SliceExt
 mod iter; // SliceIter. SliceIterMut

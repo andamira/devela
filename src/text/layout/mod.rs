@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 mod engine; // TextLayout
 mod line; // TextLineIter

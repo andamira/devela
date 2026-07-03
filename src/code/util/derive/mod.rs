@@ -1,7 +1,7 @@
 // devela/src/code/util/derive/mod.rs
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod alias; // macro_apply_alias!, derive_alias!
 

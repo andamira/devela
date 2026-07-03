@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod buf; // PcmBuf
 mod io; // PcmStream, PcmDrain, PcmSink, PcmSource, PcmSinkPlanar, PcmSourcePlanar

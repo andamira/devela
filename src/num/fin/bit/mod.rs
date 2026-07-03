@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 // mod _benches;
 mod _docs;

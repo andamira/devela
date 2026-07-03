@@ -4,9 +4,10 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
-mod definition; // Ansi, control prefixes, erase escape codes
+mod define; // Ansi, control prefixes, erase escape codes
+
 mod terminal; // terminal modes
 mod cursor; // cursor escape codes
 mod mouse; // mouse escape codes
@@ -17,7 +18,7 @@ mod osc; // AnsiLink, OSC codes
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            define::*,
             osc::*,
         };
     }

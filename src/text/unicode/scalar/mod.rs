@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(extends: char)]
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod _reexport_core;
 

@@ -7,10 +7,10 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 mod color; // TermColor[s|Kind|Mode]
-mod definition; // TermGrid
+mod define; // TermGrid
 mod error; // TermGridError
 mod meta; // TermelMeta, TermOccupancy
 mod style; // TermStyle[Ext]
@@ -22,7 +22,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             color::*,
-            definition::*,
+            define::*,
             error::*,
             meta::*,
             style::*,

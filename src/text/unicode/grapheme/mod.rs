@@ -12,7 +12,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod grapheme; // Grapheme
 mod kind; // GraphemeKind

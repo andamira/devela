@@ -9,7 +9,7 @@
 //
 
 mod array;
-mod definitions; // Vector*, NumVector
+mod define; // Vector*, NumVector
 // #[cfg(feature = "alloc")]
 // mod vec;
 
@@ -17,7 +17,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             array::*,
-            definitions::*,
+            define::*,
         };
 
         // #[cfg(feature = "alloc")]

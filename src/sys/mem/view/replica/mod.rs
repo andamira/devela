@@ -8,7 +8,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod error; // MemReplicaError
 mod slice; // MemReplicaSlice

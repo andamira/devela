@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 // impls
 mod core;

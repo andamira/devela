@@ -4,8 +4,7 @@
 //
 // TODO: f16, 128
 
-use super::definition::Float;
-use crate::{_FloatInternals, is};
+use crate::{_FloatInternals, Float, is};
 
 /// Implements methods independently of any features
 ///

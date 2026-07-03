@@ -1,7 +1,7 @@
 // devela/src/data/codec/bin/bit/set/mod.rs
 
 #[cfg(any(test, doctest))]
-mod _tests;
+mod _test;
 
 mod define; // set!
 

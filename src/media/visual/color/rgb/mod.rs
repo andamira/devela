@@ -3,11 +3,11 @@
 //! RGB color space
 //
 
-mod definitions; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
+mod define; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::definitions::*;
+        pub use super::define::*;
     }
 }

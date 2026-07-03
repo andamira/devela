@@ -9,10 +9,10 @@ mod primitives;
 #[cfg(feature = "alloc")]
 mod impls_alloc;
 
-mod definition; // Sort
+mod define; // Sort
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::definition::*;
+        pub use super::define::*;
     }
 }

@@ -3,16 +3,16 @@
 //! Matrices.
 //
 
-mod definitions;
-mod methods;
-
 #[cfg(test)]
-mod tests;
+mod _test;
+
+mod define; // Matrix
+mod methods;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definitions::*,
+            define::*,
         };
     }
 }

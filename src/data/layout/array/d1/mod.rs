@@ -6,14 +6,15 @@
 mod impl_traits;
 mod methods;
 
-mod definitions; // Array
+mod define; // Array
 
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 mod uninit; // ArrayUninit
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::definitions::*;
+        pub use super::define::*;
+
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_array")))]
         pub use super::uninit::*;

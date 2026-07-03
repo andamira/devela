@@ -7,7 +7,7 @@
 mod legacy; // OLD handle! (Span)
 
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // HandleSpanExample
+mod _example; // HandleSpanExample
 
 crate::structural_mods! { // _mods
     _mods {
@@ -17,6 +17,6 @@ crate::structural_mods! { // _mods
             legacy::*,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
 }

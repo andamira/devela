@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod hit; // HitRegion
 mod state; // RouteActive, RouteCapture, RouteFocus, RouteHot

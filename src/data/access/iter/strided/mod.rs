@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod canonical; // StridedIter, StridedIterMut
 mod define; // strided_iter!

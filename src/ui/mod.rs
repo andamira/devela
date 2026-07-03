@@ -17,6 +17,7 @@ pub mod event; // Normalized interaction and window events entering the UI frame
 
 #[cfg(feature = "ui")]
 mod intent; // WIP Desired UI configuration before capability-bound realization
+// mod notice; // WIP Attention requests, alarm discipline, and delivery routing
 
 #[cfg(feature = "ui")]
 pub mod frame; // Immediate UI authorship, scoped identity, and retained facts across frames
@@ -39,6 +40,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         #[cfg(feature = "ui")]
         pub use super::{
             intent::_all::*,
+            // notice::_all::*,
         };
     }
     _pub_mods {

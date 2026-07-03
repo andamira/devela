@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod action; // UiAction, UiActions
 mod entry; // UiEntry

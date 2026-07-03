@@ -4,9 +4,9 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // EnumExample, EnumSetExample
+mod _example; // EnumExample, EnumSetExample
 
 mod define; // enumset!
 
@@ -16,6 +16,6 @@ crate::structural_mods! { // _mods
             define::enumset,
         };
         #[cfg(feature = "_docs_examples")]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
 }

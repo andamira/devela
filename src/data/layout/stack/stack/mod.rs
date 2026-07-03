@@ -3,14 +3,14 @@
 //! A type that can be used as a single-ended stack.
 //
 
-// no items defined
+// impls
 mod impl_traits;
 mod methods;
 
-mod definitions; // Stack, StackIter, …
+mod define; // Stack, StackIter, …
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::definitions::*;
+        pub use super::define::*;
     }
 }

@@ -9,10 +9,10 @@
 mod _reexport_core;
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 #[cfg(feature = "_docs_examples")]
-mod examples;
+mod _example;
 
 mod _docs;
 mod _helper; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
@@ -22,8 +22,9 @@ mod lane; // lane!
 crate::structural_mods! { // _reexports, _hidden
     _mods {
         pub use super::lane::*;
+
         #[cfg(feature = "_docs_examples")]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
     _reexports {
         pub use super::_reexport_core::*;

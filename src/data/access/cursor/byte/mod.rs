@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod define; // ByteCursor (+ impl common)
 mod read;

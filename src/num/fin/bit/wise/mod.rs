@@ -4,15 +4,15 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
-mod definition; // Bitwise
+mod define; // Bitwise
 mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            define::*,
         };
     }
 }

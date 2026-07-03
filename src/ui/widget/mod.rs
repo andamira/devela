@@ -7,7 +7,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod button; // UiButton
 mod response; // UiResponse, UiResponseFlags

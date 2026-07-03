@@ -9,7 +9,7 @@
 #![cfg_attr(not(ffi_alsa··), allow(dead_code, unused_imports))]
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 pub(crate) mod _raw; //
 

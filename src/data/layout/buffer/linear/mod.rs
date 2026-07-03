@@ -6,19 +6,19 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 #[cfg(any(test, feature = "_docs_examples"))]
-mod examples; // BufferLinearStaticExample, BufferLinearViewExample, BufferLinearAllocExample
+mod _example; // BufferLinearStaticExample, BufferLinearViewExample, BufferLinearAllocExample
 
-mod definition; // buffer_linear!
+mod define; // buffer_linear!
 mod impls; // hidden macros for buffer variants
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            definition::*,
+            define::*,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::examples::*;
+        pub use super::_example::*;
     }
 }

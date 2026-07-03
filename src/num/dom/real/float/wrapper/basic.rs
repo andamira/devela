@@ -4,10 +4,8 @@
 //
 // WAIT: [core_float_math](https://github.com/rust-lang/rust/issues/137578)
 
-use super::definition::Float;
-use crate::{
-    _FloatInternals, Cmp, FloatCategory, Sign, concat as cc, is, stringify as sfy, whilst,
-};
+use crate::{_FloatInternals, Float, FloatCategory, Sign};
+use crate::{Cmp, concat as cc, is, stringify as sfy, whilst};
 
 /// Implements methods independently of any features
 ///

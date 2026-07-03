@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 // hidden implementation helpers
 // mod impls; // __fmt_num_impl_float, __fmt_num_impl_int WIP

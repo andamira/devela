@@ -3,12 +3,12 @@
 //! Helpers for converting between primitives.
 //
 
+#[cfg(test)]
+mod _test;
+
 mod macros; // cast!
 mod namespace; // Cast
 mod traits; // PrimCast, PrimJoin, PrimSplit
-
-#[cfg(test)]
-mod tests;
 
 crate::structural_mods! { // _mods
     _mods {

@@ -4,7 +4,7 @@
 //
 
 #[cfg(test)]
-mod _tests;
+mod _test;
 
 mod iter; // TextBreakKind, TextLine, TextWrapIter
 mod segment; // TextSegment, TextSegmentKind

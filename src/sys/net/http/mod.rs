@@ -8,7 +8,7 @@
 #![allow(unused)] // TEMP WIP
 
 #[cfg(test)]
-mod tests;
+mod _test;
 
 mod error; // HttpError
 mod namespace; // Http, HttpMethod
