@@ -34,7 +34,6 @@ mod contract {
         assert_eq![I::MAX_COUNT, 3];
         assert_eq![I::MIN_VALUE, -16];
         assert_eq![I::MAX_VALUE, 15];
-        assert_eq![I::RESERVED_RAW, RAW_RESERVED];
         assert_eq![I::ZERO.get(), 0];
         assert_eq![I::ZERO.raw(), 0];
         assert_empty_meta(I::ZERO);
@@ -131,7 +130,6 @@ mod metadata {
     }
 }
 mod sign_magnitude {
-    /* sign predicates, abs, dist policy */
     use super::*;
     #[test]
     fn sign_predicates_work() {
@@ -175,6 +173,13 @@ mod sign_magnitude {
         let x = I::MIN.abs_nometa();
         assert_eq![x, I::MAX];
         assert_empty_meta(x);
+    }
+    #[test]
+    fn full_abs_payload_min_clips_upper() {
+        let x = I::MIN.abs();
+        assert_eq![x, I::MAX];
+        assert_eq![x.bound_count(), 1];
+        assert_eq![x.bound_dir(), Some(Upper)];
     }
 }
 mod ordering {

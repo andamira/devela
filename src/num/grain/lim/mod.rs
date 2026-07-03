@@ -12,6 +12,8 @@ crate::__doc_auto_hide_features! { (("_docs_examples"))
 }
 
 mod define; // bound_int!
+mod signed;
+// mod unsigned;
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

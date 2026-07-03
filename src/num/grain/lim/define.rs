@@ -102,8 +102,9 @@ macro_rules! bound_int {
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%dispatch_range
-            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i8] unsigned[u8] up[i16]
+        $crate::bound_int!(%validate_range
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[true] carrier[i8] unsigned[u8] up[i16]
             value_bits[$VALUE_BITS] range[$Range] ops[$($op),*]
             user_impls[$($user_impls)*]
         );
@@ -113,8 +114,9 @@ macro_rules! bound_int {
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%dispatch_range
-            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i16] unsigned[u16] up[i32]
+        $crate::bound_int!(%validate_range
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[true] carrier[i16] unsigned[u16] up[i32]
             value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
@@ -123,8 +125,9 @@ macro_rules! bound_int {
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%dispatch_range
-            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i32] unsigned[u32] up[i64]
+        $crate::bound_int!(%validate_range
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[true] carrier[i32] unsigned[u32] up[i64]
             value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
@@ -133,11 +136,13 @@ macro_rules! bound_int {
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%dispatch_range
-            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i64] unsigned[u64] up[i128]
+        $crate::bound_int!(%validate_range
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[true] carrier[i64] unsigned[u64] up[i128]
             value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
+    // TODO: unsigned dispatch
     (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[$bad:tt]
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
@@ -147,34 +152,36 @@ macro_rules! bound_int {
             stringify!($bad), "`; currently only `i8`, `i16`, `i32` and `i64` are implemented"));
     };
 
-    // range validation and dispatch
-    (%dispatch_range
-        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
-        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+    // range validation / normalization
+    (%validate_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[$signed:tt] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
         value_bits[$VALUE_BITS:expr] range[full] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
-            attrs[$($attr)*] vis[$vis] name[$Name]
-            repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
-            value_bits[$VALUE_BITS] range[full] ops[$($op),*] user_impls[$($user_impls)*]
+        $crate::bound_int!(%validate_range_backend
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[$signed] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[full] range_requires_signed[false]
+            ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch_range
-        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
-        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+    (%validate_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[$signed:tt] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
         value_bits[$VALUE_BITS:expr] range[symmetric] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
-            attrs[$($attr)*] vis[$vis] name[$Name]
-            repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
-            value_bits[$VALUE_BITS] range[symmetric] ops[$($op),*] user_impls[$($user_impls)*]
+        $crate::bound_int!(%validate_range_backend
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[$signed] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[symmetric] range_requires_signed[true]
+            ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch_range
-        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
-        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+    (%validate_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[$signed:tt] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
         value_bits[$VALUE_BITS:expr] range[$bad:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
@@ -182,9 +189,71 @@ macro_rules! bound_int {
             "`; expected `full` or `symmetric`"));
     };
 
-    (%impl_signed_boundary_count_dir
-        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
-        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+    // semantic compatibility validation
+    (%validate_range_backend
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[false] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] range_requires_signed[true]
+        ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+    ) => {
+        compile_error!(concat!("bound_int!: range(`", stringify!($Range),
+            "`) requires a signed carrier"));
+    };
+    (%validate_range_backend
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[$signed:tt] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] range_requires_signed[$requires_signed:tt]
+        ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+    ) => {
+        $crate::bound_int!(%dispatch
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[$signed] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[$Range]
+            ops[$($op),*] user_impls[$($user_impls)*]
+        );
+    };
+
+    // main dispatch
+    (%dispatch
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[true] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
+    ) => {
+        $crate::bound_int!(%impl_common
+            attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+            signed[true] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
+        );
+        $crate::__bound_int_impl_signed!(
+            attrs[$($attr)*] vis[$vis] name[$Name]
+            repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
+        );
+    };
+    // TODO: unsigned
+    // (%dispatch
+    //     attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+    //     signed[false] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+    //     value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+    //     user_impls[$($user_impls:tt)*]
+    // ) => {
+    //     $crate::bound_int!(%impl_common
+    //         attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr]
+    //         signed[false] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+    //         value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
+    //     );
+    //     $crate::__bound_int_impl_unsigned!(
+    //         attrs[$($attr)*] vis[$vis] name[$Name]
+    //         repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+    //         value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
+    //     );
+    // };
+
+    // WIP
+    (%impl_common
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty]
+        signed[$signed:tt] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
         value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
         user_impls[$($user_impls:tt)*]
     ) => {
@@ -194,17 +263,8 @@ macro_rules! bound_int {
         #[derive(Clone, Copy, Debug)]
         $vis struct $Name($crate::MaybeNiche<$Repr>);
 
+        // Common public constants and methods
         impl $Name {
-            const _CHECK_INVARIANTS: () = {
-                assert!(Self::VALUE_BITS >= 1, "bound_int!: value_bits must be at least 1");
-                assert!(Self::VALUE_BITS <= Self::CARRIER_BITS - 2,
-                    "bound_int!: value_bits must leave at least 2 metadata bits");
-                assert!(Self::META_BITS >= 2,
-                    "bound_int!: metadata requires at least 1 count bit and 1 direction bit");
-                assert!(Self::COUNT_BITS >= 1,
-                    "bound_int!: boundary count requires at least 1 bit");
-            };
-
             /* constants */
 
             /// Number of bits in the primitive carrier.
@@ -220,24 +280,15 @@ macro_rules! bound_int {
             /// Maximum representable boundary-event count.
             pub const MAX_COUNT: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
 
+            /// Whether the payload carrier is signed.
+            pub const IS_SIGNED: bool = $crate::cif!(same($signed, true));
+            /// Whether the signed payload range is symmetric around zero.
+            pub const IS_SYMMETRIC: bool = $crate::cif!(same($Range, symmetric));
+
+            /// Minimum representable payload value.
+            pub const MIN_VALUE: $Carrier = Self::_MIN_VALUE;
             /// Maximum representable payload value.
-            pub const MAX_VALUE: $Carrier =  (1 as $Carrier << (Self::VALUE_BITS - 1)) - 1;
-
-            /// Minimum representable payload value.
-            #[$crate::compile(diff($Range, symmetric))]
-            pub const MIN_VALUE: $Carrier = -(1 as $Carrier << (Self::VALUE_BITS - 1));
-            /// Minimum representable payload value.
-            #[$crate::compile(same($Range, symmetric))]
-            pub const MIN_VALUE: $Carrier = -Self::MAX_VALUE;
-
-            /// Raw carrier pattern reserved as invalid.
-            ///
-            /// For signed carriers this is the primitive minimum value.
-            pub const RESERVED_RAW: $Carrier = <$Carrier>::MIN;
-
-            const VALUE_MASK: $Unsigned = (1 as $Unsigned << Self::VALUE_BITS) - 1;
-            const COUNT_MASK: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
-            const DIR_BIT: $Unsigned = 1 as $Unsigned << Self::COUNT_BITS;
+            pub const MAX_VALUE: $Carrier = Self::_MAX_VALUE;
 
             /// Zero, with empty metadata.
             pub const ZERO: Self = {
@@ -246,12 +297,8 @@ macro_rules! bound_int {
             };
             /// Minimum payload value, with empty metadata.
             pub const MIN: Self = Self::from_value_meta(Self::MIN_VALUE, 0, false);
-
             /// Maximum payload value, with empty metadata.
             pub const MAX: Self = Self::from_value_meta(Self::MAX_VALUE, 0, false);
-
-            /// Whether the signed payload range is symmetric around zero.
-            pub const IS_SYMMETRIC: bool = $crate::cif!(same($Range,symmetric));
 
             /* constructors */
 
@@ -275,35 +322,32 @@ macro_rules! bound_int {
 
             /// Creates a value from a raw encoded carrier.
             ///
-            /// Returns `None` if `raw` is the reserved pattern or is invalid for
-            /// the underlying representation.
+            /// Returns `None` if `raw` is reserved, invalid for the underlying representation,
+            /// or decodes outside the payload range.
             ///
             /// Non-canonical raw encodings with `count == 0` are canonicalized so
             /// the direction bit is cleared.
             pub const fn from_raw(raw: $Carrier) -> Option<Self> {
-                if raw == Self::RESERVED_RAW { return None; }
-                match $crate::MaybeNiche::<$Repr>::try_from_prim(raw) {
-                    Ok(_) => {}
-                    Err(_) => return None,
-                }
+                if raw == Self::_RESERVED_RAW { return None; }
+                let _ = $crate::unwrap![ok_some? $crate::MaybeNiche::<$Repr>::try_from_prim(raw)];
                 let (value, count) = (Self::decode_value(raw), Self::decode_count(raw));
-                if value < Self::MIN_VALUE || value > Self::MAX_VALUE { return None; }
+                // Only `symmetric` excludes a value that the signed payload decoder can produce.
+                // `full` accepts the complete decoded payload domain.
+                // Custom ranges must add their own validation arm.
+                if $crate::cif!(same($Range, symmetric)) && !Self::decoded_value_fits(value) {
+                    return None }
                 let dir_upper = count != 0 && Self::decode_dir_upper(raw);
                 let raw = Self::encode_raw(value, count, dir_upper);
-                match $crate::MaybeNiche::<$Repr>::try_from_prim(raw) {
-                    Ok(repr) => Some(Self(repr)),
-                    Err(_) => None,
-                }
+                let res = $crate::unwrap![ok_some? $crate::MaybeNiche::<$Repr>::try_from_prim(raw)];
+                Some(Self(res))
             }
 
-            /* deconstructors */
+            /* raw/meta methods */
 
             /// Returns the raw encoded carrier.
             pub const fn raw(self) -> $Carrier { self.0.prim() }
             /// Returns the decoded payload value.
             pub const fn get(self) -> $Carrier { Self::decode_value(self.raw()) }
-
-            /* metadata */
 
             /// Returns whether this value carries at least one boundary event.
             pub const fn is_bounded(self) -> bool { self.bound_count() != 0 }
@@ -311,12 +355,12 @@ macro_rules! bound_int {
             /// Returns the saturating boundary-event count.
             ///
             /// A value of `0` means no boundary event is recorded. When this is `0`,
-            /// [`bound_dir`](Self::bound_dir) returns `None`
+            /// [`bound_dir`](#method.bound_dir) returns `None`.
             pub const fn bound_count(self) -> $Unsigned { Self::decode_count(self.raw()) }
 
             /// Returns the last recorded boundary direction.
             ///
-            /// Returns `None` when [`bound_count`](Self::bound_count) is `0`.
+            /// Returns `None` when [`bound_count`](#method.bound_count) is `0`.
             pub const fn bound_dir(self) -> Option<$crate::Boundary1d> {
                 if self.bound_count() == 0 { None }
                 else if Self::decode_dir_upper(self.raw()) { Some($crate::Boundary1d::Upper) }
@@ -340,6 +384,7 @@ macro_rules! bound_int {
 
             /* sign */
 
+            // TODO: allow lints
             /// Whether the value is less than zero.
             pub const fn is_negative(self) -> bool { self.get() < 0 }
             /// Whether the value is greater than zero.
@@ -418,8 +463,27 @@ macro_rules! bound_int {
                 if self.get() < min.get() { min }
                 else if self.get() > max.get() { max } else { self }
             }
+        }
 
-            /* helpers: constructors */
+        // Common private helpers
+        impl $Name {
+            /* constants */
+
+            const _CHECK_INVARIANTS: () = {
+                assert!(Self::VALUE_BITS >= 1, "bound_int!: value_bits must be at least 1");
+                assert!(Self::VALUE_BITS <= Self::CARRIER_BITS - 2,
+                    "bound_int!: value_bits must leave at least 2 metadata bits");
+                assert!(Self::META_BITS >= 2,
+                    "bound_int!: metadata requires at least 1 count bit and 1 direction bit");
+                assert!(Self::COUNT_BITS >= 1,
+                    "bound_int!: boundary count requires at least 1 bit");
+            };
+
+            const VALUE_MASK: $Unsigned = (1 as $Unsigned << Self::VALUE_BITS) - 1;
+            const COUNT_MASK: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
+            const DIR_BIT: $Unsigned = 1 as $Unsigned << Self::COUNT_BITS;
+
+            /* constructors */
 
             /// Creates a value from a canonical raw carrier.
             ///
@@ -438,14 +502,8 @@ macro_rules! bound_int {
                 let raw = Self::encode_raw(value, count, dir_upper);
                 Self::from_canonical_raw(raw)
             }
-            // /// Creates a metadata-empty value from an already in-range payload.
-            // ///
-            // /// The caller must ensure `value` is within the payload range.
-            // const fn from_clean_value_unchecked(value: $Carrier) -> Self {
-            //     Self::from_value_meta(value, 0, false)
-            // }
 
-            /* helpers: meta */
+            /* meta */
 
             const fn encode_raw(value: $Carrier, count: $Unsigned, dir_upper: bool) -> $Carrier {
                 let count = if count > Self::MAX_COUNT { Self::MAX_COUNT } else { count };
@@ -455,19 +513,19 @@ macro_rules! bound_int {
                 let bits = (meta << Self::VALUE_BITS) | ((value as $Unsigned) & Self::VALUE_MASK);
                 bits as $Carrier
             }
-            const fn decode_value(raw: $Carrier) -> $Carrier {
-                $crate::lets![bits = raw as $Unsigned, payload = bits & Self::VALUE_MASK];
-                let shift = Self::CARRIER_BITS - Self::VALUE_BITS;
-                ((payload << shift) as $Carrier) >> shift
-            }
             const fn decode_count(raw: $Carrier) -> $Unsigned {
                 (((raw as $Unsigned) >> Self::VALUE_BITS) & Self::COUNT_MASK)
             }
             const fn decode_dir_upper(raw: $Carrier) -> bool {
                 ((((raw as $Unsigned) >> Self::VALUE_BITS) & Self::DIR_BIT) != 0)
             }
+            // less branchy: `value < Self::MIN_VALUE || value > Self::MAX_VALUE`
+            const fn decoded_value_fits(value: $Carrier) -> bool {
+                ((value - Self::MIN_VALUE) as $Unsigned)
+                    <= ((Self::MAX_VALUE - Self::MIN_VALUE) as $Unsigned)
+            }
 
-            /* helpers: arithmetic ops */
+            /* arithmetic ops */
 
             // Safe from carrier overflow: COUNT_BITS <= CARRIER_BITS - 2, so
             // MAX_COUNT + MAX_COUNT + MAX_COUNT fits in the unsigned carrier.
@@ -481,7 +539,7 @@ macro_rules! bound_int {
                 else { false }
             }
 
-            /* helpers: ordering / clamping */
+            /* ordering / clamping */
 
             /// Returns the greater carrier value.
             ///
@@ -510,10 +568,7 @@ macro_rules! bound_int {
             }
         }
 
-        $crate::bound_int!(%emit_user_impls $Name; $($user_impls)*);
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; $($op),*);
-
-        /* traits */
+        /* common traits */
 
         impl Default for $Name { fn default() -> Self { Self::ZERO } }
         $crate::_impl_init![Self::ZERO => $Name];
@@ -544,467 +599,7 @@ macro_rules! bound_int {
         }
     };
 
-    /* op group validation */
-
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty;) => {};
-    // NOTE: mixing aliases is not supported
-    // FUTURE: make the parser a state-machine to use accummulated flags
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; all) => {
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; sat, che, mod, up);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; default) => {
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; sat, che);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; sat $(, $rest:ident)*) => {
-        impl $Name {
-            /* private helpers */
-
-            /// Saturates an exact carrier result to the payload range.
-            const fn from_sat_carrier(exact: $Carrier) -> Self {
-                if exact < Self::MIN_VALUE { Self::from_value_meta(Self::MIN_VALUE, 1, false) }
-                else if exact > Self::MAX_VALUE { Self::from_value_meta(Self::MAX_VALUE, 1, true) }
-                else { Self::from_value_nometa(exact) }
-            }
-            /// Saturates an exact carrier result, preserving metadata.
-            const fn from_sat_carrier_meta(exact: $Carrier, count: $Unsigned, dir_upper: bool)
-                -> Self {
-                if exact < Self::MIN_VALUE {
-                    Self::from_value_meta(Self::MIN_VALUE, Self::count_inc(count, 0, 1), false)
-                } else if exact > Self::MAX_VALUE {
-                    Self::from_value_meta(Self::MAX_VALUE, Self::count_inc(count, 0, 1), true)
-                } else { Self::from_value_meta(exact, count, dir_upper) }
-            }
-            /// Saturates an exact carrier result without metadata.
-            const fn from_sat_carrier_nometa(exact: $Carrier) -> Self {
-                Self::from_value_nometa(Self::clamp_carrier_to_value(exact))
-            }
-
-            /// Saturates an exact upcasted result to the payload range.
-            const fn from_sat_up(exact: $Up) -> Self {
-                if exact < Self::MIN_VALUE as $Up {
-                    Self::from_value_meta(Self::MIN_VALUE, 1, false)
-                } else if exact > Self::MAX_VALUE as $Up {
-                    Self::from_value_meta(Self::MAX_VALUE, 1, true)
-                } else { Self::from_value_nometa(exact as $Carrier) }
-            }
-            /// Saturates an exact upcasted result, preserving metadata.
-            const fn from_sat_up_meta(exact: $Up, count: $Unsigned, dir_upper: bool) -> Self {
-                if exact < Self::MIN_VALUE as $Up {
-                    Self::from_value_meta(Self::MIN_VALUE, Self::count_inc(count, 0, 1), false)
-                } else if exact > Self::MAX_VALUE as $Up {
-                    Self::from_value_meta(Self::MAX_VALUE, Self::count_inc(count, 0, 1), true)
-                } else { Self::from_value_meta(exact as $Carrier, count, dir_upper) }
-            }
-            /// Saturates an exact upcasted result without metadata.
-            const fn from_sat_up_nometa(exact: $Up) -> Self {
-                if exact < Self::MIN_VALUE as $Up { Self::MIN }
-                else if exact > Self::MAX_VALUE as $Up { Self::MAX }
-                else { Self::from_value_nometa(exact as $Carrier) }
-            }
-
-            /* sign */
-
-            /// Returns the absolute decoded value, saturating to the payload range.
-            ///
-            /// Inherited metadata is ignored; no metadata is generated.
-            pub const fn abs(self) -> Self {
-                Self::from_sat_carrier(self.get().abs())
-            }
-            /// Returns the absolute decoded value, saturating to the payload range.
-            ///
-            /// Inherited metadata is propagated; no metadata is generated.
-            pub const fn abs_meta(self) -> Self {
-                Self::from_sat_carrier_meta(self.get().abs(), self.bound_count(),
-                    Self::decode_dir_upper(self.raw()))
-            }
-            /// Returns the absolute decoded value, saturating to the payload range.
-            ///
-            /// No metadata is propagated or generated.
-            pub const fn abs_nometa(self) -> Self {
-                Self::from_sat_carrier_nometa(self.get().abs())
-            }
-
-            /* arithmetic */
-
-            /// Saturating addition.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_add(self, rhs: Self) -> Self {
-                Self::from_sat_carrier(self.get() + rhs.get())
-            }
-            /// Saturating addition, preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged; operation metadata is recorded if this clips.
-            pub const fn sat_add_meta(self, rhs: Self) -> Self {
-                Self::from_sat_carrier_meta(self.get() + rhs.get(),
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-            /// Saturating addition without metadata.
-            ///
-            /// No metadata is propagated or generated.
-            pub const fn sat_add_nometa(self, rhs: Self) -> Self {
-                Self::from_sat_carrier_nometa(self.get() + rhs.get())
-            }
-
-            /// Adds `rhs`,
-            /// saturating to the payload range, then applying a zero floor.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_add_floor_zero(self, rhs: Self) -> Self {
-                self.sat_add(rhs).max_zero_meta()
-            }
-            /// Adds `rhs`, preserving metadata,
-            /// saturating to the payload range, then applying a zero floor.
-            pub const fn sat_add_floor_zero_meta(self, rhs: Self) -> Self {
-                self.sat_add_meta(rhs).max_zero_meta()
-            }
-
-            /// Adds `rhs`,
-            /// saturating to the payload range, then applying a zero ceiling.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_add_ceil_zero(self, rhs: Self) -> Self {
-                self.sat_add(rhs).min_zero_meta()
-            }
-            /// Adds `rhs`, preserving metadata,
-            /// saturating to the payload range, then applying a zero ceiling.
-            pub const fn sat_add_ceil_zero_meta(self, rhs: Self) -> Self {
-                self.sat_add_meta(rhs).min_zero_meta()
-            }
-
-            /// Saturating subtraction.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_sub(self, rhs: Self) -> Self {
-                Self::from_sat_carrier(self.get() - rhs.get())
-            }
-            /// Saturating subtraction.
-            ///
-            /// Inherited metadata is merged; operation metadata is recorded if this clips.
-            pub const fn sat_sub_meta(self, rhs: Self) -> Self {
-                Self::from_sat_carrier_meta(self.get() - rhs.get(),
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-            /// Saturating subtraction without metadata.
-            ///
-            /// No metadata is propagated or generated.
-            pub const fn sat_sub_nometa(self, rhs: Self) -> Self {
-                let exact = self.get() - rhs.get();
-                Self::from_value_nometa(Self::clamp_carrier_to_value(exact))
-            }
-
-            /// Subtracts `rhs`,
-            /// saturating to the payload range, then applying a zero floor.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_sub_floor_zero(self, rhs: Self) -> Self {
-                self.sat_sub(rhs).max_zero_meta()
-            }
-            /// Subtracts `rhs`, preserving metadata,
-            /// saturating to the payload range, then applying a zero floor.
-            pub const fn sat_sub_floor_zero_meta(self, rhs: Self) -> Self {
-                self.sat_sub_meta(rhs).max_zero_meta()
-            }
-            /// Subtracts `rhs`,
-            /// saturating to the payload range, then applying a zero ceiling.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_sub_ceil_zero(self, rhs: Self) -> Self {
-                self.sat_sub(rhs).min_zero_meta()
-            }
-            /// Subtracts `rhs`, preserving metadata,
-            /// saturating to the payload range, then applying a zero ceiling.
-            pub const fn sat_sub_ceil_zero_meta(self, rhs: Self) -> Self {
-                self.sat_sub_meta(rhs).min_zero_meta()
-            }
-
-            /// Saturating multiplication.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_mul(self, rhs: Self) -> Self {
-                Self::from_sat_up(self.get() as $Up * rhs.get() as $Up)
-            }
-            /// Saturating multiplication, preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged; operation metadata is recorded if this clips.
-            pub const fn sat_mul_meta(self, rhs: Self) -> Self {
-                Self::from_sat_up_meta(self.get() as $Up * rhs.get() as $Up,
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-            /// Saturating multiplication without metadata.
-            ///
-            /// No metadata is propagated or generated.
-            pub const fn sat_mul_nometa(self, rhs: Self) -> Self {
-                Self::from_sat_up_nometa(self.get() as $Up * rhs.get() as $Up)
-            }
-
-            /// Multiplies by `num`, divides by `den`, and saturates the final result.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            /// Returns `None` when `den == 0`.
-            pub const fn sat_mul_div(self, num: $Carrier, den: $Carrier) -> Option<Self> {
-                if den == 0 { return None; }
-                Some(Self::from_sat_up((self.get() as $Up * num as $Up) / den as $Up))
-            }
-            /// Multiplies by `num`, divides by `den`, and saturates the final result,
-            /// preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged; operation metadata is recorded if this clips.
-            /// Returns `None` when `den == 0`.
-            pub const fn sat_mul_div_meta(self, num: $Carrier, den: $Carrier) -> Option<Self> {
-                if den == 0 { return None; }
-                Some(Self::from_sat_up_meta((self.get() as $Up * num as $Up) / den as $Up,
-                    self.bound_count(), Self::decode_dir_upper(self.raw())))
-            }
-            /// Multiplies by `num`, divides by `den`, and saturates the final result without metadata.
-            ///
-            /// No metadata is propagated or generated. Returns `None` when `den == 0`.
-            pub const fn sat_mul_div_nometa(self, num: $Carrier, den: $Carrier) -> Option<Self> {
-                if den == 0 { return None; }
-                Some(Self::from_sat_up_nometa((self.get() as $Up * num as $Up) / den as $Up))
-            }
-
-            /* magnitude */
-
-            /// Returns the absolute distance between decoded values,
-            /// saturating to the payload range.
-            ///
-            /// Inherited metadata is ignored; operation metadata is recorded if this clips.
-            pub const fn sat_dist(self, rhs: Self) -> Self {
-                let d = (self.get() - rhs.get()).abs();
-                if d > Self::MAX_VALUE { Self::from_value_meta(Self::MAX_VALUE, 1, true) }
-                else { Self::from_value_meta(d, 0, false) }
-            }
-            /// Returns the absolute distance between decoded values,
-            /// saturating to the payload range.
-            ///
-            /// Inherited metadata is merged; operation metadata is recorded if this clips.
-            pub const fn sat_dist_meta(self, rhs: Self) -> Self {
-                let d = (self.get() - rhs.get()).abs();
-                if d > Self::MAX_VALUE {
-                    Self::from_value_meta(Self::MAX_VALUE,
-                        Self::count_inc(self.bound_count(), rhs.bound_count(), 1), true)
-                } else {
-                    Self::from_value_meta(d,
-                        Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                        Self::merged_dir_upper(self, rhs))
-                }
-            }
-            /// Returns the absolute distance between decoded values,
-            /// saturating to the payload range.
-            ///
-            /// No metadata is propagated or generated.
-            pub const fn sat_dist_nometa(self, rhs: Self) -> Self {
-                let d = (self.get() - rhs.get()).abs();
-                Self::from_value_nometa(Self::clamp_carrier_to_value(d))
-            }
-        }
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; $($rest),*);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; che $(, $rest:ident)*) => {
-        /// # Checked operations
-        impl $Name {
-            /* private helpers */
-
-            /// Converts an exact carrier result if it fits the payload range.
-            ///
-            /// Inherited metadata is ignored.
-            const fn from_checked_carrier(exact: $Carrier) -> Option<Self> {
-                if exact < Self::MIN_VALUE || exact > Self::MAX_VALUE { None }
-                else { Some(Self::from_value_nometa(exact)) }
-            }
-            /// Converts an exact carrier result if it fits, preserving metadata.
-            const fn from_checked_carrier_meta(exact: $Carrier, count: $Unsigned, dir_upper: bool)
-                -> Option<Self> {
-                if exact < Self::MIN_VALUE || exact > Self::MAX_VALUE { None }
-                else { Some(Self::from_value_meta(exact, count, dir_upper)) }
-            }
-
-            /// Converts an exact upcasted result if it fits the payload range.
-            const fn from_checked_up(exact: $Up) -> Option<Self> {
-                if exact < Self::MIN_VALUE as $Up || exact > Self::MAX_VALUE as $Up { None }
-                else { Some(Self::from_value_nometa(exact as $Carrier)) }
-            }
-            /// Converts an exact upcasted result if it fits, preserving metadata.
-            const fn from_checked_up_meta(exact: $Up, count: $Unsigned, dir_upper: bool)
-                -> Option<Self> {
-                if exact < Self::MIN_VALUE as $Up || exact > Self::MAX_VALUE as $Up { None }
-                else { Some(Self::from_value_meta(exact as $Carrier, count, dir_upper)) }
-            }
-
-            /* arithmetic */
-
-            /// Checked addition.
-            ///
-            /// Inherited metadata is ignored.
-            /// Returns `None` if the exact result escapes the payload range.
-            pub const fn che_add(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier(self.get() + rhs.get())
-            }
-            /// Checked addition, preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged when the result fits.
-            pub const fn che_add_meta(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier_meta(self.get() + rhs.get(),
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-
-            /// Checked subtraction.
-            ///
-            /// Inherited metadata is ignored.
-            /// Returns `None` if the exact result escapes the payload range.
-            pub const fn che_sub(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier(self.get() - rhs.get())
-            }
-            /// Checked subtraction, preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged when the result fits.
-            pub const fn che_sub_meta(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier_meta(self.get() - rhs.get(),
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-
-            /// Checked multiplication.
-            ///
-            /// Inherited metadata is ignored.
-            /// Returns `None` if the exact result escapes the payload range.
-            pub const fn che_mul(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_up(self.get() as $Up * rhs.get() as $Up)
-            }
-            /// Checked multiplication, preserving boundary metadata.
-            ///
-            /// Inherited metadata is merged when the result fits.
-            pub const fn che_mul_meta(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_up_meta(self.get() as $Up * rhs.get() as $Up,
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-
-            /// Multiplies by `num`, divides by `den`, and checks the final result.
-            ///
-            /// Inherited metadata is ignored.
-            /// Returns `None` when `den == 0` or the final result escapes the payload range.
-            pub const fn che_mul_div(self, num: $Carrier, den: $Carrier) -> Option<Self> {
-                if den == 0 { return None; }
-                Self::from_checked_up((self.get() as $Up * num as $Up) / den as $Up)
-            }
-            /// Multiplies by `num`, divides by `den`, and checks the final result.
-            ///
-            /// Inherited metadata is merged when the result fits.
-            /// Returns `None` when `den == 0` or the final result escapes the payload range.
-            pub const fn che_mul_div_meta(self, num: $Carrier, den: $Carrier) -> Option<Self> {
-                if den == 0 { return None; }
-                Self::from_checked_up_meta((self.get() as $Up * num as $Up) / den as $Up,
-                    self.bound_count(), Self::decode_dir_upper(self.raw()))
-            }
-
-            /* magnitude */
-
-            /// Returns the absolute distance between the decoded values.
-            ///
-            /// Returns `None` if the exact distance cannot be represented as a payload value.
-            pub const fn che_dist(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier((self.get() - rhs.get()).abs())
-            }
-            /// Returns the absolute distance between the decoded values.
-            ///
-            /// Returns `None` if the exact distance cannot be represented as a payload value.
-            pub const fn che_dist_meta(self, rhs: Self) -> Option<Self> {
-                Self::from_checked_carrier_meta((self.get() - rhs.get()).abs(),
-                    Self::count_inc(self.bound_count(), rhs.bound_count(), 0),
-                    Self::merged_dir_upper(self, rhs))
-            }
-        }
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; $($rest),*);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; mod $(, $rest:ident)*) => {
-        /// # Modular operations
-        impl $Name {
-            /* arithmetic */
-
-            /// Modular addition over an explicit positive modulus.
-            ///
-            /// Returns `(self + delta) mod modulo` using Euclidean modulo.
-            ///
-            /// Returns `None` when `modulo <= 0`.
-            pub const fn mod_add(self, delta: Self, modulo: Self) -> Option<Self> {
-                let m = modulo.get();
-                if m <= 0 { return None; }
-                let t = self.get() as $Up + delta.get() as $Up;
-                let m = m as $Up;
-                let q = t.div_euclid(m);
-                let r = t.rem_euclid(m);
-                let extra = Self::cycles_to_count(q);
-                let count = Self::count_inc(self.bound_count(), delta.bound_count(), extra);
-                let dir_upper = if q > 0 { true } else if q < 0 { false }
-                    else { Self::merged_dir_upper(self, delta) };
-                Some(Self::from_value_meta(r as $Carrier, count, dir_upper))
-            }
-            /// Modular subtraction over an explicit positive modulus.
-            ///
-            /// Returns `(self - delta) mod modulo` using Euclidean modulo.
-            ///
-            /// Returns `None` when `modulo <= 0`.
-            pub const fn mod_sub(self, delta: Self, modulo: Self) -> Option<Self> {
-                let m = modulo.get();
-                if m <= 0 { return None; }
-                let t = self.get() as $Up - delta.get() as $Up;
-                let m = m as $Up;
-                let q = t.div_euclid(m);
-                let r = t.rem_euclid(m);
-                let extra = Self::cycles_to_count(q);
-                let count = Self::count_inc(self.bound_count(), delta.bound_count(), extra);
-                let dir_upper = if q > 0 { true } else if q < 0 { false }
-                    else { Self::merged_dir_upper(self, delta) };
-                Some(Self::from_value_meta(r as $Carrier, count, dir_upper))
-            }
-
-            const fn cycles_to_count(cycles: $Up) -> $Unsigned {
-                let cycles = if cycles < 0 { -cycles } else { cycles };
-                if cycles > Self::MAX_COUNT as $Up { Self::MAX_COUNT }
-                else { cycles as $Unsigned }
-            }
-        }
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; $($rest),*);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; up $(, $rest:ident)*) => {
-        /// # Upcasted outcome operations
-        impl $Name {
-            /* arithmetic */
-
-            /// Returns the exact upcasted sum of the decoded values.
-            pub const fn add_up(self, rhs: Self) -> $Up {
-                self.get() as $Up + rhs.get() as $Up
-            }
-            /// Returns the exact upcasted difference of the decoded values.
-            pub const fn sub_up(self, rhs: Self) -> $Up {
-                self.get() as $Up - rhs.get() as $Up
-            }
-            /// Returns the exact upcasted product of the decoded values.
-            pub const fn mul_up(self, rhs: Self) -> $Up {
-                self.get() as $Up * rhs.get() as $Up
-            }
-
-            /* magnitude */
-
-            /// Returns the exact absolute distance between the decoded values.
-            pub const fn dist_up(self, rhs: Self) -> $Up {
-                (self.get() as $Up - rhs.get() as $Up).abs()
-            }
-        }
-        $crate::bound_int!(%impl_ops $Name; $Carrier; $Unsigned; $Up; $($rest),*);
-    };
-    (%impl_ops $Name:ident; $Carrier:ty; $Unsigned:ty; $Up:ty; $bad:ident $(, $rest:ident)*) => {
-        compile_error!(concat!("bound_int!: unknown op group `", stringify!($bad), "`"));
-    };
-
-    /* emit: user impl blocks */
-
+    // emit: user impl blocks
     (%emit_user_impls $Name:ident;) => {};
     (%emit_user_impls
         $Name:ident;
