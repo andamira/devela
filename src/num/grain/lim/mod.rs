@@ -13,7 +13,7 @@ crate::__doc_auto_hide_features! { (("_docs_examples"))
 
 mod define; // bound_int!
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             define::bound_int,
@@ -21,5 +21,9 @@ crate::structural_mods! { // _mods
 
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;
+    }
+    _crate_internals {
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub(crate) use super::_example::*;
     }
 }

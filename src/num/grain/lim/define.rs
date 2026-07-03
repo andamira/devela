@@ -18,6 +18,16 @@
 /// Non-canonical raw values with `count == 0` and a set direction bit are
 /// accepted by `from_raw` but canonicalized by clearing the direction bit.
 ///
+/// `range(...)` chooses the decoded payload interval:
+///
+/// - `full`: uses every payload value representable by `value_bits`.
+/// - `symmetric`: for signed carriers, excludes the negative extra endpoint
+///   so the range is symmetric around zero.
+///
+/// The default is `full`.
+///
+/// `symmetric` is only valid for signed carriers.
+///
 /// # Invariants
 ///
 /// - `value_bits` must be at least `1` and must leave at least two metadata bits:
@@ -35,6 +45,17 @@
 /// - `all`: all supported operation groups.
 /// - `default`: `sat` and `che`.
 ///
+/// # Syntax
+/// ```ignore
+/// bound_int! {
+///     pub struct Name: repr(Representation => carrier);
+///
+///     value_bits(N);
+///     range(full); // optional: full | symmetric
+///     ops(sat, che, mod, up);
+/// }
+/// ```
+///
 /// # Examples
 ///
 /// See [`BoundI8Example`][crate::BoundI8Example].
@@ -50,59 +71,122 @@ macro_rules! bound_int {
 
         $($user_impls:tt)*
     ) => {
-        $crate::bound_int!(%dispatch
+        $crate::bound_int! {
+            $(#[$attr])*
+            $vis struct $Name: repr($Repr => $Carrier);
+            value_bits($VALUE_BITS);
+            range(full);
+            ops($($op),*);
+            $($user_impls)*
+        }
+    };
+    (
+        $(#[$attr:meta])*
+        $vis:vis struct $Name:ident : repr($Repr:ty => $Carrier:tt);
+
+        value_bits($VALUE_BITS:expr);
+        range($Range:ident);
+        ops($($op:ident),* $(,)?);
+
+        $($user_impls:tt)*
+    ) => {
+        $crate::bound_int!(%dispatch_carrier
             attrs[$(#[$attr])*] vis[$vis] name[$Name] repr[$Repr] carrier[$Carrier]
-            value_bits[$VALUE_BITS] ops[$($op),*] user_impls[$($user_impls)*]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch
+
+    // carrier validation and dispatch
+    (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[i8]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
+        $crate::bound_int!(%dispatch_range
             attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i8] unsigned[u8] up[i16]
-            value_bits[$VALUE_BITS] ops[$($op),*] user_impls[$($user_impls)*]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*]
+            user_impls[$($user_impls)*]
         );
     };
-    (%dispatch
+    (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[i16]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
+        $crate::bound_int!(%dispatch_range
             attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i16] unsigned[u16] up[i32]
-            value_bits[$VALUE_BITS] ops[$($op),*] user_impls[$($user_impls)*]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch
+    (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[i32]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
+        $crate::bound_int!(%dispatch_range
             attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i32] unsigned[u32] up[i64]
-            value_bits[$VALUE_BITS] ops[$($op),*] user_impls[$($user_impls)*]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch
+    (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[i64]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
-        $crate::bound_int!(%impl_signed_boundary_count_dir
+        $crate::bound_int!(%dispatch_range
             attrs[$($attr)*] vis[$vis] name[$Name] repr[$Repr] carrier[i64] unsigned[u64] up[i128]
-            value_bits[$VALUE_BITS] ops[$($op),*] user_impls[$($user_impls)*]
+            value_bits[$VALUE_BITS] range[$Range] ops[$($op),*] user_impls[$($user_impls)*]
         );
     };
-    (%dispatch
+    (%dispatch_carrier
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident] repr[$Repr:ty] carrier[$bad:tt]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
         compile_error!(concat!("bound_int!: unsupported carrier `",
             stringify!($bad), "`; currently only `i8`, `i16`, `i32` and `i64` are implemented"));
     };
 
+    // range validation and dispatch
+    (%dispatch_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
+        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[full] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
+    ) => {
+        $crate::bound_int!(%impl_signed_boundary_count_dir
+            attrs[$($attr)*] vis[$vis] name[$Name]
+            repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[full] ops[$($op),*] user_impls[$($user_impls)*]
+        );
+    };
+    (%dispatch_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
+        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[symmetric] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
+    ) => {
+        $crate::bound_int!(%impl_signed_boundary_count_dir
+            attrs[$($attr)*] vis[$vis] name[$Name]
+            repr[$Repr] carrier[$Carrier] unsigned[$Unsigned] up[$Up]
+            value_bits[$VALUE_BITS] range[symmetric] ops[$($op),*] user_impls[$($user_impls)*]
+        );
+    };
+    (%dispatch_range
+        attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
+        repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
+        value_bits[$VALUE_BITS:expr] range[$bad:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
+    ) => {
+        compile_error!(concat!("bound_int!: unknown range mode `", stringify!($bad),
+            "`; expected `full` or `symmetric`"));
+    };
+
     (%impl_signed_boundary_count_dir
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
         repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
-        value_bits[$VALUE_BITS:expr] ops[$($op:ident),*] user_impls[$($user_impls:tt)*]
+        value_bits[$VALUE_BITS:expr] range[$Range:ident] ops[$($op:ident),*]
+        user_impls[$($user_impls:tt)*]
     ) => {
         $($attr)*
         #[must_use]
@@ -136,10 +220,15 @@ macro_rules! bound_int {
             /// Maximum representable boundary-event count.
             pub const MAX_COUNT: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
 
-            /// Minimum representable payload value.
-            pub const MIN_VALUE: $Carrier = -(1 as $Carrier << (Self::VALUE_BITS - 1));
             /// Maximum representable payload value.
             pub const MAX_VALUE: $Carrier =  (1 as $Carrier << (Self::VALUE_BITS - 1)) - 1;
+
+            /// Minimum representable payload value.
+            #[$crate::compile(diff($Range, symmetric))]
+            pub const MIN_VALUE: $Carrier = -(1 as $Carrier << (Self::VALUE_BITS - 1));
+            /// Minimum representable payload value.
+            #[$crate::compile(same($Range, symmetric))]
+            pub const MIN_VALUE: $Carrier = -Self::MAX_VALUE;
 
             /// Raw carrier pattern reserved as invalid.
             ///
@@ -160,6 +249,9 @@ macro_rules! bound_int {
 
             /// Maximum payload value, with empty metadata.
             pub const MAX: Self = Self::from_value_meta(Self::MAX_VALUE, 0, false);
+
+            /// Whether the signed payload range is symmetric around zero.
+            pub const IS_SYMMETRIC: bool = $crate::cif!(same($Range,symmetric));
 
             /* constructors */
 
@@ -190,12 +282,12 @@ macro_rules! bound_int {
             /// the direction bit is cleared.
             pub const fn from_raw(raw: $Carrier) -> Option<Self> {
                 if raw == Self::RESERVED_RAW { return None; }
-                // First respect the storage representation itself.
                 match $crate::MaybeNiche::<$Repr>::try_from_prim(raw) {
                     Ok(_) => {}
                     Err(_) => return None,
                 }
                 let (value, count) = (Self::decode_value(raw), Self::decode_count(raw));
+                if value < Self::MIN_VALUE || value > Self::MAX_VALUE { return None; }
                 let dir_upper = count != 0 && Self::decode_dir_upper(raw);
                 let raw = Self::encode_raw(value, count, dir_upper);
                 match $crate::MaybeNiche::<$Repr>::try_from_prim(raw) {

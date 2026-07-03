@@ -1,7 +1,7 @@
 // devela/src/num/grain/lim/_test.rs
 
 use crate::{
-    BoundI8Example as I,
+    BoundI8Example as I, BoundI8SymExample as Is,
     Boundary1d::{Lower, Upper},
 };
 
@@ -505,5 +505,40 @@ mod upcasted {
     #[test]
     fn dist_up_returns_exact_distance() {
         assert_eq![I::MIN.dist_up(I::MAX), 31];
+    }
+}
+mod symmetric {
+    use super::*;
+    #[test]
+    fn constants_match_contract() {
+        assert_eq![Is::CARRIER_BITS, 8];
+        assert_eq![Is::VALUE_BITS, 5];
+        assert_eq![Is::META_BITS, 3];
+        assert_eq![Is::COUNT_BITS, 2];
+        assert![Is::IS_SYMMETRIC];
+        assert_eq![Is::MIN_VALUE, -15];
+        assert_eq![Is::MAX_VALUE, 15];
+    }
+    #[test]
+    fn constructor_rejects_negative_extra_endpoint() {
+        assert![Is::new_checked(-16).is_none()];
+        let x = Is::new(-16);
+        assert_eq![x, Is::MIN];
+        assert_eq![x.bound_count(), 1];
+        assert_eq![x.bound_dir(), Some(Lower)];
+    }
+    #[test]
+    fn abs_of_min_does_not_clip() {
+        let x = Is::MIN.abs();
+        assert_eq![x, Is::MAX];
+        assert_eq![x.bound_count(), 0];
+        assert_eq![x.bound_dir(), None];
+    }
+    #[test]
+    fn raw_negative_extra_endpoint_is_rejected() {
+        // Low 5 payload bits `10000` decode as -16.
+        let raw_payload_min = 0b1_0000i8;
+        assert![Is::from_raw(raw_payload_min).is_none()];
+        assert![Is::from_raw(RAW_RESERVED).is_none()];
     }
 }
