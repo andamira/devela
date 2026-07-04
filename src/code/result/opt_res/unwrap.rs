@@ -148,7 +148,10 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Some(v) => v,
-            None => $crate::_devela_policy! {unreachable},
+            None => {
+                $crate::cold_path();
+                $crate::_devela_policy! {unreachable}
+            }
         }
     };
     (
@@ -309,7 +312,10 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Ok(v) => v,
-            Err(_) => $crate::_devela_policy! {unreachable},
+            Err(_) => {
+                $crate::cold_path();
+                $crate::_devela_policy! {unreachable}
+            }
         }
     };
     (
@@ -521,8 +527,14 @@ macro_rules! unwrap {
     ) => {
         match $T {
             Some(Ok(v)) => v,
-            Some(Err(_)) => $crate::_devela_policy! {unreachable},
-            None => $crate::_devela_policy! {unreachable},
+            Some(Err(_)) => {
+                $crate::cold_path();
+                $crate::_devela_policy! {unreachable}
+            }
+            None => {
+                $crate::cold_path();
+                $crate::_devela_policy! {unreachable}
+            }
         }
     };
     (
