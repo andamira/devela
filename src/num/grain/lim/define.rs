@@ -4,12 +4,11 @@
 //
 
 #[doc = crate::_tags!(construction num)]
-/// Defines a signed bounded integer wrapper with embedded boundary metadata.
+/// Defines a bounded integer wrapper with embedded boundary metadata.
 #[doc = crate::_doc_meta!{location("num/grain/lim")}]
-/// The generated type stores a primitive signed carrier through
-/// [`MaybeNiche`][crate::MaybeNiche].
+/// The generated type stores a primitive carrier through [`MaybeNiche`][crate::MaybeNiche].
 ///
-/// The `value_bits(...)` argument chooses how many low bits encode the signed payload.
+/// The `value_bits(...)` argument chooses how many low bits encode the payload.
 /// The remaining high bits encode boundary metadata:
 /// - one direction bit, reporting the last lower/upper boundary event,
 /// - the remaining metadata bits as a saturating event counter.
@@ -318,6 +317,16 @@ macro_rules! bound_int {
             pub const fn new_checked(value: $Carrier) -> Option<Self> {
                 if value < Self::MIN_VALUE || value > Self::MAX_VALUE { None }
                 else { Some(Self::from_value_meta(value, 0, false)) }
+            }
+
+            /// Creates a value saturated to the payload range.
+            pub const fn new_saturated(value: $Carrier) -> Self {
+                let value = $crate::cmp!(clamp value, Self::MIN_VALUE, Self::MAX_VALUE);
+                Self::from_value_meta(value, 0, false)
+            }
+            /// Creates a value saturated to the payload range, from an upcasted carrier.
+            pub const fn new_saturated_up(value: $Up) -> Self {
+                Self::new_saturated($crate::cast!(saturating value => $Carrier))
             }
 
             /// Creates a value from a raw encoded carrier.

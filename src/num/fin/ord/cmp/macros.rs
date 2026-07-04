@@ -43,7 +43,7 @@ macro_rules! cmp· {
     total $x:tt $y:tt) => { $crate::Cmp($x).total_cmp($y) };
     (total $x:expr, $y:expr) => { $crate::Cmp($x).total_cmp($y) };
     (clamp $v:tt $x:tt $y:tt) => { $crate::Cmp($v).clamp($x, $y) };
-    (clamp $x:expr, $y:expr) => { $crate::Cmp($x).clamp($x, $y) };
+    (clamp $v:expr, $x:expr, $y:expr) => { $crate::Cmp($v).clamp($x, $y) };
     (max $x:tt $y:tt) => { $crate::Cmp($x).max($y) };
     (max $x:expr, $y:expr) => { $crate::Cmp($x).max($y) };
     (min $x:tt $y:tt) => { $crate::Cmp($x).min($y) };

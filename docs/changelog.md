@@ -75,6 +75,9 @@
   - remove `alloc` feature-gates.
   - make all methods const.
 
+#### num::fin::ord
+- fix `cmp!` clamp arm.
+
 ### num::grain
 - new macro `bound_int!`.
 
