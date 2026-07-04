@@ -99,8 +99,8 @@ impl TimeScale {
         let (from, to) = (unwrap![some? self.to_ratio()], unwrap![some? target.to_ratio()]);
 
         // value * from / to
-        let num = (value as u128) * (from.n.get() as u128) * (to.d.get() as u128);
-        let den = (from.d.get() as u128) * (to.n.get() as u128);
+        let num = (value as u128) * (from.num_ref().get() as u128) * (to.den_ref().get() as u128);
+        let den = (from.den_ref().get() as u128) * (to.num_ref().get() as u128);
         Some((num / den) as u64)
     }
 
@@ -117,8 +117,8 @@ impl TimeScale {
         let from = self.to_ratio_simulated();
         let to = target.to_ratio_simulated();
 
-        let num = (value as u128) * (from.n.get() as u128) * (to.d.get() as u128);
-        let den = (from.d.get() as u128) * (to.n.get() as u128);
+        let num = (value as u128) * (from.num_ref().get() as u128) * (to.den_ref().get() as u128);
+        let den = (from.den_ref().get() as u128) * (to.num_ref().get() as u128);
         (num / den) as u64
     }
 }
@@ -129,7 +129,7 @@ impl TimeScale {
     /// Returns `None` if either component is zero.
     pub const fn new_ratio(num: u32, den: u32) -> Option<Self> {
         match (NonZeroU32::new(num), NonZeroU32::new(den)) {
-            (Some(n), Some(d)) => Some(Self::Ratio(Ratio::new(n, d))),
+            (Some(n), Some(d)) => Some(Self::Ratio(Ratio::from_parts(n, d))),
             _ => None,
         }
     }
@@ -150,12 +150,16 @@ impl TimeScale {
     /// Calendar-based scales (`Days`, `Years`) return `None`.
     pub const fn to_ratio(self) -> Option<Ratio<NonZeroU32, NonZeroU32>> {
         match self {
-            Self::Seconds => Some(Ratio::new(niche!(1u32;!=0), niche!(1u32;!=0))),
-            Self::Milliseconds => Some(Ratio::new(niche!(1u32; !=0), niche!(1_000u32;!=0))),
-            Self::Microseconds => Some(Ratio::new(niche!(1u32; !=0), niche!(1_000_000u32;!=0))),
-            Self::Nanoseconds => Some(Ratio::new(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0))),
-            Self::Minutes => Some(Ratio::new(niche!(60u32;!=0), niche!(1u32;!=0))),
-            Self::Hours => Some(Ratio::new(niche!(3_600u32;!=0), niche!(1u32;!=0))),
+            Self::Seconds => Some(Ratio::from_parts(niche!(1u32;!=0), niche!(1u32;!=0))),
+            Self::Milliseconds => Some(Ratio::from_parts(niche!(1u32; !=0), niche!(1_000u32;!=0))),
+            Self::Microseconds => {
+                Some(Ratio::from_parts(niche!(1u32; !=0), niche!(1_000_000u32;!=0)))
+            }
+            Self::Nanoseconds => {
+                Some(Ratio::from_parts(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0)))
+            }
+            Self::Minutes => Some(Ratio::from_parts(niche!(60u32;!=0), niche!(1u32;!=0))),
+            Self::Hours => Some(Ratio::from_parts(niche!(3_600u32;!=0), niche!(1u32;!=0))),
             Self::Ratio(r) => Some(r),
             Self::Days | Self::Years => None,
         }
@@ -176,15 +180,15 @@ impl TimeScale {
     /// civil-time accuracy.
     pub const fn to_ratio_simulated(self) -> Ratio<NonZeroU32, NonZeroU32> {
         match self {
-            Self::Seconds => Ratio::new(niche!(1u32;!=0), niche!(1u32;!=0)),
-            Self::Milliseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000u32;!=0)),
-            Self::Microseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000_000u32;!=0)),
-            Self::Nanoseconds => Ratio::new(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0)),
-            Self::Minutes => Ratio::new(niche!(60u32;!=0), niche!(1u32;!=0)),
-            Self::Hours => Ratio::new(niche!(3_600u32;!=0), niche!(1u32;!=0)),
+            Self::Seconds => Ratio::from_parts(niche!(1u32;!=0), niche!(1u32;!=0)),
+            Self::Milliseconds => Ratio::from_parts(niche!(1u32;!=0), niche!(1_000u32;!=0)),
+            Self::Microseconds => Ratio::from_parts(niche!(1u32;!=0), niche!(1_000_000u32;!=0)),
+            Self::Nanoseconds => Ratio::from_parts(niche!(1u32;!=0), niche!(1_000_000_000u32;!=0)),
+            Self::Minutes => Ratio::from_parts(niche!(60u32;!=0), niche!(1u32;!=0)),
+            Self::Hours => Ratio::from_parts(niche!(3_600u32;!=0), niche!(1u32;!=0)),
             Self::Ratio(r) => r,
-            Self::Days => Ratio::new(niche!(86_400u32;!=0), niche!(1u32;!=0)), // 24 hours
-            Self::Years => Ratio::new(niche!(31_536_000u32;!=0), niche!(1u32;!=0)), // 365 days
+            Self::Days => Ratio::from_parts(niche!(86_400u32;!=0), niche!(1u32;!=0)), // 24 hours
+            Self::Years => Ratio::from_parts(niche!(31_536_000u32;!=0), niche!(1u32;!=0)), // 365 days
         }
     }
 }

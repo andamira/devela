@@ -78,6 +78,10 @@
 ### num::grain
 - new macro `bound_int!`.
 
+### num::quant
+- add nonzero-denominator primitive aliases: `Ratio<I|U><8|16|32|64|128|size>`.
+- overhaul `Ratio` with new functionalty for primitive aliases.
+
 ### num::signal
 - new module.
 - new traits: `SignalAt`, `SignalNext`.
