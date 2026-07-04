@@ -8,6 +8,8 @@
 // - rename current version with data variants.
 //   - RETHINK: make enumfield!
 
+#![allow(unused)]
+
 use devela::enumset;
 
 enumset! {

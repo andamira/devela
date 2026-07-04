@@ -115,94 +115,80 @@ pub use lets· as lets;
 
 #[cfg(test)]
 #[rustfmt::skip]
-mod tests {
+mod _test {
     use super::*;
 
     #[test]
-    fn test_basic_immutable() {
+    fn basic_immutable() {
         lets![a = 1, b = 2, c = 3]; // comma for separator
         assert_eq!(a, 1); assert_eq!(b, 2); assert_eq!(c, 3);
-
         lets![a = 1; b = 2; c = 3]; // semicolon for separator
         assert_eq!(a, 1); assert_eq!(b, 2); assert_eq!(c, 3);
     }
-
     #[test]
-    fn test_basic_mutable() {
+    fn basic_mutable() {
         lets![mut a = 1, b = 2];
         a += 1;
         assert_eq!(a, 2); assert_eq!(b, 2);
     }
-
     #[test]
-    fn test_with_type_annotations() {
+    fn with_type_annotations() {
         lets![x: u32 = 42, y: &str = "hello"];
         assert_eq!(x, 42);
         assert_eq!(y, "hello");
     }
-
     #[test]
-    fn test_trailing_separator() {
+    fn trailing_separator() {
         lets![a = 1, b = 2,]; // trailing comma
         assert_eq!(a, 1); assert_eq!(b, 2);
-
         lets![a = 3; b = 4;]; // trailing semicolon
         assert_eq!(a, 3); assert_eq!(b, 4);
-
         // mixed:
         lets![a = 5; b = 6,]; // first semicolon, then trailing comma
         assert_eq!(a, 5); assert_eq!(b, 6);
         lets![a = 7, b = 8;]; // first comma, then trailing semicolon
         assert_eq!(a, 7); assert_eq!(b, 8);
     }
-
     #[test]
-    fn test_single_declaration() {
+    fn single_declaration() {
         lets![x = 42];
         assert_eq!(x, 42);
-
         lets![mut y = 100];
         y += 1;
         assert_eq!(y, 101);
     }
-
     #[test]
     #[allow(dead_code, non_snake_case)]
-    fn test_enum_scoping() {
+    fn enum_scoping() {
         #[derive(Debug, PartialEq)]
         enum Color { Red, Green, Blue }
         lets![@Color::{R = Red, G = Green}];
         assert_eq!(R, Color::Red);
         assert_eq!(G, Color::Green);
     }
-
     #[test]
     #[allow(dead_code, non_snake_case)]
-    fn test_enum_scoping_with_trailing_comma() {
+    fn enum_scoping_with_trailing_comma() {
         #[derive(Debug, PartialEq)]
         enum Direction { Up, Down, Left, Right }
         lets![@Direction::{U = Up, D = Down,}]; // trailing comma
         assert_eq!(U, Direction::Up);
         assert_eq!(D, Direction::Down);
     }
-
     #[test]
     #[allow(dead_code)]
-    fn test_mixed_declarations() {
+    fn mixed_declarations() {
         #[derive(Debug, PartialEq)]
         enum Status { Active, Inactive }
-
         lets![name = "John", mut age = 30, @Status::{a = Active}, status = a, score: f64 = 95.5];
-
         assert_eq!(name, "John");
         age += 1;
         assert_eq!(age, 31);
         assert_eq!(status, Status::Active);
         assert_eq!(score, 95.5);
     }
-
     #[test]
-    fn test_tuple_destructuring() {
+    fn tuple_destructuring() {
         let point = (1, 2);
         lets![(x, y) = point, (a, mut b) = (3, 4)];
         assert_eq!(x, 1);
@@ -211,55 +197,46 @@ mod tests {
         b += 1;
         assert_eq!(b, 5);
     }
-
     #[test]
     #[allow(unused)]
-    fn test_struct_destructuring() {
+    fn struct_destructuring() {
         struct Point { x: i32, y: i32 }
         let point = Point { x: 10, y: 20 };
-
         lets![Point {x, mut y} = point];
         assert_eq!(x, 10);
         y -= 1;
         assert_eq!(y, 19);
-
         lets![Point { x: new_x, y: new_y } = point];
         assert_eq!(new_x, 10);
         assert_eq!(new_y, 20);
-
         struct GenericPoint<T> { x: T, y: T }
         lets![GenericPoint { x, y } = GenericPoint { x: 1, y: 2 }];
         assert_eq!(x, 1);
         lets![GenericPoint { x: a, y } = GenericPoint::<f32> { x: 1.0, y: 2.0 }];
         assert_eq!(a, 1.0);
     }
-
     #[test]
     #[allow(unused_variables)]
-    fn test_tuple_struct_destructuring() {
+    fn tuple_struct_destructuring() {
         struct Ts(i32, bool);
         let ts = Ts(10, true);
-
         lets![Ts(num, _bool) = ts];
         assert_eq!(num, 10);
-
         struct GenericPair<T>(T, T);
         lets![GenericPair(a, _b) = GenericPair(1, 2)];
         assert_eq!(a, 1);
     }
-
     #[test]
-    fn test_slice_destructuring() {
+    fn slice_destructuring() {
         let arr = [1, 2, 3, 4];
         lets![[first, mut second, ..] = arr];
         assert_eq!(first, 1);
         second *= 10;
         assert_eq!(second, 20);
     }
-
     #[test]
     #[allow(non_snake_case, unused_variables)]
-    fn test_complex_mixed() {
+    fn complex_mixed() {
         #[derive(Debug, PartialEq)]
         enum Option { Some, None }
         struct Data { value: i32, name: &'static str }
@@ -283,26 +260,23 @@ mod tests {
         assert_eq!(b, 20);
         assert_eq!(option_variant, Option::Some);
     }
-
     #[test]
-    fn test_expression_evaluation() {
+    fn expression_evaluation() {
         lets![ a = 1 + 2, b = a * 2, c = { let x = 5; x * 2 } ];
         assert_eq!(a, 3);
         assert_eq!(b, 6);
         assert_eq!(c, 10);
     }
-
     #[test]
-    fn test_variable_ordering() {
+    fn variable_ordering() {
         // Later variables can use earlier ones
         lets![a = 1, b = a + 1, c = b + 1];
         assert_eq!(a, 1);
         assert_eq!(b, 2);
         assert_eq!(c, 3);
     }
-
     #[test]
-    fn test_expansion() {
+    fn expansion() {
         // This should compile without warnings
         lets![_x = 1, _y = 2];
     }
