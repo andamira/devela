@@ -93,6 +93,17 @@ impl<P, E, const D: usize> Region<P, E, D> {
         Self::new(pos.into(), ext.into())
     }
 }
+
+impl<P, E> Region<P, E, 2> {
+    /// Returns a 2D region from position and extent components.
+    pub const fn from_xy_wh(x: P, y: P, w: E, h: E) -> Self {
+        Self {
+            pos: Position { dim: [x, y] },
+            ext: Extent { dim: [w, h] },
+        }
+    }
+}
+
 impl<P, E> From<((P, P), (E, E))> for Region<P, E, 2> {
     fn from(((x, y), (w, h)): ((P, P), (E, E))) -> Self {
         Self {

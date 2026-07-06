@@ -6,14 +6,16 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod density; // UiDensity
-// mod scale; // UiRound, UiScaleProfile, UiTextScale
+mod density; // UiDensity
+mod round; // UiRound
+// mod scale; // UiScaleProfile, UiTextScale
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     density::*,
-        //     scale::*,
-        // };
+        pub use super::{
+            density::*,
+            round::*,
+            // scale::*,
+        };
     }
 }

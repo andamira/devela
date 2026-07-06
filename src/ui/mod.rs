@@ -12,6 +12,9 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui: event, frame, layout, route, semantic, text, view, widget);
 }
 
+#[cfg(feature = "ui")]
+mod _helper; // (UiNum)
+
 #[cfg(feature = "event")]
 pub mod event; // Normalized interaction and window events entering the UI frame
 
@@ -60,5 +63,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_UI_MODULES;
+        #[cfg(feature = "ui")]
+        pub(crate) use super::_helper::*;
     }
 }

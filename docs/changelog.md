@@ -147,7 +147,7 @@
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
 
 ### ui::layout
-- new types: `Layout1d`, `LayoutReceipt`, `Lunit`.
+- new types: `Layout1d`, `LayoutReceipt`, `Lunit`, `UiStack`.
 - new aliases: `UiExt`, `UiPos`, `UiRect`, `UiStride`.
 
 ### ui::route
@@ -160,7 +160,7 @@
 - new types: `TextInput[Action|Config|Outcome|Reject|View]`, `TextInputKeymap[Preset]`.
 
 ### ui::view
-- new types: `UiLayer`, `UiView`, `UiViewFlags`, `UiViewForm`.
+- new types: `UiDensity`, `UiLayer`, `UiRound`, `UiView`, `UiViewFlags`, `UiViewForm`.
 
 ### ui::widget
 - new types: `UiButton`, `UiResponse`, `UiResponseFlags`.

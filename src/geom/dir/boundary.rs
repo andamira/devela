@@ -78,7 +78,14 @@ pub enum Boundary2d {
 }
 #[allow(missing_docs, non_upper_case_globals)]
 impl Boundary2d {
+    /// Alias for the top boundary face.
+    ///
+    /// Useful when describing something located above a region.
     pub const Above: Self = Self::Top;
+
+    /// Alias for the bottom boundary face.
+    ///
+    /// Useful when describing something located below a region.
     pub const Below: Self = Self::Bottom;
 
     /// Returns the opposite boundary.

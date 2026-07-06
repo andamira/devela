@@ -9,15 +9,19 @@
 #[cfg(test)]
 mod _test;
 
+mod metric; // aliases: Ui<Ext|Pos|Rect|Stride|>
 // mod partition; // UiPartition, UiRemainder
 mod receipt; // Layout1d, LayoutReceipt
-mod unit; // Lunit, aliases: Ui<Ext|Pos|Rect|Stride|>
+mod stack; // UiStack
+mod unit; // Lunit
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            metric::*,
             // partition::*,
             receipt::*,
+            stack::*,
             unit::*,
         };
     }
