@@ -16,6 +16,7 @@ pub mod dom; // Numeric domains and value representations
 // pub mod expr; // Symbolic numeric forms and manipulation
 pub mod fin; // Finite and discrete numeric structures
 pub mod grain; // Structural granularity and representation of numeric values
+// mod intro; // WIP
 #[cfg(feature = "lin")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "lin")))]
 pub mod lin;
@@ -25,6 +26,11 @@ pub mod quant; // Quantification, measurement, and numerical relationships
 pub mod signal; // Numerical signals and value evolution over domains
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+    _mods {
+        // pub use super::{
+        //     intro::_all::*,
+        // };
+    }
     _pub_mods {
         pub use super::{
             dom::_all::*,

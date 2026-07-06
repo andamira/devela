@@ -7,11 +7,13 @@ use crate::bound_int;
 
 bound_int! {
     #[doc = crate::_tags!(example num)]
-    /// Example bounded integer with embedded boundary metadata created with [`bound_int!`].
+    /// Example bounded integer with embedded boundary metadata.
     #[doc = crate::_doc_meta!{
         location("num/grain"),
         test_size_of(BoundI8Example = 1|8; niche Option),
     }]
+    /// Generated with [`bound_int!`].
+    ///
     /// This compact `i8` example uses 5 bits for the signed payload and the
     /// remaining 3 bits for metadata: 2 count bits plus 1 direction bit.
     ///
@@ -30,7 +32,7 @@ crate::bound_int! {
     #[doc = crate::_tags!(example num)]
     /// Example bounded integer with a symmetric signed payload range.
     #[doc = crate::_doc_meta!{ location("num/grain") }]
-    pub struct BoundI8SymExample: repr(crate::NonMinI8 => i8);
+    pub(crate) struct BoundI8SymExample: repr(crate::NonMinI8 => i8);
 
     value_bits(8-3);
     range(symmetric);

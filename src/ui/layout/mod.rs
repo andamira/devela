@@ -9,12 +9,14 @@
 #[cfg(test)]
 mod _test;
 
+// mod partition; // UiPartition, UiRemainder
 mod receipt; // Layout1d, LayoutReceipt
 mod unit; // Lunit, aliases: Ui<Ext|Pos|Rect|Stride|>
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
+            // partition::*,
             receipt::*,
             unit::*,
         };
