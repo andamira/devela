@@ -4,9 +4,7 @@ mod base; // XSurfaceFrame, (XSurface), (XSurfaceStorage)
 mod cpu; // XCpuBuffer
 
 #[cfg(ffi_xcb_shm··)]
-crate::__doc_auto_hide! { ((ffi_xcb_shm··))
-    mod shm; // XShmBuffer, (XShmCaps)
-}
+mod shm; // XShmBuffer, (XShmCaps)
 
 crate::structural_mods! { // _mods
     _mods {

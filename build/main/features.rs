@@ -290,7 +290,7 @@ mod reflection {
     };
         pub const FFI: FlagsFeatures = FlagsFeatures {
             ref_flags: &["ffi··"],
-            features: &["glsl", "js", "unsafe_ffi"] // ffi
+            features: &["ffi", "glsl", "js", "unsafe_ffi"] // ffi
         };
         // pub const SCRIPT: FlagsFeatures = FlagsFeatures {
         //     ref_flags: &["script··"],

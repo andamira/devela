@@ -145,7 +145,9 @@ impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> SpinLock<T, SPI
     pub unsafe fn debug_force_unlock(&self) { self.lock.store(false, AtomicOrdering::SeqCst); }
 }
 
+#[doc = crate::_tags!(guard concurrency)]
 /// A guard that grants exclusive access to a [`SpinLock`] value.
+#[doc = crate::_doc_meta!{location("work/sync")}]
 ///
 /// ## Guarantees
 /// - If a `SpinLockGuard` exists, the lock **is held**.

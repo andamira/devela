@@ -2,6 +2,7 @@
 //
 //! Defines the [`map!`] macro.
 //
+// IMPROVE: do not generate docs, make them specific of the examples.
 
 #[cfg(feature = "_docs_examples")]
 map! {

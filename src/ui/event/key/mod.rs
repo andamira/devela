@@ -18,7 +18,7 @@ mod pad; // KeyPad
 mod state; // KeyState
 
 #[cfg(ffi··)]
-#[cfg_attr(nightly_doc, doc(cfg(ffi··)))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "ffi")))]
 mod ffi; // KeyFfi
 
 crate::structural_mods! { // _mods

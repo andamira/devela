@@ -14,11 +14,8 @@
 // #[cfg(feature = "gdi")]
 // pub mod gdi;
 
-#[cfg(feature = "x11")]
-#[cfg(not(feature = "safe_sys"))]
-crate::__doc_auto_hide! { ((ffi_xcb_shm··))
-    pub mod x11;
-}
+#[cfg(all(feature = "x11", not(feature = "safe_sys")))]
+pub mod x11;
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
@@ -27,13 +24,11 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         // #[cfg(feature = "gdi")]
         // pub use super::gdi::*;
 
-        #[cfg(feature = "x11")]
-        #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_ffi"))]
+        #[cfg(all(feature = "x11", not(feature = "safe_sys")))]
         pub use super::x11::_all::*;
     }
     _crate_internals {
-        #[cfg(feature = "x11")]
-        #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_ffi"))]
+        #[cfg(all(feature = "x11", not(feature = "safe_sys")))]
         pub(crate) use super::x11::_crate_internals::*;
     }
 }

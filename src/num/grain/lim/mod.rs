@@ -8,7 +8,7 @@ mod _test;
 
 #[cfg(any(test, feature = "_docs_examples"))]
 crate::__doc_auto_hide_features! { (("_docs_examples"))
-    mod _example;
+    mod _example; // BoundI8Example, (BoundI8SymExample)
 }
 
 mod define; // bound_int!

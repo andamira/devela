@@ -4,6 +4,10 @@
 #![doc = crate::_doc!(modules: crate::sys::device::display; x11)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
+//!
+//! # Features
+//! The `x11` feature automatically enables: `alloc`, `event`, and `unsafe_ffi`.
+//
 // - <https://www.x.org/releases/current/doc/>
 // - [library functions](https://www.x.org/releases/current/doc/man/man3/)
 //

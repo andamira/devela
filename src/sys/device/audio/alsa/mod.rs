@@ -5,6 +5,9 @@
 #![doc = crate::_doc!(modules: crate::sys::device; audio)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
+//!
+//! # Features
+//! The `alsa` feature automatically enables: `audio` and `unsafe_ffi`.
 //
 #![cfg_attr(not(ffi_alsa··), allow(dead_code, unused_imports))]
 

@@ -12,22 +12,19 @@
 
 mod common; // AudioDevice, AudioDeviceDir
 
-crate::__doc_auto_hide! { ((ffi_alsa··))
-    #[cfg(feature = "alsa")]
-    #[cfg(not(feature = "safe_sys"))]
-    mod alsa;
-}
+#[cfg(all(feature = "alsa", not(feature = "safe_sys")))]
+mod alsa;
 // mod pulse;
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::common::*;
-        #[cfg(feature = "alsa")]
+        #[cfg(all(feature = "alsa", not(feature = "safe_sys")))]
         pub use super::alsa::_all::*;
         // pub use super::pulse::*;
     }
     _crate_internals {
-        #[cfg(feature = "alsa")]
+        #[cfg(all(feature = "alsa", not(feature = "safe_sys")))]
         pub(crate) use super::alsa::_crate_internals::*;
     }
 }

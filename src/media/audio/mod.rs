@@ -16,6 +16,7 @@ mod layout; // Channel roles, arrangements, and sample layouts
 // mod music;    // Theory, tuning, notation, harmony, performance data
 pub mod pcm; // PCM samples, buffers, specs, and stream metadata
 // mod synth;    // Oscillators, envelopes, voices, modulation
+// mod time; // Audio time scales, modes, perceptual anchors
 
 crate::structural_mods! { // _mods
     _mods {
@@ -25,6 +26,7 @@ crate::structural_mods! { // _mods
             layout::*,
             // music::_all::*,
             // synth::_all::*,
+            // time::*,
         };
     }
     _pub_mods {

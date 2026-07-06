@@ -127,11 +127,15 @@
 // #![cfg_attr(nightly_doc, doc(auto_cfg = false))]
 // NOTE: that doc attribute hiding only works in nightly
 #![cfg_attr(nightly_doc, doc(auto_cfg(
-    hide(miri),
+    // rustc flags:
+    hide(miri, ffi··, ffi_alsa··, ffi_xcb_shm··),
+    // features:
     hide(feature, values(
-        // development features
+        // development
         "__dbg", "__std", "__publish",
-        // positive safety features
+        // scope
+        "_docs_examples", "_linux_abi",
+        // positive safety
         "safe", "safe_build", "safe_code", "safe_data",
         "safe_geom", "safe_lang", "safe_media", "safe_audio",
         "safe_color", "safe_draw", "safe_font", "safe_image",

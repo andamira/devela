@@ -144,7 +144,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 166/300 (134 remaining), 118 visible, 48 hidden
+[features] # 167/300 (133 remaining), 119 visible, 48 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -244,7 +244,7 @@ lang_all = ["lang", "glsl", "js", "shell"]
 		# i18n = []
 	# repr = []
 	# prog = ["ffi", "script"]
-		# ffi = ["glsl", "js"]
+		ffi = ["glsl", "js"]
 			glsl = []
 			js = []
 		# script = ["shell"]

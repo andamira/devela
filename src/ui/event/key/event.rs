@@ -74,9 +74,10 @@ impl EventKey {
 
 #[cfg(ffi··)]
 pub use ffi::*;
+
 #[cfg(ffi··)]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "ffi")))]
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(ffi··)))]
 mod ffi {
     use super::*;
     use crate::KeyFfi;

@@ -14,7 +14,6 @@ divisor! {
     /// Implemented for [`i32`](#impl-DivisorExample<i32>)
     /// and [`u32`](#impl-DivisorExample<u32>).
     /// *(The macro supports all integer primitives)*
-    #[crate::macro_apply(crate::__doc_show(feature = "_docs_examples"))]
     pub struct DivisorExample:<> impl (i32, u32)
 }
 

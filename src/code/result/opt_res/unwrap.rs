@@ -30,7 +30,7 @@
 /// | `_if`               | Unwrap depends on the given condition  | Safe          |
 /// | `_guaranteed_or_ub` | UB if failed (debug checks)            | **Unsafe** *  |
 ///
-/// * Requires `// SAFETY:` justification for impossible-failure invariants
+/// `*` Requires `// SAFETY:` justification for impossible-failure invariants
 ///
 /// ### Special Cases
 /// - `ok_err`: Only when `Ok(v)` and `Err(v)` are identical types.
