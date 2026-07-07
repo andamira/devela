@@ -59,7 +59,9 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
+- 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
+- 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 
 # 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
 <!-- > - <https://github.com/rust-lang/rust/milestone/147> -->
@@ -103,7 +105,6 @@ See also
 - 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `·`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
-- 1.??: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
@@ -128,7 +129,6 @@ See also
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 
 # … may be stable even later
