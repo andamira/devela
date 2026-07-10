@@ -3,8 +3,9 @@
 //! Defines [`WebEventKey`].
 //
 
-use crate::{EventKey, EventKind, EventKindTimed, EventTimestamp};
-use crate::{JsInstant, Timed, is};
+use crate::EventKey;
+#[cfg(feature = "time")]
+use crate::{EventKind, EventKindTimed, EventTimestamp, JsInstant, Timed, is};
 use crate::{KeyFfi, KeyMods, KeyState};
 crate::_use! { basic::from_utf8 }
 
@@ -12,7 +13,12 @@ crate::_use! { basic::from_utf8 }
 /// A web API keyboard event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
+    #[cfg(all(feature = "time", target_pointer_width = "64"))]
     test_size_of(WebEventKey = 32|256; niche Option),
+    #[cfg(all(feature = "time", target_pointer_width = "32"))]
+    test_size_of(WebEventKey = 28|224; niche Option),
+    #[cfg(not(feature = "time"))]
+    test_size_of(WebEventKey = 20|160; niche Option),
 }]
 ///
 /// Represents a JavaScript `KeyboardEvent` in a callback-friendly form.
@@ -39,6 +45,7 @@ pub struct WebEventKey {
     pub state: KeyState, // 1 byte
 
     /// The JavaScript event timestamp.
+    #[cfg(feature = "time")]
     pub timestamp: JsInstant, // 8 bytes
 }
 
@@ -49,9 +56,16 @@ impl WebEventKey {
         physical: KeyFfi,
         mods: KeyMods,
         state: KeyState,
-        timestamp: JsInstant,
+        #[cfg(feature = "time")] timestamp: JsInstant,
     ) -> Self {
-        Self { semantic, physical, mods, state, timestamp }
+        Self {
+            semantic,
+            physical,
+            mods,
+            state,
+            #[cfg(feature = "time")]
+            timestamp,
+        }
     }
 
     /// Converts `WebEventKey` to a normalized `EventKey`.
@@ -60,7 +74,10 @@ impl WebEventKey {
     pub const fn to_event_key(self) -> EventKey {
         EventKey::new(self.semantic.to_key(), self.physical.to_key(), self.mods, self.state)
     }
-
+}
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+impl WebEventKey {
     /// Converts `WebEventKey` to `EventKindTimed`.
     ///
     /// Returns `None` if the web event kind is not a keyboard event.
@@ -70,7 +87,6 @@ impl WebEventKey {
             Some(EventTimestamp::from_js(self.timestamp)),
         )
     }
-
     /// Converts a timed normalized `EventKey` back to `WebEventKey`.
     pub const fn from_event_key_timed(from: Timed<EventKey, Option<EventTimestamp>>) -> Self {
         Self {
@@ -82,11 +98,15 @@ impl WebEventKey {
         }
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventKey> for EventKindTimed {
     fn from(from: WebEventKey) -> Self {
         from.to_kind_timed()
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<Timed<EventKey, Option<EventTimestamp>>> for WebEventKey {
     fn from(from: Timed<EventKey, Option<EventTimestamp>>) -> Self {
         Self::from_event_key_timed(from)

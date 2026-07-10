@@ -30,12 +30,14 @@ pub extern "C" fn main() {
     let mut buffer2 = [0; 1024];
     let buf2 = &mut buffer2;
 
+    #[cfg(feature = "time")]
     let start_time = Web::performance_now();
 
     /* log */
 
     console::info("# log");
 
+    #[cfg(feature = "time")]
     console::log(fmt![?buf, "example log at: {start_time}ms"]);
     console::debug("example debug");
     console::warn("example warn");
@@ -82,10 +84,13 @@ pub extern "C" fn main() {
 
     // eval
     window::eval("console.log('Hello from Rust!');");
-    window::eval_timeout("console.log('Delayed!');", 1000);
-    window::eval_interval("console.log('Repeating!');", 2000);
-    let cleared = window::eval_timeout("console.error('This should not run!');", 1500);
-    window::clear_timeout(cleared);
+    #[cfg(feature = "time")]
+    {
+        window::eval_timeout("console.log('Delayed!');", 1000);
+        window::eval_interval("console.log('Repeating!');", 2000);
+        let cleared = window::eval_timeout("console.error('This should not run!');", 1500);
+        window::clear_timeout(cleared);
+    }
 
     /* document */
 
@@ -146,20 +151,29 @@ pub extern "C" fn main() {
 pub extern "C" fn canvas_click() {
     let buf = unsafe { &mut *&raw mut BUF };
 
-    let time = Web::performance_now();
-
-    let times = Web::performance_event_count(WebEventKind::Click) + 1;
-    console::log(fmt![?buf, "Canvas clicked {times} times"]);
-
-    let origin = Web::performance_time_origin();
-    console::log(fmt![?buf, "origin {origin}ms"]);
-
     Web::fill_style(200, 0, 50);
     Web::fill_rect(50.0, 50.0, 100.0, 100.0);
 
-    console::log(fmt![?buf, "Canvas clicked at: {time}ms"]);
-    Web::fill_style(50, 50, 200);
-    Web::fill_text(fmt![?buf, "time: {time}ms"], 60.0, 100.0);
+    #[cfg(feature = "time")]
+    {
+        let time = Web::performance_now();
+        let times = Web::performance_event_count(WebEventKind::Click) + 1;
+
+        console::log(fmt![?buf, "Canvas clicked {times} times"]);
+
+        let origin = Web::performance_time_origin();
+        console::log(fmt![?buf, "origin: {origin}ms"]);
+
+        console::log(fmt![?buf, "Canvas clicked at: {time}ms"]);
+
+        Web::fill_style(50, 50, 200);
+        Web::fill_text(fmt![?buf, "time: {time}ms"], 60.0, 100.0);
+    }
+    #[cfg(not(feature = "time"))]
+    {
+        Web::fill_style(50, 50, 200);
+        Web::fill_text(fmt![?buf, "`time` disabled"], 60.0, 100.0);
+    }
 }
 
 #[unsafe(no_mangle)] #[rustfmt::skip]

@@ -4,8 +4,10 @@
 //! Implements the web events API.
 //
 
+#[cfg(feature = "time")]
+use crate::JsInstant;
 use crate::transmute;
-use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number, js_uint32};
+use crate::{_js_doc, _js_extern, js_int32, js_number, js_uint32};
 use crate::{EventPointerKind, EventWheelUnit, Key, KeyMods};
 use crate::{
     Web, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel, WebKeyLocation,
@@ -135,6 +137,7 @@ impl Web {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
+    #[allow(unused_variables, reason = "timestamp with `time` disabled")]
     pub unsafe extern "C" fn wasm_callback_key(callback_ptr: usize,
         semantic: js_uint32, physical: js_uint32, location: js_int32, repeat: js_int32,
         mods: js_int32, etype: js_int32, timestamp: js_number) {
@@ -145,10 +148,12 @@ impl Web {
         let etype = WebEventKind::from_repr(etype as u8);
         let Some(state) = etype.to_key_state(repeat) else { return };
         let location = WebKeyLocation::from_repr(location as u8);
-        let timestamp = JsInstant::from_millis_f64(timestamp);
         let semantic = Key::from_web_compact_key(semantic, location).to_ffi();
         let physical = Key::from_web_compact_code(physical, location).to_ffi();
-        callback(WebEventKey::new(semantic, physical, mods, state, timestamp));
+        #[cfg(feature = "time")]
+        let timestamp = JsInstant::from_millis_f64(timestamp);
+        callback( WebEventKey::new(semantic, physical, mods, state,
+            #[cfg(feature = "time")] timestamp));
     }
 
     /// WebAssembly mouse event callback dispatcher.
@@ -159,6 +164,7 @@ impl Web {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
+    #[allow(unused_variables, reason = "timestamp with `time` disabled")]
     pub unsafe extern "C" fn wasm_callback_mouse(callback_ptr: usize,
         x: js_number, y: js_number, button: js_int32, buttons: js_int32, mods: js_int32,
         etype: js_int32, timestamp: js_number) {
@@ -166,8 +172,10 @@ impl Web {
         let callback: extern "C" fn(WebEventMouse) = unsafe { transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
+        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, mods, etype, timestamp));
+        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, mods, etype,
+            #[cfg(feature = "time")] timestamp));
     }
     /// WebAssembly pointer event callback dispatcher.
     ///
@@ -181,6 +189,7 @@ impl Web {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1207700
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1822714
     #[unsafe(no_mangle)]
+    #[allow(unused_variables, reason = "timestamp with `time` disabled")]
     pub unsafe extern "C" fn wasm_callback_pointer(callback_ptr: usize, id: js_int32,
         kind: js_int32, x: js_number, y: js_number, pressure: js_number,
         tilt_x: js_int32, tilt_y: js_int32, twist: js_int32, button: js_int32, buttons: js_int32,
@@ -190,9 +199,11 @@ impl Web {
         let mods = KeyMods::from_web(mods as u8);
         let kind = EventPointerKind::from_web(kind as u8);
         let etype = WebEventKind::from_repr(etype as u8);
+        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
         callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8,
-            twist as u16, kind, button as u8, buttons as u8, mods, etype, timestamp));
+            twist as u16, kind, button as u8, buttons as u8, mods, etype,
+            #[cfg(feature = "time")] timestamp));
     }
     /// WebAssembly wheel event callback dispatcher.
     ///
@@ -202,6 +213,7 @@ impl Web {
     /// # Safety
     /// - `callback_ptr` must be a valid function pointer.
     #[unsafe(no_mangle)]
+    #[allow(unused_variables, reason = "timestamp with `time` disabled")]
     pub unsafe extern "C" fn wasm_callback_wheel(callback_ptr: usize, x: js_number, y: js_number,
         delta_x: js_number, delta_y: js_number, buttons: js_int32, mods: js_int32, unit: js_int32,
         timestamp: js_number) {
@@ -209,8 +221,10 @@ impl Web {
         let callback: extern "C" fn(WebEventWheel) = unsafe { transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let unit = EventWheelUnit::from_web(unit as u8);
+        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventWheel::new(x, y, delta_x, delta_y, buttons as u8, mods, unit, timestamp));
+        callback(WebEventWheel::new(x, y, delta_x, delta_y, buttons as u8, mods, unit,
+            #[cfg(feature = "time")] timestamp));
     }
 }
 _js_extern! {

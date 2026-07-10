@@ -3,17 +3,20 @@
 //! Defines [`WebEventWheel`].
 //
 
-use crate::lang::prog::ffi::js::{JsInstant, JsNumFmt, js_number};
-use crate::ui::event::{
-    EventButtons, EventKind, EventKindTimed, EventTimestamp, EventWheel, EventWheelUnit, KeyMods,
-};
-use crate::{Timed, impl_trait, is};
+use crate::impl_trait;
+use crate::{EventButtons, EventWheelUnit, KeyMods};
+#[cfg(feature = "time")]
+use crate::{EventKind, EventKindTimed, EventTimestamp, EventWheel, JsInstant, Timed, is};
+use crate::{JsNumFmt, js_number};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Wheel Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
+    #[cfg(feature = "time")]
     test_size_of(WebEventWheel = 48|384; niche Option),
+    #[cfg(not(feature = "time"))]
+    test_size_of(WebEventWheel = 40|320; niche Option),
 }]
 ///
 /// Represents a JavaScript wheel event with browser-native deltas and unit.
@@ -54,19 +57,21 @@ pub struct WebEventWheel {
     pub unit: EventWheelUnit, // 1 byte
     // 4 byte gap
     /// The JavaScript event timestamp.
+    #[cfg(feature = "time")]
     pub timestamp: JsInstant, // 8 bytes
 }
 impl_trait! { fmt::Debug for WebEventWheel |self, f| {
-    f.debug_struct("WebEventWheel")
-        .field("x", &JsNumFmt::<2>(self.x))
+    let mut d = f.debug_struct("WebEventWheel");
+    d.field("x", &JsNumFmt::<2>(self.x))
         .field("y", &JsNumFmt::<2>(self.y))
         .field("delta_x", &JsNumFmt::<2>(self.delta_x))
         .field("delta_y", &JsNumFmt::<2>(self.delta_y))
         .field("buttons", &EventButtons::from_bits(self.buttons))
         .field("mods", &self.mods)
-        .field("unit", &self.unit)
-        .field("timestamp", &self.timestamp)
-        .finish()
+        .field("unit", &self.unit);
+    #[cfg(feature = "time")]
+    d.field("timestamp", &self.timestamp);
+    d.finish()
 }}
 impl WebEventWheel {
     /// Returns a new [`WebEventWheel`].
@@ -79,7 +84,7 @@ impl WebEventWheel {
         buttons: u8,
         mods: KeyMods,
         unit: EventWheelUnit,
-        timestamp: JsInstant,
+        #[cfg(feature = "time")] timestamp: JsInstant,
     ) -> Self {
         Self {
             x,
@@ -89,6 +94,7 @@ impl WebEventWheel {
             buttons,
             mods,
             unit,
+            #[cfg(feature = "time")]
             timestamp,
         }
     }
@@ -101,7 +107,11 @@ impl WebEventWheel {
     pub const fn web_buttons(self) -> u8 {
         self.buttons
     }
+}
 
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+impl WebEventWheel {
     /// Converts `WebEventWheel` to `EventKindTimed`.
     pub const fn to_kind_timed(self) -> EventKindTimed {
         let kind = EventKind::Wheel(EventWheel {
@@ -116,7 +126,6 @@ impl WebEventWheel {
         let timestamp = Some(EventTimestamp::from_js(self.timestamp));
         EventKindTimed::new(kind, timestamp)
     }
-
     /// Converts a timed normalized `EventWheel` back to `WebEventWheel`.
     pub const fn from_event_wheel_timed(
         from: Timed<EventWheel, Option<EventTimestamp>>,
@@ -134,12 +143,15 @@ impl WebEventWheel {
         }
     }
 }
-
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventWheel> for EventKindTimed {
     fn from(from: WebEventWheel) -> Self {
         from.to_kind_timed()
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<Timed<EventWheel, Option<EventTimestamp>>> for WebEventWheel {
     fn from(from: Timed<EventWheel, Option<EventTimestamp>>) -> Self {
         Self::from_event_wheel_timed(from)

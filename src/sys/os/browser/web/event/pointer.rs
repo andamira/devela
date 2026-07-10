@@ -8,18 +8,23 @@
 // impl EventPointerKind
 // struct WebPointerCode
 
-use crate::lang::prog::ffi::js::{JsInstant, JsNumFmt, js_int32, js_number};
+use crate::impl_trait;
+use crate::{EventButton, EventButtons, EventPointerKind, KeyMods, WebEventKind};
+#[cfg(feature = "time")]
 use crate::{
-    EventButton, EventButtonState, EventButtons, EventKind, EventKindTimed, EventPointer,
-    EventPointerKind, EventTimestamp, KeyMods, Timed, WebEventKind, f32bits_niche,
+    EventButtonState, EventKind, EventKindTimed, EventPointer, EventTimestamp, JsInstant, Timed,
+    f32bits_niche, is,
 };
-use crate::{impl_trait, is};
+use crate::{JsNumFmt, js_int32, js_number};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
+    #[cfg(feature = "time")]
     test_size_of(WebEventPointer = 48|384; niche Option),
+    #[cfg(not(feature = "time"))]
+    test_size_of(WebEventPointer = 40|320; niche Option),
 }]
 ///
 /// Represents a JavaScript pointer event containing relevant properties.
@@ -77,11 +82,12 @@ pub struct WebEventPointer {
     /// The type of pointer event (PointerDown, PointerMove, etc.).
     pub etype: WebEventKind, // 4 bytes
     /// The JavaScript event timestamp.
+    #[cfg(feature = "time")]
     pub timestamp: JsInstant, // 8 bytes
 }
 impl_trait! { fmt::Debug for WebEventPointer |self, f| {
-    f.debug_struct("WebEventPointer")
-        .field("x", &JsNumFmt::<2>(self.x))
+    let mut d = f.debug_struct("WebEventPointer");
+    d.field("x", &JsNumFmt::<2>(self.x))
         .field("y", &JsNumFmt::<2>(self.y))
         .field("pressure", &JsNumFmt::<3>(self.pressure))
         .field("id", &self.id)
@@ -92,9 +98,10 @@ impl_trait! { fmt::Debug for WebEventPointer |self, f| {
         .field("button", &self.button())
         .field("buttons", &EventButtons::from_bits(self.buttons))
         .field("mods", &self.mods)
-        .field("etype", &self.etype)
-        .field("timestamp", &self.timestamp)
-        .finish()
+        .field("etype", &self.etype);
+    #[cfg(feature = "time")]
+    d.field("timestamp", &self.timestamp);
+    d.finish()
 }}
 impl WebEventPointer {
     /// Returns a new [`WebEventPointer`].
@@ -109,12 +116,17 @@ impl WebEventPointer {
         button: u8, buttons: u8,
         mods: KeyMods,
         etype: WebEventKind,
+        #[cfg(feature = "time")]
         timestamp: JsInstant,
     ) -> Self {
         let code = WebPointerCode::new()
             .with_kind(kind.to_web())
             .with_button(Self::encode_web_button(button));
-        Self { x, y, pressure, id, tilt_x, tilt_y, twist, code, buttons, mods, etype, timestamp }
+        Self {
+            x, y, pressure, id, tilt_x, tilt_y, twist, code, buttons, mods, etype,
+            #[cfg(feature = "time")]
+            timestamp,
+        }
     }
     /// Returns the pointer-device kind.
     pub const fn kind(self) -> EventPointerKind {
@@ -172,6 +184,8 @@ impl WebEventPointer {
     }
 }
 
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl WebEventPointer {
     /// Converts `WebEventPointer` to `EventKindTimed`.
     pub const fn to_kind_timed(self) -> EventKindTimed {
@@ -216,11 +230,15 @@ impl WebEventPointer {
         )
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventPointer> for EventKindTimed {
     fn from(from: WebEventPointer) -> Self {
         from.to_kind_timed()
     }
 }
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<Timed<EventPointer, Option<EventTimestamp>>> for WebEventPointer {
     fn from(from: Timed<EventPointer, Option<EventTimestamp>>) -> Self {
         Self::from_event_pointer_timed(from)

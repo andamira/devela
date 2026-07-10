@@ -36,6 +36,7 @@
   - showcase signal handling.
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
+  - decouple from the `time` feature.
   - show keyboard events.
 
 ---
@@ -100,6 +101,7 @@
 
 ##### sys::os::browser::web
 - new type `WebEventKey`.
+- decouple events from the `time` feature.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - modularize browser JS bindings.
 

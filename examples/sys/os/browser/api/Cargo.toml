@@ -17,9 +17,13 @@ path = "main.rs"
 # git = "https://github.com/andamira/devela"
 path = "../../../../.."
 features = [
-	"web", "time", "event",
+	"web", "event",
 	"alloc", "unsafe_layout",
 ]
+
+[features]
+default = ["time"]
+time = ["devela/time"]
 
 [profile.release]
 # https://rustwasm.github.io/docs/book/reference/code-size.html
