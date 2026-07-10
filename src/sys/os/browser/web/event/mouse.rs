@@ -3,13 +3,13 @@
 //! Defines [`WebEventMouse`].
 //
 
-use crate::impl_trait;
-use crate::{EventButton, EventButtons, KeyMods, WebEventKind};
-#[cfg(feature = "time")]
 use crate::{
-    EventButtonState, EventKind, EventKindTimed, EventMouse, EventTimestamp, JsInstant, Timed, is,
+    EventButton, EventButtonState, EventButtons, EventKind, EventMouse, KeyMods, WebEventKind,
 };
+#[cfg(feature = "time")]
+use crate::{EventKindTimed, EventTimestamp, JsInstant, Timed};
 use crate::{JsNumFmt, js_number};
+use crate::{impl_trait, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
@@ -113,43 +113,68 @@ impl WebEventMouse {
     }
 }
 
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+/* conversion */
+
 impl WebEventMouse {
-    /// Converts `WebEventMouse` to `EventKindTimed`.
-    pub const fn to_kind_timed(self) -> EventKindTimed {
-        let kind = EventKind::Mouse(EventMouse {
+    /// Converts `WebEventMouse` to `EventMouse`.
+    pub const fn to_event_mouse(self) -> EventMouse {
+        EventMouse {
             x: self.x as i32,
             y: self.y as i32,
             button: EventButton::from_web(self.button),
             state: EventButtonState::from_web(self.etype),
             buttons: EventButtons::from_bits(self.buttons),
             mods: self.mods,
-        });
-        let timestamp = Some(EventTimestamp::from_js(self.timestamp));
-        EventKindTimed::new(kind, timestamp)
-    }
-    /// Converts a timed normalized `EventMouse` back to `WebEventMouse`.
-    pub const fn from_event_mouse_timed(
-        from: Timed<EventMouse, Option<EventTimestamp>>,
-    ) -> WebEventMouse {
-        let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
-        WebEventMouse {
-            x: from.value.x as js_number,
-            y: from.value.y as js_number,
-            button: is![let Some(b) = from.value.button, b.to_web(), 255],
-            buttons: from.value.buttons.bits(), // already a bitmask, directly compatible
-            mods: from.value.mods,
-            etype: from.value.state.to_web_as_mouse(),
-            timestamp,
         }
+    }
+    /// Converts `WebEventMouse` to `EventKind`.
+    pub const fn to_event_kind(self) -> EventKind {
+        EventKind::Mouse(self.to_event_mouse())
+    }
+    /// Converts a normalized `EventMouse` `WebEventMouse`.
+    pub const fn from_event_mouse(from: EventMouse) -> Self {
+        Self {
+            x: from.x as js_number,
+            y: from.y as js_number,
+            button: is![let Some(b) = from.button, b.to_web(), 255],
+            buttons: from.buttons.bits(), // already a bitmask, directly compatible
+            mods: from.mods,
+            etype: from.state.to_web_as_mouse(),
+            #[cfg(feature = "time")]
+            timestamp: JsInstant::ZERO,
+        }
+    }
+}
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+impl WebEventMouse {
+    /// Converts `WebEventMouse` to `EventKindTimed`.
+    pub const fn to_event_kind_timed(self) -> EventKindTimed {
+        let timestamp = Some(EventTimestamp::from_js(self.timestamp));
+        EventKindTimed::new(self.to_event_kind(), timestamp)
+    }
+    /// Converts a timed normalized `EventMouse` `WebEventMouse`.
+    pub const fn from_event_mouse_timed(from: Timed<EventMouse, Option<EventTimestamp>>) -> Self {
+        let Timed { value, time } = from;
+        let timestamp = is![let Some(t) = time, t.to_js(), JsInstant::ZERO];
+        Self { timestamp, ..Self::from_event_mouse(value) }
+    }
+}
+impl From<WebEventMouse> for EventMouse {
+    fn from(from: WebEventMouse) -> Self {
+        from.to_event_mouse()
+    }
+}
+impl From<WebEventMouse> for EventKind {
+    fn from(from: WebEventMouse) -> Self {
+        from.to_event_kind()
     }
 }
 #[cfg(feature = "time")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventMouse> for EventKindTimed {
     fn from(from: WebEventMouse) -> Self {
-        from.to_kind_timed()
+        from.to_event_kind_timed()
     }
 }
 #[cfg(feature = "time")]

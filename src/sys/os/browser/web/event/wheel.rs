@@ -4,9 +4,9 @@
 //
 
 use crate::impl_trait;
-use crate::{EventButtons, EventWheelUnit, KeyMods};
+use crate::{EventButtons, EventKind, EventWheel, EventWheelUnit, KeyMods};
 #[cfg(feature = "time")]
-use crate::{EventKind, EventKindTimed, EventTimestamp, EventWheel, JsInstant, Timed, is};
+use crate::{EventKindTimed, EventTimestamp, JsInstant, Timed, is};
 use crate::{JsNumFmt, js_number};
 
 #[doc = crate::_tags!(event web)]
@@ -18,12 +18,7 @@ use crate::{JsNumFmt, js_number};
     #[cfg(not(feature = "time"))]
     test_size_of(WebEventWheel = 40|320; niche Option),
 }]
-///
 /// Represents a JavaScript wheel event with browser-native deltas and unit.
-///
-/// This is a raw web-side event carrier.
-/// Use [`to_kind_timed`](Self::to_kind_timed) to normalize it into
-/// [`EventKindTimed`].
 ///
 /// # Notes
 /// - `delta_x` and `delta_y` preserve the browser-provided wheel deltas.
@@ -109,12 +104,12 @@ impl WebEventWheel {
     }
 }
 
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+/* conversion */
+
 impl WebEventWheel {
-    /// Converts `WebEventWheel` to `EventKindTimed`.
-    pub const fn to_kind_timed(self) -> EventKindTimed {
-        let kind = EventKind::Wheel(EventWheel {
+    /// Converts `WebEventWheel` to `EventWheel`.
+    pub const fn to_event_wheel(self) -> EventWheel {
+        EventWheel {
             delta_x: self.delta_x as i32,
             delta_y: self.delta_y as i32,
             unit: self.unit,
@@ -122,32 +117,57 @@ impl WebEventWheel {
             y: self.y as i32,
             buttons: EventButtons::from_bits(self.buttons),
             mods: self.mods,
-        });
+        }
+    }
+    /// Converts `WebEventWheel` to `EventKind`.
+    pub const fn to_event_kind(self) -> EventKind {
+        EventKind::Wheel(self.to_event_wheel())
+    }
+    /// Converts a normalized `EventWheel` to `WebEventWheel`.
+    pub const fn from_event_wheel(from: EventWheel) -> Self {
+        Self {
+            x: from.x as js_number,
+            y: from.y as js_number,
+            delta_x: from.delta_x as js_number,
+            delta_y: from.delta_y as js_number,
+            buttons: from.buttons.bits(),
+            mods: from.mods,
+            unit: from.unit,
+            #[cfg(feature = "time")]
+            timestamp: JsInstant::ZERO,
+        }
+    }
+}
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+impl WebEventWheel {
+    /// Converts `WebEventWheel` to `EventKindTimed`.
+    pub const fn to_event_kind_timed(self) -> EventKindTimed {
         let timestamp = Some(EventTimestamp::from_js(self.timestamp));
-        EventKindTimed::new(kind, timestamp)
+        EventKindTimed::new(self.to_event_kind(), timestamp)
     }
     /// Converts a timed normalized `EventWheel` back to `WebEventWheel`.
-    pub const fn from_event_wheel_timed(
-        from: Timed<EventWheel, Option<EventTimestamp>>,
-    ) -> WebEventWheel {
-        let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
-        WebEventWheel {
-            x: from.value.x as js_number,
-            y: from.value.y as js_number,
-            delta_x: from.value.delta_x as js_number,
-            delta_y: from.value.delta_y as js_number,
-            buttons: from.value.buttons.bits(),
-            mods: from.value.mods,
-            unit: from.value.unit,
-            timestamp,
-        }
+    pub const fn from_event_wheel_timed(from: Timed<EventWheel, Option<EventTimestamp>>) -> Self {
+        let Timed { value, time } = from;
+        let timestamp = is![let Some(t) = time, t.to_js(), JsInstant::ZERO];
+        Self { timestamp, ..Self::from_event_wheel(value) }
+    }
+}
+impl From<WebEventWheel> for EventWheel {
+    fn from(from: WebEventWheel) -> Self {
+        from.to_event_wheel()
+    }
+}
+impl From<WebEventWheel> for EventKind {
+    fn from(from: WebEventWheel) -> Self {
+        from.to_event_kind()
     }
 }
 #[cfg(feature = "time")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventWheel> for EventKindTimed {
     fn from(from: WebEventWheel) -> Self {
-        from.to_kind_timed()
+        from.to_event_kind_timed()
     }
 }
 #[cfg(feature = "time")]

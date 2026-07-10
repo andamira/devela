@@ -8,14 +8,14 @@
 // impl EventPointerKind
 // struct WebPointerCode
 
-use crate::impl_trait;
-use crate::{EventButton, EventButtons, EventPointerKind, KeyMods, WebEventKind};
-#[cfg(feature = "time")]
 use crate::{
-    EventButtonState, EventKind, EventKindTimed, EventPointer, EventTimestamp, JsInstant, Timed,
-    f32bits_niche, is,
+    EventButton, EventButtonState, EventButtons, EventKind, EventPointer, EventPointerKind,
+    KeyMods, WebEventKind, f32bits_niche,
 };
+#[cfg(feature = "time")]
+use crate::{EventKindTimed, EventTimestamp, JsInstant, Timed};
 use crate::{JsNumFmt, js_int32, js_number};
+use crate::{impl_trait, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
@@ -184,12 +184,12 @@ impl WebEventPointer {
     }
 }
 
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+/* conversion */
+
 impl WebEventPointer {
-    /// Converts `WebEventPointer` to `EventKindTimed`.
-    pub const fn to_kind_timed(self) -> EventKindTimed {
-        let kind = EventKind::Pointer(EventPointer::new(
+    /// Converts `WebEventPointer` to `EventPointer`.
+    pub const fn to_event_pointer(self) -> EventPointer {
+        EventPointer::new(
             self.kind(),
             self.id as u32,
             self.x as i32,
@@ -204,37 +204,64 @@ impl WebEventPointer {
             EventButtonState::from_web(self.etype),
             EventButtons::from_bits(self.buttons),
             self.mods,
-        ));
-        let timestamp = Some(EventTimestamp::from_js(self.timestamp));
-        EventKindTimed::new(kind, timestamp)
+        )
     }
-    /// Converts a timed normalized `EventPointer` back to `WebEventPointer`.
+    /// Converts `WebEventPointer` to `EventKind`.
+    pub const fn to_event_kind(self) -> EventKind {
+        EventKind::Pointer(self.to_event_pointer())
+    }
+    /// Converts a normalized `EventPointer` to `WebEventPointer`.
+    pub const fn from_event_pointer(from: EventPointer) -> Self {
+        WebEventPointer::new(
+            from.x as js_number,
+            from.y as js_number,
+            from.get_pressure() as js_number,
+            from.id as js_int32,
+            from.tilt_x,
+            from.tilt_y,
+            from.twist,
+            from.kind,
+            is![let Some(b) = from.button, b.to_web(), 255],
+            from.buttons.bits(),
+            from.mods,
+            from.state.to_web_as_pointer(),
+            #[cfg(feature = "time")]
+            JsInstant::ZERO,
+        )
+    }
+}
+#[cfg(feature = "time")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
+impl WebEventPointer {
+    /// Converts `WebEventPointer` to `EventKindTimed`.
+    pub const fn to_event_kind_timed(self) -> EventKindTimed {
+        let timestamp = Some(EventTimestamp::from_js(self.timestamp));
+        EventKindTimed::new(self.to_event_kind(), timestamp)
+    }
+    /// Converts a timed normalized `EventPointer` to `WebEventPointer`.
     pub const fn from_event_pointer_timed(
         from: Timed<EventPointer, Option<EventTimestamp>>,
-    ) -> WebEventPointer {
-        let timestamp = is![let Some(t) = from.time, t.to_js(), JsInstant { ms: 0.0 }];
-        WebEventPointer::new(
-            from.value.x as js_number,
-            from.value.y as js_number,
-            from.value.get_pressure() as js_number,
-            from.value.id as js_int32,
-            from.value.tilt_x,
-            from.value.tilt_y,
-            from.value.twist,
-            from.value.kind,
-            is![let Some(b) = from.value.button, b.to_web(), 255],
-            from.value.buttons.bits(),
-            from.value.mods,
-            from.value.state.to_web_as_pointer(),
-            timestamp,
-        )
+    ) -> Self {
+        let Timed { value, time } = from;
+        let timestamp = is![let Some(t) = time, t.to_js(), JsInstant::ZERO];
+        Self { timestamp, ..Self::from_event_pointer(value) }
+    }
+}
+impl From<WebEventPointer> for EventPointer {
+    fn from(from: WebEventPointer) -> Self {
+        from.to_event_pointer()
+    }
+}
+impl From<WebEventPointer> for EventKind {
+    fn from(from: WebEventPointer) -> Self {
+        from.to_event_kind()
     }
 }
 #[cfg(feature = "time")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventPointer> for EventKindTimed {
     fn from(from: WebEventPointer) -> Self {
-        from.to_kind_timed()
+        from.to_event_kind_timed()
     }
 }
 #[cfg(feature = "time")]

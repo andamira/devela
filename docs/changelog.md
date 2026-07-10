@@ -104,8 +104,11 @@
 
 ##### sys::os::browser::web
 - new type `WebEventKey`.
-- decouple events from the `time` feature.
+- update `WebEvent*` types:
+  - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.
+  - rename the timed variants to `<from|to>_event_kind_timed`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
+- decouple events from the `time` feature.
 - modularize browser JS bindings.
 
 #### sys::os::linux
