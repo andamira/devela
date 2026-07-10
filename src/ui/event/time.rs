@@ -47,7 +47,6 @@ impl DebugExt for EventTimestamp {
     location("ui/event"),
     test_size_of(EventTimestamp = 4|32; niche Option),
 }]
-///
 /// Backend dependent and relative to an arbitrary origin.
 ///
 /// The underlying representation can be treated as either `f32` milliseconds

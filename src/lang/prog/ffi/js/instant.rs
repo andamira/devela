@@ -3,8 +3,9 @@
 //! Defines [`JsInstant`], [`JsTimeout`].
 //
 
-use crate::{_impl_init, Display, TimeDelta, impl_trait};
-use crate::{js_number, js_uint32};
+#[cfg(feature = "time")]
+use crate::TimeDelta;
+use crate::{_impl_init, Display, impl_trait, js_number, js_uint32};
 
 #[doc = crate::_tags!(runtime time)]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
@@ -41,6 +42,7 @@ impl JsInstant {
     pub const fn since(self, earlier: Self) -> Self { Self::from_millis_f64(self.ms - earlier.ms) }
 
     /// Returns the duration between this and an earlier instant as a `TimeDelta`.
+    #[cfg(feature = "time")]
     pub const fn delta_since(self, earlier: Self) -> TimeDelta { TimeDelta::from_js(self.since(earlier)) }
 }
 

@@ -71,7 +71,10 @@
 - move `code::error` contents here.
 
 ##### lang::prog::ffi::js
-- update `JsInstant:` add const `ZERO`, impl `ConstInit`.
+- update `JsInstant:`
+  - add const `ZERO`.
+  - remove `time` feature-gate.
+  - impl `ConstInit`.
 
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.

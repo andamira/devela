@@ -8,9 +8,6 @@
 //! - <https://developer.mozilla.org/en-US/docs/Web/API>.
 //
 
-#[cfg(feature = "time")]
-mod time; // impls for JsInstant and JsTimeout
-
 mod api; // Web (js & rust files)
 mod document; // WebDocument, WebElement
 #[cfg(feature = "event")]
@@ -20,6 +17,8 @@ mod permission; // WebPermission, WebPermissionState
 // mod url; // WebUrl, WebUrlSearchParams // WIP
 mod window; // WebWindow
 mod worker; // WebWorker, WebWorkerError, WebWorkerJob
+
+mod time; // impls for JsInstant and JsTimeout
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {

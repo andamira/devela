@@ -5,15 +5,12 @@
 //
 
 use crate::_js_extern;
-#[cfg(feature = "unsafe_ffi")]
 #[cfg(not(feature = "safe_lang"))]
 crate::items! {
+    use crate::{_js_doc, JsInstant, js_int32, js_number};
     use crate::{WebDocument, WebPermission, WebPermissionState, WebWindow};
-    use crate::{_js_doc, js_int32};
-    #[cfg(all(feature = "event", feature = "time"))]
+    #[cfg(feature = "event")]
     use crate::{WebEventKind, js_uint32};
-    #[cfg(feature = "time")]
-    use crate::{JsInstant, js_number};
 }
 
 #[doc = crate::_tags!(web namespace)]
@@ -44,8 +41,7 @@ pub struct Web;
 
 #[rustfmt::skip]
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl Web {
     #[doc = _js_doc!("Window")]
     #[doc = _js_doc!("Screen")]
@@ -67,8 +63,7 @@ impl Web {
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 #[rustfmt::skip]
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 // In sync with ../js/permissions.js
 impl Web {
     #[doc = _js_doc!("Permissions", "query")]
@@ -91,10 +86,8 @@ _js_extern! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
-#[cfg(feature = "time")]
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 // In sync with ../js/performance.js
 impl Web {
     #[doc = _js_doc!("Performance", "now")]
@@ -112,7 +105,6 @@ impl Web {
         unsafe { performance_event_count(name.as_ptr(), name.len()) }
     }
 }
-#[cfg(feature = "time")]
 _js_extern! {
     [ module: "api_performance" ]
     safe fn "now" performance_now() -> js_number;

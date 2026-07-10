@@ -4,16 +4,10 @@
 //!
 //
 
-#[cfg(feature = "time")]
-use devela::JsTimeout;
-#[allow(unused_imports, reason = "used by _js_method_str_alloc!")]
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::{_js_doc, Distance, Extent, Float, offset_of};
-#[allow(unused_imports, reason = "not(windows)")]
-use devela::{
-    _js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int32, js_number, js_uint32,
-};
+use devela::{_js_doc, _js_extern, _js_method_str_alloc, JsTimeout, js_bool, js_int32, js_uint32};
+use devela::{Distance, Extent, Float, WebDocument, offset_of};
 
 #[doc = crate::_tags!(ui web)]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
@@ -88,10 +82,7 @@ impl WebWindow {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "time")]
 #[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
     /* eval */
@@ -140,7 +131,6 @@ _js_extern! {
     // eval
     unsafe fn window_eval(js_code_ptr: *const u8, js_code_len: usize);
 }
-#[cfg(feature = "time")]
 _js_extern! {
     [module: "api_window"]
     // eval

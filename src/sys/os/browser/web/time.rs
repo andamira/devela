@@ -1,7 +1,8 @@
 // devela/src/sys/os/browser/web/time.rs
 
-use crate::{_js_doc, JsInstant, JsTimeout, js_uint32};
-use crate::{TimeDelta, Web, WebWindow};
+#[cfg(feature = "time")]
+use crate::TimeDelta;
+use crate::{_js_doc, JsInstant, JsTimeout, Web, WebWindow, js_uint32};
 
 #[rustfmt::skip]
 impl JsInstant {
@@ -14,7 +15,9 @@ impl JsInstant {
     pub fn reset(&mut self) { *self = Web::performance_now(); }
     /// Returns the elapsed time since this instant.
     pub fn elapsed(self) -> Self { Self::from_millis_f64(Web::performance_now().ms - self.ms) }
+
     /// Returns the elapsed time since this instant as a `TimeDelta`.
+    #[cfg(feature = "time")]
     pub fn delta_elapsed(self) -> TimeDelta { TimeDelta::from_js(self.elapsed()) }
 }
 

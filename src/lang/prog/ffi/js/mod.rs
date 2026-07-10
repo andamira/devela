@@ -48,8 +48,6 @@ mod _helper; // _js_doc!, _js_extern!, js_method_str_alloc!
 
 mod console; // JsConsole
 // mod error; // JsError WIP
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 mod instant; // JsInstant, JsTimeout
 mod namespace; // Js
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
@@ -63,15 +61,12 @@ crate::structural_mods! { // _mods, _crate_internals
         pub use super::{
             console::*,
             // error::*,
+            instant::*,
             namespace::*,
             // object::*,
             primitives::*,
             text::*,
             value::*,
-        };
-        #[cfg(feature = "time")]
-        pub use super::{
-            instant::*,
         };
     }
     _crate_internals {

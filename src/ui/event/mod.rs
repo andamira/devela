@@ -13,7 +13,7 @@ mod kind; // EventKind, EventKindTimed, EventTag
 mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
 mod queue; // EventQueue
 mod target; // EventTarget
-mod time; // EventTimestamp
+mod time; // EventTimestamp[Mode]
 mod window; // EventWindow
 
 crate::structural_mods! { // _mods
