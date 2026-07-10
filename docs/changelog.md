@@ -73,7 +73,7 @@
 ##### lang::prog::ffi::js
 - update `JsInstant:`
   - add const `ZERO`.
-  - remove `time` feature-gate.
+  - remove the `time` feature-gate.
   - impl `ConstInit`.
 
 #### media::visual::image
@@ -81,7 +81,7 @@
 - udpate `ImageError`; add new variant: `InsufficientBuffer`.
 - update `Pnm`:
   - implement all classic PNM variants P1..P6.
-  - remove `alloc` feature-gates.
+  - remove the `alloc` feature-gate.
   - make all methods const.
 
 #### num::fin::ord
@@ -98,6 +98,9 @@
 - new module.
 - new traits: `SignalAt`, `SignalNext`.
 - new types: `CurveRamp`, `Phase[Step|Accum]`, `Signal<Clamp|Const|Fn|Map|Scale|Zip>`.
+
+### phys::time
+- remove the `time` feature-gate from `[Maybe]Timed`.
 
 ### sys::io
 - re-export missing `IoSeekFrom` from std.
@@ -155,6 +158,7 @@
 
 ### ui::event
 - reimplement `EventQueue` using `BufferRingU8`.
+- remove the `time` feature-gate from `EventKindTimed`.
 
 ### ui::frame
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.

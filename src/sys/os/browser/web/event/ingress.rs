@@ -2,9 +2,7 @@
 //
 //! Defines [`WebEventIngress`].
 
-#[cfg(feature = "time")]
-use crate::EventKindTimed;
-use crate::{Event, EventKind, EventQueue, EventTarget, Mem};
+use crate::{Event, EventKind, EventKindTimed, EventQueue, EventTarget, Mem};
 use crate::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
 
 #[doc = crate::_tags!(event web)]
@@ -128,7 +126,6 @@ impl<const CAP: usize> WebEventIngress<CAP> {
     /// Pushes a timed event kind with the given target.
     ///
     /// The kind timestamp is stored as [`Event::emitted`].
-    #[cfg(feature = "time")]
     pub fn push_kind_timed_with(&mut self, target: EventTarget, kind: EventKindTimed) -> bool {
         self.push_event(Event::from_kind_timed_with(target, kind))
     }
@@ -156,30 +153,18 @@ impl<const CAP: usize> WebEventIngress<CAP> {
 
     /// Pushes a keyboard event with the given target.
     pub fn push_key_with(&mut self, target: EventTarget, ev: WebEventKey) -> bool {
-        cfg_select! {
-            feature = "time" => self.push_kind_timed_with(target, ev.to_event_kind_timed()),
-            _ => self.push_kind_with(target, ev.to_event_kind()),
-        }
+        self.push_kind_timed_with(target, ev.to_event_kind_timed())
     }
     /// Pushes a mouse event with the given target.
     pub fn push_mouse_with(&mut self, target: EventTarget, ev: WebEventMouse) -> bool {
-        cfg_select! {
-            feature = "time" => self.push_kind_timed_with(target, ev.to_event_kind_timed()),
-            _ => self.push_kind_with(target, ev.to_event_kind()),
-        }
+        self.push_kind_timed_with(target, ev.to_event_kind_timed())
     }
     /// Pushes a pointer event with the given target.
     pub fn push_pointer_with(&mut self, target: EventTarget, ev: WebEventPointer) -> bool {
-        cfg_select! {
-            feature = "time" => self.push_kind_timed_with(target, ev.to_event_kind_timed()),
-            _ => self.push_kind_with(target, ev.to_event_kind()),
-        }
+        self.push_kind_timed_with(target, ev.to_event_kind_timed())
     }
     /// Pushes a wheel event with the given target.
     pub fn push_wheel_with(&mut self, target: EventTarget, ev: WebEventWheel) -> bool {
-        cfg_select! {
-            feature = "time" => self.push_kind_timed_with(target, ev.to_event_kind_timed()),
-            _ => self.push_kind_with(target, ev.to_event_kind()),
-        }
+        self.push_kind_timed_with(target, ev.to_event_kind_timed())
     }
 }

@@ -3,22 +3,16 @@
 //! Defines [`WebEventMouse`].
 //
 
-use crate::{
-    EventButton, EventButtonState, EventButtons, EventKind, EventMouse, KeyMods, WebEventKind,
-};
-#[cfg(feature = "time")]
-use crate::{EventKindTimed, EventTimestamp, JsInstant, Timed};
-use crate::{JsNumFmt, js_number};
+use crate::{EventButton, EventButtonState, EventButtons, EventMouse, KeyMods, WebEventKind};
+use crate::{EventKind, EventKindTimed, EventTimestamp, Timed};
+use crate::{JsInstant, JsNumFmt, js_number};
 use crate::{impl_trait, is};
 
 #[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
-    #[cfg(feature = "time")]
     test_size_of(WebEventMouse = 32|256; niche Option),
-    #[cfg(not(feature = "time"))]
-    test_size_of(WebEventMouse = 24|192; niche Option),
 }]
 ///
 /// Represents a JavaScript mouse event containing relevant properties.
@@ -54,7 +48,6 @@ pub struct WebEventMouse {
     pub etype: WebEventKind, // 4 bytes
 
     /// The JavaScript event timestamp.
-    #[cfg(feature = "time")]
     pub timestamp: JsInstant, // 8 bytes
 }
 impl WebEventMouse {
@@ -66,31 +59,21 @@ impl WebEventMouse {
         buttons: u8,
         mods: KeyMods,
         etype: WebEventKind,
-        #[cfg(feature = "time")] timestamp: JsInstant,
+        timestamp: JsInstant,
     ) -> Self {
-        Self {
-            x,
-            y,
-            button,
-            buttons,
-            mods,
-            etype,
-            #[cfg(feature = "time")]
-            timestamp,
-        }
+        Self { x, y, button, buttons, mods, etype, timestamp }
     }
 }
 impl_trait! { fmt::Debug for WebEventMouse |self, f| {
-    let mut d = f.debug_struct("WebEventMouse");
-    d.field("x", &JsNumFmt::<2>(self.x))
+    f.debug_struct("WebEventMouse")
+        .field("x", &JsNumFmt::<2>(self.x))
         .field("y", &JsNumFmt::<2>(self.y))
         .field("button", &self.button())
         .field("buttons", &EventButtons::from_bits(self.buttons))
         .field("mods", &self.mods)
-        .field("etype", &self.etype);
-    #[cfg(feature = "time")]
-    d.field("timestamp", &self.timestamp);
-    d.finish()
+        .field("etype", &self.etype)
+        .field("timestamp", &self.timestamp)
+        .finish()
 }}
 impl WebEventMouse {
     /// Returns the normalized triggering button, or `None` when no button changed.
@@ -140,14 +123,9 @@ impl WebEventMouse {
             buttons: from.buttons.bits(), // already a bitmask, directly compatible
             mods: from.mods,
             etype: from.state.to_web_as_mouse(),
-            #[cfg(feature = "time")]
             timestamp: JsInstant::ZERO,
         }
     }
-}
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
-impl WebEventMouse {
     /// Converts `WebEventMouse` to `EventKindTimed`.
     pub const fn to_event_kind_timed(self) -> EventKindTimed {
         let timestamp = Some(EventTimestamp::from_js(self.timestamp));
@@ -170,15 +148,11 @@ impl From<WebEventMouse> for EventKind {
         from.to_event_kind()
     }
 }
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<WebEventMouse> for EventKindTimed {
     fn from(from: WebEventMouse) -> Self {
         from.to_event_kind_timed()
     }
 }
-#[cfg(feature = "time")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 impl From<Timed<EventMouse, Option<EventTimestamp>>> for WebEventMouse {
     fn from(from: Timed<EventMouse, Option<EventTimestamp>>) -> Self {
         Self::from_event_mouse_timed(from)

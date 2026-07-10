@@ -4,10 +4,7 @@
 //! Implements the web events API.
 //
 
-#[cfg(feature = "time")]
-use crate::JsInstant;
-use crate::transmute;
-use crate::{_js_doc, _js_extern, js_int32, js_number, js_uint32};
+use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number, js_uint32, transmute};
 use crate::{EventPointerKind, EventWheelUnit, Key, KeyMods};
 use crate::{
     Web, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel, WebKeyLocation,
@@ -150,10 +147,8 @@ impl Web {
         let location = WebKeyLocation::from_repr(location as u8);
         let semantic = Key::from_web_compact_key(semantic, location).to_ffi();
         let physical = Key::from_web_compact_code(physical, location).to_ffi();
-        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback( WebEventKey::new(semantic, physical, mods, state,
-            #[cfg(feature = "time")] timestamp));
+        callback( WebEventKey::new(semantic, physical, mods, state, timestamp));
     }
 
     /// WebAssembly mouse event callback dispatcher.
@@ -172,10 +167,8 @@ impl Web {
         let callback: extern "C" fn(WebEventMouse) = unsafe { transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
-        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, mods, etype,
-            #[cfg(feature = "time")] timestamp));
+        callback(WebEventMouse::new(x, y, button as u8, buttons as u8, mods, etype, timestamp));
     }
     /// WebAssembly pointer event callback dispatcher.
     ///
@@ -199,11 +192,9 @@ impl Web {
         let mods = KeyMods::from_web(mods as u8);
         let kind = EventPointerKind::from_web(kind as u8);
         let etype = WebEventKind::from_repr(etype as u8);
-        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
         callback(WebEventPointer::new(x, y, pressure, id, tilt_x as i8, tilt_y as i8,
-            twist as u16, kind, button as u8, buttons as u8, mods, etype,
-            #[cfg(feature = "time")] timestamp));
+            twist as u16, kind, button as u8, buttons as u8, mods, etype, timestamp));
     }
     /// WebAssembly wheel event callback dispatcher.
     ///
@@ -221,10 +212,8 @@ impl Web {
         let callback: extern "C" fn(WebEventWheel) = unsafe { transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let unit = EventWheelUnit::from_web(unit as u8);
-        #[cfg(feature = "time")]
         let timestamp = JsInstant::from_millis_f64(timestamp);
-        callback(WebEventWheel::new(x, y, delta_x, delta_y, buttons as u8, mods, unit,
-            #[cfg(feature = "time")] timestamp));
+        callback(WebEventWheel::new(x, y, delta_x, delta_y, buttons as u8, mods, unit, timestamp));
     }
 }
 _js_extern! {

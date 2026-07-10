@@ -16,6 +16,8 @@ mod _reexport_std;
 #[cfg(feature = "std")]
 mod error_std; // TEMP, RETHINK
 
+mod timed; // [Maybe]Timed
+
 #[cfg(feature = "time")]
 crate::items! {
     mod calendar; // Month, Weekday
@@ -28,7 +30,6 @@ crate::items! {
     mod no; // NoTime
     mod scale; // TimeScale
     mod split; // TimeSplit[Year[Day|Sec]|Hour[Sec|Nano]|MilliNano][Norm]
-    mod timed; // Timed
     mod unix; // TimeUnix[I64|U32]
 }
 
@@ -40,6 +41,8 @@ pub mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
+        pub use super::timed::*;
+
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
         pub use super::{
@@ -53,7 +56,6 @@ crate::structural_mods! { // _mods, _pub_mods
             no::*,
             scale::*,
             split::*,
-            timed::*,
             unix::*,
         };
         #[cfg(feature = "std")]
