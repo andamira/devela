@@ -7,16 +7,17 @@ use super::*;
 use crate::{ConstInit, impl_trait, unwrap};
 
 #[doc = crate::_tags!(interaction ffi)]
-/// An FFI-safe version of [`Key`], used in
-/// [`EventKeyFfi`][crate::EventKeyFfi],
-/// [`WebEventKey`][crate::WebEventKey].
-// (The main difference is in the Char variant.)
+/// An FFI-safe, versioned representation of [`Key`].
+///
+/// Used in [`EventKeyFfi`][crate::EventKeyFfi] and [`WebEventKey`][crate::WebEventKey].
+///
+/// Unlike [`Key`], this enum is exhaustive because it participates in
+/// FFI-compatible layouts. New variants require a coordinated API/ABI change.
 #[doc = crate::_doc_meta!{
     location("ui/event"),
     test_size_of(KeyFfi = 8|64; niche Option),
 }]
 #[repr(C)]
-#[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]
 #[derive(Copy, Clone, Default, PartialEq, Eq, Hash)]
 pub enum KeyFfi {

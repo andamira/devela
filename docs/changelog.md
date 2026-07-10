@@ -159,6 +159,7 @@
 ### ui::event
 - reimplement `EventQueue` using `BufferRingU8`.
 - remove the `time` feature-gate from `EventKindTimed`.
+- remove non_exhaustive from `KeyFfi`.
 
 ### ui::frame
 - new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
