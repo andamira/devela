@@ -8,11 +8,12 @@
 #![allow(clippy::deref_addrof, reason = "safe references to static mut")]
 // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
 
-use devela::{JsConsole as console, Wasm, WasmAlloc, format_buf as fmt, set_panic_handler};
 use devela::{
-    Web, WebDocument as document, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer,
-    WebEventWheel, WebWindow as window,
+    Event, WebEventIngress, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer,
+    WebEventWheel,
 };
+use devela::{JsConsole as console, Wasm, WasmAlloc, format_buf as fmt, set_panic_handler};
+use devela::{Web, WebDocument as document, WebWindow as window};
 
 set_panic_handler![web];
 
@@ -22,6 +23,21 @@ static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
 /// Global string buffer for printing to the console without allocation.
 static mut BUF: [u8; 1024] = [0; 1024];
 
+/// Maximum number of normalized web events buffered between animation frames.
+const EVENT_CAP: usize = 16; // manual keyboard/wheel stress overflowed a capacity of 7
+
+/// Global queue bridging browser event callbacks and frame-time polling.
+static mut INGRESS: WebEventIngress<EVENT_CAP> = WebEventIngress::new();
+
+/// Runs `f` with exclusive access to the global web event ingress.
+fn with_ingress<R>(f: impl FnOnce(&mut WebEventIngress<EVENT_CAP>) -> R) -> R {
+    // The example uses one browser main thread. Keep each borrow local and
+    // do not call reentrant JavaScript while the mutable ingress reference is held.
+    let ingress = unsafe { &mut *&raw mut INGRESS };
+    f(ingress)
+}
+
+/// Initializes the Web API demonstration and starts its animation-frame loop.
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
     let buf = unsafe { &mut *&raw mut BUF };
@@ -43,6 +59,8 @@ pub extern "C" fn main() {
     console::warn("example warn");
     console::error("example error");
     // console::trace();
+
+    // panic!("let's trigger a panic");
 
     /* wasm architecture */
 
@@ -68,7 +86,7 @@ pub extern "C" fn main() {
 
     console::info("# window");
 
-    window::set_name("sopanum1");
+    window::set_name("web api example");
 
     // Alternative methods when getting a string.
     console::log(fmt![?buf, "  name:       {:?}", window::name(buf2)]);
@@ -124,29 +142,89 @@ pub extern "C" fn main() {
 
     console::info("# events");
 
+    /* events: direct callback */
+
     // Add an event listener to the canvas for clicks
     Web::event_add_listener("#example_canvas_1", WebEventKind::Click, canvas_click);
 
+    /* events: queued typed callbacks */
+
     // keys
-    Web::event_add_listener_key("window", WebEventKind::KeyDown, my_key_callback);
-    Web::event_add_listener_key("window", WebEventKind::KeyUp, my_key_callback);
+    Web::event_add_listener_key("window", WebEventKind::KeyDown, key_cb);
+    Web::event_add_listener_key("window", WebEventKind::KeyUp, key_cb);
 
     // mouse
-    Web::event_add_listener_mouse("window", WebEventKind::MouseDown, my_mouse_callback);
-    // Web::event_add_listener_mouse("window", WebEventKind::MouseMove, my_mouse_callback);
+    Web::event_add_listener_mouse("window", WebEventKind::MouseDown, mouse_cb);
+    // Web::event_add_listener_mouse("window", WebEventKind::MouseMove, mouse_cb);
 
     // pointer
-    Web::event_add_listener_pointer("window", WebEventKind::PointerDown, my_pointer_callback);
-    // Web::event_add_listener_pointer("window", WebEventKind::PointerUp, my_pointer_callback);
-    // Web::event_add_listener_pointer("window", WebEventKind::PointerMove, my_pointer_callback);
+    Web::event_add_listener_pointer("window", WebEventKind::PointerDown, pointer_cb);
+    // Web::event_add_listener_pointer("window", WebEventKind::PointerUp, pointer_cb);
+    // Web::event_add_listener_pointer("window", WebEventKind::PointerMove, pointer_cb);
 
     // wheel
-    Web::event_add_listener_wheel("window", WebEventKind::Wheel, my_wheel_callback);
+    Web::event_add_listener_wheel("window", WebEventKind::Wheel, wheel_cb);
 
-    // panic!("let's trigger a panic");
+    /* frame loop */
+
+    window::request_animation_frame(web_frame);
 }
 
-/// Called when clicking on the canvas.
+/// Runs one browser-driven application frame and schedules the next one.
+#[unsafe(no_mangle)]
+pub extern "C" fn web_frame() {
+    drain_events();
+    // update();
+    // draw();
+    window::request_animation_frame(web_frame);
+}
+
+/// Drains the normalized events queued since the previous frame.
+fn drain_events() {
+    while let Some(event) = with_ingress(|ingress| ingress.poll_event()) {
+        handle_event(event);
+    }
+    report_dropped_events();
+}
+
+/// Reports and resets the ingress overflow count.
+fn report_dropped_events() {
+    let dropped = with_ingress(|ingress| ingress.take_dropped());
+    if dropped != 0 {
+        let buf = unsafe { &mut *&raw mut BUF };
+        console::warn(fmt![?buf, "EVENTS DROPPED: {dropped}"]);
+    }
+}
+
+/// Handles one normalized application event.
+fn handle_event(event: Event) {
+    let buf = unsafe { &mut *&raw mut BUF };
+    console::log(fmt![?buf, "POLL: {event:?}"]);
+}
+
+// /// Advances the application state for the current frame.
+// fn update() { }
+
+// /// Presents the application state for the current frame.
+// fn draw() { }
+
+/// Queues a mouse event for frame-time processing.
+#[unsafe(no_mangle)] #[rustfmt::skip]
+pub extern "C" fn key_cb(event: WebEventKey) { with_ingress(|i| i.push_key(event)); }
+
+/// Queues a mouse event for frame-time processing.
+#[unsafe(no_mangle)] #[rustfmt::skip]
+pub extern "C" fn mouse_cb(event: WebEventMouse) { with_ingress(|i| i.push_mouse(event)); }
+
+/// Queues a pointer event for frame-time processing.
+#[unsafe(no_mangle)] #[rustfmt::skip]
+pub extern "C" fn pointer_cb(event: WebEventPointer) { with_ingress(|i| i.push_pointer(event)); }
+
+/// Queues a wheel event for frame-time processing.
+#[unsafe(no_mangle)] #[rustfmt::skip]
+pub extern "C" fn wheel_cb(event: WebEventWheel) { with_ingress(|i| i.push_wheel(event)); }
+
+/// Handles the canvas click directly in the browser callback.
 #[unsafe(no_mangle)]
 pub extern "C" fn canvas_click() {
     let buf = unsafe { &mut *&raw mut BUF };
@@ -158,14 +236,10 @@ pub extern "C" fn canvas_click() {
     {
         let time = Web::performance_now();
         let times = Web::performance_event_count(WebEventKind::Click) + 1;
-
         console::log(fmt![?buf, "Canvas clicked {times} times"]);
-
         let origin = Web::performance_time_origin();
         console::log(fmt![?buf, "origin: {origin}ms"]);
-
         console::log(fmt![?buf, "Canvas clicked at: {time}ms"]);
-
         Web::fill_style(50, 50, 200);
         Web::fill_text(fmt![?buf, "time: {time}ms"], 60.0, 100.0);
     }
@@ -174,25 +248,4 @@ pub extern "C" fn canvas_click() {
         Web::fill_style(50, 50, 200);
         Web::fill_text(fmt![?buf, "`time` disabled"], 60.0, 100.0);
     }
-}
-
-#[unsafe(no_mangle)] #[rustfmt::skip]
-pub extern "C" fn my_key_callback(event: WebEventKey) {
-    let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "KEY: {:?}", event]);
-}
-#[unsafe(no_mangle)]
-pub extern "C" fn my_mouse_callback(event: WebEventMouse) {
-    let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "MOUSE: {:?}", event]);
-}
-#[unsafe(no_mangle)]
-pub extern "C" fn my_pointer_callback(event: WebEventPointer) {
-    let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "POINT: {:?}", event]);
-}
-#[unsafe(no_mangle)]
-pub extern "C" fn my_wheel_callback(event: WebEventWheel) {
-    let buf = unsafe { &mut *&raw mut BUF };
-    console::log(fmt![?buf, "WHEEL: {:?}", event]);
 }

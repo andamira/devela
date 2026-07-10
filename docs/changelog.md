@@ -36,6 +36,8 @@
   - showcase signal handling.
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
+- update example: `web_api`:
+  - leverage `WebEventIngress` and `request_animation_frame` to poll events.
   - decouple from the `time` feature.
   - show keyboard events.
 
