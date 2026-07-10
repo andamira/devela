@@ -3,7 +3,7 @@
 //! Defines [`JsInstant`], [`JsTimeout`].
 //
 
-use crate::{Display, TimeDelta, impl_trait};
+use crate::{_impl_init, Display, TimeDelta, impl_trait};
 use crate::{js_number, js_uint32};
 
 #[doc = crate::_tags!(runtime time)]
@@ -20,16 +20,22 @@ pub struct JsInstant {
     /// Milliseconds since `performance.timeOrigin`.
     pub ms: js_number,
 }
+_impl_init![Self::ZERO => JsInstant];
+
 #[rustfmt::skip]
 impl JsInstant {
-    /// Returns the time in milliseconds.
-    pub const fn as_millis_f64(self) -> js_number { self.ms }
+    /// The instant at `performance.timeOrigin` (`0.0` milliseconds).
+    pub const ZERO: Self = Self { ms: 0.0 };
+
     /// Returns a new `JsInstant` from a timestamp in milliseconds.
     pub const fn from_millis_f64(millis: js_number) -> Self { Self { ms: millis } }
+    /// Returns the time in milliseconds.
+    pub const fn as_millis_f64(self) -> js_number { self.ms }
+
+    /// Returns a new `JsInstant` from a timestamp in seconds.
+    pub const fn from_secs_f64(secs: js_number) -> Self { Self { ms: secs * 1_000.0 } }
     /// Returns the time in `f64` seconds.
     pub const fn as_secs_f64(self) -> js_number { self.ms / 1_000.0 }
-    /// Returns a new `JsInstant` from a timestamp in milliseconds.
-    pub const fn from_secs_f64(secs: js_number) -> Self { Self { ms: secs * 1_000.0 } }
 
     /// Returns the duration between this and an earlier `JsInstant`.
     pub const fn since(self, earlier: Self) -> Self { Self::from_millis_f64(self.ms - earlier.ms) }

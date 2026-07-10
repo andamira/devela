@@ -9,9 +9,8 @@
 // - impl traits
 
 use crate::{_js_unsafe_ffi_doc, macro_apply};
-use crate::{DiagLevel, DiagOut, Infallible, TextOut};
-#[allow(unused_imports)]
-use devela::{_js_doc, _js_extern};
+#[allow(unused_imports, reason = "±unsafe")]
+use devela::{_js_doc, _js_extern, DiagLevel, DiagOut, Infallible, TextOut};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.

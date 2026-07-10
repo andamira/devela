@@ -68,6 +68,9 @@
 - move `<data|num|text>::error` to `error::<data|num|text>`.
 - move `code::error` contents here.
 
+##### lang::prog::ffi::js
+- update `JsInstant:` add const `ZERO`, impl `ConstInit`.
+
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
 - udpate `ImageError`; add new variant: `InsufficientBuffer`.
