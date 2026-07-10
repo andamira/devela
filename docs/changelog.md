@@ -103,7 +103,7 @@
 - keep ALSA handle methods and PCM trait impls visible without `asound`.
 
 ##### sys::os::browser::web
-- new type `WebEventKey`.
+- new types `WebEventIngress`, `WebEventKey`.
 - update `WebEvent*` types:
   - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.
   - rename the timed variants to `<from|to>_event_kind_timed`.
