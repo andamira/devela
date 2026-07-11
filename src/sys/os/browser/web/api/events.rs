@@ -126,6 +126,19 @@ impl Web {
         let callback: extern "C" fn() = unsafe { transmute(callback) };
         callback();
     }
+
+    /// WebAssembly animation-frame callback dispatcher.
+    ///
+    /// # Safety
+    /// `callback_ptr` must be a valid `extern "C" fn(JsInstant)` pointer.
+    #[unsafe(no_mangle)]
+    pub unsafe extern "C" fn wasm_callback_animation_frame(callback_ptr: usize,
+        timestamp: js_number) {
+        let callback = callback_ptr as *const ();
+        let callback: extern "C" fn(JsInstant) = unsafe { transmute(callback) };
+        callback(JsInstant::from_millis_f64(timestamp));
+    }
+
     /// WebAssembly keyboard event callback dispatcher.
     ///
     /// - Called from JavaScript when a keyboard event is fired.

@@ -115,6 +115,8 @@
 - update `WebEvent*` types:
   - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.
   - rename the timed variants to `<from|to>_event_kind_timed`.
+- update `Web`:
+  - take `JsInstant` as an argument for `request_animation_frame`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - decouple events from the `time` feature.
 - modularize browser JS bindings.

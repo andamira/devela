@@ -22,8 +22,6 @@ features = [
 ]
 
 [features]
-default = ["time"]
-time = ["devela/time"]
 
 [profile.release]
 # https://rustwasm.github.io/docs/book/reference/code-size.html

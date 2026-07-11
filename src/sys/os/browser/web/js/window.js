@@ -77,7 +77,9 @@ export function makeWindowApi(env) {
 
     // animation
     window_request_animation_frame: (callbackPtr) => {
-      return requestAnimationFrame(() => { env.wasm.exports.wasm_callback(callbackPtr); });
+      return requestAnimationFrame((timestamp) => {
+        env.wasm.exports.wasm_callback_animation_frame(callbackPtr, timestamp);
+      });
     },
     window_cancel_animation_frame: (requestId) => {
       cancelAnimationFrame(requestId);

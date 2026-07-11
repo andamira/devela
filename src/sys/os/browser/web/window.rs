@@ -6,8 +6,9 @@
 
 #[cfg(feature = "alloc")]
 use devela::String;
-use devela::{_js_doc, _js_extern, _js_method_str_alloc, JsTimeout, js_bool, js_int32, js_uint32};
+use devela::{_js_doc, _js_extern, _js_method_str_alloc};
 use devela::{Distance, Extent, Float, WebDocument, offset_of};
+use devela::{JsInstant, JsTimeout, js_bool, js_int32, js_uint32};
 
 #[doc = crate::_tags!(ui web)]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
@@ -67,7 +68,7 @@ impl WebWindow {
 
     #[doc = _js_doc!("Window", "requestAnimationFrame")]
     /// Requests an animation frame, executing the given `callback`.
-    pub fn request_animation_frame(callback: extern "C" fn()) -> js_uint32 {
+    pub fn request_animation_frame(callback: extern "C" fn(JsInstant)) -> js_uint32 {
         unsafe { window_request_animation_frame(callback as usize) } }
     /// Cancels a request for an animation frame.
     pub fn cancel_animation_frame(id: js_uint32) { window_cancel_animation_frame(id); }
