@@ -336,6 +336,7 @@ its own flat view of all its public children.";
     _DOC_UI_SEMANTIC = "Human-facing meaning for roles, actions, descriptions, and navigation.";
     _DOC_UI_TEXT     = "Interactive text editing state.";
     _DOC_UI_VIEW     = "Projection of UI state into concrete presentation forms.";
+    _DOC_UI_VIEW_DRAW    = "Backend-neutral spatial draw records produced by UI view projection.";
     _DOC_UI_VIEW_FORM    = "Cell, document, graphic, and message forms of UI projection.";
     _DOC_UI_VIEW_PROFILE = "Presentation profiles for fitting logical views into output space.";
     _DOC_UI_VIEW_SCALE   = "Pixel, density, and text scaling units for view projection.";

@@ -180,7 +180,7 @@
 - new types: `TextInput[Action|Config|Outcome|Reject|View]`, `TextInputKeymap[Preset]`.
 
 ### ui::view
-- new types: `UiDensity`, `UiLayer`, `UiRound`, `UiView`, `UiViewFlags`, `UiViewForm`.
+- new types: `UiDensity`, `UiDraw`, `UiDrawKind`, `UiDrawList`, `UiDrawListView`, `UiLayer`, `UiRound`, `UiView`, `UiViewFlags`, `UiViewForm`.
 
 ### ui::widget
 - new types: `UiButton`, `UiResponse`, `UiResponseFlags`.

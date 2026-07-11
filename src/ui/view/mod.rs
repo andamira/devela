@@ -10,6 +10,7 @@
 mod _test;
 
 // mod cue; // Interactive visual cues for view presentation
+mod draw; // UiDraw, UiDrawList, UiDrawListView
 mod form; // WIP UiViewForm: cell, document, graphic and message projection forms
 mod layer; // UiLayer
 mod profile; // WIP Presentation profiles for fitting logical views into output space
@@ -20,6 +21,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             // cue::_all::*,
+            draw::_all::*,
             form::_all::*,
             layer::*,
             profile::_all::*,
