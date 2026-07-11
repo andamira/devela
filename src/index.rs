@@ -119,7 +119,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(box_vec_non_null, btree_extract_if, new_zeroed_alloc,)
+    feature(box_vec_non_null, btree_extract_if, new_zeroed_alloc, string_from_utf8_lossy_owned,)
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]

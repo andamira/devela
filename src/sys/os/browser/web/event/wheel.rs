@@ -12,7 +12,7 @@ use crate::{JsNumFmt, js_number};
 /// A web API Wheel Event.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
-    test_size_of(WebEventWheel = 40|320; niche Option),
+    test_size_of(WebEventWheel = 48|384; niche Option),
 }]
 /// Represents a JavaScript wheel event with browser-native deltas and unit.
 ///
