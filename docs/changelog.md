@@ -73,6 +73,8 @@
 - move `code::error` contents here.
 
 ##### lang::prog::ffi::js
+- update `Js`:
+  - improve safety of string-related methods.
 - update `JsInstant:`
   - add const `ZERO`.
   - remove the `time` feature-gate.
