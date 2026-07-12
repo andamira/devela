@@ -7,8 +7,7 @@
 // - struct WebWorkerError
 // - struct WebWorkerJob
 
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", feature = "alloc", not(windows)))]
+#[cfg(feature = "alloc")]
 use crate::String;
 #[allow(unused_imports)]
 use crate::{AsyncPoll, Web, js_uint32};
@@ -36,10 +35,6 @@ impl WebWorker {
 }
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWorker {
     /// Spawns a new JavaScript Web Worker from a script.
     pub fn spawn(script: &str) -> Result<Self, WebWorkerError> { Web::worker_spawn(script) }
@@ -89,10 +84,6 @@ impl WebWorkerJob {
 }
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWorkerJob {
     /// Polls the result of this job and writes it into `buffer`.
     ///

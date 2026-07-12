@@ -21,9 +21,6 @@ use devela::{JsInstant, JsTimeout, js_bool, js_int32, js_uint32};
 pub struct WebWindow;
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
     #[doc = _js_doc!("Window", "document")]
@@ -83,7 +80,6 @@ impl WebWindow {
 }
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
 #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebWindow {
     /* eval */
@@ -214,9 +210,6 @@ impl WebWindowState {
     ///
     /// # Safety
     /// - JavaScript must write all non-padding fields at correct offsets.
-    #[cfg(not(feature = "safe_lang"))]
-    #[cfg(feature = "unsafe_ffi")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
     pub fn new() -> WebWindowState {
         let mut state = WebWindowState::default();
         unsafe {
@@ -226,9 +219,6 @@ impl WebWindowState {
     }
 
     /// Overwrites this `WebWindowState` with the latest live metrics.
-    #[cfg(not(feature = "safe_lang"))]
-    #[cfg(feature = "unsafe_ffi")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ffi")))]
     pub fn update(&mut self) {
         unsafe { window_state(self as *mut Self as *mut u8) };
     }

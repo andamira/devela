@@ -16,17 +16,24 @@
 // mod container; // MAYBE container/bridge, hosted/integration
 // mod extension; // WIP
 
+// #[cfg(any(doc, target_arch = "wasm32"))]
+// #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))] // too noisy
 #[cfg(all(feature = "web", not(windows)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "web")))]
+#[cfg(not(feature = "safe_sys"))]
 pub mod web; // Web[Document|Element|Event*|Permission*|Window*|Worker*]…
 
 crate::structural_mods! { // _pub_mods, _crate_internals
     _pub_mods {
+        // #[cfg(any(doc, target_arch = "wasm32"))]
         #[cfg(all(feature = "web", not(windows)))]
+        #[cfg(not(feature = "safe_sys"))]
         pub use super::web::_all::*;
     }
     _crate_internals {
+        // #[cfg(any(doc, target_arch = "wasm32"))]
         #[cfg(all(feature = "web", not(windows)))]
+        #[cfg(not(feature = "safe_sys"))]
         pub(crate) use super::web::_crate_internals::*;
     }
 }

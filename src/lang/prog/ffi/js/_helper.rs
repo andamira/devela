@@ -102,7 +102,6 @@ macro_rules! _js_extern {
         )*
     ) => {
         $( #[link(wasm_import_module = $module)] )?
-        #[cfg(not(feature = "safe_lang"))]
         unsafe extern "C" { $(
             $(#[$fn_attrs])*
             $( #[link_name = $js_fn] )?

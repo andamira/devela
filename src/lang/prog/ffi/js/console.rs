@@ -8,9 +8,9 @@
 // - extern impls
 // - impl traits
 
-use crate::{_js_extern, macro_apply};
+use crate::macro_apply;
 #[allow(unused_imports, reason = "±unsafe")]
-use devela::{_js_doc, _js_unsafe_ffi_doc, DiagLevel, DiagOut, Infallible, TextOut};
+use devela::{_js_doc, _js_extern, _js_unsafe_ffi_doc, DiagLevel, DiagOut, Infallible, TextOut};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
@@ -95,6 +95,7 @@ impl JsConsole {
     /// Logs a timer with the given name, started with [`time_log`][Self::time_log].
     pub fn time_log(name: &str) { unsafe { console_time_log(name.as_ptr(), name.len()); } }
 }
+#[cfg(not(feature = "safe_lang"))]
 _js_extern! {
     [ module: "api_console" ]
     safe fn console_clear();

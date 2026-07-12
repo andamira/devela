@@ -7,7 +7,7 @@
 // use devela::String;
 // #[allow(unused_imports, reason = "not(windows)")]
 use devela::_js_extern;
-#[cfg(feature = "unsafe_ffi")]
+#[allow(unused_imports, reason = "±unsafe")]
 use devela::{_js_doc, _js_method_str_alloc, js_bool, js_int32, js_uint32};
 
 #[doc = crate::_tags!(web uid)]
@@ -20,9 +20,7 @@ use devela::{_js_doc, _js_method_str_alloc, js_bool, js_int32, js_uint32};
 pub struct WebDocument;
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg(all(feature = "unsafe_ffi", not(windows)))]
-#[cfg_attr(nightly_doc, doc(cfg(all(feature = "unsafe_ffi", target_arch = "wasm32"))))]
+#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl WebDocument {
     /* flags */
 

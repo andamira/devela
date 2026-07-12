@@ -5,7 +5,6 @@
 //
 
 use crate::_js_extern;
-#[cfg(not(feature = "safe_lang"))]
 crate::items! {
     use crate::{_js_doc, JsInstant, js_int32, js_number};
     use crate::{WebDocument, WebPermission, WebPermissionState, WebWindow};
@@ -17,12 +16,9 @@ crate::items! {
 /// A Web API namespace.
 #[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
 ///
-/// # Features
-/// All methods depend on the `unsafe_ffi` feature and the `wasm32` architecture.
-///
 /// # Methods
 /// - core APis
-///   - [console](#web-api-console)
+//   - [console](#web-api-console)
 //    - document
 ///   - [events](#web-api-events)
 ///   - [history & location](#web-api-history--location)
@@ -36,12 +32,12 @@ crate::items! {
 ///    - [performance](#web-api-performance)
 ///  - advanced & experimental
 ///    - [workers](#web-api-workers)
+///
+/// See also: [`JsConsole`][crate::JsConsole].
 #[derive(Clone, Copy, Debug)]
 pub struct Web;
 
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 impl Web {
     #[doc = _js_doc!("Window")]
     #[doc = _js_doc!("Screen")]
@@ -62,8 +58,6 @@ impl Web {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 // In sync with ../js/permissions.js
 impl Web {
     #[doc = _js_doc!("Permissions", "query")]
@@ -86,8 +80,6 @@ _js_extern! {
 ///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Performance>
 #[rustfmt::skip]
-#[cfg(not(feature = "safe_lang"))]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
 // In sync with ../js/performance.js
 impl Web {
     #[doc = _js_doc!("Performance", "now")]

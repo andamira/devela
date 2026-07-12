@@ -50,9 +50,8 @@ impl_trait![fmt::Display for JsInstant |self, f| Display::fmt(&self.ms, f)];
 
 #[rustfmt::skip]
 #[cfg(feature = "event")]
-mod impls {
-    pub use super::JsInstant;
-    pub use crate::EventTimestamp;
+mod impl_event {
+    pub use crate::{EventTimestamp, JsInstant};
 
     impl EventTimestamp {
         /// Converts a `JsInstant` to an `EventTimestamp`, ensuring a valid value.
@@ -69,6 +68,46 @@ mod impls {
     }
     impl From<EventTimestamp> for JsInstant {
         fn from(from: EventTimestamp) -> Self { from.to_js() }
+    }
+}
+#[rustfmt::skip]
+#[cfg(any(target_arch = "wasm32", doc))]
+#[cfg(all(feature = "web", not(windows)))]
+mod impl_web {
+    use crate::{JsInstant, TimeScale, TimeSource};
+
+    /// Relative `u64` projection of [`JsInstant`] in milliseconds.
+    ///
+    /// This is the canonical wide numeric projection for the browser high-resolution
+    /// time origin. Milliseconds are the native scale exposed by the type's public API.
+    ///
+    /// At millisecond resolution, `u64` spans about 584 million years.
+    impl TimeSource<u64> for JsInstant {
+        fn time_is_monotonic() -> bool { true }
+        fn time_is_absolute() -> bool { false }
+        fn time_scale() -> TimeScale { TimeScale::Millis }
+        fn time_now() -> u64 { JsInstant::now().as_millis_f64() as u64 }
+        fn time_point_value(point: u64) -> u64 { point }
+        fn time_elapsed_value(elapsed: u64) -> u64 { elapsed }
+        fn time_now_millis_f64() -> f64 { JsInstant::now().as_millis_f64() }
+    }
+    /// Relative `u32` projection of [`JsInstant`] in milliseconds.
+    ///
+    /// This compact projection favors storage size while keeping a practical range
+    /// for browser sessions and medium-lived applications.
+    ///
+    /// At millisecond resolution, `u32` spans about 49.7 days.
+    impl TimeSource<u32> for JsInstant {
+        fn time_is_monotonic() -> bool { true }
+        fn time_is_absolute() -> bool { false }
+        fn time_scale() -> TimeScale { TimeScale::Millis }
+        fn time_now() -> u32 {
+            u32::try_from(JsInstant::now().as_millis_f64() as u64)
+                .expect("JsInstant u32 millisecond projection overflow")
+        }
+        fn time_point_value(point: u32) -> u64 { point.into() }
+        fn time_elapsed_value(elapsed: u32) -> u64 { elapsed.into() }
+        fn time_now_millis_f64() -> f64 { JsInstant::now().as_millis_f64() }
     }
 }
 

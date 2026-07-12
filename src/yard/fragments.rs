@@ -301,7 +301,7 @@ its own flat view of all its public children.";
     _DOC_SYS_NET_HTTP    = "The HTTP protocol.";
     _DOC_SYS_OS          = "Operating systems and supervisors.";
     _DOC_SYS_OS_BROWSER      = "Browser supervisory environment.";
-    _DOC_SYS_OS_BROWSER_WEB  = "Web APIs interfacing.";
+    _DOC_SYS_OS_BROWSER_WEB  = "Browser and Web API bindings for `wasm32` targets.";
     _DOC_SYS_OS_FD       = "Unix-like file descriptors.";
     _DOC_SYS_OS_LINUX    = "Linux-specific definitions.";
     _DOC_SYS_OS_TERM     = "Terminal supervisory environment and ANSI/TTY interfacing.";
