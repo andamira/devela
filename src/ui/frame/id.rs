@@ -2,6 +2,9 @@
 //
 //! Defines [`UiId`], [`UiKey`], [`UiScope`].
 //
+// Boundary: keys are author-local inputs; resolved ids are the tokens shared with
+// layout, routing, semantics, widgets, and presentation.
+//
 
 use crate::{NonMaxU64, SplitMix64, unwrap};
 

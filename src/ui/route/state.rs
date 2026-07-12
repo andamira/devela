@@ -21,30 +21,30 @@ macro_rules! define_ui_state {
         #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $name(Option<UiId>);
         impl $name {
-            /// No hot identity.
+            #[doc = concat!("No ", $adj, " identity.")]
             pub const NONE: Self = Self(None);
 
-            /// Constructs a hot state from an optional identity.
+            #[doc = concat!("Constructs ", $det, " ", $adj, " state from an optional identity.")]
             pub const fn new(id: Option<UiId>) -> Self { Self(id) }
-            /// Constructs a hot state with an identity.
+            #[doc = concat!("Constructs ", $det, " ", $adj, " state with an identity.")]
             pub const fn some(id: UiId) -> Self { Self(Some(id)) }
 
-            /// Returns the hot identity.
             #[must_use]
+            #[doc = concat!("Returns the ", $adj, " identity.")]
             pub const fn id(self) -> Option<UiId> { self.0 }
 
-            /// Returns whether `id` is the hot identity.
             #[must_use]
+            #[doc = concat!("Returns whether `id` is the ", $adj, " identity.")]
             pub const fn is(self, id: UiId) -> bool {
                 match self.0 {
                     Some(hot) => hot.raw() == id.raw(),
                     None => false,
                 }
             }
-            /// Returns whether there is a hot identity.
             #[must_use]
+            #[doc = concat!("Returns whether there is ", $det, " ", $adj, " identity.")]
             pub const fn is_some(self) -> bool { self.0.is_some() }
-            /// Returns whether there is no hot identity.
+            #[doc = concat!("Returns whether there is no ", $adj, " identity.")]
             #[must_use]
             pub const fn is_none(self) -> bool { self.0.is_none() }
         }
@@ -52,7 +52,7 @@ macro_rules! define_ui_state {
 }
 define_ui_state! {
     RouteActive, "Current owner of an ongoing interaction.", "an", "active";
-    RouteCapture, "Current pointer-capture owner", "a", "pointer-captured";
+    RouteCapture, "Current pointer-capture owner", "a", "captured";
     RouteFocus, "Current keyboard or navigation focus owner.", "a", "focused";
     RouteHot, "Current candidate under direct pointing interaction.", "a", "hot";
 }

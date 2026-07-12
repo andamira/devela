@@ -1,6 +1,9 @@
 // devela/src/ui/entry.rs
 //
-//! Defines [`UiAction`].
+//! Defines [`UiEntry`].
+//
+// Boundary: actions and flags describe meaning exposed by an identity.
+// They do not represent incoming events or current routing ownership.
 //
 
 use crate::{UiAction, UiActions, UiFlags, UiId, UiRole};

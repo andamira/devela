@@ -2,6 +2,9 @@
 //
 //! Defines [`HitRegion`].
 //
+// Boundary: layout defines the geometry vocabulary;
+// routing only associates a layout region with a resolved interaction identity.
+//
 
 use crate::{UiId, UiRect};
 

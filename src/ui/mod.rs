@@ -23,13 +23,13 @@ mod intent; // WIP Desired UI configuration before capability-bound realization
 // mod notice; // WIP Attention requests, alarm discipline, and delivery routing
 
 #[cfg(feature = "ui")]
-pub mod frame; // Immediate UI authorship, scoped identity, and retained facts across frames
+pub mod frame; // Frame context, scoped identity, and processing phases
 #[cfg(feature = "ui")]
 pub mod layout; // Canonical spatial vocabulary for deterministic arrangement
 #[cfg(feature = "ui")]
-pub mod route; // Routing interaction through regions, focus, active state, and capture
+pub mod route; // Identity-based interaction regions and ownership state
 #[cfg(feature = "ui")]
-pub mod semantic; // Human-facing meaning for roles, actions, descriptions, and navigation
+pub mod semantic; // Human-facing roles, actions, state, and text
 #[cfg(feature = "ui")]
 pub mod text; // Interactive text editing state.
 #[cfg(feature = "ui")]
