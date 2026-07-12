@@ -263,41 +263,42 @@ macro_rules! bound_int {
         $vis struct $Name($crate::MaybeNiche<$Repr>);
 
         // Common public constants and methods
+        #[allow(dead_code)]
         impl $Name {
             /* constants */
 
             /// Number of bits in the primitive carrier.
-            pub const CARRIER_BITS: u32 = <$Carrier>::BITS;
+            $vis const CARRIER_BITS: u32 = <$Carrier>::BITS;
             /// Number of bits used by the signed payload.
-            pub const VALUE_BITS: u32 = ($VALUE_BITS) as u32;
+            $vis const VALUE_BITS: u32 = ($VALUE_BITS) as u32;
             /// Number of high bits used by boundary metadata.
-            pub const META_BITS: u32 = Self::CARRIER_BITS - Self::VALUE_BITS;
+            $vis const META_BITS: u32 = Self::CARRIER_BITS - Self::VALUE_BITS;
             /// Number of metadata bits used by the boundary direction marker.
-            pub const DIR_BITS: u32 = 1;
+            $vis const DIR_BITS: u32 = 1;
             /// Number of metadata bits used by the saturating boundary-event counter.
-            pub const COUNT_BITS: u32 = Self::META_BITS - 1;
+            $vis const COUNT_BITS: u32 = Self::META_BITS - 1;
             /// Maximum representable boundary-event count.
-            pub const MAX_COUNT: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
+            $vis const MAX_COUNT: $Unsigned = (1 as $Unsigned << Self::COUNT_BITS) - 1;
 
             /// Whether the payload carrier is signed.
-            pub const IS_SIGNED: bool = $crate::cif!(same($signed, true));
+            $vis const IS_SIGNED: bool = $crate::cif!(same($signed, true));
             /// Whether the signed payload range is symmetric around zero.
-            pub const IS_SYMMETRIC: bool = $crate::cif!(same($Range, symmetric));
+            $vis const IS_SYMMETRIC: bool = $crate::cif!(same($Range, symmetric));
 
             /// Minimum representable payload value.
-            pub const MIN_VALUE: $Carrier = Self::_MIN_VALUE;
+            $vis const MIN_VALUE: $Carrier = Self::_MIN_VALUE;
             /// Maximum representable payload value.
-            pub const MAX_VALUE: $Carrier = Self::_MAX_VALUE;
+            $vis const MAX_VALUE: $Carrier = Self::_MAX_VALUE;
 
             /// Zero, with empty metadata.
-            pub const ZERO: Self = {
+            $vis const ZERO: Self = {
                 let _ = Self::_CHECK_INVARIANTS;
                 Self::from_value_meta(0, 0, false)
             };
             /// Minimum payload value, with empty metadata.
-            pub const MIN: Self = Self::from_value_meta(Self::MIN_VALUE, 0, false);
+            $vis const MIN: Self = Self::from_value_meta(Self::MIN_VALUE, 0, false);
             /// Maximum payload value, with empty metadata.
-            pub const MAX: Self = Self::from_value_meta(Self::MAX_VALUE, 0, false);
+            $vis const MAX: Self = Self::from_value_meta(Self::MAX_VALUE, 0, false);
 
             /* constructors */
 
@@ -308,24 +309,24 @@ macro_rules! bound_int {
             ///
             /// If `value` is above [`MAX_VALUE`](#associatedconstant.MAX_VALUE),
             /// the result is clamped to `MAX` and records one upper-boundary event.
-            pub const fn new(value: $Carrier) -> Self {
+            $vis const fn new(value: $Carrier) -> Self {
                 if value < Self::MIN_VALUE { Self::from_value_meta(Self::MIN_VALUE, 1, false) }
                 else if value > Self::MAX_VALUE { Self::from_value_meta(Self::MAX_VALUE, 1, true) }
                 else { Self::from_value_meta(value, 0, false) }
             }
             /// Creates a value if it fits in the payload range.
-            pub const fn new_checked(value: $Carrier) -> Option<Self> {
+            $vis const fn new_checked(value: $Carrier) -> Option<Self> {
                 if value < Self::MIN_VALUE || value > Self::MAX_VALUE { None }
                 else { Some(Self::from_value_meta(value, 0, false)) }
             }
 
             /// Creates a value saturated to the payload range.
-            pub const fn new_saturated(value: $Carrier) -> Self {
+            $vis const fn new_saturated(value: $Carrier) -> Self {
                 let value = $crate::cmp!(clamp value, Self::MIN_VALUE, Self::MAX_VALUE);
                 Self::from_value_meta(value, 0, false)
             }
             /// Creates a value saturated to the payload range, from an upcasted carrier.
-            pub const fn new_saturated_up(value: $Up) -> Self {
+            $vis const fn new_saturated_up(value: $Up) -> Self {
                 Self::new_saturated($crate::cast!(saturating value => $Carrier))
             }
 
@@ -336,7 +337,7 @@ macro_rules! bound_int {
             ///
             /// Non-canonical raw encodings with `count == 0` are canonicalized so
             /// the direction bit is cleared.
-            pub const fn from_raw(raw: $Carrier) -> Option<Self> {
+            $vis const fn from_raw(raw: $Carrier) -> Option<Self> {
                 if raw == Self::_RESERVED_RAW { return None; }
                 let _ = $crate::unwrap![ok_some? $crate::MaybeNiche::<$Repr>::try_from_prim(raw)];
                 let (value, count) = (Self::decode_value(raw), Self::decode_count(raw));
@@ -354,29 +355,29 @@ macro_rules! bound_int {
             /* raw/meta methods */
 
             /// Returns the raw encoded carrier.
-            pub const fn raw(self) -> $Carrier { self.0.prim() }
+            $vis const fn raw(self) -> $Carrier { self.0.prim() }
             /// Returns the decoded payload value.
-            pub const fn get(self) -> $Carrier { Self::decode_value(self.raw()) }
+            $vis const fn get(self) -> $Carrier { Self::decode_value(self.raw()) }
 
             /// Returns whether this value carries at least one boundary event.
-            pub const fn is_bounded(self) -> bool { self.bound_count() != 0 }
+            $vis const fn is_bounded(self) -> bool { self.bound_count() != 0 }
 
             /// Returns the saturating boundary-event count.
             ///
             /// A value of `0` means no boundary event is recorded. When this is `0`,
             /// [`bound_dir`](#method.bound_dir) returns `None`.
-            pub const fn bound_count(self) -> $Unsigned { Self::decode_count(self.raw()) }
+            $vis const fn bound_count(self) -> $Unsigned { Self::decode_count(self.raw()) }
 
             /// Returns the last recorded boundary direction.
             ///
             /// Returns `None` when [`bound_count`](#method.bound_count) is `0`.
-            pub const fn bound_dir(self) -> Option<$crate::Boundary1d> {
+            $vis const fn bound_dir(self) -> Option<$crate::Boundary1d> {
                 if self.bound_count() == 0 { None }
                 else if Self::decode_dir_upper(self.raw()) { Some($crate::Boundary1d::Upper) }
                 else { Some($crate::Boundary1d::Lower) }
             }
             /// Returns the same payload value with empty metadata.
-            pub const fn clear_meta(self) -> Self {
+            $vis const fn clear_meta(self) -> Self {
                 Self::from_value_meta(self.get(), 0, false)
             }
             /// Returns the same payload value with explicit boundary metadata.
@@ -385,7 +386,7 @@ macro_rules! bound_int {
             ///
             /// When `count == 0`, `dir` is ignored
             /// and the raw direction bit is canonicalized to zero.
-            pub const fn with_bound_meta(self, count: $Unsigned, dir: Option<$crate::Boundary1d>)
+            $vis const fn with_bound_meta(self, count: $Unsigned, dir: Option<$crate::Boundary1d>)
                 -> Self {
                 let dir_upper = match dir { Some($crate::Boundary1d::Upper) => true, _ => false };
                 Self::from_value_meta(self.get(), count, dir_upper)
@@ -393,25 +394,25 @@ macro_rules! bound_int {
 
             /* sign */
 
-            // TODO: allow lints
+            // TODO: allow lints when supporting unsigned
             /// Whether the value is less than zero.
-            pub const fn is_negative(self) -> bool { self.get() < 0 }
+            $vis const fn is_negative(self) -> bool { self.get() < 0 }
             /// Whether the value is greater than zero.
-            pub const fn is_positive(self) -> bool { self.get() > 0 }
+            $vis const fn is_positive(self) -> bool { self.get() > 0 }
             /// Whether the value is zero.
-            pub const fn is_zero(self) -> bool { self.get() == 0 }
+            $vis const fn is_zero(self) -> bool { self.get() == 0 }
             /// Whether the value is greater than or equal to zero.
-            pub const fn is_nonnegative(self) -> bool { self.get() >= 0 }
+            $vis const fn is_nonnegative(self) -> bool { self.get() >= 0 }
             /// Whether the value is less than or equal to zero.
-            pub const fn is_nonpositive(self) -> bool { self.get() <= 0 }
+            $vis const fn is_nonpositive(self) -> bool { self.get() <= 0 }
 
             /* ordering */
 
             /// Equality comparison over decoded payload values.
-            pub const fn eq(self, other: Self) -> bool { self.get() == other.get() }
+            $vis const fn eq(self, other: Self) -> bool { self.get() == other.get() }
 
             /// Compares decoded payload values.
-            pub const fn cmp(self, other: Self) -> $crate::Ordering {
+            $vis const fn cmp(self, other: Self) -> $crate::Ordering {
                 if self.get() < other.get() { $crate::Ordering::Less }
                 else if self.get() > other.get() { $crate::Ordering::Greater }
                 else { $crate::Ordering::Equal }
@@ -420,61 +421,62 @@ macro_rules! bound_int {
             /// Returns the greater decoded value.
             ///
             /// Metadata is cleared because the result is recomputed.
-            pub const fn max(self, other: Self) -> Self {
+            $vis const fn max(self, other: Self) -> Self {
                 Self::from_value_nometa(Self::max_carrier(self.get(), other.get()))
             }
             /// Returns the greater value, preserving the selected operand metadata.
-            pub const fn max_meta(self, other: Self) -> Self {
+            $vis const fn max_meta(self, other: Self) -> Self {
                 if self.get() >= other.get() { self } else { other }
             }
 
             /// Returns the decoded value floored at zero.
             ///
             /// Metadata is cleared because the result is recomputed.
-            pub const fn max_zero(self) -> Self {
+            $vis const fn max_zero(self) -> Self {
                 Self::from_value_nometa(Self::max_carrier(self.get(), 0))
             }
             /// Returns the decoded value floored at zero, preserving selected metadata.
-            pub const fn max_zero_meta(self) -> Self { self.max_meta(Self::ZERO) }
+            $vis const fn max_zero_meta(self) -> Self { self.max_meta(Self::ZERO) }
 
             /// Returns the lesser decoded value.
             ///
             /// Metadata is cleared because the result is recomputed.
-            pub const fn min(self, other: Self) -> Self {
+            $vis const fn min(self, other: Self) -> Self {
                 Self::from_value_nometa(Self::min_carrier(self.get(), other.get()))
             }
             /// Returns the lesser value, preserving the selected operand metadata.
-            pub const fn min_meta(self, other: Self) -> Self {
+            $vis const fn min_meta(self, other: Self) -> Self {
                 if self.get() <= other.get() { self } else { other }
             }
 
             /// Returns the decoded value capped at zero.
             ///
             /// Metadata is cleared because the result is recomputed.
-            pub const fn min_zero(self) -> Self {
+            $vis const fn min_zero(self) -> Self {
                 Self::from_value_nometa(Self::min_carrier(self.get(), 0))
             }
             /// Returns the decoded value capped at zero, preserving selected metadata.
-            pub const fn min_zero_meta(self) -> Self { self.min_meta(Self::ZERO) }
+            $vis const fn min_zero_meta(self) -> Self { self.min_meta(Self::ZERO) }
 
             /// Clamps the decoded value between `min` and `max`.
             ///
             /// Metadata is cleared because the result is recomputed.
             ///
             /// If `min > max`, this returns `min`.
-            pub const fn clamp(self, min: Self, max: Self) -> Self {
+            $vis const fn clamp(self, min: Self, max: Self) -> Self {
                 Self::from_value_nometa(Self::clamp_carrier(self.get(), min.get(), max.get()))
             }
             /// Clamps `self` between `min` and `max`, preserving selected metadata.
             ///
             /// If `min > max`, this returns `min`.
-            pub const fn clamp_meta(self, min: Self, max: Self) -> Self {
+            $vis const fn clamp_meta(self, min: Self, max: Self) -> Self {
                 if self.get() < min.get() { min }
                 else if self.get() > max.get() { max } else { self }
             }
         }
 
         // Common private helpers
+        #[allow(dead_code)]
         impl $Name {
             /* constants */
 
