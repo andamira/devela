@@ -7,7 +7,7 @@
 use ::core::str::from_utf8_mut;
 // crate::_use! {basic::from_utf8} // MAYBE not needed
 
-use crate::{CharIter, InvalidUtf8, Str};
+use crate::{CharIter, InvalidUtf8, Str, slice};
 #[cfg(feature = "grapheme")]
 use crate::{GraphemeBoundary, GraphemeIter, GraphemeMachine, GraphemeScanner, charu, is};
 #[allow(unused_imports, reason = "±unsafe")]
@@ -75,6 +75,20 @@ impl Str {
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked_mut(v) }
+    }
+
+    /// Converts `bytes` to the longest complete UTF-8 prefix.
+    ///
+    /// An incomplete final code point is discarded.
+    /// Any other invalid UTF-8 sequence is returned as an error.
+    pub const fn from_utf8_complete_prefix(bytes: &[u8]) -> Result<&str, InvalidUtf8> {
+        match Self::from_utf8(bytes) {
+            Ok(string) => Ok(string),
+            Err(error) if error.error_len.is_none() => {
+                Self::from_utf8(slice![bytes, ..error.valid_up_to])
+            }
+            Err(error) => Err(error),
+        }
     }
 
     /// Converts a byte slice known to be valid UTF-8 to a string.

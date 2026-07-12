@@ -776,23 +776,14 @@ macro_rules! impl_str_u {
             pub const fn push_str(&mut self, string: &str) -> usize {
                 lets! { start = self.len(); remaining = CAP - start }
                 is! { remaining == 0, return 0 }
-                let string_len = string.len();
-                let bytes_to_write = if string_len <= remaining {
-                    string_len
-                } else {
-                    let mut amount = remaining;
-                    while amount > 0 && !string.is_char_boundary(amount) { amount -= 1; }
-                    amount
-                };
+                let bytes_to_write = string.floor_char_boundary(Cmp(remaining).min(string.len()));
                 if bytes_to_write > 0 {
                     let end = start + bytes_to_write;
                     slice![mut &mut self.arr, start, ..end]
                         .copy_from_slice(slice![string.as_bytes(), ..bytes_to_write]);
                     self._set_len(end);
-                    bytes_to_write
-                } else {
-                    0
                 }
+                bytes_to_write
             }
 
             /// Appends characters from `string`, returning `Ok` if all fit, `Err` if partial.
