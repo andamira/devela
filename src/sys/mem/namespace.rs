@@ -200,10 +200,11 @@ impl Mem {
 
 /// # Unsafe methods
 ///
+/// Mirrors unsafe operations from [`core::mem`].
+///
 /// ## Features
-/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
-#[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-#[cfg(all(not(feature = "safe_mem"), unsafe··))]
+/// Available unless `safe_mem` is enabled.
+#[cfg(not(feature = "safe_mem"))]
 impl Mem {
     // NOTE: can't compile, errors with: error[E0512]:
     // cannot transmute between types of different sizes, or dependently-sized types

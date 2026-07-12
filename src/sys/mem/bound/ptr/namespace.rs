@@ -247,11 +247,12 @@ impl Ptr {
 
 /// # Unsafe methods
 ///
+/// Mirrors unsafe operations from [`core::ptr`].
+///
 /// ## Features
-/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
+/// Available unless `safe_mem` is enabled.
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-#[cfg(all(not(feature = "safe_mem"), unsafe··))]
+#[cfg(not(feature = "safe_mem"))]
 impl Ptr {
     /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
     ///

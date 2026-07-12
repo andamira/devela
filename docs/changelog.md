@@ -22,6 +22,8 @@
 - new features: `code_all`, `data_all`, `ffi`, `geom_all`, `lang_all`, `media_all`, `num_all`, `org_all`, `phys_all`, `run_all`, `sys_all`, `text_all`, `ui_all`, `vita_all`, `widget`, `work_all`.
 - remove features: `layout`.
 - add more feature gates for: `time`, `ui`.
+- remove the `unsafe··` flag requirement for re-exported unsafe std methods.
+  - update namespaces: `Alloc`, `Mem`, `Ptr`, `Slice`, `Str`.
 
 ## documentation
 - make `all` and `all_` root modules public.

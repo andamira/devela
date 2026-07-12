@@ -1,6 +1,6 @@
 // devela/src/sys/mem/view/slice/namespace/bytes.rs
 
-#[cfg(any(doc, unsafe··))]
+#[cfg(any(doc, not(feature = "safe_mem")))]
 use crate::Ptr;
 use crate::{Char, Cmp, Slice};
 
@@ -89,7 +89,7 @@ impl Slice<u8> {
     /// # Features
     /// - Uses `Ptr::copy_nonoverlapping` when unsafe operations are allowed.
     pub const fn copy_array<const N: usize>(dst: &mut [u8; N], src: &[u8; N]) {
-        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+        cfg_select! { not(feature = "safe_mem") => {
             unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr(), N); }
         } _ => {
             crate::whilst! { i in 0..N; { dst[i] = src[i]; }}
@@ -106,7 +106,7 @@ impl Slice<u8> {
     /// - Falls back to safe element-wise copy otherwise.
     pub const fn copy_array_at<const LEN: usize>(dst: &mut [u8; LEN], src: &[u8], offset: usize) {
         assert!(src.len() + offset <= LEN, "source slice does not fit in destination array");
-        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+        cfg_select! { not(feature = "safe_mem") => {
             // SAFETY: Length checked via assert, u8 is Copy, offset + src.len() is bounds-checked
             unsafe {
                 Ptr::copy_nonoverlapping(src.as_ptr(), dst.as_mut_ptr().add(offset), src.len());
@@ -143,7 +143,7 @@ impl Slice<u8> {
     pub const fn to_array<const LEN: usize>(src: &[u8]) -> [u8; LEN] {
         assert!(src.len() == LEN, "source slice length must match destination array length");
         let mut buf = [0; LEN];
-        cfg_select! { all(unsafe··, not(feature = "safe_mem")) => {
+        cfg_select! { not(feature = "safe_mem") => {
             // SAFETY: Just checked lengths are equal, u8 is Copy, entire range is bounds-checked
             unsafe { Ptr::copy_nonoverlapping(src.as_ptr(), buf.as_mut_ptr(), src.len()); }
         } _ => {

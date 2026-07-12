@@ -57,7 +57,7 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), unsafe··))] // RETHINK
+    #[cfg(not(feature = "safe_text"))]
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked(v) }
@@ -71,7 +71,7 @@ impl Str {
     /// # Safety
     /// The bytes passed in must be valid UTF-8.
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), unsafe··))] // RETHINK
+    #[cfg(not(feature = "safe_text"))]
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked_mut(v) }
@@ -108,7 +108,7 @@ impl Str {
     /// [`join!`][crate::join].
     #[doc(hidden)] #[rustfmt::skip]
     pub const fn __utf8_bytes_to_str(bytes: &[u8]) -> &str {
-        cfg_select! { all(unsafe··, not(feature = "safe_text")) => {
+        cfg_select! { not(feature = "safe_text") => {
             unsafe { ::core::str::from_utf8_unchecked(bytes) }
         } _ => { unwrap![ok ::core::str::from_utf8(bytes)] }}
     }

@@ -35,11 +35,12 @@ impl Alloc {
 
 /// # Unsafe methods
 ///
+/// Mirrors unsafe operations from [`core::alloc`].
+///
 /// ## Features
-/// They depend on enabling any `unsafe*` feature, and not enabling `safe_mem`.
-#[cfg_attr(nightly_doc, doc(cfg(unsafe··)))]
-#[cfg(all(not(feature = "safe_mem"), unsafe··))]
+/// Available unless `safe_mem` is enabled.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+#[cfg(not(feature = "safe_mem"))]
 #[cfg(feature = "alloc")]
 #[rustfmt::skip]
 impl Alloc {
