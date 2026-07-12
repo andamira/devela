@@ -28,7 +28,7 @@ use crate::{Lunit, UiRect};
 /// borrowed frame data and an owned string or text handle for retained output.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct UiDraw<S, T> {
+pub struct UiDraw<S, T = &'static str> {
     rect: UiRect,
     kind: UiDrawKind<S, T>,
 }

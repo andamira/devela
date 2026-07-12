@@ -103,3 +103,38 @@ impl UiScope {
 const fn mix_u64(scope: u64, key: u64) -> u64 {
     SplitMix64::mix64(scope ^ key.wrapping_add(SplitMix64::GOLDEN_GAMMA))
 }
+
+#[cfg(test)]
+mod _test {
+    use super::*;
+
+    #[test]
+    fn key_and_id_preserve_raw_values_except_max() {
+        assert_eq!(UiKey::new(0).raw(), 0);
+        assert_eq!(UiId::new(0).raw(), 0);
+        assert_eq!(UiKey::new(u64::MAX).raw(), u64::MAX - 1);
+        assert_eq!(UiId::new(u64::MAX).raw(), u64::MAX - 1);
+    }
+    #[test]
+    fn default_identity_values_are_root() {
+        assert_eq!(UiKey::default(), UiKey::ROOT);
+        assert_eq!(UiId::default(), UiId::ROOT);
+        assert_eq!(UiScope::default(), UiScope::ROOT);
+    }
+    #[test]
+    fn resolving_key_is_deterministic() {
+        let scope = UiScope::ROOT;
+        let key = UiKey::new(42);
+        assert_eq!(scope.resolve(key), scope.resolve(key));
+    }
+    #[test]
+    fn entering_scope_matches_resolved_id() {
+        let scope = UiScope::ROOT;
+        let key = UiKey::new(7);
+        assert_eq!(scope.enter(key).id(), scope.resolve(key));
+    }
+    #[test]
+    fn resolving_root_key_inside_root_scope_derives_child_id() {
+        assert_ne!(UiScope::ROOT.resolve(UiKey::ROOT), UiId::ROOT);
+    }
+}

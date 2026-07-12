@@ -164,7 +164,7 @@
 - remove non_exhaustive from `KeyFfi`.
 
 ### ui::frame
-- new types: `UiId`, `UiKey`, `UiScope`, `UiFrame`, `UiPhase`.
+- new types: `UiId`, `UiKey`, `UiFrame`, `UiOutput`, `UiOutputView`, `UiPhase`, `UiScope`.
 
 ### ui::layout
 - new types: `Layout1d`, `LayoutReceipt`, `Lunit`, `UiStack`.

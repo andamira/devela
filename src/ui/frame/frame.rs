@@ -1,6 +1,6 @@
-// devela/src/ui/frame/id.rs
+// devela/src/ui/frame/frame.rs
 //
-//!
+//! Defines [`UiFrame`].
 //
 
 use crate::{UiId, UiKey, UiScope};
@@ -82,4 +82,28 @@ pub enum UiPhase {
 
     /// Frame finalization.
     End,
+}
+
+#[cfg(test)]
+mod _test {
+    use super::*;
+
+    #[test]
+    fn frame_resolves_ids_through_its_scope() {
+        let frame = UiFrame::new();
+        let key = UiKey::new(13);
+        assert_eq!(frame.id(key), frame.scope().resolve(key));
+    }
+    #[test]
+    fn frame_enter_updates_scope() {
+        let frame = UiFrame::new();
+        let key = UiKey::new(5);
+        let entered = frame.enter(key);
+        assert_eq!(entered.scope(), frame.scope().enter(key));
+    }
+    #[test]
+    fn frame_phase_can_be_changed() {
+        let frame = UiFrame::new().with_phase(UiPhase::Layout);
+        assert_eq!(frame.phase(), UiPhase::Layout);
+    }
 }
