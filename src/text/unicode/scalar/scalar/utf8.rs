@@ -116,7 +116,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// ```
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             pub const fn from_str(string: &str) -> Option<$name> {
                 is![string.is_empty(), None, Some($name::from_str_unchecked(string))]
             }
@@ -127,7 +127,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Panics if the string is empty.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             pub const fn from_str_unchecked(string: &str) -> $name {
                 debug_assert!(!string.is_empty(), "string must not be empty");
                 let bytes = string.as_bytes();
@@ -141,7 +141,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Returns `None` if the string is empty.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[must_use]
             pub const fn from_str_with_len(string: &str) -> Option<($name, u32)> {
                 is![string.is_empty(), None, Some($name::from_str_with_len_unchecked(string))]
@@ -155,7 +155,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Panics if the string is empty.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             pub const fn from_str_with_len_unchecked(string: &str) -> ($name, u32) {
                 debug_assert!(!string.is_empty(), "string must not be empty");
                 let bytes = string.as_bytes();
@@ -182,7 +182,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// assert!(charu::from_utf8(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[must_use] #[rustfmt::skip]
             pub const fn from_utf8(bytes: &[u8]) -> Option<$name> {
                 is![bytes.is_empty(), return None];
@@ -208,7 +208,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Violating these conditions may lead to undefined behavior.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_unchecked(bytes: &[u8]) -> $name {
@@ -235,7 +235,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// assert!(charu::from_utf8_prefix(b"\xC2").is_none()); // incomplete sequence
             /// ```
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[must_use] #[rustfmt::skip]
             pub const fn from_utf8_prefix(bytes: &[u8]) -> Option<($name, u32)> {
                 is![bytes.is_empty(), return None];
@@ -261,7 +261,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Violating these conditions may lead to undefined behavior.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_prefix_unchecked(bytes: &[u8]) -> ($name, u32) {
@@ -283,7 +283,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// assert!(charu::from_utf8_byte_array([0xC2, 0x41, 0, 0]).is_none()); // malformed cont.
             /// ```
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[rustfmt::skip]
             pub const fn from_utf8_byte_array(bytes: [u8; 4]) -> Option<$name> {
                 let len = unwrap![some? Char(bytes[0]).len_utf8()]; // invalid leading byte?
@@ -307,7 +307,7 @@ macro_rules! _text_char_scalar_charu_impls {
             /// Violating these conditions may lead to undefined behavior.
             ///
             /// # Features
-            /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+            /// `unsafe_hint` enables unchecked handling of unreachable branches.
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_utf8_byte_array_unchecked(bytes: [u8; 4]) -> $name {

@@ -51,7 +51,7 @@ pub trait StringExt: Sealed {
     /// Panics if `!separator.is_ascii()`.
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]

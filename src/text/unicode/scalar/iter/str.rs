@@ -20,11 +20,8 @@ impl<'a> CharIter<'a, &str> {
     /// Returns `None` if the given index is not a valid character boundary.
     #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn new_at(string: &'a str, index: usize) -> Option<Self> {
-        if string.is_char_boundary(index) {
-            Some(Self::_new(string.as_bytes(), index))
-        } else {
-            None
-        }
+        if string.is_char_boundary(index) { Some(Self::_new(string.as_bytes(), index)) }
+        else { None }
     }
 
     /* misc. */
@@ -32,7 +29,7 @@ impl<'a> CharIter<'a, &str> {
     /// Returns the remaining string slice.
     ///
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     #[must_use]
     #[rustfmt::skip]
     pub const fn as_str(&self) -> &'a str {
@@ -74,7 +71,7 @@ impl<'a> CharIter<'a, &str> {
     /// assert![iter.next_char().is_none()];
     /// ```
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     #[must_use] #[rustfmt::skip]
     pub const fn next_char(&mut self) -> Option<char> {
         is![self.pos >= self.bytes.len(), return None];
@@ -209,10 +206,10 @@ impl<'a> CharIter<'a, &str> {
     /* peek methods */
 
     /// Returns the next Unicode scalar without advancing the iterator.
+    ///
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
-    #[must_use]
-    #[rustfmt::skip]
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
+    #[must_use] #[rustfmt::skip]
     pub const fn peek_char(&self) -> Option<char> {
         is![self.pos >= self.bytes.len(), return None];
         let (cp, _) = Char(self.bytes).to_scalar_unchecked(self.pos);

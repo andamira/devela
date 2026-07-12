@@ -41,6 +41,9 @@ pub trait StrExt: Sealed {
 
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
+    ///
+    /// For the *const* version see [`Str::repeat_into`].
+    ///
     /// # Examples
     /// ```
     /// use devela::StrExt;
@@ -50,9 +53,7 @@ pub trait StrExt: Sealed {
     /// assert_eq![repeated, "ayayay"];
     /// ```
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
-    ///
-    /// For the *const* version see [`Str::repeat_into`].
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     #[must_use]
     fn repeat_into<'input, const CAP: usize>(
         &self,
@@ -76,6 +77,7 @@ pub trait StrExt: Sealed {
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
     /// with a `separator` positioned after the immediately preceding number.
+    ///
     /// # Examples
     /// ```
     /// use devela::StrExt;
@@ -87,10 +89,10 @@ pub trait StrExt: Sealed {
     /// # Panics
     /// Panics if `buffer.len() < length`, or if `!separator.is_ascii()`.
     ///
-    /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
-    ///
     /// For the *const* version see [`Str::new_counter`].
+    ///
+    /// # Features
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]

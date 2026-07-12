@@ -94,7 +94,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// or if the next character is not ASCII.
     ///
     /// # Features
-    /// Uses the `unsafe_niche` feature to skip validation checks.
+    /// `unsafe_niche` enables unchecked construction of `char7` values.
     #[must_use]
     pub const fn next_char7(&mut self) -> Option<char7> {
         is![self.pos >= self.bytes.len(), return None];
@@ -161,7 +161,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// or if the next character can't fit in 2 bytes.
     ///
     /// # Features
-    /// Uses the `unsafe_niche` feature to skip validation checks.
+    /// `unsafe_niche` enables unchecked construction of `char16` values.
     #[must_use]
     pub const fn next_char16(&mut self) -> Option<char16> {
         is![self.pos >= self.bytes.len(), return None];
@@ -191,7 +191,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Violating these conditions may lead to undefined behavior.
     ///
     /// # Features
-    /// Uses the `unsafe_niche` feature to skip validation checks.
+    /// `unsafe_niche` enables unchecked construction of `char16` values.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
@@ -209,7 +209,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Returns `None` once there are no more characters left.
     ///
     /// # Features
-    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    /// `unsafe_hint` enables unchecked handling of unreachable branches.
     #[must_use] #[rustfmt::skip]
     pub const fn next_charu(&mut self) -> Option<charu> {
         is![self.pos >= self.bytes.len(), return None];
@@ -229,7 +229,7 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Violating these conditions may lead to undefined behavior.
     ///
     /// # Features
-    /// Uses the `unsafe_hint` feature to optimize out unreachable branches.
+    /// `unsafe_hint` enables unchecked handling of unreachable branches.
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))))]
@@ -246,9 +246,6 @@ impl<'a> CharIter<'a, &[u8]> {
     /// Returns the next Unicode scalar value.
     ///
     /// This is implemented via `Char::`[`to_scalar`][Char::to_scalar].
-    ///
-    /// # Features
-    /// Uses the `unsafe_niche` feature to skip duplicated validation checks.
     #[must_use]
     pub const fn next_scalar(&mut self) -> Option<u32> {
         is![self.pos >= self.bytes.len(), return None];

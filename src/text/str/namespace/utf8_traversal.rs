@@ -94,7 +94,7 @@ impl Str {
     /// Converts a byte slice known to be valid UTF-8 to a string.
     ///
     /// # Features
-    /// It can use unsafe internally to skip checks.
+    /// `safe_text` forces checked UTF-8 conversion.
     ///
     /// # Safety
     /// `bytes` must contain valid utf-8.

@@ -533,7 +533,7 @@ macro_rules! impl_str_u {
             /// Returns a byte slice of the inner string slice.
             ///
             /// # Features
-            /// Uses the `unsafe_slice` feature to skip validation checks.
+            /// `unsafe_slice` enables unchecked slicing.
             #[must_use] #[inline(always)]
             pub const fn as_bytes(&self) -> &[u8] {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
@@ -549,7 +549,7 @@ macro_rules! impl_str_u {
             /// before the borrow ends and the underlying `str` is used.
             ///
             /// # Features
-            /// Uses the `unsafe_slice` feature to skip validation checks.
+            /// `unsafe_slice` enables unchecked slicing.
             #[must_use] #[inline(always)]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
@@ -564,7 +564,7 @@ macro_rules! impl_str_u {
             /// Returns a reference to the inner string slice.
             ///
             /// # Features
-            /// Uses the `unsafe_str` feature to skip validation checks.
+            /// `unsafe_str` enables unchecked UTF-8 conversion.
             #[must_use]
             #[inline(always)]
             pub const fn as_str(&self) -> &str {
@@ -590,7 +590,7 @@ macro_rules! impl_str_u {
             /// Returns an iterator over the `chars` of the string.
             ///
             /// # Features
-            /// Uses the `unsafe_str` feature to skip validation checks.
+            /// `unsafe_str` enables unchecked UTF-8 conversion.
             #[inline(always)]
             pub const fn chars(&self) -> CharIter<'_, &str> {
                 CharIter::<&str>::new(self.as_str())

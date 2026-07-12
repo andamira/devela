@@ -226,7 +226,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns a byte slice of the inner string slice.
     ///
     /// # Features
-    /// Makes use of the `unsafe_slice` feature if enabled.
+    /// `unsafe_slice` enables unchecked slicing.
     #[must_use] #[inline(always)]
     pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len()).0 }
 
@@ -238,7 +238,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// ends and the underlying `str` is used.
     ///
     /// # Features
-    /// Makes use of the `unsafe_slice` feature if enabled.
+    /// `unsafe_slice` enables unchecked slicing.
     #[must_use] #[inline(always)]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
@@ -251,8 +251,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns the inner string slice.
+    ///
     /// # Features
-    /// Makes use of the `unsafe_slice` feature if enabled.
+    /// `unsafe_slice` enables unchecked slicing.
     #[must_use]
     pub const fn as_str(&self) -> &str {
         cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
@@ -393,11 +394,12 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// if not even the first non-nul character can fit.
     ///
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     pub const fn push_str(&mut self, string: &str) -> usize {
         let mut rem_cap = self.remaining_capacity();
         let mut bytes_written = 0;
         let mut chars = CharIter::<&str>::new(string);
+        // FEATURE(`unsafe_str`): applied inside `CharIter::<&[u8]>::next_char`.
         while let Some(character) = chars.next_char() {
             if character != NUL_CHAR {
                 let char_len = character.len_utf8();
@@ -440,7 +442,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// assert!(small.try_push_str("🚀").is_err()); // Needs 4 bytes for the rocket
     /// ```
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     pub const fn try_push_str(&mut self, string: &str) -> Result<usize, NotEnoughSpace> {
         let mut first_char_len = 0;
         let mut chars = CharIter::<&str>::new(string);
@@ -464,7 +466,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns [`NotEnoughSpace`] if the slice wont completely fit.
     ///
     /// # Features
-    /// Uses the `unsafe_str` feature to skip validation checks.
+    /// `unsafe_str` enables unchecked UTF-8 conversion.
     pub const fn try_push_str_complete(&mut self, string: &str) -> Result<usize, NotEnoughSpace> {
         lets![mut non_nul_len=0, bytes=string.as_bytes(), str_len=bytes.len()];
         whilst!{ i in 0..str_len; { is![bytes[i] != 0, non_nul_len += 1] }} // count !0 bytes

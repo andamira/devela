@@ -20,7 +20,7 @@ macro_rules! _num_dom_real_float_define_fsize {
         #[doc = crate::_doc_meta!{location("num/dom/real")}]
         ///
         /// # Features
-        /// Makes use of `nightly_float` in 16-bit architectures.
+        /// `nightly_float` enables 16-bit architectures.
         #[cfg_attr(
             nightly_doc,
             doc(cfg(any(

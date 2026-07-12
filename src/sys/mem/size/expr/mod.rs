@@ -27,8 +27,7 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 /// assert_eq!(SIZE, 2);
 /// ```
 /// # Features
-/// Makes use of [`unreachable_unchecked`][core::hint::unreachable_unchecked]
-/// if the `unsafe_hint` feature is enabled.
+/// `unsafe_hint` enables leveraging [`unreachable_unchecked`][core::hint::unreachable_unchecked].
 #[doc = crate::_doc_vendor!("size_of_trait")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
