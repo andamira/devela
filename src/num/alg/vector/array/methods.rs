@@ -1,4 +1,4 @@
-// devela/src/num/lin/vector/array/methods.rs
+// devela/src/num/alg/vector/array/methods.rs
 //
 //! impl methods for Vector
 //

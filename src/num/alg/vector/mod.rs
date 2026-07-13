@@ -1,4 +1,4 @@
-// devela/src/num/lin/vector/mod.rs
+// devela/src/num/alg/vector/mod.rs
 //
 //! Linear algebra vectors.
 //!

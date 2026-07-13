@@ -1,4 +1,4 @@
-// devela/src/num/lin/matrix/_test.rs
+// devela/src/num/alg/matrix/_test.rs
 //
 //!
 //

@@ -311,7 +311,7 @@ mod reflection {
         };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         ref_flags: &["num··"],
-        features: &["num", "lin", "int", "rand"]
+        features: &["num", "alg", "int", "rand"]
     };
     pub const ORG: FlagsFeatures = FlagsFeatures {
         ref_flags: &["org··"],

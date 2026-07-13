@@ -1,4 +1,4 @@
-// devela/src/num/lin/vector/vec/methods.rs
+// devela/src/num/alg/vector/vec/methods.rs
 //
 //! impl methods for VecVector
 //

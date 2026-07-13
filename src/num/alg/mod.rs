@@ -1,7 +1,7 @@
-// devela/src/num/lin/mod.rs
+// devela/src/num/alg/mod.rs
 //
-#![doc = crate::_DOC_NUM_LIN!()] // public
-#![doc = crate::_doc!(modules: crate::num; lin)]
+#![doc = crate::_DOC_NUM_ALG!()] // public
+#![doc = crate::_doc!(modules: crate::num; alg)]
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //

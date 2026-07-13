@@ -197,6 +197,7 @@ its own flat view of all its public children.";
 
     // 7. num (formal relations of magnitude and uncertainty)
     _DOC_NUM             = "Numeric abstractions and formal computation.";
+    _DOC_NUM_ALG         = "Algebraic numeric structures and operations.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
     _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
     _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
@@ -210,7 +211,8 @@ its own flat view of all its public children.";
     _DOC_NUM_GRAIN_CAST  = "Casting between primitives.";
     _DOC_NUM_GRAIN_NICHE = "Specialized numeric types and behaviors.";
     _DOC_NUM_GRAIN_WIDE  = "Wide numeric types and parallel arithmetic.";
-    _DOC_NUM_LIN         = "Linear algebraic structures and methods.";
+    _DOC_NUM_LEARN       = "Adaptive numeric systems for prediction and training.";
+    _DOC_NUM_OPTIM       = "Objective functions, constraints, and numerical optimization.";
     _DOC_NUM_PROB        = "Probability theory and statistical inference.";
     _DOC_NUM_PROB_DIST   = "Probability distributions, sampling, mass, and cumulative structure.";
     _DOC_NUM_PROB_MARKOV = "Finite-state Markov chains and stochastic transition structure.";

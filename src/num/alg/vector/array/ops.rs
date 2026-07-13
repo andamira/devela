@@ -1,4 +1,4 @@
-// devela/src/num/lin/vector/array/ops.rs
+// devela/src/num/alg/vector/array/ops.rs
 //
 //! implement overloadable operators
 //

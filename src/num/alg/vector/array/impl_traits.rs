@@ -1,4 +1,4 @@
-// devela/src/num/lin/vector/array/impl_traits.rs
+// devela/src/num/alg/vector/array/impl_traits.rs
 //
 //!
 //

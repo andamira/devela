@@ -262,12 +262,12 @@ media_all = ["media", "audio", "font", "visual"]
 		image = []
 
 num = []
-num_all = ["num", "int", "lin", "rand"]
+num_all = ["alg", "num", "int", "rand"]
+	alg = [] # linear algebra
 	# dom
 		int = [] # Int TEMP
 		# real
 			# float
-	lin = [] # linear algebra
 	# prob
 		rand = []
 	# symb = []
