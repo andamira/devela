@@ -2,6 +2,9 @@
 //
 //! Defines `TextInput[Config|Action|Outcome|Reject|View]`.
 //
+// Boundary: TextInput owns text mutation and cursor state.
+// It does not own focus, event acquisition, layout, or presentation.
+//
 
 #[doc = crate::_tags!(ui text)]
 /// One-line editable text state over caller-chosen storage.
@@ -48,7 +51,7 @@ impl TextInputConfig {
     pub const DEFAULT: Self = Self { max_bytes: None, can_be_empty: true };
 }
 
-#[doc = crate::_tags!(ui text)]
+#[doc = crate::_tags!(ui text interaction)]
 /// Editing command consumed by [`TextInput`].
 #[doc = crate::_doc_meta!{
     location("ui/text"),
@@ -87,7 +90,7 @@ pub enum TextInputAction {
     Cancel,
 }
 
-#[doc = crate::_tags!(ui text)]
+#[doc = crate::_tags!(ui text result)]
 /// Result of applying a [`TextInputAction`].
 #[doc = crate::_doc_meta!{
     location("ui/text"),

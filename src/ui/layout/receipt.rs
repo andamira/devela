@@ -2,6 +2,9 @@
 //
 //! Defines [`Layout1d`], [`LayoutReceipt`].
 //
+// Boundary: layout receipts record assigned space.
+// They do not carry semantic, routing, or presentation state.
+//
 
 use crate::{Cmp, Interval, Lunit, Ordering, UiId, UiRect};
 

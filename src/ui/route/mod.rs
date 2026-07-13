@@ -14,7 +14,7 @@
 //! ├── UiId
 //! └── UiRect
 //!
-//! routing state — each stores an optional UiId
+//! routing state (each stores an optional UiId)
 //! ├── RouteHot       direct pointing candidate
 //! ├── RouteActive    ongoing interaction owner
 //! ├── RouteFocus     keyboard or navigation owner
@@ -36,9 +36,11 @@
 //! it does not prescribe hit ordering, overlap resolution,
 //! event propagation, gesture recognition, or a particular routing algorithm.
 //!
-//! [`RouteFocus`] records current routing ownership. The semantic ability to
-//! request or receive focus is represented separately by
-//! [`UiAction::Focus`][crate::UiAction::Focus].
+//! [`RouteFocus`] records current focus ownership. The corresponding
+//! semantic action is [`UiAction::Focus`][crate::UiAction::Focus].
+//!
+//! [`UiId`]: crate::UiId
+//! [`UiRect`]: crate::UiRect
 //
 
 #[cfg(test)]

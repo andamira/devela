@@ -21,7 +21,7 @@
 //! distinct ids, avoiding the need for one globally coordinated key space.
 //!
 //! A phase identifies the current kind of frame processing. It does not
-//! prescribe a scheduler or require to perform every phase.
+//! prescribe a scheduler or require every phase to be performed.
 //!
 //! # Boundaries
 //!

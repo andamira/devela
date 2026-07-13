@@ -2,6 +2,9 @@
 //
 //! Defines [`UiResponseFlags`], [`UiResponse`].
 //
+// Boundary: UiResponse reports per-identity interaction results.
+// It does not own or derive the routing state that produced them.
+//
 
 use crate::{_impl_init, UiId};
 
@@ -32,7 +35,7 @@ crate::set! {
     }
 }
 
-#[doc = crate::_tags!(ui)]
+#[doc = crate::_tags!(ui interaction result)]
 /// Interaction result for a UI item.
 #[doc = crate::_doc_meta! {
     location("ui/widget"),

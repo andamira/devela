@@ -26,6 +26,8 @@ use crate::{Lunit, UiRect};
 ///
 /// `T` is the caller-defined text payload. Common choices include `&str` for
 /// borrowed frame data and an owned string or text handle for retained output.
+///
+/// [`UiDrawList`]: crate::UiDrawList
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct UiDraw<S, T = &'static str> {

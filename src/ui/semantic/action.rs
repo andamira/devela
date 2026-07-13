@@ -5,7 +5,7 @@
 
 crate::enumset! {
 
-    #[doc = crate::_tags!(ui member)]
+    #[doc = crate::_tags!(ui interaction member)]
     /// Human-facing action exposed by a UI identity.
     #[doc = crate::_doc_meta! {location("ui/semantic")}]
     #[must_use]

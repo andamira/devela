@@ -7,7 +7,9 @@
 use crate::Vec;
 use crate::{PhantomData, UiDraw};
 
+#[doc = crate::_tags!(ui data_structure lifetime)]
 /// A borrowed view over an ordered UI draw sequence.
+#[doc = crate::_doc_meta! { location("ui/view") }]
 ///
 /// It preserves the painter ordering of the underlying
 /// [`UiDrawList`] without taking ownership of its storage.

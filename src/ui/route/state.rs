@@ -10,7 +10,7 @@ macro_rules! define_ui_state {
         $( define_ui_state!(% $name, $doc, $det, $adj); )+
     };
     (% $name:ident, $doc:literal, $det:literal, $adj:literal) => {
-        #[doc = crate::_tags!(ui)]
+        #[doc = crate::_tags!(ui interaction)]
         #[doc = $doc]
         #[doc = crate::_doc_meta! {
             location("ui/route"),

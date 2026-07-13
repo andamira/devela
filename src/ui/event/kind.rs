@@ -23,7 +23,7 @@ crate::enumset! {
     #[non_exhaustive]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub enum EventTag(
-        #[doc = crate::_tags!(event data_structure)]
+        #[doc = crate::_tags!(event set)]
         /// A compact set of [`EventTag`]s.
         #[doc = crate::_doc_meta!{
             location("ui/event"),

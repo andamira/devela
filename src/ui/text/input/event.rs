@@ -2,6 +2,9 @@
 //
 //! Event mappings for text input.
 //
+// Boundary: keymaps translate normalized keys into editing actions;
+// they do not consume backend-native events or mutate TextInput directly.
+//
 
 use crate::{EventKey, Key, KeyMods, KeyState, TextInputAction, is};
 use KeyState::{Press, Release, Repeat};

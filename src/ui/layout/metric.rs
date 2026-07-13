@@ -2,6 +2,9 @@
 //
 //! Metric aliases: [`UiExt`], [`UiPos`], [`UiRect`], [`UiStride`].
 //
+// Boundary: these aliases specialize generic geometry for logical UI space;
+// conversion into backend output units happens after layout.
+//
 
 use crate::{Extent2, Lunit, Position2, RegionS2, Stride2};
 

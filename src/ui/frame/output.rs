@@ -20,6 +20,8 @@ use crate::{LayoutReceipt, UiDraw, UiDrawList, UiDrawListView, UiView};
 ///
 /// `L`, `V`, and `D` determine ownership and storage. They may contain borrowed
 /// slices, fixed storage, allocated vectors, or other suitable representations.
+///
+/// [`UiFrame`]: crate::UiFrame
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct UiOutput<L, V, D> {

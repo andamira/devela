@@ -2,6 +2,9 @@
 //
 //! Defines [`Event`].
 //
+// Boundary: EventTarget addresses host surfaces and devices,
+// not frame-resolved UiId values.
+//
 
 use crate::{_impl_init, NonZeroU64};
 use crate::{

@@ -2,6 +2,9 @@
 //
 //! Defines [`EventKey`], [`EventKeyFfi`].
 //
+// Boundary: semantic keys preserve interpreted meaning;
+// physical keys preserve positional origin when available.
+//
 
 use crate::{ConstInit, Key, KeyMods, KeyState};
 

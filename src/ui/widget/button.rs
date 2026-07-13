@@ -2,10 +2,13 @@
 //
 //! Defines [`UiButton`].
 //
+// Boundary: UiButton carries author input and derives semantic records.
+// Identity resolution, routing, layout, and drawing remain external.
+//
 
 use crate::{UiAction, UiEntry, UiKey, UiRole, UiText};
 
-#[doc = crate::_tags!(ui)]
+#[doc = crate::_tags!(ui interaction)]
 /// Activatable command control.
 #[doc = crate::_doc_meta! {
     location("ui/widget"),

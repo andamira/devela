@@ -2,6 +2,9 @@
 //
 //! Defines [`EventQueue`].
 //
+// Boundary: this queue buffers normalized events.
+// Polling cadence, overflow policy, and dispatch belong to its caller.
+//
 
 use crate::{BufferRingU8, ConstInit, Event, MismatchedCapacity};
 

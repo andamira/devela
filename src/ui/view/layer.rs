@@ -3,7 +3,7 @@
 //! Defines [`UiLayer`].
 //
 
-#[doc = crate::_tags!(ui)]
+#[doc = crate::_tags!(ui ord)]
 /// Visual ordering layer for a UI view.
 #[doc = crate::_doc_meta! {
     location("ui/view"),

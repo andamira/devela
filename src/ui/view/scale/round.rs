@@ -3,7 +3,7 @@
 //! Defines [`UiRound`].
 //
 
-#[doc = crate::_tags!(ui)]
+#[doc = crate::_tags!(ui quant)]
 /// Rounding policy used when projecting UI layout space.
 #[doc = crate::_doc_meta! { location("ui/view") }]
 #[must_use]

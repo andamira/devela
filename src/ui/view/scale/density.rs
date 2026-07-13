@@ -6,7 +6,7 @@
 use crate::UiRound::{self, Ceil, Floor, Inward, Nearest, Outward};
 use crate::{Cmp, Lunit, RatioU32, RegionS2, UiNum, UiRect, unwrap};
 
-#[doc = crate::_tags!(ui)]
+#[doc = crate::_tags!(ui quant)]
 /// Physical output pixels per logical UI pixel.
 #[doc = crate::_doc_meta! {
     location("ui/view/scale"),
@@ -136,7 +136,6 @@ impl UiDensity {
         }
     }
 
-    /// Projects a physical output pixel rectangle back into logical UI space.
     /// Projects a physical output pixel rectangle back into logical UI space.
     pub const fn px_to_rect(self, rect: RegionS2<i32>, round: UiRound) -> UiRect {
         let (rx, ry) = (rect.x(), rect.y());

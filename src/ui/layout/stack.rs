@@ -2,6 +2,9 @@
 //
 //! Defines [`UiStack`].
 //
+// Boundary: UiStack is a local region-consumption helper,
+// not a layout tree or general layout engine.
+//
 
 use crate::{Boundary2d, Lunit, UiRect};
 

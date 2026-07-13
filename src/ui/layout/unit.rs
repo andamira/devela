@@ -6,7 +6,7 @@
 use crate::UiNum;
 
 crate::bound_int! {
-    #[doc = crate::_tags!(ui layout)]
+    #[doc = crate::_tags!(ui layout quant)]
     /// Fixed-point scalar used for UI layout negotiation.
     #[doc = crate::_doc_meta!{
         location("ui/layout"),

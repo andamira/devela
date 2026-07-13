@@ -328,7 +328,7 @@ its own flat view of all its public children.";
     // 13. ui (contact between human and system)
     _DOC_UI = "Interactive surfaces, input semantics, and presentation state.";
     _QUO_UI = "> How humans interact with what exists.";
-    _DOC_UI_EVENT    = "Normalized interaction and window events entering the UI frame.";
+    _DOC_UI_EVENT    = "Normalized input, control, and presentation-surface events.";
     _DOC_UI_FRAME    = "Frame context, scoped identity, and processing phases";
     _DOC_UI_INTENT   = "Desired UI configuration before capability-bound realization.";
     _DOC_UI_LAYOUT   = "Canonical spatial vocabulary for deterministic arrangement.";
