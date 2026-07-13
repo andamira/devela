@@ -9,8 +9,11 @@
 //!
 //! They are: discrete, region-relative, non-cyclic, without magnitude.
 //!
-//! In one dimension, boundary orientation corresponds to the two extrema
-//! of a totally ordered extent.
+//! In one dimension, boundary orientation corresponds
+//! to the two extrema of a totally ordered extent.
+//
+// Boundary: boundary values are region-relative labels.
+// They do not represent motion, distance, or containment results.
 //
 
 #[cfg(doc)]

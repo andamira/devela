@@ -2,6 +2,9 @@
 //
 //! Defines [`Stride`].
 //
+// Boundary: Stride describes per-axis stepping.
+// It does not select iteration order or define a memory layout.
+//
 
 #[doc = crate::_tags!(geom)]
 /// A step size for traversing dimensions or repetitions.

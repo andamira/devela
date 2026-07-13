@@ -6,6 +6,10 @@
 // - struct Region, type aliases
 // - struct RegionStrided
 // - implementations
+//
+// Boundary: Region combines position and extent.
+// It is not a geometric figure, collection, or storage view.
+//
 
 use crate::{Extent, Position, Stride};
 

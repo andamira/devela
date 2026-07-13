@@ -118,7 +118,7 @@ its own flat view of all its public children.";
     _DOC_GEOM_FIG_LINE     = "Linear geometric primitives such as segments and rays.";
     _DOC_GEOM_FIG_POLY     = "Polygonal and polyhedral geometric figures.";
     _DOC_GEOM_FIG_SET      = "Collections of geometric figures for aggregation and derivation.";
-    _DOC_GEOM_METRIC       = "Measurement of space: distances, extents, and magnitudes.";
+    _DOC_GEOM_METRIC       = "Spatial positions, measures, regions, and traversal.";
     _DOC_GEOM_REL          = "Spatial predicates and semantic relations between geometric entities.";
     _DOC_GEOM_REL_ADJACENCY   = "Neighborhood and reachability relations between entities.";
     _DOC_GEOM_REL_CONTAINMENT = "Inside, outside, and inclusion relations.";

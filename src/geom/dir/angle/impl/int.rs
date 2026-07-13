@@ -189,7 +189,7 @@ macro_rules! _geom_dir_angle_impl_int {
                 }
             }
 
-            /// Returns a version of the angle with the given `direction`.
+            /// Sets the angle with the given `direction`.
             ///
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
             pub fn set_direction(&mut self, direction: AngleDirection) {
@@ -240,10 +240,10 @@ macro_rules! _geom_dir_angle_impl_int {
             /// Unsigned integers can only have `Positive` direction.
             pub const fn with_direction(self, _direction: AngleDirection) -> Self { self }
 
-            /// Returns a version of the angle with the given `direction` (no-op for unsigned).
+            /// Sets the angle with the given `direction` (no-op for unsigned).
             ///
             /// Unsigned integers can only have `Positive` direction.
-            pub const fn set_direction(self, _direction: AngleDirection) {}
+            pub const fn set_direction(&mut self, _direction: AngleDirection) {}
 
             /// Returns a version of the angle with inverted direction (no-op for unsigned).
             ///

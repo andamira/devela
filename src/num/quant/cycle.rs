@@ -2,6 +2,9 @@
 //
 //! Defines [`Cycle`], [`CycleCount`].
 //
+// Boundary: Cycle describes a period.
+// Current phase and progression belong to signal-state abstractions.
+//
 
 use crate::ConstInit;
 

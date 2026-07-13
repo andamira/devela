@@ -2,6 +2,9 @@
 //
 //! Defines [`Orientation`][1|2|3].
 //
+// Boundary: Orientation carries direction only.
+// It does not carry position, distance, or guaranteed normalization.
+//
 
 #[cfg(doc)]
 use crate::{Distance, Position};

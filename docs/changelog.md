@@ -72,6 +72,9 @@
 - move `<data|num|text>::error` to `error::<data|num|text>`.
 - move `code::error` contents here.
 
+### geom::dir
+- fix `Angle` left-hand rule direction.
+
 ##### lang::prog::ffi::js
 - update `Js`:
   - improve safety of string-related methods.

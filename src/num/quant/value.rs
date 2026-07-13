@@ -2,6 +2,9 @@
 //
 //! Defines [`ValueQuant`].
 //
+// Boundary: ValueQuant only associates V with Q.
+// The meaning and validity of that relation belong to the caller.
+//
 
 #[doc = crate::_tags!(quant result)]
 /// A value with associated quantification.
