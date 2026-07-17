@@ -1,0 +1,102 @@
+// devela/src/sys/os/browser/web/work/worker.rs
+//
+//! Defines [`WebWorker`], [`WebWorkerError`], [`WebWorkerJob`].
+//
+// TOC
+// - struct WebWorker
+// - struct WebWorkerError
+// - struct WebWorkerJob
+
+#[cfg(feature = "alloc")]
+use crate::String;
+#[allow(unused_imports)]
+use crate::{AsyncPoll, Web, js_uint32};
+
+#[doc = crate::_tags!(web uid)]
+/// A handle to a JavaScript Web Worker.
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web"),
+    test_size_of(WebWorker = 4|32),
+}]
+///
+/// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
+#[repr(transparent)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct WebWorker {
+    pub(crate) id: js_uint32,
+}
+
+#[rustfmt::skip]
+impl WebWorker {
+    /// Returns a new invalid worker.
+    pub const fn invalid() -> Self { WebWorker { id: 0 } }
+    /// Returns the worker's ID.
+    pub const fn id(self) -> js_uint32 { self.id }
+}
+
+#[rustfmt::skip]
+impl WebWorker {
+    /// Spawns a new JavaScript Web Worker from a script.
+    pub fn spawn(script: &str) -> Result<Self, WebWorkerError> { Web::worker_spawn(script) }
+    /// Stops this Web Worker.
+    pub fn stop(self) { Web::worker_stop(self); }
+    /// Checks if this worker is still active by querying JavaScript.
+    pub fn is_active(self) -> bool { Web::worker_is_active(self) }
+    /// Sends a message to this Web Worker.
+    pub fn send_message(self, message: &str) { Web::worker_send_message(self, message); }
+    /// Executes JavaScript inside this worker, returning a `WebWorkerJob`.
+    pub fn eval(self, js_code: &str) -> Result<WebWorkerJob, WebWorkerError> {
+        if !self.is_active() { return Err(WebWorkerError::WorkerNotFound); }
+        let job = Web::worker_eval(self, js_code);
+        if job.id == 0 { return Err(WebWorkerError::WorkerNotFound); }
+        Ok(job)
+    }
+}
+
+#[doc = crate::_tags!(web error)]
+/// Errors that can occur when working with JavaScript Web Workers.
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum WebWorkerError {
+    /// The worker script provided was invalid.
+    InvalidScript,
+    /// The worker was not found.
+    WorkerNotFound,
+    /// The job was not found.
+    JobNotFound,
+}
+
+#[doc = crate::_tags!(web uid)]
+/// Represents a job running inside a [`WebWorker`].
+#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct WebWorkerJob {
+    pub(crate) worker: WebWorker,
+    pub(crate) id: js_uint32,
+}
+
+#[rustfmt::skip]
+impl WebWorkerJob {
+    /// Returns the associated worker.
+    pub const fn worker(self) -> WebWorker { self.worker }
+    /// Returns the job's ID.
+    pub const fn id(self) -> js_uint32 { self.id }
+}
+
+#[rustfmt::skip]
+impl WebWorkerJob {
+    /// Polls the result of this job and writes it into `buffer`.
+    ///
+    /// Returns the number of bytes written to the buffer.
+    pub fn poll(self, buffer: &mut [u8]) -> AsyncPoll<Result<usize, WebWorkerError>> {
+        Web::worker_poll(self, buffer)
+    }
+    /// Polls the result of this job.
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    pub fn poll_alloc(self) -> AsyncPoll<Result<String, WebWorkerError>> {
+        Web::worker_poll_alloc(self)
+    }
+    /// Cancels this job.
+    pub fn cancel(self) { Web::worker_eval_cancel(self); }
+}

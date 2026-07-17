@@ -9,7 +9,7 @@
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_NUM_MODULES =
-    crate::_doc!(modules: crate; num: dom, fin, grain, lin, prob, quant, signal); // expr
+    crate::_doc!(modules: crate; num: alg, dom, fin, grain, prob, quant, signal); // expr
 }
 
 #[cfg(feature = "alg")]

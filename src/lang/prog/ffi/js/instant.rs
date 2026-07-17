@@ -72,7 +72,7 @@ mod impl_event {
 }
 #[rustfmt::skip]
 #[cfg(any(target_arch = "wasm32", doc))]
-#[cfg(all(feature = "web", not(windows)))]
+#[cfg(all(feature = "time", feature = "web", not(windows)))]
 mod impl_web {
     use crate::{JsInstant, TimeScale, TimeSource};
 

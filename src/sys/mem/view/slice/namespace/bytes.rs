@@ -1,6 +1,6 @@
 // devela/src/sys/mem/view/slice/namespace/bytes.rs
 
-#[cfg(any(doc, not(feature = "safe_mem")))]
+#[cfg(all(feature = "unsafe_ptr", not(feature = "safe_mem")))]
 use crate::Ptr;
 use crate::{Char, Cmp, Slice};
 
