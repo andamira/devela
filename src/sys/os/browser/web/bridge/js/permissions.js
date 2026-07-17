@@ -2,42 +2,45 @@
 
 import { strDecode } from "./shared.js";
 
-// In sync with ../access/permission.rs::WebPermissionState
+// In sync with ../access.rs permission_query_from_js
 const PERMISSION_GRANTED = 1;
 const PERMISSION_PROMPT = 0;
 const PERMISSION_DENIED = -1;
-const PERMISSION_UNKNOWN = -2;
-const PERMISSION_ERROR = -3;
+const PERMISSION_PENDING = -2;
+const PERMISSION_UNSUPPORTED = -3;
+const PERMISSION_FAILED = -4;
 
 function permissionStateCode(state) {
   switch (state) {
     case "granted": return PERMISSION_GRANTED;
     case "prompt":  return PERMISSION_PROMPT;
     case "denied":  return PERMISSION_DENIED;
-    default:        return PERMISSION_UNKNOWN;
+    default:        return PERMISSION_FAILED;
   }
 }
 
 export function makePermissionsApi(env) {
   const cache = new Map();   // permission name -> state code
   const pending = new Set(); // permission name
-
   return {
     permissions_query: (namePtr, nameLen) => {
       const name = strDecode(env, namePtr, nameLen);
-      if (!navigator.permissions || !navigator.permissions.query) { return PERMISSION_UNKNOWN; }
+      if (!navigator.permissions?.query) { return PERMISSION_UNSUPPORTED; }
       if (cache.has(name)) { return cache.get(name); }
       if (!pending.has(name)) {
         pending.add(name);
         navigator.permissions.query({ name })
-          .then((result) => {
-            cache.set(name, permissionStateCode(result.state));
+          .then((status) => {
+            cache.set(name, permissionStateCode(status.state));
             pending.delete(name);
-            result.onchange = () => { cache.set(name, permissionStateCode(result.state)); };
+            status.onchange = () => { cache.set(name, permissionStateCode(status.state)); };
           })
-          .catch(() => { cache.set(name, PERMISSION_ERROR); pending.delete(name); });
+          .catch((error) => {
+            cache.set(name, error instanceof TypeError ? PERMISSION_UNSUPPORTED : PERMISSION_FAILED);
+            pending.delete(name);
+          });
       }
-      return PERMISSION_UNKNOWN;
+      return PERMISSION_PENDING;
     },
   };
 }

@@ -1,6 +1,8 @@
 // devela/src/sys/os/browser/web/access/permission.rs
 
-use crate::{_tags, js_int32};
+#[cfg(doc)]
+use crate::AsyncPoll;
+use crate::{_tags, PermissionQuery, Web};
 
 #[doc = _tags!(web)]
 /// Web API permissions
@@ -54,6 +56,14 @@ pub enum WebPermission {
     TopLevelStorageAccess,
 }
 impl WebPermission {
+    /// Starts or polls a non-blocking query for this permission.
+    ///
+    /// The first call may return [`AsyncPoll::Pending`] while the browser resolves the query.
+    /// A later call returns the resolved permission state or a query error.
+    pub fn query(self) -> PermissionQuery {
+        Web::permissions_query(self)
+    }
+
     /// Returns the permission name as a string.
     pub fn as_str(self) -> &'static str {
         use WebPermission as P;
@@ -74,37 +84,6 @@ impl WebPermission {
             P::ScreenWakeLock => "screen-wake-lock",
             P::StorageAccess => "storage-access",
             P::TopLevelStorageAccess => "top-level-storage-access",
-        }
-    }
-}
-
-#[doc = _tags!(web result)]
-/// Permission query result state.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[repr(i8)]
-pub enum WebPermissionState {
-    /// The permission has been granted by the user.
-    Granted = 1,
-    /// The user has not yet granted or denied the permission.
-    Prompt = 0,
-    /// The user has not yet granted or denied the permission.
-    Denied = -1,
-    /// The queried permission is unsupported or unrecognized.
-    Unknown = -2,
-    /// An error occurred while querying the permission state.
-    Error = -3,
-}
-
-impl From<js_int32> for WebPermissionState {
-    fn from(from: js_int32) -> Self {
-        use WebPermissionState as S;
-        match from {
-            1 => S::Granted,
-            0 => S::Prompt,
-            -1 => S::Denied,
-            -2 => S::Unknown,
-            _ => S::Error,
         }
     }
 }

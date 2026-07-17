@@ -30,7 +30,7 @@ impl JsTimeout {
     #[doc = _js_doc!("Window", "setInterval")]
     /// Calls a function repeatedly at a fixed interval in milliseconds.
     pub fn interval(callback: extern "C" fn(), interval_ms: js_uint32) -> Self {
-        WebWindow::set_timeout(callback, interval_ms) }
+        WebWindow::set_interval(callback, interval_ms) }
 
     /// Executes JavaScript code immediately.
     /// ## Security Warning

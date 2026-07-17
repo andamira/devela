@@ -29,6 +29,7 @@
 ## documentation
 - make `all` and `all_` root modules public.
 - remove `zall` and `zall_` public root modules.
+- new tag: `_TAG_STATE`.
 - clarify public module and hidden scope features.
 
 ## examples
@@ -113,6 +114,9 @@
 ### phys::time
 - remove the `time` feature-gate from `[Maybe]Timed`.
 
+## run
+- new types `Permission<Error|Query|State>`.
+
 ### sys::io
 - re-export missing `IoSeekFrom` from std.
 
@@ -123,11 +127,13 @@
 
 ##### sys::os::browser::web
 - new types `WebEventIngress`, `WebEventKey`.
+- remove `WebPermissionState`.
 - update `WebEvent*` types:
   - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.
   - rename the timed variants to `<from|to>_event_kind_timed`.
 - update `Web`:
   - take `JsInstant` as an argument for `request_animation_frame`.
+  - change `permissions_query` to return `PermissionQuery`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.
 - decouple events from the `time` feature.
 - modularize browser JS bindings.

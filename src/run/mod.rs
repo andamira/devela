@@ -17,6 +17,7 @@ pub mod app; // AppControl
 pub mod cycle; // RunCycle, RunControl, RunPhase
 mod driver; // RunDriver
 mod iface; // RunApp
+mod permission; // Permission<Error|Query|State>
 pub mod regime; // RunCap*, RunService
 // pub mod state;
 pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
@@ -26,6 +27,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             iface::*,
             driver::_all::*,
+            permission::*,
         };
     }
     _pub_mods {

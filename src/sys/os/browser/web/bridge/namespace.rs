@@ -4,11 +4,7 @@
 //! Defines the [`Web`] namespace.
 //
 
-use crate::_js_extern;
-crate::items! {
-    use crate::{_js_doc, js_int32,};
-    use crate::{WebDocument, WebPermission, WebPermissionState, WebWindow};
-}
+use crate::{_js_doc, WebDocument, WebWindow};
 
 #[doc = crate::_tags!(web namespace)]
 /// A Web API namespace.

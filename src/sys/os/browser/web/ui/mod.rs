@@ -7,7 +7,6 @@
 
 crate::structural_mods! { // _mods
     _mods {
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = "ui")))]
         pub use super::{
             // canvas::*,
         };
