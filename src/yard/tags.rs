@@ -192,7 +192,7 @@ _define_symbol_tags! {
     // Current condition and transition-bearing state of an entity or process.
     // Covers state enums, state holders, and explicit current-state snapshots.
     // Excludes one-shot outcomes, commands, configuration, and static policy.
-    _TAG_STATE, "State", "◉";
+    _TAG_STATE, "State", "◎"; // ◉
     _TAG_STRING, "String storage and views", "🧶"; // (yarn)
     // Symbolic representations and manipulation of expressions.
     // Focuses on form and rewriting, not truth evaluation or inference.
