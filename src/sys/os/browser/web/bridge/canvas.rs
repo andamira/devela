@@ -22,10 +22,17 @@ impl Web {
 
     #[doc = _js_doc!(canvas "fillStyle")]
     /// Sets the color or style for filling shapes.
-    pub fn fill_style(r: u8, g: u8, b: u8) { fill_style(r, g, b); }
+    pub fn set_fill_rgb([r, g, b]: [u8; 3]) { set_fill_style_rgba(r, g, b, u8::MAX); }
+    #[doc = _js_doc!(canvas "fillStyle")]
+    /// Sets the color or style for filling shapes.
+    pub fn set_fill_rgba([r, g, b, a]: [u8; 4]) { set_fill_style_rgba(r, g, b, a); }
+
     #[doc = _js_doc!(canvas "strokeStyle")]
     /// Sets the color or style for lines.
-    pub fn stroke_style(r: u8, g: u8, b: u8) { stroke_style(r, g, b); }
+    pub fn set_stroke_rgb([r, g, b]: [u8; 3]) { set_stroke_style_rgba(r, g, b, u8::MAX); }
+    #[doc = _js_doc!(canvas "strokeStyle")]
+    /// Sets the color or style for lines.
+    pub fn set_stroke_rgba([r, g, b, a]: [u8; 4]) { set_stroke_style_rgba(r, g, b, a); }
 
     /* drawing rectangles */
 
@@ -53,6 +60,9 @@ impl Web {
 
     /* drawing text */
 
+    // IMPROVE
+    /// Selects top-relative canvas text positioning for UI projection.
+    pub(crate) fn set_text_baseline_top() { set_text_baseline_top(); }
     #[doc = _js_doc!(canvas "fillText")]
     /// Draws filled text at the specified position.
     pub fn fill_text(text: &str, x: js_number, y: js_number) {
@@ -88,8 +98,8 @@ _js_extern! {
 
     /* color settings */
 
-    safe fn "fillStyle" fill_style(r: u8, g: u8, b: u8);
-    safe fn "strokeStyle" stroke_style(r: u8, g: u8, b: u8);
+    safe fn "fillStyleRgba" set_fill_style_rgba(r: u8, g: u8, b: u8, a: u8);
+    safe fn "strokeStyleRgba" set_stroke_style_rgba(r: u8, g: u8, b: u8, a: u8);
 
     /* drawing rectangles */
 
@@ -107,6 +117,7 @@ _js_extern! {
 
     /* drawing text */
 
+    safe fn "setTextBaselineTop" set_text_baseline_top();
     unsafe fn "fillText" fill_text(str_ptr: *const u8, str_len: usize, x: js_number, y: js_number);
     unsafe fn "strokeText" stroke_text(str_ptr: *const u8, str_len: usize,
         x: js_number, y: js_number);

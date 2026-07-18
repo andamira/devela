@@ -1,6 +1,10 @@
-# `web_worker` example
+# `ui_web` example
 
-This example demonstrates how to use the workers WebAPI with Rust-generated WASM.
+This example demonstrates devela's UI abstractions
+running in a web browser through WebAssembly and the web backend.
+
+It is intended to evolve alongside the corresponding UI examples
+for other backends while preserving a comparable overall structure.
 
 ## Build
 

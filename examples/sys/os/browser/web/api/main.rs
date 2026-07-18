@@ -12,9 +12,9 @@ use devela::{Web, WebDocument as document, WebWindow as window};
 use devela::{WebEventIngress, WebEventKind};
 use devela::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
 use devela::{WebPermission, WebPermissionSnapshot};
-use devela::{format_buf as fmt, items, set_panic_handler};
+use devela::{format_buf as fmt, items};
 
-set_panic_handler![web];
+devela::set_panic_handler![web];
 
 #[global_allocator]
 static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
@@ -120,15 +120,15 @@ pub extern "C" fn main() {
 
     console::info("# canvas");
     Web::set_canvas("#example_canvas_1");
-    Web::fill_style(255, 0, 0);
+    Web::set_fill_rgb([255, 0, 0]);
     Web::fill_rect(10.0, 10.0, 100.0, 100.0);
-    Web::fill_style(0, 255, 0);
+    Web::set_fill_rgb([0, 255, 0]);
     Web::draw_circle(150.0, 50.0, 30.0);
-    Web::stroke_style(0, 0, 255);
+    Web::set_stroke_rgb([0, 0, 255]);
     Web::draw_line(200.0, 20.0, 300.0, 100.0);
 
     let text_click = "Click the canvas!";
-    Web::fill_style(0, 0, 0);
+    Web::set_fill_rgb([0, 0, 0]);
     Web::fill_text(text_click, 60.0, 30.0);
 
     let text_metrics = Web::measure_text_full(text_click);
@@ -182,9 +182,6 @@ fn handle_event(event: Event) {
 // /// Advances the application state for the current frame.
 // fn update() { }
 
-// /// Presents the application state for the current frame.
-// fn draw() { }
-
 /// Polls the demonstrated permissions and logs classification changes.
 fn log_permission_changes() {
     static mut PREVIOUS: WebPermissionSnapshot = WebPermissionSnapshot::new();
@@ -193,7 +190,7 @@ fn log_permission_changes() {
     if !current.changed_since(previous).is_empty() {
         unsafe { *&raw mut PREVIOUS = current };
         with_buf(|buf| {
-            console::log(fmt![?buf, "camera permission: {:?}", current.get(WebPermission::Camera),])
+            console::log(fmt![?buf, "camera permission: {:?}", current.get(WebPermission::Camera)])
         });
     }
 }
@@ -222,7 +219,7 @@ items! {
 /// Handles the canvas click directly in the browser callback.
 #[unsafe(no_mangle)]
 pub extern "C" fn canvas_click() {
-    Web::fill_style(200, 0, 50);
+    Web::set_fill_rgba([200, 0, 50, 50]);
     Web::fill_rect(50.0, 50.0, 100.0, 100.0);
 
     let time = Web::performance_now();
@@ -232,7 +229,30 @@ pub extern "C" fn canvas_click() {
     let origin = Web::performance_time_origin();
     with_buf(|b| console::log(fmt![?b, "origin: {origin}ms"]));
     with_buf(|b| console::log(fmt![?b, "Canvas clicked at: {time}ms"]));
+    with_buf(|b| {
+        let text = fmt![?b, "time: {time} ms"];
+        fill_backed_text(text, 60.0, 100.0, 4.0, [50, 10, 20, 255], [220, 230, 240, 255]);
+    });
+}
 
-    Web::fill_style(50, 50, 200);
-    with_buf(|b| Web::fill_text(fmt![?b, "time: {time}ms"], 60.0, 100.0));
+fn fill_backed_text(
+    text: &str,
+    x: f64,
+    baseline_y: f64,
+    padding: f64,
+    background: [u8; 4],
+    foreground: [u8; 4],
+) {
+    let metrics = Web::measure_text(text);
+    let width = metrics.width as f64;
+    let ascent = metrics.ascent as f64;
+    Web::set_fill_rgba(background);
+    Web::fill_rect(
+        x - padding,
+        baseline_y - ascent - padding,
+        width + padding * 2.0,
+        ascent + padding * 2.0,
+    );
+    Web::set_fill_rgba(foreground);
+    Web::fill_text(text, x, baseline_y);
 }

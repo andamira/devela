@@ -3,12 +3,12 @@
 //!
 //
 
-// mod canvas; // WebCanvasUi
+mod canvas; // WebCanvasUi
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // canvas::*,
+            canvas::*,
         };
     }
 }

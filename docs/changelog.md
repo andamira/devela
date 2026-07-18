@@ -35,7 +35,7 @@
 
 ## examples
 - refactor examples directory tree.
-- new examples: `alsa`.
+- new examples: `alsa`, `ui_web`.
 - remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
@@ -129,12 +129,14 @@
 - keep ALSA handle methods and PCM trait impls visible without `asound`.
 
 ##### sys::os::browser::web
-- new types `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.
+- new types: `WebCanvasUi`, `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.
 - remove `WebPermissionState`.
 - update `WebEvent*` types:
   - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.
   - rename the timed variants to `<from|to>_event_kind_timed`.
 - update `Web`:
+  - new methods `set_fill_rgb[a]`, `set_stroke_rgb[a]`, `set_text_baseline_top`.
+  - remove methods `fill_style`, `stroke_style`.
   - take `JsInstant` as an argument for `request_animation_frame`.
   - change `permissions_query` to return `PermissionQuery`.
 - move `<from|to>_web_*` conversions from `KeyFfi` to `Key`.

@@ -1,0 +1,34 @@
+# devela/examples/sys/os/browser/api/Cargo.toml
+[workspace]
+[package]
+name = "ui_web" # in sync with build.sh, public_html/index.html
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = [
+	"cdylib",
+	# "rlib",
+]
+path = "main.rs"
+
+[dependencies]
+[dependencies.devela]
+# git = "https://github.com/andamira/devela"
+path = "../../.."
+features = [
+	"web", "event", "ui",
+	# "alloc", "unsafe_layout",
+]
+
+[features]
+
+[profile.release]
+# https://rustwasm.github.io/docs/book/reference/code-size.html
+opt-level = "s"      # Optimize for size
+lto = true           # Enable link-time optimizations
+codegen-units = 1    # Improve optimization at the cost of compile time
+panic = "abort"      # Reduce binary size (no unwinding)
+strip = true         # Remove debug symbols for smaller binaries
+[profile.dev]
+panic = "abort"

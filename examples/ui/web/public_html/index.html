@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- devela/examples/ui/web/public_html/index.html -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <title>Rust Ui Web example</title>
+    <script type="module">
+      import { initWasm } from "./devela/api.js";
+      window.addEventListener("DOMContentLoaded", async () => {
+        window.wasmInstance = await initWasm("ui_web.wasm");
+      });
+    </script>
+    <style>
+      body {background-color: lightgray;}
+      #canvas_ui { display: block; width: 500px; height: 260px; }
+    </style>
+  </head>
+  <body>
+    <title>Rust Ui Web example</title>
+    <canvas id="canvas_ui" width="500" height="260"></canvas>
+  </body>
+</html>

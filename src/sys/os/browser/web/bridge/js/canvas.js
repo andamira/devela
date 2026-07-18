@@ -19,13 +19,13 @@ export function makeCanvasApi(env) {
     set_canvas: (ptr, len) => { setCanvas(env, strDecode(env, ptr, len)); },
 
     /* color settings */
-    fillStyle: (r, g, b) => {
+    fillStyleRgba: (r, g, b, a) => {
       const ctx = requireCtx(env);
-      if (ctx) ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      if (ctx) ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
     },
-    strokeStyle: (r, g, b) => {
+    strokeStyleRgba: (r, g, b, a) => {
       const ctx = requireCtx(env);
-      if (ctx) ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+      if (ctx) ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
     },
 
     /* drawing rectangles */
@@ -62,6 +62,10 @@ export function makeCanvasApi(env) {
     },
 
     /* drawing text */
+    setTextBaselineTop: () => { // IMPROVE
+      const ctx = requireCtx(env);
+      if (ctx) ctx.textBaseline = "top";
+    },
     fillText: (ptr, len, x, y) => {
       const ctx = requireCtx(env);
       if (ctx) ctx.fillText(strDecode(env, ptr, len), x, y);

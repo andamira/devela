@@ -2,21 +2,26 @@
 
 This example demonstrates how to use the Web API in a web browser with Rust-generated WASM.
 
-## build
+## Build
 
-Run the following script to build the `.wasm` file and copy necessary assets:
+Run the build script:
+
 ```sh
 ./build.sh
 ```
-This script:
-- Compiles the Rust library to WebAssembly (`wasm32-unknown-unknown`).
-- Copies the generated `.wasm` file and `web_api.js` into the `public_html/` directory.
 
+The script:
 
-## run
+* Compiles the Rust crate to WebAssembly using `wasm32-unknown-unknown`.
+* Copies the generated `.wasm` module into `public_html/`.
+* Copies the required JavaScript bridge modules into `public_html/`.
 
-1. Start a local web server to serve the public_html/ directory. E.g.:
+## Run
+
+Start a local web server from the example directory. For example:
+
 ```sh
 python3 -m http.server 4000 --directory public_html
 ```
-2. Open http://localhost:4000 in your browser.
+
+Then open `http://localhost:4000` in a web browser.
