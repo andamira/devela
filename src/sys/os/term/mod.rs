@@ -17,6 +17,8 @@ mod metric; // TermSize
 mod pen; // TermPen
 mod render; // TermRenderer
 mod session; // TermSession, TermPollPolicy, TermMode
+#[cfg(feature = "ui")]
+mod ui; // UI realizations for the terminal
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -31,6 +33,8 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
         };
         #[cfg(feature = "event")]
         pub use super::event::_all::*;
+        #[cfg(feature = "ui")]
+        pub use super::ui::_all::*;
     }
     _pub_mods {
         pub use super::{

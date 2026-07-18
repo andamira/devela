@@ -35,7 +35,7 @@
 
 ## examples
 - refactor examples directory tree.
-- new examples: `alsa`, `ui_web`.
+- new examples: `alsa`, `ui_term`, `ui_web`.
 - remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
@@ -154,7 +154,7 @@
 
 #### sys::os::term
 - new trait: `TermBackend`.
-- new types: `TermLinuxRestore`.
+- new types: `TermCellUi`, `TermLinuxRestore`.
 - make `ansi` module public.
 - update `Termel` to adapt to the new `Textel`.
 - reimplement `TermLinuxInputBuf` using `BufferRingU8`.
