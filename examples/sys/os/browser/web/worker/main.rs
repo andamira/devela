@@ -1,4 +1,4 @@
-// devela/examples/sys/os/browser/worker/main.rs
+// devela/examples/sys/os/browser/web/worker/main.rs
 //
 //! A Web API canvas example.
 //

@@ -41,8 +41,10 @@
   - showcase signal handling.
 - update examples: `web_api`, `web_workers`:
   - add optional JS bundling and wasm-opt paths for web builds.
+  - move inside examples/sys/os/browser/web.
 - update example: `web_api`:
   - leverage `WebEventIngress` and `request_animation_frame` to poll events.
+  - showcase web permission querying.
   - decouple from the `time` feature.
   - show keyboard events.
 
@@ -127,7 +129,7 @@
 - keep ALSA handle methods and PCM trait impls visible without `asound`.
 
 ##### sys::os::browser::web
-- new types `WebEventIngress`, `WebEventKey`.
+- new types `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.
 - remove `WebPermissionState`.
 - update `WebEvent*` types:
   - add methods: `<from|to>_event_<key|mouse|pointer|wheel>`, `to_event_kind`.

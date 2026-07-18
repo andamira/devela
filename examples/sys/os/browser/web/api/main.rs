@@ -1,4 +1,4 @@
-// devela/examples/sys/os/browser/api/main.rs
+// devela/examples/sys/os/browser/web/api/main.rs
 //
 //! A Javascript Web API canvas example.
 //
@@ -9,9 +9,9 @@
 
 use devela::{Event, JsConsole as console, JsInstant, Wasm, WasmAlloc};
 use devela::{Web, WebDocument as document, WebWindow as window};
-use devela::{
-    WebEventIngress, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel,
-};
+use devela::{WebEventIngress, WebEventKind};
+use devela::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
+use devela::{WebPermission, WebPermissionSnapshot};
 use devela::{format_buf as fmt, items, set_panic_handler};
 
 set_panic_handler![web];
@@ -152,6 +152,8 @@ pub extern "C" fn web_frame(_timestamp: JsInstant) {
     // update();
     // draw();
 
+    log_permission_changes();
+
     // with_buf(|b| console::log(fmt![?b, "web frame at {_timestamp}ms"]));
     window::request_animation_frame(web_frame);
 }
@@ -182,6 +184,19 @@ fn handle_event(event: Event) {
 
 // /// Presents the application state for the current frame.
 // fn draw() { }
+
+/// Polls the demonstrated permissions and logs classification changes.
+fn log_permission_changes() {
+    static mut PREVIOUS: WebPermissionSnapshot = WebPermissionSnapshot::new();
+    let current = WebPermission::Camera.to_set().query();
+    let previous = unsafe { *&raw const PREVIOUS };
+    if !current.changed_since(previous).is_empty() {
+        unsafe { *&raw mut PREVIOUS = current };
+        with_buf(|buf| {
+            console::log(fmt![?buf, "camera permission: {:?}", current.get(WebPermission::Camera),])
+        });
+    }
+}
 
 /// Registers the browser event listeners that feed the global ingress.
 fn register_ingress_listeners() {

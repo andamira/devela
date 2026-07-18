@@ -1,5 +1,5 @@
 #!/bin/sh
-# devela/examples/sys/os/browser/worker/build.sh
+# devela/examples/sys/os/browser/web/api/build.sh
 #
 ## install required tools
 # $ apt install jq
@@ -11,7 +11,7 @@
 set -e
 
 # CONFIG
-CRATE_NAME="web_worker" # in sync with Cargo.toml, public_html/index.html
+CRATE_NAME="web_api" # in sync with Cargo.toml, public_html/index.html
 PROFILE="release"
 WEB_DIR="./public_html/"
 #
@@ -19,10 +19,10 @@ WASM_NAME="${CRATE_NAME}.wasm"
 WASM_MODE="${WASM_MODE:-copy}" # copy|opt
 #
 JS_ENTRY_NAME="api.js"
-JS_LIB_DIR="../../../../../src/sys/os/browser/web/bridge/js/"
-JS_OUT_DIR="${WEB_DIR}devela/"
 JS_MODE="${JS_MODE:-copy}" # copy|min|bundle
-#
+JS_LIB_DIR="../../../../../../src/sys/os/browser/web/bridge/js/"
+JS_OUT_DIR="${WEB_DIR}devela/"
+
 RUSTFLAGS="-C target-feature=+bulk-memory,+simd128"
 BUILD_CMD="cargo build --profile $PROFILE --target wasm32-unknown-unknown"
 

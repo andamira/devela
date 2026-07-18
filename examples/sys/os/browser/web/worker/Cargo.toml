@@ -14,7 +14,7 @@ path = "main.rs"
 [dependencies]
 [dependencies.devela]
 # git = "https://github.com/andamira/devela"
-path = "../../../../.."
+path = "../../../../../.."
 features = [
 	"web",
 	# "time",

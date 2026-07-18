@@ -1,4 +1,4 @@
-# devela/examples/sys/os/browser/api/Cargo.toml
+# devela/examples/sys/os/browser/web/api/Cargo.toml
 [workspace]
 [package]
 name = "web_api" # in sync with build.sh, public_html/index.html
@@ -15,7 +15,7 @@ path = "main.rs"
 [dependencies]
 [dependencies.devela]
 # git = "https://github.com/andamira/devela"
-path = "../../../../.."
+path = "../../../../../.."
 features = [
 	"web", "event",
 	"alloc", "unsafe_layout",
