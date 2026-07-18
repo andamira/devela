@@ -23,7 +23,7 @@ mod page; // document, elements, navigation, screen, window
 // mod storage; // Web Storage, IndexedDB, Cache, origin filesystem
 #[cfg(feature = "ui")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "ui")))]
-mod ui; // devela UI presenters implemented for the web
+mod ui; // UI presenters implemented for the web
 mod work; // clocks, frames, timers, workers, scheduling
 
 crate::structural_mods! { // _mods, _crate_internals

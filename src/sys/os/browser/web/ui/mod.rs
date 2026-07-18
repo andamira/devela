@@ -1,6 +1,6 @@
 // devela/src/sys/os/browser/web/ui/mod.rs
 //
-//!
+//! UI presenters implemented for the web.
 //
 
 mod canvas; // WebCanvasUi

@@ -457,8 +457,7 @@ macro_rules! _impl_ratio_prim {
             ///
             /// # Features
             /// Uses `unsafe_str`, when enabled, to avoid duplicated UTF-8 validation.
-            pub const fn write_str_with_sep<'a>(self, buf: &'a mut [u8], sep: char)
-                -> RatioResult<&'a str> {
+            pub const fn write_str_with_sep(self, buf: &mut [u8], sep: char) -> RatioResult<&str> {
                 let len = unwrap![ok? self.write_with_sep(buf, sep)];
                 cfg_select! { all(feature = "unsafe_str", not(feature = "safe_num")) => {
                     // SAFETY: only decimal ASCII digits, `-`,

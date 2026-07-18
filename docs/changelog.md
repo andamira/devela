@@ -35,7 +35,7 @@
 
 ## examples
 - refactor examples directory tree.
-- new examples: `alsa`, `ui_term`, `ui_web`.
+- new examples: `alsa`, `ui_term`, `ui_web`, `ui_x11`.
 - remove examples: `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
@@ -127,6 +127,11 @@
 - new `Alsa` method: `require_available`.
 - add `AlsaError` error variant `Unavailable`.
 - keep ALSA handle methods and PCM trait impls visible without `asound`.
+
+##### sys::device::display::x11
+- new type `XSurfaceUi`.
+- update `XDisplay::wait_event` to skip internal empty events.
+- update `XSurfaceFrame`: add `bits_per_pixel` field.
 
 ##### sys::os::browser::web
 - new types: `WebCanvasUi`, `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.

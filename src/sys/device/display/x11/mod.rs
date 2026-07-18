@@ -21,6 +21,8 @@ mod event; // XEvent
 mod image; // XImageMode, (XImageFormat), (XImageStore).
 mod runtime; // XFrontend, XPresent, XRasterRender, (XBackend), (XFrameCtx), (XPresenter)
 mod surface; // XCpuBuffer, XShmBuffer, (XShmCaps), (XSurface), (XSurfaceStorage)
+#[cfg(all(feature = "ui", feature = "font"))]
+mod ui; // UI realization for X11 pixel surfaces
 mod window; // XWindow
 mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
 
@@ -35,6 +37,8 @@ crate::structural_mods! { // _mods, _crate_internals
             surface::*,
             window::*,
         };
+        #[cfg(all(feature = "ui", feature = "font"))]
+        pub use super::ui::*;
     }
     _crate_internals {
         pub(crate) use super::{

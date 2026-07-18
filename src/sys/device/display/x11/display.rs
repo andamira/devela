@@ -144,15 +144,19 @@ impl XDisplay {
 
     /// Waits for the next event, blocking until one is available.
     ///
-    /// The raw event is passed to `handle_raw_event` and returned as a high-level [`Event`].
-    /// If the X connection enters an error state, returns [`Event::None`].
+    /// Raw events that do not directly produce a public event are consumed internally.
+    /// Returns [`Event::None`] only if the X connection enters an error state.
     ///
     /// This is the blocking counterpart of [`poll_event`][Self::poll_event], used when the
     /// application should sleep until user input or a window notification arrives.
-    #[inline(always)]
+    #[inline]
     pub fn wait_event(&mut self) -> Event {
-        is![let Some(ev) = self.queue.pop(), return ev]; // return pending events first
-        is![let Some(raw) = self.wait_raw_event(), self.handle_raw_event(raw), Event::None]
+        loop {
+            is! { let Some(event) = self.queue.pop(), return event }
+            let Some(raw) = self.wait_raw_event() else { return Event::None; };
+            let event = self.handle_raw_event(raw);
+            is! { !event.is_none(), return event }
+        }
     }
 
     /// Flushes pending XCB commands.

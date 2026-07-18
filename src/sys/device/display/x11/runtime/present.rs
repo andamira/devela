@@ -106,7 +106,8 @@ impl XPresenter {
     ) -> Result<XSurfaceFrame<'a>, XError> {
         let surface = self.ensure_surface(display, width, height, depth)?;
         let bytes_per_line = display.bytes_per_line(width);
-        Ok(XSurfaceFrame::_new(surface, bytes_per_line))
+        let bits_per_pixel = display.bits_per_pixel();
+        Ok(XSurfaceFrame::_new(surface, bytes_per_line, bits_per_pixel))
     }
     pub(crate) fn present_surface(
         &mut self,

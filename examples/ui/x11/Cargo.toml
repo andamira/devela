@@ -1,0 +1,14 @@
+[workspace]
+
+[package]
+name = "ui_x11"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "ui_x11"
+path = "main.rs"
+
+[dependencies.devela]
+path = "../../.."
+features = ["x11", "ui", "font"]

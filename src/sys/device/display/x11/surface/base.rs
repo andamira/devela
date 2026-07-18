@@ -5,7 +5,7 @@
 
 #[cfg(ffi_xcb_shm··)]
 use crate::XShmBuffer;
-use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XWindow};
+use crate::{XCpuBuffer, XDisplay, XError, XImageMode, XImageStore, XWindow, is};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Pixel-backed X11 drawing surface.
@@ -93,28 +93,36 @@ impl XImageStore for XSurface {
 pub struct XSurfaceFrame<'a> {
     surface: &'a mut XSurface,
     bytes_per_line: u32,
+    bits_per_pixel: u8,
 }
 #[rustfmt::skip]
 impl<'a> XSurfaceFrame<'a> {
-    pub(crate) const fn _new(surface: &'a mut XSurface, bytes_per_line: u32) -> Self {
-        Self { surface, bytes_per_line }
-    }
-    /// Returns the surface width in pixels.
-    #[must_use]
+    pub(crate) const fn _new(surface: &'a mut XSurface, bytes_per_line: u32, bits_per_pixel: u8)
+        -> Self { Self { surface, bytes_per_line, bits_per_pixel } }
+
+    #[must_use] /// Returns the surface width in pixels.
     pub const fn width(&self) -> u16 { self.surface.width }
-    /// Returns the surface height in pixels.
-    #[must_use]
+
+    #[must_use] /// Returns the surface height in pixels.
     pub const fn height(&self) -> u16 { self.surface.height }
-    /// Returns the surface pixel depth in bits.
-    #[must_use]
+
+    #[must_use] /// Returns the surface pixel depth in bits.
     pub const fn depth(&self) -> u8 { self.surface.depth }
-    /// Returns the byte stride between consecutive rows.
-    #[must_use]
+
+    #[must_use] /// Returns the number of stored bits per pixel.
+    pub const fn bits_per_pixel(&self) -> u8 { self.bits_per_pixel }
+
+    #[must_use] /// Returns the number of stored bytes per pixel, when byte-aligned.
+    pub const fn bytes_per_pixel(&self) -> Option<u8> {
+        is! { self.bits_per_pixel % 8 == 0, Some(self.bits_per_pixel / 8), None }
+    }
+    #[must_use] /// Returns the byte stride between consecutive rows.
     pub const fn bytes_per_line(&self) -> u32 { self.bytes_per_line }
+
     /// Returns the active surface backing mode.
     pub const fn mode(&self) -> XImageMode { self.surface.mode() }
-    /// Returns whether each row has no backend padding.
-    #[must_use]
+
+    #[must_use] /// Returns whether each row has no backend padding.
     pub const fn is_tight_rows(&self) -> bool {
         let bits = self.width() as u32 * self.depth() as u32;
         bits.div_ceil(8) == self.bytes_per_line
