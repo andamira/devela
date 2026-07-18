@@ -92,7 +92,7 @@
   - `JsWorker*` → `WebWorker*`.
 
 ## media
-- delete: `[Audio|Color|Draw|Font|Media|Midi][Result|Error]`.
+- delete: `<Audio|Color|Draw|Font|Media|Midi>[Result|Error]`.
 
 ### color
 - add types: `Gamma`, `Lum`, `Rgb`, `Rgba`.
@@ -105,14 +105,14 @@
 - rename the `ColorBase` trait → `Color`.
 - update the `Color` trait:
   - make type `Component` bound on `NumConst`.
-  - add constants: `COLOR_[BITS|COUNT|HAS_ALPHA]`, `COLOR_IS_[INT|LINEAR|PREMUL]`.
-  - add methods: `color_[bits|has_alpha]`, `color_[red|green|blue|alpha]`, `color_is_[int|linear|premul]`.
+  - add constants: `COLOR_<BITS|COUNT|HAS_ALPHA>`, `COLOR_IS_<INT|LINEAR|PREMUL>`.
+  - add methods: `color_<bits|has_alpha>`, `color_<red|green|blue|alpha>`, `color_is_<int|linear|premul>`.
 
 ## num
 - update the `NumConst` trait.
 - require the trait bound `PartialEq<Self::Num>`.
 - make all its associated constant values be `Option`al.
-- add consts: `NUM_[MAX|MIN][_NORM]`, `NUM_IS_[BIG|INT|FLOAT|FIXED|SIGNED|NICHE]`.
+- add consts: `NUM_<MAX|MIN>[_NORM]`, `NUM_IS_<BIG|INT|FLOAT|FIXED|SIGNED|NICHE>`.
 - add auto-implemented methods over `&self`, to query the associated constant values.
 
 ### float
@@ -138,7 +138,7 @@
 ### niche
 - add new:
   - macros: `ne!`, `nz!`.
-  - types: `Non[Extreme|Value][I|U]size`.
+  - types: `Non<Extreme|Value><I|U>size`.
   - methods to `NonValue*`: `new_lossy`.
 - make `impl_non_value!` private.
 - pre-generate all `NonValue*` types.
@@ -190,7 +190,7 @@
   - lang: `glsl`, `js`.
   - num: `linear`, `metric`, `shape`.
   - ui: `desk`, `term`, `web`.
-  - capability: `_maxest`, `_value_all`, `_value[8|16|32|64|128|256|512|1024]`.
+  - capability: `_maxest`, `_value_all`, `_value<8|16|32|64|128|256|512|1024>`.
   - safety: `unsafe_ffi`.
 - new flags: `ffi··`, `geom··`.
 - new traits:
@@ -262,7 +262,7 @@
   - `Float`: `midpoint`, `recip`, `sqrt_hybrid`, `to_degrees`, `to_radians`.
   - `HasherFx`: `hash_bytes_with_seed`.
   - `IoError`: `other`.
-  - `Linux` syscalls: `sys_[open|close|lseek|dup|dup2|fcntl|stat|fstat|getdents|pipe|pipe2]`.
+  - `Linux` syscalls: `sys_<open|close|lseek|dup|dup2|fcntl|stat|fstat|getdents|pipe|pipe2>`.
   - `Slice`: `copy_from_slice`, `<u8>::copy_array`, `<u8>::copy_array_at`, `<u8>::copied_array_at`, `<u8>::to_array`.
   - `Str`: `__utf8_bytes_to_str`.
   - prngs: `from_state`, `inner_state`.
@@ -274,7 +274,7 @@
   - std:
     - `alloc::System` as `SystemAlloc`.
     - env: `*`.
-    - io: `IoEmpty`, `IoIntoInnerError`, `IoRepeat`, `Std[err|in|out][Lock]`.
+    - io: `IoEmpty`, `IoIntoInnerError`, `IoRepeat`, `Std<err|in|out>[Lock]`.
     - panic: `PanicHookInfo`.
     - process: `*`.
     - sync: `LazyLock`, `mpsc::*`.
@@ -284,7 +284,7 @@
 - new example: `js_web_api`.
 - add musl architectures to `check.rs` script.
 - add docs for monitored nightly features and for disabled dependencies.
-- add more doc tags: `TAG_[FAKE|FFI|FMT|GEOM|NO|NUM|QUANT|RAND|TEXT|TIME]`.
+- add more doc tags: `TAG_<FAKE|FFI|FMT|GEOM|NO|NUM|QUANT|RAND|TEXT|TIME>`.
 - add more compile targets for docs.rs.
 
 ### Removed
@@ -308,14 +308,14 @@
 - deprecate:
   - `iif!`.
   - `Char::len_to_utf8`.
-  - `Float::{const_[clamp|max|min|signum|copysign]}`.
+  - `Float::{const_<clamp|max|min|signum|copysign>}`.
 
 ### Changed
 - bump MSRV to 1.85.0.
 - rename features:
   - `_docs_max` to `_max`, `_docs_min` to `_docs`, `_string_*` to `_str_*`.
 - change features into cfg flags:
-  - `nightly, [nightly_[allocator|autodiff|bigint|coro|doc|float|simd|stable|stable_[next1|next2|later]`.
+  - `nightly, nightly_<allocator|autodiff|bigint|coro|doc|float|simd|stable|stable_<next1|next2|later>>`.
 - rename flags:
   - `prim···` flag to `prim··`, `_str*` to `_str*`.
 - rename/move modules:
@@ -359,7 +359,7 @@
   - `str` for: `Str`.
 - auto-enable features:
   - `str`: when enabling `_str_u*`.
-- make customizable: `XorShift[16|32|64]`.
+- make customizable: `XorShift<16|32|64>`.
 - make const methods:
   - `Float`: `clamp`, `copysign`, `div_euclid`, `max`, `min`, `min_total`, `round_ties_odd`, `signum`.
   - `IoBufReader`: `buffer`, `capacity`, `get_ref`, `get_mut`, `new`.
@@ -390,7 +390,7 @@
 - improve build script debug output.
 - make `array_init` use absolute paths internally.
 - enable nightly features depending on `alloc` and `std`.
-- fix and improve `Float` methods: `[cos|sin|tan]_series`.
+- fix and improve `Float` methods: `<cos|sin|tan>_series`.
 - feature-gate:
   - `ExtFuture::block`.
   - namespaced re-exported unsafe methods with `unsafe··`.
@@ -450,7 +450,7 @@
   - `ColorBase`, `ExtCellOption`, `ExtError`, `ExtOptRes`, `ExtPath`, `ExtThread`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
 - new associated methods and constants for:
-  - `Array`: `from_fn`, `contains_[from|to|between]`, `as_bare_mut_slice`, `get[_mut]`.
+  - `Array`: `from_fn`, `contains_<from|to|between>`, `as_bare_mut_slice`, `get[_mut]`.
   - `Array`, when storing `Option<T>`.
   - `Array2d`: `cap_col`, `cap_row`, `cap_major`, `cap_minor`, `num_major`, `num_minor`.
   - `BareBox`.
@@ -458,10 +458,10 @@
   - `Float` and `ExtFloat`:
     - `FRAC_1_SQRT_2PI`.
     - `eval_poly` to evaluate polynomials.
-    - for calculus: `derivative`, `integrate`, `partial_derivative_[x|y]`.
+    - for calculus: `derivative`, `integrate`, `partial_derivative_<x|y>`.
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
-  - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
+  - `NonValue*`: `is_max`, `is_min`, `<checked|strict|saturating|wrapping>_<add|sub>`.
   - `Slice`: `eq`, `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
   - `UnicodeScalar` & `char*` types: `MIN`.
 - new macros:

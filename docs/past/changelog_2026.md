@@ -59,7 +59,7 @@ while pruning older surfaces and tightening the crate toward a clearer 0.29.
 - bump `wide` to 1.5.
 
 ## docs
-- new tags: `_TAG_[ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|PROTOCOL|SET|SIGNAL|STRING]`.
+- new tags: `_TAG_<ABI|CRYPTO|GAME|LANG|MEMBER|ORD|PARSER|PROTOCOL|SET|SIGNAL|STRING>`.
 - rename tag `_TAG_GEOM_DIR` to `_TAG_DIR`.
 - make example-generated `*Example` items visible in the docs.
 - enable `doc_cfg` for all doctest crates under `nightly_doc`.
@@ -81,7 +81,7 @@ while pruning older surfaces and tightening the crate toward a clearer 0.29.
 
 ## build
 - update `Build`:
-  - new methods: `emit_[check_cfg|checked_flag|env|env_marker|flag|flag_if|flag_if_lib]`, `has_lib`.
+  - new methods: `emit_<check_cfg|checked_flag|env|env_marker|flag|flag_if|flag_if_lib>`, `has_lib`.
 
 ## code
 - new types: `InfallibleResult`, `Version`, `VersionFull`.
@@ -137,7 +137,7 @@ while pruning older surfaces and tightening the crate toward a clearer 0.29.
 - new trait: `Word`.
 
 ### data::access
-- new type: [`ByteCursor`].
+- new type: `ByteCursor`.
 
 #### data::access::iter
 - new `Iter` method: `from_coroutine`.
@@ -168,7 +168,7 @@ while pruning older surfaces and tightening the crate toward a clearer 0.29.
 - remove `encode` vendored items: `CodecBe`, `CodecLe`, `CodecIf`, `CodecFlags`, `CodecJoin`, `CodecLen`, `CodecLenValue`, `Decodable`, `Encodable`, `EncodableLen`.
 
 ### data::error
-- new type: [`UnexpectedEof`].
+- new type: `UnexpectedEof`.
 
 ### data::id
 - rename `define_handle!` to `handle!`
@@ -410,9 +410,9 @@ new types `SparseSet[Array|Error]`, `LinuxSparseSet`.
 - add new `kind`, `button` and `buttons` fields to: `WebEventPointer`.
 - bring here impls from `ui::event`.
 - feature-gate with `event` the event-related impls.
-- rename all methods `[from|to]_js*` to `[from|to]_web*`.
-- replace `ui::event::KeyState` methods: `[from|to]_js` with `WebEventKind` methods: `[to|from]_key_state`.
-- replace `ui::event::EventMouse` methods: `[from|to]_js` with `WebEventMouse` methods: `to_kind_timed`, `from_event_mouse_timed`.
+- rename all methods `<from|to>_js*` to `<from|to>_web*`.
+- replace `ui::event::KeyState` methods: `<from|to>_js` with `WebEventKind` methods: `<to|from>_key_state`.
+- replace `ui::event::EventMouse` methods: `<from|to>_js` with `WebEventMouse` methods: `to_kind_timed`, `from_event_mouse_timed`.
 - replace `impl From<WebEventMouse> for EventMouse` with one `for EventKindTimed`.
 - replace `impl From<EventMouse> for WebEventMouse` with one `From<Timed<EventMouse, Option<EventTimestamp>>>`.
 - impl `WebEventPointer` methods: from_event_pointer_timed and to_kind_timed.
@@ -732,12 +732,12 @@ and system interfaces toward clearer typed contracts and deeper coherence.
 - remove all `*_ref` and `*_mut` accessor methods for `dir` and `metric` types.
 
 ### geom::dir
-- new aliases: `Orientation[1|2|3]`.
+- new aliases: `Orientation<1|2|3>`.
 
 ### geom::metric
 - make the module public.
 - fix re-export of `RegionStrided`.
-- new aliases: `Distance[1|2|3]`, `Extent[1|2|3]`, `Position[1|2|3]`, `Region[S][1|2|3]`.
+- new aliases: `Distance<1|2|3>`, `Extent<1|2|3>`, `Position<1|2|3>`, `Region[S]<1|2|3>`.
 - update `Extent`:
   - move the accesor methods from being macro implemented to generic for `T: Copy`.
   - add the doc-alias `Size`.
@@ -870,7 +870,7 @@ Many feature gates have been removed in order to make the features always availa
 - make sure `CARGO_TARGET_DIR` and `CARGO_WORKSPACE_DIR` are always defined.
 - add new `devela_postbuild` crate to `build/post`.
 - add build config flag aliases: `any_target_arch_linux`, `any_target_arch_riscv`.
-- add [base] symlinks to `devela/main/[alias|environment|features].rs`.
+- add [base] symlinks to `devela/main/<alias|environment|features>.rs`.
 - move `/config/dep_all.rs` to `/build/main/dep_all`.
 
 ### cargo
@@ -1045,7 +1045,7 @@ Many feature gates have been removed in order to make the features always availa
 - move to [base]:
   - public macros: `CONST!`, `assert_eq_all!`, `assert_approx_eq_all!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `cfg_if!`, `const_assert!`, `define_error!`, `deprecate!`, `enumset!`, `ident_const_index!`, `impl_trait!`, `include_from!`, `is!`, `items!`, `maybe!`, `methods_as_fns!`, `mod_from!`, `sf!`, , `structural_mods!`, `type_marker!`.
   - internal macros: `__crate_name!`, `__dbg!`, `__std!`, `_EMOJI_*`, `_TAG_*`, `_doc!`, `_doc_availability!`, `_doc_miri_warn!`,  `_reexport!`, `_tags!`, `_use!`.
-- add tags: `_DOC_*`, `_TAG_[ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|EXEC|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|INTERNAL|INTROSPECT|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP]`.
+- add tags: `_DOC_*`, `_TAG_<ALG|APPLE|ASSERT|AUDIO|BIT|CODE|CODEC|CODEGEN_BUILD|CONSTRUCTION|COLOR|CONCURRENCY|DATA|DEBUG|EVENT|EXAMPLE|EXEC|FS|GEOM_DIR|GUARD|HASH|ID|IMAGE|INIT|INTERACTION|INTERNAL|INTROSPECT|IO|LAYOUT|LIFETIME|LIN|LINUX|LIST|LOGIC|MAYBE|MEM|PLATFORM|PROC_MACRO|RUNTIME|SYMB|TERM|UNIX|VALUE|WAVE|WINDOWS|WIP>`.
 - change the emoji for `_TAG_DATA_STRUCTURE`.
 - new re-exports: `select_unpredictable`.
 - new functions: `cold_path`, `likely`, `unlikely`.
@@ -1257,7 +1257,7 @@ Many feature gates have been removed in order to make the features always availa
   - float shared docs prefixed with `_FLOAT_`.
 
 #### num::dom::int
-- move to [base]: `Int`, `[iu]size_*`.
+- move to [base]: `Int`, `<i|u>size_*`.
 - prefix int shared docs with `_INT_`.
 - new macros: `define_divisor!`.
 - new types: `DivisorExample`, `IntAlloc`, `IntError`, `IntResult`.
@@ -1276,7 +1276,7 @@ Many feature gates have been removed in order to make the features always availa
 - separate documentations for `BitOps` and `Bitwise` as individual constants.
 
 #### num::fin::logic
-- move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `[iu]size_*`.
+- move to [base]: `ConstBool`, `False`, `True`, `const_bool!`, `<i|u>size_*`.
 
 #### num::fin::ord
 - rename `Compare` to `Cmp`.
@@ -1361,7 +1361,7 @@ Many feature gates have been removed in order to make the features always availa
   - remove methods: `epoch_*`.
   - fix impl for `SystemInstant`.
 - update `TimeDelta`:
-  - make method const: `from_js`, `[div|mul]_f[32|64]`, `[try_]from_[millis|secs]_f[32|64]`.
+  - make method const: `from_js`, `<div|mul>_f<32|64>`, `[try_]from_<millis|secs>_f<32|64>`.
   - remove methods: `const_from_js`, const_try_from_millis_f64.
 - update `TimeSplitMilliNanoNorm`:
   - add method `from_duration`.
@@ -1495,7 +1495,7 @@ Many feature gates have been removed in order to make the features always availa
 - new type: `AnsiColor`.
 - update `Ansi`:
   - reverse the order of arguments in `CURSOR_MOVE*` to be columns first.
-  - add methods: `COLOR_[BG|FG]_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_[BG|FG]`, `MOUSE_X10_[ENABLE|DISABLE]`, `MOUSE_[NORMAL|TRACKING|UTF8]`, `MOUSE_SGR[_PIXELS]`, `strip_codes`.
+  - add methods: `COLOR_<BG|FG>_BRIGHT`, `CURSOR_MOVE`, `DEFAULT_<BG|FG>`, `MOUSE_X10_<ENABLE|DISABLE>`, `MOUSE_<NORMAL|TRACKING|UTF8>`, `MOUSE_SGR<_PIXELS>`, `strip_codes`.
   - rename current associated const items with a `_B` suffix.
   - add duplicated items with the old name returning a string slice or a `StringNonul`.
   - update digits formatting methods to use `Digits::write_digits10`.
@@ -1517,9 +1517,9 @@ Many feature gates have been removed in order to make the features always availa
 - new fn: `scalar_as_ascii_translit`.
 - new types: `CharIter`, `charu`, `charu_niche`.
 - new `char7` methods: `to_byte`, `to_str`, `try_from_u8_array`, `from_u8_array_unchecked`, `read_u8_slice`, `read_u8_slice_trunc`, `write_u8_slice`, `write_str`, `to_ascii_lowercase_array`, `eq_ignore_ascii_case`.
-- new `char[7|8|16]` methods: `to_charu`, `try_from_charu`.
+- new `char<7|8|16>` methods: `to_charu`, `try_from_charu`.
 - new `TextLut` consts: `ASCII_BASE36_OFFSET`, `DIGITS_BASE36`, `DECIMAL_PAIRS`, `POWERS10`.
-- mark `char[7|8|16]` as must_use.
+- mark `char<7|8|16>` as must_use.
 - impl `ConstInit` for `char*`.
 - rename `AsciiChar` to `CharAscii`.
 - rename `char*` methods:
@@ -1586,10 +1586,10 @@ Many feature gates have been removed in order to make the features always availa
 - impl `Grapheme` for scalar types.
 - update the `Grapheme` trait:
   - add new methods: `grapheme_chars`, `grapheme_is_kind`, `grapheme_kind`, `grapheme_len_bytes`, `grapheme_len_chars`, `grapheme_len_utf8`.
-- update `Grapheme[Nonul|U*]`:
+- update `Grapheme<Nonul|U*>`:
   - remove methods: `to_cstring`.
   - make `new` method panic.
-  - add new methods: `eq`, `[as|into]_string_[nonul|u8]`, `from_charu[_unchecked]`, `from_str`, `new_checked`.
+  - add new methods: `eq`, `<as|into>_string_<nonul|u8>`, `from_charu[_unchecked]`, `from_str`, `new_checked`.
   - make methods unsafe: `as_bytes_mut`, `as_str_mut`.
   - implement `PartialEq` and `Hash` manually.
   - implement `PartialEq` between string and grapheme types.
@@ -1658,7 +1658,7 @@ Many feature gates have been removed in order to make the features always availa
 - change `EventKeyFfi.timestamp` field to be `f32bits`.
 - update `EventWindow`:
   - fix `Moved` variant to use `i32`.
-  - new methods `is_[geometry|resize|move|focus|close|redraw|visibility|pointer_crossing|text_input|stream_signal]`, `[resize|move]_coords`.
+  - new methods `is_<geometry|resize|move|focus|close|redraw|visibility|pointer_crossing|text_input|stream_signal>`, `<resize|move>_coords`.
   - new variants: `Entered`, `Left`, `Minimized`, `Maximized`, `Restored`, `FullscreenEntered`, `FullscreenExited`.
 
 #### ui::event::key

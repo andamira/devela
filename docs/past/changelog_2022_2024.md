@@ -67,16 +67,16 @@
 
 ### Added
 - add features: `num_geom`, `num_float`, `num_int`, `num_rand`, `sys`, `safe_sys`, `unsafe_thread`.
-- add features: `_num_all`, `_float_all`, `_float_f[32|64]`, `_int_all`, `_int_[iu][all|8|16|32|64|128|size]`.
-- add features: `_bit_all`, `_bit_[iu][8|16|32|64|128|size]`.
-- add features: `_ascii_all`, `_ascii_u[8|16|32|64|128|size]`.
-- add features: `_non_value_all`, `_non_value_[iu][8|16|32|64|128|size]`.
-- add features: `_non_range_all`, `_non_range_[iu][8|16|32|64|128|size]`.
-- add features: `_range_all`, `_non_range_[iu][8|16|32|64|128|size]`.
-- add features: `_sort_all`, `_sort_[iu][8|16|32|64|128|size]`.
-- add features: `_cmp_all`, `_cmp_[iu][8|16|32|64|128|size]`.
+- add features: `_num_all`, `_float_all`, `_float_f<32|64>`, `_int_all`, `_int_<iu><all|8|16|32|64|128|size>`.
+- add features: `_bit_all`, `_bit_<iu><8|16|32|64|128|size>`.
+- add features: `_ascii_all`, `_ascii_u<8|16|32|64|128|size>`.
+- add features: `_non_value_all`, `_non_value_<iu><8|16|32|64|128|size>`.
+- add features: `_non_range_all`, `_non_range_<iu><8|16|32|64|128|size>`.
+- add features: `_range_all`, `_non_range_<iu><8|16|32|64|128|size>`.
+- add features: `_sort_all`, `_sort_<iu><8|16|32|64|128|size>`.
+- add features: `_cmp_all`, `_cmp_<iu><8|16|32|64|128|size>`.
 - add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`, `__no_test` `nightly_stabilized`.
-- add features: `_node_all`, `_node_u[8|16|32|64|128|size]`.
+- add features: `_node_all`, `_node_u<8|16|32|64|128|size>`.
 - add compilation flags for reflection purposes, named `_some_*`.
 - enable `doc_notable_trait` unstable feature with `nightly_doc`.
 - add traits: `ExtFuture`, `ExtFloatConst`, `ExtLog`, `NumVector`.
@@ -107,7 +107,7 @@
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 - add methods to `ExtAny`: `downcast_ref`, `downcast_mut`.
 - add methods to `Tuple:`: `nth_ref`, `nth_mut`, `into_iter`, `iter_ref`, `iter_mut`.
-- add methods to `Cast` and `PrimitiveCast`: `wrapping_cast_*`, for `[iu]size_[up|down]`.
+- add methods to `Cast` and `PrimitiveCast`: `wrapping_cast_*`, for `<iu>size_<up|down>`.
 - re-export more items from: `std::io`, `core::ptr`.
 - re-export: `String`, `ToString`, `Rc`, `RcWeak`.
 - add build script for debugging purposes.
@@ -158,8 +158,8 @@
 - change default `Tuple` arity to 12.
 - change tuple capability features to: `_tuple_arity_24`, `_tuple_arity_36`, `_tuple_arity_48`, `_tuple_arity_72`.
 - add bounds for `color_gamma_*` functions.
-- make some methods const: `Slice::<u8>::trim_leading_bytes`, `StringU*::from_bytes_n[left|right]`, `Timecode::split_nanos_u[32|64]`.
-- make some methods *optionally* const: `Slice::{lsplit, msplit_[left|right]}`, `Ascii::digits_str`, `StringU*::from_bytes_n[left|right][_unchecked]`.
+- make some methods const: `Slice::<u8>::trim_leading_bytes`, `StringU*::from_bytes_n<left|right>`, `Timecode::split_nanos_u<32|64>`.
+- make some methods *optionally* const: `Slice::{lsplit, msplit_<left|right>}`, `Ascii::digits_str`, `StringU*::from_bytes_n<left|right>[_unchecked]`.
 - feature-gate `Compare` impls for primitives.
 - feature-gate `StackU*` method `own_resize_default_truncate`.
 - feature-gate `Float` methods: `clamp_total`, `max_total`, `min_total`.
@@ -313,7 +313,7 @@
 - new traits: `DataArray`, `PrimitiveCast`, `BitOps`, `NumInt`, `NumRefInt`, `VecExt`.
 - new macros: `bitfield`, `enumset`, `ident_const_index`, `ident_total_count`, `init_array`.
 - new `NumErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
-- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
+- new color constants: `COLOR_LUMINANCE_<RED|GREEN|BLUE>`.
 - complete `Floating` and `FloatOps` methods and constants.
 - re-export `panic` from `error`, and `hint` from `code`.
 - new type aliases: `isize_up`, `usize_up`.
@@ -362,7 +362,7 @@
 - make `DataCollection` always available.
 - make `prime_number_theorem` compilable without `libm` nor `std`.
 - make `devela_macros` a non-optional dependency, and update it.
-- update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
+- update color gamma fns, rename to `color_gamma_<apply|remove>_f*`, add `f64` versions.
 - update `DataCollection` methods to return `DataResult`; add new methods `collection_contains`, `collection_count`.
 - update `IntoPrimitives` related method to take `self`, remove one generic argument.
 - update `CastPrimitives` with missing `usize` and `isize` methods.
@@ -692,7 +692,7 @@
 ### Added
 - new features: `unsafe_mem`, `unsafe_str`.
 - new modules : `ascii`, `os::terminal`, `str`, `_features`.
-- new fns in `ascii:`: `ascii_d[1-4]`, `u[BITS]_to_ascii`.
+- new fns in `ascii:`: `ascii_d<1…4>`, `u{BITS}_to_ascii`.
 - new fns in `mem:` `as_bytes`, `as_bytes_mut`, `as_bytes_sized`.
 - new fns in `os::linux`: `sys_ioctl`.
 - new fns in `os::terminal`: `is_terminal`, `enable_raw_terminal`, `disable_raw_terminal`, `eprint`, `eprintln` `get_char`, `get_dirty_char`, `get_line`, `get_utf8_bytes`, `get_str`, `pause_until_char`, `println`, `prompt`.
