@@ -5,8 +5,6 @@
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
-// safety
-#![cfg_attr(feature = "safe_image", forbid(unsafe_code))]
 
 mod error;
 mod info; // ImageInfo, ImageFrame<Info|Span>

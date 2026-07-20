@@ -144,7 +144,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 167/300 (133 remaining), 119 visible, 48 hidden
+[features] # 164/300 (136 remaining), 116 visible, 48 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -360,15 +360,10 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 	# safe_error = []
 	safe_geom = []
 	safe_lang = []
-	safe_media = [
-		"safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
-		]
+	safe_media = ["safe_audio", "safe_font", "safe_visual"]
 		safe_audio = []
-		safe_visual = ["safe_color", "safe_draw", "safe_image"]
-			safe_color = []
-			safe_draw = []
-			safe_font = []
-			safe_image = []
+		safe_font = []
+		safe_visual = []
 	safe_num = []
 	safe_org = []
 	safe_phys = ["safe_time"]

@@ -241,7 +241,7 @@ mod reflection {
             "safe_media",
                 "safe_audio",
                 "safe_font",
-                "safe_visual", "safe_color", "safe_draw", "safe_image",
+                "safe_visual",
             "safe_num",
             "safe_org",
             "safe_phys",

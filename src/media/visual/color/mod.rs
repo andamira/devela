@@ -5,8 +5,6 @@
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
-// safety
-#![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
 #[cfg(feature = "color")]
 mod _helper; // (TEMP Norm)

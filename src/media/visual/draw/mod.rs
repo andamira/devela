@@ -5,8 +5,6 @@
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
-// safety
-#![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]
 
 mod traits; // Canvas, CanvasRead, CanvasTextel
 
