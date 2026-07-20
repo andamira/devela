@@ -7,7 +7,7 @@
 // - FONT_BIT_3_5
 // - FONT_BIT_5_6
 
-use super::FontBitmap;
+use super::FontBitmapWord;
 
 #[doc = crate::_tags!(font)]
 /// A simple 3x3 bitmap font.
@@ -17,7 +17,8 @@ use super::FontBitmap;
 /// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 /// - upper and lower case characters are the same.
 /// - 'S' == '5' and  'Z' == '2'.
-pub const FONT_BIT_3_3: FontBitmap<u16> = FontBitmap::new(&FONT_BIT_3_3_GLYPHS, ' ', 3, 3, 2, 4, 4);
+pub const FONT_BIT_3_3: FontBitmapWord<u16> =
+    FontBitmapWord::new(&FONT_BIT_3_3_GLYPHS, ' ', 3, 3, 2, 4, 4);
 
 // The question mark glyph is also used for when there's no specific glyph.
 const QUESTION_3_3: u16 = 0b_010_110_111;
@@ -50,7 +51,8 @@ const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_3_5: FontBitmap<u16> = FontBitmap::new(&FONT_BIT_3_5_GLYPHS, ' ', 3, 5, 4, 4, 6);
+pub const FONT_BIT_3_5: FontBitmapWord<u16> =
+    FontBitmapWord::new(&FONT_BIT_3_5_GLYPHS, ' ', 3, 5, 4, 4, 6);
 
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
 const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
@@ -81,7 +83,8 @@ const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
 ///
 /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
 #[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_5_6: FontBitmap<u32> = FontBitmap::new(&FONT_BIT_5_6_GLYPHS, ' ', 5, 6, 5, 6, 8);
+pub const FONT_BIT_5_6: FontBitmapWord<u32> =
+    FontBitmapWord::new(&FONT_BIT_5_6_GLYPHS, ' ', 5, 6, 5, 6, 8);
 
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
 const FONT_BIT_5_6_GLYPHS: [u32; 95] = [

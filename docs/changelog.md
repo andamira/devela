@@ -88,6 +88,10 @@
   - remove the `time` feature-gate.
   - impl `ConstInit`.
 
+### media::font
+- new types: `FontBitmapView`, `GlyphBitmapView`.
+- rename `FontBitmap` to `FontBitmapWord`.
+
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
 - udpate `ImageError`; add new variant: `InsufficientBuffer`.

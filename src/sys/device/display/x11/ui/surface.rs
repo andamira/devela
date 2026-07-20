@@ -3,7 +3,7 @@
 //! Defines [`XSurfaceUi`].
 //
 
-use crate::{FontBitmap, RegionS2, XError, XSurfaceFrame, is};
+use crate::{FontBitmapWord, RegionS2, XError, XSurfaceFrame, is};
 use crate::{UiDensity, UiDrawKind, UiDrawListView, UiRound};
 
 #[doc = crate::_tags!(ui unix)]
@@ -17,7 +17,7 @@ use crate::{UiDensity, UiDrawKind, UiDrawListView, UiRound};
 /// [`XSurfaceFrame`].
 ///
 /// Geometry is converted from logical UI space into pixels using the configured
-/// [`UiDensity`]. Text is rasterized with a caller-provided [`FontBitmap`].
+/// [`UiDensity`]. Text is rasterized with a caller-provided [`FontBitmapWord`].
 ///
 /// The current implementation supports little-endian, 32-bit stored XRGB surfaces.
 #[must_use]
@@ -51,7 +51,7 @@ impl XSurfaceUi {
         &self,
         draws: &UiDrawListView<'_, S, T>,
         surface: &mut XSurfaceFrame<'_>,
-        font: &FontBitmap<'_, G>,
+        font: &FontBitmapWord<'_, G>,
         mut resolve: impl FnMut(&S) -> [u8; 4],
     ) -> Result<(), XError>
     where
@@ -195,7 +195,7 @@ fn render_text<G>(
     rect: PixelRect,
     text: &str,
     rgba: [u8; 4],
-    font: &FontBitmap<'_, G>,
+    font: &FontBitmapWord<'_, G>,
     scale: u8,
 ) where
     G: Copy + Into<u64>,

@@ -8,21 +8,33 @@
 // safety
 #![cfg_attr(feature = "safe_font", forbid(unsafe_code))]
 
-mod art; // FontArt
-mod bitmap; // FontBitmap
+mod _helper;
 
-// WIPZONE
-// #[cfg(any(feature = "std", feature = "dep_hashbrown"))]
-// pub mod bdf;
+mod art; // Fixed-size Unicode/text-art font representations
+mod bitmap; // Bitmap font data, glyph masks, views, storage and access
+// mod color; // Font-specific color structures
+mod format; // Font storage and interchange formats
+// mod generate; // Procedural construction, derivation and synthesis
+// mod inspect; // Descriptive inspection and optional quality policies
+// mod metric; // Objective dimensions and placement
+// mod outline; // Contour-based glyph representation
+// mod semantic; // Format-independent typographic meaning
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
-            art::*,
-            bitmap::*,
+            art::_all::*,
+            bitmap::_all::*,
+            // color::_all::*,
+            format::_all::*,
+            // generate::_all::*,
+            // inspect::_all::*,
+            // metric::_all::*,
+            // outline::_all::*,
+            // semantic::_all::*,
         };
-        // WIPZONE
-        // #[cfg(feature = "std")]
-        // pub use super::bdf::*;
+    }
+    _crate_internals {
+        pub(crate) use super::_helper::_Font;
     }
 }

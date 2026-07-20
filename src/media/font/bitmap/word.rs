@@ -1,6 +1,6 @@
-// devela/src/media/font/bitmap/bitmap.rs
+// devela/src/media/font/bitmap/word.rs
 //
-//! Defines [`FontBitmap`].
+//! Defines [`FontBitmapWord`].
 //
 
 use crate::{Debug, FmtResult, Formatter};
@@ -11,9 +11,9 @@ use crate::{format_buf, whilst};
 #[doc = crate::_doc_meta!{
     location("media/font"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: FontBitmap<()> = 28|224),
+    test_size_of(__: FontBitmapWord<()> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: FontBitmap<()> = 48|384),
+    test_size_of(__: FontBitmapWord<()> = 48|384),
 }]
 ///
 /// Glyph bits are stored row-major from the least-significant bit:
@@ -21,7 +21,7 @@ use crate::{format_buf, whilst};
 ///
 /// `baseline` is a zero-based glyph row. Drawing at `y` places that row at `y`.
 #[derive(Clone, PartialEq, Eq, Hash)]
-pub struct FontBitmap<'glyphs, T> {
+pub struct FontBitmapWord<'glyphs, T> {
     glyphs: &'glyphs [T],
     first_glyph: char,
     extra_glyphs: &'glyphs [(char, T)],
@@ -32,10 +32,10 @@ pub struct FontBitmap<'glyphs, T> {
     advance_x: u8,
     advance_y: u8,
 }
-impl<T> Debug for FontBitmap<'_, T> {
+impl<T> Debug for FontBitmapWord<'_, T> {
     fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
         let mut buf = [0u8; 128];
-        let name = format_buf![&mut buf, "FontBitmap<{}>", stringify!(T)].unwrap();
+        let name = format_buf![&mut buf, "FontBitmapWord<{}>", stringify!(T)].unwrap();
         f.debug_struct(name)
             .field("glyphs", &self.glyphs.len())
             .field("first_glyph", &self.first_glyph)
@@ -44,13 +44,13 @@ impl<T> Debug for FontBitmap<'_, T> {
             .field("height", &self.height)
             .field("baseline", &self.baseline)
             .field("advance_x", &self.advance_x)
-            .field("advance_y", &self.advance_x)
+            .field("advance_y", &self.advance_y)
             .finish()
     }
 }
 
 #[rustfmt::skip]
-impl<'glyphs, T> FontBitmap<'glyphs, T> {
+impl<'glyphs, T> FontBitmapWord<'glyphs, T> {
     /// Creates a checked bitmap font.
     ///
     /// # Panics
@@ -67,8 +67,7 @@ impl<'glyphs, T> FontBitmap<'glyphs, T> {
             glyphs, first_glyph, extra_glyphs: &[], width, height, baseline, advance_x, advance_y
         }
     }
-    /// Adds individually mapped glyphs.
-    #[must_use]
+    #[must_use] /// Adds individually mapped glyphs.
     pub const fn with_extra_glyphs(mut self, extra_glyphs: &'glyphs [(char, T)]) -> Self {
         self.extra_glyphs = extra_glyphs;
         self
@@ -76,38 +75,29 @@ impl<'glyphs, T> FontBitmap<'glyphs, T> {
 
     /* data */
 
-    /// Returns the sequential glyphs.
-    #[must_use]
+    #[must_use] /// Returns the sequential glyphs.
     pub const fn glyphs(&self) -> &[T] { self.glyphs }
-    /// Returns the first sequential glyph character.
-    #[must_use]
+    #[must_use] /// Returns the first sequential glyph character.
     pub const fn first_glyph(&self) -> char { self.first_glyph }
-    /// Returns the individually mapped glyphs.
-    #[must_use]
+    #[must_use] /// Returns the individually mapped glyphs.
     pub const fn extra_glyphs(&self) -> &[(char, T)] { self.extra_glyphs }
 
     /* metrics */
 
-    /// Returns the glyph width.
-    #[must_use]
+    #[must_use] /// Returns the glyph width.
     pub const fn width(&self) -> u8 { self.width }
-    /// Returns the glyph height.
-    #[must_use]
+    #[must_use] /// Returns the glyph height.
     pub const fn height(&self) -> u8 { self.height }
 
-    /// Returns the zero-based baseline row.
-    #[must_use]
+    #[must_use] /// Returns the zero-based baseline row.
     pub const fn baseline(&self) -> u8 { self.baseline }
 
-    /// Returns the horizontal glyph advance.
-    #[must_use]
+    #[must_use] /// Returns the horizontal glyph advance.
     pub const fn advance_x(&self) -> u8 { self.advance_x }
-    /// Returns the vertical line advance.
-    #[must_use]
+    #[must_use] /// Returns the vertical line advance.
     pub const fn advance_y(&self) -> u8 { self.advance_y }
 
-    /// Returns the bits used by each glyph.
-    #[must_use]
+    #[must_use] /// Returns the bits used by each glyph.
     pub const fn glyph_bits(&self) -> usize { self.width as usize * self.height as usize }
 
     /* lookup */
@@ -128,22 +118,20 @@ impl<'glyphs, T> FontBitmap<'glyphs, T> {
         }}
         None
     }
-    /// Returns whether a glyph exists for `c`.
-    #[must_use]
+    #[must_use] /// Returns whether a glyph exists for `c`.
     pub const fn has_glyph(&self, c: char) -> bool {
         match self.glyph_ref(c) { Some(_) => true, None => false }
     }
 
     /* measurement */
 
-    /// Returns the horizontal advance after single-line `text`.
-    #[must_use]
+    #[must_use] /// Returns the horizontal advance after single-line `text`.
+    // IMPROVE: make const with IterChar
     pub fn text_advance(&self, text: &str) -> usize {
         text.chars().count().saturating_mul(self.advance_x as usize)
     }
-
-    /// Returns the fixed-glyph span of single-line `text`.
-    #[must_use]
+    #[must_use] /// Returns the fixed-glyph span of single-line `text`.
+    // IMPROVE: make const
     pub fn text_width(&self, text: &str) -> usize {
         let count = text.chars().count();
         if count == 0 { 0 }
@@ -154,7 +142,7 @@ impl<'glyphs, T> FontBitmap<'glyphs, T> {
 }
 
 #[rustfmt::skip]
-impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
+impl<T: Copy + Into<u64>> FontBitmapWord<'_, T> {
     /// Draws text into a one-byte-per-pixel buffer.
     pub fn draw_mono(&self, buffer: &mut [u8], width: usize, x: isize, y: isize, text: &str) {
         if width == 0 { return; }
@@ -231,7 +219,7 @@ impl<T: Copy + Into<u64>> FontBitmap<'_, T> {
     }
 }
 #[rustfmt::skip]
-impl<T: Copy> FontBitmap<'_, T> {
+impl<T: Copy> FontBitmapWord<'_, T> {
     /// Returns the glyph for `c`.
     #[must_use]
     pub const fn glyph(&self, c: char) -> Option<T> {

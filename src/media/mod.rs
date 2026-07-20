@@ -23,16 +23,21 @@ pub mod visual;
 
 crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
-        #[cfg(feature = "audio")] pub use super::audio::_all::*;
+        #[cfg(feature = "audio")]
+        pub use super::audio::_all::*;
         // pub use super::compo::_all::*;
         // pub use super::doc::_all::*;
-        #[cfg(feature = "font")]  pub use super::font::_all::*;
+        #[cfg(feature = "font")]
+        pub use super::font::_all::*;
         // pub use super::motion::_all::*;
         pub use super::visual::_all::*;
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;
-        pub(crate) use super::visual::_crate_internals::*;
+        pub(crate) use super::{
+            visual::_crate_internals::*,
+            font::_crate_internals::*,
+        };
     }
     _hidden {
         // pub use super::visual::_hidden::*;
