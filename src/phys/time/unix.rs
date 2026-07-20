@@ -8,6 +8,8 @@
 //
 //! Defines [`TimeUnixI64`], [`TimeUnixU32`].
 //
+// Unix epoch = days since 1970/01/01 * 86400 + seconds since midnight.
+//
 
 use crate::{
     Debug, Display, FmtResult, Formatter, Month, TimeSplit, TimeSplitYearSec, TryFromIntError, is,

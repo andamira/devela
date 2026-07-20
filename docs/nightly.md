@@ -83,6 +83,7 @@ See also
         = `nightly_doc` flag
 
 - 1.??: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
+- 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)

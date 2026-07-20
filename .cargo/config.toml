@@ -183,9 +183,13 @@ tl_ = "test --lib -- --nocapture"
 tl_1 = "test --lib -- --test-threads 1 --nocapture"
 td = "test --doc" #+w
 # Linux targets:
+
 # INSTALL:
 # $ rustup target add i686-unknown-linux-gnu
-# $ sudo apt install gcc-multilib libc6-dev-i386
+# $ sudo dpkg --add-architecture i386
+# $ sudo apt install gcc-multilib libc6-dev-i386 \
+#   libxcb1-dev:i386 libxcb-shm0-dev:i386 libxkbcommon-dev:i386 libxkbcommon-x11-dev:i386 \
+
 # USAGE:
 # $ cargo t_x32l -F linux,unsafe_ffi
 t32 = "t_x32l"
