@@ -70,9 +70,8 @@
   [M_apply]: crate::_doc::vendored::apply
   [`Hook`]: crate::code::result::Hook
   [`Morph`]: crate::code::result::Morph
- <!-- [M_blitfonts]: crate::_doc::vendored::blit-fonts -->
-  [`FONT_BIT_3_5`]: crate::media::font::FONT_BIT_3_5
-  [`FONT_BIT_5_6`]: crate::media::font::FONT_BIT_5_6
+  [`Fonts::BIT_3_5`]: crate::media::font::Fonts::BIT_3_5
+  [`Fonts::BIT_5_6`]: crate::media::font::Fonts::BIT_5_6
   [M_jiff]: crate::_doc::vendored::jiff
   [`TimeDelta`]: crate::phys::time::TimeDelta
   [M_pengyhash]: crate::_doc::vendored::pengyhash

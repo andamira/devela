@@ -15,7 +15,6 @@ use crate::{format_buf, whilst};
     #[cfg(target_pointer_width = "64")]
     test_size_of(__: FontBitmapWord<()> = 48|384),
 }]
-///
 /// Glyph bits are stored row-major from the least-significant bit:
 /// left to right, then top to bottom.
 ///

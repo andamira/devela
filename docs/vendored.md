@@ -157,7 +157,7 @@ See the linked modifications for detailed changes.
 - <i id="apply"></i>[apply] by GeorgeBurton (Unlicense),
   as part of the [`Hook`] and [`Morph`] structs ([*modifications*][M_apply]).
 - <i id="blit-fonts"></i>[blit-fonts] by Andrew Reece (ISC),
-  as the [`FONT_BIT_3_5`] and [`FONT_BIT_5_6`] consts data<!-- ([*modifications*][M_blit-fonts]) -->.
+  as the [`Fonts::BIT_3_5`] and [`Fonts::BIT_5_6`] consts data.
 - <i id="jiff"></i>[jiff] by Andrew Gallant (Unlicense),
   as the [`TimeDelta`] struct ([*modifications*][M_jiff]).
 - <i id="pengyhash"></i>[pengyhash] by Alberto Fajardo (BSD-2),
@@ -178,9 +178,8 @@ See the linked modifications for detailed changes.
   [`Hook`]: https://docs.rs/devela/latest/devela/code/result/trait.Hook.html
   [`Morph`]: https://docs.rs/devela/latest/devela/code/result/trait.Morph.html
 [blit-fonts]: https://github.com/azmr/blit-fonts
-  <!-- [M_blit-fonts]: https://github.com/andamira/devela/blob/main/src/media/font/bitmap/MODS_BLIT.md -->
-  [`FONT_BIT_3_5`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_BIT_3_5.html
-  [`FONT_BIT_5_6`]: https://docs.rs/devela/latest/devela/media/font/const.FONT_BIT_5_6.html
+  [`Fonts::BIT_3_5`]: https://docs.rs/devela/latest/devela/media/font/const.Fonts::BIT_3_5.html
+  [`Fonts::BIT_5_6`]: https://docs.rs/devela/latest/devela/media/font/const.Fonts::BIT_5_6.html
 [jiff]: https://crates.io/crates/jiff/0.2.1
   [M_jiff]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/jiff.md
   [`TimeDelta`]: https://docs.rs/devela/latest/devela/phys/time/struct.TimeDelta.html
@@ -192,8 +191,3 @@ See the linked modifications for detailed changes.
 [Xabc]: https://web.archive.org/web/20140328221846/https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
 [Graphics Gems]: https://www.realtimerendering.com/resources/GraphicsGems/
-
-<!-- WIPZONE -->
-<!-- - <i id="agg"></i>[agg] by Brian Savage, (BSD-2), (TODO WIP) -->
-<!--   as the [`Pixels`], [`Raster`] and [`Render`] structs. -->
-<!-- - [bdf] by *meh* (WTFPL) as part of the [`Bdf`] struct. -->

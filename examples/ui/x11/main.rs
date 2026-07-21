@@ -3,7 +3,7 @@
 //! Renders a backend-neutral UI output to an X11 pixel surface.
 //
 
-use devela::{EventWindow, FONT_BIT_3_5, Key, is};
+use devela::{EventWindow, Fonts, Key, is};
 use devela::{Lunit, UiDensity, UiDraw, UiOutputView, UiRect};
 use devela::{XError, XFrontend, XSurfaceUi};
 
@@ -74,7 +74,7 @@ fn draw(front: &mut XFrontend) -> Result<(), XError> {
     let output = demo_output();
     let depth = front.display().depth();
     front.with_surface_frame(WIDTH, HEIGHT, depth, true, |surface| {
-        X_UI.render_with(output.draw_list(), surface, &FONT_BIT_3_5, |style| style.dark())
+        X_UI.render_with(output.draw_list(), surface, &Fonts::BIT_3_5, |style| style.dark())
     })
 }
 

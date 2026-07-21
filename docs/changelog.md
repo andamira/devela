@@ -89,8 +89,9 @@
   - impl `ConstInit`.
 
 ### media::font
-- new types: `FontBitmapView`, `GlyphBitmapView`.
+- new types: `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
 - rename `FontBitmap` to `FontBitmapWord`.
+- move standalone font constants to associated `Fonts` constants without `FONT_` prefix.
 
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.

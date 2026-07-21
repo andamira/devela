@@ -2,7 +2,7 @@
 //
 //! Defines [`FontBitmapView`] and [`GlyphBitmapView`].
 
-use crate::{_Font, Debug, FmtResult, Formatter, Region2, Slice};
+use crate::{Debug, FmtResult, Fonts, Formatter, Region2, Slice};
 
 #[doc = crate::_tags!(font)]
 /// A validated, borrowed view over fixed-metric monochrome bitmap-font data.
@@ -234,7 +234,7 @@ impl<'a> FontBitmapView<'a> {
 
     /// Reads a scalar after the caller has checked the glyph index.
     const fn scalar_at_unchecked(&self, index: usize) -> u32 {
-        _Font::read_u32(self.scalars_le, index * 4)
+        Fonts::read_u32(self.scalars_le, index * 4)
     }
 }
 

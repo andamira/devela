@@ -2,28 +2,41 @@
 //
 //! Defines bitmap fonts.
 //
-// TOC
-// - FONT_BIT_3_3
-// - FONT_BIT_3_5
-// - FONT_BIT_5_6
 
-use super::FontBitmapWord;
+use crate::{FontBitmapWord, Fonts};
 
-#[doc = crate::_tags!(font)]
-/// A simple 3x3 bitmap font.
-#[doc = crate::_doc_meta!{location("media/font")}]
-///
-/// Notes:
-/// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
-/// - upper and lower case characters are the same.
-/// - 'S' == '5' and  'Z' == '2'.
-pub const FONT_BIT_3_3: FontBitmapWord<u16> =
-    FontBitmapWord::new(&FONT_BIT_3_3_GLYPHS, ' ', 3, 3, 2, 4, 4);
+impl Fonts {
+    #[doc = crate::_tags!(font)]
+    /// A simple 3x3 bitmap font.
+    #[doc = crate::_doc_meta!{location("media/font")}]
+    ///
+    /// Notes:
+    /// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
+    /// - upper and lower case characters are the same.
+    /// - 'S' == '5' and  'Z' == '2'.
+    pub const BIT_3_3: FontBitmapWord<'_, u16> =
+        FontBitmapWord::new(&BIT_3_3_GLYPHS, ' ', 3, 3, 2, 4, 4);
+
+    /// A simple 3x5 bitmap font.
+    ///
+    /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
+    #[doc = crate::_doc_vendor!("blit-fonts")]
+    pub const BIT_3_5: FontBitmapWord<'_, u16> =
+        FontBitmapWord::new(&BIT_3_5_GLYPHS, ' ', 3, 5, 4, 4, 6);
+
+    /// A simple 5x6 bitmap font.
+    ///
+    /// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
+    #[doc = crate::_doc_vendor!("blit-fonts")]
+    pub const BIT_5_6: FontBitmapWord<'_, u32> =
+        FontBitmapWord::new(&BIT_5_6_GLYPHS, ' ', 5, 6, 5, 6, 8);
+}
 
 // The question mark glyph is also used for when there's no specific glyph.
 const QUESTION_3_3: u16 = 0b_010_110_111;
+
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
-const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
+const BIT_3_3_GLYPHS: [u16; 95] = [
     0b_000000000, 0b_010010010, 0b_000000101, 0b_111111111, QUESTION_3_3, //   ! " # $
     QUESTION_3_3, QUESTION_3_3, 0b_000000010, 0b_010001010, 0b_010100010, // % & ' ( )
     0b_000000001, 0b_010111010, 0b_001010000, 0b_000111000, 0b_010000000, // * + , - .
@@ -45,17 +58,8 @@ const FONT_BIT_3_3_GLYPHS: [u16; 95] = [
     0b_110010011, 0b_110011110, 0b_010010010, 0b_011110011, 0b_000110011, // z { | } ~
 ];
 
-#[doc = crate::_tags!(font)]
-/// A simple 3x5 bitmap font.
-#[doc = crate::_doc_meta!{location("media/font")}]
-///
-/// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
-#[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_3_5: FontBitmapWord<u16> =
-    FontBitmapWord::new(&FONT_BIT_3_5_GLYPHS, ' ', 3, 5, 4, 4, 6);
-
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
-const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
+const BIT_3_5_GLYPHS: [u16; 95] = [
     0x_0000, 0x_2092, 0x_002d, 0x_5f7d, 0x_279e, //   ! " # $
     0x_52a5, 0x_7ad6, 0x_0012, 0x_4494, 0x_1491, // % & ' ( )
     0x_0aba, 0x_05d0, 0x_1400, 0x_01c0, 0x_0400, // * + , - .
@@ -77,17 +81,8 @@ const FONT_BIT_3_5_GLYPHS: [u16; 95] = [
     0x_73b8, 0x_64d6, 0x_2492, 0x_3593, 0x_03e0, // z { | } ~
 ];
 
-#[doc = crate::_tags!(font)]
-/// A simple 5x6 bitmap font.
-#[doc = crate::_doc_meta!{location("media/font")}]
-///
-/// It includes all 95 ASCII characters from space `' '` to tilde `'~'`.
-#[doc = crate::_doc_vendor!("blit-fonts")]
-pub const FONT_BIT_5_6: FontBitmapWord<u32> =
-    FontBitmapWord::new(&FONT_BIT_5_6_GLYPHS, ' ', 5, 6, 5, 6, 8);
-
 #[allow(clippy::unreadable_literal)] #[rustfmt::skip]
-const FONT_BIT_5_6_GLYPHS: [u32; 95] = [
+const BIT_5_6_GLYPHS: [u32; 95] = [
     0x_00000000, 0x_08021084, 0x_0000294a, 0x_15f52bea, 0x_08fa38be, //   ! " # $
     0x_33a22e60, 0x_2e94d8a6, 0x_00001084, 0x_10421088, 0x_04421082, // % & ' ( )
     0x_00a23880, 0x_00471000, 0x_04420000, 0x_00070000, 0x_0c600000, // * + , - .
