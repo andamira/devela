@@ -92,6 +92,7 @@
 - new types: `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
 - rename `FontBitmap` to `FontBitmapWord`.
 - move standalone font constants to associated `Fonts` constants without `FONT_` prefix.
+- make fonts methods const: `text_<advance|width>`.
 
 #### media::visual::image
 - new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.

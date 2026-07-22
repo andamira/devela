@@ -2,7 +2,7 @@
 //
 //! Defines [`FontBitmapView`] and [`GlyphBitmapView`].
 
-use crate::{Debug, FmtResult, Fonts, Formatter, Region2, Slice};
+use crate::{CharIter, Debug, FmtResult, Fonts, Formatter, Region2, Slice};
 
 #[doc = crate::_tags!(font)]
 /// A validated, borrowed view over fixed-metric monochrome bitmap-font data.
@@ -227,7 +227,7 @@ impl<'a> FontBitmapView<'a> {
     /// Every Unicode scalar is counted literally; this method does not interpret
     /// line breaks, tabs, combining behavior, or fallback availability.
     pub fn text_advance(&self, text: &str) -> usize {
-        text.chars().count().saturating_mul(self.advance_x as usize)
+        CharIter::<&str>::new(text).count().saturating_mul(self.advance_x as usize)
     }
 
     /* private helpers */

@@ -3,8 +3,7 @@
 //! Defines [`FontBitmapWord`].
 //
 
-use crate::{Debug, FmtResult, Formatter};
-use crate::{format_buf, whilst};
+use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, whilst};
 
 #[doc = crate::_tags!(font)]
 /// A fixed-size bitmap font packed into glyph words.
@@ -125,14 +124,12 @@ impl<'glyphs, T> FontBitmapWord<'glyphs, T> {
     /* measurement */
 
     #[must_use] /// Returns the horizontal advance after single-line `text`.
-    // IMPROVE: make const with IterChar
-    pub fn text_advance(&self, text: &str) -> usize {
-        text.chars().count().saturating_mul(self.advance_x as usize)
+    pub const fn text_advance(&self, text: &str) -> usize {
+        CharIter::<&str>::new(text).count().saturating_mul(self.advance_x as usize)
     }
     #[must_use] /// Returns the fixed-glyph span of single-line `text`.
-    // IMPROVE: make const
-    pub fn text_width(&self, text: &str) -> usize {
-        let count = text.chars().count();
+    pub const fn text_width(&self, text: &str) -> usize {
+        let count = CharIter::<&str>::new(text).count();
         if count == 0 { 0 }
         else {
             (count - 1).saturating_mul(self.advance_x as usize).saturating_add(self.width as usize)
