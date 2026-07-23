@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d1/define.rs
+// devela/src/data/layout/array/owned/d1/define.rs
 //
 //! 1-dimensional array definitions
 //

@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/vec/chunk/define.rs
+// devela/src/data/layout/array/owned/vec/chunk/define.rs
 //
 //!
 //

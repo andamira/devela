@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d2/methods/coords.rs
+// devela/src/data/layout/array/owned/d2/methods/coords.rs
 //
 //! 2-dimensional array coordinates and indexing methods
 //

@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/vec/ext.rs
+// devela/src/data/layout/array/owned/vec/ext.rs
 //
 //!
 //

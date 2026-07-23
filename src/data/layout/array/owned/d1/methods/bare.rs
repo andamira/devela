@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d1/methods/bare.rs
+// devela/src/data/layout/array/owned/d1/methods/bare.rs
 //
 //! 1-dimensional array *Bare* methods.
 //

@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d1/methods/boxed.rs
+// devela/src/data/layout/array/owned/d1/methods/boxed.rs
 //
 //! 1-dimensional array *Boxed* methods.
 //

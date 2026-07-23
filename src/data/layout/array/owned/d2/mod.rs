@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d2/mod.rs
+// devela/src/data/layout/array/owned/d2/mod.rs
 //
 //! 2-dimensional array
 //

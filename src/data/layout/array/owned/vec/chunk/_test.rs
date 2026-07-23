@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/vec/chunk/tests.rs
+// devela/src/data/layout/array/owned/vec/chunk/tests.rs
 
 use crate::{FloatConst, String, Vec, VecChunk, vec_ as vec};
 

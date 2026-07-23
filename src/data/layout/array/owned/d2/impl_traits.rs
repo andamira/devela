@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/d2/impl_traits.rs
+// devela/src/data/layout/array/owned/d2/impl_traits.rs
 //
 //! 2-dimensional array trait impls
 //

@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/vec/chunk/mod.rs
+// devela/src/data/layout/array/owned/vec/chunk/mod.rs
 //
 //!
 //
