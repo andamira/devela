@@ -64,6 +64,9 @@
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
+#### data::layout::array
+- new types: `ArrayShape`, `ArrayLayout`, `ArrayView`.
+
 #### data::layout::buffer
 - new types: `BufferRingU8`, `BufferRingStaticExample`.
 - new macro: `buffer_ring!`.

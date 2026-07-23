@@ -11,11 +11,13 @@
 mod _reexport_core;
 
 mod adt; // DataArray
-mod d1; // 1-dimensional Array
-mod d2; // 2-dimensional Array2d
+mod d1; // 1-dimensional Array TEMP
+mod d2; // 2-dimensional Array2d TEMP
 mod ext; // ArrayExt, ArrayFmt
 mod from; // ArrayFrom
 mod init; // init_array!
+mod layout; // Array shape and layout foundations
+mod view; // Array views over generic data carriers
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
@@ -24,12 +26,14 @@ mod vec;
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            adt::*,
-            d1::_all::*,
-            d2::_all::*,
-            ext::*,
-            from::*,
-            init::*,
+            adt::DataArray,
+            d1::_all::*, // Array, ArrayUninit
+            d2::_all::Array2d,
+            ext::{ArrayExt, ArrayFmt},
+            from::ArrayFrom,
+            init::init_array,
+            layout::{ArrayLayout, ArrayShape},
+            view::{ArrayView},
         };
 
         #[cfg(feature = "alloc")]
