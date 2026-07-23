@@ -6,9 +6,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
+// mod boundary;
+// mod adjacency;
+
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
+        //     boundary::*,
+        //     adjacency::*,
         // };
     }
 }

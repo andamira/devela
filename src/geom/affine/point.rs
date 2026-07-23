@@ -1,17 +1,33 @@
-// devela/src/geom/affine/point/methods.rs
+// devela/src/geom/affine/point/define.rs
 //
 //!
 //
-// TOC
-// - Point
-// - Point2d
-// - Point3d
-// - impl_point!
-// - Points
 
 #[cfg(feature = "alg")]
 use crate::Vector;
-use crate::{Point, Point2d, Point3d, Points};
+
+/* definitions */
+
+#[doc = crate::_tags!(geom)]
+/// A coordinate position in `D`-space without extent.
+#[doc = crate::_doc_meta!{location("num/geom/shape")}]
+#[must_use]
+pub struct Point<T, const D: usize> {
+    /// The D-dimensional coordinates.
+    pub coords: [T; D],
+}
+
+#[doc = crate::_tags!(geom)]
+/// A specific position in 2d-space without a size.
+#[doc = crate::_doc_meta!{location("num/geom/shape")}]
+pub type Point2d<T> = Point<T, 2>;
+
+#[doc = crate::_tags!(geom)]
+/// A specific position in 3d-space without a size.
+#[doc = crate::_doc_meta!{location("num/geom/shape")}]
+pub type Point3d<T> = Point<T, 3>;
+
+/* implementations */
 
 #[rustfmt::skip]
 impl<T, const D: usize> Point<T, D> {
@@ -93,7 +109,9 @@ macro_rules! impl_point {
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
             #[cfg(feature = "alg")]
+            #[cfg(feature = "int")] // TEMP
             #[cfg_attr(nightly_doc, doc(cfg(feature = "alg")))]
+            #[cfg_attr(nightly_doc, doc(cfg(feature = "int")))] // TEMP
             pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
                 Self { coords: Vector::new(self.coords).c_add(v).coords }
             }
@@ -140,8 +158,58 @@ macro_rules! impl_point {
 }
 impl_point!();
 
-#[rustfmt::skip]
-impl<T, const D: usize, const N: usize> Points<T, D, N> {
-    /// Returns new `Points` from the given `coords` array.
-    pub const fn new(points: [Point<T, D>; N]) -> Self { Self { array: points } }
+mod impl_traits {
+    use crate::{ArrayExt, Point, init_array};
+    use crate::{ConstInit, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering};
+
+    impl<T: Clone, const D: usize> Clone for Point<T, D> {
+        fn clone(&self) -> Self {
+            Self::new(self.coords.clone())
+        }
+    }
+    impl<T: Copy, const D: usize> Copy for Point<T, D> {}
+
+    impl<T: Default, const D: usize> Default for Point<T, D> {
+        fn default() -> Self {
+            Self::new(init_array![default [T; D], "safe_num", "unsafe_array"])
+        }
+    }
+    impl<T: ConstInit, const D: usize> ConstInit for Point<T, D> {
+        const INIT: Self = Self::new(init_array![INIT in ConstInit [T; D]]);
+    }
+
+    impl<T: Debug, const D: usize> Debug for Point<T, D> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            f.debug_tuple("Point").field(&self.coords).finish()
+        }
+    }
+    impl<T: Display, const D: usize> Display for Point<T, D> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            write!(f, "Point {{ coords: {} }}", self.coords.fmt())
+        }
+    }
+
+    impl<T: PartialEq, const D: usize> PartialEq for Point<T, D> {
+        fn eq(&self, other: &Self) -> bool {
+            self.coords == other.coords
+        }
+    }
+    impl<T: Eq, const D: usize> Eq for Point<T, D> {}
+
+    impl<T: PartialOrd, const D: usize> PartialOrd for Point<T, D> {
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+            self.coords.partial_cmp(&other.coords)
+        }
+    }
+    impl<T: Ord, const D: usize> Ord for Point<T, D> {
+        fn cmp(&self, other: &Self) -> Ordering {
+            self.coords.cmp(&other.coords)
+        }
+    }
+
+    impl<T: Hash, const D: usize> Hash for Point<T, D> {
+        fn hash<HR: Hasher>(&self, state: &mut HR) {
+            self.coords.hash(state);
+        }
+    }
 }

@@ -9,7 +9,6 @@
 // mod curve; // Curved geometric primitives and parametric paths.
 // mod line; // Linear geometric primitives such as segments and rays.
 // mod poly; // Polygonal and polyhedral geometric figures.
-// mod set; // Sets of geometric figures.
 
 crate::structural_mods! { // _mods
     _mods {
@@ -17,7 +16,6 @@ crate::structural_mods! { // _mods
         //     curve::_all::*,
         //     line::_all::*,
         //     poly::_all::*,
-        //     set::_all::*,
         // };
     }
 }

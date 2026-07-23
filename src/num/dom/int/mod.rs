@@ -16,10 +16,10 @@ mod gcd; // GcdReturn
 // mod primes; // WIP
 // mod recip; // DivRecip WIP
 
-#[cfg(feature = "int")]
+#[cfg(all(feature = "int", feature = "num"))]
 mod num_trait; // NumInt, NumRefInt
 #[cfg(feature = "int")]
-mod wrapper; // Int, int! WIP
+mod wrapper; // Int, TODO: int!
 
 crate::structural_mods! { // _mods, _crate_internals, _hidden
     _mods {
@@ -31,11 +31,10 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             // prim::*,
             // recip::*,
         };
+        #[cfg(all(feature = "int", feature = "num"))]
+        pub use super::num_trait::*;
         #[cfg(feature = "int")]
-        pub use super::{
-            num_trait::*,
-            wrapper::_all::*,
-        };
+        pub use super::wrapper::_all::*;
         #[cfg(feature = "_docs_examples")]
         pub use super::divisor::DivisorExample;
     }

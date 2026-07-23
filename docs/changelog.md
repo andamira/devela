@@ -77,6 +77,10 @@
 - move `<data|num|text>::error` to `error::<data|num|text>`.
 - move `code::error` contents here.
 
+### geom::affine
+- new type `Simplex`.
+- remove `Points`, `Points2d`, `VecPoints`.
+
 ### geom::dir
 - fix `Angle` left-hand rule direction.
 

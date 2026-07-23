@@ -8,6 +8,7 @@
 //! their direction can be decomposed into *orientation* and *sense*.
 //
 
+#[cfg(feature = "num")]
 use crate::Num;
 // #[cfg(feature = "alloc")]
 // use crate::{Box, NumError, NumResult as Result, Vec};
@@ -46,8 +47,8 @@ pub type Vector3d<T> = Vector<T, 3>;
 
 /* trait */
 
-#[doc = crate::_tags!(wip)]
-#[doc = crate::_tags!(lin)]
+#[cfg(feature = "num")]
+#[doc = crate::_tags!(wip lin)]
 /// A common trait for all vectors.
 #[doc = crate::_doc_meta!{location("num/alg")}]
 pub trait NumVector: Num {
