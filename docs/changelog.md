@@ -78,7 +78,7 @@
 - move `code::error` contents here.
 
 ### geom::affine
-- new type `Simplex`.
+- new types: `Simplex`, `SimplexFacetView`, `SimplexFacetIter`.
 - remove `Points`, `Points2d`, `VecPoints`.
 
 ### geom::dir

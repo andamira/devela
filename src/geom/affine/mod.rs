@@ -18,7 +18,7 @@ crate::structural_mods! { // _mods
             // frame::_all::*,
             // map::_all::*,
             point::{Point, Point2d, Point3d},
-            simplex::Simplex,
+            simplex::_all::{Simplex, SimplexFacetView, SimplexFacetIter},
             // transform::_all::*,
         };
     }
