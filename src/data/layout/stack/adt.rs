@@ -1,11 +1,7 @@
 // devela/src/data/layout/stack/adt.rs
 //
-//! Defines the [`DataStack`] & [`DataDesta`] abstract data types.
+//! Defines the [`DataStack`] abstract data type.
 //
-// TOC
-// - define traits DataStack, DataDesta
-// - impl for
-//   - VecDeque
 
 #![allow(dead_code, reason = "feature-gated implementations")]
 
@@ -24,32 +20,6 @@ pub trait DataStack: DataCollection {
     ) -> Result<(), NotEnoughSpace>;
 }
 
-#[doc = crate::_tags!(data_structure)]
-/// An abstract *double-ended stack* data type.
-#[doc = crate::_doc_meta!{location("data/layout/stack")}]
-pub trait DataDesta: DataStack {
-    /// Remove an element from the front of the stack.
-    fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements>;
-    /// Add an element to the front of the stack.
-    fn stack_push_front(
-        &mut self,
-        element: <Self as DataCollection>::Element,
-    ) -> Result<(), NotEnoughSpace>;
-
-    /// Remove an element from the back of the stack (calls [`DataStack::stack_pop`]).
-    fn stack_pop_back(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
-        self.stack_pop()
-    }
-    /// Remove an element from the back of the stack (calls [`DataStack::stack_push`]).
-    ///
-    fn stack_push_back(
-        &mut self,
-        element: <Self as DataCollection>::Element,
-    ) -> Result<(), NotEnoughSpace> {
-        self.stack_push(element)
-    }
-}
-
 /* impl for VecDeque */
 
 #[rustfmt::skip]
@@ -60,15 +30,5 @@ impl<T> DataStack for crate::VecDeque<T> {
     }
     fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<(), NotEnoughSpace> {
         self.push_back(element); Ok(())
-    }
-}
-#[rustfmt::skip]
-#[cfg(feature = "alloc")]
-impl<T> DataDesta for crate::VecDeque<T> {
-    fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
-        self.pop_front().ok_or(NotEnoughElements(Some(1)))
-    }
-    fn stack_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<(), NotEnoughSpace> {
-        self.push_front(element); Ok(())
     }
 }

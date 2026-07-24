@@ -11,23 +11,26 @@
 mod _reexport_core;
 
 mod adt; // DataArray
+
+mod carrier; // impls for ArrayView
+mod define; // ArrayView
+mod layout; // ArrayLayout, ArrayShape
+
 mod ext; // ArrayExt, ArrayFmt
 mod from; // ArrayFrom
 mod init; // init_array!
-mod layout; // Array shape and layout foundations
 mod owned; // Owning array containers and storage-specific utilities
-mod view; // Array views over generic data carriers
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             adt::DataArray,
+            define::ArrayView,
             ext::{ArrayExt, ArrayFmt},
             from::ArrayFrom,
             init::init_array,
             layout::{ArrayLayout, ArrayShape},
             owned::_all::*,
-            view::ArrayView,
         };
     }
     _reexports {

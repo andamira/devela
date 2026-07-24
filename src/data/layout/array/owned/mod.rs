@@ -1,4 +1,4 @@
-// devela::data::layout::array::owned
+// devela/src/data/layout/array/owned/mod.rs
 //
 //! Owning array containers and storage-specific utilities.
 //

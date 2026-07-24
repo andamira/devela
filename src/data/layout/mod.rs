@@ -12,16 +12,17 @@ mod collection; // DataCollection
 mod queue;
 mod sort; // Sort
 mod stack;
-// mod view;
 
 pub mod array;
 pub mod buffer; // buffer_linear!, buffer_ring!, Buffer*Example
-// pub mod table;
 
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
+
+// pub mod erased; // TODO
+// pub mod table; // TODO
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -31,13 +32,13 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             queue::_all::*,
             sort::_all::*,
             stack::_all::*,
-            // view::_all::*,
         };
     }
     _pub_mods {
         pub use super::{
             array::_all::*,
             buffer::_all::*,
+            // erased::_all::*,
             // table::_all::*,
         };
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]

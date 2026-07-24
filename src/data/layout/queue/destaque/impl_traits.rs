@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    Array, Bare, ConstInit, DataCollection, DataDeque, DataDesta, DataQueue, DataStack, Destaque,
+    Array, Bare, ConstInit, DataCollection, DataDeque, DataQueue, DataStack, Destaque,
     DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
 };
 use ::core::fmt;
@@ -115,17 +115,6 @@ macro_rules! _data_layout_queue_destaque_impl_traits {
                 self.push_back(element)
             }
         }
-        #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
-            fn stack_pop_front(&mut self)
-                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
-                self.pop_front()
-            }
-            fn stack_push_front(&mut self, element: <Self as DataCollection>::Element)
-                -> Result<(), NotEnoughSpace> {
-                self.push_front(element)
-            }
-        }
         // unsafe alternative without T: Clone
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
         impl<T, const CAP: usize, S: Storage> DataStack for Destaque<T, CAP, $IDX, S> {
@@ -138,17 +127,7 @@ macro_rules! _data_layout_queue_destaque_impl_traits {
                 self.push_back(element)
             }
         }
-        #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
-            fn stack_pop_front(&mut self)
-                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
-                self.pop_front()
-            }
-            fn stack_push_front(&mut self, element: <Self as DataCollection>::Element)
-                -> Result<(), NotEnoughSpace> {
-                self.push_front(element)
-            }
-        }
+
         /* impl From<IntoIterator<Item = T>> */
 
         impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, CAP, $IDX, Bare>

@@ -64,6 +64,9 @@
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
+#### data::layout
+- remove trait `DataDesta`.
+
 #### data::layout::array
 - new types: `ArrayShape`, `ArrayLayout`, `ArrayView`.
 

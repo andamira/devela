@@ -1,57 +1,6 @@
-// devela::data::layout::array::view
-//
-//! Array views over generic data carriers.
+// devela/src/data/layout/array/carrier/slice.rs
 
-use crate::{ArrayLayout, ArrayShape, MismatchedCapacity, Slice};
-
-#[doc = crate::_tags!(data_structure lifetime mem)]
-/// A logical array interpretation over a data carrier.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
-/// An array view joins:
-/// - accessible data of type `D`;
-/// - an [`ArrayLayout`] describing how logical coordinates address it.
-///
-/// The view does not imply ownership. `D` may be a shared slice,
-/// an exclusive slice, or another supported carrier.
-///
-/// # Example
-/// ```
-/// # use devela::{ArrayLayout, ArrayShape, ArrayView};
-/// let storage = [0, 1, 2, 3, 4, 5];
-/// let shape = ArrayShape::new([2, 3]);
-/// let layout = ArrayLayout::dense_last(shape)?;
-/// let view = ArrayView::try_from_slice_ref(&storage, layout)?;
-///
-/// assert_eq!(view.get_copy([1, 2]), Some(5));
-/// # Ok::<(), Box<dyn core::error::Error>>(())
-/// ```
-#[must_use]
-#[derive(Clone, Copy, Debug)]
-pub struct ArrayView<D, const RANK: usize> {
-    data: D,
-    layout: ArrayLayout<RANK>,
-}
-#[rustfmt::skip]
-impl<D, const RANK: usize> ArrayView<D, RANK> {
-    /// Returns the underlying data carrier.
-    pub const fn data(&self) -> &D { &self.data }
-
-    /// Returns the array layout.
-    pub const fn layout(&self) -> ArrayLayout<RANK> { self.layout }
-
-    /// Returns the logical shape.
-    pub const fn shape(&self) -> ArrayShape<RANK> { self.layout.shape() }
-
-    /// Returns the number of logical axes.
-    pub const fn rank(&self) -> usize { RANK }
-
-    /// Returns the number of logical elements.
-    pub const fn element_count(&self) -> usize { self.layout.element_count() }
-
-    /// Returns whether the logical array has no elements.
-    pub const fn is_empty(&self) -> bool { self.layout.is_empty() }
-}
+use crate::{ArrayLayout, ArrayShape, ArrayView, MismatchedCapacity, Slice};
 
 /// # Methods over a shared slice.
 impl<'a, T, const RANK: usize> ArrayView<&'a [T], RANK> {
@@ -224,7 +173,7 @@ impl<'a, T, const RANK: usize> ArrayView<&'a mut [T], RANK> {
 #[cfg(test)]
 mod _test {
     use super::*;
-    use crate::const_assert;
+    use crate::{Order, const_assert};
 
     const SHAPE: ArrayShape<2> = ArrayShape::new([2, 3]);
     const LAYOUT: ArrayLayout<2> = match ArrayLayout::dense_last(SHAPE) {
@@ -378,5 +327,13 @@ mod _test {
             assert_eq!(part_layout, LAYOUT);
         }
         assert_eq!(storage, [9, 1, 2, 3, 4, 5]);
+    }
+    #[test]
+    fn equivalence_with_order() {
+        let dims = [4, 3, 2];
+        assert_eq!(ArrayLayout::dense_first(ArrayShape::new(dims)).unwrap().strides(), &[1, 4, 12]);
+        assert_eq!(Order::row_major_strides(dims), Some([1, 4, 12]));
+        assert_eq!(ArrayLayout::dense_last(ArrayShape::new(dims)).unwrap().strides(), &[6, 2, 1]);
+        assert_eq!(Order::col_major_strides(dims), Some([6, 2, 1]));
     }
 }
