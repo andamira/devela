@@ -140,17 +140,7 @@ Expands internal data-structure coverage and generated implementations.
 - `_tuple[_24|_36|_48|_72]`: implements the [`Tuple`] trait for a selected
   maximum arity (12 by default).
 
-Temporary collection scope features for [`Destaque`] and [`Stack`]:
-
-- `_destaque_all`: `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
-- `_stack_all`: `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
-
-These collection scope features are temporary and will be removed
-once the corresponding generator macros replace them.
-
 [`unroll!`]: crate::code::util::unroll
-[`Destaque`]: crate::data::Destaque
-[`Stack`]: crate::data::Stack
 [`Tuple`]: crate::data::value::Tuple
 
 

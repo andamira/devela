@@ -16,17 +16,15 @@
 mod _reexport_alloc;
 
 mod adt;
-#[cfg(_destaque··)]
-mod destaque;
 // mod destaque; // WIP destaque!
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        pub use super::adt::*;
-
-        #[cfg(_destaque··)]
-        pub use super::destaque::_all::*;
-        // pub use super::destaque::_all::*;
+        #[doc(inline)]
+        pub use super::{
+            adt::*,
+            // destaque::_all::*,
+        };
     }
     _reexports {
         #[cfg(feature = "alloc")]

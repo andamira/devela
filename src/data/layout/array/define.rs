@@ -3,7 +3,7 @@
 //! Array views over generic data carriers.
 //
 
-use crate::{ArrayLayout, ArrayShape, MismatchedCapacity, Slice};
+use crate::{ArrayLayout, ArrayShape};
 
 #[doc = crate::_tags!(data_structure lifetime mem)]
 /// A logical array interpretation over a data carrier.

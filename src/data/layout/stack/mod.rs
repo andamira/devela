@@ -12,13 +12,13 @@
 //
 
 mod adt;
-#[cfg(_stack··)]
-mod stack;
+// mod stack; // WIP stack!
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::adt::*;
-        #[cfg(_stack··)]
-        pub use super::stack::_all::*;
+        pub use super::{
+            adt::*,
+            // stack::_all::*,
+        };
     }
 }

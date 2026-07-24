@@ -372,10 +372,6 @@ mod reflection {
     };
 
     // ### collections
-    pub const _DESTAQUE: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_destaque··"],
-        features: &["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
-    };
     pub const _GRAPH: FlagsFeatures = FlagsFeatures {
         ref_flags: &["_graph··"],
         features: &["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
@@ -384,9 +380,6 @@ mod reflection {
         ref_flags: &["_node··"],
         features: &["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
     };
-    pub const _STACK: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_stack··"],
-        features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
 
     /* ## sys */
 
@@ -440,7 +433,7 @@ mod reflection {
             _UNROLL,
             // data
             _TUPLE,
-            _DESTAQUE, _GRAPH, _NODE, _STACK, // collections
+            _GRAPH, _NODE, // collections
             // sys
             _SYS,
 

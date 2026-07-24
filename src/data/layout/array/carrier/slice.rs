@@ -1,6 +1,6 @@
 // devela/src/data/layout/array/carrier/slice.rs
 
-use crate::{ArrayLayout, ArrayShape, ArrayView, MismatchedCapacity, Slice};
+use crate::{ArrayLayout, ArrayView, MismatchedCapacity, Slice};
 
 /// # Methods over a shared slice.
 impl<'a, T, const RANK: usize> ArrayView<&'a [T], RANK> {
@@ -173,7 +173,7 @@ impl<'a, T, const RANK: usize> ArrayView<&'a mut [T], RANK> {
 #[cfg(test)]
 mod _test {
     use super::*;
-    use crate::{Order, const_assert};
+    use crate::{ArrayShape, Order, const_assert};
 
     const SHAPE: ArrayShape<2> = ArrayShape::new([2, 3]);
     const LAYOUT: ArrayLayout<2> = match ArrayLayout::dense_last(SHAPE) {

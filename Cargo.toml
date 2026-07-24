@@ -144,7 +144,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 164/300 (136 remaining), 116 visible, 48 hidden
+[features] # 154/300 (146 remaining), 116 visible, 38 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -464,7 +464,7 @@ _docs_min = [ # the minimum scope to document every item independent of alloc/st
 				"term",
 				# "windows"
 	# data:
-	"_destaque_u8", "_stack_u8", "_graph_u8", "_tuple", "_unroll",
+	"_graph_u8", "_tuple", "_unroll",
 ]
 _docs_nodep = [ # +std +unsafe +__dbg
 	"_docs_min", "std", "unsafe", "__dbg",
@@ -494,13 +494,8 @@ _unroll_2048 = ["_unroll_1024"]
 
 _data_all = ["_collections_all", "_tuple"]
 
-# `Destaque*`, `Graph*`, `Node*`, `Stack*`, `Tuple`:
-_collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "_tuple" ]
-	_destaque_all = ["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
-		_destaque_u8 = []
-		_destaque_u16 = []
-		_destaque_u32 = []
-		_destaque_usize = []
+# `Graph*`, `Node*`, `Tuple`:
+_collections_all = ["_graph_all", "_node_all", "_tuple" ]
 	_graph_all = ["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
 		_graph_u8 = ["_node_u8"]
 		_graph_u16 = ["_node_u16"]
@@ -511,11 +506,6 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_node_u16 = []
 		_node_u32 = []
 		_node_usize = []
-	_stack_all = ["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"]
-		_stack_u8 = []
-		_stack_u16 = []
-		_stack_u32 = []
-		_stack_usize = []
 
 # `Tuple` trait and maximum arity supported (example relative compilation times)
 _tuple = [] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
@@ -914,7 +904,6 @@ check-cfg = [ # Allowed configuration flags:
 	"cfg(unsafe··, safe··, nightly··, dep··)",
 	# data: (5)
 	'cfg(data··)',
-	'cfg(_destaque··, _stack··)',
 	'cfg(_graph··, _node··)',
 	# geom: (1)
 	'cfg(geom··)',
