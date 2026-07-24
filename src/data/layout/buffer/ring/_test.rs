@@ -1,24 +1,39 @@
 // devela/src/data/layout/buffer/ring/_test.rs
 
 use super::*;
+use crate::{ConstInit, const_assert};
 
-type RingOption = BufferRingStaticExample<i32, [Option<i32>; 4]>;
-type RingArray = BufferRingStaticExample<i32, [i32; 4]>;
-
-crate::items! {
-    #[derive(Debug, Default, PartialEq, Eq)]
-    struct Token(i32);
-    type RingToken = BufferRingStaticExample<Token, [Token; 4]>;
+#[derive(Debug, PartialEq, Eq)]
+struct Item(u8);
+impl ConstInit for Item {
+    const INIT: Self = Self(0);
 }
 
 mod array {
     use super::*;
 
+    type RingArray = BufferRingStaticExample<i32, [i32; 4]>;
+    crate::items! {
+        #[derive(Debug, Default, PartialEq, Eq)]
+        struct Token(i32);
+        type RingToken = BufferRingStaticExample<Token, [Token; 4]>;
+    }
     fn assert_ring_eq(buf: &RingArray, expected: &[i32]) {
         assert_eq!(buf.len_prim() as usize, expected.len());
         assert!(buf.iter().copied().eq(expected.iter().copied()));
     }
 
+    #[test]
+    const fn array_ring_pop_noncopy_is_const() {
+        const RING_POP: (Option<Item>, usize) = {
+            let mut ring =
+                BufferRingStaticExample::<Item, [Item; 2]>::from_array_full([Item(10), Item(20)]);
+            let value = ring.pop_back();
+            (value, ring.len().get() as usize)
+        };
+        const_assert!(eq RING_POP.0.unwrap().0, Item(20).0);
+        const_assert!(eq RING_POP.1, 1);
+    }
     #[test]
     fn basic_fifo() {
         let mut buf = RingArray::new_init();
@@ -47,8 +62,8 @@ mod array {
     fn pop_init_moves_value() {
         let mut buf = RingArray::new_init();
         assert_eq!(buf.push_back_slice_copy(&[1, 2, 3]), 3);
-        assert_eq!(buf.pop_front_init(), Some(1));
-        assert_eq!(buf.pop_back_init(), Some(3));
+        assert_eq!(buf.pop_front(), Some(1));
+        assert_eq!(buf.pop_back(), Some(3));
         assert_ring_eq(&buf, &[2]);
     }
     #[test]
@@ -87,6 +102,8 @@ mod array {
 
 mod option {
     use super::*;
+
+    type RingOption = BufferRingStaticExample<i32, [Option<i32>; 4]>;
 
     fn assert_ring_option_eq(buf: &RingOption, expected: &[i32]) {
         assert_eq!(buf.len_prim() as usize, expected.len());

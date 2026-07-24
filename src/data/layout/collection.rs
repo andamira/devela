@@ -16,14 +16,11 @@
 //   - UnorderedMap
 //   - UnorderedSet
 
+use crate::NotAvailable::{self, NotImplemented, NotSupported};
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, BTreeSet, BinaryHeap, Vec, VecDeque};
 #[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
 use crate::{HashMap, HashSet};
-use crate::{
-    NotAvailable::{self, NotImplemented, NotSupported},
-    Storage,
-};
 
 type Result<T> = crate::Result<T, NotAvailable>;
 

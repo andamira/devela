@@ -7,7 +7,7 @@
 // - impl for:
 //   - Array
 
-use crate::{DataCollection, IndexOutOfBounds, Storage};
+use crate::{DataCollection, IndexOutOfBounds};
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *array* data type.

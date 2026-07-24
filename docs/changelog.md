@@ -76,6 +76,8 @@
 - new types: `BufferRingU8`, `BufferRingStaticExample`.
 - new macro: `buffer_ring!`.
 - update `buffer_linear!`:
+  - new impl `array` methods: `pop_back`, `pop_back_with`.
+  - make impl array methods const: `from_array_clamped[_prim]`.
   - new impl `option` methods: `swap_remove_prim`, `swap_remove_copy_prim`.
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.

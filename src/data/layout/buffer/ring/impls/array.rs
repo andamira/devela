@@ -322,6 +322,45 @@ macro_rules! __buffer_ring_impl_array {
 
             /* pop: front */
 
+            /// Removes and returns a copied value from the front,
+            /// replacing its storage slot with `T::INIT`.
+            pub const fn pop_front(&mut self) -> Option<T> where T: $crate::ConstInit {
+                if self.is_empty() { return None; }
+                let head = self._head_usize();
+                let value = $crate::Mem::replace(&mut self.storage[head], T::INIT);
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
+                Some(value)
+            }
+            /// Removes and returns a value from the front,
+            /// replacing its storage slot with `T::default()`.
+            pub fn pop_front_default(&mut self) -> Option<T> where T: Default {
+                self.pop_front_with(T::default())
+            }
+            /// Removes and returns a value from the front,
+            /// replacing its storage slot with `replacement`.
+            pub fn pop_front_with(&mut self, replacement: T) -> Option<T> {
+                if self.is_empty() { return None; }
+                let head = self._head_usize();
+                let value = $crate::Mem::replace(&mut self.storage[head], replacement);
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
+                Some(value)
+            }
+            /// Removes and returns a copied value from the front,
+            /// replacing its storage slot with `replacement`.
+            pub const fn pop_front_copy_with(&mut self, replacement: T) -> Option<T> where T: Copy {
+                if self.is_empty() { return None; }
+                let head = self._head_usize();
+                let value = self.storage[head];
+                self.storage[head] = replacement;
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
+                Some(value)
+            }
             /// Removes and returns a cloned value from the front of the ring.
             pub fn pop_front_clone(&mut self) -> Option<T> where T: Clone {
                 if self.is_empty() { return None; }
@@ -342,43 +381,45 @@ macro_rules! __buffer_ring_impl_array {
                 else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
                 Some(value)
             }
-            /// Removes and returns a value from the front,
-            /// replacing its storage slot with `replacement`.
-            pub fn pop_front_with(&mut self, replacement: T) -> Option<T> {
-                if self.is_empty() { return None; }
-                let head = self._head_usize();
-                let value = $crate::Mem::replace(&mut self.storage[head], replacement);
-                self.len = self._len_dec();
-                if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
-                Some(value)
-            }
-            /// Removes and returns a value from the front,
-            /// replacing its storage slot with `T::default()`.
-            pub fn pop_front_default(&mut self) -> Option<T> where T: Default {
-                self.pop_front_with(T::default())
-            }
-
-            /// Removes and returns a copied value from the front,
-            /// replacing its storage slot with `replacement`.
-            pub const fn pop_front_copy_with(&mut self, replacement: T) -> Option<T> where T: Copy {
-                if self.is_empty() { return None; }
-                let head = self._head_usize();
-                let value = self.storage[head];
-                self.storage[head] = replacement;
-                self.len = self._len_dec();
-                if self.is_empty() { self.head = Self::_idx_zero(); }
-                else { self.head = Self::_usize_to_midx(Self::_wrap_usize(head + 1)); }
-                Some(value)
-            }
-            /// Removes and returns a copied value from the front,
-            /// replacing its storage slot with `T::INIT`.
-            pub const fn pop_front_init(&mut self) -> Option<T> where T: $crate::ConstInit + Copy {
-                self.pop_front_copy_with(T::INIT)
-            }
 
             /* pop: back */
 
+            /// Removes and returns a copied value from the back,
+            /// replacing its storage slot with `T::INIT`.
+            pub const fn pop_back(&mut self) -> Option<T> where T: $crate::ConstInit {
+                if self.is_empty() { return None; }
+                let back = self._back_usize();
+                let value = $crate::Mem::replace(&mut self.storage[back], T::INIT);
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                Some(value)
+            }
+            /// Removes and returns a value from the back,
+            /// replacing its storage slot with `T::default()`.
+            pub fn pop_back_default(&mut self) -> Option<T> where T: Default {
+                self.pop_back_with(T::default())
+            }
+            /// Removes and returns a value from the back,
+            /// replacing its storage slot with `replacement`.
+            pub fn pop_back_with(&mut self, replacement: T) -> Option<T> {
+                if self.is_empty() { return None; }
+                let back = self._back_usize();
+                let value = $crate::Mem::replace(&mut self.storage[back], replacement);
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                Some(value)
+            }
+            /// Removes and returns a copied value from the back,
+            /// replacing its storage slot with `replacement`.
+            pub const fn pop_back_copy_with(&mut self, replacement: T) -> Option<T> where T: Copy {
+                if self.is_empty() { return None; }
+                let back = self._back_usize();
+                let value = self.storage[back];
+                self.storage[back] = replacement;
+                self.len = self._len_dec();
+                if self.is_empty() { self.head = Self::_idx_zero(); }
+                Some(value)
+            }
             /// Removes and returns a cloned value from the back of the ring.
             pub fn pop_back_clone(&mut self) -> Option<T> where T: Clone {
                 if self.is_empty() { return None; }
@@ -396,37 +437,6 @@ macro_rules! __buffer_ring_impl_array {
                 self.len = self._len_dec();
                 if self.is_empty() { self.head = Self::_idx_zero(); }
                 Some(value)
-            }
-            /// Removes and returns a value from the back,
-            /// replacing its storage slot with `replacement`.
-            pub fn pop_back_with(&mut self, replacement: T) -> Option<T> {
-                if self.is_empty() { return None; }
-                let back = self._back_usize();
-                let value = $crate::Mem::replace(&mut self.storage[back], replacement);
-                self.len = self._len_dec();
-                if self.is_empty() { self.head = Self::_idx_zero(); }
-                Some(value)
-            }
-            /// Removes and returns a value from the back,
-            /// replacing its storage slot with `T::default()`.
-            pub fn pop_back_default(&mut self) -> Option<T> where T: Default {
-                self.pop_back_with(T::default())
-            }
-            /// Removes and returns a copied value from the back,
-            /// replacing its storage slot with `replacement`.
-            pub const fn pop_back_copy_with(&mut self, replacement: T) -> Option<T> where T: Copy {
-                if self.is_empty() { return None; }
-                let back = self._back_usize();
-                let value = self.storage[back];
-                self.storage[back] = replacement;
-                self.len = self._len_dec();
-                if self.is_empty() { self.head = Self::_idx_zero(); }
-                Some(value)
-            }
-            /// Removes and returns a copied value from the back,
-            /// replacing its storage slot with `T::INIT`.
-            pub const fn pop_back_init(&mut self) -> Option<T> where T: $crate::ConstInit + Copy {
-                self.pop_back_copy_with(T::INIT)
             }
 
             /* peek */

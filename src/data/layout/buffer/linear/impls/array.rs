@@ -13,9 +13,9 @@ macro_rules! __buffer_linear_impl_array {
         /// - `len` controls logical membership, not initialization.
         /// - Dropping the array drops all `CAP` elements.
         ///
-        /// Consequences
-        /// - Cannot move out `T` safely.
-        /// - Popping by value needs `Copy` or `Clone`.
+        /// # Consequences
+        /// - Moving out `T` requires immediately installing another valid `T`.
+        /// - Popping by value therefore requires `Copy`, `Clone`, or a replacement value.
         /// - Shrinking `len` does not affect drop behavior.
         #[rustfmt::skip]
         impl<T, const CAP: usize> $name<T, [T; CAP]> {
@@ -32,7 +32,7 @@ macro_rules! __buffer_linear_impl_array {
 
             /// Creates a buffer from an already initialized array,
             /// limiting the logical length to `max_len`.
-            pub fn from_array_clamped(array: [T; CAP], max_len: $I) -> Self {
+            pub const fn from_array_clamped(array: [T; CAP], max_len: $I) -> Self {
                 let a = $crate::MaybeNiche(max_len).prim();
                 let b = $crate::MaybeNiche(Self::CAP).prim();
                 let min = $crate::Cmp(a).min(b);
@@ -43,7 +43,7 @@ macro_rules! __buffer_linear_impl_array {
             }
             /// Primitive-index variant of [`from_array_clamped`][Self::from_array_clamped].
             #[inline(always)]
-            pub fn from_array_clamped_prim(array: [T; CAP], max_len: $P) -> Self {
+            pub const fn from_array_clamped_prim(array: [T; CAP], max_len: $P) -> Self {
                 Self::from_array_clamped(array, Self::_prim_to_idx_lossy(max_len))
             }
 
@@ -156,6 +156,26 @@ macro_rules! __buffer_linear_impl_array {
 
             /* pop */
 
+            /// Removes and returns the value at the back,
+            /// replacing its storage slot with `T::INIT`.
+            pub const fn pop_back(&mut self) -> Option<T> where T: $crate::ConstInit {
+                if self.is_empty() { return None; }
+                let new_len = self._len_dec();
+                let back = new_len.to_usize_saturating();
+                let value = $crate::Mem::replace(&mut self.storage[back], T::INIT);
+                self.len = new_len;
+                Some(value)
+            }
+            /// Removes and returns the value at the back,
+            /// replacing its storage slot with `replacement`.
+            pub fn pop_back_with(&mut self, replacement: T) -> Option<T> {
+                if self.is_empty() { return None; }
+                let new_len = self._len_dec();
+                let back = new_len.to_usize_saturating();
+                let value = $crate::Mem::replace(&mut self.storage[back], replacement);
+                self.len = new_len;
+                Some(value)
+            }
             /// Removes and returns a cloned value from the back of the buffer.
             pub fn pop_back_clone(&mut self) -> Option<T> where T: Clone {
                 if self.is_empty() { return None; }
