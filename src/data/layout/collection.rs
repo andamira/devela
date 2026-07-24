@@ -17,7 +17,6 @@
 //   - UnorderedSet
 
 use crate::{
-    Array,
     NotAvailable::{self, NotImplemented, NotSupported},
     Storage,
 };
@@ -58,23 +57,23 @@ pub trait DataCollection {
 
 /* impl for devela types */
 
-#[rustfmt::skip]
-impl<T, const LEN: usize, S: Storage> DataCollection for Array<T, LEN, S> {
-    type Element = T;
-    /// The capacity of a fixed-size array is always equal to its length.
-    fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }
-    fn collection_len(&self) -> Result<usize> { Ok(LEN) }
-    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
-    fn collection_is_empty(&self) -> Result<bool> { Err(NotSupported) }
-    /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
-    fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
-    fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
-        Ok(self.contains(&element))
-    }
-    fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
-        Ok(self.iter().filter(|&e| e == element).count())
-    }
-}
+// #[rustfmt::skip]
+// impl<T, const LEN: usize, S: Storage> DataCollection for Array<T, LEN, S> {
+//     type Element = T;
+//     /// The capacity of a fixed-size array is always equal to its length.
+//     fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }
+//     fn collection_len(&self) -> Result<usize> { Ok(LEN) }
+//     /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
+//     fn collection_is_empty(&self) -> Result<bool> { Err(NotSupported) }
+//     /// Returns [`NotSupported`] since a fixed-size array is never empty or full.
+//     fn collection_is_full(&self) -> Result<bool> { Err(NotSupported) }
+//     fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
+//         Ok(self.contains(&element))
+//     }
+//     fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
+//         Ok(self.iter().filter(|&e| e == element).count())
+//     }
+// }
 
 /* impl for reexported types */
 

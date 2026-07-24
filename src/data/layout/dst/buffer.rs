@@ -1,6 +1,6 @@
 // devela/src/data/layout/dst/buffer.rs
 
-use crate::{Array, ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
+use crate::{ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
 
 #[doc = crate::_tags!(data_structure)]
 /// Represents the backing buffer for storing dynamically sized types.
@@ -98,37 +98,64 @@ unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
 }
 
 #[doc = crate::_tags!(data_structure)]
-/// A static array for storing <abbr title="Dynamically sized type">DST</abbr>s.
+/// An inline fixed-capacity buffer for storing
+/// <abbr title="Dynamically sized type">DST</abbr>s.
 #[doc = crate::_doc_meta!{location("data/layout/dst")}]
+///
+/// `CAP` is measured in `T`-sized storage words.
+/// The size and alignment of `T` determine which values can be stored.
+#[repr(transparent)]
 #[derive(Debug)]
 pub struct DstArray<T, const CAP: usize> {
-    inner: Array<MaybeUninit<T>, CAP>,
+    inner: [MaybeUninit<T>; CAP],
 }
-impl<T, const CAP: usize> Deref for DstArray<T, CAP> {
-    type Target = Array<MaybeUninit<T>, CAP>;
+impl<T, const CAP: usize> DstArray<T, CAP> {
+    /// The number of `T`-sized storage words.
+    pub const CAPACITY: usize = CAP;
 
-    fn deref(&self) -> &Self::Target {
+    /// Creates an uninitialized fixed-capacity DST buffer.
+    #[must_use]
+    pub const fn new() -> Self {
+        Self { inner: [const { MaybeUninit::uninit() }; CAP] }
+    }
+    /// Returns the backing native array.
+    #[must_use]
+    pub const fn as_array(&self) -> &[MaybeUninit<T>; CAP] {
         &self.inner
     }
-}
-impl<T, const CAP: usize> DerefMut for DstArray<T, CAP> {
-    fn deref_mut(&mut self) -> &mut Self::Target {
+    /// Returns the backing native array exclusively.
+    #[must_use]
+    pub const fn as_mut_array(&mut self) -> &mut [MaybeUninit<T>; CAP] {
         &mut self.inner
     }
-}
-impl<T: MemPod, const CAP: usize> Default for DstArray<T, CAP> {
-    fn default() -> Self {
-        Self { inner: Array::new([MaybeUninit::uninit(); CAP]) }
+    /// Returns the backing storage as a slice.
+    #[must_use]
+    pub const fn as_slice(&self) -> &[MaybeUninit<T>] {
+        &self.inner
+    }
+    /// Returns the backing storage as an exclusive slice.
+    #[must_use]
+    pub const fn as_mut_slice(&mut self) -> &mut [MaybeUninit<T>] {
+        &mut self.inner
+    }
+    /// Consumes the buffer and returns its backing native array.
+    #[must_use]
+    pub fn into_array(self) -> [MaybeUninit<T>; CAP] {
+        self.inner
     }
 }
-impl<T: MemPod, const CAP: usize> ConstInit for DstArray<T, CAP> {
-    const INIT: Self = Self {
-        inner: Array::new_bare([MaybeUninit::uninit(); CAP]),
-    };
+impl<T, const CAP: usize> Default for DstArray<T, CAP> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+impl<T, const CAP: usize> ConstInit for DstArray<T, CAP> {
+    const INIT: Self = Self::new();
 }
 #[rustfmt::skip]
 unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {
     type Inner = T;
+
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         &self.inner
     }

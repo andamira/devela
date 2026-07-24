@@ -54,55 +54,55 @@ pub trait DataArray: DataCollection {
 
 /* impl for Array */
 
-impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S> {
-    fn array_ref_get(
-        &self,
-        idx: usize,
-    ) -> Result<&<Self as DataCollection>::Element, IndexOutOfBounds> {
-        if let Some(e) = self.get(idx) {
-            Ok(e)
-        } else {
-            Err(IndexOutOfBounds(Some(idx)))
-        }
-    }
-    fn array_mut_get(
-        &mut self,
-        idx: usize,
-    ) -> Result<&mut <Self as DataCollection>::Element, IndexOutOfBounds> {
-        if let Some(e) = self.get_mut(idx) {
-            Ok(e)
-        } else {
-            Err(IndexOutOfBounds(Some(idx)))
-        }
-    }
-    fn array_set(
-        &mut self,
-        idx: usize,
-        value: <Self as DataCollection>::Element,
-    ) -> Result<(), IndexOutOfBounds> {
-        if let Some(e) = self.get_mut(idx) {
-            *e = value;
-            Ok(())
-        } else {
-            Err(IndexOutOfBounds(Some(idx)))
-        }
-    }
-    fn array_set_ref(
-        &mut self,
-        idx: usize,
-        value: &<Self as DataCollection>::Element,
-    ) -> Result<(), IndexOutOfBounds>
-    where
-        T: Clone,
-    {
-        if let Some(e) = self.get_mut(idx) {
-            *e = value.clone();
-            Ok(())
-        } else {
-            Err(IndexOutOfBounds(Some(idx)))
-        }
-    }
-}
+// impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S> {
+//     fn array_ref_get(
+//         &self,
+//         idx: usize,
+//     ) -> Result<&<Self as DataCollection>::Element, IndexOutOfBounds> {
+//         if let Some(e) = self.get(idx) {
+//             Ok(e)
+//         } else {
+//             Err(IndexOutOfBounds(Some(idx)))
+//         }
+//     }
+//     fn array_mut_get(
+//         &mut self,
+//         idx: usize,
+//     ) -> Result<&mut <Self as DataCollection>::Element, IndexOutOfBounds> {
+//         if let Some(e) = self.get_mut(idx) {
+//             Ok(e)
+//         } else {
+//             Err(IndexOutOfBounds(Some(idx)))
+//         }
+//     }
+//     fn array_set(
+//         &mut self,
+//         idx: usize,
+//         value: <Self as DataCollection>::Element,
+//     ) -> Result<(), IndexOutOfBounds> {
+//         if let Some(e) = self.get_mut(idx) {
+//             *e = value;
+//             Ok(())
+//         } else {
+//             Err(IndexOutOfBounds(Some(idx)))
+//         }
+//     }
+//     fn array_set_ref(
+//         &mut self,
+//         idx: usize,
+//         value: &<Self as DataCollection>::Element,
+//     ) -> Result<(), IndexOutOfBounds>
+//     where
+//         T: Clone,
+//     {
+//         if let Some(e) = self.get_mut(idx) {
+//             *e = value.clone();
+//             Ok(())
+//         } else {
+//             Err(IndexOutOfBounds(Some(idx)))
+//         }
+//     }
+// }
 
 /* impl for core array [T; LEN] */
 
