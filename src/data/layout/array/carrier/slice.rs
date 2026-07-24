@@ -1,5 +1,9 @@
 // devela/src/data/layout/array/carrier/slice.rs
+//
+//! Array implementations over shared and exclusive slices.
+//
 
+use super::validate_storage_len;
 use crate::{Array, ArrayLayout, MismatchedCapacity, Slice};
 
 /// # Methods over a shared slice.
@@ -16,11 +20,9 @@ impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
         storage: &'a [T],
         layout: ArrayLayout<RANK>,
     ) -> Result<Self, MismatchedCapacity> {
-        let required = layout.required_storage_len();
-        if storage.len() < required {
-            Err(MismatchedCapacity::too_small(storage.len(), required))
-        } else {
-            Ok(Self { data: storage, layout })
+        match validate_storage_len(storage.len(), layout) {
+            Ok(()) => Ok(Self { data: storage, layout }),
+            Err(error) => Err(error),
         }
     }
     /// Creates a shared slice-backed view.
@@ -53,27 +55,10 @@ impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
             None => None,
         }
     }
-    /// Returns a copy of the element at `coord`.
-    ///
-    /// Returns `None` if the coordinate is out of bounds.
-    pub const fn get_copy(&self, coord: [usize; RANK]) -> Option<T>
-    where
-        T: Copy,
-    {
-        match self.get(coord) {
-            Some(value) => Some(*value),
-            None => None,
-        }
-    }
     /// Returns a shared view reborrowed for the lifetime of `self`.
     #[inline(always)]
     pub const fn reborrow(&self) -> Array<&[T], RANK> {
         Array { data: self.data, layout: self.layout }
-    }
-    /// Decomposes the view into its backing slice and layout.
-    #[inline(always)]
-    pub const fn into_parts(self) -> (&'a [T], ArrayLayout<RANK>) {
-        (self.data, self.layout)
     }
 }
 
@@ -138,16 +123,6 @@ impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
             None => None,
         }
     }
-    /// Returns a copy of the element at `coord`.
-    pub const fn get_copy(&self, coord: [usize; RANK]) -> Option<T>
-    where
-        T: Copy,
-    {
-        match self.get(coord) {
-            Some(value) => Some(*value),
-            None => None,
-        }
-    }
     /// Returns a shared view reborrowed for the lifetime of `self`.
     #[inline(always)]
     pub const fn reborrow(&self) -> Array<&[T], RANK> {
@@ -162,11 +137,6 @@ impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
     #[inline(always)]
     pub const fn into_shared(self) -> Array<&'a [T], RANK> {
         Array { data: self.data, layout: self.layout }
-    }
-    /// Decomposes the view into its backing slice and layout.
-    #[inline(always)]
-    pub const fn into_parts(self) -> (&'a mut [T], ArrayLayout<RANK>) {
-        (self.data, self.layout)
     }
 }
 
@@ -186,7 +156,7 @@ mod _test {
             Ok(view) => view,
             Err(_) => panic!("insufficient storage"),
         };
-    const SHARED_VALUE: Option<u8> = SHARED_VIEW.get_copy([1, 2]);
+    const SHARED_VALUE: Option<u8> = SHARED_VIEW.get([1, 2]).copied();
 
     const MUTATED_DATA: [u8; 6] = const_mutated_data();
     const fn const_mutated_data() -> [u8; 6] {
@@ -236,10 +206,10 @@ mod _test {
         assert_eq!(view.storage_len(), 8);
         assert_eq!(view.storage(), &storage);
         assert_eq!(*view.data(), &storage);
-        assert_eq!(view.get_copy([0, 0]), Some(0));
-        assert_eq!(view.get_copy([0, 2]), Some(2));
-        assert_eq!(view.get_copy([1, 0]), Some(3));
-        assert_eq!(view.get_copy([1, 2]), Some(5));
+        assert_eq!(view.get([0, 0]).copied(), Some(0));
+        assert_eq!(view.get([0, 2]).copied(), Some(2));
+        assert_eq!(view.get([1, 0]).copied(), Some(3));
+        assert_eq!(view.get([1, 2]).copied(), Some(5));
         assert_eq!(view.get([2, 0]), None);
         assert_eq!(view.get([0, 3]), None);
     }
@@ -255,7 +225,7 @@ mod _test {
         let storage = [0, 1, 2, 3, 4, 5];
         let view = Array::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
         assert_eq!(view.storage_len(), 6);
-        assert_eq!(view.get_copy([1, 2]), Some(5));
+        assert_eq!(view.get([1, 2]).copied(), Some(5));
     }
     #[test]
     fn scalar_view() {
@@ -265,7 +235,7 @@ mod _test {
         assert_eq!(view.rank(), 0);
         assert_eq!(view.element_count(), 1);
         assert!(!view.is_empty());
-        assert_eq!(view.get_copy([]), Some(42));
+        assert_eq!(view.get([]).copied(), Some(42));
         let empty: [u8; 0] = [];
         assert!(Array::<&[u8], 0>::try_from_slice(&empty, layout).is_err());
     }
@@ -293,19 +263,19 @@ mod _test {
         let mut storage = [0, 1, 2, 3, 4, 5];
         {
             let mut view = Array::<&mut [u8], 2>::try_from_slice(&mut storage, LAYOUT).unwrap();
-            assert_eq!(view.get_copy([1, 2]), Some(5));
+            assert_eq!(view.get([1, 2]).copied(), Some(5));
             *view.get_mut([1, 2]).unwrap() = 9;
             {
                 let shared = view.reborrow();
-                assert_eq!(shared.get_copy([1, 2]), Some(9));
+                assert_eq!(shared.get([1, 2]).copied(), Some(9));
             }
             {
                 let mut exclusive = view.reborrow_mut();
                 *exclusive.get_mut([0, 0]).unwrap() = 8;
             }
             let shared = view.into_shared();
-            assert_eq!(shared.get_copy([0, 0]), Some(8));
-            assert_eq!(shared.get_copy([1, 2]), Some(9));
+            assert_eq!(shared.get([0, 0]).copied(), Some(8));
+            assert_eq!(shared.get([1, 2]).copied(), Some(9));
         }
         assert_eq!(storage, [8, 1, 2, 3, 4, 9]);
     }
