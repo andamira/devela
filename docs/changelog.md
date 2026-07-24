@@ -65,11 +65,12 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 #### data::layout
-- remove items: `Destaque`, `Stack`.
-- remove trait `DataDesta`.
+- remove trait: `DataDesta`.
+- remove types: `Destaque`, `Stack`.
 
 #### data::layout::array
-- new types: `ArrayShape`, `ArrayLayout`, `ArrayView`.
+- new types: `ArrayShape`, `ArrayLayout`, `Array`.
+- remove types: `Array`, `Array2d`, `ArrayUninit`.
 
 #### data::layout::buffer
 - new types: `BufferRingU8`, `BufferRingStaticExample`.

@@ -1,9 +1,9 @@
 // devela/src/data/layout/array/carrier/slice.rs
 
-use crate::{ArrayLayout, ArrayView, MismatchedCapacity, Slice};
+use crate::{Array, ArrayLayout, MismatchedCapacity, Slice};
 
 /// # Methods over a shared slice.
-impl<'a, T, const RANK: usize> ArrayView<&'a [T], RANK> {
+impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
     /// Creates a shared view over `storage`.
     ///
     /// Extra backing elements are permitted and remain visible through
@@ -67,8 +67,8 @@ impl<'a, T, const RANK: usize> ArrayView<&'a [T], RANK> {
     }
     /// Returns a shared view reborrowed for the lifetime of `self`.
     #[inline(always)]
-    pub const fn reborrow(&self) -> ArrayView<&[T], RANK> {
-        ArrayView { data: self.data, layout: self.layout }
+    pub const fn reborrow(&self) -> Array<&[T], RANK> {
+        Array { data: self.data, layout: self.layout }
     }
     /// Decomposes the view into its backing slice and layout.
     #[inline(always)]
@@ -78,7 +78,7 @@ impl<'a, T, const RANK: usize> ArrayView<&'a [T], RANK> {
 }
 
 /// # Methods over an exclusive slice.
-impl<'a, T, const RANK: usize> ArrayView<&'a mut [T], RANK> {
+impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
     /// Creates an exclusive view over `storage`.
     ///
     /// Extra backing elements are permitted and remain accessible through
@@ -150,18 +150,18 @@ impl<'a, T, const RANK: usize> ArrayView<&'a mut [T], RANK> {
     }
     /// Returns a shared view reborrowed for the lifetime of `self`.
     #[inline(always)]
-    pub const fn reborrow(&self) -> ArrayView<&[T], RANK> {
-        ArrayView { data: &*self.data, layout: self.layout }
+    pub const fn reborrow(&self) -> Array<&[T], RANK> {
+        Array { data: &*self.data, layout: self.layout }
     }
     /// Returns an exclusive view reborrowed for the lifetime of `self`.
     #[inline(always)]
-    pub const fn reborrow_mut(&mut self) -> ArrayView<&mut [T], RANK> {
-        ArrayView { data: &mut *self.data, layout: self.layout }
+    pub const fn reborrow_mut(&mut self) -> Array<&mut [T], RANK> {
+        Array { data: &mut *self.data, layout: self.layout }
     }
     /// Consumes the exclusive view and returns a shared view.
     #[inline(always)]
-    pub const fn into_shared(self) -> ArrayView<&'a [T], RANK> {
-        ArrayView { data: self.data, layout: self.layout }
+    pub const fn into_shared(self) -> Array<&'a [T], RANK> {
+        Array { data: self.data, layout: self.layout }
     }
     /// Decomposes the view into its backing slice and layout.
     #[inline(always)]
@@ -181,8 +181,8 @@ mod _test {
         Err(_) => panic!("unexpected layout overflow"),
     };
     const SHARED_DATA: &[u8] = &[0, 1, 2, 3, 4, 5];
-    const SHARED_VIEW: ArrayView<&[u8], 2> =
-        match ArrayView::<&[u8], 2>::try_from_slice(SHARED_DATA, LAYOUT) {
+    const SHARED_VIEW: Array<&[u8], 2> =
+        match Array::<&[u8], 2>::try_from_slice(SHARED_DATA, LAYOUT) {
             Ok(view) => view,
             Err(_) => panic!("insufficient storage"),
         };
@@ -192,7 +192,7 @@ mod _test {
     const fn const_mutated_data() -> [u8; 6] {
         let mut data = [0, 1, 2, 3, 4, 5];
         {
-            let mut view = match ArrayView::<&mut [u8], 2>::try_from_slice(&mut data, LAYOUT) {
+            let mut view = match Array::<&mut [u8], 2>::try_from_slice(&mut data, LAYOUT) {
                 Ok(view) => view,
                 Err(_) => panic!("insufficient storage"),
             };
@@ -216,18 +216,18 @@ mod _test {
     fn constructors_infer_slice_view_types() {
         let layout = ArrayLayout::dense_last(ArrayShape::new([2, 3])).unwrap();
         let storage = [0, 1, 2, 3, 4, 5];
-        let shared = ArrayView::try_from_slice_ref(&storage, layout).unwrap();
+        let shared = Array::try_from_slice_ref(&storage, layout).unwrap();
 
         // These assignments prove the fully inferred types.
-        let _: ArrayView<&[u8], 2> = shared;
+        let _: Array<&[u8], 2> = shared;
         let mut storage = [0, 1, 2, 3, 4, 5];
-        let exclusive = ArrayView::try_from_slice_mut(&mut storage, layout).unwrap();
-        let _: ArrayView<&mut [u8], 2> = exclusive;
+        let exclusive = Array::try_from_slice_mut(&mut storage, layout).unwrap();
+        let _: Array<&mut [u8], 2> = exclusive;
     }
     #[test]
     fn shared_view_queries() {
         let storage = [0, 1, 2, 3, 4, 5, 6, 7];
-        let view = ArrayView::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
+        let view = Array::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
         assert_eq!(view.rank(), 2);
         assert_eq!(view.shape(), SHAPE);
         assert_eq!(view.layout(), LAYOUT);
@@ -246,14 +246,14 @@ mod _test {
     #[test]
     fn shared_view_rejects_short_storage() {
         let storage = [0, 1, 2, 3, 4];
-        let err = ArrayView::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap_err();
+        let err = Array::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap_err();
         assert_eq!(err, MismatchedCapacity::too_small(5, 6));
         assert_eq!(err.missing(), Some(1));
     }
     #[test]
     fn view_accepts_exact_storage() {
         let storage = [0, 1, 2, 3, 4, 5];
-        let view = ArrayView::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
+        let view = Array::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
         assert_eq!(view.storage_len(), 6);
         assert_eq!(view.get_copy([1, 2]), Some(5));
     }
@@ -261,19 +261,19 @@ mod _test {
     fn scalar_view() {
         let layout = ArrayLayout::dense_last(ArrayShape::<0>::new([])).unwrap();
         let storage = [42];
-        let view = ArrayView::<&[u8], 0>::try_from_slice(&storage, layout).unwrap();
+        let view = Array::<&[u8], 0>::try_from_slice(&storage, layout).unwrap();
         assert_eq!(view.rank(), 0);
         assert_eq!(view.element_count(), 1);
         assert!(!view.is_empty());
         assert_eq!(view.get_copy([]), Some(42));
         let empty: [u8; 0] = [];
-        assert!(ArrayView::<&[u8], 0>::try_from_slice(&empty, layout).is_err());
+        assert!(Array::<&[u8], 0>::try_from_slice(&empty, layout).is_err());
     }
     #[test]
     fn empty_view_requires_no_storage() {
         let layout = ArrayLayout::dense_last(ArrayShape::new([2, 0, 3])).unwrap();
         let storage: [u8; 0] = [];
-        let view = ArrayView::<&[u8], 3>::try_from_slice(&storage, layout).unwrap();
+        let view = Array::<&[u8], 3>::try_from_slice(&storage, layout).unwrap();
         assert!(view.is_empty());
         assert_eq!(view.element_count(), 0);
         assert_eq!(view.storage_len(), 0);
@@ -285,14 +285,14 @@ mod _test {
         struct Token(u8);
         let storage = [Token(7)];
         let layout = ArrayLayout::dense_last(ArrayShape::new([1])).unwrap();
-        let view = ArrayView::<&[Token], 1>::try_from_slice(&storage, layout).unwrap();
+        let view = Array::<&[Token], 1>::try_from_slice(&storage, layout).unwrap();
         assert_eq!(view.get([0]), Some(&Token(7)));
     }
     #[test]
     fn exclusive_view_access_and_reborrowing() {
         let mut storage = [0, 1, 2, 3, 4, 5];
         {
-            let mut view = ArrayView::<&mut [u8], 2>::try_from_slice(&mut storage, LAYOUT).unwrap();
+            let mut view = Array::<&mut [u8], 2>::try_from_slice(&mut storage, LAYOUT).unwrap();
             assert_eq!(view.get_copy([1, 2]), Some(5));
             *view.get_mut([1, 2]).unwrap() = 9;
             {
@@ -312,7 +312,7 @@ mod _test {
     #[test]
     fn shared_into_parts() {
         let storage = [0, 1, 2, 3, 4, 5];
-        let view = ArrayView::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
+        let view = Array::<&[u8], 2>::try_from_slice(&storage, LAYOUT).unwrap();
         let (part_storage, part_layout) = view.into_parts();
         assert_eq!(part_storage, &storage);
         assert_eq!(part_layout, LAYOUT);
@@ -321,7 +321,7 @@ mod _test {
     fn exclusive_into_parts() {
         let mut storage = [0, 1, 2, 3, 4, 5];
         {
-            let view = ArrayView::<&mut [u8], 2>::try_from_slice(&mut storage, LAYOUT).unwrap();
+            let view = Array::<&mut [u8], 2>::try_from_slice(&mut storage, LAYOUT).unwrap();
             let (part_storage, part_layout) = view.into_parts();
             part_storage[0] = 9;
             assert_eq!(part_layout, LAYOUT);

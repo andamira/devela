@@ -17,7 +17,7 @@ use crate::{Overflow, is, unwrap, whilst};
 ///
 /// Offsets and strides are measured in elements, not bytes.
 ///
-/// `ArrayLayout` does not own or borrow storage. An [`ArrayView`][crate::ArrayView]
+/// `ArrayLayout` does not own or borrow storage. An [`Array`][crate::Array]
 /// binds a layout to accessible data and verifies that the storage is large enough.
 ///
 /// # Invariants

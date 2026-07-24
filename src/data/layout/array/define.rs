@@ -18,23 +18,23 @@ use crate::{ArrayLayout, ArrayShape};
 ///
 /// # Example
 /// ```
-/// # use devela::{ArrayLayout, ArrayShape, ArrayView};
+/// # use devela::{ArrayLayout, ArrayShape, Array};
 /// let storage = [0, 1, 2, 3, 4, 5];
 /// let shape = ArrayShape::new([2, 3]);
 /// let layout = ArrayLayout::dense_last(shape)?;
-/// let view = ArrayView::try_from_slice_ref(&storage, layout)?;
+/// let view = Array::try_from_slice_ref(&storage, layout)?;
 ///
 /// assert_eq!(view.get_copy([1, 2]), Some(5));
 /// # Ok::<(), Box<dyn core::error::Error>>(())
 /// ```
 #[must_use]
 #[derive(Clone, Copy, Debug)]
-pub struct ArrayView<D, const RANK: usize> {
+pub struct Array<D, const RANK: usize> {
     pub(super) data: D,
     pub(super) layout: ArrayLayout<RANK>,
 }
 #[rustfmt::skip]
-impl<D, const RANK: usize> ArrayView<D, RANK> {
+impl<D, const RANK: usize> Array<D, RANK> {
     /// Returns the underlying data carrier.
     pub const fn data(&self) -> &D { &self.data }
 

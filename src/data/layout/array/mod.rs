@@ -12,8 +12,8 @@ mod _reexport_core;
 
 mod adt; // DataArray
 
-mod carrier; // impls for ArrayView
-mod define; // ArrayView
+mod carrier; // impls for Array
+mod define; // Array
 mod layout; // ArrayLayout, ArrayShape
 
 mod ext; // ArrayExt, ArrayFmt
@@ -25,7 +25,7 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             adt::DataArray,
-            define::ArrayView,
+            define::Array,
             ext::{ArrayExt, ArrayFmt},
             from::ArrayFrom,
             init::init_array,
