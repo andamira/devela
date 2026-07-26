@@ -20,7 +20,7 @@ crate::structural_mods! { // _mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
-            borrow::{RasterBytesMut, RasterBytesRef, RasterMut, RasterRef},
+            borrow::{RasterByteSlice, RasterSlice},
             coverage::Coverage8,
             // element::RasterElement,
             format::RasterFormat,

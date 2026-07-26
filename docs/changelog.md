@@ -116,6 +116,10 @@
   - remove the `alloc` feature-gate.
   - make all methods const.
 
+##### media::visual::image::raster
+- new types `RasterSlice`, `RasterByteSlice`
+- remove types: `RasterBytesMut`, `RasterBytesRef`, `RasterMut`, `RasterRef`.
+
 ## num
 - rename `num::lin` to `num::alg`.
 
