@@ -1,4 +1,4 @@
-// devela/src/num/grain/lim/define.rs
+// devela/src/num/grain/lim/bound/define.rs
 //
 //! Defines [`bound_int!`].
 //

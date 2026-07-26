@@ -1,4 +1,4 @@
-// devela/src/num/grain/lim/signed.rs
+// devela/src/num/grain/lim/bound/signed.rs
 
 #[doc(hidden)]
 #[macro_export]

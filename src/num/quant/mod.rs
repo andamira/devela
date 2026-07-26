@@ -52,7 +52,6 @@
 // mod cont;
 mod cycle; // Cycle, CycleCount
 mod interval; // Interval, interval!
-// mod norm; // Norm
 // mod power; // Log, Power, Root
 mod ratio; // Ratio*
 // mod scale; // Scale
@@ -67,7 +66,6 @@ crate::structural_mods! { // _mods
             // cont::_all::*,
             cycle::*,
             interval::{Interval, interval},
-            // norm::*,
             // power::*,
             ratio::_all::*,
             // scale::*,

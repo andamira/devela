@@ -1,4 +1,4 @@
-// devela/src/num/grain/lim/_test.rs
+// devela/src/num/grain/lim/bound/_test.rs
 
 use crate::{
     BoundI8Example as I, BoundI8SymExample as Is,
