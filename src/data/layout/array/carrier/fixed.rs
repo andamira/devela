@@ -1,4 +1,4 @@
-// devela::data::layout::array::carrier::fixed
+// devela/src/data/layout/array/carrier/fixed.rs
 //
 //! Array implementations over fixed native arrays.
 //

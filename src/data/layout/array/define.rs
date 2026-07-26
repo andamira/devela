@@ -58,11 +58,11 @@ impl<D, const RANK: usize> Array<D, RANK> {
     /// Returns the array layout.
     pub const fn layout(&self) -> ArrayLayout<RANK> { self.layout }
 
-    /// Consumes the array and returns its fixed native carrier.
+    /// Consumes the array and returns its underlying data carrier.
     pub fn into_data(self) -> D {
         self.data
     }
-    /// Decomposes the array into its fixed native carrier and layout.
+    /// Decomposes the array into its data carrier and layout.
     pub fn into_parts(self) -> (D, ArrayLayout<RANK>) {
         (self.data, self.layout)
     }
