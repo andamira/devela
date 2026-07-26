@@ -25,6 +25,9 @@ crate::structural_mods! { // _pub_mods, _crate_internals
         pub use super::draw::_all::*;
     }
     _crate_internals {
-        pub(crate) use super::color::_crate_internals::*;
+        pub(crate) use super::{
+            color::_crate_internals::*,
+            image::_crate_internals::*,
+        };
     }
 }

@@ -6,22 +6,38 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod borrow; // (4) <Raster[Bytes]<Mut|Ref>>
-mod format; // (1+5) RasterFormat, (<Raster[Alpha|[Packed]Channels|SampleFormat|Transfer]>)
-mod layout; // (1) RasterLayout
-// mod macros; // (1) raster! WIP
-// mod ops; // Raster operations WIP
-mod traits; // (7) Raster<[Buf|View][Bytes]>, <Raster<Sample|View>Packed>>
+mod borrow; // Borrowed typed and byte raster views
+// mod coverage; // Quantized raster-sample coverage
+// mod element; // Coordinate-and-coverage rasterization output
+mod format; // Raster sample and color-format semantics
+// mod grid; // Logical raster-cell geometry and traversal
+mod layout; // Physical raster byte-storage layout
+// mod macros; // WIP Raster type generators
+// mod ops; // WIP Raster storage and image operations
+mod traits; // Typed and byte raster access contracts
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
+        #[doc(inline)]
         pub use super::{
-            borrow::*,
-            format::*,
-            layout::*,
-            // macros::*,
+            borrow::{RasterBytesMut, RasterBytesRef, RasterMut, RasterRef},
+            // coverage::Coverage8,
+            // element::RasterElement,
+            format::RasterFormat,
+            // grid::RasterGrid,
+            layout::RasterLayout,
+            // macros::raster,
             // ops::_all::*,
-            traits::*,
+            traits::{
+                RasterView, RasterBuf, Raster,
+                RasterViewBytes, RasterBufBytes,
+                RasterSamplePacked, RasterViewPacked,
+            },
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::format::{
+            RasterAlpha, RasterChannels, RasterPackedChannels, RasterSampleFormat, RasterTransfer,
         };
     }
 }

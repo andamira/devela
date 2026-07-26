@@ -17,8 +17,13 @@ use crate::{
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed dense raster view over typed samples.
-#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image/raster"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: RasterRef<'_, u32> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: RasterRef<'_, u32> = 48|384),
+}]
 /// This is the concrete borrowed form of [`RasterView`].
 ///
 /// It carries a [`RasterFormat`], a [`RasterLayout`], and a shared sample slice.
@@ -35,8 +40,13 @@ pub struct RasterRef<'a, T> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed mutable dense raster view over typed samples.
-#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image/raster"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: RasterMut<'_, u32> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: RasterMut<'_, u32> = 48|384),
+}]
 /// This is the concrete borrowed form of [`RasterBuf`].
 ///
 /// It gives exclusive access to dense row-major sample storage without implying
@@ -50,8 +60,13 @@ pub struct RasterMut<'a, T> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed byte raster view with explicit row layout.
-#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image/raster"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: RasterBytesRef<'_> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: RasterBytesRef<'_> = 48|384),
+}]
 /// This is the concrete borrowed form of [`RasterViewBytes`].
 ///
 /// It is the safe byte-first bridge for codecs, presentation backends, and
@@ -65,8 +80,13 @@ pub struct RasterBytesRef<'a> {
 
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed mutable byte raster view with explicit row layout.
-#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image/raster"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: RasterBytesMut<'_> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: RasterBytesMut<'_> = 48|384),
+}]
 /// This is the concrete borrowed form of [`RasterBufBytes`].
 ///
 /// It gives exclusive access to backend-native byte storage without implying

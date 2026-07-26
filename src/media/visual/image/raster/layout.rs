@@ -2,12 +2,19 @@
 //
 //! Defines [`RasterLayout`].
 //
+// > How are pixels represented in memory?
 
 use crate::{Boundary1d, Extent2};
 
 #[doc = crate::_tags!(image layout)]
 /// Describes the extent and memory stepping of raster storage.
-#[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
+#[doc = crate::_doc_meta!{
+    location("media/visual/image/raster"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(RasterLayout = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(RasterLayout = 24|192),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct RasterLayout {
     /// Logical width and height of the raster, in pixels.

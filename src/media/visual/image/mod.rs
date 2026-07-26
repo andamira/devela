@@ -14,7 +14,7 @@ pub mod raster; // Raster[[Buf|View][Bytes]], Raster<Sample|View>Packed, raster!
 #[cfg(feature = "term")]
 pub mod sixel; // SixelChar, SixelColor, SixelEncoder, SixelPalette
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             error::*,
@@ -29,5 +29,10 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
         #[doc(inline)]
         #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
+    }
+    _crate_internals {
+        pub use super::{
+            raster::_crate_internals::*,
+        };
     }
 }
