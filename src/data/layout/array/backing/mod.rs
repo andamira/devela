@@ -1,6 +1,10 @@
-// devela/src/data/layout/array/carrier/mod.rs
+// devela/src/data/layout/array/backing/mod.rs
 //
+//! Backing-storage implementations for [`Array`][crate::Array].
 //!
+//! Each implementation adapts construction, physical-storage access,
+//! logical element access, and reborrowing to a particular backing type
+//! while preserving the same layout invariant.
 //
 
 use crate::{ArrayLayout, MismatchedCapacity};
@@ -13,7 +17,7 @@ mod boxed;
 #[cfg(feature = "alloc")]
 mod vec;
 
-/// Validates that a physical carrier covers every position addressed by a layout.
+/// Validates that backing storage covers every position addressed by a layout.
 pub(super) const fn validate_storage_len<const RANK: usize>(
     storage_len: usize,
     layout: ArrayLayout<RANK>,

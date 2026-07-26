@@ -69,7 +69,7 @@
 - remove types: `Destaque`, `Stack`.
 
 #### data::layout::array
-- new types: `ArrayShape`, `ArrayLayout`, `Array`.
+- new types: `Array`, `ArrayCoordIter`, `ArrayShape`, `ArrayLayout`.
 - remove types: `Array`, `Array2d`, `ArrayUninit`.
 
 #### data::layout::buffer

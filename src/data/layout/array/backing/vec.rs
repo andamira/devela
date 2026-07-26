@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/carrier/vec.rs
+// devela/src/data/layout/array/backing/vec.rs
 //
 //! Array implementations over vectors.
 //
@@ -108,7 +108,7 @@ mod _test {
     };
 
     #[test]
-    fn constructor_infers_vec_carrier() {
+    fn constructor_infers_vec_backing() {
         let array = Array::try_from_vec(vec![0, 1, 2, 3, 4, 5], LAYOUT).unwrap();
         let _: Array<Vec<u8>, 2> = array;
     }

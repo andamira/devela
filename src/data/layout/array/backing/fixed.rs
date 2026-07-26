@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/carrier/fixed.rs
+// devela/src/data/layout/array/backing/fixed.rs
 //
 //! Array implementations over fixed native arrays.
 //
@@ -57,10 +57,10 @@ impl<T, const LEN: usize, const RANK: usize> Array<[T; LEN], RANK> {
     pub const fn storage_mut(&mut self) -> &mut [T] {
         &mut self.data
     }
-    /// Returns exclusive access to the fixed native carrier.
+    /// Returns exclusive access to the fixed native backing array.
     ///
-    /// Unlike dynamically sized carriers, exposing this value cannot change
-    /// the physical storage length.
+    /// Unlike dynamically sized backing storage,
+    /// exposing this value cannot change the physical storage length.
     pub const fn data_mut(&mut self) -> &mut [T; LEN] {
         &mut self.data
     }
@@ -145,7 +145,7 @@ mod _test {
         const_assert!(eq_buf & MUTATED_DATA, &[0u8, 1, 2, 3, 4, 9]);
     }
     #[test]
-    fn constructor_infers_fixed_carrier() {
+    fn constructor_infers_fixed_backing() {
         let array = Array::try_from_array([0, 1, 2, 3, 4, 5], LAYOUT).unwrap();
         let _: Array<[u8; 6], 2> = array;
     }
@@ -174,7 +174,7 @@ mod _test {
         assert_eq!(error.missing(), Some(1));
     }
     #[test]
-    fn exposes_safe_mutable_fixed_carrier() {
+    fn exposes_safe_mutable_fixed_backing() {
         let mut array = Array::try_from_array([0, 1, 2, 3, 4, 5], LAYOUT).unwrap();
         array.data_mut()[0] = 8;
         array.storage_mut()[1] = 7;

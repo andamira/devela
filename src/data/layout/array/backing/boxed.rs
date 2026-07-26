@@ -1,4 +1,4 @@
-// devela/data/layout/array/carrier/boxed.rs
+// devela/data/layout/array/backing/boxed.rs
 //
 //! Array implementations over boxed slices.
 //
@@ -95,7 +95,7 @@ mod _test {
     };
 
     #[test]
-    fn constructor_infers_boxed_carrier() {
+    fn constructor_infers_boxed_backing() {
         let storage = vec![0_u8, 1, 2, 3, 4, 5].into_boxed_slice();
         let array = Array::try_from_boxed_slice(storage, LAYOUT).unwrap();
         let _: Array<Box<[u8]>, 2> = array;

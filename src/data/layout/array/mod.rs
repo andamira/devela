@@ -5,16 +5,20 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, vec)]
 //!
-//! They enable efficient iterable storage over a sequence of the same type.
+//! Array primitives, owning utilities,
+//! and logical multidimensional views over backing storage.
 //
 
 mod _reexport_core;
 
 mod adt; // DataArray
 
-mod carrier; // impls for Array
 mod define; // Array
-mod layout; // ArrayLayout, ArrayShape
+mod backing; // Array impls over backing storage
+
+mod coord; // ArrayCoordIter and coordinate ops
+mod layout; // ArrayShape
+mod shape; // ArrayShape
 
 mod ext; // ArrayExt, ArrayFmt
 mod from; // ArrayFrom
@@ -25,11 +29,13 @@ crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
             adt::DataArray,
+            coord::ArrayCoordIter,
             define::Array,
             ext::{ArrayExt, ArrayFmt},
             from::ArrayFrom,
             init::init_array,
-            layout::{ArrayLayout, ArrayShape},
+            layout::ArrayLayout,
+            shape::ArrayShape,
             owned::_all::*,
         };
     }

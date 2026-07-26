@@ -1,4 +1,4 @@
-// devela/src/data/layout/array/carrier/slice.rs
+// devela/src/data/layout/array/backing/slice.rs
 //
 //! Array implementations over shared and exclusive slices.
 //
@@ -28,7 +28,7 @@ impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
     /// Creates a shared slice-backed view.
     ///
     /// This inference-friendly constructor is equivalent to
-    /// [`try_from_slice`][Self::try_from_slice], but allows the data carrier
+    /// [`try_from_slice`][Self::try_from_slice], but allows the backing data
     /// and rank to be inferred from `storage` and `layout`.
     pub const fn try_from_slice_ref(
         storage: &'a [T],
@@ -86,7 +86,7 @@ impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
     /// Creates an exclusive slice-backed view.
     ///
     /// This inference-friendly constructor is equivalent to
-    /// [`try_from_slice`][Self::try_from_slice], but allows the data carrier
+    /// [`try_from_slice`][Self::try_from_slice], but allows the backing data
     /// and rank to be inferred from `storage` and `layout`.
     pub const fn try_from_slice_mut(
         storage: &'a mut [T],

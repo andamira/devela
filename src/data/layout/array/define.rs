@@ -1,17 +1,17 @@
 // devela/src/data/layout/array/define.rs
 //
-//! Array views over generic data carriers.
+//! Array views over generic backing storage.
 //
 
-use crate::{ArrayLayout, ArrayShape};
+use crate::{ArrayCoordIter, ArrayLayout, ArrayShape};
 
 #[doc = crate::_tags!(data_structure mem)]
-/// A logical array over a data carrier.
+/// A logical array over backing storage.
 #[doc = crate::_doc_meta!{location("data/layout/array")}]
 ///
 /// An array joins:
-/// - a data carrier of type `D`;
-/// - an [`ArrayLayout`] mapping logical coordinates into that carrier.
+/// - backing data of type `D`;
+/// - an [`ArrayLayout`] mapping logical coordinates into that data.
 ///
 /// `D` determines whether the array borrows or owns its storage,
 /// whether access is shared or exclusive, and whether the
@@ -39,7 +39,7 @@ use crate::{ArrayLayout, ArrayShape};
 #[must_use]
 #[derive(Clone, Copy, Debug)]
 pub struct Array<D, const RANK: usize> {
-    /// The carrier providing the physical element storage.
+    /// The backing data providing physical element storage.
     ///
     /// Its accessible storage must cover every position addressed by `layout`.
     pub(super) data: D,
@@ -52,17 +52,17 @@ pub struct Array<D, const RANK: usize> {
 #[rustfmt::skip]
 impl<D, const RANK: usize> Array<D, RANK> {
 
-    /// Returns the underlying data carrier.
+    /// Returns a shared reference to the backing data.
     pub const fn data(&self) -> &D { &self.data }
 
     /// Returns the array layout.
     pub const fn layout(&self) -> ArrayLayout<RANK> { self.layout }
 
-    /// Consumes the array and returns its underlying data carrier.
+    /// Consumes the array and returns its backing data.
     pub fn into_data(self) -> D {
         self.data
     }
-    /// Decomposes the array into its data carrier and layout.
+    /// Decomposes the array into its backing data and layout.
     pub fn into_parts(self) -> (D, ArrayLayout<RANK>) {
         (self.data, self.layout)
     }
@@ -78,4 +78,12 @@ impl<D, const RANK: usize> Array<D, RANK> {
 
     /// Returns whether the logical array has no elements.
     pub const fn is_empty(&self) -> bool { self.layout.is_empty() }
+
+    /// Returns an iterator over every logical coordinate of this array.
+    ///
+    /// Coordinates are independent of physical offset, strides,
+    /// backing-storage order, and ownership.
+    pub const fn coords(&self) -> ArrayCoordIter<RANK> {
+        self.layout.coords()
+    }
 }

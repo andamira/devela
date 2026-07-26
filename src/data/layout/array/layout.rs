@@ -1,9 +1,9 @@
 // devela/src/data/layout/array/layout.rs
 //
-//! Defines [`ArrayLayout`], [`ArrayShape`].
+//! Defines [`ArrayLayout`].
 //
 
-use crate::{Overflow, is, unwrap, whilst};
+use crate::{ArrayCoordIter, ArrayShape, Overflow, is, unwrap, whilst};
 
 #[doc = crate::_tags!(data_structure mem)]
 /// An affine mapping from array coordinates to linear storage positions.
@@ -36,6 +36,7 @@ pub struct ArrayLayout<const RANK: usize> {
     offset: usize,
     strides: [isize; RANK],
 }
+#[rustfmt::skip]
 impl<const RANK: usize> ArrayLayout<RANK> {
     /// Creates a dense layout whose last axis varies fastest.
     ///
@@ -79,12 +80,9 @@ impl<const RANK: usize> ArrayLayout<RANK> {
         }}
         Ok(Self { shape, offset: 0, strides })
     }
-}
-#[rustfmt::skip]
-impl<const RANK: usize> ArrayLayout<RANK> {
+
     /// Returns the number of axes.
     pub const fn rank(&self) -> usize { RANK }
-
     /// Returns the logical shape.
     pub const fn shape(&self) -> ArrayShape<RANK> { self.shape }
 
@@ -96,6 +94,14 @@ impl<const RANK: usize> ArrayLayout<RANK> {
 
     /// Returns whether the logical array has no elements.
     pub const fn is_empty(&self) -> bool { self.shape.is_empty() }
+
+    /// Returns an iterator over every logical coordinate of this layout.
+    ///
+    /// The coordinate order is independent of the layout's offset and
+    /// physical strides. Axis `0` changes fastest.
+    pub const fn coords(&self) -> ArrayCoordIter<RANK> {
+        ArrayCoordIter::new(self.shape(), self.element_count())
+    }
 
     /// Returns the number of logical elements.
     ///
@@ -141,127 +147,10 @@ impl<const RANK: usize> ArrayLayout<RANK> {
     }
 }
 
-#[doc = crate::_tags!(data_structure)]
-/// The ordered lengths of an array's logical axes.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
-/// `RANK` is the number of axes and is known at compile time.
-///
-/// A rank-zero shape, `ArrayShape<0>`, represents one scalar element.
-/// A shape with one or more zero-length axes represents an empty array.
-///
-/// A shape does not describe storage order, strides, ownership, or access.
-#[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct ArrayShape<const RANK: usize> {
-    lengths: [usize; RANK],
-}
-#[rustfmt::skip]
-impl<const RANK: usize> ArrayShape<RANK> {
-    /// The number of axes.
-    pub const RANK: usize = RANK;
-
-    /// Creates a shape from its ordered axis lengths.
-    pub const fn new(lengths: [usize; RANK]) -> Self { Self { lengths } }
-
-    /// Returns the number of axes.
-    pub const fn rank(&self) -> usize { RANK }
-
-    /// Returns the ordered axis lengths.
-    pub const fn lengths(&self) -> &[usize; RANK] { &self.lengths }
-
-    /// Returns the ordered axis lengths by value.
-    pub const fn into_lengths(self) -> [usize; RANK] { self.lengths }
-
-    /// Returns the length of `axis`, or `None` if it is out of bounds.
-    pub const fn axis_len(&self, axis: usize) -> Option<usize> {
-        if axis < RANK { Some(self.lengths[axis]) } else { None }
-    }
-    /// Returns whether no logical element exists.
-    ///
-    /// Rank zero is not empty. Any zero-length axis makes a shape empty.
-    pub const fn is_empty(&self) -> bool {
-        whilst! { axis in 0..RANK; { if self.lengths[axis] == 0 { return true; } }}
-        false
-    }
-    /// Returns the total number of logical elements.
-    ///
-    /// Rank zero contains one element. A shape containing a zero-length
-    /// axis contains zero elements.
-    ///
-    /// # Errors
-    /// Returns [`Overflow`] if the product of the non-zero axis lengths
-    /// is not representable as a `usize`.
-    pub const fn element_count(&self) -> Result<usize, Overflow> {
-        if self.is_empty() { return Ok(0); }
-        let mut count = 1usize;
-        whilst! { axis in 0..RANK; {
-            count = match count.checked_mul(self.lengths[axis]) {
-                Some(count) => count,
-                None => return Err(Overflow(None)),
-            };
-        }}
-        Ok(count)
-    }
-    /// Returns whether `coord` belongs to this shape.
-    ///
-    /// The sole rank-zero coordinate, `[]`, belongs to a scalar shape.
-    pub const fn contains_coord(&self, coord: [usize; RANK]) -> bool {
-        whilst! { axis in 0..RANK; {
-            if coord[axis] >= self.lengths[axis] { return false; }
-        }}
-        true
-    }
-}
-
 #[cfg(test)]
 mod _test {
     use super::*;
 
-    #[test]
-    fn shape_scalar() {
-        let shape = ArrayShape::<0>::new([]);
-        assert_eq!(shape.rank(), 0);
-        assert_eq!(ArrayShape::<0>::RANK, 0);
-        assert_eq!(shape.axis_len(0), None);
-        assert!(!shape.is_empty());
-        assert_eq!(shape.element_count().unwrap(), 1);
-        assert!(shape.contains_coord([]));
-        assert_eq!(shape.into_lengths(), []);
-    }
-    #[test]
-    fn shape_empty() {
-        let shape = ArrayShape::new([4, 0, 8]);
-        assert_eq!(shape.rank(), 3);
-        assert_eq!(shape.lengths(), &[4, 0, 8]);
-        assert_eq!(shape.axis_len(0), Some(4));
-        assert_eq!(shape.axis_len(1), Some(0));
-        assert_eq!(shape.axis_len(2), Some(8));
-        assert_eq!(shape.axis_len(3), None);
-        assert!(shape.is_empty());
-        assert_eq!(shape.element_count().unwrap(), 0);
-        assert!(!shape.contains_coord([0, 0, 0]));
-    }
-    #[test]
-    fn empty_shape_short_circuits_overflow() {
-        let shape = ArrayShape::new([usize::MAX, 0, usize::MAX]);
-        assert!(shape.is_empty());
-        assert_eq!(shape.element_count().unwrap(), 0);
-    }
-    #[test]
-    fn shape_element_count_and_overflow() {
-        assert_eq!(ArrayShape::new([2, 3, 4]).element_count().unwrap(), 24);
-        assert!(ArrayShape::new([usize::MAX, 2]).element_count().is_err());
-    }
-    #[test]
-    fn shape_coordinate_bounds() {
-        let shape = ArrayShape::new([2, 3, 4]);
-        assert!(shape.contains_coord([0, 0, 0]));
-        assert!(shape.contains_coord([1, 2, 3]));
-        assert!(!shape.contains_coord([2, 0, 0]));
-        assert!(!shape.contains_coord([0, 3, 0]));
-        assert!(!shape.contains_coord([0, 0, 4]));
-    }
     #[test]
     fn dense_last_layout() {
         let shape = ArrayShape::new([2, 3, 4]);
