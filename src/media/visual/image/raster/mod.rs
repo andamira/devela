@@ -7,7 +7,7 @@
 //
 
 mod borrow; // Borrowed typed and byte raster views
-// mod coverage; // Quantized raster-sample coverage
+mod coverage; // Quantized raster-sample coverage
 // mod element; // Coordinate-and-coverage rasterization output
 mod format; // Raster sample and color-format semantics
 // mod grid; // Logical raster-cell geometry and traversal
@@ -21,7 +21,7 @@ crate::structural_mods! { // _mods, _crate_internals
         #[doc(inline)]
         pub use super::{
             borrow::{RasterBytesMut, RasterBytesRef, RasterMut, RasterRef},
-            // coverage::Coverage8,
+            coverage::Coverage8,
             // element::RasterElement,
             format::RasterFormat,
             // grid::RasterGrid,

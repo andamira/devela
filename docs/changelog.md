@@ -109,7 +109,7 @@
 - make fonts methods const: `text_<advance|width>`.
 
 #### media::visual::image
-- new types: `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
+- new types: `Coverage8`, `ImageInfo`, `ImageFrameInfo`, `ImageFrameSpan`.
 - udpate `ImageError`; add new variant: `InsufficientBuffer`.
 - update `Pnm`:
   - implement all classic PNM variants P1..P6.
