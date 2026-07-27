@@ -6,10 +6,11 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod array; // APL/J/K/BQN/Uiua-like array languages
-// mod concat; // Forth/False/Joy/Factor-like concatenative machines
-// mod rule; // AWK/Make/Prolog-ish rule or pattern-action systems
-// mod symb; // Lisp/Scheme/Racket-like symbolic tree forms
+// mod array; // Array and tacit programming (APL/J/K/BQN/Uiua)
+// mod concat; // Concatenative program composition (Forth/False/Joy/Factor)
+// mod rule; // Rule-based pattern-action programming (AWK/Make/Prolog)
+// mod stack; // Stack-machine semantics and composition kernels
+// mod term; // Symbolic term programming kernels (Lisp/Scheme/Racket)
 
 crate::structural_mods! { // _mods
     _mods {
@@ -17,7 +18,8 @@ crate::structural_mods! { // _mods
         //     array::_all::*,
         //     concat::_all::*,
         //     rule::_all::*,
-        //     symb::_all::*,
+        //     stack::_all::*,
+        //     term::_all::*,
         // };
     }
 }

@@ -75,7 +75,6 @@ impl<const RANK: usize> ArrayCoordIter<RANK> {
     }
 
     /// Returns the complete logical shape being traversed.
-    #[must_use]
     pub const fn shape(&self) -> ArrayShape<RANK> {
         self.shape
     }

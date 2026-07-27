@@ -85,6 +85,7 @@ pub struct SimplexFacetIter<'a, T, const D: usize, const V: usize> {
 impl<'a, T, const D: usize, const V: usize> SimplexFacetIter<'a, T, D, V> {
     /// Returns the number of facets not yet yielded.
     #[must_use]
+    #[allow(clippy::len_without_is_empty)]
     pub const fn len(&self) -> usize {
         self.back - self.front
     }

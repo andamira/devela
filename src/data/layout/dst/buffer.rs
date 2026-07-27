@@ -1,6 +1,6 @@
 // devela/src/data/layout/dst/buffer.rs
 
-use crate::{ConstInit, Deref, DerefMut, MaybeUninit, MemPod};
+use crate::{ConstInit, MaybeUninit, MemPod};
 
 #[doc = crate::_tags!(data_structure)]
 /// Represents the backing buffer for storing dynamically sized types.

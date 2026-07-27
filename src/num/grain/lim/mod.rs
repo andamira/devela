@@ -1,6 +1,12 @@
 // devela/src/num/grain/lim/mod.rs
 //
-//! Bounded numeric carriers and range-preserving arithmetic.
+//! Boundary-aware integer representations and arithmetic.
+//!
+//! Includes bounded carriers, normalized scalars,
+//! and operations defined relative to explicit ranges or unit boundaries.
+//!
+//! Storage niches and reserved representations remain orthogonal
+//! and are provided by [`crate::num::grain::niche`].
 //
 
 mod bound; // bound_int!

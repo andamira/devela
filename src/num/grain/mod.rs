@@ -6,9 +6,9 @@
 #![doc = crate::_doc!(extends: num)]
 //
 
-// mod big; // WIP
+// mod big; // TODO
 mod cast; // Cast, PrimCast, PrimJoin, PrimSplit, cast!
-mod lim; // Bounded numeric carriers and range-preserving arithmetic
+mod lim; // Boundary-aware integer representations and arithmetic
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, Non<Max|Min|Value>*, nm!, nv!, nz!
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 pub mod wide; // lane!
@@ -30,7 +30,9 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         };
     }
     _crate_internals {
-        pub(crate) use super::lim::_crate_internals::*;
+        pub(crate) use super::{
+            lim::_crate_internals::*,
+        };
     }
     _hidden {
         pub use super::{

@@ -11,14 +11,18 @@
 //! Stacks are ideal for managing nested or temporary operations.
 //
 
+// #[cfg(test)]
+// mod _test;
+
 mod adt;
-// mod stack; // WIP stack!
+// mod define; // stack!
+// mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             adt::*,
-            // stack::_all::*,
+            // define::*,
         };
     }
 }

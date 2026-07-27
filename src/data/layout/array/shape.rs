@@ -14,7 +14,6 @@ use crate::{ArrayCoordIter, Overflow, is, unwrap, whilst};
     #[cfg(target_pointer_width = "64")]
     test_size_of(__: ArrayShape<2> = 16|128),
 }]
-///
 /// `RANK` is the number of axes and is known at compile time.
 ///
 /// A rank-zero shape, `ArrayShape<0>`, represents one scalar element.
@@ -107,10 +106,7 @@ impl<const RANK: usize> ArrayShape<RANK> {
     /// Returns `None` if `ordinal` is outside the shape or if the shape's
     /// element count is not representable as a `usize`.
     pub const fn coord_at(&self, mut ordinal: usize) -> Option<[usize; RANK]> {
-        let count = match self.element_count() {
-            Ok(count) => count,
-            Err(_) => return None,
-        };
+        let count = unwrap![ok_some? self.element_count()];
         is! { ordinal >= count, return None }
         let mut coord = [0; RANK];
         whilst! { axis in 0..RANK; {
