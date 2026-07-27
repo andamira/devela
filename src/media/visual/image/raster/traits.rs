@@ -33,6 +33,11 @@ use crate::{Boundary1d, Extent2};
 /// to the upper-left pixel, and complete rows proceed from upper to lower.
 ///
 /// It does not imply mutability, ownership, resizing, or any byte layout.
+///
+/// # Invariants
+///
+/// `raster_samples().len()` must equal `width * height`,
+/// where the dimensions are returned by `raster_extent()`.
 pub trait RasterView {
     /// The stored sample or packed pixel type.
     type Sample;
@@ -167,7 +172,7 @@ where
 }
 
 #[doc = crate::_tags!(image)]
-/// Exclusive access to a dense 2D byte raster with explicit row layout.
+/// Exclusive access to a 2D byte raster with explicit row layout.
 #[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This extends [`RasterViewBytes`] with direct mutable access to the backing

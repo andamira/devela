@@ -158,6 +158,7 @@
 - new type `XSurfaceUi`.
 - update `XDisplay::wait_event` to skip internal empty events.
 - update `XSurfaceFrame`: add `bits_per_pixel` field.
+- fix `XPresent`, `XSurfaceFrame` and `XCpuBuffer`'s raster stride and row-orientation handling.
 
 ##### sys::os::browser::web
 - new types: `WebCanvasUi`, `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.

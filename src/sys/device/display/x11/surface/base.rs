@@ -124,7 +124,7 @@ impl<'a> XSurfaceFrame<'a> {
 
     #[must_use] /// Returns whether each row has no backend padding.
     pub const fn is_tight_rows(&self) -> bool {
-        let bits = self.width() as u32 * self.depth() as u32;
+        let bits = self.width() as u32 * self.bits_per_pixel() as u32;
         bits.div_ceil(8) == self.bytes_per_line
     }
     /// Returns the mutable surface bytes for direct rendering.

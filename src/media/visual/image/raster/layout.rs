@@ -84,10 +84,6 @@ impl RasterLayout {
         }
     }
 
-    /// Returns the stored bytes per scanline.
-    pub const fn bytes_per_line(self) -> Option<usize> {
-        Some(self.bytes_per_line)
-    }
     /// Returns the minimum byte length required by this layout.
     pub const fn min_len_bytes(self) -> Option<usize> {
         is! { !self.is_valid(), return None }

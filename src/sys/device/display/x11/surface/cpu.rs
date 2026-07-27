@@ -21,8 +21,13 @@ pub struct XCpuBuffer {
     bytes: Vec<u8>,
 }
 impl XCpuBuffer {
-    /// Creates a new cpu pixel buffer compatible with the display.
+    /// Creates a new CPU pixel buffer compatible with the display.
     pub fn new(display: &XDisplay, width: u16, height: u16, depth: u8) -> Result<Self, XError> {
+        if depth != display.depth() {
+            return Err(XError::Other(
+                "requested depth does not match the X11 display image format",
+            ));
+        }
         let len = display.image_format.len_bytes(width, height);
         Ok(Self { width, height, depth, bytes: vec![0; len] })
     }
@@ -35,6 +40,11 @@ impl XImageStore for XCpuBuffer {
     fn bytes_mut(&mut self) -> &mut [u8] { &mut self.bytes }
     fn resize(&mut self, display: &XDisplay, width: u16, height: u16, depth: u8)
         -> Result<(), XError> {
+        if depth != display.depth() {
+            return Err(XError::Other(
+                "requested depth does not match the X11 display image format",
+            ));
+        }
         let len = display.image_format.len_bytes(width, height);
         self.bytes.resize(len, 0);
         self.width = width;
