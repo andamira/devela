@@ -6,6 +6,9 @@
 #![doc = crate::_doc!(hr)]
 //
 
+#[cfg(test)]
+mod _test;
+
 mod borrow; // Borrowed typed and byte raster views
 mod coverage; // Quantized raster-sample coverage
 // mod element; // Coordinate-and-coverage rasterization output

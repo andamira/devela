@@ -19,17 +19,19 @@
 
 #[cfg(feature = "unsafe_layout")]
 use crate::MemPod;
-use crate::{Extent2, is};
+use crate::{Boundary1d, Extent2};
 
 /* typed-sample family */
 
 #[doc = crate::_tags!(image)]
-/// A borrowed dense 2D raster view over contiguous samples.
+/// A dense 2D raster view over contiguous samples.
 #[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the minimal read contract for typed raster consumption and export.
 ///
-/// The samples form one row-major dense image.
+/// The samples form one row-major, top-down image. The first sample belongs
+/// to the upper-left pixel, and complete rows proceed from upper to lower.
+///
 /// It does not imply mutability, ownership, resizing, or any byte layout.
 pub trait RasterView {
     /// The stored sample or packed pixel type.
@@ -93,44 +95,50 @@ pub trait Raster: RasterBuf {
 /* byte-view family */
 
 #[doc = crate::_tags!(image)]
-/// A borrowed dense 2D byte raster view with explicit row layout.
+/// A 2D byte raster view with explicit storage layout.
 #[doc = crate::_doc_meta!{location("media/visual/image/raster")}]
 ///
 /// This is the safe byte-first bridge for presentation and backend upload.
 ///
-/// It is for rasters whose consumer needs raw bytes and explicit scanline layout.
+/// It is for rasters whose consumer needs raw bytes,
+/// stored pixel width, scanline stride, and row orientation.
+///
 /// It is a sibling of [`RasterView`], not a replacement for it.
 pub trait RasterViewBytes {
     /// Returns the logical raster extent in samples or pixels.
-    ///
-    /// This uses a distinct method name to avoid ambiguity with [`RasterView`]
-    /// on types that implement both traits.
     fn raster_extent_bytes(&self) -> Extent2<u32>;
+
     /// Returns the logical raster depth in bits.
     ///
-    /// This is a compact backend-style depth value. It may differ from the stored
-    /// bits per pixel. For example, a 32-bit stored XRGB pixel may have depth 24.
+    /// This may differ from the stored bits per pixel.
+    /// For example, a 32-bit stored XRGB pixel may have a logical depth of 24.
     fn raster_depth(&self) -> u8;
+
     /// Returns the raw raster bytes.
     fn raster_bytes(&self) -> &[u8];
-    /// Returns the stored bytes per scanline.
+
+    /// Returns the stored bytes occupied by one pixel.
+    fn raster_bytes_per_pixel_bytes(&self) -> usize;
+
+    /// Returns the stored bytes between the starts of consecutive rows.
     fn raster_bytes_per_line(&self) -> usize;
+
+    /// Returns the boundary corresponding to the first stored row.
+    fn raster_row_start_bytes(&self) -> Boundary1d;
 
     /* provided */
 
-    /// Returns the total stored byte length.
+    /// Returns the total exposed byte length.
     fn raster_len_bytes(&self) -> usize {
         self.raster_bytes().len()
     }
-    /// Returns the stored bits per pixel, if known from the row layout.
+
+    /// Returns the stored bits occupied by one pixel.
     ///
-    /// This is storage width, not logical depth.
+    /// This is storage width, including padding bits, rather than logical depth.
     fn raster_bits_per_pixel_bytes(&self) -> Option<u16> {
-        let [w, _] = self.raster_extent_bytes().dim;
-        is! { w == 0, return None }
-        let bits = self.raster_bytes_per_line().checked_mul(8)?;
-        let bpp = bits / w as usize;
-        u16::try_from(bpp).ok()
+        let bits = self.raster_bytes_per_pixel_bytes().checked_mul(8)?;
+        u16::try_from(bits).ok()
     }
 }
 impl<T> RasterViewBytes for T
@@ -147,8 +155,14 @@ where
     fn raster_bytes(&self) -> &[u8] {
         <T::Sample as RasterSampleBytes>::slice_as_bytes(self.raster_samples())
     }
+    fn raster_bytes_per_pixel_bytes(&self) -> usize {
+        RasterViewPacked::raster_bytes_per_pixel(self)
+    }
     fn raster_bytes_per_line(&self) -> usize {
         RasterViewPacked::raster_bytes_per_line(self)
+    }
+    fn raster_row_start_bytes(&self) -> Boundary1d {
+        Boundary1d::Upper // RasterView's typed order is canonical and top-down
     }
 }
 
@@ -266,8 +280,9 @@ where
     /// Returns the stored bits per pixel.
     ///
     /// This is derived from the packed sample type and includes padding bits.
-    fn raster_bits_per_pixel(&self) -> u16 {
-        (size_of::<Self::Sample>() * 8) as u16
+    fn raster_bits_per_pixel(&self) -> Option<u16> {
+        let bits = self.raster_bytes_per_pixel().checked_mul(8)?;
+        u16::try_from(bits).ok()
     }
     /// Returns the stored bytes per pixel.
     fn raster_bytes_per_pixel(&self) -> usize {
