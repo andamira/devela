@@ -21,7 +21,7 @@ use crate::{RasterView, RasterViewBytes, RasterViewPacked};
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: RasterSlice<u32, &[u32]> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RasterSlice<u32, &[u32]> = 48|384),
+    test_size_of(__: RasterSlice<u32, &[u32]> = 40|320),
 }]
 /// This is the concrete borrowed form of [`RasterView`].
 ///
@@ -151,7 +151,7 @@ impl<T: RasterSamplePacked, B: AsRef<[T]>> RasterViewPacked for RasterSlice<T, B
         raster_depth_u8(self.format).expect("Raster format must have a valid u8 depth")
     }
     fn raster_bytes_per_line(&self) -> usize {
-        self.layout.bytes_per_line
+        self.layout.bytes_per_line as usize
     }
 }
 
@@ -164,7 +164,7 @@ impl<T: RasterSamplePacked, B: AsRef<[T]>> RasterViewPacked for RasterSlice<T, B
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: RasterByteSlice<&[u8]> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RasterByteSlice<&[u8]> = 48|384),
+    test_size_of(__: RasterByteSlice<&[u8]> = 40|320),
 }]
 /// This is the concrete borrowed form of [`RasterViewBytes`].
 ///
@@ -279,7 +279,7 @@ impl<B: AsRef<[u8]>> RasterViewBytes for RasterByteSlice<B> {
         self.layout.bytes_per_pixel as usize
     }
     fn raster_bytes_per_line(&self) -> usize {
-        self.layout.bytes_per_line
+        self.layout.bytes_per_line as usize
     }
     fn raster_row_start_bytes(&self) -> Boundary1d {
         self.layout.row_start

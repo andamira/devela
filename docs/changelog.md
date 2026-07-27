@@ -120,7 +120,9 @@
 - new types `RasterSlice`, `RasterByteSlice`
 - remove types: `RasterBytesMut`, `RasterBytesRef`, `RasterMut`, `RasterRef`.
 - update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
-- update `RasterLayout`: add method `is_valid`.
+- update `RasterLayout`:
+  - add method `is_valid`.
+  - change `bytes_per_line` field to u32.
 
 ## num
 - rename `num::lin` to `num::alg`.
