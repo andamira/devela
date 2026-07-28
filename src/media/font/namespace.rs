@@ -13,7 +13,7 @@ pub struct Fonts;
 impl Fonts {
     ///
     pub(crate) const fn valid_scalar(v: u32) -> bool {
-        v <= 0x10ffff && !(v >= 0xd800 && v <= 0xdfff)
+        v <= 0x0010_ffff && !(v >= 0xd800 && v <= 0xdfff)
     }
     ///
     pub(crate) const fn read_u16(b: &[u8], o: usize) -> u16 {

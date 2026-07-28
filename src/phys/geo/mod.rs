@@ -7,4 +7,24 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! {}
+// mod atmos; // Atmosphere as a terrestrial physical system
+// mod gravity; // Terrestrial gravitational fields and anomalies
+// mod hydro; // Physically modeled terrestrial water systems
+// mod interior; // Layers, density, pressure, and thermal structure
+// mod magnet; // Geomagnetism
+// mod seismic; // Waves, earthquakes, and seismic models
+// mod tectonic; // Plates, deformation, and crustal motion
+
+crate::structural_mods! { // _mods
+    _mods {
+        // pub use super::{
+        //     atmos::_all::*,
+        //     gravity::_all::*,
+        //     hydro::_all::*,
+        //     interior::_all::*,
+        //     magnet::_all::*,
+        //     seismic::_all::*,
+        //     tectonic::_all::*,
+        // };
+    }
+}

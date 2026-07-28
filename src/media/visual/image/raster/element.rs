@@ -42,17 +42,14 @@ impl RasterElement {
     pub const fn full(coord: Position2<usize>) -> Self {
         Self { coord, coverage: Coverage8::FULL }
     }
-    #[must_use]
     /// Returns the target raster-cell coordinate.
     pub const fn coord(self) -> Position2<usize> {
         self.coord
     }
-    #[must_use]
     /// Returns the quantized raster coverage.
     pub const fn coverage(self) -> Coverage8 {
         self.coverage
     }
-    #[must_use]
     /// Returns the coordinate and coverage as a pair.
     pub const fn into_parts(self) -> (Position2<usize>, Coverage8) {
         (self.coord, self.coverage)

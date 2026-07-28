@@ -30,6 +30,7 @@ use crate::_impl_init;
 ///
 /// Rasterizers may use wider or higher-precision internal accumulators
 /// and quantize to `Coverage8` only when producing their output.
+#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Coverage8(u8);
@@ -45,7 +46,6 @@ impl Coverage8 {
     /// Creates coverage from its normalized 8-bit representation.
     ///
     /// Every `u8` value is valid.
-    #[must_use]
     pub const fn new(value: u8) -> Self { Self(value) }
 
     /// Returns the normalized 8-bit representation.

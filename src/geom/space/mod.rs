@@ -7,16 +7,18 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod field; // Scalar and vector quantities defined over space.
-// pub mod grid; // Geometric grid systems using guides, modules, and spatial rhythm.
-// pub mod layout; // Spatial constraint-based layout and region resolution.
-// pub mod motion; // Geometric motion and change of space over time.
-// pub mod part; // Spatial partitioning, subdivision, and tessellation.
-// pub mod topol; // Topological properties of space such as connectivity and boundaries.
+// pub mod earth; // Terrestrial reference systems, geodesy, projections, and surveying
+// pub mod field; // Quantities defined over geometric domains and their level sets
+// pub mod grid; // Regular spatial frames, guides, modules, and geometric lattices
+// pub mod layout; // Constraint-driven placement and resolution of spatial elements
+// pub mod motion; // Geometric trajectories, velocities, and change through time
+// pub mod part; // Decomposition, covering, subdivision, and tessellation of space
+// pub mod topol; // Incidence, orientation, adjacency, connectivity, and boundaries
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
+        //     earth::_all::*,
         //     field::_all::*,
         //     grid::_all::*,
         //     layout::_all::*,

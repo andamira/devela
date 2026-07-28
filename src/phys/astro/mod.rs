@@ -7,4 +7,20 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! {}
+// mod body; // Physical properties of celestial bodies
+// mod cosm; // Large-scale cosmological models
+// mod orbit; // Orbital dynamics
+// mod stellar; // Stars and stellar evolution
+// mod radiation; // Astronomical radiation and spectra
+
+crate::structural_mods! { // _mods
+    _mods {
+        // pub use super:: {
+        //     body::_all::*,
+        //     cosm::_all::*,
+        //     orbit::_all::*,
+        //     stellar::_all::*,
+        //     radiation::_all::*,
+        // };
+    }
+}

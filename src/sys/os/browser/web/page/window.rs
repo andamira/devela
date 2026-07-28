@@ -4,8 +4,6 @@
 //!
 //
 
-#[cfg(feature = "alloc")]
-use devela::String;
 use devela::{_js_doc, _js_extern, _js_method_str_alloc};
 use devela::{Distance, Extent, Float, WebDocument, offset_of};
 use devela::{JsInstant, JsTimeout, js_bool, js_int32, js_uint32};
