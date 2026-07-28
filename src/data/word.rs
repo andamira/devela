@@ -38,17 +38,15 @@ macro_rules! word {
 
         impl $name {
             /// Creates the word from its raw representation.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn from_raw(raw: $repr) -> Self { Self(raw) }
             /// Returns the raw representation.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn raw(self) -> $repr { self.0 }
         }
         impl $crate::Word for $name {
             type Repr = $repr;
-            #[inline(always)]
             fn raw(self) -> Self::Repr { self.raw() }
-            #[inline(always)]
             fn from_raw(raw: Self::Repr) -> Self { Self::from_raw(raw) }
         }
     };

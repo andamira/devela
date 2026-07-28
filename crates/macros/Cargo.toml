@@ -79,6 +79,4 @@ name = "coalesce"
 [[example]]
 name = "compile_attr"
 [[example]]
-name = "compile_doc"
-[[example]]
 name = "compile"

@@ -306,7 +306,6 @@ macro_rules! buffer_linear {
         $crate::buffer_linear!(%guard_index_repr $I);
 
         /// Constructs a buffer from raw components, assuming all invariants hold.
-        #[inline(always)]
         const fn _new(storage: S, len: $crate::MaybeNiche<$I>) -> Self {
             Self { storage, len, _m: $crate::PhantomData }
         }
@@ -315,24 +314,20 @@ macro_rules! buffer_linear {
 
         /// Returns the zero value as a MaybeNiche wrapped index type.
         // It should not panic since we've already checked the invariants.
-        #[inline(always)]
         const fn _idx_zero() -> $crate::MaybeNiche<$I> {
             // SAFETY-INVARIANT: checked above; buffer indices must represent zero.
             $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$I>::ZERO]
         }
 
         /// `a == b`
-        #[inline(always)]
         const fn _idx_eq(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a == b
         }
         /// `a <= b`
-        #[inline(always)]
         const fn _idx_le(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a <= b
         }
         /// `a >= b`
-        #[inline(always)]
         const fn _idx_ge(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a >= b
         }
@@ -340,18 +335,15 @@ macro_rules! buffer_linear {
         /* prim */
 
         /// Returns the given index-typed value as a primitive.
-        #[inline(always)]
         const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
 
         /// Returns the given primitive value as an index type.
-        #[inline(always)]
         // IMPROVE:MAYBE make an unchecked version leveraging unsafe_niche.
         const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
             $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
         }
         /// Returns the given primitive value as an index type,
         /// converting invalid inputs to the closest valid number.
-        #[inline(always)]
         const fn _prim_to_idx_lossy(from: $P) -> $I {
             $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
         }
@@ -362,23 +354,19 @@ macro_rules! buffer_linear {
         const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$I>::MAX).to_usize_saturating();
 
         /// Returns the current logical length as a `usize`, saturating if necessary.
-        #[inline(always)]
         const fn _len_usize(&self) -> usize { self.len.to_usize_saturating() }
 
         /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-        #[inline(always)]
         const fn _usize_to_idx_sat(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::MaybeNiche::<$I>::from_usize_saturating(from)
         }
         /// Returns the given usize value as a MaybeNiche wrapped index type.
         // It should not panic since we've already checked the invariants.
-        #[inline(always)]
         const fn _usize_to_idx(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
         }
         /// Returns the given index value as a usize.
         // It should not panic unless we're using 128-bit values!
-        #[inline(always)]
         const fn _idx_to_usize(from: $I) -> usize {
             $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
         }
@@ -386,21 +374,18 @@ macro_rules! buffer_linear {
         /* len */
 
         /// Sets the logical length without checking invariants.
-        #[inline(always)]
         const fn _set_len(&mut self, len: $I) {
             self.len = $crate::MaybeNiche(len);
         }
         /// Returns the next logical length (len + 1).
         ///
         /// Caller must guarantee `len < capacity`.
-        #[inline(always)]
         const fn _len_inc(&self) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() + 1)]
         }
         /// Returns the previous logical length (len - 1).
         ///
         /// Caller must guarantee `len > 0`.
-        #[inline(always)]
         const fn _len_dec(&self) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() - 1)]
         }
@@ -419,7 +404,6 @@ macro_rules! buffer_linear {
         $crate::buffer_linear!(%guard_index_repr $I);
 
         /// Constructs a buffer from raw components, assuming all invariants hold.
-        #[inline(always)]
         const fn _new(storage: S) -> Self {
             Self { storage, _m: $crate::PhantomData }
         }
@@ -427,13 +411,11 @@ macro_rules! buffer_linear {
         /* prim */
 
         /// Returns the given primitive value as an index type.
-        #[inline(always)]
         const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
             $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
         }
         /// Returns the given primitive value as an index type,
         /// converting invalid inputs to the closest valid number.
-        #[inline(always)]
         const fn _prim_to_idx_lossy(from: $P) -> $I {
             $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
         }
@@ -441,18 +423,15 @@ macro_rules! buffer_linear {
         /* usize */
 
         /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-        #[inline(always)]
         const fn _usize_to_idx_sat(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::MaybeNiche::<$I>::from_usize_saturating(from)
         }
         /// Returns the given usize value as a MaybeNiche wrapped index type.
         // It should not panic since we've already checked the invariants.
-        #[inline(always)]
         const fn _usize_to_idx(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
         }
         /// Returns the given index value as a usize.
-        #[inline(always)]
         const fn _idx_to_usize(from: $I) -> usize {
             $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
         }

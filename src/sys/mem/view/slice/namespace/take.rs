@@ -13,7 +13,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_first(slice: &[T], n: usize) -> &[T] {
         slice.split_at(n).0
     }
@@ -24,7 +23,6 @@ impl<T> Slice<T> {
     ///
     /// Returns `None` if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_first_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.split_at_checked(n) {
             Some((subslice, _)) => Some(subslice),
@@ -39,7 +37,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_first_unchecked(slice: &[T], n: usize) -> &[T] {
@@ -53,7 +50,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_first_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(n).0
     }
@@ -64,7 +60,6 @@ impl<T> Slice<T> {
     ///
     /// Returns `None` if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_first_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.split_at_mut_checked(n) {
             Some((subslice, _)) => Some(subslice),
@@ -79,7 +74,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_first_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
@@ -95,7 +89,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_last(slice: &[T], n: usize) -> &[T] {
         slice.split_at(slice.len() - n).1
     }
@@ -109,7 +102,6 @@ impl<T> Slice<T> {
     /// # Features
     /// This method makes use of of the `unsafe_slice` feature is enabled.
     #[must_use]
-    #[inline(always)]
     pub const fn take_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
@@ -131,7 +123,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_last_unchecked(slice: &[T], n: usize) -> &[T] {
@@ -145,7 +136,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(slice.len() - n).1
     }
@@ -159,7 +149,6 @@ impl<T> Slice<T> {
     /// # Features
     /// This method makes use of of the `unsafe_slice` feature is enabled.
     #[must_use]
-    #[inline(always)]
     pub const fn take_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
@@ -181,7 +170,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const unsafe fn take_last_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {
@@ -197,7 +185,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_omit_last(slice: &[T], n: usize) -> &[T] {
         slice.split_at(slice.len() - n).0
     }
@@ -211,7 +198,6 @@ impl<T> Slice<T> {
     /// # Features
     /// This method makes use of of the `unsafe_slice` feature is enabled.
     #[must_use]
-    #[inline(always)]
     pub const fn take_omit_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
@@ -233,7 +219,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const fn take_omit_last_unchecked(slice: &[T], n: usize) -> &[T] {
@@ -247,7 +232,6 @@ impl<T> Slice<T> {
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     pub const fn take_omit_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(slice.len() - n).0
     }
@@ -261,7 +245,6 @@ impl<T> Slice<T> {
     /// # Features
     /// This method makes use of of the `unsafe_slice` feature is enabled.
     #[must_use]
-    #[inline(always)]
     pub const fn take_omit_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
         match slice.len().checked_sub(n) {
             Some(index) => {
@@ -283,7 +266,6 @@ impl<T> Slice<T> {
     /// # Safety
     /// Results in *undefined behavior* if `n` > `slice.len()`.
     #[must_use]
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
     pub const fn take_omit_last_mut_unchecked(slice: &mut [T], n: usize) -> &mut [T] {

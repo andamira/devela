@@ -39,7 +39,6 @@ pub enum LinuxRandomMode {
 }
 impl LinuxRandomMode {
     /// Returns the Linux `getrandom` flags for this mode.
-    #[inline(always)]
     pub const fn flags(self) -> c_uint {
         match self {
             Self::Secure => 0,
@@ -49,19 +48,16 @@ impl LinuxRandomMode {
     }
 
     /// Returns whether this mode is intended for cryptographic randomness.
-    #[inline(always)]
     pub const fn is_cryptographic(self) -> bool {
         matches!(self, Self::Secure | Self::SecureNonblock)
     }
 
     /// Returns whether this mode is known to be weak.
-    #[inline(always)]
     pub const fn is_weak(self) -> bool {
         matches!(self, Self::Insecure)
     }
 
     /// Returns whether this mode may block while waiting for randomness.
-    #[inline(always)]
     pub const fn may_block(self) -> bool {
         matches!(self, Self::Secure)
     }

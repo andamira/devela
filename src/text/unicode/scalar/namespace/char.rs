@@ -21,46 +21,46 @@ impl Char<char> {
     /// - 0: Non-printing characters (controls, combining marks)
     /// - 1: Regular characters (Latin, Greek, Cyrillic, etc.)
     /// - 2: Wide characters (CJK, emoji, fullwidth forms)
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn width(self) -> usize { Char(self.0 as u32).width() }
 
     /// Returns the monospace display width using faster calculation.
     ///
     /// Uses optimized checks that cover common cases but may incorrectly
     /// report some obscure Unicode characters as 1 width instead of 2.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn width_common(self) -> usize { Char(self.0 as u32).width_common() }
 
     /// Returns `true` for all Unicode combining characters.
     ///
     /// Includes musical notation, historic scripts, and obscure diacritics.
     /// Comprehensive but slightly slower than `is_combining_common`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_combining(self) -> bool { Char(self.0 as u32).is_combining() }
 
     /// Returns `true` for common combining marks used in modern text.
     ///
     /// Covers Latin, Greek, and most European language diacritics.
     /// Fast and suitable for 95% of use cases.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_combining_common(self) -> bool { Char(self.0 as u32).is_combining_common() }
 
     /// Returns `true` for all Unicode control characters.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_control(self) -> bool { Char(self.0 as u32).is_control() }
 
     /// Returns `true` for common Unicode control characters.
     ///
     /// Just ASCII, zero-width spaces, bidi formatting, word joiners and invisible operators.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_control_common(self) -> bool { Char(self.0 as u32).is_control_common() }
 
     /// Returns `true` for all Unicode fullwidth characters.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_fullwidth(self) -> bool { Char(self.0 as u32).is_fullwidth() }
 
     /// Returns `true` for common fullwidth characters (ASCII variants, basic CJK)
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_fullwidth_common(self) -> bool { Char(self.0 as u32).is_fullwidth_common() }
 
     /// Converts this Unicode scalar to a UTF-8 encoded byte sequence.
@@ -68,7 +68,7 @@ impl Char<char> {
     /// Always returns a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`char::encode_utf8`].
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn to_utf8_bytes(self) -> [u8; 4] { Char(self.0 as u32).to_utf8_bytes_unchecked() }
 
     /// Writes this Unicode scalar as UTF-8 into `buf`.
@@ -79,7 +79,7 @@ impl Char<char> {
     ///
     /// # Panics
     /// Panics if `buf.len() < self.0.len_utf8()`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn write_utf8_to(self, buf: &mut [u8]) -> usize {
         Char(self.0 as u32).write_utf8_to_unchecked(buf)
     }
@@ -93,7 +93,7 @@ impl Char<char> {
     /// Returns the ASCII representation as a `&'static str`.
     /// # Panics
     /// Panics if the character is not ASCII.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn as_ascii_unchecked(self) -> &'static str { AsciiLut::ASCII_CHARS[self.0 as usize] }
 
     /// Converts a character to its closest ASCII equivalent, if possible.
@@ -139,13 +139,13 @@ impl Char<char> {
     /// This function is similar to
     /// [`to_ascii_fold`][Self::to_ascii_fold], but **never returns `None`**.
     /// If no ASCII equivalent exists, the input character is returned unchanged.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn to_ascii_fold_unchecked(self) -> char {
         unwrap![some_or self.to_ascii_fold(), self.0]
     }
 
     /// Returns a Unicode scalar selected from the next output of `rng`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn random_next(rng: &mut Pcg32) -> char {
         let code = Char::<u32>::random_next(rng);
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -154,7 +154,7 @@ impl Char<char> {
         } _ => { unwrap![some_guaranteed_or_ub char::from_u32(code)] }}
     }
     /// Returns a Unicode scalar deterministically selected from `seed`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn random_from_seed(seed: u64) -> char {
         Self::random_next(&mut Pcg32::new(seed, 0))
     }

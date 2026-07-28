@@ -166,7 +166,6 @@ impl Char<&[u8]> {
     }
 
     #[must_use]
-    #[inline(always)]
     const fn decode_scalar(self, index: usize, len: usize) -> u32 {
         let (bytes, first) = (self.0, self.0[index]);
         match len {
@@ -281,7 +280,7 @@ macro_rules! _impl_char_array_ref_wrappers {
      $($rest:tt)* ) => {
         #[doc = concat!( "A wrapper over [`", stringify!($name), "()`](#method.", stringify!($name),
         ").", "\n\n# Safety\nSame requirements as the wrapped method.")]
-        #[must_use] #[inline(always)] $(#[$attr])*
+        #[must_use] $(#[$attr])*
         pub const unsafe fn $name(self $(, $arg: $arg_ty)*) -> $ret {
             let bytes: &[u8] = self.0;
             unsafe { Char(bytes).$name($($arg),*) }
@@ -292,7 +291,7 @@ macro_rules! _impl_char_array_ref_wrappers {
      $($rest:tt)* ) => {
         #[doc = concat!("A wrapper over [`",
             stringify!($name), "()`](#method.", stringify!($name), ").")]
-        #[must_use] #[inline(always)] $(#[$attr])*
+        #[must_use] $(#[$attr])*
         pub const fn $name(self $(, $arg: $arg_ty)*) -> $ret {
             let bytes: &[u8] = self.0; Char(bytes).$name($($arg),*)
         }

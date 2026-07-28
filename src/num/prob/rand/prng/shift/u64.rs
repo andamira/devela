@@ -168,7 +168,6 @@ crate::items! {
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RandSeedable
     for XorShift64<BASIS, A, B, C> {
         type RandSeed = [u8; 8];
-        #[inline(always)]
         /// When seeded with zero this implementation uses the default seed value as the cold path.
         fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(u64::from_le_bytes(seed)) }
     }

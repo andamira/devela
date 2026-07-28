@@ -20,7 +20,6 @@ pub struct __Arena<const CAP: usize>;
 #[rustfmt::skip]
 impl<const CAP: usize> __Arena<CAP> {
     ///
-    #[inline(always)]
     pub const fn new_array<const N: usize>() -> [MaybeByte; N] {
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {
             [MaybeByte::uninit(); N]
@@ -29,7 +28,6 @@ impl<const CAP: usize> __Arena<CAP> {
         }}
     }
     ///
-    #[inline(always)]
     pub const fn read_byte(data: &[MaybeByte], i: usize) -> u8 {
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {
             unsafe { data[i].assume_init_read() }
@@ -38,7 +36,6 @@ impl<const CAP: usize> __Arena<CAP> {
         }}
     }
     ///
-    #[inline(always)]
     pub const fn read_byte_mut(data: &mut [MaybeByte], i: usize) -> &mut u8 {
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {
             unsafe { data[i].assume_init_mut() }
@@ -47,7 +44,6 @@ impl<const CAP: usize> __Arena<CAP> {
         }}
     }
     ///
-    #[inline(always)]
     pub const fn write_byte(data: &mut [MaybeByte], i: usize, b: u8) {
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {
             data[i].write(b);
@@ -56,7 +52,6 @@ impl<const CAP: usize> __Arena<CAP> {
         }}
     }
     ///
-    #[inline(always)]
     pub const fn slice_bytes(data: &[MaybeByte], start: usize, end: usize) -> &[u8] {
         cfg_select! { // unsafest, unsafe, safe:
             all(feature = "unsafe_array", feature = "unsafe_slice", not(feature = "safe_mem")) => {
@@ -69,7 +64,6 @@ impl<const CAP: usize> __Arena<CAP> {
             _ => { Slice::range(data, start, end) }}
     }
     ///
-    #[inline(always)]
     pub const fn slice_bytes_mut(data: &mut [MaybeByte], start: usize, end: usize) -> &mut [u8] {
         cfg_select! { // unsafest, unsafe, safe:
             all(feature = "unsafe_array", feature = "unsafe_slice", not(feature = "safe_mem")) => {

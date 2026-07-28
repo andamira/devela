@@ -143,7 +143,6 @@ macro_rules! lane {
 
             /* arithmetic: elementwise */
 
-            #[inline(always)]
             /// Adds each lane of `rhs` to the corresponding lane in `self`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn add_assign(&mut self, rhs: Self) {
@@ -174,7 +173,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Subtracts each lane of `rhs` from the corresponding lane in `self`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn sub_assign(&mut self, rhs: Self) {
@@ -205,7 +203,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Multiplies each lane of `self` by the corresponding lane of `rhs`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn mul_assign(&mut self, rhs: Self) {
@@ -236,7 +233,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Applies elementwise modular reduction.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn rem_assign(&mut self, rhs: Self) {
@@ -266,7 +262,6 @@ macro_rules! lane {
                 self.0 = (a / b).to_array();
             }
 
-            #[inline(always)]
             /// Negates each lane in place.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn neg_assign(&mut self) {
@@ -277,7 +272,6 @@ macro_rules! lane {
             /* arithmetic: scalar */
 
             // TODO: add scalar SIMD impls
-            #[inline(always)]
             /// Adds the scalar `rhs` to each lane in `self`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn add_scalar_assign(&mut self, rhs: $t) {
@@ -290,7 +284,6 @@ macro_rules! lane {
                 $crate::punroll! { $L |i| self.0[i] += rhs }
             }
 
-            #[inline(always)]
             /// Subtracts the scalar `rhs` from each lane in `self`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn sub_scalar_assign(&mut self, rhs: $t) {
@@ -303,7 +296,6 @@ macro_rules! lane {
                 $crate::punroll! { $L |i| self.0[i] -= rhs }
             }
 
-            #[inline(always)]
             /// Multiplies each lane by the scalar `rhs`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn mul_scalar_assign(&mut self, rhs: $t) {
@@ -316,7 +308,6 @@ macro_rules! lane {
                 $crate::punroll! { $L |i| self.0[i] *= rhs }
             }
 
-            #[inline(always)]
             /// Applies scalar modular reduction to each lane.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn rem_scalar_assign(&mut self, rhs: $t) {
@@ -329,7 +320,6 @@ macro_rules! lane {
                 $crate::punroll! { $L |i| self.0[i] %= rhs }
             }
 
-            #[inline(always)]
             /// Divides each lane by the scalar `rhs` (truncating division).
             #[doc = $crate::_LANE_AUTO!()]
             pub fn div_scalar_assign(&mut self, rhs: $t) {
@@ -344,7 +334,6 @@ macro_rules! lane {
 
             /* comparisons and clamping */
 
-            #[inline(always)]
             /// Returns the minimum lane value.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn min(&mut self, rhs: Self) {
@@ -366,7 +355,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Returns the maximum lane value.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn max(&mut self, rhs: Self) {
@@ -388,7 +376,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Clamps each lane to the inclusive `[lo, hi]` range.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn clamp_assign(&mut self, lo: $t, hi: $t) {
@@ -422,7 +409,6 @@ macro_rules! lane {
             // TODO: min_reduce_simd → reduce_min (separate for int|float)
             // CHECK: min_reduce_wide
 
-            #[inline(always)]
             /// Returns the sum of all lanes.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn sum(&mut self) {
@@ -459,7 +445,6 @@ macro_rules! lane {
         impl $name<$t> {
             /* arithmetic: elementwise */
 
-            #[inline(always)]
             /// Divides each lane by the corresponding lane in `rhs` (truncating division).
             #[doc = $crate::_LANE_AUTO!()]
             pub fn div_assign(&mut self, rhs: Self) {
@@ -522,7 +507,6 @@ macro_rules! lane {
 
             /* bitwise operations */
 
-            #[inline(always)]
             /// Bitwise AND each lane with the corresponding lane in `rhs`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn bitand_assign(&mut self, rhs: Self) {
@@ -551,7 +535,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Bitwise OR each lane with the corresponding lane in `rhs`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn bitor_assign(&mut self, rhs: Self) {
@@ -580,7 +563,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Bitwise XOR each lane with the corresponding lane in `rhs`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn bitxor_assign(&mut self, rhs: Self) {
@@ -611,7 +593,6 @@ macro_rules! lane {
 
             /* shifts */
 
-            #[inline(always)]
             /// Shifts each lane left by `n`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn shl_assign(&mut self, n: $t) {
@@ -640,7 +621,6 @@ macro_rules! lane {
                 }
             }
 
-            #[inline(always)]
             /// Shifts each lane right by `n`.
             #[doc = $crate::_LANE_AUTO!()]
             pub fn shr_assign(&mut self, n: $t) {

@@ -62,7 +62,6 @@ impl<const CAP: usize, const MSG_LEN: usize> Default for LoggerStatic<CAP, MSG_L
 
 impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     /// Constructs a new static logger.
-    #[inline(always)]
     pub const fn new() -> Self {
         Self {
             buf: [[0; MSG_LEN]; CAP],
@@ -74,7 +73,6 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     }
 
     /// Clears all the stored messages.
-    #[inline(always)]
     pub const fn clear(&mut self) {
         _slog_guard![self enter "LoggerStatic::clear()"];
         self.len = 0;
@@ -82,7 +80,6 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
     }
 
     /// Returns the number of logged messages.
-    #[inline(always)]
     pub const fn count(&mut self) -> usize {
         _slog_guard![self enter "LoggerStatic::len()"];
         let len = self.len;
@@ -92,7 +89,6 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 
     /// Whether the logger is full.
     #[must_use]
-    #[inline(always)]
     pub const fn is_full(&mut self) -> bool {
         _slog_guard![self enter "LoggerStatic::is_full()"];
         let full = self.len == CAP;
@@ -341,7 +337,6 @@ macro_rules! slog {
         ///
         /// # Safety
         /// The caller must ensure single-threaded discipline when mutating the returned reference.
-        #[inline(always)]
         $vis const unsafe fn $fn() -> &'static mut $crate::LoggerStatic<$CAP, $LEN> {
             #[allow(static_mut_refs, reason = "accessing the single-thread static logger instance")]
             // SAFETY: user upholds single-threaded access to this static instance.

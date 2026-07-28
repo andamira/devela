@@ -100,19 +100,15 @@ impl RandTry for Linux {
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;
     const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL.with_cryptographic();
-    #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64> {
         Linux::random_u64()
     }
-    #[inline(always)]
     fn rand_try_next_u32(&mut self) -> Result<u32> {
         Linux::random_u32()
     }
-    #[inline(always)]
     fn rand_try_next_u16(&mut self) -> Result<u16> {
         Linux::random_u16()
     }
-    #[inline(always)]
     fn rand_try_fill_bytes(&mut self, buf: &mut [u8]) -> Result<()> {
         Linux::random_bytes(buf)
     }

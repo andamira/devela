@@ -26,7 +26,6 @@ impl MyType {
 
 methods_as_fns! {
     pub MyType =>
-    #[inline]
     +const add(a: i32, b: i32) -> i32,
     #[must_use]
     +async fetch(url: &str) -> &str,
@@ -124,7 +123,7 @@ mod tests {
     // Test same-name pattern with attributes
     methods_as_fns! {
         pub TestMethods =>
-        #[inline] +const add(a: i32, b: i32) -> i32,
+        +const add(a: i32, b: i32) -> i32,
         #[cold] #[allow(unused)] sub(a: i32, b: i32) -> i32,
         #[must_use] +async fetch(url: &str) -> &str,
         #[must_use] trim(name: &str) -> &str,
@@ -135,7 +134,7 @@ mod tests {
     // Test different-name pattern with attributes
     methods_as_fns! {
         pub(crate) TestMethods =>
-        #[inline(always)] +const add|add_numbers(a: i32, b: i32) -> i32,
+        +const add|add_numbers(a: i32, b: i32) -> i32,
         #[cold] sub|subtract(a: i32, b: i32) -> i32,
         +async fetch|fetch_data(url: &str) -> &str,
         #[must_use] trim|do_trim(name: &str) -> &str,

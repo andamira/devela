@@ -54,13 +54,11 @@ unsafe impl GlobalAlloc for LinuxMmapAlloc {
     /// Allocates zeroed memory with the given layout.
     ///
     /// Anonymous Linux mappings are initially zero-filled.
-    #[inline(always)]
     unsafe fn alloc_zeroed(&self, layout: MemLayout) -> *mut u8 {
         unsafe { self.alloc(layout) }
     }
 
     /// Deallocates memory with `munmap`.
-    #[inline(always)]
     unsafe fn dealloc(&self, ptr: *mut u8, _layout: MemLayout) {
         unsafe {
             is! { !ptr.is_null(), linux_mmap_dealloc_impl(ptr) }

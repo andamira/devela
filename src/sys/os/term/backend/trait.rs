@@ -45,19 +45,16 @@ pub trait TermBackend: Sized {
     /* provided methods */
 
     /// Enters a scoped raw terminal session.
-    #[inline(always)]
     fn session_raw(&mut self) -> Result<Self::Session, Self::Error> {
         self.session(TermMode::raw())
     }
     /// Probes terminal protocol capabilities.
     ///
     /// Backends that cannot probe may keep the cached/default capabilities.
-    #[inline(always)]
     fn probe_term_capabilities(&mut self) -> Result<TermCaps, Self::Error> {
         Ok(self.term_capabilities())
     }
     /// Polls for one terminal event using the default immediate policy.
-    #[inline(always)]
     #[cfg(feature = "event")]
     fn poll_event(&mut self) -> Result<Option<EventKind>, Self::Error> {
         self.poll_event_with(TermPollPolicy::Immediate)

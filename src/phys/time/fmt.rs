@@ -192,14 +192,12 @@ impl Timecode {
 
     /* helpers */
 
-    #[inline(always)]
     const fn write_2(buf: &mut [u8], pos: usize, n: u16) -> usize {
         let d = Digits(n).digits10_2();
         buf[pos] = d[0];
         buf[pos + 1] = d[1];
         2
     }
-    #[inline(always)]
     const fn write_3(buf: &mut [u8], pos: usize, n: u16) -> usize {
         let d = Digits(n).digits10_3();
         buf[pos] = d[0];

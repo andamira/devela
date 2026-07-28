@@ -50,7 +50,6 @@ impl Libc {
 /// Convenience helpers for libc return values.
 impl Libc {
     /// Returns `true` if `ptr` matches the POSIX `MAP_FAILED` sentinel.
-    #[inline(always)]
     pub fn is_map_failed(ptr: *mut c_void) -> bool {
         ptr == Self::MAP_FAILED
     }
@@ -61,21 +60,18 @@ impl Libc {
 impl Libc {
     /// Create/open POSIX shared memory.
     /// - <https://www.man7.org/linux/man-pages/man3/shm_open.3.html>
-    #[inline(always)]
     pub unsafe fn shm_open(name: *const c_char, oflag: c_int, mode: c_mode_t) -> c_int {
         unsafe { raw::shm_open(name, oflag, mode) }
     }
 
     /// Unlink POSIX shared memory.
     /// - <https://www.man7.org/linux/man-pages/man3/shm_open.3.html>
-    #[inline(always)]
     pub unsafe fn shm_unlink(name: *const c_char) -> c_int {
         unsafe { raw::shm_unlink(name) }
     }
 
     /// Truncate a file to a specified length.
     /// - <https://man7.org/linux/man-pages/man3/ftruncate.3p.html>
-    #[inline(always)]
     pub unsafe fn ftruncate(fd: c_int, length: c_off_t) -> c_int {
         unsafe { raw::ftruncate(fd, length) }
     }
@@ -83,7 +79,6 @@ impl Libc {
     /// Map pages of memory.
     /// - <https://man7.org/linux/man-pages/man3/mmap.3p.html>
     // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
-    #[inline(always)]
     pub unsafe fn mmap(
         addr: *mut c_void,
         length: usize,
@@ -98,14 +93,12 @@ impl Libc {
     ///  Unmap pages of memory.
     /// - <https://man7.org/linux/man-pages/man3/munmap.3p.html>
     // /// - <https://man7.org/linux/man-pages/man2/mmap.2.html>
-    #[inline(always)]
     pub unsafe fn munmap(addr: *mut c_void, length: usize) -> c_int {
         unsafe { raw::munmap(addr, length) }
     }
 
     /// Free allocated memory.
     /// - <https://man7.org/linux/man-pages/man3/free.3p.html>
-    #[inline(always)]
     pub unsafe fn free(ptr: *mut c_void) {
         unsafe { raw::free(ptr) }
     }
@@ -113,7 +106,6 @@ impl Libc {
     /// Closes a file descriptor.
     /// - <https://man7.org/linux/man-pages/man3/close.3p.html>
     // /// - <https://man7.org/linux/man-pages/man2/close.2.html>
-    #[inline(always)]
     pub unsafe fn close(fd: c_int) -> c_int {
         unsafe { raw::close(fd) }
     }

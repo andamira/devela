@@ -39,7 +39,6 @@ impl Char<u32> {
     /// # Panics
     /// Panics if `rank >= SCALAR_COUNT`.
     #[must_use]
-    #[inline(always)]
     pub const fn scalar_from_rank(rank: u32) -> u32 {
         assert!(rank < Self::SCALAR_COUNT);
         if rank < Self::SURROGATE_START { rank } else { rank + Self::SURROGATE_COUNT }
@@ -76,7 +75,7 @@ impl Char<u32> {
     /// // invalid:
     /// assert!(!Char(0x110000).is_valid_code());  // above max Unicode
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_valid_code(self) -> bool {
         self.0 <= Self::MAX_CODE_POINT
     }
@@ -98,7 +97,6 @@ impl Char<u32> {
     /// assert!(!Char(0x110000).is_valid_scalar());  // above max Unicode
     /// ```
     #[must_use]
-    #[inline(always)]
     pub const fn is_valid_scalar(self) -> bool {
         self.is_valid_code() && !self.is_surrogate()
     }
@@ -106,21 +104,21 @@ impl Char<u32> {
     /// Returns `true` if the value is a Unicode [surrogate][0] code point.
     ///
     /// [0]: https://www.unicode.org/glossary/#surrogate_code_point
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_surrogate(self) -> bool {
         self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_END
     }
     /// Returns `true` if the value is a Unicode [high surrogate][0] code point.
     ///
     /// [0]: https://www.unicode.org/glossary/#high_surrogate_code_point
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_surrogate_high(self) -> bool {
         self.0 >= Self::SURROGATE_START && self.0 <= Self::SURROGATE_HIGH_END
     }
     /// Returns `true` if the value is a Unicode [low surrogate][0] code point.
     ///
     /// [0]: https://www.unicode.org/glossary/#low_surrogate_code_point
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_surrogate_low(self) -> bool {
         self.0 >= Self::SURROGATE_LOW_START && self.0 <= Self::SURROGATE_END
     }
@@ -190,7 +188,7 @@ impl Char<u32> {
     }
 
     /// Checks if the given value is a 7-bit ASCII character (U+0000..=U+007F).
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_ascii(self) -> bool { self.0 <= 0x7F }
 
     /// Returns `true` if the given Unicode scalar code is a [noncharacter][0].
@@ -363,7 +361,7 @@ impl Char<u32> {
     /// The result is always a `[u8; 4]` array, with unused bytes set to `0`.
     ///
     /// See also [`char::encode_utf8`].
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn to_utf8_bytes(self) -> Option<[u8; 4]> {
         if self.is_valid_scalar() { Some(self.to_utf8_bytes_unchecked()) } else { None }
     }
@@ -396,14 +394,14 @@ impl Char<u32> {
     }
 
     /// Returns a Unicode scalar selected from the next output of `rng`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn random_next(rng: &mut Pcg32) -> u32 {
         let rank = rng.next_bounded(Self::SCALAR_COUNT);
         Self::scalar_from_rank(rank)
     }
 
     /// Returns a Unicode scalar deterministically selected from `seed`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn random_from_seed(seed: u64) -> u32 {
         Self::random_next(&mut Pcg32::new(seed, 0))
     }

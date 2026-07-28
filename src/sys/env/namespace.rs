@@ -167,7 +167,6 @@ impl Env {
     /// Return type: [`std::env::Args`].
     ///
     /// See also [`std::env::args`].
-    #[inline(always)]
     pub fn args() -> ::std::env::Args {
         args()
     }
@@ -177,7 +176,6 @@ impl Env {
     /// Return type: [`std::env::ArgsOs`].
     ///
     /// See also [`std::env::args_os`].
-    #[inline(always)]
     pub fn args_os() -> ::std::env::ArgsOs {
         args_os()
     }

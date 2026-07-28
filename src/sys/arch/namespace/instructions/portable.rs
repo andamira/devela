@@ -27,7 +27,6 @@ impl Arch {
     /// - On ARM (32-bit and 64-bit), this uses the Virtual Count Register (CNTVCT).
     /// - On RISC-V, this uses the `rdcycle` instruction.
     /// - The value is only meaningful for measuring relative durations on the same core.
-    #[inline(always)]
     pub fn cycles() -> u64 {
         cfg_select! {
                  any(target_arch = "x86", target_arch = "x86_64") => Arch::rdtsc(),

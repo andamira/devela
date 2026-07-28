@@ -145,7 +145,6 @@ crate::items! {
     }
     impl RandSeedable for Lcg16 {
         type RandSeed = [u8; 2];
-        #[inline(always)]
         fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(u16::from_le_bytes(seed)) }
     }
 }

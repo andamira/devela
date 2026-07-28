@@ -115,7 +115,6 @@ impl Wasm {
     /// On non-WASM platforms it always returns `usize::MAX`.
     ///
     /// See `core::arch::wasm32::`[`memory_grow`].
-    #[inline(always)]
     #[allow(unused_variables, rustdoc::broken_intra_doc_links, reason = "cross-platform")]
     pub fn memory_grow(delta: usize) -> usize {
         #[cfg(target_family = "wasm")]
@@ -150,7 +149,6 @@ impl Wasm {
     }
 
     /// Returns the remaining available memory.
-    #[inline(always)]
     pub fn remaining_memory() -> usize {
         Self::MAX_MEMORY.saturating_sub(Self::memory_bytes())
     }

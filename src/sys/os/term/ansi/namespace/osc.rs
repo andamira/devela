@@ -245,7 +245,7 @@ impl Display for AnsiLink<'_> {
 
 /* helpers */
 
-#[inline(always)] #[rustfmt::skip]
+#[rustfmt::skip]
 const fn _put_bytes(dst: &mut [u8], offset: usize, src: &[u8], needed: usize)
     -> Result<usize, usize> {
     is! { offset > dst.len() || src.len() > dst.len() - offset, return Err(needed) }

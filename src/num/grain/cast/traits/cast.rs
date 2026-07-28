@@ -173,117 +173,69 @@ macro_rules! _num_grain_cast_trait_cast_impl_methods {
     };
     (@$t:ty) => { crate::paste! {
         impl PrimCast for $t {
-            #[inline(always)]
             fn checked_cast_to_u8(self) -> Result<u8> { Cast(self).checked_cast_to_u8() }
-            #[inline(always)]
             fn checked_cast_to_u16(self) -> Result<u16> { Cast(self).checked_cast_to_u16() }
-            #[inline(always)]
             fn checked_cast_to_u32(self) -> Result<u32> { Cast(self).checked_cast_to_u32() }
-            #[inline(always)]
             fn checked_cast_to_u64(self) -> Result<u64> { Cast(self).checked_cast_to_u64() }
-            #[inline(always)]
             fn checked_cast_to_u128(self) -> Result<u128> { Cast(self).checked_cast_to_u128() }
-            #[inline(always)]
             fn checked_cast_to_usize(self) -> Result<usize> { Cast(self).checked_cast_to_usize() }
-            #[inline(always)]
             fn checked_cast_to_usize_up(self) -> Result<usize_up> {
                 Cast(self).checked_cast_to_usize_up() }
-            #[inline(always)]
             fn checked_cast_to_usize_down(self) -> Result<usize_down> {
                 Cast(self).checked_cast_to_usize_down() }
 
-            #[inline(always)]
             fn checked_cast_to_i8(self) -> Result<i8> { Cast(self).checked_cast_to_i8() }
-            #[inline(always)]
             fn checked_cast_to_i16(self) -> Result<i16> { Cast(self).checked_cast_to_i16() }
-            #[inline(always)]
             fn checked_cast_to_i32(self) -> Result<i32> { Cast(self).checked_cast_to_i32() }
-            #[inline(always)]
             fn checked_cast_to_i64(self) -> Result<i64> { Cast(self).checked_cast_to_i64() }
-            #[inline(always)]
             fn checked_cast_to_i128(self) -> Result<i128> { Cast(self).checked_cast_to_i128() }
-            #[inline(always)]
             fn checked_cast_to_isize(self) -> Result<isize> { Cast(self).checked_cast_to_isize() }
-            #[inline(always)]
             fn checked_cast_to_isize_up(self) -> Result<isize_up> {
                 Cast(self).checked_cast_to_isize_up() }
-            #[inline(always)]
             fn checked_cast_to_isize_down(self) -> Result<isize_down> {
                 Cast(self).checked_cast_to_isize_down() }
 
-            #[inline(always)]
             fn saturating_cast_to_u8(self) -> u8 { Cast(self).saturating_cast_to_u8() }
-            #[inline(always)]
             fn saturating_cast_to_u16(self) -> u16 { Cast(self).saturating_cast_to_u16() }
-            #[inline(always)]
             fn saturating_cast_to_u32(self) -> u32 { Cast(self).saturating_cast_to_u32() }
-            #[inline(always)]
             fn saturating_cast_to_u64(self) -> u64 { Cast(self).saturating_cast_to_u64() }
-            #[inline(always)]
             fn saturating_cast_to_u128(self) -> u128 { Cast(self).saturating_cast_to_u128() }
-            #[inline(always)]
             fn saturating_cast_to_usize(self) -> usize { Cast(self).saturating_cast_to_usize() }
-            #[inline(always)]
             fn saturating_cast_to_usize_up(self) -> usize_up {
                 Cast(self).saturating_cast_to_usize_up() }
-            #[inline(always)]
             fn saturating_cast_to_usize_down(self) -> usize_down {
                 Cast(self).saturating_cast_to_usize_down() }
 
-            #[inline(always)]
             fn saturating_cast_to_i8(self) -> i8 { Cast(self).saturating_cast_to_i8() }
-            #[inline(always)]
             fn saturating_cast_to_i16(self) -> i16 { Cast(self).saturating_cast_to_i16() }
-            #[inline(always)]
             fn saturating_cast_to_i32(self) -> i32 { Cast(self).saturating_cast_to_i32() }
-            #[inline(always)]
             fn saturating_cast_to_i64(self) -> i64 { Cast(self).saturating_cast_to_i64() }
-            #[inline(always)]
             fn saturating_cast_to_i128(self) -> i128 { Cast(self).saturating_cast_to_i128() }
-            #[inline(always)]
             fn saturating_cast_to_isize(self) -> isize { Cast(self).saturating_cast_to_isize() }
-            #[inline(always)]
             fn saturating_cast_to_isize_up(self) -> isize_up {
                 Cast(self).saturating_cast_to_isize_up() }
-            #[inline(always)]
             fn saturating_cast_to_isize_down(self) -> isize_down {
                 Cast(self).saturating_cast_to_isize_down() }
 
-            #[inline(always)]
             fn wrapping_cast_to_u8(self) -> u8 { Cast(self).wrapping_cast_to_u8() }
-            #[inline(always)]
             fn wrapping_cast_to_u16(self) -> u16 { Cast(self).wrapping_cast_to_u16() }
-            #[inline(always)]
             fn wrapping_cast_to_u32(self) -> u32 { Cast(self).wrapping_cast_to_u32() }
-            #[inline(always)]
             fn wrapping_cast_to_u64(self) -> u64 { Cast(self).wrapping_cast_to_u64() }
-            #[inline(always)]
             fn wrapping_cast_to_u128(self) -> u128 { Cast(self).wrapping_cast_to_u128() }
-            #[inline(always)]
             fn wrapping_cast_to_usize(self) -> usize { Cast(self).wrapping_cast_to_usize() }
-            #[inline(always)]
             fn wrapping_cast_to_usize_up(self) -> usize_up {
                 Cast(self).wrapping_cast_to_usize_up() }
-            #[inline(always)]
             fn wrapping_cast_to_usize_down(self) -> usize_down {
                 Cast(self).wrapping_cast_to_usize_down() }
 
-            #[inline(always)]
             fn wrapping_cast_to_i8(self) -> i8 { Cast(self).wrapping_cast_to_i8() }
-            #[inline(always)]
             fn wrapping_cast_to_i16(self) -> i16 { Cast(self).wrapping_cast_to_i16() }
-            #[inline(always)]
             fn wrapping_cast_to_i32(self) -> i32 { Cast(self).wrapping_cast_to_i32() }
-            #[inline(always)]
             fn wrapping_cast_to_i64(self) -> i64 { Cast(self).wrapping_cast_to_i64() }
-            #[inline(always)]
             fn wrapping_cast_to_i128(self) -> i128 { Cast(self).wrapping_cast_to_i128() }
-            #[inline(always)]
             fn wrapping_cast_to_isize(self) -> isize { Cast(self).wrapping_cast_to_isize() }
-            #[inline(always)]
             fn wrapping_cast_to_isize_up(self) -> isize_up {
                 Cast(self).wrapping_cast_to_isize_up() }
-            #[inline(always)]
             fn wrapping_cast_to_isize_down(self) -> isize_down {
                 Cast(self).wrapping_cast_to_isize_down() }
         }

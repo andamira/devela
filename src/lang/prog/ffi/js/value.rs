@@ -37,7 +37,6 @@ pub enum JsValue {
 
 impl JsValue {
     /// Returns the number tag associated with the current variant.
-    #[inline(always)]
     pub const fn type_tag(&self) -> u8 {
         match self {
             Self::Null => 0,
@@ -93,7 +92,6 @@ impl JsValue {
         offset
     }
 
-    #[inline(always)]
     fn encode_str(&self, s: &str, buf: &mut [u8]) -> usize {
         let (bytes, len) = (s.as_bytes(), s.len());
         buf[..4].copy_from_slice(&(len as u32).to_le_bytes()); // encode length prefix

@@ -118,11 +118,9 @@ impl RandTry for Alloc {
     const RAND_STATE_BITS: u32 = 0;
     const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL.with_entropy_weak();
 
-    #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64, Self::Error> {
         Ok(Alloc::random_weak_u64())
     }
-    #[inline(always)]
     fn rand_try_fill_bytes(&mut self, buf: &mut [u8]) -> Result<(), Self::Error> {
         Alloc::random_weak_bytes(buf);
         Ok(())

@@ -78,7 +78,7 @@ macro_rules! handle {
             /* constructors */
 
             /// Creates a new handle from an `offset` and `len`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn new(offset: $T, len: $T) -> Self {
                 let offset = $crate::MaybeNiche::<$T>::new(offset);
                 let len = $crate::MaybeNiche::<$T>::new(len);
@@ -88,7 +88,6 @@ macro_rules! handle {
             /// Creates a new handle from a primitive `offset` and `len`.
             ///
             /// Returns `None` if any of the values are invalid.
-            #[inline(always)]
             $vis const fn from_prim(offset: $prim, len: $prim)
                 -> Result<Self, $crate::InvalidValue> {
                 let offset = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_prim(offset)];
@@ -100,7 +99,7 @@ macro_rules! handle {
             // /// Creates a new handle from a primitive `offset` and `len`, without any checks.
             // /// # Safety
             // /// Callers must ensure that the values satisfies the validity constraints.
-            // #[must_use] #[inline(always)]
+            // #[must_use]
             // $vis const fn from_prim_unchecked(offset: $prim, len: $prim) -> Self {
             //     unimplemented![]
             // }
@@ -108,7 +107,7 @@ macro_rules! handle {
             /// Creates a new handle from a *lossy* primitive `offset` and `len`.
             ///
             /// Converting invalid inputs into a valid but *approximate* representation.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn from_prim_lossy(offset: $prim, len: $prim) -> Self {
                 let offset = $crate::MaybeNiche::<$T>::from_prim_lossy(offset);
                 let len = $crate::MaybeNiche::<$T>::from_prim_lossy(len);
@@ -119,7 +118,6 @@ macro_rules! handle {
             ///
             /// Returns `None` if any of the values can't fit in the primitive representation,
             /// or if it's not valid for the current niche.
-            #[inline(always)]
             $vis const fn try_from_usize(offset: usize, len: usize)
                 -> Result<Self, $crate::NicheValueError> {
                 let o = $crate::unwrap![ok? $crate::MaybeNiche::<$T>::try_from_usize(offset)];
@@ -130,38 +128,36 @@ macro_rules! handle {
             /* accessors */
 
             /// Returns the length of the stored data.
-            #[must_use] #[inline(always)]
+            #[must_use]
             #[allow(clippy::len_without_is_empty)]
             $vis const fn len(self) -> $T { self.len.get() }
             /// Returns the length of the stored data as the corresponding primitive.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn len_prim(self) -> $prim { self.len.get_prim() }
 
             /// Returns the length of the stored data as a usize.
-            #[inline(always)]
             $vis const fn len_usize(self) -> Result<usize, $crate::Overflow> {
                 self.len.try_to_usize()
             }
             /// Returns the length of the stored data as a usize, saturating at the numeric bounds.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn len_usize_saturating(self) -> usize {
                 self.len.to_usize_saturating()
             }
 
             /// Returns the offset of the stored data.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn offset(self) -> $T { self.offset.get() }
             /// Returns the offset of the stored data as the corresponding primitive.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn offset_prim(self) -> $prim { self.offset.get_prim() }
 
             /// Returns the offset of the stored data as a usize.
-            #[inline(always)]
             $vis const fn offset_usize(self) -> Result<usize, $crate::Overflow> {
                 self.offset.try_to_usize()
             }
             /// Returns the offset of the stored data as a usize, saturating at the numeric bounds.
-            #[must_use] #[inline(always)]
+            #[must_use]
             $vis const fn offset_usize_saturating(self) -> usize {
                 self.offset.to_usize_saturating()
             }

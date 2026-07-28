@@ -192,7 +192,6 @@ crate::items! {
     }
     impl RandSeedable for XorShift128 {
         type RandSeed = [u8; 16];
-        #[inline(always)]
         /// When seeded with zero this implementation uses the default seed value as the cold path.
         fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new16_u8(seed) }
     }

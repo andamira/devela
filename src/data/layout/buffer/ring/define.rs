@@ -227,7 +227,6 @@ macro_rules! buffer_ring {
         $crate::buffer_ring!(%guard_index_repr $I);
 
         /// Constructs a ring from raw components, assuming all invariants hold.
-        #[inline(always)]
         const fn _new(storage: S,
             head: $crate::MaybeNiche<$I>, len: $crate::MaybeNiche<$I>) -> Self {
             Self { storage, head, len, _m: $crate::PhantomData }
@@ -236,24 +235,20 @@ macro_rules! buffer_ring {
         /* idx */
 
         /// Returns the zero value as a MaybeNiche wrapped index type.
-        #[inline(always)]
         const fn _idx_zero() -> $crate::MaybeNiche<$I> {
             // SAFETY-INVARIANT: checked above; buffer indices must represent zero.
             $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$I>::ZERO]
         }
 
         /// `a == b`
-        #[inline(always)]
         const fn _idx_eq(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a == b
         }
         /// `a <= b`
-        #[inline(always)]
         const fn _idx_le(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a <= b
         }
         /// `a >= b`
-        #[inline(always)]
         const fn _idx_ge(a: $I, b: $I) -> bool {
             let (a, b) = ($crate::MaybeNiche(a).prim(), $crate::MaybeNiche(b).prim()); a >= b
         }
@@ -261,17 +256,14 @@ macro_rules! buffer_ring {
         /* prim */
 
         /// Returns the given index-typed value as a primitive.
-        #[inline(always)]
         const fn _idx_to_prim(from: $I) -> $P { $crate::MaybeNiche(from).prim() }
 
         /// Returns the given primitive value as an index type.
-        #[inline(always)]
         const fn _prim_to_idx(from: $P) -> Result<$I, $crate::InvalidValue> {
             $crate::unwrap![ok_map? $crate::MaybeNiche::<$I>::try_from_prim(from), |v| v.repr()]
         }
         /// Returns the given primitive value as an index type,
         /// converting invalid inputs to the closest valid number.
-        #[inline(always)]
         const fn _prim_to_idx_lossy(from: $P) -> $I {
             $crate::MaybeNiche::<$I>::from_prim_lossy(from).repr()
         }
@@ -282,30 +274,24 @@ macro_rules! buffer_ring {
         const _IDX_MAX_USIZE: usize = $crate::MaybeNiche(<$I>::MAX).to_usize_saturating();
 
         /// Returns the current logical length as a `usize`, saturating if necessary.
-        #[inline(always)]
         const fn _len_usize(&self) -> usize { self.len.to_usize_saturating()
         }
         /// Returns the current physical head as a `usize`, saturating if necessary.
-        #[inline(always)]
         const fn _head_usize(&self) -> usize { self.head.to_usize_saturating() }
 
         /// Returns the given usize value as a MaybeNiche wrapped index type.
-        #[inline(always)]
         const fn _usize_to_midx(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_usize(from)]
         }
         /// Returns the given usize value as a MaybeNiche wrapped saturated index type.
-        #[inline(always)]
         const fn _usize_to_midx_sat(from: usize) -> $crate::MaybeNiche<$I> {
             $crate::MaybeNiche::<$I>::from_usize_saturating(from)
         }
         /// Returns the given usize value as an index type.
-        #[inline(always)]
         const fn _usize_to_idx(from: usize) -> $I {
             Self::_usize_to_midx(from).repr()
         }
         /// Returns the given index value as a usize.
-        #[inline(always)]
         const fn _idx_to_usize(from: $I) -> usize {
             $crate::unwrap![ok $crate::MaybeNiche(from).try_to_usize()]
         }
@@ -313,24 +299,20 @@ macro_rules! buffer_ring {
         /* state */
 
         /// Sets the physical head without checking invariants.
-        #[inline(always)]
         const fn _set_head(&mut self, head: $I) { self.head = $crate::MaybeNiche(head); }
 
         /// Sets the logical length without checking invariants.
-        #[inline(always)]
         const fn _set_len(&mut self, len: $I) { self.len = $crate::MaybeNiche(len); }
 
         /// Returns the next logical length.
         ///
         /// Caller must guarantee `len < capacity`.
-        #[inline(always)]
         const fn _len_inc(&self) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() + 1)]
         }
         /// Returns the previous logical length.
         ///
         /// Caller must guarantee `len > 0`.
-        #[inline(always)]
         const fn _len_dec(&self) -> $crate::MaybeNiche<$I> {
             $crate::unwrap![ok $crate::MaybeNiche::<$I>::try_from_prim(self.len.prim() - 1)]
         }
@@ -388,7 +370,6 @@ macro_rules! buffer_ring {
         /// Wraps a physical index into the fixed ring capacity.
         ///
         /// Caller should only pass values smaller than `2 * CAP`.
-        #[inline(always)]
         const fn _wrap_usize(index: usize) -> usize {
             if CAP == 0 { 0 } else if index >= CAP { index - CAP } else { index }
         }
@@ -396,28 +377,24 @@ macro_rules! buffer_ring {
         /// Returns the physical index for a logical index.
         ///
         /// Caller must guarantee `logical < len`.
-        #[inline(always)]
         const fn _physical_usize(&self, logical: usize) -> usize {
             Self::_wrap_usize(self._head_usize() + logical)
         }
         /// Returns the physical insertion index at the back.
         ///
         /// This is the derived tail.
-        #[inline(always)]
         const fn _tail_usize(&self) -> usize {
             Self::_wrap_usize(self._head_usize() + self._len_usize())
         }
         /// Returns the physical index of the current back element.
         ///
         /// Caller must guarantee `len > 0`.
-        #[inline(always)]
         const fn _back_usize(&self) -> usize {
             Self::_wrap_usize(self._head_usize() + self._len_usize() - 1)
         }
         /// Returns the physical index before the current head.
         ///
         /// Caller must guarantee `CAP > 0`.
-        #[inline(always)]
         const fn _prev_head_usize(&self) -> usize {
             let head = self._head_usize();
             if head == 0 { CAP - 1 } else { head - 1 }

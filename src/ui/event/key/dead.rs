@@ -105,7 +105,6 @@ impl KeyDead {
     }
 
     /// Returns the canonical dead-key keysym for this variant.
-    #[inline(always)]
     pub const fn to_keysym(kind: KeyDead) -> u32 {
         match kind {
             KeyDead::Unknown => 0,

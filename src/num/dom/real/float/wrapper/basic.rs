@@ -557,7 +557,6 @@ macro_rules! _num_dom_real_float_impl_basic {
             /// - and the compiler can optimize the loop by unrolling and constant propagation.
             ///
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
-            #[inline(always)]
             pub const fn eval_poly_const<const N: usize>(self, coeffs: &[$f; N]) -> Float<$f> {
                 let mut acc = coeffs[N-1];
                 whilst![i in rev 0..N-1; acc = acc * self.0 + coeffs[i]];

@@ -16,7 +16,6 @@ impl Str {
     /// Panics if `start` > `end` or `end` > `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range(string: &str, start: usize, end: usize) -> &str {
         string.split_at(start).1.split_at(end - start).0
     }
@@ -28,7 +27,6 @@ impl Str {
     /// Returns `None` if `start` > `end` or `end` > `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_checked(string: &str, start: usize, end: usize) -> Option<&str> {
         Some(
             unwrap![some?
@@ -46,7 +44,6 @@ impl Str {
     /// Panics if `start` > `end` or `end` > `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_mut(string: &mut str, start: usize, end: usize) -> &mut str {
         string.split_at_mut(start).1.split_at_mut(end - start).0
     }
@@ -58,7 +55,6 @@ impl Str {
     /// Returns `None` if `start` > `end` or `end` > `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_mut_checked(string: &mut str, start: usize, end: usize) -> Option<&mut str> {
         Some(
             unwrap![some?
@@ -78,7 +74,6 @@ impl Str {
     /// Panics if `start` > `end` or `end` >= `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_inclusive(string: &str, start: usize, end: usize) -> &str {
         string.split_at(start).1.split_at(end - start + 1).0
     }
@@ -90,7 +85,6 @@ impl Str {
     /// Returns `None` if `start` > `end` or `end` > `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_inclusive_checked(string: &str, start: usize, end: usize) -> Option<&str> {
         Some(
             unwrap![some?
@@ -108,7 +102,6 @@ impl Str {
     /// Panics if `start` > `end` or `end` >= `string.len()`
     /// or if any split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_inclusive_mut(string: &mut str, start: usize, end: usize) -> &mut str {
         string.split_at_mut(start).1.split_at_mut(end - start + 1).0
     }
@@ -120,7 +113,6 @@ impl Str {
     /// Returns `None` if `start` > `end` or `end` > `string.len()`
     /// or if a split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_inclusive_mut_checked(
         string: &mut str,
         start: usize,
@@ -144,7 +136,6 @@ impl Str {
     /// Panics if `start` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_from(string: &str, start: usize) -> &str {
         string.split_at(start).1
     }
@@ -156,7 +147,6 @@ impl Str {
     /// Returns `None` if `start` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_from_checked(string: &str, start: usize) -> Option<&str> {
         match string.split_at_checked(start) {
             Some((_, substring)) => Some(substring),
@@ -172,7 +162,6 @@ impl Str {
     /// Panics if `start` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_from_mut(string: &mut str, start: usize) -> &mut str {
         string.split_at_mut(start).1
     }
@@ -184,7 +173,6 @@ impl Str {
     /// Returns `None` if `start` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_from_mut_checked(string: &mut str, start: usize) -> Option<&mut str> {
         match string.split_at_mut_checked(start) {
             Some((_, substring)) => Some(substring),
@@ -202,7 +190,6 @@ impl Str {
     /// Panics if `end` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to(string: &str, end: usize) -> &str {
         string.split_at(end).0
     }
@@ -214,7 +201,6 @@ impl Str {
     /// Returns `None` if `end` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_checked(string: &str, end: usize) -> Option<&str> {
         match string.split_at_checked(end) {
             Some((substring, _)) => Some(substring),
@@ -230,7 +216,6 @@ impl Str {
     /// Panics if `end` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_mut(string: &mut str, end: usize) -> &mut str {
         string.split_at_mut(end).0
     }
@@ -242,7 +227,6 @@ impl Str {
     /// Returns `None` if `end` > `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
         match string.split_at_mut_checked(end) {
             Some((substring, _)) => Some(substring),
@@ -260,7 +244,6 @@ impl Str {
     /// Panics if `end` >= `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_inclusive(string: &str, end: usize) -> &str {
         string.split_at(end + 1).0
     }
@@ -272,7 +255,6 @@ impl Str {
     /// Returns `None` if `end` >= `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_inclusive_checked(string: &str, end: usize) -> Option<&str> {
         is![end < string.len(), Some(string.split_at(end + 1).0), None]
     }
@@ -285,7 +267,6 @@ impl Str {
     /// Panics if `end` >= `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_inclusive_mut(string: &mut str, end: usize) -> &mut str {
         string.split_at_mut(end + 1).0
     }
@@ -297,7 +278,6 @@ impl Str {
     /// Returns `None` if `end` >= `string.len()`
     /// or if the split point falls outside a UTF-8 code point boundary.
     #[must_use]
-    #[inline(always)]
     pub const fn range_to_inclusive_mut_checked(string: &mut str, end: usize) -> Option<&mut str> {
         is![end < string.len(), Some(string.split_at_mut(end + 1).0), None]
     }

@@ -23,7 +23,6 @@ pub struct XEvent {
 #[rustfmt::skip]
 impl XEvent {
     /// Returns the X11 response type (event code).
-    #[inline(always)]
     pub fn response_type(&self) -> u8 { unsafe { (*self.raw).response_type & !0x80 } }
 
     /// Returns the event timestamp in backend-specific milliseconds, if present.
@@ -216,7 +215,6 @@ impl XEvent {
         unwrap![some EventButton::new(detail)]
     }
     /// Converts this X11 button state into an `EventButtons` bitmask.
-    #[inline(always)]
     pub(crate) const fn map_button_mask(state: u16) -> EventButtons {
         use EventButtons as B;
         let (state, mut buttons) = (Bitwise(state), B::new());

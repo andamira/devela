@@ -31,7 +31,6 @@ impl Js {
     /// Panics if the writer violates its length contract or produces invalid
     /// UTF-8 other than an incomplete final code point caused by truncation.
     // FUTURE IMPROVE add unchecked specialization
-    #[inline(always)]
     pub fn read_str(
         buffer: &mut [u8],
         mut write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32,
@@ -61,7 +60,6 @@ impl Js {
     /// # Features
     /// - `unsafe_ffi` enables writing directly into uninitialized allocation capacity.
     /// - `unsafe_str` enables unchecked UTF-8 conversion.
-    #[inline(always)]
     #[cfg(feature = "alloc")]
     pub fn read_string(write_fn: impl FnMut(*mut u8, js_uint32) -> js_int32) -> String {
         Js::read_string_capped(128, false, write_fn)

@@ -52,13 +52,11 @@ pub enum ValueKind4 {
 impl ValueKind4 {
     /// Returns the raw 4-bit kind code.
     #[must_use]
-    #[inline(always)]
     pub const fn code(self) -> u8 {
         self as u8
     }
     /// Returns a compact kind from a raw 4-bit code.
     #[must_use]
-    #[inline(always)]
     pub const fn from_code(code: u8) -> Option<Self> {
         match code {
             0 => Some(Self::Nil),
@@ -82,13 +80,11 @@ impl ValueKind4 {
     }
     /// Widens this compact kind to [`ValueKind`].
     #[must_use]
-    #[inline(always)]
     pub const fn to_kind(self) -> ValueKind {
         ValueKind::from_code(self.code())
     }
     /// Narrows a [`ValueKind`] if it belongs to the compact universal band.
     #[must_use]
-    #[inline(always)]
     pub const fn from_kind(kind: ValueKind) -> Option<Self> {
         if kind.is_compact() { Self::from_code(kind.code()) } else { None }
     }

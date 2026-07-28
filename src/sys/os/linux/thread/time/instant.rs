@@ -14,7 +14,6 @@ use crate::{Linux, LinuxClock, LinuxTimespec, TimeScale, TimeSource, TimeSourceC
 #[derive(Debug)]
 pub struct LinuxInstant;
 
-#[inline(always)]
 fn linux_ts_nanos(ts: LinuxTimespec) -> u64 {
     (ts.tv_sec as u64) * 1_000_000_000 + (ts.tv_nsec as u64)
 }
@@ -105,15 +104,11 @@ impl TimeSourceCfg<u64> for LinuxTime {
                 | LinuxClock::Tai
         )
     }
-    #[inline(always)]
     fn time_scale(_: LinuxClock) -> TimeScale { TimeScale::Nanos }
-    #[inline(always)]
     fn time_now(clock: LinuxClock) -> u64 {
         let ts = Linux::clock_gettime(clock).expect("clock_gettime failed");
         linux_ts_nanos(ts)
     }
-    #[inline(always)]
     fn time_point_value(_: LinuxClock, point: u64) -> u64 { point }
-    #[inline(always)]
     fn time_elapsed_value(_: LinuxClock, elapsed: u64) -> u64 { elapsed }
 }

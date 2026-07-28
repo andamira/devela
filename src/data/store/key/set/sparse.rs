@@ -116,7 +116,6 @@ impl<const DENSE: usize, const SPARSE: usize> Default for SparseSetArray<DENSE, 
     }
 }
 
-#[inline(always)]
 pub(super) fn contains_raw(dense: &[usize], sparse: &[usize], count: usize, value: usize) -> bool {
     if value >= sparse.len() {
         return false;
@@ -126,7 +125,6 @@ pub(super) fn contains_raw(dense: &[usize], sparse: &[usize], count: usize, valu
     index < count && dense[index] == value
 }
 
-#[inline(always)]
 pub(super) fn insert_raw(
     dense: &mut [usize],
     sparse: &mut [usize],
@@ -142,7 +140,6 @@ pub(super) fn insert_raw(
     Ok(true)
 }
 
-#[inline(always)]
 pub(super) fn remove_raw(
     dense: &mut [usize],
     sparse: &mut [usize],

@@ -55,11 +55,9 @@ impl RandTry for StdRand {
     const RAND_STATE_BITS: u32 = 0;
     const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL;
 
-    #[inline(always)]
     fn rand_try_next_u64(&mut self) -> Result<u64, Self::Error> {
         Ok(StdRand::random_u64())
     }
-    #[inline(always)]
     fn rand_try_fill_bytes(&mut self, buf: &mut [u8]) -> Result<(), Self::Error> {
         StdRand::random_bytes(buf);
         Ok(())

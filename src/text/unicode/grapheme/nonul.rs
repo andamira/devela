@@ -13,6 +13,7 @@ use crate::{
 
 /* definitions */
 
+#[must_use]
 #[doc = crate::_tags!(text)]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonul`]."]]
 #[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
@@ -30,7 +31,6 @@ use crate::{
 ///       [8][Self::from_char8],
 ///       [16](Self::from_char16),
 ///       [utf8](Self::from_charu))*.
-#[must_use]
 #[repr(transparent)]
 #[derive(Clone, Eq, PartialOrd, Ord)]
 pub struct GraphemeNonul<const CAP: usize>(pub(crate) StringNonul<CAP>);
@@ -43,7 +43,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP > 255.
-    #[inline(always)]
     pub const fn new() -> Self {
         Self(StringNonul::new())
     }
@@ -157,40 +156,39 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
     /* queries */
 
+    #[must_use]
     /// Returns the length in bytes.
-    #[must_use] #[inline(always)]
     pub const fn len(&self) -> usize { self.0.len() }
 
+    #[must_use]
     /// Returns `true` if the current length is 0.
-    #[must_use] #[inline(always)]
     pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
+    #[must_use]
     /// Returns the total capacity in bytes.
-    #[must_use] #[inline(always)]
     pub const fn capacity() -> usize { CAP }
 
+    #[must_use]
     /// Returns the remaining capacity.
-    #[must_use] #[inline(always)]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
+    #[must_use]
     /// Returns `true` if the current remaining capacity is 0.
-    #[must_use] #[inline(always)]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[inline(always)]
     pub const fn clear(&mut self) { self.0.clear(); }
 
     /// Const-compatible `Eq`.
-    #[inline(always)]
     pub const fn eq(self, other: &Self) -> bool { self.0.eq(&other.0) }
 
     //
 
+    #[must_use]
     /// Returns a byte slice of the inner string slice.
-    #[must_use] #[inline(always)]
     pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
+    #[must_use]
     /// Returns a mutable byte slice of the inner string slice.
     ///
     /// # Safety
@@ -200,7 +198,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[must_use] #[inline(always)]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -208,37 +205,35 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
         unsafe { self.0.as_bytes_mut() }
     }
 
+    #[must_use]
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[inline(always)]
     pub const fn as_array(&self) -> &[u8; CAP] { self.0.as_array() }
 
+    #[must_use]
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[inline(always)]
     pub const fn into_array(self) -> [u8; CAP] { self.0.into_array() }
 
+    #[must_use]
     /// Returns the inner string slice.
-    #[must_use] #[inline(always)]
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the inner string type.
-    #[inline(always)]
     pub const fn as_string_nonul(&self) -> &StringNonul::<CAP> { &self.0 }
 
     /// Returns the inner string type.
-    #[inline(always)]
     pub const fn into_string_nonul(self) -> StringNonul::<CAP> { self.0 }
 
+    #[must_use]
     /// Returns the mutable inner string slice.
     ///
     /// # Safety
     /// The caller must ensure that the content of the slice is valid UTF-8
     /// and that it contains exactly one extended grapheme character other
     /// than `NUL`, before the borrow ends and the underlying `str` is used.
-    #[must_use] #[inline(always)]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_mut_str(&mut self) -> &mut str {
@@ -247,7 +242,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    #[inline(always)]
     pub const fn chars(&self) -> CharIter<'_, &str> { self.0.chars() }
 }
 
@@ -262,7 +256,6 @@ mod trait_impls {
 
     impl<const CAP: usize> Default for GraphemeNonul<CAP> {
         /// Returns an empty extended grapheme character.
-        #[inline(always)]
         fn default() -> Self { Self::new() }
     }
     impl<const CAP: usize> ConstInit for GraphemeNonul<CAP> {

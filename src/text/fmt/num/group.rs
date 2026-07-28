@@ -51,7 +51,6 @@ impl FmtNumGroup {
     /* constructors */
 
     /// Creates a default grouping configuration of 3 for the left part, and no separator.
-    #[inline(always)]
     pub const fn new() -> Self { Self::INIT }
 
     /// Sets the `_` underscore for the left part, with groups of 3.

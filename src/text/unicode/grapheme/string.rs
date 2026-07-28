@@ -58,16 +58,13 @@ impl GraphemeString {
 
     /// Returns the length in bytes.
     #[must_use]
-    #[inline(always)]
     pub const fn len(&self) -> usize { self.0.len() }
 
     /// Returns `true` if the current length is 0.
     #[must_use]
-    #[inline(always)]
     pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[inline(always)]
     pub fn clear(&mut self) { self.0.clear(); }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.

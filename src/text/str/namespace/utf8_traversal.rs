@@ -119,13 +119,11 @@ impl Str {
     /* chars */
 
     /// Returns an iterator over the Unicode scalars.
-    #[inline(always)]
     pub const fn chars(string: &str) -> CharIter<'_, &str> {
         CharIter::<&str>::new(string)
     }
     /// Returns the total number of Unicode scalars.
     #[must_use]
-    #[inline(always)]
     pub const fn char_count(string: &str) -> usize {
         CharIter::<&str>::new(string).count()
     }
@@ -133,13 +131,11 @@ impl Str {
     /* graphemes */
 
     /// Returns an iterator over grapheme-boundary actions and Unicode scalars.
-    #[inline(always)]
     #[cfg(feature = "grapheme")]
     pub const fn graphemes(string: &str) -> GraphemeIter<'_, char> {
         GraphemeIter::<char>::new(string)
     }
     /// Returns an iterator over grapheme-boundary actions and [`charu`] scalars.
-    #[inline(always)]
     #[cfg(feature = "grapheme")]
     pub const fn graphemes_charu(string: &str) -> GraphemeIter<'_, charu> {
         GraphemeIter::<charu>::new_charu(string)
@@ -148,7 +144,6 @@ impl Str {
     /// Returns a grapheme-boundary scanner over `string`.
     ///
     /// The caller provides the machine so the scan can continue across buffers.
-    #[inline(always)]
     #[cfg(feature = "grapheme")]
     pub const fn graphemes_in<'a>(
         machine: &'a mut GraphemeMachine,
@@ -159,7 +154,6 @@ impl Str {
     /// Returns a grapheme-boundary scanner over `string`.
     ///
     /// The caller provides the machine so the scan can continue across buffers.
-    #[inline(always)]
     #[cfg(feature = "grapheme")]
     pub const fn graphemes_charu_in<'a>(
         machine: &'a mut GraphemeMachine,

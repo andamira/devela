@@ -307,7 +307,6 @@ crate::items! {
     }
     impl RandSeedable for Xyza8b {
         type RandSeed = [u8; 4];
-        #[inline(always)]
         fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(seed) }
     }
 }

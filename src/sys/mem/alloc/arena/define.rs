@@ -113,28 +113,21 @@ macro_rules! arena {
         impl<const CAP: usize> $Arena<CAP> {
 
             /// Returns a new empty arena.
-            #[inline(always)]
             $vis const fn new() -> Self {
                 Self { data: <$_>::new_array(), len: 0 }
             }
 
-            #[inline(always)]
             /// Returns the total capacity.
             $vis const fn capacity(&self) -> $T { CAP as $T }
-            #[inline(always)]
             /// Return the occupied length.
             $vis const fn len(&self) -> $T { self.len }
-            #[inline(always)]
             /// Whether the arena is empty.
             $vis const fn is_empty(&self) -> bool { self.len == 0 }
-            #[inline(always)]
             /// Returns the remaining byte capacity.
             $vis const fn remaining(&self) -> $T { CAP as $T - self.len }
             /// Returns `true` if n bytes fit in the remaining capacity.
-            #[inline(always)]
             $vis const fn can_write(&self, n: $T) -> bool { self.len + n <= CAP as $T }
 
-            #[inline(always)]
             /// Compares two arenas for equality.
             $vis const fn eq(&self, other: &Self) -> bool {
                 $crate::Slice::<u8>::eq(self.as_bytes(), other.as_bytes())
@@ -142,22 +135,18 @@ macro_rules! arena {
 
             /* snapshot and rollback */
 
-            #[inline(always)]
             /// Snapshot a position in the arena.
             $vis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
-            #[inline(always)]
             /// Rollback to a previous marked position.
             $vis const fn rollback(&mut self, m: $Mark) { self.len = m.0; }
 
             /* byte slices */
 
-            #[inline(always)]
             /// Returns a byte slice over all the written data.
             $vis const fn as_bytes(&self) -> &[u8] {
                 <$_>::slice_bytes(&self.data, 0, self.len as usize)
             }
             /// Returns an exclusive byte slice over all the written data.
-            #[inline(always)]
             $vis const fn as_bytes_mut(&mut self) -> &mut [u8] {
                 $crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len as usize)
             }
@@ -305,7 +294,6 @@ macro_rules! arena {
             ///
             /// # Errors
             /// Returns `None` if there's insufficient capacity.
-            #[inline(always)]
             $vis const fn push_char(&mut self, val: char) -> Option<$Handle> {
                 self.push_u32(val as u32)
             }
@@ -313,12 +301,10 @@ macro_rules! arena {
             ///
             /// # Errors
             /// Returns `None` if the handle is invalid or incomplete.
-            #[inline(always)]
             $vis const fn read_char(&self, handle: $Handle) -> Option<char> {
                 if let Some(c) = self.read_u32(handle) { char::from_u32(c) } else { None }
             }
             /// Replaces a `char` from the given `handle`. Returns `true` on success.
-            #[inline(always)]
             $vis const fn replace_char(&mut self, handle: $Handle, val: char) -> bool {
                 self.replace_u32(handle, val as u32)
             }
@@ -344,7 +330,6 @@ macro_rules! arena {
                 ///
                 /// # Errors
                 /// Returns `None` if there's insufficient capacity.
-                #[inline(always)]
                 $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_byte(val as u8)
                 }
@@ -368,7 +353,6 @@ macro_rules! arena {
                 ///
                 /// # Errors
                 /// Returns `None` if there's insufficient capacity.
-                #[inline(always)]
                 $vis const fn [<push_ $P>](&mut self, val: $P) -> Option<$Handle> {
                     self.push_bytes(&val.to_le_bytes())
                 }

@@ -11,7 +11,6 @@ use crate::is;
 /// `data` is interpreted as an array of 32-bit values (`format = 32`).
 /// Common use cases include: `_NET_WM_STATE`, `_NET_WM_WINDOW_TYPE`,
 /// `WM_NORMAL_HINTS`, and other ICCCM/EWMH integer properties.
-#[inline(always)]
 pub(crate) fn change_property_u32(
     conn: *mut xcb_connection_t,
     win: u32,
@@ -28,7 +27,6 @@ pub(crate) fn change_property_u32(
 ///
 /// Used by EWMH (`_NET_WM_NAME`, `_NET_WM_ICON_NAME`) and ICCCM (`WM_NAME`)
 /// when providing a UTF-8 encoded window title.
-#[inline(always)]
 pub(crate) fn change_property_str(
     conn: *mut xcb_connection_t,
     win: u32,
@@ -43,7 +41,6 @@ pub(crate) fn change_property_str(
 /// `format` must be 8, 16, or 32. `data` is raw bytes.
 ///
 /// `data_len_units` is automatically derived from format.
-#[inline(always)]
 pub(crate) fn change_property_u8(
     conn: *mut xcb_connection_t,
     win: u32,

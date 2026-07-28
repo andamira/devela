@@ -43,7 +43,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP > 255.
-    #[inline(always)]
     pub const fn new() -> Self {
         Self(StringU8::new())
     }
@@ -149,31 +148,30 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /* queries */
 
     /// Returns the length in bytes.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn len(&self) -> usize { self.0.len() }
 
     /// Returns `true` if the current length is 0.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
     /// Returns the total capacity in bytes.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[inline(always)]
     pub const fn clear(&mut self) { self.0.clear(); }
 
     /// Const-compatible `Eq`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn eq(self, other: &Self) -> bool { self.0.eq(&other.0) }
 
     //
@@ -213,11 +211,9 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the inner string type.
-    #[inline(always)]
     pub const fn as_string_u8(&self) -> &StringU8::<CAP> { &self.0 }
 
     /// Returns the inner string type.
-    #[inline(always)]
     pub const fn into_string_u8(self) -> StringU8::<CAP> { self.0 }
 
     /// Returns the mutable inner string slice.
@@ -234,7 +230,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    #[inline(always)]
     pub const fn chars(&self) -> CharIter<'_, &str> { self.0.chars() }
 }
 
@@ -251,7 +246,6 @@ mod trait_impls {
         ///
         /// # Panics
         /// Panics if `CAP` > 255.
-        #[inline(always)]
         fn default() -> Self { Self::new() }
     }
     impl<const CAP: usize> ConstInit for GraphemeU8<CAP> {

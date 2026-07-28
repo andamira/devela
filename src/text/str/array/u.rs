@@ -103,53 +103,40 @@ macro_rules! impl_str_u {
         /* helpers */
         impl<const CAP: usize> $name<CAP> {
             /* niche construction */
-            #[inline(always)]
             const fn _ni_zero() -> $crate::MaybeNiche<$NI> {
                 // SAFETY-INVARIANT: `$NI` is a `NonMaxU*`; zero is always representable.
                 $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$NI>::ZERO]
             }
-            #[inline(always)]
             const fn _ni_prim(p: $P) -> $crate::MaybeNiche<$NI> {
                 $crate::unwrap![ok $crate::MaybeNiche::<$NI>::try_from_prim(p)]
             }
-            #[inline(always)]
             const fn _ni_usize(p: usize) -> $crate::MaybeNiche<$NI> {
                 $crate::unwrap![ok $crate::MaybeNiche::<$NI>::try_from_usize(p)]
             }
             /* cap validation */
-            #[inline(always)]
             const fn _valid_cap() -> bool { CAP < <$P>::MAX as usize }
-            #[inline(always)]
             const fn _assert_cap() {
                 assert![Self::_valid_cap(),
                     concat!["Mismatched capacity, greater or equal than ", stringify![$P], "::MAX"]
                 ];
             }
-            #[inline(always)]
             const fn _check_cap() -> Result<(), MismatchedCapacity> {
                 if Self::_valid_cap() { Ok(()) }
                 else { Err(MismatchedCapacity::too_large(CAP, <$P>::MAX as usize - 1)) }
             }
-            #[inline(always)]
             const fn _check_cap_invalid_text() -> Result<(), InvalidText> {
                 if Self::_valid_cap() { Ok(()) } else {
                     let err = MismatchedCapacity::too_large(CAP, <$P>::MAX as usize - 1);
                     Err(InvalidText::from_mismatched_capacity(err)) }
             }
             /* len */
-            #[inline(always)]
             const fn _add_len(&mut self, extra: usize) {
                 self.len = Self::_ni_usize(self.len() + extra); }
-            #[inline(always)]
             const fn _len_prim(&self) -> $P { self.len.prim() }
-            #[inline(always)]
             const fn _set_len_prim(&mut self, len: $P) { self.len = Self::_ni_prim(len); }
-            #[inline(always)]
             const fn _set_len(&mut self, len: usize) { self.len = Self::_ni_usize(len); }
             /* constructors */
-            #[inline(always)]
             const fn _empty() -> Self { Self { arr: [0; CAP], len: Self::_ni_zero() } }
-            #[inline(always)]
             const fn _from_parts_unchecked(arr: [u8; CAP], len: usize) -> Self {
                 Self { arr, len: Self::_ni_usize(len) }
             }
@@ -423,7 +410,6 @@ macro_rules! impl_str_u {
             /// Internal accessor for trusted formatting operations, avoiding UTF-8 re-validation.
             /// # Panics
             /// Panics if `CAP > Self::MAX_CAPACITY` or if `len > CAP`.
-            #[inline(always)]
             pub(crate) const fn _from_array_len_trusted(array: [u8; CAP], len: $P) -> Self {
                 Self::_assert_cap();
                 assert!(len as usize <= CAP, "length greater than capacity");
@@ -521,20 +507,20 @@ macro_rules! impl_str_u {
             /// Returns the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
             /// Returns a copy of the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn as_array(&self) -> &[u8; CAP] { &self.arr }
 
             /// Returns a byte slice of the inner string slice.
             ///
             /// # Features
             /// `unsafe_slice` enables unchecked slicing.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn as_bytes(&self) -> &[u8] {
                 cfg_select! { all(feature = "unsafe_slice", not(feature = "safe_text")) => {
                     // SAFETY: we ensure to contain a correct length
@@ -550,7 +536,7 @@ macro_rules! impl_str_u {
             ///
             /// # Features
             /// `unsafe_slice` enables unchecked slicing.
-            #[must_use] #[inline(always)]
+            #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -566,7 +552,6 @@ macro_rules! impl_str_u {
             /// # Features
             /// `unsafe_str` enables unchecked UTF-8 conversion.
             #[must_use]
-            #[inline(always)]
             pub const fn as_str(&self) -> &str {
                 cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
                     // SAFETY: we ensure to contain only valid UTF-8
@@ -579,7 +564,7 @@ macro_rules! impl_str_u {
             /// # Safety
             /// The caller must ensure that the content of the slice is valid UTF-8
             /// before the borrow ends and the underlying `str` is used.
-            #[must_use] #[inline(always)]
+            #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn as_mut_str(&mut self) -> &mut str {
@@ -591,7 +576,6 @@ macro_rules! impl_str_u {
             ///
             /// # Features
             /// `unsafe_str` enables unchecked UTF-8 conversion.
-            #[inline(always)]
             pub const fn chars(&self) -> CharIter<'_, &str> {
                 CharIter::<&str>::new(self.as_str())
             }
@@ -601,27 +585,22 @@ macro_rules! impl_str_u {
         impl<const CAP: usize> $name<CAP> {
             /// Returns the current string length in bytes.
             #[must_use]
-            #[inline(always)]
             pub const fn len(&self) -> usize { self.len.prim() as usize }
 
             /// Returns `true` if the current length is 0.
             #[must_use]
-            #[inline(always)]
             pub const fn is_empty(&self) -> bool { self.len.prim() == 0 }
 
             /// Returns `true` if the current remaining capacity is 0.
             #[must_use]
-            #[inline(always)]
             pub const fn is_full(&self) -> bool { self.len() == CAP }
 
             /// Returns the total capacity in bytes.
             #[must_use]
-            #[inline(always)]
             pub const fn capacity() -> usize { CAP }
 
             /// Returns the remaining capacity in bytes.
             #[must_use]
-            #[inline(always)]
             pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
             /// Checks the equality of two strings, with the same capacity and length.
@@ -638,7 +617,6 @@ macro_rules! impl_str_u {
             /// assert![a.eq(&b)];
             /// ```
             #[must_use]
-            #[inline(always)]
             pub const fn eq(&self, other: &Self) -> bool {
                 self.len.prim() == other.len.prim() && {
                     whilst![i in 0..self.len(); is![self.arr[i] != other.arr[i], return false]];
@@ -650,15 +628,12 @@ macro_rules! impl_str_u {
         /// # Modifiers
         impl<const CAP: usize> $name<CAP> {
             /// Sets the length to 0.
-            #[inline(always)]
             pub const fn clear(&mut self) { self.len = Self::_ni_zero() }
 
             /// Sets the length to 0, and resets all the bytes to 0.
-            #[inline(always)]
             pub const fn reset(&mut self) { self.arr = [0; CAP]; self.len = Self::_ni_zero(); }
 
             /// Zeros all unused bytes while maintaining the current length.
-            #[inline(always)]
             pub const fn sanitize(&mut self) {
                 whilst![i in (self.len()),..CAP; self.arr[i] = 0];
             }

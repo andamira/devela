@@ -177,14 +177,14 @@ impl GraphemeMachineState {
     }
 
     /// GB9c is only active in IndicConsonantExtendLinkerLinker state.
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     const fn gb9c_active(self) -> bool { matches!(self, Self::IndicLinker) }
 
     /// GB11 is only active in AfterZwj state.
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     const fn gb11_active(self) -> bool { matches!(self, Self::AfterZwj) }
 
     /// GB12/GB13 are only active in AwaitRegionalPair state.
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     const fn gb13_active(self) -> bool { matches!(self, Self::AwaitRegionalPair) }
 }

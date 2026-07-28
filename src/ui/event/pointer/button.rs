@@ -55,7 +55,6 @@ impl EventButton {
     }
 
     /// Returns the button represented by the mask, if exactly one button is set.
-    #[inline(always)]
     pub const fn from_one_bit_mask(mask: EventButtons) -> Option<EventButton> {
         match mask.bits() {
             1 => Some(EventButton::Left),
@@ -70,7 +69,6 @@ impl EventButton {
         }
     }
     /// Returns this button as a held-button mask, if it has a normalized role.
-    #[inline(always)]
     pub const fn to_mask(self) -> EventButtons {
         match self {
             Self::Left => EventButtons::new().with(EventButtons::LEFT),

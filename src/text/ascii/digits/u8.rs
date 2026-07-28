@@ -38,7 +38,6 @@ impl Digits<u8> {
     ///
     /// Returns `b'0'` if the index is beyond the number's decimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(), return b'0'];
         const POWERS: [u8; 3] = [100, 10, 1];
@@ -100,7 +99,6 @@ impl Digits<u8> {
     ///
     /// Returns `0` if the index is beyond the number's hexadecimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_value_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         self.0.unbounded_shr(shift) & 0xF
@@ -117,14 +115,12 @@ impl Digits<u8> {
 
     #[doc = _DOC_DIGIT_AT_POWER_10!()]
     #[must_use]
-    #[inline(always)]
     pub(crate) const fn digit_at_power10(self, divisor: u8) -> u8 {
         (self.0 / divisor % 10) + b'0'
     }
 
     #[doc = _DOC_DIGIT_AT_POWER_16!()]
     #[must_use]
-    #[inline(always)]
     pub(crate) const fn digit_at_power16(self, divisor: u8) -> u8 {
         let digit = match divisor {
             0x1 => self.0 & 0xF,
@@ -166,7 +162,6 @@ impl Digits<u8> {
         ]
     }
 
-    #[inline(always)]
     const fn write_digits10_inner(self, buf: &mut [u8], offset: usize) -> usize {
         let n = self.0;
         if n < 10 {

@@ -46,13 +46,11 @@ impl Riff {
 
     /// Returns the RIFF pad length for a chunk data length.
     #[must_use]
-    #[inline(always)]
     pub const fn pad_len(len: usize) -> usize {
         len & 1
     }
     /// Returns the RIFF padded length for a chunk data length.
     #[must_use]
-    #[inline(always)]
     pub const fn padded_len(len: usize) -> Option<usize> {
         len.checked_add(Self::pad_len(len))
     }
@@ -63,7 +61,6 @@ impl Riff {
         Ok(chunk)
     }
     /// Iterates over chunks in a RIFF chunk region.
-    #[inline(always)]
     pub const fn chunks<'a>(bytes: &'a [u8]) -> RiffChunkIter<'a> {
         RiffChunkIter::new(bytes)
     }

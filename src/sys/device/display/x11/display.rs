@@ -135,7 +135,6 @@ impl XDisplay {
     ///
     /// This is suitable for rendering loops or cooperative schedulers where
     /// the program must remain responsive without waiting.
-    #[inline(always)]
     pub fn poll_event(&mut self) -> Event {
         is![let Some(ev) = self.queue.pop(), return ev]; // return pending events first
         is![let Some(raw) = self.poll_raw_event(), return self.handle_raw_event(raw)];
@@ -149,7 +148,6 @@ impl XDisplay {
     ///
     /// This is the blocking counterpart of [`poll_event`][Self::poll_event], used when the
     /// application should sleep until user input or a window notification arrives.
-    #[inline]
     pub fn wait_event(&mut self) -> Event {
         loop {
             is! { let Some(event) = self.queue.pop(), return event }
@@ -160,7 +158,6 @@ impl XDisplay {
     }
 
     /// Flushes pending XCB commands.
-    #[inline(always)]
     pub fn flush(&self) { unsafe { _raw::xcb_flush(self.conn); } }
 }
 

@@ -55,7 +55,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
     ///
     /// # Panics
     /// Panics if `CAP > StringU8::MAX_CAPACITY`.
-    #[inline(always)]
     pub const fn new() -> Self {
         Self {
             repr: StringSmallAllocRepr::Inline(StringU8::<CAP>::new()),
@@ -112,7 +111,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 
     /// Returns the string slice.
     #[must_use]
-    #[inline(always)]
     pub fn as_str(&self) -> &str {
         match &self.repr {
             StringSmallAllocRepr::Inline(s) => s.as_str(),
@@ -122,7 +120,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 
     /// Returns the initialized bytes.
     #[must_use]
-    #[inline(always)]
     pub fn as_bytes(&self) -> &[u8] {
         self.as_str().as_bytes()
     }
@@ -140,7 +137,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 
     /// Returns the inline capacity in bytes.
     #[must_use]
-    #[inline(always)]
     pub const fn inline_capacity() -> usize {
         CAP
     }
@@ -149,7 +145,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
     ///
     /// This is `CAP` while inline, and the heap capacity after spilling.
     #[must_use]
-    #[inline(always)]
     pub fn capacity(&self) -> usize {
         match &self.repr {
             StringSmallAllocRepr::Inline(_) => CAP,
@@ -159,7 +154,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 
     /// Returns the current length in bytes.
     #[must_use]
-    #[inline(always)]
     pub fn len(&self) -> usize {
         match &self.repr {
             StringSmallAllocRepr::Inline(s) => s.len(),
@@ -169,28 +163,24 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
 
     /// Returns the current remaining active capacity in bytes.
     #[must_use]
-    #[inline(always)]
     pub fn remaining_capacity(&self) -> usize {
         self.capacity().saturating_sub(self.len())
     }
 
     /// Returns `true` if the string is empty.
     #[must_use]
-    #[inline(always)]
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
 
     /// Returns `true` if the string is currently stored inline.
     #[must_use]
-    #[inline(always)]
     pub const fn is_inline(&self) -> bool {
         matches!(self.repr, StringSmallAllocRepr::Inline(_))
     }
 
     /// Returns `true` if the string has spilled to the heap.
     #[must_use]
-    #[inline(always)]
     pub const fn is_heap(&self) -> bool {
         matches!(self.repr, StringSmallAllocRepr::Heap(_))
     }
@@ -200,7 +190,6 @@ impl<const CAP: usize> StringSmallAlloc<CAP> {
     /// Clears the string.
     ///
     /// If the string has spilled to the heap, the heap allocation is retained.
-    #[inline(always)]
     pub fn clear(&mut self) {
         match &mut self.repr {
             StringSmallAllocRepr::Inline(s) => s.clear(),

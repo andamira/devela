@@ -26,6 +26,7 @@ pub struct Mem;
 
 /// # Safe methods.
 impl Mem {
+    #[must_use]
     /// Aligns `value` downward to the nearest multiple of `align`.
     ///
     /// This is equivalent to `value & !(align - 1)` but uses `wrapping_neg()`
@@ -42,29 +43,24 @@ impl Mem {
     /// assert_eq!(Mem::align_down(16, 8), 16);
     /// ```
     #[doc = crate::_doc_vendor!("mini-alloc")]
-    #[must_use]
-    #[inline(always)]
     pub const fn align_down(value: usize, align: usize) -> usize {
         value & align.wrapping_neg()
     }
 
-    /// Aligns `value` upward to the nearest multiple of `align`.
     #[must_use]
-    #[inline(always)]
+    /// Aligns `value` upward to the nearest multiple of `align`.
     pub const fn align_up(value: usize, align: usize) -> usize {
         (value + align - 1) & !(align - 1)
     }
 
-    /// Checks if `value` is aligned to `align`.
     #[must_use]
-    #[inline(always)]
+    /// Checks if `value` is aligned to `align`.
     pub const fn is_aligned(value: usize, align: usize) -> bool {
         value & (align - 1) == 0
     }
 
     /// Runtime version of
     /// [`MemAligned::is_compatible`][super::MemAligned::is_compatible] for raw pointers.
-    #[inline(always)]
     pub fn is_aligned_to<T>(ptr: *const T, requirement: usize) -> bool {
         let align = Mem::align_of::<T>();
         requirement >= align && Mem::is_aligned(ptr as usize, align)

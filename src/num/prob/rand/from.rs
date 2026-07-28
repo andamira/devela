@@ -28,7 +28,6 @@ pub trait FromRandTry: Sized {
 pub trait FromRand: FromRandTry {
     /// Constructs a value using `rng`.
     #[must_use]
-    #[inline(always)]
     fn from_rand<R: Rand + ?Sized>(rng: &mut R) -> Self {
         match Self::from_rand_try(rng) {
             Ok(value) => value,
@@ -41,7 +40,6 @@ pub trait FromRand: FromRandTry {
 
 impl FromRandTry for bool {
     /// Returns `true` or `false` with equal probability.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_bool()
     }
@@ -50,7 +48,6 @@ impl FromRandTry for char {
     /// Returns a value uniformly distributed across all Unicode scalar values.
     ///
     /// This includes unassigned, private-use, control, and non-printing scalars.
-    #[inline]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         let i = rng.rand_try_below(Char::SCALAR_COUNT as u64)? as u32;
         let scalar = if i < Char::SURROGATE_START { i } else { i + Char::SURROGATE_COUNT };
@@ -65,35 +62,30 @@ impl FromRandTry for char {
 
 impl FromRandTry for u8 {
     /// Returns a value uniformly distributed across all `u8` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u8()
     }
 }
 impl FromRandTry for u16 {
     /// Returns a value uniformly distributed across all `u16` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u16()
     }
 }
 impl FromRandTry for u32 {
     /// Returns a value uniformly distributed across all `u32` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u32()
     }
 }
 impl FromRandTry for u64 {
     /// Returns a value uniformly distributed across all `u64` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u64()
     }
 }
 impl FromRandTry for u128 {
     /// Returns a value uniformly distributed across all `u128` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         let pair = [rng.rand_try_next_u64()?, rng.rand_try_next_u64()?];
         Ok(Cast::<u128>::from_u64_le(pair))
@@ -101,42 +93,36 @@ impl FromRandTry for u128 {
 }
 impl FromRandTry for usize {
     /// Returns a value uniformly distributed across all `usize` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u64().map(|n| n as usize)
     }
 }
 impl FromRandTry for i8 {
     /// Returns a value uniformly distributed across all `i16` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u8().map(|n| n as i8)
     }
 }
 impl FromRandTry for i16 {
     /// Returns a value uniformly distributed across all `i16` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u16().map(|n| n as i16)
     }
 }
 impl FromRandTry for i32 {
     /// Returns a value uniformly distributed across all `i32` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u32().map(|n| n as i32)
     }
 }
 impl FromRandTry for i64 {
     /// Returns a value uniformly distributed across all `i64` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u64().map(|n| n as i64)
     }
 }
 impl FromRandTry for i128 {
     /// Returns a value uniformly distributed across all `i128` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         let pair = [rng.rand_try_next_u64()?, rng.rand_try_next_u64()?];
         Ok(Cast::<u128>::from_u64_le(pair) as i128)
@@ -144,7 +130,6 @@ impl FromRandTry for i128 {
 }
 impl FromRandTry for isize {
     /// Returns a value uniformly distributed across all `isize` values.
-    #[inline(always)]
     fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
         rng.rand_try_next_u64().map(|n| n as isize)
     }

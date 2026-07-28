@@ -12,6 +12,7 @@ use crate::{AsciiLut, Display, FmtResult, FmtWriter, Formatter, StringU8, format
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct SixelChar(u8);
 
+#[rustfmt::skip]
 impl SixelChar {
     const MASK: u8 = 0b111_111; // == 63
 
@@ -19,15 +20,14 @@ impl SixelChar {
     ///
     /// Bit 1 is the bottom pixel and bit 6 (== 32) is the top pixel.
     /// Bits 7 and 8 are ignored.
-    #[inline(always)] #[rustfmt::skip]
     pub const fn from_bitmask(mask: u8) -> Self { Self(mask & Self::MASK) }
 
+    #[must_use]
     /// Get the 6-bit bitmask representation.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn as_bitmask(self) -> u8 { self.0 }
 
+    #[must_use]
     /// Get the sixel byte value.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn as_byte(self) -> u8 { self.0 + Self::MASK }
 
     /// Create a sixel character from a valid Unicode scalar, from '@' to '~'.
@@ -39,20 +39,20 @@ impl SixelChar {
             None
         }
     }
+    #[must_use]
     /// Returns the corresponding Unicode scalar.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn as_char(self) -> char { self.as_byte() as char }
 
+    #[must_use]
     /// Checks the equality of two chars.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn eq(self, other: Self) -> bool { self.0 == other.0 }
 
+    #[must_use]
     /// Returns `true` if all the pixels are unset.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn is_empty(self) -> bool { self.eq(Self::EMPTY) }
 
+    #[must_use]
     /// Returns `true` if all the pixels are set.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn is_full(self) -> bool { self.eq(Self::FULL) }
 
     /// Returns the next sixel character in sequence, wrapping around from 63 to 0.
@@ -65,14 +65,14 @@ impl SixelChar {
         is![self.eq(Self::EMPTY), Self::FULL, Self(self.0 - 1)]
     }
 
-    /// Returns the next sixel character in sequence, returning None if at maximum.
     #[must_use]
+    /// Returns the next sixel character in sequence, returning None if at maximum.
     pub const fn next_checked(self) -> Option<Self> {
         is![self.eq(Self::FULL), None, Some(Self(self.0 + 1))]
     }
 
-    /// Returns the previous sixel character in sequence, returning None if at minimum.
     #[must_use]
+    /// Returns the previous sixel character in sequence, returning None if at minimum.
     pub const fn prev_checked(self) -> Option<Self> {
         is![self.eq(Self::EMPTY), None, Some(Self(self.0 - 1))]
     }
@@ -129,12 +129,12 @@ impl SixelChar {
     pub const fn from_braille_unchecked(braille: char) -> Self {
         Self::from_bitmask((braille as u32 & Self::MASK as u32) as u8)
     }
+    #[must_use]
     /// Converts this sixel to a Braille pattern character.
     ///
     /// The sixel bits map directly to Braille dots 1-6:
     /// - Bit 0 (top) → Dot 1
     /// - Bit 5 (bottom) → Dot 6
-    #[must_use]
     pub const fn to_braille(self) -> char {
         unwrap![some char::from_u32(0x2800 + self.as_bitmask() as u32)]
     }

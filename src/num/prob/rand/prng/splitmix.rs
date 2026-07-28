@@ -43,25 +43,21 @@ impl SplitMix64 {
     /// Second SplitMix64 avalanche multiplier.
     pub const MIX_B: u64 = 0x94D0_49BB_1331_11EB;
 
-    /// Creates a new generator from a 64-bit state.
     #[must_use]
-    #[inline(always)]
+    /// Creates a new generator from a 64-bit state.
     pub const fn new(seed: u64) -> Self {
         Self { state: seed }
     }
 
-    /// Applies the SplitMix64 output mixer.
     #[must_use]
-    #[inline(always)]
+    /// Applies the SplitMix64 output mixer.
     pub const fn mix64(mut x: u64) -> u64 {
         x = (x ^ (x >> 30)).wrapping_mul(Self::MIX_A);
         x = (x ^ (x >> 27)).wrapping_mul(Self::MIX_B);
         x ^ (x >> 31)
     }
-
-    /// Advances the state and returns the next value.
     #[must_use]
-    #[inline(always)]
+    /// Advances the state and returns the next value.
     pub const fn next_u64(&mut self) -> u64 {
         self.state = self.state.wrapping_add(Self::GOLDEN_GAMMA);
         Self::mix64(self.state)
@@ -93,11 +89,9 @@ impl RandTry for SplitMix64 {
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 64;
     const RAND_QUALITIES: RandQualities = RandQualities::PRNG;
-    #[inline(always)]
     fn rand_try_next_u64(&mut self) -> InfallibleResult<u64> {
         Ok(self.next_u64())
     }
-    #[inline(always)]
     fn rand_try_fill_bytes(&mut self, buffer: &mut [u8]) -> InfallibleResult<()> {
         self.fill_bytes(buffer);
         Ok(())
@@ -105,7 +99,6 @@ impl RandTry for SplitMix64 {
 }
 impl RandSeedable for SplitMix64 {
     type RandSeed = [u8; 8];
-    #[inline(always)]
     fn rand_from_seed(seed: Self::RandSeed) -> Self {
         Self::new(u64::from_le_bytes(seed))
     }

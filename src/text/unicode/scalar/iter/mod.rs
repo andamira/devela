@@ -56,7 +56,6 @@ impl<'a, Source> CharIter<'a, Source> {
 impl<'a> Iterator for CharIter<'a, &'a str> {
     type Item = char;
 
-    #[inline(always)]
     fn next(&mut self) -> Option<char> {
         self.next_char()
     }
@@ -64,7 +63,6 @@ impl<'a> Iterator for CharIter<'a, &'a str> {
         let remaining = self.bytes.len() - self.pos;
         (remaining.div_ceil(4), Some(remaining))
     }
-    #[inline(always)]
     fn count(self) -> usize {
         self.count()
     }
@@ -74,7 +72,6 @@ impl<'a> IteratorFused for CharIter<'a, &'a str> {}
 impl<'a> Iterator for CharIter<'a, &'a [u8]> {
     type Item = char;
 
-    #[inline(always)]
     fn next(&mut self) -> Option<char> {
         self.next_char()
     }
@@ -82,7 +79,6 @@ impl<'a> Iterator for CharIter<'a, &'a [u8]> {
         let remaining = self.bytes.len() - self.pos;
         (remaining.div_ceil(4), Some(remaining))
     }
-    #[inline(always)]
     fn count(self) -> usize {
         self.count()
     }

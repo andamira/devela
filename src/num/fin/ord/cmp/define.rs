@@ -203,38 +203,38 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             }
 
             /// Compares and returns `self` clamped between `min` and `max`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn clamp(self, min: $p, max: $p) -> $p {
                 if self.0 < min { min } else if self.0 > max { max } else { self.0 }
             }
             /// Compares and returns the maximum between `self` and `other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn max(self, other: $p) -> $p { if self.0 > other { self.0 } else { other } }
             /// Compares and returns the minimum between `self` and `other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn min(self, other: $p) -> $p { if self.0 < other { self.0 } else { other } }
             /// Compares, orders and returns the (minimum, maximum) `self` and `other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn minmax(self, other: $p) -> ($p, $p) {
                 if self.0 < other { (self.0, other) } else { (other, self.0) }
             }
             /// Returns `true` if `self == other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn eq(self, other: $p) -> bool { self.0 == other }
             /// Returns `true` if `self != other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ne(self, other: $p) -> bool { self.0 != other }
             /// Returns `true` if `self < other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn lt(self, other: $p) -> bool { self.0 <  other }
             /// Returns `true` if `self <= other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn le(self, other: $p) -> bool { self.0 <= other }
             /// Returns `true` if `self > other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn gt(self, other: $p) -> bool { self.0 >  other }
             /// Returns `true` if `self >= other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ge(self, other: $p) -> bool { self.0 >= other }
         }
     };
@@ -276,7 +276,7 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             #[doc = "assert_eq![2.0, Cmp(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Cmp(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn clamp(self, min: $f, max: $f) -> $f { self.0.clamp(min, max) }
 
             /// Compares and returns the *total ordered* maximum between `self` and `other`.
@@ -291,7 +291,7 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             #[doc = "assert_eq![" $f "::INFINITY, Cmp(" $f "::INFINITY).max("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn max(self, other: $f) -> $f { self.0.max(other) }
 
             /// Compares and returns the *total ordered* minimum between `self` and `other`.
@@ -306,59 +306,59 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             #[doc = "assert_eq![" $f "::NEG_INFINITY, Cmp(" $f "::INFINITY).min("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn min(self, other: $f) -> $f { self.0.min(other) }
 
             /// Returns `true` if `self == other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn eq(self, other: $f) -> bool { Cmp(self.total_cmp(other)).eq(Equal) }
 
             /// Returns `true` if `self != other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ne(self, other: $f) -> bool { Cmp(self.total_cmp(other)).ne(Equal) }
 
             /// Returns `true` if `self < other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn lt(self, other: $f) -> bool { Cmp(self.total_cmp(other)).eq(Less) }
 
             /// Returns `true` if `self <= other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn le(self, other: $f) -> bool { Cmp(self.total_cmp(other)).ne(Greater) }
 
             /// Returns `true` if `self > other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn gt(self, other: $f) -> bool { Cmp(self.total_cmp(other)).eq(Greater) }
 
             /// Returns `true` if `self >= other` using total order.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ge(self, other:$f) -> bool { Cmp(self.total_cmp(other)).ne(Less) }
 
             /// Returns `true` if `self` is sign positive.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_positive(self) -> bool { self.0.is_sign_positive() }
 
             /// Returns `true` if `self` is sign negative.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_negative(self) -> bool { self.0.is_sign_negative() }
 
             /// Returns `true` if `self` is infinite (either negative or positive).
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_infinite(self) -> bool { self.0.is_infinite() }
 
             /// Returns `true` if `self` is neither infinite nor NaN.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_finite(self) -> bool { self.0.is_finite() }
 
             /// Returns `true` if `self` is NaN.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_nan(self) -> bool { self.0.is_nan() }
 
             /// Returns `true` if `self` is subnormal.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_subnormal(self) -> bool { self.0.is_subnormal() }
 
             /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_normal(self) -> bool { self.0.is_normal() }
         }
     }};

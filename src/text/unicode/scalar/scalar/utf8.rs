@@ -18,7 +18,6 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Errors
             /// Returns [`MismatchedCapacity`] if `self` can't fit in 7 bits.
-            #[inline(always)]
             pub const fn try_to_char7(self) -> Result<char7, MismatchedCapacity> {
                 char7::try_from_charu(self)
             }
@@ -26,7 +25,6 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Errors
             /// Returns [`MismatchedCapacity`] if `self` can't fit in 8 bits.
-            #[inline(always)]
             pub const fn try_to_char8(self) -> Result<char8, MismatchedCapacity> {
                 char8::try_from_charu(self)
             }
@@ -34,7 +32,6 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Errors
             /// Returns [`MismatchedCapacity`] if `self` can't fit in 16 bits.
-            #[inline(always)]
             pub const fn try_to_char16(self) -> Result<char16, MismatchedCapacity> {
                 char16::try_from_charu(self)
             }
@@ -318,7 +315,7 @@ macro_rules! _text_char_scalar_charu_impls {
             // Private helper to create a charu* from the first scalar value in a UTF-8 byte slice.
             // Most efficient implementation with jump table, bit shifting and oring.
             // This doesn't perform any validation and should be used carefully.
-            #[inline(always)] #[rustfmt::skip]
+            #[rustfmt::skip]
             pub(crate) const fn _from_utf8_prefix_trusted(bytes: &[u8], len: usize) -> $name {
                 let scalar = match len {
                     1 =>  (bytes[0] as u32) << 24,
@@ -342,7 +339,6 @@ macro_rules! _text_char_scalar_charu_impls {
 
             #[doc = "Converts this `" $name "` to a `" $other "` representation."]
             ///
-            #[inline(always)]
             pub const fn [<to_ $other>](self) -> $other {
                 $other::new_unchecked(self.0.get())
             }
@@ -352,7 +348,6 @@ macro_rules! _text_char_scalar_charu_impls {
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
             #[must_use]
-            #[inline(always)]
             pub const fn to_char(self) -> char {
                 cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
                     // SAFETY: charu* always has valid UTF-8 in 0..len.
@@ -365,7 +360,6 @@ macro_rules! _text_char_scalar_charu_impls {
 
             #[doc = "Converts this `" $name "` to a `u32` Unicode scalar value."]
             #[must_use]
-            #[inline(always)]
             pub const fn to_scalar(self) -> u32 {
                 Char(&self.to_utf8_bytes()).to_scalar_unchecked(0).0
             }
@@ -399,7 +393,6 @@ macro_rules! _text_char_scalar_charu_impls {
 
             /// Copy UTF-8 bytes into caller buffer and return a slice of the valid bytes.
             #[must_use]
-            #[inline(always)]
             pub const fn as_bytes_into<'a>(&self, buf: &'a mut [u8; 4]) -> &'a [u8] {
                 *buf = self.to_utf8_bytes();
                 slice![buf, ..self.len_utf8()]
@@ -427,7 +420,6 @@ macro_rules! _text_char_scalar_charu_impls {
             /// assert_eq!(c.to_utf8_bytes(), [0xF0, 0x9D, 0x85, 0xA0]);
             /// ```
             #[must_use]
-            #[inline(always)]
             pub const fn to_utf8_bytes(self) -> [u8; 4] {
                 self.0.get().to_be_bytes()
             }
@@ -447,55 +439,43 @@ macro_rules! _text_char_scalar_charu_impls {
             /// assert_eq!(c.first_utf8_byte(), 0xE2);
             /// ```
             #[must_use]
-            #[inline(always)]
             pub const fn first_utf8_byte(self) -> u8 {
                 (self.0.get() >> 24) as u8
             }
 
             /* queries */
 
+            #[must_use]
             /// Returns `true` if this Unicode scalar is a [noncharacter][0].
             ///
             /// [0]: https://www.unicode.org/glossary/#noncharacter
-            #[must_use]
-            #[inline(always)]
             pub const fn is_noncharacter(self) -> bool {
                 Char(self.0.get()).is_noncharacter()
             }
-
+            #[must_use]
             /// Returns `true` if this Unicode scalar is an [abstract character][0].
             ///
             /// [0]: https://www.unicode.org/glossary/#abstract_character
-            #[must_use]
-            #[inline(always)]
             pub const fn is_character(self) -> bool {
                 !self.is_noncharacter()
             }
-
-            /// Checks if the value is within the ASCII range.
             #[must_use]
-            #[inline(always)]
+            /// Checks if the value is within the ASCII range.
             pub const fn is_ascii(self) -> bool {
                 self.0.get() <= 0x7F
             }
-
-            /// Returns `true` if this is the nul character (`0x00`).
             #[must_use]
-            #[inline(always)]
+            /// Returns `true` if this is the nul character (`0x00`).
             pub const fn is_nul(self) -> bool {
                 self.0.get() == 0x00
             }
-
-            /// Returns the length of the UTF-8 representation.
             #[must_use]
-            #[inline(always)]
+            /// Returns the length of the UTF-8 representation.
             pub const fn len_bytes(self) -> usize {
                 Char(self.to_scalar()).len_bytes() // we need to convert to a scalar
             }
-
-            /// Returns the length of the UTF-8 representation.
             #[must_use]
-            #[inline(always)]
+            /// Returns the length of the UTF-8 representation.
             pub const fn len_utf8(self) -> usize {
                 Char::UTF8_CHAR_LEN[self.first_utf8_byte() as usize] as usize
             }

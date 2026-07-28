@@ -53,7 +53,6 @@ impl FmtNumConf {
     /// - the default sign policy,
     /// - no minimum integral digit count,
     /// - and zero fractional digits.
-    #[inline(always)]
     pub const fn new() -> Self { Self::INIT }
 
     /// Creates a formatting configuration for integers.
@@ -62,7 +61,6 @@ impl FmtNumConf {
     /// - the default sign policy,
     /// - a minimum integral digit count,
     /// - and zero fractional digits.
-    #[inline(always)]
     pub const fn new_int(int: u16) -> Self { Self::INIT.with_int(int) }
 
     /// Creates a formatting configuration for fixed-point floating-point numbers.
@@ -71,41 +69,32 @@ impl FmtNumConf {
     /// - the default sign policy,
     /// - a minimum integral digit count,
     /// - and a fixed number of fractional digits.
-    #[inline(always)]
     pub const fn new_float(int: u16, fract: u16) -> Self { Self::new_int(int).with_fract(fract) }
 
     //
 
     /// Sets the sign formatting policy.
-    #[inline(always)]
     pub const fn set_sign(&mut self, sign: FmtNumSign) { self.sign = sign }
     /// Returns a copy with the given sign formatting policy.
-    #[inline(always)]
     pub const fn with_sign(mut self, sign: FmtNumSign) -> Self { self.sign = sign; self }
 
     /// Sets the sign padding influence policy.
-    #[inline(always)]
     pub const fn set_pad_sign(&mut self, pad_sign: bool) { self.pad_sign = pad_sign }
     /// Returns a copy with the given sign padding influence policy.
-    #[inline(always)]
     pub const fn with_pad_sign(mut self, pad_sign: bool) -> Self { self.pad_sign = pad_sign; self }
 
     /// Sets the minimum number of integral digits (zero-padded).
-    #[inline(always)]
     pub const fn set_int(&mut self, int: u16) { self.int = int }
     /// Returns a copy with the given minimum integral digit count.
-    #[inline(always)]
     pub const fn with_int(mut self, int: u16) -> Self { self.int = int; self }
 
     /// Sets the number of fractional digits to emit.
     ///
     /// For integers, this value is ignored.
-    #[inline(always)]
     pub const fn set_fract(&mut self, fract: u16) { self.fract = fract }
     /// Returns a copy with the given fractional digit count.
     ///
     /// For integers, this value is ignored.
-    #[inline(always)]
     pub const fn with_fract(mut self, fract: u16) -> Self { self.fract = fract; self }
 }
 

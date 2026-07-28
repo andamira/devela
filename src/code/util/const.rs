@@ -50,7 +50,7 @@
 ///     /// Supports *const* functions.
 ///     FN_1 =
 ///     /// Returns `n × 5`.
-///     #[inline] #[must_use]
+///     #[must_use]
 ///     pub const fn fn_1(n: i32) -> i64 { (n * 5) as i64 };
 ///
 ///     /// You can repeat functions.

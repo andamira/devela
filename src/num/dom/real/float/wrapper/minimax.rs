@@ -52,7 +52,6 @@ macro_rules! impl_float_shared_minimax {
             /// using a minimax polynomial evaluated by Horner's method.
             ///
             /// The current implementation computes separately the sine and the cosine.
-            #[inline(always)]
             pub const fn sin_cos_minimax(self) -> (Float<$f>, Float<$f>) {
                 let (x, flip) = self.reduce_half_pi();
                 (x.sin_minimax_from_reduced(), x.cos_minimax_from_reduced(flip))
@@ -60,7 +59,6 @@ macro_rules! impl_float_shared_minimax {
 
             /* private helpers */
 
-            #[inline(always)]
             const fn sin_minimax_from_reduced(self) -> Float<$f> {
                 let x2 = self.0 * self.0;
                 let poly = Float(x2).eval_poly_const::<{_FloatInternals::<$f>::SIN_COS_DEGREE}>(
@@ -69,7 +67,6 @@ macro_rules! impl_float_shared_minimax {
                 Float(self.0 + self.0 * x2 * poly)
             }
 
-            #[inline(always)]
             const fn cos_minimax_from_reduced(self, flip: bool) -> Float<$f> {
                 let x2 = self.0 * self.0;
                 let poly = Float(x2).eval_poly_const::<{_FloatInternals::<$f>::SIN_COS_DEGREE}>(
@@ -79,7 +76,6 @@ macro_rules! impl_float_shared_minimax {
                 Float(is![flip, -c, c])
             }
 
-            #[inline(always)]
             const fn reduce_half_pi(self) -> (Float<$f>, bool) {
                 use crate::FloatConst;
                 // first stage: reduce into [-PI, PI]

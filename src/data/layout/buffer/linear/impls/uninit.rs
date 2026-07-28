@@ -152,13 +152,11 @@ macro_rules! __buffer_linear_impl_uninit {
                 if $crate::MaybeNiche(new_len).lt(self.len) { self._set_len(new_len); }
             }
             /// Primitive-index variant of [`truncate`][Self::truncate],
-            #[inline(always)]
             pub fn truncate_prim(&mut self, new_len: $P) -> Result<(), $crate::InvalidValue> {
                 self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
                 Ok(())
             }
             /// Primitive-index variant of [`truncate_copy`][Self::truncate_copy],
-            #[inline(always)]
             pub const fn truncate_prim_copy(&mut self, new_len: $P)
                 -> Result<(), $crate::InvalidValue> where T: Copy {
                 self.truncate_copy($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);

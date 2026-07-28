@@ -84,7 +84,7 @@ impl Char<u8> {
     ///
     /// This checks if the byte is not a UTF-8 continuation byte (i.e., it's either
     /// an ASCII character or a valid leading byte of a multi-byte sequence).
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_utf8_boundary(self) -> bool {
         // Equivalent to: b < 128 || b >= 192 (== not a continuation byte (0b10xxxxxx))
         (self.0 as i8) >= -0x40
@@ -92,12 +92,12 @@ impl Char<u8> {
     /// Returns `true` if this byte is a UTF-8 continuation byte.
     ///
     /// Continuation bytes have the bit pattern `10xxxxxx`.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_utf8_continuation(self) -> bool { !self.is_utf8_boundary() }
 
     /// Returns the current byte as a `char`.
     ///
     /// See [`char::from(u8)`][char#impl-From<u8>-for-char].
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn as_char(self) -> char { self.0 as char }
 }

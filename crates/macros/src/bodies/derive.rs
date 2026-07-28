@@ -5,12 +5,10 @@
 
 use proc_macro::{Delimiter, Group, Punct, Spacing, TokenStream as TS, TokenTree as TT};
 
-#[inline(always)]
 pub(crate) fn body_macro_apply(args: TS, input: TS) -> TS {
     macro_call(args.into_iter().collect(), input)
 }
 
-#[inline(always)]
 pub(crate) fn body_macro_derive(args: TS, input: TS) -> TS {
     let args = match split_top_commas(args.into_iter().collect()) {
         Ok(args) => args,
@@ -54,7 +52,6 @@ pub(crate) fn body_macro_derive(args: TS, input: TS) -> TS {
     out.extend(input);
     out
 }
-#[inline(always)]
 pub(crate) fn body_macro_derive_with(args: TS, input: TS) -> TS {
     let args = match split_top_commas(args.into_iter().collect()) {
         Ok(args) => args,

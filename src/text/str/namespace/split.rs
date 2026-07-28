@@ -24,7 +24,7 @@ impl Str {
     /// assert_eq!(Str::lsplit(s, 3), "Hel");
     /// assert_eq!(Str::lsplit(s, 20), "Hello world!");
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn lsplit(string: &str, len: usize) -> &str {
         Str::range_to(string, Cmp(len).min(string.len()))
     }
@@ -42,7 +42,7 @@ impl Str {
     /// assert!(Str::lsplit_checked(s, 5).is_none()); // attempt to split `ø`
     /// assert_eq!(Str::lsplit_checked(s, 20), Some("Hellø wørld!"));
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn lsplit_checked(string: &str, len: usize) -> Option<&str> {
         Str::range_to_checked(string, Cmp(len).min(string.len()))
     }
@@ -65,7 +65,7 @@ impl Str {
     /// assert_eq!(&*Str::lsplit(s, 20), "Hello world!");
     /// # }
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn lsplit_mut(string: &mut str, len: usize) -> &mut str {
         Str::range_to_mut(string, Cmp(len).min(string.len()))
     }
@@ -86,7 +86,7 @@ impl Str {
     /// assert!(Str::lsplit_mut_checked(s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
     /// # }
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn lsplit_mut_checked(string: &mut str, len: usize) -> Option<&mut str> {
         Str::range_to_mut_checked(string, Cmp(len).min(string.len()))
     }
@@ -126,7 +126,7 @@ impl Str {
     /// assert!(Str::rsplit_checked(s, 5).is_none()); // attempt to split `ø`
     /// assert_eq!(Str::rsplit_checked(s, 20), Some("Hellø wørld!"));
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn rsplit_checked(string: &str, len: usize) -> Option<&str> {
         Str::range_from_checked(string, string.len().saturating_sub(len))
     }
@@ -170,7 +170,7 @@ impl Str {
     /// assert!(Str::rsplit_mut_checked(s, 20).is_some_and(|s| &*s == "Hellø wørld!"));
     /// # }
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn rsplit_mut_checked(string: &mut str, len: usize) -> Option<&mut str> {
         Str::range_from_mut_checked(string, string.len().saturating_sub(len))
     }

@@ -118,7 +118,6 @@ impl Slice<u8> {
     }
 
     /// A convenience wrapper over [`Slice::copy_array_at`].
-    // #[inline(always)] // MAYBE
     // // Auto-select best version
     // macro_rules! _copy_array { // IDEA
     //     ($dst:expr, $src:expr, $at:expr) => {
@@ -272,7 +271,7 @@ impl Slice<u8> {
     /// # use devela::Slice;
     /// assert_eq!(Slice::trim_edges(b"000123000", b'0'), b"123");
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn trim_edges(slice: &[u8], byte: u8) -> &[u8] {
         Slice::trim_trailing(Slice::trim_leading(slice, byte), byte)
     }
@@ -288,7 +287,7 @@ impl Slice<u8> {
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 2), b"0012300");
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 10), b"000123000");
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn trim_edges_keep(slice: &[u8], byte: u8, keep: usize) -> &[u8] {
         Slice::trim_trailing_keep(Slice::trim_leading_keep(slice, byte, keep), byte, keep)
     }

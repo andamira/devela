@@ -8,9 +8,8 @@ use crate::{LINUX_EXIT, Linux, c_int};
 
 /// # Thread-related methods.
 impl Linux {
-    /// Returns the current process number.
     #[must_use]
-    #[inline(always)]
+    /// Returns the current process number.
     pub fn getpid() -> c_int {
         unsafe { Linux::sys_getpid() }
     }
@@ -18,7 +17,6 @@ impl Linux {
     /// Terminates the process with a normalized exit `status` (0–255).
     ///
     /// See also [`LINUX_EXIT`].
-    #[inline(always)]
     pub fn exit(status: c_int) -> ! {
         unsafe {
             Linux::sys_exit(status & LINUX_EXIT::MAX);

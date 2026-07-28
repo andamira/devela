@@ -149,7 +149,6 @@ macro_rules! rand_pcg {
             #[doc(hidden)]
             pub const DEFAULT_INC: $state = $INC;
 
-            #[inline]
             const fn advance_lcg(state: $state,
                 mut delta: $state,
                 mut cur_mult: $state,
@@ -297,7 +296,6 @@ macro_rules! rand_pcg {
 
     (%impls u8 $name:ident) => {
         impl $name {
-            #[inline(always)]
             const fn output_xsh_rr_16_8(state: u16) -> u8 {
                 let xorshifted = (((state >> 5) ^ state) >> 3) as u8;
                 let rot = (state >> 13) as u32;
@@ -349,7 +347,6 @@ macro_rules! rand_pcg {
         }
         impl $crate::RandSeedable for $name {
             type RandSeed = [u8; 4];
-            #[inline(always)]
             fn rand_from_seed(seed: Self::RandSeed) -> Self {
                 let state = u16::from_le_bytes($crate::read_at![seed, 0, @2]);
                 let stream = u16::from_le_bytes($crate::read_at![seed, 2, @2]);
@@ -359,7 +356,6 @@ macro_rules! rand_pcg {
     };
     (%impls u16 $name:ident) => {
         impl $name {
-            #[inline(always)]
             const fn output_xsh_rr_32_16(state: u32) -> u16 {
                 let xorshifted = (((state >> 10) ^ state) >> 12) as u16;
                 let rot = (state >> 28) as u32;
@@ -409,7 +405,6 @@ macro_rules! rand_pcg {
         }
         impl $crate::RandSeedable for $name {
             type RandSeed = [u8; 8];
-            #[inline(always)]
             fn rand_from_seed(seed: Self::RandSeed) -> Self {
                 let state = u32::from_le_bytes($crate::read_at![seed, 0, @4]);
                 let stream = u32::from_le_bytes($crate::read_at![seed, 4, @4]);
@@ -419,7 +414,6 @@ macro_rules! rand_pcg {
     };
     (%impls u32 $name:ident) => {
         impl $name {
-            #[inline(always)]
             const fn output_xsh_rr_64_32(state: u64) -> u32 {
                 let xorshifted = (((state >> 18) ^ state) >> 27) as u32;
                 let rot = (state >> 59) as u32;
@@ -463,7 +457,6 @@ macro_rules! rand_pcg {
         }
         impl $crate::RandSeedable for $name {
             type RandSeed = [u8; 16];
-            #[inline(always)]
             fn rand_from_seed(seed: Self::RandSeed) -> Self {
                 let state = u64::from_le_bytes($crate::read_at![seed, 0, @8]);
                 let stream = u64::from_le_bytes($crate::read_at![seed, 8, @8]);
@@ -473,7 +466,6 @@ macro_rules! rand_pcg {
     };
     (%impls u64 $name:ident) => {
         impl $name {
-            #[inline(always)]
             const fn output_xsl_rr_128_64(state: u128) -> u64 {
                 let xorshifted = (((state >> 64) ^ state) >> 64) as u64;
                 let rot = (state >> 122) as u32;
@@ -506,7 +498,6 @@ macro_rules! rand_pcg {
         }
         impl $crate::RandSeedable for $name {
             type RandSeed = [u8; 32];
-            #[inline(always)]
             fn rand_from_seed(seed: Self::RandSeed) -> Self {
                 let state = u128::from_le_bytes($crate::read_at![seed, 0, @16]);
                 let stream = u128::from_le_bytes($crate::read_at![seed, 16, @16]);

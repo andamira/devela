@@ -37,37 +37,29 @@ impl ConstInit for Sign {
 
 impl Sign {
     /// True if `self` == `other`.
-    #[inline(always)]
     pub const fn eq(self, other: Self) -> bool {
         self as i8 == other as i8
     }
 
     /// True if `self` is `Negative`.
-    #[inline(always)]
     pub const fn is_negative(self) -> bool {
         matches!(self, Self::Negative)
     }
-
     /// True if `self` is `Positive`.
-    #[inline(always)]
     pub const fn is_positive(self) -> bool {
         matches!(self, Self::Positive)
     }
 
     /// True if `self` is `Zero`.
-    #[inline(always)]
     pub const fn is_zero(self) -> bool {
         matches!(self, Self::Zero)
     }
-
     /// True if `self` is not `Zero`.
-    #[inline(always)]
     pub const fn is_nonzero(self) -> bool {
         !self.is_zero()
     }
 
     /// Flips `Positive` ↔ `Negative`, keeps `Zero`.
-    #[inline(always)]
     pub const fn invert(self) -> Self {
         match self {
             Self::Positive => Self::Negative,
@@ -77,7 +69,6 @@ impl Sign {
     }
 
     /// Returns true if both have the same non-zero direction.
-    #[inline(always)]
     pub const fn same_direction(self, other: Self) -> bool {
         matches!((self, other), (Self::Positive, Self::Positive) | (Self::Negative, Self::Negative))
     }
@@ -99,18 +90,14 @@ impl Sign {
             Self::Negative => is![n & 1 == 0, Self::Positive, Self::Negative],
         }
     }
-
     /// Converts `Negative`→`Positive`; keeps `Zero`/`Positive`.
-    #[inline(always)]
     pub const fn abs(self) -> Self {
         match self {
             Self::Negative => Self::Positive,
             _ => self,
         }
     }
-
     /// Converts `Positive`→`Negative`; keeps `Zero`/`Negative`.
-    #[inline(always)]
     pub const fn neg_abs(self) -> Self {
         match self {
             Self::Positive => Self::Negative,
@@ -129,7 +116,6 @@ impl Sign {
         }
         acc
     }
-
     /// Combines all signs in `slice` with zero-dominance.
     pub const fn fold_slice(slice: &[Sign]) -> Self {
         let mut acc = Self::Positive;

@@ -105,18 +105,18 @@ pub use _devela_policy· as _devela_policy;
 
 /// for devela safe
 #[crate::compile(env(__DEVELA_MEMBER))] #[cfg(not(unsafe··))]
-#[rustfmt::skip] #[doc(hidden)] #[inline(always)]
+#[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! { crate::unreachable!() }
 /// for devela unsafe
 #[crate::compile(env(__DEVELA_MEMBER))] #[cfg(unsafe··)]
-#[rustfmt::skip] #[doc(hidden)] #[inline(always)]
+#[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! {
     if cfg!(debug_assertions) { crate::unreachable!(); }
     else { unsafe { crate::unreachable_unchecked() } }
 }
 /// for external crates
 #[crate::compile(not(env(__DEVELA_MEMBER)))]
-#[rustfmt::skip] #[doc(hidden)] #[inline(always)]
+#[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! {
     if cfg!(debug_assertions) { crate::unreachable!(); }
     else { unsafe { crate::unreachable_unchecked() } }

@@ -74,15 +74,12 @@ Makes use of the `unsafe_str` feature to avoid double validation.";
 
 #[rustfmt::skip]
 impl<'a> FmtWriter<'a> {
-    #[inline(always)]
     /// Creates a new writer for the given buffer.
     pub const fn new(buf: &'a mut [u8]) -> Self { FmtWriter { buf, len: 0, truncated: false } }
 
-    #[inline(always)]
     /// Returns true if truncation occurred.
     pub const fn is_truncated(&self) -> bool { self.truncated }
 
-    #[inline(always)]
     /// Returns the number of bytes written.
     pub const fn written_len(&self) -> usize { self.len }
 
@@ -213,7 +210,6 @@ impl<'a> FmtWriter<'a> {
 
     /* helper methods */
 
-    #[inline(always)]
     fn get_str_from_slice(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = &slice[..valid_len]; // could be faster in debug builds (non-const)
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -222,7 +218,6 @@ impl<'a> FmtWriter<'a> {
         } _ => { from_utf8(valid_range).unwrap() }} // could use dep_simdutf8 (non-const)
     }
 
-    #[inline(always)]
     const fn get_str_from_slice_const(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = slice![slice, ..valid_len];
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
@@ -233,7 +228,6 @@ impl<'a> FmtWriter<'a> {
 }
 
 impl FmtWrite for FmtWriter<'_> {
-    #[inline(always)]
     fn write_str(&mut self, s: &str) -> FmtResult<()> {
         self.write_str_truncate(s);
         Ok(())

@@ -35,6 +35,7 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
     args
 }
 
+/*
 /// Splits a tuple of two elements; used for the `compile_doc` macro.
 pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let tuple = tuple.trim();
@@ -95,6 +96,7 @@ pub(crate) fn deindent(s: &str) -> String {
         .collect::<Vec<&str>>()
         .join("\n")
 }
+*/
 
 /// Evaluator of compilation predicates
 #[rustfmt::skip]

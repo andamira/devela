@@ -21,7 +21,6 @@ impl Order {
     ///
     /// Does not validate coordinates or arithmetic overflow.
     #[must_use]
-    #[inline]
     pub const fn row_major_from_2d(x: usize, y: usize, width: usize) -> usize {
         y * width + x
     }
@@ -46,7 +45,6 @@ impl Order {
     ///
     /// Does not validate the ordinal. `width` must be nonzero.
     #[must_use]
-    #[inline]
     pub const fn row_major_to_2d(i: usize, width: usize) -> (usize, usize) {
         (i % width, i / width)
     }
@@ -71,7 +69,6 @@ impl Order {
     ///
     /// Does not validate coordinates or arithmetic overflow.
     #[must_use]
-    #[inline]
     pub const fn row_major_from_3d(
         x: usize,
         y: usize,
@@ -105,7 +102,6 @@ impl Order {
     ///
     /// Does not validate the ordinal. `width` and `height` must be nonzero.
     #[must_use]
-    #[inline]
     pub const fn row_major_to_3d(i: usize, width: usize, height: usize) -> (usize, usize, usize) {
         let area = width * height;
         let z = i / area;
@@ -141,7 +137,6 @@ impl Order {
     ///
     /// Does not validate coordinates or arithmetic overflow.
     #[must_use]
-    #[inline]
     pub const fn col_major_from_2d(x: usize, y: usize, height: usize) -> usize {
         x * height + y
     }
@@ -163,7 +158,6 @@ impl Order {
     ///
     /// Does not validate the ordinal. `height` must be nonzero.
     #[must_use]
-    #[inline]
     pub const fn col_major_to_2d(i: usize, height: usize) -> (usize, usize) {
         (i / height, i % height)
     }
@@ -185,7 +179,6 @@ impl Order {
     ///
     /// Does not validate coordinates or arithmetic overflow.
     #[must_use]
-    #[inline]
     pub const fn col_major_from_3d(
         x: usize,
         y: usize,
@@ -216,7 +209,6 @@ impl Order {
     ///
     /// Does not validate the ordinal. `height` and `depth` must be nonzero.
     #[must_use]
-    #[inline]
     pub const fn col_major_to_3d(i: usize, height: usize, depth: usize) -> (usize, usize, usize) {
         let area = height * depth;
         let x = i / area;

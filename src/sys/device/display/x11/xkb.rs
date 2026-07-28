@@ -35,7 +35,6 @@ impl KeyRepeatFilter {
     /// - A press of the same key while `repeating == true` → `Repeat`
     /// - Any new key press → `Press` and begin repeating for that key
     /// - Any release → `Release` and stop repeating
-    #[inline(always)]
     pub fn filter(&mut self, keycode: u8, is_press: bool) -> KeyState {
         if is_press {
             // is this a repeated press of the same key?
@@ -63,7 +62,6 @@ pub(crate) struct XkbKeyInfo {
     pub(crate) mods: KeyMods,
 }
 impl XkbKeyInfo {
-    #[inline(always)]
     pub fn new(semantic: Key, physical: Key, mods: KeyMods) -> Self {
         Self { semantic, physical, mods }
     }
@@ -98,7 +96,6 @@ impl XkbKeyInfo {
 //             // level5:  Self::index(keymap, "LevelFive\0"),
 //         }
 //     }
-//     #[inline(always)]
 //     fn index(keymap: *mut _raw::xkb_keymap, name: &str) -> u32 {
 //         unsafe { _raw::xkb_keymap_mod_get_index(keymap, name.as_ptr().cast()) }
 //     }
@@ -117,7 +114,6 @@ impl XkbKeyInfo {
 //             scroll: Self::index(keymap, "Scroll Lock\0"),
 //         }
 //     }
-//     #[inline(always)]
 //     fn index(keymap: *mut _raw::xkb_keymap, name: &str) -> u32 {
 //         unsafe { _raw::xkb_keymap_led_get_index(keymap, name.as_ptr().cast()) }
 //     }
@@ -251,7 +247,6 @@ impl XkbState {
     //     m
     // }
     // // helper to check effective modifier state
-    // #[inline(always)]
     // fn mod_active(&self, idx: u32) -> bool {
     //     idx != _raw::XKB_MOD_INVALID && unsafe {
     //         _raw::xkb_state_mod_index_is_active(self.state, idx,
@@ -283,7 +278,6 @@ impl XkbState {
     ///
     /// This is the "semantic" key: the character or meaning according to the
     /// active keyboard layout (e.g., `'q'`, `'Q'`, `'é'`, `Left`, `F5`, etc.).
-    #[inline(always)]
     pub fn key_semantic(&self, keycode: u8) -> Key {
         // try to get special keys via keysym (arrows, F1, Shift, etc.)
         let sym = unsafe { _raw::xkb_state_key_get_one_sym(self.state, keycode as u32) };
@@ -310,7 +304,6 @@ impl XkbState {
     /// (e.g., "key in row 2, column 1"), stable across layouts.
     ///
     /// Useful for games and universal keybindings.
-    #[inline(always)]
     pub fn key_physical(&self, keycode: u8) -> Key {
         // X11 core keycodes on Linux are usually evdev + 8.
         // We subtract 8 to get a layout-independent "physical" scancode.
@@ -322,7 +315,6 @@ impl XkbState {
 
     // IMPROVE: add more LUTs like in dead key recognition, for faster conversion.
     /// Maps special keys before converting to UTF32 in [`XkbState::key_semantic`].
-    #[inline(always)]
     const fn map_special_keys(sym: u32) -> Option<Key> {
         let k = match sym {
             /* control keys */
@@ -407,7 +399,6 @@ impl XkbState {
     /// - numeric row
     /// - keypad keys
     /// - basic system keys (Escape, Enter, etc.)
-    #[inline(always)]
     const fn map_scancode_to_key(sc: u32) -> Key {
         // _raw::SCANCODE_TO_KEY.get(sc as usize).copied().unwrap_or(Key::Unknown)
         _raw::LUT_SCANCODE_TO_KEY[sc as usize]

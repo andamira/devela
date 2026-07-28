@@ -63,17 +63,15 @@ pub enum ValueKind {
     Unknown = 255,
 }
 impl ValueKind {
-    /// Returns the raw 8-bit kind code.
     #[must_use]
-    #[inline(always)]
+    /// Returns the raw 8-bit kind code.
     pub const fn code(self) -> u8 {
         self as u8
     }
+    #[must_use]
     /// Returns a kind from its raw 8-bit code.
     ///
     /// Unknown codes map to [`Unknown`][Self::Unknown].
-    #[must_use]
-    #[inline(always)]
     pub const fn from_code(code: u8) -> Self {
         match code {
             0 => Self::Nil,
@@ -106,27 +104,23 @@ impl ValueKind {
     }
 }
 impl ValueKind {
-    /// Returns whether this kind belongs to the compact universal band.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind belongs to the compact universal band.
     pub const fn is_compact(self) -> bool {
         self.code() <= 15
     }
-    /// Returns whether this kind represents absence.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind represents absence.
     pub const fn is_nil(self) -> bool {
         matches!(self, Self::Nil)
     }
-    /// Returns whether this kind represents a numeric scalar.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind represents a numeric scalar.
     pub const fn is_number(self) -> bool {
         matches!(self, Self::Int | Self::UInt | Self::Float)
     }
-    /// Returns whether this kind represents a scalar-like atom.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind represents a scalar-like atom.
     pub const fn is_scalar(self) -> bool {
         matches!(
             self,
@@ -140,45 +134,38 @@ impl ValueKind {
                 | Self::Enum
         )
     }
-    /// Returns whether this kind points outside the immediate value body.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind points outside the immediate value body.
     pub const fn is_ref_like(self) -> bool {
         matches!(self, Self::Ref)
     }
-    /// Returns whether this kind describes aggregate data.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind describes aggregate data.
     pub const fn is_aggregate(self) -> bool {
         matches!(self, Self::Bytes | Self::Set | Self::Text | Self::List | Self::Table)
     }
-    /// Returns whether this kind describes callable behavior.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind describes callable behavior.
     pub const fn is_callable(self) -> bool {
         matches!(self, Self::Callable)
     }
-    /// Returns whether this kind describes a domain-specific body.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind describes a domain-specific body.
     pub const fn is_object(self) -> bool {
         matches!(self, Self::Object)
     }
-    /// Returns whether this kind describes an externally managed resource.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind describes an externally managed resource.
     pub const fn is_resource(self) -> bool {
         matches!(self, Self::Resource)
     }
-    /// Returns whether this kind needs profile-specific decoding or widening.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind needs profile-specific decoding or widening.
     pub const fn is_escape(self) -> bool {
         matches!(self, Self::Escape)
     }
-    /// Returns whether this kind is unknown or unmapped.
     #[must_use]
-    #[inline(always)]
+    /// Returns whether this kind is unknown or unmapped.
     pub const fn is_unknown(self) -> bool {
         matches!(self, Self::Unknown)
     }

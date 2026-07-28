@@ -379,19 +379,16 @@ impl Ptr {
 /// # [`PtrNonNull`] methods
 impl Ptr {
     /// Creates a new `PtrNonNull` if `ptr` is non-null.
-    #[inline(always)]
     pub const fn nn_new<T: ?Sized>(ptr: *mut T) -> Option<PtrNonNull<T>> {
         PtrNonNull::new(ptr)
     }
 
     /// Converts a reference to a `PtrNonNull`.
-    #[inline(always)]
     pub const fn nn_from_ref<T: ?Sized>(r: &T) -> PtrNonNull<T> {
         PtrNonNull::from_ref(r)
     }
 
     /// Converts a mutable reference to a `PtrNonNull`.
-    #[inline(always)]
     pub const fn nn_from_mut<T: ?Sized>(r: &mut T) -> PtrNonNull<T> {
         PtrNonNull::from_mut(r)
     }
@@ -402,7 +399,6 @@ impl Ptr {
     }
 
     /// Creates a new `PtrNonNull` that is dangling, but well-aligned.
-    #[inline(always)]
     pub const fn nn_dangling<T>() -> PtrNonNull<T> {
         PtrNonNull::dangling()
     }

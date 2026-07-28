@@ -42,7 +42,6 @@ macro_rules! __buffer_linear_impl_array {
                 Self::_new(array, len)
             }
             /// Primitive-index variant of [`from_array_clamped`][Self::from_array_clamped].
-            #[inline(always)]
             pub const fn from_array_clamped_prim(array: [T; CAP], max_len: $P) -> Self {
                 Self::from_array_clamped(array, Self::_prim_to_idx_lossy(max_len))
             }
@@ -95,7 +94,6 @@ macro_rules! __buffer_linear_impl_array {
                 if Self::_idx_le(new_len, self.len()) { self._set_len(new_len); }
             }
             /// Primitive-index variant of [`truncate`][Self::truncate],
-            #[inline(always)]
             pub const fn truncate_prim(&mut self, new_len: $P) -> Result<(), $crate::InvalidValue> {
                 self.truncate($crate::unwrap![ok? Self::_prim_to_idx(new_len)]);
                 Ok(())

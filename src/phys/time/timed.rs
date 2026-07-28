@@ -38,30 +38,24 @@ pub type MaybeTimed<V, T> = Timed<V, Option<T>>;
 #[rustfmt::skip]
 impl<V, T> Timed<V, T> {
     /// Creates a new timed value.
-    #[inline(always)]
     pub const fn new(value: V, time: T) -> Self { Self { value, time } }
 
     /// Splits this timed value into `(value, time)` copies.
-    #[inline(always)]
     pub const fn copy_parts(self) -> (V, T) where V: Copy, T: Copy { (self.value, self.time) }
 
     /// Splits this timed value into `(value, time)`.
-    #[inline(always)]
     pub fn into_parts(self) -> (V, T) { (self.value, self.time) }
 
     /// Borrows both fields.
-    #[inline(always)]
     pub const fn as_ref(&self) -> Timed<&V, &T> {
         Timed { value: &self.value, time: &self.time }
     }
     /// Mutably borrows both fields.
-    #[inline(always)]
     pub const fn as_mut(&mut self) -> Timed<&mut V, &mut T> {
         Timed { value: &mut self.value, time: &mut self.time }
     }
 
     /// Maps the carried value, preserving the time companion.
-    #[inline(always)]
     pub fn map_value<V2, F>(self, f: F) -> Timed<V2, T>
     where
         F: FnOnce(V) -> V2,
@@ -70,7 +64,6 @@ impl<V, T> Timed<V, T> {
     }
 
     /// Maps the time companion, preserving the carried value.
-    #[inline(always)]
     pub fn map_time<T2, F>(self, f: F) -> Timed<V, T2>
     where
         F: FnOnce(T) -> T2,
@@ -79,7 +72,6 @@ impl<V, T> Timed<V, T> {
     }
 
     /// Maps both fields at once.
-    #[inline(always)]
     pub fn map<V2, T2, FV, FT>(self, fv: FV, ft: FT) -> Timed<V2, T2>
     where
         FV: FnOnce(V) -> V2,

@@ -57,7 +57,6 @@ impl<'a> StrBuf<'a> {
     /* constructors */
 
     /// Creates an empty buffer over `buf`.
-    #[inline(always)]
     pub const fn new(buf: &'a mut [u8]) -> Self {
         Self { buf, len: 0 }
     }
@@ -83,7 +82,6 @@ impl<'a> StrBuf<'a> {
     /// `len` must be `<= buf.len()` and `buf[..len]` must be valid UTF-8.
     #[cfg(all(feature = "unsafe_str", not(feature = "safe_text")))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    #[inline(always)]
     pub const unsafe fn from_bytes_unchecked(buf: &'a mut [u8], len: usize) -> Self {
         Self { buf, len }
     }
@@ -92,20 +90,17 @@ impl<'a> StrBuf<'a> {
 
     /// Returns the initialized UTF-8 string.
     #[must_use]
-    #[inline(always)]
     pub const fn as_str(&self) -> &str {
         Self::_str_from_buf_len(self.buf, self.len)
     }
     /// Returns the initialized UTF-8 string mutably.
     #[must_use]
-    #[inline(always)]
     pub const fn as_mut_str(&mut self) -> &mut str {
         Self::_str_from_buf_len_mut(self.buf, self.len)
     }
 
     /// Returns the initialized bytes.
     #[must_use]
-    #[inline(always)]
     pub const fn as_bytes(&self) -> &[u8] {
         slice![&self.buf, ..self.len]
     }
@@ -115,7 +110,6 @@ impl<'a> StrBuf<'a> {
     /// The caller must preserve valid UTF-8 in `self.as_bytes()`.
     #[cfg(all(feature = "unsafe_str", not(feature = "safe_text")))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    #[inline(always)]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         slice![mut &mut self.buf, .. self.len]
     }
@@ -125,14 +119,12 @@ impl<'a> StrBuf<'a> {
     /// Writing here does not change the string length. Use
     /// [`set_len_checked`][Self::set_len_checked] afterwards to extend safely.
     #[must_use]
-    #[inline(always)]
     pub const fn spare_capacity_mut(&mut self) -> &mut [u8] {
         slice![mut &mut self.buf, self.len, ..]
     }
 
     /// Consumes the buffer and returns the initialized UTF-8 string.
     #[must_use]
-    #[inline(always)]
     pub const fn into_str(self) -> &'a str {
         Self::_str_from_buf_len(self.buf, self.len)
     }
@@ -141,31 +133,26 @@ impl<'a> StrBuf<'a> {
 
     /// Returns the initialized length in bytes.
     #[must_use]
-    #[inline(always)]
     pub const fn len(&self) -> usize {
         self.len
     }
     /// Returns the total byte capacity.
     #[must_use]
-    #[inline(always)]
     pub const fn capacity(&self) -> usize {
         self.buf.len()
     }
     /// Returns the remaining byte capacity.
     #[must_use]
-    #[inline(always)]
     pub const fn remaining_capacity(&self) -> usize {
         self.buf.len().saturating_sub(self.len)
     }
     /// Returns `true` if no bytes are initialized.
     #[must_use]
-    #[inline(always)]
     pub const fn is_empty(&self) -> bool {
         self.len == 0
     }
     /// Returns `true` if no spare capacity remains.
     #[must_use]
-    #[inline(always)]
     pub const fn is_full(&self) -> bool {
         self.len == self.buf.len()
     }
@@ -173,7 +160,6 @@ impl<'a> StrBuf<'a> {
     /* setters */
 
     /// Clears the string.
-    #[inline(always)]
     pub const fn clear(&mut self) {
         self.len = 0;
     }
@@ -213,7 +199,6 @@ impl<'a> StrBuf<'a> {
     /// `len` must be `<= self.capacity()` and `self.buf[..len]` must be valid UTF-8.
     #[cfg(all(feature = "unsafe_str", not(feature = "safe_text")))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    #[inline(always)]
     pub const unsafe fn set_len_unchecked(&mut self, len: usize) {
         self.len = len;
     }

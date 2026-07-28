@@ -231,17 +231,14 @@ macro_rules! impl_matrix {
             /* utility methods */
 
             /// Returns an immutable reference to the element at (`row`, `col`).
-            #[inline(always)]
             pub const fn at(&self, row: usize, col: usize) -> $T {
                 self.data[row * C + col]
             }
             /// Returns a shared reference to the element at (`row`, `col`).
-            #[inline(always)]
             pub const fn at_ref(&self, row: usize, col: usize) -> &$T {
                 &self.data[row * C + col]
             }
             /// Returns an exclusive reference to the element at (`row`, `col`).
-            #[inline(always)]
             pub const fn at_mut(&mut self, row: usize, col: usize) -> &mut $T {
                 &mut self.data[row * C + col]
             }
@@ -249,7 +246,6 @@ macro_rules! impl_matrix {
             /// Returns alternating ±1 based on the column index for determinant expansion.
             ///
             /// Returns `1` for even indices, and `-1` for odd indices.
-            #[inline(always)]
             const fn parity_sign(i: usize) -> $T {
                 is![i % 2 == 0, <$T>::NUM_ONE.unwrap(), <$T>::NUM_NEG_ONE.unwrap()]
             }

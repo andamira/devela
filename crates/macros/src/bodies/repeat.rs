@@ -13,7 +13,6 @@
 use ::core::fmt::Write;
 use proc_macro::TokenStream;
 
-#[inline(always)]
 pub(crate) fn body_repeat(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let input = input.trim();

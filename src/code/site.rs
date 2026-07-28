@@ -37,7 +37,6 @@ impl CodeLocation {
     /* constructors */
 
     /// Returns the code location of the current invocation site.
-    #[inline(always)]
     pub const fn here() -> Self {
         CodeLocation {
             module: crate::code_module!(),

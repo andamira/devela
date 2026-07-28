@@ -14,7 +14,7 @@
 //   - cif
 //   - compile
 //   - compile_attr
-//   - compile_doc (hidden)
+//   - compile_doc TODO FIX
 // - ident:
 //   - ident_total
 //   - ident_total_unique
@@ -94,15 +94,15 @@ pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 #[proc_macro_attribute] #[rustfmt::skip]
 pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) }
 
-#[doc(hidden)]
-/// Conditionally compiles each doc comment based on the [predicate].
-#[doc = crate::_doc_location!(proc "code/util")]
-///
-#[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
-///
-#[doc = concat!("# Example\n```\n", include_str!("../examples/compile_doc.rs"), "\n```")]
-#[proc_macro_attribute] #[rustfmt::skip]
-pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
+// #[doc(hidden)]
+// /// Conditionally compiles each doc comment based on the [predicate].
+// #[doc = crate::_doc_location!(proc "code/util")]
+// ///
+// #[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
+// ///
+// #[doc = concat!("# Example\n```\n", include_str!("../examples/compile_doc.rs"), "\n```")]
+// #[proc_macro_attribute] #[rustfmt::skip]
+// pub fn compile_doc(args: TS, input: TS) -> TS { body_compile_doc(args, input) }
 
 /* ident */
 

@@ -181,7 +181,6 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// # Behavioral guarantees
             /// The operation is atomic: on failure, nothing is written.
-            #[inline(always)]
             pub const fn write(self, buf: &mut [u8], pos: usize) -> usize {
                 let digits = $crate::Digits(self.0);
                 let needed = digits.count_digits10() as usize;
@@ -324,7 +323,6 @@ macro_rules! __impl_fmt_num_int {
             /// Formats the number into a provided buffer and returns it as a byte slice.
             ///
             /// The operation is atomic: if the buffer is too small, nothing is written.
-            #[inline(always)]
             pub const fn as_bytes_into<'b>(&self, buf: &'b mut [u8]) -> &'b [u8] {
                 let len = self.write(buf, 0); $crate::Slice::range_to(buf, len)
             }
@@ -332,7 +330,6 @@ macro_rules! __impl_fmt_num_int {
             /// using the given formatting configuration.
             ///
             /// The operation is atomic: if the buffer is too small, nothing is written.
-            #[inline(always)]
             pub const fn as_bytes_into_fmt<'b>(&self, buf: &'b mut [u8], conf: $crate::FmtNumConf)
                 -> &'b [u8] {
                 let len = self.write_fmt(buf, 0, conf); $crate::Slice::range_to(buf, len)
@@ -342,7 +339,6 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// The operation is atomic: if the buffer is too small, nothing is written
             /// and it returns `None`.
-            #[inline(always)]
             pub const fn as_bytes_into_checked<'b>(&self, buf: &'b mut [u8]) -> Option<&'b [u8]> {
                 let len = self.write(buf, 0);
                 $crate::is![len == 0, None, Some($crate::Slice::range_to(buf, len))]
@@ -352,7 +348,6 @@ macro_rules! __impl_fmt_num_int {
             ///
             /// The operation is atomic: if the buffer is too small, nothing is written
             /// and it returns `None`.
-            #[inline(always)]
             pub const fn as_bytes_into_checked_fmt<'b>(&self, buf: &'b mut [u8],
                 conf: $crate::FmtNumConf) -> Option<&'b [u8]> {
                 let len = self.write_fmt(buf, 0, conf);
@@ -361,7 +356,6 @@ macro_rules! __impl_fmt_num_int {
 
             /* as_str */
 
-            #[inline(always)]
             const fn _as_str(slice: &[u8]) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))] // safe
                 return $crate::unwrap![ok_guaranteed_or_ub $crate::Str::from_utf8(slice)];
@@ -375,7 +369,6 @@ macro_rules! __impl_fmt_num_int {
             /// The operation is atomic: if the buffer is too small, nothing is written.
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
-            #[inline(always)]
             pub const fn as_str_into<'b>(&self, buf: &'b mut [u8]) -> &'b str {
                 let len = self.write(buf, 0);
                 Self::_as_str($crate::Slice::range_to(buf, len))
@@ -386,7 +379,6 @@ macro_rules! __impl_fmt_num_int {
             /// The operation is atomic: if the buffer is too small, nothing is written.
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
-            #[inline(always)]
             pub const fn as_str_into_fmt<'b>(&self, buf: &'b mut [u8], conf: $crate::FmtNumConf)
                 -> &'b str {
                 let len = self.write_fmt(buf, 0, conf);
@@ -399,7 +391,6 @@ macro_rules! __impl_fmt_num_int {
             /// and it returns `None`.
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
-            #[inline(always)]
             pub const fn as_str_into_checked<'b>(&self, buf: &'b mut [u8]) -> Option<&'b str> {
                 let len = self.write(buf, 0);
                 if len == 0 { None } else { Some(Self::_as_str($crate::Slice::range_to(buf, len))) }
@@ -411,7 +402,6 @@ macro_rules! __impl_fmt_num_int {
             /// and it returns `None`.
             /// # Features
             /// Uses the `unsafe_str` feature to avoid duplicated validation.
-            #[inline(always)]
             pub const fn as_str_into_checked_fmt<'b>(&self, buf: &'b mut [u8],
                 conf: $crate::FmtNumConf) -> Option<&'b str> {
                 let len = self.write_fmt(buf, 0, conf);

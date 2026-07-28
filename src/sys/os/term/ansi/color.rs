@@ -37,55 +37,55 @@ pub enum AnsiColor {
 impl AnsiColor {
     const _CHECK_SIZE: () = const { assert![4 == size_of::<Self>(), "AnsiColor size != 4"] };
 
+    #[must_use]
     /// Returns `true` if this is [`AnsiColor::None`].
-    #[must_use] #[inline(always)]
     pub const fn is_none(self) -> bool { matches![self, Self::None] }
+    #[must_use]
     /// Returns `true` if this is [`AnsiColor::Default`].
-    #[must_use] #[inline(always)]
     pub const fn is_default(self) -> bool { matches![self, Self::Default] }
 
+    #[must_use]
     /// Returns `true` if this is a 3-bit ANSI color (dark or bright).
-    #[must_use] #[inline(always)]
     pub const fn is_3(self) -> bool { matches![self, Self::Dark(_) | Self::Bright(_)] }
+    #[must_use]
     /// Returns `true` if this is a dark 3-bit ANSI color.
-    #[must_use] #[inline(always)]
     pub const fn is_dark(self) -> bool { matches![self, Self::Dark(_)] }
+    #[must_use]
     /// Returns `true` if this is a bright 3-bit ANSI color.
-    #[must_use] #[inline(always)]
     pub const fn is_bright(self) -> bool { matches![self, Self::Bright(_)] }
 
+    #[must_use]
     /// Returns `true` if this is an 8-bit ANSI palette color.
-    #[must_use] #[inline(always)]
     pub const fn is_8(self) -> bool { matches![self, Self::Palette(_)] }
+    #[must_use]
     /// Returns `true` if this is an 8-bit ANSI palette color.
     ///
     /// Alias of [`Self::is_8`].
-    #[must_use] #[inline(always)]
     pub const fn is_palette(self) -> bool { matches![self, Self::Palette(_)] }
+    #[must_use]
     /// Returns `true` if this is a 24-bit RGB color.
-    #[must_use] #[inline(always)]
     pub const fn is_rgb(self) -> bool { matches![self, Self::Rgb(_)] }
 
     //
 
+    #[must_use]
     /// Extracts the 3-bit color if present.
     ///
     /// Returns `None` for non-3-bit variants.
-    #[must_use] #[inline(always)]
     pub const fn into_3(self) -> Option<AnsiColor3> {
         match self { Self::Dark(c) | Self::Bright(c) => Some(c), _ => None }
     }
+    #[must_use]
     /// Extracts the 8-bit palette color if present.
     ///
     /// Returns `None` for non-palette variants.
-    #[must_use] #[inline(always)]
     pub const fn into_8(self) -> Option<AnsiColor8> {
         match self { Self::Palette(c) => Some(c), _ => None }
     }
+    #[must_use]
     /// Extracts the RGB value if present.
     ///
     /// Returns `None` for non-RGB variants.
-    #[must_use] #[inline(always)]
     pub const fn into_rgb(self) -> Option<[u8; 3]> {
         match self { Self::Rgb(c) => Some(c), _ => None }
     }

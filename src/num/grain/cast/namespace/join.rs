@@ -8,17 +8,14 @@ use crate::Cast;
 #[rustfmt::skip]
 impl Cast<u16> {
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u16` from an array of `[u8; 2]` in big-endian order.
     pub const fn from_u8_be(v: [u8; 2]) -> u16 { u16::from_be_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u16` from an array of `[u8; 2]` in little-endian order.
     pub const fn from_u8_le(v: [u8; 2]) -> u16 { u16::from_le_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u16` from an array of `[u8; 2]` in native-endian order.
     pub const fn from_u8_ne(v: [u8; 2]) -> u16 { u16::from_ne_bytes(v) }
 }
@@ -48,17 +45,14 @@ impl Cast<u32> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u32` from an array of `[u8; 4]` in big-endian order.
     pub const fn from_u8_be(v: [u8; 4]) -> u32 { u32::from_be_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u32` from an array of `[u8; 4]` in little-endian order.
     pub const fn from_u8_le(v: [u8; 4]) -> u32 { u32::from_le_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u32` from an array of `[u8; 4]` in native-endian order.
     pub const fn from_u8_ne(v: [u8; 4]) -> u32 { u32::from_ne_bytes(v) }
 }
@@ -106,7 +100,6 @@ impl Cast<u64> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u64` from an array of `[u16; 4]` in native-endian order.
     pub const fn from_u16_ne(v: [u16; 4]) -> u64 {
         if cfg!(target_endian = "big") {
@@ -117,17 +110,14 @@ impl Cast<u64> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u64` from an array of `[u8; 8]` in big-endian order.
     pub const fn from_u8_be(v: [u8; 8]) -> u64 { u64::from_be_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u64` from an array of `[u8; 8]` in little-endian order.
     pub const fn from_u8_le(v: [u8; 8]) -> u64 { u64::from_le_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u64` from an array of `[u8; 8]` in native-endian order.
     pub const fn from_u8_ne(v: [u8; 8]) -> u64 { u64::from_ne_bytes(v) }
 }
@@ -147,7 +137,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u64; 2]` in native-endian order.
     pub const fn from_u64_ne(v: [u64; 2]) -> u128 {
         if cfg!(target_endian = "big") {
@@ -176,7 +165,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u32; 4]` in native-endian order.
     pub const fn from_u32_ne(v: [u32; 4]) -> u128 {
         if cfg!(target_endian = "big") {
@@ -213,7 +201,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u16; 8]` in native-endian order.
     pub const fn from_u16_ne(v: [u16; 8]) -> u128 {
         if cfg!(target_endian = "big") {
@@ -224,17 +211,14 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u8; 16]` in big-endian order.
     pub const fn from_u8_be(v: [u8; 16]) -> u128 { u128::from_be_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u8; 16]` in little-endian order.
     pub const fn from_u8_le(v: [u8; 16]) -> u128 { u128::from_le_bytes(v) }
 
     #[must_use]
-    #[inline(always)]
     /// Constructs a `u128` from an array of `[u8; 16]` in native-endian order.
     pub const fn from_u8_ne(v: [u8; 16]) -> u128 { u128::from_ne_bytes(v) }
 }

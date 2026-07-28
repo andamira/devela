@@ -77,10 +77,8 @@ impl char7 {
     /* to_* conversions */
 
     /// Returns the byte representation.
-    #[inline(always)]
     pub const fn to_byte(&self) -> u8 { self.0.get() }
     /// Returns the string slice representation.
-    #[inline(always)]
     pub const fn to_str(&self) -> &'static str { AsciiLut::ASCII_CHARS[self.to_byte() as usize] }
 
     /// Converts a `char7` to `CharAscii`.

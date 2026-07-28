@@ -11,11 +11,11 @@ impl<'a> CharIter<'a, &[u8]> {
         Self::_new(bytes, 0)
     }
 
+    #[must_use]
     /// Returns a new iterator over the Unicode scalars of a slice of `bytes`,
     /// starting at `index`.
     ///
     /// Returns `None` if the given index is not a valid character boundary.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
     pub const fn new_at(bytes: &'a [u8], index: usize) -> Option<Self> {
         if Char(bytes).is_utf8_boundary(index) {
             Some(Self::_new(bytes, index))

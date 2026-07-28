@@ -163,7 +163,7 @@ impl<T: Any> Current<T> {
 impl<T: Any> Deref for Current<T> {
     type Target = T;
 
-    #[inline(always)] #[rustfmt::skip]
+   #[rustfmt::skip]
     fn deref<'a>(&'a self) -> &'a T {
         // SAFETY:
         // - `Current<T>` is only an access point, not an actual value.
@@ -174,7 +174,6 @@ impl<T: Any> Deref for Current<T> {
     }
 }
 impl<T: Any> DerefMut for Current<T> {
-    #[inline(always)]
     fn deref_mut(&mut self) -> &mut T {
         // SAFETY:
         // - Requires an active `CurrentGuard<T>`, ensuring a valid instance.

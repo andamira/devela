@@ -5,6 +5,7 @@
 
 use crate::{Cmp, Digits, Display, FmtResult, Formatter, format_buf, is, write_at};
 
+#[must_use]
 #[doc = crate::_tags!(color term)]
 /// Sixel color representation.
 #[doc = crate::_doc_meta!{location("media/visual/image")}]
@@ -12,7 +13,6 @@ use crate::{Cmp, Digits, Display, FmtResult, Formatter, format_buf, is, write_at
 /// It stores r, g, b components (0-99 each).
 ///
 /// The default color is black.
-#[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SixelColor {
     data: [u8; 3],
@@ -103,25 +103,21 @@ impl SixelColor {
 
     /// Get color components.
     #[must_use]
-    #[inline(always)]
     pub const fn components(self) -> (u8, u8, u8) {
         (self.data[0], self.data[1], self.data[2])
     }
     /// Get red component (0-99)
     #[must_use]
-    #[inline(always)]
     pub const fn r(self) -> u8 {
         self.data[0]
     }
     /// Get green component (0-99)
     #[must_use]
-    #[inline(always)]
     pub const fn g(self) -> u8 {
         self.data[1]
     }
     /// Get blue component (0-99)
     #[must_use]
-    #[inline(always)]
     pub const fn b(self) -> u8 {
         self.data[2]
     }
@@ -145,16 +141,14 @@ impl SixelColor {
 
     // /// Simple color distance metric (Manhattan distance in RGB space)
     // #[must_use]
-    // #[inline(always)]
     // pub const fn distance(self, other: SixelColor) -> u16 {
     //     let dr = (self.r() as i16 - other.r() as i16).unsigned_abs();
     //     let dg = (self.g() as i16 - other.g() as i16).unsigned_abs();
     //     let db = (self.b() as i16 - other.b() as i16).unsigned_abs();
     //     dr + dg + db
     // }
-    /// Simple color distance metric (Manhattan distance in RGB space)
     #[must_use]
-    #[inline(always)]
+    /// Simple color distance metric (Manhattan distance in RGB space)
     pub const fn is_similar_to(self, other: SixelColor) -> bool {
         let dr = (self.r() as i16 - other.r() as i16).unsigned_abs();
         let dg = (self.g() as i16 - other.g() as i16).unsigned_abs();

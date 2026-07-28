@@ -132,7 +132,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Panics if `CAP` > [`u8::MAX`].
     ///
     /// This is implemented via `Self::`[`push_str()`](#method.push_str).
-    #[inline(always)]
     pub const fn from_str_unchecked(string: &str) -> Self {
         let mut new_string = Self::new();
         let _ = new_string.push_str(string);
@@ -142,11 +141,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     /* queries */
 
     /// Returns the total capacity in bytes.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns the current length.
@@ -178,11 +177,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns `true` if the current length is 0.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Checks the equality of two strings, with the same capacity and length.
@@ -198,7 +197,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// b.pop();
     /// assert![a.eq(&b)];
     /// ```
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn eq(&self, other: &Self) -> bool {
         let mut i = 0;
         while i < CAP {
@@ -214,20 +213,20 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn as_array(&self) -> &[u8; CAP] { &self.arr }
 
     /// Returns a byte slice of the inner string slice.
     ///
     /// # Features
     /// `unsafe_slice` enables unchecked slicing.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len()).0 }
 
     /// Returns a mutable byte slice of the inner string slice.
@@ -239,7 +238,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Features
     /// `unsafe_slice` enables unchecked slicing.
-    #[must_use] #[inline(always)]
+    #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -277,7 +276,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     }
 
     /// Returns an iterator over the `chars` of the string.
-    #[inline(always)]
     pub const fn chars(&self) -> CharIter<'_, &str> { CharIter::<&str>::new(self.as_str()) }
 
     /* operations */
@@ -670,7 +668,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Errors
     /// Returns [`InvalidText::Utf8`] if the bytes are not valid UTF-8.
-    #[inline(always)]
     pub const fn from_array(bytes: [u8; CAP]) -> Result<Self, InvalidText> {
         // IMPROVE: use Str
         match ::core::str::from_utf8(&bytes) {
@@ -686,7 +683,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and that it has no NUL characters as part of the string.
     ///
     /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-    #[inline(always)]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_array_unchecked(bytes: [u8; CAP]) -> Self {
@@ -697,7 +693,6 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Safety
     /// The caller must ensure that the content of the slice is valid UTF-8,
     /// and that it has no NUL characters as part of the string.
-    #[inline(always)]
     pub(crate) const fn _from_array_trusted(array: [u8; CAP]) -> Self {
         Self { arr: array }
     }

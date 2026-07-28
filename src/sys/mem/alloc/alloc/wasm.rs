@@ -49,10 +49,8 @@ unsafe impl GlobalAlloc for WasmAlloc {
     }
     /// Allocates zeroed memory with the given layout.
     /// This is the same as `alloc` since WASM memory is always zero-initialized.
-    #[inline(always)]
     unsafe fn alloc_zeroed(&self, l: MemLayout) -> *mut u8 { unsafe { self.alloc(l) } }
     /// No-op. Memory is only reclaimed when the entire WASM instance is dropped.
-    #[inline(always)]
     unsafe fn dealloc(&self, _ptr: *mut u8, _l: MemLayout) {}
 }
 

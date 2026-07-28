@@ -133,7 +133,6 @@ impl Str {
     /// Unmapped scalars are omitted.
     ///
     /// Returns the number of bytes written, or `None` if `dst` is too small.
-    #[inline(always)]
     #[cfg(feature = "translit")]
     pub fn translit_ascii_into(string: &str, dst: &mut [u8]) -> Option<usize> {
         Translit::write_ascii(string, dst)
@@ -143,7 +142,6 @@ impl Str {
     /// for unmapped scalars.
     ///
     /// Returns the number of bytes written, or `None` if `dst` is too small.
-    #[inline(always)]
     #[cfg(feature = "translit")]
     pub fn translit_ascii_into_or(string: &str, dst: &mut [u8], fallback: &str) -> Option<usize> {
         Translit::write_ascii_or(string, dst, fallback)

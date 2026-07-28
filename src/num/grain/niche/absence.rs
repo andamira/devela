@@ -154,13 +154,12 @@ macro_rules! impl_maybe {
             /* constructors */
 
             /// Creates a new `MaybeNiche` containing `value`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn new(value: $T) -> Self { Self(value) }
 
             /// Creates a new `MaybeNiche` from a primitive value.
             /// # Errors
             /// - [`InvalidValue`] if the value violates the validity invariant of `T`.
-            #[inline(always)]
             pub const fn try_from_prim(primitive: $prim) -> Result<Self, InvalidValue> {
                 // WAIT: [proc_macro_hygiene](https://github.com/rust-lang/rust/issues/54727)
                 // Can't use `compile` on expr or stmt, e.g.: return Some(Self(primitive));
@@ -179,7 +178,7 @@ macro_rules! impl_maybe {
             /// # Safety
             /// For niche-optimized types, callers must ensure that
             /// `value` satisfies the variant's validity constraints.
-            #[must_use] #[inline(always)]
+            #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
             #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
             pub const unsafe fn from_prim_unchecked(primitive: $prim) -> Self {
@@ -205,7 +204,7 @@ macro_rules! impl_maybe {
             /// - For `NonValue*` types, conversion defers to their own
             ///   [`new_lossy`](NonValueU8::new_lossy)-style semantics.
             /// - For `NonNiche` and primitive integers, the value is used as-is.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn from_prim_lossy(value: $prim) -> Self {
                 // NonZero converts
                 #[crate::compile(all(some($($new)?), some($($non0)?)))]
@@ -235,7 +234,6 @@ macro_rules! impl_maybe {
             ///   underlying primitive type.
             /// - [`NicheValueError::InvalidValue`] if the value violates the validity
             ///   invariant of `T`.
-            #[inline(always)]
             pub const fn try_from_usize(value: usize) -> Result<Self, NicheValueError> {
                 // NonNiche, NonValue, NonZero
                 #[crate::compile(some($($new)?))]
@@ -255,7 +253,7 @@ macro_rules! impl_maybe {
             /// 1. The `usize` value is saturated to the bounds of the primitive type.
             /// 2. If the resulting value violates the niche invariant of `T`,
             ///    a best-effort lossy conversion is applied.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn from_usize_saturating(value: usize) -> Self {
                 let prim = $crate::paste! { Cast(value).[<saturating_cast_to_ $prim>]() };
                 Self::from_prim_lossy(prim)
@@ -267,7 +265,7 @@ macro_rules! impl_maybe {
             /// 1. The `usize` value is wrapped to the primitive type.
             /// 2. If the resulting value violates the niche invariant of `T`,
             ///    a best-effort lossy conversion is applied.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn from_usize_wrapping(value: usize) -> Self {
                 let prim = $crate::paste! { Cast(value).[<wrapping_cast_to_ $prim>]() };
                 Self::from_prim_lossy(prim)
@@ -276,60 +274,60 @@ macro_rules! impl_maybe {
             /* queries */
 
             /// Returns `true` if this representation uses a memory niche.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_niche(self) -> bool { Self::IS_NICHE }
 
             /// Returns `true` if the representable domain is contiguous.
             ///
             /// That is, if every primitive value `v` such that `MIN <= v <= MAX` is representable.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn is_contiguous(self) -> bool { Self::IS_CONTIGUOUS }
 
             /// Returns `true` if the representable domain includes negative values.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn has_negative(self) -> bool { Self::HAS_NEGATIVE }
 
             /// Returns `true` if this type can represent zero.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn has_zero(self) -> bool { Self::ZERO.is_some() }
 
             /// Returns `true` if `self == other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn eq(self, other: Self) -> bool { self.prim() == other.prim() }
             /// Returns `true` if `self != other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ne(self, other: Self) -> bool { self.prim() != other.prim() }
             /// Returns `true` if `self < other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn lt(self, other: Self) -> bool { self.prim() < other.prim() }
             /// Returns `true` if `self <= other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn le(self, other: Self) -> bool { self.prim() <= other.prim() }
             /// Returns `true` if `self > other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn gt(self, other: Self) -> bool { self.prim() > other.prim() }
             /// Returns `true` if `self >= other`.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn ge(self, other: Self) -> bool { self.prim() >= other.prim() }
 
             /* representation access */
 
             /// Returns the validated (niche-aware) representation.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn get(self) -> $T { self.0 }
 
             /// Alias of [`get`][Self::get], emphasizing representational access.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn repr(self) -> $T { self.get() }
 
             /* primitive access */
 
             /// Returns the primitive carrier value.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn get_prim(self) -> $prim { self.0 $( . $get() )? }
 
             /// Alias of [`get_prim`][Self::get_prim], emphasizing primitive access.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn prim(self) -> $prim { self.get_prim() }
 
             /* casts */
@@ -338,17 +336,16 @@ macro_rules! impl_maybe {
             ///
             /// # Errors
             /// Will return [`Overflow`] if `self` can't fit in a `usize`.
-            #[inline(always)]
             pub const fn try_to_usize(self) -> Result<usize, Overflow> {
                 Cast(self.get_prim()).checked_cast_to_usize()
             }
             /// Converts the value into a `usize`, saturating at the numeric bounds.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn to_usize_saturating(self) -> usize {
                 Cast(self.get_prim()).saturating_cast_to_usize()
             }
             /// Converts the value into a `usize`, wrapping at the numeric bounds.
-            #[must_use] #[inline(always)]
+            #[must_use]
             pub const fn to_usize_wrapping(self) -> usize {
                 Cast(self.get_prim()).wrapping_cast_to_usize()
             }
@@ -384,14 +381,14 @@ impl<T: Copy> NonNiche<T> {
     /// Creates a new `NonNiche` with the given value.
     ///
     /// This always succeeds, unlike `NonZero*` types.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn new(value: T) -> Option<Self> { Some(Self(value)) }
 
     /// Creates a new `NonNiche` without checking.
     /// # Safety
     /// This is always safe since `NonNiche` doesn't have any validity constraints.
     /// Method provided for API completion.
-    #[must_use] #[inline(always)]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_niche")))]
     pub const unsafe fn new_unchecked(value: T) -> Self { Self(value) }
@@ -399,17 +396,16 @@ impl<T: Copy> NonNiche<T> {
     /// Creates a NonNiche, automatically converting any prohibited values.
     ///
     /// There are no prohibited values. Method provided for API completion.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn new_lossy(value: T) -> Self { Self(value) }
 
     /// Extracts the inner value.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn get(self) -> T { self.0 }
 }
 
 #[rustfmt::skip]
 impl<T: Copy> From<T> for NonNiche<T> {
-    #[inline(always)]
     fn from(value: T) -> Self { Self(value) }
 }
 

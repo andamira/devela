@@ -33,7 +33,6 @@ impl Digits<usize> {
     ///
     /// Returns `b'0'` if the index is beyond the number's decimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(), return b'0'];
         let power = AsciiLut::POWERS10[index as usize] as usize;
@@ -96,7 +95,6 @@ impl Digits<usize> {
     ///
     /// Returns `0` if the index is beyond the number's hexadecimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_value_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         (self.0.unbounded_shr(shift) & 0xF) as u8
@@ -202,28 +200,24 @@ impl Digits<usize> {
 
     #[doc = _DOC_WRITE_DIGITS_10!(10)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_NONZERO!(10)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub const fn write_digits10_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10_nonzero(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_FAST!(10)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub const fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10_fast(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_FAST_NONZERO!(10)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "32")]
     pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u32).write_digits10_fast_nonzero(buf, offset)
@@ -231,28 +225,24 @@ impl Digits<usize> {
 
     #[doc = _DOC_WRITE_DIGITS_10!(20)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "64")]
     pub const fn write_digits10(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_NONZERO!(20)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "64")]
     pub const fn write_digits10_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10_nonzero(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_FAST!(20)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "64")]
     pub const fn write_digits10_fast(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10_fast(buf, offset)
     }
     #[doc = _DOC_WRITE_DIGITS_10_FAST_NONZERO!(20)]
     #[must_use]
-    #[inline(always)]
     #[cfg(target_pointer_width = "64")]
     pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10_fast_nonzero(buf, offset)

@@ -110,11 +110,9 @@ pub trait OptionExt<T>: Sealed {
 }
 
 impl<T> OptionExt<T> for Option<T> {
-    #[inline(always)]
     fn has<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().is_some_and(|y| x == y)
     }
-
     fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T> {
         match (self, other) {
             (Some(l), Some(r)) => Some(f(l, r)),
@@ -122,18 +120,12 @@ impl<T> OptionExt<T> for Option<T> {
             (None, None) => None,
         }
     }
-
-    #[inline(always)]
     fn fmt_or_empty(&self) -> OptionFmt<'_, T> {
         OptionFmt(self)
     }
-
-    #[inline(always)]
     fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<'_, T, U> {
         OptionFmtOr(self, u)
     }
-
-    #[inline(always)]
     fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<'_, T, F> {
         OptionFmtOrElse(self, f)
     }

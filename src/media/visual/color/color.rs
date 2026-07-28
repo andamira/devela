@@ -77,27 +77,21 @@ pub trait Color {
 
     /* non-required */
 
-    #[inline(always)]
     /// Returns the bit depth of each color component (e.g., 8 for `u8`, 32 for `f32`).
     fn color_bits(&self) -> usize { Self::COLOR_BITS }
 
-    #[inline(always)]
     /// Returns the number of color components (channels).
     fn color_count(&self) -> usize { Self::COLOR_COUNT }
 
-    #[inline(always)]
     /// Returns `true` if the color has an alpha component.
     fn color_has_alpha(&self) -> bool { Self::COLOR_HAS_ALPHA }
 
-    #[inline(always)]
     /// Returns `true` if the color uses integer components (e.g., `u8`, `u16`).
     fn color_is_int(&self) -> bool { Self::COLOR_IS_INT }
 
-    #[inline(always)]
     /// Returns `true` if the color is in a linear space (not gamma-encoded like sRGB).
     fn color_is_linear(&self) -> bool { Self::COLOR_IS_LINEAR }
 
-    #[inline(always)]
     /// Returns `true` if the color uses premultiplied alpha.
     fn color_is_premul(&self) -> bool { Self::COLOR_IS_PREMUL }
 

@@ -115,13 +115,11 @@ impl<S> ByteCursor<S> {
     /// contract. Slice-specific constructors and methods perform bounds checks
     /// where needed.
     #[must_use]
-    #[inline(always)]
     pub const fn from_storage_at(storage: S, pos: usize) -> Self {
         Self { storage, pos }
     }
     /// Returns the current byte position.
     #[must_use]
-    #[inline(always)]
     pub const fn pos(&self) -> usize {
         self.pos
     }
@@ -130,25 +128,21 @@ impl<S> ByteCursor<S> {
     /// Slice-specific read/write methods will fail if the position is out of
     /// bounds. Use this only when the position was computed by trusted format
     /// logic.
-    #[inline(always)]
     pub const fn set_pos(&mut self, pos: usize) {
         self.pos = pos;
     }
     /// Returns a shared reference to the underlying storage.
     #[must_use]
-    #[inline(always)]
     pub const fn storage(&self) -> &S {
         &self.storage
     }
     /// Consumes the cursor and returns its storage.
     #[must_use]
-    #[inline(always)]
     pub fn into_storage(self) -> S {
         self.storage
     }
     /// Consumes the cursor and returns its storage.
     #[must_use]
-    #[inline(always)]
     pub const fn into_storage_copy(self) -> S
     where
         S: Copy,

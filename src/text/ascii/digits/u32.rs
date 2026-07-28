@@ -34,7 +34,6 @@ impl Digits<u32> {
     ///
     /// Returns `b'0'` if the index is beyond the number's decimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(), return b'0'];
         let power = AsciiLut::POWERS10[index as usize] as u32;
@@ -97,7 +96,6 @@ impl Digits<u32> {
     ///
     /// Returns `0` if the index is beyond the number's hexadecimal digits.
     #[must_use]
-    #[inline(always)]
     pub const fn digit_value_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         (self.0.unbounded_shr(shift) & 0xF) as u8

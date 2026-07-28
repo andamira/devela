@@ -178,7 +178,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// Sort(&mut arr[..]).quick_lomuto();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn quick_lomuto(&mut self) where T: Clone { Sort::quick_lomuto_internal(self.0); }
     fn quick_lomuto_internal(slice: &mut [T]) {
         is![slice.len() < 2, return];
@@ -212,7 +212,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
     /// Sorts the slice using quick sort with the three-way partition scheme.
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn quick_3way(&mut self) where T: Clone { Sort::quick_3way_internal(self.0); }
     fn quick_3way_internal(slice: &mut [T])
     where
@@ -248,7 +248,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// Sort(&mut arr[..]).quick_hoare();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn quick_hoare(&mut self) where T: Clone { Sort::quick_hoare_internal(self.0); }
     fn quick_hoare_internal(slice: &mut [T])
     where

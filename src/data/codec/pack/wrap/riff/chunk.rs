@@ -23,50 +23,49 @@ pub struct RiffChunk<'a> {
 #[rustfmt::skip]
 impl<'a> RiffChunk<'a> {
     /// Returns the chunk identifier.
-    #[inline(always)]
     pub const fn id(self) -> BinTag4 { self.id }
 
+    #[must_use]
     /// Returns the declared chunk data size.
-    #[must_use] #[inline(always)]
     pub const fn size(self) -> u32 { self.size }
+    #[must_use]
     /// Returns the chunk data length.
-    #[must_use] #[inline(always)]
     pub const fn len(self) -> usize { self.data.len() }
+    #[must_use]
     /// Returns whether the chunk data is empty.
-    #[must_use] #[inline(always)]
     pub const fn is_empty(self) -> bool { self.data.is_empty() }
 
+    #[must_use]
     /// Returns the chunk data.
-    #[must_use] #[inline(always)]
     pub const fn data(self) -> &'a [u8] { self.data }
+    #[must_use]
     /// Returns the chunk offset relative to the parsed byte region.
-    #[must_use] #[inline(always)]
     pub const fn offset(self) -> usize { self.offset }
 
+    #[must_use]
     /// Returns whether this chunk is `RIFF`.
-    #[must_use] #[inline(always)]
     pub const fn is_riff(self) -> bool { self.id.eq_bytes(*b"RIFF") }
+    #[must_use]
     /// Returns whether this chunk is `RIFX`.
-    #[must_use] #[inline(always)]
     pub const fn is_rifx(self) -> bool { self.id.eq_bytes(*b"RIFX") }
+    #[must_use]
     /// Returns whether this chunk is `LIST`.
-    #[must_use] #[inline(always)]
     pub const fn is_list(self) -> bool { self.id.eq_bytes(*b"LIST") }
 
+    #[must_use]
     /// Returns whether this chunk can contain subchunks.
-    #[must_use] #[inline(always)]
     pub const fn is_container(self) -> bool {
         self.is_riff() || self.is_rifx() || self.is_list()
     }
-    /// Returns the RIFF form type or LIST type.
     #[must_use]
+    /// Returns the RIFF form type or LIST type.
     pub const fn container_type(self) -> Option<BinTag4> {
         is! { !self.is_container() || self.data.len() < 4, return None }
         Some(BinTag4::new([self.data[0], self.data[1], self.data[2], self.data[3]]))
     }
 
-    /// Returns the subchunk byte region of a `RIFF`, `RIFX`, or `LIST` chunk.
     #[must_use]
+    /// Returns the subchunk byte region of a `RIFF`, `RIFX`, or `LIST` chunk.
     pub const fn subchunk_data(self) -> Option<&'a [u8]> {
         is! { !self.is_container() || self.data.len() < 4, return None }
         Some(self.data.split_at(4).1)
@@ -78,10 +77,10 @@ impl<'a> RiffChunk<'a> {
     }
 }
 
+#[must_use]
 #[doc = crate::_tags!(data codec iterator)]
 /// An iterator over borrowed RIFF chunks.
 #[doc = crate::_doc_meta!{location("data/codec/pack")}]
-#[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RiffChunkIter<'a> {
     bytes: &'a [u8],
@@ -92,25 +91,24 @@ impl<'a> RiffChunkIter<'a> {
     pub(crate) const fn _new(bytes: &'a [u8], offset: usize) -> Self { Self { bytes, offset } }
 
     /// Returns a new iterator over the chunks in `bytes`.
-    #[inline(always)]
     pub const fn new(bytes: &'a [u8]) -> Self { Self::_new(bytes, 0) }
 
+    #[must_use]
     /// Returns the remaining byte region.
-    #[must_use] #[inline(always)]
     pub const fn remaining(self) -> &'a [u8] { slice![self.bytes, self.offset, ..] }
+    #[must_use]
     /// Returns the current byte offset.
-    #[must_use] #[inline(always)]
     pub const fn offset(self) -> usize { self.offset }
+    #[must_use]
     /// Returns whether no bytes remain.
-    #[must_use] #[inline(always)]
     pub const fn is_empty(self) -> bool { self.offset >= self.bytes.len() }
 
+    #[must_use]
     /// Returns the next RIFF chunk.
     ///
     /// Returns `None` once there are no bytes left.
     ///
     /// On error, the iterator is exhausted.
-    #[must_use]
     pub const fn next_chunk(&mut self) -> Option<Result<RiffChunk<'a>, RiffError>> {
         is![self.offset >= self.bytes.len(), return None];
         match Riff::chunk_at(self.bytes, self.offset) {
@@ -133,7 +131,6 @@ impl<'a> RiffChunkIter<'a> {
 #[rustfmt::skip]
 impl<'a> Iterator for RiffChunkIter<'a> {
     type Item = Result<RiffChunk<'a>, RiffError>;
-    #[inline(always)]
     fn next(&mut self) -> Option<Self::Item> { self.next_chunk() }
     fn size_hint(&self) -> (usize, Option<usize>) {
         let remaining = self.bytes.len().saturating_sub(self.offset);

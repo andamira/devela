@@ -9,7 +9,7 @@ impl<'a> CharIter<'a, &str> {
     /* constructors */
 
     /// Returns a new iterator over the Unicode scalars of a `string` slice.
-    #[inline(always)] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub const fn new(string: &'a str) -> Self {
         Self::_new(string.as_bytes(), 0)
     }
@@ -18,7 +18,7 @@ impl<'a> CharIter<'a, &str> {
     /// starting at `index`.
     ///
     /// Returns `None` if the given index is not a valid character boundary.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn new_at(string: &'a str, index: usize) -> Option<Self> {
         if string.is_char_boundary(index) { Some(Self::_new(string.as_bytes(), index)) }
         else { None }

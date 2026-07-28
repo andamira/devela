@@ -122,7 +122,6 @@ impl TermLinux {
     /// Feeds one byte into the parser and queues a completed event, if any.
     ///
     /// Returns `true` if an event was queued.
-    #[inline]
     fn feed_byte_to_event_queue(&mut self, byte: u8) -> bool {
         is! { let Some(ev) = self.parser.feed(byte), self.queue_event(ev), false }
     }

@@ -192,7 +192,6 @@ crate::items! {
     }
     impl RandSeedable for Xabc {
         type RandSeed = [u8; 3];
-        #[inline(always)]
         fn rand_from_seed(seed: Self::RandSeed) -> Self { Self::new(seed) }
     }
 }

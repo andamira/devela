@@ -8,17 +8,14 @@ use crate::Cast;
 #[rustfmt::skip]
 impl Cast<u16> {
     #[must_use]
-    #[inline(always)]
     /// Splits a `u16` into an array of `[u8; 2]` in big-endian order.
     pub const fn into_u8_be(self) -> [u8; 2] { self.0.to_be_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u16` into an array of `[u8; 2]` in little-endian order.
     pub const fn into_u8_le(self) -> [u8; 2] { self.0.to_le_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u16` into an array of `[u8; 2]` in native-endian order.
     pub const fn into_u8_ne(self) -> [u8; 2] { self.0.to_ne_bytes() }
 }
@@ -42,7 +39,6 @@ impl Cast<u32> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u32` into an array of `[u16; 2]` in native-endian order.
     pub const fn into_u16_ne(self) -> [u16; 2] {
         if cfg!(target_endian = "big") {
@@ -53,17 +49,14 @@ impl Cast<u32> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u32` into an array of `[u8; 4]` in big-endian order.
     pub const fn into_u8_be(self) -> [u8; 4] { self.0.to_be_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u32` into an array of `[u8; 4]` in little-endian order.
     pub const fn into_u8_le(self) -> [u8; 4] { self.0.to_le_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u32` into an array of `[u8; 4]` in native-endian order.
     pub const fn into_u8_ne(self) -> [u8; 4] { self.0.to_ne_bytes() }
 }
@@ -87,7 +80,6 @@ impl Cast<u64> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u64` into an array of `[u32; 2]` in native-endian order.
     pub const fn into_u32_ne(self) -> [u32; 2] {
         if cfg!(target_endian = "big") {
@@ -118,7 +110,6 @@ impl Cast<u64> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u64` into an array of `[u16; 4]` in native-endian order.
     pub const fn into_u16_ne(self) -> [u16; 4] {
         if cfg!(target_endian = "big") {
@@ -129,17 +120,14 @@ impl Cast<u64> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u64` into an array of `[u8; 8]` in big-endian order.
     pub const fn into_u8_be(self) -> [u8; 8] { self.0.to_be_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u64` into an array of `[u8; 8]` in little-endian order.
     pub const fn into_u8_le(self) -> [u8; 8] { self.0.to_le_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u64` into an array of `[u8; 8]` in native-endian order.
     pub const fn into_u8_ne(self) -> [u8; 8] {
         if cfg!(target_endian = "big") {
@@ -169,7 +157,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u64; 2]` in native-endian order.
     pub const fn into_u64_ne(self) -> [u64; 2] {
         if cfg!(target_endian = "big") {
@@ -200,7 +187,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u32; 4]` in native-endian order.
     pub const fn into_u32_ne(self) -> [u32; 4] {
         if cfg!(target_endian = "big") {
@@ -239,7 +225,6 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u16; 8]` in native-endian order.
     pub const fn into_u16_ne(self) -> [u16; 8] {
         if cfg!(target_endian = "big") {
@@ -250,17 +235,14 @@ impl Cast<u128> {
     }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u8; 16]` in big-endian order.
     pub const fn into_u8_be(self) -> [u8; 16] { self.0.to_be_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u8; 16]` in little-endian order.
     pub const fn into_u8_le(self) -> [u8; 16] { self.0.to_le_bytes() }
 
     #[must_use]
-    #[inline(always)]
     /// Splits a `u128` into an array of `[u8; 16]` in native-endian order.
     pub const fn into_u8_ne(self) -> [u8; 16] { self.0.to_ne_bytes() }
 }

@@ -29,21 +29,17 @@ impl BinTag4 {
     #[must_use]
     pub const fn bytes(self) -> [u8; 4] { self.0 }
     /// Returns a reference to the tag bytes.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn as_bytes(&self) -> &[u8; 4] { &self.0 }
 
     /// Creates a tag from a little-endian integer.
-    #[inline(always)]
     pub const fn from_u32_le(raw: u32) -> Self { Self(raw.to_le_bytes()) }
     /// Creates a tag from a big-endian integer.
-    #[inline(always)]
     pub const fn from_u32_be(raw: u32) -> Self { Self(raw.to_be_bytes()) }
 
     /// Returns this tag as a little-endian integer.
-    #[inline(always)]
     pub const fn to_u32_le(self) -> u32 { u32::from_le_bytes(self.0) }
     /// Returns this tag as a big-endian integer.
-    #[inline(always)]
     pub const fn to_u32_be(self) -> u32 { u32::from_be_bytes(self.0) }
 
     /// Returns whether all bytes are ASCII.
@@ -95,12 +91,12 @@ impl BinTag4 {
     }
 
     /// Returns whether the tag equals another tag.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn eq(self, other: Self) -> bool {
         self.eq_bytes(other.bytes())
     }
     /// Returns whether the tag equals the given bytes.
-    #[must_use] #[inline(always)]
+    #[must_use]
     pub const fn eq_bytes(self, bytes: [u8; 4]) -> bool {
         self.0[0] == bytes[0]
             && self.0[1] == bytes[1]
@@ -132,8 +128,6 @@ impl_trait![Hash for BinTag4 |self, s| self.bytes().hash(s)];
 #[rustfmt::skip]
 impl Word for BinTag4 {
     type Repr = [u8; 4];
-    #[inline(always)]
     fn raw(self) -> Self::Repr { self.0 }
-    #[inline(always)]
     fn from_raw(raw: Self::Repr) -> Self { Self(raw) }
 }

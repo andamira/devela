@@ -39,12 +39,10 @@ impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
     /// Returns the complete physical backing slice.
     ///
     /// This is not necessarily the array's logical ravel order.
-    #[inline(always)]
     pub const fn storage(&self) -> &'a [T] {
         self.data
     }
     /// Returns the backing-storage length.
-    #[inline(always)]
     pub const fn storage_len(&self) -> usize {
         self.data.len()
     }
@@ -56,7 +54,6 @@ impl<'a, T, const RANK: usize> Array<&'a [T], RANK> {
         }
     }
     /// Returns a shared view reborrowed for the lifetime of `self`.
-    #[inline(always)]
     pub const fn reborrow(&self) -> Array<&[T], RANK> {
         Array { data: self.data, layout: self.layout }
     }
@@ -95,17 +92,14 @@ impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
         Self::try_from_slice(storage, layout)
     }
     /// Returns the complete physical backing slice.
-    #[inline(always)]
     pub const fn storage(&self) -> &[T] {
         &*self.data
     }
     /// Returns the complete exclusive physical backing slice.
-    #[inline(always)]
     pub const fn storage_mut(&mut self) -> &mut [T] {
         &mut *self.data
     }
     /// Returns the backing-storage length.
-    #[inline(always)]
     pub const fn storage_len(&self) -> usize {
         self.data.len()
     }
@@ -124,17 +118,14 @@ impl<'a, T, const RANK: usize> Array<&'a mut [T], RANK> {
         }
     }
     /// Returns a shared view reborrowed for the lifetime of `self`.
-    #[inline(always)]
     pub const fn reborrow(&self) -> Array<&[T], RANK> {
         Array { data: &*self.data, layout: self.layout }
     }
     /// Returns an exclusive view reborrowed for the lifetime of `self`.
-    #[inline(always)]
     pub const fn reborrow_mut(&mut self) -> Array<&mut [T], RANK> {
         Array { data: &mut *self.data, layout: self.layout }
     }
     /// Consumes the exclusive view and returns a shared view.
-    #[inline(always)]
     pub const fn into_shared(self) -> Array<&'a [T], RANK> {
         Array { data: self.data, layout: self.layout }
     }
