@@ -21,13 +21,3 @@ impl super::Num for NoNum {
 impl super::NumInt for NoNum {
     type OutI = ();
 }
-
-// #[cfg(feature = "geom")]
-// mod geom {
-//     use crate::{NoNum, NumVector};
-//
-//     #[cfg_attr(nightly_doc, doc(cfg(feature = "geom")))]
-//     impl NumVector for NoNum {
-//         type Scalar = ();
-//     }
-// }

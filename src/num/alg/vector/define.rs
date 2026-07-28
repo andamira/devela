@@ -1,23 +1,20 @@
 // devela/src/num/alg/vector/define.rs
 //
-//! Linear algebra vectors.
-//!
-//! Vectors represent the difference between two positions.
-//!
-//! They are characterized by their *direction* and *magnitude*, and
-//! their direction can be decomposed into *orientation* and *sense*.
+//! Fixed coordinate vectors and their algebra.
 //
-
-#[cfg(feature = "num")]
-use crate::Num;
-// #[cfg(feature = "alloc")]
-// use crate::{Box, NumError, NumResult as Result, Vec};
 
 /* types */
 
 #[doc = crate::_tags!(lin)]
-/// A static `D`-dimensional vector, backed by a primitive [`array`][prim@array].
+/// A fixed `D`-dimensional coordinate vector.
 #[doc = crate::_doc_meta!{location("num/alg")}]
+///
+/// Its components are expressed in a chosen basis. Vector addition and scalar
+/// multiplication are available when supported by the component type.
+///
+/// Geometric displacement, Euclidean length, normalization, and orientation
+/// are interpretations or additional structures, not representation invariants.
+#[must_use]
 #[repr(transparent)]
 pub struct Vector<T, const D: usize> {
     /// The vector coordinates in some basis.
@@ -34,42 +31,45 @@ pub type Vector2d<T> = Vector<T, 2>;
 #[doc = crate::_doc_meta!{location("num/alg")}]
 pub type Vector3d<T> = Vector<T, 3>;
 
-// #[doc = crate::_tags!(lin)]
-// /// A dynamic vector, backed by a primitive [`Vec`].
-// #[doc = crate::_doc_meta!{location("num/alg")}]
-// #[repr(transparent)]
-// #[cfg(feature = "alloc")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-// pub struct VecVector<T> {
-//     /// The vector coordinates in some basis.
-//     pub coords: Vec<T>,
-// }
+mod impl_traits {
+    use crate::{ConstInit, Debug, FmtResult, Formatter, Hash, Hasher, Vector, init_array};
 
-/* trait */
+    impl<T: Clone, const D: usize> Clone for Vector<T, D> {
+        fn clone(&self) -> Self {
+            Self { coords: self.coords.clone() }
+        }
+    }
 
-#[cfg(feature = "num")]
-#[doc = crate::_tags!(wip lin)]
-/// A common trait for all vectors.
-#[doc = crate::_doc_meta!{location("num/alg")}]
-pub trait NumVector: Num {
-    /// The associated scalar type.
-    type Scalar;
+    impl<T: Copy, const D: usize> Copy for Vector<T, D> {}
 
-    // fn dot() -> Self::Scalar;
-    // fn cross() -> Self::Scalar;
+    impl<T: Default, const D: usize> Default for Vector<T, D> {
+        /// Returns a vector filled with each component's default value.
+        fn default() -> Self {
+            Self::new(init_array![default [T; D], "safe_num", "unsafe_array"])
+        }
+    }
+
+    impl<T: ConstInit, const D: usize> ConstInit for Vector<T, D> {
+        /// A vector filled with each component's initial value.
+        const INIT: Self = Self::new(init_array![INIT in ConstInit [T; D]]);
+    }
+
+    impl<T: Debug, const D: usize> Debug for Vector<T, D> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            f.debug_struct("Vector").field("D", &D).field("coords", &self.coords).finish()
+        }
+    }
+
+    impl<T: Eq, const D: usize> Eq for Vector<T, D> {}
+    impl<T: PartialEq, const D: usize> PartialEq for Vector<T, D> {
+        fn eq(&self, other: &Self) -> bool {
+            self.coords == other.coords
+        }
+    }
+
+    impl<T: Hash, const D: usize> Hash for Vector<T, D> {
+        fn hash<HR: Hasher>(&self, state: &mut HR) {
+            self.coords.hash(state);
+        }
+    }
 }
-
-// #[cfg(feature = "alloc")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
-// impl<T: Num + 'static, const D: usize>
-//     TryInto<Box<dyn NumVector<Scalar = T, Rhs = Self, Inner = [T; D], Out = Self>>>
-//     for Vector<T, D>
-// {
-//     type Error = NumError;
-//
-//     fn try_into(
-//         self,
-//     ) -> Result<Box<dyn NumVector<Scalar = T, Rhs = Self, Inner = [T; D], Out = Self>>> {
-//         Ok(Box::new(self))
-//     }
-// }

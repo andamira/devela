@@ -11,8 +11,7 @@
 ///
 /// A point represents a position, not a displacement.
 ///
-/// [`Vector`] acts on a point by translation:
-///
+/// [`Vector`][crate::Vector] acts on a point by translation:
 /// - `point + vector` produces another point,
 /// - `point - vector` produces another point,
 /// - `destination - origin` produces the displacement vector.
@@ -67,11 +66,11 @@ impl<T> Point2d<T> {
 #[rustfmt::skip]
 impl<T> Point3d<T> {
     /// Returns a copy of the first dimension `x`.
-    #[must_use] pub const fn x(self) -> T where T: Copy { self.coords[0] }
+    #[must_use] pub const fn x(&self) -> T where T: Copy { self.coords[0] }
     /// Returns a copy of the second dimension `y`.
-    #[must_use] pub const fn y(self) -> T where T: Copy { self.coords[1] }
+    #[must_use] pub const fn y(&self) -> T where T: Copy { self.coords[1] }
     /// Returns a copy of the third dimension `z`.
-    #[must_use] pub const fn z(self) -> T where T: Copy { self.coords[2] }
+    #[must_use] pub const fn z(&self) -> T where T: Copy { self.coords[2] }
 
     /// Returns a shared reference to the first dimension `x`.
     #[must_use] pub const fn x_ref(&self) -> &T { &self.coords[0] }

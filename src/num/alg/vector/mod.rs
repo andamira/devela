@@ -8,21 +8,18 @@
 //! their direction can be decomposed into *orientation* and *sense*.
 //
 
-mod array;
-mod define; // Vector*, NumVector
-// #[cfg(feature = "alloc")]
-// mod vec;
+#[cfg(test)]
+mod _test;
+
+mod define; //
+
+mod methods;
+mod ops;
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            array::*,
-            define::*,
+            define::{Vector, Vector2d, Vector3d},
         };
-
-        // #[cfg(feature = "alloc")]
-        // pub use super::{
-        //     vec::*,
-        // };
     }
 }

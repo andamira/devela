@@ -14,8 +14,7 @@ macro_rules! impl_point_const_ops {
         $(
             impl<const D: usize> Point<$t, D> {
                 /// Adds a displacement vector to this point.
-                #[must_use]
-                pub const fn c_add_vector(self, rhs: Vector<$t, D>) -> Self {
+                pub const fn add_vector(self, rhs: Vector<$t, D>) -> Self {
                     let mut coords = [<$t>::NUM_ZERO.unwrap(); D];
                     whilst! { i in 0..D; {
                         coords[i] = self.coords[i] + rhs.coords[i];
@@ -23,8 +22,7 @@ macro_rules! impl_point_const_ops {
                     Self::new(coords)
                 }
                 /// Subtracts a displacement vector from this point.
-                #[must_use]
-                pub const fn c_sub_vector(self, rhs: Vector<$t, D>) -> Self {
+                pub const fn sub_vector(self, rhs: Vector<$t, D>) -> Self {
                     let mut coords = [<$t>::NUM_ZERO.unwrap(); D];
                     whilst! { i in 0..D; {
                         coords[i] = self.coords[i] - rhs.coords[i];
@@ -32,8 +30,7 @@ macro_rules! impl_point_const_ops {
                     Self::new(coords)
                 }
                 /// Returns the displacement from `origin` to this point.
-                #[must_use]
-                pub const fn c_sub_point(self, origin: Self) -> Vector<$t, D> {
+                pub const fn sub_point(self, origin: Self) -> Vector<$t, D> {
                     let mut coords = [<$t>::NUM_ZERO.unwrap(); D];
                     whilst! { i in 0..D; {
                         coords[i] = self.coords[i] - origin.coords[i];
@@ -141,11 +138,9 @@ mod _test {
         assert_eq!((p + v) - v, p);
     }
 
-    const CONST_DESTINATION: Point<i32, 2> =
-        Point::new([2i32, 3]).c_add_vector(Vector::new([5, -1]));
+    const CONST_DESTINATION: Point<i32, 2> = Point::new([2i32, 3]).add_vector(Vector::new([5, -1]));
 
-    const CONST_DISPLACEMENT: Vector<i32, 2> =
-        Point::new([7i32, 2]).c_sub_point(Point::new([2, 3]));
+    const CONST_DISPLACEMENT: Vector<i32, 2> = Point::new([7i32, 2]).sub_point(Point::new([2, 3]));
 
     #[test]
     fn affine_operations_are_const_capable() {

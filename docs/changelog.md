@@ -131,6 +131,12 @@
 ## num
 - rename `num::lin` to `num::alg`.
 
+#### num::alg::vector
+- update `Vector`:
+  - simplify the fixed-array implementation and module layout.
+  - add const primitive operations and checked integer variants.
+  - improve floating-point magnitude and normalization.
+
 #### num::fin::ord
 - fix `cmp!` clamp arm.
 

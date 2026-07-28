@@ -258,19 +258,37 @@ macro_rules! _num_dom_real_float_impl_basic {
                 Float(y * (three_halfs - (x2 * y * y)))
             }
 
-            /// $ \sqrt{x} $ The square root calculated calling both [`sqrt_fisr`] and [`sqrt_nr`].
+            /// Calculates an approximate square root using a fast inverse-square-root
+            /// estimate followed by fixed Newton–Raphson refinements.
             ///
-            /// [`sqrt_fisr`]: Self::sqrt_fisr
-            /// [`sqrt_nr`]: Self::sqrt_nr
+            /// It uses two refinements for `f32` and three for `f64`.
+            ///
+            /// This method is deterministic and const-capable,
+            /// but does not promise correctly rounded results.
             pub const fn sqrt_hybrid(self) -> Float<$f> {
-                is![self.0 < 0.0, return Self::NAN, is![self.0 == 0.0, return Self::ZERO]];
-                let y = self.fisr().0; // fast path using fisr + newton refinement
-                let mut x = self.0 * y; // initial estimate: x ~= sqrt(n)
-                // 1 newton iteration some times can be enough:
-                // Float(0.5 * (x + self.0 / x))
-                // But 2 iterations gives much better precision:
-                whilst![_i in 0..2; x = 0.5 * (x + self.0 / x)];
-                Float(x)
+                is![self.0.is_nan(), return self];
+                is![self.0 < 0.0, return Self::NAN];
+                is![self.0 == 0.0 || self.0.is_infinite(), return self];
+
+                // Lift subnormal values into the normal range using an exact power of two.
+                let (n, undo_scale): ($f, $f) =
+                    if self.0 < <$f>::MIN_POSITIVE {
+                        if $crate::cif!(same($f, f64)) { // n × 2^54; sqrt result ÷ 2^27
+                            (self.0 * 18_014_398_509_481_984.0, 134_217_728.0)
+                        } else {
+                            // n × 2^24; sqrt result ÷ 2^12
+                            (self.0 * 16_777_216.0, 4_096.0)
+                        }
+                    } else { (self.0, 1.0) };
+
+                let y = Float(n).fisr().0; // approximate 1 / sqrt(n)
+                let mut x = n * y; // approximate sqrt(n)
+                if $crate::cif!(same($f, f64)) {
+                    $crate::punroll! { 3 |_i| x = 0.5 * (x + n / x) }
+                } else {
+                    $crate::punroll! { 2 |_i| x = 0.5 * (x + n / x) }
+                }
+                Float(x / undo_scale)
             }
 
             /// $ \sqrt{x} $ The square root calculated using the
