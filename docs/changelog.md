@@ -89,6 +89,10 @@
 
 ### geom::affine
 - new types: `Simplex`, `SimplexFacetView`, `SimplexFacetIter`.
+- update `Point`:
+  - remove methods for explicit conversion to vectors.
+  - implement affine operations with vectors.
+  - remove `PartialOrd` and `Ord` impls.
 - remove `Points`, `Points2d`, `VecPoints`.
 
 ### geom::dir

@@ -330,11 +330,9 @@ macro_rules! _geom_dim_impl_common {
             #[must_use]
             pub fn is_uniform_nd(&self) -> bool where T: PartialEq {
                 if D == 0 { return true }
-                let mut i = 1;
-                while i < D {
+                crate::whilst! { i in 1..D; {
                     if self.dim[i] != self.dim[0] { return false }
-                    i += 1;
-                }
+                }}
                 true
             }
 
