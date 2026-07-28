@@ -7,15 +7,19 @@
 use crate::{Orientation, Position};
 
 #[doc = crate::_tags!(geom)]
-/// A separation between two locations in `D`-dimensional space.
+/// A component-wise separation between locations in `D`-dimensional space.
 #[doc = crate::_doc_meta!{location("geom/metric")}]
 ///
-/// Represents a displacement vector **without an absolute origin**.
-/// It describes the magnitude of separation between positions.
+/// `Distance` describes how far apart two locations are along each coordinate
+/// axis, without assigning a signed direction to that separation.
 ///
-/// - Unlike [`Position`], `Distance` is **relative**,
-///   and represents how far apart two positions are.
-/// - Unlike [`Orientation`], `Distance` has **magnitude** but no defined direction.
+/// Its components are conventionally non-negative,
+/// although this type does not enforce that invariant.
+///
+/// - Unlike [`Position`], `Distance` is relative rather than absolute.
+/// - Unlike [`Vector`], `Distance` does not represent a directed displacement.
+/// - Unlike [`Extent`], `Distance` relates locations rather than describing
+///   the size of an object or domain.
 ///
 /// See also: [`Distance1`], [`Distance2`], [`Distance3`], [`dis!`][crate::dis].
 #[must_use]

@@ -5,6 +5,22 @@
 #![doc = crate::_doc!(flat:"geom")]
 #![doc = crate::_doc!(hr)]
 //! Foundational abstractions for reasoning about space, structure, and spatial relationships.
+//!
+//! ## Coordinate roles
+//!
+//! Affine geometry models the algebra of locations and displacements:
+//! - [`Point`] is a location on which vectors act.
+//! - [`Vector`] is a directed displacement or linear-space element.
+//!
+//! Metric geometry provides domain-oriented spatial quantities:
+//! - [`Position`] is an absolute coordinate location.
+//! - [`Distance`] is a non-oriented component-wise separation.
+//! - [`Extent`] is an origin-independent component-wise size.
+//!
+//! `Point` and `Position` may share a representation while serving different APIs.
+//! Semantic conversion between them is explicit and lossless.
+//!
+//! [`Vector`]: crate::Vector
 //
 // safety
 #![cfg_attr(feature = "safe_geom", forbid(unsafe_code))]
@@ -19,7 +35,7 @@ pub mod affine; // Structure of space under translation and linear combination.
 pub mod dir; // Spatial navigation and facing semantics.
 pub mod metric; // Measurement of space: distances, extents, and magnitudes.
 mod rel; // Spatial predicates and semantic relations between geometric entities. WIP
-mod space; // Global organization, decomposition, and structure of space. WIP
+pub mod space; // Global organization, decomposition, and structure of space.
 
 #[cfg(feature = "fig")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "fig")))]
@@ -29,7 +45,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             rel::_all::*,
-            space::_all::*,
         };
     }
     _pub_mods {
@@ -37,6 +52,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             affine::_all::*,
             dir::_all::*,
             metric::_all::*,
+            space::_all::*,
         };
         #[cfg(feature = "fig")]
         pub use super::fig::_all::*;

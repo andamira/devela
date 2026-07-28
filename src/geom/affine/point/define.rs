@@ -88,7 +88,7 @@ impl<T> Point3d<T> {
 }
 
 mod impl_traits {
-    use crate::{ArrayExt, Point, init_array};
+    use crate::{ArrayExt, Point, Position, init_array};
     use crate::{ConstInit, Debug, Display, FmtResult, Formatter, Hash, Hasher};
 
     impl<T: Clone, const D: usize> Clone for Point<T, D> {
@@ -128,6 +128,19 @@ mod impl_traits {
     impl<T: Hash, const D: usize> Hash for Point<T, D> {
         fn hash<HR: Hasher>(&self, state: &mut HR) {
             self.coords.hash(state);
+        }
+    }
+
+    /* conversion */
+
+    impl<T, const D: usize> From<Position<T, D>> for Point<T, D> {
+        fn from(position: Position<T, D>) -> Self {
+            Self::new(position.dim)
+        }
+    }
+    impl<T, const D: usize> From<Point<T, D>> for Position<T, D> {
+        fn from(point: Point<T, D>) -> Self {
+            Self::new(point.coords)
         }
     }
 }

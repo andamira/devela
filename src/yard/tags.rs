@@ -201,6 +201,9 @@ _define_symbol_tags! {
     _TAG_TERM, "Terminal platform", "🮖";
     _TAG_TEXT, "Text", "𝐓";
     _TAG_TIME, "Time", "🕘";
+    // Topological relations such as incidence, orientation,
+    // adjacency, connectivity, and boundaries.
+    _TAG_TOPOL, "Topology", "➰";
     _TAG_UNIX, "Unix platform", "🐚";
     // UI-specific interaction, layout, semantic, and presentation abstractions.
     _TAG_UI, "User interface", "▦";

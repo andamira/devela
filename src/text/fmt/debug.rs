@@ -44,7 +44,9 @@ pub trait DebugExt {
     }
 }
 
+#[doc = crate::_tags!(fmt debug)]
 /// A [`Debug`] adapter for formatting a value with a [`DebugExt`] context.
+#[doc = crate::_doc_meta!{location("text/fmt")}]
 pub struct DebugWith<'a, T: DebugExt + ?Sized> {
     value: &'a T,
     ctx: &'a T::Ctx,

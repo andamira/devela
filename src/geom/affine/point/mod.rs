@@ -7,6 +7,7 @@ mod define; //
 
 #[cfg(feature = "alg")]
 mod vector; // impl vector ops
+mod turn;
 
 crate::structural_mods! { // _mods
     _mods {
