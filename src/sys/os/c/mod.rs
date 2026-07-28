@@ -3,7 +3,8 @@
 //! Libc
 //
 
-mod raw;
+#[cfg(unix)]
+mod _raw;
 
 mod namespace; // Libc
 
