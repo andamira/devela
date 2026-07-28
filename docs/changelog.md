@@ -101,7 +101,7 @@
 
 ### geom::space
 - make module public.
-- new type `Turn`.
+- new types: `PointSegmentRelation`, `Turn`.
 
 ##### lang::prog::ffi::js
 - update `Js`:

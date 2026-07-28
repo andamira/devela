@@ -1,10 +1,10 @@
 // devela/src/geom/affine/point/turn.rs
 //
-//!
+//! Implements methods related to `Turn` and `PointSegmentRelation`.
 //
 // FUTURE: support 128-bit ops WAIT: u256
 
-use crate::{Point, Turn, is};
+use crate::{Point, PointSegmentRelation, Turn, is};
 
 macro_rules! define_turn_int {
     ($name:ident, $sint:ty, $uint:ty) => {
@@ -47,7 +47,6 @@ macro_rules! impl_point_turn_int {
                 /// `(self, b, c)`.
                 ///
                 /// The result is computed exactly without arithmetic overflow.
-                #[must_use]
                 pub const fn turn(self, b: Self, c: Self) -> Turn {
                     $helper(
                         self.coords[0] as $wide,
@@ -79,104 +78,57 @@ impl_point_turn_int!(turn_i64, i64 => isize, usize);
 #[cfg(target_pointer_width = "64")]
 impl_point_turn_int!(turn_i128, i128 => isize, usize);
 
-#[cfg(test)]
-mod tests {
-    use super::{Point, Turn};
-
-    macro_rules! point {
-        ($t:ty; $x:expr, $y:expr) => {
-            Point::<$t, 2> { coords: [$x as $t, $y as $t] }
-        };
-    }
-    macro_rules! assert_turn_basics {
-        ($t:ty) => {{
-            let a = point![$t; 0, 0];
-            let b = point![$t; 4, 0];
-            let c = point![$t; 1, 3];
-            let d = point![$t; 2, 0];
-            let turn = a.turn(b, c);
-            assert_eq!(turn, Turn::Left);
-            assert_eq!(a.turn(c, b), Turn::Right);
-            assert_eq!(a.turn(b, d), Turn::Collinear);
-            // Cyclic permutations preserve the turn.
-            assert_eq!(b.turn(c, a), turn);
-            assert_eq!(c.turn(a, b), turn);
-            // Odd permutations reverse it.
-            assert_eq!(b.turn(a, c), turn.reversed());
-            assert_eq!(c.turn(b, a), turn.reversed());
-            // Repeated points are degenerate.
-            assert_eq!(a.turn(a, c), Turn::Collinear);
-            assert_eq!(a.turn(b, a), Turn::Collinear);
-            assert_eq!(a.turn(b, b), Turn::Collinear);
-            // Translation does not affect the result.
-            let ta = point![$t; 10, 20];
-            let tb = point![$t; 14, 20];
-            let tc = point![$t; 11, 23];
-            assert_eq!(ta.turn(tb, tc), turn);
-        }};
-    }
-    macro_rules! assert_signed_extremes {
-        ($t:ty) => {{
-            let min = <$t>::MIN;
-            let max = <$t>::MAX;
-            let a = Point::<$t, 2> { coords: [min, min] };
-            let b = Point::<$t, 2> { coords: [max, min] };
-            let c = Point::<$t, 2> { coords: [min, max] };
-            assert_eq!(a.turn(b, c), Turn::Left);
-            assert_eq!(a.turn(c, b), Turn::Right);
-            let middle = Point::<$t, 2> { coords: [0 as $t, 0 as $t] };
-            let diagonal = Point::<$t, 2> { coords: [max, max] };
-            assert_eq!(a.turn(middle, diagonal), Turn::Collinear);
-        }};
-    }
-    macro_rules! assert_unsigned_extremes {
-        ($t:ty) => {{
-            let max = <$t>::MAX;
-            let a = Point::<$t, 2> { coords: [0 as $t, 0 as $t] };
-            let b = Point::<$t, 2> { coords: [max, 0 as $t] };
-            let c = Point::<$t, 2> { coords: [0 as $t, max] };
-            assert_eq!(a.turn(b, c), Turn::Left);
-            assert_eq!(a.turn(c, b), Turn::Right);
-            let diagonal_a = Point::<$t, 2> { coords: [0 as $t, 0 as $t] };
-            let diagonal_b = Point::<$t, 2> { coords: [1 as $t, 1 as $t] };
-            let diagonal_c = Point::<$t, 2> { coords: [max, max] };
-            assert_eq!(diagonal_a.turn(diagonal_b, diagonal_c), Turn::Collinear);
-        }};
-    }
-
-    #[test]
-    fn turn_integer_basics() {
-        assert_turn_basics!(i8);
-        assert_turn_basics!(u8);
-        assert_turn_basics!(i16);
-        assert_turn_basics!(u16);
-        assert_turn_basics!(i32);
-        assert_turn_basics!(u32);
-        assert_turn_basics!(i64);
-        assert_turn_basics!(u64);
-        assert_turn_basics!(isize);
-        assert_turn_basics!(usize);
-    }
-    #[test]
-    fn turn_signed_extremes() {
-        assert_signed_extremes!(i8);
-        assert_signed_extremes!(i16);
-        assert_signed_extremes!(i32);
-        assert_signed_extremes!(i64);
-        assert_signed_extremes!(isize);
-    }
-    #[test]
-    fn turn_unsigned_extremes() {
-        assert_unsigned_extremes!(u8);
-        assert_unsigned_extremes!(u16);
-        assert_unsigned_extremes!(u32);
-        assert_unsigned_extremes!(u64);
-        assert_unsigned_extremes!(usize);
-    }
-    const _: () = {
-        let a = Point::<i32, 2> { coords: [0, 0] };
-        let b = Point::<i32, 2> { coords: [1, 0] };
-        let c = Point::<i32, 2> { coords: [0, 1] };
-        assert!(a.turn(b, c).is_left());
+macro_rules! impl_point_segment_relation_int {
+    ($($t:ty),+ $(,)?) => {
+        $(
+            impl Point<$t, 2> {
+                /// Classifies this point relative to the directed segment `orig → dest`.
+                ///
+                /// Returns [`None`] when the segment is degenerate, meaning
+                /// that its origin and destination coincide.
+                #[must_use]
+                pub const fn segment_relation(self, orig: Self, dest: Self)
+                    -> Option<PointSegmentRelation> {
+                    // A zero-length segment has neither a direction nor a
+                    // meaningful supporting-line ordering.
+                    if orig.coords[0] == dest.coords[0] && orig.coords[1] == dest.coords[1] {
+                        return None;
+                    }
+                    match orig.turn(dest, self) {
+                        Turn::Left => { return Some(PointSegmentRelation::Left); }
+                        Turn::Right => { return Some(PointSegmentRelation::Right); }
+                        Turn::Collinear => {}
+                    }
+                    // Along a non-degenerate collinear segment, either varying
+                    // coordinate provides a monotonic parameter.
+                    let (origin_axis, destination_axis, point_axis) =
+                        if orig.coords[0] != dest.coords[0] {
+                            (orig.coords[0], dest.coords[0], self.coords[0])
+                        } else {
+                            (orig.coords[1], dest.coords[1], self.coords[1])
+                        };
+                    if point_axis == origin_axis {
+                        Some(PointSegmentRelation::Origin)
+                    } else if point_axis == destination_axis {
+                        Some(PointSegmentRelation::Destination)
+                    } else if origin_axis < destination_axis {
+                        if point_axis < origin_axis {
+                            Some(PointSegmentRelation::Behind)
+                        } else if point_axis > destination_axis {
+                            Some(PointSegmentRelation::Beyond)
+                        } else {
+                            Some(PointSegmentRelation::Between)
+                        }
+                    } else if point_axis > origin_axis {
+                        Some(PointSegmentRelation::Behind)
+                    } else if point_axis < destination_axis {
+                        Some(PointSegmentRelation::Beyond)
+                    } else {
+                        Some(PointSegmentRelation::Between)
+                    }
+                }
+            }
+        )+
     };
 }
+impl_point_segment_relation_int!(i8, u8, i16, u16, i32, u32, i64, u64, isize, usize);

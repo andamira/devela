@@ -3,11 +3,14 @@
 //! Positions in affine space without metric or unit semantics
 //
 
-mod define; //
+#[cfg(test)]
+mod _test;
+
+mod define; // Point*
 
 #[cfg(feature = "alg")]
 mod vector; // impl vector ops
-mod turn;
+mod turn; // Turn-related impls
 
 crate::structural_mods! { // _mods
     _mods {

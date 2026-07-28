@@ -8,6 +8,7 @@
 
 // mod boundary;
 // mod adjacency;
+mod point_segment;
 // mod relation; // MAYBE
 mod turn;
 
@@ -16,7 +17,8 @@ crate::structural_mods! { // _mods
         pub use super::{
             // boundary::*,
             // adjacency::*,
-            turn::*,
+            point_segment::PointSegmentRelation,
+            turn::Turn,
         };
     }
 }

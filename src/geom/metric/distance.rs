@@ -4,7 +4,7 @@
 //
 
 #[cfg(doc)]
-use crate::{Orientation, Position};
+use crate::{Extent, Orientation, Position};
 
 #[doc = crate::_tags!(geom)]
 /// A component-wise separation between locations in `D`-dimensional space.
@@ -17,11 +17,14 @@ use crate::{Orientation, Position};
 /// although this type does not enforce that invariant.
 ///
 /// - Unlike [`Position`], `Distance` is relative rather than absolute.
-/// - Unlike [`Vector`], `Distance` does not represent a directed displacement.
+/// - Unlike [`Orientation`], `Distance` has **magnitude** but no defined direction.
 /// - Unlike [`Extent`], `Distance` relates locations rather than describing
 ///   the size of an object or domain.
+/// - Unlike [`Vector`], `Distance` does not represent a directed displacement.
 ///
 /// See also: [`Distance1`], [`Distance2`], [`Distance3`], [`dis!`][crate::dis].
+///
+/// [`Vector`]: crate::Vector
 #[must_use]
 #[repr(transparent)]
 pub struct Distance<T, const D: usize> {
