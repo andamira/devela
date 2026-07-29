@@ -59,6 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
+- 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
 - 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
@@ -85,7 +86,6 @@ See also
 - 1.??: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
-- 1.??: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
 - 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
