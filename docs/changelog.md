@@ -142,6 +142,12 @@
   - add const primitive operations and checked integer variants.
   - improve floating-point magnitude and normalization.
 
+#### num::alg::matrix
+- update `Matrix`:
+  - simplify the static owning representation, removing storage-order and algorithm-scratch parameters.
+  - add common traits, shape and access utilities, transposition, and const primitive operations.
+  - add identity, trace, checked integer variants, and vector and matrix products.
+
 #### num::fin::ord
 - fix `cmp!` clamp arm.
 

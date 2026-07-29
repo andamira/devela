@@ -1,18 +1,30 @@
 // devela/src/num/alg/matrix/mod.rs
 //
-//! Matrices.
+//! Static and borrowed matrix representations.
 //
 
 #[cfg(test)]
 mod _test;
 
 mod define; // Matrix
-mod methods;
+mod methods; // construction, shape, access, structural operations
+mod ops; // overloadable operators
+mod primitive; // const primitive arithmetic
+
+// mod layout; // TODO MatrixLayout: rows, columns, offset and strides
+// mod view; // TODO MatrixView<D>: external backing interpretation
+//
+// #[cfg(feature = "alloc")]
+// mod buf; // TODO MatrixBuf<T>: dynamic owning dense matrix
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            define::*,
+            define::Matrix,
+            // layout::MatrixLayout,
+            // view::MatrixView,
         };
+        // #[cfg(feature = "alloc")]
+        // pub use super::buf::MatrixBuf;
     }
 }
