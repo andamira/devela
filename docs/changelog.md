@@ -90,6 +90,7 @@
 ### geom::affine
 - new types: `Simplex`, `SimplexFacetView`, `SimplexFacetIter`.
 - update `Point`:
+  - add robust planar turn and point-segment predicates
   - remove methods for explicit conversion to vectors.
   - implement affine operations with vectors.
   - remove `PartialOrd` and `Ord` impls.

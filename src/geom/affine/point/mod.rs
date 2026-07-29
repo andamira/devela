@@ -3,9 +3,6 @@
 //! Positions in affine space without metric or unit semantics
 //
 
-#[cfg(test)]
-mod _test;
-
 mod define; // Point*
 
 #[cfg(feature = "alg")]

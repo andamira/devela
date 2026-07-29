@@ -79,7 +79,6 @@ macro_rules! _impl_matrix {
             /// # Panics
             ///
             /// Panics if the declared backing lengths do not match their matrix dimensions.
-            #[must_use]
             pub const fn product<
                 const INNER: usize,
                 const LEFT_LEN: usize,
@@ -119,7 +118,6 @@ macro_rules! _impl_matrix {
                 result
             };
             /// Multiplies this square matrix by another square matrix.
-            #[must_use]
             pub const fn mul_square(&self, other: &Self) -> Self {
                 Self::product(self, other)
             }

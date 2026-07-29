@@ -1,4 +1,4 @@
-// devela/src/geom/affine/point/turn.rs
+// devela/src/geom/affine/point/turn/int.rs
 //
 //! Implements methods related to `Turn` and `PointSegmentRelation`.
 //
@@ -112,20 +112,13 @@ macro_rules! impl_point_segment_relation_int {
                     } else if point_axis == destination_axis {
                         Some(PointSegmentRelation::Destination)
                     } else if origin_axis < destination_axis {
-                        if point_axis < origin_axis {
-                            Some(PointSegmentRelation::Behind)
-                        } else if point_axis > destination_axis {
-                            Some(PointSegmentRelation::Beyond)
-                        } else {
-                            Some(PointSegmentRelation::Between)
-                        }
-                    } else if point_axis > origin_axis {
-                        Some(PointSegmentRelation::Behind)
-                    } else if point_axis < destination_axis {
-                        Some(PointSegmentRelation::Beyond)
-                    } else {
-                        Some(PointSegmentRelation::Between)
+                        if point_axis < origin_axis { Some(PointSegmentRelation::Behind) }
+                        else if point_axis > destination_axis { Some(PointSegmentRelation::Beyond) }
+                        else { Some(PointSegmentRelation::Between) }
                     }
+                    else if point_axis > origin_axis { Some(PointSegmentRelation::Behind) }
+                    else if point_axis < destination_axis { Some(PointSegmentRelation::Beyond) }
+                    else { Some(PointSegmentRelation::Between) }
                 }
             }
         )+

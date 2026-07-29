@@ -1,6 +1,131 @@
-// devela/src/geom/affine/point/_test.rs
+// devela/src/geom/affine/point/turn/_test.rs
 
-mod turn {
+mod float_turn {
+    use crate::{Point, PointSegmentRelation as Relation, Turn};
+
+    #[test]
+    fn f32_turns() {
+        let a = Point::<f32, 2> { coords: [0.0, 0.0] };
+        let b = Point::<f32, 2> { coords: [4.0, 0.0] };
+        assert_eq!(a.try_turn(b, Point { coords: [2.0, 3.0] }), Some(Turn::Left));
+        assert_eq!(a.try_turn(b, Point { coords: [2.0, -3.0] }), Some(Turn::Right));
+        assert_eq!(a.try_turn(b, Point { coords: [2.0, 0.0] }), Some(Turn::Collinear));
+    }
+    #[test]
+    fn f64_turns() {
+        let a = Point::<f64, 2> { coords: [0.0, 0.0] };
+        let b = Point::<f64, 2> { coords: [4.0, 0.0] };
+        let c = Point::<f64, 2> { coords: [2.0, 3.0] };
+        let turn = a.try_turn(b, c);
+        assert_eq!(turn, Some(Turn::Left));
+        assert_eq!(b.try_turn(c, a), turn);
+        assert_eq!(c.try_turn(a, b), turn);
+        assert_eq!(a.try_turn(c, b), Some(Turn::Right));
+    }
+    #[test]
+    fn f64_resolves_near_collinearity() {
+        let a = Point::<f64, 2> {
+            coords: [f64::from_bits(0xBFF4_4110_0FDF_88E2), f64::from_bits(0xBFE9_1ABA_D188_0594)],
+        };
+        let b = Point::<f64, 2> {
+            coords: [f64::from_bits(0xC008_2C8F_70E2_B89E), f64::from_bits(0xC004_FB67_6350_95F9)],
+        };
+        let c = Point::<f64, 2> {
+            coords: [f64::from_bits(0x3FCB_A857_A392_4DA7), f64::from_bits(0x3FE8_8AFC_E812_597E)],
+        };
+
+        let naive = (b.coords[0] - a.coords[0]) * (c.coords[1] - a.coords[1])
+            - (b.coords[1] - a.coords[1]) * (c.coords[0] - a.coords[0]);
+
+        assert_eq!(naive, 0.0);
+        assert_eq!(a.try_turn(b, c), Some(Turn::Right));
+
+        // The point-segment relation inherits the robust turn classification.
+        assert_eq!(c.segment_relation(a, b), Some(Relation::Right));
+    }
+    #[test]
+    fn non_finite_has_no_turn() {
+        let finite = Point::<f64, 2> { coords: [0.0, 0.0] };
+        let infinite = Point::<f64, 2> { coords: [f64::INFINITY, 0.0] };
+        let nan = Point::<f64, 2> { coords: [f64::NAN, 0.0] };
+        assert_eq!(finite.try_turn(infinite, finite), None);
+        assert_eq!(finite.try_turn(nan, finite), None);
+    }
+}
+
+mod float_point_segment {
+    use crate::{Point, PointSegmentRelation as Relation};
+
+    macro_rules! point {
+        ($t:ty; $x:expr, $y:expr) => {
+            Point::<$t, 2> { coords: [$x as $t, $y as $t] }
+        };
+    }
+
+    macro_rules! assert_float_relations {
+        ($t:ty) => {{
+            // Horizontal segment directed rightward.
+            let origin = point![$t; 2.0, 2.0];
+            let destination = point![$t; 6.0, 2.0];
+            let cases = [
+                (point![$t; 4.0, 5.0], Relation::Left),
+                (point![$t; 4.0, 0.0], Relation::Right),
+                (point![$t; 0.0, 2.0], Relation::Behind),
+                (origin, Relation::Origin),
+                (point![$t; 4.0, 2.0], Relation::Between),
+                (destination, Relation::Destination),
+                (point![$t; 8.0, 2.0], Relation::Beyond),
+            ];
+            for (point, expected) in cases {
+                assert_eq!(point.segment_relation(origin, destination), Some(expected));
+                assert_eq!(point.segment_relation(destination, origin), Some(expected.reversed()));
+            }
+            // Vertical segment directed downward.
+            let origin = point![$t; 3.0, 7.0];
+            let destination = point![$t; 3.0, 2.0];
+            let cases = [
+                (point![$t; 5.0, 4.0], Relation::Left),
+                (point![$t; 1.0, 4.0], Relation::Right),
+                (point![$t; 3.0, 9.0], Relation::Behind),
+                (origin, Relation::Origin),
+                (point![$t; 3.0, 4.0], Relation::Between),
+                (destination, Relation::Destination),
+                (point![$t; 3.0, 0.0], Relation::Beyond),
+            ];
+            for (point, expected) in cases {
+                assert_eq!(point.segment_relation(origin, destination), Some(expected));
+                assert_eq!(point.segment_relation(destination, origin), Some(expected.reversed()));
+            }
+            let collapsed = point![$t; 4.0, 4.0];
+            assert_eq!(collapsed.segment_relation(collapsed, collapsed), None);
+            assert_eq!(point![$t; 5.0, 4.0] .segment_relation(collapsed, collapsed), None);
+        }};
+    }
+    #[test]
+    fn floating_relations() {
+        assert_float_relations!(f32);
+        assert_float_relations!(f64);
+    }
+    #[test]
+    fn non_finite_relation_is_undefined() {
+        let origin = Point::<f64, 2> { coords: [0.0, 0.0] };
+        let destination = Point::<f64, 2> { coords: [4.0, 0.0] };
+        assert_eq!(Point { coords: [f64::NAN, 0.0] }.segment_relation(origin, destination), None,);
+        assert_eq!(
+            Point { coords: [2.0_f64, 0.0] }
+                .segment_relation(origin, Point { coords: [f64::INFINITY, 0.0] }),
+            None
+        );
+    }
+    const _: () = {
+        let origin = Point::<f32, 2> { coords: [0.0, 0.0] };
+        let destination = Point::<f32, 2> { coords: [4.0, 0.0] };
+        let point = Point::<f32, 2> { coords: [2.0, 0.0] };
+        assert!(matches!(point.segment_relation(origin, destination), Some(Relation::Between)));
+    };
+}
+
+mod int_turn {
     use crate::{Point, Turn};
 
     macro_rules! point {
@@ -99,9 +224,55 @@ mod turn {
         let c = Point::<i32, 2> { coords: [0, 1] };
         assert!(a.turn(b, c).is_left());
     };
+
+    macro_rules! assert_turn_product_signs {
+        ($t:ty) => {{
+            let a = point![$t; 4, 4];
+            // Positive lhs, negative rhs.
+            assert_eq!(a.turn(point![$t; 5, 5], point![$t; 3, 5]), Turn::Left);
+            // Negative lhs, positive rhs.
+            assert_eq!(a.turn(point![$t; 3, 5], point![$t; 5, 5]), Turn::Right);
+            // Both products negative, lhs magnitude greater.
+            assert_eq!(a.turn(point![$t; 6, 3], point![$t; 5, 2]), Turn::Right);
+            // Both products negative, rhs magnitude greater.
+            assert_eq!(a.turn(point![$t; 5, 2], point![$t; 6, 3]), Turn::Left);
+            // Equal negative products.
+            assert_eq!(a.turn(point![$t; 5, 3], point![$t; 6, 2]), Turn::Collinear);
+        }};
+    }
+
+    #[test]
+    fn turn_product_sign_paths() {
+        assert_turn_product_signs!(i8);
+        assert_turn_product_signs!(u8);
+        assert_turn_product_signs!(i16);
+        assert_turn_product_signs!(u16);
+        assert_turn_product_signs!(i32);
+        assert_turn_product_signs!(u32);
+        assert_turn_product_signs!(i64);
+        assert_turn_product_signs!(u64);
+        assert_turn_product_signs!(isize);
+        assert_turn_product_signs!(usize);
+    }
+    #[test]
+    fn turn_wide_product_cancellation() {
+        let max = u64::MAX;
+        let a = Point::<u64, 2> { coords: [0, 0] };
+        let b = Point::<u64, 2> { coords: [max, max - 1] };
+        let c = Point::<u64, 2> { coords: [max - 1, max - 2] };
+        assert_eq!(a.turn(b, c), Turn::Right);
+        assert_eq!(a.turn(c, b), Turn::Left);
+        let min = i64::MIN;
+        let max = i64::MAX;
+        let a = Point::<i64, 2> { coords: [min, min] };
+        let b = Point::<i64, 2> { coords: [max, max - 1] };
+        let c = Point::<i64, 2> { coords: [max - 1, max - 2] };
+        assert_eq!(a.turn(b, c), Turn::Right);
+        assert_eq!(a.turn(c, b), Turn::Left);
+    }
 }
 
-mod point_segment_relation {
+mod int_point_segment {
     use crate::{Point, PointSegmentRelation as Relation, Turn};
 
     macro_rules! point {

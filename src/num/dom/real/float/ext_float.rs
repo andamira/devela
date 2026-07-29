@@ -125,7 +125,7 @@ pub trait FloatExt: FloatConst + Sized {
     /// Fused multiply-add. Computes `(self * mul) + add` with only one rounding error.
     ///
     /// With `std` enabled it leverages compiler intrinsics,
-    /// otherwise it uses [`mul_add_fallback`][Float::mul_add_fallback].
+    /// otherwise it leverages [`mul_add_fallback`][Float::mul_add_fallback].
     #[must_use]
     fn mul_add(self, mul: Self, add: Self) -> Self;
 
