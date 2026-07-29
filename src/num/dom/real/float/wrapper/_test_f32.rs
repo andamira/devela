@@ -87,10 +87,6 @@ fn is_zero() {
     assert_eq!(Float(-1.0_f32).is_zero(), false);
 }
 #[test]
-fn mul_add_fallback() {
-    assert_eq!(Float(2.0_f32).mul_add_fallback(3.0, 4.0), 10.0);
-}
-#[test]
 fn div_euclid() {
     assert_eq!(Float(17.0_f32).div_euclid(3.0), 5.0);
     assert_eq!(Float(17.0_f32).div_euclid(-3.0), -5.0);

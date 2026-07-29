@@ -68,6 +68,15 @@ macro_rules! _num_dom_real_float_impl_no_std {
             #[doc = crate::_FLOAT_FORMULA_SPLIT!()]
             pub const fn split(self) -> (Float<$f>, Float<$f>) { self.const_split() }
 
+            /// Unfused multiply-add no_std fallback.
+            ///
+            /// Computes `self * mul + add` as separate operations.
+            ///
+            /// The product may be rounded before the addition.
+            pub const fn mul_add(self, mul: $f, add: $f) -> Float<$f> {
+                self.mul_add_unfused(mul, add)
+            }
+
             /// Raises itself to the `p` integer power.
             pub const fn powi(self, p: $ie) -> Float<$f> { self.const_powi(p) }
         }

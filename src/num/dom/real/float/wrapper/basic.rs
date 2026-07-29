@@ -16,7 +16,7 @@ use crate::{Cmp, concat as cc, is, stringify as sfy, whilst};
 macro_rules! _num_dom_real_float_impl_basic {
     () => {
         _num_dom_real_float_impl_basic![ (f32:u32, i32, u32), (f64:u64, i32, u32)];
-        // #[cfg(feature = "nightly_float")] // TODO
+        // #[cfg(feature = "nightly_float")] // FUTURE
         // _num_dom_real_float_impl_basic![ (f16:u16, u32), (f128:u128, u32)];
     };
 
@@ -186,8 +186,10 @@ macro_rules! _num_dom_real_float_impl_basic {
                 !self.is_zero() && self.is_sign_negative()
             }
 
-            /// Computes `(x * mul + add)` normally.
-            pub const fn mul_add_fallback(self, mul: $f, add: $f) -> Float<$f> {
+            /// Computes `self * mul + add` as separate operations.
+            ///
+            /// The product may be rounded before the addition.
+            pub const fn mul_add_unfused(self, mul: $f, add: $f) -> Float<$f> {
                 Float(self.0 * mul + add)
             }
 
