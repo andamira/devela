@@ -4,7 +4,7 @@
 //
 // TEMP: legacy impl, for HandleSpan
 
-#[doc = crate::_tags!(construction uid)]
+#[doc = crate::_tags!(construction uid rework)]
 /// Defines a lightweight handle type.
 #[doc = crate::_doc_meta!{location("data/id")}]
 ///

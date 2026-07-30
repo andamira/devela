@@ -11,7 +11,7 @@ use crate::Int;
 
 mod impl_frac;
 
-#[doc = crate::_tags!(num namespace)]
+#[doc = crate::_tags!(num namespace rework)]
 /// Provides comprehensive fractional operations on `T`, most of them *const*.
 #[doc = crate::_doc_meta!{location("num/dom")}]
 ///

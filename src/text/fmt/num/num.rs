@@ -3,7 +3,8 @@
 //! Defines [`FmtNum`].
 //
 
-#[doc = crate::_tags!(fmt num)]
+// REWORK: Replace the current namespace-based API with a `num_fmt!` macro.
+#[doc = crate::_tags!(fmt num rework)]
 /// Const number formatter.
 #[doc = crate::_doc_meta!{location("text/fmt")}]
 ///

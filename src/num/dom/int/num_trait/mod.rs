@@ -39,7 +39,8 @@ mod auto_impls {
     impl<T: NumInt> NumRefInt<'_> for &mut T {}
 }
 
-#[doc = crate::_tags!(num)]
+// REWORK: Replace the current namespace-based API with an `int!` macro.
+#[doc = crate::_tags!(num rework)]
 /// Common trait for integer types.
 #[doc = crate::_doc_meta!{location("num/dom/int")}]
 ///

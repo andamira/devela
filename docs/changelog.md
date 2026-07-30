@@ -29,7 +29,7 @@
 ## documentation
 - make `all` and `all_` root modules public.
 - remove `zall` and `zall_` public root modules.
-- - new tag: `_TAG_<STATE|TOPOL>`.
+- new tag: `_TAG_<REWORK|STATE|TOPOL>`.
 - clarify public module and hidden scope features.
 - update katex to v0.18.0.
 
@@ -148,6 +148,11 @@
   - simplify the static owning representation, removing storage-order and algorithm-scratch parameters.
   - add common traits, shape and access utilities, transposition, and const primitive operations.
   - add identity, trace, checked integer variants, and vector and matrix products.
+
+#### num::dom::real
+- update `Float`:
+  - rename `mul_add_fallback` to `mul_add_unfused`.
+  - add `mul_add` no_std fallback version.
 
 #### num::fin::ord
 - fix `cmp!` clamp arm.

@@ -7,7 +7,7 @@ use crate::{NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};
 
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(num rework)]
 /// Common trait for numeric types.
 #[doc = crate::_doc_meta!{location("num/dom")}]
 ///

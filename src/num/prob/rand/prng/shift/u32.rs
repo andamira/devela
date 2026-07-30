@@ -6,7 +6,7 @@
 use crate::{_xorshift_basis, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 use crate::{Cast, ConstInit, Own, Slice, slice};
 
-#[doc = crate::_tags!(rand)]
+#[doc = crate::_tags!(rand rework)]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
 #[doc = crate::_doc_meta!{location("num/prob/rand")}]
 ///

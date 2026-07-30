@@ -18,6 +18,9 @@
 /// Emits a location annotation for documentation.
 #[doc = crate::_doc_meta!{location("yard")}]
 ///
+/// Location is usually the nearest publicly documented parent,
+/// instead of the conceptual private source module of origin.
+///
 /// This macro renders a small location marker (`📍`) followed by the public
 /// API path under `devela`, and optionally the crate where the item is defined.
 ///

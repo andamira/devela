@@ -179,6 +179,8 @@ _define_symbol_tags! {
     // Terminal outcome values in a control or computation flow,
     // not producers or fallible abstractions.
     _TAG_RESULT, "Outcome", "⚖️";
+    // An existing design expected to require substantial reconstruction or replacement.
+    _TAG_REWORK, "Reconstruction needed", "🏚️";
     // Live orchestration of execution flows.
     // Covers schedulers, tasks, async runtimes, and progression of active systems.
     // Excludes structural invocation semantics.

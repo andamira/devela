@@ -14,7 +14,7 @@
 
 use crate::{ConstInit, PhantomData, whilst};
 
-#[doc = crate::_tags!(codec)]
+#[doc = crate::_tags!(codec rework)]
 /// A compile-time configurable radix-based encoding scheme.
 #[doc = crate::_doc_meta!{location("data/codec")}]
 ///

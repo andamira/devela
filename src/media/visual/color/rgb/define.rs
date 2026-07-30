@@ -3,7 +3,7 @@
 //! Defines the [`Rgb`] and [`Rgba`] types.
 //
 
-#[doc = crate::_tags!(color)]
+#[doc = crate::_tags!(color rework)]
 /// RGB color with 3 channels.
 #[doc = crate::_doc_meta!{location("media/visual/color")}]
 #[repr(C)]
@@ -14,7 +14,7 @@ pub struct Rgb<T, const LINEAR: bool = false> {
     pub c: [T; 3],
 }
 
-#[doc = crate::_tags!(color)]
+#[doc = crate::_tags!(color rework)]
 /// RGB+A color with 4 channels.
 #[doc = crate::_doc_meta!{location("media/visual/color")}]
 #[repr(C)]
