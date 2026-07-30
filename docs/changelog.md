@@ -161,6 +161,7 @@
 - new macro `bound_int!`.
 
 ### num::quant
+- new type: `Scale`.
 - add nonzero-denominator primitive aliases: `Ratio<I|U><8|16|32|64|128|size>`.
 - overhaul `Ratio` with new functionalty for primitive aliases.
 

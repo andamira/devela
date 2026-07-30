@@ -54,7 +54,7 @@ mod cycle; // Cycle, CycleCount
 mod interval; // Interval, interval!
 // mod power; // Log, Power, Root
 mod ratio; // Ratio*
-// mod scale; // Scale
+mod scale; // Scale
 mod sign; // Sign
 mod value; // ValueQuant
 
@@ -68,7 +68,7 @@ crate::structural_mods! { // _mods
             interval::{Interval, interval},
             // power::*,
             ratio::_all::*,
-            // scale::*,
+            scale::*,
             sign::*,
             value::*,
         };
