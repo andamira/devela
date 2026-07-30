@@ -10,8 +10,13 @@ use crate::{Lunit, UiRect};
 
 #[doc = crate::_tags!(ui)]
 /// A resolved backend-neutral draw record in logical UI space.
-#[doc = crate::_doc_meta! { location("ui/view") }]
-///
+#[doc = crate::_doc_meta! {
+    location("ui/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: UiDraw<u8, &str> = 28|224),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: UiDraw<u8, &str> = 40|320),
+}]
 /// A draw record describes one spatial presentation operation produced during
 /// UI view projection. Its rectangle is fully resolved and expressed in [`Lunit`]s.
 ///
@@ -88,8 +93,13 @@ impl<S, T> UiDraw<S, T> {
 
 #[doc = crate::_tags!(ui)]
 /// Operation and payload of a [`UiDraw`].
-#[doc = crate::_doc_meta! { location("ui/view") }]
-///
+#[doc = crate::_doc_meta! {
+    location("ui/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: UiDrawKind<u8, &str> = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: UiDrawKind<u8, &str> = 24|192; niche Option),
+}]
 /// Geometry common to every operation is stored by [`UiDraw`]. This enum
 /// contains only the operation-specific data required by the presenter.
 #[must_use]

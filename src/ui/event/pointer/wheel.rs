@@ -107,8 +107,10 @@ impl EventWheel {
 
 #[doc = crate::_tags!(event interaction)]
 /// The semantic unit carried by an [`EventWheel`].
-#[doc = crate::_doc_meta!{ location("ui/event") }]
-///
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventWheelUnit = 1|8; niche Option),
+}]
 /// This describes the meaning of `delta_x` and `delta_y` after backend normalization.
 ///
 ///

@@ -112,7 +112,10 @@ impl EventPointer {
 
 #[doc = crate::_tags!(event interaction)]
 /// Enum representing the type of pointer.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventPointerKind = 1|8),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EventPointerKind {
     /// A mouse pointer.
@@ -125,7 +128,10 @@ pub enum EventPointerKind {
 _impl_init! { Self::Mouse => EventPointerKind }
 
 // /// Represents the phase of a pointer (useful for touch events).
-// #[doc = crate::_doc_meta!{location("ui/event")}]
+// #[doc = crate::_doc_meta!{
+//     location("ui/event"),
+//     test_size_of(EventPointerPhase = 1|8; niche Option),
+// }]
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 // pub enum EventPointerPhase {
 //     /// The pointer has started touching the surface.

@@ -9,8 +9,10 @@ _impl_init![Self::Global => EventTarget];
 
 #[doc = crate::_tags!(event uid)]
 /// Identifies what an [`Event`][crate::Event] is conceptually directed to.
-#[doc = crate::_doc_meta!{location("ui/event")}]
-///
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventTarget = 8|64; niche Option),
+}]
 /// - Some backends (X11, Wayland, Win32, macOS) generate window–scoped events.
 ///   These are represented as [`EventTarget::Window`], carrying a window
 ///   identifier meaningful to the backend.

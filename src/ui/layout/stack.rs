@@ -10,7 +10,10 @@ use crate::{Boundary2d, Lunit, UiRect};
 
 #[doc = crate::_tags!(layout)]
 /// Cursor-like helper for sequentially taking rectangles from a region.
-#[doc = crate::_doc_meta!{ location("ui/layout") }]
+#[doc = crate::_doc_meta!{
+    location("ui/layout"),
+    test_size_of(UiStack = 24|192; niche Option),
+}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct UiStack {

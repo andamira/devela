@@ -72,8 +72,13 @@ where
 
 #[doc = crate::_tags!(ui lifetime)]
 /// A borrowed read-only view over a completed backend-neutral UI frame.
-#[doc = crate::_doc_meta! { location("ui/frame") }]
-///
+#[doc = crate::_doc_meta! {
+    location("ui/frame"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: UiOutputView<u8, &str> = 24|192; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: UiOutputView<u8, &str> = 48|384; niche Option),
+}]
 /// Borrows the frame record streams without taking ownership of their storage.
 ///
 /// This is the canonical form intended for backend-neutral presenters.

@@ -58,7 +58,10 @@ impl UiFrame {
 #[doc = crate::_tags!(ui time)]
 /// Phase of UI frame processing.
 #[must_use]
-#[doc = crate::_doc_meta!{location("ui/frame")}]
+#[doc = crate::_doc_meta!{
+    location("ui/frame"),
+    test_size_of(UiPhase = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum UiPhase {
     /// Initial frame setup.

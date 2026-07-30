@@ -9,7 +9,10 @@ use crate::ConstInit;
 
 #[doc = crate::_tags!(interaction)]
 /// Keypad keys.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(KeyPad = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[non_exhaustive]
 #[allow(missing_docs)] #[rustfmt::skip]

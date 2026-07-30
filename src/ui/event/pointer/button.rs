@@ -86,7 +86,10 @@ impl EventButton {
 
 #[doc = crate::_tags!(event interaction)]
 /// Represents the state of a button.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventButtonState = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
     /// The button was pressed.

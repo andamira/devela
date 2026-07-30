@@ -9,16 +9,26 @@ use crate::{PhantomData, UiDraw};
 
 #[doc = crate::_tags!(ui data_structure lifetime)]
 /// A borrowed view over an ordered UI draw sequence.
-#[doc = crate::_doc_meta! { location("ui/view") }]
-///
+#[doc = crate::_doc_meta! {
+    location("ui/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: UiDrawListView<'_, u8, &str> = 8|64),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: UiDrawListView<'_, u8, &str> = 16|128),
+}]
 /// It preserves the painter ordering of the underlying
 /// [`UiDrawList`] without taking ownership of its storage.
 pub type UiDrawListView<'a, S, T = &'a str> = UiDrawList<S, T, &'a [UiDraw<S, T>]>;
 
 #[doc = crate::_tags!(ui data_structure)]
 /// An ordered UI draw sequence over caller-chosen storage.
-#[doc = crate::_doc_meta! { location("ui/view") }]
-///
+#[doc = crate::_doc_meta! {
+    location("ui/view"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 8|64),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 16|128),
+}]
 /// The list is a backend-neutral display list in resolved logical UI space.
 ///
 /// Records are presented from first to last. When records overlap, a later

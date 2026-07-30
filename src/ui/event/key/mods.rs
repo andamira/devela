@@ -14,7 +14,10 @@ use crate::{ConstInit, impl_trait, is, set};
 
 #[doc = crate::_tags!(interaction member)]
 /// Modifier key codes (when pressed by themselves)
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(KeyMod = 1|8),
+}]
 ///
 /// These keys modify the behavior of other keys when held down.
 //

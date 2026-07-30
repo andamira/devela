@@ -11,7 +11,10 @@ use crate::{
 
 #[doc = crate::_tags!(event time)]
 /// Selects how an [`EventTimestamp`] should be formatted.
-#[doc = crate::_doc_meta!{location("ui/event")}]
+#[doc = crate::_doc_meta!{
+    location("ui/event"),
+    test_size_of(EventTimestampMode = 1|8; niche Option),
+}]
 ///
 /// This controls whether the timestamp is shown as integer milliseconds,
 /// floating-point milliseconds, both representations, or chosen automatically

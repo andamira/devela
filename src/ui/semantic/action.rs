@@ -7,7 +7,10 @@ crate::enumset! {
 
     #[doc = crate::_tags!(ui interaction member)]
     /// Human-facing action exposed by a UI identity.
-    #[doc = crate::_doc_meta! {location("ui/semantic")}]
+    #[doc = crate::_doc_meta! {
+        location("ui/semantic"),
+        test_size_of(UiAction = 1|8),
+    }]
     #[must_use]
     pub enum UiAction(
 
