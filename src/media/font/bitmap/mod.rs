@@ -9,14 +9,14 @@ mod _test;
 mod view; // FontBitmapView, GlyphBitmapView
 mod word; // FontBitmapWord
 
-mod fonts; // FONT_BIT_3_3,  FONT_BIT_3_5, FONT_BIT_5_6
+mod fonts; // Fonts::BIT_3_3,  Fonts::BIT_3_5, Fonts::BIT_5_6
+mod termivela; // Fonts::TERMIVELA_*
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             view::*,
             word::*,
-            fonts::*,
         };
     }
 }

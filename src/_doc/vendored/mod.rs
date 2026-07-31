@@ -38,3 +38,4 @@ crate::_doc_vendor! { mod: "apply", apply }
 // crate::_doc_vendor! { mod: "blit-fonts", blit_fonts }
 crate::_doc_vendor! { mod: "jiff", jiff }
 crate::_doc_vendor! { mod: "pengyhash", pengyhash }
+crate::_doc_vendor! { mod: "termivela", termivela }

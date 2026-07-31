@@ -1,3 +1,5 @@
+<!-- devela/src/_doc/features.md -->
+
 ## Features and Flags
 
 Features are grouped in the following categories:

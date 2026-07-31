@@ -111,6 +111,13 @@ include = [
 	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 	## programs
+	# "",
+	## assets
+	"/assets/font/termivela/*.md",
+	"/assets/font/termivela/*.txt",
+	"/assets/font/termivela/*.toml",
+	"/assets/font/termivela/termivela-8x16-bold.dvbf",
+	"/assets/font/termivela/termivela-8x16-regular.dvbf",
 ]
 
 [package.metadata.docs.rs]

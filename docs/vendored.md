@@ -1,3 +1,5 @@
+<!-- devela/docs/vendored.md -->
+
 This project includes code adapted from various permissively licensed sources.
 
 Below is a list of derived works, their origins, and relevant modifications.
@@ -166,6 +168,9 @@ See the linked modifications for detailed changes.
   as the [`size_of_expr!`] macro.
 - <i id="Xabc"></i>[Xabc] by *EternityForest* (openly shared),
   as the [`Xabc`] struct PRNG algorithm.
+- <i id="terminus-font"></i>[Terminus Font] by Dimitar Toshkov Zhekov
+  and contributors (OFL-1.1-RFN), vendored in converted form as the
+  [Termivela] bitmap-font family ([*modifications*][M_termivela]).
 - <i id="GraphicGems"></i>[Graphics Gems] (1985–1994) (permissive EULA),
   as various algorithms.
 
@@ -178,8 +183,8 @@ See the linked modifications for detailed changes.
   [`Hook`]: https://docs.rs/devela/latest/devela/code/result/trait.Hook.html
   [`Morph`]: https://docs.rs/devela/latest/devela/code/result/trait.Morph.html
 [blit-fonts]: https://github.com/azmr/blit-fonts
-  [`Fonts::BIT_3_5`]: https://docs.rs/devela/latest/devela/media/font/const.Fonts::BIT_3_5.html
-  [`Fonts::BIT_5_6`]: https://docs.rs/devela/latest/devela/media/font/const.Fonts::BIT_5_6.html
+  [`Fonts::BIT_3_5`]: https://docs.rs/devela/latest/devela/media/font/struct.Fonts.html#associatedconstant.BIT_3_5
+  [`Fonts::BIT_5_6`]: https://docs.rs/devela/latest/devela/media/font/struct.Fonts.html#associatedconstant.BIT_5_6
 [jiff]: https://crates.io/crates/jiff/0.2.1
   [M_jiff]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/jiff.md
   [`TimeDelta`]: https://docs.rs/devela/latest/devela/phys/time/struct.TimeDelta.html
@@ -188,6 +193,9 @@ See the linked modifications for detailed changes.
   [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
   [`size_of_expr!`]: https://docs.rs/devela/latest/devela/sys/mem/macro.size_of_expr.html
+[Terminus Font]: https://terminus-font.sourceforge.net/
+  [M_termivela]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/termivela.md
+  [Termivela]: https://docs.rs/devela/latest/devela/media/font/struct.Fonts.html#termivela
 [Xabc]: https://web.archive.org/web/20140328221846/https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
 [Graphics Gems]: https://www.realtimerendering.com/resources/GraphicsGems/

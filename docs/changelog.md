@@ -114,6 +114,7 @@
 
 ### media::font
 - new types: `Dvbf`, `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
+- new font: `termivela`, vendored from Terminus Font.
 - rename `FontBitmap` to `FontBitmapWord`.
 - move standalone font constants to associated `Fonts` constants without `FONT_` prefix.
 - make fonts methods const: `text_<advance|width>`.

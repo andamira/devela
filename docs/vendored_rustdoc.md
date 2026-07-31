@@ -1,3 +1,5 @@
+<!-- devela/docs/vendored_rustdoc.md -->
+
 <!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
 <!-- license: Apache-2.0 OR MIT -->
@@ -77,4 +79,6 @@
   [M_pengyhash]: crate::_doc::vendored::pengyhash
   [`HasherPengy`]: crate::data::codec::hash::HasherPengy
   [`size_of_expr!`]: crate::sys::mem::size_of_expr
+  [M_termivela]: crate::_doc::vendored::termivela
+  [Termivela]: crate::media::font::Fonts#termivela
   [`Xabc`]: crate::num::prob::rand::Xabc

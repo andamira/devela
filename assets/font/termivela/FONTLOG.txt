@@ -1,0 +1,17 @@
+Termivela FONTLOG
+
+Version 0.1.0 — 2026-07-31
+
+- Created the Termivela family from the regular and bold 8×16 BDF faces of Terminus Font 4.49.1.
+- Converted the Unicode scalar mappings, fixed metrics and monochrome glyph bitmaps to DVBF 0.1.0.
+- Adopted the name "Termivela" to distinguish the derivative from the Reserved Font Name "Terminus Font".
+- Made no intentional changes to glyph shapes or font metrics.
+
+Future modifications
+
+Future versions may add custom glyphs, amend existing glyphs, extend character coverage, or introduce additional bitmap strikes. Such changes will be recorded here.
+
+Acknowledgements
+
+Termivela is derived from Terminus Font by Dimitar Toshkov Zhekov and contributors.
+

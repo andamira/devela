@@ -1,0 +1,42 @@
+# /devela/assets/font/termivela/source.toml
+
+id = "termivela"
+family = "Termivela"
+version = "0.1.0"
+license = "OFL-1.1-RFN"
+
+[derivation]
+upstream_name = "Terminus Font"
+upstream_version = "4.49.1"
+reserved_font_name = "Terminus Font"
+transformation = "BDF-to-DVBF format conversion"
+glyph_changes = false
+
+[source]
+url = "https://sourceforge.net/projects/terminus-font/files/terminus-font-4.49/terminus-font-4.49.1.tar.gz/download"
+sha256 = "d961c1b781627bf417f9b340693d64fc219e0113ad3a3af1a3424c7aa373ef79"
+bytes = 648345
+
+[format]
+name = "DVBF"
+version = "0.1.0"
+
+[[strike]]
+face = "regular"
+cell = [8, 16]
+input = "ter-u16n.bdf"
+input_sha256 = "5197662b22bf9f3e68d4af9f969a7fefa3edae40dd82ae969a147381130fb4ae"
+output = "termivela-8x16-regular.dvbf"
+output_sha256 = "7b54cd70056f93f3d9c82688eb404839602dfbd5fb0bbf88c0e2a5b199274cf0"
+output_bytes = 27184
+distribution = "core"
+
+[[strike]]
+face = "bold"
+cell = [8, 16]
+input = "ter-u16b.bdf"
+input_sha256 = "92861fecd6f94c5ecc764fc43df5a69eb000ae13a75f652c6525db0495274f0a"
+output = "termivela-8x16-bold.dvbf"
+output_sha256 = "7acf3fc37fd6fefff1a46844d0b6ec8288767e4fc87e8c015f240f46dd758a0e"
+output_bytes = 27184
+distribution = "core"
