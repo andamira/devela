@@ -1,39 +1,24 @@
-// devela/src/media/font/format/bdf/_parse.rs
+// devela/src/media/font/format/bdf/_parse/hader.rs
 //
-//! Private BDF grammar and header parsing.
+//! Defines `BdfVersion`, `BdfSection`, `BdfHeader`.
 //
 
 #![allow(dead_code, reason = "staged BDF parser implementation")]
 
-use super::BdfError as E;
-use crate::{Region2, Slice, TextScanner, Version, is, lets, unwrap, whilst};
-
-/* local result propagation */
-
-macro_rules! bdf_try {
-    ($result:expr) => {
-        match $result {
-            Ok(value) => value,
-            Err(error) => return Err(error),
-        }
-    };
-}
-
-type BdfResult<T> = Result<T, E>;
-
-/* version */
+use super::{BdfLine, BdfNumber, BdfReader, BdfResult, bdf_try};
+use crate::{BdfError as E, Region2, TextScanner, Version, is, unwrap, whilst};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub(super) enum BdfVersion {
+pub(crate) enum BdfVersion {
     V2_1,
     V2_2,
 }
 impl BdfVersion {
-    pub(super) const fn read(bytes: &[u8]) -> BdfResult<Self> {
+    pub(crate) const fn read(bytes: &[u8]) -> BdfResult<Self> {
         let mut reader = BdfReader::new(bytes);
         read_startfont(&mut reader)
     }
-    pub(super) const fn to_version(self) -> Version {
+    pub(crate) const fn to_version(self) -> Version {
         match self {
             Self::V2_1 => Version::new(2, 1, 0),
             Self::V2_2 => Version::new(2, 2, 0),
@@ -50,208 +35,6 @@ impl BdfVersion {
         matches![self, Self::V2_1]
     }
 }
-
-/* exact decimal */
-
-/// Exact normalized BDF `number`.
-///
-/// Its value is `coefficient × 10⁻ˢᶜᵃˡᵉ`.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-struct BdfNumber {
-    coefficient: i64,
-    scale: u8,
-}
-
-impl BdfNumber {
-    const ZERO: Self = Self { coefficient: 0, scale: 0 };
-
-    const fn new(mut coefficient: i64, mut scale: u8) -> Self {
-        while scale != 0 && coefficient % 10 == 0 {
-            coefficient /= 10;
-            scale -= 1;
-        }
-        Self { coefficient, scale }
-    }
-    const fn is_positive(self) -> bool {
-        self.coefficient > 0
-    }
-    const fn parse(bytes: &[u8], line: u32) -> BdfResult<Self> {
-        is! { bytes.is_empty(), return Err(E::invalid_value(line)) }
-        lets! { negative = bytes[0] == b'-', mut i = is! { negative, 1, 0 } }
-        is! { i == bytes.len(), return Err(E::invalid_value(line)) }
-        lets! { mut magnitude = 0_u64, mut scale = 0_u8, mut digits = 0_usize, mut decimal = false }
-        while i < bytes.len() {
-            let byte = bytes[i];
-            if byte == b'.' {
-                is! { decimal, return Err(E::invalid_value(line)) }
-                decimal = true;
-            } else if byte >= b'0' && byte <= b'9' {
-                let digit = (byte - b'0') as u64;
-                magnitude = unwrap![some_or magnitude.checked_mul(10),
-                    return Err(E::invalid_value(line))];
-                magnitude = unwrap![some_or magnitude.checked_add(digit),
-                    return Err(E::invalid_value(line))];
-                digits += 1;
-                if decimal {
-                    scale = unwrap![some_or scale.checked_add(1),
-                        return Err(E::invalid_value(line))];
-                }
-            } else {
-                return Err(E::invalid_value(line));
-            }
-            i += 1;
-        }
-        is! { digits == 0, return Err(E::invalid_value(line)) }
-        let coefficient = if negative {
-            const MIN_MAGNITUDE: u64 = i64::MAX as u64 + 1;
-            if magnitude > MIN_MAGNITUDE {
-                return Err(E::invalid_value(line));
-            } else if magnitude == MIN_MAGNITUDE {
-                i64::MIN
-            } else {
-                -(magnitude as i64)
-            }
-        } else {
-            is! { magnitude > i64::MAX as u64, return Err(E::invalid_value(line)) }
-            magnitude as i64
-        };
-        Ok(Self::new(coefficient, scale))
-    }
-}
-
-/* line reader */
-
-#[derive(Clone, Debug)]
-struct BdfReader<'a> {
-    scanner: TextScanner<'a>,
-    next_line: u32,
-}
-impl<'a> BdfReader<'a> {
-    const fn new(bytes: &'a [u8]) -> Self {
-        Self {
-            scanner: TextScanner::from_bytes(bytes),
-            next_line: 1,
-        }
-    }
-    const fn pos(&self) -> usize {
-        self.scanner.pos().as_usize()
-    }
-    const fn next(&mut self) -> BdfResult<Option<BdfLine<'a>>> {
-        let range = unwrap![some_or self.scanner.next_line(), return Ok(None)];
-        let number = self.next_line;
-        self.next_line = self.next_line.saturating_add(1);
-        unwrap![ok_map BdfLine::read(self.scanner.slice(range), number), |v| Some(v)]
-    }
-    const fn required(&mut self) -> BdfResult<BdfLine<'a>> {
-        unwrap![some_ok_or bdf_try!(self.next()), E::unexpected_eof(self.next_line)]
-    }
-    /// Reads the next non-`COMMENT` line.
-    const fn required_data(&mut self) -> BdfResult<BdfLine<'a>> {
-        loop {
-            let line = bdf_try!(self.required());
-            is! { !line.is(b"COMMENT"), return Ok(line) }
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-struct BdfLine<'a> {
-    keyword: &'a [u8],
-    value: &'a [u8],
-    number: u32,
-}
-impl<'a> BdfLine<'a> {
-    const fn read(bytes: &'a [u8], number: u32) -> BdfResult<Self> {
-        if bytes.is_empty() || matches!(bytes[0], b' ' | b'\t') {
-            return Err(E::unexpected_directive(number));
-        }
-        let mut scanner = TextScanner::from_bytes(bytes);
-        let keyword_range = scanner.take_until_any2(b' ', b'\t');
-        let keyword = scanner.slice(keyword_range);
-        is! { keyword.is_empty(), return Err(E::unexpected_directive(number)) }
-        scanner.skip_ascii_hws();
-        Ok(Self { keyword, value: scanner.rest(), number })
-    }
-    const fn is(self, keyword: &[u8]) -> bool {
-        bytes_eq(self.keyword, keyword)
-    }
-    const fn expect(self, keyword: &[u8]) -> BdfResult<Self> {
-        is! { self.is(keyword), Ok(self), Err(E::unexpected_directive(self.number)) }
-    }
-    const fn fields(self) -> BdfFields<'a> {
-        BdfFields {
-            scanner: TextScanner::from_bytes(self.value),
-            line: self.number,
-        }
-    }
-    const fn trimmed_value(self) -> &'a [u8] {
-        let mut end = self.value.len();
-        while end != 0 && matches!(self.value[end - 1], b' ' | b'\t') {
-            end -= 1;
-        }
-        Slice::range_to(self.value, end)
-    }
-}
-
-/* fields */
-
-#[derive(Clone, Debug)]
-struct BdfFields<'a> {
-    scanner: TextScanner<'a>,
-    line: u32,
-}
-impl<'a> BdfFields<'a> {
-    const fn token(&mut self) -> BdfResult<&'a [u8]> {
-        self.scanner.skip_ascii_hws();
-        is! { self.scanner.is_eof(), return Err(E::invalid_value(self.line)) }
-        let range = self.scanner.take_until_any2(b' ', b'\t');
-        let token = self.scanner.slice(range);
-        is! { token.is_empty(), Err(E::invalid_value(self.line)), Ok(token) }
-    }
-    const fn finish(&mut self) -> BdfResult<()> {
-        self.scanner.skip_ascii_hws();
-        is! { self.scanner.is_eof(), Ok(()), Err(E::invalid_value(self.line)) }
-    }
-    const fn u64(&mut self) -> BdfResult<u64> {
-        let token = bdf_try!(self.token());
-        let mut scanner = TextScanner::from_bytes(token);
-        let value = unwrap![ok_err_map? scanner.expect_ascii_u64(),
-            |__| E::invalid_value(self.line)];
-        is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
-    }
-    const fn usize(&mut self) -> BdfResult<usize> {
-        let token = bdf_try!(self.token());
-        let mut scanner = TextScanner::from_bytes(token);
-        let value = unwrap![ok_err_map? scanner.expect_ascii_usize(),
-            |__| E::invalid_value(self.line)];
-        is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
-    }
-    const fn i64(&mut self) -> BdfResult<i64> {
-        let token = bdf_try!(self.token());
-        let mut scanner = TextScanner::from_bytes(token);
-        let value = unwrap![ok_err_map? scanner.expect_ascii_i64(),
-            |__| E::invalid_value(self.line)];
-        is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
-    }
-    const fn u32(&mut self) -> BdfResult<u32> {
-        let value = bdf_try!(self.u64());
-        is! { value > u32::MAX as u64, Err(E::invalid_value(self.line)), Ok(value as u32) }
-    }
-    const fn i32(&mut self) -> BdfResult<i32> {
-        let value = bdf_try!(self.i64());
-        if value < i32::MIN as i64 || value > i32::MAX as i64 {
-            Err(E::invalid_value(self.line))
-        } else {
-            Ok(value as i32)
-        }
-    }
-    const fn number(&mut self) -> BdfResult<BdfNumber> {
-        let token = bdf_try!(self.token());
-        BdfNumber::parse(token, self.line)
-    }
-}
-
-/* private header records */
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 struct BdfMetrics {
@@ -279,21 +62,21 @@ struct BdfSection {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub(super) struct BdfHeader<'a> {
+pub(crate) struct BdfHeader<'a> {
     version: BdfVersion,
     name: &'a [u8],
     point_size: BdfNumber,
     resolution: [u32; 2],
-    pub(super) bounds: Region2<i32, u32>,
+    pub(crate) bounds: Region2<i32, u32>,
     content_version: Option<i64>,
     metrics_set: u8,
     global_metrics: BdfMetrics,
     properties: Option<BdfSection>,
-    pub(super) glyph_count: usize,
+    pub(crate) glyph_count: usize,
     glyphs_offset: usize,
 }
 impl<'a> BdfHeader<'a> {
-    pub(super) const fn read(bytes: &'a [u8]) -> BdfResult<Self> {
+    pub(crate) const fn read(bytes: &'a [u8]) -> BdfResult<Self> {
         let mut reader = BdfReader::new(bytes);
         let version = bdf_try!(read_startfont(&mut reader));
         let mut line = bdf_try!(reader.required_data());
@@ -456,11 +239,4 @@ const fn read_number_pair(line: BdfLine<'_>) -> BdfResult<[BdfNumber; 2]> {
     let y = bdf_try!(fields.number());
     bdf_try!(fields.finish());
     Ok([x, y])
-}
-const fn bytes_eq(a: &[u8], b: &[u8]) -> bool {
-    is! { a.len() != b.len(), return false }
-    whilst! { i in 0..a.len(); {
-        is! { a[i] != b[i], return false }
-    }}
-    true
 }
