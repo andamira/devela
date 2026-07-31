@@ -34,8 +34,6 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;
-        #[cfg(feature = "font")]
-        pub(crate) use super::font::_crate_internals::*;
         pub(crate) use super::visual::_crate_internals::*;
     }
     _hidden {

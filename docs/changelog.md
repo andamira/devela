@@ -113,7 +113,7 @@
   - impl `ConstInit`.
 
 ### media::font
-- new types: `Dvbf`, `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
+- new types: `Bdf`, `Dvbf`, `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
 - new font: `termivela`, vendored from Terminus Font.
 - rename `FontBitmap` to `FontBitmapWord`.
 - move standalone font constants to associated `Fonts` constants without `FONT_` prefix.
