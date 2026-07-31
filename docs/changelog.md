@@ -232,7 +232,7 @@
 
 ### text::parse
 - update `TextScanner`:
-  - add methods: `<take|expect>_ascii_u64_radix`, `<take|expect>_ascii_i64[_radix]`, `<take|expect>_ascii_usize`.
+  - add methods: `bytes`, `<take|expect>_ascii_u64_radix`, `<take|expect>_ascii_i64[_radix]`, `<take|expect>_ascii_usize`.
 
 
 ### text::str

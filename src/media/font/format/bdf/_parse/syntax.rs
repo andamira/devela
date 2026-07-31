@@ -25,7 +25,7 @@ impl<'a> BdfReader<'a> {
         self.next_line
     }
     pub(super) const fn source(&self, start: usize, end: usize) -> &'a [u8] {
-        Slice::range(self.scanner.bytes, start, end)
+        Slice::range(self.scanner.bytes(), start, end)
     }
     pub(super) const fn next(&mut self) -> BdfResult<Option<BdfLine<'a>>> {
         let range = unwrap![some_or self.scanner.next_line(), return Ok(None)];

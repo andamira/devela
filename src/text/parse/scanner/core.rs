@@ -20,12 +20,16 @@ impl<'a> TextScanner<'a> {
 
     /* source views */
 
+    /// Returns the complete underlying byte source.
+    #[must_use]
+    pub const fn bytes(&self) -> &'a [u8] {
+        self.bytes
+    }
     /// Returns the byte slice covered by `range`.
     #[must_use]
     pub const fn slice(&self, range: TextRange) -> &'a [u8] {
         Slice::range(self.bytes, range.start.as_usize(), range.end.as_usize())
     }
-
     /// Returns the string slice covered by `range`, if valid UTF-8.
     #[must_use]
     pub const fn slice_str(&self, range: TextRange) -> Option<&'a str> {
