@@ -54,6 +54,8 @@
 
 ### code::result
 - remove `OptResExt::transpose_result` method.
+- update `unwrap!`:
+  - add new arms: `some_or?`, `=some_or`, `=ok_or`, `err_or?`, `=err_or`, `=sok_or`, `serr_or?`, `=serr_or`.
 
 ### code::util
 - extend `whilst!` with indexed slice iteration.

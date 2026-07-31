@@ -18,17 +18,25 @@
 /// - **`sok_`** - `Option<Result<T, E>>` (`Some(Ok)`)
 /// - **`serr_`** - `Option<Result<T, E>>` (`Some(Err)`)
 ///
+/// #### Modifiers
+/// - **`=`** - Retains the selected variant wrapper
+///   instead of unwrapping its contained value.
+///
+/// The `=` modifier currently applies to `_or` forms.
+/// For example, `some_or` extracts the value from `Some`,
+/// whereas `=some_or` reconstructs and returns `Some`.
+///
 /// #### Suffixes
-/// | Suffix              | Behavior                               | Safety        |
-/// |---------------------|----------------------------------------|---------------|
-/// | `?`                 | Early return                           | Safe          |
-/// | (none)              | Panic                                  | Safe          |
-/// | `_expect`           | Panic with message                     | Safe          |
-/// | `_or`               | Evaluate fallback expression           | Safe          |
-/// | `_map`              | Maps the value of the previous variant | Safe          |
-/// | `_into`             | Unwraps the value explicitly           | Safe          |
-/// | `_if`               | Unwrap depends on the given condition  | Safe          |
-/// | `_guaranteed_or_ub` | UB if failed (debug checks)            | **Unsafe** *  |
+/// | Suffix              | Behavior                                       | Safety        |
+/// |---------------------|------------------------------------------------|---------------|
+/// | `?`                 | Early return                                   | Safe          |
+/// | (none)              | Panic                                          | Safe          |
+/// | `_expect`           | Panic with message                             | Safe          |
+/// | `_or`               | Use the selected value, or evaluate a fallback | Safe          |
+/// | `_map`              | Maps the value of the selected variant         | Safe          |
+/// | `_into`             | Unwraps the value explicitly                   | Safe          |
+/// | `_if`               | Unwrap depends on the given condition          | Safe          |
+/// | `_guaranteed_or_ub` | UB if failed (debug checks)                    | **Unsafe** *  |
 ///
 /// `*` Requires `// SAFETY:` justification for impossible-failure invariants
 ///
@@ -36,6 +44,8 @@
 /// - `ok_err`: Only when `Ok(v)` and `Err(v)` are identical types.
 /// - `some_ok_or`: Converts to `Result` with provided error.
 /// - `[ok|err]_some`: Converts to `Option`.
+/// - `=*_or`: Retains and reconstructs the selected variant
+///   instead of extracting its contained value.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! unwrap {
@@ -136,6 +146,22 @@ macro_rules! unwrap {
       some_or $T:expr, $fallback:expr) => {
         match $T {
             Some(v) => v,
+            None => $fallback,
+        }
+    };
+    (
+      // Unwraps `Some` value, otherwise returns `$fallback`.
+      some_or? $T:expr, $fallback:expr) => {
+        match $T {
+            Some(v) => v,
+            None => return $fallback,
+        }
+    };
+    (
+      // Retains `Some`, otherwise evaluates an alternative `Option`.
+      =some_or $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(v) => Some(v),
             None => $fallback,
         }
     };
@@ -304,6 +330,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Retains `Ok`, otherwise evaluates an alternative `Result`.
+      =ok_or $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Ok(v) => Ok(v),
+            Err(_) => $fallback,
+        }
+    };
+    (
       // Unwraps `Ok`, treating `Err` as an impossible invariant violation.
       //
       // Debug/safe paths panic. Optimized unsafe paths may use unchecked unreachable,
@@ -453,6 +487,22 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps `Err`, otherwise returns `$fallback`.
+      err_or? $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Ok(_) => return $fallback,
+            Err(e) => e,
+        }
+    };
+    (
+      // Retains `Err`, otherwise evaluates an alternative `Result`.
+      =err_or $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Ok(_) => $fallback,
+            Err(e) => Err(e),
+        }
+    };
+    (
       // Transforms `Err(e)` to `Some(e)`, and `Ok(_)` to `None`.
       err_some $T:expr) => {
         match $T {
@@ -510,12 +560,19 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value; otherwise returns `Err($err)`.
-      sok_or? $T:expr, $err:expr) => {
+      // Unwraps `Some(Ok)` value; otherwise returns `$fallback`.
+      sok_or? $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(v)) => v,
-            Some(Err(_)) => return $err,
-            None => return $err,
+            Some(Err(_)) | None => return $fallback,
+        }
+    };
+    (
+      // Retains `Some(Ok)`, otherwise evaluates an alternative `OptRes`.
+      =sok_or $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Ok(v)) => Some(Ok(v)),
+            _ => $fallback,
         }
     };
     (
@@ -562,6 +619,22 @@ macro_rules! unwrap {
             Some(Ok(_)) => $fallback,
             Some(Err(v)) => v,
             None => $fallback,
+        }
+    };
+    (
+      // Unwraps `Some(Err)`, otherwise returns `$fallback`.
+      serr_or? $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Err(e)) => e,
+            _ => return $fallback,
+        }
+    };
+    (
+      // Retains `Some(Err)`, otherwise evaluates an alternative `OptRes`.
+      =serr_or $T:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Err(e)) => Some(Err(e)),
+            _ => $fallback,
         }
     };
 }
