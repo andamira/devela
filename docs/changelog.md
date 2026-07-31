@@ -52,6 +52,9 @@
 
 # Modules
 
+### code::result
+- remove `OptResExt::transpose_result` method.
+
 ### code::util
 - extend `whilst!` with indexed slice iteration.
 - update `enumset!`:

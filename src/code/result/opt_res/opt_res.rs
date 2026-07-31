@@ -113,27 +113,6 @@ impl<T, E> Sealed for OptRes<T, E> {}
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait OptResExt<T, E>: Sealed {
-    /// Transposes `Option<Result<T, E>>` into `Result<Option<T>, E>`.
-    ///
-    /// # Examples
-    /// ```
-    /// # extern crate devela as devela;
-    /// use devela::{OptResExt, OptRes};
-    ///
-    /// let a: OptRes<u8, &str> = None;
-    /// let b: OptRes<u8, &str> = Some(Ok(1));
-    /// let c: OptRes<u8, &str> = Some(Err("err"));
-    ///
-    /// assert_eq![a.transpose_result(), Ok(None)];
-    /// assert_eq![b.transpose_result(), Ok(Some(1))];
-    /// assert_eq![c.transpose_result(), Err("err")];
-    ///
-    /// // Comparison with std:
-    /// // a.transpose_result()
-    /// // match a { Some(Ok(t)) => Ok(Some(t)), Some(Err(e)) => Err(e), None => Ok(None) }
-    /// ```
-    fn transpose_result(self) -> Result<Option<T>, E>;
-
     /// Unwraps the result if the `Option` is `Some`, otherwise calls the provided closure.
     ///
     /// # Examples
@@ -222,29 +201,18 @@ pub trait OptResExt<T, E>: Sealed {
 }
 
 impl<T, E> OptResExt<T, E> for OptRes<T, E> {
-    fn transpose_result(self) -> Result<Option<T>, E> {
-        match self {
-            Some(Ok(t)) => Ok(Some(t)),
-            Some(Err(e)) => Err(e),
-            None => Ok(None),
-        }
-    }
-
     fn unwrap_or_else_result<F: FnOnce() -> Result<T, E>>(self, f: F) -> Result<T, E> {
         match self {
             Some(result) => result,
             None => f(),
         }
     }
-
     fn map_ok<U, F: FnOnce(T) -> U>(self, f: F) -> OptRes<U, E> {
         self.map(|res| res.map(f))
     }
-
     fn map_err<F, G: FnOnce(E) -> F>(self, f: G) -> OptRes<T, F> {
         self.map(|res| res.map_err(f))
     }
-
     fn ok_or_default_err(self) -> Result<T, E>
     where
         E: Default,
