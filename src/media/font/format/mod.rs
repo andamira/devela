@@ -4,13 +4,18 @@
 //
 
 // mod bdf; // Bdf
-// mod dvbf; // Dvbf
+mod dvbf; // Dvbf
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
+        pub use super::{
+            // bdf::_all::*,
+            dvbf::_all::*,
+        };
+    }
+    _crate_internals {
         // pub use super::{
-        //     // bdf::_all::*,
-        //     // dvbf::_all::*,
+        //     bdf::_crate_internals::*,
         // };
     }
 }

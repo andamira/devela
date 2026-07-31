@@ -34,4 +34,9 @@ crate::structural_mods! { // _mods, _crate_internals
             // semantic::_all::*,
         };
     }
+    _crate_internals {
+        pub(crate) use super::format::{
+            _crate_internals::*,
+        };
+    }
 }
