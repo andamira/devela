@@ -3,8 +3,8 @@
 //! implements methods for [`Key`].
 //
 
-use crate::{Char, Slice, WebKeyLocation, is, unwrap};
-use crate::{Key, KeyMedia, KeyMod, KeyPad};
+use crate::{Char, Slice, TextScanner, is, unwrap};
+use crate::{Key, KeyMedia, KeyMod, KeyPad, WebKeyLocation};
 crate::_use! { basic::from_utf8 }
 
 #[rustfmt::skip]
@@ -16,32 +16,15 @@ pub(crate) const F_KEYS: [&str; 48] = [
 ];
 
 #[rustfmt::skip]
-impl Key{
-    // IMPROVE generalize and move to some namespace
-    // const fn parse_u8_from_bytes(mut bytes: &[u8]) -> (u8, bool) {
-    //     let (mut num, mut valid) = (0u8, false);
-    //     while let Some((&digit, rest)) = bytes.split_first() {
-    //         if digit < b'0' || digit > b'9' { return (0, false); }
-    //         num = num * 10 + (digit - b'0');
-    //         valid = true;
-    //         bytes = rest;
-    //     }
-    //     (num, valid)
-    // }
+impl Key {
     const fn parse_u8_from_bytes(bytes: &[u8]) -> Option<u8> {
-        let (mut num, mut index, mut found_digit) = (0u8, 0usize, false);
-        while index < bytes.len() {
-            let digit = bytes[index];
-            if digit < b'0' || digit > b'9' { break; } // Stop at first invalid character
-            let digit_value = digit - b'0';
-            if num > (u8::MAX / 10) || (num == u8::MAX / 10 && digit_value > u8::MAX % 10) {
-                return None;
-            }
-            num = num * 10 + digit_value;
-            found_digit = true;
-            index += 1;
-        }
-        if found_digit { Some(num) } else { None }
+        let mut scanner = TextScanner::from_bytes(bytes);
+        let value = match scanner.expect_ascii_u64() {
+            Ok(value) => value,
+            Err(_) => return None,
+        };
+        if !scanner.is_eof() || value > u8::MAX as u64 { return None; }
+        Some(value as u8)
     }
 
     /// Attempts to construct a `Key` from a JavaScript `KeyboardEvent`
@@ -330,5 +313,17 @@ impl Key{
             // K::Unknown => ("Unknown", Std),
             _ => ("Unknown", Std),
         }
+    }
+}
+
+#[cfg(test)]
+mod _test {
+    use super::*;
+
+    #[test]
+    fn function_keys() {
+        let location = WebKeyLocation::default();
+        assert_eq!(Key::from_web_code("F11", location), Some(Key::Fn(11)));
+        assert_eq!(Key::from_web_code("F11x", location), None);
     }
 }

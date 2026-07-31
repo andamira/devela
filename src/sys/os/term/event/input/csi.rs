@@ -1,6 +1,6 @@
 // devela/src/sys/os/term/event/input/csi.rs
 
-use crate::{Char, is, pos, slice, unwrap, whilst};
+use crate::{Char, TextScanner, is, pos, slice, unwrap, whilst};
 use crate::{
     EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, EventWheel,
     EventWheelUnit, Key, KeyMods,
@@ -292,16 +292,10 @@ impl TermInputParser {
         Some((a, b))
     }
     const fn parse_u16(bytes: &[u8]) -> Option<u16> {
-        is! { bytes.is_empty(), return None }
-        let mut n = 0u16;
-        whilst! { b in 0..bytes.len(); {
-            let byte = bytes[b];
-            is!{ !byte.is_ascii_digit(), return None }
-            n = unwrap![some?
-                unwrap![some? n.checked_mul(10)]
-                    .checked_add((byte - b'0') as u16)];
-        }}
-        Some(n)
+        let mut scanner = TextScanner::from_bytes(bytes);
+        let value = unwrap![ok_some? scanner.expect_ascii_usize()];
+        is! { !scanner.is_eof() || value > u16::MAX as usize, return None }
+        Some(value as u16)
     }
 
     /// Creates a named key press where semantic and physical keys coincide.
@@ -323,9 +317,9 @@ impl TermInputParser {
     pub(super) const fn is_pasting(&self) -> bool {
         self.paste
     }
-
     /// Returns whether the parser is holding a lone `ESC`.
     #[must_use]
+    #[allow(dead_code)]
     pub(crate) const fn is_pending_escape(&self) -> bool {
         matches!(self.state, TermInputState::Esc)
     }

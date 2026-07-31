@@ -9,7 +9,8 @@
 // - struct PnmHeader
 
 use crate::ImageError::{InsufficientBuffer, InvalidImageSize, InvalidMagicNumber, InvalidPixel};
-use crate::{ByteCursor, Digits, Extent2, ImageResult, Mem, is, unwrap, whilst};
+use crate::{ByteCursor, Digits, Extent2, ImageResult, RasterFormat, TextScanner};
+use crate::{Mem, is, slice, unwrap, whilst};
 use PnmFormat::{P1, P2, P3, P4, P5, P6};
 
 // misc. fns
@@ -57,15 +58,14 @@ impl<'a> PnmCursor<&'a [u8]> {
     /// Reads a decimal ASCII number, skipping whitespace and comments first.
     pub(crate) const fn number(&mut self) -> ImageResult<usize> {
         self.skip_ws_comments();
-        if self.pos() >= self.len() || !is_digit(self.byte_at_pos()) { return Err(InvalidPixel); }
-        let mut n = 0usize;
-        while self.pos() < self.len() && is_digit(self.byte_at_pos()) {
-            let digit = (self.byte_at_pos() - b'0') as usize;
-            let next = unwrap![some_ok_or? n.checked_mul(10), InvalidPixel];
-            n = unwrap![some_ok_or? next.checked_add(digit), InvalidPixel];
-            self.bump();
-        }
-        Ok(n)
+        let start = self.pos();
+        let (result, consumed) = {
+            let mut scanner = TextScanner::from_bytes(slice![self.bytes(), start, ..]);
+            let result = scanner.expect_ascii_usize();
+            (result, scanner.pos().as_usize())
+        };
+        self.cur.set_pos(start + consumed);
+        unwrap! { ok_map_err_map? result, |v| v, |e| InvalidPixel }
     }
     /// Consumes the separator before raw raster data and returns its offset.
     pub(crate) const fn raw_data_offset(&mut self) -> ImageResult<usize> {

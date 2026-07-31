@@ -149,6 +149,7 @@ impl<'a> TextScanner<'a> {
     }
 }
 
+#[cfg(test)]
 mod _test {
     use crate::TextScanner;
 
