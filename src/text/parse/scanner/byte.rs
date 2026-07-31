@@ -181,3 +181,90 @@ impl<'a> TextScanner<'a> {
         self.range_from(start)
     }
 }
+
+#[cfg(test)]
+mod _test {
+    use crate::TextScanner;
+
+    #[test]
+    fn byte_ops() {
+        let mut s = TextScanner::new("abc\r\ndef");
+        assert_eq!(s.peek_byte(), Some(b'a'));
+        assert_eq!(s.eat_byte(b'x'), false);
+        assert_eq!(s.pos().as_usize(), 0);
+        assert_eq!(s.eat_byte(b'a'), true);
+        assert_eq!(s.pos().as_usize(), 1);
+        assert_eq!(s.eat_bytes(b"bc"), true);
+        assert_eq!(s.pos().as_usize(), 3);
+        assert_eq!(s.eat_eol(), true);
+        assert_eq!(s.pos().as_usize(), 5);
+        assert_eq!(s.expect_bytes(b"def"), Ok(()));
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_byte_consumption_and_position() {
+        let mut s = TextScanner::new("abc");
+        assert_eq!(s.pos().as_usize(), 0);
+        assert_eq!(s.peek_byte(), Some(b'a'));
+        assert!(s.skip_byte());
+        assert_eq!(s.pos().as_usize(), 1);
+        assert_eq!(s.peek_byte(), Some(b'b'));
+        assert_eq!(s.next_byte(), Some(b'b'));
+        assert_eq!(s.pos().as_usize(), 2);
+        assert!(s.eat_byte(b'c'));
+        assert!(s.is_eof());
+        assert!(!s.skip_byte());
+        assert_eq!(s.next_byte(), None);
+        assert_eq!(s.pos().as_usize(), 3);
+    }
+    #[test]
+    fn expect_ops_do_not_advance_on_failure() {
+        let mut s = TextScanner::new("abc");
+        assert!(s.expect_byte(b'x').is_err());
+        assert_eq!(s.pos().as_usize(), 0);
+        assert!(s.expect_bytes(b"ax").is_err());
+        assert_eq!(s.pos().as_usize(), 0);
+        assert!(s.expect_bytes(b"abcd").is_err());
+        assert_eq!(s.pos().as_usize(), 0);
+    }
+    #[test]
+    fn take_until_variants() {
+        let mut s = TextScanner::new("abc:def,ghi\r\nrest");
+        let r = s.take_until_byte(b':');
+        assert_eq!(s.slice_str(r), Some("abc"));
+        assert_eq!(s.peek_byte(), Some(b':'));
+        let _ = s.eat_byte(b':');
+        let r = s.take_until_any2(b',', b';');
+        assert_eq!(s.slice_str(r), Some("def"));
+        assert_eq!(s.peek_byte(), Some(b','));
+        let _ = s.eat_byte(b',');
+        let r = s.take_until_any3(b'X', b'Y', b'\r');
+        assert_eq!(s.slice_str(r), Some("ghi"));
+        assert_eq!(s.peek_byte(), Some(b'\r'));
+        let r = s.take_until_eol();
+        assert_eq!(s.slice_str(r), Some(""));
+        assert_eq!(s.peek_byte(), Some(b'\r'));
+        assert_eq!(s.eat_eol(), true);
+        assert_eq!(s.rest(), b"rest");
+    }
+    #[test]
+    fn take_until_bytes_regression_nonzero_cursor() {
+        let mut s = TextScanner::new("xx--yy--zz");
+        assert_eq!(s.expect_bytes(b"xx"), Ok(()));
+        assert_eq!(s.pos().as_usize(), 2);
+        let r = s.take_until_bytes(b"--");
+        assert_eq!(s.slice_str(r), Some(""));
+        assert_eq!(s.pos().as_usize(), 2);
+        assert_eq!(s.eat_bytes(b"--"), true);
+        assert_eq!(s.pos().as_usize(), 4);
+        let r = s.take_until_bytes(b"--");
+        assert_eq!(s.slice_str(r), Some("yy"));
+        assert_eq!(s.pos().as_usize(), 6);
+        assert_eq!(s.eat_bytes(b"--"), true);
+        assert_eq!(s.pos().as_usize(), 8);
+        let r = s.take_until_bytes(b"??");
+        assert_eq!(s.slice_str(r), Some("zz"));
+        assert_eq!(s.pos().as_usize(), 10);
+        assert!(s.is_eof());
+    }
+}

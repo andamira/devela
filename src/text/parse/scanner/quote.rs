@@ -167,3 +167,108 @@ impl<'a> TextScanner<'a> {
         }
     }
 }
+
+#[cfg(test)]
+mod _test {
+    use crate::{TextParseErrorKind, TextScanner, assert_matches};
+
+    #[test]
+    fn quoted_scanning_and_decoding() {
+        let mut s = TextScanner::new(r#""a\n\"b" 'x\y'"#);
+        let basic = s.take_quoted_basic().unwrap().unwrap();
+        assert_eq!(s.slice(basic), br#"a\n\"b"#);
+        let mut out = [0u8; 16];
+        let len = s.decode_quoted_basic_into(basic, &mut out).unwrap();
+        assert_eq!(&out[..len], b"a\n\"b");
+        let text = s.decode_quoted_basic_str_into(basic, &mut out).unwrap();
+        assert_eq!(text, "a\n\"b");
+        s.skip_ascii_ws();
+        let lit = s.take_quoted_literal().unwrap().unwrap();
+        assert_eq!(s.slice(lit), br#"x\y"#);
+    }
+    #[test]
+    fn quoted_decode_errors() {
+        // trailing backslash
+        let mut s = TextScanner::from_bytes(b"a\\");
+        let start = s.mark();
+        let _ = s.next_byte();
+        let _ = s.next_byte();
+        let range = s.range_from(start);
+        let mut out = [0u8; 8];
+        assert!(s.decode_quoted_basic_into(range, &mut out).is_err());
+        // invalid escape
+        let mut s = TextScanner::from_bytes(b"\\x");
+        let start = s.mark();
+        let _ = s.next_byte();
+        let _ = s.next_byte();
+        let range = s.range_from(start);
+        let mut out = [0u8; 8];
+        assert!(s.decode_quoted_basic_into(range, &mut out).is_err());
+    }
+    #[test]
+    fn quoted_decode_invalid_utf8() {
+        let mut s = TextScanner::from_bytes(&[0xFF]);
+        let start = s.mark();
+        let _ = s.next_byte();
+        let range = s.range_from(start);
+        let mut out = [0u8; 8];
+        let err = s.decode_quoted_basic_str_into(range, &mut out).unwrap_err();
+        assert_eq!(err.at.index.as_usize(), 0);
+        match err.kind {
+            TextParseErrorKind::InvalidUtf8(e) => {
+                assert_eq!(e.valid_up_to, 0);
+                assert_eq!(e.error_len, Some(1));
+            }
+            other => panic!("unexpected error kind: {other:?}"),
+        }
+    }
+    #[test]
+    fn quoted_decode_invalid_escape() {
+        let mut s = TextScanner::from_bytes(b"\\x");
+        let start = s.mark();
+        let _ = s.next_byte();
+        let _ = s.next_byte();
+        let range = s.range_from(start);
+        let mut out = [0u8; 8];
+        let err = s.decode_quoted_basic_into(range, &mut out).unwrap_err();
+        assert_eq!(err.at.index.as_usize(), 1);
+        assert_matches!(err.kind, TextParseErrorKind::InvalidEscape);
+    }
+    #[test]
+    fn quoted_decode_trailing_backslash() {
+        let mut s = TextScanner::from_bytes(b"a\\");
+        let start = s.mark();
+        let _ = s.next_byte();
+        let _ = s.next_byte();
+        let range = s.range_from(start);
+        let mut out = [0u8; 8];
+        let err = s.decode_quoted_basic_into(range, &mut out).unwrap_err();
+        assert_eq!(err.at.index.as_usize(), 2);
+        assert_matches!(err.kind, TextParseErrorKind::UnterminatedQuote);
+    }
+    #[test]
+    fn quoted_decode_buffer_too_small() {
+        let mut s = TextScanner::new(r#""abcd""#);
+        let range = s.take_quoted_basic().unwrap().unwrap();
+        let mut out = [0u8; 2];
+        assert!(s.decode_quoted_basic_into(range, &mut out).is_err());
+    }
+    #[test]
+    fn scanner_line_and_quoted_helpers() {
+        let mut s = TextScanner::new("  alpha # comment\r\n\"a\\n b\" tail\nplain tail");
+        let line = s.next_line_trimmed_before(b'#').unwrap();
+        assert_eq!(s.str_at(line), "alpha");
+        let quoted = s.take_quoted_basic_or_rest().unwrap();
+        assert_eq!(s.str_at(quoted), "a\\n b");
+        s.skip_ascii_hws();
+        let tail = s.next_line_trimmed().unwrap();
+        assert_eq!(s.str_at(tail), "tail");
+        let rest = s.take_quoted_basic_or_rest().unwrap();
+        assert_eq!(s.str_at(rest), "plain tail");
+        assert!(s.is_eof());
+        // Pin the documented byte-blind behavior.
+        let mut comments = TextScanner::new(r#"  "x # y" # z"#);
+        let before_hash = comments.next_line_trimmed_before(b'#').unwrap();
+        assert_eq!(comments.str_at(before_hash), r#""x"#);
+    }
+}

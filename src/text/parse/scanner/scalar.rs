@@ -189,3 +189,105 @@ impl<'a> TextScanner<'a> {
         self.range_from(start)
     }
 }
+
+#[cfg(test)]
+mod _test {
+    use crate::{TextScanner, charu};
+
+    #[test]
+    fn scanner_utf8_char_peek_next_take_and_eat() {
+        let mut s = TextScanner::new("aé€🐛z");
+        assert_eq!(s.pos().as_usize(), 0);
+        assert_eq!(s.peek_char(), Some('a'));
+        assert_eq!(s.peek_char(), Some('a'));
+        assert_eq!(s.next_char(), Some('a'));
+        assert_eq!(s.pos().as_usize(), 1);
+        let r = s.take_char().unwrap();
+        assert_eq!(s.str_at(r), "é");
+        assert_eq!(s.pos().as_usize(), 3);
+        assert!(s.eat_char('€'));
+        assert_eq!(s.pos().as_usize(), 6);
+        let r = s.take_char().unwrap();
+        assert_eq!(s.str_at(r), "🐛");
+        assert_eq!(s.pos().as_usize(), 10);
+        assert_eq!(s.next_char(), Some('z'));
+        assert_eq!(s.next_char(), None);
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_utf8_char_predicates() {
+        let mut s = TextScanner::new("αβγ123");
+        let r = s.take_char_if(|ch| ch == 'α').unwrap();
+        assert_eq!(s.str_at(r), "α");
+        assert!(s.take_char_if(|ch| ch.is_ascii_digit()).is_none());
+        assert_eq!(s.peek_char(), Some('β'));
+        let letters = s.take_char_while(|ch| ch.is_alphabetic());
+        assert_eq!(s.str_at(letters), "βγ");
+        assert_eq!(s.skip_char_while(|ch| ch.is_ascii_digit()), 3);
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_utf8_invalid_input_does_not_advance() {
+        let mut s = TextScanner::from_bytes(b"a\xFFz");
+        assert_eq!(s.next_char(), Some('a'));
+        assert_eq!(s.pos().as_usize(), 1);
+        assert_eq!(s.peek_char(), None);
+        assert_eq!(s.next_char(), None);
+        assert!(s.take_char().is_none());
+        assert!(!s.eat_char('z'));
+        assert!(s.take_char_if(|_| true).is_none());
+        // Strict UTF-8 scalar methods stop before the invalid byte.
+        assert_eq!(s.pos().as_usize(), 1);
+        // Byte-level methods remain available for recovery.
+        assert_eq!(s.next_byte(), Some(0xFF));
+        assert_eq!(s.next_char(), Some('z'));
+        assert!(s.is_eof());
+    }
+    /* Unicode scalar scanning, with UTF-8 representation */
+    #[test]
+    fn scanner_utf8_charu_peek_next_and_eat() {
+        let mut s = TextScanner::new("aé€🐛z");
+        assert_eq!(s.peek_charu(), Some(charu::from_char('a')));
+        assert_eq!(s.peek_charu(), Some(charu::from_char('a')));
+        assert_eq!(s.next_charu(), Some(charu::from_char('a')));
+        assert_eq!(s.pos().as_usize(), 1);
+        assert!(s.eat_charu(charu::from_char('é')));
+        assert_eq!(s.pos().as_usize(), 3);
+        assert!(s.eat_charu(charu::from_char('€')));
+        assert_eq!(s.pos().as_usize(), 6);
+        assert_eq!(s.next_charu(), Some(charu::from_char('🐛')));
+        assert_eq!(s.pos().as_usize(), 10);
+        assert!(!s.eat_charu(charu::from_char('x')));
+        assert_eq!(s.next_charu(), Some(charu::from_char('z')));
+        assert_eq!(s.next_charu(), None);
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_utf8_charu_predicates() {
+        let mut s = TextScanner::new("αβγ123");
+        let r = s.take_charu_if(|ch| ch == charu::from_char('α')).unwrap();
+        assert_eq!(s.str_at(r), "α");
+        assert!(s.take_charu_if(|ch| ch == charu::from_char('1')).is_none());
+        assert_eq!(s.peek_charu(), Some(charu::from_char('β')));
+        let letters = s.take_charu_while(|ch| !ch.to_char().is_ascii_digit());
+        assert_eq!(s.str_at(letters), "βγ");
+        assert_eq!(s.skip_charu_while(|ch| ch.to_char().is_ascii_digit()), 3);
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_utf8_charu_invalid_input_does_not_advance() {
+        let mut s = TextScanner::from_bytes(b"a\xFFz");
+        assert_eq!(s.next_charu(), Some(charu::from_char('a')));
+        assert_eq!(s.pos().as_usize(), 1);
+        assert_eq!(s.peek_charu(), None);
+        assert_eq!(s.next_charu(), None);
+        assert!(s.take_charu_if(|_| true).is_none());
+        assert_eq!(s.skip_charu_while(|_| true), 0);
+        // Strict UTF-8 scalar methods stop before the invalid byte.
+        assert_eq!(s.pos().as_usize(), 1);
+        // Byte-level recovery remains possible.
+        assert_eq!(s.next_byte(), Some(0xFF));
+        assert_eq!(s.next_charu(), Some(charu::from_char('z')));
+        assert!(s.is_eof());
+    }
+}

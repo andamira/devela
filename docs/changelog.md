@@ -230,6 +230,11 @@
 - new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.
 - update `Textel` with a new `meta` field and methods.
 
+### text::parse
+- update `TextScanner`:
+  - add methods: `<take|expect>_ascii_u64_radix`, `<take|expect>_ascii_i64[_radix]`, `<take|expect>_ascii_usize`.
+
+
 ### text::str
 - update `Str`:
   - add methods: `eq`, `from_utf8_complete_prefix`, `starts_with[_char]`, `ends_with[_char]`, `strip_<prefix|suffix>[_char]`, `strip_circumfix[_chars]`, `translit_ascii_into[_or]`, `graphemes[_charu][_in]`, `grapheme_count`.

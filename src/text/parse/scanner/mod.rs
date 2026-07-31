@@ -4,6 +4,7 @@
 //
 
 // impls
+mod _helper;
 mod core; // constructors, source views, cursor/range basics, predicate adapters
 mod byte; // byte inspection, exact byte consumption, byte-delimited range scanning
 mod ascii; // ASCII whitespace, identifiers, AsciiSet scanning

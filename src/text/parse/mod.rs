@@ -3,9 +3,6 @@
 //! String parsing without structured semantics.
 //
 
-#[cfg(test)]
-mod _test;
-
 mod _reexport_core;
 
 mod byte_search; // ByteSearch, dep_memchr fns alternatives

@@ -194,3 +194,58 @@ impl<'a> TextScanner<'a> {
         self.range_from(start)
     }
 }
+
+#[cfg(test)]
+mod _test {
+    use crate::{AsciiSet, TextScanner};
+
+    #[test]
+    fn ascii_scanners() {
+        let mut s = TextScanner::new(" \t\r\nfoo_12 123bar");
+        s.skip_ascii_ws();
+        assert_eq!(s.pos().as_usize(), 4);
+        let ident = s.take_ascii_ident().unwrap();
+        assert_eq!(s.slice_str(ident), Some("foo_12"));
+        assert_eq!(s.peek_byte(), Some(b' '));
+        s.skip_ascii_ws();
+        assert_eq!(s.expect_ascii_u64(), Ok(123));
+        assert_eq!(s.rest(), b"bar");
+    }
+    #[test]
+    fn scanner_ascii_set_consumes_runs_and_delimiters() {
+        let mut s = TextScanner::from_bytes(b"abc=123;\xC3\xB1!");
+        let alpha = s.take_ascii_set(AsciiSet::ALPHA).unwrap();
+        assert_eq!(s.str_at(alpha), "abc");
+        assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+        assert_eq!(s.peek_byte(), Some(b'1'));
+        let digits = s.take_ascii_set(AsciiSet::DIGIT).unwrap();
+        assert_eq!(s.slice(digits), b"123");
+        assert_eq!(s.skip_until_ascii_set(AsciiSet::PUNCT), 0);
+        assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+        // Non-ASCII bytes do not match the ASCII set, but are still skipped over.
+        assert_eq!(s.skip_until_ascii_set(AsciiSet::PUNCT), 2);
+        assert_eq!(s.peek_byte(), Some(b'!'));
+        assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+        assert!(s.is_eof());
+    }
+    #[test]
+    fn scanner_ascii_set_takes_until_and_runs() {
+        let mut s = TextScanner::new("name:value rest");
+        let head = s.take_until_ascii_set(AsciiSet::PUNCT);
+        assert_eq!(s.str_at(head), "name");
+        assert_eq!(s.peek_byte(), Some(b':'));
+        assert!(s.eat_ascii_set(AsciiSet::PUNCT));
+        let tail = s.take_until_ascii_set(AsciiSet::PUNCT);
+        assert_eq!(s.str_at(tail), "value rest");
+        assert!(s.is_eof());
+        let mut id = TextScanner::new("9bad _good");
+        assert!(id.take_ascii_run(AsciiSet::IDENT_HEAD, AsciiSet::IDENT_TAIL).is_none());
+        assert_eq!(id.pos().as_usize(), 0);
+        let tail = id.take_ascii_set(AsciiSet::IDENT_TAIL).unwrap();
+        assert_eq!(id.str_at(tail), "9bad");
+        id.skip_ascii_hws();
+        let ident = id.take_ascii_run(AsciiSet::IDENT_HEAD, AsciiSet::IDENT_TAIL).unwrap();
+        assert_eq!(id.str_at(ident), "_good");
+        assert!(id.is_eof());
+    }
+}

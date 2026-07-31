@@ -127,7 +127,6 @@ impl<'a> TextScanner<'a> {
             _ => false,
         }
     }
-
     /// Advances while `byte` matches the predicate.
     ///
     /// Returns the number of consumed bytes.
@@ -139,7 +138,6 @@ impl<'a> TextScanner<'a> {
         }}
         self.cursor.index.0 - start
     }
-
     /// Consumes and returns the half-open range of bytes matching the predicate.
     pub fn take_while<F: FnMut(u8) -> bool>(&mut self, mut f: F) -> TextRange {
         let start = self.mark();
@@ -148,5 +146,41 @@ impl<'a> TextScanner<'a> {
             self._cursor_bump(1);
         }}
         self.range_from(start)
+    }
+}
+
+mod _test {
+    use crate::TextScanner;
+
+    #[test]
+    fn construction_views_and_state() {
+        let mut s = TextScanner::new("abc");
+        assert_eq!(s.pos().as_usize(), 0);
+        assert!(!s.is_eof());
+        assert_eq!(s.rest(), b"abc");
+        let start = s.mark();
+        assert_eq!(s.next_byte(), Some(b'a'));
+        assert_eq!(s.next_byte(), Some(b'b'));
+        let range = s.range_from(start);
+        assert_eq!(s.slice(range), b"ab");
+        assert_eq!(s.slice_str(range), Some("ab"));
+        assert_eq!(s.rest(), b"c");
+        assert_eq!(s.next_byte(), Some(b'c'));
+        assert_eq!(s.next_byte(), None);
+        assert!(s.is_eof());
+        assert_eq!(s.rest(), b"");
+    }
+    #[test]
+    fn predicate_adapters() {
+        let mut s = TextScanner::new("123abc456");
+        let n = s.skip_while(|b| b.is_ascii_digit());
+        assert_eq!(n, 3);
+        assert_eq!(s.rest(), b"abc456");
+        let r = s.take_while(|b| b.is_ascii_alphabetic());
+        assert_eq!(s.slice_str(r), Some("abc"));
+        assert_eq!(s.rest(), b"456");
+        let r = s.take_while(|b| b.is_ascii_digit());
+        assert_eq!(s.slice_str(r), Some("456"));
+        assert!(s.is_eof());
     }
 }

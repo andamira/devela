@@ -86,8 +86,16 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 ///   - [take_until_ascii_set](#method.take_until_ascii_set).
 ///
 /// - ASCII numeric parsing:
-///   - [take_ascii_u64](#method.take_ascii_u64).
-///   - [expect_ascii_u64](#method.expect_ascii_u64).
+///   - [take_ascii_u64](#method.take_ascii_u64)
+///     ([*radix*](#method.take_ascii_u64_radix)).
+///   - [expect_ascii_u64](#method.expect_ascii_u64)
+///     ([*radix*](#method.expect_ascii_u64_radix)).
+///   - [take_ascii_i64](#method.take_ascii_i64)
+///     ([*radix*](#method.take_ascii_i64_radix)).
+///   - [expect_ascii_i64](#method.expect_ascii_i64)
+///     ([*radix*](#method.expect_ascii_i64_radix)).
+///   - [take_ascii_usize](#method.take_ascii_usize).
+///   - [expect_ascii_usize](#method.expect_ascii_usize).
 ///
 /// - EOL and line-oriented scanning:
 ///   - [eat_eol](#method.eat_eol).
