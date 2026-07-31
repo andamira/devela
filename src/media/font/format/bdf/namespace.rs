@@ -3,7 +3,7 @@
 //! Defines [`Bdf`].
 //
 
-use super::_parse::{BdfHeader, BdfVersion};
+use super::_parse::{BdfHeader, BdfParser, BdfVersion};
 use super::BdfError;
 use crate::{Debug, Region2, Version};
 
@@ -19,6 +19,13 @@ use crate::{Debug, Region2, Version};
 pub struct Bdf;
 
 impl Bdf {
+    /// Validates the complete structure and glyph data of a BDF font.
+    pub const fn validate(bytes: &[u8]) -> Result<(), BdfError> {
+        match BdfParser::new(bytes) {
+            Ok(parser) => parser.finish(),
+            Err(error) => Err(error),
+        }
+    }
     /// Reads the format version from the opening `STARTFONT` directive.
     pub const fn version(bytes: &[u8]) -> Result<Version, BdfError> {
         match BdfVersion::read(bytes) {
@@ -26,7 +33,6 @@ impl Bdf {
             Err(error) => Err(error),
         }
     }
-
     /// Reads the declared font-wide bitmap bounding region.
     ///
     /// This parses the global header through the `CHARS` directive but does
@@ -37,7 +43,6 @@ impl Bdf {
             Err(error) => Err(error),
         }
     }
-
     /// Reads the glyph count declared by `CHARS`.
     ///
     /// This does not yet verify that the declared number of glyph records

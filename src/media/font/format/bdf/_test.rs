@@ -1,6 +1,129 @@
 // devela/src/media/font/format/bdf/_test.rs
 
+use super::_parse::BdfParser;
 use crate::{Bdf, BdfError, Version};
+
+const FONT_1: &[u8] = b"\
+STARTFONT 2.1
+FONT test
+SIZE 8 72 72
+FONTBOUNDINGBOX 8 2 0 0
+CHARS 1
+STARTCHAR A
+ENCODING 65
+SWIDTH 500 0
+DWIDTH 8 0
+BBX 8 2 0 0
+BITMAP
+81
+7E
+ENDCHAR
+ENDFONT
+";
+
+#[test]
+fn validates_complete_font() {
+    assert_eq!(Bdf::validate(FONT_1), Ok(()));
+}
+#[test]
+fn streams_glyphs() {
+    let mut parser = BdfParser::new(FONT_1).unwrap();
+    assert_eq!(parser.remaining(), 1);
+    let glyph = parser.next_glyph().unwrap().unwrap();
+    assert_eq!(glyph.name, b"A");
+    assert_eq!(glyph.encoding.primary, 65);
+    assert_eq!(glyph.encoding.alternate, None);
+    assert_eq!(glyph.bounds.pos.dim, [0, 0]);
+    assert_eq!(glyph.bounds.ext.dim, [8, 2]);
+    assert_eq!(glyph.bitmap.row_bytes, 1);
+    assert_eq!(glyph.bitmap.source, b"81\n7E\n");
+    assert!(parser.next_glyph().unwrap().is_none());
+    assert_eq!(parser.finish(), Ok(()));
+}
+#[test]
+fn inherits_global_metrics() {
+    const FONT: &[u8] = b"\
+STARTFONT 2.2
+FONT test
+SIZE 8 72 72
+FONTBOUNDINGBOX 8 1 0 0
+SWIDTH 500 0
+DWIDTH 8 0
+CHARS 1
+STARTCHAR A
+ENCODING 65
+BBX 8 1 0 0
+BITMAP
+80
+ENDCHAR
+ENDFONT
+";
+    assert_eq!(Bdf::validate(FONT), Ok(()));
+}
+#[test]
+fn reads_alternate_encoding() {
+    const FONT: &[u8] = b"\
+STARTFONT 2.1
+FONT test
+SIZE 8 72 72
+FONTBOUNDINGBOX 8 1 0 0
+CHARS 1
+STARTCHAR custom
+ENCODING -1 1234
+SWIDTH 500 0
+DWIDTH 8 0
+BBX 8 1 0 0
+BITMAP
+80
+ENDCHAR
+ENDFONT
+";
+    let mut parser = BdfParser::new(FONT).unwrap();
+    let glyph = parser.next_glyph().unwrap().unwrap();
+    assert_eq!(glyph.encoding.primary, -1);
+    assert_eq!(glyph.encoding.alternate, Some(1234));
+    assert_eq!(parser.finish(), Ok(()));
+}
+#[test]
+fn rejects_wrong_declared_count() {
+    const TOO_MANY: &[u8] = b"\
+STARTFONT 2.1
+FONT test
+SIZE 8 72 72
+FONTBOUNDINGBOX 8 1 0 0
+CHARS 2
+STARTCHAR A
+ENCODING 65
+SWIDTH 500 0
+DWIDTH 8 0
+BBX 8 1 0 0
+BITMAP
+80
+ENDCHAR
+ENDFONT
+";
+    assert!(Bdf::validate(TOO_MANY).is_err());
+}
+#[test]
+fn rejects_invalid_bitmap_row() {
+    const INVALID: &[u8] = b"\
+STARTFONT 2.1
+FONT test
+SIZE 8 72 72
+FONTBOUNDINGBOX 8 1 0 0
+CHARS 1
+STARTCHAR A
+ENCODING 65
+SWIDTH 500 0
+DWIDTH 8 0
+BBX 8 1 0 0
+BITMAP
+8Z
+ENDCHAR
+ENDFONT
+";
+    assert!(matches!(Bdf::validate(INVALID), Err(BdfError::InvalidValue { line: 12 })));
+}
 
 const HEADER_21: &[u8] = b"\
 STARTFONT 2.1
@@ -16,7 +139,6 @@ DEFAULT_CHAR 65533
 ENDPROPERTIES
 CHARS 1356
 ";
-
 const HEADER_22: &[u8] = b"\
 STARTFONT 2.2
 FONT test

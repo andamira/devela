@@ -1,4 +1,4 @@
-// devela/src/media/font/format/bdf/_parse/hader.rs
+// devela/src/media/font/format/bdf/_parse/header.rs
 //
 //! Defines `BdfVersion`, `BdfSection`, `BdfHeader`.
 //
@@ -37,21 +37,71 @@ impl BdfVersion {
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-struct BdfMetrics {
-    swidth: Option<[BdfNumber; 2]>,
-    dwidth: Option<[i32; 2]>,
-    swidth1: Option<[BdfNumber; 2]>,
-    dwidth1: Option<[i32; 2]>,
-    vvector: Option<[i32; 2]>,
+pub(crate) struct BdfMetrics {
+    pub(super) swidth: Option<[BdfNumber; 2]>,
+    pub(super) dwidth: Option<[i32; 2]>,
+    pub(super) swidth1: Option<[BdfNumber; 2]>,
+    pub(super) dwidth1: Option<[i32; 2]>,
+    pub(super) vvector: Option<[i32; 2]>,
 }
 impl BdfMetrics {
-    const EMPTY: Self = Self {
+    pub(super) const EMPTY: Self = Self {
         swidth: None,
         dwidth: None,
         swidth1: None,
         dwidth1: None,
         vvector: None,
     };
+
+    /// Fills absent local metrics from the global font metrics.
+    const fn with_defaults(self, defaults: Self) -> Self {
+        Self {
+            swidth: match self.swidth {
+                Some(value) => Some(value),
+                None => defaults.swidth,
+            },
+            dwidth: match self.dwidth {
+                Some(value) => Some(value),
+                None => defaults.dwidth,
+            },
+            swidth1: match self.swidth1 {
+                Some(value) => Some(value),
+                None => defaults.swidth1,
+            },
+            dwidth1: match self.dwidth1 {
+                Some(value) => Some(value),
+                None => defaults.dwidth1,
+            },
+            vvector: match self.vvector {
+                Some(value) => Some(value),
+                None => defaults.vvector,
+            },
+        }
+    }
+    /// Validates the effective metrics for the declared writing directions.
+    const fn validate(self, metrics_set: u8, line: u32) -> BdfResult<Self> {
+        let valid = match metrics_set {
+            // Writing direction 0.
+            0 => {
+                self.swidth.is_some()
+                    && self.dwidth.is_some()
+                    && self.swidth1.is_none()
+                    && self.dwidth1.is_none()
+            }
+            // Writing direction 1. Direction-0 metrics are optional.
+            1 => self.swidth1.is_some() && self.dwidth1.is_some() && self.vvector.is_some(),
+            // Both writing directions.
+            2 => {
+                self.swidth.is_some()
+                    && self.dwidth.is_some()
+                    && self.swidth1.is_some()
+                    && self.dwidth1.is_some()
+                    && self.vvector.is_some()
+            }
+            _ => false,
+        };
+        is! { valid, Ok(self), Err(E::invalid_value(line)) }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -76,9 +126,22 @@ pub(crate) struct BdfHeader<'a> {
     glyphs_offset: usize,
 }
 impl<'a> BdfHeader<'a> {
+    pub(super) const fn resolve_metrics(
+        &self,
+        local: BdfMetrics,
+        line: u32,
+    ) -> BdfResult<BdfMetrics> {
+        local.with_defaults(self.global_metrics).validate(self.metrics_set, line)
+    }
+    pub(super) const fn supports_vertical_metrics(&self) -> bool {
+        matches!(self.version, BdfVersion::V2_2)
+    }
     pub(crate) const fn read(bytes: &'a [u8]) -> BdfResult<Self> {
         let mut reader = BdfReader::new(bytes);
-        let version = bdf_try!(read_startfont(&mut reader));
+        Self::read_from(&mut reader)
+    }
+    pub(super) const fn read_from(reader: &mut BdfReader<'a>) -> BdfResult<Self> {
+        let version = bdf_try!(read_startfont(reader));
         let mut line = bdf_try!(reader.required_data());
         let content_version = if line.is(b"CONTENTVERSION") {
             let mut fields = line.fields();
@@ -138,7 +201,7 @@ impl<'a> BdfHeader<'a> {
             }
             if line.is(b"STARTPROPERTIES") {
                 is! { properties.is_some(), return Err(E::unexpected_directive(line.number)); }
-                properties = Some(bdf_try!(read_properties_section(&mut reader, line)));
+                properties = Some(bdf_try!(read_properties_section(reader, line)));
                 continue;
             }
             if line.is(b"METRICSSET") {
@@ -187,7 +250,7 @@ impl<'a> BdfHeader<'a> {
     }
 }
 
-/* parsing helpers */
+/* helpers */
 
 const fn read_startfont(reader: &mut BdfReader<'_>) -> BdfResult<BdfVersion> {
     let line = bdf_try!(reader.required());
@@ -226,14 +289,14 @@ const fn read_properties_section(
     bdf_try!(fields.finish());
     Ok(BdfSection { start, end, count })
 }
-const fn read_i32_pair(line: BdfLine<'_>) -> BdfResult<[i32; 2]> {
+pub(crate) const fn read_i32_pair(line: BdfLine<'_>) -> BdfResult<[i32; 2]> {
     let mut fields = line.fields();
     let x = bdf_try!(fields.i32());
     let y = bdf_try!(fields.i32());
     bdf_try!(fields.finish());
     Ok([x, y])
 }
-const fn read_number_pair(line: BdfLine<'_>) -> BdfResult<[BdfNumber; 2]> {
+pub(crate) const fn read_number_pair(line: BdfLine<'_>) -> BdfResult<[BdfNumber; 2]> {
     let mut fields = line.fields();
     let x = bdf_try!(fields.number());
     let y = bdf_try!(fields.number());

@@ -7,7 +7,7 @@ use super::{BdfNumber, BdfResult, bdf_try};
 use crate::{BdfError as E, Slice, TextScanner, is, unwrap, whilst};
 
 #[derive(Clone, Debug)]
-pub(super) struct BdfReader<'a> {
+pub(crate) struct BdfReader<'a> {
     scanner: TextScanner<'a>,
     next_line: u32,
 }
@@ -21,7 +21,13 @@ impl<'a> BdfReader<'a> {
     pub(super) const fn pos(&self) -> usize {
         self.scanner.pos().as_usize()
     }
-    const fn next(&mut self) -> BdfResult<Option<BdfLine<'a>>> {
+    pub(super) const fn line_number(&self) -> u32 {
+        self.next_line
+    }
+    pub(super) const fn source(&self, start: usize, end: usize) -> &'a [u8] {
+        Slice::range(self.scanner.bytes, start, end)
+    }
+    pub(super) const fn next(&mut self) -> BdfResult<Option<BdfLine<'a>>> {
         let range = unwrap![some_or self.scanner.next_line(), return Ok(None)];
         let number = self.next_line;
         self.next_line = self.next_line.saturating_add(1);
@@ -40,9 +46,9 @@ impl<'a> BdfReader<'a> {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub(super) struct BdfLine<'a> {
-    keyword: &'a [u8],
-    value: &'a [u8],
+pub(crate) struct BdfLine<'a> {
+    pub(super) keyword: &'a [u8],
+    pub(super) value: &'a [u8],
     pub(super) number: u32,
 }
 impl<'a> BdfLine<'a> {
@@ -56,6 +62,10 @@ impl<'a> BdfLine<'a> {
         is! { keyword.is_empty(), return Err(E::unexpected_directive(number)) }
         scanner.skip_ascii_hws();
         Ok(Self { keyword, value: scanner.rest(), number })
+    }
+    /// Returns the sole token on this line.
+    pub(super) const fn bare(self) -> BdfResult<&'a [u8]> {
+        is! { self.value.is_empty(), Ok(self.keyword), Err(E::invalid_value(self.number)) }
     }
     pub(super) const fn is(self, keyword: &[u8]) -> bool {
         bytes_eq(self.keyword, keyword)
@@ -79,11 +89,16 @@ impl<'a> BdfLine<'a> {
 }
 
 #[derive(Clone, Debug)]
-pub(super) struct BdfFields<'a> {
+pub(crate) struct BdfFields<'a> {
     scanner: TextScanner<'a>,
     line: u32,
 }
 impl<'a> BdfFields<'a> {
+    /// Returns whether no non-horizontal-whitespace fields remain.
+    pub(super) const fn is_empty(&mut self) -> bool {
+        self.scanner.skip_ascii_hws();
+        self.scanner.is_eof()
+    }
     pub(super) const fn token(&mut self) -> BdfResult<&'a [u8]> {
         self.scanner.skip_ascii_hws();
         is! { self.scanner.is_eof(), return Err(E::invalid_value(self.line)) }

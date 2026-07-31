@@ -10,11 +10,12 @@ use crate::{BdfError as E, is, lets, unwrap};
 ///
 /// Its value is `coefficient × 10⁻ˢᶜᵃˡᵉ`.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
-pub(super) struct BdfNumber {
+pub(crate) struct BdfNumber {
     coefficient: i64,
     scale: u8,
 }
 impl BdfNumber {
+    #[expect(dead_code)]
     pub(super) const ZERO: Self = Self { coefficient: 0, scale: 0 };
 
     pub(super) const fn new(mut coefficient: i64, mut scale: u8) -> Self {
