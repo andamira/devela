@@ -3,7 +3,7 @@
 //! Defines [`FontBitmapWord`].
 //
 
-use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, whilst};
+use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, unwrap, whilst};
 
 #[doc = crate::_tags!(font)]
 /// A fixed-size bitmap font packed into glyph words.
@@ -23,7 +23,6 @@ pub struct FontBitmapWord<'glyphs, T> {
     glyphs: &'glyphs [T],
     first_glyph: char,
     extra_glyphs: &'glyphs [(char, T)],
-
     width: u8,
     height: u8,
     baseline: u8,
@@ -60,7 +59,7 @@ impl<'glyphs, T> FontBitmapWord<'glyphs, T> {
         assert!(width != 0 && height != 0, "bitmap glyph dimensions must be non-zero");
         assert!(baseline < height, "bitmap font baseline must be inside the glyph");
         assert!(glyph_bits <= 64, "bitmap glyph exceeds 64 bits");
-        assert!(size_of::<T>() >= (glyph_bits + 7) / 8, "bitmap glyph storage is too small");
+        assert!(size_of::<T>() >= glyph_bits.div_ceil(8), "bitmap glyph storage is too small");
         Self {
             glyphs, first_glyph, extra_glyphs: &[], width, height, baseline, advance_x, advance_y
         }
@@ -118,7 +117,7 @@ impl<'glyphs, T> FontBitmapWord<'glyphs, T> {
     }
     #[must_use] /// Returns whether a glyph exists for `c`.
     pub const fn has_glyph(&self, c: char) -> bool {
-        match self.glyph_ref(c) { Some(_) => true, None => false }
+        self.glyph_ref(c).is_some()
     }
 
     /* measurement */
@@ -214,16 +213,15 @@ impl<T: Copy + Into<u64>> FontBitmapWord<'_, T> {
         }
     }
 }
-#[rustfmt::skip]
 impl<T: Copy> FontBitmapWord<'_, T> {
     /// Returns the glyph for `c`.
     #[must_use]
     pub const fn glyph(&self, c: char) -> Option<T> {
-        match self.glyph_ref(c) { Some(glyph) => Some(*glyph), None => None }
+        unwrap![=some_map self.glyph_ref(c), |glyph| *glyph]
     }
     /// Returns the glyph for `c`, or `fallback`.
     #[must_use]
     pub const fn glyph_or(&self, c: char, fallback: T) -> T {
-        match self.glyph(c) { Some(glyph) => glyph, None => fallback }
+        unwrap![some_or self.glyph(c), fallback]
     }
 }

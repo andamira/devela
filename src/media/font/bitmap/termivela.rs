@@ -3,7 +3,7 @@
 //! Defines the embedded Termivela bitmap-font faces.
 //
 
-use crate::{Dvbf, FontBitmapView, Fonts};
+use crate::{Dvbf, FontBitmapView, Fonts, unwrap};
 
 const REGULAR_BYTES: &[u8] =
     include_bytes!("../../../../assets/font/termivela/termivela-8x16-regular.dvbf");
@@ -11,10 +11,7 @@ const BOLD_BYTES: &[u8] =
     include_bytes!("../../../../assets/font/termivela/termivela-8x16-bold.dvbf");
 
 const fn read_embedded(bytes: &'static [u8]) -> FontBitmapView<'static> {
-    match Dvbf::read(bytes) {
-        Ok(font) => font,
-        Err(_) => panic!("invalid embedded Termivela DVBF data"),
-    }
+    unwrap![ok_expect Dvbf::read(bytes), "invalid embedded Termivela DVBF data"]
 }
 
 /// # Termivela

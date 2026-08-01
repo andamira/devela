@@ -2,7 +2,7 @@
 //
 //! Defines [`FontBitmapView`] and [`GlyphBitmapView`].
 
-use crate::{CharIter, Debug, FmtResult, Fonts, Formatter, Region2, Slice};
+use crate::{CharIter, Debug, FmtResult, Fonts, Formatter, Region2, Slice, is, unwrap};
 
 #[doc = crate::_tags!(font)]
 /// A validated, borrowed view over fixed-metric monochrome bitmap-font data.
@@ -120,18 +120,12 @@ impl<'a> FontBitmapView<'a> {
     #[must_use]
     /// Returns the Unicode scalar value of the fallback character, when present.
     pub const fn default_scalar(&self) -> Option<u32> {
-        match self.default_character {
-            Some(c) => Some(c as u32),
-            None => None,
-        }
+        unwrap![=some_map self.default_character, |c| c as u32]
     }
     #[must_use]
     /// Returns the fallback glyph, when the font defines one.
     pub const fn default_glyph(&self) -> Option<GlyphBitmapView<'a>> {
-        match self.default_character {
-            Some(c) => self.glyph(c),
-            None => None,
-        }
+        unwrap![=some_map_into self.default_character, |c| self.glyph(c)]
     }
 
     #[must_use] /// Returns whether the font contains a glyph for `character`.
@@ -153,36 +147,21 @@ impl<'a> FontBitmapView<'a> {
     ///
     /// Invalid or unmapped scalar values return `None`.
     pub const fn glyph_scalar(&self, scalar: u32) -> Option<GlyphBitmapView<'a>> {
-        match self.glyph_index_scalar(scalar) {
-            Some(index) => self.glyph_at(index),
-            None => None,
-        }
+        unwrap![=some_map_into self.glyph_index_scalar(scalar), |idx| self.glyph_at(idx)]
     }
     /// Returns the mapped glyph for `character`, or the fallback glyph.
     ///
     /// Returns `None` when neither glyph exists.
     pub const fn glyph_or_default(&self, character: char) -> Option<GlyphBitmapView<'a>> {
-        match self.glyph(character) {
-            Some(glyph) => Some(glyph),
-            None => self.default_glyph(),
-        }
+        unwrap![=some_or self.glyph(character), self.default_glyph()]
     }
 
     /// Returns the glyph at `index` in scalar-sort order.
     pub const fn glyph_at(&self, index: usize) -> Option<GlyphBitmapView<'a>> {
-        let character = match self.character_at(index) {
-            Some(character) => character,
-            None => return None,
-        };
-        let start = match index.checked_mul(self.glyph_stride()) {
-            Some(start) => start,
-            None => return None,
-        };
-        let end = match start.checked_add(self.glyph_bitmap_len()) {
-            Some(end) => end,
-            None => return None,
-        };
-        if end > self.bitmaps.len() { return None; }
+        let character = unwrap![some? self.character_at(index)];
+        let start = unwrap![some? index.checked_mul(self.glyph_stride())];
+        let end = unwrap![some? start.checked_add(self.glyph_bitmap_len())];
+        is! { end > self.bitmaps.len(), return None }
         Some(GlyphBitmapView {
             character,
             bitmap: Slice::range(self.bitmaps, start, end),
@@ -193,15 +172,11 @@ impl<'a> FontBitmapView<'a> {
     }
     /// Returns the Unicode scalar value at `index` in scalar-sort order.
     pub const fn scalar_at(&self, index: usize) -> Option<u32> {
-        if index < self.glyph_count() { Some(self.scalar_at_unchecked(index)) }
-        else { None }
+        is! { index < self.glyph_count(), Some(self.scalar_at_unchecked(index)), None }
     }
     /// Returns the character at `index` in scalar-sort order.
     pub const fn character_at(&self, index: usize) -> Option<char> {
-        match self.scalar_at(index) {
-            Some(scalar) => char::from_u32(scalar),
-            None => None,
-        }
+        unwrap![=some_map_into self.scalar_at(index), |sc| char::from_u32(sc)]
     }
 
     /// Returns the scalar-sort index of `character`.
@@ -281,7 +256,7 @@ impl<'a> GlyphBitmapView<'a> {
 
     /// Returns the bitmap bytes for `row`, indexed from the top.
     pub const fn row(&self, row: usize) -> Option<&'a [u8]> {
-        if row >= self.height as usize { return None; }
+        is! { row >= self.height as usize, return None }
         let start = row * self.row_stride();
         Some(Slice::range(self.bitmap, start, start + self.row_stride()))
     }
@@ -290,7 +265,7 @@ impl<'a> GlyphBitmapView<'a> {
     /// Coordinates begin at the bitmap's top-left corner. Returns `None` when
     /// either coordinate lies outside the visible bitmap dimensions.
     pub const fn is_set(&self, x: usize, y: usize) -> Option<bool> {
-        if x >= self.width as usize || y >= self.height as usize { return None; }
+        is! { x >= self.width as usize || y >= self.height as usize, return None }
         let byte = self.bitmap[y * self.row_stride() + x / 8];
         Some(byte & (0x80 >> (x % 8)) != 0)
     }

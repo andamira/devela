@@ -56,41 +56,26 @@ impl BdfMetrics {
     /// Fills absent local metrics from the global font metrics.
     const fn with_defaults(self, defaults: Self) -> Self {
         Self {
-            swidth: match self.swidth {
-                Some(value) => Some(value),
-                None => defaults.swidth,
-            },
-            dwidth: match self.dwidth {
-                Some(value) => Some(value),
-                None => defaults.dwidth,
-            },
-            swidth1: match self.swidth1 {
-                Some(value) => Some(value),
-                None => defaults.swidth1,
-            },
-            dwidth1: match self.dwidth1 {
-                Some(value) => Some(value),
-                None => defaults.dwidth1,
-            },
-            vvector: match self.vvector {
-                Some(value) => Some(value),
-                None => defaults.vvector,
-            },
+            swidth: unwrap![=some_or self.swidth, defaults.swidth],
+            dwidth: unwrap![=some_or self.dwidth, defaults.dwidth],
+            swidth1: unwrap![=some_or self.swidth1, defaults.swidth1],
+            dwidth1: unwrap![=some_or self.dwidth1, defaults.dwidth1],
+            vvector: unwrap![=some_or self.vvector, defaults.vvector],
         }
     }
     /// Validates the effective metrics for the declared writing directions.
     const fn validate(self, metrics_set: u8, line: u32) -> BdfResult<Self> {
         let valid = match metrics_set {
-            // Writing direction 0.
+            // Writing direction 0
             0 => {
                 self.swidth.is_some()
                     && self.dwidth.is_some()
                     && self.swidth1.is_none()
                     && self.dwidth1.is_none()
             }
-            // Writing direction 1. Direction-0 metrics are optional.
+            // Writing direction 1. Direction-0 metrics are optional
             1 => self.swidth1.is_some() && self.dwidth1.is_some() && self.vvector.is_some(),
-            // Both writing directions.
+            // Both writing directions
             2 => {
                 self.swidth.is_some()
                     && self.dwidth.is_some()
@@ -200,7 +185,7 @@ impl<'a> BdfHeader<'a> {
                 });
             }
             if line.is(b"STARTPROPERTIES") {
-                is! { properties.is_some(), return Err(E::unexpected_directive(line.number)); }
+                is! { properties.is_some(), return Err(E::unexpected_directive(line.number)) }
                 properties = Some(bdf_try!(read_properties_section(reader, line)));
                 continue;
             }

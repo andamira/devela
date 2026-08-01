@@ -3,7 +3,7 @@
 //! Defines [`Dvbf`].
 //
 
-use crate::{Debug, DvbfError, FontBitmapView, Fonts, Slice, Version, is, whilst};
+use crate::{Debug, DvbfError, FontBitmapView, Fonts, Slice, Version, is, unwrap, whilst};
 
 /// A DVBF decoding result.
 type DvbfResult<T> = crate::Result<T, DvbfError>;
@@ -93,7 +93,6 @@ impl Dvbf {
         let descent = Fonts::read_u16(bytes, 54);
         let default_scalar = Fonts::read_u32(bytes, 56);
         let reserved1 = Fonts::read_u32(bytes, 60);
-
         if header_bytes != Self::HEADER_BYTES || reserved0 != 0 || reserved1 != 0 {
             return Err(DvbfError::InvalidHeader);
         }
@@ -105,7 +104,7 @@ impl Dvbf {
         if glyph_count == 0 || width == 0 || height == 0 || advance_x == 0 || line_advance == 0 {
             return Err(DvbfError::InvalidMetrics);
         }
-        let expected_row_stride = ((width as u32 + 7) / 8) as u16;
+        let expected_row_stride = (width as u32).div_ceil(8) as u16;
         let Some(expected_glyph_stride) = (row_stride as u32).checked_mul(height as u32) else {
             return Err(DvbfError::InvalidMetrics);
         };
@@ -156,10 +155,8 @@ impl Dvbf {
         let default_character = if default_scalar == Self::NO_SCALAR {
             None
         } else {
-            match char::from_u32(default_scalar) {
-                Some(character) => Some(character),
-                None => return Err(DvbfError::InvalidDefaultScalar(default_scalar)),
-            }
+            unwrap![=some_or char::from_u32(default_scalar),
+                return Err(DvbfError::InvalidDefaultScalar(default_scalar))]
         };
         let view = FontBitmapView {
             scalars_le,

@@ -277,13 +277,13 @@ const fn magnitude_precedes(a: f64, b: f64) -> bool {
 macro_rules! impl_point_segment_relation_float {
     ($($t:ty),+ $(,)?) => { $(
         impl Point<$t, 2> {
-            /// Classifies this point relative to the directed segment
-            /// `origin → destination`.
+            /// Classifies this point relative to the directed segment `origin → destination`.
             ///
             /// Returns [`None`] when the segment is degenerate, any coordinate
-            /// is non-finite, or the turn cannot be evaluated within the
-            /// supported floating-point range.
+            /// is non-finite, or the turn cannot be evaluated
+            /// within the supported floating-point range.
             #[must_use]
+            #[allow(clippy::float_cmp, reason = "intentional exact coordinate equality")]
             pub const fn segment_relation(
                 self,
                 origin: Self,
