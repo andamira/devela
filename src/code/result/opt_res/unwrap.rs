@@ -19,12 +19,13 @@
 /// - **`serr_`** - `Option<Result<T, E>>` (`Some(Err)`)
 ///
 /// #### Modifiers
-/// - **`=`** - Retains the selected variant wrapper
-///   instead of unwrapping its contained value.
+/// - **`=`** - Completes the operation locally within its wrapper
+///   instead of panicking or returning from the enclosing function.
 ///
-/// The `=` modifier currently applies to `_or` forms.
-/// For example, `some_or` extracts the value from `Some`,
-/// whereas `=some_or` reconstructs and returns `Some`.
+/// The `=` modifier preserves or reconstructs every relevant variant:
+/// - `=some_or` retains `Some`, or evaluates an alternative `Option`.
+/// - `=some_map` maps and reconstructs `Some`, while preserving `None`.
+/// - `=some_map_into` uses the mapped `Option` directly, while preserving `None`.
 ///
 /// #### Suffixes
 /// | Suffix              | Behavior                                       | Safety        |
@@ -50,19 +51,10 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! unwrap {
     (
-
       // Option<T>
       // ---------
 
-      // Unwraps `Some` value, or otherwise returns `None`.
-      some? $T:expr ) => {
-        match $T {
-            Some(v) => v,
-            None => return None,
-        }
-    };
-    (
-      // Unwraps `Some` value, or panics if it's `None`.
+      // Unwraps `Some`, otherwise panics.
       some $T:expr) => {
         match $T {
             Some(v) => v,
@@ -70,7 +62,15 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, or panics with a message if it's `None`.
+      // Unwraps `Some`, otherwise returns `None`.
+      some? $T:expr ) => {
+        match $T {
+            Some(v) => v,
+            None => return None,
+        }
+    };
+    (
+      // Unwraps `Some`, otherwise panics with a message.
       some_expect $T:expr, $message:expr) => {
         match $T {
             Some(v) => v,
@@ -78,23 +78,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps `Some` value or otherwise returns `None`.
-      some_map? $T:expr, |$v:ident| $some_map:expr) => {
-        match $T {
-            Some($v) => Some($some_map),
-            None => return None,
-        }
-    };
-    (
-      // Maps and unwraps `Some` value or otherwise returns `None`.
-      some_map_into? $T:expr, |$v:ident| $some_map:expr) => {
-        match $T {
-            Some($v) => $some_map,
-            None => return None,
-        }
-    };
-    (
-      // Maps `Some` value or panics if it's `None`.
+      // Maps `Some`, otherwise panics.
       some_map $T:expr, |$v:ident| $some_map:expr) => {
         match $T {
             Some($v) => Some($some_map),
@@ -102,7 +86,23 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps `Some` value or panics with a message if it's `None`.
+      // Maps `Some`, otherwise returns `None`.
+      some_map? $T:expr, |$v:ident| $some_map:expr) => {
+        match $T {
+            Some($v) => Some($some_map),
+            None => return None,
+        }
+    };
+    (
+      // Maps `Some`, preserving `None` locally.
+      =some_map $T:expr, |$v:ident| $some_map:expr $(,)?) => {
+        match $T {
+            Some($v) => Some($some_map),
+            None => None,
+        }
+    };
+    (
+      // Maps `Some`, otherwise panics with a message.
       some_map_expect $T:expr, |$v:ident| $some_map:expr, $message:expr) => {
         match $T {
             Some($v) => Some($some_map),
@@ -110,11 +110,27 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps and unwraps `Some` value or panics if it's `None`.
+      // Maps `Some` directly into the result, otherwise panics.
       some_map_into $T:expr, |$v:ident| $some_map:expr) => {
         match $T {
             Some($v) => $some_map,
             None => ::core::panic!["called unwrap!(some_map_into …) on None"],
+        }
+    };
+    (
+      // Maps `Some` directly into the result, otherwise returns `None`.
+      some_map_into? $T:expr, |$v:ident| $some_map:expr) => {
+        match $T {
+            Some($v) => $some_map,
+            None => return None,
+        }
+    };
+    (
+      // Maps `Some` directly into the result, preserving `None` locally.
+      =some_map_into $T:expr, |$v:ident| $some_map:expr $(,)?) => {
+        match $T {
+            Some($v) => $some_map,
+            None => None,
         }
     };
     (
@@ -126,15 +142,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value if `$cond` holds, otherwise returns `None`.
-      some_if? $T:expr, |$v:ident| $cond:expr) => {
-        match $T {
-            Some($v) if $cond => $v,
-            _ => return None,
-        }
-    };
-    (
-      // Unwraps `Some` value if `$cond` holds, otherwise panics.
+      // Unwraps `Some` if `$cond` holds, otherwise panics.
       some_if $T:expr, |$v:ident| $cond:expr) => {
         match $T {
             Some($v) if $cond => $v,
@@ -142,7 +150,15 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, otherwise evaluates `$fallback`.
+      // Unwraps `Some` if `$cond` holds, otherwise returns `None`.
+      some_if? $T:expr, |$v:ident| $cond:expr) => {
+        match $T {
+            Some($v) if $cond => $v,
+            _ => return None,
+        }
+    };
+    (
+      // Unwraps `Some`, otherwise evaluates `$fallback`.
       some_or $T:expr, $fallback:expr) => {
         match $T {
             Some(v) => v,
@@ -150,7 +166,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, otherwise returns `$fallback`.
+      // Unwraps `Some`, otherwise returns `$fallback`.
       some_or? $T:expr, $fallback:expr) => {
         match $T {
             Some(v) => v,
@@ -158,7 +174,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Retains `Some`, otherwise evaluates an alternative `Option`.
+      // Retains `Some`, otherwise evaluates `$fallback`.
       =some_or $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Some(v) => Some(v),
@@ -189,7 +205,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some` value, or otherwise returns Err($err).
+      // Unwraps `Some`, otherwise returns Err($err).
       some_ok_or? $T:expr, $err:expr) => {
         match $T {
             Some(v) => v,
@@ -197,7 +213,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Transforms and maps `Some` value to `Ok`, and `None` to `Err($err)`.
+      // Transforms and maps `Some` to `Ok`, and `None` to `Err($err)`.
       some_ok_map_or $T:expr, |$v:ident| $ok_map:expr, $err:expr) => {
         match $T {
             Some($v) => Ok($ok_map),
@@ -205,7 +221,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Transforms and maps `Some` value to `Ok`, or otherwise returns `Err($err)`.
+      // Transforms and maps `Some` to `Ok`, otherwise returns `Err($err)`.
       some_ok_map_or? $T:expr, |$v:ident| $ok_map:expr, $err:expr) => {
         match $T {
             Some($v) => Ok($ok_map),
@@ -218,15 +234,7 @@ macro_rules! unwrap {
       // Result<T, E>
       // ------------
 
-      // Unwraps the `Ok` value, or otherwise returns the `Err` value.
-      ok? $T:expr ) => {
-        match $T {
-            Ok(v) => v,
-            Err(e) => return Err(e),
-        }
-    };
-    (
-      // Unwraps the `Ok` value, or panics if it's `Err`.
+      // Unwraps `Ok`, otherwise panics.
       ok $T:expr ) => {
         match $T {
             Ok(v) => v,
@@ -234,7 +242,15 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value, or panics with a message if it's `Err`.
+      // Unwraps `Ok`, otherwise returns `Err`.
+      ok? $T:expr ) => {
+        match $T {
+            Ok(v) => v,
+            Err(e) => return Err(e),
+        }
+    };
+    (
+      // Unwraps `Ok`, otherwise panics with a message.
       ok_expect $T:expr, $message:expr) => {
         match $T {
             Ok(v) => v,
@@ -242,15 +258,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps the `Ok` value or otherwise returns the `Err` value.
-      ok_map? $T:expr, |$v:ident| $ok_map:expr) => {
-        match $T {
-            Ok($v) => Ok($ok_map),
-            Err(e) => return Err(e),
-        }
-    };
-    (
-      // Maps the `Ok` value or panics if it's `Err`.
+      // Maps `Ok`, otherwise panics.
       ok_map $T:expr, |$v:ident| $ok_map:expr) => {
         match $T {
             Ok($v) => Ok($ok_map),
@@ -258,7 +266,23 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps the `Ok` value or panics with a message if it's `Err`.
+      // Maps `Ok`, otherwise returns `Err`.
+      ok_map? $T:expr, |$v:ident| $ok_map:expr) => {
+        match $T {
+            Ok($v) => Ok($ok_map),
+            Err(e) => return Err(e),
+        }
+    };
+    (
+      // Maps `Ok`, preserving `Err` locally.
+      =ok_map $T:expr, |$v:ident| $ok_map:expr $(,)?) => {
+        match $T {
+            Ok($v) => Ok($ok_map),
+            Err(e) => Err(e),
+        }
+    };
+    (
+      // Maps `Ok`, otherwise panics with a message.
       ok_map_expect $T:expr, |$v:ident| $ok_map:expr, $message:expr) => {
         match $T {
             Ok($v) => Ok($ok_map),
@@ -266,15 +290,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps and unwraps the `Ok` value or otherwise returns the `Err` value.
-      ok_map_into? $T:expr, |$v:ident| $ok_map:expr) => {
-        match $T {
-            Ok($v) => $ok_map,
-            Err(e) => return Err(e),
-        }
-    };
-    (
-      // Maps and unwraps the `Ok` value or panics if it's `Err`.
+      // Maps `Ok` directly into the result, otherwise panics.
       ok_map_into $T:expr, |$v:ident| $ok_map:expr) => {
         match $T {
             Ok($v) => $ok_map,
@@ -282,7 +298,23 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps and unwraps the `Ok` value or panics with a message if it's `Err`.
+      // Maps `Ok` directly into the result, otherwise returns `Err`.
+      ok_map_into? $T:expr, |$v:ident| $ok_map:expr) => {
+        match $T {
+            Ok($v) => $ok_map,
+            Err(e) => return Err(e),
+        }
+    };
+    (
+      // Maps `Ok` directly into the result, preserving `Err` locally.
+      =ok_map_into $T:expr, |$v:ident| $ok_map:expr $(,)?) => {
+        match $T {
+            Ok($v) => $ok_map,
+            Err(e) => Err(e),
+        }
+    };
+    (
+      // Maps `Ok` directly into the result, otherwise panics with a message.
       ok_map_into_expect $T:expr, |$v:ident| $ok_map:expr, $message:expr) => {
         match $T {
             Ok($v) => $ok_map,
@@ -290,7 +322,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps the `Ok` value or otherwise returns the mapped `Err`.
+      // Maps `Ok`, otherwise returns the mapped `Err`.
       ok_map_err_map? $T:expr, |$v:ident| $ok_map:expr, |$e:ident| $err_map:expr) => {
         match $T {
             Ok($v) => Ok($ok_map),
@@ -298,7 +330,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps and unwraps the `Ok` value or otherwise returns the mapped `Err`.
+      // Maps `Ok` directly into the result, otherwise returns the mapped `Err`.
       ok_map_err_map_into? $T:expr, |$v:ident| $ok_map:expr, |$e:ident| $err_map:expr) => {
         match $T {
             Ok($v) => $ok_map,
@@ -306,7 +338,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value or otherwise returns the mapped `Err`.
+      // Unwraps `Ok`, otherwise returns the mapped `Err`.
       ok_err_map? $T:expr, |$e:ident| $err_map:expr) => {
         match $T {
             Ok(v) => v,
@@ -314,7 +346,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value; otherwise evaluates `$fallback`.
+      // Unwraps `Ok`, otherwise evaluates `$fallback`.
       ok_or $T:expr, $fallback:expr) => {
         match $T {
             Ok(v) => v,
@@ -322,7 +354,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value; otherwise returns `Err($err)`.
+      // Unwraps `Ok`, otherwise returns `Err($err)`.
       ok_or? $T:expr, $err:expr) => {
         match $T {
             Ok(v) => v,
@@ -330,7 +362,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Retains `Ok`, otherwise evaluates an alternative `Result`.
+      // Retains `Ok`, otherwise evaluates `$fallback`.
       =ok_or $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Ok(v) => Ok(v),
@@ -353,7 +385,15 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value if `$cond` holds;
+      // Unwraps `Ok` if `$cond` holds, otherwise panics.
+      ok_if $T:expr, |$v:ident| $cond:expr) => {
+        match $T {
+            Ok($v) if $cond => $v,
+            _ => ::core::panic!["called unwrap!(ok_if …) on failed condition"],
+        }
+    };
+    (
+      // Unwraps `Ok` if `$cond` holds,
       // otherwise returns `$ok_err` (type Err) or propagates the original `Err`.
       ok_if? $T:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
         match $T {
@@ -363,16 +403,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value if `$cond` holds; otherwise panics.
-      ok_if $T:expr, |$v:ident| $cond:expr) => {
-        match $T {
-            Ok($v) if $cond => $v,
-            _ => ::core::panic!["called unwrap!(ok_if …) on failed condition"],
-        }
-    };
-    (
-      // Unwraps the `Ok` value if `$cond` holds;
-      // otherwise evaluates `$fallback`.
+      // Unwraps `Ok` if `$cond` holds, otherwise evaluates `$fallback`.
       ok_if_or $T:expr, |$v:ident| $cond:expr, $fallback:expr) => {
         match $T {
             Ok($v) if $cond => $v,
@@ -380,7 +411,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value if `$cond` holds; otherwise returns `Err($ok_err)`.
+      // Unwraps `Ok` if `$cond` holds, otherwise returns `Err($ok_err)`.
       ok_if_or_err? $T:expr, |$v:ident| $cond:expr, $ok_err:expr) => {
         match $T {
             Ok($v) if $cond => $v,
@@ -388,7 +419,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value if `$cond` holds;
+      // Unwraps `Ok` if `$cond` holds,
       // otherwise returns `Err($ok_err)`, or maps an existing `Err` with `$err_map`.
       ok_if_err_map? $T:expr, |$v:ident| $cond:expr, $ok_err:expr, |$e:ident| $err_map:expr) => {
         match $T {
@@ -398,7 +429,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Transforms the `Ok` value to `Some`, and `Err` to `None`.
+      // Transforms `Ok` to `Some`, and `Err` to `None`.
       ok_some $T:expr) => {
         match $T {
             Ok(v) => Some(v),
@@ -406,7 +437,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value, otherwise returns `None`.
+      // Unwraps `Ok`, otherwise returns `None`.
       ok_some? $T:expr) => {
         match $T {
             Ok(v) => v,
@@ -414,7 +445,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Transforms and maps the `Ok` value to `Some`, and `Err` to `None`.
+      // Transforms and maps `Ok` to `Some`, and `Err` to `None`.
       ok_some_map $T:expr, |$v:ident| $some_map:expr) => {
         match $T {
             Ok($v) => Some($some_map),
@@ -422,7 +453,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Ok` value, or the `Err` value.
+      // Unwraps `Ok`, otherwise unwraps `Err`.
       // Only use when `Ok` and `Err` contain the same type.
       ok_err $T:expr) => {
         match $T {
@@ -431,15 +462,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Err` value, or returns the `Ok` value.
-      err? $T:expr ) => {
-        match $T {
-            Ok(v) => return Ok(v),
-            Err(e) => e,
-        }
-    };
-    (
-      // Unwraps the `Err` value, or panics if it's `Ok`.
+      // Unwraps `Err`, otherwise panics.
       err $T:expr ) => {
         match $T {
             Ok(_) => ::core::panic!["called unwrap!(err …) on Ok"],
@@ -447,7 +470,15 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Err` value, or panics with a message if it's `Ok`.
+      // Unwraps `Err`, otherwise returns `Ok`.
+      err? $T:expr ) => {
+        match $T {
+            Ok(v) => return Ok(v),
+            Err(e) => e,
+        }
+    };
+    (
+      // Unwraps `Err`, otherwise panics with a message.
       err_expect $T:expr, $message:expr) => {
         match $T {
             Ok(_) => ::core::panic!["{}", $message],
@@ -455,15 +486,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps the `Err` value or otherwise returns the `Ok` value.
-      err_map? $T:expr, |$e:ident| $err_map:expr) => {
-        match $T {
-            Ok(v) => return Ok(v),
-            Err($e) => Err($err_map),
-        }
-    };
-    (
-      // Maps the `Err` value or panics if it's `Ok`.
+      // Maps `Err`, otherwise panics.
       err_map $T:expr, |$e:ident| $err_map:expr) => {
         match $T {
             Ok(_) => ::core::panic!["called unwrap!(err_map …) on Ok"],
@@ -471,7 +494,23 @@ macro_rules! unwrap {
         }
     };
     (
-      // Maps the `Err` value or panics with a message if it's `Ok`.
+      // Maps `Err`, otherwise returns `Ok`.
+      err_map? $T:expr, |$e:ident| $err_map:expr) => {
+        match $T {
+            Ok(v) => return Ok(v),
+            Err($e) => Err($err_map),
+        }
+    };
+    (
+      // Maps `Err`, preserving `Ok` locally.
+      =err_map $T:expr, |$e:ident| $err_map:expr $(,)?) => {
+        match $T {
+            Ok(v) => Ok(v),
+            Err($e) => Err($err_map),
+        }
+    };
+    (
+      // Maps `Err`, otherwise panics with a message.
       err_map_expect $T:expr, |$e:ident| $err_map:expr, $message:expr) => {
         match $T {
             Ok(_) => ::core::panic!["{}", $message],
@@ -479,7 +518,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Err` value; otherwise evaluates `$fallback`.
+      // Unwraps `Err`, otherwise evaluates `$fallback`.
       err_or $T:expr, $fallback:expr) => {
         match $T {
             Ok(_) => $fallback,
@@ -495,7 +534,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Retains `Err`, otherwise evaluates an alternative `Result`.
+      // Retains `Err`, otherwise evaluates $fallback.
       =err_or $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Ok(_) => $fallback,
@@ -503,7 +542,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Transforms `Err(e)` to `Some(e)`, and `Ok(_)` to `None`.
+      // Transforms `Err` to `Some`, and `Ok` to `None`.
       err_some $T:expr) => {
         match $T {
             Ok(_) => None,
@@ -511,7 +550,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps the `Err` value, otherwise returns `None`.
+      // Unwraps `Err`, otherwise returns `None`.
       err_some? $T:expr) => {
         match $T {
             Ok(_) => return None,
@@ -524,16 +563,7 @@ macro_rules! unwrap {
       // OptRes<T, E>
       // ------------
 
-      // Unwraps `Some(Ok)` value; otherwise returns either `Some(Err)` value or `None`.
-      sok? $T:expr ) => {
-        match $T {
-            Some(Ok(v)) => v,
-            Some(Err(e)) => return Some(Err(e)),
-            None => return None,
-        }
-    };
-    (
-      // Unwraps `Some(Ok)` value, or panics if it's `Some(Err)` or `None`.
+      // Unwraps `Some(Ok)`, otherwise panics.
       sok $T:expr ) => {
         match $T {
             Some(Ok(v)) => v,
@@ -542,7 +572,16 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value, or panics with a message if it's `Some(Err)` or `None`.
+      // Unwraps `Some(Ok)` value, otherwise returns either `Some(Err)` or `None`.
+      sok? $T:expr ) => {
+        match $T {
+            Some(Ok(v)) => v,
+            Some(Err(e)) => return Some(Err(e)),
+            None => return None,
+        }
+    };
+    (
+      // Unwraps `Some(Ok)`, otherwise panics with a message.
       sok_expect $T:expr, $message:expr) => {
         match $T {
             Some(Ok(v)) => v,
@@ -551,7 +590,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value; otherwise evaluates `$fallback`.
+      // Unwraps `Some(Ok)`, otherwise evaluates `$fallback`.
       sok_or $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(v)) => v,
@@ -560,7 +599,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Ok)` value; otherwise returns `$fallback`.
+      // Unwraps `Some(Ok)`, otherwise returns `$fallback`.
       sok_or? $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(v)) => v,
@@ -568,7 +607,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Retains `Some(Ok)`, otherwise evaluates an alternative `OptRes`.
+      // Retains `Some(Ok)`, otherwise evaluates `$fallback`.
       =sok_or $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Some(Ok(v)) => Some(Ok(v)),
@@ -595,7 +634,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Err)` value, or panics if it's `Some(Ok)` or `None`.
+      // Unwraps `Some(Err)`, otherwise panics.
       serr $T:expr ) => {
         match $T {
             Some(Ok(_)) => ::core::panic!["called unwrap!(serr …) on Some(Ok)"],
@@ -604,7 +643,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Err)` value, or panics with a message if it's `Some(Ok)` or `None`.
+      // Unwraps `Some(Err)`, otherwise panics with a message.
       serr_expect $T:expr, $message:expr) => {
         match $T {
             Some(Ok(_)) => ::core::panic!["{}", $message],
@@ -613,7 +652,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Unwraps `Some(Err)` value; otherwise evaluates `$fallback`.
+      // Unwraps `Some(Err)`, otherwise evaluates `$fallback`.
       serr_or $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(_)) => $fallback,
@@ -630,7 +669,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Retains `Some(Err)`, otherwise evaluates an alternative `OptRes`.
+      // Retains `Some(Err)`, otherwise evaluates `$fallback`.
       =serr_or $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Some(Err(e)) => Some(Err(e)),
