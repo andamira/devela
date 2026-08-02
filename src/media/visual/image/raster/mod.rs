@@ -13,7 +13,7 @@ mod borrow; // Borrowed typed and byte raster views
 mod coverage; // Quantized raster-sample coverage
 mod element; // Coordinate-and-coverage rasterization output
 mod format; // Raster sample and color-format semantics
-// mod grid; // WIP Logical raster-cell geometry and traversal
+mod grid; // Logical raster-cell geometry and traversal
 mod layout; // Physical raster byte-storage layout
 // mod macros; // TODO Raster type generators
 // mod ops; // TODO Raster storage and image operations
@@ -27,7 +27,7 @@ crate::structural_mods! { // _mods, _crate_internals
             coverage::Coverage8,
             element::RasterElement,
             format::RasterFormat,
-            // grid::RasterGrid,
+            grid::RasterGrid,
             layout::RasterLayout,
             // macros::raster,
             // ops::_all::*,

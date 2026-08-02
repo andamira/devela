@@ -133,7 +133,7 @@
   - make all methods const.
 
 ##### media::visual::image::raster
-- new types: `RasterElement`, `RasterSlice`, `RasterByteSlice`.
+- new types: `RasterElement`, `RasterGrid`, `RasterSlice`, `RasterByteSlice`.
 - remove types: `RasterBytesMut`, `RasterBytesRef`, `RasterMut`, `RasterRef`.
 - update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
 - update `RasterLayout`:

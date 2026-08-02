@@ -52,7 +52,7 @@ pub struct ArrayCoordIter<const RANK: usize> {
 
 impl<const RANK: usize> ArrayCoordIter<RANK> {
     /// Creates an iterator with a previously validated element count.
-    pub(super) const fn new(shape: ArrayShape<RANK>, remaining: usize) -> Self {
+    pub(crate) const fn new(shape: ArrayShape<RANK>, remaining: usize) -> Self {
         let mut back = [0; RANK];
         if remaining != 0 {
             let lengths = shape.lengths();
