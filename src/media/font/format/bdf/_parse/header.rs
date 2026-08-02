@@ -31,8 +31,8 @@ impl BdfVersion {
             version => Err(E::UnsupportedVersion(version)),
         }
     }
-    const fn is_v2(self) -> bool {
-        matches![self, Self::V2_1]
+    const fn supports_global_metrics(self) -> bool {
+        matches![self, Self::V2_2]
     }
 }
 
@@ -190,7 +190,7 @@ impl<'a> BdfHeader<'a> {
                 continue;
             }
             if line.is(b"METRICSSET") {
-                is! { version.is_v2() || has_metrics_set,
+                is! { !version.supports_global_metrics() || has_metrics_set,
                 return Err(E::unexpected_directive(line.number)) }
                 let mut fields = line.fields();
                 let value = bdf_try!(fields.u32());
@@ -201,31 +201,31 @@ impl<'a> BdfHeader<'a> {
                 continue;
             }
             if line.is(b"SWIDTH") {
-                is! { version.is_v2() || global_metrics.swidth.is_some(),
+                is! { !version.supports_global_metrics() || global_metrics.swidth.is_some(),
                 return Err(E::unexpected_directive(line.number)) }
                 global_metrics.swidth = Some(bdf_try!(read_number_pair(line)));
                 continue;
             }
             if line.is(b"DWIDTH") {
-                is! { version.is_v2() || global_metrics.dwidth.is_some(),
+                is! { !version.supports_global_metrics() || global_metrics.dwidth.is_some(),
                 return Err(E::unexpected_directive(line.number)) }
                 global_metrics.dwidth = Some(bdf_try!(read_i32_pair(line)));
                 continue;
             }
             if line.is(b"SWIDTH1") {
-                is! { version.is_v2() || global_metrics.swidth1.is_some(),
+                is! { !version.supports_global_metrics() || global_metrics.swidth1.is_some(),
                 return Err(E::unexpected_directive(line.number)) }
                 global_metrics.swidth1 = Some(bdf_try!(read_number_pair(line)));
                 continue;
             }
             if line.is(b"DWIDTH1") {
-                is! { version.is_v2() || global_metrics.dwidth1.is_some(),
+                is! { !version.supports_global_metrics() || global_metrics.dwidth1.is_some(),
                 return Err(E::unexpected_directive(line.number)) }
                 global_metrics.dwidth1 = Some(bdf_try!(read_i32_pair(line)));
                 continue;
             }
             if line.is(b"VVECTOR") {
-                is! { version.is_v2() || global_metrics.vvector.is_some(),
+                is! { !version.supports_global_metrics() || global_metrics.vvector.is_some(),
                 return Err(E::unexpected_directive(line.number)) }
                 global_metrics.vvector = Some(bdf_try!(read_i32_pair(line)));
                 continue;

@@ -3,7 +3,8 @@
 //! Defines [`Dvbf`].
 //
 
-use crate::{Debug, DvbfError, FontBitmapView, Fonts, Slice, Version, is, unwrap, whilst};
+use crate::{Debug, DvbfError, FontBitmapView, Version};
+use crate::{Slice, is, read_at, slice, unwrap, whilst};
 
 /// A DVBF decoding result.
 type DvbfResult<T> = crate::Result<T, DvbfError>;
@@ -58,14 +59,13 @@ impl Dvbf {
     /// Returns [`DvbfError`] when any part of the encoded representation
     /// is unsupported, malformed or internally inconsistent.
     pub const fn read(bytes: &[u8]) -> DvbfResult<FontBitmapView<'_>> {
-        is! { bytes.len() < Self::HEADER_BYTES as usize, return Err(DvbfError::TooShort) }
-        if bytes[0] != b'D' || bytes[1] != b'V' || bytes[2] != b'B' || bytes[3] != b'F' {
-            return Err(DvbfError::InvalidMagic);
-        }
+        is![bytes.len() < Self::HEADER_BYTES as usize, return Err(DvbfError::TooShort)];
+        is![!Slice::<u8>::eq(slice![bytes, ..4], b"DVBF"), return Err(DvbfError::InvalidMagic)];
+        let mut off = 4;
         let version = Version::new(
-            Fonts::read_u16(bytes, 4),
-            Fonts::read_u16(bytes, 6),
-            Fonts::read_u16(bytes, 8),
+            u16::from_le_bytes(read_at![bytes, +=off, @2]),
+            u16::from_le_bytes(read_at![bytes, +=off, @2]),
+            u16::from_le_bytes(read_at![bytes, +=off, @2]),
         );
         if version.major != Self::VERSION.major
             || version.minor != Self::VERSION.minor
@@ -73,26 +73,26 @@ impl Dvbf {
         {
             return Err(DvbfError::UnsupportedVersion(version));
         }
-        let header_bytes = Fonts::read_u16(bytes, 10);
-        let flags = Fonts::read_u32(bytes, 12);
-        let file_bytes = Fonts::read_u32(bytes, 16);
-        let glyph_count = Fonts::read_u32(bytes, 20);
-        let scalars_offset = Fonts::read_u32(bytes, 24);
-        let bitmaps_offset = Fonts::read_u32(bytes, 28);
-        let glyph_stride = Fonts::read_u32(bytes, 32);
-        let width = Fonts::read_u16(bytes, 36);
-        let height = Fonts::read_u16(bytes, 38);
-        let row_stride = Fonts::read_u16(bytes, 40);
-        let bit_depth = bytes[42];
-        let reserved0 = bytes[43];
-        let bounds_x = Fonts::read_i16(bytes, 44);
-        let bounds_y = Fonts::read_i16(bytes, 46);
-        let advance_x = Fonts::read_u16(bytes, 48);
-        let line_advance = Fonts::read_u16(bytes, 50);
-        let ascent = Fonts::read_u16(bytes, 52);
-        let descent = Fonts::read_u16(bytes, 54);
-        let default_scalar = Fonts::read_u32(bytes, 56);
-        let reserved1 = Fonts::read_u32(bytes, 60);
+        let header_bytes = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let flags = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let file_bytes = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let glyph_count = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let scalars_offset = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let bitmaps_offset = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let glyph_stride = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let width = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let height = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let row_stride = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let bit_depth = read_at![bytes, +=off, @1][0];
+        let reserved0 = read_at![bytes, +=off, @1][0];
+        let bounds_x = i16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let bounds_y = i16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let advance_x = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let line_advance = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let ascent = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let descent = u16::from_le_bytes(read_at![bytes, +=off, @2]);
+        let default_scalar = u32::from_le_bytes(read_at![bytes, +=off, @4]);
+        let reserved1 = u32::from_le_bytes(read_at![bytes, off, @4]);
         if header_bytes != Self::HEADER_BYTES || reserved0 != 0 || reserved1 != 0 {
             return Err(DvbfError::InvalidHeader);
         }
@@ -145,8 +145,8 @@ impl Dvbf {
 
         let mut previous = 0u32;
         whilst! { i in 0..glyph_count; {
-            let scalar = Fonts::read_u32(scalars_le, (i as usize) * 4);
-            if !Fonts::valid_scalar(scalar) {
+            let scalar = u32::from_le_bytes(read_at![scalars_le, (i as usize) * 4, @4]);
+            if !char::from_u32(scalar).is_some() {
                 return Err(DvbfError::InvalidScalar { index: i, scalar });
             }
             is![i != 0 && scalar <= previous, return Err(DvbfError::UnsortedScalars { index: i })];
