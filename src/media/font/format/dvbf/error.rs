@@ -83,3 +83,9 @@ impl Display for DvbfError {
         }
     }
 }
+#[allow(missing_docs)]
+impl DvbfError {
+    pub const fn invalid_scalar(index: u32, scalar: u32) -> Self {
+        Self::InvalidScalar { index, scalar }
+    }
+}

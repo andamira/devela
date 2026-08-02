@@ -3,11 +3,12 @@
 //! Defines [`Dvbf`].
 //
 
-use crate::{Debug, DvbfError, FontBitmapView, Version};
+use crate::DvbfError::{self as E, InvalidScalar};
+use crate::{Debug, FontBitmapView, Version};
 use crate::{Slice, is, read_at, slice, unwrap, whilst};
 
 /// A DVBF decoding result.
-type DvbfResult<T> = crate::Result<T, DvbfError>;
+type DvbfResult<T> = crate::Result<T, E>;
 
 #[doc = crate::_tags!(font codec)]
 /// Devela Bitmap Font format operations and constants.
@@ -56,12 +57,13 @@ impl Dvbf {
     ///
     /// # Errors
     ///
-    /// Returns [`DvbfError`] when any part of the encoded representation
+    /// Returns [`DvbfError`][E] when any part of the encoded representation
     /// is unsupported, malformed or internally inconsistent.
     pub const fn read(bytes: &[u8]) -> DvbfResult<FontBitmapView<'_>> {
-        is![bytes.len() < Self::HEADER_BYTES as usize, return Err(DvbfError::TooShort)];
-        is![!Slice::<u8>::eq(slice![bytes, ..4], b"DVBF"), return Err(DvbfError::InvalidMagic)];
-        let mut off = 4;
+        is![bytes.len() < Self::HEADER_BYTES as usize, return Err(E::TooShort)];
+        let mut off = Self::MAGIC.len();
+        is![off == Self::HEADER_BYTES as usize, return Err(E::InvalidMagic)];
+        is![!Slice::<u8>::eq(slice![bytes, ..off], b"DVBF"), return Err(E::InvalidMagic)];
         let version = Version::new(
             u16::from_le_bytes(read_at![bytes, +=off, @2]),
             u16::from_le_bytes(read_at![bytes, +=off, @2]),
@@ -71,7 +73,7 @@ impl Dvbf {
             || version.minor != Self::VERSION.minor
             || version.patch != Self::VERSION.patch
         {
-            return Err(DvbfError::UnsupportedVersion(version));
+            return Err(E::UnsupportedVersion(version));
         }
         let header_bytes = u16::from_le_bytes(read_at![bytes, +=off, @2]);
         let flags = u32::from_le_bytes(read_at![bytes, +=off, @4]);
@@ -94,69 +96,56 @@ impl Dvbf {
         let default_scalar = u32::from_le_bytes(read_at![bytes, +=off, @4]);
         let reserved1 = u32::from_le_bytes(read_at![bytes, off, @4]);
         if header_bytes != Self::HEADER_BYTES || reserved0 != 0 || reserved1 != 0 {
-            return Err(DvbfError::InvalidHeader);
+            return Err(E::InvalidHeader);
         }
-        is! { flags != 0, return Err(DvbfError::UnsupportedFlags(flags)) }
+        is! { flags != 0, return Err(E::UnsupportedFlags(flags)) }
         if file_bytes as usize != bytes.len() {
-            return Err(DvbfError::InvalidFileSize { declared: file_bytes, actual: bytes.len() });
+            return Err(E::InvalidFileSize { declared: file_bytes, actual: bytes.len() });
         }
-        is! { bit_depth != 1, return Err(DvbfError::UnsupportedBitDepth(bit_depth)) }
+        is! { bit_depth != 1, return Err(E::UnsupportedBitDepth(bit_depth)) }
         if glyph_count == 0 || width == 0 || height == 0 || advance_x == 0 || line_advance == 0 {
-            return Err(DvbfError::InvalidMetrics);
+            return Err(E::InvalidMetrics);
         }
         let expected_row_stride = (width as u32).div_ceil(8) as u16;
-        let Some(expected_glyph_stride) = (row_stride as u32).checked_mul(height as u32) else {
-            return Err(DvbfError::InvalidMetrics);
-        };
-        let Some(metric_height) = ascent.checked_add(descent) else {
-            return Err(DvbfError::InvalidMetrics);
-        };
+        let expected_glyph_stride =
+            unwrap![some_ok_or?(row_stride as u32).checked_mul(height as u32), E::InvalidMetrics];
+        let metric_height = unwrap![some_ok_or? ascent.checked_add(descent), E::InvalidMetrics];
         if row_stride != expected_row_stride || glyph_stride != expected_glyph_stride {
-            return Err(DvbfError::InvalidLayout);
+            return Err(E::InvalidLayout);
         }
-        is! { line_advance < metric_height, return Err(DvbfError::InvalidMetrics) }
-
-        let Some(scalar_bytes) = glyph_count.checked_mul(4) else {
-            return Err(DvbfError::InvalidLayout);
-        };
-        let Some(bitmap_bytes) = glyph_count.checked_mul(glyph_stride) else {
-            return Err(DvbfError::InvalidLayout);
-        };
-        let Some(expected_bitmaps_offset) = scalars_offset.checked_add(scalar_bytes) else {
-            return Err(DvbfError::InvalidLayout);
-        };
-        let Some(expected_file_bytes) = bitmaps_offset.checked_add(bitmap_bytes) else {
-            return Err(DvbfError::InvalidLayout);
-        };
+        is! { line_advance < metric_height, return Err(E::InvalidMetrics) }
+        let scalar_bytes = unwrap![some_ok_or? glyph_count.checked_mul(4), E::InvalidLayout];
+        let bitmap_bytes = unwrap![some_ok_or? glyph_count.checked_mul(glyph_stride),
+            E::InvalidLayout];
+        let expected_bitmaps_offset = unwrap![some_ok_or? scalars_offset.checked_add(scalar_bytes),
+            E::InvalidLayout];
+        let expected_file_bytes = unwrap![some_ok_or? bitmaps_offset.checked_add(bitmap_bytes),
+            E::InvalidLayout];
         if scalars_offset != header_bytes as u32
             || bitmaps_offset != expected_bitmaps_offset
             || file_bytes != expected_file_bytes
         {
-            return Err(DvbfError::InvalidLayout);
+            return Err(E::InvalidLayout);
         }
-        let scalar_start = scalars_offset as usize;
-        let scalar_end = bitmaps_offset as usize;
+        let (scalar_start, scalar_end) = (scalars_offset as usize, bitmaps_offset as usize);
         let bm_end = file_bytes as usize;
         if scalar_start > scalar_end || scalar_end > bm_end || bm_end > bytes.len() {
-            return Err(DvbfError::InvalidLayout);
+            return Err(E::InvalidLayout);
         }
         let scalars_le = Slice::range(bytes, scalar_start, scalar_end);
         let bitmaps = Slice::range(bytes, scalar_end, bm_end);
-
         let mut previous = 0u32;
         whilst! { i in 0..glyph_count; {
             let scalar = u32::from_le_bytes(read_at![scalars_le, (i as usize) * 4, @4]);
-            if !char::from_u32(scalar).is_some() {
-                return Err(DvbfError::InvalidScalar { index: i, scalar });
-            }
-            is![i != 0 && scalar <= previous, return Err(DvbfError::UnsortedScalars { index: i })];
+            is![!char::from_u32(scalar).is_some(), return Err(E::invalid_scalar(i, scalar))];
+            is![i != 0 && scalar <= previous, return Err(E::UnsortedScalars { index: i })];
             previous = scalar;
         }}
         let default_character = if default_scalar == Self::NO_SCALAR {
             None
         } else {
             unwrap![=some_or char::from_u32(default_scalar),
-                return Err(DvbfError::InvalidDefaultScalar(default_scalar))]
+            return Err(E::InvalidDefaultScalar(default_scalar))]
         };
         let view = FontBitmapView {
             scalars_le,
@@ -175,7 +164,7 @@ impl Dvbf {
         };
         match default_character {
             Some(character) if !view.has_glyph(character) => {
-                Err(DvbfError::MissingDefaultGlyph(character as u32))
+                Err(E::MissingDefaultGlyph(character as u32))
             }
             _ => Ok(view),
         }
