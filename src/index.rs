@@ -82,7 +82,10 @@
     all(nightly_stable_1_99, feature = "alloc"),
     feature(box_vec_non_null, vec_deque_truncate_front,)
 )]
-#![cfg_attr(all(nightly_stable_1_99, feature = "std"), feature(local_key_cell_update,))]
+#![cfg_attr(
+    all(nightly_stable_1_99, feature = "std"),
+    feature(layout_for_ptr, local_key_cell_update,)
+)]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -104,7 +107,6 @@
         frontmatter,
         impl_trait_in_assoc_type,
         isqrt,
-        layout_for_ptr,
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
