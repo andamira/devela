@@ -15,10 +15,10 @@
 //!
 //! ## Core Niche Types
 //!
-//! - `NonZero[I|U]*` (re-exported)
+//! - `NonZero<I|U>*` (re-exported)
 //!   - Standard zero-prohibiting types with niche optimization.
 //!
-//! - `NonValue[I|U]*<const V>`.
+//! - `NonValue<I|U>*`, generic over `<const V>`.
 //!   - General extension of `NonZero*` guaranteeing `value != V`.
 //!   - **Implementation**: Stores transformed value in `NonZero*`.
 //!   - **Optimizations**: Automatic instruction selection per case.
