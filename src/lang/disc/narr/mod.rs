@@ -8,26 +8,20 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod choice;  // explicit choices, options, and player-facing branches
-// mod beat;    // narrative beats, pacing shifts, and delivery markers
-// mod dialog;  // dialogue turns, attributed lines, and exchanges
-// mod guard;   // narrative guards, conditions, and availability gates
-// mod link;    // links, transitions, and narrative targets
-// mod passage; // passages, lexia, and authored text units
-// mod route;   // routes, paths, outcomes, and ending lines
-// mod scene;   // scenes, situations, and local narrative contexts
+// mod beat; // A local pacing, emphasis, or delivery moment
+// mod lexia; // An authored or generated content unit
+// mod plot; // Causal and dramatic arrangement
+// mod scene; // A situated narrative context
+// mod thread; // A continuity followed across scenes or lexias
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
-        //     choice::_all::*,
         //     beat::_all::*,
-        //     dialog::_all::*,
-        //     guard::_all::*,
-        //     link::_all::*,
-        //     passage::_all::*,
-        //     route::_all::*,
+        //     lexia::_all::*,
+        //     plot::_all::*,
         //     scene::_all::*,
+        //     thread::_all::*,
         // };
     }
 }

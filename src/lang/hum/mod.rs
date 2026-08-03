@@ -15,6 +15,7 @@ mod form; // Word formation (morphology)
 pub mod i18n; // Internationalization and localization support
 pub mod nat; // Natural human languages
 mod prag; // Pragmatics (meaning in use)
+mod rethoric; // Human-language realization of rhetorical structures
 mod syntax; // Sentence structure
 mod vocal; // Sound systems (phonetics, phonology, prosody)
 mod write; // Writing systems, ortopgraphy
@@ -25,6 +26,7 @@ crate::structural_mods! { // _mods, _pub_mods
             denote::_all::*,
             form::_all::*,
             prag::_all::*,
+            rethoric::_all::*,
             syntax::_all::*,
             vocal::_all::*,
             write::_all::*,

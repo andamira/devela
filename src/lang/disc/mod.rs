@@ -3,27 +3,32 @@
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_DISC!()] // public
 #![doc = crate::_doc!(modules: crate::lang; disc: narr)]
-// argument, lyric, move, plot, rhetoric, style
+// act, case, dialog, flow, ifx, lyric, rhetoric, style
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(hr)]
 //
 
-// mod argument; // argumentative structure, persuasion, fallacies
-// mod lyric;    // lyric expression, voice, felt experience
-// mod move;     // discourse moves, intents, prompts, replies
-mod narr; // narrative structure, scenes, routes
-// mod plot;     // causal progression, tension, revelation
-// mod rhetoric; // rhetorical devices, tropes, figures
-// mod style;    // stylistic patterns, tone, register
+// mod act; // Discourse moves, intents, prompts, replies
+// mod case; // Argumentative structure, persuasion, fallacies
+// mod dialog; // Dialogue turns, attribution, and exchanges
+// mod flow; // Conditional discourse flow
+// mod journal; // Journalistic inquiry, attribution, reporting, and presentation
+// mod ifx; // Interactive-fiction structure and execution
+// mod lyric; // Lyric expression, voice, felt experience
+mod narr; // Narrative structure, scenes, routes
+// mod rhetoric; // Rhetorical devices, tropes, figures
+// mod style; // Stylistic patterns, tone, register
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // argument::_all::*,
+            // act::_all::*,
+            // case::_all::*,
+            // dialog::_all::*,
+            // flow::_all::*,
+            // ifx::_all::*,
             // lyric::_all::*,
-            // move::_all::*,
             narr::_all::*,
-            // plot::_all::*,
             // rhetoric::_all::*,
             // style::_all::*,
         };

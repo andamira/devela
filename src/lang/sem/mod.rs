@@ -4,27 +4,28 @@
 #![doc = crate::_DOC_LANG_SEM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; sem)]
 #![doc = crate::_doc!(flat:"lang")]
-//!
-//! > Meaning is relational.
 //
 
-// mod about; // aboutness
-// mod comp; // composed relations
-// mod equiv; // semantic sameness
-// mod intent; // directedness
-// mod logic; // formal relations
-// mod polar; // polarity, stance
-// mod scope; // extent of meaning
+// mod derive; // Rules, inference, normalization, rewriting
+// mod find; // Matching, selection, and traversal
+// mod interp; // Situated readings and interpretation
+// mod map; // Mappings between semantic regions
+// mod qual; // Semantic qualification
+// mod rel; // Abstract relational semantics
+// mod schema; // Compile-time semantic vocabulary
+// mod world; // Concrete semantic items and relations
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
-        //     about::_all::*,
-        //     comp::_all::*,
-        //     equiv::_all::*,
-        //     intent::_all::*,
-        //     logic::_all::*,
-        //     polar::_all::*,
+        //     derive::_all::*,
+        //     find::_all::*,
+        //     interp::_all::*,
+        //     map::_all::*,
+        //     qual::_all::*,
+        //     rel::_all::*,
+        //     schema::_all::*,
+        //     world::_all::*,
         // };
     }
 }
