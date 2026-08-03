@@ -1,8 +1,7 @@
-// devela/src/data/id/handle/legacy.rs
+// devela/src/data/id/handle/span.rs
 //
-//! Defines [`handle!`] macro.
+//! Defines [`handle_span!`] macro.
 //
-// TEMP: legacy impl, for HandleSpan
 
 #[doc = crate::_tags!(construction uid rework)]
 /// Defines a lightweight handle type.
@@ -20,8 +19,8 @@
 /// # Examples
 /// A simple handle for an arena.
 /// ```
-/// # use devela::{NonMaxUsize, handle};
-/// handle! {
+/// # use devela::{NonMaxUsize, handle_span};
+/// handle_span! {
 ///     [offset: usize+NonMaxUsize; ]
 ///     /// A custom handle.
 ///     pub MyHandle;
@@ -30,7 +29,7 @@
 /// See also [`HandleSpanExample`][crate::HandleSpanExample].
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! handle {
+macro_rules! handle_span {
     // point of entry
     (
      [
@@ -40,7 +39,7 @@ macro_rules! handle {
      $(#[$handle_attr:meta])*
      $vis:vis $Handle:ident $(;)?
      ) => {
-         $crate::handle![%handle
+         $crate::handle_span![%handle
              [offset:$prim+$T;]
              $(#[$handle_attr])* $vis $Handle ];
     };
@@ -50,12 +49,12 @@ macro_rules! handle {
      [offset:$prim:ident+$T:ty;]
      $(#[$handle_attr:meta])* $vis:vis $Handle:ident) => { $crate::paste! {
 
-        $crate::handle![%main
+        $crate::handle_span![%main
             [offset:$prim+$T;]
             $(#[$handle_attr])* $vis $Handle ];
 
         // #[cfg(test)]
-        // $crate::handle![%tests $Handle, [<test_ $Handle>]];
+        // $crate::handle_span![%tests $Handle, [<test_ $Handle>]];
     }};
     (
      %main
@@ -165,4 +164,4 @@ macro_rules! handle {
     };
 }
 #[doc(inline)]
-pub use handle;
+pub use handle_span;

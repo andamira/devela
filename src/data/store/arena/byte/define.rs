@@ -1,43 +1,43 @@
-// devela/src/sys/mem/alloc/arena/define.rs
+// devela/src/data/store/arena/byte/define.rs
 //
-//! Defines [`arena`].
+//! Defines [`arena_bytes!`].
 //
 
 #[cfg(any(test, feature = "_docs_examples"))]
-arena! {
+arena_bytes! {
     // [ offset: u8+crate::NonMaxU8; ] // WIP TODO
     [ offset: u8+u8; ]
 
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena.
     ///
-    /// Generated with [`arena!`].
-    pub ArenaExample;
+    /// Generated with [`arena_bytes!`].
+    pub ArenaBytesExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena handle.
     ///
-    /// Generated with [`arena!`].
-    pub ArenaHandleExample;
+    /// Generated with [`arena_bytes!`].
+    pub ArenaBytesHandleExample;
     #[doc = crate::_tags!(example allocation)]
     /// An example memory arena mark.
     ///
-    /// Generated with [`arena!`].
-    pub ArenaMarkExample;
+    /// Generated with [`arena_bytes!`].
+    pub ArenaBytesMarkExample;
 }
 
 #[doc = crate::_tags!(construction allocation)]
-/// A custom memory arena generator.
-#[doc = crate::_doc_meta!{location("sys/mem/alloc")}]
+/// A custom byte store arena generator.
+#[doc = crate::_doc_meta!{location("data/store")}]
 ///
 /// # Features
 /// Uses `unsafe_array` to leverage `MaybeUninit` and avoid initializing the full capacity.
 /// And uses `unsafe_slice` for further performance gains.
 ///
 /// # Examples
-/// See: [`ArenaExample`], [`ArenaHandleExample`], [`ArenaMarkExample`].
+/// See: [`ArenaBytesExample`], [`ArenaBytesHandleExample`], [`ArenaBytesMarkExample`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! arena {
+macro_rules! arena_bytes {
     // point of entry
     (
      [ offset: $prim:ident+$T:ty; ]
@@ -49,10 +49,10 @@ macro_rules! arena {
      $(#[$mark_attr:meta])*
      $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::handle! {
+        $crate::handle_span! {
             [offset:$prim+$T;] $(#[$handle_attr])* $hvis $Handle
         }
-        $crate::arena![%arena
+        $crate::arena_bytes![%arena
             $(#[$arena_attr])* $vis $Arena<$T>,
             $Handle,
             $(#[$mark_attr])* $Mark,
@@ -68,17 +68,17 @@ macro_rules! arena {
      $Mark:ident,
      $_:ty
     ) => {
-        $crate::arena![%main
+        $crate::arena_bytes![%main
             $(#[$arena_attr])* $vis $Arena<$T>, // the arena type
             $Handle, // the handle type
             $Mark, // the mark type
             $_ // the internal ops arena namespace
         ];
-        $crate::arena![%prim $vis $Arena<$T>, $Handle, ($)];
-        $crate::arena![%mark $Arena<$T>, $(#[$mark_attr])* $vis $Mark];
+        $crate::arena_bytes![%prim $vis $Arena<$T>, $Handle, ($)];
+        $crate::arena_bytes![%mark $Arena<$T>, $(#[$mark_attr])* $vis $Mark];
         $crate::paste! {
             #[cfg(test)]
-            $crate::arena![%tests $Arena, [<test_ $Arena>]];
+            $crate::arena_bytes![%tests $Arena, [<test_ $Arena>]];
         }
     };
     // $Arena:   the name of the new generated arena.
@@ -450,7 +450,6 @@ macro_rules! arena {
                 assert_eq!(handle.len(), 4);
                 assert_eq!(a.read_bytes(handle).unwrap(), &[1, 2, 3, 4]);
             }
-
             #[test]
             fn replace_and_mutate_bytes() {
                 let mut a = $Arena::<8>::new();
@@ -461,7 +460,6 @@ macro_rules! arena {
                 dst.copy_from_slice(&[5, 6]);
                 assert_eq!(a.read_bytes(h).unwrap(), &[5, 6]);
             }
-
             #[test]
             fn push_and_read_primitives() {
                 let mut a = $Arena::<32>::new();
@@ -470,14 +468,12 @@ macro_rules! arena {
                 assert!(a.replace_u32(h, 0x55667788));
                 assert_eq!(a.read_u32(h), Some(0x55667788));
             }
-
             #[test]
             fn push_and_read_str() {
                 let mut a = $Arena::<32>::new();
                 let h = a.push_str_u8("hi").unwrap();
                 assert_eq!(a.read_str_u8(h), Some("hi"));
             }
-
             #[test]
             fn bool_and_char() {
                 let mut a = $Arena::<16>::new();
@@ -486,7 +482,6 @@ macro_rules! arena {
                 assert_eq!(a.read_bool(hb), Some(true));
                 assert_eq!(a.read_char(hc), Some('Z'));
             }
-
             #[test]
             fn pop_and_truncate() {
                 let mut a = $Arena::<8>::new();
@@ -496,21 +491,18 @@ macro_rules! arena {
                 assert!(a.truncate_last(h2));
                 assert_eq!(a.len(), h1.offset() + h1.len());
             }
-
             #[test]
             fn capacity_and_remaining() {
                 let a = $Arena::<8>::new();
                 assert_eq!(a.capacity(), 8);
                 assert_eq!(a.remaining(), 8);
             }
-
             #[test]
             fn handle_bounds_checks() {
                 let mut a = $Arena::<4>::new();
                 assert!(a.push_bytes(&[1, 2, 3, 4]).is_some());
                 assert!(a.push_byte(5).is_none()); // capacity overflow
             }
-
             #[test]
             fn eq_bytes_and_replace_str() {
                 let mut a = $Arena::<32>::new();
@@ -518,7 +510,6 @@ macro_rules! arena {
                 assert_eq!(a.read_str_u8(h), Some("hi"));
                 assert!(a.replace_str_u8(h, "hi"));
                 assert_eq!(a.read_str_u8(h), Some("hi"));
-
                 let mut b = $Arena::<32>::new();
                 let _ = b.push_str_u8("hi");
                 assert!(a == b);
@@ -527,4 +518,4 @@ macro_rules! arena {
     };
 }
 #[doc(inline)]
-pub use arena;
+pub use arena_bytes;

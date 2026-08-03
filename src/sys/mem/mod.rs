@@ -53,7 +53,6 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     }
     _hidden {
         pub use super::{
-            alloc::_hidden::*,
             size::_hidden::*,
         };
     }

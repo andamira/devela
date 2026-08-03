@@ -69,7 +69,10 @@
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
-#### data::layout
+### data::id
+- rename `handle!` to `handle_span!`.
+
+### data::layout
 - remove trait: `DataDesta`.
 - remove types: `Destaque`, `Stack`.
 
@@ -86,6 +89,9 @@
   - new impl `option` methods: `swap_remove_prim`, `swap_remove_copy_prim`.
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
+
+### data::store
+- rename `arena!` to `arena_bytes!`.
 
 ## error
 - new root module.
@@ -195,6 +201,9 @@
 - update `XDisplay::wait_event` to skip internal empty events.
 - update `XSurfaceFrame`: add `bits_per_pixel` field.
 - fix `XPresent`, `XSurfaceFrame` and `XCpuBuffer`'s raster stride and row-orientation handling.
+
+#### sys::mem::alloc
+- move `arena` module to `data::store::arena::bytes`.
 
 ##### sys::os::browser::web
 - new types: `WebCanvasUi`, `WebEventIngress`, `WebEventKey`, `WebPermissionSet`, `WebPermissionSnapshot`.

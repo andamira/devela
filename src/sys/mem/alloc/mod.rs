@@ -6,21 +6,14 @@
 #![doc = crate::_doc!(extends: alloc)]
 //
 
-mod alloc; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc, ::alloc::alloc::*
-mod arena; // arena!
+mod alloc; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc, reexports
 mod storage; // Bare, BareBox, Boxed, Storage
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             alloc::_all::*,
-            arena::_all::*,
             storage::*,
-        };
-    }
-    _hidden {
-        pub use super::{
-            arena::_hidden::*,
         };
     }
 }

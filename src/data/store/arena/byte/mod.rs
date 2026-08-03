@@ -1,9 +1,9 @@
-// devela/src/sys/mem/alloc/arena/mod.rs
+// devela/src/data/store/arena/byte/mod.rs
 //
 //!
 //
 
-mod define; // defina_arena!
+mod define; // arena_bytes!
 mod internals; // __Arena
 // mod field; // WIP ArenaField
 // mod primitive; // WIP ArenaPrimitive
