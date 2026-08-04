@@ -86,6 +86,7 @@ See also
         = `nightly_doc` flag
 
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
+- 1.??: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
 - 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `·`[book::toggle](https://github.com/rust-lang/rust/pull/160299)
 - 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
