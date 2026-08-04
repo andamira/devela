@@ -56,7 +56,7 @@ macro_rules! arena_bytes {
             $(#[$arena_attr])* $vis $Arena<$T>,
             $Handle,
             $(#[$mark_attr])* $Mark,
-            $crate::__Arena::<CAP>
+            $crate::__ArenaBytes::<CAP>
         ];
     };
     // calls the necessary arms in order.
@@ -137,8 +137,10 @@ macro_rules! arena_bytes {
 
             /// Snapshot a position in the arena.
             $vis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
-            /// Rollback to a previous marked position.
-            $vis const fn rollback(&mut self, m: $Mark) { self.len = m.0; }
+            /// Rolls back to `mark`, returning whether it was valid.
+            $vis const fn rollback(&mut self, mark: $Mark) -> bool {
+                if mark.0 <= self.len { self.len = mark.0; true } else { false }
+            }
 
             /* byte slices */
 
@@ -148,7 +150,7 @@ macro_rules! arena_bytes {
             }
             /// Returns an exclusive byte slice over all the written data.
             $vis const fn as_bytes_mut(&mut self) -> &mut [u8] {
-                $crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len as usize)
+                $crate::__ArenaBytes::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len as usize)
             }
 
             /// Write a byte slice into the arena.
@@ -158,7 +160,8 @@ macro_rules! arena_bytes {
                 let start = self.len;
                 let handle = <$Handle>::new(start as $T, bytes.len() as $T);
                 $crate::whilst! { i in 0..bytes.len(); {
-                    $crate::__Arena::<CAP>::write_byte(&mut self.data, self.len as usize, bytes[i]);
+                    $crate::__ArenaBytes::<CAP>::write_byte(&mut self.data,
+                        self.len as usize, bytes[i]);
                     self.len += 1;
                 }}
                 Some(handle)
@@ -168,13 +171,14 @@ macro_rules! arena_bytes {
             $vis const fn read_bytes(&self, h: $Handle) -> Option<&[u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 if h.len() + h.offset() > self.len { return None }
-                Some($crate::__Arena::<CAP>::slice_bytes(&self.data, hoff, hlen + hoff))
+                Some($crate::__ArenaBytes::<CAP>::slice_bytes(&self.data, hoff, hlen + hoff))
             }
             /// Read an exclusive slice over the written bytes.
             $vis const fn read_bytes_mut(&mut self, h: $Handle) -> Option<&mut [u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 if h.len() + h.offset() > self.len { return None }
-                Some($crate::__Arena::<CAP>::slice_bytes_mut(&mut self.data, hoff, hlen + hoff))
+                Some($crate::__ArenaBytes::<CAP>::slice_bytes_mut(&mut self.data,
+                    hoff, hlen + hoff))
             }
 
             /// Replace the bytes for the handle. Lengths must match. Returns `false` otherwise.

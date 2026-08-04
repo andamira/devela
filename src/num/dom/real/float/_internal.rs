@@ -1,4 +1,4 @@
-// devela/src/num/dom/real/float/_internals.rs
+// devela/src/num/dom/real/float/_internal.rs
 //
 //! Defines [`_FloatInternals`].
 //

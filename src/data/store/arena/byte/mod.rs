@@ -4,7 +4,7 @@
 //
 
 mod define; // arena_bytes!
-mod internals; // __Arena
+mod _internal; // __ArenaBytes
 // mod field; // WIP ArenaField
 // mod primitive; // WIP ArenaPrimitive
 // mod recipe; // WIP ArenaRecipe
@@ -19,6 +19,6 @@ crate::structural_mods! { // _mods, _hidden
         };
     }
     _hidden {
-        pub use super::internals::*;
+        pub use super::_internal::*;
     }
 }

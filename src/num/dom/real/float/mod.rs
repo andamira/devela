@@ -10,7 +10,7 @@ mod _reexport_core;
 
 pub(crate) mod _consts; // PI, TAU, SQRT2, …
 pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
-mod _internals; // _FloatInternals
+mod _internal; // _FloatInternals
 
 mod alias; // fsize
 mod bits; // f[32|64]bits[_niche]
@@ -35,7 +35,7 @@ crate::structural_mods! { // _mods, _reexports, _crate_internals
         pub(crate) use super::{
             _consts::*,
             _docs::*,
-            _internals::*,
+            _internal::*,
         };
     }
 }
