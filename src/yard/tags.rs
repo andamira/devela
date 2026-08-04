@@ -2,9 +2,6 @@
 //
 //! Private tags definitions for visual type categorization in documentation.
 //
-// MAYBE
-// - _STATE
-//
 // NOTES
 // - icons used by _doc_location: 📍,
 // - icons used by _doc_test_size_of: 📦,⚗️,

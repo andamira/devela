@@ -7,11 +7,11 @@
 #![doc = crate::_QUO_DATA_ID!()]
 //
 
-mod arena; // WIP
+mod arena; // Monotonic stores with stable handles and collective reclamation
 // mod cache; // Stores that retain values to reduce recomputation or retrieval cost
 // mod db; // Persistent queryable stores with schema and transactional semantics
 pub mod key; // Keyed stores and lookup structures
-// mod pool; // WIP
+mod pool; // Reusable stores with stable handles and individual reclamation
 
 crate::structural_mods! { // _mods, _pub_mods, _hidden
     _mods {
@@ -19,7 +19,7 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
             arena::_all::*,
             // cache::_all::*,
             // db::_all::*,
-            // pool::_all::*,
+            pool::_all::*,
         };
     }
     _pub_mods {

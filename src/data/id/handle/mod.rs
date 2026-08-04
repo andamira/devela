@@ -3,7 +3,7 @@
 //!
 //
 
-// mod define; // WIP handle2!
+mod generation; // handle_gen!
 mod span; // handle_span!
 
 #[cfg(any(test, feature = "_docs_examples"))]
@@ -13,8 +13,8 @@ crate::structural_mods! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            // define::*,
-            span::*,
+            generation::handle_gen,
+            span::handle_span,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;

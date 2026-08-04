@@ -33,7 +33,7 @@ macro_rules! handle_span {
     // point of entry
     (
      [
-      offset: $prim:ident+$T:ty;
+      offset: $prim:ident + $T:ty;
      ]
 
      $(#[$handle_attr:meta])*
@@ -60,8 +60,9 @@ macro_rules! handle_span {
      %main
      [offset:$prim:ident+$T:ty;]
      $(#[$handle_attr:meta])* $vis:vis $Handle:ident) => {
+
         $(#[$handle_attr])*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis struct $Handle {
             offset: $crate::MaybeNiche::<$T>,
             len: $crate::MaybeNiche::<$T>,

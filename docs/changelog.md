@@ -70,6 +70,7 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 ### data::id
+- new macro: `handle_gen!`.
 - rename `handle!` to `handle_span!`.
 
 ### data::layout
@@ -92,6 +93,7 @@
 
 ### data::store
 - rename `arena!` to `arena_bytes!`.
+- new macro: `pool!`.
 
 ## error
 - new root module.

@@ -1,6 +1,6 @@
 // devela/src/data/store/arena/mod.rs
 //
-//!
+//! Monotonic stores with stable handles and collective reclamation.
 //
 
 mod byte; // arena!
