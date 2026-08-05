@@ -52,6 +52,9 @@
 
 # Modules
 
+### code::marker
+- fix `IndexRepr` impl for `usize`.
+
 ### code::result
 - remove `OptResExt::transpose_result` method.
 - update `unwrap!`:

@@ -97,7 +97,7 @@ pub trait IndexRepr: Copy {
 }
 items! {
     impl IndexRepr for u8 { type Prim = u8; }
-    impl IndexRepr for usize { type Prim = u8; }
+    impl IndexRepr for usize { type Prim = usize; }
     impl IndexRepr for NonMaxU8 { type Prim = u8; }
     impl IndexRepr for NonMaxUsize { type Prim = usize; }
     #[cfg(target_pointer_width = "16")]
