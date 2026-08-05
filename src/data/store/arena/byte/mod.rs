@@ -3,6 +3,11 @@
 //!
 //
 
+#[cfg(test)]
+mod _test;
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example;
+
 mod define; // arena_bytes!
 mod _internal; // __ArenaBytes
 // mod field; // WIP ArenaField
@@ -16,6 +21,10 @@ crate::structural_mods! { // _mods, _hidden
             // field::*,
             // primitive::*,
             // recipe::*,
+        };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example::{
+            ArenaBytesExample, ArenaBytesHandleExample, ArenaBytesMarkExample,
         };
     }
     _hidden {

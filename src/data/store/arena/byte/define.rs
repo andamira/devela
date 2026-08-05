@@ -3,31 +3,6 @@
 //! Defines [`arena_bytes!`].
 //
 
-#[cfg(any(test, feature = "_docs_examples"))]
-arena_bytes! {
-    [
-        offset: u8;
-    ]
-
-    #[doc = crate::_tags!(example data_structure)]
-    /// An example memory arena.
-    ///
-    /// Generated with [`arena_bytes!`].
-    pub ArenaBytesExample;
-
-    #[doc = crate::_tags!(example uid)]
-    /// An example handle into [`ArenaBytesExample`].
-    ///
-    /// Generated with [`arena_bytes!`] and [`handle_span!`][crate::handle_span].
-    pub ArenaBytesHandleExample;
-
-    #[doc = crate::_tags!(example state)]
-    /// An example memory arena mark.
-    ///
-    /// Generated with [`arena_bytes!`].
-    pub ArenaBytesMarkExample;
-}
-
 #[doc = crate::_tags!(construction data_structure)]
 /// A custom byte store arena generator.
 #[doc = crate::_doc_meta!{location("data/store")}]
@@ -38,6 +13,10 @@ arena_bytes! {
 ///
 /// # Examples
 /// See: [`ArenaBytesExample`], [`ArenaBytesHandleExample`], [`ArenaBytesMarkExample`].
+///
+/// [`ArenaBytesExample`]: crate::ArenaBytesExample
+/// [`ArenaBytesHandleExample`]: crate::ArenaBytesHandleExample
+/// [`ArenaBytesMarkExample`]: crate::ArenaBytesMarkExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! arena_bytes {
@@ -103,23 +82,19 @@ macro_rules! arena_bytes {
 
         /* arena */
 
-        $crate::paste! {
-            $crate::arena_bytes![%define
-                $(#[$arena_attr])* $vis $Arena<$Offset>; // the arena type
-                $hvis $Handle; // the handle name
-                $mvis $Mark; // the mark name
-                [<_test_ $Arena>]; // the test module name
-                $crate::__ArenaBytes::<CAP>; // the internal ops arena namespace
-                ($); // the dollar sign passed as a token
-            ];
-        }
+        $crate::arena_bytes![%define
+            $(#[$arena_attr])* $vis $Arena<$Offset>; // the arena type
+            $hvis $Handle; // the handle name
+            $mvis $Mark; // the mark name
+            $crate::__ArenaBytes::<CAP>; // the internal ops arena namespace
+            ($); // the dollar sign passed as a token
+        ];
     };
     (%define
      $(#[$arena_attr:meta])*
      $vis:vis $Arena:ident<$Offset:ty>;
      $hvis:vis $Handle:ident;
      $mvis:vis $Mark:ident;
-     $test_mod:ident;
      $_:ty;
      ($_d:tt);
     ) => {
@@ -445,7 +420,6 @@ macro_rules! arena_bytes {
                 /// Returns `None` if the handle is invalid or incomplete.
                 $hvis const fn [<read_str_ $oprim>](&self, h: $Handle) -> Option<&str> {
                     let len_size = size_of::<$oprim>() as $Offset;
-                    // $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                     let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
                     let s = $crate::unwrap![some? self.read_bytes(h)];
                     if let Ok(s) = $crate::Str::from_utf8(s) { Some(s) } else { None }
@@ -468,87 +442,6 @@ macro_rules! arena_bytes {
             }};
         }
         use _impl_arena_methods_for_prims;
-
-        /* tests */
-
-        #[cfg(test)]
-        #[allow(non_snake_case)]
-        mod $test_mod {
-            use super::$Arena;
-
-            #[test]
-            fn push_and_read_bytes() {
-                let mut a = $Arena::<16>::new();
-                let handle = a.push_bytes(&[1, 2, 3, 4]).unwrap();
-                assert_eq!(handle.offset(), 0);
-                assert_eq!(handle.len(), 4);
-                assert_eq!(a.read_bytes(handle).unwrap(), &[1, 2, 3, 4]);
-            }
-            #[test]
-            fn replace_and_mutate_bytes() {
-                let mut a = $Arena::<8>::new();
-                let h = a.push_bytes(&[9, 9]).unwrap();
-                assert!(a.replace_bytes(h, &[7, 8]));
-                assert_eq!(a.read_bytes(h).unwrap(), &[7, 8]);
-                let dst = a.read_bytes_mut(h).unwrap();
-                dst.copy_from_slice(&[5, 6]);
-                assert_eq!(a.read_bytes(h).unwrap(), &[5, 6]);
-            }
-            #[test]
-            fn push_and_read_primitives() {
-                let mut a = $Arena::<32>::new();
-                let h = a.push_u32(0x11223344).unwrap();
-                assert_eq!(a.read_u32(h), Some(0x11223344));
-                assert!(a.replace_u32(h, 0x55667788));
-                assert_eq!(a.read_u32(h), Some(0x55667788));
-            }
-            #[test]
-            fn push_and_read_str() {
-                let mut a = $Arena::<32>::new();
-                let h = a.push_str_u8("hi").unwrap();
-                assert_eq!(a.read_str_u8(h), Some("hi"));
-            }
-            #[test]
-            fn bool_and_char() {
-                let mut a = $Arena::<16>::new();
-                let hb = a.push_bool(true).unwrap();
-                let hc = a.push_char('Z').unwrap();
-                assert_eq!(a.read_bool(hb), Some(true));
-                assert_eq!(a.read_char(hc), Some('Z'));
-            }
-            #[test]
-            fn pop_and_truncate() {
-                let mut a = $Arena::<8>::new();
-                let h1 = a.push_bytes(&[1, 2]).unwrap();
-                let h2 = a.push_bytes(&[3, 4]).unwrap();
-                assert!(!a.truncate_last(h1));
-                assert!(a.truncate_last(h2));
-                assert_eq!(a.len(), h1.offset() + h1.len());
-            }
-            #[test]
-            fn capacity_and_remaining() {
-                let a = $Arena::<8>::new();
-                assert_eq!(a.capacity(), 8);
-                assert_eq!(a.remaining(), 8);
-            }
-            #[test]
-            fn handle_bounds_checks() {
-                let mut a = $Arena::<4>::new();
-                assert!(a.push_bytes(&[1, 2, 3, 4]).is_some());
-                assert!(a.push_byte(5).is_none()); // capacity overflow
-            }
-            #[test]
-            fn eq_bytes_and_replace_str() {
-                let mut a = $Arena::<32>::new();
-                let h = a.push_str_u8("hi").unwrap();
-                assert_eq!(a.read_str_u8(h), Some("hi"));
-                assert!(a.replace_str_u8(h, "hi"));
-                assert_eq!(a.read_str_u8(h), Some("hi"));
-                let mut b = $Arena::<32>::new();
-                let _ = b.push_str_u8("hi");
-                assert!(a == b);
-            }
-        }
     };
 }
 #[doc(inline)]

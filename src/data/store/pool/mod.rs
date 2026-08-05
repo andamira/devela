@@ -3,6 +3,11 @@
 //! Reusable stores with stable handles and individual reclamation.
 //
 
+#[cfg(test)]
+mod _test;
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example;
+
 mod define; // pool!
 
 crate::structural_mods! { // _mods
@@ -10,5 +15,7 @@ crate::structural_mods! { // _mods
         pub use super::{
             define::*,
         };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example::{PoolExample, PoolHandleExample};
     }
 }

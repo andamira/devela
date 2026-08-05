@@ -173,7 +173,7 @@ buffer_linear!(
 
 buffer_linear!(
     #[doc = crate::_tags!(example data_structure)]
-    /// A linear buffer view over contiguous storage, made with [buffer_linear!].
+    /// A linear buffer view over contiguous storage, made with [`buffer_linear!`].
     #[doc = crate::_doc_meta!{location("data/layout/buffer")}]
     ///
     /// # Methods

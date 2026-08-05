@@ -71,9 +71,7 @@ macro_rules! handle_span {
             );
         }
         impl Default for $Handle {
-            fn default() -> Self {
-                Self::new(<$Offset as Default>::default(), <$Offset as Default>::default())
-            }
+            fn default() -> Self { <Self as $crate::ConstInit>::INIT }
         }
 
         /// Fundamental const methods for creation and access.
@@ -113,11 +111,13 @@ macro_rules! handle_span {
 
             /// Returns the length of the stored data.
             #[must_use]
-            #[allow(clippy::len_without_is_empty)]
             $vis const fn len(self) -> $Offset { self.len.get() }
             /// Returns the length of the stored data as the corresponding primitive.
             #[must_use]
             $vis const fn len_prim(self) -> $oprim { self.len.get_prim() }
+            /// Returns whether this span has zero length.
+            #[must_use]
+            $vis const fn is_empty(self) -> bool { self.len_prim() == 0 }
 
             /// Returns the length of the stored data as a usize.
             $vis const fn len_usize(self) -> Result<usize, $crate::Overflow> {
@@ -146,6 +146,16 @@ macro_rules! handle_span {
                 self.offset.to_usize_saturating()
             }
         }
+    };
+    (%guard_offset_repr $P:ty, $I:ty) => {
+        const __GUARD_OFFSET_REPR: () = {
+            const fn __allowed<P, I>()
+            where
+                P: $crate::PrimIndex,
+                I: $crate::IndexRepr<Prim = P>,
+            {}
+            __allowed::<$P, $I>();
+        };
     };
 }
 #[doc(inline)]

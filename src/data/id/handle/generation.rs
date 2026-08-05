@@ -104,10 +104,15 @@ macro_rules! handle_gen {
 
         #[allow(dead_code)]
         impl $Handle {
+            $crate::handle_gen!(%guard_repr __GUARD_INDEX_REPR, $iprim, $Index);
+            $crate::handle_gen!(%guard_repr __GUARD_GENERATION_REPR, $gprim, $Generation);
+
             /* constructors */
 
             /// Creates a new handle from an `index` and `generation`.
             $hvis const fn new(index: $Index, generation: $Generation) -> Self {
+                // let () = Self::__GUARD_INDEX_REPR;
+                // let () = Self::__GUARD_GENERATION_REPR;
                 let index = $crate::MaybeNiche::<$Index>::new(index);
                 let generation = $crate::MaybeNiche::<$Generation>::new(generation);
                 Self { index, generation }
@@ -159,6 +164,18 @@ macro_rules! handle_gen {
             #[must_use]
             $hvis const fn generation_prim(self) -> $gprim { self.generation.get_prim() }
         }
+    };
+    // Allows only unsigned index primitives no wider than usize,
+    // paired with a compatible index representation.
+    (%guard_repr $CONST:ident, $P:ty, $I:ty) => {
+        const $CONST: () = {
+            const fn __allowed<P, I>()
+            where
+                P: $crate::PrimIndex,
+                I: $crate::IndexRepr<Prim = P>,
+            {}
+            __allowed::<$P, $I>();
+        };
     };
 }
 #[doc(inline)]
