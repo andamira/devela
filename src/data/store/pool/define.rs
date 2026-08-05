@@ -6,9 +6,10 @@
 #[cfg(any(test, feature = "_docs_examples"))]
 pool! {
     [
-        index: u8 + crate::NonMaxU8;
+        index: u8;
         generation: u16 + crate::NonMaxU16;
     ]
+
     #[doc = crate::_tags!(example data_structure)]
     /// An example fixed-capacity generational pool.
     ///
@@ -49,7 +50,7 @@ pool! {
 /// # use devela::{NonMaxU8, NonMaxU16, pool};
 /// pool! {
 ///     [
-///         index: u8 + NonMaxU8;
+///         index: u8;
 ///         generation: u16 + NonMaxU16;
 ///     ]
 ///     pub Entities;
@@ -63,8 +64,77 @@ pool! {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! pool {
-    // point of entry
     (
+
+     [
+      index: $iprim:ident;
+      generation: $gprim:ident;
+     ]
+
+     $(#[$pool_attr:meta])*
+     $vis:vis $Pool:ident;
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+
+    ) => {
+        $crate::pool! {
+            [
+                index: $iprim + $iprim;
+                generation: $gprim + $gprim;
+            ]
+            $(#[$pool_attr])* $vis $Pool;
+            $(#[$handle_attr])* $hvis $Handle;
+        }
+    };
+    (
+
+     [
+      index: $iprim:ident + $Index:ty;
+      generation: $gprim:ident;
+     ]
+
+     $(#[$pool_attr:meta])*
+     $vis:vis $Pool:ident;
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+
+    ) => {
+        $crate::pool! {
+            [
+                index: $iprim + $Index;
+                generation: $gprim + $gprim;
+            ]
+            $(#[$pool_attr])* $vis $Pool;
+            $(#[$handle_attr])* $hvis $Handle;
+        }
+    };
+    (
+
+     [
+      index: $iprim:ident;
+      generation: $gprim:ident + $Generation:ty;
+     ]
+
+     $(#[$pool_attr:meta])*
+     $vis:vis $Pool:ident;
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+
+    ) => {
+        $crate::pool! {
+            [
+                index: $iprim + $iprim;
+                generation: $gprim + $Generation;
+            ]
+            $(#[$pool_attr])* $vis $Pool;
+            $(#[$handle_attr])* $hvis $Handle;
+        }
+    };
+    (
+
      [
       index: $iprim:ident + $Index:ty;
       generation: $gprim:ident + $Generation:ty;
@@ -77,30 +147,6 @@ macro_rules! pool {
      $hvis:vis $Handle:ident $(;)?
 
     ) => {
-        $crate::pool! {
-            %define
-            [
-                index: $iprim + $Index;
-                generation: $gprim + $Generation;
-            ]
-            $(#[$pool_attr])*
-            $vis $Pool;
-            $(#[$handle_attr])*
-            $hvis $Handle;
-        }
-    };
-    // Defines the handle, pool, fundamental API, and tests.
-    (
-     %define
-     [
-      index: $iprim:ident + $Index:ty;
-      generation: $gprim:ident + $Generation:ty;
-     ]
-     $(#[$pool_attr:meta])*
-     $vis:vis $Pool:ident;
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident;) => {
-
         /* handle */
 
         $crate::handle_gen! {
@@ -113,6 +159,27 @@ macro_rules! pool {
 
         /* pool */
 
+        $crate::paste! {
+            $crate::pool! {%define
+                [
+                    index: $iprim + $Index;
+                    generation: $gprim + $Generation;
+                ]
+                $(#[$pool_attr])* $vis $Pool; // the pool name
+                $Handle; // the handle name
+                [<_test_ $Pool>]; // the test module name
+            }
+        }
+    };
+    (%define
+     [
+      index: $iprim:ident + $Index:ty;
+      generation: $gprim:ident + $Generation:ty;
+     ]
+     $(#[$pool_attr:meta])* $vis:vis $Pool:ident;
+     $Handle:ident;
+     $test_mod:ident;
+    ) => {
         $(#[$pool_attr])*
         #[derive(Clone, Debug)]
         $vis struct $Pool<T, const CAP: usize> {
@@ -122,6 +189,9 @@ macro_rules! pool {
             len: usize,
             free_len: usize,
         }
+
+        /* misc. trait impls */
+
         impl<T, const CAP: usize> $crate::ConstInit for $Pool<T, CAP> {
             const INIT: Self = Self::new();
         }
@@ -129,6 +199,7 @@ macro_rules! pool {
             fn default() -> Self { Self::new() }
         }
 
+        // Fundamental methods
         #[allow(dead_code)]
         impl<T, const CAP: usize> $Pool<T, CAP> {
             /// Verifies the representation laws required by this pool.
@@ -191,14 +262,12 @@ macro_rules! pool {
             $vis fn contains(&self, handle: $Handle) -> bool {
                 self.__resolve_index(handle).is_some()
             }
-
             /// Returns a shared reference to the value resolved by `handle`.
             #[must_use]
             $vis fn get(&self, handle: $Handle) -> Option<&T> {
                 let index = self.__resolve_index(handle)?;
                 self.values[index].as_ref()
             }
-
             /// Returns an exclusive reference to the value resolved by `handle`.
             #[must_use]
             $vis fn get_mut(&mut self, handle: $Handle) -> Option<&mut T> {
@@ -237,7 +306,7 @@ macro_rules! pool {
                 let generation = self.generations[index_usize];
                 self.values[index_usize] = Some(value);
                 self.len += 1;
-                Ok($Handle::__new(index, generation))
+                Ok($Handle::new(index.get(), generation.get()))
             }
             /// Removes and returns the value resolved by `handle`.
             ///
@@ -246,7 +315,7 @@ macro_rules! pool {
                 let index = self.__resolve_index(handle)?;
                 let value = self.values[index].take()?;
                 self.generations[index] = Self::__next_generation(self.generations[index]);
-                self.free[self.free_len] = handle.index;
+                self.free[self.free_len] = $crate::MaybeNiche(handle.index());
                 self.free_len += 1;
                 self.len -= 1;
                 Some(value)
@@ -266,9 +335,11 @@ macro_rules! pool {
             /* private */
 
             fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
-                let index = handle.index.try_to_usize().ok()?;
+                let index = $crate::MaybeNiche(handle.index()).try_to_usize().ok()?;
                 if index >= CAP { return None; }
-                if self.generations[index].ne(handle.generation) { return None; }
+                if self.generations[index].ne($crate::MaybeNiche(handle.generation())) {
+                    return None;
+                }
                 if self.values[index].is_none() { return None; }
                 Some(index)
             }
@@ -284,74 +355,74 @@ macro_rules! pool {
             }
         }
 
-        $crate::paste! {
-            #[cfg(test)]
-            #[allow(non_snake_case)]
-            mod [<_test_ $Pool>] {
-                use super::$Pool;
+        /* tests */
 
-                #[test]
-                fn empty_and_capacity() {
-                    let pool = $Pool::<u8, 3>::new();
-                    assert_eq!(pool.capacity(), 3);
-                    assert_eq!(pool.len(), 0);
-                    assert_eq!(pool.remaining(), 3);
-                    assert!(pool.is_empty());
-                    assert!(!pool.is_full());
-                }
-                #[test]
-                fn insertion_and_access() {
-                    let mut pool = $Pool::<&str, 2>::new();
-                    let a = pool.insert("a").unwrap();
-                    let b = pool.insert("b").unwrap();
-                    assert_eq!(pool.get(a), Some(&"a"));
-                    assert_eq!(pool.get(b), Some(&"b"));
-                    assert!(pool.contains(a));
-                    assert!(pool.is_full());
-                    assert_eq!(pool.insert("c"), Err("c"));
-                }
-                #[test]
-                fn removal_preserves_unrelated_handles() {
-                    let mut pool = $Pool::<&str, 3>::new();
-                    let a = pool.insert("a").unwrap();
-                    let b = pool.insert("b").unwrap();
-                    assert_eq!(pool.remove(a), Some("a"));
-                    assert_eq!(pool.get(a), None);
-                    assert_eq!(pool.get(b), Some(&"b"));
-                    assert_eq!(pool.remove(a), None);
-                }
-                #[test]
-                fn reuse_invalidates_the_previous_handle() {
-                    let mut pool = $Pool::<&str, 1>::new();
-                    let old = pool.insert("old").unwrap();
-                    assert_eq!(pool.remove(old), Some("old"));
-                    let new = pool.insert("new").unwrap();
-                    assert_eq!(old.index_prim(), new.index_prim());
-                    assert_ne!(old.generation_prim(), new.generation_prim());
-                    assert_eq!(pool.get(old), None);
-                    assert_eq!(pool.remove(old), None);
-                    assert_eq!(pool.get(new), Some(&"new"));
-                }
-                #[test]
-                fn zero_capacity() {
-                    let mut pool = $Pool::<u8, 0>::new();
-                    assert!(pool.is_empty());
-                    assert!(pool.is_full());
-                    assert_eq!(pool.insert(7), Err(7));
-                }
-                #[test]
-                fn clear_invalidates_live_handles() {
-                    let mut pool = PoolExample::<&str, 3>::new();
-                    let a = pool.insert("a").unwrap();
-                    let b = pool.insert("b").unwrap();
-                    pool.clear();
-                    assert!(pool.is_empty());
-                    assert_eq!(pool.get(a), None);
-                    assert_eq!(pool.get(b), None);
-                    let c = pool.insert("c").unwrap();
-                    assert_eq!(pool.get(c), Some(&"c"));
-                    assert_eq!(pool.get(a), None);
-                }
+        #[cfg(test)]
+        #[allow(non_snake_case)]
+        mod $test_mod {
+            use super::$Pool;
+
+            #[test]
+            fn empty_and_capacity() {
+                let pool = $Pool::<u8, 3>::new();
+                assert_eq!(pool.capacity(), 3);
+                assert_eq!(pool.len(), 0);
+                assert_eq!(pool.remaining(), 3);
+                assert!(pool.is_empty());
+                assert!(!pool.is_full());
+            }
+            #[test]
+            fn insertion_and_access() {
+                let mut pool = $Pool::<&str, 2>::new();
+                let a = pool.insert("a").unwrap();
+                let b = pool.insert("b").unwrap();
+                assert_eq!(pool.get(a), Some(&"a"));
+                assert_eq!(pool.get(b), Some(&"b"));
+                assert!(pool.contains(a));
+                assert!(pool.is_full());
+                assert_eq!(pool.insert("c"), Err("c"));
+            }
+            #[test]
+            fn removal_preserves_unrelated_handles() {
+                let mut pool = $Pool::<&str, 3>::new();
+                let a = pool.insert("a").unwrap();
+                let b = pool.insert("b").unwrap();
+                assert_eq!(pool.remove(a), Some("a"));
+                assert_eq!(pool.get(a), None);
+                assert_eq!(pool.get(b), Some(&"b"));
+                assert_eq!(pool.remove(a), None);
+            }
+            #[test]
+            fn reuse_invalidates_the_previous_handle() {
+                let mut pool = $Pool::<&str, 1>::new();
+                let old = pool.insert("old").unwrap();
+                assert_eq!(pool.remove(old), Some("old"));
+                let new = pool.insert("new").unwrap();
+                assert_eq!(old.index_prim(), new.index_prim());
+                assert_ne!(old.generation_prim(), new.generation_prim());
+                assert_eq!(pool.get(old), None);
+                assert_eq!(pool.remove(old), None);
+                assert_eq!(pool.get(new), Some(&"new"));
+            }
+            #[test]
+            fn zero_capacity() {
+                let mut pool = $Pool::<u8, 0>::new();
+                assert!(pool.is_empty());
+                assert!(pool.is_full());
+                assert_eq!(pool.insert(7), Err(7));
+            }
+            #[test]
+            fn clear_invalidates_live_handles() {
+                let mut pool = PoolExample::<&str, 3>::new();
+                let a = pool.insert("a").unwrap();
+                let b = pool.insert("b").unwrap();
+                pool.clear();
+                assert!(pool.is_empty());
+                assert_eq!(pool.get(a), None);
+                assert_eq!(pool.get(b), None);
+                let c = pool.insert("c").unwrap();
+                assert_eq!(pool.get(c), Some(&"c"));
+                assert_eq!(pool.get(a), None);
             }
         }
     };

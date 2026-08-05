@@ -4,26 +4,30 @@
 //
 
 #[doc = crate::_tags!(construction uid rework)]
-/// Defines a lightweight handle type.
+/// Defines a compact generational handle.
 #[doc = crate::_doc_meta!{location("data/id")}]
 ///
-/// A *handle* is a lightweight, copyable semantic reference that identifies
-/// an entry within a managed collection, such as an arena, list, or graph.
+/// The generated handle stores a slot index and generation.
 ///
-/// Handles are plain data values. They contain only small scalar fields
-/// (like offsets, lengths, or indices) and no lifetimes or ownership.
+/// A store can advance a slot's generation when reclaiming it, allowing old
+/// handles to be rejected after that slot is reused. Generation values may
+/// eventually wrap, so stale-handle rejection is bounded by the configured
+/// generation domain.
 ///
-/// Handles form the connective tissue of the data layer,
-/// bridging raw storage with higher-level structure.
+/// The handle contains no store-instance identity. A handle used with another
+/// compatible store may therefore coincidentally resolve.
+///
+/// Constructors validate only numeric representation.
+/// They do not validate whether the handle resolves to a live value.
 ///
 /// # Examples
-/// A simple handle for an arena.
+/// A simple handle for a pool.
 /// ```
-/// # use devela::{NonMaxU32, NonMaxU16, handle_gen};
+/// # use devela::{NonMaxU32, handle_gen};
 /// handle_gen! {
 ///     [
 ///       index: u32 + NonMaxU32;
-///       generation: u16 + u16;
+///       generation: u16;
 ///     ]
 ///     /// A custom handle.
 ///     pub MyHandle;
@@ -33,35 +37,63 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! handle_gen {
-    // point of entry
     (
+
+     [
+      index: $iprim:ident;
+      generation: $gprim:ident;
+     ]
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+
+    ) => {
+        $crate::handle_gen! {
+            [ index: $iprim + $iprim; generation: $gprim + $gprim; ]
+            $(#[$handle_attr])* $hvis $Handle;
+        }
+    };
+    (
+
      [
       index: $iprim:ident + $Index:ty;
+      generation: $gprim:ident;
+     ]
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident $(;)?
+
+    ) => {
+        $crate::handle_gen! {
+            [ index: $iprim + $Index; generation: $gprim + $gprim; ]
+            $(#[$handle_attr])* $hvis $Handle;
+        }
+    };
+    (
+
+     [
+      index: $iprim:ident;
       generation: $gprim:ident + $Generation:ty;
      ]
 
      $(#[$handle_attr:meta])*
      $hvis:vis $Handle:ident $(;)?
 
-     ) => {
-        $crate::handle_gen! { %define
-            [
-                index: $iprim + $Index;
-                generation: $gprim + $Generation;
-            ]
-            $(#[$handle_attr])*
-            $hvis $Handle;
+    ) => {
+        $crate::handle_gen! {
+            [ index: $iprim + $iprim; generation: $gprim + $Generation; ]
+            $(#[$handle_attr])* $hvis $Handle;
         }
     };
     (
-     %define
+
      [
       index: $iprim:ident + $Index:ty;
       generation: $gprim:ident + $Generation:ty;
      ]
      $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident;) => {
-
+     $hvis:vis $Handle:ident $(;)?
+    ) => {
         $(#[$handle_attr])*
         #[must_use]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -72,13 +104,36 @@ macro_rules! handle_gen {
 
         #[allow(dead_code)]
         impl $Handle {
-            /// Creates a handle from validated internal parts.
-            const fn __new(
-                index: $crate::MaybeNiche<$Index>,
-                generation: $crate::MaybeNiche<$Generation>,
-            ) -> Self {
+            /* constructors */
+
+            /// Creates a new handle from an `index` and `generation`.
+            $hvis const fn new(index: $Index, generation: $Generation) -> Self {
+                let index = $crate::MaybeNiche::<$Index>::new(index);
+                let generation = $crate::MaybeNiche::<$Generation>::new(generation);
                 Self { index, generation }
             }
+            /// Creates a new handle from a primitive `index` and `generation`.
+            ///
+            /// Returns `None` if any of the values are invalid.
+            $hvis const fn from_prim(index: $iprim, generation: $gprim)
+                -> Result<Self, $crate::InvalidValue> {
+                let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_prim(index)];
+                let generation = $crate::unwrap![ok?
+                    $crate::MaybeNiche::<$Generation>::try_from_prim(generation)];
+                Ok(Self { index: i, generation })
+            }
+            /// Creates a new handle from a primitive `index` and `generation`.
+            ///
+            /// Returns `None` if any of the values are invalid.
+            $hvis const fn try_from_usize(index: usize, generation: usize)
+                -> Result<Self, $crate::NicheValueError> {
+                let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_usize(index)];
+                let generation = $crate::unwrap![ok?
+                    $crate::MaybeNiche::<$Generation>::try_from_usize(generation)];
+                Ok(Self { index: i, generation })
+            }
+
+            /* accessors */
 
             /// Returns the slot index.
             #[must_use]

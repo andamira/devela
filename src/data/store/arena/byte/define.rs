@@ -5,19 +5,22 @@
 
 #[cfg(any(test, feature = "_docs_examples"))]
 arena_bytes! {
-    // [ offset: u8 + crate::NonMaxU8; ] // WIP TODO
-    [ offset: u8 + u8; ]
+    [
+        offset: u8;
+    ]
 
     #[doc = crate::_tags!(example data_structure)]
     /// An example memory arena.
     ///
     /// Generated with [`arena_bytes!`].
     pub ArenaBytesExample;
+
     #[doc = crate::_tags!(example uid)]
     /// An example handle into [`ArenaBytesExample`].
     ///
     /// Generated with [`arena_bytes!`] and [`handle_span!`][crate::handle_span].
     pub ArenaBytesHandleExample;
+
     #[doc = crate::_tags!(example state)]
     /// An example memory arena mark.
     ///
@@ -38,10 +41,9 @@ arena_bytes! {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! arena_bytes {
-    // point of entry
     (
      [
-      offset: $oprim:ident + $Offset:ty;
+      offset: $oprim:ident;
      ]
 
      $(#[$arena_attr:meta])*
@@ -53,47 +55,74 @@ macro_rules! arena_bytes {
      $(#[$mark_attr:meta])*
      $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::handle_span! {
-            [offset:$oprim + $Offset;] $(#[$handle_attr])* $hvis $Handle
-        }
-        $crate::arena_bytes![%arena
-            $(#[$arena_attr])* $vis $Arena<$Offset>,
-            $Handle,
-            $(#[$mark_attr])* $mvis $Mark,
-            $crate::__ArenaBytes::<CAP>
+        $crate::arena_bytes![
+            [
+                offset: $oprim + $oprim;
+            ]
+            $(#[$arena_attr])* $vis $Arena;
+            $(#[$handle_attr])* $hvis $Handle;
+            $(#[$mark_attr])* $mvis $Mark;
+            // $crate::__ArenaBytes::<CAP>
         ];
     };
-    // calls the necessary arms in order.
-    (%arena
+    (
+
+     [
+      offset: $oprim:ident + $Offset:ty;
+     ]
+
      $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident<$Offset:ty>,
-     $Handle:ident,
+     $vis:vis $Arena:ident;
+
+     $(#[$handle_attr:meta])*
+     $hvis:vis $Handle:ident;
+
      $(#[$mark_attr:meta])*
-     $mvis:vis $Mark:ident,
-     $_:ty
+     $mvis:vis $Mark:ident $(;)?
+
     ) => {
-        $crate::arena_bytes![%main
-            $(#[$arena_attr])* $vis $Arena<$Offset>, // the arena type
-            $Handle, // the handle type
-            $Mark, // the mark type
-            $_ // the internal ops arena namespace
-        ];
-        $crate::arena_bytes![%prim $vis $Arena<$Offset>, $Handle, ($)];
-        $crate::arena_bytes![%mark $Arena<$Offset>, $(#[$mark_attr])* $mvis $Mark];
+        /* handle */
+
+        $crate::handle_span! {
+            [
+                offset:$oprim + $Offset;
+            ]
+            $(#[$handle_attr])* $hvis $Handle
+        }
+
+        /* mark */
+
+        $(#[$mark_attr])*
+        // Append-only mark for snapshots and rollback in an arena.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        $vis struct $Mark($Offset);
+        #[allow(dead_code)]
+        impl $Mark {
+            // Constructor always private.
+            const fn new(mark: $Offset) -> Self { $Mark(mark) }
+        }
+
+        /* arena */
+
         $crate::paste! {
-            #[cfg(test)]
-            $crate::arena_bytes![%tests $Arena, [<_test_ $Arena>]];
+            $crate::arena_bytes![%define
+                $(#[$arena_attr])* $vis $Arena<$Offset>; // the arena type
+                $Handle; // the handle name
+                $Mark; // the mark name
+                [<_test_ $Arena>]; // the test module name
+                $crate::__ArenaBytes::<CAP>; // the internal ops arena namespace
+                ($); // the dollar sign passed as a token
+            ];
         }
     };
-    // $Arena:   the name of the new generated arena.
-    // $Handle:  the handle type used by the arena.
-    // $_:       internal arena helper.
-    (%main
+    (%define
      $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident<$Offset:ty>,
-     $Handle:ident,
-     $Mark:ident,
-     $_:ty
+     $vis:vis $Arena:ident<$Offset:ty>;
+     $Handle:ident;
+     $Mark:ident;
+     $test_mod:ident;
+     $_:ty;
+     ($_d:tt);
     ) => {
         $(#[$arena_attr])*
         #[derive(Clone, Debug)]
@@ -268,9 +297,9 @@ macro_rules! arena_bytes {
                 } else { false }
             }
         }
-    };
-    // $_d: the dollar sign passed as a token, as a trick to be able to nest repetitions.
-    (%prim $vis:vis $Arena:ident<$Offset:ty>, $Handle:ty, ($_d:tt)) => {
+
+        /* primitives */
+
         #[allow(dead_code, private_interfaces)]
         /// Implements push, read and replace for primitives.
         impl<const CAP: usize> $Arena<CAP> {
@@ -440,22 +469,14 @@ macro_rules! arena_bytes {
             }};
         }
         use _impl_arena_methods_for_prims;
-    };
-    (%mark $Arena:ident<$Offset:ty>, $(#[$mark_attr:meta])* $vis:vis $Mark:ident) => {
-        $(#[$mark_attr])*
-        // Append-only mark for snapshots and rollback in an arena.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $vis struct $Mark($Offset);
-        #[allow(dead_code)]
-        impl $Mark {
-            // Constructor always private.
-            const fn new(mark: $Offset) -> Self { $Mark(mark) }
-        }
-    };
-    (%tests $Arena:ident, $mod:ident) => {
+
+        /* tests */
+
+        #[cfg(test)]
         #[allow(non_snake_case)]
-        mod $mod {
+        mod $test_mod {
             use super::$Arena;
+
             #[test]
             fn push_and_read_bytes() {
                 let mut a = $Arena::<16>::new();

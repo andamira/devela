@@ -1,6 +1,6 @@
 // devela/src/data/id/handle/_example.rs
 //
-//! Defines [`HandleSpanExample`].
+//! Defines example handle types.
 //
 // TODO
 // - HandleIndexExample
@@ -22,7 +22,7 @@ handle_gen! {
         location("data"),
         test_size_of(HandleGenExample = 4|32; niche Option),
     }]
-    /// Demonstrates a minimal span-handle using niche-aware `u8` storage.
+    /// Demonstrates a generational handle with niche-aware index and generation fields.
     pub HandleGenExample;
 }
 #[cfg(any(test, feature = "_docs_examples"))]
