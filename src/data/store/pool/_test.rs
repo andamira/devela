@@ -137,3 +137,120 @@ fn stale_relationship_does_not_resolve_to_replacement() {
     let stale_parent = pool.get(child).unwrap().parent.unwrap();
     assert!(pool.get(stale_parent).is_none());
 }
+#[test]
+fn shared_iterator_tracks_exact_limits() {
+    let mut pool = Pool::<u8, 6>::new();
+    let a = pool.insert(10).unwrap();
+    let _b = pool.insert(20).unwrap();
+    let c = pool.insert(30).unwrap();
+    let _d = pool.insert(40).unwrap();
+    assert_eq!(pool.remove(a), Some(10));
+    assert_eq!(pool.remove(c), Some(30));
+    let mut iter = pool.iter();
+    assert_eq!(iter.len(), 2);
+    assert!(!iter.is_empty());
+    assert_eq!(iter.size_hint(), (2, Some(2)));
+    assert_eq!(iter.next(), Some(&20));
+    assert_eq!(iter.len(), 1);
+    assert_eq!(iter.size_hint(), (1, Some(1)));
+    assert_eq!(iter.next(), Some(&40));
+    assert_eq!(iter.len(), 0);
+    assert!(iter.is_empty());
+    assert_eq!(iter.size_hint(), (0, Some(0)));
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.len(), 0);
+}
+#[test]
+fn mutable_iterator_yields_disjoint_values_and_tracks_limits() {
+    let mut pool = Pool::<u8, 6>::new();
+    let a = pool.insert(10).unwrap();
+    let b = pool.insert(20).unwrap();
+    let c = pool.insert(30).unwrap();
+    let d = pool.insert(40).unwrap();
+    assert_eq!(pool.remove(a), Some(10));
+    assert_eq!(pool.remove(c), Some(30));
+    {
+        let mut iter = pool.iter_mut();
+        assert_eq!(iter.len(), 2);
+        assert_eq!(iter.size_hint(), (2, Some(2)));
+        let first = iter.next().unwrap();
+        assert_eq!(iter.len(), 1);
+        assert_eq!(iter.size_hint(), (1, Some(1)));
+        let second = iter.next().unwrap();
+        assert_eq!(iter.len(), 0);
+        assert!(iter.is_empty());
+        // Both exclusive references coexist and target different slots.
+        assert!(!core::ptr::eq(first, second));
+        *first += 1;
+        *second += 2;
+        assert!(iter.next().is_none());
+        assert!(iter.next().is_none());
+        assert_eq!(iter.size_hint(), (0, Some(0)));
+    }
+    assert_eq!(pool.get(b), Some(&21));
+    assert_eq!(pool.get(d), Some(&42));
+}
+const CONST_ITER_MUTATED: [u8; 2] = {
+    let mut pool = Pool::<u8, 4>::new();
+    let a = match pool.insert_copy(1) {
+        Ok(handle) => handle,
+        Err(_) => panic!("unexpected full pool"),
+    };
+    let b = match pool.insert_copy(2) {
+        Ok(handle) => handle,
+        Err(_) => panic!("unexpected full pool"),
+    };
+    let c = match pool.insert_copy(3) {
+        Ok(handle) => handle,
+        Err(_) => panic!("unexpected full pool"),
+    };
+    match pool.remove(b) {
+        Some(2) => {}
+        _ => panic!("unexpected removal"),
+    }
+    {
+        let mut iter = pool.iter_mut();
+        while let Some(value) = iter.next() {
+            *value += 10;
+        }
+    }
+    [
+        match pool.get(a) {
+            Some(value) => *value,
+            None => panic!("missing first value"),
+        },
+        match pool.get(c) {
+            Some(value) => *value,
+            None => panic!("missing second value"),
+        },
+    ]
+};
+#[test]
+fn mutable_iteration_works_during_const_evaluation() {
+    assert_eq!(CONST_ITER_MUTATED, [11, 13]);
+}
+#[test]
+fn reference_into_iteration_skips_vacant_slots() {
+    let mut pool = Pool::<u8, 4>::new();
+    let a = pool.insert(1).unwrap();
+    let b = pool.insert(2).unwrap();
+    let c = pool.insert(3).unwrap();
+    assert_eq!(pool.remove(b), Some(2));
+    let mut sum = 0;
+    let mut count = 0;
+    for value in &pool {
+        sum += *value;
+        count += 1;
+    }
+    assert_eq!(sum, 4);
+    assert_eq!(count, 2);
+    let mut count = 0;
+    for value in &mut pool {
+        *value += 10;
+        count += 1;
+    }
+    assert_eq!(count, 2);
+    assert_eq!(pool.get(a), Some(&11));
+    assert_eq!(pool.get(c), Some(&13));
+}

@@ -51,4 +51,5 @@ macro_rules! word {
         }
     };
 }
+#[doc(inline)]
 pub use word;

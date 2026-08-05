@@ -95,8 +95,9 @@
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
 ### data::store
-- rename `arena!` to `arena_bytes!`.
+- new type: `PoolIter`.
 - new macro: `pool!`.
+- rename `arena!` to `arena_bytes!`.
 
 ## error
 - new root module.

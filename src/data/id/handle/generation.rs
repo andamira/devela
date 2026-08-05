@@ -3,7 +3,7 @@
 //! Defines [`handle_gen!`] macro.
 //
 
-#[doc = crate::_tags!(construction uid rework)]
+#[doc = crate::_tags!(construction uid)]
 /// Defines a compact generational handle.
 #[doc = crate::_doc_meta!{location("data/id")}]
 ///
@@ -33,7 +33,9 @@
 ///     pub MyHandle;
 /// }
 /// ```
-/// See also [`HandleGenExample`][crate::HandleGenExample].
+/// See also [`HandleGenExample`]
+///
+/// [`HandleGenExample`]: crate::HandleGenExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! handle_gen {
@@ -104,15 +106,13 @@ macro_rules! handle_gen {
 
         #[allow(dead_code)]
         impl $Handle {
-            $crate::handle_gen!(%guard_repr __GUARD_INDEX_REPR, $iprim, $Index);
-            $crate::handle_gen!(%guard_repr __GUARD_GENERATION_REPR, $gprim, $Generation);
+            $crate::handle_gen!(%guard_index_repr $iprim, $Index);
+            $crate::handle_gen!(%guard_generation_prim $gprim);
 
             /* constructors */
 
             /// Creates a new handle from an `index` and `generation`.
             $hvis const fn new(index: $Index, generation: $Generation) -> Self {
-                // let () = Self::__GUARD_INDEX_REPR;
-                // let () = Self::__GUARD_GENERATION_REPR;
                 let index = $crate::MaybeNiche::<$Index>::new(index);
                 let generation = $crate::MaybeNiche::<$Generation>::new(generation);
                 Self { index, generation }
@@ -165,16 +165,20 @@ macro_rules! handle_gen {
             $hvis const fn generation_prim(self) -> $gprim { self.generation.get_prim() }
         }
     };
-    // Allows only unsigned index primitives no wider than usize,
-    // paired with a compatible index representation.
-    (%guard_repr $CONST:ident, $P:ty, $I:ty) => {
-        const $CONST: () = {
+    (%guard_index_repr $P:ty, $I:ty) => {
+        const __GUARD_INDEX_REPR: () = {
             const fn __allowed<P, I>()
             where
                 P: $crate::PrimIndex,
                 I: $crate::IndexRepr<Prim = P>,
             {}
             __allowed::<$P, $I>();
+        };
+    };
+    (%guard_generation_prim $P:ty) => {
+        const __GUARD_GENERATION_REPR: () = {
+            const fn __allowed<P: $crate::PrimUint>() {}
+            __allowed::<$P>();
         };
     };
 }

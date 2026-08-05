@@ -3,7 +3,7 @@
 //! Defines [`handle_span!`] macro.
 //
 
-#[doc = crate::_tags!(construction uid rework)]
+#[doc = crate::_tags!(construction uid)]
 /// Defines a compact handle for a contiguous span.
 #[doc = crate::_doc_meta!{location("data/id")}]
 ///
@@ -29,7 +29,9 @@
 ///     pub MyHandle;
 /// }
 /// ```
-/// See also [`HandleSpanExample`][crate::HandleSpanExample].
+/// See also [`HandleSpanExample`].
+///
+/// [`HandleSpanExample`]: crate::HandleSpanExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! handle_span {
@@ -59,6 +61,7 @@ macro_rules! handle_span {
 
      ) => {
         $(#[$handle_attr])*
+        #[must_use]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis struct $Handle {
             offset: $crate::MaybeNiche::<$Offset>,
@@ -77,10 +80,11 @@ macro_rules! handle_span {
         /// Fundamental const methods for creation and access.
         #[allow(dead_code)]
         impl $Handle {
+            $crate::handle_span!(%guard_offset_repr $oprim, $Offset);
+
             /* constructors */
 
             /// Creates a new handle from an `offset` and `len`.
-            #[must_use]
             $vis const fn new(offset: $Offset, len: $Offset) -> Self {
                 let offset = $crate::MaybeNiche::<$Offset>::new(offset);
                 let len = $crate::MaybeNiche::<$Offset>::new(len);

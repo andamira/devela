@@ -324,8 +324,6 @@ macro_rules! pool {
             /// The vacated slot advances its generation before it can be reused.
             $hvis const fn remove(&mut self, handle: $Handle) -> Option<T> {
                 let index = $crate::unwrap![some? self.__resolve_index(handle)];
-                debug_assert!(self.values[index].is_some());
-                debug_assert!(self.free_len < CAP);
                 let next_generation = Self::__next_generation(self.generations[index]);
                 let free_pos = self.free_len;
                 self.generations[index] = next_generation;
@@ -363,14 +361,15 @@ macro_rules! pool {
             /* iteration */
 
             /// Iterates over occupied values in ascending slot order.
-            $vis fn iter(&self) -> impl Iterator<Item = &T> + '_ {
-                self.values.iter().filter_map(Option::as_ref)
+            $vis const fn iter(&self) -> $crate::PoolIter<&[Option<T>]> {
+                $crate::PoolIter::_new(&self.values, self.len)
             }
             /// Iterates mutably over occupied values in ascending slot order.
-            $vis fn iter_mut(&mut self) -> impl Iterator<Item = &mut T> + '_ {
-                self.values.iter_mut().filter_map(Option::as_mut)
+            $vis const fn iter_mut(&mut self) -> $crate::PoolIter<&mut [Option<T>]> {
+                $crate::PoolIter::_new(&mut self.values, self.len)
             }
 
+            // MAYBE: concrete const-capable handle/entry iterator when needed.
             /// Iterates over current handles in ascending slot order.
             $hvis fn handles(&self) -> impl Iterator<Item = $Handle> + '_ {
                 self.entries().map(|(handle, _)| handle)
@@ -429,6 +428,17 @@ macro_rules! pool {
                     }
                 }
             }
+        }
+
+        impl<'a, T, const CAP: usize> $crate::IteratorInto for &'a $Pool<T, CAP> {
+            type Item = &'a T;
+            type IntoIter = $crate::PoolIter<&'a [$crate::Option<T>]>;
+            fn into_iter(self) -> Self::IntoIter { self.iter() }
+        }
+        impl<'a, T, const CAP: usize> $crate::IteratorInto for &'a mut $Pool<T, CAP> {
+            type Item = &'a mut T;
+            type IntoIter = $crate::PoolIter<&'a mut [$crate::Option<T>]>;
+            fn into_iter(self) -> Self::IntoIter { self.iter_mut() }
         }
     };
 }

@@ -9,11 +9,13 @@ mod _test;
 mod _example;
 
 mod define; // pool!
+mod iter; // PoolIter
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            define::*,
+            define::pool,
+            iter::PoolIter,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::{PoolExample, PoolHandleExample};

@@ -48,7 +48,7 @@ pool! {
     ///   [`remove`](#method.remove),
     ///   [`clear`](#method.clear) *([_copy](#method.clear_copy))*.
     /// - Iteration:
-    ///   [`iter`](#method.iter) *([_copy](#method.iter_mut))*,
+    ///   [`iter`](#method.iter) *([_mut](#method.iter_mut))*,
     ///   [`handles`](#method.handles),
     ///   [`entries`](#method.entries).
     pub PoolExample;
