@@ -114,7 +114,7 @@ macro_rules! handle_gen {
             }
             /// Creates a new handle from a primitive `index` and `generation`.
             ///
-            /// Returns `None` if any of the values are invalid.
+            /// Returns an error if either value is invalid.
             $hvis const fn from_prim(index: $iprim, generation: $gprim)
                 -> Result<Self, $crate::InvalidValue> {
                 let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_prim(index)];
@@ -124,7 +124,7 @@ macro_rules! handle_gen {
             }
             /// Creates a new handle from a primitive `index` and `generation`.
             ///
-            /// Returns `None` if any of the values are invalid.
+            /// Returns an error if either value is invalid.
             $hvis const fn try_from_usize(index: usize, generation: usize)
                 -> Result<Self, $crate::NicheValueError> {
                 let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_usize(index)];

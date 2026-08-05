@@ -166,7 +166,7 @@ macro_rules! pool {
                     generation: $gprim + $Generation;
                 ]
                 $(#[$pool_attr])* $vis $Pool; // the pool name
-                $Handle; // the handle name
+                $hvis $Handle; // the handle name
                 [<_test_ $Pool>]; // the test module name
             }
         }
@@ -177,7 +177,7 @@ macro_rules! pool {
       generation: $gprim:ident + $Generation:ty;
      ]
      $(#[$pool_attr:meta])* $vis:vis $Pool:ident;
-     $Handle:ident;
+     $hvis:vis $Handle:ident;
      $test_mod:ident;
     ) => {
         $(#[$pool_attr])*
@@ -259,19 +259,19 @@ macro_rules! pool {
 
             /// Returns whether `handle` currently resolves to a value.
             #[must_use]
-            $vis fn contains(&self, handle: $Handle) -> bool {
+            $hvis const fn contains(&self, handle: $Handle) -> bool {
                 self.__resolve_index(handle).is_some()
             }
             /// Returns a shared reference to the value resolved by `handle`.
             #[must_use]
-            $vis fn get(&self, handle: $Handle) -> Option<&T> {
-                let index = self.__resolve_index(handle)?;
+            $hvis const fn get(&self, handle: $Handle) -> Option<&T> {
+                let index = $crate::unwrap![some? self.__resolve_index(handle)];
                 self.values[index].as_ref()
             }
             /// Returns an exclusive reference to the value resolved by `handle`.
             #[must_use]
-            $vis fn get_mut(&mut self, handle: $Handle) -> Option<&mut T> {
-                let index = self.__resolve_index(handle)?;
+            $hvis const fn get_mut(&mut self, handle: $Handle) -> Option<&mut T> {
+                let index = $crate::unwrap![some? self.__resolve_index(handle)];
                 self.values[index].as_mut()
             }
 
@@ -281,7 +281,7 @@ macro_rules! pool {
             ///
             /// # Errors
             /// Returns `value` unchanged when the pool is full.
-            $vis fn insert(&mut self, value: T) -> Result<$Handle, T> {
+            $hvis fn insert(&mut self, value: T) -> Result<$Handle, T> {
                 if self.is_full() { return Err(value); }
                 let (index_usize, index) = if self.free_len != 0 {
                     let free_pos = self.free_len - 1;
@@ -304,16 +304,16 @@ macro_rules! pool {
                 debug_assert!(index_usize < CAP);
                 debug_assert!(self.values[index_usize].is_none());
                 let generation = self.generations[index_usize];
-                self.values[index_usize] = Some(value);
+                self.values[index_usize] = Some(value); // drop
                 self.len += 1;
                 Ok($Handle::new(index.get(), generation.get()))
             }
             /// Removes and returns the value resolved by `handle`.
             ///
             /// The vacated slot advances its generation before it can be reused.
-            $vis fn remove(&mut self, handle: $Handle) -> Option<T> {
-                let index = self.__resolve_index(handle)?;
-                let value = self.values[index].take()?;
+            $hvis fn remove(&mut self, handle: $Handle) -> Option<T> {
+                let index = $crate::unwrap![some? self.__resolve_index(handle)];
+                let value = $crate::unwrap![some? self.values[index].take()]; // drop
                 self.generations[index] = Self::__next_generation(self.generations[index]);
                 self.free[self.free_len] = $crate::MaybeNiche(handle.index());
                 self.free_len += 1;
@@ -324,7 +324,7 @@ macro_rules! pool {
             $vis fn clear(&mut self) {
                 let frontier = self.len + self.free_len;
                 $crate::whilst! { index in 0..frontier; {
-                    if self.values[index].take().is_some() {
+                    if self.values[index].take().is_some() { // drop
                         self.generations[index] = Self::__next_generation(self.generations[index]);
                     }
                 }}
@@ -334,8 +334,9 @@ macro_rules! pool {
 
             /* private */
 
-            fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
-                let index = $crate::MaybeNiche(handle.index()).try_to_usize().ok()?;
+            const fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
+                let index = $crate::unwrap![ok_some?
+                    $crate::MaybeNiche(handle.index()).try_to_usize()];
                 if index >= CAP { return None; }
                 if self.generations[index].ne($crate::MaybeNiche(handle.generation())) {
                     return None;
@@ -343,7 +344,7 @@ macro_rules! pool {
                 if self.values[index].is_none() { return None; }
                 Some(index)
             }
-            fn __next_generation(current: $crate::MaybeNiche<$Generation>)
+            const fn __next_generation(current: $crate::MaybeNiche<$Generation>)
                 -> $crate::MaybeNiche<$Generation> {
                 let mut candidate = current.get_prim();
                 loop {
@@ -413,7 +414,7 @@ macro_rules! pool {
             }
             #[test]
             fn clear_invalidates_live_handles() {
-                let mut pool = PoolExample::<&str, 3>::new();
+                let mut pool = $Pool::<&str, 3>::new();
                 let a = pool.insert("a").unwrap();
                 let b = pool.insert("b").unwrap();
                 pool.clear();

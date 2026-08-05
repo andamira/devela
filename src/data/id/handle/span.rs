@@ -4,7 +4,7 @@
 //
 
 #[doc = crate::_tags!(construction uid rework)]
-/// Defines a compact handle for a contiguos span.
+/// Defines a compact handle for a contiguous span.
 #[doc = crate::_doc_meta!{location("data/id")}]
 ///
 /// The generated handle stores an offset and a length
@@ -64,9 +64,16 @@ macro_rules! handle_span {
             offset: $crate::MaybeNiche::<$Offset>,
             len: $crate::MaybeNiche::<$Offset>,
         }
-
         impl $crate::ConstInit for $Handle {
-            const INIT: Self = Self::new(<$Offset>::INIT, <$Offset>::INIT);
+            const INIT: Self = Self::new(
+                <$Offset as $crate::ConstInit>::INIT,
+                <$Offset as $crate::ConstInit>::INIT,
+            );
+        }
+        impl Default for $Handle {
+            fn default() -> Self {
+                Self::new(<$Offset as Default>::default(), <$Offset as Default>::default())
+            }
         }
 
         /// Fundamental const methods for creation and access.
@@ -84,7 +91,7 @@ macro_rules! handle_span {
 
             /// Creates a new handle from a primitive `offset` and `len`.
             ///
-            /// Returns `None` if any of the values are invalid.
+            /// Returns an error if either value is invalid.
             $vis const fn from_prim(offset: $oprim, len: $oprim)
                 -> Result<Self, $crate::InvalidValue> {
                 let offset = $crate::unwrap![ok? $crate::MaybeNiche::<$Offset>::try_from_prim(offset)];
@@ -94,8 +101,7 @@ macro_rules! handle_span {
 
             /// Creates a new handle from a primitive `offset` and `len`.
             ///
-            /// Returns `None` if any of the values can't fit in the primitive representation,
-            /// or if it's not valid for the current niche.
+            /// Returns an error if either value is invalid.
             $vis const fn try_from_usize(offset: usize, len: usize)
                 -> Result<Self, $crate::NicheValueError> {
                 let o = $crate::unwrap![ok? $crate::MaybeNiche::<$Offset>::try_from_usize(offset)];

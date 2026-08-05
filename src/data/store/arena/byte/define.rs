@@ -62,7 +62,6 @@ macro_rules! arena_bytes {
             $(#[$arena_attr])* $vis $Arena;
             $(#[$handle_attr])* $hvis $Handle;
             $(#[$mark_attr])* $mvis $Mark;
-            // $crate::__ArenaBytes::<CAP>
         ];
     };
     (
@@ -95,7 +94,7 @@ macro_rules! arena_bytes {
         $(#[$mark_attr])*
         // Append-only mark for snapshots and rollback in an arena.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $vis struct $Mark($Offset);
+        $mvis struct $Mark($Offset);
         #[allow(dead_code)]
         impl $Mark {
             // Constructor always private.
@@ -107,8 +106,8 @@ macro_rules! arena_bytes {
         $crate::paste! {
             $crate::arena_bytes![%define
                 $(#[$arena_attr])* $vis $Arena<$Offset>; // the arena type
-                $Handle; // the handle name
-                $Mark; // the mark name
+                $hvis $Handle; // the handle name
+                $mvis $Mark; // the mark name
                 [<_test_ $Arena>]; // the test module name
                 $crate::__ArenaBytes::<CAP>; // the internal ops arena namespace
                 ($); // the dollar sign passed as a token
@@ -118,8 +117,8 @@ macro_rules! arena_bytes {
     (%define
      $(#[$arena_attr:meta])*
      $vis:vis $Arena:ident<$Offset:ty>;
-     $Handle:ident;
-     $Mark:ident;
+     $hvis:vis $Handle:ident;
+     $mvis:vis $Mark:ident;
      $test_mod:ident;
      $_:ty;
      ($_d:tt);
@@ -169,9 +168,9 @@ macro_rules! arena_bytes {
             /* snapshot and rollback */
 
             /// Snapshot a position in the arena.
-            $vis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
+            $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
             /// Rolls back to `mark`, returning whether it was valid.
-            $vis const fn rollback(&mut self, mark: $Mark) -> bool {
+            $mvis const fn rollback(&mut self, mark: $Mark) -> bool {
                 if mark.0 <= self.len { self.len = mark.0; true } else { false }
             }
 
@@ -187,7 +186,7 @@ macro_rules! arena_bytes {
             }
 
             /// Write a byte slice into the arena.
-            $vis const fn push_bytes(&mut self, bytes: &[u8]) -> Option<$Handle> {
+            $hvis const fn push_bytes(&mut self, bytes: &[u8]) -> Option<$Handle> {
                 $crate::unwrap!(some_if?
                     self.len.checked_add(bytes.len() as $Offset), |v| v <= CAP as $Offset);
                 let start = self.len;
@@ -201,13 +200,13 @@ macro_rules! arena_bytes {
             }
 
             /// Read a shared slice over the written bytes.
-            $vis const fn read_bytes(&self, h: $Handle) -> Option<&[u8]> {
+            $hvis const fn read_bytes(&self, h: $Handle) -> Option<&[u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 if h.len() + h.offset() > self.len { return None }
                 Some($crate::__ArenaBytes::<CAP>::slice_bytes(&self.data, hoff, hlen + hoff))
             }
             /// Read an exclusive slice over the written bytes.
-            $vis const fn read_bytes_mut(&mut self, h: $Handle) -> Option<&mut [u8]> {
+            $hvis const fn read_bytes_mut(&mut self, h: $Handle) -> Option<&mut [u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 if h.len() + h.offset() > self.len { return None }
                 Some($crate::__ArenaBytes::<CAP>::slice_bytes_mut(&mut self.data,
@@ -215,7 +214,7 @@ macro_rules! arena_bytes {
             }
 
             /// Replace the bytes for the handle. Lengths must match. Returns `false` otherwise.
-            $vis const fn replace_bytes(&mut self, h: $Handle, new: &[u8]) -> bool {
+            $hvis const fn replace_bytes(&mut self, h: $Handle, new: &[u8]) -> bool {
                 if let Some(dst) = self.read_bytes_mut(h) {
                     if dst.len() == new.len() {
                         dst.copy_from_slice(new);
@@ -228,7 +227,7 @@ macro_rules! arena_bytes {
             /* single bytes */
 
             /// Write a single byte into the arena.
-            $vis const fn push_byte(&mut self, byte: u8) -> Option<$Handle> {
+            $hvis const fn push_byte(&mut self, byte: u8) -> Option<$Handle> {
                 if self.len as usize + 1 > CAP { return None; }
                 <$_>::write_byte(&mut self.data, self.len as usize, byte);
                 let handle = <$Handle>::new(self.len as $Offset, 1);
@@ -236,17 +235,17 @@ macro_rules! arena_bytes {
                 Some(handle)
             }
             /// Read a byte previously written.
-            $vis const fn read_byte(&self, h: $Handle) -> Option<u8> {
+            $hvis const fn read_byte(&self, h: $Handle) -> Option<u8> {
                 if h.offset() + 1 > self.len { return None }
                 Some(<$_>::read_byte(&self.data, h.offset() as usize))
             }
             /// Read a byte previously written.
-            $vis const fn read_byte_mut(&mut self, h: $Handle) -> Option<&mut u8> {
+            $hvis const fn read_byte_mut(&mut self, h: $Handle) -> Option<&mut u8> {
                 if h.offset() + 1 > self.len { return None }
                 Some(<$_>::read_byte_mut(&mut self.data, h.offset() as usize))
             }
             /// Replace the bytes for `handle`. Length must match.
-            $vis const fn replace_byte(&mut self, handle: $Handle, new: u8) -> bool {
+            $hvis const fn replace_byte(&mut self, handle: $Handle, new: u8) -> bool {
                 if handle.len() != 1 { return false; }
                 <$_>::write_byte(&mut self.data, handle.offset() as usize, new);
                 true
@@ -258,7 +257,7 @@ macro_rules! arena_bytes {
             /// and spanning `count` items of its length.
             ///
             /// Returns `None` if...
-            $vis const fn view_bytes(&self, h: $Handle, count: $Offset) -> Option<&[u8]> {
+            $hvis const fn view_bytes(&self, h: $Handle, count: $Offset) -> Option<&[u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 let total = hlen * count as usize;
                 if hoff + total > self.len as usize { return None; }
@@ -269,7 +268,7 @@ macro_rules! arena_bytes {
             /// and spanning `count` items of its length.
             ///
             /// Returns `None` if...
-            $vis const fn view_bytes_mut(&mut self, h: $Handle, count: $Offset)
+            $hvis const fn view_bytes_mut(&mut self, h: $Handle, count: $Offset)
                 -> Option<&mut [u8]> {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 let total = hlen * count as usize;
@@ -280,7 +279,7 @@ macro_rules! arena_bytes {
             /* shrinking the arena */
 
             /// Truncates the arena if the handle corresponds to the last region.
-            $vis const fn truncate_last(&mut self, h: $Handle) -> bool {
+            $hvis const fn truncate_last(&mut self, h: $Handle) -> bool {
                 $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                 if hoff + hlen != self.len as usize { return false; }
                 self.len = h.offset();
@@ -288,7 +287,7 @@ macro_rules! arena_bytes {
             }
 
             /// Copies the last stored value into `dst` and removes it.
-            $vis const fn pop_into(&mut self, h: $Handle, dst: &mut [u8]) -> bool {
+            $hvis const fn pop_into(&mut self, h: $Handle, dst: &mut [u8]) -> bool {
                 let hlen = h.len() as usize;
                 if hlen != dst.len() { return false; }
                 if let Some(src) = self.read_bytes(h) {
@@ -311,18 +310,18 @@ macro_rules! arena_bytes {
             ///
             /// # Errors
             /// Returns `None` if there's insufficient capacity.
-            $vis const fn push_bool(&mut self, val: bool) -> Option<$Handle> {
+            $hvis const fn push_bool(&mut self, val: bool) -> Option<$Handle> {
                 self.push_byte(val as u8)
             }
             /// Reads a `bool` from the given `handle`.
             ///
             /// # Errors
             /// Returns `None` if the handle is invalid or incomplete.
-            $vis const fn read_bool(&self, handle: $Handle) -> Option<bool> {
+            $hvis const fn read_bool(&self, handle: $Handle) -> Option<bool> {
                 if let Some(b) = self.read_byte(handle) { Some(b != 0) } else { None }
             }
             /// Replaces a `bool` from the given `handle`. Returns `true` on success.
-            $vis const fn replace_bool(&mut self, handle: $Handle, val: bool) -> bool {
+            $hvis const fn replace_bool(&mut self, handle: $Handle, val: bool) -> bool {
                 self.replace_byte(handle, val as u8)
             }
 
@@ -332,18 +331,18 @@ macro_rules! arena_bytes {
             ///
             /// # Errors
             /// Returns `None` if there's insufficient capacity.
-            $vis const fn push_char(&mut self, val: char) -> Option<$Handle> {
+            $hvis const fn push_char(&mut self, val: char) -> Option<$Handle> {
                 self.push_u32(val as u32)
             }
             /// Reads a `char` from the given `handle`.
             ///
             /// # Errors
             /// Returns `None` if the handle is invalid or incomplete.
-            $vis const fn read_char(&self, handle: $Handle) -> Option<char> {
+            $hvis const fn read_char(&self, handle: $Handle) -> Option<char> {
                 if let Some(c) = self.read_u32(handle) { char::from_u32(c) } else { None }
             }
             /// Replaces a `char` from the given `handle`. Returns `true` on success.
-            $vis const fn replace_char(&mut self, handle: $Handle, val: char) -> bool {
+            $hvis const fn replace_char(&mut self, handle: $Handle, val: char) -> bool {
                 self.replace_u32(handle, val as u32)
             }
         }
@@ -368,19 +367,19 @@ macro_rules! arena_bytes {
                 ///
                 /// # Errors
                 /// Returns `None` if there's insufficient capacity.
-                $vis const fn [<push_ $oprim>](&mut self, val: $oprim) -> Option<$Handle> {
+                $hvis const fn [<push_ $oprim>](&mut self, val: $oprim) -> Option<$Handle> {
                     self.push_byte(val as u8)
                 }
                 #[doc = "Reads a `" $oprim "` from the given `handle`."]
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_ $oprim>](&self, handle: $Handle) -> Option<$oprim> {
+                $hvis const fn [<read_ $oprim>](&self, handle: $Handle) -> Option<$oprim> {
                     if let Some(b) = self.read_byte(handle) { Some(b as $oprim) } else { None }
                 }
                 #[doc = "Replaces a `" $oprim "`
                 from the given `handle`. Returns `true` on success."]
-                $vis const fn [<replace_ $oprim>](&mut self, handle: $Handle, val: $oprim)
+                $hvis const fn [<replace_ $oprim>](&mut self, handle: $Handle, val: $oprim)
                 -> bool {
                     self.replace_byte(handle, val as u8)
                 }
@@ -394,14 +393,14 @@ macro_rules! arena_bytes {
                 ///
                 /// # Errors
                 /// Returns `None` if there's insufficient capacity.
-                $vis const fn [<push_ $oprim>](&mut self, val: $oprim) -> Option<$Handle> {
+                $hvis const fn [<push_ $oprim>](&mut self, val: $oprim) -> Option<$Handle> {
                     self.push_bytes(&val.to_le_bytes())
                 }
                 #[doc = "Reads a `" $oprim "` in little-endian order from the given `handle`."]
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_ $oprim>](&self, handle: $Handle) -> Option<$oprim> {
+                $hvis const fn [<read_ $oprim>](&self, handle: $Handle) -> Option<$oprim> {
                     const T_SIZE: usize = size_of::<$oprim>();
                     if let Some(bytes) = self.read_bytes(handle) {
                         Some($oprim::from_le_bytes(
@@ -410,7 +409,7 @@ macro_rules! arena_bytes {
                 }
                 #[doc = "Replaces a `" $oprim
                 "` from the given `handle`. Returns `true` on success."]
-                $vis const fn [<replace_ $oprim>](&mut self, handle: $Handle, val: $oprim)
+                $hvis const fn [<replace_ $oprim>](&mut self, handle: $Handle, val: $oprim)
                     -> bool {
                     if let Some(b) = self.read_bytes_mut(handle) {
                         if let Some(arr) = b.first_chunk_mut::<{size_of::<$oprim>()}>() {
@@ -430,7 +429,7 @@ macro_rules! arena_bytes {
                 ///
                 /// # Errors
                 /// Returns `None` if there's insufficient capacity or the string is too long.
-                $vis const fn [<push_str_ $oprim>](&mut self, val: &str) -> Option<$Handle> {
+                $hvis const fn [<push_str_ $oprim>](&mut self, val: &str) -> Option<$Handle> {
                     let len = val.len();
                     if len <= <$oprim>::MAX as usize {
                         let prefix = $crate::unwrap![some? self.[<push_ $oprim>](len as $oprim)];
@@ -444,7 +443,7 @@ macro_rules! arena_bytes {
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
-                $vis const fn [<read_str_ $oprim>](&self, h: $Handle) -> Option<&str> {
+                $hvis const fn [<read_str_ $oprim>](&self, h: $Handle) -> Option<&str> {
                     let len_size = size_of::<$oprim>() as $Offset;
                     // $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
                     let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
@@ -456,7 +455,7 @@ macro_rules! arena_bytes {
                 /// from the given handle. Returns `true` on success.
                 ///
                 /// Both strings have to have the same byte length.
-                $vis const fn [<replace_str_ $oprim>](&mut self, h: $Handle, val: &str) -> bool {
+                $hvis const fn [<replace_str_ $oprim>](&mut self, h: $Handle, val: &str) -> bool {
                     let len_size = size_of::<$oprim>() as $Offset;
                     let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
                     if h.len() as usize != val.len() { return false }
