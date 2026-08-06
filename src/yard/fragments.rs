@@ -2,6 +2,11 @@
 //
 //! Docs headings for modules across crates and misc. abbreviations.
 //
+// NOTES
+// - `_DOC_*` defines the canonical opening sentence of a public module.
+// - Parent-module declaration comments provide local navigation and may paraphrase it.
+// - Explicit re-export lists describe the actual forwarded surface when appropriate.
+// - Longer explanations remain in each module's source.
 
 #![allow(missing_docs, reason = "hidden internals for the workspace")]
 
@@ -57,8 +62,7 @@ its own flat view of all its public children.";
     _DOC_DATA_ACCESS_ITER    = "Composable external iteration.";
     _DOC_DATA_ACCESS_ROUTE   = "Segmented access routes.";
     // _QUO_DATA_ACCESS_ROUTE   = "> Ordered reachability before resolution.";
-    _DOC_DATA_CODEC         = "Data encoding and decoding abstractions.";
-    _QUO_DATA_CODEC         = "> Structured, algorithmic transformations of data representations.";
+    _DOC_DATA_CODEC         = "Algorithmic transformations of data representations.";
     _DOC_DATA_CODEC_BIN     = "Binary representation atoms.";
     _DOC_DATA_CODEC_BIN_BIT = "Bit-focused items.";
     _DOC_DATA_CODEC_CRYPTO  = "Cryptographic primitives for encryption, authentication, and hashing.";
@@ -68,11 +72,9 @@ its own flat view of all its public children.";
     _DOC_DATA_CODEC_INTEGRITY = "Integrity checks and correction codes.";
     _DOC_DATA_CODEC_PACK    = "Packed data representations";
     _DOC_DATA_ID            = "Identity abstractions for stable and contextual distinction.";
-    _QUO_DATA_ID            = "> Distinction preserved across change.";
     _DOC_DATA_ID_UID        = "Abstractions for producing and stabilizing unique identities.";
     _QUO_DATA_ID_UID        = "> Defines identity kinds and generation tools.";
     _DOC_DATA_LAYOUT        = "Structural arrangement of elements in memory or sequence.";
-    _QUO_DATA_LAYOUT        = "> Determines how values are positioned and grouped.";
     _DOC_DATA_LAYOUT_ARRAY  = "Contiguous homogeneous storage with dimensional projections.";
     _DOC_DATA_LAYOUT_BUFFER = "Capacity-managed storage with explicit occupancy state.";
     _DOC_DATA_LAYOUT_DST    = "Dynamically-sized types stored without need of heap allocation.";
@@ -82,13 +84,15 @@ its own flat view of all its public children.";
         $crate::_ABBR_LIFO!(), " order."];
     _DOC_DATA_LAYOUT_TABLE  = "Tabular and heterogeneous data processing.";
     _DOC_DATA_STORE         = "Retained data stores and retrieval semantics.";
+    _DOC_DATA_STORE_ARENA   = "Monotonic stores with stable positions and collective reclamation.";
     _DOC_DATA_STORE_DB      = "Persistent queryable stores with schema and transactional semantics.";
     _DOC_DATA_STORE_CACHE   = "Stores that retain values to reduce recomputation or retrieval cost.";
+    _DOC_DATA_STORE_INTERN = "Canonical stores for deduplicated values and shared identity.";
     _DOC_DATA_STORE_KEY     = "Keyed stores and lookup structures.";
     _DOC_DATA_TOPOL         = "Relational topology over structured data.";
-    _QUO_DATA_TOPOL         = "> Describes connectivity, adjacency, and ordered relations.";
     _DOC_DATA_TOPOL_LINKED  = "Homogeneous, sequentially accessed structures.";
     _DOC_DATA_TOPOL_NODE    = "Abstractions for structured relationships.";
+    _DOC_DATA_STORE_POOL    = "Reusable slot stores with generational handles and individual reclamation";
     _DOC_DATA_TOPOL_SPATIAL = "Spatial adjacency and partitioning structures over indexed data.";
     _QUO_DATA_TOPOL_SPATIAL = "> Organizes locality, neighborhood, and region-based relations.";
     _DOC_DATA_VALUE         = "Semantic value categories and composable data forms.";

@@ -8,15 +8,19 @@ use crate::{ConstInit, Hash, Hasher, HasherBuildDefault};
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
 #[doc = crate::_tags!(hash)]
-/// A hashing algorithm used in the Rustc compiler, implemented for
-/// [u32](#impl-HasherFx<u32>),
-/// [u64](#impl-HasherFx<u64>) &
-/// [usize](##impl-HasherFx<usize>).
+/// The legacy Fx hashing algorithm derived from Firefox and earlier rustc implementations.
 #[doc = crate::_doc_meta!{location("data/codec/hash")}]
 ///
-/// This is the same hashing algorithm used for some internal operations in
-/// Firefox. The strength of this algorithm is in hashing 4 bytes at a time on
-/// any platform, where the FNV algorithm works on one byte at a time.
+/// This differs from the current rustc-hash algorithm.
+///
+/// It is implemented for
+/// [u32](#impl-HasherFx<u32>),
+/// [u64](#impl-HasherFx<u64>), and
+/// [usize](#impl-HasherFx<usize>).
+///
+/// This is the same hashing algorithm used for some internal operations in Firefox.
+/// The strength of this algorithm is in hashing 4 bytes at a time on any platform,
+/// where the FNV algorithm works on one byte at a time.
 ///
 /// This hashing algorithm should not be used for cryptographic,
 /// or in scenarios where DoS attacks are a concern.
@@ -29,15 +33,15 @@ pub struct HasherFx<T> {
 }
 
 const ROTATE: u32 = 5;
-const SEED32: u32 = 0x9e_37_79_b9;
-const SEED64: u64 = 0x51_7c_c1_b7_27_22_0a_95;
+const K32: u32 = 0x9e_37_79_b9;
+const K64: u64 = 0x51_7c_c1_b7_27_22_0a_95;
 #[cfg(target_pointer_width = "32")]
-const SEED: usize = SEED32 as usize;
+const K: usize = K32 as usize;
 #[cfg(target_pointer_width = "64")]
-const SEED: usize = SEED64 as usize;
+const K: usize = K64 as usize;
 
 macro_rules! impl_fx {
-    () => { impl_fx![u32:SEED32, u64:SEED64, usize:SEED]; };
+    () => { impl_fx![u32:K32, u64:K64, usize:K]; };
 
     ($($t:ty:$seed:ident),+) =>  { $( impl_fx![@$t:$seed]; )+ };
     (@$t:ty:$seed:ident) =>  {

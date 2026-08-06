@@ -1,7 +1,6 @@
 // devela/src/data/layout/dst/mod.rs
 /*!
-This module adds support for storing dynamically-sized types within fixed-size
-allocations.
+Adds support for storing dynamically-sized types within fixed-size allocations.
 
 - The `DstValue` type provides a fixed size (7 word in the current version)
   buffer in which a trait object or array can be stored, without resorting

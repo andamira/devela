@@ -98,6 +98,7 @@
 - new type: `PoolIter`.
 - new macro: `pool!`.
 - rename `arena!` to `arena_bytes!`.
+- make `pool` and `arena` modules public.
 
 ## error
 - new root module.

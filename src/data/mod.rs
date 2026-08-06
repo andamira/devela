@@ -4,6 +4,16 @@
 #![doc = crate::_DOC_DATA_MODULES!()]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
+//!
+//! The data tree separates several independent concerns:
+//!
+//! - [`Access`](access) determines how values are reached and traversed.
+//! - [`Codecs`](codec) transform values between representations.
+//! - [`Identity`](id) preserves distinction across change.
+//! - [`Layout`](layout) determines how values are positioned and grouped.
+//! - [`Storage`](store) governs how values remain and are recovered.
+//! - [`Topology`](topol) describes connectivity, adjacency, and ordered relations.
+//! - [`Values`](value) provide the semantic forms carried by these structures.
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]

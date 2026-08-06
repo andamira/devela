@@ -3,20 +3,31 @@
 #![doc = crate::_DOC_DATA_ACCESS!()] // public
 #![doc = crate::_doc!(modules: crate::data; access: iter, route)]
 #![doc = crate::_doc!(flat:"data")]
-// #![doc = crate::_QUO_DATA_ACCESS!()]
 #![doc = crate::_doc!(hr)]
 //!
-//! Reachability, traversal, and access structure.
+//! These abstractions operate over data supplied by another context.
+//! They may change what is current or reachable without relocating or
+//! taking ownership of the underlying values.
 //!
-//! - Routes describe ordered access structure.
+//! Access does not determine identity, physical arrangement, or retention.
+//! Those concerns belong to [`data::id`](crate::data::id),
+//! [`data::layout`](crate::data::layout), and
+//! [`data::store`](crate::data::store).
+//!
 //! - Addresses interpret reachability through a resolver.
-//! - Cursors move explicitly through ordered storage.
+// - [`Addresses`](address) express symbolic or contextual references
+//   for later resolution.
+// - Cursors maintain an explicit position within ordered data.
+//! - [`ByteCursor`] maintains an explicit position within ordered byte data.
+//! - [`Iterators`](iter) expose successive elements through traversal protocols.
+//! - [`Routes`](route) represent ordered segments before domain-specific
+//!   interpretation.
 //
 
-// mod address; // Addressability and directed reachability WIP
-mod cursor; // traversal over ordered data
-pub mod iter; // Composable external iteration
-pub mod route; // Segmented access routes
+// mod address; // Symbolic and contextual references interpreted through resolution
+mod cursor; // Explicit positional access over ordered data
+pub mod iter; // Composable external and lending traversal
+pub mod route; // Segmented routes before domain-specific interpretation
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {

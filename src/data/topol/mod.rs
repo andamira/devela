@@ -4,7 +4,22 @@
 #![doc = crate::_doc!(modules: crate::data; topol)] // graph, spatial
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
-#![doc = crate::_QUO_DATA_TOPOL!()]
+//!
+//! Topology describes connectivity, adjacency, and ordered relations.
+//!
+//! It answers how values are related, independently of their physical
+//! arrangement, ownership, or representation.
+//!
+//! A topology may be represented through references, indices, handles,
+//! or explicit nodes. Changing that representation need not change the
+//! relations being expressed.
+//!
+//! It does not assign identity, retain values, or define geometric distance;
+//! those concerns belong to [`data::id`](crate::data::id),
+//! [`data::store`](crate::data::store), and [`geom`](crate::geom).
+//!
+//! - [`ConstList`] represents immutable linear succession through shared links.
+//! - [`LinkedList`] provides mutable owned linkage when allocation is available.
 //
 
 mod linked; // ConstList[Item], LinkedList

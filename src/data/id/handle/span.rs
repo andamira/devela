@@ -61,7 +61,6 @@ macro_rules! handle_span {
 
      ) => {
         $(#[$handle_attr])*
-        #[must_use]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis struct $Handle {
             offset: $crate::MaybeNiche::<$Offset>,
@@ -85,6 +84,7 @@ macro_rules! handle_span {
             /* constructors */
 
             /// Creates a new handle from an `offset` and `len`.
+            #[must_use]
             $vis const fn new(offset: $Offset, len: $Offset) -> Self {
                 let offset = $crate::MaybeNiche::<$Offset>::new(offset);
                 let len = $crate::MaybeNiche::<$Offset>::new(len);

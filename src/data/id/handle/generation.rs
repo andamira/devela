@@ -97,7 +97,6 @@ macro_rules! handle_gen {
      $hvis:vis $Handle:ident $(;)?
     ) => {
         $(#[$handle_attr])*
-        #[must_use]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $hvis struct $Handle {
             index: $crate::MaybeNiche<$Index>,
@@ -112,6 +111,7 @@ macro_rules! handle_gen {
             /* constructors */
 
             /// Creates a new handle from an `index` and `generation`.
+            #[must_use]
             $hvis const fn new(index: $Index, generation: $Generation) -> Self {
                 let index = $crate::MaybeNiche::<$Index>::new(index);
                 let generation = $crate::MaybeNiche::<$Generation>::new(generation);

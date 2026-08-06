@@ -4,7 +4,20 @@
 #![doc = crate::_doc!(modules: crate::data; layout: array, buffer, dst)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, vec)]
-#![doc = crate::_QUO_DATA_LAYOUT!()]
+//!
+//! Layout determines how values are positioned and grouped.
+//!
+//! It describes where elements reside, how positions correspond,
+//! and which portion of a capacity is logically occupied.
+//!
+//! It does not provide durable identity or govern reclamation;
+//! those concerns belong to [`data::id`](crate::data::id) and
+//! [`data::store`](crate::data::store).
+//!
+//! - [`Arrays`](mod@array) add dimensions and coordinate mappings.
+//! - [`Buffers`](buffer) add bounded occupancy in linear or cyclic order.
+//! - [`DST storage`](dst) supports dynamically sized representations
+//!   without requiring heap allocation.
 //
 
 mod collection; // DataCollection
