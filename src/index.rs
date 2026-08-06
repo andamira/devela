@@ -119,12 +119,19 @@
         refcell_try_map,
         str_as_str,
         supertrait_item_shadowing,
+        trim_prefix_suffix,
         unsafe_cell_from_mut,
     )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(box_take, btree_extract_if, new_zeroed_alloc, string_from_utf8_lossy_owned,)
+    feature(
+        box_take,
+        btree_extract_if,
+        new_zeroed_alloc,
+        string_from_utf8_lossy_owned,
+        smart_pointer_try_map, //smart_pointer_map
+    )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]

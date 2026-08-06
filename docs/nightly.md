@@ -61,6 +61,7 @@ See also
 
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
+- 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
 - 1.99: `·`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
@@ -127,12 +128,14 @@ See also
 - 1.??: `·`[random_source](https://github.com/rust-lang/rust/pull/157168)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
+- 1.??: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `a`[String::from_utf8_lossy_owned](https://github.com/rust-lang/rust/pull/159099)
 - 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
+- 1.??: `·`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
 - 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 
