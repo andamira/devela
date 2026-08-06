@@ -5,10 +5,13 @@
 
 #[cfg(test)]
 mod _test;
+#[cfg(all(test, feature = "alloc"))]
+mod _model;
 #[cfg(any(test, feature = "_docs_examples"))]
 mod _example;
 
 mod define; // pool!
+mod impls; // hidden macros for pool variants
 mod iter; // PoolIter
 
 crate::structural_mods! { // _mods
@@ -18,6 +21,6 @@ crate::structural_mods! { // _mods
             iter::PoolIter,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::_example::{PoolExample, PoolHandleExample};
+        pub use super::_example::*;
     }
 }

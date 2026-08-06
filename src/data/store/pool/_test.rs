@@ -254,3 +254,38 @@ fn reference_into_iteration_skips_vacant_slots() {
     assert_eq!(pool.get(a), Some(&11));
     assert_eq!(pool.get(c), Some(&13));
 }
+
+#[cfg(feature = "alloc")]
+mod alloc {
+    use crate::PoolAllocExample as Pool;
+
+    #[test]
+    fn allocated_pool_grows_reuses_and_clears() {
+        let mut pool = Pool::<u8>::new();
+        assert_eq!(pool.len(), 0);
+        assert_eq!(pool.slot_count(), 0);
+        assert_eq!(pool.remaining(), pool.capacity());
+        assert!(!pool.is_full());
+        let a = pool.insert(1).unwrap();
+        let b = pool.insert(2).unwrap();
+        assert_eq!(pool.slot_count(), 2);
+        assert_eq!(pool.remaining(), pool.capacity() - pool.len());
+        assert_eq!(pool.remove(a), Some(1));
+        let slots = pool.slot_count();
+        let c = pool.insert(3).unwrap();
+        assert_eq!(pool.slot_count(), slots);
+        assert_eq!(a.index_prim(), c.index_prim());
+        assert_ne!(a.generation_prim(), c.generation_prim());
+        assert_eq!(pool.get(a), None);
+        pool.clear();
+        assert_eq!(pool.len(), 0);
+        assert_eq!(pool.slot_count(), slots);
+        assert_eq!(pool.get(b), None);
+        assert_eq!(pool.get(c), None);
+    }
+    #[test]
+    #[should_panic(expected = "exceeds its index representation")]
+    fn with_capacity_rejects_unrepresentable_capacity() {
+        let _ = Pool::<u8>::with_capacity(256);
+    }
+}
