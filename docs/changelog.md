@@ -75,6 +75,7 @@
 ### data::id
 - new macro: `handle_gen!`.
 - rename `handle!` to `handle_span!`.
+- make `handle` module public.
 
 ### data::layout
 - remove trait: `DataDesta`.

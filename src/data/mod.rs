@@ -9,7 +9,7 @@
 //!
 //! - [`Access`](access) determines how values are reached and traversed.
 //! - [`Codecs`](codec) transform values between representations.
-//! - [`Identity`](id) preserves distinction across change.
+//! - [`Identification`](id) distinguishes values through identities and contextual references.
 //! - [`Layout`](layout) determines how values are positioned and grouped.
 //! - [`Storage`](store) governs how values remain and are recovered.
 //! - [`Topology`](topol) describes connectivity, adjacency, and ordered relations.
@@ -24,11 +24,11 @@ crate::CONST! { pub(crate) _DOC_DATA_MODULES =
 
 pub mod access; // Mechanisms of reachability and traversal
 pub mod codec; // Data encoding and decoding abstractions
-pub mod id; // Identity abstractions for stable and contextual distinction
+pub mod id; // Identifiers and references for stable and contextual distinction
 pub mod layout; // Structural arrangement of elements in memory or sequence
 pub mod store; // Retained data stores and retrieval semantics
 pub mod topol; // Relational topology over structured data
-pub mod value; // Enumerated data values and types, classified by size
+pub mod value; // Semantic value categories and composable data forms
 mod word; // Fixed-width encoded data words
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden

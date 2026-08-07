@@ -1,32 +1,50 @@
 // devela/src/data/id/mod.rs
 //
 #![doc = crate::_DOC_DATA_ID!()] // public
-#![doc = crate::_doc!(modules: crate::data; id)]
+#![doc = crate::_doc!(modules: crate::data; id: handle)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//
+//! Identifiers distinguish values across storage, position, representation,
+//! or execution contexts, with guarantees that depend on the identifier form.
+//! Different forms provide different scopes and resolution models:
 //!
-//! It answers *which thing* is being referred to, independently of where it
-//! is stored, how it is reached, or how it is related to other values.
-//!
-//! An identity may be generated, physically anchored, translated from an
-//! external identifier, or meaningful only within a particular store.
-//!
-//! - [`handle_gen!`] defines index-and-generation handles for reusable slots.
-//! - [`handle_span!`] defines offset-and-length handles for contiguous regions.
-//! - [`id_seq!`] produces sequential identifiers.
-//! - [`IdPin`] and [`IdPinBox`] anchor identity to stable memory locations.
-//! - [`IdRegistry`] maps foreign identifiers into compact local identities.
+//! - [`Handles`](handle) refer to stored values through a particular context.
+//! - [`UUIDs`](uuid) provide standardized, portable 128-bit identifiers
+//!   without requiring a shared local allocator.
+//! - Locally generated or anchored identifiers distinguish values within
+//!   a bounded execution scope.
 //
 
-mod handle; // handle!, HandleExample
-mod uid; // IdPin
+pub mod handle; // Compact contextual references resolved against external state
+pub mod uuid; // Standardized portable 128-bit identifiers
 
-crate::structural_mods! { // _mods
+mod pin; // IdPin
+mod registry; // IdRegistry
+mod seq; // id_seq!
+
+#[cfg(feature = "alloc")]
+mod pin_box; // IdPinBox
+// #[cfg(feature = "std")]
+// mod snowflake;
+
+crate::structural_mods! { // _mods, _pub_mods
     _mods {
         #[doc(inline)]
         pub use super::{
-            handle::*,
-            uid::_all::*,
+            pin::IdPin,
+            registry::IdRegistry,
+            seq::id_seq,
+        };
+        #[cfg(feature = "alloc")]
+        pub use super::pin_box::IdPinBox;
+        // #[cfg(feature = "std")]
+        // pub use super::snowflake::*;
+    }
+    _pub_mods {
+        #[doc(inline)]
+        pub use super::{
+            handle::_all::*,
         };
     }
 }

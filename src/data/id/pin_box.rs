@@ -1,4 +1,4 @@
-// devela/src/data/id/uid/pin_box.rs
+// devela/src/data/id/pin_box.rs
 //
 //! Defines [`IdPinBox`].
 //
@@ -20,13 +20,11 @@ use crate::{Box, Pin};
 pub struct IdPinBox {
     inner: Pin<Box<u8>>,
 }
-
 impl IdPinBox {
     /// Creates a new `IdPinBox` with a unique memory address.
     pub fn new() -> Self {
         Self::default()
     }
-
     /// Returns the unique ID as a `usize`, derived from the memory address.
     pub fn as_usize(&self) -> usize {
         (&raw const *self.inner).addr()
@@ -41,7 +39,6 @@ mod impl_traits {
             Self { inner: Box::pin(0) }
         }
     }
-
     impl Debug for IdPinBox {
         fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
             write!(f, "{}", self.as_usize())
@@ -52,14 +49,12 @@ mod impl_traits {
             self.as_usize().hash(state);
         }
     }
-
+    impl Eq for IdPinBox {}
     impl PartialEq for IdPinBox {
         fn eq(&self, other: &Self) -> bool {
             Ptr::eq(&*self.inner, &*other.inner)
         }
     }
-    impl Eq for IdPinBox {}
-
     impl PartialOrd for IdPinBox {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             Some(self.cmp(other))

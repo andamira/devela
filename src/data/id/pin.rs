@@ -1,4 +1,4 @@
-// devela/src/data/id/uid/pin.rs
+// devela/src/data/id/pin.rs
 //
 //! Defines [`IdPin`].
 //
@@ -29,7 +29,6 @@ use crate::Pin;
 pub struct IdPin<'a> {
     inner: Pin<&'a mut u8>,
 }
-
 impl<'a> IdPin<'a> {
     /// Creates a new `IdPin` with a unique stack memory address.
     ///
@@ -38,7 +37,6 @@ impl<'a> IdPin<'a> {
         let inner = Pin::new(data);
         Self { inner }
     }
-
     /// Returns the unique ID as a `usize`, derived from the stack memory address.
     pub fn as_usize(&self) -> usize {
         (&raw const *self.inner).addr()
@@ -57,7 +55,6 @@ mod impl_traits {
             Ptr::eq(&*self.inner, &*other.inner)
         }
     }
-
     impl PartialOrd for IdPin<'_> {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             Some(self.cmp(other))

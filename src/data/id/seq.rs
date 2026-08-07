@@ -1,4 +1,4 @@
-// devela/src/data/id/uid/seq.rs
+// devela/src/data/id/seq.rs
 //
 //! Defines [`id_seq!`], for sequential unique IDs. An identity allocator.
 //
@@ -371,20 +371,17 @@ macro_rules! id_seq {
                 from.value()
             }
         }
-
         impl ::core::hash::Hash for $name {
             fn hash<H: ::core::hash::Hasher>(&self, state: &mut H) {
                 self.id.hash(state);
             }
         }
-
+        impl Eq for $name {}
         impl PartialEq for $name {
             fn eq(&self, other: &Self) -> bool {
                 self.id == other.id
             }
         }
-        impl Eq for $name {}
-
         #[allow(clippy::non_canonical_partial_ord_impl)]
         impl PartialOrd for $name {
             fn partial_cmp(&self, other: &Self) -> Option<::core::cmp::Ordering> {
@@ -410,24 +407,19 @@ mod test {
         id_seq![TestIdSeqU8a, u8];
         id_seq![TestIdSeqU8b, u8];
         id_seq![TestIdSeqI8, i8];
-
         // unsigned starts at 1 (MIN+1)
         let u8a_id1 = TestIdSeqU8a::new().unwrap();
         let u8b_id1 = TestIdSeqU8b::new().unwrap();
-
         // types are different, values can be the same
         assert_ne![u8a_id1.type_of(), u8b_id1.type_of()];
         assert_eq_all![1, u8a_id1.value(), u8b_id1.value()];
-
         let u8a_id2 = TestIdSeqU8a::new().unwrap();
         assert_eq![2, u8a_id2.value()];
-
         // signed starts at MIN+1
         let i8_id1 = TestIdSeqI8::new().unwrap();
         let i8_id2 = TestIdSeqI8::new().unwrap();
         assert_eq![i8::MIN + 1, i8_id1.value()];
         assert_eq![i8::MIN + 2, i8_id2.value()];
-
         // generate all remaining ids
         for _ in 2..u8::MAX {
             let _ = TestIdSeqU8a::new_fast_unchecked();
@@ -437,54 +429,41 @@ mod test {
         assert_eq![TestIdSeqU8a::new_fast(), None];
         assert_eq![TestIdSeqI8::new_fast(), None];
     }
-
     #[test]
     #[cfg(feature = "alloc")]
     fn id_seq_iter() {
         use crate::Vec;
-
         id_seq![TestIdSeqU8Iter, u8];
-
         let ids: Vec<_> = TestIdSeqU8Iter::iter_fast().take(10).collect();
         // First 10 IDs should start at 1 and end at 10
         let expected_ids: Vec<u8> = (1..=10).collect();
         assert_eq!(ids.iter().map(|id| id.value()).collect::<Vec<_>>(), expected_ids);
-
         let ids: Vec<_> = TestIdSeqU8Iter::iter_balanced().take(10).collect();
         // next 10 IDs should start at 11 and end at 20
         let expected_ids: Vec<u8> = (11..=20).collect();
         assert_eq!(ids.iter().map(|id| id.value()).collect::<Vec<_>>(), expected_ids);
     }
-
     #[test]
     #[cfg(feature = "alloc")]
     fn id_seq_iter_stops_at_max() {
         use crate::Vec;
-
         id_seq![TestIdSeqU8IterStops, u8];
         type IdGen = TestIdSeqU8IterStops;
-
         // move the id counter close to the maximum value
         let _: Vec<_> = IdGen::iter_fast().take(252).collect();
-
         // take the rest of the ids
         let ids: Vec<_> = IdGen::iter_fast().collect();
-
         let expected_ids = Vec::from([253, 254, 255]);
         assert_eq!(ids.iter().map(|id| id.value()).collect::<Vec<_>>(), expected_ids);
     }
-
     #[test]
     #[cfg(feature = "std")]
     fn id_seq_iter_panics_on_overflow() {
         use std::panic::catch_unwind;
-
         id_seq![TestIdSeqU8IterPanics, u8];
         type IdGen = TestIdSeqU8IterPanics;
-
         // move the id counter to the maximum value
         let _: Vec<_> = IdGen::iter_fast_unchecked().take(255).collect();
-
         // Expect a panic on overflow
         let result = catch_unwind(|| {
             let _ids: Vec<_> = IdGen::iter_fast_unchecked().take(1).collect();

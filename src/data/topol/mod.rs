@@ -20,6 +20,8 @@
 //!
 //! - [`ConstList`] represents immutable linear succession through shared links.
 //! - [`LinkedList`] provides mutable owned linkage when allocation is available.
+// - [`Spatial structures`](spatial) organize indexed values by locality,
+//   neighborhood, and partition.
 //
 
 mod linked; // ConstList[Item], LinkedList

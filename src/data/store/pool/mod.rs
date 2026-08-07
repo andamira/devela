@@ -26,7 +26,7 @@
 
 #[cfg(test)]
 mod _test;
-#[cfg(all(test, feature = "alloc"))]
+#[cfg(all(test, feature = "alloc", not(miri)))] // too slow for miri
 mod _model;
 #[cfg(any(test, feature = "_docs_examples"))]
 mod _example;

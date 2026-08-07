@@ -18,13 +18,11 @@ pub struct IdRegistry<Id, const MAX: usize> {
     next: u32,
     entries: [(u32, Id); MAX],
 }
-
 impl<Id: Copy, const MAX: usize> IdRegistry<Id, MAX> {
     /// Creates an empty registry.
     pub const fn new(default: Id) -> Self {
         Self { next: 0, entries: [(0, default); MAX] }
     }
-
     /// Returns an existing id for `native`, or inserts a new one.
     pub fn intern(&mut self, native: u32, mk: impl Fn(u32) -> Id) -> Id {
         // lookup
@@ -36,7 +34,6 @@ impl<Id: Copy, const MAX: usize> IdRegistry<Id, MAX> {
         // allocate new
         let id = mk(self.next);
         self.next += 1;
-
         for slot in self.entries.iter_mut() {
             if slot.0 == 0 {
                 *slot = (native, id);
