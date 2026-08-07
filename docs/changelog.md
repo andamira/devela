@@ -73,9 +73,9 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 ### data::id
-- new macro: `handle_gen!`.
-- rename `handle!` to `handle_span!`.
-- make `handle` module public.
+- new macros: `handle!`, `handle_gen!`.
+- rename old `handle!` to `handle_span!`.
+- make `handle` and `uuid` modules public.
 
 ### data::layout
 - remove trait: `DataDesta`.
@@ -98,7 +98,7 @@
 ### data::store
 - new type: `PoolIter`.
 - new macro: `pool!`.
-- rename `arena!` to `arena_bytes!`.
+- rename old `arena!` to `arena_bytes!`.
 - make `pool` and `arena` modules public.
 
 ## error

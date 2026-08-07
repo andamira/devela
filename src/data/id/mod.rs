@@ -1,7 +1,7 @@
 // devela/src/data/id/mod.rs
 //
 #![doc = crate::_DOC_DATA_ID!()] // public
-#![doc = crate::_doc!(modules: crate::data; id: handle)]
+#![doc = crate::_doc!(modules: crate::data; id: handle, uuid)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //
@@ -9,7 +9,7 @@
 //! or execution contexts, with guarantees that depend on the identifier form.
 //! Different forms provide different scopes and resolution models:
 //!
-//! - [`Handles`](handle) refer to stored values through a particular context.
+//! - [`Handles`](mod@handle) refer to stored values through a particular context.
 //! - [`UUIDs`](uuid) provide standardized, portable 128-bit identifiers
 //!   without requiring a shared local allocator.
 //! - Locally generated or anchored identifiers distinguish values within
@@ -45,6 +45,7 @@ crate::structural_mods! { // _mods, _pub_mods
         #[doc(inline)]
         pub use super::{
             handle::_all::*,
+            uuid::_all::*,
         };
     }
 }
