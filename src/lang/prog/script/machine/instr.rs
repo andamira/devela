@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::ScriptValue;
+use crate::{ConstInit, ScriptCallId, ScriptValue};
 
 #[doc = crate::_tags!(lang)]
 /// An operation executed by a [`ScriptMachine`][crate::ScriptMachine].
@@ -40,9 +40,24 @@ pub enum ScriptOp<R> {
     /// Jumps by the given signed operation offset if the popped value is `true`.
     JumpIf(isize),
 
+    /// Requests a host operation using values from the top of the stack.
+    ///
+    /// The call consumes `arity` arguments and produces one value.
+    CallHost {
+        /// The contextual host-operation identifier.
+        id: ScriptCallId,
+
+        /// The number of arguments supplied from the stack.
+        arity: u8,
+    },
+
     /// Suspends execution until the machine is resumed.
     Yield,
 
     /// Finishes execution, returning the top stack value when present.
     Return,
+}
+
+impl<R> ConstInit for ScriptOp<R> {
+    const INIT: Self = Self::Return;
 }

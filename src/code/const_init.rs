@@ -24,12 +24,16 @@
 /// `Default` represents the type's natural baseline, usually a neutral or zero-like state.
 /// `ConstInit` simply provides a valid const-time initializer, without requiring that meaning.
 ///
-/// When a type has a clear `Default`, these traits should return the same value to keep behavior
-/// consistent. They only diverge for types that cannot offer a safe or meaningful `Default`, but
-/// still need a guaranteed const initializer.
+/// When a type has a clear `Default`, these traits should return the same value
+/// to keep behavior consistent. They only diverge for types that cannot offer a
+/// safe or meaningful `Default`, but still need a guaranteed const initializer.
 ///
 /// - Use `Default` for semantic baselines.
 /// - Use `ConstInit` for invariant-safe const initialization.
+///
+/// An implementation may use a recognizable sentinel value when the type
+/// has a natural inactive or structurally impossible state. Callers must not
+/// assume that `INIT` is a sentinel unless the type documents that guarantee.
 pub trait ConstInit {
     /// Returns the compile-time "initial value" for a type.
     const INIT: Self;

@@ -132,7 +132,8 @@
   - impl `ConstInit`.
 
 #### lang::prog::script
-- new types `ScriptOp`, `ScriptOutcome`, `ScriptMachine`, `ScriptValue`.
+- new trait: `ScriptHost`.
+- new types: `ScriptCall`, `ScriptCallId`, `ScriptError`, `ScriptOp`, `ScriptOutcome`, `ScriptMachine`, `ScriptValue`.
 
 ### media::font
 - new types: `Bdf`, `Dvbf`, `Fonts`, `FontBitmapView`, `GlyphBitmapView`.

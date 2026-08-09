@@ -158,7 +158,7 @@ its own flat view of all its public children.";
     _DOC_LANG_PROG_SCRIPT_EMBED = "Host-embedded scripting notation and generators.";
     _DOC_LANG_PROG_SCRIPT_FORM       = "Scripting and programming language forms.";
     _DOC_LANG_PROG_SCRIPT_FORM_SHELL = "Shell command words and quoting.";
-    _DOC_LANG_PROG_SCRIPT_MACHINE    = "Hosted scripting execution machinery.";
+    _DOC_LANG_PROG_SCRIPT_MACHINE    = "Resumable scripting execution machinery.";
     _DOC_LANG_PROG_TEMPLATE = "Text substitution and escaping machinery.";
     _DOC_LANG_PROG_FFI      = concat![$crate::_ABBR_FFI!(), " bindings and interoperability."];
     _DOC_LANG_PROG_FFI_C    =

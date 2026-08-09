@@ -3,10 +3,12 @@
 //!
 //
 
+#[cfg(doc)]
+use crate::ScriptMachine;
 use crate::{ConstInit, ValueKind};
 
 #[doc = crate::_tags!(lang value)]
-/// A value manipulated by a [`ScriptMachine`][crate::ScriptMachine].
+/// A value manipulated by a [`ScriptMachine`].
 #[doc = crate::_doc_meta!{
     location("lang/prog/script"),
     #[cfg(target_pointer_width = "32")]
@@ -18,9 +20,12 @@ use crate::{ConstInit, ValueKind};
 ///
 /// [`Ref`][Self::Ref] carries an opaque reference whose meaning and validity
 /// are defined by the host rather than by the scripting machine.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum ScriptValue<R> {
     /// The absence of a value.
+    ///
+    /// This is the default.
+    #[default]
     Nil,
 
     /// A boolean value.
@@ -35,11 +40,6 @@ pub enum ScriptValue<R> {
 
 impl<R> ConstInit for ScriptValue<R> {
     const INIT: Self = Self::Nil;
-}
-impl<R> Default for ScriptValue<R> {
-    fn default() -> Self {
-        Self::Nil
-    }
 }
 
 impl<R> ScriptValue<R> {
