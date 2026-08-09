@@ -9,7 +9,6 @@
 //
 
 // mod calc; // Executable semantic calculus WIP
-// mod embed; // Host-embedded notation and generator macros WIP
 pub mod ffi; // Foreign language interfaces
 // mod ir; // Lowered program representations
 // mod kernel; // Reusable computational language kernels
@@ -21,7 +20,6 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // calc::_all::*,
-            // embed::_all::*,
             // ir::_all::*,
             // kernel::_all::*,
             // phrase::_all::*,

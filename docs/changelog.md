@@ -131,6 +131,9 @@
   - remove the `time` feature-gate.
   - impl `ConstInit`.
 
+#### lang::prog::script
+- new types `ScriptOp`, `ScriptOutcome`, `ScriptMachine`, `ScriptValue`.
+
 ### media::font
 - new types: `Bdf`, `Dvbf`, `Fonts`, `FontBitmapView`, `GlyphBitmapView`.
 - new font: `termivela`, vendored from Terminus Font.

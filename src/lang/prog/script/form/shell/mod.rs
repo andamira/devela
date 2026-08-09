@@ -1,7 +1,7 @@
-// devela/src/lang/prog/script/shell/mod.rs
+// devela/src/lang/prog/script/form/shell/mod.rs
 //
-#![doc = crate::_DOC_LANG_PROG_SCRIPT_SHELL!()] // public
-#![doc = crate::_doc!(modules: crate::lang::prog::script; shell)]
+#![doc = crate::_DOC_LANG_PROG_SCRIPT_FORM_SHELL!()] // public
+#![doc = crate::_doc!(modules: crate::lang::prog::script::form; shell)]
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(hr)]
 //

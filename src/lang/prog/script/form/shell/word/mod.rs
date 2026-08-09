@@ -1,4 +1,4 @@
-// devela/src/lang/prog/script/shell/word/mod.rs
+// devela/src/lang/prog/script/form/shell/word/mod.rs
 //
 //! Shell word parsing and quoting.
 //
@@ -13,9 +13,9 @@ mod quote;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            error::*,
-            lex::*,
-            quote::*,
+            error::ShellWordError,
+            lex::ShellLex,
+            quote::ShellQuote,
         };
     }
 }

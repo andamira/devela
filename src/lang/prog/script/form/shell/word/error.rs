@@ -1,11 +1,11 @@
-// devela/src/lang/prog/script/shell/word/error.rs
+// devela/src/lang/prog/script/form/shell/word/error.rs
 //
 //! Defines [`ShellWordError`].
 //
 
 #[doc = crate::_tags!(lang error_composite)]
 /// An error while parsing or quoting shell words.
-#[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
+#[doc = crate::_doc_meta!{location("lang/prog/script/form/shell")}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ShellWordError {

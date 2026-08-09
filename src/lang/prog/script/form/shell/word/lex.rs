@@ -1,4 +1,4 @@
-// devela/src/lang/prog/script/shell/word/lex.rs
+// devela/src/lang/prog/script/form/shell/word/lex.rs
 //
 //! Defines [`ShellLex`].
 //
@@ -7,7 +7,13 @@ use crate::{ShellWordError, TextScanner, is, unwrap};
 
 #[doc = crate::_tags!(lang parser)]
 /// Splits shell-like input into command words.
-#[doc = crate::_doc_meta!{location("lang/prog/script/shell")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/script/form/shell"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: ShellLex<'_> = 16|128),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: ShellLex<'_> = 32|256),
+}]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ShellLex<'a> {
     scanner: TextScanner<'a>,

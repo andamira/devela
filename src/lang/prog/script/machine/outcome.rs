@@ -1,0 +1,29 @@
+// devela/src/lang/prog/script/machine/outcome.rs
+//
+//!
+//
+
+use crate::ScriptValue;
+
+#[doc = crate::_tags!(lang result)]
+/// The non-error outcome of running a [`ScriptMachine`][crate::ScriptMachine].
+#[doc = crate::_doc_meta!{
+    location("lang/prog/script"),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: ScriptOutcome<u32> = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: ScriptOutcome<u32> = 16|128; niche Option),
+}]
+///
+/// An outcome explains why control returned to the host.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum ScriptOutcome<R> {
+    /// Execution explicitly suspended with [`ScriptOp::Yield`][crate::ScriptOp::Yield].
+    Yielded,
+
+    /// Execution finished with an optional returned value.
+    Returned(Option<ScriptValue<R>>),
+
+    /// Execution reached the host-provided operation budget.
+    BudgetExhausted,
+}
