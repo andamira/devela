@@ -9,6 +9,9 @@
 ///
 /// The generated handle stores a slot index and generation.
 ///
+/// Each component uses `Prim` directly or `Prim + Repr` to select a
+/// distinct representation while retaining `Prim` as its primitive carrier.
+///
 /// A store can advance a slot's generation when reclaiming it, allowing old
 /// handles to be rejected after that slot is reused. Generation values may
 /// eventually wrap, so stale-handle rejection is bounded by the configured
@@ -19,6 +22,9 @@
 ///
 /// Constructors validate only numeric representation.
 /// They do not validate whether the handle resolves to a live value.
+///
+/// Generational handles have a structural total ordering by
+/// `(index, generation)`. This ordering does not imply recency or liveness.
 ///
 /// # Examples
 /// A simple handle for a pool.
@@ -40,15 +46,12 @@
 #[macro_export]
 macro_rules! handle_gen {
     (
-
-     [
-      index: $iprim:ident;
-      generation: $gprim:ident;
-     ]
-
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident $(;)?
-
+        [
+            index: $iprim:ident;
+            generation: $gprim:ident;
+        ]
+        $(#[$handle_attr:meta])*
+        $hvis:vis $Handle:ident $(;)?
     ) => {
         $crate::handle_gen! {
             [ index: $iprim + $iprim; generation: $gprim + $gprim; ]
@@ -56,15 +59,12 @@ macro_rules! handle_gen {
         }
     };
     (
-
-     [
-      index: $iprim:ident + $Index:ty;
-      generation: $gprim:ident;
-     ]
-
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident $(;)?
-
+        [
+            index: $iprim:ident + $Index:ty;
+            generation: $gprim:ident;
+        ]
+        $(#[$handle_attr:meta])*
+        $hvis:vis $Handle:ident $(;)?
     ) => {
         $crate::handle_gen! {
             [ index: $iprim + $Index; generation: $gprim + $gprim; ]
@@ -72,15 +72,12 @@ macro_rules! handle_gen {
         }
     };
     (
-
-     [
-      index: $iprim:ident;
-      generation: $gprim:ident + $Generation:ty;
-     ]
-
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident $(;)?
-
+        [
+            index: $iprim:ident;
+            generation: $gprim:ident + $Generation:ty;
+        ]
+        $(#[$handle_attr:meta])*
+        $hvis:vis $Handle:ident $(;)?
     ) => {
         $crate::handle_gen! {
             [ index: $iprim + $iprim; generation: $gprim + $Generation; ]
@@ -88,27 +85,27 @@ macro_rules! handle_gen {
         }
     };
     (
-
-     [
-      index: $iprim:ident + $Index:ty;
-      generation: $gprim:ident + $Generation:ty;
-     ]
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident $(;)?
+        [
+            index: $iprim:ident + $Index:ty;
+            generation: $gprim:ident + $Generation:ty;
+        ]
+        $(#[$handle_attr:meta])*
+        $vis:vis $Handle:ident $(;)?
     ) => {
-        $(#[$handle_attr])*
-        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $hvis struct $Handle {
-            index: $crate::MaybeNiche<$Index>,
-            generation: $crate::MaybeNiche<$Generation>,
+        $crate::handle! {
+            [ index: $iprim + $Index; generation: $gprim + $Generation; ]
+            $(#[$handle_attr])*
+            $vis $Handle;
         }
 
-        impl $crate::Debug for $Handle {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
-                f.debug_struct(stringify!($Handle))
-                    .field("index", &self.index.get_prim())
-                    .field("generation", &self.generation.get_prim())
-                    .finish()
+        impl $crate::PartialOrd for $Handle {
+            fn partial_cmp(&self, other: &Self) -> Option<$crate::Ordering> {
+                Some($crate::Ord::cmp(self, other))
+            }
+        }
+        impl $crate::Ord for $Handle {
+            fn cmp(&self, other: &Self) -> $crate::Ordering {
+                $crate::Ord::cmp(&(*self).into_prim(), &(*other).into_prim())
             }
         }
 
@@ -116,62 +113,6 @@ macro_rules! handle_gen {
         impl $Handle {
             $crate::handle_gen!(%guard_index_repr $iprim, $Index);
             $crate::handle_gen!(%guard_generation_prim $gprim);
-
-            /* constructors */
-
-            /// Creates a new handle from an `index` and `generation`.
-            #[must_use]
-            $hvis const fn new(index: $Index, generation: $Generation) -> Self {
-                let index = $crate::MaybeNiche::<$Index>::new(index);
-                let generation = $crate::MaybeNiche::<$Generation>::new(generation);
-                Self { index, generation }
-            }
-            /// Creates a new handle from a primitive `index` and `generation`.
-            ///
-            /// Returns an error if either value is invalid.
-            $hvis const fn from_prim(index: $iprim, generation: $gprim)
-                -> Result<Self, $crate::InvalidValue> {
-                let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_prim(index)];
-                let generation = $crate::unwrap![ok?
-                    $crate::MaybeNiche::<$Generation>::try_from_prim(generation)];
-                Ok(Self { index: i, generation })
-            }
-            /// Creates a new handle from a primitive `index` and `generation`.
-            ///
-            /// Returns an error if either value is invalid.
-            $hvis const fn try_from_usize(index: usize, generation: usize)
-                -> Result<Self, $crate::NicheValueError> {
-                let i = $crate::unwrap![ok? $crate::MaybeNiche::<$Index>::try_from_usize(index)];
-                let generation = $crate::unwrap![ok?
-                    $crate::MaybeNiche::<$Generation>::try_from_usize(generation)];
-                Ok(Self { index: i, generation })
-            }
-
-            /* accessors */
-
-            /// Returns the slot index.
-            #[must_use]
-            $hvis const fn index(self) -> $Index { self.index.get() }
-
-            /// Returns the slot index as its primitive carrier.
-            #[must_use]
-            $hvis const fn index_prim(self) -> $iprim { self.index.get_prim() }
-
-            /// Returns the slot index as a `usize`.
-            ///
-            /// # Errors
-            /// Returns an error if it cannot fit in a `usize`.
-            $hvis const fn index_usize(self) -> Result<usize, $crate::Overflow> {
-                self.index.try_to_usize()
-            }
-
-            /// Returns the slot generation.
-            #[must_use]
-            $hvis const fn generation(self) -> $Generation { self.generation.get() }
-
-            /// Returns the slot generation as its primitive carrier.
-            #[must_use]
-            $hvis const fn generation_prim(self) -> $gprim { self.generation.get_prim() }
         }
     };
     (%guard_index_repr $P:ty, $I:ty) => {
@@ -185,7 +126,7 @@ macro_rules! handle_gen {
         };
     };
     (%guard_generation_prim $P:ty) => {
-        const __GUARD_GENERATION_REPR: () = {
+        const __GUARD_GENERATION_PRIM: () = {
             const fn __allowed<P: $crate::PrimUint>() {}
             __allowed::<$P>();
         };
@@ -193,3 +134,30 @@ macro_rules! handle_gen {
 }
 #[doc(inline)]
 pub use handle_gen;
+
+#[cfg(test)]
+crate::items! {
+    use crate::{HandleGenExample, Ordering};
+
+    #[test]
+    fn handle_gen_components() {
+        let handle = HandleGenExample::from_prim(7, 3).unwrap();
+        assert_eq![handle.index_prim(), 7];
+        assert_eq![handle.generation_prim(), 3];
+        assert_eq![handle.index_usize(), Ok(7)];
+        assert_eq![handle.generation_usize(), Ok(3)];
+        assert_eq![handle.into_prim(), (7, 3)];
+    }
+    #[test]
+    fn handle_gen_ordering() {
+        let a = HandleGenExample::from_prim(1, 20).unwrap();
+        let b = HandleGenExample::from_prim(2, 0).unwrap();
+        let c = HandleGenExample::from_prim(2, 1).unwrap();
+        // Index is the primary structural key.
+        assert![a < b];
+        // Generation distinguishes incarnations of one index.
+        assert![b < c];
+        assert_eq![a.cmp(&b), Ordering::Less];
+        assert_eq![b.partial_cmp(&c), Some(Ordering::Less)];
+    }
+}

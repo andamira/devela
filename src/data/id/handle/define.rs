@@ -20,16 +20,25 @@
 /// exposes checked conversion to and from each component's primitive carrier.
 ///
 /// # Syntax
-/// Each component is written as `name: (Representation);`. The representation
-/// must be directly supported by [`MaybeNiche`] and [`niche_prim!`].
+/// Each component declares its primitive carrier and may optionally declare
+/// a distinct storage representation:
+///
+/// - `name: Prim;` uses `Prim` as both carrier and representation.
+/// - `name: Prim + Repr;` uses `Prim` as the carrier and `Repr` as the representation.
+///
+/// Primitive carriers are used by `from_prim`, `*_prim`, and `into_prim`.
+/// Representations are used by `new`, direct component accessors, and `into_parts`.
+///
+/// Each representation must be supported by [`MaybeNiche`]
+/// with the declared primitive carrier.
 ///
 /// # Example
 /// ```
 /// # use devela::{NonMaxU16, handle};
 /// handle! {
 ///     [
-///         index: (NonMaxU16);
-///         revision: (u16);
+///         index: u16 + NonMaxU16;
+///         revision: u16;
 ///     ]
 ///     /// A compact versioned reference.
 ///     pub EntityRef;
@@ -44,27 +53,58 @@
 /// See also [`HandleExample`].
 ///
 /// [`MaybeNiche`]: crate::MaybeNiche
-/// [`niche_prim!`]: crate::niche_prim
 /// [`HandleExample`]: crate::HandleExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
 macro_rules! handle {
     (
-
-     [
-      $(
-       $field:ident : ($($Repr:tt)+);
-      )+
-     ]
-
-     $(#[$handle_attr:meta])*
-     $vis:vis $Handle:ident $(;)?
-
+        [ $($fields:tt)* ]
+        $(#[$attr:meta])*
+        $vis:vis $Handle:ident $(;)?
     ) => {
-        $(#[$handle_attr])*
+        $crate::handle! { %parse_fields
+            [] [$($fields)*] [$(#[$attr])* $vis $Handle]
+        }
+    };
+    // explicit representation
+    (%parse_fields
+        [$($done:tt)*]
+        [$field:ident : $Prim:ident + $Repr:ty; $($rest:tt)*]
+        [$($tail:tt)*]
+    ) => {
+        $crate::handle! { %parse_fields
+            [$($done)* $field: $Prim, $Repr;] [$($rest)*] [$($tail)*]
+        }
+    };
+    // primitive == representation
+    (%parse_fields
+        [$($done:tt)*]
+        [$field:ident : $Prim:ident; $($rest:tt)*]
+        [$($tail:tt)*]
+    ) => {
+        $crate::handle! { %parse_fields
+            [$($done)* $field: $Prim, $Prim;] [$($rest)*] [$($tail)*]
+        }
+    };
+    // done
+    (%parse_fields [$($done:tt)*] [] [$($tail:tt)*]) => {
+        $crate::handle! { %define [$($done)*] $($tail)* }
+    };
+    // catch-all
+    (%parse_fields [$($done:tt)*] [$($bad:tt)+] [$($tail:tt)*]) => {
+        compile_error!("invalid handle field; expected `name: Prim;` or `name: Prim + Repr;`");
+    };
+
+    // normalized kernel
+    (%define
+        [ $( $field:ident : $Prim:ident, $Repr:ty; )+ ]
+        $(#[$attr:meta])*
+        $vis:vis $Handle:ident $(;)?
+    ) => {
+        $(#[$attr])*
         #[derive(Clone, Copy, PartialEq, Eq, Hash)]
         $vis struct $Handle {
-            $( $field: $crate::MaybeNiche<$($Repr)+>, )+
+            $( $field: $crate::MaybeNiche<$Repr>, )+
         }
 
         impl $crate::Debug for $Handle {
@@ -82,19 +122,18 @@ macro_rules! handle {
 
             /// Creates a new handle from its representation components.
             #[must_use]
-            $vis const fn new( $($field: $($Repr)+),+ ) -> Self {
-                $( let $field = $crate::MaybeNiche::<$($Repr)+>::new($field); )+
+            $vis const fn new( $($field: $Repr),+ ) -> Self {
+                $( let $field = $crate::MaybeNiche::<$Repr>::new($field); )+
                 Self { $($field),+ }
             }
 
             /// Creates a new handle from primitive carrier components.
             ///
             /// Returns an error if any component violates its representation invariant.
-            $vis const fn from_prim( $( $field: $crate::niche_prim![$($Repr)+], )+ )
-                -> Result<Self, $crate::InvalidValue> {
+            $vis const fn from_prim( $( $field: $Prim, )+ ) -> Result<Self, $crate::InvalidValue> {
                 $(
                     let $field = $crate::unwrap![ok?
-                        $crate::MaybeNiche::<$($Repr)+>::try_from_prim($field)];
+                        $crate::MaybeNiche::<$Repr>::try_from_prim($field)];
                 )+
                 Ok(Self { $($field),+ })
             }
@@ -107,7 +146,7 @@ macro_rules! handle {
                 -> Result<Self, $crate::NicheValueError> {
                 $(
                     let $field = $crate::unwrap![ok?
-                        $crate::MaybeNiche::<$($Repr)+>::try_from_usize($field)];
+                        $crate::MaybeNiche::<$Repr>::try_from_usize($field)];
                 )+
                 Ok(Self { $($field),+ })
             }
@@ -116,29 +155,29 @@ macro_rules! handle {
 
             /// Returns the representation components in declaration order.
             #[must_use]
-            $vis const fn into_parts(self) -> ($($($Repr)+,)+) {
+            $vis const fn into_parts(self) -> ($($Repr,)+) {
                 ($(self.$field.get(),)+)
             }
 
             /// Returns the primitive carrier components in declaration order.
             #[must_use]
-            $vis const fn into_prim(self) -> ($($crate::niche_prim![$($Repr)+],)+) {
+            $vis const fn into_prim(self) -> ($($Prim,)+) {
                 ($(self.$field.get_prim(),)+)
             }
 
             /* component accessors */
 
-            $( $crate::handle!(%field_methods $vis $field: ($($Repr)+)); )+
+            $( $crate::handle!(%field_methods $vis $field: $Prim, $Repr;); )+
         }
     };
-    (%field_methods $vis:vis $field:ident : ($($Repr:tt)+)) => { $crate::paste! {
+    (%field_methods $vis:vis $field:ident : $Prim:ty, $Repr:ty;) => { $crate::paste! {
         #[doc = "Returns the `" $field "` component."]
         #[must_use]
-        $vis const fn $field(self) -> $($Repr)+ { self.$field.get() }
+        $vis const fn $field(self) -> $Repr { self.$field.get() }
 
         #[doc = "Returns the `" $field "` component as its primitive carrier."]
         #[must_use]
-        $vis const fn [<$field _prim>](self) -> $crate::niche_prim![$($Repr)+] {
+        $vis const fn [<$field _prim>](self) -> $Prim {
             self.$field.get_prim()
         }
 
