@@ -3,8 +3,8 @@
 //! Optional values.
 //
 
-#[cfg(all(test, feature = "std"))]
-mod tests_unwrap_std;
+#[cfg(test)]
+mod _test_unwrap;
 
 mod ext_option; // OptionExt
 mod ext_result; // ResultExt
