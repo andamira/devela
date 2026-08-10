@@ -20,6 +20,10 @@ use ScriptError as Error;
 /// program being executed. A host may therefore retain a machine between
 /// calls and resume it against the same loaded program.
 ///
+/// `R` is the opaque reference payload stored by [`ScriptValue::Ref`].
+/// The machine only requires it to be [`Copy`]; its meaning and validity
+/// belong to the caller.
+///
 /// `STACK` is the maximum number of live stack values.
 ///
 /// # Execution
@@ -41,6 +45,24 @@ use ScriptError as Error;
 ///
 /// Host-side effects performed before a [`ScriptHost`] returns an error
 /// are outside this guarantee and are not rolled back.
+///
+/// # Example
+/// ```
+/// use devela::{ScriptMachine, ScriptOp, ScriptOutcome, ScriptValue};
+///
+/// type V = ScriptValue<()>;
+/// let program = [
+///     ScriptOp::Push(V::Int(20)),
+///     ScriptOp::Push(V::Int(22)),
+///     ScriptOp::Add,
+/// ];
+/// let mut machine = ScriptMachine::<(), 2>::new();
+///
+/// assert_eq!(
+///     machine.run(&program, 3),
+///     Ok(ScriptOutcome::Returned(Some(V::Int(42)))),
+/// );
+/// ```
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ScriptMachine<R: Copy, const STACK: usize> {
     ip: usize,

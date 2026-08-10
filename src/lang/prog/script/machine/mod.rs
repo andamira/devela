@@ -1,6 +1,6 @@
 // devela/src/lang/prog/script/machine/mod.rs
 //
-#![doc = crate::_DOC_LANG_PROG_SCRIPT_MACHINE!()] // private
+#![doc = crate::_DOC_LANG_PROG_SCRIPT_MACHINE!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog::script; machine)]
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(hr)]
@@ -10,18 +10,61 @@
 //! [`ScriptMachine`] owns suspended execution state but neither the program
 //! being executed nor the world affected by it. This keeps program storage,
 //! execution state, and external authority independent.
+
+//! ## Execution
 //!
-//! External interaction is reified as [`ScriptCall`]. Direct execution through
-//! [`ScriptMachine::step`] and [`ScriptMachine::run`] returns such interactions
-//! to the caller, which may resolve them explicitly and resume execution.
-//! [`ScriptHost`] provides an optional adapter that resolves the same protocol
-//! through [`ScriptMachine::step_with`] and [`ScriptMachine::run_with`].
+//! Direct and hosted execution share the same machine state and transition
+//! protocol. They differ only in who resolves external calls.
 //!
-//! This allows the same machine semantics to serve statically wired,
-//! const-capable simulations as well as dynamically hosted scripting.
+//! [`ScriptMachine::step`] and [`ScriptMachine::run`] return external
+//! interaction as [`ScriptOutcome::HostCall`]. The caller may inspect the
+//! contained [`ScriptCall`], perform the requested effect, and resume the
+//! machine with [`ScriptMachine::complete_call`].
 //!
-//! A failing operation is atomic with respect to machine state. Effects already
-//! performed by an external host are outside that guarantee.
+//! [`ScriptMachine::step_with`] and [`ScriptMachine::run_with`] resolve the
+//! same interaction through a [`ScriptHost`] instead.
+//!
+//! ```txt
+//! program: &[ScriptOp<R>]
+//!          │
+//!          ▼
+//!    ScriptMachine
+//!          │
+//!       step / run
+//!          │
+//!          ▼
+//!    ScriptOutcome
+//!      ├─ Yielded
+//!      ├─ Returned
+//!      ├─ BudgetExhausted
+//!      └─ HostCall(call)
+//!              │
+//!       resolve externally
+//!              │
+//!              ▼
+//!      complete_call(value)
+//!              │
+//!              └──────► resume
+//!
+//! step_with / run_with:
+//! HostCall ──► ScriptHost::call ──► value ──► resume
+//! ```
+//!
+//! ## Reference payloads
+//!
+//! `R` is the machine's opaque reference payload type. It is carried by
+//! [`ScriptValue::Ref`] but is never interpreted or validated by the machine.
+//! Typical payloads are compact IDs or generational handles into caller-owned state.
+//!
+//! `R` can remain stored after its external target becomes invalid.
+//!
+//! Direct execution can resolve these references explicitly. Hosted execution
+//! passes the same values through [`ScriptHost`].
+//!
+//! # Errors
+//!
+//! A failing operation leaves machine state unchanged.
+//! External effects are not rolled back.
 //
 
 #[cfg(test)]

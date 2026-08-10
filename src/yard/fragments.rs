@@ -154,7 +154,7 @@ its own flat view of all its public children.";
     _DOC_LANG_PROG_KERNEL_RULE   = "Rule-based pattern-action program kernels.";
     _DOC_LANG_PROG_KERNEL_SYMB   = "Symbolic program expression kernels.";
     _DOC_LANG_PROG_PHRASE   = "Source-level program phrases before lowering.";
-    _DOC_LANG_PROG_SCRIPT       = "Hosted scripting machinery and language forms.";
+    _DOC_LANG_PROG_SCRIPT       = "Scripting machinery and language forms.";
     _DOC_LANG_PROG_SCRIPT_EMBED = "Host-embedded scripting notation and generators.";
     _DOC_LANG_PROG_SCRIPT_FORM       = "Scripting and programming language forms.";
     _DOC_LANG_PROG_SCRIPT_FORM_SHELL = "Shell command words and quoting.";

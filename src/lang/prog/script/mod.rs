@@ -5,23 +5,20 @@
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(hr)]
 //!
+//!
 //! Scripting provides changeable behavior inside a host-owned world.
 //!
 //! The host retains ownership of world structure, resources, timing, and
 //! authority. Scripts operate on small machine values and request external
 //! effects through explicit capabilities.
 //!
-//! - [`form`] contains particular scripting and programming language forms.
-//! - [`machine`] provides resumable execution, reified host calls,
-//!   and the direct and hosted execution paths.
-//!
-//! Machine execution is independent of source syntax. A language form may
+//! Source syntax and machine execution remain independent. A language may
 //! lower into machine operations without becoming part of the execution model.
 //
 
 // mod embed; // WIP Host-embedded scripting notation and generators
 pub mod form; // Scripting and programming language forms
-pub mod machine; // Hosted scripting execution machinery
+pub mod machine; // Resumable scripting execution machinery
 // mod source;   // MAYBE: Script source loading and lowering
 
 crate::structural_mods! { // _mods, _pub_mods

@@ -17,6 +17,8 @@ use crate::{ConstInit, ScriptCallId, ScriptValue};
 /// Operations form the machine-level executable representation.
 /// They are intentionally independent of any
 /// particular scripting language syntax.
+///
+/// `R` is the opaque reference payload carried by machine values.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ScriptOp<R> {
     /// Pushes a value onto the stack.

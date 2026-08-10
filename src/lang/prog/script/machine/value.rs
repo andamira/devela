@@ -18,8 +18,9 @@ use crate::{ConstInit, ValueKind};
 }]
 /// Values are small, copyable machine-level data.
 ///
-/// [`Ref`][Self::Ref] carries an opaque reference whose meaning and validity
-/// are defined by the host rather than by the scripting machine.
+/// `R` is a caller-defined opaque reference payload, typically an ID or
+/// handle into external state. The machine stores and transports such
+/// references but does not interpret or validate them.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum ScriptValue<R> {
     /// The absence of a value.
@@ -34,7 +35,7 @@ pub enum ScriptValue<R> {
     /// A signed integer value.
     Int(i64),
 
-    /// An opaque reference interpreted by the host.
+    /// An opaque caller-defined reference payload.
     Ref(R),
 }
 

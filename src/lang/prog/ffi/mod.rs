@@ -5,7 +5,12 @@
 #![doc = crate::_doc!(flat:"lang")]
 #![doc = crate::_doc!(extends: ffi)]
 //!
-//! > Bridges to external languages and platforms.
+//! Foreign interfaces adapt representations and conventions defined by
+//! external languages, ABIs, and platforms.
+//!
+//! Types and bindings here may intentionally mirror foreign layouts or naming
+//! where interoperability requires it. They do not define devela's internal
+//! semantic model.
 //
 // - Use repr(u8) for small, FFI-safe enums (C-like, no fields).
 // - Use repr(C) for structs that contain repr(u8) enums.

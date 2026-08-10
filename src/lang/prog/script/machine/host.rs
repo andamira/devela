@@ -15,6 +15,8 @@ use crate::{ScriptMachine, ScriptOutcome};
 /// host calls through this trait. Direct execution may instead return
 /// [`ScriptOutcome::HostCall`] for explicit resolution by the caller.
 ///
+/// `R` is the opaque reference payload carried by machine values.
+///
 /// Arguments are supplied in stack order, with the earliest argument first.
 /// Every successful call returns exactly one machine value; [`ScriptValue::Nil`]
 /// represents a call with no meaningful result.
