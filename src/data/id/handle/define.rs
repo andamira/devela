@@ -62,9 +62,17 @@ macro_rules! handle {
 
     ) => {
         $(#[$handle_attr])*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash)]
         $vis struct $Handle {
             $( $field: $crate::MaybeNiche<$($Repr)+>, )+
+        }
+
+        impl $crate::Debug for $Handle {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                f.debug_struct(stringify!($Handle))
+                    $( .field(stringify!($field), &self.$field.get_prim()) )+
+                    .finish()
+            }
         }
 
         /// Fundamental const methods for creation, decomposition, and access.

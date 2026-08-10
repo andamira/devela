@@ -97,10 +97,19 @@ macro_rules! handle_gen {
      $hvis:vis $Handle:ident $(;)?
     ) => {
         $(#[$handle_attr])*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $hvis struct $Handle {
             index: $crate::MaybeNiche<$Index>,
             generation: $crate::MaybeNiche<$Generation>,
+        }
+
+        impl $crate::Debug for $Handle {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                f.debug_struct(stringify!($Handle))
+                    .field("index", &self.index.get_prim())
+                    .field("generation", &self.generation.get_prim())
+                    .finish()
+            }
         }
 
         #[allow(dead_code)]

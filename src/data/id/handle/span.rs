@@ -61,11 +61,12 @@ macro_rules! handle_span {
 
      ) => {
         $(#[$handle_attr])*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash)]
         $vis struct $Handle {
             offset: $crate::MaybeNiche::<$Offset>,
             len: $crate::MaybeNiche::<$Offset>,
         }
+
         impl $crate::ConstInit for $Handle {
             const INIT: Self = Self::new(
                 <$Offset as $crate::ConstInit>::INIT,
@@ -74,6 +75,15 @@ macro_rules! handle_span {
         }
         impl Default for $Handle {
             fn default() -> Self { <Self as $crate::ConstInit>::INIT }
+        }
+
+        impl $crate::Debug for $Handle {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                f.debug_struct(stringify!($Handle))
+                    .field("offset", &self.offset.get_prim())
+                    .field("len", &self.len.get_prim())
+                    .finish()
+            }
         }
 
         /// Fundamental const methods for creation and access.
