@@ -77,20 +77,18 @@
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_99`: core, alloc, std…
-// #![cfg_attr(nightly_stable_1_99, feature())]
+#![cfg_attr(nightly_stable_1_99, feature(c_variadic, c_variadic_naked_functions, layout_for_ptr))]
 #![cfg_attr(
     all(nightly_stable_1_99, feature = "alloc"),
     feature(box_vec_non_null, vec_deque_truncate_front,)
 )]
-#![cfg_attr(
-    all(nightly_stable_1_99, feature = "std"),
-    feature(layout_for_ptr, local_key_cell_update,)
-)]
+#![cfg_attr(all(nightly_stable_1_99, feature = "std"), feature(local_key_cell_update,))]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
     nightly_stable_later,
     feature(
+        abort_immediate,
         bool_to_result,
         breakpoint,
         cfg_version,
@@ -133,7 +131,10 @@
         smart_pointer_try_map, //smart_pointer_map
     )
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
+#![cfg_attr(
+    all(nightly_stable_later, feature = "std"),
+    feature(fs_set_times, once_wait, path_is_empty,)
+)]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 //
 // documentation

@@ -3,7 +3,7 @@
 Legend:
 - ` ` = not enabled / can't be enabled
 - `i` = not enabled (incomplete_features).
-- `·` = enabled by non-specific cfg flag (`nightly_stable_[1_XX|later]`)
+- `c` = enabled by non-specific cfg flag (`nightly_stable_[1_XX|later]`)
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
@@ -29,11 +29,11 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.97.0> -->
 
 - 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
-- 1.97: `·`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
-- 1.97: `·`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
-- 1.97: `·`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
+- 1.97: `c`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
+- 1.97: `c`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
+- 1.97: `c`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
 - 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
-- 1.97: `·`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
+- 1.97: `c`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
 - 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
 
 
@@ -42,16 +42,16 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.98.0> -->
 
-- 1.98: `·`[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
+- 1.98: `c`[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
-- 1.98: `·`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
+- 1.98: `c`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
 - 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
 - 1.98: ` `[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
-- 1.98: `·`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
-- 1.98: `·`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
+- 1.98: `c`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
+- 1.98: `c`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 - 1.98: `a`[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912)
-- 1.98: `·`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
-- 1.98: `·`[substr_range](https://github.com/rust-lang/rust/pull/141266)
+- 1.98: `c`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
+- 1.98: `c`[substr_range](https://github.com/rust-lang/rust/pull/141266)
 
 
 # 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
@@ -61,8 +61,10 @@ See also
 
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
+- 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
+- 1.99: `c`[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
 - 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
-- 1.99: `·`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
+- 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
 - 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
@@ -87,56 +89,57 @@ See also
         = `nightly_doc` flag
 
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
+- 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
 - 1.??: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
-- 1.??: `·`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
-- 1.??: `·`[book::toggle](https://github.com/rust-lang/rust/pull/160299)
-- 1.??: `·`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
-- 1.??: ` `[c-variadic function definitions](https://github.com/rust-lang/rust/pull/155697)
-- 1.??: `·`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `·`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
-        `·` `const_slice_from_ref`
-- 1.??: `·`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
-        `·` `const_sockaddr_setters`
+- 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
+- 1.??: `c`[book::toggle](https://github.com/rust-lang/rust/pull/160299)
+- 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
+- 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
+- 1.??: `c`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
+        `c` `const_slice_from_ref`
+- 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
+        `c` `const_sockaddr_setters`
 - 1.??: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
-- 1.??: `·`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
-- 1.??: `·`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: `·`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
+- 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
+- 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
-- 1.??: `·`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
-- 1.??: `·`[fn_align](https://github.com/rust-lang/rust/pull/140261)
-- 1.??: `·`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
-- 1.??: `·`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
-- 1.??: `·`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
-- 1.??: `·`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
-- 1.??: `·`[isqrt](https://github.com/rust-lang/rust/pull/131391)
-- 1.??: `·`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
-- 1.??: `·`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
+- 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
+- 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
+- 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
+- 1.??: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
+- 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
+- 1.??: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
+- 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
+- 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `c`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
+- 1.??: `c`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
-- 1.??: `·`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
+- 1.??: `c`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
-- 1.??: `·`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
+- 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: `·`[new_range_api](https://github.com/rust-lang/rust/pull/152304) from:new_range_api
-- 1.??: `·`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
-- 1.??: `·`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
+- 1.??: `c`[new_range_api](https://github.com/rust-lang/rust/pull/152304) from:new_range_api
+- 1.??: `c`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
+- 1.??: `c`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
-- 1.??: `·`[optimize](https://github.com/rust-lang/rust/pull/157273)
+- 1.??: `c`[optimize](https://github.com/rust-lang/rust/pull/157273)
 - 1.??: `s`[path_is_empty](https://github.com/rust-lang/rust/pull/157065)
-- 1.??: `·`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
-- 1.??: `·`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
-- 1.??: `·`[random_source](https://github.com/rust-lang/rust/pull/157168)
+- 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
+- 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
+- 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
-- 1.??: `·`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
+- 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
 - 1.??: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
-- 1.??: `·`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
+- 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `a`[String::from_utf8_lossy_owned](https://github.com/rust-lang/rust/pull/159099)
-- 1.??: `·`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
+- 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
-- 1.??: `·`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
-- 1.??: `·`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
+- 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
+- 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 
 # … may be stable even later
