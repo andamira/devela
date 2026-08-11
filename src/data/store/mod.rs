@@ -14,7 +14,7 @@
 //! [`Identity`](crate::data::id) distinguishes one entity from another.
 //! Storage determines the lifecycle of the retained values themselves.
 //!
-//! - [`Arenas`](arena) advance monotonically and reclaim storage collectively.
+//! - [`Arenas`](mod@arena) advance monotonically and reclaim storage collectively.
 // - [`Caches`](cache) retain computed or retrieved values to avoid repeated work.
 // - [`Databases`](db) persist and query structured data under schema and transaction policies.
 // - [`Interners`](intern) canonicalize equal values into shared representatives.

@@ -11,7 +11,7 @@
 //! Removing a value advances that slot's generation before it can be reused,
 //! allowing previously issued handles to be rejected.
 //!
-//! Unlike an [`arena`](super::arena), a pool can reclaim and reuse one slot
+//! Unlike an [`arena`](mod@super::arena), a pool can reclaim and reuse one slot
 //! without reclaiming values inserted after it. Live values remain in stable
 //! slots while vacant slots are recycled.
 //!

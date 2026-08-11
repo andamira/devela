@@ -97,10 +97,16 @@
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
 ### data::store
-- new type: `PoolIter`.
-- new macro: `pool!`.
-- rename old `arena!` to `arena_bytes!`.
 - make `pool` and `arena` modules public.
+
+#### data::store::arena
+- rename old `arena!` to `arena_bytes!`.
+- new macro: `arena!`.
+- new type examples: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`.
+
+#### data::store::pool
+- new macro: `pool!`.
+- new type: `PoolIter`.
 
 ## error
 - new root module.

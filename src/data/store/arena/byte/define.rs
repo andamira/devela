@@ -62,9 +62,7 @@ macro_rules! arena_bytes {
         /* handle */
 
         $crate::handle_span! {
-            [
-                offset:$oprim + $Offset;
-            ]
+            [ offset:$oprim + $Offset; ]
             $(#[$handle_attr])* $hvis $Handle
         }
 
