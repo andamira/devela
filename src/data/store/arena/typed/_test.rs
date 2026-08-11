@@ -87,6 +87,35 @@ fn static_handle_bounds() {
     let _ = arena.insert(2).unwrap();
     assert!(arena.insert(3).is_err());
 }
+#[test]
+fn static_max_capacity_matches_frontier_repr() {
+    assert_eq!(Arena::<(), 1>::MAX_CAPACITY, 254);
+    let mut arena = Arena::<(), 254>::new();
+    for _ in 0..254 {
+        assert!(arena.insert(()).is_ok());
+    }
+    assert_eq!(arena.len(), 254);
+    assert!(arena.is_full());
+    assert!(arena.insert(()).is_err());
+}
+
+/**
+```compile_fail, E0080
+# use devela::ArenaExample as Arena;
+let _ = Arena::<(), 255>::new();
+```
+**/
+#[allow(dead_code)]
+fn static_rejects_unrepresentable_frontier() {}
+
+#[test]
+fn static_handle_and_mark_are_compact() {
+    use crate::ArenaMarkExample as Mark;
+    assert_eq!(size_of::<Handle>(), 1);
+    assert_eq!(size_of::<Mark>(), 1);
+    assert_eq!(size_of::<Option<Handle>>(), 1);
+    assert_eq!(size_of::<Option<Mark>>(), 1);
+}
 
 #[cfg(feature = "alloc")]
 mod alloc {

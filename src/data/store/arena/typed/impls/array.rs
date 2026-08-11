@@ -13,7 +13,7 @@ macro_rules! __arena_impl_array {
         #[derive(Clone, Debug)]
         $vis struct $Arena<T, const CAP: usize> {
             values: [$crate::Option<T>; CAP],
-            len: usize,
+            len: $crate::MaybeNiche<$Index>,
         }
 
         impl<T, const CAP: usize> $crate::ConstInit for $Arena<T, CAP> {
@@ -26,17 +26,25 @@ macro_rules! __arena_impl_array {
         #[allow(dead_code)]
         impl<T, const CAP: usize> $Arena<T, CAP> {
             /// Verifies the representation laws required by this arena.
-            const __VALID_CONFIG: () = {
-                const fn __index_primitive<P: $crate::PrimIndex>() {}
-                __index_primitive::<$iprim>();
-                assert!(CAP <= Self::__index_capacity(),
-                    "the arena capacity exceeds its index representation");
+            const _VALID_CONFIG: () = {
+                const fn _index_primitive<P: $crate::PrimIndex>() {}
+                _index_primitive::<$iprim>();
                 assert!(!$crate::MaybeNiche::<$Index>::HAS_NEGATIVE,
                     "the arena index representation must be unsigned");
                 assert!($crate::MaybeNiche::<$Index>::IS_CONTIGUOUS,
                     "the arena index representation must be contiguous");
                 assert!($crate::MaybeNiche::<$Index>::ZERO.is_some(),
                     "the arena index representation must contain zero");
+                assert!(CAP <= Self::MAX_CAPACITY,
+                    "the arena capacity exceeds its compact representation");
+            };
+
+            /// The maximum fixed capacity representable by this arena.
+            $vis const MAX_CAPACITY: usize = {
+                match $crate::MaybeNiche::<$Index>::MAX.try_to_usize() {
+                    Ok(max) => max,
+                    Err(_) => usize::MAX,
+                }
             };
 
             /* construction */
@@ -44,8 +52,8 @@ macro_rules! __arena_impl_array {
             /// Returns a new empty arena.
             #[must_use]
             $vis const fn new() -> Self {
-                let () = Self::__VALID_CONFIG;
-                Self { values: [const { None }; CAP], len: 0 }
+                let () = Self::_VALID_CONFIG;
+                Self { values: [const { None }; CAP], len: Self::_len_zero() }
             }
 
             /* capacity */
@@ -56,38 +64,38 @@ macro_rules! __arena_impl_array {
 
             /// Returns the number of retained values.
             #[must_use]
-            $vis const fn len(&self) -> usize { self.len }
+            $vis const fn len(&self) -> usize { self._len_usize() }
 
             /// Returns whether the arena contains no values.
             #[must_use]
-            $vis const fn is_empty(&self) -> bool { self.len == 0 }
+            $vis const fn is_empty(&self) -> bool { self.len() == 0 }
 
             /// Returns how many additional values fit in the arena.
             #[must_use]
-            $vis const fn remaining(&self) -> usize { CAP - self.len }
+            $vis const fn remaining(&self) -> usize { CAP - self.len() }
 
             /// Returns whether no further value can be inserted.
             #[must_use]
-            $vis const fn is_full(&self) -> bool { self.len == CAP }
+            $vis const fn is_full(&self) -> bool { self.len() == CAP }
 
             /* access */
 
             /// Returns whether `handle` currently resolves to a retained value.
             #[must_use]
             $hvis const fn contains(&self, handle: $Handle) -> bool {
-                self.__resolve_index(handle).is_some()
+                self._resolve_index(handle).is_some()
             }
 
             /// Returns a shared reference to the value resolved by `handle`.
             #[must_use]
             $hvis const fn get(&self, handle: $Handle) -> Option<&T> {
-                let index = $crate::unwrap![some? self.__resolve_index(handle)];
+                let index = $crate::unwrap![some? self._resolve_index(handle)];
                 self.values[index].as_ref()
             }
             /// Returns an exclusive reference to the value resolved by `handle`.
             #[must_use]
             $hvis const fn get_mut(&mut self, handle: $Handle) -> Option<&mut T> {
-                let index = $crate::unwrap![some? self.__resolve_index(handle)];
+                let index = $crate::unwrap![some? self._resolve_index(handle)];
                 self.values[index].as_mut()
             }
             /// Returns exclusive references to the values resolved by `a` and `b`.
@@ -99,8 +107,8 @@ macro_rules! __arena_impl_array {
             #[must_use]
             $hvis const fn get2_mut(&mut self, a: $Handle, b: $Handle)
                 -> Option<(&mut T, &mut T)> {
-                let a_index = $crate::unwrap![some? self.__resolve_index(a)];
-                let b_index = $crate::unwrap![some? self.__resolve_index(b)];
+                let a_index = $crate::unwrap![some? self._resolve_index(a)];
+                let b_index = $crate::unwrap![some? self._resolve_index(b)];
                 if a_index == b_index { return None; }
                 if a_index < b_index {
                     let (left, right) = self.values.split_at_mut(b_index);
@@ -125,12 +133,9 @@ macro_rules! __arena_impl_array {
             /// Returns `value` unchanged when the arena is full.
             $hvis fn insert(&mut self, value: T) -> Result<$Handle, T> {
                 if self.is_full() { return Err(value); }
-                let index = match $crate::MaybeNiche::<$Index>::try_from_usize(self.len) {
-                    Ok(index) => index,
-                    Err(_) => return Err(value),
-                };
-                self.values[self.len] = Some(value);
-                self.len += 1;
+                let (index, index_usize) = (self.len, self.len());
+                self.values[index_usize] = Some(value);
+                self.len = Self::_len_from_usize(index_usize + 1);
                 Ok($Handle::new(index.get()))
             }
 
@@ -142,12 +147,9 @@ macro_rules! __arena_impl_array {
             /// Returns `value` unchanged when the arena is full.
             $hvis const fn insert_copy(&mut self, value: T) -> Result<$Handle, T> where T: Copy {
                 if self.is_full() { return Err(value); }
-                let index = match $crate::MaybeNiche::<$Index>::try_from_usize(self.len) {
-                    Ok(index) => index,
-                    Err(_) => return Err(value),
-                };
-                self.values[self.len] = Some(value);
-                self.len += 1;
+                let (index, index_usize) = (self.len, self.len());
+                self.values[index_usize] = Some(value);
+                self.len = Self::_len_from_usize(index_usize + 1);
                 Ok($Handle::new(index.get()))
             }
 
@@ -168,10 +170,11 @@ macro_rules! __arena_impl_array {
                 /// Reclaimed handles are not permanently invalidated: later insertion
                 /// may reuse their indices.
                 $mvis fn rollback(&mut self, mark: $Mark) -> bool {
-                    if mark.0 > self.len { return false; }
-                    while self.len > mark.0 {
-                        self.len -= 1;
-                        let _ = self.values[self.len].take();
+                    if mark.0.gt(self.len) { return false; }
+                    while self.len.gt(mark.0) {
+                        let index = self.len() - 1;
+                        self.len = Self::_len_from_usize(index);
+                        let _ = self.values[index].take();
                     }
                     true
                 }
@@ -182,10 +185,11 @@ macro_rules! __arena_impl_array {
                 /// Returns `false` without changing the arena if `mark` lies ahead
                 /// of the current frontier.
                 $mvis const fn rollback_copy(&mut self, mark: $Mark) -> bool where T: Copy {
-                    if mark.0 > self.len { return false; }
-                    while self.len > mark.0 {
-                        self.len -= 1;
-                        self.values[self.len] = None;
+                    if mark.0.gt(self.len) { return false; }
+                    while self.len.gt(mark.0) {
+                        let index = self.len() - 1;
+                        self.len = Self::_len_from_usize(index);
+                        let _ = self.values[index].take();
                     }
                     true
                 }
@@ -196,18 +200,20 @@ macro_rules! __arena_impl_array {
             /// Later insertion begins again at index zero, so previously issued
             /// handles may resolve again.
             $vis fn clear(&mut self) {
-                while self.len != 0 {
-                    self.len -= 1;
-                    let _ = self.values[self.len].take();
+                while !self.is_empty() {
+                    let index = self.len() - 1;
+                    self.len = Self::_len_from_usize(index);
+                    let _ = self.values[index].take();
                 }
             }
             /// Removes every retained copyable value.
             ///
             /// This is the const-capable variant of [`clear`][Self::clear].
             $vis const fn clear_copy(&mut self) where T: Copy {
-                while self.len != 0 {
-                    self.len -= 1;
-                    self.values[self.len] = None;
+                while !self.is_empty() {
+                    let index = self.len() - 1;
+                    self.len = Self::_len_from_usize(index);
+                    let _ = self.values[index].take();
                 }
             }
 
@@ -215,26 +221,34 @@ macro_rules! __arena_impl_array {
 
             /// Iterates over retained values in insertion order.
             $vis fn iter(&self) -> impl Iterator<Item = &T> + '_ {
-                let len = self.len;
+                let len = self.len();
                 self.values[..len].iter().filter_map(|slot| slot.as_ref())
             }
             /// Iterates mutably over retained values in insertion order.
             $vis fn iter_mut(&mut self) -> impl Iterator<Item = &mut T> + '_ {
-                let len = self.len;
+                let len = self.len();
                 self.values[..len].iter_mut().filter_map(|slot| slot.as_mut())
             }
 
             /* private */
 
-            const fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
-                let index = match handle.index_usize() {
-                    Ok(index) => index,
-                    Err(_) => return None,
-                };
-                if index >= self.len || self.values[index].is_none() { return None; }
+            const fn _len_zero() -> $crate::MaybeNiche<$Index> {
+                $crate::unwrap![some_guaranteed_or_ub $crate::MaybeNiche::<$Index>::ZERO]
+            }
+            const fn _len_from_usize(len: usize) -> $crate::MaybeNiche<$Index> {
+                $crate::unwrap![ok_guaranteed_or_ub
+                    $crate::MaybeNiche::<$Index>::try_from_usize(len)]
+            }
+            const fn _len_usize(&self) -> usize {
+                $crate::unwrap![ok_guaranteed_or_ub self.len.try_to_usize()]
+            }
+
+            const fn _resolve_index(&self, handle: $Handle) -> Option<usize> {
+                let index = $crate::unwrap![ok_some? handle.index_usize()];
+                if index >= self.len() || self.values[index].is_none() { return None; }
                 Some(index)
             }
-            const fn __index_capacity() -> usize {
+            const fn _index_capacity() -> usize {
                 match $crate::MaybeNiche::<$Index>::MAX.try_to_usize() {
                     Ok(max) => max.saturating_add(1),
                     Err(_) => usize::MAX,

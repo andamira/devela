@@ -53,6 +53,9 @@
 /// Marks, like handles, are relative to the arena instance that produced them.
 /// Rolling back to a mark ahead of the current frontier is rejected.
 ///
+/// Static marks use the same compact representation as the arena frontier.
+/// Allocating marks retain the Vec frontier as usize.
+///
 /// # Handle validity
 ///
 /// Handles contain only an index and no arena-instance identity or generation.
@@ -67,9 +70,13 @@
 ///
 /// [`capacity`](#method.capacity) reports usable storage without further growth:
 ///
-/// - for a static arena, this is the fixed `CAP`;
-/// - for an allocating arena, this is the currently reserved `Vec` capacity,
-///   bounded by the index representation.
+/// For a static arena, the configured representation stores both handle indices
+/// and the current insertion frontier. It must therefore represent every frontier
+/// in 0..=CAP; CAP may not exceed the representation's maximum value.
+/// The maximum frontier value is not issued as a handle index.
+///
+/// An allocating arena stores its frontier in Vec and may therefore use
+/// the full representable index range.
 ///
 /// [`remaining`](#method.remaining) returns `capacity() - len()`.
 /// For an allocating arena, `remaining() == 0` does not necessarily mean that
@@ -108,8 +115,8 @@
 /// assert!(entities.rollback(origin));
 /// assert!(!entities.contains(tree));
 ///
-/// # #[cfg(feature = "alloc")] {
 /// // Allocating storage, without marks.
+/// # #[cfg(feature = "alloc")] {
 /// arena! {
 ///     [index: u32;]
 ///     pub DynamicEntities: alloc;
@@ -124,13 +131,14 @@
 /// See:
 /// [`ArenaExample`], [`ArenaAllocExample`],
 /// [`ArenaHandleExample`], [`ArenaAllocHandleExample`],
-/// [`ArenaMarkExample`].
+/// [`ArenaMarkExample`], [`ArenaAllocMarkExample`].
 ///
 /// [`ArenaExample`]: crate::ArenaExample
 /// [`ArenaAllocExample`]: crate::ArenaAllocExample
 /// [`ArenaHandleExample`]: crate::ArenaHandleExample
 /// [`ArenaAllocHandleExample`]: crate::ArenaAllocHandleExample
 /// [`ArenaMarkExample`]: crate::ArenaMarkExample
+/// [`ArenaAllocMarkExample`]: crate::ArenaAllocMarkExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! arena {
@@ -189,25 +197,12 @@ macro_rules! arena {
             [index: $iprim + $Index;]
             $(#[$handle_attr])* $hvis $Handle
         }
-
-        $(
-            $(#[$mark_attr])*
-            #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            $mvis struct $Mark(usize);
-
-            #[allow(dead_code)]
-            impl $Mark {
-                // Constructor remains private: marks are snapshots produced by an arena.
-                const fn new(mark: usize) -> Self { Self(mark) }
-            }
-        )?
-
         $crate::arena! { %backend
             [kind: $($kind)?]
             [index: $iprim + $Index]
             [arena: $(#[$arena_attr])* $vis $Arena]
             [handle: $hvis $Handle]
-            [mark: $($mvis $Mark)?]
+            [mark: $($(#[$mark_attr])* $mvis $Mark)?]
         }
     };
     (%backend
@@ -220,7 +215,7 @@ macro_rules! arena {
         [index: $iprim:ident + $Index:ty]
         [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
         [handle: $hvis:vis $Handle:ident]
-        [mark: $($mvis:vis $Mark:ident)?]
+        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
     ) => {
         $crate::__arena_impl_array! {
             [index: $iprim + $Index;]
@@ -228,13 +223,24 @@ macro_rules! arena {
             $hvis $Handle;
             [mark: $($mvis $Mark)?]
         }
-    };
+        $(
+            $(#[$mark_attr])*
+            #[repr(transparent)]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+            $mvis struct $Mark($crate::MaybeNiche<$Index>);
+
+            #[allow(dead_code)]
+            impl $Mark {
+                const fn new(mark: $crate::MaybeNiche<$Index>) -> Self { Self(mark) }
+            }
+        )?
+     };
     (%backend
         [kind: alloc]
         [index: $iprim:ident + $Index:ty]
         [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
         [handle: $hvis:vis $Handle:ident]
-        [mark: $($mvis:vis $Mark:ident)?]
+        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
     ) => {
         $crate::__arena_impl_vec! {
             [index: $iprim + $Index;]
@@ -242,6 +248,16 @@ macro_rules! arena {
             $hvis $Handle;
             [mark: $($mvis $Mark)?]
         }
+        $(
+            $(#[$mark_attr])*
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+            $mvis struct $Mark(usize);
+
+            #[allow(dead_code)]
+            impl $Mark {
+                const fn new(mark: usize) -> Self { Self(mark) }
+            }
+        )?
     };
 }
 #[doc(inline)]

@@ -3,9 +3,9 @@
 //! Typed monotonic arenas.
 //
 
-#[cfg(test)]
+#[cfg(any(test, doctest))]
 mod _test;
-#[cfg(any(test, feature = "_docs_examples"))]
+#[cfg(any(test, doctest, feature = "_docs_examples"))]
 mod _example;
 
 mod define; // arena!
@@ -14,7 +14,7 @@ mod impls; // hidden macros for arena variants
 crate::structural_mods! { // _mods
     _mods {
         pub use super::define::arena;
-        #[cfg(any(test, feature = "_docs_examples"))]
+        #[cfg(any(test, doctest, feature = "_docs_examples"))]
         pub use super::_example::*;
     }
 }

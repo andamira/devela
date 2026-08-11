@@ -102,7 +102,7 @@
 #### data::store::arena
 - rename old `arena!` to `arena_bytes!`.
 - new macro: `arena!`.
-- new type examples: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`.
+- new type examples: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
 
 #### data::store::pool
 - new macro: `pool!`.
