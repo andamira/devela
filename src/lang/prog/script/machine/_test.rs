@@ -1,7 +1,7 @@
 // devela/src/lang/prog/script/machine/_test.rs
 
 use super::*;
-use crate::ValueKind;
+use crate::{ValueKind, is, unwrap};
 
 type V = ScriptValue<u8>;
 type M<const STACK: usize> = ScriptMachine<u8, STACK>;
@@ -12,20 +12,14 @@ type M<const STACK: usize> = ScriptMachine<u8, STACK>;
 const fn direct_execution_is_const() {
     let program = [ScriptOp::Push(V::Int(20)), ScriptOp::Push(V::Int(22)), ScriptOp::Add];
     let mut machine = M::<2>::new();
-    let outcome = match machine.run(&program, 3) {
-        Ok(outcome) => outcome,
-        Err(_) => panic!("unexpected script error"),
-    };
+    let outcome = unwrap![ok_expect machine.run(&program, 3), "unexpected script error"];
     match outcome {
         ScriptOutcome::Returned(Some(V::Int(42))) => {}
         _ => panic!("unexpected outcome"),
     }
     assert!(machine.ip() == 3);
     assert!(machine.stack_len() == 1);
-    match machine.peek() {
-        Some(V::Int(42)) => {}
-        _ => panic!("unexpected stack"),
-    }
+    unwrap![some_expect machine.peek(), V::Int(42) => {}, "unexpected stack"];
 }
 #[test]
 fn yield_is_resumable() {
@@ -82,10 +76,7 @@ fn integer_overflow_is_atomic() {
 }
 #[test]
 const fn host_call_can_be_resolved_directly_in_const() {
-    const ADD: ScriptCallId = match ScriptCallId::new(7) {
-        Some(id) => id,
-        None => panic!("invalid call id"),
-    };
+    const ADD: ScriptCallId = unwrap![some_expect ScriptCallId::new(7), "invalid call id"];
     let program = [
         ScriptOp::Push(V::Int(20)),
         ScriptOp::Push(V::Int(22)),
@@ -93,29 +84,15 @@ const fn host_call_can_be_resolved_directly_in_const() {
         ScriptOp::Return,
     ];
     let mut machine = M::<2>::new();
-    let call = match machine.run(&program, 3) {
-        Ok(ScriptOutcome::HostCall(call)) => call,
-        _ => panic!("expected host call"),
-    };
+    let call = unwrap![ok_expect machine.run(&program, 3),
+        ScriptOutcome::HostCall(call) => call, "expected host call"];
     assert!(call.id().raw() == 7);
     assert!(call.arity() == 2);
     assert!(call.ip() == 2);
-    match machine.call_arg(call, 0) {
-        Some(V::Int(20)) => {}
-        _ => panic!("unexpected first argument"),
-    }
-    match machine.call_arg(call, 1) {
-        Some(V::Int(22)) => {}
-        _ => panic!("unexpected second argument"),
-    }
-    match machine.complete_call(call, V::Int(42)) {
-        Ok(()) => {}
-        Err(_) => panic!("could not complete call"),
-    }
-    let outcome = match machine.run(&program, 1) {
-        Ok(outcome) => outcome,
-        Err(_) => panic!("unexpected script error"),
-    };
+    unwrap![some_expect machine.call_arg(call, 0), V::Int(20) => {}, "unexpected first argument"];
+    unwrap![some_expect machine.call_arg(call, 1), V::Int(22) => {}, "unexpected second argument"];
+    unwrap![ok_expect machine.complete_call(call, V::Int(42)), "could not complete call"];
+    let outcome = unwrap![ok_expect machine.run(&program, 1), "unexpected script error"];
     match outcome {
         ScriptOutcome::Returned(Some(V::Int(42))) => {}
         _ => panic!("unexpected result"),
@@ -123,10 +100,7 @@ const fn host_call_can_be_resolved_directly_in_const() {
 }
 #[test]
 fn hosted_execution_resolves_calls() {
-    const ADD: ScriptCallId = match ScriptCallId::new(7) {
-        Some(id) => id,
-        None => panic!("invalid call id"),
-    };
+    const ADD: ScriptCallId = unwrap![some_expect ScriptCallId::new(7), "invalid call id"];
     let program = [
         ScriptOp::Push(V::Int(20)),
         ScriptOp::Push(V::Int(22)),
@@ -136,12 +110,8 @@ fn hosted_execution_resolves_calls() {
     let mut calls = 0;
     let mut host = |id: ScriptCallId, args: &[V]| -> Result<V, &'static str> {
         calls += 1;
-        if id != ADD {
-            return Err("unknown call");
-        }
-        if args != [V::Int(20), V::Int(22)] {
-            return Err("invalid arguments");
-        }
+        is! { id != ADD, return Err("unknown call") }
+        is! { args != [V::Int(20), V::Int(22)], return Err("invalid arguments") }
         Ok(V::Int(42))
     };
     let mut machine = M::<2>::new();
@@ -153,10 +123,7 @@ fn hosted_execution_resolves_calls() {
 }
 #[test]
 fn host_error_preserves_machine_state() {
-    const FAIL: ScriptCallId = match ScriptCallId::new(3) {
-        Some(id) => id,
-        None => panic!("invalid call id"),
-    };
+    const FAIL: ScriptCallId = unwrap![some_expect ScriptCallId::new(3), "invalid call id"];
     let program = [ScriptOp::Push(V::Int(5)), ScriptOp::CallHost { id: FAIL, arity: 1 }];
     let mut machine = M::<1>::new();
     assert_eq!(machine.run(&program, 1), Ok(ScriptOutcome::BudgetExhausted));

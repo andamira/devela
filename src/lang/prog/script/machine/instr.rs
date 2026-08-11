@@ -8,7 +8,7 @@ use crate::{ConstInit, ScriptCallId, ScriptValue};
 #[doc = crate::_tags!(lang)]
 /// An operation executed by a [`ScriptMachine`][crate::ScriptMachine].
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: ScriptOp<u32> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

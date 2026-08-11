@@ -10,7 +10,7 @@ use crate::{ConstInit, NonMaxU16, unwrap};
 #[doc = crate::_tags!(lang uid)]
 /// A compact contextual identifier for a host operation.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     test_size_of(ScriptCallId = 2|16; niche Option),
 }]
 #[must_use]
@@ -43,7 +43,7 @@ impl ScriptCallId {
 #[doc = crate::_tags!(lang runtime)]
 /// A host operation awaiting resolution by the caller.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(ScriptCall = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

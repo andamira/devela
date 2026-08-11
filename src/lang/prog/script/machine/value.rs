@@ -10,7 +10,7 @@ use crate::{ConstInit, ValueKind};
 #[doc = crate::_tags!(lang value)]
 /// A value manipulated by a [`ScriptMachine`].
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: ScriptValue<u32> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

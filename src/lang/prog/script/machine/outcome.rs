@@ -10,7 +10,7 @@ use crate::{ScriptMachine, ScriptOp};
 #[doc = crate::_tags!(lang result)]
 /// The non-error outcome of running a [`ScriptMachine`].
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: ScriptOutcome<u32> = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]

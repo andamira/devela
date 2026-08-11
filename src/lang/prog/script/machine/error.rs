@@ -10,7 +10,7 @@ use crate::{ConstInit, Debug, Display, Error, FmtResult, Formatter, Infallible, 
 #[doc = crate::_tags!(lang error)]
 /// An error encountered while executing a [`ScriptMachine`].
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(ScriptError = 16|128),
     #[cfg(target_pointer_width = "64")]

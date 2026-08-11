@@ -10,7 +10,7 @@ use ScriptError as Error;
 #[doc = crate::_tags!(lang runtime state)]
 /// A fixed-stack resumable scripting machine.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script"),
+    location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: ScriptMachine<u32, 4> = 56|448; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -306,11 +306,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         is! { self.ip > program.len(), return Err(Error::invalid_ip(self.ip, program.len())) }
         is! { self.ip == program.len(), return Ok(ScriptOutcome::Returned(self.return_value())) }
         whilst! { executed in 0..budget; {
-            match self.step(program) {
-                Ok(Some(outcome)) => return Ok(outcome),
-                Ok(None) => {}
-                Err(error) => return Err(error),
-            }
+            is! { let Some(outcome) = unwrap![ok? self.step(program)], return Ok(outcome) }
         }}
         Ok(ScriptOutcome::BudgetExhausted)
     }
@@ -328,9 +324,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         host: &mut H,
     ) -> Result<Option<ScriptOutcome<R>>, ScriptError<H::Error>> {
         let outcome = self.step_inner::<H::Error>(program)?;
-        let Some(ScriptOutcome::HostCall(call)) = outcome else {
-            return Ok(outcome);
-        };
+        let call = unwrap![some_or? outcome, ScriptOutcome::HostCall(call) => call, Ok(outcome)];
         // `step_inner` just produced this token, so the machine still matches it.
         let arity = call.arity() as usize;
         let base = self.len - arity;
@@ -350,11 +344,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         is![self.ip > program.len(), return Err(ScriptError::invalid_ip(self.ip, program.len()))];
         is![self.ip == program.len(), return Ok(ScriptOutcome::Returned(self.return_value()))];
         whilst! { executed in 0..budget; {
-            match self.step_with(program, host) {
-                Ok(Some(outcome)) => return Ok(outcome),
-                Ok(None) => {}
-                Err(error) => return Err(error),
-            }
+            is![let Some(outcome) = unwrap![ok? self.step_with(program, host)], return Ok(outcome)];
         }}
         Ok(ScriptOutcome::BudgetExhausted)
     }

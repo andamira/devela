@@ -9,8 +9,9 @@ use crate::{ScriptMachine, ScriptOutcome};
 
 #[doc = crate::_tags!(lang)]
 /// A host capability boundary for resolving scripted operations.
-#[doc = crate::_doc_meta!{ location("lang/prog/script") }]
-///
+#[doc = crate::_doc_meta!{
+    location("lang/prog/script/machine"),
+}]
 /// [`ScriptMachine::step_with`] and [`ScriptMachine::run_with`] resolve
 /// host calls through this trait. Direct execution may instead return
 /// [`ScriptOutcome::HostCall`] for explicit resolution by the caller.
