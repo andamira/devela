@@ -1,4 +1,4 @@
-// devela/src/data/id/handle/mod.rs
+// devela/src/data/id/uuid/mod.rs
 //
 #![doc = crate::_DOC_DATA_ID_UUID!()] // public
 #![doc = crate::_doc!(modules: crate::data::id; uuid)]
@@ -8,7 +8,7 @@
 //! UUIDs carry identity across contexts
 //! without requiring a shared local allocator or store.
 //!
-//! All UUIDs use the same standardized 128-bit representation.
+//! The UUID format defines a standardized 128-bit value.
 //! Different versions assign different structure and
 //! generation semantics within that representation.
 //!
@@ -17,12 +17,19 @@
 //! Uniqueness guarantees depend on the version and generation method.
 //
 
-// mod __; //
+#[cfg(test)]
+mod _test;
+
+mod define; // Uuid
+mod non_nil; // UuidNonNil
+mod variant; // UuidVariant, UuidVersion
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     __::*,
-        // };
+        pub use super::{
+            define::Uuid,
+            non_nil::UuidNonNil,
+            variant::{UuidVariant, UuidVersion},
+        };
     }
 }

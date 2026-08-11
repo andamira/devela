@@ -78,6 +78,9 @@
 - rename old `handle!` to `handle_span!`.
 - make `handle` and `uuid` modules public.
 
+#### data::id::uuid
+- new types: `Uuid`, `UuidNonNil`, `UuidVariant`, `UuidVersion`.
+
 ### data::layout
 - remove trait: `DataDesta`.
 - remove types: `Destaque`, `Stack`.
