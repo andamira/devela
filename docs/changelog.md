@@ -59,6 +59,7 @@
 - remove `OptResExt::transpose_result` method.
 - update `unwrap!`:
   - add new arms: `some_or?`, `=some_or`, `=ok_or`, `err_or?`, `=err_or`, `=sok_or`, `serr_or?`, `=serr_or`, `=some_map`, `=some_map_into`, `=ok_map`, `=ok_map_into`, `=err_map`.
+- add match-supporting arms for: `<some|ok|err|sok|err>[_expect|_or|_or?]`.
 
 ### code::util
 - extend `whilst!` with indexed slice iteration.

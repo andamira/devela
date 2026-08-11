@@ -9,18 +9,38 @@
 ///
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
 ///
-/// ### Naming Convention
+/// ### Naming and syntax
 ///
-/// #### Prefixes
-/// - **`some_`** - `Option<T>`
-/// - **`ok_`** - `Result<T, E>` (success case)
-/// - **`err_`** - `Result<T, E>` (error case)
-/// - **`sok_`** - `Option<Result<T, E>>` (`Some(Ok)`)
-/// - **`serr_`** - `Option<Result<T, E>>` (`Some(Err)`)
+/// `unwrap!` forms are composed from a small set of semantic dimensions:
+///
+/// ```text
+/// selector     some | ok | err | sok | serr
+/// operation    unwrap | expect | fallback | map | condition | conversion ...
+/// modifier     ? | =
+/// refinement   PAT => EXPR
+/// ```
+///
+/// - A **selector** identifies the wrapper variant being selected.
+/// - An **operation** determines what is done with that selected value.
+/// - `?` makes failure return from the enclosing function.
+/// - `=` keeps the operation local by preserving or reconstructing its wrapper.
+/// - `PAT => EXPR` further refines the selected payload and produces `EXPR`
+///   from the pattern bindings.
+///
+/// Forms are provided only where these dimensions compose with clear semantics;
+/// not every possible combination is defined.
+///
+///
+/// #### Selectors
+/// - **`some`** - `Option<T>`
+/// - **`ok`** - `Result<T, E>` (success case)
+/// - **`err`** - `Result<T, E>` (error case)
+/// - **`sok`** - `Option<Result<T, E>>` (`Some(Ok)`)
+/// - **`serr`** - `Option<Result<T, E>>` (`Some(Err)`)
 ///
 /// #### Modifiers
-/// - **`=`** - Completes the operation locally within its wrapper
-///   instead of panicking or returning from the enclosing function.
+/// - **`=`** - Keeps non-selected variants local, preserving or reconstructing
+///   the wrapper instead of escaping by panic or early return.
 ///
 /// The `=` modifier preserves or reconstructs every relevant variant:
 /// - `=some_or` retains `Some`, or evaluates an alternative `Option`.
@@ -41,12 +61,36 @@
 ///
 /// `*` Requires `// SAFETY:` justification for impossible-failure invariants
 ///
-/// ### Special Cases
-/// - `ok_err`: Only when `Ok(v)` and `Err(v)` are identical types.
-/// - `some_ok_or`: Converts to `Result` with provided error.
-/// - `[ok|err]_some`: Converts to `Option`.
-/// - `=*_or`: Retains and reconstructs the selected variant
-///   instead of extracting its contained value.
+/// ### Conversions and special forms
+/// - `some_ok_or` converts `Option<T>` to `Result<T, E>`.
+/// - `[ok|err]_some` converts `Result<T, E>` to `Option<T>`.
+/// - `ok_err` extracts either variant when `Ok(T)` and `Err(T)` contain the same type.
+///
+/// ### Pattern refinement
+///
+/// Extracting forms may optionally refine the selected value with a pattern:
+/// ```text
+/// unwrap![some value, PAT => EXPR]
+/// unwrap![some_expect value, PAT => EXPR, message]
+/// unwrap![some_or value, PAT => EXPR, fallback]
+/// unwrap![some_or? value, PAT => EXPR, fallback]
+/// ```
+///
+/// The pattern is matched against the value contained by the selected variant.
+/// A pattern mismatch follows the same failure policy as a selector mismatch.
+///
+/// For example:
+/// ```
+/// # use devela::unwrap;
+/// enum Value { Int(i32), Bool(bool) }
+///
+/// let value = Some(Value::Int(7));
+/// let n = unwrap![some value, Value::Int(n) => n];
+/// assert_eq!(n, 7);
+/// ```
+///
+/// Pattern refinement is available for the `some`, `ok`, `err`, `sok`, and `serr`
+/// extracting families where mismatch has a single failure policy.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! unwrap {
@@ -59,6 +103,14 @@ macro_rules! unwrap {
         match $T {
             Some(v) => v,
             None => ::core::panic!["called unwrap!(some …) on None"],
+        }
+    };
+    (
+      // Unwraps matching `Some`, otherwise panics.
+      some $T:expr, $pat:pat => $value:expr $(,)?) => {
+        match $T {
+            Some($pat) => $value,
+            _ => ::core::panic!["called unwrap!(some …) on unmatched value"],
         }
     };
     (
@@ -75,6 +127,14 @@ macro_rules! unwrap {
         match $T {
             Some(v) => v,
             None => ::core::panic!["{}", $message],
+        }
+    };
+    (
+      // Unwraps matching `Some`, otherwise panics with a message.
+      some_expect $T:expr, $pat:pat => $value:expr, $message:expr $(,)?) => {
+        match $T {
+            Some($pat) => $value,
+            _ => ::core::panic!["{}", $message],
         }
     };
     (
@@ -146,7 +206,7 @@ macro_rules! unwrap {
       some_if $T:expr, |$v:ident| $cond:expr) => {
         match $T {
             Some($v) if $cond => $v,
-            _ => ::core::panic!["called unwrap!(some_if …) on None"],
+            _ => ::core::panic!["called unwrap!(some_if …) on failed condition"],
         }
     };
     (
@@ -166,11 +226,27 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some`, otherwise evaluates `$fallback`.
+      some_or $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some($pat) => $value,
+            _ => $fallback,
+        }
+    };
+    (
       // Unwraps `Some`, otherwise returns `$fallback`.
       some_or? $T:expr, $fallback:expr) => {
         match $T {
             Some(v) => v,
             None => return $fallback,
+        }
+    };
+    (
+      // Unwraps matching `Some`, otherwise returns `$fallback`.
+      some_or? $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some($pat) => $value,
+            _ => return $fallback,
         }
     };
     (
@@ -242,6 +318,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Ok`, otherwise panics.
+      ok $T:expr, $pat:pat => $value:expr $(,)?) => {
+        match $T {
+            Ok($pat) => $value,
+            _ => ::core::panic!["called unwrap!(ok …) on unmatched value"],
+        }
+    };
+    (
       // Unwraps `Ok`, otherwise returns `Err`.
       ok? $T:expr ) => {
         match $T {
@@ -255,6 +339,14 @@ macro_rules! unwrap {
         match $T {
             Ok(v) => v,
             Err(_) => ::core::panic!["{}", $message],
+        }
+    };
+    (
+      // Unwraps matching `Ok`, otherwise panics with a message.
+      ok_expect $T:expr, $pat:pat => $value:expr, $message:expr $(,)?) => {
+        match $T {
+            Ok($pat) => $value,
+            _ => ::core::panic!["{}", $message],
         }
     };
     (
@@ -354,11 +446,27 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Ok`, otherwise evaluates `$fallback`.
+      ok_or $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Ok($pat) => $value,
+            _ => $fallback,
+        }
+    };
+    (
       // Unwraps `Ok`, otherwise returns `Err($err)`.
       ok_or? $T:expr, $err:expr) => {
         match $T {
             Ok(v) => v,
             Err(_) => return Err($err),
+        }
+    };
+    (
+      // Unwraps matching `Ok`, otherwise returns `Err($err)`.
+      ok_or? $T:expr, $pat:pat => $value:expr, $err:expr $(,)?) => {
+        match $T {
+            Ok($pat) => $value,
+            _ => return Err($err),
         }
     };
     (
@@ -470,6 +578,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Err`, otherwise panics.
+      err $T:expr, $pat:pat => $value:expr $(,)?) => {
+        match $T {
+            Err($pat) => $value,
+            _ => ::core::panic!["called unwrap!(err …) on unmatched value"],
+        }
+    };
+    (
       // Unwraps `Err`, otherwise returns `Ok`.
       err? $T:expr ) => {
         match $T {
@@ -483,6 +599,14 @@ macro_rules! unwrap {
         match $T {
             Ok(_) => ::core::panic!["{}", $message],
             Err(e) => e,
+        }
+    };
+    (
+      // Unwraps matching `Err`, otherwise panics with a message.
+      err_expect $T:expr, $pat:pat => $value:expr, $message:expr $(,)?) => {
+        match $T {
+            Err($pat) => $value,
+            _ => ::core::panic!["{}", $message],
         }
     };
     (
@@ -526,11 +650,27 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Err`, otherwise evaluates `$fallback`.
+      err_or $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Err($pat) => $value,
+            _ => $fallback,
+        }
+    };
+    (
       // Unwraps `Err`, otherwise returns `$fallback`.
       err_or? $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Ok(_) => return $fallback,
             Err(e) => e,
+        }
+    };
+    (
+      // Unwraps matching `Err`, otherwise returns `$fallback`.
+      err_or? $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Err($pat) => $value,
+            _ => return $fallback,
         }
     };
     (
@@ -572,6 +712,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some(Ok)`, otherwise panics.
+      sok $T:expr, $pat:pat => $value:expr $(,)?) => {
+        match $T {
+            Some(Ok($pat)) => $value,
+            _ => ::core::panic!["called unwrap!(sok …) on unmatched value"],
+        }
+    };
+    (
       // Unwraps `Some(Ok)` value, otherwise returns either `Some(Err)` or `None`.
       sok? $T:expr ) => {
         match $T {
@@ -590,6 +738,14 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some(Ok)`, otherwise panics with a message.
+      sok_expect $T:expr, $pat:pat => $value:expr, $message:expr $(,)?) => {
+        match $T {
+            Some(Ok($pat)) => $value,
+            _ => ::core::panic!["{}", $message],
+        }
+    };
+    (
       // Unwraps `Some(Ok)`, otherwise evaluates `$fallback`.
       sok_or $T:expr, $fallback:expr) => {
         match $T {
@@ -599,11 +755,27 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some(Ok)`, otherwise evaluates `$fallback`.
+      sok_or $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Ok($pat)) => $value,
+            _ => $fallback,
+        }
+    };
+    (
       // Unwraps `Some(Ok)`, otherwise returns `$fallback`.
       sok_or? $T:expr, $fallback:expr) => {
         match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) | None => return $fallback,
+        }
+    };
+    (
+      // Unwraps matching `Some(Ok)`, otherwise returns `$fallback`.
+      sok_or? $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Ok($pat)) => $value,
+            _ => return $fallback,
         }
     };
     (
@@ -643,12 +815,28 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some(Err)`, otherwise panics.
+      serr $T:expr, $pat:pat => $value:expr $(,)?) => {
+        match $T {
+            Some(Err($pat)) => $value,
+            _ => ::core::panic!["called unwrap!(serr …) on unmatched value"],
+        }
+    };
+    (
       // Unwraps `Some(Err)`, otherwise panics with a message.
       serr_expect $T:expr, $message:expr) => {
         match $T {
             Some(Ok(_)) => ::core::panic!["{}", $message],
             Some(Err(v)) => v,
             None => ::core::panic!["{}", $message],
+        }
+    };
+    (
+      // Unwraps matching `Some(Err)`, otherwise panics with a message.
+      serr_expect $T:expr, $pat:pat => $value:expr, $message:expr $(,)?) => {
+        match $T {
+            Some(Err($pat)) => $value,
+            _ => ::core::panic!["{}", $message],
         }
     };
     (
@@ -661,10 +849,26 @@ macro_rules! unwrap {
         }
     };
     (
+      // Unwraps matching `Some(Err)`, otherwise evaluates `$fallback`.
+      serr_or $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Err($pat)) => $value,
+            _ => $fallback,
+        }
+    };
+    (
       // Unwraps `Some(Err)`, otherwise returns `$fallback`.
       serr_or? $T:expr, $fallback:expr $(,)?) => {
         match $T {
             Some(Err(e)) => e,
+            _ => return $fallback,
+        }
+    };
+    (
+      // Unwraps matching `Some(Err)`, otherwise returns `$fallback`.
+      serr_or? $T:expr, $pat:pat => $value:expr, $fallback:expr $(,)?) => {
+        match $T {
+            Some(Err($pat)) => $value,
             _ => return $fallback,
         }
     };
