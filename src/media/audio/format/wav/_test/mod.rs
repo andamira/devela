@@ -261,6 +261,7 @@ mod owned {
 
 /* file I/O */
 
+#[cfg(not(miri))]
 #[cfg(feature = "std")]
 mod file_io {
     use super::*;

@@ -41,6 +41,7 @@ pub enum LinuxFileType {
     Unknown(c_uint),
 }
 
+#[cfg(not(miri))]
 #[doc = crate::_tags!(linux fs abi)]
 /// File status structure matching libc's stat ([man 2 stat])
 #[doc = crate::_doc_meta!{
@@ -50,7 +51,6 @@ pub enum LinuxFileType {
     #[cfg(target_pointer_width = "64")]
     test_size_of(LinuxStat = 144|1152), // TODO verify actual runtime stat values per Linux arch
 }]
-///
 /// [man 2 stat]: https://man7.org/linux/man-pages/man2/stat.2.html
 #[repr(C)]
 #[derive(Debug, Default)]
@@ -98,6 +98,7 @@ pub struct LinuxStat {
     _unused: [c_long; 3],
 }
 
+#[cfg(not(miri))]
 #[rustfmt::skip]
 impl LinuxStat {
     /// Returns the raw file mode.

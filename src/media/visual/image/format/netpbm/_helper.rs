@@ -65,7 +65,7 @@ impl<'a> PnmCursor<&'a [u8]> {
             (result, scanner.pos().as_usize())
         };
         self.cur.set_pos(start + consumed);
-        unwrap! { ok_map_err_map? result, |v| v, |e| InvalidPixel }
+        unwrap! { ok_map_err_map? result, |v| v, |_e| InvalidPixel }
     }
     /// Consumes the separator before raw raster data and returns its offset.
     pub(crate) const fn raw_data_offset(&mut self) -> ImageResult<usize> {

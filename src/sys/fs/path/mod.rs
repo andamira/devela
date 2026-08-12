@@ -12,17 +12,16 @@ mod _reexport_std;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod ext; // PathExt
 
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", not(miri)))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod fs_path; // FsPath
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         #[cfg(feature = "std")]
-        pub use super::{
-            ext::*,
-            fs_path::*,
-        };
+        pub use super::ext::*;
+        #[cfg(all(feature = "std", not(miri)))]
+        pub use super::fs_path::*;
     }
     _reexports {
         #[cfg(feature = "std")]

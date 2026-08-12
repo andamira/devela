@@ -104,7 +104,9 @@ use crate::TermSize;
 ///     r.try_hline_at0(2, 3, "─", 32).unwrap();
 ///
 ///     finish(&mut r);
+///     # devela::_std_or_linux_syscall! {
 ///     r.present()
+///     # } devela::_not_std_or_linux_syscall! { Ok(()) }
 /// }
 ///
 /// fn begin_fullscreen<B>(r: &mut TermRenderer<B>)

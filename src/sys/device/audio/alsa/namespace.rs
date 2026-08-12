@@ -32,7 +32,7 @@ impl Alsa {
     }
 }
 
-#[cfg(ffi_alsa··)]
+#[cfg(all(ffi_alsa··, not(miri)))]
 impl Alsa {
     /// Opens an ALSA PCM device.
     pub fn open_pcm(id: &CStr, dir: AudioStreamDir) -> Result<AlsaPcmHandle, AlsaError> {

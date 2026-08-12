@@ -90,7 +90,7 @@ crate::macro_apply_alias! {
     ))];
 
     // std || (_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
-    pub(crate) _std_or_linux_syscall = #[cfg(any(
+    pub _std_or_linux_syscall = #[cfg(any(
         feature = "std",
         all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
     ))];
@@ -104,7 +104,7 @@ crate::macro_apply_alias! {
     ))];
 
     // !(std || (_linux_abi && unsafe_syscall && !miri && supported_linux_arch))
-    pub(crate) _not_std_or_linux_syscall = #[cfg(not(any(
+    pub _not_std_or_linux_syscall = #[cfg(not(any(
         feature = "std",
         all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
     )))];
