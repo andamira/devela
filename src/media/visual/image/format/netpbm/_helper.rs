@@ -9,7 +9,7 @@
 // - struct PnmHeader
 
 use crate::ImageError::{InsufficientBuffer, InvalidImageSize, InvalidMagicNumber, InvalidPixel};
-use crate::{ByteCursor, Digits, Extent2, ImageResult, RasterFormat, TextScanner};
+use crate::{ByteCursor, Digits, Extent2, ImageResult, TextScanner};
 use crate::{Mem, is, slice, unwrap, whilst};
 use PnmFormat::{P1, P2, P3, P4, P5, P6};
 

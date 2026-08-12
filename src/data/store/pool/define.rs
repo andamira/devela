@@ -263,7 +263,7 @@ macro_rules! pool {
                 if self.generations[index].ne($crate::MaybeNiche(handle.generation())) {
                     return None;
                 }
-                if self.values[index].is_none() { return None; }
+                $crate::is!{ self.values[index].is_none(), return None }
                 Some(index)
             }
             $(const$($_c)?)? fn __handle_at(&self, index: usize) -> Option<$Handle> {

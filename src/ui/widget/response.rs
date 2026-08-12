@@ -70,11 +70,9 @@ impl UiResponse {
     /* queries */
 
     /// Returns the UI identity.
-    #[must_use]
     pub const fn id(self) -> UiId { self.id }
 
     /// Returns the response flags.
-    #[must_use]
     pub const fn flags(self) -> UiResponseFlags { self.flags }
 
     /// Returns whether this response has no flags.
@@ -101,35 +99,27 @@ impl UiResponse {
 
 
     /// Returns this response with another flag set.
-    #[must_use]
     pub const fn replace_flags(self, flags: UiResponseFlags) -> Self {
         Self { flags, ..self }
     }
     /// Returns this response with `flags` included.
-    #[must_use]
     pub const fn with_flags(self, flags: UiResponseFlags) -> Self {
         Self { flags: self.flags.with(flags), ..self }
     }
     /// Returns this response with `flags` removed.
-    #[must_use]
     pub const fn without_flags(self, flags: UiResponseFlags) -> Self {
         Self { flags: self.flags.without(flags), ..self }
     }
 
     /// Returns this response marked as hot.
-    #[must_use]
     pub const fn hot(self) -> Self { self.with_flags(UiResponseFlags::HOT) }
     /// Returns this response marked as active.
-    #[must_use]
     pub const fn active(self) -> Self { self.with_flags(UiResponseFlags::ACTIVE) }
     /// Returns this response marked as focused.
-    #[must_use]
     pub const fn focused(self) -> Self { self.with_flags(UiResponseFlags::FOCUSED) }
 
     /// Returns this response marked as activated.
-    #[must_use]
     pub const fn activate(self) -> Self { self.with_flags(UiResponseFlags::ACTIVATED) }
     /// Returns this response marked as changed.
-    #[must_use]
     pub const fn change(self) -> Self { self.with_flags(UiResponseFlags::CHANGED) }
 }

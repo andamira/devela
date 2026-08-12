@@ -43,7 +43,6 @@ impl<'a> UiButton<'a> {
     /* queries */
 
     /// Returns the stable identity seed.
-    #[must_use]
     pub const fn key(&self) -> UiKey { self.key }
     /// Returns the button label.
     #[must_use]
@@ -55,22 +54,18 @@ impl<'a> UiButton<'a> {
     /* modifiers */
 
     /// Returns this button with another key.
-    #[must_use]
     pub const fn with_key(self, key: UiKey) -> Self {
         Self { key, ..self }
     }
     /// Returns this button with another label.
-    #[must_use]
     pub const fn with_label(self, label: &'a str) -> Self {
         Self { label, ..self }
     }
     /// Returns this button with a description.
-    #[must_use]
     pub const fn with_description(self, description: &'a str) -> Self {
         Self { description: Some(description), ..self }
     }
     /// Returns this button without a description.
-    #[must_use]
     pub const fn without_description(self) -> Self {
         Self { description: None, ..self }
     }
@@ -78,12 +73,10 @@ impl<'a> UiButton<'a> {
     /* semantic helpers */
 
     /// Returns the semantic entry for the resolved identity.
-    #[must_use]
     pub const fn entry(&self, id: crate::UiId) -> UiEntry {
         UiEntry::new(id, UiRole::Button).with_action(UiAction::Activate)
     }
     /// Returns the semantic text for the resolved identity.
-    #[must_use]
     pub const fn text(&self, id: crate::UiId) -> UiText<'a> {
         UiText::from_parts(id, Some(self.label), self.description)
     }

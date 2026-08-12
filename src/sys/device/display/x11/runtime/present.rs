@@ -43,6 +43,7 @@ pub struct XPresent<'a> {
 }
 #[rustfmt::skip]
 impl<'a> XPresent<'a> {
+    #[allow(clippy::too_many_arguments)]
     const fn _new(width: u16, height: u16, depth: u8, bytes_per_pixel: usize, bytes_per_line: usize,
         row_start: Boundary1d, bytes: &'a [u8], clear_redraw: bool) -> Self {
         Self {
@@ -85,7 +86,7 @@ impl XCopyLayout {
         if input.depth != dst_depth {
             return Err(XError::Other("raster depth does not match the X11 display depth"));
         }
-        if dst_bits_per_pixel == 0 || dst_bits_per_pixel % 8 != 0 {
+        if dst_bits_per_pixel == 0 || !dst_bits_per_pixel.is_multiple_of(8) {
             return Err(XError::Other("X11 display pixel storage is not byte-aligned"));
         }
         let dst_bytes_per_pixel = usize::from(dst_bits_per_pixel / 8);

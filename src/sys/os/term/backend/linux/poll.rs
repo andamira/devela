@@ -144,17 +144,13 @@ impl TermLinux {
     }
     fn fill_event_queue_from_resize(&mut self) {
         is! { !Self::take_resize(), return }
-        match self.refresh_size() {
-            Ok(Some(size)) => {
-                let extent = ext![size.cols as u32, size.rows as u32];
-                let queued =
-                    self.queue_event(EventKind::Window(EventWindow::Resized(Some(extent))));
-                debug_assert!(queued || self.events.is_full());
-            }
-            Ok(None) | Err(_) => {
-                let queued = self.queue_event(EventKind::Window(EventWindow::Resized(None)));
-                debug_assert!(queued || self.events.is_full());
-            }
+        if let Ok(Some(size)) = self.refresh_size() {
+            let extent = ext![size.cols as u32, size.rows as u32];
+            let queued = self.queue_event(EventKind::Window(EventWindow::Resized(Some(extent))));
+            debug_assert!(queued || self.events.is_full());
+        } else {
+            let queued = self.queue_event(EventKind::Window(EventWindow::Resized(None)));
+            debug_assert!(queued || self.events.is_full());
         }
     }
     /// Returns one queued event, filling the queue from buffered input if needed.

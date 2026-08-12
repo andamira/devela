@@ -4,8 +4,10 @@
 //
 
 #[cfg(unix)]
-use super::_raw;
-use crate::{c_char, c_int, c_mode_t, c_off_t, c_void};
+use {
+    super::_raw,
+    crate::{c_char, c_int, c_mode_t, c_off_t, c_void},
+};
 
 #[doc = crate::_tags!(platform namespace)]
 /// Raw C/POSIX system interfaces exposed through the platform's libc.

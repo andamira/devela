@@ -2,7 +2,8 @@
 //
 //! Defines [`WebEventIngress`].
 
-use crate::{Event, EventKind, EventKindTimed, EventQueue, EventTarget, Mem};
+use crate::{ConstInit, Mem};
+use crate::{Event, EventKind, EventKindTimed, EventQueue, EventTarget};
 use crate::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
 
 #[doc = crate::_tags!(event web)]
@@ -32,6 +33,16 @@ pub struct WebEventIngress<const CAP: usize> {
     queue: EventQueue<CAP>,
     dropped: u32,
 }
+
+impl<const CAP: usize> ConstInit for WebEventIngress<CAP> {
+    const INIT: Self = Self::new();
+}
+impl<const CAP: usize> Default for WebEventIngress<CAP> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[rustfmt::skip]
 impl<const CAP: usize> WebEventIngress<CAP> {
     /* construct */

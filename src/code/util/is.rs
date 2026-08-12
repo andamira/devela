@@ -80,45 +80,87 @@ macro_rules! is {
     ($cond:expr, $then:expr) => {
         $crate::is!(%if $cond, { $then }) };
     ($cond:expr, $then:expr;) => {
-        $crate::is!(%if $cond, { let _ = $then; }) };
+        $crate::is!(%if $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; }
+        )
+    };
     ($cond:expr, $then:expr, $else:expr) => {
         $crate::is!(%if $cond, { $then }, { $else }) };
     ($cond:expr, $then:expr;, $else:expr) => {
-        $crate::is!(%if $cond, { let _ = $then; }, { $else }) };
+        $crate::is!(%if $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            { $else }
+        )
+    };
     ($cond:expr, $then:expr, $else:expr;) => {
         $crate::is!(%if $cond, { $then }, { $else; }) };
     ($cond:expr, $then:expr;, $else:expr;) => {
-        $crate::is!(%if $cond, { let _ = $then; }, { let _ = $else; }) };
+        $crate::is!(%if $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            { #[allow(clippy::diverging_sub_expression)] let _ = $else; }
+        )
+    };
     ($cond:expr, $then:expr,) => {
         $crate::is!(%if $cond, { $then }, {}) };
     ($cond:expr, $then:expr; ,) => {
-        $crate::is!(%if $cond, { let _ = $then; }, {}) };
+        $crate::is!(%if $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            {}
+        )
+    };
     ($cond:expr, , $else:expr) => {
         $crate::is!(%if $cond, {}, { $else }) };
     ($cond:expr, , $else:expr;) => {
-        $crate::is!(%if $cond, {}, { let _ = $else; }) };
+        $crate::is!(%if $cond,
+            {},
+            { #[allow(clippy::diverging_sub_expression)] let _ = $else; }
+        )
+    };
 
     /* if let */
     (let $pat:pat = $cond:expr, $then:expr) => {
         $crate::is!(%let $pat = $cond, { $then }) };
     (let $pat:pat = $cond:expr, $then:expr;) => {
-        $crate::is!(%let $pat = $cond, { let _ = $then; }) };
+        $crate::is!(%let $pat = $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; }
+        )
+    };
     (let $pat:pat = $cond:expr, $then:expr, $else:expr) => {
         $crate::is!(%let $pat = $cond, { $then }, { $else }) };
     (let $pat:pat = $cond:expr, $then:expr;, $else:expr) => {
-        $crate::is!(%let $pat = $cond, { let _ = $then; }, { $else }) };
+        $crate::is!(%let $pat = $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            { $else }
+        )
+    };
     (let $pat:pat = $cond:expr, $then:expr, $else:expr;) => {
-        $crate::is!(%let $pat = $cond, { $then }, { let _ = $else; }) };
+        $crate::is!(%let $pat = $cond,
+            { $then },
+            { #[allow(clippy::diverging_sub_expression)] let _ = $else; }
+        )
+    };
     (let $pat:pat = $cond:expr, $then:expr;, $else:expr;) => {
-        $crate::is!(%let $pat = $cond, { let _ = $then; }, { let _ = $else; }) };
+        $crate::is!(%let $pat = $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            { #[allow(clippy::diverging_sub_expression)] let _ = $else; }
+        )
+    };
     (let $pat:pat = $cond:expr, $then:expr,) => {
         $crate::is!(%let $pat = $cond, { $then }, {}) };
     (let $pat:pat = $cond:expr, $then:expr; ,) => {
-        $crate::is!(%let $pat = $cond, { let _ = $then; }, {}) };
+        $crate::is!(%let $pat = $cond,
+            { #[allow(clippy::diverging_sub_expression)] let _ = $then; },
+            {}
+        )
+    };
     (let $pat:pat = $cond:expr, , $else:expr) => {
         $crate::is!(%let $pat = $cond, {}, { $else }) };
     (let $pat:pat = $cond:expr, , $else:expr;) => {
-        $crate::is!(%let $pat = $cond, {}, { let _ = $else; }) };
+        $crate::is!(%let $pat = $cond,
+            {},
+            { #[allow(clippy::diverging_sub_expression)] let _ = $else; }
+        )
+    };
 
     /* internals */
     (% if $cond:expr, $then:block) => {

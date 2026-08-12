@@ -40,8 +40,8 @@ pub enum LinuxRandomMode {
 }
 impl LinuxRandomMode {
     // from `sys/random.h`
-    pub const GRND_NONBLOCK: c_uint = 0x0001;
-    pub const GRND_INSECURE: c_uint = 0x0004;
+    const GRND_NONBLOCK: c_uint = 0x0001;
+    const GRND_INSECURE: c_uint = 0x0004;
 
     /* queries */
 

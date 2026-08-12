@@ -329,7 +329,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         let arity = call.arity() as usize;
         let base = self.len - arity;
         let result =
-            host.call(call.id(), &self.stack[base..self.len]).map_err(|e| ScriptError::Host(e))?;
+            host.call(call.id(), &self.stack[base..self.len]).map_err(ScriptError::Host)?;
         self.complete_call_inner::<H::Error>(call, result)?;
         Ok(self.after_advance(program.len()))
     }

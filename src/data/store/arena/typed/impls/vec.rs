@@ -130,10 +130,8 @@ macro_rules! __arena_impl_vec {
             /// # Errors
             /// Returns `value` unchanged when no further index can be represented.
             $hvis fn insert(&mut self, value: T) -> Result<$Handle, T> {
-                let index = match $crate::MaybeNiche::<$Index>::try_from_usize(self.values.len()) {
-                    Ok(index) => index,
-                    Err(_) => return Err(value),
-                };
+                let Ok(index) = $crate::MaybeNiche::<$Index>::try_from_usize(self.values.len())
+                    else { return Err(value) };
                 self.values.push(value);
                 Ok($Handle::new(index.get()))
             }

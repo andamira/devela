@@ -3,7 +3,7 @@
 //! Defines [`UuidNonNil`].
 //
 
-use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion, unwrap};
+use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion};
 
 #[doc = crate::_tags!(uid niche)]
 /// A UUID excluding [`Uuid::NIL`] to provide a memory niche.

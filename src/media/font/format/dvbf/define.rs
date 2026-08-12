@@ -3,12 +3,12 @@
 //! Defines [`Dvbf`].
 //
 
-use crate::DvbfError::{self as E, InvalidScalar};
+use crate::DvbfError::{self, self as E};
 use crate::{Debug, FontBitmapView, Version};
 use crate::{Slice, is, read_at, slice, unwrap, whilst};
 
 /// A DVBF decoding result.
-type DvbfResult<T> = crate::Result<T, E>;
+type DvbfResult<T> = crate::Result<T, DvbfError>;
 
 #[doc = crate::_tags!(font codec)]
 /// Devela Bitmap Font format operations and constants.
@@ -57,7 +57,7 @@ impl Dvbf {
     ///
     /// # Errors
     ///
-    /// Returns [`DvbfError`][E] when any part of the encoded representation
+    /// Returns [`DvbfError`] when any part of the encoded representation
     /// is unsupported, malformed or internally inconsistent.
     pub const fn read(bytes: &[u8]) -> DvbfResult<FontBitmapView<'_>> {
         is![bytes.len() < Self::HEADER_BYTES as usize, return Err(E::TooShort)];
@@ -137,7 +137,7 @@ impl Dvbf {
         let mut previous = 0u32;
         whilst! { i in 0..glyph_count; {
             let scalar = u32::from_le_bytes(read_at![scalars_le, (i as usize) * 4, @4]);
-            is![!char::from_u32(scalar).is_some(), return Err(E::invalid_scalar(i, scalar))];
+            is![char::from_u32(scalar).is_none(), return Err(E::invalid_scalar(i, scalar))];
             is![i != 0 && scalar <= previous, return Err(E::UnsortedScalars { index: i })];
             previous = scalar;
         }}

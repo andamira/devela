@@ -145,7 +145,7 @@ impl Linux {
         let mut fd = Self::open_fd(path, LinuxOpenOptions::read_only())?;
         let mut stat = LinuxStat::default();
         let n = unsafe { Self::sys_fstat(fd.as_raw(), &mut stat) };
-        if n < 0 { return Err(LinuxError::Sys(n as isize)); }
+        if n < 0 { return Err(LinuxError::Sys(n)); }
         let len = stat.st_size as usize;
         let mut buf = vec_![0u8; len];
         let read = fd.read_to_buf_raw(&mut buf)?;

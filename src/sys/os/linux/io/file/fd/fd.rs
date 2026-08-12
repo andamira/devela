@@ -145,18 +145,8 @@ impl IoSeek for LinuxFd {
                 })?;
                 LinuxSeekFrom::Start(offset)
             }
-            IoSeekFrom::Current(offset) => {
-                let offset = offset.try_into().map_err(|_| {
-                    IoError::new(IoErrorKind::InvalidInput, "seek offset out of range")
-                })?;
-                LinuxSeekFrom::Current(offset)
-            }
-            IoSeekFrom::End(offset) => {
-                let offset = offset.try_into().map_err(|_| {
-                    IoError::new(IoErrorKind::InvalidInput, "seek offset out of range")
-                })?;
-                LinuxSeekFrom::End(offset)
-            }
+            IoSeekFrom::Current(offset) => LinuxSeekFrom::Current(offset),
+            IoSeekFrom::End(offset) => LinuxSeekFrom::End(offset),
         };
         let offset = self.seek_raw(pos).map_err(IoError::from)?;
         offset

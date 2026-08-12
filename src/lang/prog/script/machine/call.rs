@@ -72,7 +72,6 @@ impl ScriptCall {
         Self { ip, stack_len, id, arity }
     }
     /// Returns the host-operation identifier.
-    #[must_use]
     pub const fn id(self) -> ScriptCallId {
         self.id
     }

@@ -114,7 +114,7 @@ impl<'a> XSurfaceFrame<'a> {
 
     #[must_use] /// Returns the number of stored bytes per pixel, when byte-aligned.
     pub const fn bytes_per_pixel(&self) -> Option<u8> {
-        is! { self.bits_per_pixel % 8 == 0, Some(self.bits_per_pixel / 8), None }
+        is! { self.bits_per_pixel.is_multiple_of(8), Some(self.bits_per_pixel / 8), None }
     }
     #[must_use] /// Returns the byte stride between consecutive rows.
     pub const fn bytes_per_line(&self) -> u32 { self.bytes_per_line }

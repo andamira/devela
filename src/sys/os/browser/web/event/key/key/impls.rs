@@ -19,10 +19,7 @@ pub(crate) const F_KEYS: [&str; 48] = [
 impl Key {
     const fn parse_u8_from_bytes(bytes: &[u8]) -> Option<u8> {
         let mut scanner = TextScanner::from_bytes(bytes);
-        let value = match scanner.expect_ascii_u64() {
-            Ok(value) => value,
-            Err(_) => return None,
-        };
+        let value = unwrap![ok_some? scanner.expect_ascii_u64()];
         if !scanner.is_eof() || value > u8::MAX as u64 { return None; }
         Some(value as u8)
     }
