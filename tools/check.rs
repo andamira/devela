@@ -4,7 +4,7 @@
 edition = "2024"
 [dependencies]
 devela = { version = "0.26.0", features = ["std"] }
-itertools = "0.14"
+itertools = "0.15"
 lexopt = "0.3"
 toml_edit = "0.25"
 ---
@@ -391,7 +391,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env(NIGHTLY, "miri",
-            &["test", "--target", arch, "--workspace", "-F", "all,std,unsafe"],
+            &["test", "--target", arch, "--workspace", "-F", "_docs_min,std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")],)?; }
             a += 1;
         }
@@ -402,7 +402,7 @@ fn main() -> Result<()> {
         }
         for arch in STD_ARCHES {
             let deps = filter_deps(DEP_ALL, &[DEP_NO_CROSS_COMPILE_EVER]);
-            let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
+            let feature_flags = format!("_docs_min,std,unsafe,{}", deps.join(","));
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
             sf! { run_cargo_with_env(NIGHTLY, "miri",
@@ -420,7 +420,7 @@ fn main() -> Result<()> {
             sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo_with_env(NIGHTLY, "miri",
             &["test", "--target", arch, "--workspace", "--exclude", "devela_base_std",
-            "-F", "all,no_std,unsafe"],
+            "-F", "_docs_min,no_std,unsafe"],
             &[("RUSTFLAGS", "--cfg nightly")])?; }
             a += 1;
         }

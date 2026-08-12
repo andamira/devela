@@ -3,8 +3,12 @@
 //! Defines [`LinuxPipe`], [`LinuxPipeFlags`].
 //
 
-use crate::{LINUX_O_FLAGS as O, Linux, LinuxFd, LinuxResult, c_int};
+use crate::{LINUX_O_FLAGS as O, c_int};
 
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+use crate::{Linux, LinuxFd, LinuxResult};
+
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 #[doc = crate::_tags!(linux fs io)]
 /// An owned Linux anonymous pipe.
 #[doc = crate::_doc_meta!{
@@ -21,6 +25,7 @@ pub struct LinuxPipe {
     pub write: LinuxFd,
 }
 
+#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
 impl LinuxPipe {
     /// Creates an anonymous pipe.
     pub fn new() -> LinuxResult<Self> {

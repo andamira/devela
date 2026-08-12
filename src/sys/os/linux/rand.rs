@@ -3,7 +3,7 @@
 //! Defines [`LinuxRandomMode`].
 //
 
-use crate::{Linux, c_uint};
+use crate::c_uint;
 
 #[doc = crate::_tags!(rand linux)]
 /// Linux `getrandom` randomness mode.
@@ -17,6 +17,7 @@ use crate::{Linux, c_uint};
 /// blocking; if the kernel randomness source is not ready, the operation
 /// returns an error instead.
 ///
+///  [`Linux::RANDOM_MODE`]:: crate::Linux::RANDOM_MODE
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum LinuxRandomMode {
     /// Cryptographic randomness, allowing the syscall to block.
@@ -38,12 +39,18 @@ pub enum LinuxRandomMode {
     Insecure,
 }
 impl LinuxRandomMode {
+    // from `sys/random.h`
+    pub const GRND_NONBLOCK: c_uint = 0x0001;
+    pub const GRND_INSECURE: c_uint = 0x0004;
+
+    /* queries */
+
     /// Returns the Linux `getrandom` flags for this mode.
     pub const fn flags(self) -> c_uint {
         match self {
             Self::Secure => 0,
-            Self::SecureNonblock => Linux::GRND_NONBLOCK,
-            Self::Insecure => Linux::GRND_INSECURE,
+            Self::SecureNonblock => Self::GRND_NONBLOCK,
+            Self::Insecure => Self::GRND_INSECURE,
         }
     }
 
@@ -51,12 +58,10 @@ impl LinuxRandomMode {
     pub const fn is_cryptographic(self) -> bool {
         matches!(self, Self::Secure | Self::SecureNonblock)
     }
-
     /// Returns whether this mode is known to be weak.
     pub const fn is_weak(self) -> bool {
         matches!(self, Self::Insecure)
     }
-
     /// Returns whether this mode may block while waiting for randomness.
     pub const fn may_block(self) -> bool {
         matches!(self, Self::Secure)

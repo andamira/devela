@@ -45,10 +45,6 @@ impl Linux {
     _sys_os_linux_impl_random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 }
 impl Linux {
-    // from `sys/random.h`
-    pub(crate) const GRND_NONBLOCK: c_uint = 0x0001;
-    pub(crate) const GRND_INSECURE: c_uint = 0x0004;
-
     /// Maximum number of retry attempts after `getrandom` returns `EAGAIN`.
     pub(crate) const RAND_MAX_ATTEMPTS: usize = 15;
 

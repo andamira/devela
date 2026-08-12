@@ -4,15 +4,16 @@
 //
 
 mod _raw; // Raw Linux file-descriptor constants.
-mod fd; // LinuxFd
+
+crate::_unsafe_syscall_not_miri! {
+mod fd; } // LinuxFd
 mod seek; // LinuxSeekFrom
 
 crate::structural_mods! { // _mods, _crate_internals
     _mods {
-        pub use super::{
-            fd::*,
-            seek::*,
-        };
+        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        pub use super::fd::*;
+        pub use super::seek::*;
     }
     _crate_internals {
         pub(crate) use super::{

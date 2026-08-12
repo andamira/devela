@@ -27,6 +27,7 @@ crate::structural_mods! { // _mods, _crate_internals
     }
     _crate_internals {
         #[cfg(feature = "term")]
+        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub(crate) use super::term::LinuxTermModeGuard;
     }
 }

@@ -117,8 +117,8 @@ crate::structural_mods! { // _mods, _reexports
         #[cfg(all(feature = "js", not(windows)))]
         pub use crate::JsInstant;
 
-        #[cfg(feature = "time")]
-        #[cfg(all(feature = "linux", feature = "unsafe_syscall"))]
+        #[cfg(all(feature = "time", feature = "linux"))]
+        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub use crate::{LinuxInstant, LinuxTime};
     }
 }
