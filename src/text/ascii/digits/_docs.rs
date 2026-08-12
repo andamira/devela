@@ -54,7 +54,26 @@ available starting at `offset`. It avoids the exact pre-counting step used by
 [`write_digits10`][Self::write_digits10]. Returns 0 and writes nothing if
 that workspace is not available.\n\n"
 ]}; }
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_16 { ($MAX:literal) => { concat![
+"Writes 1..=", $MAX, " hexadecimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n",
+"Writes `0` when the value is zero.\n\n",
+"This method checks the exact number of bytes required before writing.
+It can write into buffers with fewer than ", $MAX, " bytes remaining when
+the value itself needs fewer digits. Returns 0 and writes nothing if
+insufficient space remains.\n\n"
+]}; }
+
+#[rustfmt::skip] macro_rules! _DOC_WRITE_DIGITS_16_NONZERO { ($MAX:literal) => { concat![
+"Writes 0..=", $MAX, " hexadecimal digits without leading zeros starting at `offset`,
+returning the number of bytes written.\n\n",
+"If the number is zero, writes nothing and returns `0`.\n\n",
+"This method checks the exact number of bytes required before writing.
+It can write into buffers with fewer than ", $MAX, " bytes remaining when
+the value itself needs fewer digits. Returns 0 and writes nothing if
+insufficient space remains.\n\n"
+]}; }
 pub(super) use {
     _DOC_WRITE_DIGITS_10, _DOC_WRITE_DIGITS_10_FAST, _DOC_WRITE_DIGITS_10_FAST_NONZERO,
-    _DOC_WRITE_DIGITS_10_NONZERO,
+    _DOC_WRITE_DIGITS_10_NONZERO, _DOC_WRITE_DIGITS_16, _DOC_WRITE_DIGITS_16_NONZERO,
 };

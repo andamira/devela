@@ -247,4 +247,29 @@ impl Digits<usize> {
     pub const fn write_digits10_fast_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
         Digits(self.0 as u64).write_digits10_fast_nonzero(buf, offset)
     }
+
+    #[doc = _DOC_WRITE_DIGITS_16!(8)]
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn write_digits16(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits16(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_16_NONZERO!(8)]
+    #[must_use]
+    #[cfg(target_pointer_width = "32")]
+    pub const fn write_digits16_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u32).write_digits16_nonzero(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_16!(16)]
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn write_digits16(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits16(buf, offset)
+    }
+    #[doc = _DOC_WRITE_DIGITS_16_NONZERO!(16)]
+    #[must_use]
+    #[cfg(target_pointer_width = "64")]
+    pub const fn write_digits16_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
+        Digits(self.0 as u64).write_digits16_nonzero(buf, offset)
+    }
 }

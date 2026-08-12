@@ -262,6 +262,10 @@
   - remove the `event` feature gate when possible.
   - add methods: `listen_signals`, `listen_app_controls`, `listen_resize`.
 
+### text::ascii
+- update `Digits`:
+  - add methods `write_digits16[_nonzero]` for all bit-sizes.
+
 ### text::layout
 - new types: `TextBreakKind`, `TextBreakMode`, `TextLine`, `TextLineIter`, `TextElideMode`, `TextSegment`, `TextSegmentKind`, `TextSymbolConfig`, `TextWrapIter`, `TextelWidth`, `TextelWidthMode`.
 - update `Textel` with a new `meta` field and methods.

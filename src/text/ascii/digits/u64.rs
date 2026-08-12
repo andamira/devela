@@ -263,4 +263,23 @@ impl Digits<u64> {
         is![self.0 == 0, return 0];
         self.write_digits10_fast(buf, offset)
     }
+
+    #[doc = _DOC_WRITE_DIGITS_16!(16)]
+    pub const fn write_digits16(self, buf: &mut [u8], offset: usize) -> usize {
+        let digits = self.count_digits16() as usize;
+        is![digits > buf.len().saturating_sub(offset), return 0];
+        let mut n = self.0;
+        let mut pos = offset + digits;
+        while pos > offset {
+            pos -= 1;
+            buf[pos] = AsciiLut::DIGITS_BASE36[(n & 0xF) as usize];
+            n >>= 4;
+        }
+        digits
+    }
+    #[doc = _DOC_WRITE_DIGITS_16_NONZERO!(16)]
+    pub const fn write_digits16_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
+        is![self.0 == 0, return 0];
+        self.write_digits16(buf, offset)
+    }
 }

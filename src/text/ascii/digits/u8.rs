@@ -202,38 +202,24 @@ impl Digits<u8> {
         self.write_digits10_fast(buf, offset)
     }
 
-    /// Writes 1..=2 hexadecimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if fewer than 2 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_16!(2)]
     pub const fn write_digits16(self, buf: &mut [u8], offset: usize) -> usize {
         let n = self.0;
-        is![offset + 2 > buf.len(), return 0];
         if n < 0x10 {
+            is![buf.len().saturating_sub(offset) < 1, return 0];
             buf[offset] = AsciiLut::DIGITS_BASE36[n as usize];
             1
         } else {
+            is![buf.len().saturating_sub(offset) < 2, return 0];
             buf[offset] = AsciiLut::DIGITS_BASE36[(n >> 4) as usize];
-            buf[offset + 1] = AsciiLut::DIGITS_BASE36[(n & 0x0F) as usize];
+            buf[offset + 1] = AsciiLut::DIGITS_BASE36[(n & 0xF) as usize];
             2
         }
     }
-    /// Writes 1..=2 hexadecimal digits without leading zeros starting at `offset`,
-    /// returning the number of bytes written.
-    ///
-    /// Returns 0 and writes nothing if the value is 0 or if fewer than 2 bytes remain.
+    #[doc = _DOC_WRITE_DIGITS_16_NONZERO!(2)]
     pub const fn write_digits16_nonzero(self, buf: &mut [u8], offset: usize) -> usize {
-        let n = self.0;
-        is![n == 0, return 0];
-        is![offset + 2 > buf.len(), return 0];
-        if n < 0x10 {
-            buf[offset] = AsciiLut::DIGITS_BASE36[n as usize];
-            1
-        } else {
-            buf[offset] = AsciiLut::DIGITS_BASE36[(n >> 4) as usize];
-            buf[offset + 1] = AsciiLut::DIGITS_BASE36[(n & 0x0F) as usize];
-            2
-        }
+        is![self.0 == 0, return 0];
+        self.write_digits16(buf, offset)
     }
 
     /// Converts a one-digit decimal number to the corresponding `1` ASCII digit.
@@ -298,6 +284,9 @@ mod tests {
         assert_eq!(Digits(0xBC_u8).write_digits16(&mut buf, 2), 2);
         assert_eq!(&buf[0..4], b"A0BC");
         assert_eq!(Digits(0x10_u8).write_digits16(&mut buf[0..1], 0), 0); // buffer too small
+        let mut buf = [0; 1];
+        assert_eq!(Digits(0xA_u8).write_digits16(&mut buf, 0), 1);
+        assert_eq!(&buf, b"A");
     }
     #[test]
     fn test_write_digits16_nonzero() {
