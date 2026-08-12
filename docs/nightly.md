@@ -67,6 +67,7 @@ See also
 - 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
+- 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 
 # 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
@@ -100,6 +101,7 @@ See also
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
 - 1.??: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
+- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull)
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
@@ -107,7 +109,6 @@ See also
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
-- 1.??: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)

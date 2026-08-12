@@ -82,7 +82,10 @@
     all(nightly_stable_1_99, feature = "alloc"),
     feature(box_vec_non_null, vec_deque_truncate_front,)
 )]
-#![cfg_attr(all(nightly_stable_1_99, feature = "std"), feature(local_key_cell_update,))]
+#![cfg_attr(
+    all(nightly_stable_1_99, feature = "std"),
+    feature(fs_set_times, local_key_cell_update,)
+)]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
 #![cfg_attr(
@@ -97,6 +100,7 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
+        // core_io_fundamentals,
         debug_closure_helpers,
         derive_coerce_pointee,
         exclusive_wrapper,
@@ -131,10 +135,7 @@
         smart_pointer_try_map, //smart_pointer_map
     )
 )]
-#![cfg_attr(
-    all(nightly_stable_later, feature = "std"),
-    feature(fs_set_times, once_wait, path_is_empty,)
-)]
+#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 //
 // documentation
