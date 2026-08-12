@@ -17,7 +17,7 @@
 #* CONFIGURATION *#
 
 # `rustfmt` command (minus --check)
-RUSTFMT="rustfmt +stable --edition 2024"
+RUSTFMT=(rustfmt +stable --edition 2024)
 
 # directories to include in the search for "all" Rust files, relative to $CRATE_ROOT
 INCLUDE_DIRS=("build" "examples" "programs" "src")
@@ -25,7 +25,7 @@ INCLUDE_DIRS=("build" "examples" "programs" "src")
 # initialize default argument values
 ARG_MODE="check" # Default rustfmt mode (check|format)
 ARG_FILES="changed" # Default file selection (all|changed)
-ARG_USE_EXCLUSION="no-exclude" # Default to using the exclusion list
+ARG_USE_EXCLUSION="no-exclude" # Do not use the exclusion list by default
 ARG_STOP_ON_ERROR=false # Do not stop on first error by default
 
 # paths
@@ -41,54 +41,53 @@ while [[ "$#" -gt 0 ]]; do
     case "$1" in
         check|format)
             ARG_MODE="$1"
-			echo "Will \"$ARG_MODE\" files."
+            echo "Will \"$ARG_MODE\" files."
             ;;
-
         all)
             ARG_FILES="$1"
-			echo "Will find \"$ARG_FILES\" files."
+            echo "Will find \"$ARG_FILES\" files."
             ;;
         changed|modified)
             ARG_FILES="changed"
-			echo "Will find \"$ARG_FILES\" files."
+            echo "Will find \"$ARG_FILES\" files."
             ;;
-
         exclude)
             ARG_USE_EXCLUSION="exclude"
-			echo "Will exclude files listed in \"$EXCLUDE_FILES\"."
+            echo "Will exclude files listed in \"$EXCLUDE_FILES\"."
+            ;;
+        no-exclude)
+            ARG_USE_EXCLUSION="no-exclude"
             ;;
         stop)
             ARG_STOP_ON_ERROR=true
             ;;
         *)
             echo "Unknown argument: $1"
-            echo "Usage: $0 [all|changed] [exclude|no-exclude] [stop]"
+            echo "Usage: $0 [check|format] [all|changed] [exclude|no-exclude] [stop]"
             exit 1
             ;;
     esac
     shift
 done
 
-# find the rust files
+# find the Rust files
 FILE_LIST=()
-if [ "$ARG_FILES" == "all" ]; then
-	for dir in "${INCLUDE_DIRS[@]}"; do
-		# echo "> find $CRATE_ROOT/$dir -type f -name \"*.rs\""
+if [[ "$ARG_FILES" == "all" ]]; then
+    for dir in "${INCLUDE_DIRS[@]}"; do
+        root="$CRATE_ROOT/$dir"
+        [[ -d "$root" ]] || continue
 
-        # Find all .rs files in the directory and append them to FILE_LIST
         while IFS= read -r -d $'\0' file; do
             FILE_LIST+=("$file")
-        done < <(find "$CRATE_ROOT/$dir" -type f -name "*.rs" -print0)
+        done < <(find "$root" -type f -name "*.rs" -print0)
     done
-elif [ "$ARG_FILES" == "changed" ]; then
-    # Use existing logic to get modified files
-    mapfile -t TMP_FILE_LIST < <(git diff --name-only --diff-filter=ACMR) # either staged or not
-    # Filter TMP_FILE_LIST by INCLUDE_DIRS, considering paths are relative to $CRATE_ROOT
+elif [[ "$ARG_FILES" == "changed" ]]; then
+    mapfile -t TMP_FILE_LIST < <(git -C "$CRATE_ROOT" diff --name-only --diff-filter=ACMR)
     for file in "${TMP_FILE_LIST[@]}"; do
         for dir in "${INCLUDE_DIRS[@]}"; do
-            if [[ $file == $dir/* ]]; then
+            if [[ $file == "$dir"/* ]]; then
                 FILE_LIST+=("$CRATE_ROOT/$file")
-                break # Stop checking other dirs once matched
+                break
             fi
         done
     done
@@ -96,19 +95,21 @@ else
     echo "Invalid file selection specified. Use 'all' or 'changed'."
     exit 1
 fi
-# echo "> FILE_LIST: ${FILE_LIST[@]}"; # DEBUG
 
 # parse the file with the list of excluded files
 EXCLUDE_FILES_FULL_PATH="$CRATE_ROOT/$EXCLUDE_FILES"
+declare -A EXCLUDED_PATHS=()
 if [[ "$ARG_USE_EXCLUSION" == "exclude" ]]; then
-    if [ ! -f "$EXCLUDE_FILES_FULL_PATH" ]; then
+    if [[ ! -f "$EXCLUDE_FILES_FULL_PATH" ]]; then
         echo "File not found: \"$EXCLUDE_FILES\""
         exit 1
-    else
-        mapfile -t EXCLUDED_FILES < <(grep -vE "^\s*(#|\$)" "$EXCLUDE_FILES_FULL_PATH")
     fi
+
+    while IFS= read -r excluded; do
+        [[ $excluded =~ ^[[:space:]]*(#|$) ]] && continue
+        EXCLUDED_PATHS["$excluded"]=1
+    done < "$EXCLUDE_FILES_FULL_PATH"
 fi
-# echo "> EXCLUDED_FILES: ${EXCLUDED_FILES[@]}"; # DEBUG
 
 
 #* RUN *#
@@ -117,52 +118,108 @@ echo -e "Running rustfmt. . .\n"
 
 RUSTFMT_FILES=()
 for file in "${FILE_LIST[@]}"; do
-    # Convert to relative path for matching
-    relative_path=$(realpath --relative-to="$CRATE_ROOT" "$file")
+    [[ $file == *.rs ]] || continue
+    [[ -f $file ]] || continue
 
-    # Check exclusion and Rust file extension
-    if [ "$ARG_USE_EXCLUSION" == "exclude" ] && { [[ " ${EXCLUDED_FILES[*]} " =~ " ${relative_path} " ]] || [[ ! $file =~ \.rs$ ]]; }; then
-        # echo "> EXCLUDED FILE: $relative_path" # DEBUG
-        continue # skip excluded files and non-Rust files
-    elif [ "$ARG_USE_EXCLUSION" != "exclude" ] && [[ ! $file =~ \.rs$ ]]; then
-        # echo "> NOT RUST FILE: $relative_path" # DEBUG
-        continue # skip non-Rust files
+    relative_path=$(realpath --relative-to="$CRATE_ROOT" "$file")
+    if [[ "$ARG_USE_EXCLUSION" == "exclude" && -n ${EXCLUDED_PATHS["$relative_path"]+x} ]]; then
+        continue
     fi
-    RUSTFMT_FILES+=("$file") # add the remaining files
+    RUSTFMT_FILES+=("$file")
 done
 
-if [ ${#RUSTFMT_FILES[@]} -eq 0 ]; then
+if ((${#RUSTFMT_FILES[@]} == 0)); then
     echo "No applicable Rust files found."
     exit 0
 fi
 
-$RUSTFMT --version &>/dev/null || { echo "rustfmt not available"; exit 1; }
+"${RUSTFMT[@]}" --version &>/dev/null || { echo "rustfmt not available"; exit 1; }
 
-formatting_errors=0
+# Feeding rustfmt through stdin prevents it from following `mod` declarations.
+# Thus every invocation checks or formats exactly one enumerated physical file.
+format_to_temp() {
+    local file=$1
+    local output=$2
+
+    if ! (cd "$CRATE_ROOT" && "${RUSTFMT[@]}" < "$file" > "$output"); then
+        echo "rustfmt failed while processing: $file" >&2
+        return 2
+    fi
+}
+
+check_file() {
+    local file=$1
+    local formatted
+    formatted=$(mktemp) || return 2
+
+    if ! format_to_temp "$file" "$formatted"; then
+        rm -f "$formatted"
+        return 2
+    fi
+
+    if cmp -s "$file" "$formatted"; then
+        rm -f "$formatted"
+        return 0
+    fi
+
+    diff -u --label "$file" --label "$file (rustfmt)" "$file" "$formatted" || true
+    rm -f "$formatted"
+    return 1
+}
+
+format_file() {
+    local file=$1
+    local formatted
+    formatted=$(mktemp) || return 2
+
+    if ! format_to_temp "$file" "$formatted"; then
+        rm -f "$formatted"
+        return 2
+    fi
+
+    if ! cmp -s "$file" "$formatted"; then
+        cat "$formatted" > "$file"
+    fi
+    rm -f "$formatted"
+}
+
+formatting_errors=()
+processing_failed=false
+
 for file in "${RUSTFMT_FILES[@]}"; do
-	if [[ "$ARG_MODE" == "check" ]]; then
-		# echo "$RUSTFMT --check \"$file\"" # DEBUG
-		if ! $RUSTFMT --check "$file"; then
-			formatting_errors=$((formatting_errors + 1))
-			if [ "$ARG_STOP_ON_ERROR" = true ]; then
-				echo "Stopping on first error as requested."
-				exit 1
-			fi
-		fi
-	else
-		# echo "$RUSTFMT \"$file\"" # DEBUG
-		$RUSTFMT "$file"
-	fi
+    if [[ "$ARG_MODE" == "check" ]]; then
+        check_file "$file"
+        status=$?
+        if ((status == 1)); then
+            formatting_errors+=("$file")
+            if [[ "$ARG_STOP_ON_ERROR" == true ]]; then
+                echo "Stopping on first error as requested."
+                exit 1
+            fi
+        elif ((status != 0)); then
+            processing_failed=true
+            if [[ "$ARG_STOP_ON_ERROR" == true ]]; then
+                exit 2
+            fi
+        fi
+    elif ! format_file "$file"; then
+        processing_failed=true
+        if [[ "$ARG_STOP_ON_ERROR" == true ]]; then
+            exit 2
+        fi
+    fi
 done
 
-printf "[pre_commit] $RUSTFMT → "
-if [ $formatting_errors != 0 ]; then
-    if [ $formatting_errors == 1 ]; then
-        printf "\033[0;31merrors \033[0min $formatting_errors file\n"
-    else
-        printf "\033[0;31merrors \033[0min $formatting_errors files\n"
-    fi
-    exit $formatting_errors
+printf "[pre_commit] %s → " "${RUSTFMT[*]}"
+if [[ "$processing_failed" == true ]]; then
+    printf "\033[0;31mrustfmt failed\033[0m\n"
+    exit 2
+elif ((${#formatting_errors[@]} != 0)); then
+    count=${#formatting_errors[@]}
+    printf "\033[0;31merrors \033[0min %d file" "$count"
+    ((count == 1)) || printf "s"
+    printf "\n"
+    exit 1
 else
     printf "\033[0;32mOK\033[0m\n"
 fi
