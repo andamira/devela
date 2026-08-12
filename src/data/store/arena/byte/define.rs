@@ -420,7 +420,7 @@ macro_rules! arena_bytes {
                     let len_size = size_of::<$oprim>() as $Offset;
                     let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
                     let s = $crate::unwrap![some? self.read_bytes(h)];
-                    if let Ok(s) = $crate::Str::from_utf8(s) { Some(s) } else { None }
+                    $crate::unwrap![ok_some $crate::Str::from_utf8(s)]
                 }
 
                 #[doc = "Replaces a `&str` with a prefixed len of up to [`" $oprim "::MAX`] bytes"]

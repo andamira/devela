@@ -17,7 +17,7 @@ use crate::c_uint;
 /// blocking; if the kernel randomness source is not ready, the operation
 /// returns an error instead.
 ///
-///  [`Linux::RANDOM_MODE`]:: crate::Linux::RANDOM_MODE
+///  [`Linux::RANDOM_MODE`]: crate::Linux::RANDOM_MODE
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum LinuxRandomMode {
     /// Cryptographic randomness, allowing the syscall to block.

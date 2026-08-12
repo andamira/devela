@@ -816,6 +816,7 @@ doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
 mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes
 module_inception = "allow" # modules with the same name as its parent
 needless_doctest_main = "allow" # doctests with a main fn (imported from examples)
+nonstandard_macro_braces = "allow" # non-conventional braces on well-stablished macros
 wrong_self_convention = "allow" # `is_` methods having an owned self
 ## [suspicious]
 empty_docs = "allow" # empty documentation
