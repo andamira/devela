@@ -634,7 +634,7 @@ version = "2.8" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
 
 [workspace.dependencies.portable-atomic] # https://crates.io/crates/portable-atomic (unsafe)
-version = "1.13" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+version = "1.15" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 # https://docs.rs/portable-atomic/1.11.0/portable_atomic/#optional-features
 features = ["fallback", "float"]
@@ -662,7 +662,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
-version = "1.5" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
+version = "1.6" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 

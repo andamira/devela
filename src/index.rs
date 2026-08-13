@@ -107,6 +107,7 @@
         float_bits_const,
         fn_align,
         frontmatter,
+        funnel_shifts,
         impl_trait_in_assoc_type,
         isqrt,
         likely_unlikely,

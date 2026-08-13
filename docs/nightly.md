@@ -109,6 +109,7 @@ See also
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
+- 1.??: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
