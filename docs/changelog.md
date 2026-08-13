@@ -75,6 +75,8 @@
 
 ### data::codec
 - new type `Radix`.
+- remove type: `Base`.
+- remove type aliases: `Base16`, `Base32`, `Base32Padded`, `Base32Crockford`, `Base32Hex`, `Base64`, `Base64Padded`.
 
 ### data::id
 - new macros: `handle!`, `handle_gen!`.

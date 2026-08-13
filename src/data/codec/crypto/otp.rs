@@ -154,7 +154,7 @@ impl Otp {
 #[allow(unused, reason = "example script")]
 #[cfg(all(feature = "std", feature = "time"))]
 fn main() {
-    use ::devela::{Base32, Otp, TimeUnixU32, digest};
+    use ::devela::{Otp, Radix, TimeUnixU32, digest};
 
     digest![struct Sha1: Sha1];
 
@@ -162,8 +162,8 @@ fn main() {
     const SECRET: &str = "I65VU7K5ZQL7WB4E";
     const PERIOD: u64 = 30;
 
-    let mut key = [0u8; Base32::decoded_len_stripped(SECRET.as_bytes())];
-    let key_len = Base32::decode_from_slice(SECRET.as_bytes(), &mut key).unwrap();
+    let mut key = [0u8; 32];
+    let key_len = Radix::<32>::STD.decode_from_slice(SECRET.as_bytes(), &mut key).unwrap();
     let now = TimeUnixU32::now().seconds as u64;
     let otp = Sha1::totp(&key[..key_len], now, Otp::DEFAULT_DIGITS).unwrap();
     println!("{otp}");

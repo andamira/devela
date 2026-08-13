@@ -3,15 +3,14 @@
 //! Defines `_hex`, `__crypto_impl_hmac!`, `__crypto_impl_otp`.
 //
 
+use crate::{Radix, unwrap};
+
 pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
-    use devela::{Base, Rfc4648};
-    type Hex = Base<16, false, false, true, Rfc4648>;
     let input = s.as_bytes();
     assert!(input.len() == N * 2);
     let mut out = [0u8; N];
-    let Some(written) = Hex::decode_from_slice(input, &mut out) else {
-        panic!("invalid hex")
-    };
+    let written =
+        unwrap![some_expect Radix::<16>::HEX.decode_from_slice(input, &mut out), "invalid hex"];
     assert!(written == N);
     out
 }
