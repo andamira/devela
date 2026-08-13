@@ -10,6 +10,7 @@ mod _test;
 
 mod base; // Base*
 mod define; // Radix
+mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
