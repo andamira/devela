@@ -5,6 +5,10 @@ use crate::{ConstInit, Radix, is, unwrap, whilst};
 const BASE64_STD: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 const BASE64_URL: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
+impl ConstInit for Radix<64> {
+    const INIT: Self = Self::STD;
+}
+
 impl Radix<64> {
     /// Standard RFC 4648 Base64 with padding.
     pub const STD: Self = Self::configured(0);

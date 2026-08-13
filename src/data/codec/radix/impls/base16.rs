@@ -5,6 +5,10 @@ use crate::{ConstInit, Radix, is, unwrap, whilst};
 const HEX_UPPER: &[u8; 16] = b"0123456789ABCDEF";
 const HEX_LOWER: &[u8; 16] = b"0123456789abcdef";
 
+impl ConstInit for Radix<16> {
+    const INIT: Self = Self::HEX;
+}
+
 impl Radix<16> {
     /// Standard hexadecimal, emitting uppercase ASCII.
     pub const HEX: Self = Self::configured(0);
