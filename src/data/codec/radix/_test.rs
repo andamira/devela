@@ -2,166 +2,154 @@
 
 use super::*;
 
-#[test]
-fn base_reconstructors() {
-    let base32 = Base32::new();
-    let _base64 = base32.with_radix::<64>().with_pad::<true>();
+const fn hex<const N: usize>(s: &str) -> [u8; N] {
+    match Radix::<16>::HEX.decode_array(s.as_bytes()) {
+        Some(bytes) => bytes,
+        None => panic!("invalid hexadecimal"),
+    }
 }
 
-/* base-16 */
+mod base16 {
+    use super::*;
 
-#[test]
-fn base16_rfc4648_lut() {
-    pub type Base16 = Base<16, true, false, true, Rfc4648>; // LUT = true
-    let mut encoded_buf = [0u8; 22];
-    let encoded_len = Base16::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"68656C6C6F20776F726C64"];
-
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base16::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-#[test]
-fn base16_rfc4648_nolut() {
-    //default
-    let mut encoded_buf = [0u8; 22];
-    let encoded_len = Base16::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"68656C6C6F20776F726C64"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base16::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-
-/* base-32 */
-
-#[test]
-fn base32_rfc4648_lut() {
-    let mut encoded_buf = [0u8; 18];
-    let encoded_len = Base32::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"NBSWY3DPEB3W64TMMQ"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-#[test]
-fn base32_rfc4648_nolut() {
-    pub type Base32 = Base<32, false, false, false, Rfc4648>;
-    let mut encoded_buf = [0u8; 18];
-    let encoded_len = Base32::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"NBSWY3DPEB3W64TMMQ"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-
-#[test]
-fn base32_rfc4648_padded() {
-    pub type Base32 = Base<32, true, true, false, Rfc4648>; // PAD = true
-    const ENC_REFERENCE: &[u8] = b"NBSWY3DPEB3W64TMMQ======";
-    const DEC_LEN_PAD: usize = Base32::decoded_len_stripped(ENC_REFERENCE);
-
-    let mut encoded_buf = [0u8; Base32::encoded_len_padded(b"hello world".len())];
-    let encoded_len = Base32::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, ENC_REFERENCE];
-
-    let mut decoded_buf = [0u8; DEC_LEN_PAD];
-    let decoded_len = Base32::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-
-#[test]
-fn base32_rfc4648_case_sensitive() {
-    pub type Base32 = Base<32, true, false, false, Rfc4648>; // CASE = false
-    let encoded_lower = b"nbswy3dpeb3w64tmmq"; // Lowercase should fail
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32::decode_from_slice(encoded_lower, &mut decoded_buf);
-    assert_eq![decoded_len, None]; // Decoding should fail
-
-    let encoded_lower = b"NBSWY3DPEB3W64TMMQ"; // Uppercase should succeed
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32::decode_from_slice(encoded_lower, &mut decoded_buf);
-    assert_eq![decoded_len, Some(11)];
-    let decoded = &decoded_buf[..decoded_len.unwrap()];
-    assert_eq![decoded, b"hello world"];
-}
-#[test]
-fn base32_crockford_case_insensitive() {
-    pub type Base32 = Base<32, true, false, true, Crockford>; // CASE = true
-    let encoded = b"NBSWY3DPEB3W64TMMQ"; // Uppercase encoding
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-
-    let encoded_lower = b"nbswy3dpeb3w64tmmq"; // Lowercase encoding (should decode the same)
-    let decoded_len = Base32::decode_from_slice(encoded_lower, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-
-#[test]
-fn base32hex_rfc4648() {
-    pub type Base32H = Base<32, true, false, false, Rfc4648Hex>;
-    let mut encoded_buf = [0u8; 18];
-    let encoded_len = Base32H::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"D1IMOR3F41RMUSJCCG"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base32H::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-}
-
-/* base-64 */
-
-#[test]
-fn base64_rfc4648_lut() {
-    let mut encoded_buf = [0u8; 18];
-    let encoded_len = Base64::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"aGVsbG8gd29ybGQ"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base64::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
-    // assert_eq![core::str::from_utf8(decoded).unwrap(), "hello world"];
-}
-#[test]
-fn base64_rfc4648_nolut() {
-    pub type Base64 = Base<64, false, false, false, Rfc4648>;
-    let mut encoded_buf = [0u8; 18];
-    let encoded_len = Base64::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, b"aGVsbG8gd29ybGQ"];
-    let mut decoded_buf = [0u8; 11];
-    let decoded_len = Base64::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
+    #[test]
+    fn base() {
+        assert_eq!(Radix::<16>::BASE, 16);
+    }
+    #[test]
+    fn encode_known_vectors() {
+        let vectors: &[(&[u8], &[u8])] = &[
+            (b"", b""),
+            (b"f", b"66"),
+            (b"fo", b"666F"),
+            (b"foo", b"666F6F"),
+            (b"foob", b"666F6F62"),
+            (b"fooba", b"666F6F6261"),
+            (b"foobar", b"666F6F626172"),
+        ];
+        for &(input, expected) in vectors {
+            let mut output = [0; 32];
+            let written = Radix::<16>::HEX.encode_to_slice(input, &mut output).unwrap();
+            assert_eq!(&output[..written], expected);
+        }
+    }
+    #[test]
+    fn encode_lowercase() {
+        let mut output = [0; 12];
+        let written = Radix::<16>::HEX_LOWER.encode_to_slice(b"foobar", &mut output).unwrap();
+        assert_eq!(written, 12);
+        assert_eq!(&output, b"666f6f626172");
+    }
+    #[test]
+    fn decode_known_vectors() {
+        let vectors: &[(&[u8], &[u8])] = &[
+            (b"", b""),
+            (b"66", b"f"),
+            (b"666F", b"fo"),
+            (b"666F6F", b"foo"),
+            (b"666F6F62", b"foob"),
+            (b"666F6F6261", b"fooba"),
+            (b"666F6F626172", b"foobar"),
+        ];
+        for &(input, expected) in vectors {
+            let mut output = [0; 16];
+            let written = Radix::<16>::HEX.decode_from_slice(input, &mut output).unwrap();
+            assert_eq!(&output[..written], expected);
+        }
+    }
+    #[test]
+    fn decode_accepts_both_cases() {
+        let expected = b"\xab\xcd\xef";
+        for input in [b"ABCDEF".as_slice(), b"abcdef".as_slice(), b"AbCdEf".as_slice()] {
+            let mut output = [0; 3];
+            let written = Radix::<16>::HEX.decode_from_slice(input, &mut output).unwrap();
+            assert_eq!(written, 3);
+            assert_eq!(&output, expected);
+        }
+    }
+    #[test]
+    fn both_configs_decode_identically() {
+        let input = b"aBcDeF";
+        let mut upper = [0; 3];
+        let mut lower = [0; 3];
+        assert_eq!(Radix::<16>::HEX.decode_from_slice(input, &mut upper), Some(3));
+        assert_eq!(Radix::<16>::HEX_LOWER.decode_from_slice(input, &mut lower), Some(3));
+        assert_eq!(upper, lower);
+    }
+    #[test]
+    fn decode_array_exact() {
+        assert_eq!(Radix::<16>::HEX.decode_array::<3>(b"1234ab"), Some([0x12, 0x34, 0xab]));
+        assert_eq!(Radix::<16>::HEX.decode_array::<2>(b"1234ab"), None);
+        assert_eq!(Radix::<16>::HEX.decode_array::<4>(b"1234ab"), None);
+    }
+    #[test]
+    fn rejects_invalid_input() {
+        let mut output = [0; 8];
+        // Odd number of hexadecimal digits.
+        assert_eq!(Radix::<16>::HEX.decode_from_slice(b"123", &mut output), None);
+        // Non-hexadecimal characters.
+        assert_eq!(Radix::<16>::HEX.decode_from_slice(b"12xz", &mut output), None);
+        assert_eq!(Radix::<16>::HEX.decode_from_slice(b"12 3", &mut output), None);
+    }
+    #[test]
+    fn rejects_small_output() {
+        let mut encoded = [0; 3];
+        assert_eq!(Radix::<16>::HEX.encode_to_slice(b"ab", &mut encoded), None);
+        let mut decoded = [0; 1];
+        assert_eq!(Radix::<16>::HEX.decode_from_slice(b"abcd", &mut decoded), None);
+    }
+    #[test]
+    fn allows_larger_output() {
+        let mut encoded = [0xff; 8];
+        let written = Radix::<16>::HEX.encode_to_slice(b"ab", &mut encoded).unwrap();
+        assert_eq!(written, 4);
+        assert_eq!(&encoded[..4], b"6162");
+        assert_eq!(&encoded[4..], &[0xff; 4]);
+        let mut decoded = [0xff; 4];
+        let written = Radix::<16>::HEX.decode_from_slice(b"6162", &mut decoded).unwrap();
+        assert_eq!(written, 2);
+        assert_eq!(&decoded[..2], b"ab");
+        assert_eq!(&decoded[2..], &[0xff; 2]);
+    }
+    #[test]
+    fn roundtrip() {
+        let input = b"\x00\x01\x0f\x10\x7f\x80\xfe\xff";
+        for radix in [Radix::<16>::HEX, Radix::<16>::HEX_LOWER] {
+            let mut encoded = [0; 16];
+            let mut decoded = [0; 8];
+            assert_eq!(radix.encode_to_slice(input, &mut encoded), Some(encoded.len()));
+            assert_eq!(radix.decode_from_slice(&encoded, &mut decoded), Some(decoded.len()));
+            assert_eq!(&decoded, input);
+        }
+    }
+    #[test]
+    fn helper() {
+        const VALUE: [u8; 20] = hex("b617318655057264e28bc0b6fb378c8ef146be00");
+        assert_eq!(
+            VALUE,
+            [
+                0xb6, 0x17, 0x31, 0x86, 0x55, 0x05, 0x72, 0x64, 0xe2, 0x8b, 0xc0, 0xb6, 0xfb, 0x37,
+                0x8c, 0x8e, 0xf1, 0x46, 0xbe, 0x00,
+            ]
+        );
+    }
+    #[test]
+    fn const_operations() {
+        const DECODED: Option<[u8; 3]> = Radix::<16>::HEX.decode_array(b"DeAdBe");
+        const ENCODED: ([u8; 6], Option<usize>) = {
+            let mut output = [0; 6];
+            let written = Radix::<16>::HEX_LOWER.encode_to_slice(b"\xde\xad\xbe", &mut output);
+            (output, written)
+        };
+        assert_eq!(DECODED, Some([0xde, 0xad, 0xbe]));
+        assert_eq!(ENCODED, (*b"deadbe", Some(6)));
+    }
 }
 
-#[test]
-fn base64_rfc4648_padded() {
-    pub type Base64 = Base<64, true, true, false, Rfc4648>; // PAD = true
-    const ENC_REFERENCE: &[u8] = b"aGVsbG8gd29ybGQ=";
-    const DEC_LEN_PAD: usize = Base64::decoded_len_stripped(ENC_REFERENCE);
+mod base32 {
+    use super::*;
+}
 
-    let mut encoded_buf = [0u8; Base64::encoded_len_padded(b"hello world".len())];
-    let encoded_len = Base64::encode_to_slice(b"hello world", &mut encoded_buf);
-    let encoded = &encoded_buf[..encoded_len];
-    assert_eq![encoded, ENC_REFERENCE];
-
-    let mut decoded_buf = [0u8; DEC_LEN_PAD];
-    let decoded_len = Base64::decode_from_slice(encoded, &mut decoded_buf).unwrap();
-    let decoded = &decoded_buf[..decoded_len];
-    assert_eq![decoded, b"hello world"];
+mod base64 {
+    use super::*;
 }

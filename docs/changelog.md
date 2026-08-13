@@ -73,6 +73,9 @@
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
+### data::codec
+- new type `Radix`.
+
 ### data::id
 - new macros: `handle!`, `handle_gen!`.
 - rename old `handle!` to `handle_span!`.

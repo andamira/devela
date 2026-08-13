@@ -4,16 +4,18 @@
 //
 
 #[cfg(test)]
+mod _test_base;
+#[cfg(test)]
 mod _test;
 
 mod base; // Base*
-// mod new_base; // WIP
+mod define; // Radix
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             base::*,
-            // new_base::*,
+            define::*,
         };
     }
 }
