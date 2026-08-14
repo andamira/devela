@@ -1,6 +1,7 @@
 // devela/src/data/id/uuid/_test.rs
 
 use super::*;
+use crate::{TextParseErrorKind, assert_matches, format_buf};
 
 #[test]
 #[rustfmt::skip]
@@ -93,4 +94,96 @@ fn non_nil_classification() {
     assert_eq!(uuid.variant(), UuidVariant::Ietf);
     assert_eq!(uuid.version_number(), Some(7));
     assert_eq!(uuid.version(), Some(UuidVersion::V7));
+}
+#[test]
+fn text_parse() {
+    let expected = Uuid::from_u128(0xf81d4fae_7dec_11d0_a765_00a0c91e6bf6);
+    assert_eq!(Uuid::parse_str("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), Ok(expected));
+    assert_eq!(Uuid::parse_str("F81D4fAe-7DEC-11d0-A765-00A0c91E6BF6"), Ok(expected));
+    assert_eq!("f81d4fae-7dec-11d0-a765-00a0c91e6bf6".parse::<Uuid>(), Ok(expected));
+}
+#[test]
+fn text_parse_errors() {
+    let err = Uuid::parse_str("").unwrap_err();
+    assert_matches!(err.kind, TextParseErrorKind::UnexpectedEof);
+    assert_eq!(err.at.index.as_usize(), 0);
+    let err = Uuid::parse_str("f81d4fae_7dec-11d0-a765-00a0c91e6bf6").unwrap_err();
+    assert_matches!(
+        err.kind,
+        TextParseErrorKind::UnexpectedByte { expected: b'-', found: Some(b'_') }
+    );
+    assert_eq!(err.at.index.as_usize(), 8);
+    let err = Uuid::parse_str("g81d4fae-7dec-11d0-a765-00a0c91e6bf6").unwrap_err();
+    assert_matches!(err.kind, TextParseErrorKind::InvalidDigit);
+    assert_eq!(err.at.index.as_usize(), 0);
+    let err = Uuid::parse_str("f81d4fae-7dec-11d0-a765-00a0c91e6bf6x").unwrap_err();
+    assert_matches!(err.kind, TextParseErrorKind::TrailingInput);
+    assert_eq!(err.at.index.as_usize(), Uuid::STR_LEN);
+}
+#[test]
+fn text_roundtrip() {
+    let uuid = Uuid::from_u128(0xf81d4fae_7dec_11d0_a765_00a0c91e6bf6);
+    let mut buf = [0u8; 36];
+    let string = format_buf!(&mut buf, "{uuid}").unwrap();
+    assert_eq!(Uuid::parse_str(string), Ok(uuid));
+}
+#[test]
+fn text_format() {
+    let uuid = Uuid::from_u128(0xf81d4fae_7dec_11d0_a765_00a0c91e6bf6);
+    let mut buf = [0; Uuid::STR_LEN];
+    assert_eq!(uuid.as_str_into(&mut buf), Some("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"),);
+    let mut short = [0; Uuid::STR_LEN - 1];
+    assert_eq!(uuid.as_str_into(&mut short), None);
+}
+// RFC 9562 Appendix A.3
+#[test]
+#[rustfmt::skip]
+fn v4_rfc9562_vector() {
+    let random = [
+        0x91, 0x91, 0x08, 0xF7,
+        0x52, 0xD1, 0x33, 0x20,
+        0x5B, 0xAC, 0xF8, 0x47,
+        0xDB, 0x41, 0x48, 0xA8,
+    ];
+    let uuid = Uuid::from_random_v4(random);
+    assert_eq!(
+        uuid.into_bytes(),
+        [
+            0x91, 0x91, 0x08, 0xF7,
+            0x52, 0xD1, 0x43, 0x20,
+            0x9B, 0xAC, 0xF8, 0x47,
+            0xDB, 0x41, 0x48, 0xA8,
+        ]
+    );
+    assert_eq!(uuid.variant(), UuidVariant::Ietf);
+    assert_eq!(uuid.version(), Some(UuidVersion::V4));
+}
+// RFC 9562 Appendix A.6
+#[test]
+#[rustfmt::skip]
+fn v7_rfc9562_vector() {
+    let random = [
+        0x0C, 0xC3,
+        0x18, 0xC4, 0xDC, 0x0C,
+        0x0C, 0x07, 0x39, 0x8F,
+    ];
+    let uuid =
+        Uuid::from_random_v7(1_645_557_742_000, random).unwrap();
+    assert_eq!(
+        uuid.into_bytes(),
+        [
+            0x01, 0x7F, 0x22, 0xE2,
+            0x79, 0xB0, 0x7C, 0xC3,
+            0x98, 0xC4, 0xDC, 0x0C,
+            0x0C, 0x07, 0x39, 0x8F,
+        ]
+    );
+    assert_eq!(uuid.variant(), UuidVariant::Ietf);
+    assert_eq!(uuid.version(), Some(UuidVersion::V7));
+}
+#[test]
+fn v7_timestamp_bounds() {
+    let random = [0; 10];
+    assert!(Uuid::from_random_v7(0xFFFF_FFFF_FFFF, random).is_some());
+    assert!(Uuid::from_random_v7(0x1_0000_0000_0000, random).is_none());
 }

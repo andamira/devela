@@ -9,8 +9,8 @@ use crate::Uuid;
 #[doc = crate::_tags!(uid)]
 /// The layout variant of a [`Uuid`].
 #[doc = crate::_doc_meta!{location("data/id/uuid")}]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[non_exhaustive]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum UuidVariant {
     /// The legacy Network Computing System variant.
     Ncs,
