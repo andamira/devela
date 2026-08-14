@@ -1,7 +1,7 @@
 // devela/src/data/id/uuid/_test.rs
 
 use super::*;
-use crate::{TextParseErrorKind, assert_matches, format_buf};
+use crate::{Pcg32, TextParseErrorKind, assert_matches, const_assert, format_buf};
 
 #[test]
 #[rustfmt::skip]
@@ -186,4 +186,37 @@ fn v7_timestamp_bounds() {
     let random = [0; 10];
     assert!(Uuid::from_random_v7(0xFFFF_FFFF_FFFF, random).is_some());
     assert!(Uuid::from_random_v7(0x1_0000_0000_0000, random).is_none());
+}
+#[test]
+fn v7_timestamp() {
+    const TS: u64 = 1_645_557_742_000;
+    let uuid = Uuid::from_random_v7(TS, [0; 10]).unwrap();
+    assert_eq!(uuid.unix_ts_ms_v7(), Some(TS));
+    assert_eq!(Uuid::from_random_v4([0; 16]).unix_ts_ms_v7(), None);
+}
+#[test]
+fn invalid_v7_timestamp_does_not_advance_pcg32() {
+    let mut rng = Pcg32::new(1, 2);
+    let state = rng.inner_state();
+    assert_eq!(Uuid::from_pcg32_v7(0x1_0000_0000_0000, &mut rng), None);
+    assert_eq!(rng.inner_state(), state);
+}
+#[test]
+fn pcg32_generation() {
+    let mut rng = Pcg32::new(1, 2);
+    let v4 = Uuid::from_pcg32_v4(&mut rng);
+    assert_eq!(v4.variant(), UuidVariant::Ietf);
+    assert_eq!(v4.version(), Some(UuidVersion::V4));
+    let v7 = Uuid::from_pcg32_v7(1234, &mut rng).unwrap();
+    assert_eq!(v7.variant(), UuidVariant::Ietf);
+    assert_eq!(v7.version(), Some(UuidVersion::V7));
+    assert_eq!(v7.unix_ts_ms_v7(), Some(1234));
+}
+#[test]
+const fn pcg32_generation_const() {
+    const PCG_UUID_V4: Uuid = {
+        let mut rng = Pcg32::new(1, 2);
+        Uuid::from_pcg32_v4(&mut rng)
+    };
+    const_assert!(eq PCG_UUID_V4.version().unwrap().number(), UuidVersion::V4.number());
 }

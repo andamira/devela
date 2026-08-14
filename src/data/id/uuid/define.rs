@@ -3,8 +3,11 @@
 //! Defines [`Uuid`].
 //
 
-use crate::{Ascii, ConstInit, Str, impl_trait, is, slice, unwrap, whilst};
+use crate::{Ascii, ConstInit, FromRandTry, Pcg32, RandTry, Str};
 use crate::{TextCursor, TextParseError, UuidNonNil, UuidVariant, UuidVersion};
+#[cfg(feature = "time")]
+use crate::{TimePoint, TimeSource, TimeSourceCfg};
+use crate::{impl_trait, is, slice, unwrap, whilst};
 
 #[doc = crate::_tags!(uid)]
 /// A standardized portable 128-bit identifier.
@@ -58,6 +61,16 @@ impl Uuid {
     pub const fn from_random_v4(random: [u8; 16]) -> Self {
         Self::from_ietf_bytes(random, UuidVersion::V4)
     }
+    /// Generates a deterministic version 4 UUID using Pcg32.
+    ///
+    /// This is suitable when reproducibility is desired;
+    /// it does not provide cryptographic unpredictability.
+    pub const fn from_pcg32_v4(rng: &mut Pcg32) -> Self {
+        let mut random = [0u8; 16];
+        rng.fill_bytes(&mut random);
+        Self::from_random_v4(random)
+    }
+
     /// Creates a version 7 UUID from a Unix millisecond timestamp
     /// and 80 bits of random input.
     ///
@@ -77,6 +90,42 @@ impl Uuid {
             random[6], random[7], random[8], random[9],
         ];
         Some(Self::from_ietf_bytes(bytes, UuidVersion::V7))
+    }
+    /// Generates a version 7 UUID using a Unix millisecond timestamp
+    /// and deterministic randomness from `Pcg32`.
+    ///
+    /// This is suitable when reproducibility is desired;
+    /// it does not provide cryptographic unpredictability.
+    pub const fn from_pcg32_v7(unix_ts_ms: u64, rng: &mut Pcg32) -> Option<Self> {
+        is! { unix_ts_ms > 0xFFFF_FFFF_FFFF, return None } // avoids advancing rng
+        let mut random = [0u8; 10];
+        rng.fill_bytes(&mut random);
+        Self::from_random_v7(unix_ts_ms, random)
+    }
+    /// Generates a version 7 UUID using the current time from an absolute `TimeSource`
+    /// and deterministic randomness from `Pcg32`.
+    ///
+    /// Returns `None` if the source is not absolute or if its current
+    /// Unix millisecond timestamp exceeds the UUID version 7 range.
+    #[cfg(feature = "time")]
+    pub fn from_pcg32_v7_now<T, P>(rng: &mut Pcg32) -> Option<Self>
+    where
+        T: TimeSource<P>,
+        P: TimePoint,
+    {
+        is! { !T::time_is_absolute(), return None }
+        Self::from_pcg32_v7(T::time_now_millis(), rng)
+    }
+    /// Generates a version 7 UUID using the current time from an absolute `TimeSourceCfg`
+    /// and deterministic randomness from `Pcg32`.
+    #[cfg(feature = "time")]
+    pub fn from_pcg32_v7_now_cfg<T, P>(cfg: T::Config, rng: &mut Pcg32) -> Option<Self>
+    where
+        T: TimeSourceCfg<P>,
+        P: TimePoint,
+    {
+        is! { !T::time_is_absolute(cfg), return None }
+        Self::from_pcg32_v7(T::time_now_millis(cfg), rng)
     }
 
     /// Creates a UUID from its 16-byte representation.
@@ -129,6 +178,16 @@ impl Uuid {
     /// Converts this UUID into a non-NIL niche-optimized representation.
     pub const fn into_non_nil(self) -> Option<UuidNonNil> {
         UuidNonNil::from_uuid(self)
+    }
+    /// Returns the Unix millisecond timestamp encoded by a version 7 UUID.
+    ///
+    /// Returns `None` if this is not a recognized IETF version 7 UUID.
+    #[must_use]
+    pub const fn unix_ts_ms_v7(self) -> Option<u64> {
+        is! { !matches!(self.version(), Some(UuidVersion::V7)), return None }
+        Some(u64::from_be_bytes([
+            0, 0, self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5],
+        ]))
     }
 
     /* classification */
@@ -226,4 +285,16 @@ impl From<Uuid> for u128 {
 }
 impl_trait! { FromStr<TextParseError> for Uuid |s|
     Self::parse_str(s)
+}
+
+impl FromRandTry for Uuid {
+    /// Constructs a version 4 UUID from a fallible random source.
+    ///
+    /// `FromRandTry` maps to UUID version 4 because version 4 is defined
+    /// entirely by random or pseudo-random input.
+    fn from_rand_try<R: RandTry + ?Sized>(rng: &mut R) -> Result<Self, R::Error> {
+        let mut random = [0u8; 16];
+        rng.rand_try_fill_bytes(&mut random)?;
+        Ok(Self::from_random_v4(random))
+    }
 }
