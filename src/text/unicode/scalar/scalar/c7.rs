@@ -4,7 +4,7 @@
 //
 
 use super::*;
-use crate::{AsciiLut, Char, CharAscii, ConstInit, MismatchedCapacity, NonMaxU8, Str, cmp, whilst};
+use crate::{Ascii, Char, CharAscii, ConstInit, MismatchedCapacity, NonMaxU8, Str, cmp, whilst};
 
 #[rustfmt::skip]
 impl char7 {
@@ -79,7 +79,7 @@ impl char7 {
     /// Returns the byte representation.
     pub const fn to_byte(&self) -> u8 { self.0.get() }
     /// Returns the string slice representation.
-    pub const fn to_str(&self) -> &'static str { AsciiLut::ASCII_CHARS[self.to_byte() as usize] }
+    pub const fn to_str(&self) -> &'static str { Ascii::ASCII_CHARS[self.to_byte() as usize] }
 
     /// Converts a `char7` to `CharAscii`.
     /// # Features

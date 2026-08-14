@@ -2,7 +2,7 @@
 
 #[cfg(doc)]
 use crate::TextParseErrorKind;
-use crate::{TextParseError, TextScanner, is, unwrap, whilst};
+use crate::{Ascii, TextParseError, TextScanner, is, unwrap, whilst};
 
 /// ASCII numeric parsing.
 impl<'a> TextScanner<'a> {
@@ -55,8 +55,8 @@ impl<'a> TextScanner<'a> {
         let radix_u64 = radix as u64;
         let (mut value, mut saw_digit) = (0_u64, false);
         whilst! { let Some(byte) = self.peek_byte(); {
-            let digit = match ascii_digit_value(byte) {
-                Some(digit) if digit < radix => digit as u64,
+            let digit = match Ascii::digit_value(byte) {
+                Some(digit) if (digit as u32) < radix => digit as u64,
                 _ => break,
             };
             let Some(next) = value.checked_mul(radix_u64) else {
@@ -146,8 +146,8 @@ impl<'a> TextScanner<'a> {
         let radix_i64 = radix as i64;
         let mut value = 0_i64;
         whilst! { let Some(byte) = self.peek_byte(); {
-            let digit = match ascii_digit_value(byte) {
-                Some(digit) if digit < radix => digit as i64,
+            let digit = match Ascii::digit_value(byte) {
+                Some(digit) if (digit as u32) < radix => digit as i64,
                 _ => break,
             };
             let Some(next) = value.checked_mul(radix_i64) else {
@@ -225,18 +225,10 @@ impl<'a> TextScanner<'a> {
 const fn assert_ascii_radix(radix: u32) {
     assert!(radix >= 2 && radix <= 36, "ASCII integer radix must be in 2..=36");
 }
-const fn ascii_digit_value(byte: u8) -> Option<u32> {
-    match byte {
-        b'0'..=b'9' => Some((byte - b'0') as u32),
-        b'A'..=b'Z' => Some((byte - b'A') as u32 + 10),
-        b'a'..=b'z' => Some((byte - b'a') as u32 + 10),
-        _ => None,
-    }
-}
 const fn is_ascii_digit_in_radix(byte: Option<u8>, radix: u32) -> bool {
     match byte {
-        Some(byte) => match ascii_digit_value(byte) {
-            Some(digit) => digit < radix,
+        Some(byte) => match Ascii::digit_value(byte) {
+            Some(digit) => (digit as u32) < radix,
             None => false,
         },
         None => false,

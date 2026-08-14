@@ -1,6 +1,6 @@
 // devela/src/data/codec/radix/impls/base16.rs
 
-use crate::{ConstInit, Radix, is, unwrap, whilst};
+use crate::{Ascii, ConstInit, Radix, is, unwrap, whilst};
 
 const HEX_UPPER: &[u8; 16] = b"0123456789ABCDEF";
 const HEX_LOWER: &[u8; 16] = b"0123456789abcdef";
@@ -59,20 +59,13 @@ const fn decode_hex(input: &[u8], output: &mut [u8]) -> Option<usize> {
     let len = input.len() / 2;
     is! { output.len() < len, return None }
     whilst! { i in 0..len; {
-        let hi = unwrap![some? decode_hex_digit(input[i * 2])];
-        let lo = unwrap![some? decode_hex_digit(input[i * 2 + 1])];
+        let hi = unwrap![some? Ascii::hex_digit_value(input[i * 2])];
+        let lo = unwrap![some? Ascii::hex_digit_value(input[i * 2 + 1])];
         output[i] = hi << 4 | lo;
     }}
     Some(len)
 }
-const fn decode_hex_digit(byte: u8) -> Option<u8> {
-    match byte {
-        b'0'..=b'9' => Some(byte - b'0'),
-        b'A'..=b'F' => Some(byte - b'A' + 10),
-        b'a'..=b'f' => Some(byte - b'a' + 10),
-        _ => None,
-    }
-}
+
 const fn encode_hex(input: &[u8], output: &mut [u8], alphabet: &[u8; 16]) -> Option<usize> {
     let len = unwrap![some? input.len().checked_mul(2)];
     is! { output.len() < len, return None }

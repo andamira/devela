@@ -1,7 +1,7 @@
 // devela/src/text/ascii/digits/usize.rs
 
 use super::*;
-use crate::{AsciiLut, is};
+use crate::{Ascii, is};
 
 impl Digits<usize> {
     /// The maximum number of decimal digits a `usize` can represent in the current platform.
@@ -35,7 +35,7 @@ impl Digits<usize> {
     #[must_use]
     pub const fn digit_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(), return b'0'];
-        let power = AsciiLut::POWERS10[index as usize] as usize;
+        let power = Self::POWERS10[index as usize] as usize;
         (self.0 / power % 10) as u8 + b'0'
     }
 
@@ -45,7 +45,7 @@ impl Digits<usize> {
     #[must_use]
     pub const fn digit_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(), return None];
-        let power = AsciiLut::POWERS10[index as usize] as usize;
+        let power = Self::POWERS10[index as usize] as usize;
         Some((self.0 / power % 10) as u8 + b'0')
     }
 
@@ -56,7 +56,7 @@ impl Digits<usize> {
     pub const fn digit_at_index16(self, index: u8) -> u8 {
         let shift = index as u32 * 4;
         let digit = self.0.unbounded_shr(shift) & 0xF;
-        AsciiLut::DIGITS_BASE36[digit]
+        Ascii::DIGITS_BASE36_UPPER[digit]
     }
 
     /// Returns `Some(ASCII digit)` if the index is within the number's hexadecimal digits,
@@ -67,7 +67,7 @@ impl Digits<usize> {
         is![index >= self.count_digits16(), return None];
         let shift = index as u32 * 4;
         let digit = self.0.unbounded_shr(shift) & 0xF;
-        Some(AsciiLut::DIGITS_BASE36[digit])
+        Some(Ascii::DIGITS_BASE36_UPPER[digit])
     }
 
     /* digit_value_at_ */
@@ -78,7 +78,7 @@ impl Digits<usize> {
     #[must_use]
     pub const fn digit_value_at_index10(self, index: u8) -> u8 {
         is![index >= self.count_digits10(), return 0];
-        let power = AsciiLut::POWERS10[index as usize] as usize;
+        let power = Self::POWERS10[index as usize] as usize;
         (self.0 / power % 10) as u8
     }
     /// Returns `Some(numeric_value)` (0-9) of the decimal digit at the specified index.
@@ -87,7 +87,7 @@ impl Digits<usize> {
     #[must_use]
     pub const fn digit_value_at_index10_checked(self, index: u8) -> Option<u8> {
         is![index >= self.count_digits10(), return None];
-        let power = AsciiLut::POWERS10[index as usize] as usize;
+        let power = Self::POWERS10[index as usize] as usize;
         Some((self.0 / power % 10) as u8)
     }
 

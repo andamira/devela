@@ -313,7 +313,7 @@ its own flat view of all its public children.";
 
     // 12. text (cultural symbols held in sequence)
     _DOC_TEXT            = "Symbolic sequences, encodings, and text processing.";
-    _DOC_TEXT_ASCII      = "ASCII characters, sets, digits and tables";
+    _DOC_TEXT_ASCII      = "ASCII characters, sets, digit operations, and related data.";
     _DOC_TEXT_CODEC      = "Text codecs, alphabets, and transmission codes.";
     _DOC_TEXT_DRAW       = "Drawing with textual symbols.";
     _DOC_TEXT_FMT        = "Text and string formatting.";

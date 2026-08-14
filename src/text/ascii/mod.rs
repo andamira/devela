@@ -7,19 +7,16 @@
 
 mod char; // CharAscii
 mod digits; // Digits
-mod lut; // AsciiLut
+mod namespace; // Ascii
 mod set; // AsciiSet
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            char::*,
-            digits::_all::*,
-            lut::*,
-            set::*,
+            char::CharAscii,
+            digits::_all::Digits,
+            namespace::Ascii,
+            set::AsciiSet,
         };
-    }
-    _crate_internals {
-        pub(crate) use super::digits::_crate_internals::*;
     }
 }

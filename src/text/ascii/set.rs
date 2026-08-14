@@ -3,7 +3,7 @@
 //! Defines [`AsciiSet`].
 //
 
-use crate::{CharAscii, char7, is};
+use crate::{Ascii, CharAscii, char7, is};
 
 crate::set! {
     #[doc = crate::_tags!(text set)]
@@ -63,33 +63,16 @@ crate::set! {
     }
 
     impl {
-        /// Number of characters in the ASCII space.
-        pub const LEN: usize = 128;
-
-        /// The minimum ASCII byte.
-        pub const MIN_BYTE: u8 = 0x00;
-
-        /// The maximum ASCII byte.
-        pub const MAX_BYTE: u8 = 0x7F;
-
-        /// Returns `true` if `byte` is ASCII.
-        #[must_use]
-        pub const fn is_ascii_byte(byte: u8) -> bool { byte <= Self::MAX_BYTE }
-
-        /// Returns `true` if `ch` is ASCII.
-        #[must_use]
-        pub const fn is_ascii_char(ch: char) -> bool { (ch as u32) <= Self::MAX_BYTE as u32 }
-
         /// Returns a singleton set containing `byte`, if it is ASCII.
         #[must_use]
         pub const fn from_byte(byte: u8) -> Option<Self> {
-            is![Self::is_ascii_byte(byte), Some(Self::from_ascii_byte_unchecked(byte)), None]
+            is![Ascii::is_ascii_byte(byte), Some(Self::from_ascii_byte_unchecked(byte)), None]
         }
 
         /// Returns a singleton set containing `ch`, if it is ASCII.
         #[must_use]
         pub const fn from_char(ch: char) -> Option<Self> {
-            is![Self::is_ascii_char(ch), Some(Self::from_ascii_byte_unchecked(ch as u8)), None]
+            is![Ascii::is_ascii_char(ch), Some(Self::from_ascii_byte_unchecked(ch as u8)), None]
         }
         /// Returns a singleton set containing `ch`.
         pub const fn from_char7(ch: char7) -> Self {
@@ -103,12 +86,12 @@ crate::set! {
         /// Returns `true` if this set contains `byte`.
         #[must_use]
         pub const fn contains_byte(self, byte: u8) -> bool {
-            Self::is_ascii_byte(byte) && (self.bits & Self::bit(byte)) != 0
+            Ascii::is_ascii_byte(byte) && (self.bits & Self::bit(byte)) != 0
         }
         /// Returns `true` if this set contains `ch`.
         #[must_use]
         pub const fn contains_char(self, ch: char) -> bool {
-            Self::is_ascii_char(ch) && self.contains_byte(ch as u8)
+            Ascii::is_ascii_char(ch) && self.contains_byte(ch as u8)
         }
         /// Returns `true` if this set contains `ch`.
         #[must_use]
@@ -124,13 +107,13 @@ crate::set! {
         /// Returns this set with `byte` inserted, if it is ASCII.
         #[must_use]
         pub const fn with_byte(self, byte: u8) -> Option<Self> {
-            is![Self::is_ascii_byte(byte),
+            is![Ascii::is_ascii_byte(byte),
                 Some(Self::from_bits(self.bits | Self::bit(byte))), None]
         }
         /// Returns this set without `byte`, if it is ASCII.
         #[must_use]
         pub const fn without_byte(self, byte: u8) -> Option<Self> {
-            is![Self::is_ascii_byte(byte),
+            is![Ascii::is_ascii_byte(byte),
                 Some(Self::from_bits(self.bits & !Self::bit(byte))), None]
         }
 
