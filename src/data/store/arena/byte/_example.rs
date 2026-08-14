@@ -13,19 +13,25 @@ arena_bytes! {
 
     #[doc = crate::_tags!(example data_structure)]
     /// An example memory arena.
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/store/arena"),
+    }]
     /// Generated with [`arena_bytes!`].
     pub ArenaBytesExample;
 
     #[doc = crate::_tags!(example uid)]
     /// An example handle into [`ArenaBytesExample`].
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/store/arena"),
+    }]
     /// Generated with [`arena_bytes!`] and [`handle_span!`][crate::handle_span].
     pub ArenaBytesHandleExample;
 
     #[doc = crate::_tags!(example state)]
     /// An example memory arena mark.
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/store/arena"),
+    }]
     /// Generated with [`arena_bytes!`].
     pub ArenaBytesMarkExample;
 }

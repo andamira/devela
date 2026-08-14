@@ -123,6 +123,10 @@
 - remove old type sketches: `Graph*`, `Node*`.
 - move `linked` module to `data::layout`.
 
+#### data::topol::graph
+- new macro: `graph_adj!`.
+- new type examples: `GraphAdjExample`, `GraphAdjVertexExample`, `GraphAdjEdgeExample`, `GraphAdjAllocExample`, `GraphAdjAllocVertexExample`, `GraphAdjAllocEdgeExample`.
+
 ## error
 - new root module.
 - move `<data|num|text>::error` to `error::<data|num|text>`.

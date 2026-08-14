@@ -5,24 +5,19 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
+//! Graphs describe connectivity over vertex domains independently of application values.
+//!
+//! Representation-specific semantics and guarantees are documented by each graph generator.
 //
 
-// #[cfg(test)]
-// mod _test;
-// #[cfg(any(test, feature = "_docs_examples"))]
-// mod _example;
-
-// mod adj;
-// mod csr;
-// mod impls;
+mod adj; // graph_adj!
+// mod csr; /// graph_csr!
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     adj::_all::*,
-        //     // csr::_all::*,
-        // };
-        // #[cfg(any(test, feature = "_docs_examples"))]
-        // pub use super::_example::*;
+        pub use super::{
+            adj::_all::*,
+            // csr::_all::*,
+        };
     }
 }
