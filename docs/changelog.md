@@ -276,6 +276,7 @@
 - update `Textel` with a new `meta` field and methods.
 
 ### text::parse
+- update `TextParseErrorKind`: add `TrailingInput` variant.
 - update `TextScanner`:
   - add methods: `bytes`, `<take|expect>_ascii_u64_radix`, `<take|expect>_ascii_i64[_radix]`, `<take|expect>_ascii_usize`.
 

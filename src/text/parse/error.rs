@@ -21,6 +21,9 @@ pub enum TextParseErrorKind {
         /// The byte that was found, or `None` if EOF was reached.
         found: Option<u8>,
     },
+    /// Additional input remains after a complete construct.
+    TrailingInput,
+
     /* decoding and lexical-value failures */
     /// Decoded bytes were not valid UTF-8.
     InvalidUtf8(InvalidUtf8),
@@ -51,14 +54,17 @@ impl_trait![fmt::Display for TextParseErrorKind |self, f| {
             Some(found) => write!(f, "unexpected byte: found {found:?}, expected {expected:?}"),
             None => write!(f, "unexpected EOF: expected byte {expected:?}"),
         },
+        K::TrailingInput => f.write_str("unexpected additional remaining input"),
+        //
         K::InvalidUtf8(err) => write!(f, "invalid UTF-8 ({err})"),
         K::InvalidDigit => f.write_str("invalid digit"),
+        K::InvalidEscape => f.write_str("invalid escape"),
+        //
         K::BufferTooSmall => f.write_str("buffer too small"),
         K::Overflow => f.write_str("overflow"),
         //
         K::UnterminatedQuote => f.write_str("unterminated quoted string"),
         K::UnexpectedAfterQuote => f.write_str("unexpected data after closing quote"),
-        K::InvalidEscape => f.write_str("invalid escape"),
     }
 }];
 
@@ -88,11 +94,15 @@ impl TextParseError {
 
     /// Returns an unexpected-EOF error.
     pub const fn unexpected_eof(at: TextCursor) -> Self {
-        Self::new(at, TextParseErrorKind::UnexpectedEof)
+        Self::new(at, TextParseErrorKind::UnexpectedEof) // IMPROVE?
     }
     /// Returns an unexpected-byte error.
     pub const fn unexpected_byte(at: TextCursor, expected: u8, found: Option<u8>) -> Self {
         Self::new(at, TextParseErrorKind::UnexpectedByte { expected, found })
+    }
+    /// Returns a trailing-input error.
+    pub const fn trailing_input(at: TextCursor) -> Self {
+        Self::new(at, TextParseErrorKind::TrailingInput) // IMPROVE?
     }
 
     /* decoding and lexical-value failures */
