@@ -16,7 +16,7 @@ mod _test;
 
 mod grapheme; // Grapheme
 mod kind; // GraphemeKind
-mod nonul; // GraphemeNonul
+mod nonul; // GraphemeNonNul
 mod scanner; // Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 mod u8; // GraphemeU8
 

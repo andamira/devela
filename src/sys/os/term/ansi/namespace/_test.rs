@@ -28,7 +28,7 @@ fn cursor_move_n() {
     assert_eq!(result, b"\x1b[456;123H");
     let result = Ansi::CURSOR_MOVE_N_B(&mut buffer, 1999, 10999);
     assert_eq!(result, b"\x1b[10999;1999H");
-    let result = Ansi::CURSOR_MOVE(30_000, 20_000); // StringNonul
+    let result = Ansi::CURSOR_MOVE(30_000, 20_000); // StringNonNul
     assert_eq!(result, "\x1b[20000;30000H");
 }
 

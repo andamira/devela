@@ -57,7 +57,7 @@ define_error! { composite: fmt(f)
     #[doc = crate::_doc_meta!{location("error/text")}]
     ///
     /// Used in methods of:
-    /// [`StringNonul`][crate::StringNonul], and `StringU*`.
+    /// [`StringNonNul`][crate::StringNonNul], and `StringU*`.
     pub enum InvalidText {
         +tag: _tags!(text),
 

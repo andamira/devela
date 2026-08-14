@@ -7,8 +7,8 @@
 // - impl over char
 
 use crate::{
-    GraphemeBoundary, GraphemeMachine, GraphemeNonul, GraphemeU8, IteratorFused, PhantomData,
-    StringNonul, StringU8, charu, is, slice, unwrap,
+    GraphemeBoundary, GraphemeMachine, GraphemeNonNul, GraphemeU8, IteratorFused, PhantomData,
+    StringNonNul, StringU8, charu, is, slice, unwrap,
 };
 
 #[doc = crate::_tags!(text iterator)]
@@ -81,7 +81,7 @@ impl<'a> GraphemeScanner<'a, charu> {
     }
     // TODO make another version exact non-truncating.
 
-    /// Returns the next complete grapheme cluster as a `GraphemeNonul`.
+    /// Returns the next complete grapheme cluster as a `GraphemeNonNul`.
     ///
     /// Returns `None` when there are no more graphemes to process.
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
@@ -98,22 +98,22 @@ impl<'a> GraphemeScanner<'a, charu> {
     /// let g = scanner.next_grapheme_nonul::<32>().unwrap(); assert_eq!(g.as_str(), "🧑‍🌾");
     /// assert!(scanner.next_grapheme_nonul::<32>().is_none());
     /// ```
-    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<GraphemeNonul<CAP>> {
-        let mut g = StringNonul::<CAP>::new();
+    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<GraphemeNonNul<CAP>> {
+        let mut g = StringNonNul::<CAP>::new();
         let mut buf = [0u8; 4];
         let mut has_content = false; // to avoid costly is_empty() calls
         while let Some((ch, len)) = charu::from_str_with_len(self.remain) {
             let boundary = self.machine.next_charu(ch);
             // if split occurs return the previous grapheme:
             if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
-                return Some(GraphemeNonul(g)); // if split occurs return the previous grapheme
+                return Some(GraphemeNonNul(g)); // if split occurs return the previous grapheme
             }
             // add char to current grapheme, breaking if capacity is exceeded
             is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(), break];
             has_content = true; // we have now at least 1 code point
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![has_content, Some(GraphemeNonul(g)), None]
+        is![has_content, Some(GraphemeNonNul(g)), None]
     }
 }
 

@@ -12,7 +12,7 @@ pub enum GraphemeKind {
     /* graphemes */
     #[cfg(feature = "grapheme")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
-    Nonul,
+    NonNul,
 
     #[cfg(feature = "grapheme")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]

@@ -7,7 +7,7 @@
 
 mod _reexport;
 
-mod array; // StringNonul, StringU8, StringU16
+mod array; // StringNonNul, StringU8, StringU16
 mod buf; // StrBuf
 mod ext; // StrExt, StringExt
 mod namespace; // Str

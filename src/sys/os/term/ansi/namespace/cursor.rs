@@ -1,6 +1,6 @@
 // devela/src/sys/os/term/ansi/namespace/cursor.rs
 
-use crate::{__ansi_consts, Ansi, Digits, StringNonul, slice, write_at};
+use crate::{__ansi_consts, Ansi, Digits, StringNonNul, slice, write_at};
 
 /// # Cursor escape codes
 impl Ansi {
@@ -51,10 +51,10 @@ impl Ansi {
         }
     }
     /// Returns a string with the code to move the cursor to the specified position (col, row).
-    pub const fn CURSOR_MOVE(col: u16, row: u16) -> StringNonul<14> {
+    pub const fn CURSOR_MOVE(col: u16, row: u16) -> StringNonNul<14> {
         let mut buf = [0; 14];
         let _ = Self::CURSOR_MOVE_N(&mut buf, col, row);
-        StringNonul::<14>::_from_array_trusted(buf)
+        StringNonNul::<14>::_from_array_trusted(buf)
     }
     __ansi_consts! {
         /// Returns a slice with the code to move the cursor to the specified position (col, row).

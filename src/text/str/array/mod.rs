@@ -3,7 +3,7 @@
 //!
 //
 
-mod nonul; // StringNonul
+mod nonul; // StringNonNul
 mod u; // StringU8, StringU16
 
 crate::structural_mods! { // _mods

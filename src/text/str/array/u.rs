@@ -9,7 +9,7 @@
 // - tests
 
 use crate::{AddAssign, ConstInit, Deref, Hash, Hasher, is, lets, paste, slice, whilst};
-use crate::{Char, CharIter, InvalidText, Str, StringNonul, char7, char8, char16, charu};
+use crate::{Char, CharIter, InvalidText, Str, StringNonNul, char7, char8, char16, charu};
 #[allow(unused, reason = "±unsafe")]
 use crate::{Cmp, unwrap};
 use crate::{Debug, Display, FmtError, FmtResult, FmtWrite, Formatter, Ordering};
@@ -38,7 +38,7 @@ macro_rules! impl_str_u {
         ///
         /// Suited for frequently inspected or manipulated text where constant-time
         /// length access is important. Uses extra space to provide O(1) length operations.
-        /// For the opposite trade-off see [`StringNonul`].
+        /// For the opposite trade-off see [`StringNonNul`].
         ///
         #[doc = concat!(
             "Internally, the current length is stored as a [`",
@@ -897,14 +897,14 @@ macro_rules! impl_str_u {
             }
         }
         /// Appends non-NUL text in place, keeping the fitted UTF-8 prefix.
-        impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonul<RHS>> for StringU8<CAP> {
-            fn add_assign(&mut self, rhs: &StringNonul<RHS>) {
+        impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonNul<RHS>> for StringU8<CAP> {
+            fn add_assign(&mut self, rhs: &StringNonNul<RHS>) {
                 let _ = self.push_str(rhs.as_str());
             }
         }
         /// Appends non-NUL text in place, keeping the fitted UTF-8 prefix.
-        impl<const CAP: usize, const RHS: usize> AddAssign<StringNonul<RHS>> for StringU8<CAP> {
-            fn add_assign(&mut self, rhs: StringNonul<RHS>) {
+        impl<const CAP: usize, const RHS: usize> AddAssign<StringNonNul<RHS>> for StringU8<CAP> {
+            fn add_assign(&mut self, rhs: StringNonNul<RHS>) {
                 let _ = self.push_str(rhs.as_str());
             }
         }

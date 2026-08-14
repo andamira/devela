@@ -290,12 +290,15 @@
 ### text::str
 - update `Str`:
   - add methods: `eq`, `from_utf8_complete_prefix`, `starts_with[_char]`, `ends_with[_char]`, `strip_<prefix|suffix>[_char]`, `strip_circumfix[_chars]`, `translit_ascii_into[_or]`, `graphemes[_charu][_in]`, `grapheme_count`.
+- rename `StringNonul` to `StringNonNul`.
 
 ### text::unicode
 - new type `GraphemeIter`.
 - update `CharIter`:
   - add methods: `byte_pos`, `as_bytes`, `as_str`, `remaining_bytes`, `is_empty`, `peek_char`, `peek_charu`, `peek_scalar`.
 - fix `next_charu*` methods over byte slice impl.
+- rename `GraphemeNonul` to `GraphemeNonNul`.
+- rename `GraphemeKind::Nonul` variant to `NonNul`.
 
 ## ui
 - new submodules: `frame`, `route`, `semantic`, `text`, `view`, `widget`.

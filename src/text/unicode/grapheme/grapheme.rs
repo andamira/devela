@@ -45,15 +45,15 @@ pub trait Grapheme {
 
 #[rustfmt::skip]
 mod impls {
-    use crate::{Char,Grapheme, GraphemeKind, GraphemeNonul, GraphemeU8, Iter,
+    use crate::{Char,Grapheme, GraphemeKind, GraphemeNonNul, GraphemeU8, Iter,
     char, charu, charu_niche, char7, char8, char16};
 
     /* for graphemes */
 
     crate::items! {
-        impl<const CAP: usize> Grapheme for GraphemeNonul<CAP> {
+        impl<const CAP: usize> Grapheme for GraphemeNonNul<CAP> {
             fn grapheme_chars(&self) -> impl Iterator<Item = char> { self.chars() }
-            fn grapheme_kind(&self) -> GraphemeKind { GraphemeKind::Nonul }
+            fn grapheme_kind(&self) -> GraphemeKind { GraphemeKind::NonNul }
             fn grapheme_len_bytes(&self) -> usize { self.len() }
             fn grapheme_len_utf8(&self) -> usize { self.len() }
         }

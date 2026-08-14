@@ -30,7 +30,7 @@ fn char_kind() {
     let ch = 'A';
     assert_eq!(ch.grapheme_kind(), GraphemeKind::char);
     assert!(ch.grapheme_is_kind(GraphemeKind::char));
-    assert!(!ch.grapheme_is_kind(GraphemeKind::Nonul));
+    assert!(!ch.grapheme_is_kind(GraphemeKind::NonNul));
 }
 
 #[test]

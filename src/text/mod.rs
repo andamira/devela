@@ -19,7 +19,7 @@ pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
 pub mod layout; // TextLayout*, …
 mod metric; // TextCursor, TextIndex, TextRange, TextUnit
 pub mod parse; // ByteSearch, TextScanner, …
-pub mod str; // Str, StringNonul, StringU*
+pub mod str; // Str, StringNonNul, StringU*
 mod translit; // scalar_as_ascii_translit()
 pub mod unicode; // Unicode-defined text units and algorithms
 

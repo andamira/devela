@@ -6,7 +6,7 @@
 // - trait impls
 
 #[cfg(feature = "grapheme")]
-use crate::GraphemeNonul;
+use crate::GraphemeNonNul;
 #[cfg(feature = "term")]
 use crate::{Ansi, AnsiColor, AnsiColor3, AnsiColor8};
 #[cfg(feature = "std")]
@@ -14,7 +14,7 @@ use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 use crate::{
     BareBox, BitSized, CharAscii, Duration, Infallible, NonZeroI8, NonZeroI16, NonZeroI32,
     NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
-    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonul,
+    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonNul,
 };
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
@@ -158,8 +158,8 @@ _impl_bit_sized![= 128; for AtomicI128, AtomicU128];
 
 _impl_bit_sized![= 7; for CharAscii];
 #[cfg(feature = "grapheme")]
-_impl_bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>];
-_impl_bit_sized![<const LEN: usize> = LEN; for StringNonul<LEN>];
+_impl_bit_sized![<const LEN: usize> = LEN; for GraphemeNonNul<LEN>];
+_impl_bit_sized![<const LEN: usize> = LEN; for StringNonNul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // _impl_bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];
 // _impl_bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];

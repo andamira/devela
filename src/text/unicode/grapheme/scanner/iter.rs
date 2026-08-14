@@ -8,8 +8,8 @@
 // - impl over char
 
 use crate::{
-    GraphemeBoundary, GraphemeMachine, GraphemeNonul, GraphemeU8, IteratorFused, PhantomData,
-    StringNonul, StringU8, charu, is, slice, unwrap,
+    GraphemeBoundary, GraphemeMachine, GraphemeNonNul, GraphemeU8, IteratorFused, PhantomData,
+    StringNonNul, StringU8, charu, is, slice, unwrap,
 };
 
 #[doc = crate::_tags!(text iterator)]
@@ -82,24 +82,24 @@ impl<'a> GraphemeIter<'a, charu> {
         is![!g.is_empty(), Some(GraphemeU8(g)), None]
     }
 
-    /// Returns the next complete grapheme cluster as a `GraphemeNonul`.
+    /// Returns the next complete grapheme cluster as a `GraphemeNonNul`.
     ///
     /// Returns `None` when there are no more graphemes to process.
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
-    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<GraphemeNonul<CAP>> {
-        let mut g = StringNonul::<CAP>::new();
+    pub const fn next_grapheme_nonul<const CAP: usize>(&mut self) -> Option<GraphemeNonNul<CAP>> {
+        let mut g = StringNonNul::<CAP>::new();
         let mut buf = [0u8; 4];
         let mut has_content = false;
         while let Some((ch, len)) = charu::from_str_with_len(self.remain) {
             let boundary = self.machine.next_charu(ch);
             if boundary.eq(GraphemeBoundary::Split) && !g.is_empty() {
-                return Some(GraphemeNonul(g));
+                return Some(GraphemeNonNul(g));
             }
             is![g.try_push_str(ch.as_str_into(&mut buf)).is_err(), break];
             has_content = true;
             self.remain = slice![str self.remain, len as usize, ..];
         }
-        is![has_content, Some(GraphemeNonul(g)), None]
+        is![has_content, Some(GraphemeNonNul(g)), None]
     }
 }
 impl<'a> Iterator for GraphemeIter<'a, charu> {

@@ -62,21 +62,21 @@ const NUL_CHAR: char = '\0';
 ///   - [try_push_str_complete](#method.try_push_str_complete).
 #[must_use]
 #[derive(Clone, Copy, Eq, PartialOrd, Ord)]
-pub struct StringNonul<const CAP: usize> {
+pub struct StringNonNul<const CAP: usize> {
     arr: [u8; CAP],
 }
 
 #[rustfmt::skip]
-impl<const CAP: usize> StringNonul<CAP> {
-    /// Creates a new empty `StringNonul`.
+impl<const CAP: usize> StringNonNul<CAP> {
+    /// Creates a new empty `StringNonNul`.
     ///
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`].
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonul;
-    /// let mut s = StringNonul::<10>::new();
+    /// # use devela::StringNonNul;
+    /// let mut s = StringNonNul::<10>::new();
     /// assert_eq![size_of_val(&s), 10];
     /// ```
     pub const fn new() -> Self {
@@ -84,7 +84,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Self { arr: [0; CAP] }
     }
 
-    /// Creates a new empty `StringNonul`.
+    /// Creates a new empty `StringNonNul`.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
@@ -96,7 +96,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         }
     }
 
-    /// Creates a new `StringNonul` from a complete `&str`.
+    /// Creates a new `StringNonNul` from a complete `&str`.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`] or if `CAP < string.len()`.
@@ -115,7 +115,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         else { Err(MismatchedCapacity::too_small(CAP, string.len())) }
     }
 
-    /// Creates a new `StringNonul` from a `&str`, truncating if it does not fit.
+    /// Creates a new `StringNonNul` from a `&str`, truncating if it does not fit.
     ///
     /// Returns [`MismatchedCapacity`] if `CAP` > [`u8::MAX`].
     ///
@@ -126,7 +126,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new_string)
     }
 
-    /// Creates a new `StringNonul` from a `&str`, truncating if it does not fit.
+    /// Creates a new `StringNonNul` from a `&str`, truncating if it does not fit.
     ///
     /// # Panics
     /// Panics if `CAP` > [`u8::MAX`].
@@ -154,9 +154,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, MismatchedCapacity};
+    /// # use devela::{StringNonNul, MismatchedCapacity};
     /// # fn main() -> Result<(), MismatchedCapacity> {
-    /// let mut s = StringNonul::<4>::new_checked()?;
+    /// let mut s = StringNonNul::<4>::new_checked()?;
     /// assert_eq![0, s.len()];
     ///
     /// assert_eq![1, s.push('a')];
@@ -189,9 +189,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// It only checks the first `self.len()` bytes.
     /// # Examples
     /// ```
-    /// # use devela::StringNonul;
-    /// let mut a = StringNonul::<16>::from_str_unchecked("hello world!");
-    /// let mut b = StringNonul::<16>::from_str_unchecked("hello world!!!");
+    /// # use devela::StringNonNul;
+    /// let mut a = StringNonNul::<16>::from_str_unchecked("hello world!");
+    /// let mut b = StringNonNul::<16>::from_str_unchecked("hello world!!!");
     /// assert![!a.eq(&b)];
     /// b.pop();
     /// b.pop();
@@ -308,8 +308,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonul;
-    /// let mut s = StringNonul::<16>::new();
+    /// # use devela::StringNonNul;
+    /// let mut s = StringNonNul::<16>::new();
     /// s.push_str("hello worlð!");
     /// assert_eq![s.len(), 13];
     ///
@@ -341,8 +341,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonul;
-    /// let mut s = StringNonul::<16>::new();
+    /// # use devela::StringNonNul;
+    /// let mut s = StringNonNul::<16>::new();
     /// s.push('h');
     /// assert_eq![s.len(), 1];
     ///
@@ -425,8 +425,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonul;
-    /// let mut s = StringNonul::<8>::new();
+    /// # use devela::StringNonNul;
+    /// let mut s = StringNonNul::<8>::new();
     /// s.push_str("hello");
     ///
     /// // successfully appends a string while removing NUL characters
@@ -436,7 +436,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// assert!(s.try_push_str("!").is_err()); // fails if it can't fit 1 char
     ///
     /// // Insufficient capacity for the first non-NUL character
-    /// let mut small = StringNonul::<3>::new();
+    /// let mut small = StringNonNul::<3>::new();
     /// assert!(small.try_push_str("🚀").is_err()); // Needs 4 bytes for the rocket
     /// ```
     /// # Features
@@ -477,7 +477,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /* from char */
 
-    /// Creates a new `StringNonul` from a `char`.
+    /// Creates a new `StringNonNul` from a `char`.
     ///
     /// If `c` is NUL an empty string will be returned.
     ///
@@ -488,10 +488,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, char};
-    /// assert_eq![StringNonul::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
-    /// assert_eq![StringNonul::<4>::from_char('\0').unwrap().as_str(), ""];
-    /// assert![StringNonul::<3>::from_char('🐛').is_err()];
+    /// # use devela::{StringNonNul, char};
+    /// assert_eq![StringNonNul::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
+    /// assert_eq![StringNonNul::<4>::from_char('\0').unwrap().as_str(), ""];
+    /// assert![StringNonNul::<3>::from_char('🐛').is_err()];
     /// ```
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
@@ -507,7 +507,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `char7`.
+    /// Creates a new `StringNonNul` from a `char7`.
     ///
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty string will be returned.
     ///
@@ -518,13 +518,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 1.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, char7};
-    /// let s = StringNonul::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
+    /// # use devela::{StringNonNul, char7};
+    /// let s = StringNonNul::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "@"];
-    /// let s = StringNonul::<1>::from_char7(char7::try_from_char('\0').unwrap()).unwrap();
+    /// let s = StringNonNul::<1>::from_char7(char7::try_from_char('\0').unwrap()).unwrap();
     /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
+    /// assert![StringNonNul::<0>::from_char7(char7::try_from_char('@').unwrap()).is_err()];
     /// ```
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
         is![CAP == 0, return Err(MismatchedCapacity::too_small(CAP, 1))];
@@ -535,7 +535,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `char8`.
+    /// Creates a new `StringNonNul` from a `char8`.
     ///
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty string will be returned.
     ///
@@ -546,13 +546,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 2.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, char8};
-    /// let s = StringNonul::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
+    /// # use devela::{StringNonNul, char8};
+    /// let s = StringNonNul::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "ß"];
-    /// let s = StringNonul::<2>::from_char8(char8::try_from_char('\0').unwrap()).unwrap();
+    /// let s = StringNonNul::<2>::from_char8(char8::try_from_char('\0').unwrap()).unwrap();
     /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
+    /// assert![StringNonNul::<1>::from_char8(char8::try_from_char('ß').unwrap()).is_err()];
     /// ```
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
@@ -566,7 +566,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `char16`.
+    /// Creates a new `StringNonNul` from a `char16`.
     ///
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty string will be returned.
     ///
@@ -577,13 +577,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 3.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, char16};
-    /// let s = StringNonul::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
+    /// # use devela::{StringNonNul, char16};
+    /// let s = StringNonNul::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "€"];
-    /// let s = StringNonul::<3>::from_char16(char16::try_from_char('\0').unwrap()).unwrap();
+    /// let s = StringNonNul::<3>::from_char16(char16::try_from_char('\0').unwrap()).unwrap();
     /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
+    /// assert![StringNonNul::<2>::from_char16(char16::try_from_char('€').unwrap()).is_err()];
     /// ```
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
@@ -598,7 +598,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `charu`.
+    /// Creates a new `StringNonNul` from a `charu`.
     ///
     /// If `c`.[`is_nul()`][charu#method.is_nul] an empty string will be returned.
     ///
@@ -609,13 +609,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, charu};
-    /// let s = StringNonul::<4>::from_charu(charu::from_char('🐛')).unwrap();
+    /// # use devela::{StringNonNul, charu};
+    /// let s = StringNonNul::<4>::from_charu(charu::from_char('🐛')).unwrap();
     /// assert_eq![s.as_str(), "🐛"];
-    /// let s = StringNonul::<4>::from_charu(charu::from_char('\0')).unwrap();
+    /// let s = StringNonNul::<4>::from_charu(charu::from_char('\0')).unwrap();
     /// assert_eq![s.as_str(), ""];
     ///
-    /// assert![StringNonul::<3>::from_charu(charu::from_char('🐛')).is_err()];
+    /// assert![StringNonNul::<3>::from_charu(charu::from_char('🐛')).is_err()];
     /// ```
     pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
         let mut new = unwrap![ok? Self::new_checked()];
@@ -631,7 +631,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `charu`.
+    /// Creates a new `StringNonNul` from a `charu`.
     ///
     /// If `c`.[`is_nul()`][charu#method.is_nul] an empty string will be returned.
     ///
@@ -642,13 +642,13 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonul, charu};
-    /// let s = StringNonul::<3>::from_charu_unchecked(charu::from_char('€'));
+    /// # use devela::{StringNonNul, charu};
+    /// let s = StringNonNul::<3>::from_charu_unchecked(charu::from_char('€'));
     /// assert_eq![s, "€"]
     /// ```
     /// ```should_panic
-    /// # use devela::{StringNonul, charu};
-    /// StringNonul::<2>::from_charu_unchecked(charu::from_char('€'));
+    /// # use devela::{StringNonNul, charu};
+    /// StringNonNul::<2>::from_charu_unchecked(charu::from_char('€'));
     /// ```
     pub const fn from_charu_unchecked(c: charu) -> Self {
         let mut new = Self::new();
@@ -706,34 +706,34 @@ mod impl_traits {
         AddAssign, ConstInit, Debug, Deref, Display, FmtError, FmtResult, FmtWrite, Formatter,
         Hash, Hasher,
     };
-    use super::{StringNonul, StringU8, InvalidText, MismatchedCapacity, is};
+    use super::{StringNonNul, StringU8, InvalidText, MismatchedCapacity, is};
 
-    impl<const CAP: usize> Default for StringNonul<CAP> {
+    impl<const CAP: usize> Default for StringNonNul<CAP> {
         /// Returns an empty string.
         /// # Panics
         /// Panics if `CAP > [`u8::MAX`]`.
         fn default() -> Self { Self::new() }
     }
-    impl<const CAP: usize> ConstInit for StringNonul<CAP> {
+    impl<const CAP: usize> ConstInit for StringNonNul<CAP> {
         /// Returns an empty string.
         /// # Panics
         /// Panics if `CAP > [`u8::MAX`]`.
         const INIT: Self = Self::new();
     }
 
-    impl<const CAP: usize> Display for StringNonul<CAP> {
+    impl<const CAP: usize> Display for StringNonNul<CAP> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write!(f, "{}", self.as_str())
         }
     }
-    impl<const CAP: usize> Debug for StringNonul<CAP> {
+    impl<const CAP: usize> Debug for StringNonNul<CAP> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write!(f, "{:?}", self.as_str())
         }
     }
 
     /// Leverages [`try_push`](#method.try_push) and [`try_push_str`](#method.try_push_str).
-    impl<const CAP: usize> FmtWrite for StringNonul<CAP> {
+    impl<const CAP: usize> FmtWrite for StringNonNul<CAP> {
         fn write_str(&mut self, s: &str) -> FmtResult<()> {
             self.try_push_str(s).map_err(|_| FmtError)?;
             Ok(())
@@ -744,84 +744,84 @@ mod impl_traits {
         }
     }
 
-    impl<const CAP: usize> PartialEq for StringNonul<CAP> {
+    impl<const CAP: usize> PartialEq for StringNonNul<CAP> {
         fn eq(&self, other: &Self) -> bool { self.eq(other) }
     }
 
-    impl<const CAP: usize> PartialEq<str> for StringNonul<CAP> { // str on the RHS
+    impl<const CAP: usize> PartialEq<str> for StringNonNul<CAP> { // str on the RHS
         fn eq(&self, slice: &str) -> bool { self.as_str() == slice }
     }
-    impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> { // &str on the RHS
+    impl<const CAP: usize> PartialEq<&str> for StringNonNul<CAP> { // &str on the RHS
         fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
     }
-    impl<const CAP: usize> PartialEq<&[u8]> for StringNonul<CAP> { // &[u8] on the RHS
+    impl<const CAP: usize> PartialEq<&[u8]> for StringNonNul<CAP> { // &[u8] on the RHS
         fn eq(&self, bytes: &&[u8]) -> bool { self.as_bytes() == *bytes }
     }
 
-    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for str { // &str on the LHS
-        fn eq(&self, string: &StringNonul<CAP>) -> bool { self == string.as_str() }
+    impl<const CAP: usize> PartialEq<StringNonNul<CAP>> for str { // &str on the LHS
+        fn eq(&self, string: &StringNonNul<CAP>) -> bool { self == string.as_str() }
     }
-    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str { // &str on the LHS
-        fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
+    impl<const CAP: usize> PartialEq<StringNonNul<CAP>> for &str { // &str on the LHS
+        fn eq(&self, string: &StringNonNul<CAP>) -> bool { *self == string.as_str() }
     }
-    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &[u8] { // &[u8] on the LHS
-        fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_bytes() }
+    impl<const CAP: usize> PartialEq<StringNonNul<CAP>> for &[u8] { // &[u8] on the LHS
+        fn eq(&self, string: &StringNonNul<CAP>) -> bool { *self == string.as_bytes() }
     }
 
-    impl<const CAP: usize> Hash for StringNonul<CAP> {
+    impl<const CAP: usize> Hash for StringNonNul<CAP> {
         fn hash<H: Hasher>(&self, state: &mut H) {
             let len = self.len();
             self.arr[..len].hash(state);
         }
     }
 
-    impl<const CAP: usize> Deref for StringNonul<CAP> {
+    impl<const CAP: usize> Deref for StringNonNul<CAP> {
         type Target = str;
         fn deref(&self) -> &Self::Target { self.as_str() }
     }
 
-    impl<const CAP: usize> AsRef<str> for StringNonul<CAP> {
+    impl<const CAP: usize> AsRef<str> for StringNonNul<CAP> {
         fn as_ref(&self) -> &str { self.as_str() }
     }
 
-    impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
+    impl<const CAP: usize> AsRef<[u8]> for StringNonNul<CAP> {
         fn as_ref(&self) -> &[u8] { self.as_bytes() }
     }
 
     /* overloadable operators */
 
-    impl<const CAP: usize> AddAssign<char> for StringNonul<CAP> {
+    impl<const CAP: usize> AddAssign<char> for StringNonNul<CAP> {
         /// Appends the character if it fits and is not NUL.
         fn add_assign(&mut self, rhs: char) {
             let _ = self.push(rhs);
         }
     }
-    impl<const CAP: usize> AddAssign<&str> for StringNonul<CAP> {
+    impl<const CAP: usize> AddAssign<&str> for StringNonNul<CAP> {
         /// Appends text in place, skipping NULs and keeping what fits.
         fn add_assign(&mut self, rhs: &str) {
             let _ = self.push_str(rhs);
         }
     }
-    impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonul<RHS>> for StringNonul<CAP> {
+    impl<const CAP: usize, const RHS: usize> AddAssign<&StringNonNul<RHS>> for StringNonNul<CAP> {
         /// Appends text in place, skipping NULs and keeping what fits.
-        fn add_assign(&mut self, rhs: &StringNonul<RHS>) {
+        fn add_assign(&mut self, rhs: &StringNonNul<RHS>) {
             let _ = self.push_str(rhs.as_str());
         }
     }
-    impl<const CAP: usize, const RHS: usize> AddAssign<StringNonul<RHS>> for StringNonul<CAP> {
+    impl<const CAP: usize, const RHS: usize> AddAssign<StringNonNul<RHS>> for StringNonNul<CAP> {
         /// Appends text in place, skipping NULs and keeping what fits.
-        fn add_assign(&mut self, rhs: StringNonul<RHS>) {
+        fn add_assign(&mut self, rhs: StringNonNul<RHS>) {
             let _ = self.push_str(rhs.as_str());
         }
     }
     /// Appends text in place, skipping NULs and keeping what fits.
-    impl<const CAP: usize, const RHS: usize> AddAssign<&StringU8<RHS>> for StringNonul<CAP> {
+    impl<const CAP: usize, const RHS: usize> AddAssign<&StringU8<RHS>> for StringNonNul<CAP> {
         fn add_assign(&mut self, rhs: &StringU8<RHS>) {
             let _ = self.push_str(rhs.as_str());
         }
     }
     /// Appends text in place, skipping NULs and keeping what fits.
-    impl<const CAP: usize, const RHS: usize> AddAssign<StringU8<RHS>> for StringNonul<CAP> {
+    impl<const CAP: usize, const RHS: usize> AddAssign<StringU8<RHS>> for StringNonNul<CAP> {
         fn add_assign(&mut self, rhs: StringU8<RHS>) {
             let _ = self.push_str(rhs.as_str());
         }
@@ -829,10 +829,10 @@ mod impl_traits {
 
     /* conversions */
 
-    impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
+    impl<const CAP: usize> TryFrom<&str> for StringNonNul<CAP> {
         type Error = MismatchedCapacity;
 
-        /// Tries to create a new `StringNonul` from the given string slice.
+        /// Tries to create a new `StringNonNul` from the given string slice.
         ///
         /// # Errors
         /// Returns [`MismatchedCapacity`] if `CAP > `[`u8::MAX`] or if `CAP < str.len()`.
@@ -849,10 +849,10 @@ mod impl_traits {
         }
     }
 
-    impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
+    impl<const CAP: usize> TryFrom<&[u8]> for StringNonNul<CAP> {
         type Error = InvalidText;
 
-        /// Tries to create a new `StringNonul` from the given slice of `bytes`.
+        /// Tries to create a new `StringNonNul` from the given slice of `bytes`.
         ///
         /// The string will stop before the first nul character or the end of the slice.
         ///
@@ -883,7 +883,7 @@ mod impl_traits {
 
     /* Extend & FromIterator */
 
-    impl<const CAP: usize> Extend<char> for StringNonul<CAP> {
+    impl<const CAP: usize> Extend<char> for StringNonNul<CAP> {
         /// Creates an instance from an iterator of characters.
         ///
         /// Processes characters until it can fit no more, discarding the rest.
@@ -893,9 +893,9 @@ mod impl_traits {
         ///
         /// # Examples
         /// ```
-        /// # use devela::StringNonul;
+        /// # use devela::StringNonNul;
         /// let chars = ['a', 'b', 'c', '€', 'さ'];
-        /// let mut s = StringNonul::<6>::new();
+        /// let mut s = StringNonNul::<6>::new();
         /// s.extend(chars);
         /// assert_eq![s, "abc€"];
         /// ```
@@ -905,7 +905,7 @@ mod impl_traits {
             }
         }
     }
-    impl<const CAP: usize> FromIterator<char> for StringNonul<CAP> {
+    impl<const CAP: usize> FromIterator<char> for StringNonNul<CAP> {
         /// Creates an instance from an iterator of characters.
         ///
         /// Processes characters until it can fit no more, discarding the rest.
@@ -915,16 +915,16 @@ mod impl_traits {
         ///
         /// # Examples
         /// ```
-        /// # use devela::StringNonul;
+        /// # use devela::StringNonNul;
         /// let chars = ['a', 'b', 'c', '€', 'さ'];
-        /// assert_eq!(StringNonul::<9>::from_iter(chars), "abc€さ");
-        /// assert_eq!(StringNonul::<6>::from_iter(chars), "abc€");
-        /// assert_eq!(StringNonul::<5>::from_iter(chars), "abc");
-        /// assert_eq!(StringNonul::<2>::from_iter(chars), "ab");
-        /// assert_eq!(StringNonul::<0>::from_iter(chars), "");
+        /// assert_eq!(StringNonNul::<9>::from_iter(chars), "abc€さ");
+        /// assert_eq!(StringNonNul::<6>::from_iter(chars), "abc€");
+        /// assert_eq!(StringNonNul::<5>::from_iter(chars), "abc");
+        /// assert_eq!(StringNonNul::<2>::from_iter(chars), "ab");
+        /// assert_eq!(StringNonNul::<0>::from_iter(chars), "");
         /// ```
         fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
-            let mut string = StringNonul::new();
+            let mut string = StringNonNul::new();
             string.extend(iter);
             string
         }

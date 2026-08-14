@@ -9,7 +9,7 @@
 // mod case;
 #[cfg(feature = "grapheme")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "grapheme")))]
-pub mod grapheme; // Grapheme[Nonul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
+pub mod grapheme; // Grapheme[NonNul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
 // mod norm;
 // mod prop; // Unicode properties
 // mod width;

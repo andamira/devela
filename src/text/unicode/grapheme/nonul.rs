@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonul, char7, char8,
+    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonNul, char7, char8,
     char16, charu, doclink, unwrap,
 };
 
@@ -15,7 +15,7 @@ use crate::{
 
 #[must_use]
 #[doc = crate::_tags!(text)]
-#[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonul`]."]]
+#[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonNul`]."]]
 #[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
 ///
 /// ## Methods
@@ -33,31 +33,31 @@ use crate::{
 ///       [utf8](Self::from_charu))*.
 #[repr(transparent)]
 #[derive(Clone, Eq, PartialOrd, Ord)]
-pub struct GraphemeNonul<const CAP: usize>(pub(crate) StringNonul<CAP>);
+pub struct GraphemeNonNul<const CAP: usize>(pub(crate) StringNonNul<CAP>);
 
 #[rustfmt::skip]
-impl<const CAP: usize> GraphemeNonul<CAP> {
+impl<const CAP: usize> GraphemeNonNul<CAP> {
     /* constructors */
 
-    /// Creates a new empty `GraphemeNonul` with a capacity of `CAP` bytes.
+    /// Creates a new empty `GraphemeNonNul` with a capacity of `CAP` bytes.
     ///
     /// # Panics
     /// Panics if `CAP > 255.
     pub const fn new() -> Self {
-        Self(StringNonul::new())
+        Self(StringNonNul::new())
     }
 
-    /// Creates a new empty `GraphemeNonul` with a capacity of `CAP` bytes.
+    /// Creates a new empty `GraphemeNonNul` with a capacity of `CAP` bytes.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP > 255.
     pub const fn new_checked() -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::new_checked()]))
+        Ok(Self(unwrap![ok? StringNonNul::new_checked()]))
     }
 
     /* from_str* conversions */
 
-    /// Creates a new `GraphemeNonul` from the first grapheme of a `string` slice.
+    /// Creates a new `GraphemeNonNul` from the first grapheme of a `string` slice.
     ///
     /// The grapheme will be truncated if it exceeds the capacity `CAP`.
     ///
@@ -80,7 +80,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 
     /* from_char* conversions */
 
-    /// Creates a new `GraphemeNonul` from a `char7`.
+    /// Creates a new `GraphemeNonNul` from a `char7`.
     ///
     /// If `c`.[`is_nul()`][char7#method.is_nul] an empty grapheme will be returned.
     ///
@@ -90,10 +90,10 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1.
     pub const fn from_char7(c: char7) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
+        Ok(Self(unwrap![ok? StringNonNul::from_char7(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `char8`.
+    /// Creates a new `GraphemeNonNul` from a `char8`.
     ///
     /// If `c`.[`is_nul()`][char8#method.is_nul] an empty grapheme will be returned.
     ///
@@ -103,10 +103,10 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2.
     pub const fn from_char8(c: char8) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
+        Ok(Self(unwrap![ok? StringNonNul::from_char8(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `char16`.
+    /// Creates a new `GraphemeNonNul` from a `char16`.
     ///
     /// If `c`.[`is_nul()`][char16#method.is_nul] an empty grapheme will be returned.
     ///
@@ -116,10 +116,10 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3.
     pub const fn from_char16(c: char16) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
+        Ok(Self(unwrap![ok? StringNonNul::from_char16(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `char`.
+    /// Creates a new `GraphemeNonNul` from a `char`.
     ///
     /// If `c`.[`is_nul()`] an empty grapheme will be returned.
     ///
@@ -131,10 +131,10 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     #[doc = doclink!(devela "[`is_nul()`]" "text/trait.UnicodeScalar.html#method.is_nul")]
     #[doc = doclink!(devela "[`len_utf8()`]" "text/trait.UnicodeScalar.html#method.len_utf8")]
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
+        Ok(Self(unwrap![ok? StringNonNul::from_char(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `charu`.
+    /// Creates a new `GraphemeNonNul` from a `charu`.
     ///
     /// # Errors
     /// Returns [`MismatchedCapacity`] if `CAP` > 255
@@ -142,16 +142,16 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
     pub const fn from_charu(c: charu) -> Result<Self, MismatchedCapacity> {
-        Ok(Self(unwrap![ok? StringNonul::from_charu(c)]))
+        Ok(Self(unwrap![ok? StringNonNul::from_charu(c)]))
     }
-    /// Creates a new `GraphemeNonul` from a `charu`.
+    /// Creates a new `GraphemeNonNul` from a `charu`.
     ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][charu#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
     pub const fn from_charu_unchecked(c: charu) -> Self {
-        Self(StringNonul::from_charu_unchecked(c))
+        Self(StringNonNul::from_charu_unchecked(c))
     }
 
     /* queries */
@@ -222,10 +222,10 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the inner string type.
-    pub const fn as_string_nonul(&self) -> &StringNonul::<CAP> { &self.0 }
+    pub const fn as_string_nonul(&self) -> &StringNonNul::<CAP> { &self.0 }
 
     /// Returns the inner string type.
-    pub const fn into_string_nonul(self) -> StringNonul::<CAP> { self.0 }
+    pub const fn into_string_nonul(self) -> StringNonNul::<CAP> { self.0 }
 
     #[must_use]
     /// Returns the mutable inner string slice.
@@ -250,38 +250,38 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
 #[rustfmt::skip]
 mod trait_impls {
     use crate::{
-        ConstInit, Debug, Display, Formatter, FmtResult, GraphemeNonul, Hash, Hasher,
-        StringNonul,
+        ConstInit, Debug, Display, Formatter, FmtResult, GraphemeNonNul, Hash, Hasher,
+        StringNonNul,
     };
 
-    impl<const CAP: usize> Default for GraphemeNonul<CAP> {
+    impl<const CAP: usize> Default for GraphemeNonNul<CAP> {
         /// Returns an empty extended grapheme character.
         fn default() -> Self { Self::new() }
     }
-    impl<const CAP: usize> ConstInit for GraphemeNonul<CAP> {
+    impl<const CAP: usize> ConstInit for GraphemeNonNul<CAP> {
         /// An empty extended grapheme character.
         const INIT: Self = Self::new();
     }
 
-    impl<const CAP: usize> PartialEq for GraphemeNonul<CAP> {
+    impl<const CAP: usize> PartialEq for GraphemeNonNul<CAP> {
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
 
-    impl<const CAP: usize> PartialEq<StringNonul<CAP>> for GraphemeNonul<CAP> {
-        fn eq(&self, other: &StringNonul<CAP>) -> bool { self.0.eq(other) }
+    impl<const CAP: usize> PartialEq<StringNonNul<CAP>> for GraphemeNonNul<CAP> {
+        fn eq(&self, other: &StringNonNul<CAP>) -> bool { self.0.eq(other) }
     }
-    impl<const CAP: usize> PartialEq<GraphemeNonul<CAP>> for StringNonul<CAP> {
-        fn eq(&self, other: &GraphemeNonul<CAP>) -> bool { self.eq(&other.0) }
+    impl<const CAP: usize> PartialEq<GraphemeNonNul<CAP>> for StringNonNul<CAP> {
+        fn eq(&self, other: &GraphemeNonNul<CAP>) -> bool { self.eq(&other.0) }
     }
 
-    impl<const CAP: usize> Hash for GraphemeNonul<CAP> {
+    impl<const CAP: usize> Hash for GraphemeNonNul<CAP> {
         fn hash<H: Hasher>(&self, state: &mut H) { self.0.hash(state); }
     }
 
-    impl<const CAP: usize> Display for GraphemeNonul<CAP> {
+    impl<const CAP: usize> Display for GraphemeNonNul<CAP> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{}", self.0) }
     }
-    impl<const CAP: usize> Debug for GraphemeNonul<CAP> {
+    impl<const CAP: usize> Debug for GraphemeNonNul<CAP> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{:?}", self.0) }
     }
 }
