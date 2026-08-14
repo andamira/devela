@@ -19,8 +19,8 @@ crate::structural_mods! { // _mods, _reexports
             array::_all::*,
             buf::*,
             ext::*,
-            namespace::Str,
-            small::*,
+            namespace::_all::Str,
+            small::_all::*,
         };
     }
     _reexports {

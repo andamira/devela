@@ -52,10 +52,13 @@ impl AsciiLut {
         6061626364656667686970717273747576777879\
         8081828384858687888990919293949596979899";
 
-    /// Lookup table for digit characters in bases 2 through 36.
+    /// Lookup table for uppercase digit characters in bases 2 through 36.
     ///
     /// Used internally in [`Digits`][crate::Digits].
     pub const DIGITS_BASE36: [u8; 36] = *b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    /// Lookup table for lowercase digit characters in bases 2 through 36.
+    pub const DIGITS_BASE36_LOWER: [u8; 36] = *b"0123456789abcdefghijklmnopqrstuvwxyz";
 
     /// Precomputed powers of 10: `[10^0, 10^1, ..., 10^38]`
     ///

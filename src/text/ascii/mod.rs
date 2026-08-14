@@ -10,13 +10,16 @@ mod digits; // Digits
 mod lut; // AsciiLut
 mod set; // AsciiSet
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _crate_internals
     _mods {
         pub use super::{
             char::*,
-            digits::*,
+            digits::_all::*,
             lut::*,
             set::*,
         };
+    }
+    _crate_internals {
+        pub(crate) use super::digits::_crate_internals::*;
     }
 }

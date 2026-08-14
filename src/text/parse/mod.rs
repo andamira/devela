@@ -14,7 +14,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use super::{
             byte_search::*,
             error::*,
-            scanner::*,
+            scanner::_all::*,
         };
     }
     _reexports {

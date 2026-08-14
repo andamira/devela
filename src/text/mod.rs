@@ -29,13 +29,13 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             // draw::_all::*,
             // generate::_all::*,
             metric::*,
-            translit::*,
+            translit::_all::*,
         };
     }
     _pub_mods {
         #[doc(inline)]
         pub use super::{
-            ascii::*,
+            ascii::_all::*,
             fmt::_all::*,
             layout::_all::*,
             parse::_all::*,
@@ -46,6 +46,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _crate_internals {
         pub(crate) use super::{
             _DOC_TEXT_MODULES,
+            ascii::_crate_internals::*,
         };
     }
     _hidden {

@@ -21,7 +21,7 @@ pub enum TextParseErrorKind {
         /// The byte that was found, or `None` if EOF was reached.
         found: Option<u8>,
     },
-    /// Additional input remains after a complete construct.
+    /// Input remains after a complete value was parsed.
     TrailingInput,
 
     /* decoding and lexical-value failures */

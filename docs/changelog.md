@@ -268,6 +268,8 @@
   - add methods: `listen_signals`, `listen_app_controls`, `listen_resize`.
 
 ### text::ascii
+- update AsciiLut:
+  - new constant: `DIGITS_BASE36_LOWER`.
 - update `Digits`:
   - add methods `write_digits16[_nonzero]` for all bit-sizes.
 

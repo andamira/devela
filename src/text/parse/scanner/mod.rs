@@ -3,6 +3,8 @@
 //! Defines [`TextScanner`]
 //
 
+mod define; // TextScanner
+
 // impls
 mod _helper;
 mod core; // constructors, source views, cursor/range basics, predicate adapters
@@ -13,12 +15,10 @@ mod line; // EOL and line-oriented scanning
 mod quote; // quoted string scanning and decoding
 mod scalar; // UTF-8 scalar scanning
 
-mod define; // TextScanner
-
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            define::*,
+            define::TextScanner,
         };
     }
 }
