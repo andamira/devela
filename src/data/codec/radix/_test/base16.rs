@@ -140,3 +140,28 @@ fn const_operations() {
     assert_eq!(DECODED, Some([0xde, 0xad, 0xbe]));
     assert_eq!(ENCODED, (*b"deadbe", Some(6)));
 }
+#[test]
+fn lengths() {
+    let radix = Radix::<16>::HEX;
+    for &(input, encoded) in &[
+        (b"".as_slice(), b"".as_slice()),
+        (b"f", b"66"),
+        (b"fo", b"666F"),
+        (b"foo", b"666F6F"),
+        (b"foobar", b"666F6F626172"),
+    ] {
+        assert_eq!(radix.encoded_len(input.len()), encoded.len());
+        assert_eq!(radix.decoded_len(encoded), input.len());
+    }
+    assert_eq!(Radix::<16>::HEX_LOWER.encoded_len(6), Radix::<16>::HEX.encoded_len(6));
+}
+#[test]
+fn encoded_len_matches_encoder() {
+    let input = &ALL_BYTES;
+    for radix in [Radix::<16>::HEX, Radix::<16>::HEX_LOWER] {
+        let mut output = [0; 512];
+        let written = radix.encode_to_slice(input, &mut output).unwrap();
+        assert_eq!(radix.encoded_len(input.len()), written);
+        assert_eq!(radix.decoded_len(&output[..written]), input.len());
+    }
+}

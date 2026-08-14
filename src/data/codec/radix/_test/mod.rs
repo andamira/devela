@@ -11,6 +11,13 @@ const ALL_BYTES: [u8; 256] = {
     crate::whilst! { i in 0..256; { bytes[i] = i as u8; }}
     bytes
 };
+fn without_padding(input: &[u8]) -> &[u8] {
+    let mut len = input.len();
+    while len > 0 && input[len - 1] == b'=' {
+        len -= 1;
+    }
+    &input[..len]
+}
 
 #[test]
 fn const_init() {

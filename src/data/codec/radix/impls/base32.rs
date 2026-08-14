@@ -60,6 +60,25 @@ impl Radix<32> {
         is! { written != N, return None }
         Some(output)
     }
+    /// Returns the structural decoded length of `input`.
+    ///
+    /// This accounts for the selected codec's canonical padding,
+    /// but does not validate symbols or canonical form.
+    pub const fn decoded_len(self, input: &[u8]) -> usize {
+        match self.cfg {
+            // RFC4648 / Base32hex:
+            0..=3 => {
+                let mut len = input.len();
+                while len > 0 && input[len - 1] == b'=' {
+                    len -= 1;
+                }
+                len * 5 / 8
+            }
+            // Crockford:
+            4 => input.len() * 5 / 8,
+            _ => 0,
+        }
+    }
 
     /// Encodes bytes as Base32 ASCII.
     pub const fn encode_to_slice(self, input: &[u8], output: &mut [u8]) -> Option<usize> {
@@ -71,6 +90,30 @@ impl Radix<32> {
             4 => encode_base32(input, output, BASE32_CROCKFORD, false),
             _ => None,
         }
+    }
+    /// Returns the encoded length for `input_len` bytes.
+    pub const fn encoded_len(self, input_len: usize) -> usize {
+        let blocks = input_len / 5;
+        let rem = input_len % 5;
+        let tail = match self.cfg {
+            0 | 2 => {
+                // padded
+                if rem == 0 { 0 } else { 8 }
+            }
+            1 | 3 | 4 => {
+                // unpadded / Crockford
+                match rem {
+                    0 => 0,
+                    1 => 2,
+                    2 => 4,
+                    3 => 5,
+                    4 => 7,
+                    _ => unreachable!(),
+                }
+            }
+            _ => return 0,
+        };
+        blocks * 8 + tail
     }
 }
 

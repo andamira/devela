@@ -30,6 +30,14 @@ impl Radix<16> {
         is! { written != N, return None }
         Some(output)
     }
+    /// Returns the structural decoded length of `input`.
+    ///
+    /// This accounts for the selected codec's canonical padding,
+    /// but does not validate symbols or canonical form.
+    pub const fn decoded_len(self, input: &[u8]) -> usize {
+        input.len() / 2
+    }
+
     /// Encodes bytes as hexadecimal ASCII.
     pub const fn encode_to_slice(self, input: &[u8], output: &mut [u8]) -> Option<usize> {
         let alphabet = match self.cfg {
@@ -38,6 +46,11 @@ impl Radix<16> {
             _ => return None,
         };
         encode_hex(input, output, alphabet)
+    }
+    /// Returns the encoded length for `input_len` bytes.
+    pub const fn encoded_len(self, input_len: usize) -> usize {
+        unwrap![some_expect input_len.checked_mul(2), "encoded length overflow"]
+        // input_len * 2
     }
 }
 

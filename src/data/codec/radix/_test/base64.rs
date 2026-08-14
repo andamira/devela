@@ -2,22 +2,32 @@
 
 use super::*;
 
+const VECTORS_RFC4648: &[(&[u8], &[u8])] = &[
+    (b"", b""),
+    (b"f", b"Zg=="),
+    (b"fo", b"Zm8="),
+    (b"foo", b"Zm9v"),
+    (b"foob", b"Zm9vYg=="),
+    (b"fooba", b"Zm9vYmE="),
+    (b"foobar", b"Zm9vYmFy"),
+];
+const VECTORS_RFC4648_UNPADDED: &[(&[u8], &[u8])] = &[
+    (b"", b""),
+    (b"f", b"Zg"),
+    (b"fo", b"Zm8"),
+    (b"foo", b"Zm9v"),
+    (b"foob", b"Zm9vYg"),
+    (b"fooba", b"Zm9vYmE"),
+    (b"foobar", b"Zm9vYmFy"),
+];
+
 #[test]
 fn base() {
     assert_eq!(Radix::<64>::BASE, 64);
 }
 #[test]
 fn encode_rfc4648_vectors() {
-    let vectors: &[(&[u8], &[u8])] = &[
-        (b"", b""),
-        (b"f", b"Zg=="),
-        (b"fo", b"Zm8="),
-        (b"foo", b"Zm9v"),
-        (b"foob", b"Zm9vYg=="),
-        (b"fooba", b"Zm9vYmE="),
-        (b"foobar", b"Zm9vYmFy"),
-    ];
-    for &(input, expected) in vectors {
+    for &(input, expected) in VECTORS_RFC4648 {
         let mut output = [0; 16];
         let written = Radix::<64>::STD.encode_to_slice(input, &mut output).unwrap();
         assert_eq!(&output[..written], expected);
@@ -25,16 +35,7 @@ fn encode_rfc4648_vectors() {
 }
 #[test]
 fn encode_unpadded() {
-    let vectors: &[(&[u8], &[u8])] = &[
-        (b"", b""),
-        (b"f", b"Zg"),
-        (b"fo", b"Zm8"),
-        (b"foo", b"Zm9v"),
-        (b"foob", b"Zm9vYg"),
-        (b"fooba", b"Zm9vYmE"),
-        (b"foobar", b"Zm9vYmFy"),
-    ];
-    for &(input, expected) in vectors {
+    for &(input, expected) in VECTORS_RFC4648_UNPADDED {
         let mut output = [0; 16];
         let written = Radix::<64>::STD_UNPADDED.encode_to_slice(input, &mut output).unwrap();
         assert_eq!(&output[..written], expected);
@@ -56,16 +57,7 @@ fn url_alphabet() {
 }
 #[test]
 fn decode_rfc4648_vectors() {
-    let vectors: &[(&[u8], &[u8])] = &[
-        (b"", b""),
-        (b"Zg==", b"f"),
-        (b"Zm8=", b"fo"),
-        (b"Zm9v", b"foo"),
-        (b"Zm9vYg==", b"foob"),
-        (b"Zm9vYmE=", b"fooba"),
-        (b"Zm9vYmFy", b"foobar"),
-    ];
-    for &(input, expected) in vectors {
+    for &(expected, input) in VECTORS_RFC4648 {
         let mut output = [0; 16];
         let written = Radix::<64>::STD.decode_from_slice(input, &mut output).unwrap();
         assert_eq!(&output[..written], expected);
@@ -156,5 +148,29 @@ fn case_sensitive_and_rejects_non_alphabet() {
     let mut output = [0; 8];
     for input in [b"Z g==".as_slice(), b"Zg==\n".as_slice(), b"*g==".as_slice()] {
         assert_eq!(Radix::<64>::STD.decode_from_slice_relaxed(input, &mut output), None);
+    }
+}
+#[test]
+fn lengths() {
+    for &(input, encoded) in VECTORS_RFC4648 {
+        assert_eq!(Radix::<64>::STD.encoded_len(input.len()), encoded.len());
+        assert_eq!(Radix::<64>::URL.encoded_len(input.len()), encoded.len());
+        assert_eq!(Radix::<64>::STD.decoded_len(encoded), input.len());
+        let unpadded = without_padding(encoded);
+        assert_eq!(Radix::<64>::STD_UNPADDED.encoded_len(input.len()), unpadded.len());
+        assert_eq!(Radix::<64>::URL_UNPADDED.encoded_len(input.len()), unpadded.len());
+        assert_eq!(Radix::<64>::STD_UNPADDED.decoded_len(unpadded), input.len());
+    }
+}
+#[test]
+fn encoded_len_matches_encoder() {
+    let input = &ALL_BYTES;
+    for radix in
+        [Radix::<64>::STD, Radix::<64>::STD_UNPADDED, Radix::<64>::URL, Radix::<64>::URL_UNPADDED]
+    {
+        let mut output = [0; 512];
+        let written = radix.encode_to_slice(input, &mut output).unwrap();
+        assert_eq!(radix.encoded_len(input.len()), written);
+        assert_eq!(radix.decoded_len(&output[..written]), input.len());
     }
 }

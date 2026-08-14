@@ -59,6 +59,17 @@ impl Radix<64> {
         is! { written != N, return None }
         Some(output)
     }
+    /// Returns the structural decoded length of `input`.
+    ///
+    /// This accounts for the selected codec's canonical padding,
+    /// but does not validate symbols or canonical form.
+    pub const fn decoded_len(self, input: &[u8]) -> usize {
+        let mut len = input.len();
+        while len > 0 && input[len - 1] == b'=' {
+            len -= 1;
+        }
+        len * 6 / 8
+    }
 
     /// Encodes bytes as Base64 ASCII.
     pub const fn encode_to_slice(self, input: &[u8], output: &mut [u8]) -> Option<usize> {
@@ -68,6 +79,28 @@ impl Radix<64> {
             2 => encode_base64(input, output, BASE64_URL, true),
             3 => encode_base64(input, output, BASE64_URL, false),
             _ => None,
+        }
+    }
+    /// Returns the encoded length for `input_len` bytes.
+    pub const fn encoded_len(self, input_len: usize) -> usize {
+        let blocks = input_len / 3;
+        let rem = input_len % 3;
+        match self.cfg {
+            0 | 2 => {
+                // padded
+                blocks * 4 + if rem == 0 { 0 } else { 4 }
+            }
+            1 | 3 => {
+                // unpadded
+                blocks * 4
+                    + match rem {
+                        0 => 0,
+                        1 => 2,
+                        2 => 3,
+                        _ => unreachable!(),
+                    }
+            }
+            _ => 0,
         }
     }
 }

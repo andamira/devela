@@ -29,14 +29,6 @@ const VECTORS_CROCKFORD: &[(&[u8], &[u8])] = &[
     (b"foobar", b"CSQPYRK1E8"),
 ];
 
-fn without_padding(input: &[u8]) -> &[u8] {
-    let mut len = input.len();
-    while len > 0 && input[len - 1] == b'=' {
-        len -= 1;
-    }
-    &input[..len]
-}
-
 #[test]
 fn base() {
     assert_eq!(Radix::<32>::BASE, 32);
@@ -250,4 +242,41 @@ fn const_operations() {
     assert_eq!(DECODED, Some(*b"foobar"));
     assert_eq!(RELAXED, Some(*b"foobar"));
     assert_eq!(ENCODED, (*b"CSQPYRK1E8", Some(10)));
+}
+#[test]
+fn lengths() {
+    for &(input, encoded) in VECTORS_RFC4648 {
+        assert_eq!(Radix::<32>::STD.encoded_len(input.len()), encoded.len());
+        assert_eq!(Radix::<32>::STD.decoded_len(encoded), input.len());
+        let unpadded = without_padding(encoded);
+        assert_eq!(Radix::<32>::STD_UNPADDED.encoded_len(input.len()), unpadded.len());
+        assert_eq!(Radix::<32>::STD_UNPADDED.decoded_len(unpadded), input.len());
+    }
+    for &(input, encoded) in VECTORS_HEX {
+        assert_eq!(Radix::<32>::HEX.encoded_len(input.len()), encoded.len());
+        assert_eq!(Radix::<32>::HEX.decoded_len(encoded), input.len());
+        let unpadded = without_padding(encoded);
+        assert_eq!(Radix::<32>::HEX_UNPADDED.encoded_len(input.len()), unpadded.len());
+        assert_eq!(Radix::<32>::HEX_UNPADDED.decoded_len(unpadded), input.len());
+    }
+    for &(input, encoded) in VECTORS_CROCKFORD {
+        assert_eq!(Radix::<32>::CROCKFORD.encoded_len(input.len()), encoded.len());
+        assert_eq!(Radix::<32>::CROCKFORD.decoded_len(encoded), input.len());
+    }
+}
+#[test]
+fn encoded_len_matches_encoder() {
+    let input = &ALL_BYTES;
+    for radix in [
+        Radix::<32>::STD,
+        Radix::<32>::STD_UNPADDED,
+        Radix::<32>::HEX,
+        Radix::<32>::HEX_UNPADDED,
+        Radix::<32>::CROCKFORD,
+    ] {
+        let mut output = [0; 512];
+        let written = radix.encode_to_slice(input, &mut output).unwrap();
+        assert_eq!(radix.encoded_len(input.len()), written);
+        assert_eq!(radix.decoded_len(&output[..written]), input.len());
+    }
 }
