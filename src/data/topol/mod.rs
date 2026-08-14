@@ -24,19 +24,16 @@
 //   neighborhood, and partition.
 //
 
+// pub mod graph;
 mod linked; // ConstList[Item], LinkedList
 // mod ord;
 // mod span;
-
-// #[cfg(_graph··)]
-// pub mod graph;
-// #[cfg(_node··)]
-// pub mod node;
 // pub mod spatial;
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
+            // graph::_all::*,
             linked::_all::*,
             // ord::_all::*,
             // span::_all::*,
@@ -46,10 +43,5 @@ crate::structural_mods! { // _mods, _pub_mods
         // pub use super::{
         //     spatial::_all::*,
         // };
-
-        // #[cfg(_graph··)]
-        // pub use super::graph::*;
-        // #[cfg(_node··)]
-        // pub use super::node::_all::*;
     }
 }

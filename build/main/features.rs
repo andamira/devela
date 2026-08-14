@@ -371,16 +371,6 @@ mod reflection {
         features: &["_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72"]
     };
 
-    // ### collections
-    pub const _GRAPH: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_graph··"],
-        features: &["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
-    };
-    pub const _NODE: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["_node··"],
-        features: &["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
-    };
-
     /* ## sys */
 
     pub const _SYS: FlagsFeatures = FlagsFeatures {
@@ -433,7 +423,6 @@ mod reflection {
             _UNROLL,
             // data
             _TUPLE,
-            _GRAPH, _NODE, // collections
             // sys
             _SYS,
 

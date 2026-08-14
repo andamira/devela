@@ -20,7 +20,7 @@
 
 ## features & flags
 - new features: `code_all`, `data_all`, `ffi`, `geom_all`, `lang_all`, `media_all`, `num_all`, `org_all`, `phys_all`, `run_all`, `sys_all`, `text_all`, `ui_all`, `vita_all`, `widget`, `work_all`.
-- remove features: `layout`, `safe_color`, `safe_draw`, `safe_image`, `_destaque*`, `_stack*`.
+- remove features: `layout`, `safe_color`, `safe_draw`, `safe_image`, `_destaque*`, `_stack*`, `_graph_*`, `_node_*`.
 - rename features: `lin` to `alg`.
 - add more feature gates for: `time`, `ui`.
 - remove the `unsafe··` flag requirement for re-exported unsafe std methods.
@@ -116,6 +116,9 @@
 - new macro: `pool!`.
 - new type: `PoolIter`.
 
+### data::topol
+- remove old type sketches: `Graph*`, `Node*`.
+
 ## error
 - new root module.
 - move `<data|num|text>::error` to `error::<data|num|text>`.
@@ -175,6 +178,7 @@
 
 ## num
 - rename `num::lin` to `num::alg`.
+- new module `signal`.
 
 #### num::alg::vector
 - update `Vector`:
@@ -205,7 +209,6 @@
 - overhaul `Ratio` with new functionalty for primitive aliases.
 
 ### num::signal
-- new module.
 - new traits: `SignalAt`, `SignalNext`.
 - new types: `CurveRamp`, `Phase[Step|Accum]`, `Signal<Clamp|Const|Fn|Map|Scale|Zip>`.
 

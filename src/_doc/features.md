@@ -138,7 +138,6 @@ Implements the [`unroll!`] macro for a selected maximum recursion depth (64 by d
 Expands internal data-structure coverage and generated implementations.
 
 - `_data_all`: enables all hidden data scope expansions.
-- `_collections_all`: enables hidden collection implementation families.
 - `_tuple[_24|_36|_48|_72]`: implements the [`Tuple`] trait for a selected
   maximum arity (12 by default).
 
