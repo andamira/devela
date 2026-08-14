@@ -1,47 +1,48 @@
 // devela/src/data/topol/mod.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL!()] // public
-#![doc = crate::_doc!(modules: crate::data; topol)] // graph, spatial
+#![doc = crate::_doc!(modules: crate::data; topol: graph)] // spatial
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
-//! Topology describes connectivity, adjacency, and ordered relations.
+//! Topology describes structural relations
+//! independently of the values participating in them.
 //!
-//! It answers how values are related, independently of their physical
-//! arrangement, ownership, or representation.
+//! It answers how positions or identities are connected, adjacent,
+//! or otherwise related without determining where their values
+//! are stored or how long those values live.
 //!
-//! A topology may be represented through references, indices, handles,
-//! or explicit nodes. Changing that representation need not change the
-//! relations being expressed.
+//! A topology may be represented through indices, handles, links,
+//! or compact relation tables. Changing that representation need
+//! not change the relations being expressed.
 //!
-//! It does not assign identity, retain values, or define geometric distance;
-//! those concerns belong to [`data::id`](crate::data::id),
-//! [`data::store`](crate::data::store), and [`geom`](crate::geom).
+//! Topology does not assign durable identity, retain application values,
+//! or define geometric measurement; those concerns belong to
+//! [`data::id`](crate::data::id), [`data::store`](crate::data::store),
+//! and [`geom`](crate::geom).
+//
+// //! Restrictions such as acyclicity, uniqueness of edges, or exclusion of
+// //! self-loops are graph properties rather than assumptions of topology itself.
 //!
-//! - [`ConstList`] represents immutable linear succession through shared links.
-//! - [`LinkedList`] provides mutable owned linkage when allocation is available.
-// - [`Spatial structures`](spatial) organize indexed values by locality,
-//   neighborhood, and partition.
+//! - [`graph`] describes arbitrary connectivity over vertex domains.
+//! - Spatial topology may describe locality, neighborhood, and partitioning
+//!   independently of geometric coordinates and metrics.
 //
 
-// pub mod graph;
-mod linked; // ConstList[Item], LinkedList
-// mod ord;
-// mod span;
-// pub mod spatial;
+pub mod graph; // WIP
+// mod ord; // TODO
+// pub mod spatial; // TODO
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            // graph::_all::*,
-            linked::_all::*,
             // ord::_all::*,
-            // span::_all::*,
         };
     }
     _pub_mods {
-        // pub use super::{
-        //     spatial::_all::*,
-        // };
+        pub use super::{
+            graph::_all::*,
+            // spatial::_all::*,
+        };
     }
 }

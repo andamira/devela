@@ -56,7 +56,7 @@ See the linked modifications for detailed changes.
   [`SpinLock`]: https://docs.rs/devela/latest/devela/work/sync/struct.SpinLock.html
   [`SpinLockGuard`]: https://docs.rs/devela/latest/devela/work/sync/struct.SpinLockGuard.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
-  [`ConstList`]: https://docs.rs/devela/latest/devela/data/list/struct.ConstList.html
+  [`ConstList`]: https://docs.rs/devela/latest/devela/data/layout/linked/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.21
   [M_crossbeam-utils]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/crossbeam-utils.md
   [`CacheAlign`]: https://docs.rs/devela/latest/devela/sys/mem/struct.CacheAlign.html

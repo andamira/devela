@@ -1,12 +1,15 @@
-// devela/src/data/topol/linked/mod.rs
+// devela/src/data/layout/linked/mod.rs
 //
-#![doc = crate::_DOC_DATA_TOPOL_LINKED!()] // private
-#![doc = crate::_doc!(modules: crate::data::topol; linked)]
+#![doc = crate::_DOC_DATA_LAYOUT_LINKED!()] // public
+#![doc = crate::_doc!(modules: crate::data::layout; linked)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
 //! They enable efficient insertion and deletion at any position,
 //! storing a sequence of elements of the same type, each pointing to the next.
+//!
+//! - [`ConstList`] represents immutable linear succession through shared links.
+//! - [`LinkedList`] provides mutable owned linkage when allocation is available.
 //
 
 #[cfg(feature = "alloc")]

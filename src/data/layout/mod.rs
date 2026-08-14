@@ -1,7 +1,7 @@
 // devela/src/data/layout/mod.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
-#![doc = crate::_doc!(modules: crate::data; layout: array, buffer, dst)]
+#![doc = crate::_doc!(modules: crate::data; layout: array, buffer, dst, linked)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, vec)]
 //!
@@ -20,28 +20,26 @@
 //!   without requiring heap allocation.
 //
 
+pub mod array; // Contiguous homogeneous storage with dimensional projections
+pub mod buffer; // Capacity-managed storage with explicit occupancy state
 mod collection; // DataCollection
-mod queue;
-mod sort; // Sort
-mod stack;
-
-pub mod array;
-pub mod buffer; // buffer_linear!, buffer_ring!, Buffer*Example
-
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
-pub mod dst;
-
+pub mod dst; // Dynamically-sized types stored without need of heap allocation
 // pub mod erased; // TODO
-// pub mod table; // TODO
+pub mod linked; // Homogeneous, sequentially accessed structures
+mod ord; // Sort
+mod queue; // Homogeneous data structures that process elements in FIFO order
+mod stack; // Homogeneous data structures that process elements in LIFO order
+// pub mod table; // TODO Tabular and heterogeneous data processing
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
-            collection::*,
+            collection::DataCollection,
             queue::_all::*,
-            sort::_all::*,
+            ord::_all::Sort,
             stack::_all::*,
         };
     }
@@ -50,6 +48,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             array::_all::*,
             buffer::_all::*,
             // erased::_all::*,
+            linked::_all::*,
             // table::_all::*,
         };
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]

@@ -9,7 +9,7 @@
   [M_bytehound-preload]: crate::_doc::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
-  [`ConstList`]: crate::data::topol::ConstList
+  [`ConstList`]: crate::data::layout::linked::ConstList
   [M_crossbeam-utils]: crate::_doc::vendored::crossbeam_utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_doc::vendored::etcetera

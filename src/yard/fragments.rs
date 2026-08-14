@@ -75,6 +75,7 @@ its own flat view of all its public children.";
     _DOC_DATA_LAYOUT_ARRAY  = "Contiguous homogeneous storage with dimensional projections.";
     _DOC_DATA_LAYOUT_BUFFER = "Capacity-managed storage with explicit occupancy state.";
     _DOC_DATA_LAYOUT_DST    = "Dynamically-sized types stored without need of heap allocation.";
+    _DOC_DATA_LAYOUT_LINKED = "Homogeneous, sequentially accessed structures.";
     _DOC_DATA_LAYOUT_QUEUE  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_FIFO!(), " order."];
     _DOC_DATA_LAYOUT_STACK  = concat!["Homogeneous data structures that process elements in ",
@@ -87,10 +88,9 @@ its own flat view of all its public children.";
     _DOC_DATA_STORE_INTERN  = "Canonical stores for deduplicated values and shared identity.";
     _DOC_DATA_STORE_KEY     = "Keyed stores and lookup structures.";
     _DOC_DATA_STORE_POOL    = "Reusable slot stores with generational handles and individual reclamation.";
-    _DOC_DATA_TOPOL         = "Relational topology over structured data.";
-    _DOC_DATA_TOPOL_LINKED  = "Homogeneous, sequentially accessed structures.";
-    _DOC_DATA_TOPOL_NODE    = "Abstractions for structured relationships.";
-    _DOC_DATA_TOPOL_SPATIAL = "Locality, neighborhood, and partitioning structures over indexed data.";
+    _DOC_DATA_TOPOL         = "Connectivity and structural relations independent of storage.";
+    _DOC_DATA_TOPOL_GRAPH   = "Graph connectivity over indexed vertex domains.";
+    _DOC_DATA_TOPOL_SPATIAL = "Locality, neighborhood, and partitioning over indexed domains.";
     _DOC_DATA_VALUE         = "Semantic value categories and composable data forms.";
     _DOC_DATA_VALUE_SCHEMA  = "Schemas for encoded values.";
     _DOC_DATA_WORD          = "Raw-representable data words.";

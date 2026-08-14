@@ -104,6 +104,9 @@
   - fix impl `option` methods: `truncate`, `swap_remove`, `from_array_unchecked`.
 - rename: `BufferStaticExample` to `BufferLinearStaticExample`, `BufferViewExample` to `BufferLinearViewExample`, `BufferAllocExample` to `BufferLinearAllocExample`.
 
+#### data::layout::linked
+- make module public.
+
 ### data::store
 - make `pool` and `arena` modules public.
 
@@ -118,6 +121,7 @@
 
 ### data::topol
 - remove old type sketches: `Graph*`, `Node*`.
+- move `linked` module to `data::layout`.
 
 ## error
 - new root module.

@@ -1,4 +1,4 @@
-// devela/src/data/layout/sort/define.rs
+// devela/src/data/layout/ord/define.rs
 //
 //! Defines and documents [`Sort`].
 //
