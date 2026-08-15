@@ -275,7 +275,6 @@ pub mod all {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
-        _doc::_all::*,
         code::_all::*,
         data::_all::*,
         error::_all::*,

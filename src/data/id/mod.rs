@@ -18,6 +18,9 @@
 //!   a bounded execution scope.
 //
 
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example;
+
 pub mod handle; // Compact contextual references resolved against external state
 pub mod uuid; // Standardized portable 128-bit identifiers
 
@@ -42,6 +45,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
         pub use super::pin_box::IdPinBox;
         // #[cfg(feature = "std")]
         // pub use super::snowflake::*;
+
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example::*;
     }
     _pub_mods {
         #[doc(inline)]

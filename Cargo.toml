@@ -107,8 +107,6 @@ include = [
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
 	## examples included from /src/_doc
 	# (omitted local examples are stripped from the packaged manifest)
-	"/examples/code/enumint.rs",
-	"/examples/data/id_seq.rs",
 	"/examples/work/coro_manager.rs",
 	## programs
 	# "",
@@ -971,19 +969,16 @@ name = "cargo_script"
 path = "examples/code/cargo_script.rs"
 required-features = ["__exclude_test"]
 doc-scrape-examples = false
-[[example]]
-name = "enumint" # NOTE: in docs
-path = "examples/code/enumint.rs"
 
 # data
 [[example]]
 name = "id_pin"
-path = "examples/data/id_pin.rs"
+path = "examples/data/id/pin.rs"
 required-features = [] # optional: "alloc"
 doc-scrape-examples = false
 [[example]]
-name = "id_seq" # NOTE: in docs
-path = "examples/data/id_seq.rs"
+name = "id_seq"
+path = "examples/data/id/seq.rs"
 
 # sys
 [[example]]

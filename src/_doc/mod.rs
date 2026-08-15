@@ -1,7 +1,7 @@
 // devela/src/_doc/mod.rs
 //
 //! Extra documentation about the library.
-#![doc = crate::_doc!(modules: crate; _doc: examples, features, macros, nightly, vendored)]
+#![doc = crate::_doc!(modules: crate; _doc: features, macros, nightly, vendored)]
 //#![doc = crate::_doc!(br+hr)] // gives way to the first root module
 //
 // #![cfg(any(doc, test))] // RETHINK
@@ -11,9 +11,6 @@
 // #[cfg(feature = "std")]
 // #[path = "../../build/main/mod.rs"]
 // pub mod build; // Build-time configuration and code generation.
-
-#[cfg(feature = "_docs_examples")]
-pub mod examples; // Documented examples
 
 pub mod macros;
 
@@ -34,12 +31,4 @@ crate::items! {
     }
     /// Vendored work.
     pub mod vendored;
-}
-
-// IMPROVE: some could be _crate_internals, currently blocked by define_error! and rand_pcg!
-crate::structural_mods! { // _pub_mods
-    _pub_mods {
-        #[cfg(feature = "_docs_examples")]
-        pub use super::examples::_all::*;
-    }
 }

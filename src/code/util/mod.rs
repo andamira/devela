@@ -28,6 +28,8 @@ mod _reexport_core;
 
 #[cfg(test)]
 mod _test;
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example; // EnumintI8Example
 
 mod asserts; // (assertion macros)
 mod capture; // capture_[first|last|tail_tuple]!
@@ -90,6 +92,9 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
         };
         #[cfg(feature = "_unroll")]
         pub use super::unroll::_all::*;
+
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example::EnumintI8Example;
     }
     _reexports {
         pub use super::_reexport_core::*;

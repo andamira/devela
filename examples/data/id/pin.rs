@@ -1,4 +1,4 @@
-// devela/examples/data/id_pin.rs
+// devela/examples/data/id/pin.rs
 //
 //! Shows how to use the [`IdPin`] and [`IdPinBox`][devela::IdPinBox] items.
 //

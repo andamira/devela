@@ -29,6 +29,7 @@
 ## documentation
 - make `all` and `all_` root modules public.
 - remove `zall` and `zall_` public root modules.
+- remove `_doc/examples` module.
 - new tag: `_TAG_<REWORK|STATE|TOPOL>`.
 - clarify public module and hidden scope features.
 - update katex to v0.18.0.
@@ -36,7 +37,7 @@
 ## examples
 - refactor examples directory tree.
 - new examples: `alsa`, `ui_term`, `ui_web`, `ui_x11`.
-- remove examples: `enumset`, `num/niche.rs`.
+- remove examples: `enumint`, `enumset`, `num/niche.rs`.
 - update example: `term_linux`:
   - showcase signal handling.
 - update examples: `web_api`, `web_workers`:
