@@ -10,8 +10,10 @@
 //! Different forms provide different scopes and resolution models:
 //!
 //! - [`Handles`](mod@handle) refer to stored values through a particular context.
-//! - [`UUIDs`](uuid) provide standardized, portable 128-bit identifiers
+//! - [`UUIDs`](mod@uuid) provide standardized, portable 128-bit identifiers
 //!   without requiring a shared local allocator.
+//!   - [`Uuid`] represents a standardized portable 128-bit identity.
+//!   - [`UuidV7Generator`] generates strictly ordered version 7 UUID sequences.
 //! - Locally generated or anchored identifiers distinguish values within
 //!   a bounded execution scope.
 //
@@ -28,7 +30,7 @@ mod pin_box; // IdPinBox
 // #[cfg(feature = "std")]
 // mod snowflake;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -47,5 +49,9 @@ crate::structural_mods! { // _mods, _pub_mods
             handle::_all::*,
             uuid::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{Uuid, UuidV7Generator};
     }
 }

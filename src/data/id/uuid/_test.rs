@@ -220,3 +220,74 @@ const fn pcg32_generation_const() {
     };
     const_assert!(eq PCG_UUID_V4.version().unwrap().number(), UuidVersion::V4.number());
 }
+#[test]
+fn generator_same_timestamp_is_strictly_monotonic() {
+    let mut gv7 = UuidV7Generator::new();
+    let a = gv7.next_random(1000, [1; 10]).unwrap();
+    let b = gv7.next_random(1000, [2; 10]).unwrap();
+    let c = gv7.next_random(1000, [3; 10]).unwrap();
+    assert!(a < b);
+    assert!(b < c);
+    assert_eq!(a.into_uuid().unix_ts_ms_v7(), Some(1000));
+    assert_eq!(b.into_uuid().unix_ts_ms_v7(), Some(1000));
+    assert_eq!(c.into_uuid().unix_ts_ms_v7(), Some(1000));
+}
+#[test]
+fn generator_survives_clock_rollback() {
+    let mut gv7 = UuidV7Generator::new();
+    let a = gv7.next_random(1000, [1; 10]).unwrap();
+    let b = gv7.next_random(999, [2; 10]).unwrap();
+    let c = gv7.next_random(998, [3; 10]).unwrap();
+    assert!(a < b && b < c);
+    assert_eq!(b.into_uuid().unix_ts_ms_v7(), Some(1000));
+    assert_eq!(c.into_uuid().unix_ts_ms_v7(), Some(1000));
+}
+#[test]
+fn generator_advances_timestamp_after_rollback() {
+    let mut gv7 = UuidV7Generator::new();
+    let a = gv7.next_random(1000, [1; 10]).unwrap();
+    let b = gv7.next_random(999, [2; 10]).unwrap();
+    let c = gv7.next_random(1001, [3; 10]).unwrap();
+    assert!(a < b && b < c);
+    assert_eq!(c.into_uuid().unix_ts_ms_v7(), Some(1001));
+}
+#[test]
+fn generator_state_roundtrip() {
+    let mut a = UuidV7Generator::new();
+    let first = a.next_random(1000, [1; 10]).unwrap();
+    let mut b = UuidV7Generator::from_last(first).unwrap();
+    let second = b.next_random(1000, [2; 10]).unwrap();
+    assert!(second > first);
+}
+#[test]
+fn generator_rejects_non_v7_state() {
+    let v4 = Uuid::from_random_v4([1; 16]).into_non_nil().unwrap();
+    assert!(UuidV7Generator::from_last(v4).is_none());
+}
+#[test]
+fn generator_invalid_timestamp_does_not_advance_pcg32() {
+    let mut gv7 = UuidV7Generator::new();
+    let mut rng = Pcg32::new(1, 2);
+    let rng_state = rng.inner_state();
+    assert_eq!(gv7.next_pcg32(Uuid::V7_UNIX_TS_MS_MAX + 1, &mut rng), None,);
+    assert_eq!(gv7.last(), None);
+    assert_eq!(rng.inner_state(), rng_state);
+}
+#[test]
+fn generator_rand_b_overflow_preserves_state() {
+    let last = Uuid::from_random_v7(1000, [0xFF; 10]).unwrap().into_non_nil().unwrap();
+    let mut gv7 = UuidV7Generator::from_last(last).unwrap();
+    assert_eq!(gv7.next_random(1000, [0; 10]), None);
+    assert_eq!(gv7.last(), Some(last));
+}
+#[test]
+const fn generator_const() {
+    const GENERATED: UuidNonNil = {
+        let mut gv7 = UuidV7Generator::new();
+        gv7.next_random(1000, [1; 10]).unwrap()
+    };
+    const_assert!(eq
+        GENERATED.version().unwrap().number(),
+        UuidVersion::V7.number()
+    );
+}

@@ -84,7 +84,7 @@
 - make `handle` and `uuid` modules public.
 
 #### data::id::uuid
-- new types: `Uuid`, `UuidNonNil`, `UuidVariant`, `UuidVersion`.
+- new types: `Uuid`, `UuidV7Generator`, `UuidNonNil`, `UuidVariant`, `UuidVersion`.
 
 ### data::layout
 - remove trait: `DataDesta`.

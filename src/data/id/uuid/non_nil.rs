@@ -16,10 +16,6 @@ use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct UuidNonNil(NonZeroU128);
 
-impl_trait! { fmt::Display for UuidNonNil |self, f| {
-    self.into_uuid().fmt(f)
-}}
-
 impl UuidNonNil {
     /* constants */
 
@@ -88,7 +84,11 @@ impl UuidNonNil {
     }
 }
 
-/* conversions */
+/* trait impls */
+
+impl_trait! { fmt::Display for UuidNonNil |self, f| {
+    self.into_uuid().fmt(f)
+}}
 
 impl From<UuidNonNil> for Uuid {
     fn from(uuid: UuidNonNil) -> Self {

@@ -15,12 +15,16 @@
 //! UUIDs are suited to identities that must persist or travel
 //! across processes, storage, systems, or network boundaries.
 //! Uniqueness guarantees depend on the version and generation method.
+//!
+//! [`UuidV7Generator`] adds stateful version 7 generation,
+//! preserving strict UUID ordering across repeated or regressing timestamps.
 //
 
 #[cfg(test)]
 mod _test;
 
 mod define; // Uuid
+mod generator; // UuidV7Generator
 mod non_nil; // UuidNonNil
 mod variant; // UuidVariant, UuidVersion
 
@@ -28,6 +32,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             define::Uuid,
+            generator::UuidV7Generator,
             non_nil::UuidNonNil,
             variant::{UuidVariant, UuidVersion},
         };

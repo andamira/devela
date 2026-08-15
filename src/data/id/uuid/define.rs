@@ -20,19 +20,6 @@ use crate::{impl_trait, is, slice, unwrap, whilst};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Uuid([u8; 16]);
 
-impl ConstInit for Uuid {
-    const INIT: Self = Self::NIL;
-}
-impl Default for Uuid {
-    fn default() -> Self {
-        Self::NIL
-    }
-}
-impl_trait! { fmt::Display for Uuid |self, f| {
-    let mut buf = [0u8; Self::STR_LEN];
-    f.write_str(unwrap![some_guaranteed_or_ub self.as_str_into(&mut buf)])
-}}
-
 impl Uuid {
     /* constants */
 
@@ -44,6 +31,9 @@ impl Uuid {
 
     /// The length of the standard textual UUID representation.
     pub const STR_LEN: usize = 36;
+
+    /// The maximum Unix millisecond timestamp representable by UUID version 7.
+    pub const V7_UNIX_TS_MS_MAX: u64 = 0xFFFF_FFFF_FFFF;
 
     /* construction */
 
@@ -263,6 +253,22 @@ impl Uuid {
         Ok(Self::from_bytes(bytes))
     }
 }
+
+/* trait impls */
+
+impl ConstInit for Uuid {
+    const INIT: Self = Self::NIL;
+}
+impl Default for Uuid {
+    fn default() -> Self {
+        Self::NIL
+    }
+}
+impl_trait! { fmt::Display for Uuid |self, f| {
+    let mut buf = [0u8; Self::STR_LEN];
+    f.write_str(unwrap![some_guaranteed_or_ub self.as_str_into(&mut buf)])
+}}
+
 impl From<[u8; 16]> for Uuid {
     fn from(bytes: [u8; 16]) -> Self {
         Self::from_bytes(bytes)
