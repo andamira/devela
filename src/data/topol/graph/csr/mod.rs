@@ -1,4 +1,4 @@
-// devela/src/data/topol/graph/adj/mod.rs
+// devela/src/data/topol/graph/csr/mod.rs
 //
 //!
 //
@@ -8,12 +8,12 @@ mod _test;
 #[cfg(any(test, doctest, feature = "_docs_examples"))]
 mod _example;
 
-mod define; // graph_adj!
+mod define; // graph_csr!
 mod impls;
 
 crate::structural_mods! { // _mods
     _mods {
-        pub use super::define::graph_adj;
+        pub use super::define::graph_csr;
         #[cfg(any(test, doctest, feature = "_docs_examples"))]
         pub use super::_example::*;
     }

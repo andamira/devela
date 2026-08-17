@@ -1,10 +1,10 @@
-// devela/src/data/topol/graph/adj/define.rs
+// devela/src/data/topol/graph/csr/define.rs
 //
-//! Defines [`graph_adj!`].
+//! Defines [`graph_csr!`].
 //
 
 #[doc = crate::_tags!(construction data_structure topol)]
-/// Defines a directed adjacency graph with static or allocating storage.
+/// Defines a directed graph in compressed sparse row representation.
 #[doc = crate::_doc_meta!{location("data/topol/graph")}]
 ///
 /// The graph stores connectivity only. Vertex and edge application
@@ -12,25 +12,21 @@
 ///
 /// Edges are directed. Self-loops, parallel edges, and cycles are allowed.
 ///
-/// New edges are prepended to each source vertex's adjacency chain, so outgoing
-/// edges are traversed in reverse insertion order. Edge handles themselves are
-/// assigned in global insertion order.
+/// Outgoing edges of each vertex occupy one contiguous range. Edge handles
+/// identify positions in this packed global edge sequence.
 ///
-/// The vertex domain is fixed for the graph's lifetime: statically
-/// through the vertex count, or at construction for the allocating backend.
+/// The graph is immutable after construction. Its canonical representation
+/// consists of the row starts and target vertices accepted by `from_parts()`.
 ///
-/// Edge handles remain stable until `clear()`. Clearing invalidates them
-/// contextually, later insertion may reuse the same handle values.
-///
-/// The initial representation is append-only:
-/// individual edges cannot be removed, while `clear()` removes all edges.
+/// `None` in the starts array represents the one-past edge offset:
+/// `EDGES` for static graphs, or `targets.len()` for allocating graphs.
 ///
 /// `static` uses fixed arrays and is the default. `alloc` uses dynamic storage.
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonMaxU8, NonMaxU16, graph_adj};
-/// graph_adj! {
+/// # use devela::{NonMaxU8, NonMaxU16, graph_csr};
+/// graph_csr! {
 ///     [
 ///         vertex: u8 + NonMaxU8;
 ///         edge: u16 + NonMaxU16;
@@ -40,26 +36,29 @@
 ///     pub MyEdge;
 /// }
 ///
-/// let mut graph = MyGraph::<4, 8>::new();
-/// let a = graph.vertex(0).unwrap();
-/// let b = graph.vertex(1).unwrap();
-/// let edge = graph.add_edge(a, b).unwrap();
+/// let v0 = MyVertex::try_from_usize(0).unwrap();
+/// let v1 = MyVertex::try_from_usize(1).unwrap();
+/// let e0 = MyEdge::try_from_usize(0).unwrap();
 ///
-/// assert_eq!(graph.edge_target(edge), Some(b));
-/// assert!(graph.has_edge(a, b));
+/// let graph = MyGraph::<2, 1>::from_parts(
+///     [Some(e0), None],
+///     [v1],
+/// ).unwrap();
+///
+/// assert!(graph.has_edge(v0, v1));
 /// ```
 /// See also:
-/// - [`GraphAdjExample`], [`GraphAdjVertexExample`], [`GraphAdjEdgeExample`],
-/// - [`GraphAdjAllocExample`], [`GraphAdjAllocVertexExample`], [`GraphAdjAllocEdgeExample`].
+/// - [`GraphCsrExample`], [`GraphCsrVertexExample`], [`GraphCsrEdgeExample`],
+/// - [`GraphCsrAllocExample`], [`GraphCsrAllocVertexExample`], [`GraphCsrAllocEdgeExample`].
 ///
-/// [`GraphAdjExample`]: crate::GraphAdjExample
-/// [`GraphAdjVertexExample`]: crate::GraphAdjVertexExample
-/// [`GraphAdjEdgeExample`]: crate::GraphAdjEdgeExample
-/// [`GraphAdjAllocExample`]: crate::GraphAdjAllocExample
-/// [`GraphAdjAllocVertexExample`]: crate::GraphAdjAllocVertexExample
-/// [`GraphAdjAllocEdgeExample`]: crate::GraphAdjAllocEdgeExample
+/// [`GraphCsrExample`]: crate::GraphCsrExample
+/// [`GraphCsrVertexExample`]: crate::GraphCsrVertexExample
+/// [`GraphCsrEdgeExample`]: crate::GraphCsrEdgeExample
+/// [`GraphCsrAllocExample`]: crate::GraphCsrAllocExample
+/// [`GraphCsrAllocVertexExample`]: crate::GraphCsrAllocVertexExample
+/// [`GraphCsrAllocEdgeExample`]: crate::GraphCsrAllocEdgeExample
 #[macro_export]
-macro_rules! graph_adj {
+macro_rules! graph_csr {
     (
         [
             vertex: $vprim:ident $(+ $VertexIndex:ty)?;
@@ -75,7 +74,7 @@ macro_rules! graph_adj {
         $(#[$edge_attr:meta])*
         $evis:vis $Edge:ident $(;)?
     ) => {
-        $crate::graph_adj! { %normalize_vertex
+        $crate::graph_csr! { %normalize_vertex
             [kind: $($kind)?]
             [vertex: $vprim $(+ $VertexIndex)?]
             [edge: $eprim $(+ $EdgeIndex)?]
@@ -92,7 +91,7 @@ macro_rules! graph_adj {
         [vertex: $vprim:ident]
         $($rest:tt)*
     ) => {
-        $crate::graph_adj! {
+        $crate::graph_csr! {
             %normalize_edge
             [kind: $($kind)?]
             [vertex: $vprim + $vprim]
@@ -104,7 +103,7 @@ macro_rules! graph_adj {
         [vertex: $vprim:ident + $VertexIndex:ty]
         $($rest:tt)*
     ) => {
-        $crate::graph_adj! {
+        $crate::graph_csr! {
             %normalize_edge
             [kind: $($kind)?]
             [vertex: $vprim + $VertexIndex]
@@ -118,7 +117,7 @@ macro_rules! graph_adj {
         [edge: $eprim:ident]
         $($rest:tt)*
     ) => {
-        $crate::graph_adj! {
+        $crate::graph_csr! {
             %generate
             [kind: $($kind)?]
             [vertex: $vprim + $VertexIndex]
@@ -132,7 +131,7 @@ macro_rules! graph_adj {
         [edge: $eprim:ident + $EdgeIndex:ty]
         $($rest:tt)*
     ) => {
-        $crate::graph_adj! {
+        $crate::graph_csr! {
             %generate
             [kind: $($kind)?]
             [vertex: $vprim + $VertexIndex]
@@ -141,7 +140,7 @@ macro_rules! graph_adj {
         }
     };
 
-    /* generate shared handle family */
+    /* generate handle family */
 
     (%generate
         [kind: $($kind:ident)?]
@@ -161,8 +160,7 @@ macro_rules! graph_adj {
             $(#[$edge_attr])*
             $evis $Edge;
         }
-
-        $crate::graph_adj! { %backend
+        $crate::graph_csr! { %backend
             [kind: $($kind)?]
             [vertex: $vprim + $VertexIndex]
             [edge: $eprim + $EdgeIndex]
@@ -174,13 +172,9 @@ macro_rules! graph_adj {
 
     /* backend dispatch */
 
-    (%backend
-        [kind:]
-        $($rest:tt)*
-    ) => {
-        $crate::graph_adj! { %backend [kind: static] $($rest)* }
+    (%backend [kind:] $($rest:tt)*) => {
+        $crate::graph_csr! { %backend [kind: static] $($rest)* }
     };
-
     (%backend
         [kind: static]
         [vertex: $vprim:ident + $VertexIndex:ty]
@@ -189,7 +183,7 @@ macro_rules! graph_adj {
         [vertex_handle: $vvis:vis $Vertex:ident]
         [edge_handle: $evis:vis $Edge:ident]
     ) => {
-        $crate::__graph_adj_impl_array! {
+        $crate::__graph_csr_impl_array! {
             [vertex: $vprim + $VertexIndex;]
             [edge: $eprim + $EdgeIndex;]
             $(#[$graph_attr])* $vis $Graph;
@@ -197,7 +191,6 @@ macro_rules! graph_adj {
             $evis $Edge;
         }
     };
-
     (%backend
         [kind: alloc]
         [vertex: $vprim:ident + $VertexIndex:ty]
@@ -206,7 +199,7 @@ macro_rules! graph_adj {
         [vertex_handle: $vvis:vis $Vertex:ident]
         [edge_handle: $evis:vis $Edge:ident]
     ) => {
-        $crate::__graph_adj_impl_vec! {
+        $crate::__graph_csr_impl_vec! {
             [vertex: $vprim + $VertexIndex;]
             [edge: $eprim + $EdgeIndex;]
             $(#[$graph_attr])* $vis $Graph;
@@ -215,5 +208,6 @@ macro_rules! graph_adj {
         }
     };
 }
+
 #[doc(inline)]
-pub use graph_adj;
+pub use graph_csr;

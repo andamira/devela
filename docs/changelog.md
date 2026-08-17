@@ -114,7 +114,7 @@
 #### data::store::arena
 - rename old `arena!` to `arena_bytes!`.
 - new macro: `arena!`.
-- new type examples: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
+- new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
 
 #### data::store::pool
 - new macro: `pool!`.
@@ -125,8 +125,8 @@
 - move `linked` module to `data::layout`.
 
 #### data::topol::graph
-- new macro: `graph_adj!`.
-- new type examples: `GraphAdjExample`, `GraphAdjVertexExample`, `GraphAdjEdgeExample`, `GraphAdjAllocExample`, `GraphAdjAllocVertexExample`, `GraphAdjAllocEdgeExample`.
+- new macros: `graph_adj!`, `graph_csr!`.
+- new example types: `GraphAdjExample`, `GraphAdjVertexExample`, `GraphAdjEdgeExample`, `GraphAdjAllocExample`, `GraphAdjAllocVertexExample`, `GraphAdjAllocEdgeExample`, `GraphCsrExample`, `GraphCsrVertexExample`, `GraphCsrEdgeExample`, `GraphCsrAllocExample`, `GraphCsrAllocVertexExample`, `GraphCsrAllocEdgeExample`.
 
 ## error
 - new root module.

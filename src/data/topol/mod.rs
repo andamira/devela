@@ -33,7 +33,7 @@ pub mod graph; // WIP
 // mod ord; // TODO
 // pub mod spatial; // TODO
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
             // ord::_all::*,
@@ -44,5 +44,9 @@ crate::structural_mods! { // _mods, _pub_mods
             graph::_all::*,
             // spatial::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{graph_adj, graph_csr};
     }
 }
