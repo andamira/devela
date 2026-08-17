@@ -41,17 +41,18 @@ macro_rules! id_seq {
                 $vis, // the visibility
                 $name, // the name of the ID generator.
                 $name, // the name of the ID generator (as a type).
+                stringify!($name), // the name of the ID generator (as a string).
                 [<$name:upper>], // the name of the static.
                 [<$prim:lower>], // the underlying primitive type.
+                stringify!([<$prim:lower>]), // the underlying primitive type (as a string).
                 [<Atomic $prim:camel>] // the atomic type in the static.
             ];
         }
     };
-    (%define $(#[$attr:meta])*, $vis:vis, $name:ident, $tname:ty,
-     $static:ident, $prim:ty, $atomic:ident) => {
+    (%define $(#[$attr:meta])*, $vis:vis, $name:ident, $tname:ty, $sname:expr,
+     $static:ident, $prim:ty, $sprim:expr, $atomic:ident) => {
         /// A static atomic counter used to generate unique sequential identifiers of type `$prim`.
-        static $static: ::core::sync::atomic::$atomic =
-            ::core::sync::atomic::$atomic::new(<$prim>::MIN + 1);
+        static $static: $crate::$atomic = $crate::$atomic::new(<$prim>::MIN + 1);
 
         $(#[$attr])*
         #[derive(Debug)]
@@ -60,45 +61,46 @@ macro_rules! id_seq {
             id: $prim,
         }
 
+        #[allow(dead_code)]
         impl $name {
             /* generators */
 
-            #[doc = concat!("Generates some unique `", stringify!($name), "` ID.")]
+            #[doc = concat!("Generates some unique `", $sname, "` ID with [`AcqRel`] ordering.")]
             ///
-            /// Alias of [`new_balanced`][Self::new_balanced].
+            /// Balances performance and memory safety,
+            /// ensuring consistent visibility across threads.
             ///
             /// Returns `None` on overflow.
-            #[must_use]
-            $vis fn new() -> Option<Self> {
-                Self::new_balanced()
-            }
-            #[doc = concat!("Generates some unique `", stringify!($name), "` ID.")]
             ///
-            /// Alias of [`new_balanced_unchecked`][Self::new_balanced_unchecked].
+            /// [`AcqRel`]: $crate::AtomicOrdering::AcqRel
+            #[must_use]
+            $vis fn new() -> Option<Self> { Self::new_custom($crate::AtomicOrdering::AcqRel) }
+
+            #[doc = concat!("Generates a unique `", $sname, "` ID with [`AcqRel`] ordering.")]
+            ///
+            /// Balances performance and memory safety,
+            /// ensuring consistent visibility across threads.
             ///
             /// # Panics
             /// Panics on overflow.
+            ///
+            /// [`AcqRel`]: $crate::AtomicOrdering::AcqRel
             $vis fn new_unchecked() -> Self {
-                Self::new_balanced_unchecked()
+                Self::new_custom_unchecked($crate::AtomicOrdering::AcqRel)
             }
-
-            #[doc = concat!(
-                "Generates some unique `", stringify!($name), "` ID with [`SeqCst`] ordering.")
-            ]
+            #[doc = concat!("Generates some unique `", $sname, "` ID with [`SeqCst`] ordering.")]
             ///
             /// Ensures the strongest memory consistency across all threads,
             /// even at the cost of performance.
             ///
             /// Returns `None` on overflow.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             #[must_use]
             $vis fn new_strong() -> Option<Self> {
-                Self::new_custom(::core::sync::atomic::Ordering::SeqCst)
+                Self::new_custom($crate::AtomicOrdering::SeqCst)
             }
-            #[doc = concat!(
-                "Generates a unique `", stringify!($name), "` ID with [`SeqCst`] ordering.")
-            ]
+            #[doc = concat!("Generates a unique `", $sname, "` ID with [`SeqCst`] ordering.")]
             ///
             /// Ensures the strongest memory consistency across all threads,
             /// even at the cost of performance.
@@ -106,57 +108,24 @@ macro_rules! id_seq {
             /// # Panics
             /// Panics on overflow.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             $vis fn new_strong_unchecked() -> Self {
-                Self::new_custom_unchecked(::core::sync::atomic::Ordering::SeqCst)
+                Self::new_custom_unchecked($crate::AtomicOrdering::SeqCst)
             }
 
-            #[doc = concat!(
-                "Generates some unique `", stringify!($name), "` ID with [`AcqRel`] ordering.")
-            ]
-            ///
-            /// Balances performance and memory safety,
-            /// ensuring consistent visibility across threads.
-            ///
-            /// Returns `None` on overflow.
-            ///
-            /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            #[must_use]
-            $vis fn new_balanced() -> Option<Self> {
-                Self::new_custom(::core::sync::atomic::Ordering::AcqRel)
-             }
-            #[doc = concat!(
-                "Generates a unique `", stringify!($name), "` ID with [`AcqRel`] ordering.")
-            ]
-            ///
-            /// Balances performance and memory safety,
-            /// ensuring consistent visibility across threads.
-            ///
-            /// # Panics
-            /// Panics on overflow.
-            ///
-            /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            $vis fn new_balanced_unchecked() -> Self {
-                Self::new_custom_unchecked(::core::sync::atomic::Ordering::AcqRel)
-            }
-
-            #[doc = concat!(
-                "Generates some unique `", stringify!($name), "` ID with [`Relaxed`] ordering.")
-            ]
+            #[doc = concat!("Generates some unique `", $sname, "` ID with [`Relaxed`] ordering.")]
             ///
             /// Offers maximum performance in low-contention scenarios
             /// where memory ordering is not a concern.
             ///
             /// Returns `None` on overflow.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             #[must_use]
             $vis fn new_fast() -> Option<Self> {
-                Self::new_custom(::core::sync::atomic::Ordering::Relaxed)
+                Self::new_custom($crate::AtomicOrdering::Relaxed)
             }
-            #[doc = concat!(
-                "Generates a unique `", stringify!($name), "` ID with [`Relaxed`] ordering.")
-            ]
+            #[doc = concat!("Generates a unique `", $sname, "` ID with [`Relaxed`] ordering.")]
             ///
             /// Offers maximum performance in low-contention scenarios
             /// where memory ordering is not a concern.
@@ -164,9 +133,9 @@ macro_rules! id_seq {
             /// # Panics
             /// Panics on overflow.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             $vis fn new_fast_unchecked() -> Self {
-                Self::new_custom_unchecked(::core::sync::atomic::Ordering::Relaxed)
+                Self::new_custom_unchecked($crate::AtomicOrdering::Relaxed)
             }
 
             /* iterators */
@@ -176,9 +145,9 @@ macro_rules! id_seq {
             /// Ensures the strongest memory consistency across all threads,
             /// even at the cost of performance.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             $vis fn iter_strong() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Self::new_strong())
+                $crate::Iter::from_fn(|| Self::new_strong())
             }
             /// Iterator over generated IDs with `SeqCst` ordering.
             ///
@@ -188,9 +157,9 @@ macro_rules! id_seq {
             /// # Panics
             /// Panics on overflow.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             $vis fn iter_strong_unchecked() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Some(Self::new_strong_unchecked()))
+                $crate::Iter::from_fn(|| Some(Self::new_strong_unchecked()))
             }
 
             /// Iterator over generated IDs with `AcqRel` ordering.
@@ -198,9 +167,9 @@ macro_rules! id_seq {
             /// Balances performance and memory safety,
             /// ensuring consistent visibility across threads.
             ///
-            /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            $vis fn iter_balanced() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Self::new_balanced())
+            /// [`AcqRel`]: $crate::AtomicOrdering::AcqRel
+            $vis fn iter() -> impl Iterator<Item = $name> {
+                $crate::Iter::from_fn(|| Self::new())
             }
             /// Iterator over generated IDs with `AcqRel` ordering.
             ///
@@ -210,9 +179,9 @@ macro_rules! id_seq {
             /// # Panics
             /// Panics on overflow.
             ///
-            /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            $vis fn iter_balanced_unchecked() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Some(Self::new_balanced_unchecked()))
+            /// [`AcqRel`]: $crate::AtomicOrdering::AcqRel
+            $vis fn iter_unchecked() -> impl Iterator<Item = $name> {
+                $crate::Iter::from_fn(|| Some(Self::new_unchecked()))
             }
 
             /// Iterator over generated IDs with `Relaxed` ordering.
@@ -220,9 +189,9 @@ macro_rules! id_seq {
             /// Offers maximum performance in low-contention scenarios
             /// where memory ordering is not a concern.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             $vis fn iter_fast() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Self::new_fast())
+                $crate::Iter::from_fn(|| Self::new_fast())
             }
             /// Iterator over generated IDs with `Relaxed` ordering.
             ///
@@ -232,38 +201,29 @@ macro_rules! id_seq {
             /// # Panics
             /// Panics on overflow.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             $vis fn iter_fast_unchecked() -> impl Iterator<Item = $name> {
-                ::core::iter::from_fn(|| Some(Self::new_fast_unchecked()))
+                $crate::Iter::from_fn(|| Some(Self::new_fast_unchecked()))
             }
 
             /* queries */
 
             /// Returns the underlying unique ID value
-            #[doc = concat!("as a `", stringify!($prim), "`.")]
+            #[doc = concat!("as a `", $sprim, "`.")]
             ///
             /// The value is guaranteed to be a valid sequential identifier, from
-            #[doc = concat!("`", stringify!($prim) ,"::MIN` to `", stringify!($prim), "::MAX`.")]
-            $vis fn value(&self) -> $prim {
-                self.id
-            }
+            #[doc = concat!("`", $sprim ,"::MIN` to `", $sprim, "::MAX`.")]
+            $vis fn value(&self) -> $prim { self.id }
 
-            /// Returns the number of IDs generated so far.
-            ///
-            /// Alias of [`generated_ids_balanced`][Self::generated_ids_balanced].
-            #[must_use]
-            $vis fn generated_ids() -> $prim {
-                Self::generated_ids_balanced()
-            }
             /// Returns the number of IDs generated so far with [`SeqCst`] ordering.
             ///
             /// Ensures the strongest memory consistency across all threads,
             /// even at the cost of performance.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             #[must_use]
             $vis fn generated_ids_strong() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::SeqCst);
+                let current_id = $static.load($crate::AtomicOrdering::SeqCst);
                 current_id - 1
             }
             /// Returns the number of IDs generated so far with [`Acquire`] ordering.
@@ -271,10 +231,10 @@ macro_rules! id_seq {
             /// Balances performance and memory safety,
             /// ensuring consistent visibility across threads.
             ///
-            /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
+            /// [`Acquire`]: $crate::AtomicOrdering::Acquire
             #[must_use]
-            $vis fn generated_ids_balanced() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::Acquire);
+            $vis fn generated_ids() -> $prim {
+                let current_id = $static.load($crate::AtomicOrdering::Acquire);
                 current_id - 1
             }
             /// Returns the number of IDs generated so far with [`Relaxed`] ordering.
@@ -282,29 +242,22 @@ macro_rules! id_seq {
             /// Offers maximum performance in low-contention scenarios
             /// where memory ordering is not a concern.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             #[must_use]
             $vis fn generated_ids_fast() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::Relaxed);
+                let current_id = $static.load($crate::AtomicOrdering::Relaxed);
                 current_id - 1
             }
 
-            /// Returns the number of remaining IDs.
-            ///
-            /// Alias of [`remaining_ids_balanced`][Self::remaining_ids_balanced].
-            #[must_use]
-            $vis fn remaining_ids() -> $prim {
-                Self::remaining_ids_balanced()
-            }
             /// Returns the number of remaining IDs with [`SeqCst`] ordering.
             ///
             /// Ensures the strongest memory consistency across all threads,
             /// even at the cost of performance.
             ///
-            /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
+            /// [`SeqCst`]: $crate::AtomicOrdering::SeqCst
             #[must_use]
             $vis fn remaining_ids_strong() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::SeqCst);
+                let current_id = $static.load($crate::AtomicOrdering::SeqCst);
                 <$prim>::MAX - current_id
             }
             /// Returns the number of remaining IDs with [`Acquire`] ordering.
@@ -312,10 +265,10 @@ macro_rules! id_seq {
             /// Balances performance and memory safety,
             /// ensuring consistent visibility across threads.
             ///
-            /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
+            /// [`Acquire`]: $crate::AtomicOrdering::Acquire
             #[must_use]
-            $vis fn remaining_ids_balanced() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::Acquire);
+            $vis fn remaining_ids() -> $prim {
+                let current_id = $static.load($crate::AtomicOrdering::Acquire);
                 <$prim>::MAX - current_id
             }
             /// Returns the number of remaining IDs with [`Relaxed`] ordering.
@@ -323,27 +276,24 @@ macro_rules! id_seq {
             /// Offers maximum performance in low-contention scenarios
             /// where memory ordering is not a concern.
             ///
-            /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
+            /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             #[must_use]
             $vis fn remaining_ids_fast() -> $prim {
-                let current_id = $static.load(::core::sync::atomic::Ordering::Relaxed);
+                let current_id = $static.load($crate::AtomicOrdering::Relaxed);
                 <$prim>::MAX - current_id
             }
 
             /* private helpers */
 
-            fn new_custom(ordering: ::core::sync::atomic::Ordering) -> Option<Self> {
+            fn new_custom(ordering: $crate::AtomicOrdering) -> Option<Self> {
                 let id = $static.fetch_add(1, ordering);
-                if id == <$prim>::MIN {
-                    Self::none_on_overflow()
-                } else {
-                    Some(Self { id })
-                }
+                if id == <$prim>::MIN { Self::none_on_overflow() }
+                else { Some(Self { id }) }
             }
             #[cold] #[rustfmt::skip]
             fn none_on_overflow() -> Option<Self> { None }
 
-            fn new_custom_unchecked(ordering: ::core::sync::atomic::Ordering) -> Self {
+            fn new_custom_unchecked(ordering: $crate::AtomicOrdering) -> Self {
                 let id = $static.fetch_add(1, ordering);
                 if id == <$prim>::MIN {
                     Self::panic_on_overflow();
@@ -357,31 +307,23 @@ macro_rules! id_seq {
         /* trait impls */
 
         impl From<$name> for $prim {
-            fn from(from: $name) -> $prim {
-                from.value()
-            }
+            fn from(from: $name) -> $prim { from.value() }
         }
-        impl ::core::hash::Hash for $name {
-            fn hash<H: ::core::hash::Hasher>(&self, state: &mut H) {
-                self.id.hash(state);
-            }
+        impl $crate::Hash for $name {
+            fn hash<H: $crate::Hasher>(&self, state: &mut H) { self.id.hash(state); }
         }
         impl Eq for $name {}
         impl PartialEq for $name {
-            fn eq(&self, other: &Self) -> bool {
-                self.id == other.id
-            }
+            fn eq(&self, other: &Self) -> bool { self.id == other.id }
         }
         #[allow(clippy::non_canonical_partial_ord_impl)]
         impl PartialOrd for $name {
-            fn partial_cmp(&self, other: &Self) -> Option<::core::cmp::Ordering> {
+            fn partial_cmp(&self, other: &Self) -> Option<$crate::Ordering> {
                 Some(self.id.cmp(&other.id))
             }
         }
         impl Ord for $name {
-            fn cmp(&self, other: &Self) -> ::core::cmp::Ordering {
-                self.id.cmp(&other.id)
-            }
+            fn cmp(&self, other: &Self) -> $crate::Ordering { self.id.cmp(&other.id) }
         }
     };
 }
@@ -389,7 +331,7 @@ macro_rules! id_seq {
 pub use id_seq;
 
 mod test {
-    #[allow(unused_imports)] // BUG:compiler doesn't detect use of AnyExt::type_of
+    #[allow(unused_imports)] // BUG: compiler doesn't detect use of AnyExt::type_of
     use crate::{AnyExt, assert_eq_all, id_seq};
 
     #[test]
@@ -428,7 +370,7 @@ mod test {
         // First 10 IDs should start at 1 and end at 10
         let expected_ids: Vec<u8> = (1..=10).collect();
         assert_eq!(ids.iter().map(|id| id.value()).collect::<Vec<_>>(), expected_ids);
-        let ids: Vec<_> = TestIdSeqU8Iter::iter_balanced().take(10).collect();
+        let ids: Vec<_> = TestIdSeqU8Iter::iter().take(10).collect();
         // next 10 IDs should start at 11 and end at 20
         let expected_ids: Vec<u8> = (11..=20).collect();
         assert_eq!(ids.iter().map(|id| id.value()).collect::<Vec<_>>(), expected_ids);
