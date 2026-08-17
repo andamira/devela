@@ -5,18 +5,21 @@
 #![doc = crate::_doc!(modules: crate::run; state)]
 #![doc = crate::_doc!(flat:"run")]
 #![doc = crate::_doc!(hr)]
+//
 
 // mod context;
 // mod log;
+mod machine; // WIP
 // mod scene;
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
-        // pub use super::{
-        //     context::*,
-        //     log::*,
-        //     scene::*,
-        // };
+        pub use super::{
+            // context::*,
+            // log::*,
+            machine::_all::*,
+            // scene::*,
+        };
     }
     _reexports {
         // pub use devela::run::state::{

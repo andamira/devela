@@ -36,14 +36,14 @@
 /// let bytes = *b"RIFF\x24\0\0\0WAVE";
 /// let mut offset = 0;
 ///
-/// // Fixed-width reads return arrays.
+/// // Fixed-width reads return arrays and can advance an offset.
 /// let id = read_at!(bytes, +=offset, @4);
 /// let size = u32::from_le_bytes(read_at!(bytes, +=offset, @4));
-/// let wave = read_at!(bytes, +=offset, @4);
+/// let format = read_at!(bytes, +=offset, @4);
 ///
 /// assert_eq!(&id, b"RIFF");
 /// assert_eq!(size, 36);
-/// assert_eq!(&wave, b"WAVE");
+/// assert_eq!(&format, b"WAVE");
 /// assert_eq!(offset, 12);
 ///
 /// // Plain offsets do not mutate external state.
@@ -53,8 +53,20 @@
 /// // Dynamic-width reads copy into a destination sequence.
 /// let mut out = [0u8; 4];
 /// let end = read_at!(bytes, 8, @out);
-/// assert_eq!(end, 12);
 /// assert_eq!(&out, b"WAVE");
+/// assert_eq!(end, 12);
+/// ```
+///
+/// Fixed-width reads also compose directly with binary representations:
+/// ```
+/// # use devela::read_at;
+/// let bytes = [0xC1, 2, 3, 4, 5, 6, 7, 8];
+///
+/// let mut field = read_at!(bytes, 0, @8);
+/// field[0] &= 0x3F;
+/// let value = u64::from_be_bytes(field);
+///
+/// assert_eq!(value, 0x0102_0304_0506_0708);
 /// ```
 /// # See also
 /// [`write_at!`] scatters values into a buffer using the same explicit-offset

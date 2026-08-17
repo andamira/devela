@@ -19,7 +19,7 @@ mod driver; // RunDriver
 mod iface; // RunApp
 mod permission; // Permission<Error|Query|State>
 pub mod regime; // RunCap*, RunService
-// pub mod state;
+// pub mod state; // WIP
 pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals

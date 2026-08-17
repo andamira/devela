@@ -3,12 +3,11 @@
 //! Defines [`Route`], [`RouteAnchor`], [`RouteName`], and [`RouteSeg`].
 //
 
-/// A borrowed sequence of route segments.
 #[doc = crate::_tags!(data)]
+/// A borrowed sequence of route segments.
 #[doc = crate::_doc_meta! {
     location("data/access/route"),
 }]
-///
 /// A route is structural reachability. It does not resolve, canonicalize,
 /// access storage, perform I/O, or encode platform-specific path rules.
 ///
@@ -60,10 +59,11 @@ impl<'a> Route<'a> {
     pub const fn is_relative(self) -> bool { matches!(self.anchor, RouteAnchor::Relative) }
 }
 
-/// The starting relation of a [`Route`].
 #[doc = crate::_tags!(data)]
-#[doc = crate::_doc_meta! { location("data/access/route") }]
-///
+/// The starting relation of a [`Route`].
+#[doc = crate::_doc_meta! {
+    location("data/access/route")
+}]
 /// This is not a filesystem root, URL origin, process directory, or storage
 /// location. It only describes how the first segment relates to a resolver
 /// context.
@@ -81,10 +81,11 @@ pub enum RouteAnchor {
     Current,
 }
 
-/// A borrowed route segment name.
 #[doc = crate::_tags!(data)]
-#[doc = crate::_doc_meta! { location("data/access/route") }]
-///
+/// A borrowed route segment name.
+#[doc = crate::_doc_meta! {
+    location("data/access/route")
+}]
 /// UTF-8 names are the ergonomic path for commands, URLs, assets, and most
 /// user-facing routes. Byte names preserve non-UTF-8 segment data for adapters
 /// that need it.
@@ -119,10 +120,11 @@ impl<'a> RouteName<'a> {
     pub const fn is_empty(self) -> bool { self.as_bytes().is_empty() }
 }
 
-/// One segment in a [`Route`].
 #[doc = crate::_tags!(data)]
-#[doc = crate::_doc_meta! { location("data/access/route") }]
-///
+/// One segment in a [`Route`].
+#[doc = crate::_doc_meta! {
+    location("data/access/route")
+}]
 /// Special segments are preserved structurally. Normalization policy belongs
 /// above this type, because filesystems, URLs, commands, and virtual routes do
 /// not all treat `.`, `..`, empty segments, or trailing separators identically.

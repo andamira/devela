@@ -59,6 +59,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
+- 1.99: ` `[abi_custom](https://github.com/rust-lang/rust/pull/158504)
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
