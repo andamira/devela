@@ -34,12 +34,14 @@ mod _example;
 mod define; // pool!
 mod impls; // hidden macros for pool variants
 mod iter; // PoolIter
+mod seq; // pool_seq!
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             define::pool,
             iter::PoolIter,
+            seq::_all::*,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;

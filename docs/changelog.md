@@ -117,8 +117,9 @@
 - new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
 
 #### data::store::pool
-- new macro: `pool!`.
+- new macros: `pool!`, `pool_seq!`.
 - new type: `PoolIter`.
+- new example types: `PoolExample`, `PoolHandleExample`, `PoolAllocExample`, `PoolAllocHandleExample`, `PoolSeqExample`, `PoolSeqHandleExample`.
 
 ### data::topol
 - remove old type sketches: `Graph*`, `Node*`.
