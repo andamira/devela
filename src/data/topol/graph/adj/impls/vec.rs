@@ -231,7 +231,7 @@ macro_rules! __graph_adj_impl_vec {
                 /// Returns whether `to` is reachable from `from`, using caller-provided scratch.
                 ///
                 /// Reachability is reflexive. `scratch` must contain at least
-                /// [`vertex_count`](Self::vertex_count) entries.
+                /// [`vertex_count`](#method.vertex_count) entries.
                 ///
                 /// Returns `None` if either endpoint is invalid or `scratch` is too small.
                 #[must_use]
@@ -268,7 +268,7 @@ macro_rules! __graph_adj_impl_vec {
                 }
                 /// Returns whether the graph is acyclic, using caller-provided scratch.
                 ///
-                /// `scratch` must contain at least [`vertex_count`](Self::vertex_count)
+                /// `scratch` must contain at least [`vertex_count`](#method.vertex_count)
                 /// entries. Its previous contents are ignored.
                 ///
                 /// Returns `None` if `scratch` is too small.

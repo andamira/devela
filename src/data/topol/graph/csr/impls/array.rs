@@ -82,7 +82,7 @@ macro_rules! __graph_csr_impl_array {
             }
             /// Decomposes the graph into its canonical CSR representation.
             ///
-            /// The returned arrays can be passed to [`from_parts`](Self::from_parts)
+            /// The returned arrays can be passed to [`from_parts`](#method.from_parts)
             /// to reconstruct an equivalent graph.
             #[must_use]
             $vis const fn into_parts(self) -> ([Option<$Edge>; VERTICES], [$Vertex; EDGES]) {
@@ -192,7 +192,7 @@ macro_rules! __graph_csr_impl_array {
             /// Returns whether `to` is reachable from `from`, using caller-provided scratch.
             ///
             /// Reachability is reflexive. `scratch` must contain at least
-            /// [`vertex_count`](Self::vertex_count) entries.
+            /// [`vertex_count`](#method.vertex_count) entries.
             ///
             /// Returns `None` if either endpoint is invalid or `scratch` is too small.
             #[must_use]
@@ -235,7 +235,7 @@ macro_rules! __graph_csr_impl_array {
             /// Returns whether the graph is acyclic, using caller-provided scratch.
             ///
             /// `scratch` stores remaining incoming degrees and must contain at least
-            /// [`vertex_count`](Self::vertex_count) entries.
+            /// [`vertex_count`](#method.vertex_count) entries.
             #[must_use]
             $vis const fn is_acyclic_in(&self, scratch: &mut [Option<usize>]) -> Option<bool> {
                 if scratch.len() < VERTICES { return None; }

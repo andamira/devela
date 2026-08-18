@@ -230,14 +230,14 @@ macro_rules! __graph_adj_impl_array {
                     }}
                     Some(count)
                 }
-
                 /// Returns whether `to` is reachable from `from`, using caller-provided scratch.
                 ///
                 /// Reachability is reflexive: every valid vertex is reachable from itself
                 /// through a path of zero edges.
                 ///
                 /// `scratch` is used as a discovered-vertex queue and must contain at least
-                /// [`vertex_count`](Self::vertex_count) entries. Its previous contents are ignored.
+                /// [`vertex_count`](#method.vertex_count) entries.
+                /// Its previous contents are ignored.
                 ///
                 /// Returns `None` if either endpoint lies outside the graph domain or if
                 /// `scratch` is too small.
@@ -287,7 +287,8 @@ macro_rules! __graph_adj_impl_array {
                 ///
                 /// `scratch` stores the remaining incoming degree of each vertex while
                 /// performing Kahn elimination. It must contain at least
-                /// [`vertex_count`](Self::vertex_count) entries. Its previous contents are ignored.
+                /// [`vertex_count`](#method.vertex_count) entries.
+                /// Its previous contents are ignored.
                 ///
                 /// Returns `None` if `scratch` is too small.
                 #[must_use]

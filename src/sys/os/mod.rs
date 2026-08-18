@@ -26,11 +26,11 @@ mod c; // Libc
 pub mod fd;
 
 #[cfg(feature = "_linux_abi")]
-crate::__doc_auto_hide! { ((feature, values("_linux_abi")))
-crate::__doc_show! { (feature = "linux")
+crate::__doc_auto_hide_features! { (("_linux_abi"))
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
     #[doc = crate::_tags!(linux)]
     pub mod linux;
-}}
+}
 
 // #[doc = crate::_tags!(apple)]
 // #[cfg(feature = "macos")]
