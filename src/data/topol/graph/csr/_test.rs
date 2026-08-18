@@ -138,6 +138,29 @@ fn parallel_edges_are_allowed() {
     assert!(graph.has_edge(vertex(0), vertex(1)));
     assert_eq!(graph.out_degree(vertex(0)), Some(2));
 }
+#[test]
+fn incoming_reachability_and_acyclicity() {
+    let graph = graph();
+    assert_eq!(graph.in_degree(vertex(0)), Some(0));
+    assert_eq!(graph.in_degree(vertex(1)), Some(1));
+    assert_eq!(graph.in_degree(vertex(2)), Some(2));
+    assert_eq!(graph.in_degree(vertex(3)), Some(1));
+    assert!(graph.is_reachable(vertex(0), vertex(3)));
+    assert!(graph.is_reachable(vertex(2), vertex(2)));
+    assert!(!graph.is_reachable(vertex(3), vertex(0)));
+    assert!(!graph.is_acyclic());
+    let acyclic = Graph::<4, 4>::from_parts(
+        [Some(edge(0)), Some(edge(2)), Some(edge(3)), None],
+        [
+            vertex(1),
+            vertex(2), // 0 → 1, 2
+            vertex(3), // 1 → 3
+            vertex(3), // 2 → 3
+        ],
+    )
+    .unwrap();
+    assert!(acyclic.is_acyclic());
+}
 
 /**
 ```compile_fail,E0080

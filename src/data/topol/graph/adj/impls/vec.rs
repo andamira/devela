@@ -214,6 +214,97 @@ macro_rules! __graph_adj_impl_vec {
                     }
                     Some(count)
                 }
+                /// Returns the number of incoming edges of `vertex`.
+                ///
+                /// Parallel edges are counted independently.
+                /// Returns `None` if `vertex` lies outside the graph domain.
+                #[must_use]
+                $vis fn in_degree(&self, vertex: $Vertex) -> Option<usize> {
+                    let target = $crate::unwrap![some? self.__vertex_index(vertex)];
+                    let mut count = 0;
+                    $crate::whilst! { edge in 0..self.edges.len(); {
+                        let index = $crate::unwrap![some? self.__vertex_index(self.edges[edge].target)];
+                        if index == target { count += 1; }
+                    }}
+                    Some(count)
+                }
+                /// Returns whether `to` is reachable from `from`, using caller-provided scratch.
+                ///
+                /// Reachability is reflexive. `scratch` must contain at least
+                /// [`vertex_count`](Self::vertex_count) entries.
+                ///
+                /// Returns `None` if either endpoint is invalid or `scratch` is too small.
+                #[must_use]
+                $vis fn is_reachable_in(&self, from: $Vertex, to: $Vertex,
+                    scratch: &mut [Option<$Vertex>]) -> Option<bool> {
+                    let from_index = $crate::unwrap![some? self.__vertex_index(from)];
+                    let to_index = $crate::unwrap![some? self.__vertex_index(to)];
+                    if scratch.len() < self.vertex_count() { return None; }
+                    if from_index == to_index { return Some(true); }
+                    scratch[0] = Some(from);
+                    let (mut read, mut queued) = (0, 1);
+                    while read < queued {
+                        let vertex = $crate::unwrap![some? scratch[read]];
+                        read += 1;
+                        let mut edge = self.first_out_edge(vertex);
+                        while let Some(current) = edge {
+                            let target = $crate::unwrap![some? self.edge_target(current)];
+                            let target_index = $crate::unwrap![some? self.__vertex_index(target)];
+                            if target_index == to_index { return Some(true); }
+                            let mut seen = false;
+                            $crate::whilst! { index in 0..queued; {
+                                let seen_vertex = $crate::unwrap![some? scratch[index]];
+                                let seen_index = $crate::unwrap![some? self.__vertex_index(seen_vertex)];
+                                if seen_index == target_index { seen = true; break; }
+                            }}
+                            if !seen {
+                                scratch[queued] = Some(target);
+                                queued += 1;
+                            }
+                            edge = self.next_out_edge(current);
+                        }
+                    }
+                    Some(false)
+                }
+                /// Returns whether the graph is acyclic, using caller-provided scratch.
+                ///
+                /// `scratch` must contain at least [`vertex_count`](Self::vertex_count)
+                /// entries. Its previous contents are ignored.
+                ///
+                /// Returns `None` if `scratch` is too small.
+                #[must_use]
+                $vis fn is_acyclic_in(&self, scratch: &mut [Option<usize>]) -> Option<bool> {
+                    let vertices = self.vertex_count();
+                    if scratch.len() < vertices { return None; }
+                    $crate::whilst! { vertex in 0..vertices; {
+                        scratch[vertex] = Some(0);
+                    }}
+                    $crate::whilst! { edge in 0..self.edges.len(); {
+                        let target = $crate::unwrap![some? self.__vertex_index(self.edges[edge].target)];
+                        let degree = $crate::unwrap![some? scratch[target]];
+                        scratch[target] = Some(degree + 1);
+                    }}
+                    let mut removed = 0;
+                    while removed < vertices {
+                        $crate::whilst! { source in 0..vertices; {
+                            if matches!(scratch[source], Some(0)) { break; }
+                        }}
+                        if source == vertices { return Some(false); }
+                        scratch[source] = None;
+                        removed += 1;
+                        let source = $crate::unwrap![some? self.vertex(source)];
+                        let mut edge = self.first_out_edge(source);
+                        while let Some(current) = edge {
+                            let target = $crate::unwrap![some? self.edge_target(current)];
+                            let target = $crate::unwrap![some? self.__vertex_index(target)];
+                            if let Some(degree) = scratch[target] {
+                                scratch[target] = Some(degree - 1);
+                            }
+                            edge = self.next_out_edge(current);
+                        }
+                    }
+                    Some(true)
+                }
 
                 /* runtime iteration */
 

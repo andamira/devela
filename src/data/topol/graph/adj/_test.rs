@@ -177,6 +177,35 @@ fn omitted_representations_and_explicit_static_work() {
     assert!(graph.add_edge(a, b).is_some());
     assert!(graph.has_edge(a, b));
 }
+#[test]
+fn incoming_reachability_and_acyclicity() {
+    let mut graph = Graph::<5, 6>::new();
+    let a = graph.vertex(0).unwrap();
+    let b = graph.vertex(1).unwrap();
+    let c = graph.vertex(2).unwrap();
+    let d = graph.vertex(3).unwrap();
+    let e = graph.vertex(4).unwrap();
+    graph.add_edge(a, b).unwrap();
+    graph.add_edge(a, c).unwrap();
+    graph.add_edge(b, d).unwrap();
+    graph.add_edge(c, d).unwrap();
+    graph.add_edge(d, e).unwrap();
+    assert_eq!(graph.in_degree(a), Some(0));
+    assert_eq!(graph.in_degree(d), Some(2));
+    assert_eq!(graph.in_degree(e), Some(1));
+    assert!(graph.is_reachable(a, e));
+    assert!(graph.is_reachable(a, a));
+    assert!(!graph.is_reachable(e, a));
+    let mut reach = [None; 5];
+    assert_eq!(graph.is_reachable_in(a, e, &mut reach), Some(true));
+    let mut too_small = [None; 4];
+    assert_eq!(graph.is_reachable_in(a, e, &mut too_small), None);
+    assert!(graph.is_acyclic());
+    let mut degrees = [None; 5];
+    assert_eq!(graph.is_acyclic_in(&mut degrees), Some(true));
+    graph.add_edge(e, b).unwrap();
+    assert!(!graph.is_acyclic());
+}
 
 /**
 ```compile_fail,E0080

@@ -33,7 +33,10 @@ graph_csr! {
     ///   [`edge_target`](#method.edge_target).
     /// - Queries:
     ///   [`has_edge`](#method.has_edge),
-    ///   [`out_degree`](#method.out_degree).
+    ///   [`out_degree`](#method.out_degree),
+    ///   [`in_degree`](#method.in_degree),
+    ///   [`is_reachable`](#method.is_reachable) *([`_in`](#method.is_reachable_in))*,
+    ///   [`is_acyclic`](#method.is_acyclic) *([`_in`](#method.is_acyclic_in))*.
     /// - Iteration:
     ///   [`out_edges`](#method.out_edges),
     ///   [`neighbors`](#method.neighbors).
@@ -91,7 +94,10 @@ graph_csr! {
     ///   [`edge_target`](#method.edge_target).
     /// - Queries:
     ///   [`has_edge`](#method.has_edge),
-    ///   [`out_degree`](#method.out_degree).
+    ///   [`out_degree`](#method.out_degree),
+    ///   [`in_degree`](#method.in_degree),
+    ///   [`is_reachable_in`](#method.is_reachable_in),
+    ///   [`is_acyclic_in`](#method.is_acyclic_in).
     /// - Iteration:
     ///   [`out_edges`](#method.out_edges),
     ///   [`neighbors`](#method.neighbors).
