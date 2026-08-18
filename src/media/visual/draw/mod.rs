@@ -4,37 +4,25 @@
 #![doc = crate::_doc!(modules: crate::media::visual; draw)]
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
+//!
+//! This module describes drawing independently of any concrete image representation.
+//! Software rasterization that converts geometry into covered raster cells
+//! lives in [`image::raster::draw`][crate::media::visual::image::raster::draw].
 //
 
-mod traits; // Canvas, CanvasRead, CanvasTextel
+// mod blend; // Source/destination compositing and blend operations
+mod canvas; // Canvas, CanvasRead, CanvasTextel
+// mod list; // Retained drawing operations
+// mod paint; // Spatial sources of color and related drawing styles
+// mod stroke; // Width, caps, joins, and dashing
 
-// mod buffer;
-// pub mod compose; // WIP
-// mod dpi; // WIP
-// mod grid;
-// #[cfg(feature = "shape")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "shape")))]
-// pub mod line; // WIP
-// pub mod paint; // WIP
-
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // buffer::*,
-            // dpi::*,
-            // grid::*,
-            traits::*,
+            canvas::*,
+            // list::*,
+            // paint::*,
+            // stroke::*,
         };
-        // pub use super::buffer::*;
-        // pub use super::grid::*;
-        // #[cfg(feature = "shape")]
-        // pub use super::line::*;
-    }
-    _pub_mods {
-        // pub use super::{
-        //     // compose::*,
-        //     // line::*,
-        //     // paint::*,
-        // };
     }
 }

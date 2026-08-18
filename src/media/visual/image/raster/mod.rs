@@ -1,7 +1,7 @@
 // devela/src/media/visual/image/raster/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL_IMAGE_RASTER!()] // public
-#![doc = crate::_doc!(modules: crate::media::visual::image; raster)]
+#![doc = crate::_doc!(modules: crate::media::visual::image; raster: draw)]
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
@@ -11,15 +11,16 @@ mod _test;
 
 mod borrow; // Borrowed typed and byte raster views
 mod coverage; // Quantized raster-sample coverage
+pub mod draw; // Rasterization of geometric primitives into covered cells
 mod element; // Coordinate-and-coverage rasterization output
 mod format; // Raster sample and color-format semantics
-mod grid; // Logical raster-cell geometry and traversal
+pub mod grid; // Logical raster-cell geometry and traversal
 mod layout; // Physical raster byte-storage layout
 // mod macros; // TODO Raster type generators
 // mod ops; // TODO Raster storage and image operations
 mod traits; // Typed and byte raster access contracts
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -27,7 +28,6 @@ crate::structural_mods! { // _mods, _crate_internals
             coverage::Coverage8,
             element::RasterElement,
             format::RasterFormat,
-            grid::RasterGrid,
             layout::RasterLayout,
             // macros::raster,
             // ops::_all::*,
@@ -36,6 +36,13 @@ crate::structural_mods! { // _mods, _crate_internals
                 RasterViewBytes, RasterBufBytes,
                 RasterSamplePacked, RasterViewPacked,
             },
+        };
+    }
+    _pub_mods {
+        #[doc(inline)]
+        pub use super::{
+            draw::_all::*,
+            grid::_all::*,
         };
     }
     _crate_internals {

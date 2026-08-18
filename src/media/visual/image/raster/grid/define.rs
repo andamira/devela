@@ -1,4 +1,4 @@
-// devela/src/media/visual/image/raster/grid.rs
+// devela/src/media/visual/image/raster/grid/define.rs
 //
 //! Defines [`RasterGrid`].
 //
@@ -10,7 +10,7 @@ use crate::{is, unwrap};
 #[doc = crate::_tags!(image layout)]
 /// A finite logical grid of canonical raster cells.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
+    location("media/visual/image/raster/grid"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(RasterGrid = 8|64),
     #[cfg(target_pointer_width = "64")]
