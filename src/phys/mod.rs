@@ -16,10 +16,10 @@ crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
 // pub mod astro; // Astronomy-related abstractions
 // pub mod bio; // Biology-related abstractions
 // pub mod chem; // Chemistry-related abstractions
-// pub mod elec; // Electromagnetic-related abstractions
+// pub mod elec; // Electrical state, fields, transport, and energetic coupling
 // pub mod geo; // Geophysics-related abstractions
 // pub mod heat; // Thermodynamics and heat transfer
-// pub mod mech; // mechanics-related abstractions
+// pub mod mech; // Mechanical state, response, interaction, and transmission
 // pub mod optic; // Optics and light transport in piecewise media
 // pub mod subs; // Physical substrates, bodies, phases, and material response properties
 pub mod time; // Time and calendar types and operations

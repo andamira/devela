@@ -83,6 +83,11 @@
 - new macros: `handle!`, `handle_gen!`.
 - rename old `handle!` to `handle_span!`.
 - make `handle` and `uuid` modules public.
+- update `id_seq!`:
+  - make relaxed ordering default.
+  - expose explicit ordering variants.
+  - fix exhaustion and ID-count semantics.
+  - restrict `id_seq!` to unsigned primitives.
 
 #### data::id::uuid
 - new types: `Uuid`, `UuidV7Generator`, `UuidNonNil`, `UuidVariant`, `UuidVersion`.
@@ -221,6 +226,8 @@
 ### num::signal
 - new traits: `SignalAt`, `SignalNext`.
 - new types: `CurveRamp`, `Phase[Step|Accum]`, `Signal<Clamp|Const|Fn|Map|Scale|Zip>`.
+
+### phys::mech
 
 ### phys::time
 - remove the `time` feature-gate from `[Maybe]Timed`.

@@ -7,4 +7,26 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! {}
+// pub mod deform; // Deformation measures, rest states, and mechanical response laws
+// pub mod fluid; // Pressure, flow, and fluid-mechanical systems
+// pub mod inter;  // Mechanical interactions, constraints, contacts, and joints
+// pub mod kine;   // Motion state and kinematic relations through time
+// pub mod load;   // Applied mechanical actions such as force, torque, and impulse
+// pub mod rigid; // Rigid-body mechanical models
+// pub mod soft;  // Deformable mechanical models and reduced forms
+// pub mod trans;  // Mechanical transmission, transformation, and transduction
+
+crate::structural_mods! { // _pub_mods
+    _pub_mods {
+        // pub use super::{
+        //     deform::_all::*,
+        //     fluid::_all::*,
+        //     inter::_all::*,
+        //     kine::_all::*,
+        //     load::_all::*,
+        //     rigid::_all::*,
+        //     soft::_all::*,
+        //     trans::_all::*,
+        // };
+    }
+}
