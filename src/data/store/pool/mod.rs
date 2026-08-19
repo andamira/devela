@@ -29,17 +29,11 @@
 mod item; // pool!
 mod seq; // pool_seq!
 
-crate::structural_mods! { // _mods, _reexports
+crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             item::_all::*,
             seq::_all::*,
-        };
-    }
-    _reexports {
-        pub use super::{
-            pool,
-            pool_seq,
         };
     }
 }

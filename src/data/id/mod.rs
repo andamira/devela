@@ -58,6 +58,9 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
     }
     _reexports {
         #[doc(inline)]
-        pub use super::{Uuid, UuidV7Generator};
+        pub use super::{
+            handle::{handle, handle_gen},
+            uuid::{Uuid, UuidV7Generator}
+        };
     }
 }

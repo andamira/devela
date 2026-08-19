@@ -117,6 +117,7 @@ macro_rules! structural_mods· {
         )?
         $(
             #[allow(unused_imports)]
+            #[doc(inline)]
             pub use _reexports::*;
             mod _reexports { #![allow(unused_imports)]
                 $($block_reexports)*
