@@ -55,7 +55,7 @@ See also
 
 
 # 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
-<!-- > - <https://github.com/rust-lang/rust/milestone/146> -->
+> - <https://github.com/rust-lang/rust/milestone/147>
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
@@ -71,10 +71,13 @@ See also
 - 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 
+
 # 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
-<!-- > - <https://github.com/rust-lang/rust/milestone/147> -->
+> - <https://github.com/rust-lang/rust/milestone/149>
 <!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
+
+- 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
