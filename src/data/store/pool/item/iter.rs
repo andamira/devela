@@ -1,4 +1,4 @@
-// devela/src/data/store/pool/iter.rs
+// devela/src/data/store/pool/item/iter.rs
 //
 //! Defines [`PoolIter`].
 //
@@ -6,15 +6,15 @@
 use crate::{IteratorExactSize, IteratorFused, Mem, is};
 
 #[doc = crate::_tags!(iterator data_structure)]
-/// An iterator over occupied slots in a pool.
+/// An iterator over values in occupied item-pool slots.
 #[doc = crate::_doc_meta!{
-    location("data/store"),
+    location("data/store/pool"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: PoolIter<&[Option<char>]> = 12|96),
     #[cfg(target_pointer_width = "64")]
     test_size_of(__: PoolIter<&[Option<char>]> = 24|192),
 }]
-/// Returned by [`pool!`][crate::pool]'s methods [`iter`] and [`iter_mut`],
+/// Returned by [`pool!`][crate::pool!]'s methods [`iter`] and [`iter_mut`],
 /// and by reference iteration.
 ///
 /// [`iter`]: crate::PoolExample::iter

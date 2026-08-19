@@ -87,7 +87,7 @@ its own flat view of all its public children.";
     _DOC_DATA_STORE_CACHE   = "Stores that retain values to reduce recomputation or retrieval cost.";
     _DOC_DATA_STORE_INTERN  = "Canonical stores for deduplicated values and shared identity.";
     _DOC_DATA_STORE_KEY     = "Keyed stores and lookup structures.";
-    _DOC_DATA_STORE_POOL    = "Reusable slot stores with generational handles and individual reclamation.";
+    _DOC_DATA_STORE_POOL    = "Reusable stores with generational handles and individual reclamation.";
     _DOC_DATA_TOPOL         = "Connectivity and structural relations independent of storage.";
     _DOC_DATA_TOPOL_GRAPH   = "Graph connectivity over indexed vertex domains.";
     _DOC_DATA_TOPOL_SPATIAL = "Locality, neighborhood, and partitioning over indexed domains.";

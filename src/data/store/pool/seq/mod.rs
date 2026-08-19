@@ -2,9 +2,13 @@
 //
 //! Variable-length sequence pools.
 //!
-//! Sequences have generational identities while
-//! their contiguous cell spans may be reclaimed or relocated.
-//! Cells preserve order but have no independent stable identity.
+//! Sequences have generational identities while their contiguous cell spans
+//! may be reclaimed or relocated. Cells preserve order but
+//! have no independent stable identity.
+//!
+//! Logical sequence length is distinct from reserved span capacity. This allows
+//! sequences to grow within existing reservations while making physical
+//! fragmentation observable and explicitly manageable.
 //
 
 #[cfg(test)]

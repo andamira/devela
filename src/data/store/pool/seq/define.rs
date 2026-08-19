@@ -4,13 +4,114 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a generational pool of variable-length contiguous sequences.
-#[doc = crate::_doc_meta!{location("data/store")}]
+#[doc = crate::_doc_meta!{location("data/store/pool")}]
 ///
-/// Sequence handles remain stable while their physical cell spans may be
-/// reclaimed or relocated. Cells within each sequence remain ordered and
-/// contiguous, but have no independent stable identity.
+/// Each inserted sequence receives a generational handle whose identity is
+/// independent of the sequence's physical cell span. A sequence may therefore
+/// relocate while its handle remains valid.
 ///
-/// The static backend owns fixed capacities for both sequences and cells.
+/// Cells within a sequence preserve their order and remain contiguous, but
+/// individual cells have no independent stable identity.
+///
+/// # Capacity
+///
+/// The static pool has two independent fixed capacities:
+///
+/// - `SEQS` is the maximum number of simultaneously live sequences.
+/// - `CELLS` is the total number of cells available to their reserved spans.
+///
+/// The generated type is:
+/// `Pool<T, const SEQS: usize, const CELLS: usize>`.
+///
+/// A sequence has both a logical [`seq_len`](#method.seq_len) and a reserved
+/// [`seq_capacity`](#method.seq_capacity). Operations such as
+/// [`truncate`](#method.truncate) and [`pop`](#method.pop) reduce the logical
+/// length without releasing the remaining reservation.
+///
+/// [`shrink_to_fit`](#method.shrink_to_fit) releases that unused reservation.
+///
+/// # Contiguity and fragmentation
+///
+/// Each sequence occupies one contiguous physical span. Consequently,
+/// [`cell_remaining`](#method.cell_remaining) may report enough total free cells
+/// for an insertion while no individual free span is large enough.
+///
+/// [`largest_free_span`](#method.largest_free_span),
+/// [`can_insert`](#method.can_insert), and
+/// [`is_fragmented_for`](#method.is_fragmented_for) expose this distinction.
+///
+/// Growth first uses existing reserved capacity, then tries to extend the
+/// current span, and otherwise relocates the complete sequence. Relocation
+/// preserves the sequence handle.
+///
+/// Growth does not implicitly compact the pool.
+///
+/// [`compact`](#method.compact) removes gaps while preserving per-sequence
+/// reservations. [`pack`](#method.pack) additionally releases unused
+/// per-sequence capacity.
+///
+/// # Representations
+///
+/// `index` selects the primitive and optional representation used for sequence
+/// slot indices.
+///
+/// `generation` selects the primitive and optional representation used for
+/// sequence generations.
+///
+/// `cell` selects the unsigned primitive used internally to represent cell
+/// offsets, lengths, and capacities. It is not the stored cell type `T`.
+///
+/// The cell representation must be able to represent `CELLS`.
+///
+/// Omitting a representation after `+` uses the primitive itself.
+///
+/// # Handle validity
+///
+/// Handles are relative to the pool instance that produced them. They do not
+/// encode a pool identity.
+///
+/// Removing a sequence advances its slot generation before that slot can be
+/// reused, so stale handles are normally rejected. Generations eventually wrap,
+/// so this protection is bounded by the configured generation domain.
+///
+/// # Cell storage
+///
+/// The current backend is fixed-capacity and fully initialized.
+/// [`new_init`](#method.new_init) initializes the backing cell storage with
+/// `T::INIT`. Operations that copy or relocate cell contents require `T: Copy`.
+///
+/// # Examples
+/// ```
+/// # use devela::{NonMaxU16, pool_seq};
+/// pool_seq! {
+///     [
+///         index: u8;
+///         generation: u16 + NonMaxU16;
+///         cell: u16;
+///     ]
+///     pub Sequences;
+///     pub SequenceId;
+/// }
+///
+/// let mut pool = Sequences::<u8, 4, 16>::new_init();
+///
+/// let word = pool.insert(b"cat").unwrap();
+/// let other = pool.insert(b"tree").unwrap();
+///
+/// assert_eq!(pool.get(word), Some(b"cat".as_slice()));
+///
+/// // `other` physically follows `word`, so growing `word` may relocate it.
+/// assert_eq!(pool.push(word, b'!'), Ok(()));
+///
+/// // Its semantic identity remains unchanged.
+/// assert_eq!(pool.get(word), Some(b"cat!".as_slice()));
+/// assert_eq!(pool.get(other), Some(b"tree".as_slice()));
+/// ```
+///
+/// See: [`PoolSeqExample`], [`PoolSeqHandleExample`].
+///
+/// [`PoolSeqExample`]: crate::PoolSeqExample
+/// [`PoolSeqHandleExample`]: crate::PoolSeqHandleExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! pool_seq {

@@ -5,45 +5,41 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Pools retain values in independently reclaimable slots.
+//! Pools retain independently reclaimable values through generational handles.
 //!
-//! Each insertion returns a handle containing a slot index and generation.
-//! Removing a value advances that slot's generation before it can be reused,
-//! allowing previously issued handles to be rejected.
+//! Removing a retained value advances the generation associated
+//! with its identity and releases its storage for reuse,
+//! so previously issued handles no longer resolve.
 //!
-//! Unlike an [`arena`](mod@super::arena), a pool can reclaim and reuse one slot
-//! without reclaiming values inserted after it. Live values remain in stable
-//! slots while vacant slots are recycled.
+//! Unlike an [`arena`](mod@super::arena), a pool can reclaim one retained value
+//! without reclaiming values introduced after it.
 //!
-//! - [`pool!`] generates either fixed-capacity static pools
-//!   or growable allocating pools.
-//! - [`PoolIter`] traverses the currently occupied slots.
+//! Two pool forms are provided:
+//!
+//! - [`pool_seq!`] stores each value in an independently reusable slot
+//!   whose index remains fixed while the item is retained.
+//! - [`pool_seq!`] stores variable-length contiguous sequences whose identities remain
+//!   stable while their physical cell spans may be reclaimed or relocated.
 //!
 //! Handles are relative to the pool instance that issued them and generations
-//! eventually wrap. Their stale-handle protection is therefore bounded by the
-//! store context and configured generation domain.
+//! eventually wrap. Stale-handle protection is therefore bounded by the store
+//! context and configured generation domain.
 //
 
-#[cfg(test)]
-mod _test;
-#[cfg(all(test, feature = "alloc", not(miri)))] // too slow for miri
-mod _model;
-#[cfg(any(test, feature = "_docs_examples"))]
-mod _example;
-
-mod define; // pool!
-mod impls; // hidden macros for pool variants
-mod iter; // PoolIter
+mod item; // pool!
 mod seq; // pool_seq!
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            define::pool,
-            iter::PoolIter,
+            item::_all::*,
             seq::_all::*,
         };
-        #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::_example::*;
+    }
+    _reexports {
+        pub use super::{
+            pool,
+            pool_seq,
+        };
     }
 }

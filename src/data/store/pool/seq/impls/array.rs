@@ -87,7 +87,7 @@ macro_rules! __pool_seq_impl_array {
 
             /* capacity */
 
-            /// Returns the maximum number of live sequences.
+            /// Returns the maximum number of simultaneously live sequences.
             #[must_use]
             $vis const fn capacity(&self) -> usize { SEQS }
 
@@ -115,11 +115,11 @@ macro_rules! __pool_seq_impl_array {
             #[must_use]
             $vis const fn cell_len(&self) -> usize { self.cell_len }
 
-            /// Returns the number of cells currently reserved by sequences.
+            /// Returns the total number of cells reserved by live sequences.
             #[must_use]
             $vis const fn allocated_cell_len(&self) -> usize { self.allocated_len }
 
-            /// Returns the total number of currently unreserved cells.
+            /// Returns the number of cells not currently reserved by any sequence.
             #[must_use]
             $vis const fn cell_remaining(&self) -> usize { CELLS - self.allocated_len }
 
@@ -143,7 +143,7 @@ macro_rules! __pool_seq_impl_array {
             $vis const fn is_fragmented_for(&self, len: usize) -> bool {
                 len <= self.cell_remaining() && len > self.largest_free_span()
             }
-            /// Returns the unoccupied capacity reserved by a sequence.
+            /// Returns the unused capacity currently reserved by `handle`.
             #[must_use]
             $hvis const fn seq_remaining(&self, handle: $Handle) -> Option<usize> {
                 $crate::unwrap![some_map self.seqs.get(handle),
@@ -167,7 +167,7 @@ macro_rules! __pool_seq_impl_array {
             $hvis const fn seq_capacity(&self, handle: $Handle) -> Option<usize> {
                 $crate::unwrap![some_map self.seqs.get(handle), |meta| meta.capacity as usize]
             }
-            /// Returns the contiguous cells belonging to `handle`.
+            /// Returns the logical cells of the sequence identified by `handle`.
             #[must_use]
             $hvis fn get(&self, handle: $Handle) -> Option<&[T]> {
                 let meta = *self.seqs.get(handle)?;
@@ -175,7 +175,7 @@ macro_rules! __pool_seq_impl_array {
                 let end = start + meta.len as usize;
                 Some(&self.cells[start..end])
             }
-            /// Returns the contiguous cells belonging to `handle`.
+            /// Returns the logical cells of the sequence identified by `handle` exclusively.
             #[must_use]
             $hvis fn get_mut(&mut self, handle: $Handle) -> Option<&mut [T]> {
                 let meta = *self.seqs.get(handle)?;
@@ -259,11 +259,14 @@ macro_rules! __pool_seq_impl_array {
             $hvis const fn clear_seq(&mut self, handle: $Handle) -> bool {
                 self.truncate(handle, 0)
             }
+
             /// Reserves capacity for at least `additional` cells beyond the current length.
             ///
-            /// The sequence may relocate while its handle remains valid.
+            /// Existing reserved capacity is reused first. The sequence may extend in place
+            /// or relocate while its handle remains valid.
             ///
-            /// Returns `false` if `handle` is invalid or no contiguous span fits.
+            /// Returns `false` if `handle` is invalid or no contiguous target span fits.
+            /// The pool is not implicitly compacted.
             $hvis const fn reserve_exact(&mut self, handle: $Handle, additional: usize) -> bool
             where T: Copy {
                 let old = *$crate::unwrap![some_or? self.seqs.get(handle), false];
@@ -355,16 +358,17 @@ macro_rules! __pool_seq_impl_array {
 
             /* packing */
 
-            /// Removes gaps between sequence spans while preserving their capacities.
+            /// Removes gaps between physical sequence spans.
             ///
-            /// Sequence handles, contents, and physical sequence order are preserved.
+            /// Per-sequence capacities, logical contents, handles,
+            /// and physical sequence order are preserved.
             $vis fn compact(&mut self) where T: Copy {
                 self._repack(false);
             }
-            /// Packs all logical sequence contents contiguously.
+            /// Packs all logical sequence contents into one contiguous prefix.
             ///
-            /// Unused per-sequence capacity is released, so every sequence's capacity
-            /// becomes its current length. Sequence handles and cell order are preserved.
+            /// Each sequence's reserved capacity is reduced to its logical length.
+            /// Handles, contents, and physical sequence order are preserved.
             $vis fn pack(&mut self) where T: Copy {
                 self._repack(true);
             }

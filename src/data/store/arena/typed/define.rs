@@ -63,7 +63,7 @@
 /// invalidation is not remembered. If a later insertion reuses the same index,
 /// an old handle for that index can resolve again to the new value.
 ///
-/// Use [`pool!`](crate::pool) when individual reclamation and bounded stale-handle
+/// Use [`pool!`][crate::pool!] when individual reclamation and bounded stale-handle
 /// rejection are required.
 ///
 /// # Capacity

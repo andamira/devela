@@ -1,14 +1,14 @@
-// devela/src/data/store/pool/define.rs
+// devela/src/data/store/pool/item/define.rs
 //
 //! Defines [`pool!`].
 //
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines an owning generational pool with static or allocating storage.
-#[doc = crate::_doc_meta!{location("data/store")}]
+#[doc = crate::_doc_meta!{location("data/store/pool")}]
 ///
-/// The generated pool stores values in stable slots and accesses them through
-/// generated handles containing a slot index and generation.
+/// The generated pool stores values in indexed slots and accesses them
+/// through generated handles containing a slot index and generation.
 ///
 /// Removing a value advances that slot's generation before the slot can be
 /// reused, so handles previously issued for that slot no longer resolve.
