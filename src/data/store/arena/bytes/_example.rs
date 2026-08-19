@@ -1,4 +1,4 @@
-// devela/src/data/store/arena/byte/_example.rs
+// devela/src/data/store/arena/bytes/_example.rs
 //
 //! Defines [`ArenaBytesExample`], [`ArenaBytesHandleExample`], [`ArenaBytesMarkExample`].
 //

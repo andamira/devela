@@ -1,7 +1,20 @@
-// devela/src/data/store/arena/byte/_test.rs
+// devela/src/data/store/arena/bytes/_test.rs
 
 use crate::ArenaBytesExample as Arena;
 
+crate::arena_bytes! {
+    [cursor: u8 + crate::NonMaxU8;]
+    _ArenaNoMark;
+    _ArenaNoMarkHandle;
+}
+#[test]
+fn works_without_marks() {
+    let mut a = _ArenaNoMark::<4>::new();
+    let h = a.push_byte(7).unwrap();
+    assert_eq!(a.read_byte(h), Some(7));
+    a.clear();
+    assert!(a.is_empty());
+}
 #[test]
 fn push_and_read_bytes() {
     let mut a = Arena::<16>::new();

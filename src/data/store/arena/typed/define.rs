@@ -43,7 +43,6 @@
 ///     pub Mark;
 /// }
 /// ```
-///
 /// [`mark`](#method.mark) snapshots the current insertion frontier and
 /// [`rollback`](#method.rollback) removes every value inserted after it.
 ///
@@ -234,7 +233,7 @@ macro_rules! arena {
                 const fn new(mark: $crate::MaybeNiche<$Index>) -> Self { Self(mark) }
             }
         )?
-     };
+    };
     (%backend
         [kind: alloc]
         [index: $iprim:ident + $Index:ty]

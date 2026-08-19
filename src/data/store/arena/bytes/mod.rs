@@ -1,4 +1,4 @@
-// devela/src/data/store/arena/byte/mod.rs
+// devela/src/data/store/arena/bytes/mod.rs
 //
 //!
 //
@@ -9,7 +9,8 @@ mod _test;
 mod _example;
 
 mod define; // arena_bytes!
-mod _internal; // __ArenaBytes
+mod _internal; // __ArenaBytesArray
+mod impls; // hidden macros for arena variants
 // mod field; // WIP ArenaField
 // mod primitive; // WIP ArenaPrimitive
 // mod recipe; // WIP ArenaRecipe

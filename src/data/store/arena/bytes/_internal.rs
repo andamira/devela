@@ -1,6 +1,6 @@
-// devela/src/data/store/arena/byte/_internal.rs
+// devela/src/data/store/arena/bytes/_internal.rs
 //
-//! Defines [`__ArenaBytes`].
+//! Defines [`__ArenaBytesArray`].
 //!
 //! This module groups all the arena-related safety feature-gates.
 //
@@ -15,10 +15,10 @@ use crate::{MaybeByte, Slice};
 /// # Features
 /// Uses the `unsafe_array` and `unsafe_slice` features.
 #[derive(Debug)]
-pub struct __ArenaBytes<const CAP: usize>;
+pub struct __ArenaBytesArray<const CAP: usize>;
 
 #[rustfmt::skip]
-impl<const CAP: usize> __ArenaBytes<CAP> {
+impl<const CAP: usize> __ArenaBytesArray<CAP> {
     ///
     pub const fn new_array<const N: usize>() -> [MaybeByte; N] {
         cfg_select! { all(feature = "unsafe_array", not(feature = "safe_mem")) => {

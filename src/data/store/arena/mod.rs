@@ -19,7 +19,7 @@
 //! - [`arena!`] generates typed arenas over either fixed-capacity static storage
 //!   or growable allocating storage, with optional rollback marks.
 //! - [`arena_bytes!`] generates fixed-capacity byte arenas
-//!   with span handles and rollback marks.
+//!   with span handles and optional rollback marks.
 //!
 //! Typed arena handles contain only an index.
 //! Byte-arena handles describe an offset and length.
@@ -28,19 +28,19 @@
 //! insertion may reuse the same coordinates so an old handle can resolve again.
 //
 
-mod byte; // arena_bytes!
+mod bytes; // arena_bytes!
 mod typed; // arena!
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
-            byte::_all::*,
+            bytes::_all::*,
             typed::_all::*,
         };
     }
     _hidden {
         pub use super::{
-            byte::_hidden::*,
+            bytes::_hidden::*,
         };
     }
 }

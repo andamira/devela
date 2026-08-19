@@ -1,131 +1,13 @@
-// devela/src/data/store/arena/byte/define.rs
-//
-//! Defines [`arena_bytes!`].
-//
+// devela/src/data/store/arena/bytes/impls/array.rs
 
-#[doc = crate::_tags!(construction data_structure)]
-/// Defines a fixed-capacity byte arena with compact span handles.
-#[doc = crate::_doc_meta!{location("data/store")}]
-///
-/// The generated arena stores bytes in an append-only initialized prefix.
-///
-/// Arena positions use the primitive part of the configured `cursor`.
-/// The arena's current length and rollback marks use that primitive directly,
-/// while generated handles may use a different representation for their
-/// byte offsets and lengths.
-///
-/// Handles describe coordinates only; they do not identify a particular arena.
-/// The receiving arena validates that their spans lie within its written prefix.
-///
-/// # Configuration
-/// `cursor` selects the primitive byte-coordinate type and, optionally,
-/// the representation used by generated handle fields.
-///
-/// - `cursor: u16;` uses `u16` for both.
-/// - `cursor: u16 + NonMaxU16;` keeps arena cursor state as `u16`
-///   while storing handle coordinates as `NonMaxU16`.
-///
-/// # Features
-/// Uses `unsafe_array` to avoid initializing the full byte capacity,
-/// and `unsafe_slice` for additional slice-access optimizations.
-///
-/// # Example
-/// ```
-/// # use devela::{NonMaxU16, arena_bytes};
-/// arena_bytes! {
-///     [cursor: u16 + NonMaxU16;]
-///
-///     /// A byte arena.
-///     pub Bytes;
-///     /// A byte span within `Bytes`.
-///     pub BytesHandle;
-///     /// A rollback position within `Bytes`.
-///     pub BytesMark;
-/// }
-///
-/// let mut arena = Bytes::<64>::new();
-/// let handle = arena.push_bytes(b"devela").unwrap();
-/// assert_eq!(arena.read_bytes(handle), Some(&b"devela"[..]));
-/// ```
-/// See:
-/// [`ArenaBytesExample`],
-/// [`ArenaBytesHandleExample`],
-/// [`ArenaBytesMarkExample`].
-///
-/// [`ArenaBytesExample`]: crate::ArenaBytesExample
-/// [`ArenaBytesHandleExample`]: crate::ArenaBytesHandleExample
-/// [`ArenaBytesMarkExample`]: crate::ArenaBytesMarkExample
+#[doc(hidden)]
 #[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! arena_bytes {
+macro_rules! __arena_bytes_impl_array {
     (
-        [cursor: $cprim:ident $(+ $Cursor:ty)?;]
-
-        $(#[$arena_attr:meta])*
-        $vis:vis $Arena:ident;
-
-        $(#[$handle_attr:meta])*
-        $hvis:vis $Handle:ident;
-
-        $(#[$mark_attr:meta])*
-        $mvis:vis $Mark:ident $(;)?
-    ) => {
-        $crate::arena_bytes! { %normalize_cursor
-            [cursor: $cprim $(+ $Cursor)?]
-            [arena: $(#[$arena_attr])* $vis $Arena]
-            [handle: $(#[$handle_attr])* $hvis $Handle]
-            [mark: $(#[$mark_attr])* $mvis $Mark]
-        }
-    };
-    (%normalize_cursor
-        [cursor: $cprim:ident]
-        $($rest:tt)*
-    ) => {
-        $crate::arena_bytes! { %generate [cursor: $cprim + $cprim] $($rest)* }
-    };
-    (%normalize_cursor
-        [cursor: $cprim:ident + $Cursor:ty]
-        $($rest:tt)*
-    ) => {
-        $crate::arena_bytes! { %generate [cursor: $cprim + $Cursor] $($rest)* }
-    };
-    (%generate
-        [cursor: $cprim:ident + $Cursor:ty]
-        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
-        [handle: $(#[$handle_attr:meta])* $hvis:vis $Handle:ident]
-        [mark: $(#[$mark_attr:meta])* $mvis:vis $Mark:ident]
-    ) => {
-        $crate::handle_span! {
-            [offset: $cprim + $Cursor;]
-            $(#[$handle_attr])*
-            $hvis $Handle;
-        }
-
-        $(#[$mark_attr])*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $mvis struct $Mark($cprim);
-
-        #[allow(dead_code)]
-        impl $Mark {
-            const fn new(cursor: $cprim) -> Self {
-                Self(cursor)
-            }
-        }
-
-        $crate::arena_bytes! { %define
-            [cursor: $cprim]
-            [arena: $(#[$arena_attr])* $vis $Arena]
-            [handle: $hvis $Handle]
-            [mark: $mvis $Mark]
-            [internal: $crate::__ArenaBytes::<CAP>]
-            ($)
-        }
-    };
-    (%define
         [cursor: $cprim:ident]
         [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
         [handle: $hvis:vis $Handle:ident]
-        [mark: $mvis:vis $Mark:ident]
+        [mark: $($mvis:vis $Mark:ident)?]
         [internal: $_:ty]
         ($_d:tt)
     ) => {
@@ -138,12 +20,15 @@ macro_rules! arena_bytes {
             len: $cprim,
         }
 
-        impl<const CAP: usize> Eq for $Arena<CAP> {}
-        impl<const CAP: usize> PartialEq for $Arena<CAP> {
-            fn eq(&self, other: &Self) -> bool { $Arena::eq(self, other) }
+        impl<const CAP: usize> $crate::ConstInit for $Arena<CAP> {
+            const INIT: Self = Self::new();
         }
         impl<const CAP: usize> Default for $Arena<CAP> {
             fn default() -> Self { Self::new() }
+        }
+        impl<const CAP: usize> Eq for $Arena<CAP> {}
+        impl<const CAP: usize> PartialEq for $Arena<CAP> {
+            fn eq(&self, other: &Self) -> bool { $Arena::eq(self, other) }
         }
 
         #[allow(dead_code, private_interfaces)]
@@ -219,12 +104,15 @@ macro_rules! arena_bytes {
 
             /* snapshot and rollback */
 
-            /// Creates a rollback mark at the current byte length.
-            $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
-            /// Rolls back to `mark`, returning whether the mark was valid.
-            $mvis const fn rollback(&mut self, mark: $Mark) -> bool {
-                if mark.0 <= self.len { self.len = mark.0; true } else { false }
-            }
+            $(
+                /// Creates a rollback mark at the current byte length.
+                $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
+
+                /// Rolls back to `mark`, returning whether the mark was valid.
+                $mvis const fn rollback(&mut self, mark: $Mark) -> bool {
+                    if mark.0 <= self.len { self.len = mark.0; true } else { false }
+                }
+            )?
 
             /* byte slices */
 
@@ -530,5 +418,3 @@ macro_rules! arena_bytes {
         use _impl_arena_methods_for_prims;
     };
 }
-#[doc(inline)]
-pub use arena_bytes;
