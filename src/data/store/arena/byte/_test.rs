@@ -6,8 +6,8 @@ use crate::ArenaBytesExample as Arena;
 fn push_and_read_bytes() {
     let mut a = Arena::<16>::new();
     let handle = a.push_bytes(&[1, 2, 3, 4]).unwrap();
-    assert_eq!(handle.offset(), 0);
-    assert_eq!(handle.len(), 4);
+    assert_eq!(handle.offset_prim(), 0);
+    assert_eq!(handle.len_prim(), 4);
     assert_eq!(a.read_bytes(handle).unwrap(), &[1, 2, 3, 4]);
 }
 #[test]
@@ -49,7 +49,7 @@ fn pop_and_truncate() {
     let h2 = a.push_bytes(&[3, 4]).unwrap();
     assert!(!a.truncate_last(h1));
     assert!(a.truncate_last(h2));
-    assert_eq!(a.len(), h1.offset() + h1.len());
+    assert_eq!(a.len(), h1.offset_prim() + h1.len_prim());
 }
 #[test]
 fn capacity_and_remaining() {
@@ -73,4 +73,17 @@ fn eq_bytes_and_replace_str() {
     let mut b = Arena::<32>::new();
     let _ = b.push_str_u8("hi");
     assert!(a == b);
+}
+#[test]
+fn rejects_oversized_primitive_span() {
+    let mut a = Arena::<8>::new();
+    let h = a.push_bytes(&[1, 2, 3, 4, 5]).unwrap();
+    assert_eq!(a.read_u32(h), None);
+    assert!(!a.replace_u32(h, 7));
+}
+#[test]
+fn rejects_invalid_bool_encoding() {
+    let mut a = Arena::<4>::new();
+    let h = a.push_byte(2).unwrap();
+    assert_eq!(a.read_bool(h), None);
 }

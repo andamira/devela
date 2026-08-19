@@ -4,15 +4,53 @@
 //
 
 #[doc = crate::_tags!(construction data_structure)]
-/// A custom byte store arena generator.
+/// Defines a fixed-capacity byte arena with compact span handles.
 #[doc = crate::_doc_meta!{location("data/store")}]
 ///
-/// # Features
-/// Uses `unsafe_array` to leverage `MaybeUninit` and avoid initializing the full capacity.
-/// And uses `unsafe_slice` for further performance gains.
+/// The generated arena stores bytes in an append-only initialized prefix.
 ///
-/// # Examples
-/// See: [`ArenaBytesExample`], [`ArenaBytesHandleExample`], [`ArenaBytesMarkExample`].
+/// Arena positions use the primitive part of the configured `cursor`.
+/// The arena's current length and rollback marks use that primitive directly,
+/// while generated handles may use a different representation for their
+/// byte offsets and lengths.
+///
+/// Handles describe coordinates only; they do not identify a particular arena.
+/// The receiving arena validates that their spans lie within its written prefix.
+///
+/// # Configuration
+/// `cursor` selects the primitive byte-coordinate type and, optionally,
+/// the representation used by generated handle fields.
+///
+/// - `cursor: u16;` uses `u16` for both.
+/// - `cursor: u16 + NonMaxU16;` keeps arena cursor state as `u16`
+///   while storing handle coordinates as `NonMaxU16`.
+///
+/// # Features
+/// Uses `unsafe_array` to avoid initializing the full byte capacity,
+/// and `unsafe_slice` for additional slice-access optimizations.
+///
+/// # Example
+/// ```
+/// # use devela::{NonMaxU16, arena_bytes};
+/// arena_bytes! {
+///     [cursor: u16 + NonMaxU16;]
+///
+///     /// A byte arena.
+///     pub Bytes;
+///     /// A byte span within `Bytes`.
+///     pub BytesHandle;
+///     /// A rollback position within `Bytes`.
+///     pub BytesMark;
+/// }
+///
+/// let mut arena = Bytes::<64>::new();
+/// let handle = arena.push_bytes(b"devela").unwrap();
+/// assert_eq!(arena.read_bytes(handle), Some(&b"devela"[..]));
+/// ```
+/// See:
+/// [`ArenaBytesExample`],
+/// [`ArenaBytesHandleExample`],
+/// [`ArenaBytesMarkExample`].
 ///
 /// [`ArenaBytesExample`]: crate::ArenaBytesExample
 /// [`ArenaBytesHandleExample`]: crate::ArenaBytesHandleExample
@@ -21,89 +59,84 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! arena_bytes {
     (
-     [
-      offset: $oprim:ident;
-     ]
+        [cursor: $cprim:ident $(+ $Cursor:ty)?;]
 
-     $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident;
+        $(#[$arena_attr:meta])*
+        $vis:vis $Arena:ident;
 
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident $(;)?
+        $(#[$handle_attr:meta])*
+        $hvis:vis $Handle:ident;
 
-     $(#[$mark_attr:meta])*
-     $mvis:vis $Mark:ident $(;)?
+        $(#[$mark_attr:meta])*
+        $mvis:vis $Mark:ident $(;)?
     ) => {
-        $crate::arena_bytes![
-            [
-                offset: $oprim + $oprim;
-            ]
-            $(#[$arena_attr])* $vis $Arena;
-            $(#[$handle_attr])* $hvis $Handle;
-            $(#[$mark_attr])* $mvis $Mark;
-        ];
-    };
-    (
-
-     [
-      offset: $oprim:ident + $Offset:ty;
-     ]
-
-     $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident;
-
-     $(#[$handle_attr:meta])*
-     $hvis:vis $Handle:ident;
-
-     $(#[$mark_attr:meta])*
-     $mvis:vis $Mark:ident $(;)?
-
-    ) => {
-        /* handle */
-
-        $crate::handle_span! {
-            [ offset:$oprim + $Offset; ]
-            $(#[$handle_attr])* $hvis $Handle
+        $crate::arena_bytes! { %normalize_cursor
+            [cursor: $cprim $(+ $Cursor)?]
+            [arena: $(#[$arena_attr])* $vis $Arena]
+            [handle: $(#[$handle_attr])* $hvis $Handle]
+            [mark: $(#[$mark_attr])* $mvis $Mark]
         }
-
-        /* mark */
+    };
+    (%normalize_cursor
+        [cursor: $cprim:ident]
+        $($rest:tt)*
+    ) => {
+        $crate::arena_bytes! { %generate [cursor: $cprim + $cprim] $($rest)* }
+    };
+    (%normalize_cursor
+        [cursor: $cprim:ident + $Cursor:ty]
+        $($rest:tt)*
+    ) => {
+        $crate::arena_bytes! { %generate [cursor: $cprim + $Cursor] $($rest)* }
+    };
+    (%generate
+        [cursor: $cprim:ident + $Cursor:ty]
+        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
+        [handle: $(#[$handle_attr:meta])* $hvis:vis $Handle:ident]
+        [mark: $(#[$mark_attr:meta])* $mvis:vis $Mark:ident]
+    ) => {
+        $crate::handle_span! {
+            [offset: $cprim + $Cursor;]
+            $(#[$handle_attr])*
+            $hvis $Handle;
+        }
 
         $(#[$mark_attr])*
-        // Append-only mark for snapshots and rollback in an arena.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        $mvis struct $Mark($Offset);
+        $mvis struct $Mark($cprim);
+
         #[allow(dead_code)]
         impl $Mark {
-            // Constructor always private.
-            const fn new(mark: $Offset) -> Self { $Mark(mark) }
+            const fn new(cursor: $cprim) -> Self {
+                Self(cursor)
+            }
         }
 
-        /* arena */
-
-        $crate::arena_bytes![%define
-            $(#[$arena_attr])* $vis $Arena<$Offset>; // the arena type
-            $hvis $Handle; // the handle name
-            $mvis $Mark; // the mark name
-            $crate::__ArenaBytes::<CAP>; // the internal ops arena namespace
-            ($); // the dollar sign passed as a token
-        ];
+        $crate::arena_bytes! { %define
+            [cursor: $cprim]
+            [arena: $(#[$arena_attr])* $vis $Arena]
+            [handle: $hvis $Handle]
+            [mark: $mvis $Mark]
+            [internal: $crate::__ArenaBytes::<CAP>]
+            ($)
+        }
     };
     (%define
-     $(#[$arena_attr:meta])*
-     $vis:vis $Arena:ident<$Offset:ty>;
-     $hvis:vis $Handle:ident;
-     $mvis:vis $Mark:ident;
-     $_:ty;
-     ($_d:tt);
+        [cursor: $cprim:ident]
+        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
+        [handle: $hvis:vis $Handle:ident]
+        [mark: $mvis:vis $Mark:ident]
+        [internal: $_:ty]
+        ($_d:tt)
     ) => {
         $(#[$arena_attr])*
         #[derive(Clone, Debug)]
         $vis struct $Arena<const CAP: usize> {
             data: [$crate::MaybeByte; CAP],
-            len: $Offset,
-        }
 
-        /* misc. trait impls */
+            /// End of the initialized byte prefix.
+            len: $cprim,
+        }
 
         impl<const CAP: usize> Eq for $Arena<CAP> {}
         impl<const CAP: usize> PartialEq for $Arena<CAP> {
@@ -113,25 +146,71 @@ macro_rules! arena_bytes {
             fn default() -> Self { Self::new() }
         }
 
-        // Fundamental methods.
         #[allow(dead_code, private_interfaces)]
         impl<const CAP: usize> $Arena<CAP> {
+            /* private helpers */
+
+            /// Ensures every arena position can also be represented by its handle.
+            ///
+            /// `CAP` itself must be representable because a full arena has
+            /// `len == CAP`, and a span may cover the entire arena.
+            const _GUARD_CAPACITY: () = assert!(
+                <$Handle>::try_from_usize(CAP, CAP).is_ok(),
+                "arena_bytes! capacity exceeds its cursor or handle representation",
+            );
+
+            /// Returns the written byte length in the machine indexing domain.
+            const fn _len_usize(&self) -> usize { self.len as usize }
+
+            /// Resolves a handle into a validated half-open byte range.
+            const fn _span_usize(&self, h: $Handle) -> Option<(usize, usize)> {
+                let start = $crate::unwrap![ok_some? h.offset_usize()];
+                let len = $crate::unwrap![ok_some? h.len_usize()];
+                let end = $crate::unwrap![some? start.checked_add(len)];
+                if end > self._len_usize() { return None; }
+                Some((start, end))
+            }
+            /// Resolves a repeated handle span into a validated byte range.
+            const fn _span_repeat_usize(&self, h: $Handle, count: $cprim)
+                -> Option<(usize, usize)> {
+                let (start, first_end) = $crate::unwrap![some? self._span_usize(h)];
+                let len = first_end - start;
+                let total = $crate::unwrap![some? len.checked_mul(count as usize)];
+                let end = $crate::unwrap![some? start.checked_add(total)];
+                if end > self._len_usize() { return None; }
+                Some((start, end))
+            }
+
+            /* constructor */
 
             /// Returns a new empty arena.
             $vis const fn new() -> Self {
+                let () = Self::_GUARD_CAPACITY;
                 Self { data: <$_>::new_array(), len: 0 }
             }
 
-            /// Returns the total capacity.
-            $vis const fn capacity(&self) -> $Offset { CAP as $Offset }
-            /// Return the occupied length.
-            $vis const fn len(&self) -> $Offset { self.len }
-            /// Whether the arena is empty.
+            /* capacity */
+
+            /// Returns the total byte capacity.
+            $vis const fn capacity(&self) -> $cprim { CAP as $cprim }
+            /// Returns the occupied byte length.
+            $vis const fn len(&self) -> $cprim { self.len }
+            /// Returns whether the arena contains no bytes.
             $vis const fn is_empty(&self) -> bool { self.len == 0 }
+            /// Returns whether no additional byte can be written.
+            $vis const fn is_full(&self) -> bool { self.len == CAP as $cprim }
             /// Returns the remaining byte capacity.
-            $vis const fn remaining(&self) -> $Offset { CAP as $Offset - self.len }
-            /// Returns `true` if n bytes fit in the remaining capacity.
-            $vis const fn can_write(&self, n: $Offset) -> bool { self.len + n <= CAP as $Offset }
+            $vis const fn remaining(&self) -> $cprim { CAP as $cprim - self.len }
+            /// Returns whether `n` additional bytes fit in the arena.
+            $vis const fn can_write(&self, n: $cprim) -> bool {
+                let end = $crate::unwrap![some_or? self.len.checked_add(n), false];
+                end <= CAP as $cprim
+            }
+
+            /* misc. */
+
+            /// Removes all written bytes.
+            $vis const fn clear(&mut self) { self.len = 0; }
 
             /// Compares two arenas for equality.
             $vis const fn eq(&self, other: &Self) -> bool {
@@ -140,9 +219,9 @@ macro_rules! arena_bytes {
 
             /* snapshot and rollback */
 
-            /// Snapshot a position in the arena.
+            /// Creates a rollback mark at the current byte length.
             $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
-            /// Rolls back to `mark`, returning whether it was valid.
+            /// Rolls back to `mark`, returning whether the mark was valid.
             $mvis const fn rollback(&mut self, mark: $Mark) -> bool {
                 if mark.0 <= self.len { self.len = mark.0; true } else { false }
             }
@@ -151,76 +230,69 @@ macro_rules! arena_bytes {
 
             /// Returns a byte slice over all the written data.
             $vis const fn as_bytes(&self) -> &[u8] {
-                <$_>::slice_bytes(&self.data, 0, self.len as usize)
+                <$_>::slice_bytes(&self.data, 0, self._len_usize())
             }
             /// Returns an exclusive byte slice over all the written data.
             $vis const fn as_bytes_mut(&mut self) -> &mut [u8] {
-                $crate::__ArenaBytes::<CAP>::slice_bytes_mut(&mut self.data, 0, self.len as usize)
+                let len = self._len_usize();
+                <$_>::slice_bytes_mut(&mut self.data, 0, len)
             }
 
-            /// Write a byte slice into the arena.
+            /// Writes a byte slice into the arena.
             $hvis const fn push_bytes(&mut self, bytes: &[u8]) -> Option<$Handle> {
-                $crate::unwrap!(some_if?
-                    self.len.checked_add(bytes.len() as $Offset), |v| v <= CAP as $Offset);
-                let start = self.len;
-                let handle = <$Handle>::new(start as $Offset, bytes.len() as $Offset);
+                let start = self._len_usize();
+                let end = $crate::unwrap![some? start.checked_add(bytes.len())];
+                if end > CAP { return None; }
+                let handle =
+                    $crate::unwrap![ok_some? <$Handle>::try_from_usize(start, bytes.len())];
                 $crate::whilst! { i in 0..bytes.len(); {
-                    $crate::__ArenaBytes::<CAP>::write_byte(&mut self.data,
-                        self.len as usize, bytes[i]);
-                    self.len += 1;
+                    <$_>::write_byte(&mut self.data, start + i, bytes[i]);
                 }}
+                // `_GUARD_CAPACITY` proves every value through CAP fits `$cprim`.
+                self.len = end as $cprim;
                 Some(handle)
             }
 
-            /// Read a shared slice over the written bytes.
-            $hvis const fn read_bytes(&self, h: $Handle) -> Option<&[u8]> {
-                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
-                if h.len() + h.offset() > self.len { return None }
-                Some($crate::__ArenaBytes::<CAP>::slice_bytes(&self.data, hoff, hlen + hoff))
+            /// Returns the bytes described by `handle`.
+            $hvis const fn read_bytes(&self, handle: $Handle) -> Option<&[u8]> {
+                let (start, end) = $crate::unwrap![some? self._span_usize(handle)];
+                Some(<$_>::slice_bytes(&self.data, start, end))
             }
-            /// Read an exclusive slice over the written bytes.
-            $hvis const fn read_bytes_mut(&mut self, h: $Handle) -> Option<&mut [u8]> {
-                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
-                if h.len() + h.offset() > self.len { return None }
-                Some($crate::__ArenaBytes::<CAP>::slice_bytes_mut(&mut self.data,
-                    hoff, hlen + hoff))
+            /// Returns the bytes described by `handle` exclusively.
+            $hvis const fn read_bytes_mut(&mut self, handle: $Handle) -> Option<&mut [u8]> {
+                let (start, end) = $crate::unwrap![some? self._span_usize(handle)];
+                Some(<$_>::slice_bytes_mut(&mut self.data, start, end))
             }
-
-            /// Replace the bytes for the handle. Lengths must match. Returns `false` otherwise.
-            $hvis const fn replace_bytes(&mut self, h: $Handle, new: &[u8]) -> bool {
-                if let Some(dst) = self.read_bytes_mut(h) {
-                    if dst.len() == new.len() {
-                        dst.copy_from_slice(new);
-                        return true;
-                    }
-                }
-                false
+            /// Replaces the bytes described by `handle`.
+            $hvis const fn replace_bytes(&mut self, handle: $Handle, new: &[u8]) -> bool {
+                let dst = $crate::unwrap![some_or? self.read_bytes_mut(handle), false];
+                if dst.len() != new.len() { return false; }
+                dst.copy_from_slice(new);
+                true
             }
 
             /* single bytes */
 
-            /// Write a single byte into the arena.
+            /// Writes a single byte into the arena.
             $hvis const fn push_byte(&mut self, byte: u8) -> Option<$Handle> {
-                if self.len as usize + 1 > CAP { return None; }
-                <$_>::write_byte(&mut self.data, self.len as usize, byte);
-                let handle = <$Handle>::new(self.len as $Offset, 1);
-                self.len += 1;
-                Some(handle)
+                self.push_bytes(&[byte])
             }
-            /// Read a byte previously written.
+            /// Reads the single byte described by `h`.
             $hvis const fn read_byte(&self, h: $Handle) -> Option<u8> {
-                if h.offset() + 1 > self.len { return None }
-                Some(<$_>::read_byte(&self.data, h.offset() as usize))
+                let (start, end) = $crate::unwrap![some? self._span_usize(h)];
+                if end - start != 1 { return None; }
+                Some(<$_>::read_byte(&self.data, start))
             }
-            /// Read a byte previously written.
+            /// Returns the single byte described by `h` exclusively.
             $hvis const fn read_byte_mut(&mut self, h: $Handle) -> Option<&mut u8> {
-                if h.offset() + 1 > self.len { return None }
-                Some(<$_>::read_byte_mut(&mut self.data, h.offset() as usize))
+                let (start, end) = $crate::unwrap![some? self._span_usize(h)];
+                if end - start != 1 { return None; }
+                Some(<$_>::read_byte_mut(&mut self.data, start))
             }
-            /// Replace the bytes for `handle`. Length must match.
-            $hvis const fn replace_byte(&mut self, handle: $Handle, new: u8) -> bool {
-                if handle.len() != 1 { return false; }
-                <$_>::write_byte(&mut self.data, handle.offset() as usize, new);
+            /// Replaces the single byte described by `h`.
+            $hvis const fn replace_byte(&mut self, h: $Handle, new: u8) -> bool {
+                let dst = $crate::unwrap![some_or? self.read_byte_mut(h), false];
+                *dst = new;
                 true
             }
 
@@ -229,44 +301,39 @@ macro_rules! arena_bytes {
             /// Returns a shared slice starting at `handle`,
             /// and spanning `count` items of its length.
             ///
-            /// Returns `None` if...
-            $hvis const fn view_bytes(&self, h: $Handle, count: $Offset) -> Option<&[u8]> {
-                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
-                let total = hlen * count as usize;
-                if hoff + total > self.len as usize { return None; }
-                Some(<$_>::slice_bytes(&self.data, hoff, hoff + total))
+            /// Returns `None` if the repeated span overflows
+            /// or extends beyond the written prefix.
+            $hvis const fn view_bytes(&self, h: $Handle, count: $cprim) -> Option<&[u8]> {
+                let (start, end) = $crate::unwrap![some? self._span_repeat_usize(h, count)];
+                Some(<$_>::slice_bytes(&self.data, start, end))
             }
 
             /// Returns an exclusive slice starting at `handle`,
             /// and spanning `count` items of its length.
             ///
-            /// Returns `None` if...
-            $hvis const fn view_bytes_mut(&mut self, h: $Handle, count: $Offset)
+            /// Returns `None` if the repeated span overflows
+            /// or extends beyond the written prefix.
+            $hvis const fn view_bytes_mut(&mut self, h: $Handle, count: $cprim)
                 -> Option<&mut [u8]> {
-                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
-                let total = hlen * count as usize;
-                if hoff + total > self.len as usize { return None; }
-                Some(<$_>::slice_bytes_mut(&mut self.data, hoff, hoff + total))
+                let (start, end) = $crate::unwrap![some? self._span_repeat_usize(h, count)];
+                Some(<$_>::slice_bytes_mut(&mut self.data, start, end))
             }
 
             /* shrinking the arena */
 
-            /// Truncates the arena if the handle corresponds to the last region.
+            /// Truncates the arena if `handle` describes its final region.
             $hvis const fn truncate_last(&mut self, h: $Handle) -> bool {
-                $crate::lets![hlen=h.len() as usize, hoff=h.offset() as usize];
-                if hoff + hlen != self.len as usize { return false; }
-                self.len = h.offset();
+                let (_, end) = $crate::unwrap![some_or? self._span_usize(h), false];
+                if end != self._len_usize() { return false; }
+                self.len = h.offset_prim();
                 true
             }
-
-            /// Copies the last stored value into `dst` and removes it.
+            /// Copies the final stored span into `dst` and removes it.
             $hvis const fn pop_into(&mut self, h: $Handle, dst: &mut [u8]) -> bool {
-                let hlen = h.len() as usize;
-                if hlen != dst.len() { return false; }
-                if let Some(src) = self.read_bytes(h) {
-                    $crate::whilst! { i in 0..hlen; { dst[i] = src[i]; }}
-                    self.truncate_last(h)
-                } else { false }
+                let src = $crate::unwrap![some_or? self.read_bytes(h), false];
+                if src.len() != dst.len() { return false; }
+                dst.copy_from_slice(src);
+                self.truncate_last(h)
             }
         }
 
@@ -279,7 +346,7 @@ macro_rules! arena_bytes {
 
             /* bool */
 
-            /// Pushes a `char`. Returns its handle on success.
+            /// Pushes a `bool`. Returns its handle on success.
             ///
             /// # Errors
             /// Returns `None` if there's insufficient capacity.
@@ -291,7 +358,11 @@ macro_rules! arena_bytes {
             /// # Errors
             /// Returns `None` if the handle is invalid or incomplete.
             $hvis const fn read_bool(&self, handle: $Handle) -> Option<bool> {
-                if let Some(b) = self.read_byte(handle) { Some(b != 0) } else { None }
+                match self.read_byte(handle) {
+                    Some(0) => Some(false),
+                    Some(1) => Some(true),
+                    _ => None,
+                }
             }
             /// Replaces a `bool` from the given `handle`. Returns `true` on success.
             $hvis const fn replace_bool(&mut self, handle: $Handle, val: bool) -> bool {
@@ -375,22 +446,21 @@ macro_rules! arena_bytes {
                 /// Returns `None` if the handle is invalid or incomplete.
                 $hvis const fn [<read_ $oprim>](&self, handle: $Handle) -> Option<$oprim> {
                     const T_SIZE: usize = size_of::<$oprim>();
-                    if let Some(bytes) = self.read_bytes(handle) {
-                        Some($oprim::from_le_bytes(
-                            *$crate::unwrap![some? bytes.first_chunk::<{T_SIZE}>()]))
-                    } else { None }
+                    let bytes = $crate::unwrap![some? self.read_bytes(handle)];
+                    if bytes.len() != T_SIZE { return None; }
+                    Some($oprim::from_le_bytes(
+                        *$crate::unwrap![some? bytes.first_chunk::<T_SIZE>()]))
                 }
                 #[doc = "Replaces a `" $oprim
                 "` from the given `handle`. Returns `true` on success."]
                 $hvis const fn [<replace_ $oprim>](&mut self, handle: $Handle, val: $oprim)
                     -> bool {
-                    if let Some(b) = self.read_bytes_mut(handle) {
-                        if let Some(arr) = b.first_chunk_mut::<{size_of::<$oprim>()}>() {
-                            *arr = val.to_le_bytes();
-                            return true;
-                        }
-                    }
-                    false
+                    const T_SIZE: usize = size_of::<$oprim>();
+                    let bytes = $crate::unwrap![some_or? self.read_bytes_mut(handle), false];
+                    if bytes.len() != T_SIZE { return false; }
+                    let arr = $crate::unwrap![some_or? bytes.first_chunk_mut::<T_SIZE>(), false];
+                    *arr = val.to_le_bytes();
+                    true
                 }
             }};
             (str_len: $_d($oprim:ty),+ $_d(,)?) => {
@@ -404,38 +474,56 @@ macro_rules! arena_bytes {
                 /// Returns `None` if there's insufficient capacity or the string is too long.
                 $hvis const fn [<push_str_ $oprim>](&mut self, val: &str) -> Option<$Handle> {
                     let len = val.len();
-                    if len <= <$oprim>::MAX as usize {
-                        let prefix = $crate::unwrap![some? self.[<push_ $oprim>](len as $oprim)];
-                        let data = $crate::unwrap![some? self.push_bytes(&val.as_bytes())];
-                        Some($Handle::new(prefix.offset(), prefix.len() + data.len()))
-                    } else { None }
+                    if len > <$oprim>::MAX as usize { return None; }
+                    let prefix = (len as $oprim).to_le_bytes();
+                    let start = self._len_usize();
+                    let total = $crate::unwrap![some? prefix.len().checked_add(len)];
+                    let end = $crate::unwrap![some? start.checked_add(total)];
+                    if end > CAP { return None; }
+                    let handle = $crate::unwrap![ok_some? <$Handle>::try_from_usize(start, total)];
+                    $crate::whilst! { i in 0..prefix.len(); {
+                        <$_>::write_byte(&mut self.data, start + i, prefix[i]);
+                    }}
+                    let bytes = val.as_bytes();
+                    $crate::whilst! { i in 0..bytes.len(); {
+                        <$_>::write_byte(&mut self.data, start + prefix.len() + i, bytes[i]);
+                    }}
+                    self.len = end as $cprim;
+                    Some(handle)
                 }
-
                 #[doc = "Reads a `&str` with a prefixed len of up to [`" $oprim "::MAX`] bytes"]
                 /// from the given handle.
                 ///
                 /// # Errors
                 /// Returns `None` if the handle is invalid or incomplete.
                 $hvis const fn [<read_str_ $oprim>](&self, h: $Handle) -> Option<&str> {
-                    let len_size = size_of::<$oprim>() as $Offset;
-                    let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
-                    let s = $crate::unwrap![some? self.read_bytes(h)];
-                    $crate::unwrap![ok_some $crate::Str::from_utf8(s)]
+                    const LEN_SIZE: usize = size_of::<$oprim>();
+                    let (start, end) = $crate::unwrap![some? self._span_usize(h)];
+                    let data_start = $crate::unwrap![some? start.checked_add(LEN_SIZE)];
+                    if data_start > end { return None; }
+                    let prefix = <$_>::slice_bytes(&self.data, start, data_start);
+                    let prefix = $crate::unwrap![some? prefix.first_chunk::<LEN_SIZE>()];
+                    let stored_len = <$oprim>::from_le_bytes(*prefix) as usize;
+                    if stored_len != end - data_start { return None; }
+                    let bytes = <$_>::slice_bytes(&self.data, data_start, end);
+                    $crate::unwrap![ok_some $crate::Str::from_utf8(bytes)]
                 }
-
                 #[doc = "Replaces a `&str` with a prefixed len of up to [`" $oprim "::MAX`] bytes"]
                 /// from the given handle. Returns `true` on success.
                 ///
                 /// Both strings have to have the same byte length.
                 $hvis const fn [<replace_str_ $oprim>](&mut self, h: $Handle, val: &str) -> bool {
-                    let len_size = size_of::<$oprim>() as $Offset;
-                    let h = $Handle::new(h.offset() + len_size, h.len() - len_size);
-                    if h.len() as usize != val.len() { return false }
-                    if let Some(dst) = self.read_bytes_mut(h) {
-                        dst.copy_from_slice(val.as_bytes());
-                        return true;
-                    }
-                    false
+                    const LEN_SIZE: usize = size_of::<$oprim>();
+                    let (start, end) = $crate::unwrap![some_or? self._span_usize(h), false];
+                    let data_start = $crate::unwrap![some_or? start.checked_add(LEN_SIZE), false];
+                    if data_start > end { return false; }
+                    let prefix = <$_>::slice_bytes(&self.data, start, data_start);
+                    let prefix = $crate::unwrap![some_or? prefix.first_chunk::<LEN_SIZE>(), false];
+                    let stored_len = <$oprim>::from_le_bytes(*prefix) as usize;
+                    if stored_len != end - data_start || stored_len != val.len() { return false; }
+                    let dst = <$_>::slice_bytes_mut(&mut self.data, data_start, end);
+                    dst.copy_from_slice(val.as_bytes());
+                    true
                 }
             }};
         }

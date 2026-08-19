@@ -120,6 +120,9 @@
 - rename old `arena!` to `arena_bytes!`.
 - new macro: `arena!`.
 - new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
+- update `arena_bytes!`:
+  - separate cursor primitives from handle representations.
+  - harden span, primitive and string validation.
 
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
