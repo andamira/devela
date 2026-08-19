@@ -4,20 +4,42 @@
 //
 
 #[doc = crate::_tags!(construction data_structure)]
-/// Defines a fixed-capacity byte arena with compact span handles.
-#[doc = crate::_doc_meta!{location("data/store")}]
+/// Defines a byte arena with static or allocating storage and compact span handles.
+#[doc = crate::_doc_meta!{location("data/store/arena")}]
 ///
 /// The generated arena stores bytes in an append-only initialized prefix.
-///
-/// Arena positions use the primitive part of the configured `cursor`.
-/// The arena's current length and rollback marks use that primitive directly,
-/// while generated handles may use a different representation for their
-/// byte offsets and lengths.
+/// Handles identify byte spans within that prefix.
 ///
 /// Handles describe coordinates only; they do not identify a particular arena.
 /// The receiving arena validates that their spans lie within its written prefix.
 ///
-/// # Configuration
+/// # Storage regimes
+///
+/// The arena declaration supports two storage regimes:
+///
+/// - **Static** — the default.
+///
+///   The arena owns fixed-capacity inline storage and has the type
+///   `Arena<const CAP: usize>`. It does not allocate.
+///
+///   The complete capacity must be representable by both the cursor primitive
+///   and the handle representation.
+///
+///   The optional `: static` selector may be written explicitly or omitted.
+///
+/// - **Allocating** — selected with `: alloc`.
+///
+///   The arena owns growable `Vec<u8>` storage and has the type `Arena`.
+///   It requires the `alloc` feature and may grow until the configured
+///   byte-coordinate range is exhausted.
+///
+///   Its `capacity` and `remaining` methods describe storage available without
+///   reallocating. Therefore `remaining() == 0` does not necessarily mean that
+///   another write will fail. `is_full()` indicates that no additional byte
+///   coordinate can be represented.
+///
+/// # Cursor and handle representation
+///
 /// `cursor` selects the primitive byte-coordinate type and, optionally,
 /// the representation used by generated handle fields.
 ///
@@ -25,30 +47,33 @@
 /// - `cursor: u16 + NonMaxU16;` keeps arena cursor state as `u16`
 ///   while storing handle coordinates as `NonMaxU16`.
 ///
+/// The current byte frontier and rollback marks use the cursor primitive
+/// directly. Handles may use a different representation for their byte
+/// offsets and lengths.
+///
+/// Both storage regimes keep the written frontier within the coordinate range
+/// representable by the cursor primitive and handle representation. This keeps
+/// byte-span semantics independent of the storage backend.
+///
 /// # Optional marks
 ///
-/// Supplying a third generated type enables checkpoint-based reclamation:
+/// Supplying a mark type adds `mark` and `rollback`.
 ///
-/// ```text
-/// arena_bytes! {
-///     [cursor: u8;]
-///     pub Arena;
-///     pub Handle;
-///     pub Mark;
-/// }
-/// ```
-/// [`mark`](#method.mark) snapshots the current insertion frontier and
-/// [`rollback`](#method.rollback) removes every value inserted after it.
+/// A mark stores the current byte frontier using the configured cursor
+/// primitive. Rolling back reclaims the suffix written after that frontier.
+/// A mark ahead of the current frontier is rejected.
 ///
-/// The mark stores the frontier as `usize`, independently of the handle index
-/// representation, so the frontier after a completely full arena remains representable.
-///
-/// Marks, like handles, are relative to the arena instance that produced them.
-/// Rolling back to a mark ahead of the current frontier is rejected.
+/// Like handles, marks are relative to the arena instance that produced them.
+/// Reclamation does not permanently invalidate their coordinates: later writes
+/// may reuse the same byte positions.
 ///
 /// # Features
-/// Uses `unsafe_array` to avoid initializing the full byte capacity,
-/// and `unsafe_slice` for additional slice-access optimizations.
+///
+/// The static backend does not require allocation. With `unsafe_array`,
+/// unwritten static capacity can remain uninitialized; `unsafe_slice` enables
+/// additional slice-access optimizations where applicable.
+///
+/// The `: alloc` backend requires the `alloc` feature and uses `Vec<u8>` storage.
 ///
 /// # Example
 /// ```
@@ -71,11 +96,13 @@
 /// See:
 /// [`ArenaBytesExample`],
 /// [`ArenaBytesHandleExample`],
-/// [`ArenaBytesMarkExample`].
+/// [`ArenaBytesMarkExample`],
+/// [`ArenaBytesAllocExample`].
 ///
 /// [`ArenaBytesExample`]: crate::ArenaBytesExample
 /// [`ArenaBytesHandleExample`]: crate::ArenaBytesHandleExample
 /// [`ArenaBytesMarkExample`]: crate::ArenaBytesMarkExample
+/// [`ArenaBytesAllocExample`]: crate::ArenaBytesAllocExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! arena_bytes {
@@ -135,27 +162,6 @@ macro_rules! arena_bytes {
             $(#[$handle_attr])*
             $hvis $Handle;
         }
-
-        $crate::arena_bytes! { %backend
-            [kind: $($kind)?]
-            [cursor: $cprim + $Cursor]
-            [arena: $(#[$arena_attr])* $vis $Arena]
-            [handle: $hvis $Handle]
-            [mark: $($(#[$mark_attr])* $mvis $Mark)?]
-        }
-    };
-    (%backend
-        [kind:]
-        $($rest:tt)*) => {
-        $crate::arena_bytes! { %backend [kind: static] $($rest)* }
-    };
-    (%backend
-        [kind: static]
-        [cursor: $cprim:ident + $Cursor:ty]
-        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
-        [handle: $hvis:vis $Handle:ident]
-        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
-    ) => {
         $(
             $(#[$mark_attr])*
             #[repr(transparent)]
@@ -169,14 +175,51 @@ macro_rules! arena_bytes {
                 }
             }
         )?
-        $crate::__arena_bytes_impl_array! {
+        $crate::arena_bytes! { %backend
+            [kind: $($kind)?]
+            [cursor: $cprim + $Cursor]
+            [arena: $(#[$arena_attr])* $vis $Arena]
+            [handle: $hvis $Handle]
+            [mark: $($mvis $Mark)?]
+        }
+    };
+    (%backend
+        [kind:]
+        $($rest:tt)*) => {
+        $crate::arena_bytes! { %backend [kind: static] $($rest)* }
+    };
+    (%backend
+        [kind: static]
+        [cursor: $cprim:ident + $Cursor:ty]
+        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
+        [handle: $hvis:vis $Handle:ident]
+        [mark: $($mvis:vis $Mark:ident)?]
+    ) => {
+        $crate::paste! { $crate::__arena_bytes_impl_array! {
             [cursor: $cprim]
             [arena: $(#[$arena_attr])* $vis $Arena]
             [handle: $hvis $Handle]
             [mark: $($mvis $Mark)?]
             [internal: $crate::__ArenaBytesArray::<CAP>]
+            [module: [<_arena_bytes_impl_ $Arena>]]
             ($)
-        }
+        }}
+    };
+    (%backend
+        [kind: alloc]
+        [cursor: $cprim:ident + $Cursor:ty]
+        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
+        [handle: $hvis:vis $Handle:ident]
+        [mark: $($mvis:vis $Mark:ident)?]
+    ) => {
+        $crate::paste! { $crate::__arena_bytes_impl_vec! {
+            [cursor: $cprim + $Cursor]
+            [arena: $(#[$arena_attr])* $vis $Arena]
+            [handle: $hvis $Handle]
+            [mark: $($mvis $Mark)?]
+            [module: [<_arena_bytes_impl_ $Arena>]]
+            ($)
+        }}
     };
 }
 #[doc(inline)]

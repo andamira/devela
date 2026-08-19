@@ -18,15 +18,13 @@ mod impls; // hidden macros for arena variants
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
-            define::*,
+            define::arena_bytes,
             // field::*,
             // primitive::*,
             // recipe::*,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::_example::{
-            ArenaBytesExample, ArenaBytesHandleExample, ArenaBytesMarkExample,
-        };
+        pub use super::_example::*;
     }
     _hidden {
         pub use super::_internal::*;

@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines an owning typed arena with static or allocating storage.
-#[doc = crate::_doc_meta!{location("data/store")}]
+#[doc = crate::_doc_meta!{location("data/store/arena")}]
 ///
 /// The generated arena appends values densely and returns compact index handles.
 /// Values are reclaimed collectively by clearing the arena. Supplying a third

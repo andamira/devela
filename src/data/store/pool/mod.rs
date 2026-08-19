@@ -16,7 +16,7 @@
 //!
 //! Two pool forms are provided:
 //!
-//! - [`pool_seq!`] stores each value in an independently reusable slot
+//! - [`pool!`] stores each value in an independently reusable slot
 //!   whose index remains fixed while the item is retained.
 //! - [`pool_seq!`] stores variable-length contiguous sequences whose identities remain
 //!   stable while their physical cell spans may be reclaimed or relocated.

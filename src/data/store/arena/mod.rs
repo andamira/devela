@@ -18,8 +18,8 @@
 //!
 //! - [`arena!`] generates typed arenas over either fixed-capacity static storage
 //!   or growable allocating storage, with optional rollback marks.
-//! - [`arena_bytes!`] generates fixed-capacity byte arenas
-//!   with span handles and optional rollback marks.
+//! - [`arena_bytes!`] generates byte arenas over either fixed-capacity static storage
+//!   or growable allocating storage, with span handles and optional rollback marks.
 //!
 //! Typed arena handles contain only an index.
 //! Byte-arena handles describe an offset and length.

@@ -123,6 +123,7 @@
 - update `arena_bytes!`:
   - separate cursor primitives from handle representations.
   - harden span, primitive and string validation.
+  - add an allocating backend.
 
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
