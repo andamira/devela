@@ -5,26 +5,27 @@
 
 #[doc = crate::_tags!(internal)]
 /// Composes a small rustdoc metadata section for an item.
-#[doc = crate::_doc_meta!{location("yard")}]
+#[doc = crate::_doc_meta!{location("yard", macro _doc_meta)}]
 ///
 /// This macro centralizes the ad-hoc metadata band used near the top of item
 /// documentation. It wraps supported metadata fragments between horizontal
 /// rules and dispatches each section to the corresponding helper.
 ///
 /// # Sections
-/// - `location(...)`: emits an item location fragment through [`_doc_location!`].
+/// - `location(...)`: emits a module or exact-item location through [`_doc_location!`].
 /// - `test_size_of(...)`: emits checked type-size metadata through [`_doc_test_size_of!`].
 /// - `origin(...)`: emits re-export origin metadata for Rust or dependency items.
 ///
-/// [`_doc_location!`]: crate::_doc_location
-/// [`_doc_test_size_of!`]: crate::_doc_test_size_of
-///
 /// # Examples
 /// ```ignore
-/// #[doc = crate::_doc_meta! { location("media/audio"), test_size_of(PcmSpec = 8) }]
+/// #[doc = crate::_doc_meta! { location("media/audio", struct PcmSpec), test_size_of(PcmSpec = 8) }]
+/// #[doc = crate::_doc_meta! { location(proc "code/util", macro cif) }]
 /// #[doc = crate::_doc_meta! { location(re-exported "code/any"), origin(rust core::any) }]
 /// #[doc = crate::_doc_meta! { location(re-exported "code"), origin(crate "hashbrown") }]
 /// ```
+///
+/// [`_doc_location!`]: crate::_doc_location
+/// [`_doc_test_size_of!`]: crate::_doc_test_size_of
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

@@ -64,6 +64,7 @@
 
 ### code::util
 - extend `whilst!` with indexed slice iteration.
+- update `doclink!`: add support for linking to the item directly.
 - update `enumset!`:
 - impl methods for the associated set:
   - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.

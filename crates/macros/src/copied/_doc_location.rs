@@ -5,42 +5,105 @@
 
 /// Emits a location annotation for documentation.
 ///
-/// This macro renders a small location marker (`📍`) followed by the public
-/// API path under `devela`, and optionally the crate where the item is defined.
+/// The annotation links both to the defining workspace crate and to the
+/// corresponding public location under `devela`.
 ///
-/// Two forms are supported:
-/// - `= path` marks items defined directly in `devela`
-/// - `path` marks items defined in another crate and re-exported by `devela`
+/// An exact item may optionally be supplied as `kind Item`.
 ///
-/// NOTE: It's important NOT to pass a leading slash in `$path` for the URL to work.
+/// # Forms
+/// - `"path"`: links to the containing module.
+/// - `"path", kind Item`: also links to the exact item.
+/// - `proc "path"`: location for an item defined by this proc-macro crate.
+/// - `proc "path", kind Item`: also links to the exact proc-macro item.
+/// - `re-exported "path"`: location for an item re-exported from another crate.
+///
+/// Supported item kinds are:
+/// `struct`, `enum`, `union`, `trait`, `type`, `fn`, `const`, `static`,
+/// `macro`, `attr`, and `derive`.
+///
+/// The path must not begin with `/`.
 macro_rules! _doc_location {
     // for items defined in a non-proc-macro workspace crate and aggregated in devela.
     ($path:literal) => {
         concat!(
-            "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
-            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
+            "\n\n---\n\n",
+            "<sup title='defined in `", crate::__crate_name!(), "`'>",
+            "[`📍`](",
+            $crate::doclink![custom_current_crate $path, @mod],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</b></sup>\n\n",
         )
     };
-    // for items defined in a proc-macro workspace crate and aggregated in devela.
-    // NOTE: this macro and doclink! has to be copied there without #[macro_export].
+    // for a specific item defined in a non-proc-macro workspace crate
+    // and aggregated in devela.
+    ($path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "\n\n---\n\n",
+            "<sup title='defined in `", crate::__crate_name!(), "`'>",
+            "[`📍`](",
+            $crate::doclink![
+                custom_current_crate $path,
+                @item $kind $item
+            ],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink![custom devela $path @item $kind $item],
+            ")</b></sup>\n\n",
+        )
+    };
+    // for items defined in this proc-macro crate and aggregated in devela.
     (proc $path:literal) => {
         concat!(
-            "\n\n---\n\n<sup title='defined in `", crate::__crate_name!(),
-            "`'>[`📍`](", $crate::doclink![custom_current_proc_crate @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>\n\n",
+            "\n\n---\n\n",
+            "<sup title='defined in `", crate::__crate_name!(), "`'>",
+            "[`📍`](",
+            $crate::doclink![custom_current_proc_crate @mod],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</b></sup>\n\n",
+        )
+    };
+    // for a specific item defined in this proc-macro crate
+    // and aggregated in devela.
+    (proc $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "\n\n---\n\n",
+            "<sup title='defined in `", crate::__crate_name!(), "`'>",
+            "[`📍`](",
+            $crate::doclink![
+                custom_current_proc_crate
+                @item $kind $item
+            ],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink![custom devela $path @item $kind $item],
+            ")</b></sup>\n\n",
         )
     };
     // for items re-exported from another crate.
-    // called from the _reexport! macro, does not end with \n\n
+    // Called from `_reexport!`; deliberately does not end with `\n\n`.
     (re-exported $path:literal) => {
         concat!(
-            "\n\n<sup title='re-exported from `", crate::__crate_name!(),
-            "`'>[`📍`](", $crate::doclink![custom_current_crate $path @mod], ")</sup>",
-            "<sup title='location in `devela`'><b>[`", $path,
-            "`](", $crate::doclink![custom devela $path @mod], ")</b></sup>",
+            "\n\n",
+            "<sup title='re-exported from `", crate::__crate_name!(), "`'>",
+            "[`📍`](",
+            $crate::doclink![custom_current_crate $path, @mod],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink![custom devela $path @mod],
+            ")</b></sup>",
         )
     };
 }

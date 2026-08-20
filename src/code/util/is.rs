@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(code)]
 /// Conditional evaluation.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util", macro is)}]
 ///
 /// Combines:
 /// 1. `if`/`else` conditions
