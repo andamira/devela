@@ -44,8 +44,9 @@ See also
 
 - 1.98: `c`[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
 - 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
+- 1.98: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
 - 1.98: `c`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
-- 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/issues/138215)
+- 1.98: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.98: ` `[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
 - 1.98: `c`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: `c`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
@@ -104,7 +105,6 @@ See also
         `c` `const_slice_from_ref`
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
-- 1.??: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull)
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
@@ -115,7 +115,6 @@ See also
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
-- 1.??: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `c`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
