@@ -90,6 +90,7 @@ its own flat view of all its public children.";
     _DOC_DATA_STORE_POOL    = "Reusable stores with generational handles and individual reclamation.";
     _DOC_DATA_TOPOL         = "Connectivity and structural relations independent of storage.";
     _DOC_DATA_TOPOL_GRAPH   = "Graph connectivity over indexed vertex domains.";
+    _DOC_DATA_TOPOL_LINK    = "Named fixed-arity links over externally interpreted targets.";
     _DOC_DATA_TOPOL_SPATIAL = "Locality, neighborhood, and partitioning over indexed domains.";
     _DOC_DATA_VALUE         = "Semantic value categories and composable data forms.";
     _DOC_DATA_VALUE_SCHEMA  = "Schemas for encoded values.";

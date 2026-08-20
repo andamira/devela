@@ -142,6 +142,10 @@
 - new macros: `graph_adj!`, `graph_csr!`.
 - new example types: `GraphAdjExample`, `GraphAdjVertexExample`, `GraphAdjEdgeExample`, `GraphAdjAllocExample`, `GraphAdjAllocVertexExample`, `GraphAdjAllocEdgeExample`, `GraphCsrExample`, `GraphCsrVertexExample`, `GraphCsrEdgeExample`, `GraphCsrAllocExample`, `GraphCsrAllocVertexExample`, `GraphCsrAllocEdgeExample`.
 
+#### data::topol::link
+- new macro `link!`.
+- new example type: `LinkExample`.
+
 ## error
 - new root module.
 - move `<data|num|text>::error` to `error::<data|num|text>`.

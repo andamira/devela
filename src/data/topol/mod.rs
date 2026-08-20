@@ -1,7 +1,7 @@
 // devela/src/data/topol/mod.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL!()] // public
-#![doc = crate::_doc!(modules: crate::data; topol: graph)] // spatial
+#![doc = crate::_doc!(modules: crate::data; topol: graph, link)] // spatial
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
@@ -24,14 +24,16 @@
 // //! Restrictions such as acyclicity, uniqueness of edges, or exclusion of
 // //! self-loops are graph properties rather than assumptions of topology itself.
 //!
-//! - [`graph`] describes arbitrary connectivity over vertex domains.
+//! - [`link`][mod@link] provides fixed-arity named direct relations.
+//! - [`graph`] provides arbitrary connectivity over vertex domains.
 //! - Spatial topology may describe locality, neighborhood, and partitioning
 //!   independently of geometric coordinates and metrics.
 //
 
-pub mod graph; // WIP
-// mod ord; // TODO
-// pub mod spatial; // TODO
+pub mod graph; // Graph connectivity over indexed vertex domains
+pub mod link; // Named fixed-arity links over externally interpreted targets
+// mod ord; // TODO Constrained ordering relations
+// pub mod spatial; // TODO Locality / neighborhood
 
 crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
@@ -42,11 +44,15 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
     _pub_mods {
         pub use super::{
             graph::_all::*,
+            link::_all::*,
             // spatial::_all::*,
         };
     }
     _reexports {
         #[doc(inline)]
-        pub use super::{graph_adj, graph_csr};
+        pub use super::{
+            graph::{graph_adj, graph_csr},
+            link::link,
+        };
     }
 }
