@@ -16,6 +16,24 @@ fn works_without_marks() {
     assert!(a.is_empty());
 }
 #[test]
+fn push_filled_and_zeroed() {
+    let mut a = Arena::<8>::new();
+    let hf = a.push_filled(3, 0xAB).unwrap();
+    let hz = a.push_zeroed(2).unwrap();
+    assert_eq!(a.read_bytes(hf), Some(&[0xAB, 0xAB, 0xAB][..]));
+    assert_eq!(a.read_bytes(hz), Some(&[0, 0][..]));
+    assert_eq!(a.as_bytes(), &[0xAB, 0xAB, 0xAB, 0, 0]);
+}
+#[test]
+fn push_filled_is_atomic() {
+    let mut a = Arena::<4>::new();
+    let h = a.push_filled(3, 7).unwrap();
+    assert!(a.push_filled(2, 9).is_none());
+    assert_eq!(a.len(), 3);
+    assert_eq!(a.as_bytes(), &[7, 7, 7]);
+    assert_eq!(a.read_bytes(h), Some(&[7, 7, 7][..]));
+}
+#[test]
 fn push_and_read_bytes() {
     let mut a = Arena::<16>::new();
     let handle = a.push_bytes(&[1, 2, 3, 4]).unwrap();
@@ -40,12 +58,6 @@ fn push_and_read_primitives() {
     assert_eq!(a.read_u32(h), Some(0x11223344));
     assert!(a.replace_u32(h, 0x55667788));
     assert_eq!(a.read_u32(h), Some(0x55667788));
-}
-#[test]
-fn push_and_read_str() {
-    let mut a = Arena::<32>::new();
-    let h = a.push_str_u8("hi").unwrap();
-    assert_eq!(a.read_str_u8(h), Some("hi"));
 }
 #[test]
 fn bool_and_char() {
@@ -77,17 +89,6 @@ fn handle_bounds_checks() {
     assert!(a.push_byte(5).is_none()); // capacity overflow
 }
 #[test]
-fn eq_bytes_and_replace_str() {
-    let mut a = Arena::<32>::new();
-    let h = a.push_str_u8("hi").unwrap();
-    assert_eq!(a.read_str_u8(h), Some("hi"));
-    assert!(a.replace_str_u8(h, "hi"));
-    assert_eq!(a.read_str_u8(h), Some("hi"));
-    let mut b = Arena::<32>::new();
-    let _ = b.push_str_u8("hi");
-    assert!(a == b);
-}
-#[test]
 fn rejects_oversized_primitive_span() {
     let mut a = Arena::<8>::new();
     let h = a.push_bytes(&[1, 2, 3, 4, 5]).unwrap();
@@ -99,6 +100,43 @@ fn rejects_invalid_bool_encoding() {
     let mut a = Arena::<4>::new();
     let h = a.push_byte(2).unwrap();
     assert_eq!(a.read_bool(h), None);
+}
+#[test]
+fn strings() {
+    let mut a = Arena::<16>::new();
+    let h = a.push_str("café").unwrap();
+    // The handle covers exactly the UTF-8 bytes: no framing bytes.
+    assert_eq!(h.len_prim(), 5);
+    assert_eq!(a.as_bytes(), "café".as_bytes());
+    assert_eq!(a.read_str(h), Some("café"));
+    // Safe mutable string access preserves UTF-8.
+    a.read_str_mut(h).unwrap().make_ascii_uppercase();
+    assert_eq!(a.read_str(h), Some("CAFé"));
+    // Replacement is span-sized, in bytes.
+    assert!(a.replace_str(h, "niño"));
+    assert_eq!(a.read_str(h), Some("niño"));
+    assert!(!a.replace_str(h, "longer"));
+    assert_eq!(a.read_str(h), Some("niño"));
+}
+#[test]
+fn strings_reject_invalid_utf8() {
+    let mut a = Arena::<8>::new();
+    let h = a.push_str("é").unwrap();
+    assert_eq!(a.read_str(h), Some("é"));
+    // Raw byte access can invalidate a previously valid string span.
+    a.read_bytes_mut(h).unwrap()[0] = 0xFF;
+    assert_eq!(a.read_str(h), None);
+    assert!(a.read_str_mut(h).is_none());
+}
+#[test]
+fn push_str_is_atomic() {
+    let mut a = Arena::<4>::new();
+    let h = a.push_str("ab").unwrap();
+    // "€" needs 3 bytes, but only 2 remain.
+    assert!(a.push_str("€").is_none());
+    assert_eq!(a.len(), 2);
+    assert_eq!(a.as_bytes(), b"ab");
+    assert_eq!(a.read_str(h), Some("ab"));
 }
 
 #[cfg(feature = "alloc")]
@@ -117,6 +155,24 @@ mod alloc {
         assert_eq!(a.read_byte(h), Some(7));
         a.clear();
         assert!(a.is_empty());
+    }
+    #[test]
+    fn filled_and_zeroed_grow() {
+        let mut a = Arena::with_capacity(1);
+        let hf = a.push_filled(3, 7).unwrap();
+        let hz = a.push_zeroed(2).unwrap();
+        assert_eq!(a.read_bytes(hf), Some(&[7, 7, 7][..]));
+        assert_eq!(a.read_bytes(hz), Some(&[0, 0][..]));
+        assert_eq!(a.as_bytes(), &[7, 7, 7, 0, 0]);
+    }
+    #[test]
+    fn filled_push_is_atomic_at_cursor_limit() {
+        let mut a = Arena::new();
+        let h = a.push_filled(253, 7).unwrap();
+        assert!(a.push_zeroed(2).is_none());
+        assert_eq!(a.len(), 253);
+        assert_eq!(a.read_bytes(h).unwrap().len(), 253);
+        assert!(a.read_bytes(h).unwrap().iter().all(|&b| b == 7));
     }
     #[test]
     fn grows() {
@@ -157,28 +213,6 @@ mod alloc {
         assert_eq!(a.read_bool(h), None);
     }
     #[test]
-    fn strings_are_transactional() {
-        let mut a = Arena::new();
-        // Leave exactly one representable byte at the coordinate frontier.
-        let h = a.push_bytes(&[0; 253]).unwrap();
-        // A u8-prefixed "a" requires two bytes. Neither the prefix nor
-        // the payload may be written when the complete span cannot fit.
-        assert!(a.push_str_u8("a").is_none());
-        assert_eq!(a.len(), 253);
-        assert_eq!(a.read_bytes(h), Some(&[0; 253][..]));
-        assert_eq!(a.as_bytes(), &[0; 253]);
-    }
-    #[test]
-    fn strings_read_and_replace() {
-        let mut a = Arena::new();
-        let h = a.push_str_u16("hi").unwrap();
-        assert_eq!(a.read_str_u16(h), Some("hi"));
-        assert!(a.replace_str_u16(h, "yo"));
-        assert_eq!(a.read_str_u16(h), Some("yo"));
-        assert!(!a.replace_str_u16(h, "longer"));
-        assert_eq!(a.read_str_u16(h), Some("yo"));
-    }
-    #[test]
     fn views_pop_and_truncate() {
         let mut a = Arena::new();
         let h1 = a.push_bytes(&[1, 2]).unwrap();
@@ -194,5 +228,19 @@ mod alloc {
         assert_eq!(a.as_bytes(), &[1, 2, 3, 9]);
         assert!(a.truncate_last(h2));
         assert_eq!(a.as_bytes(), &[1, 2]);
+    }
+    #[test]
+    fn strings() {
+        let mut a = Arena::with_capacity(1);
+        let h = a.push_str("café").unwrap(); // grows/reallocates
+        assert_eq!(h.len_prim(), 5);
+        assert_eq!(a.as_bytes(), "café".as_bytes());
+        assert_eq!(a.read_str(h), Some("café"));
+        a.read_str_mut(h).unwrap().make_ascii_uppercase();
+        assert_eq!(a.read_str(h), Some("CAFé"));
+        assert!(a.replace_str(h, "niño"));
+        assert_eq!(a.read_str(h), Some("niño"));
+        assert!(!a.replace_str(h, "longer"));
+        assert_eq!(a.read_str(h), Some("niño"));
     }
 }

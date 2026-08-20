@@ -10,8 +10,12 @@
 /// The generated arena stores bytes in an append-only initialized prefix.
 /// Handles identify byte spans within that prefix.
 ///
-/// Handles describe coordinates only; they do not identify a particular arena.
-/// The receiving arena validates that their spans lie within its written prefix.
+/// Like handles, marks contain coordinates only; they do not identify
+/// a particular arena. A receiving arena accepts a mark only when its
+/// frontier is not ahead of the current written prefix.
+///
+/// Reclamation does not permanently invalidate their coordinates:
+/// later writes may reuse the same byte positions.
 ///
 /// # Storage regimes
 ///

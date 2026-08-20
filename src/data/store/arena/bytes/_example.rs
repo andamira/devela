@@ -24,11 +24,18 @@ arena_bytes! {
     ///   [`is_empty`](#method.is_empty), [`is_full`](#method.is_full),
     ///   [`remaining`](#method.remaining), [`can_write`](#method.can_write).
     /// - Whole storage:
-    ///   [`as_bytes`](#method.as_bytes) *([_mut](#method.as_bytes_mut))*.
+    ///   [`as_bytes`](#method.as_bytes) *([_mut](#method.as_bytes_mut))*,
+    ///   [`eq`](#method.eq).
     /// - Byte spans:
+    ///   [`push_filled`](#method.push_filled),
+    ///   [`push_zeroed`](#method.push_zeroed),
     ///   [`push_bytes`](#method.push_bytes),
     ///   [`read_bytes`](#method.read_bytes) *([_mut](#method.read_bytes_mut))*,
     ///   [`replace_bytes`](#method.replace_bytes).
+    /// - Strings:
+    ///   [`push_str`](#method.push_str),
+    ///   [`read_str`](#method.read_str) *([_mut](#method.read_str_mut))*,
+    ///   [`replace_str`](#method.replace_str).
     /// - Single bytes:
     ///   [`push_byte`](#method.push_byte),
     ///   [`read_byte`](#method.read_byte) *([_mut](#method.read_byte_mut))*,
@@ -41,8 +48,6 @@ arena_bytes! {
     ///   [`pop_into`](#method.pop_into), [`clear`](#method.clear).
     /// - Primitive values: `push_*`, `read_*` and `replace_*` for
     ///   booleans, characters, integers and floating-point primitives.
-    /// - Strings: `push_str_*`, `read_str_*` and `replace_str_*` with
-    ///   `u8`, `u16`, `u32` or `usize` length prefixes.
     pub ArenaBytesExample;
 
     #[doc = crate::_tags!(example uid)]
@@ -103,11 +108,18 @@ arena_bytes! {
     ///   [`is_empty`](#method.is_empty), [`is_full`](#method.is_full),
     ///   [`remaining`](#method.remaining), [`can_write`](#method.can_write).
     /// - Whole storage:
-    ///   [`as_bytes`](#method.as_bytes) *([_mut](#method.as_bytes_mut))*.
+    ///   [`as_bytes`](#method.as_bytes) *([_mut](#method.as_bytes_mut))*,
+    ///   [`eq`](#method.eq).
     /// - Byte spans:
+    ///   [`push_filled`](#method.push_filled),
+    ///   [`push_zeroed`](#method.push_zeroed),
     ///   [`push_bytes`](#method.push_bytes),
     ///   [`read_bytes`](#method.read_bytes) *([_mut](#method.read_bytes_mut))*,
     ///   [`replace_bytes`](#method.replace_bytes).
+    /// - Strings:
+    ///   [`push_str`](#method.push_str),
+    ///   [`read_str`](#method.read_str) *([_mut](#method.read_str_mut))*,
+    ///   [`replace_str`](#method.replace_str).
     /// - Single bytes:
     ///   [`push_byte`](#method.push_byte),
     ///   [`read_byte`](#method.read_byte) *([_mut](#method.read_byte_mut))*,
@@ -120,8 +132,6 @@ arena_bytes! {
     ///   [`pop_into`](#method.pop_into), [`clear`](#method.clear).
     /// - Primitive values: `push_*`, `read_*` and `replace_*` for
     ///   booleans, characters, integers and floating-point primitives.
-    /// - Strings: `push_str_*`, `read_str_*` and `replace_str_*` with
-    ///   `u8`, `u16`, `u32` or `usize` length prefixes.
     pub ArenaBytesAllocExample: alloc;
 
     #[doc = crate::_tags!(example uid)]

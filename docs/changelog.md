@@ -122,8 +122,12 @@
 - new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
 - update `arena_bytes!`:
   - separate cursor primitives from handle representations.
+  - add initialized `push_filled` and `push_zeroed` spans.
   - harden span, primitive and string validation.
-  - add an allocating backend.
+  - add static and allocating storage backends.
+  - remove prefixed UTF-8 span operations.
+  - add raw UTF-8 span operations.
+  - make rollback marks optional.
 
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
