@@ -123,13 +123,13 @@ macro_rules! __graph_csr_impl_vec {
             /// Returns whether `vertex` resolves in this graph's vertex domain.
             #[must_use]
             $vis const fn contains_vertex(&self, vertex: $Vertex) -> bool {
-                $crate::unwrap![ok_or vertex.index_usize(),
+                $crate::unwrap![ok_or vertex.get_index_usize(),
                     index => index < self.starts.len(), false]
             }
             /// Returns whether `edge` resolves in this graph's edge domain.
             #[must_use]
             $vis const fn contains_edge(&self, edge: $Edge) -> bool {
-                $crate::unwrap![ok_or edge.index_usize(),
+                $crate::unwrap![ok_or edge.get_index_usize(),
                     index => index < self.targets.len(), false]
             }
 
@@ -279,19 +279,19 @@ macro_rules! __graph_csr_impl_vec {
             const fn _start_index(edge_count: usize, start: Option<$Edge>) -> Option<usize> {
                 match start {
                     None => Some(edge_count),
-                    Some(edge) => $crate::unwrap![ok_or edge.index_usize(),
+                    Some(edge) => $crate::unwrap![ok_or edge.get_index_usize(),
                         index => $crate::is![index < edge_count, Some(index), None], None],
                 }
             }
             const fn _vertex_index_in(vertex_count: usize, vertex: $Vertex) -> Option<usize> {
-                $crate::unwrap![ok_or vertex.index_usize(),
+                $crate::unwrap![ok_or vertex.get_index_usize(),
                     index => $crate::is![index < vertex_count, Some(index), None], None]
             }
             const fn _vertex_index(&self, vertex: $Vertex) -> Option<usize> {
                 Self::_vertex_index_in(self.starts.len(), vertex)
             }
             const fn _edge_index(&self, edge: $Edge) -> Option<usize> {
-                $crate::unwrap![ok_or edge.index_usize(),
+                $crate::unwrap![ok_or edge.get_index_usize(),
                     index => $crate::is![index < self.targets.len(), Some(index), None], None]
             }
             const fn _vertex_index_capacity() -> usize {

@@ -142,10 +142,10 @@ crate::items! {
     #[test]
     fn handle_gen_components() {
         let handle = HandleGenExample::from_prim(7, 3).unwrap();
-        assert_eq![handle.index_prim(), 7];
-        assert_eq![handle.generation_prim(), 3];
-        assert_eq![handle.index_usize(), Ok(7)];
-        assert_eq![handle.generation_usize(), Ok(3)];
+        assert_eq![handle.get_index_prim(), 7];
+        assert_eq![handle.get_generation_prim(), 3];
+        assert_eq![handle.get_index_usize(), Ok(7)];
+        assert_eq![handle.get_generation_usize(), Ok(3)];
         assert_eq![handle.into_prim(), (7, 3)];
     }
     #[test]

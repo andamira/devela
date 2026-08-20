@@ -258,9 +258,9 @@ macro_rules! pool {
 
             $(const$($_c)?)? fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
                 let index = $crate::unwrap![ok_some?
-                    $crate::MaybeNiche(handle.index()).try_to_usize()];
+                    $crate::MaybeNiche(handle.get_index()).try_to_usize()];
                 if index >= self.values.len() { return None; }
-                if self.generations[index].ne($crate::MaybeNiche(handle.generation())) {
+                if self.generations[index].ne($crate::MaybeNiche(handle.get_generation())) {
                     return None;
                 }
                 $crate::is!{ self.values[index].is_none(), return None }

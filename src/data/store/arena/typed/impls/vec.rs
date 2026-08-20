@@ -175,7 +175,7 @@ macro_rules! __arena_impl_vec {
             /* private */
 
             fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
-                let index = handle.index_usize().ok()?;
+                let index = handle.get_index_usize().ok()?;
                 if index >= self.values.len() { return None; }
                 Some(index)
             }

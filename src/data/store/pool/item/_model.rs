@@ -127,7 +127,7 @@ impl State {
         }
         let mut expected_handles =
             self.live.iter().flatten().map(|(handle, _)| *handle).collect::<Vec<_>>();
-        expected_handles.sort_by_key(|handle| handle.index_prim());
+        expected_handles.sort_by_key(|handle| handle.get_index_prim());
         assert_eq!(actual_handles, expected_handles);
     }
     fn assert_equivalent(&self) {
@@ -152,7 +152,7 @@ impl State {
             assert_eq!(self.pool.get(handle).copied(), expected);
         }
         let mut expected_entries = self.live.iter().flatten().copied().collect::<Vec<_>>();
-        expected_entries.sort_by_key(|(handle, _)| handle.index_prim());
+        expected_entries.sort_by_key(|(handle, _)| handle.get_index_prim());
         let actual_entries =
             self.pool.entries().map(|(handle, value)| (handle, *value)).collect::<Vec<_>>();
         assert_eq!(actual_entries, expected_entries);

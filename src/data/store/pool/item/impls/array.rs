@@ -168,7 +168,7 @@ macro_rules! __pool_impl_array {
                 let next_generation = Self::__next_generation(self.generations[index]);
                 let free_pos = self.free_len;
                 self.generations[index] = next_generation;
-                self.free[free_pos] = $crate::MaybeNiche(handle.index());
+                self.free[free_pos] = $crate::MaybeNiche(handle.get_index());
                 self.free_len = free_pos + 1;
                 self.len -= 1;
                 $crate::Mem::replace(&mut self.values[index], None)

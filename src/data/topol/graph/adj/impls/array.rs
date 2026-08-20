@@ -118,12 +118,12 @@ macro_rules! __graph_adj_impl_array {
                 /// Returns whether `vertex` belongs to this graph's vertex domain.
                 #[must_use]
                 $vis const fn contains_vertex(&self, vertex: $Vertex) -> bool {
-                    $crate::unwrap![ok_or vertex.index_usize(), idx => idx < VERTICES, false]
+                    $crate::unwrap![ok_or vertex.get_index_usize(), idx => idx < VERTICES, false]
                 }
                 /// Returns whether `edge` currently belongs to this graph.
                 #[must_use]
                 $vis const fn contains_edge(&self, edge: $Edge) -> bool {
-                    $crate::unwrap![ok_or edge.index_usize(), idx => idx < self.len, false]
+                    $crate::unwrap![ok_or edge.get_index_usize(), idx => idx < self.len, false]
                 }
 
                 /* mutation */
@@ -354,11 +354,11 @@ macro_rules! __graph_adj_impl_array {
                 /* private */
 
                 const fn __vertex_index(vertex: $Vertex) -> Option<usize> {
-                    $crate::unwrap![ok_or vertex.index_usize(),
+                    $crate::unwrap![ok_or vertex.get_index_usize(),
                         index => $crate::is![index < VERTICES, Some(index), None], None]
                 }
                 const fn __edge_index(&self, edge: $Edge) -> Option<usize> {
-                    $crate::unwrap![ok_or edge.index_usize(),
+                    $crate::unwrap![ok_or edge.get_index_usize(),
                         index => $crate::is![index < self.len, Some(index), None], None]
                 }
                 const fn __vertex_index_capacity() -> usize {

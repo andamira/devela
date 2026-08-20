@@ -151,7 +151,7 @@ const fn static_core_is_const_capable() {
         let a = unwrap![some graph.vertex(0)];
         let b = unwrap![some graph.vertex(1)];
         let edge = unwrap![some graph.add_edge(a, b)];
-        let target = unwrap![some_map_into graph.edge_target(edge), |v| v.index_prim()];
+        let target = unwrap![some_map_into graph.edge_target(edge), |v| v.get_index_prim()];
         let degree = unwrap![some graph.out_degree(a)];
         (graph.edge_count(), graph.has_edge(a, b), degree, target)
     };

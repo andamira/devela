@@ -7,8 +7,8 @@ fn static_insert_access_and_iteration() {
     let mut arena = Arena::<i32, 4>::new();
     let a = arena.insert(10).unwrap();
     let b = arena.insert(20).unwrap();
-    assert_eq!(a.index_usize(), Ok(0));
-    assert_eq!(b.index_usize(), Ok(1));
+    assert_eq!(a.get_index_usize(), Ok(0));
+    assert_eq!(b.get_index_usize(), Ok(1));
     assert!(arena.contains(a));
     assert_eq!(arena.get(a), Some(&10));
     {

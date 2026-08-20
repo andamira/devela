@@ -76,7 +76,7 @@ macro_rules! handle_span {
             /// Returns whether this span has zero length.
             #[must_use]
             $vis const fn is_empty(self) -> bool {
-                self.len_prim() == 0
+                self.get_len_prim() == 0
             }
         }
     };

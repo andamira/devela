@@ -45,8 +45,8 @@
 /// }
 ///
 /// let handle = EntityRef::from_prim(7, 3).unwrap();
-/// assert_eq!(handle.index_prim(), 7);
-/// assert_eq!(handle.revision_prim(), 3);
+/// assert_eq!(handle.get_index_prim(), 7);
+/// assert_eq!(handle.get_revision_prim(), 3);
 /// assert_eq!(handle.into_prim(), (7, 3));
 /// ```
 ///
@@ -115,7 +115,7 @@ macro_rules! handle {
             }
         }
 
-        /// Fundamental const methods for creation, decomposition, and access.
+        /// Fundamental const methods over the whole handle.
         #[allow(dead_code)]
         impl $Handle {
             /* constructors */
@@ -164,29 +164,30 @@ macro_rules! handle {
             $vis const fn into_prim(self) -> ($($Prim,)+) {
                 ($(self.$field.get_prim(),)+)
             }
-
-            /* component accessors */
-
-            $( $crate::handle!(%field_methods $vis $field: $Prim, $Repr;); )+
         }
+        /* component accessors */
+        $( $crate::handle!(%field_impl $vis $Handle, $field: $Prim, $Repr;); )+
     };
-    (%field_methods $vis:vis $field:ident : $Prim:ty, $Repr:ty;) => { $crate::paste! {
-        #[doc = "Returns the `" $field "` component."]
-        #[must_use]
-        $vis const fn $field(self) -> $Repr { self.$field.get() }
+    (%field_impl $vis:vis $Handle:ident, $field:ident : $Prim:ty, $Repr:ty;) => { $crate::paste! {
+        #[doc = "# Methods for `" $field "`"]
+        #[allow(dead_code)]
+        impl $Handle {
+            #[doc = "Returns the `" $field "` component."]
+            #[must_use]
+            $vis const fn [<get_ $field>](self) -> $Repr { self.$field.get() }
 
-        #[doc = "Returns the `" $field "` component as its primitive carrier."]
-        #[must_use]
-        $vis const fn [<$field _prim>](self) -> $Prim {
-            self.$field.get_prim()
-        }
-
-        #[doc = "Returns the `" $field "` component as a `usize`."]
-        ///
-        /// # Errors
-        /// Returns an error if the component cannot fit in a `usize`.
-        $vis const fn [<$field _usize>](self) -> Result<usize, $crate::Overflow> {
-            self.$field.try_to_usize()
+            #[doc = "Returns the `" $field "` component as its primitive carrier."]
+            #[must_use]
+            $vis const fn [<get_ $field _prim>](self) -> $Prim {
+                self.$field.get_prim()
+            }
+            #[doc = "Returns the `" $field "` component as a `usize`."]
+            ///
+            /// # Errors
+            /// Returns an error if the component cannot fit in a `usize`.
+            $vis const fn [<get_ $field _usize>](self) -> Result<usize, $crate::Overflow> {
+                self.$field.try_to_usize()
+            }
         }
     }};
 }
@@ -200,12 +201,12 @@ crate::items! {
     #[test]
     fn handle_components() {
         let handle = HandleExample::from_prim(7, 15, 3).unwrap();
-        assert_eq![handle.index_prim(), 7];
-        assert_eq![handle.kind_prim(), 15];
-        assert_eq![handle.revision_prim(), 3];
-        assert_eq![handle.index_usize(), Ok(7)];
-        assert_eq![handle.kind_usize(), Ok(15)];
-        assert_eq![handle.revision_usize(), Ok(3)];
+        assert_eq![handle.get_index_prim(), 7];
+        assert_eq![handle.get_kind_prim(), 15];
+        assert_eq![handle.get_revision_prim(), 3];
+        assert_eq![handle.get_index_usize(), Ok(7)];
+        assert_eq![handle.get_kind_usize(), Ok(15)];
+        assert_eq![handle.get_revision_usize(), Ok(3)];
         assert_eq![handle.into_prim(), (7, 15, 3)];
         let (index, kind, revision) = handle.into_parts();
         assert_eq![index.get(), 7];

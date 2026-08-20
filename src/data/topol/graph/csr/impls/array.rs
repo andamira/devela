@@ -297,16 +297,16 @@ macro_rules! __graph_csr_impl_array {
             const fn _start_index(start: Option<$Edge>) -> Option<usize> {
                 match start {
                     None => Some(EDGES),
-                    Some(edge) => $crate::unwrap![ok_or edge.index_usize(),
+                    Some(edge) => $crate::unwrap![ok_or edge.get_index_usize(),
                         index => $crate::is![index < EDGES, Some(index), None], None],
                 }
             }
             const fn _vertex_index(vertex: $Vertex) -> Option<usize> {
-                $crate::unwrap![ok_or vertex.index_usize(),
+                $crate::unwrap![ok_or vertex.get_index_usize(),
                     index => $crate::is![index < VERTICES, Some(index), None], None]
             }
             const fn _edge_index(edge: $Edge) -> Option<usize> {
-                $crate::unwrap![ok_or edge.index_usize(),
+                $crate::unwrap![ok_or edge.get_index_usize(),
                     index => $crate::is![index < EDGES, Some(index), None], None]
             }
             const fn _vertex_index_capacity() -> usize {

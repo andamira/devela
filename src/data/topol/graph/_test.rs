@@ -23,7 +23,7 @@ fn csr_parts_from_adj<const VERTICES: usize, const EDGE_CAP: usize, const EDGES:
             if cursor >= EDGES {
                 return None;
             }
-            let target_index = target.index_usize().ok()?;
+            let target_index = target.get_index_usize().ok()?;
             targets[cursor] = Some(CsrVertex::try_from_usize(target_index).ok()?);
             cursor += 1;
         }

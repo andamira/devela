@@ -38,8 +38,8 @@ fn reuse_invalidates_the_previous_handle() {
     let old = pool.insert("old").unwrap();
     assert_eq!(pool.remove(old), Some("old"));
     let new = pool.insert("new").unwrap();
-    assert_eq!(old.index_prim(), new.index_prim());
-    assert_ne!(old.generation_prim(), new.generation_prim());
+    assert_eq!(old.get_index_prim(), new.get_index_prim());
+    assert_ne!(old.get_generation_prim(), new.get_generation_prim());
     assert_eq!(pool.get(old), None);
     assert_eq!(pool.remove(old), None);
     assert_eq!(pool.get(new), Some(&"new"));
@@ -132,8 +132,8 @@ fn stale_relationship_does_not_resolve_to_replacement() {
     let child = pool.insert(Node { parent: Some(parent) }).unwrap();
     assert!(pool.remove(parent).is_some());
     let replacement = pool.insert(Node { parent: None }).unwrap();
-    assert_eq!(parent.index_prim(), replacement.index_prim());
-    assert_ne!(parent.generation_prim(), replacement.generation_prim());
+    assert_eq!(parent.get_index_prim(), replacement.get_index_prim());
+    assert_ne!(parent.get_generation_prim(), replacement.get_generation_prim());
     let stale_parent = pool.get(child).unwrap().parent.unwrap();
     assert!(pool.get(stale_parent).is_none());
 }
@@ -274,8 +274,8 @@ mod alloc {
         let slots = pool.slot_count();
         let c = pool.insert(3).unwrap();
         assert_eq!(pool.slot_count(), slots);
-        assert_eq!(a.index_prim(), c.index_prim());
-        assert_ne!(a.generation_prim(), c.generation_prim());
+        assert_eq!(a.get_index_prim(), c.get_index_prim());
+        assert_ne!(a.get_generation_prim(), c.get_generation_prim());
         assert_eq!(pool.get(a), None);
         pool.clear();
         assert_eq!(pool.len(), 0);

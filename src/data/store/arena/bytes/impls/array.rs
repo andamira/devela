@@ -50,8 +50,8 @@ macro_rules! __arena_bytes_impl_array {
 
             /// Resolves a handle into a validated half-open byte range.
             const fn _span_usize(&self, h: $Handle) -> Option<(usize, usize)> {
-                let start = $crate::unwrap![ok_some? h.offset_usize()];
-                let len = $crate::unwrap![ok_some? h.len_usize()];
+                let start = $crate::unwrap![ok_some? h.get_offset_usize()];
+                let len = $crate::unwrap![ok_some? h.get_len_usize()];
                 let end = $crate::unwrap![some? start.checked_add(len)];
                 if end > self._len_usize() { return None; }
                 Some((start, end))
@@ -290,7 +290,7 @@ macro_rules! __arena_bytes_impl_array {
             $hvis const fn truncate_last(&mut self, h: $Handle) -> bool {
                 let (_, end) = $crate::unwrap![some_or? self._span_usize(h), false];
                 if end != self._len_usize() { return false; }
-                self.len = h.offset_prim();
+                self.len = h.get_offset_prim();
                 true
             }
             /// Copies the final stored span into `dst` and removes it.

@@ -40,6 +40,18 @@ handle! {
     ///     pub HandleExample;
     /// }
     /// ```
+    ///
+    /// # Methods
+    ///
+    /// - Representation:
+    ///   [`new`](#method.new),
+    ///   [`into_parts`](#method.into_parts).
+    /// - Primitive conversion:
+    ///   [`from_prim`](#method.from_prim),
+    ///   [`into_prim`](#method.into_prim),
+    ///   [`try_from_usize`](#method.try_from_usize).
+    /// - Per-component access:
+    ///   `get_<field>` *(`_prim`, `_usize`)*.
     pub HandleExample;
 }
 

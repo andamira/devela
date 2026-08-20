@@ -37,8 +37,8 @@ fn push_filled_is_atomic() {
 fn push_and_read_bytes() {
     let mut a = Arena::<16>::new();
     let handle = a.push_bytes(&[1, 2, 3, 4]).unwrap();
-    assert_eq!(handle.offset_prim(), 0);
-    assert_eq!(handle.len_prim(), 4);
+    assert_eq!(handle.get_offset_prim(), 0);
+    assert_eq!(handle.get_len_prim(), 4);
     assert_eq!(a.read_bytes(handle).unwrap(), &[1, 2, 3, 4]);
 }
 #[test]
@@ -74,7 +74,7 @@ fn pop_and_truncate() {
     let h2 = a.push_bytes(&[3, 4]).unwrap();
     assert!(!a.truncate_last(h1));
     assert!(a.truncate_last(h2));
-    assert_eq!(a.len(), h1.offset_prim() + h1.len_prim());
+    assert_eq!(a.len(), h1.get_offset_prim() + h1.get_len_prim());
 }
 #[test]
 fn capacity_and_remaining() {
@@ -106,7 +106,7 @@ fn strings() {
     let mut a = Arena::<16>::new();
     let h = a.push_str("café").unwrap();
     // The handle covers exactly the UTF-8 bytes: no framing bytes.
-    assert_eq!(h.len_prim(), 5);
+    assert_eq!(h.get_len_prim(), 5);
     assert_eq!(a.as_bytes(), "café".as_bytes());
     assert_eq!(a.read_str(h), Some("café"));
     // Safe mutable string access preserves UTF-8.
@@ -233,7 +233,7 @@ mod alloc {
     fn strings() {
         let mut a = Arena::with_capacity(1);
         let h = a.push_str("café").unwrap(); // grows/reallocates
-        assert_eq!(h.len_prim(), 5);
+        assert_eq!(h.get_len_prim(), 5);
         assert_eq!(a.as_bytes(), "café".as_bytes());
         assert_eq!(a.read_str(h), Some("café"));
         a.read_str_mut(h).unwrap().make_ascii_uppercase();

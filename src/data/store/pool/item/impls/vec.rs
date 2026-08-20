@@ -181,7 +181,7 @@ macro_rules! __pool_impl_vec {
                 let index = self.__resolve_index(handle)?;
                 let value = self.values[index].take()?;
                 self.generations[index] = Self::__next_generation(self.generations[index]);
-                self.free.push($crate::MaybeNiche(handle.index()));
+                self.free.push($crate::MaybeNiche(handle.get_index()));
                 self.len -= 1;
                 Some(value)
             }

@@ -244,7 +244,7 @@ macro_rules! __arena_impl_array {
             }
 
             const fn _resolve_index(&self, handle: $Handle) -> Option<usize> {
-                let index = $crate::unwrap![ok_some? handle.index_usize()];
+                let index = $crate::unwrap![ok_some? handle.get_index_usize()];
                 if index >= self.len() || self.values[index].is_none() { return None; }
                 Some(index)
             }
