@@ -18,7 +18,7 @@ crate::structural_mods! { // _mods
     }
     _hidden {
         pub use super::{
-            test_size_of::__test_size_of_report,
+            test_size_of::_hidden::*,
         };
     }
 }

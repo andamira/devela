@@ -13,7 +13,7 @@ use crate::{impl_trait, is, slice, unwrap, whilst};
 /// A standardized portable 128-bit identifier.
 #[doc = crate::_doc_meta!{
     location("data/id/uuid"),
-    test_size_of(Uuid = 16|128),
+    test_size_of(Uuid = 16|128; niche !Option),
 }]
 #[must_use]
 #[repr(transparent)]

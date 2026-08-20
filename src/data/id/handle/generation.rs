@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// Defines a compact generational handle.
-#[doc = crate::_doc_meta!{location("data/id")}]
+#[doc = crate::_doc_meta!{location("data/id/handle")}]
 ///
 /// The generated handle stores a slot index and generation.
 ///

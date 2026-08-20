@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_TOPOL_LINK!()] // public
 #![doc = crate::_doc!(modules: crate::data::topol; link)]
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(extends: collections)]
+#![doc = crate::_doc!(hr)]
 //!
 //! Links represent fixed-arity named relations to externally interpreted targets.
 //!

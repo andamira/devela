@@ -68,6 +68,7 @@
 - impl methods for the associated set:
   - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
   - unit-only methods: `iter`, `for_each[_while]`.
+- update `test_size_of!`; add support for negative niche `Option` testing.
 - impl for the associated enum, unit-only constant: `ALL`.
 - impl `From<enum>` for the associated set.
 

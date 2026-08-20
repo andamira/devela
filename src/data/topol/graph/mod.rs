@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_TOPOL_GRAPH!()] // public
 #![doc = crate::_doc!(modules: crate::data::topol; graph)]
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(extends: collections)]
+#![doc = crate::_doc!(hr)]
 //!
 //! Graphs describe directed connectivity over vertex domains
 //! independently of application values.

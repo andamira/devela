@@ -1,4 +1,4 @@
-// devela/src/yard/_doc/size_of.rs
+// devela/src/yard/_doc/test_size_of.rs
 //
 //! Defines [`_doc_test_size_of!`].
 //
@@ -9,16 +9,22 @@
 ///
 /// The visible fragment shows the expected `size_of::<T>()` value.
 /// A hidden doctest calls [`test_size_of!`][crate::test_size_of]
-/// to verify the size during doctests.
+/// to verify the layout during doctests.
 ///
-/// It can also mark and test that `Option<T>` has the same stack size as `T`.
+/// It can also explicitly record whether wrapping `T` in `Option` preserves
+/// its stack size. Omitting the niche suffix leaves that relation unspecified.
 ///
 /// # Forms
 /// - `Type = N`: checks `devela::Type`.
 /// - `Type = N|B`: also documents and checks the expected bit count.
 /// - `Type = N; niche Option`: also checks `Option<Type>` has the same size.
+/// - `Type = N; niche !Option`: also checks `Option<Type>` has a different size.
 /// - `Label: Type = N`: shows `Type` but uses `Label` as the metadata label.
 /// - `abs Label: path::Type = N`: uses the type path exactly as written.
+///
+/// The niche suffixes check size preservation only:
+/// - `niche Option`: `size_of::<Option<T>>() == size_of::<T>()`.
+/// - `niche !Option`: `size_of::<Option<T>>() != size_of::<T>()`.
 ///
 /// All forms accept outer attributes before the type entry. These attributes
 /// are shown in the visible metadata and re-emitted before the hidden doctest.
@@ -27,6 +33,8 @@
 /// ```ignore
 /// #[doc = crate::_doc_test_size_of!(RasterFormat = 4)]
 /// #[doc = crate::_doc_test_size_of!(RasterFormat = 4|32)]
+///
+/// #[doc = crate::_doc_test_size_of!(u8 = 1|8; niche !Option)]
 /// #[doc = crate::_doc_test_size_of!(NonZeroU8 = 1|8; niche Option)]
 ///
 /// #[doc = crate::_doc_test_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
@@ -56,13 +64,19 @@ macro_rules! _doc_test_size_of· {
     //
     // #[doc = _doc_test_size_of!(RasterFormat = 4)]
     // #[doc = _doc_test_size_of!(EventWindow = 16|128; niche Option)]
-    ($(#[$meta:meta])* $ty:ty = $bytes:literal $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
+    // #[doc = _doc_test_size_of!(EventWindow = 16|128; niche !Option)]
+    ($(#[$meta:meta])* $ty:ty = $bytes:literal
+     $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {
+        $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [! $wrap]
+            stringify!($ty), concat!("devela::", stringify!($ty)),
+            stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
+        )
+    };
+    ($(#[$meta:meta])* $ty:ty = $bytes:literal
+     $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [$($wrap)?]
-            stringify!($ty),
-            concat!("devela::", stringify!($ty)),
-            stringify!($ty),
-            stringify!($bytes)
-            $(, stringify!($bits))?
+            stringify!($ty), concat!("devela::", stringify!($ty)),
+            stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
         )
     };
     // Named public-root type:
@@ -70,7 +84,16 @@ macro_rules! _doc_test_size_of· {
     // #[doc = _doc_test_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_test_size_of!(PcmRawBuf_Slice: PcmRawBuf<&[u8]> = 24|192)]
     // #[doc = _doc_test_size_of!(EventWindowCompact: EventWindow = 16|128; niche Option)]
-    ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
+    // #[doc = _doc_test_size_of!(EventWindowCompact: EventWindow = 16|128; !niche Option)]
+    ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal
+     $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {
+        $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [! $wrap]
+            stringify!($name), concat!("devela::", stringify!($ty)),
+            stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
+        )
+    };
+    ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal
+     $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [$($wrap)?]
             stringify!($name), concat!("devela::", stringify!($ty)),
             stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
@@ -81,13 +104,23 @@ macro_rules! _doc_test_size_of· {
     // #[doc = _doc_test_size_of!(abs PcmRawBuf_Slice: crate::PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_test_size_of!(abs PcmRawBuf_Slice: ::devela::PcmRawBuf<&[u8]> = 24)]
     // #[doc = _doc_test_size_of!(abs EventWindow: crate::EventWindow = 16|128; niche Option)]
-    ($(#[$meta:meta])* abs $name:ident : $ty:ty = $bytes:literal $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
+    // #[doc = _doc_test_size_of!(abs EventWindow: crate::EventWindow = 16|128; !niche Option)]
+    ($(#[$meta:meta])* abs $name:ident : $ty:ty = $bytes:literal
+     $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {
+        $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [! $wrap]
+            stringify!($name), stringify!($ty), stringify!($ty),
+            stringify!($bytes) $(, stringify!($bits))?
+        )
+    };
+    ($(#[$meta:meta])* abs $name:ident : $ty:ty = $bytes:literal
+     $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [$($wrap)?]
-            stringify!($name), stringify!($ty), stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
+            stringify!($name), stringify!($ty), stringify!($ty),
+            stringify!($bytes) $(, stringify!($bits))?
         )
     };
     // Core doc emitter.
-    (@doc [$(#[$meta:meta])*] [$($wrap:ident)?]
+    (@doc [$(#[$meta:meta])*] [$($niche:tt)*]
         $label:expr, $test_ty:expr, $shown_ty:expr, $bytes:expr $(, $bits:expr)?
     ) => {
         concat!(
@@ -97,14 +130,14 @@ macro_rules! _doc_test_size_of· {
             $(" / ", $bits, " bits",)?
             $crate::_doc_test_size_of!(@meta $(#[$meta])*),
             "</sup>",
-            $crate::_doc_test_size_of!(@niche_doc [$($wrap)?]),
+            $crate::_doc_test_size_of!(@niche_doc [$($niche)*]),
             "\n\n",
             "<div hidden class='devela-hide-next'></div>\n\n",
             "```rust\n",
             $( "# ", stringify!(#[$meta]), "\n", )*
             "# devela::test_size_of!(assert ", $test_ty, " = ", $bytes,
             $("|", $bits,)?
-            $crate::_doc_test_size_of!(@niche_test [$($wrap)?]),
+            $crate::_doc_test_size_of!(@niche_test [$($niche)*]),
             ");\n",
             "```\n",
         )
@@ -114,16 +147,23 @@ macro_rules! _doc_test_size_of· {
     (@niche_doc [Option]) => {
         concat!("\n", "<sup class='_doc_niche' ",
             "title='checked by hidden doctest: Option<T> has the same stack size as T'>",
-            "⚗️`Option<T>`", "</sup>"
+            "⚗️`Option<T>` &#x1F7F0; `T`", "</sup>" // = emoji
+        )
+    };
+    (@niche_doc [! Option]) => {
+        concat!("\n", "<sup class='_doc_niche' ",
+            "title='checked by hidden doctest: Option<T> does not have the same stack size as T'>",
+            "⚗️`Option<T>` &#x2757;&#x1F7F0; `T`", "</sup>" // != emoji
         )
     };
     // Niche-size doctest suffix.
     (@niche_test []) => { "" };
     (@niche_test [Option]) => { "; niche Option" };
+    (@niche_test [! Option]) => { "; niche !Option" };
     // Attribute printer helpers.
     (@meta) => { "" };
     (@meta $(#[$meta:meta])+) => {
-        concat!("  #️⃣ ", $(stringify!(#[$meta]), " ",)+)
+        concat!("  &#35;&#xfe0f;&#x20e3; ", $(stringify!(#[$meta]), " ",)+) // [#] emoji
     };
 }
 #[doc(inline)]

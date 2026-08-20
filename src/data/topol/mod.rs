@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_TOPOL!()] // public
 #![doc = crate::_doc!(modules: crate::data; topol: graph, link)] // spatial
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(extends: collections)]
+#![doc = crate::_doc!(hr)]
 //!
 //! Topology describes structural relations
 //! independently of the values participating in them.

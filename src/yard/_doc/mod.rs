@@ -7,7 +7,7 @@ mod availability; // _doc_availability!
 mod doc; // _doc!, _doc_warn_miri!
 mod location; // _doc_location!
 mod meta; // _doc_meta!
-mod size_of; // _doc_test_size_of!
+mod test_size_of; // _doc_test_size_of!
 mod vendor; // _doc_vendor!
 mod warn; // _doc_warn_miri!
 
@@ -24,7 +24,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             availability::_doc_availability,
             doc::_doc,
             location::_doc_location,
-            size_of::_doc_test_size_of,
+            test_size_of::_doc_test_size_of,
             warn::_doc_warn_miri,
         };
     }
