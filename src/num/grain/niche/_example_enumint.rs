@@ -1,4 +1,4 @@
-// devela/src/code/util/_example.rs
+// devela/src/num/grain/niche/_example_enumint.rs
 //
 //! Defines [`EnumintI8Example`].
 //
@@ -10,7 +10,7 @@
 use devela::enumint;
 
 enumint![
-    #[doc = crate::_tags!(example code niche)]
+    #[doc = crate::_tags!(example num niche)]
     /// An example compact `i8` enum from -126 to 126.
     #[doc = crate::_doc_meta!{
         location("data/id"),

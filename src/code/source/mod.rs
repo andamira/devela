@@ -4,6 +4,15 @@
 #![doc = crate::_doc!(modules: crate::code; source)]
 #![doc = crate::_doc!(flat: "code")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Source provenance is kept separate from the semantics of the code itself.
+//! [`CodeLocation`] and [`CodeSpan`] identify where code originates,
+//! [`Version`] describes revision state, and the inclusion macros connect source
+//! files and modules at compile time.
+//!
+//! Token manipulation and generated Rust structure belong to
+//! [`util::token`][crate::code::util::token] and
+//! [`util::synth`][crate::code::util::synth], respectively.
 //
 
 mod _reexport_core;

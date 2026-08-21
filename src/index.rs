@@ -344,9 +344,11 @@ mod _hidden {
 }
 
 #[doc(inline)]
+#[allow(unused_imports)]
 pub use _reexports::*;
 mod _reexports {
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
         code::{ConstInit, const_assert, unwrap},
         // error::{};

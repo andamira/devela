@@ -1,11 +1,11 @@
-// devela/src/code/util/type_count.rs
+// devela/src/code/util/token/type_count.rs
 //
 //! Counting types.
 //
 
 #[doc = crate::_tags!(code)]
 /// Returns the total number of types received.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util/token", macro type_count)}]
 /// # Examples
 /// ```
 /// # use devela::type_count;

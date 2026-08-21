@@ -10,6 +10,7 @@
 //
 
 // mod budget; // BitBudget
+mod enumset; // enumset!
 mod field; // bitfield!
 // mod manifest; // BitManifest
 // mod recipe; // BitRecipe
@@ -21,6 +22,7 @@ crate::structural_mods! { // _mods
         #[doc(inline)]
         pub use super::{
             // budget::*,
+            enumset::_all::*,
             field::bitfield,
             // manifest::*,
             // recipe::*,

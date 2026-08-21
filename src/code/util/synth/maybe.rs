@@ -1,4 +1,4 @@
-// devela/src/code/util/maybe.rs
+// devela/src/code/util/synth/maybe.rs
 //
 //! Defines [`maybe!`], [`maybe_slot!`].
 //
@@ -6,7 +6,7 @@
 // IMPROVE:MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 #[doc = crate::_tags!(code maybe)]
 /// Macro helper for using optionally implemented traits, like `Default` or `Clone`.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util/synth", macro maybe)}]
 ///
 /// The first boolean argument says whether `$T` implements the given trait.
 ///
@@ -85,7 +85,7 @@ pub use maybe;
 
 #[doc = crate::_tags!(code maybe primitive)]
 /// Expands to a primitive slot from either a direct carrier or a wrapped outer type.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util/synth", macro maybe_slot)}]
 ///
 /// The first argument is the outside type used for dispatch.
 ///

@@ -71,6 +71,9 @@
 
 mod _reexport_core;
 
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example_enumint; // EnumintI8Example
+
 mod impls; // impl ConstInit, BitSized
 
 mod absence; // MaybeNiche, NonNiche
@@ -85,9 +88,13 @@ crate::structural_mods! { // _mods, _reexports, _hidden
             macros::{niche, niche_prim},
             mem::_all::*,
         };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example_enumint::EnumintI8Example;
     }
     _reexports {
         pub use super::_reexport_core::*;
+        #[doc = crate::_tags!(construction num niche procedural_macro)]
+        pub use devela_macros::enumint;
     }
     _hidden {
         pub use super::macros::NicheNew;

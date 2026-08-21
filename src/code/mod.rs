@@ -5,6 +5,15 @@
 #![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(extends:
     any, clone, convert, default, hint, marker, ops, panic, range, result)]
+//!
+//! These facilities describe concerns shared across otherwise unrelated domains:
+//! type identity and conversion, initialization and markers, operational and
+//! outcome semantics, source provenance, and code-oriented tooling.
+//!
+//! [`any`], [`convert`], [`init`], [`marker`], [`ops`], and [`result`] provide
+//! reusable language-level semantics. [`hint`] and [`panic`][mod@panic] concern
+//! execution behavior, [`source`] describes provenance and inclusion, and [`util`]
+//! gathers code-authoring utilities that do not have a more specific semantic home.
 //
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
@@ -23,7 +32,7 @@ pub mod ops; // Operational syntax, semantics, and composition
 pub mod panic; // Panic hooks, unwinding, and abort strategies
 pub mod result; // Generic outcome and resolution types
 pub mod source; // Source-code location, provenance, and inclusion
-pub mod util; // General code and macro utilities
+pub mod util; // Cross-cutting code and macro utilities
 
 util::structural_mods! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {

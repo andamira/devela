@@ -67,7 +67,7 @@ pub trait IoRead {
 }
 
 #[doc = crate::_tags!(io maybe_std)]
-/// A type of `IoRead`er with an internal buffer, allowing it to perform extra ways of reading.
+/// A type of `IoRead`er with an internal buffer, allowing for extra ways of reading.
 #[doc = crate::_doc_meta!{location("sys/io")}]
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.BufRead.html>.

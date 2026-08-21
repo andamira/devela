@@ -1,11 +1,11 @@
-// devela/src/code/util/structural.rs
+// devela/src/code/util/synth/structural.rs
 //
 //! Defines the [`structural_mods!`] macro.
 //
 
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util/synth", macro structural_mods)}]
 ///
 /// This macro generates a set of structural helper modules that centralize export logic
 /// according to intended visibility and usage. It reduces boilerplate and enforces a
@@ -16,8 +16,8 @@
 /// **Usage Constraints:**
 /// - Module blocks must be specified in the exact order shown below (all are optional).
 /// - This macro defines internal modules with reserved names
-///   (`_mods`, `_pub_mods`, `_reexports`, `_crate_internals`, `_workspace_internals`,
-///   `_hidden`, and `_all`). Do not define modules with these names in the same scope.
+///   (`_mods`, `_pub_mods`, `_reexports`, `_crate_internals`, `_hidden`, and `_all`).
+///   Do not define modules with these names in the same scope.
 ///
 /// Violating either rule will result in compilation errors or incorrect aggregation.
 /// </div>
@@ -30,7 +30,6 @@
 /// - `_pub_mods`: Public items from public modules. Items should be `pub` and use `doc(inline)`.
 /// - `_reexports`: Public items from other modules, crates, or the std. Items should be `pub`.
 /// - `_crate_internals`: Crate-private items (`pub(crate)`) re-exported within the crate.
-/// - `_workspace_internals`: Workspace-visible items (`pub`, `doc(hidden)`).
 /// - `_hidden`: Public but hidden items (`pub`, `doc(hidden)`).
 ///
 /// An `_all` module is always generated. It aggregates exports from `_mods`, `_pub_mods`,
@@ -44,7 +43,6 @@
 /// # pub mod public_module { pub(super) mod _all {} }
 /// # mod _reexport {}
 /// # mod internal_utils {}
-/// # mod workspace_tools {}
 /// structural_mods! {
 ///     _mods {
 ///         pub use super::{some_module::*, other_module::*};
@@ -58,9 +56,6 @@
 ///     }
 ///     _crate_internals {
 ///         pub(crate) use super::internal_utils::*;
-///     }
-///     _workspace_internals {
-///         pub use super::workspace_tools::*;
 ///     }
 /// }
 /// ```
@@ -91,10 +86,6 @@ macro_rules! structural_mods· {
         // Items inside should be pub(crate).
         // They are re-exported from the root of the current crate.
         $( _crate_internals { $($block_crate_internals:tt)* } )?
-        //
-        // Items inside should be pub & doc(hidden).
-        // They are publicly re-exported from the root of each crate except for the top crate.
-        $( _workspace_internals { $($block_workspace_internals:tt)* } )?
         //
         // Items inside should be pub & doc(hidden).
         // They are publicly re-exported from the root of the crate.
@@ -128,14 +119,6 @@ macro_rules! structural_mods· {
             pub(crate) use _crate_internals::*;
             pub(crate) mod _crate_internals { #![allow(unused_imports)]
                 $($block_crate_internals)*
-            }
-        )?
-        $(
-            #[allow(unused_imports)]
-            #[doc(hidden, no_inline)]
-            pub use _workspace_internals::*;
-            pub(crate) mod _workspace_internals { #![allow(unused_imports)]
-                $($block_workspace_internals)*
             }
         )?
         pub(crate) mod _all { #![allow(unused_imports)]

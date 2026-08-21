@@ -1,11 +1,11 @@
-// devela/src/code/util/use_as.rs
+// devela/src/code/util/synth/use_as.rs
 //
 //! Defines [`use_as!`].
 //
 
 #[doc = crate::_tags!(code)]
 /// Imports families of prefixed items under shorter local names.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("code/util/synth", macro use_as)}]
 ///
 /// The shared prefix is prepended to each listed suffix to form its source name:
 /// - `Name` imports `PrefixName as Name`.

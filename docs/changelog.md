@@ -69,16 +69,14 @@
 - add match-supporting arms for: `<some|ok|err|sok|err>[_expect|_or|_or?]`.
 
 ### code::util
-- new modules: `assert`, `cfg`, `debug`, `synth`.
+- new modules: `assert`, `cfg`, `debug`, `synth`, `token`.
 - extend `whilst!` with indexed slice iteration.
 - update `doclink!` and `_reexport!`: support linking to the item directly.
-- update `enumset!`:
-- impl methods for the associated set:
-  - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
-  - unit-only methods: `iter`, `for_each[_while]`.
-- update `test_size_of!`; support negative niche `Option` testing.
-- impl for the associated enum, unit-only constant: `ALL`.
-- impl `From<enum>` for the associated set.
+- update `structural_mods!`: remove the `_workspace_internals` branch.
+- update `test_size_of!`: support negative niche `Option` testing.
+
+### data::access
+- move macros from `code::util`: `read_at`, `write_at`.
 
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
@@ -88,6 +86,14 @@
 - make `pack` module public.
 - remove type: `Base`.
 - remove type aliases: `Base16`, `Base32`, `Base32Padded`, `Base32Crockford`, `Base32Hex`, `Base64`, `Base64Padded`.
+
+#### data::codec::bin
+- move `enumset!` from `code::util`.
+- update `enumset!`: impl methods for the associated set:
+  - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
+  - unit-only methods: `iter`, `for_each[_while]`.
+  - impl for the associated enum, unit-only constant: `ALL`.
+  - impl `From<enum>` for the associated set.
 
 ### data::id
 - new macros: `handle!`, `handle_gen!`.
@@ -239,6 +245,9 @@
 
 ### num::grain
 - new macro `bound_int!`.
+
+#### num::grain::niche
+- move `enumint!` and `EnumintI8Example` from `code::util`.
 
 ### num::quant
 - new type: `Scale`.

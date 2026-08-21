@@ -1,4 +1,4 @@
-// devela/src/code/util/enumset/_test.rs
+// devela/src/data/codec/bin/bit/enumset/_test.rs
 
 #![allow(dead_code)]
 use crate::enumset;

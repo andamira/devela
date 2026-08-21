@@ -57,7 +57,7 @@ its own flat view of all its public children.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Generic outcome and resolution types.";
     _DOC_CODE_SOURCE     = "Source-code location, provenance, and inclusion.";
-    _DOC_CODE_UTIL       = "General code and macro utilities.";
+    _DOC_CODE_UTIL       = "Cross-cutting code and macro utilities.";
 
     // 2. data (structure before interpretation)
     _DOC_DATA               = "Structural abstractions for organizing and manipulating data.";

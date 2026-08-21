@@ -26,7 +26,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             disc::_all::*,
-            // gram::_all::*,
+            gram::_all::*,
             hum::_all::*,
             repr::_all::*,
             sem::_all::*,

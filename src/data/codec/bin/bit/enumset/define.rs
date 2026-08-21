@@ -1,11 +1,11 @@
-// devela/src/code/util/enumset/define.rs
+// devela/src/data/codec/bin/bit/enumset/define.rs
 //
 //! An enum with an associated bit set.
 //
 
-#[doc = crate::_tags!(code construction member set bit)]
+#[doc = crate::_tags!(construction member set bit)]
 /// Defines an enum and an associated type set of its variants.
-#[doc = crate::_doc_meta!{location("code/util")}]
+#[doc = crate::_doc_meta!{location("data/codec/bin")}]
 ///
 #[doc = include_str!["./_docs_enumset.md"]]
 #[doc(hidden)]

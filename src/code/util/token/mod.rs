@@ -1,6 +1,10 @@
 // devela/src/code/util/token/mod.rs
 //
 //! Macro token, fragment, identifier, and literal utilities
+//!
+//! Token utilities operate on macro input material itself: token trees,
+//! fragments, identifiers, and literals. Construction and composition of
+//! higher-level Rust structure belongs to [`synth`][super::synth].
 //
 
 mod _reexport_core;
@@ -8,6 +12,8 @@ mod _reexport_core;
 mod capture; // capture_[first|last|tail_tuple]!
 mod dollar; // macro_dollar!
 mod ident; // ident_const_index!
+mod sf; // sf!
+mod type_count; // type_count!
 
 crate::structural_mods! { // _mods, _reexports,
     _mods {
@@ -16,6 +22,8 @@ crate::structural_mods! { // _mods, _reexports,
             capture::{capture_first, capture_last, capture_tail_tuple},
             dollar::macro_dollar,
             ident::ident_const_index,
+            sf::sf,
+            type_count::type_count,
         };
     }
     _reexports {

@@ -1007,7 +1007,7 @@ required-features = ["alloc"]
 # code
 [[example]]
 name = "scope_guard"
-path = "src/code/guard.rs"
+path = "src/code/ops/guard.rs"
 required-features = ["std"]
 
 # data
