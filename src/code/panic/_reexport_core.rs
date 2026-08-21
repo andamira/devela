@@ -62,8 +62,8 @@ _reexport! { rust: core,
 ///
 /// The reason of the `_` suffix is to avoid conflicting with the Rust's prelude
 /// when glob importing from this crate. Since this macro has the same name
-/// as its sibling module `core::panic`, in order to be able to re-export
-/// only the macro we have to wrap it with our own.
+/// as its sibling module `core::panic`, to be able to re-export
+/// just the macro we have to wrap it with our own.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! panic_ { ($($tt:tt)*) => { core::panic![$($tt)*] } }

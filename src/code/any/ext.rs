@@ -18,7 +18,7 @@ impl<T: ?Sized + Any> AnyExt for T {}
 
 #[doc = crate::_tags!(code)]
 /// Extension trait providing convenience methods for `T:`[`Any`].
-#[doc = crate::_doc_meta!{location("code", trait AnyExt)}]
+#[doc = crate::_doc_meta!{location("code/any", trait AnyExt)}]
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]

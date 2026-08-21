@@ -27,6 +27,7 @@ pub mod uuid; // Standardized portable 128-bit identifiers
 mod pin; // IdPin
 mod registry; // IdRegistry
 mod seq; // id_seq!
+mod type_resource; // zero-cost type-safe resource markers
 
 #[cfg(feature = "alloc")]
 mod pin_box; // IdPinBox
@@ -40,6 +41,7 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
             pin::IdPin,
             registry::IdRegistry,
             seq::id_seq,
+            type_resource::{TypeResource, TypeResourced, type_resource},
         };
         #[cfg(feature = "alloc")]
         pub use super::pin_box::IdPinBox;

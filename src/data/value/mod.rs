@@ -7,6 +7,7 @@
 //
 
 mod absence; // NoData
+mod intro; // WIP Introspect
 mod of; // Oneof
 
 // mod decode; // ValueDecode WIP
@@ -23,6 +24,7 @@ crate::structural_mods! { // _mods, _pub_mods
             // decode::*,
             of::_all::*,
             kind::*,
+            intro::_all::*
             // schema::_all::*,
             // value::*,
         };

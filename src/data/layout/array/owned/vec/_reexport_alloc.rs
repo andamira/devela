@@ -19,8 +19,8 @@ _reexport! { rust: alloc::vec, location: "data/layout/array", tag: _tags!(data_s
 ///
 /// The reason of the `_` suffix is to avoid conflicting with Rust's prelude
 /// when glob importing from this crate. Since this macro has the same name
-/// as its sibling module `std::vec`, in order to be able to re-export
-/// only the macro we have to wrap it with our own.
+/// as its sibling module `std::vec`, to be able to re-export
+/// just the macro we have to wrap it with our own.
 #[macro_export]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]

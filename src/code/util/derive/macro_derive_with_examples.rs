@@ -1,1 +1,0 @@
-../../../../crates/macros/src/docs/macro_derive_with_examples.rs

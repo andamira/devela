@@ -44,13 +44,20 @@ its own flat view of all its public children.";
     /* thematic modules tree */
 
     // 1. code (the grammar beneath the crate)
-    _DOC_CODE            = "Reflective code synthesis.";
-    _DOC_CODE_ANY        = "Dynamic typing and reflection.";
+    _DOC_CODE            = "Code structure, semantics, and foundational utilities.";
+    _DOC_CODE_ANY        = "Dynamic typing, type identity, and type inspection.";
+    _DOC_CODE_CONVERT    = "Type conversion and adaptation.";
+    _DOC_CODE_HINT       = "Compiler and execution hints.";
+    _DOC_CODE_INIT       = "Default and const-friendly initialization.";
     _DOC_CODE_MARKER     = "Marker types, traits, and macros.";
-    _DOC_CODE_OPS        = "Overloadable operators.";
+    _DOC_CODE_OPS        = "Operational syntax, semantics, and composition.";
+    _DOC_CODE_OPS_CALL     = "Callability and invocation semantics.";
+    _DOC_CODE_OPS_OVERLOAD = "Overloadable operator traits.";
+    _DOC_CODE_OPS_RANGE    = "Range bounds, values, and traits.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Generic outcome and resolution types.";
-    _DOC_CODE_UTIL       = "Utility macros and hint functions.";
+    _DOC_CODE_SOURCE     = "Source-code location, provenance, and inclusion.";
+    _DOC_CODE_UTIL       = "General code and macro utilities.";
 
     // 2. data (structure before interpretation)
     _DOC_DATA               = "Structural abstractions for organizing and manipulating data.";

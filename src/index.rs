@@ -197,21 +197,21 @@ pub(crate) use __crate_name;
 
 /* root modules */
 
-pub mod code; // Code structure, generation, and reflective machinery.
-pub mod data; // Stored values, access patterns, and structural organization.
-pub mod error; // Explicit fallibility and recovery semantics.
-pub mod geom; // Spatial forms, relations, and transformations.
-pub mod lang; // Meaning, grammar, expression, and interpretation.
-pub mod media; // Perceivable artifacts, formats, and synthesis.
-pub mod num; // Magnitude, order, uncertainty, and formal computation.
-pub mod org; // Collective structures and supra-individual agency.
-pub mod phys; // Measured reality, units, matter, energy, and time.
-pub mod run; // Runtime staging, progression, and application state.
-pub mod sys; // Host systems, devices, memory, I/O, and OS boundaries.
-pub mod text; // Symbolic sequences, encodings, and text processing.
-pub mod ui; // Interaction, presentation state, and semantic controls.
-pub mod vita; // Lived practices, capacities, embodiment, and play.
-pub mod work; // Tasks, execution loci, scheduling, and synchronization.
+pub mod code; // Code structure, semantics, and foundational utilities
+pub mod data; // Structural abstractions for organizing and manipulating data
+pub mod error; // Failure types, result aliases, and recovery semantics
+pub mod geom; // Geometric types, operations, and spatial constructs
+pub mod lang; // Language structure and meaning across domains
+pub mod media; // Media formats, representation, and synthesis
+pub mod num; // Numeric abstractions and formal computation
+pub mod org; // Coordination and structure of collective action
+pub mod phys; // Physical quantities, units, and models of the natural world
+pub mod run; // Temporal coordination and staging of a running system
+pub mod sys; // System interfaces and hardware abstractions
+pub mod text; // Symbolic sequences, encodings, and text processing
+pub mod ui; // Interactive surfaces, input semantics, and presentation state
+pub mod vita; // Lived practices of embodied beings
+pub mod work; // Computational work, its coordination, and its execution
 // internal:
 pub mod yard; // Scaffolding, taxonomy, and documentation support.
 
@@ -340,5 +340,27 @@ mod _hidden {
         text::_hidden::*,
         work::_hidden::*,
         yard::_hidden::*,
+    };
+}
+
+#[doc(inline)]
+pub use _reexports::*;
+mod _reexports {
+    #[doc(inline)]
+    pub use super::{
+        code::{ConstInit, const_assert, unwrap},
+        // error::{};
+        // geom::{};
+        // lang::{};
+        // media::{};
+        // num::{};
+        // org::{};
+        // phys::{};
+        // run::{};
+        // sys::{};
+        // text::{};
+        // ui::{};
+        // vita::{};
+        // work::{};
     };
 }

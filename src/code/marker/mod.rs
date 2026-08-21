@@ -11,7 +11,6 @@ mod _reexport_core;
 mod prim; // Prim, PrimFitPtr, PrimIndex, IndexRepr
 mod repr; // Repr
 mod type_marker; // zero-cost generic type markers
-mod type_resource; // zero-cost type-safe resource markers
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
@@ -19,7 +18,6 @@ crate::structural_mods! { // _mods, _reexports
             prim::*,
             repr::*,
             type_marker::*,
-            type_resource::*,
         };
     }
     _reexports {

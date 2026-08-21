@@ -1,6 +1,6 @@
 // devela/src/data/codec/pack/mod.rs
 //
-#![doc = crate::_DOC_DATA_CODEC_PACK!()] // private
+#![doc = crate::_DOC_DATA_CODEC_PACK!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; pack)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]

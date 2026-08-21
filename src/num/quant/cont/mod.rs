@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
+// mod autodiff;
 // mod series;
 
 crate::structural_mods! { // _mods

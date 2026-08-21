@@ -20,11 +20,11 @@
   [M_fxhash]: crate::_doc::vendored::fxhash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
   [M_macro_rules_attribute]: crate::_doc::vendored::macro_rules_attribute
-  [`macro_apply`]: crate::code::util::macro_apply
-  [`macro_derive`]: crate::code::util::macro_derive
-  [`macro_derive_with`]: crate::code::util::macro_derive_with
-  [`macro_apply_alias!`]: crate::code::util::macro_apply_alias
-  [`macro_derive_alias!`]: crate::code::util::macro_derive_alias
+  [`macro_apply`]: crate::code::util::synth::macro_apply
+  [`macro_derive`]: crate::code::util::synth::macro_derive
+  [`macro_derive_with`]: crate::code::util::synth::macro_derive_with
+  [`macro_apply_alias!`]: crate::code::util::synth::macro_apply_alias
+  [`macro_derive_alias!`]: crate::code::util::synth::macro_derive_alias
   [M_mini-alloc]: crate::_doc::vendored::mini_alloc
   [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
   [M_no_std_io]: crate::_doc::vendored::no_std_io
@@ -40,7 +40,7 @@
   [M_stated-scope-guard]: crate::_doc::vendored::stated_scope_guard
   [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_doc::vendored::static_assertions
-  [`const_assert!`]: crate::code::util::const_assert
+  [`const_assert!`]: crate::code::util::assert::const_assert
   [`ConstBool`]: crate::num::fin::logic::ConstBool
   [M_tailcall-chunk]: crate::_doc::vendored::tailcall_chunk
   [`VecChunk`]: crate::data::layout::array::VecChunk
@@ -49,7 +49,7 @@
 
 <!-- license: MIT -->
   [M_crunchy]: crate::_doc::vendored::crunchy
-  [`unroll!`]: crate::code::util::unroll
+  [`unroll!`]: crate::code::util::synth::unroll
   [M_current]: crate::_doc::vendored::current
   [`Current`]: crate::sys::mem::Current
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
@@ -70,8 +70,8 @@
   [`Xyza8a`]: crate::num::prob::rand::Xyza8a
   [`Xyza8b`]: crate::num::prob::rand::Xyza8b
   [M_apply]: crate::_doc::vendored::apply
-  [`Hook`]: crate::code::result::Hook
-  [`Morph`]: crate::code::result::Morph
+  [`Hook`]: crate::code::ops::Hook
+  [`Morph`]: crate::code::ops::Morph
   [`Fonts::BIT_3_5`]: crate::media::font::Fonts::BIT_3_5
   [`Fonts::BIT_5_6`]: crate::media::font::Fonts::BIT_5_6
   [M_jiff]: crate::_doc::vendored::jiff

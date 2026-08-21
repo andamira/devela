@@ -64,19 +64,19 @@ See the linked modifications for detailed changes.
   [M_etcetera]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/etcetera.md
   [`AppEnv`]: https://docs.rs/devela/latest/devela/sys/env/trait.AppEnv.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
-  [`fmt_or`]: https://docs.rs/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or
-  [`fmt_or_else`]: https://docs.rs/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or_else
-  [`fmt_or_empty`]: https://docs.rs/devela/latest/devela/code/util/result/trait.OptionExt.html#tymethod.fmt_or_empty
+  [`fmt_or`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or
+  [`fmt_or_else`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or_else
+  [`fmt_or_empty`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or_empty
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
   [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/fxhash.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherFx.html
 [macro_rules_attribute]: https://crates.io/crates/macro_rules_attribute/0.2.0
   [M_macro_rules_attribute]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/macro_rules_attribute.md
-  [`macro_apply`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_apply.html
-  [`macro_derive`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_derive.html
-  [`macro_derive_with`]: https://docs.rs/devela/latest/devela/code/util/attr.macro_derive_with.html
-  [`macro_apply_alias!`]: https://docs.rs/devela/latest/devela/code/util/macro.macro_apply_alias.html
-  [`macro_derive_alias!`]: https://docs.rs/devela/latest/devela/code/util/macro.macro_derive-alias.html
+  [`macro_apply`]: https://docs.rs/devela/latest/devela/code/util/synth/attr.macro_apply.html
+  [`macro_derive`]: https://docs.rs/devela/latest/devela/code/util/synth/attr.macro_derive.html
+  [`macro_derive_with`]: https://docs.rs/devela/latest/devela/code/util/synth/attr.macro_derive_with.html
+  [`macro_apply_alias!`]: https://docs.rs/devela/latest/devela/code/util/synth/macro.macro_apply_alias.html
+  [`macro_derive_alias!`]: https://docs.rs/devela/latest/devela/code/util/synth/macro.macro_derive-alias.html
 [mini-alloc]: https://crates.io/crates/mini-alloc/0.9.0
   [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/mini-alloc.md
   [`WasmAlloc`]: https://docs.rs/devela/latest/devela/sys/mem/alloc/struct.WasmAlloc.html
@@ -86,7 +86,7 @@ See the linked modifications for detailed changes.
   [`sys::io`]: https://docs.rs/devela/latest/devela/sys/io/
 [pastey]: https://crates.io/crates/pastey/0.2.2
   [M_pastey]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pastey.md
-  [`paste!`]: https://docs.rs/devela/latest/devela/code/util/macro.paste.html
+  [`paste!`]: https://docs.rs/devela/latest/devela/code/util/token/macro.paste.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [M_pollster]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/pollster.md
   [`block_on`]: https://docs.rs/devela/latest/devela/work/future/trait.FutureExt.html#method.block_on
@@ -101,7 +101,7 @@ See the linked modifications for detailed changes.
   [`ScopeGuard`]: https://docs.rs/devela/latest/devela/code/struct.ScopeGuard.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/static_assertions.md
-  [`const_assert!`]: https://docs.rs/devela/latest/devela/code/util/macro.const_assert.html
+  [`const_assert!`]: https://docs.rs/devela/latest/devela/code/util/assert/macro.const_assert.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/fin/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
   [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tailcall-chunk.md
@@ -130,7 +130,7 @@ See the linked modifications for detailed changes.
 
 [crunchy]: https://crates.io/crates/crunchy/0.2.3
   [M_crunchy]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/crunchy.md
-  [`unroll!`]: https://docs.rs/devela/latest/devela/code/util/macro.unroll.html
+  [`unroll!`]: https://docs.rs/devela/latest/devela/code/util/synth/macro.unroll.html
 [current]: https://crates.io/crates/current/0.1.2
   [M_current]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/current.md
   [`Current`]: https://docs.rs/devela/latest/devela/sys/mem/struct.Current.html
@@ -180,8 +180,8 @@ See the linked modifications for detailed changes.
 [agg]: https://crates.io/crates/agg/0.1.0
 [apply]: https://crates.io/crates/apply/0.3.0
   [M_apply]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/apply.md
-  [`Hook`]: https://docs.rs/devela/latest/devela/code/result/trait.Hook.html
-  [`Morph`]: https://docs.rs/devela/latest/devela/code/result/trait.Morph.html
+  [`Hook`]: https://docs.rs/devela/latest/devela/code/ops/trait.Hook.html
+  [`Morph`]: https://docs.rs/devela/latest/devela/code/ops/trait.Morph.html
 [blit-fonts]: https://github.com/azmr/blit-fonts
   [`Fonts::BIT_3_5`]: https://docs.rs/devela/latest/devela/media/font/struct.Fonts.html#associatedconstant.BIT_3_5
   [`Fonts::BIT_5_6`]: https://docs.rs/devela/latest/devela/media/font/struct.Fonts.html#associatedconstant.BIT_5_6

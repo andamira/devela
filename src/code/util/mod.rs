@@ -1,9 +1,9 @@
 // devela/src/code/util/mod.rs
 //
 #![doc = crate::_DOC_CODE_UTIL!()] // public
-#![doc = crate::_doc!(modules: crate::code; util)]
+#![doc = crate::_doc!(modules: crate::code; util: assert, cfg, debug, synth, token)]
 #![doc = crate::_doc!(flat:"code")]
-#![doc = crate::_doc!(extends: hint)]
+#![doc = crate::_doc!(hr)]
 //
 // # Implementation notes
 // Several macros are defined hidden, suffixed with `·`, an publicly re-exported unsuffixed.
@@ -24,94 +24,64 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-mod _reexport_core;
-
 #[cfg(test)]
 mod _test;
 #[cfg(any(test, feature = "_docs_examples"))]
 mod _example; // EnumintI8Example
 
-mod asserts; // (assertion macros)
-mod capture; // capture_[first|last|tail_tuple]!
-mod cdbg; // cdbg!
-mod r#const; // CONST!
-mod debug; // const_warn!, fn_name!
-mod deprecate; // deprecate_feature!
-mod derive; // macro_apply_alias!, macro_derive_alias!
+pub mod assert; // Assertion utilities
+pub mod cfg; // Conditional compilation and configuration
+pub mod debug; // Debugging and diagnostic helpers
+pub mod synth; // Code synthesis and macro composition
+pub mod token; // Macro token, fragment, and identifier utilities
+
 mod doclink; // doclink!
-mod dollar; // macro_dollar!
 mod enumset; // enumset!
-mod ident; // ident_const_index!
-mod impl_trait; // impl_trait!
-mod include; // include_from!, mod_from!, mod_path!
 mod is; // is!
 mod items; // items!, sf!
 mod lets; // lets!
-mod likely; // likely, unlikely
 mod maybe; // maybe!, maybe_slot!
-mod methods; // methods_as_fns!
-mod read; // read_at!
-mod structural; // structural_mods!
+mod structural; // structural_mods! TODO
 mod type_count; // type_count!
 mod use_as; // use_as!
 mod whilst; // whilst!
-mod write; // write_at!
-
-#[cfg(feature = "_unroll")]
-mod unroll; // unroll!
 
 structural::structural_mods! { // _mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
-            asserts::{assert_eq_all, assert_approx_eq_all, const_assert, test_size_of},
-            capture::{capture_first, capture_last, capture_tail_tuple},
-            cdbg::*,
-            r#const::CONST,
-            debug::{const_warn, fn_name},
-            deprecate::deprecate_feature,
-            derive::{macro_apply_alias, macro_derive_alias},
             doclink::doclink,
-            dollar::macro_dollar,
             enumset::_all::*,
-            ident::ident_const_index,
-            impl_trait::impl_trait,
-            include::{include_from, mod_from, mod_path},
             is::is,
             items::{items, sf},
             lets::lets,
-            likely::{likely, unlikely},
             maybe::{maybe, maybe_slot},
-            methods::methods_as_fns,
-            read::read_at,
             structural::structural_mods,
             type_count::type_count,
             use_as::use_as,
             whilst::whilst,
-            write::write_at,
         };
-        #[cfg(feature = "_unroll")]
-        pub use super::unroll::_all::*;
-
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::EnumintI8Example;
     }
+    _pub_mods {
+        pub use super::{
+            assert::_all::*,
+            cfg::_all::*,
+            debug::_all::*,
+            synth::_all::*,
+            token::_all::*,
+        };
+    }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[doc = crate::_tags!(code procedural_macro)]
-        pub use super::derive::{
-            macro_apply, macro_derive, macro_derive_with,
-        };
-        #[doc = crate::_tags!(code procedural_macro)]
-        pub use devela_macros::{
-            cif, compile, compile_attr, // compile_doc,
-            ident_total, ident_total_unique, ident_unique,
-            coalesce, field_of,
-            paste,
-            repeat,
-        };
         #[doc = crate::_tags!(construction code niche procedural_macro)]
         pub use devela_macros::enumint;
+        #[doc(inline)]
+        pub use super::{
+            assert::const_assert,
+            debug::cdbg,
+            token::paste,
+        };
     }
     _crate_internals {
         pub(crate) use super::{
@@ -121,7 +91,7 @@ structural::structural_mods! { // _mods, _reexports, _crate_internals
     _hidden {
         #[doc(hidden)]
         pub use {
-            super::asserts::_hidden::*,
+            super::assert::_hidden::*,
             devela_macros::__macro_derive_helpers,
         };
     }

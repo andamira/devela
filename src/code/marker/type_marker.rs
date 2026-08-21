@@ -18,9 +18,8 @@
 /// (e.g., `Clone`, `Copy`, `Default`, `Debug`, `Display`, `PartialEq`, `Eq`,
 /// `PartialOrd`, `Ord`, `Hash`), and supports defining multiple types at once.
 ///
-/// Unlike [`type_resource!`], which ties types to an inner ID,
+/// Unlike [`type_resource!`][crate::type_resource], which ties types to an inner ID,
 /// `type_marker!` generates purely zero-sized marker types.
-#[doc = crate::doclink!(custom devela "[`type_resource!`]" "code/marker/macro.type_resource.html")]
 ///
 /// # Examples
 /// ```

@@ -32,7 +32,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     create_dir_all(&build_out_dir)?;
     let path = build_out_dir.join("unroll.rs");
 
-    // the generated file will be imported from /src/code/util/unroll/mod.rs
+    // the generated file will be imported from devela/src/code/util/synth/unroll.rs
     #[cfg(feature = "__dbg")]
     Build::println(format!("generated: {}", path.display()));
 
@@ -43,7 +43,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     let macro_code1 = r#"
 #[doc = crate::_tags!(code codegen_build)]
 /// Unrolls the given for loop.
-#[doc = crate::_doc_location!("code/util")]
+#[doc = crate::_doc_meta!{location("code/util/synth", macro unroll)}]
 ///
 /// # Example
 /// ```ignore

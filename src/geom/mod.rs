@@ -26,7 +26,7 @@
 #![cfg_attr(feature = "safe_geom", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
-    crate::_doc!(modules: crate; geom: affine, dir, fig, metric); // rel, space
+    crate::_doc!(modules: crate; geom: affine, dir, fig, metric, space); // rel
 }
 
 mod _helper; // _geom_dim_impl_common!, _geom_dim_cast_ctor!

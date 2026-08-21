@@ -25,8 +25,9 @@
 //
 
 // mod address; // Symbolic and contextual references interpreted through resolution
-mod cursor; // Explicit positional access over ordered data
+mod cursor; // Retained positional access over ordered data
 pub mod iter; // Composable external and lending traversal
+mod offset; // Explicit positional access: read_at!, write_at!
 pub mod route; // Segmented routes before domain-specific interpretation
 
 crate::structural_mods! { // _mods, _pub_mods
@@ -34,6 +35,7 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             // address::_all::*,
             cursor::_all::*,
+            offset::_all::*,
         };
     }
     _pub_mods {

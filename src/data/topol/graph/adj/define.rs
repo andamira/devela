@@ -59,6 +59,7 @@
 /// [`GraphAdjAllocVertexExample`]: crate::GraphAdjAllocVertexExample
 /// [`GraphAdjAllocEdgeExample`]: crate::GraphAdjAllocEdgeExample
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! graph_adj {
     (
         [
