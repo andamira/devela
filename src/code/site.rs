@@ -7,8 +7,13 @@ use crate::{Display, FmtResult, Formatter, Slice};
 
 #[doc = crate::_tags!(code)]
 /// A precise location in the source code.
-#[doc = crate::_doc_meta!{location("code")}]
-///
+#[doc = crate::_doc_meta!{
+    location("code", struct CodeLocation),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(CodeLocation = 24|192),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(CodeLocation = 40|320),
+}]
 /// Captures the module path, file name, line, and column of a specific
 /// invocation site. Intended as a lightweight, zero-cost provenance
 /// primitive usable across diagnostics, logging, errors, and profiling.
@@ -52,13 +57,12 @@ impl CodeLocation {
     pub const fn file_line(&self) -> (&'static str, u32) {
         (self.file, self.line)
     }
-
     /// Returns the file name, and line and column numbers.
     pub const fn file_line_column(&self) -> (&'static str, u32, u32) {
         (self.file, self.line, self.column)
     }
 
-    /* */
+    /* misc. */
 
     /// Compile-time equality comparison.
     pub const fn eq(&self, other: &Self) -> bool {
@@ -67,7 +71,6 @@ impl CodeLocation {
             && Slice::<&str>::eq(self.file, other.file)
             && Slice::<&str>::eq(self.module, other.module)
     }
-
     /// Short display helper.
     pub fn fmt_short(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         write!(f, "{}:{}:{}", self.file, self.line, self.column)
@@ -76,8 +79,13 @@ impl CodeLocation {
 
 #[doc = crate::_tags!(code)]
 /// A contiguous span between two code locations.
-#[doc = crate::_doc_meta!{location("code")}]
-///
+#[doc = crate::_doc_meta!{
+    location("code", struct CodeSpan),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(CodeSpan = 48|384),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(CodeSpan = 80|640),
+}]
 /// Represents a range in the source code, typically describing where a construct,
 /// operation, or effect originates. The span is inclusive of both endpoints
 /// and carries no semantic meaning beyond positional ordering.
@@ -96,13 +104,11 @@ impl CodeSpan {
     pub const fn new(start: CodeLocation, end: CodeLocation) -> Self {
         Self { start, end }
     }
-
     /// Creates a zero-length span at the current invocation site.
     pub const fn here() -> Self {
         let loc = CodeLocation::here();
         Self { start: loc, end: loc }
     }
-
     /// Returns true if the span represents a single point.
     pub const fn is_point(&self) -> bool {
         self.start.eq(&self.end)

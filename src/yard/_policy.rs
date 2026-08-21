@@ -8,7 +8,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Applies devela-internal policy to expressions, items, and namespaces.
-#[doc = crate::_doc_meta!{location("yard")}]
+#[doc = crate::_doc_meta!{location("yard", macro _devela_policy)}]
 ///
 /// Centralizes devela-specific rules (such as safety, documentation,
 /// or debug behavior) while keeping external expansions unrestricted.

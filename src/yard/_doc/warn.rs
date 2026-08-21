@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for a miri warning.
-#[doc = crate::_doc_meta!{location("yard")}]
+#[doc = crate::_doc_meta!{location("yard", macro _doc_warn_miri)}]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]

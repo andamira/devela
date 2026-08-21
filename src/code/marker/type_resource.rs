@@ -11,7 +11,7 @@
 
 #[doc = crate::_tags!(code uid construction)]
 /// Defines zero-cost, zero-sized, type-safe *resource* IDs.
-#[doc = crate::_doc_meta!{location("code/marker")}]
+#[doc = crate::_doc_meta!{location("code/marker", macro type_resource)}]
 ///
 /// This macro generates zero-sized types associated with an inner ID type.
 /// These types enable strong type safety at compile time
@@ -69,7 +69,7 @@ pub use type_resource;
 
 #[doc = crate::_tags!(code uid)]
 /// Represents an association between a resource and its inner data type.
-#[doc = crate::_doc_meta!{location("code/marker")}]
+#[doc = crate::_doc_meta!{location("code/marker", trait TypeResourced)}]
 ///
 /// See also: [`TypeResource`] and [`type_resource!`].
 pub trait TypeResourced {
@@ -79,7 +79,7 @@ pub trait TypeResourced {
 
 #[doc = crate::_tags!(code uid)]
 /// A newtype-based ID that associates a resource with its inner ID.
-#[doc = crate::_doc_meta!{location("code/marker")}]
+#[doc = crate::_doc_meta!{location("code/marker", struct TypeResource)}]
 ///
 /// # Examples
 /// ```
@@ -109,12 +109,10 @@ impl<T: TypeResourced> TypeResource<T> {
     pub const fn new(data: T::TypeData) -> Self {
         TypeResource { data }
     }
-
     /// Gets a reference to the ID data.
     pub const fn get(&self) -> &T::TypeData {
         &self.data
     }
-
     /// Takes ownership of the ID data.
     pub fn take(self) -> T::TypeData {
         self.data

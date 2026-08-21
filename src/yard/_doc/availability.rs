@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Generates a formatted documentation string for conditional availability.
-#[doc = crate::_doc_meta!{location("yard")}]
+#[doc = crate::_doc_meta!{location("yard", macro _doc_availability)}]
 ///
 /// It's intended to be used like this:
 /// ```txt

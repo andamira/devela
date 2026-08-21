@@ -23,7 +23,7 @@ use ::devela::{Deref, DerefMut};
 
 #[doc = _tags!(guard)]
 /// A general-purpose RAII guard that executes a callback on drop.
-#[doc = _doc_location!("code")]
+#[doc = _doc_location!("code", struct ScopeGuard)]
 ///
 /// - The callback can take both a value and a state.
 /// - The state can be updated dynamically during the guard's lifetime.

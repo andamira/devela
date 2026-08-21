@@ -92,6 +92,41 @@ macro_rules! _doc_location {
             $crate::_doc_location!(%from_meta re-exported $path)
         )
     };
+    // same, with an exact item.
+    (re-exported $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "\n\n---\n\n", // TEMP
+            $crate::_doc_location!(%from_meta re-exported $path, $kind $item)
+        )
+    };
+    // re-export location fragment.
+    (%from_meta re-exported $path:literal) => {
+        concat!(
+            "<sup title='re-exported from `", crate::__crate_name!(),
+            "`'>[`📍`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink·![custom devela $path @mod],
+            ")</b></sup>",
+        )
+    };
+    // exact re-export location fragment.
+    (%from_meta re-exported $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "<sup title='re-exported from `", crate::__crate_name!(),
+            "`'>[`📍`](",
+            $crate::doclink·![custom_current_crate $path, @item $kind $item],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `devela`'><b>",
+            "[`", $path, "`](",
+            $crate::doclink·![custom devela $path @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink·![custom devela $path @item $kind $item],
+            ")</b></sup>",
+        )
+    };
 
     /* `_doc_meta!` fragments ---------------------------------------------- */
 

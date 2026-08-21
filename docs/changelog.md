@@ -64,12 +64,12 @@
 
 ### code::util
 - extend `whilst!` with indexed slice iteration.
-- update `doclink!`: add support for linking to the item directly.
+- update `doclink!` and `_reexport!`: support linking to the item directly.
 - update `enumset!`:
 - impl methods for the associated set:
   - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
   - unit-only methods: `iter`, `for_each[_while]`.
-- update `test_size_of!`; add support for negative niche `Option` testing.
+- update `test_size_of!`; support negative niche `Option` testing.
 - impl for the associated enum, unit-only constant: `ALL`.
 - impl `From<enum>` for the associated set.
 

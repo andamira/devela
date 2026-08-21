@@ -5,7 +5,10 @@
 
 #[doc = crate::_tags!(code data)]
 /// Selects how a value exposes one of its representations.
-#[doc = crate::_doc_meta!{location("code/marker")}]
+#[doc = crate::_doc_meta!{
+    location("code/marker", enum ReprMode),
+    test_size_of(ReprMode = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ReprMode {
     /// Shows the direct underlying representation.

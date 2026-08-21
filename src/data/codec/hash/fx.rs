@@ -8,8 +8,8 @@ use crate::{ConstInit, Hash, Hasher, HasherBuildDefault};
 pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
 #[doc = crate::_tags!(hash)]
-/// The legacy Fx hashing algorithm derived from Firefox and earlier rustc implementations.
-#[doc = crate::_doc_meta!{location("data/codec/hash")}]
+/// The legacy Fx hashing algorithm derived from Firefox and earlier rustc.
+#[doc = crate::_doc_meta!{location("data/codec/hash", struct HasherFx)}]
 ///
 /// This differs from the current rustc-hash algorithm.
 ///

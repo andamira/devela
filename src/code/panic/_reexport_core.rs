@@ -4,27 +4,32 @@ use crate::{_reexport, _tags};
 
 /* structs */
 
-_reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code),
+_reexport! { rust: core::panic,
+    location: "code/panic" => struct PanicInfo, tag: _tags!(code),
     doc: "Passed to `#[panic_handler]` in `no_std`, carries a formatted message.",
     PanicInfo
 }
-_reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code),
+_reexport! { rust: core::panic,
+    location: "code/panic" => struct PanicLocation, tag: _tags!(code),
     doc: "A struct containing information about the location of a panic.",
     @Location as PanicLocation
 }
-_reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code assert),
+_reexport! { rust: core::panic,
+    location: "code/panic" => struct PanicAssertUnwindSafe, tag: _tags!(code assert),
     doc: "A simple wrapper around a type to assert that it is unwind safe.",
     @AssertUnwindSafe as PanicAssertUnwindSafe
 }
 
 /* traits */
 
-_reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code lifetime),
+_reexport! { rust: core::panic,
+    location: "code/panic" => struct PanicRefUnwindSafe, tag: _tags!(code lifetime),
     doc: "A marker trait which represents a shared reference considered unwind safe.",
     @RefUnwindSafe as PanicRefUnwindSafe
     // RefUnwindSafe
 }
-_reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code),
+_reexport! { rust: core::panic,
+    location: "code/panic" => struct PanicUnwindSafe, tag: _tags!(code),
     doc: "A marker trait which represents \"panic safe\" types in Rust.",
     @UnwindSafe as PanicUnwindSafe
     // UnwindSafe
@@ -32,19 +37,25 @@ _reexport! { rust: core::panic, location: "code/panic", tag: _tags!(code),
 
 /* macros */
 
-_reexport! { rust: core, location: "code/panic", tag: _tags!(code),
-doc: "Indicates unfinished code.", todo }
-_reexport! { rust: core, location: "code/panic", tag: _tags!(code),
-doc: "Indicates unreachable code.", unreachable }
-_reexport! { rust: core, location: "code/panic", tag: _tags!(code),
-doc: "Indicates unimplemented code.", unimplemented }
+_reexport! { rust: core,
+    location: "code/panic" => macro todo, tag: _tags!(code),
+    doc: "Indicates unfinished code.", todo
+}
+_reexport! { rust: core,
+    location: "code/panic" => macro unreachable, tag: _tags!(code),
+    doc: "Indicates unreachable code.", unreachable
+}
+_reexport! { rust: core,
+    location: "code/panic" => macro unimplemented, tag: _tags!(code),
+    doc: "Indicates unimplemented code.", unimplemented
+}
 
 // NOTE: the macro and the module have the same name
 //
 #[doc = crate::_tags!(code)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Panics the current thread.
-#[doc = crate::_doc_meta!{location("code/panic")}]
+#[doc = crate::_doc_meta!{location("code/panic", macro panic_)}]
 ///
 #[doc = "*Re-exported from [`core::panic`][macro@::core::panic]*."]
 #[doc = "\n\n---"]

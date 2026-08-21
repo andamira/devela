@@ -13,7 +13,7 @@ crate::structural_mods! { // _mods, _reexports
     }
     _reexports {
         /// Applies a declarative macro to the decorated item.
-        #[doc = crate::_doc_meta!{location(proc "code/util")}]
+        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_apply)}]
         ///
         /// Expands `#[macro_apply(m)] item` as `m! { item }`.
         ///
@@ -28,7 +28,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_macros::macro_apply;
 
         /// Runs classic derives and declarative derives from one list.
-        #[doc = crate::_doc_meta!{location(proc "code/util")}]
+        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_derive)}]
         ///
         /// Entries ending in `!` are called as declarative macros.
         /// Other entries are forwarded to Rust's built-in `derive`.
@@ -45,7 +45,7 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_macros::macro_derive;
 
         /// Runs declarative derive-like macros over the decorated item.
-        #[doc = crate::_doc_meta!{location(proc "code/util")}]
+        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_derive_with)}]
         ///
         /// Each macro receives a copy of the item and may emit impls or side-items.
         /// The original item is preserved.

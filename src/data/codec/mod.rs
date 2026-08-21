@@ -1,7 +1,7 @@
 // devela/src/data/codec/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
-#![doc = crate::_doc!(modules: crate::data; codec: crypto, hash)]
+#![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 //!
@@ -20,7 +20,7 @@
 //!   and radix encodings are re-exported directly from this module.
 //
 
-mod bin; // Binary representation atoms.
+pub mod bin; // Binary representation atoms.
 pub mod crypto; // Cryptographic primitives
 // mod detect; // WIP Format detection
 mod encode; // Composable codecs for reading and writing values
@@ -34,7 +34,6 @@ mod radix; // Radix-based encodings (Base32, Base64, Base58…)
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
-            bin::_all::*,
             // detect::_all::*,
             encode::_all::*,
             integrity::_all::*,
@@ -45,9 +44,17 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     }
     _pub_mods {
         pub use super::{
+            bin::_all::*,
             crypto::_all::*,
             // frame::_all::*,
             hash::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            bin::bitfield,
+            hash::HasherFx,
         };
     }
     _crate_internals {

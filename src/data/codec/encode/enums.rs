@@ -2,15 +2,15 @@
 
 #[doc = crate::_tags!(codec)]
 /// The primary mode for data encoding.
-#[doc = crate::_doc_meta!{location("data/codec")}]
+#[doc = crate::_doc_meta!{location("data/codec", enum EncodingMode)}]
 ///
 /// This enum is used to guide encoding/decoding strategies.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EncodingMode {
     /// Text-based and intended to be human-readable.
     ///
-    /// Often used for formats like TOML, JSON, XML, etc., where readability
-    /// and editability are prioritized over storage or transmission efficiency.
+    /// Often used for formats like TOML, JSON, XML…, where readability and
+    /// editability are prioritized over storage or transmission efficiency.
     Textual,
 
     /// Binary-based, optimized for machine processing.

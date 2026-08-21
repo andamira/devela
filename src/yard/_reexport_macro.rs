@@ -5,7 +5,10 @@
 
 #[doc = crate::_tags!(internal)]
 /// Macro helper for documentation of re-exported items.
-#[doc = crate::_doc_meta!{location("yard")}]
+#[doc = crate::_doc_meta!{location("yard", macro _reexport)}]
+//
+// Exact `location` forms are intended for single-item reexports.
+// Grouped reexports should use the module-only form.
 //
 // WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 //       the solution is to re-export from core/alloc/std items on each crate.
@@ -33,7 +36,7 @@ macro_rules! _reexport· {
       $( local_module: $module_feature:literal, )?
       $( extra_features: $($extra_feat:literal),+ $(,)? )?
       $( extra_flags:($($extra_flag:ident),+) $(,)? )?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -47,7 +50,7 @@ macro_rules! _reexport· {
         "`core`'>`core`</span>"]
         #[doc = $doc_line] // first doc line
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(rust core $(:: $( $core_path )::+)? $(
                 ; renamed($item_to_rename as $item_renamed)
             )?),
@@ -71,7 +74,7 @@ macro_rules! _reexport· {
     // when the item is available in `alloc`
     ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -85,7 +88,7 @@ macro_rules! _reexport· {
         "`alloc`'>`alloc`</span>"]
         #[doc = $doc_line] // first doc line
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(rust alloc $(:: $( $alloc_path )::+)? $(
                 ; renamed($item_to_rename as $item_renamed)
             )?),
@@ -108,7 +111,7 @@ macro_rules! _reexport· {
     ( // when the item is available in `std`
       rust : std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -122,7 +125,7 @@ macro_rules! _reexport· {
         "`std`'>`std`</span>"]
         #[doc = $doc_line] // first doc line
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(rust std $(:: $( $std_path )::+)? $(
                 ; renamed($item_to_rename as $item_renamed)
             )?),
@@ -145,7 +148,7 @@ macro_rules! _reexport· {
     ( // when the item is available in either `not(std)` or `std` (always, more transparent)
       rust : not(std)|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -160,7 +163,7 @@ macro_rules! _reexport· {
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $doc_line] // first doc line
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(rust std $(:: $( $std_path )::+)? $(
                 ; renamed($item_to_rename as $item_renamed)
             )?),
@@ -245,7 +248,7 @@ macro_rules! _reexport· {
       // $item_renamed:
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -259,7 +262,7 @@ macro_rules! _reexport· {
             $dep_name "` crate'>`" $dep_name "`</span>"]
         #[doc = $doc_line] // first doc line
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(crate $dep_name $(
                 ; renamed($item_to_rename as $item_renamed)
             )?),
@@ -294,7 +297,7 @@ macro_rules! _reexport· {
       non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
-      $( location: $($location:literal)+ ,)?
+      $( location: $location:literal $(=> $location_kind:ident $location_item:ident)? ,)?
       $( tag: $($tag:expr)+ ,)?
       doc: $doc_line:literal,
       $( +doc: $($doc_more:literal),+, )?
@@ -307,7 +310,7 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from the `"
             $dep_str "` crate'>`" $dep_str "`</span>"]
         #[doc = $crate::_doc_meta! {
-            $( location(re-exported $($location)?), )?
+            $( location(re-exported $location $(, $location_kind $location_item)?), )?
             origin(crate $dep_str => $dep_name $(
             // origin(crate $dep_name $( // simpler form
                 ; renamed($item_to_rename as $item_renamed)
