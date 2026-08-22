@@ -30,8 +30,8 @@ impl Str {
     /// Makes use of the `unsafe_str` feature if enabled.
     ///
     /// See also [`StrExt::repeat_into`], which should be faster, because it uses `copy_from_slice`.
-    #[doc = crate::doclink!(custom devela "[`StrExt::repeat_into`]"
-        "text/str/trait.StrExt.html#method.repeat_into")]
+    ///
+    /// [`StrExt::repeat_into`]: crate::StrExt::repeat_into
     #[must_use]
     pub const fn repeat_into<'input, const CAP: usize>(
         string: &str,
@@ -91,9 +91,8 @@ impl Str {
     /// Makes use of the `unsafe_str` feature if enabled.
     ///
     /// See also [`StrExt::new_counter`].
-    #[doc = crate::doclink!(custom devela "[`StrExt::new_counter`]"
-        "text/str/trait.StrExt.html#method.new_counter")]
     ///
+    /// [`StrExt::new_counter`]: crate::StrExt::new_counter
     /// [0]: https://www.satisfice.com/blog/archives/22
     pub const fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];

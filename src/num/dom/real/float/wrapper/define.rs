@@ -8,8 +8,7 @@
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 #[doc = crate::_doc_meta!{location("num/dom/real")}]
 ///
-/// See also the [`FloatConst`][crate::FloatConst] and [`FloatExt`] traits.
-#[doc = crate::doclink!(custom devela "[`FloatExt`]" "num/trait.FloatExt.html")]
+/// See also the [`FloatConst`][crate::FloatConst] and [`FloatExt`][crate::FloatExt] traits.
 ///
 // # Methods
 // TODO

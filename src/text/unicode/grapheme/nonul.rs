@@ -6,17 +6,17 @@
 // - definitions
 // - trait impls
 
-use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonNul, char7, char8,
-    char16, charu, doclink, unwrap,
-};
+use crate::{CharIter, char7, char8, char16, charu, unwrap};
+use crate::{GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonNul};
 
 /* definitions */
 
 #[must_use]
 #[doc = crate::_tags!(text)]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonNul`]."]]
-#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
+#[doc = crate::_doc_meta!{
+    location("text/unicode/grapheme", struct GraphemeNonul),
+}]
 ///
 /// ## Methods
 ///
@@ -128,8 +128,9 @@ impl<const CAP: usize> GraphemeNonNul<CAP> {
     /// or if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[doc = doclink!(devela "[`is_nul()`]" "text/trait.UnicodeScalar.html#method.is_nul")]
-    #[doc = doclink!(devela "[`len_utf8()`]" "text/trait.UnicodeScalar.html#method.len_utf8")]
+    ///
+    /// [`is_nul()`]:  crate::UnicodeScalar::is_nul
+    /// [`len_utf8()`]:  crate::UnicodeScalar::len_utf8
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringNonNul::from_char(c)]))
     }

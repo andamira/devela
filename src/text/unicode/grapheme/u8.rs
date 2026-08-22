@@ -119,8 +119,8 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// or < `c.`[`len_utf8()`]
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[doc = crate::doclink!(devela "[`len_utf8()`]"
-        "text/char/trait.UnicodeScalar.html#method.len_utf8")]
+    ///
+    /// [`len_utf8()`]: crate::UnicodeScalar::len_utf8
     pub const fn from_char(c: char) -> Result<Self, MismatchedCapacity> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }

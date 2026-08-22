@@ -1,7 +1,6 @@
 // devela/src/num/dom/int/_docs.rs
 //
-//! Defines constants for shared documentation on [`Int`] and [`NumInt`].
-#![doc = crate::doclink!(custom devela "[`NumInt`]" "num/trait.NumInt.html")]
+//! Defines constants for shared documentation on [`Int`] and [`NumInt`][crate::NumInt].
 //
 // notation: _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*
 #![allow(unused, reason = "if only compiling either unsigned or signed…")]

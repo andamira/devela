@@ -128,12 +128,6 @@ define_error! { individual:
 define_error! { composite: fmt(f)
     +location: "error/data",
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
-    ///
-    /// Used in methods of:
-    /// [`Destaque`],
-    /// [`Stack`].
-    #[doc = crate::doclink!(custom devela "[`Destaque`]" "data/list/struct.Destaque.html")]
-    #[doc = crate::doclink!(custom devela "[`Stack`]" "data/list/struct.Stack.html")]
     pub enum DataNotEnough {
         DOC_NOT_ENOUGH_ELEMENTS: +const Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
         DOC_NOT_ENOUGH_SPACE:    +const Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
@@ -145,14 +139,9 @@ define_error! { composite: fmt(f)
     /// [`MismatchedCapacity`] + [`IndexOutOfBounds`] + [`MismatchedIndices`]
     ///
     /// Used in methods of:
-    /// [`Array`],
-    /// [`Array2d`],
     /// [`bitfield!`][crate::bitfield],
-    /// [`BitOps`],
+    /// [`BitOps`][crate::BitOps],
     /// [`Bitwise`][crate::Bitwise].
-    #[doc = crate::doclink!(custom devela "[`Array`]" "data/list/struct.Array.html")]
-    #[doc = crate::doclink!(custom devela "[`Array2d`]" "data/list/struct.Array2d.html")]
-    #[doc = crate::doclink!(custom devela "[`BitOps`]" "data::BitOps")]
     pub enum MismatchedBounds {
         DOC_MISMATCHED_CAPACITY: +const MismatchedCapacity {
             /// Which boundary of the capacity constraint applies.
@@ -173,12 +162,6 @@ define_error! { composite: fmt(f)
 define_error! { composite: fmt(f)
     +location: "error/data",
     /// An error composite of [`NotEnoughSpace`] + [`PartiallyAdded`].
-    ///
-    /// Used in methods of:
-    /// [`ArrayUninit`].
-    // TEMP
-    #[doc = crate::doclink!(custom devela "[`ArrayUninit`]"
-        "data/list/array/struct.ArrayUninit.html")]
     pub enum PartialSpace {
         DOC_NOT_ENOUGH_SPACE: +const NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:  +const PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),

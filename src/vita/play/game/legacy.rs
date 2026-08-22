@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(game)]
 /// Persistent continuity that carries across multiple sessions of play.
-#[doc = crate::_doc_meta!{location("vita/play/game")}]
+#[doc = crate::_doc_meta!{location("vita/play/game", struct GameLegacy)}]
 ///
 /// Represents what remains consequential beyond any single session.
 ///

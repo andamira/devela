@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(game)]
 /// A rule-bearing identity or seat in play.
-#[doc = crate::_doc_meta!{location("vita/play/game")}]
+#[doc = crate::_doc_meta!{location("vita/play/game", struct GameRole)}]
 ///
 /// Defines who or what occupies a structured position in the game system.
 ///

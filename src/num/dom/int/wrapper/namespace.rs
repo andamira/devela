@@ -31,8 +31,7 @@
 /// [primes][Self#integer-prime-related-methods-for-u32],
 /// [root][Self#integer-root-related-methods-for-u32].
 ///
-/// See also the related trait [`NumInt`].
-#[doc = crate::doclink!(custom devela "[`NumInt`]" "num/trait.NumInt.html")]
+/// See also the related trait [`NumInt`][crate::NumInt].
 #[must_use]
 #[repr(transparent)]
 pub struct Int<T>(pub T);

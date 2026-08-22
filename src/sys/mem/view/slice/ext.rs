@@ -23,8 +23,7 @@ impl<T> Sealed for Vec<T> {}
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods,
-/// and the [`slice!`] macro for a more familiar API.
-#[doc = crate::doclink!(custom devela "[`slice!`]" "sys/mem/macro.slice.html")]
+/// and the [`slice!`][crate::slice!] macro for a more familiar API.
 #[cfg_attr(nightly_doc, doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait SliceExt<T>: Sealed {

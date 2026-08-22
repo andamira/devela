@@ -112,7 +112,8 @@ impl Ascii {
     /// - Digits 10-36: offset 7 (yields 'A'-'Z')
     ///
     /// Used internally in [`FontArt`].
-    #[doc = crate::doclink!(custom devela "[`FontArt`]" "media/font/struct.FontArt.html")]
+    ///
+    /// [`FontArt`]: crate::FontArt
     pub const ASCII_BASE36_OFFSET: [u8; 37] = [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0-9: offset 0
         7, 7, 7, 7, 7, 7, 7, 7, 7, 7, // 10-19: offset 7

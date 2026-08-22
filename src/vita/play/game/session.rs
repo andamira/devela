@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(game)]
 /// A bounded instance of enacted play.
-#[doc = crate::_doc_meta!{location("vita/play/game")}]
+#[doc = crate::_doc_meta!{location("vita/play/game", struct GameSession)}]
 ///
 /// Represents one occurrence of play as a whole.
 ///

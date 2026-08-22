@@ -2,7 +2,7 @@
 
 #[doc = crate::_tags!(game result)]
 /// A resolved result recognized by the rules of play.
-#[doc = crate::_doc_meta!{location("vita/play/game")}]
+#[doc = crate::_doc_meta!{location("vita/play/game", struct GameOutcome)}]
 ///
 /// Represents what the system acknowledges as having resulted from an action, turn, cycle, or session.
 ///
