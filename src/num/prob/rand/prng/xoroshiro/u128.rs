@@ -8,7 +8,7 @@
 //   - trait implementations
 //   - private items and helpers
 
-use crate::{Cast, ConstInit, Own, Slice, slice, whilst};
+use crate::{Cast, ConstInit, Slice, slice, whilst};
 use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 /* public definitions */
@@ -170,13 +170,6 @@ impl Xoroshiro128pp {
         x[2] ^= t;
         x[3] = x[3].rotate_left(11);
         Self(x)
-    }
-
-    /// Returns both the next random state and the `u32` value in a tuple.
-    pub const fn own_next_u32(self) -> Own<Self, u32> {
-        let next_state = self.copy_peek_next_state();
-        let next_value = next_state.current_u32();
-        Own::new(next_state, next_value)
     }
 
     /// Returns a copy of the state jumped ahead by 2^64 steps.

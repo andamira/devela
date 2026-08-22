@@ -63,7 +63,8 @@
 - new modules: `call`, `overload`, `range`.
 
 ### code::result
-- remove `OptResExt::transpose_result` method.
+- remove struct: `Own`.
+- remove trait method: `OptResExt::transpose_result`.
 - update `unwrap!`:
   - add new arms: `some_or?`, `=some_or`, `=ok_or`, `err_or?`, `=err_or`, `=sok_or`, `serr_or?`, `=serr_or`, `=some_map`, `=some_map_into`, `=ok_map`, `=ok_map_into`, `=err_map`.
 - add match-supporting arms for: `<some|ok|err|sok|err>[_expect|_or|_or?]`.
@@ -248,6 +249,10 @@
 
 #### num::grain::niche
 - move `enumint!` and `EnumintI8Example` from `code::util`.
+
+#### num::prob::rand
+- rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
+- remove `own_next_*` methods from the rest of the PRNGs.
 
 ### num::quant
 - new type: `Scale`.

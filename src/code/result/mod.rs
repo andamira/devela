@@ -11,7 +11,7 @@
 //! finds its place.
 //!
 //! It includes fundamental outcome types ([`Option`], [`Result`], [`OptRes`]),
-//! structured ownership ([`Own`]) and mismatch-aware comparisons ([`Mismatch`]).
+//! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
 mod _reexport_core;
@@ -19,7 +19,6 @@ mod _reexport_core;
 // mod enumatch; // enumatch! WIP
 mod mismatch; // Mismatch
 mod opt_res; // OptRes, sok, serr
-mod own; // Own
 
 // #[cfg(feature = "_tuple")]
 // #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
@@ -31,7 +30,6 @@ crate::structural_mods! { // _mods, _reexports
             // enumatch::*,
             mismatch::*,
             opt_res::_all::*,
-            own::*,
         };
         // #[cfg(feature = "_tuple")]
         // pub use super::menu::*;
