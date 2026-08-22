@@ -2,7 +2,10 @@
 
 #[doc = crate::_tags!(codec)]
 /// The type of compression applied to data.
-#[doc = crate::_doc_meta!{location("data/codec")}]
+#[doc = crate::_doc_meta!{
+    location("data/codec", enum CompressionMode),
+    test_size_of(CompressionMode = 1|8; niche Option),
+}]
 ///
 /// This enum is used to specify whether the compression algorithm prioritizes
 /// retaining all original data or reducing file size, potentially at the cost

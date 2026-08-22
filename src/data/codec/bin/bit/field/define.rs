@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(construction bit mem)]
 /// Defines a compact packed-field wrapper backed by an unsigned integer.
-#[doc = crate::_doc_meta!{location("data/codec")}]
+#[doc = crate::_doc_meta!{location("data/codec", macro bitfield)}]
 ///
 #[doc = include_str!["./_docs_field.md"]]
 #[macro_export]

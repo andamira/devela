@@ -1,6 +1,9 @@
 // devela/src/code/util/cfg/mod.rs
 //
-//! Conditional compilation and configuration.
+#![doc = crate::_DOC_CODE_UTIL_CFG!()] // public
+#![doc = crate::_doc!(modules: crate::code::util; cfg)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport_core;

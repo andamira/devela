@@ -10,9 +10,9 @@ use crate::{CodeLocation, Display, FmtResult, Formatter};
 #[doc = crate::_doc_meta!{
     location("code/source", struct CodeSpan),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(CodeSpan = 48|384),
+    test_size_of(CodeSpan = 48|384; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(CodeSpan = 80|640),
+    test_size_of(CodeSpan = 80|640; niche Option),
 }]
 /// Represents a range in the source code, typically describing where a construct,
 /// operation, or effect originates. The span is inclusive of both endpoints

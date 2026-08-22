@@ -1,6 +1,9 @@
 // devela/src/code/util/synth/mod.rs
 //
-//! Code synthesis and macro composition.
+#![doc = crate::_DOC_CODE_UTIL_SYNTH!()] // public
+#![doc = crate::_doc!(modules: crate::code::util; synth)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(hr)]
 //!
 //! Synthesis operates on Rust structure: generated items, implementations,
 //! methods, derives, and repeated expansions. Lower-level manipulation of macro

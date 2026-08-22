@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(value mem)]
 /// Compile-time conversion from slice-like types to arrays.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", struct ArrayFrom),
+}]
 ///
 /// # Features
 /// Uses `Ptr::copy_nonoverlapping` internally when unsafe operations are allowed.

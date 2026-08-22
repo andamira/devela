@@ -8,11 +8,11 @@ use crate::{ArrayCoordIter, Overflow, is, unwrap, whilst};
 #[doc = crate::_tags!(data_structure)]
 /// The ordered lengths of an array's logical axes.
 #[doc = crate::_doc_meta!{
-    location("data/layout/array"),
+    location("data/layout/array", struct ArrayShape),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ArrayShape<2> = 8|64),
+    test_size_of(__: ArrayShape<2> = 8|64; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ArrayShape<2> = 16|128),
+    test_size_of(__: ArrayShape<2> = 16|128; niche !Option),
 }]
 /// `RANK` is the number of axes and is known at compile time.
 ///

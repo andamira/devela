@@ -15,7 +15,7 @@ use crate::Ordering;
 #[doc = crate::_tags!(exec)]
 /// Structural semantics of a call edge.
 #[doc = crate::_doc_meta!{
-    location("code/ops", struct CallSemantics),
+    location("code/ops/call", struct CallSemantics),
     test_size_of(CallSemantics = 5|40; niche Option),
 }]
 /// The axes describe how a call is bound, dispatched, contextualized,
@@ -87,7 +87,7 @@ impl PartialOrd for CallSemantics {
 
 #[doc = crate::_tags!(exec)]
 /// When the callee identity becomes fixed.
-#[doc = crate::_doc_meta!{location("code/ops", enum CallBindTime)}]
+#[doc = crate::_doc_meta!{location("code/ops/call", enum CallBindTime)}]
 ///
 /// Ordered: `Compile < Build < Run`.
 ///
@@ -116,7 +116,7 @@ pub enum CallBindTime {
 
 #[doc = crate::_tags!(exec)]
 /// Where the callable's execution environment resides.
-#[doc = crate::_doc_meta!{location("code/ops", enum CallContext)}]
+#[doc = crate::_doc_meta!{location("code/ops/call", enum CallContext)}]
 ///
 /// Ordered: `None < Receiver < Captured`.
 ///
@@ -146,7 +146,7 @@ pub enum CallContext {
 
 #[doc = crate::_tags!(exec)]
 /// Mechanism by which control transfers to the callee.
-#[doc = crate::_doc_meta!{location("code/ops", enum CallDispatch)}]
+#[doc = crate::_doc_meta!{location("code/ops/call", enum CallDispatch)}]
 ///
 /// Ordered: `Direct < Branch < Indirect < Vtable`.
 ///
@@ -176,7 +176,7 @@ pub enum CallDispatch {
 
 #[doc = crate::_tags!(exec)]
 /// Whether the behavior set is fixed or extensible.
-#[doc = crate::_doc_meta!{location("code/ops", enum CallOpenness)}]
+#[doc = crate::_doc_meta!{location("code/ops/call", enum CallOpenness)}]
 ///
 /// Not ordered.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -194,7 +194,7 @@ pub enum CallOpenness {
 
 #[doc = crate::_tags!(exec)]
 /// Where the callable representation resides.
-#[doc = crate::_doc_meta!{location("code/ops", enum CallStorage)}]
+#[doc = crate::_doc_meta!{location("code/ops/call", enum CallStorage)}]
 ///
 /// Ordered: `Static < Inline < Arena < Heap`.
 ///

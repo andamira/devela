@@ -8,8 +8,13 @@ use crate::Pin;
 
 #[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned stack-allocated reference.
-#[doc = crate::_doc_meta!{location("data/id")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/id", struct IdPin),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(IdPin = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(IdPin = 8|64; niche Option),
+}]
 /// `IdPin` generates a unique ID by pinning a value on the stack,
 /// ensuring that the ID is based on the stack memory address
 /// for the lifetime of the reference.

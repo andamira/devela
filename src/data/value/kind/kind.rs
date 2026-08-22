@@ -6,7 +6,10 @@
 // (22 variants)
 #[doc = crate::_tags!(data value)]
 /// The semantic category of a value word.
-#[doc = crate::_doc_meta!{location("data/value")}]
+#[doc = crate::_doc_meta!{
+    location("data/value", enum ValueKind),
+    test_size_of(ValueKind = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValueKind {

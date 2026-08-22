@@ -28,7 +28,7 @@ mod hashbrown_reexports {
     #[doc = crate::_tags!(data_structure hash)]
     #[doc = _hashbrown_or_std!(start)]
     /// An unordered hash map with quadratic probing and SIMD lookup.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashMap)}]
     #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashMap;
@@ -36,7 +36,7 @@ mod hashbrown_reexports {
     #[doc = crate::_tags!(data_structure hash)]
     #[doc = _hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashMapEntry)}]
     #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
@@ -44,7 +44,7 @@ mod hashbrown_reexports {
     #[doc = crate::_tags!(data_structure hash set)]
     #[doc = _hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashSet)}]
     #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashSet;
@@ -57,7 +57,7 @@ mod std_reexports {
     #[doc = crate::_tags!(data_structure hash)]
     #[doc = super::_hashbrown_or_std!(start)]
     /// An unordered hash map with quadratic probing and SIMD lookup.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashMap)}]
     #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::HashMap;
@@ -65,7 +65,7 @@ mod std_reexports {
     #[doc = crate::_tags!(data_structure hash)]
     #[doc = super::_hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashMapEntry)}]
     #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::hash_map::Entry as HashMapEntry;
@@ -73,7 +73,7 @@ mod std_reexports {
     #[doc = crate::_tags!(data_structure hash set)]
     #[doc = super::_hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", struct HashSet)}]
     #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
@@ -81,14 +81,14 @@ mod std_reexports {
 
 #[doc = crate::_tags!(data_structure hash)]
 /// The `HashMap` in the standard library.
-#[doc = crate::_doc_meta!{location("data/id")}]
+#[doc = crate::_doc_meta!{location("data/id", struct HashMapStd)}]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
 
 #[doc = crate::_tags!(data_structure hash set)]
 /// The `HashSet` in the standard library.
-#[doc = crate::_doc_meta!{location("data/id")}]
+#[doc = crate::_doc_meta!{location("data/id", struct HashSetStd)}]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
@@ -109,7 +109,7 @@ mod aliases {
 
     #[doc = crate::_tags!(data_structure hash)]
     /// A [`HashMap`] using a default Fx hasher.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", type HashMapFx)}]
     ///
     /// To create with a reserved capacity,
     /// use `HashMapFx::with_capacity_and_hasher(num, Default::default())`.
@@ -117,7 +117,7 @@ mod aliases {
 
     #[doc = crate::_tags!(data_structure hash set)]
     /// A [`HashSet`] using a default Fx hasher.
-    #[doc = crate::_doc_meta!{location("data/id")}]
+    #[doc = crate::_doc_meta!{location("data/id", type HashSetFx)}]
     ///
     /// To create with a reserved capacity,
     /// use `HashSetFx::with_capacity_and_hasher(num, Default::default())`.

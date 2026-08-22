@@ -10,9 +10,9 @@ use crate::{Display, FmtResult, Formatter, Slice};
 #[doc = crate::_doc_meta!{
     location("code/source", struct CodeLocation),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(CodeLocation = 24|192),
+    test_size_of(CodeLocation = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(CodeLocation = 40|320),
+    test_size_of(CodeLocation = 40|320; niche Option),
 }]
 /// Captures the module path, file name, line, and column of a specific
 /// invocation site. Intended as a lightweight, zero-cost provenance

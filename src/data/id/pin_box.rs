@@ -7,13 +7,17 @@ use crate::{Box, Pin};
 
 #[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned heap-allocated memory address.
-#[doc = crate::_doc_meta!{location("data/id")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/id", struct IdPinBox),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(IdPinBox = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(IdPinBox = 8|64; niche Option),
+}]
 /// `IdPinBox` generates a unique ID by pinning a value in heap memory,
 /// ensuring that the ID remains stable and unique based on the memory address.
 ///
 /// See also [`IdPin`][crate::IdPin].
-///
 #[doc = crate::_doc_vendor!("object-id")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone)]

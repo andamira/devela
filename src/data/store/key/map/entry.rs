@@ -1,11 +1,17 @@
 // devela/src/data/store/key/map/entry.rs
 //
-//!
+//! Defines [`StaticMapEntry`].
 //
 
 #[doc = crate::_tags!(data_structure)]
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
-#[doc = crate::_doc_meta!{location("data/id")}]
+#[doc = crate::_doc_meta!{
+    location("data/id", enum StaticMapEntry),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: StaticMapEntry<char> = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: StaticMapEntry<char> = 16|128; niche Option),
+}]
 ///
 /// [static map]: crate::map
 #[derive(Debug)]

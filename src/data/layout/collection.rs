@@ -26,7 +26,7 @@ type Result<T> = crate::Result<T, NotAvailable>;
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *collection* data type.
-#[doc = crate::_doc_meta!{location("data/layout")}]
+#[doc = crate::_doc_meta!{location("data/layout", trait DataCollection)}]
 ///
 /// By default returns [`NotImplemented`] for every method.
 #[rustfmt::skip] #[allow(unused_variables)]

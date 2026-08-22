@@ -12,7 +12,10 @@ lane! {
 
 #[doc = crate::_tags!(hash)]
 /// Adler-32 checksum.
-#[doc = crate::_doc_meta!{location("data/codec")}] // integrity
+#[doc = crate::_doc_meta!{
+    location("data/codec", struct Adler32),
+    test_size_of(Adler32 = 4|32),
+}]
 ///
 /// A lightweight checksum consisting of two 16-bit accumulators (`a` and `b`)
 /// updated modulo 65521, the largest prime below 2^16.

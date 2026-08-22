@@ -3,8 +3,10 @@
 buffer_ring!(
     #[doc = crate::_tags!(data_structure)]
     /// A fixed-capacity ring buffer using `u8` indices.
-    #[doc = crate::_doc_meta!{location("data/layout/buffer")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/layout/buffer", struct BufferRingU8),
+        test_size_of(__: BufferRingU8<i8, [i8; 8]> = 10|80; niche !Option),
+    }]
     /// This is the canonical small ring buffer type for queues and short
     /// circular buffers with capacities up to `255`.
     ///
@@ -23,8 +25,9 @@ buffer_ring!(
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a ring buffer type over contiguous storage backends.
-#[doc = crate::_doc_meta!{location("data/layout")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout", macro buffer_ring),
+}]
 /// The generated type represents a fixed-capacity
 /// circular logical range over contiguous storage.
 ///

@@ -148,7 +148,7 @@ set! {
     }
 }
 
-test_size_of![RunCapWindow = 1]; // 8 bits
+test_size_of![RunCapWindow = 1|8];
 #[doc = crate::_tags!(runtime)]
 /// Runtime window capabilities.
 #[doc = crate::_doc_meta!{location("run/regime")}]

@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(construction data_structure topol)]
 /// Defines a directed adjacency graph with static or allocating storage.
-#[doc = crate::_doc_meta!{location("data/topol/graph")}]
+#[doc = crate::_doc_meta!{
+    location("data/topol/graph", macro graph_adj),
+}]
 ///
 /// The graph stores connectivity only. Vertex and edge application
 /// data can be associated externally through the generated handles.

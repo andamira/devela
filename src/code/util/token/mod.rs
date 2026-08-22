@@ -1,6 +1,9 @@
 // devela/src/code/util/token/mod.rs
 //
-//! Macro token, fragment, identifier, and literal utilities
+#![doc = crate::_DOC_CODE_UTIL_TOKEN!()] // public
+#![doc = crate::_doc!(modules: crate::code::util; token)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(hr)]
 //!
 //! Token utilities operate on macro input material itself: token trees,
 //! fragments, identifiers, and literals. Construction and composition of

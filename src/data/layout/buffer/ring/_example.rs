@@ -8,8 +8,10 @@ use crate::buffer_ring;
 buffer_ring!(
     #[doc = crate::_tags!(example data_structure)]
     /// A static ring buffer over contiguous storage, made with [`buffer_ring!`].
-    #[doc = crate::_doc_meta!{location("data/layout/buffer")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/layout/buffer", struct BufferRingStaticExample),
+        test_size_of(__: BufferRingStaticExample<i8, [i8; 10]> = 12|96; niche Option),
+    }]
     /// # Methods
     ///
     /// - [common methods](#impl-BufferRingStaticExample<T,+S>)

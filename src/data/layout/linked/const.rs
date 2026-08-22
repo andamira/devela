@@ -6,9 +6,16 @@
 // [`const_list`](https://crates.io/crates/const_list/0.1.0)
 //
 
+#[cfg(target_pointer_width = "32")]
+crate::test_size_of!(test_size_of_ConstListItem: ConstListItem<i32> = 8|64; niche Option);
+#[cfg(target_pointer_width = "64")]
+crate::test_size_of!(test_size_of_ConstListItem: ConstListItem<i32> = 16|128; niche Option);
+
 #[doc = crate::_tags!(data lifetime)]
 /// A linked list node in a `ConstList`.
-#[doc = crate::_doc_meta!{location("data/layout/linked")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/linked", struct ConstListItem),
+}]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 struct ConstListItem<'a, T: 'a> {
     /// The item represented by this node.
@@ -19,8 +26,13 @@ struct ConstListItem<'a, T: 'a> {
 
 #[doc = crate::_tags!(data_structure lifetime)]
 /// An immutable, append-only, linear, functional, non-contiguous, list.
-#[doc = crate::_doc_meta!{location("data/layout/linked")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/linked", struct ConstList),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: ConstList<i32> = 8|64; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: ConstList<i32> = 16|128; niche !Option),
+}]
 /// A safe, predictable, and lightweight structure, suitable where immutability
 /// is an asset and compile-time guarantees matter more than list manipulation.
 ///
@@ -62,7 +74,6 @@ impl<'a, T: 'a> ConstList<'a, T> {
     pub const fn len(&self) -> usize {
         if let Some(value) = &self.0 { value.rest.len() + 1 } else { 0 }
     }
-
     /// Whether the list is empty.
     #[must_use]
     pub const fn is_empty(&self) -> bool {
@@ -74,7 +85,6 @@ impl<'a, T: 'a> ConstList<'a, T> {
     pub const fn push(&'a self, value: T) -> Self {
         ConstList(Some(ConstListItem { first: value, rest: self }))
     }
-
     /// Removes the first item (if any) from this list, and produces
     /// the rest of the list.
     pub const fn pop(&'a self) -> (Option<&'a T>, &'a Self) {
@@ -102,7 +112,13 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// Iterates over the contents of a [`ConstList`].
-#[doc = crate::_doc_meta!{location("data/layout/linked")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/linked", struct ConstListIter),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: ConstListIter<i32> = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: ConstListIter<i32> = 8|64; niche Option),
+}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ConstListIter<'a, T> {

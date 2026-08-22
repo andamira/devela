@@ -57,7 +57,12 @@ its own flat view of all its public children.";
     _DOC_CODE_PANIC      = "Panic hooks, unwinding, and abort strategies.";
     _DOC_CODE_RESULT     = "Generic outcome and resolution types.";
     _DOC_CODE_SOURCE     = "Source-code location, provenance, and inclusion.";
-    _DOC_CODE_UTIL       = "Cross-cutting code and macro utilities.";
+    _DOC_CODE_UTIL        = "Cross-cutting code and macro utilities.";
+    _DOC_CODE_UTIL_ASSERT = "Assertion utilities.";
+    _DOC_CODE_UTIL_CFG    = "Conditional compilation and configuration.";
+    _DOC_CODE_UTIL_DEBUG  = "Debugging and diagnostic helpers.";
+    _DOC_CODE_UTIL_SYNTH  = "Code synthesis and macro composition..";
+    _DOC_CODE_UTIL_TOKEN  = "Macro token, fragment, identifier, and literal utilities.";
 
     // 2. data (structure before interpretation)
     _DOC_DATA               = "Structural abstractions for organizing and manipulating data.";

@@ -1,6 +1,9 @@
 // devela/src/code/util/debug/mod.rs
 //
-//! Debugging and diagnostic helpers.
+#![doc = crate::_DOC_CODE_UTIL_DEBUG!()] // public
+#![doc = crate::_doc!(modules: crate::code::util; debug)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod cdbg;

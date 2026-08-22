@@ -25,43 +25,80 @@ Generated with [`digest!`][crate::digest]."
 
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental Md5 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Md5),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(Md5 = 92|736; niche !Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(Md5 = 96|768; niche !Option),
+    }]
+    #[doc = _doc_example!()]
     pub struct Md5: Md5
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-1 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha1),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(Sha1 = 96|768; niche !Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(Sha1 = 96|768; niche !Option),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha1: Sha1
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-256 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha256),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(Sha256 = 108|864; niche !Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(Sha256 = 112|896; niche !Option),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha256: Sha256
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha512),
+        test_size_of(Sha512 = 224|1792; niche !Option),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha512: Sha512
 }
 /*
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-224 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha224),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha224: Sha224
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-384 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha384),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha384: Sha384
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512/224 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha512_224),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha512_224: Sha512_224
 }
 crate::digest! {
     #[doc = crate::_tags!(example crypto hash)] #[doc = "Incremental SHA-512/256 state."]
-    #[doc = crate::_doc_meta!{location("data/codec/crypto")}] #[doc = _doc_example!()]
+    #[doc = crate::_doc_meta!{
+        location("data/codec/crypto", struct Sha512_256),
+    }]
+    #[doc = _doc_example!()]
     pub struct Sha512_256: Sha512_256
 }
 */

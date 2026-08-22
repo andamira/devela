@@ -1,6 +1,9 @@
 // devela/src/code/util/assert/mod.rs
 //
-//! Assertion utilities.
+#![doc = crate::_DOC_CODE_UTIL_ASSERT!()] // public
+#![doc = crate::_doc!(modules: crate::code::util; token)]
+#![doc = crate::_doc!(flat:"code")]
+#![doc = crate::_doc!(hr)]
 //
 
 mod _reexport_core;

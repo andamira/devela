@@ -6,8 +6,8 @@
 #[doc = crate::_tags!(codec)]
 /// A configurable radix-based binary-to-text codec.
 #[doc = crate::_doc_meta!{
-    location("data/codec"),
-    test_size_of(__: Radix<16> = 1|8),
+    location("data/codec", struct Radix),
+    test_size_of(__: Radix<16> = 1|8; niche !Option),
 }]
 /// `Radix<BASE>` groups binary-to-text codecs by numeric base, with associated
 /// constants selecting a concrete encoding configuration.

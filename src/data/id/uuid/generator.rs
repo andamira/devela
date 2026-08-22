@@ -11,8 +11,8 @@ use crate::{Uuid, UuidNonNil, UuidVersion};
 #[doc = crate::_tags!(uid state)]
 /// A stateful monotonic UUID version 7 generator.
 #[doc = crate::_doc_meta!{
-    location("data/id/uuid"),
-    test_size_of(UuidV7Generator = 16|128),
+    location("data/id/uuid", struct UuidV7Generator),
+    test_size_of(UuidV7Generator = 16|128; niche !Option),
 }]
 /// The generator retains its preceding UUID as state. Each successfully
 /// generated UUID is strictly greater than the preceding one.

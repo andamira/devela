@@ -6,7 +6,9 @@
 
 #[doc = crate::_tags!(init data_structure)]
 /// Initializes a [`[$T; $LEN]`][array] array in multiple ways.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", macro init_array),
+}]
 ///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.

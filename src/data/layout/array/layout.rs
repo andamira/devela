@@ -7,8 +7,21 @@ use crate::{ArrayCoordIter, ArrayShape, Overflow, is, unwrap, whilst};
 
 #[doc = crate::_tags!(data_structure mem)]
 /// An affine mapping from array coordinates to linear storage positions.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", struct ArrayLayout),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:ArrayLayout<1> = 12|96; niche !Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:ArrayLayout<2> = 20|160; niche !Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:ArrayLayout<3> = 28|224; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:ArrayLayout<1> = 24|192; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:ArrayLayout<2> = 40|320; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:ArrayLayout<3> = 56|448; niche !Option),
+}]
 /// A physical storage position is calculated as:
 ///
 /// ```text

@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction data_structure topol)]
 /// Defines a compact record of named optional links.
-#[doc = crate::_doc_meta!{location("data/topol/link")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/topol/link", macro link),
+}]
 /// Each declared field represents an independent optional link to one target.
 ///
 /// `link!` only represents direct links. It does not own linked values,

@@ -8,7 +8,10 @@ use crate::ValueKind;
 // (16 variants)
 #[doc = crate::_tags!(data value)]
 /// A 4-bit compact value category.
-#[doc = crate::_doc_meta!{location("data/value")}]
+#[doc = crate::_doc_meta!{
+    location("data/value", enum ValueKind4),
+    test_size_of(ValueKind4 = 1|8; niche Option),
+}]
 ///
 /// It mirrors the compact universal band of [`ValueKind`].
 #[repr(u8)]

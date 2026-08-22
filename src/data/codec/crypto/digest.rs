@@ -7,7 +7,10 @@ use crate::{is, whilst};
 
 #[doc = crate::_tags!(crypto hash)]
 /// A fixed-size message digest.
-#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
+#[doc = crate::_doc_meta!{
+    location("data/codec/crypto", struct Digest),
+    test_size_of(__: Digest<32> = 32|256; niche !Option)
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[must_use]
 pub struct Digest<const N: usize>(pub [u8; N]);
