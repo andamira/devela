@@ -63,13 +63,16 @@ See also
 - 1.99: ` `[abi_custom](https://github.com/rust-lang/rust/pull/158504)
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
+- 1.99: `a`[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
 - 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
 - 1.99: `c`[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
 - 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
+- 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
-- 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
+- 1.99: ` `[PinSafePointer trait](https://github.com/rust-lang/rust/pull/156935)
+- 1.99: ` `[rustfmt: Format cfg_select!](https://github.com/rust-lang/rust/pull/154202)
 - 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 
 
@@ -78,6 +81,7 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
 
+- 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
 
 
@@ -98,7 +102,6 @@ See also
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
 - 1.??: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
-- 1.??: `c`[book::toggle](https://github.com/rust-lang/rust/pull/160299)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `c`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)

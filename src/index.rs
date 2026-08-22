@@ -44,7 +44,7 @@
 //
 // `nightly_stable` includes:
 // ----------------------------
-// `nightly_stable_1_97`: core, alloc, std…
+// `nightly_stable_1_97`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_97,
     feature(
@@ -57,7 +57,7 @@
 // #![cfg_attr(all(nightly_stable_1_97, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_97, feature = "std"), feature())]
 // ----------------------------
-// `nightly_stable_1_98`: core, alloc, std…
+// `nightly_stable_1_98`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_98,
     feature(
@@ -76,7 +76,7 @@
 )]
 // #![cfg_attr(all(nightly_stable_1_98, feature = "std"), feature())]
 // ----------------------------
-// `nightly_stable_1_99`: core, alloc, std…
+// `nightly_stable_1_99`: core, alloc, std:
 #![cfg_attr(nightly_stable_1_99, feature(c_variadic, c_variadic_naked_functions, layout_for_ptr))]
 #![cfg_attr(
     all(nightly_stable_1_99, feature = "alloc"),
@@ -87,7 +87,17 @@
     feature(fs_set_times, local_key_cell_update,)
 )]
 // ----------------------------
-// `nightly_stable_later`: 1.?? core, alloc, std, not(miri)…
+// `nightly_stable_1_100`: core, alloc, std:
+#![cfg_attr(nightly_stable_1_100, feature(bool_toggle,))]
+#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature(,))]
+#![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature(,))]
+// ----------------------------
+// `nightly_stable_1_101`: core, alloc, std:
+// #![cfg_attr(nightly_stable_1_101, feature(,))]
+// #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(,))]
+// #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature(,))]
+// ----------------------------
+// `nightly_stable_later`: 1.?? core, alloc, std, not(miri):
 #![cfg_attr(
     nightly_stable_later,
     feature(
