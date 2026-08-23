@@ -146,6 +146,15 @@ macro_rules! __graph_csr_impl_array {
                 };
                 Some((start, end))
             }
+            /// Returns the packed target vertices of the outgoing edges of `vertex`.
+            ///
+            /// Empty rows return an empty slice.
+            /// Returns `None` if `vertex` lies outside the graph domain.
+            #[must_use]
+            $vis const fn out_targets(&self, vertex: $Vertex) -> Option<&[$Vertex]> {
+                let (start, end) = $crate::unwrap![some? self.out_edge_bounds(vertex)];
+                Some($crate::Slice::range(&self.targets, start, end))
+            }
             /// Returns the target vertex of `edge`.
             #[must_use]
             $vvis const fn edge_target(&self, edge: $Edge) -> Option<$Vertex> {
@@ -289,7 +298,7 @@ macro_rules! __graph_csr_impl_array {
             }
             /// Iterates over target vertices of outgoing edges of `vertex`.
             $vis fn neighbors(&self, vertex: $Vertex) -> impl Iterator<Item = $Vertex> + '_ {
-                self.out_edges(vertex).map(|(_, target)| target)
+                self.out_targets(vertex).unwrap_or(&[]).iter().copied()
             }
 
             /* private */

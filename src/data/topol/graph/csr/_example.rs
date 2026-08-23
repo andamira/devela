@@ -32,6 +32,7 @@ graph_csr! {
     ///   [`contains_edge`](#method.contains_edge).
     /// - Adjacency:
     ///   [`out_edge_bounds`](#method.out_edge_bounds),
+    ///   [`out_targets`](#method.neighbors),
     ///   [`edge_target`](#method.edge_target).
     /// - Queries:
     ///   [`has_edge`](#method.has_edge),
@@ -97,6 +98,7 @@ graph_csr! {
     ///   [`contains_edge`](#method.contains_edge).
     /// - Adjacency:
     ///   [`out_edge_bounds`](#method.out_edge_bounds),
+    ///   [`out_targets`](#method.neighbors),
     ///   [`edge_target`](#method.edge_target).
     /// - Queries:
     ///   [`has_edge`](#method.has_edge),
