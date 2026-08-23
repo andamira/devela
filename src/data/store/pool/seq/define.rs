@@ -4,8 +4,9 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a generational pool of variable-length contiguous sequences.
-#[doc = crate::_doc_meta!{location("data/store/pool")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/store/pool", macro pool_seq),
+}]
 /// Each inserted sequence receives a generational handle whose identity is
 /// independent of the sequence's physical cell span. A sequence may therefore
 /// relocate while its handle remains valid.

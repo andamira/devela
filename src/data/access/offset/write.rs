@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(data)]
 /// Write elements into a buffer at an explicit offset.
-#[doc = crate::_doc_meta!{location("data/access")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access", macro write_at),
+}]
 /// Writes individual values, sequences, and UTF-8 scalar bytes using direct indexing.
 /// The buffer expression is evaluated once before the write sequence is expanded.
 ///

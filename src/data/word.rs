@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(data word)]
 /// A fixed-width copyable item with an explicit raw representation.
-#[doc = crate::_doc_meta!{location("data")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data", trait Word),
+}]
 /// It is also implemented with [`word!`].
 pub trait Word: Copy + Eq {
     /// The physical representation type.
@@ -21,8 +22,9 @@ pub trait Word: Copy + Eq {
 
 #[doc = crate::_tags!(data word construction)]
 /// Defines a transparent word type over a raw representation.
-#[doc = crate::_doc_meta!{location("data")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data", macro word),
+}]
 /// Implements both the [`Word`] trait and its methods directly as const-fns.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

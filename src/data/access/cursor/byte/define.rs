@@ -1,12 +1,13 @@
 // devela/src/data/access/cursor/byte/define.rs
 //
-//! Defines [`ByteCursor`], and [`ByteCursorError`].
+//! Defines [`ByteCursor`].
 //
 
 #[doc = crate::_tags!(data parser)]
 /// A byte-position cursor over storage `S`.
-#[doc = crate::_doc_meta!{location("data/access/cursor")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access/cursor", struct ByteCursor),
+}]
 /// The storage determines the available operations:
 /// - `ByteCursor<&[u8]>` provides read methods.
 /// - `ByteCursor<&mut [u8]>` provides write methods.

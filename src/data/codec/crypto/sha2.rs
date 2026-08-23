@@ -3,7 +3,7 @@
 //! Defines SHA2 secure hash algorithms.
 //
 
-#[doc = crate::_tags!(crypto hash)]
+#[doc = crate::_tags!(internal crypto hash)]
 /// Implements SHA-2 digest methods for a concrete hash type.
 ///
 /// Supports the SHA-2 32-bit-word core used by SHA-224 and SHA-256, and the

@@ -9,9 +9,8 @@
 
 // use crate::{__crypto_impl_hmac, _impl_init, CryptoError, Digest, Slice, cmp, is, unwrap, whilst};
 
-#[doc = crate::_tags!(crypto hash)]
+#[doc = crate::_tags!(internal crypto hash)]
 /// Implements MD5 digest methods for a concrete hash type.
-#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
 ///
 /// MD5 is provided for compatibility with existing formats and protocols.
 ///

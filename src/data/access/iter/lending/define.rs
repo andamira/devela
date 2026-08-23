@@ -11,7 +11,9 @@ use crate::is;
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator using a generic associated lifetime.
-#[doc = crate::_doc_meta!{location("data/access/iter")}]
+#[doc = crate::_doc_meta!{
+    location("data/access/iter", trait IteratorLending),
+}]
 ///
 /// A lending iterator yields items borrowed from its own internal state.
 /// Each call to [`next`][Self::next] creates a temporary borrow of `self`
@@ -245,8 +247,9 @@ pub trait IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can yield items from the back.
-#[doc = crate::_doc_meta!{location("data/access/iter")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access/iter", trait IteratorLendingDoubleEnded),
+}]
 /// This is the borrowing analogue of : [`IteratorDoubleEnded`][crate::IteratorDoubleEnded].
 pub trait IteratorLendingDoubleEnded: IteratorLending {
     /// Returns the next item from the back of the iterator.
@@ -287,8 +290,9 @@ pub trait IteratorLendingDoubleEnded: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator with a known remaining length.
-#[doc = crate::_doc_meta!{location("data/access/iter")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access/iter", trait IteratorLendingExactSize),
+}]
 /// This is the borrowing analogue of [`IteratorExactSize`][crate::IteratorExactSize].
 ///
 /// # Contract
@@ -321,8 +325,9 @@ pub trait IteratorLendingExactSize: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can inspect the next item without advancing.
-#[doc = crate::_doc_meta!{location("data/access/iter")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access/iter", trait IteratorLendingPeek),
+}]
 /// The returned reference is tied to the temporary mutable borrow of `self`
 /// created by this call. Implementations must not advance the iteration state
 /// (i.e., the next call to [`IteratorLending::next`] yields the same item, if any).
@@ -388,8 +393,9 @@ pub trait IteratorLendingPeek: IteratorLending {
 
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator that can inspect the next item from the back, without advancing.
-#[doc = crate::_doc_meta!{location("data/access/iter")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access/iter", trait IteratorLendingPeekDoubleEnded),
+}]
 /// The returned reference is tied to the temporary mutable borrow of `self`
 /// created by this call. Implementations must not modify the iteration state
 /// (i.e., the next call to [`IteratorLendingDoubleEnded::next_back`]

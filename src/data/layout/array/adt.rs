@@ -11,8 +11,9 @@ use crate::{DataCollection, IndexOutOfBounds};
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *array* data type.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", trait DataArray),
+}]
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>
 pub trait DataArray: DataCollection {
     /// Returns an immutable reference to the element at the specified `index`.

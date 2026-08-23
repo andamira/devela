@@ -8,7 +8,7 @@ use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait};
 #[doc = crate::_tags!(uid niche)]
 /// A UUID excluding [`Uuid::NIL`] to provide a memory niche.
 #[doc = crate::_doc_meta!{
-    location("data/id/uuid"),
+    location("data/id/uuid", struct UuidNonNil),
     test_size_of(UuidNonNil = 16|128; niche Option),
 }]
 #[must_use]

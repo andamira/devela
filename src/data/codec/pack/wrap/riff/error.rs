@@ -8,7 +8,10 @@ use crate::PcmWavError;
 
 #[doc = crate::_tags!(data codec error)]
 /// RIFF parsing error.
-#[doc = crate::_doc_meta!{location("data/codec/pack")}]
+#[doc = crate::_doc_meta!{
+    location("data/codec/pack", enum RiffError),
+    test_size_of(RiffError = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum RiffError {
     /// The chunk header is incomplete.

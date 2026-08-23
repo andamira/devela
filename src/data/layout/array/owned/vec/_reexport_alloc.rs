@@ -2,7 +2,8 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: alloc::vec, location: "data/layout/array", tag: _tags!(data_structure),
+_reexport! { rust: alloc::vec,
+    location: "data/layout/array" => struct Vec, tag: _tags!(data_structure),
     doc: "A contiguous growable array.",
     Vec
 }
@@ -12,8 +13,9 @@ _reexport! { rust: alloc::vec, location: "data/layout/array", tag: _tags!(data_s
 #[doc = _tags!(construction data_structure)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
 /// Creates a [`Vec`] containing the arguments.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", macro vec_),
+}]
 #[doc = "*Re-exported from [`alloc::vec`][macro@alloc::vec]*."]
 #[doc = "\n\n---"]
 ///

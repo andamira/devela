@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a byte arena with static or allocating storage and compact span handles.
-#[doc = crate::_doc_meta!{location("data/store/arena")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/store/arena", macro arena_bytes),
+}]
 /// The generated arena stores bytes in an append-only initialized prefix.
 /// Handles identify byte spans within that prefix.
 ///

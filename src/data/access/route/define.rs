@@ -6,7 +6,11 @@
 #[doc = crate::_tags!(data)]
 /// A borrowed sequence of route segments.
 #[doc = crate::_doc_meta! {
-    location("data/access/route"),
+    location("data/access/route", struct Route),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(Route = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(Route = 24|192; niche Option),
 }]
 /// A route is structural reachability. It does not resolve, canonicalize,
 /// access storage, perform I/O, or encode platform-specific path rules.
@@ -62,7 +66,8 @@ impl<'a> Route<'a> {
 #[doc = crate::_tags!(data)]
 /// The starting relation of a [`Route`].
 #[doc = crate::_doc_meta! {
-    location("data/access/route")
+    location("data/access/route", enum RouteAnchor),
+    test_size_of(RouteAnchor = 1|8; niche Option),
 }]
 /// This is not a filesystem root, URL origin, process directory, or storage
 /// location. It only describes how the first segment relates to a resolver
@@ -84,7 +89,11 @@ pub enum RouteAnchor {
 #[doc = crate::_tags!(data)]
 /// A borrowed route segment name.
 #[doc = crate::_doc_meta! {
-    location("data/access/route")
+    location("data/access/route", enum RouteName),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(RouteName = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(RouteName = 24|192; niche Option),
 }]
 /// UTF-8 names are the ergonomic path for commands, URLs, assets, and most
 /// user-facing routes. Byte names preserve non-UTF-8 segment data for adapters
@@ -123,7 +132,11 @@ impl<'a> RouteName<'a> {
 #[doc = crate::_tags!(data)]
 /// One segment in a [`Route`].
 #[doc = crate::_doc_meta! {
-    location("data/access/route")
+    location("data/access/route", enum RouteSeg),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(RouteSeg = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(RouteSeg = 24|192; niche Option),
 }]
 /// Special segments are preserved structurally. Normalization policy belongs
 /// above this type, because filesystems, URLs, commands, and virtual routes do

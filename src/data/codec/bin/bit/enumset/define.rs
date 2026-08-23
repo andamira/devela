@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction member set bit)]
 /// Defines an enum and an associated type set of its variants.
-#[doc = crate::_doc_meta!{location("data/codec/bin")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/codec/bin", macro enumset),
+}]
 #[doc = include_str!["./_docs_enumset.md"]]
 #[doc(hidden)]
 #[macro_export]

@@ -8,7 +8,10 @@ use crate::Uuid;
 
 #[doc = crate::_tags!(uid)]
 /// The layout variant of a [`Uuid`].
-#[doc = crate::_doc_meta!{location("data/id/uuid")}]
+#[doc = crate::_doc_meta!{
+    location("data/id/uuid", enum UuidVariant),
+    test_size_of(UuidVariant = 1|8; niche Option),
+}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum UuidVariant {
@@ -27,7 +30,10 @@ pub enum UuidVariant {
 
 #[doc = crate::_tags!(uid)]
 /// A recognized IETF UUID version.
-#[doc = crate::_doc_meta!{location("data/id/uuid")}]
+#[doc = crate::_doc_meta!{
+    location("data/id/uuid", enum UuidVersion),
+    test_size_of(UuidVersion = 1|8; niche Option),
+}]
 #[non_exhaustive]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

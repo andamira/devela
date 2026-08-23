@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(data)]
 /// Read values from a buffer at an explicit offset.
-#[doc = crate::_doc_meta!{location("data/access")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/access", macro read_at),
+}]
 /// Reads fixed-width arrays or gathers values into a destination sequence using
 /// direct indexing. The source buffer expression is evaluated once before the
 /// read operation is expanded.

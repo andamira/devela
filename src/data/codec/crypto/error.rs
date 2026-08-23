@@ -7,7 +7,10 @@ use crate::{_impl_init, impl_trait};
 
 #[doc = crate::_tags!(crypto error)]
 /// An error from a cryptographic codec or primitive.
-#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
+#[doc = crate::_doc_meta!{
+    location("data/codec/crypto", enum CryptoError),
+    test_size_of(CryptoError = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub enum CryptoError {

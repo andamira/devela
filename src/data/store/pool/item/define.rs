@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines an owning generational pool with static or allocating storage.
-#[doc = crate::_doc_meta!{location("data/store/pool")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/store/pool", macro pool),
+}]
 /// The generated pool stores values in indexed slots and accesses them
 /// through generated handles containing a slot index and generation.
 ///

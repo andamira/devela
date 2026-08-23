@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// Defines a compact handle for a contiguous span.
-#[doc = crate::_doc_meta!{location("data/id/handle")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/id/handle", macro handle_span),
+}]
 /// The generated handle stores an offset and a length
 /// using the configured numeric representation.
 ///

@@ -16,8 +16,9 @@ use ::core::{marker, ptr};
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr>
 /// value with pointer alignment.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", type DstValueUsize),
+}]
 /// # Examples
 /// ```
 /// # use devela::data::DstValueUsize;
@@ -28,8 +29,9 @@ pub type DstValueUsize<DST /*: ?Sized*/, const CAP: usize> = DstValue<DST, DstAr
 
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr> value.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", struct DstValue),
+}]
 /// `DST` is the unsized type contained.
 /// `BUF` is the buffer used to hold the unsized type (both data and metadata).
 ///

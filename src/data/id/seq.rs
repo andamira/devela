@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// A macro for constructing a unique sequential identifier generator.
-#[doc = crate::_doc_meta!{location("data/id")}]
+#[doc = crate::_doc_meta!{
+    location("data/id", macro id_seq),
+}]
 ///
 /// The underlying representation must implement [`PrimUint`].
 ///

@@ -3,7 +3,7 @@
 //! Defines legacy SHA1 secure hash algorithm.
 //
 
-#[doc = crate::_tags!(crypto hash)]
+#[doc = crate::_tags!(internal crypto hash)]
 /// Implements SHA-1 digest methods for a concrete hash type.
 ///
 /// SHA-1 is provided for compatibility with existing formats and protocols.

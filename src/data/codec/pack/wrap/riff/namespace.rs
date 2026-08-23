@@ -7,8 +7,10 @@ use crate::{BinTag4, RiffChunk, RiffChunkIter, RiffError, is, slice, unwrap, wri
 
 #[doc = crate::_tags!(data codec)]
 /// RIFF tagged binary container operations.
-#[doc = crate::_doc_meta!{location("data/codec/pack")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/codec/pack", struct Riff),
+    test_size_of(Riff = 0),
+}]
 /// RIFF stores data as a sequence of tagged chunks.
 /// Each chunk has a four-byte identifier, a little-endian payload size,
 /// and a payload followed by one optional pad byte when the payload size is odd.

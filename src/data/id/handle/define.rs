@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// Defines a compact handle from arbitrary numeric components.
-#[doc = crate::_doc_meta!{location("data/id/handle")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/id/handle", macro handle),
+}]
 /// Each declared component is stored through [`MaybeNiche`], allowing primitive
 /// and niche-aware integer representations to share the same generated API.
 /// Component names have no built-in semantics: the receiving store or resolver

@@ -75,8 +75,9 @@ mod impls_traits {
 
 #[doc = crate::_tags!(crypto hash construction)]
 /// Defines a selected cryptographic message-digest state type.
-#[doc = crate::_doc_meta!{location("data/codec/crypto")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/codec/crypto", macro digest),
+}]
 /// Generates a concrete allocation-free, const-friendly digest type from a
 /// whitelisted algorithm selector.
 ///

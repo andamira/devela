@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction uid)]
 /// Defines a compact generational handle.
-#[doc = crate::_doc_meta!{location("data/id/handle")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/id/handle", macro handle_gen),
+}]
 /// The generated handle stores a slot index and generation.
 ///
 /// Each component uses `Prim` directly or `Prim + Repr` to select a

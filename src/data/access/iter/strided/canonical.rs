@@ -6,7 +6,13 @@
 crate::iter_strided! {
     #[doc = crate::_tags!(iterator)]
     /// Iterates over a slice using an affine index progression.
-    #[doc = crate::_doc_meta!{location("data/access/iter")}]
+    #[doc = crate::_doc_meta!{
+        location("data/access/iter", struct StridedIter),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(__: StridedIter<u32> = 20|160; niche Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(__: StridedIter<u32> = 40|320; niche Option),
+    }]
     /// This is the immutable counterpart of [`StridedIterMut`].
     ///
     /// Elements are accessed according to:
@@ -36,8 +42,13 @@ crate::iter_strided! {
 crate::iter_strided! {
     #[doc = crate::_tags!(iterator)]
     /// Iterates mutably over a slice using an affine index progression.
-    #[doc = crate::_doc_meta!{location("data/access/iter")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/access/iter", struct StridedIterMut),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(__: StridedIterMut<u32> = 20|160; niche Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(__: StridedIterMut<u32> = 32|256; niche Option),
+    }]
     /// This is the mutable counterpart of [`StridedIter`].
     ///
     /// Elements follow:

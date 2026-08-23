@@ -8,7 +8,7 @@ use crate::{IteratorExactSize, IteratorFused, Mem, is};
 #[doc = crate::_tags!(iterator data_structure)]
 /// An iterator over values in occupied item-pool slots.
 #[doc = crate::_doc_meta!{
-    location("data/store/pool"),
+    location("data/store/pool", struct PoolIter),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: PoolIter<&[Option<char>]> = 12|96),
     #[cfg(target_pointer_width = "64")]

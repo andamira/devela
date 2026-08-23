@@ -4,8 +4,9 @@ use crate::{ConstInit, MaybeUninit, MemPod};
 
 #[doc = crate::_tags!(data_structure)]
 /// Represents the backing buffer for storing dynamically sized types.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", trait DstBuf),
+}]
 /// # Safety
 /// Must conform to the following rules:
 /// - The `as_ref`/`as_mut` methods must return pointers to the same data.
@@ -100,8 +101,9 @@ unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
 #[doc = crate::_tags!(data_structure)]
 /// An inline fixed-capacity buffer for storing
 /// <abbr title="Dynamically sized type">DST</abbr>s.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", struct DstArray),
+}]
 /// `CAP` is measured in `T`-sized storage words.
 /// The size and alignment of `T` determine which values can be stored.
 #[repr(transparent)]
@@ -170,13 +172,17 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {
 #[doc = crate::_tags!(data_structure)]
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", type DstArrayUsize),
+}]
 pub type DstArrayUsize<const CAP: usize> = DstArray<usize, CAP>;
 
 #[doc = crate::_tags!(data_structure)]
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
-#[doc = crate::_doc_meta!{location("data/layout/dst")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/dst", type DstVecUsize),
+}]
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 pub type DstVecUsize = crate::Vec<MaybeUninit<usize>>;

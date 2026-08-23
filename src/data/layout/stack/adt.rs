@@ -9,7 +9,9 @@ use crate::{DataCollection, NotEnoughElements, NotEnoughSpace};
 
 #[doc = crate::_tags!(data_structure)]
 /// An abstract *stack* data type.
-#[doc = crate::_doc_meta!{location("data/layout/stack")}]
+#[doc = crate::_doc_meta!{
+    location("data/layout/stack", trait DataStack),
+}]
 pub trait DataStack: DataCollection {
     /// Remove an element from the (back of the) stack.
     fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element, NotEnoughElements>;

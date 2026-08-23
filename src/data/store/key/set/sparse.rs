@@ -11,7 +11,9 @@ pub(crate) type SparseSetResult<T> = Result<T, SparseSetError>;
 // RETHINK
 #[doc = crate::_tags!(data_structure error set)]
 /// Sparse-set operation error.
-#[doc = crate::_doc_meta!{location("data/store/key")}]
+#[doc = crate::_doc_meta!{
+    location("data/store/key", enum SparseSetError),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum SparseSetError {
     /// The value is outside the sparse universe.
@@ -29,8 +31,9 @@ pub enum SparseSetError {
 
 #[doc = crate::_tags!(data_structure set)]
 /// A sparse integer set with constant-time insertion, removal, lookup and clearing.
-#[doc = crate::_doc_meta!{location("data/store/key")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/store/key", struct SparseSetArray),
+}]
 /// Values are `usize`s in the range `0..SPARSE`.
 ///
 /// `DENSE` is the maximum number of stored values.
