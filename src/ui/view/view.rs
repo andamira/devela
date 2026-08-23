@@ -9,8 +9,8 @@ crate::set! {
     #[doc = crate::_tags!(ui set)]
     /// Visual presentation flags of a UI view.
     #[doc = crate::_doc_meta! {
-        location("ui/view"),
-        test_size_of(UiViewFlags = 1),
+        location("ui/view", struct UiViewFlags),
+        test_size_of(UiViewFlags = 1|8; niche !Option),
     }]
     #[must_use]
     #[repr(transparent)]
@@ -29,13 +29,12 @@ crate::set! {
 #[doc = crate::_tags!(ui)]
 /// Frame-local visual record for a UI identity.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
+    location("ui/view", struct UiView),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(UiView = 28|224),
+    test_size_of(UiView = 28|224; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(UiView = 32|256),
+    test_size_of(UiView = 32|256; niche Option),
 }]
-///
 /// Connects a resolved UI identity with the visual region and ordering layer
 /// used for presentation.
 #[must_use]

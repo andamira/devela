@@ -9,8 +9,8 @@ use TextSegmentKind as Kind;
 #[doc = crate::_tags!(text layout)]
 /// Segment behavior during text wrapping.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextSegmentKind = 1|8),
+    location("text/layout", enum TextSegmentKind),
+    test_size_of(TextSegmentKind = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextSegmentKind {
@@ -51,8 +51,8 @@ impl TextSegmentKind {
 #[doc = crate::_tags!(text layout)]
 /// A semantic text segment used for wrapping.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextSegment = 16|128),
+    location("text/layout", struct TextSegment),
+    test_size_of(TextSegment = 16|128; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct TextSegment {

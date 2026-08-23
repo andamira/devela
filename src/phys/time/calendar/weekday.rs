@@ -9,7 +9,10 @@ use Weekday::*;
 
 #[doc = crate::_tags!(time)]
 /// The days of the week.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", enum Weekday),
+    test_size_of(Weekday = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Weekday {

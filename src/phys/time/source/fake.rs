@@ -9,8 +9,10 @@ use crate::{AtomicOrdering, AtomicU64, TimeScale, TimeSourceCfg};
 
 #[doc = crate::_tags!(time fake)]
 /// A test-friendly time source that allows manual control.
-#[doc = crate::_doc_meta!{location("phys/time/source")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time/source", struct TimeFake),
+    test_size_of(TimeFake = 24|192; niche Option),
+}]
 /// `TimeFake` provides a controlled, adjustable timestamp source for tests.
 /// This enables predictable behavior when testing time-dependent systems.
 ///
@@ -102,8 +104,13 @@ impl TimeFake {
 
 #[doc = crate::_tags!(time fake)]
 /// A borrowed configuration handle selecting a specific `TimeFake` timeline.
-#[doc = crate::_doc_meta!{location("phys/time/source")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time/source", struct TimeFakeRef),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(TimeFakeRef = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(TimeFakeRef = 8|64; niche Option),
+}]
 /// This type does not own time state; it exists solely to satisfy
 /// [`TimeSourceCfg`] and model timeline selection explicitly.
 ///

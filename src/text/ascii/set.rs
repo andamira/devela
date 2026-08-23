@@ -8,8 +8,10 @@ use crate::{Ascii, CharAscii, char7, is};
 crate::set! {
     #[doc = crate::_tags!(text set)]
     /// A finite set of ASCII characters.
-    #[doc = crate::_doc_meta!{location("text")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("text/ascii", struct AsciiSet),
+        test_size_of(AsciiSet = 16|128; niche !Option),
+    }]
     /// Represents membership over the 128-byte ASCII space, one bit per byte.
     #[must_use]
     pub struct AsciiSet(u128) {

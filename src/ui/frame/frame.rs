@@ -8,7 +8,7 @@ use crate::{UiId, UiKey, UiScope};
 #[doc = crate::_tags!(ui)]
 /// Immediate UI frame context.
 #[doc = crate::_doc_meta!{
-    location("ui/frame"),
+    location("ui/frame", struct UiFrame),
     #[cfg(pointer_target_width = "32")]
     test_size_of(UiFrame = 12|96; niche Option),
     #[cfg(pointer_target_width = "64")]
@@ -59,7 +59,7 @@ impl UiFrame {
 /// Phase of UI frame processing.
 #[must_use]
 #[doc = crate::_doc_meta!{
-    location("ui/frame"),
+    location("ui/frame", enum UiPhase),
     test_size_of(UiPhase = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

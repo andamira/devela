@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(ui)]
 /// Human-facing role of a UI identity.
 #[doc = crate::_doc_meta! {
-    location("ui/semantic"),
+    location("ui/semantic", enum UiRole),
     test_size_of(UiRole = 1|8; niche Option),
 }]
 #[must_use]

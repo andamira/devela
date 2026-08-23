@@ -12,10 +12,9 @@ use crate::{
 #[doc = crate::_tags!(event time)]
 /// Selects how an [`EventTimestamp`] should be formatted.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventTimestampMode),
     test_size_of(EventTimestampMode = 1|8; niche Option),
 }]
-///
 /// This controls whether the timestamp is shown as integer milliseconds,
 /// floating-point milliseconds, both representations, or chosen automatically
 /// using bit-pattern heuristics.
@@ -47,7 +46,7 @@ impl DebugExt for EventTimestamp {
 #[doc = crate::_tags!(event time)]
 /// The time at which the event occurs, stored as single-precision milliseconds.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct EventTimestamp),
     test_size_of(EventTimestamp = 4|32; niche Option),
 }]
 /// Backend dependent and relative to an arbitrary origin.

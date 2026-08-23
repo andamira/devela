@@ -7,7 +7,7 @@ crate::enumset! {
     #[doc = crate::_tags!(runtime event)]
     /// External control notice directed at an application.
     #[doc = crate::_doc_meta!{
-        location("run/app"),
+        location("run/app", enum AppControl),
         test_size_of(AppControl = 1|8; niche Option),
 
     }]
@@ -16,8 +16,8 @@ crate::enumset! {
         #[doc = crate::_tags!(runtime signal set)]
         /// A set of application control notices.
         #[doc = crate::_doc_meta!{
-            location("run/app"),
-            test_size_of(AppControlSet = 2|16),
+            location("run/app", struct AppControlSet),
+            test_size_of(AppControlSet = 2|16; niche !Option),
         }]
         pub AppControlSet: u16
     ) {

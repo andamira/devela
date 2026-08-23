@@ -10,8 +10,10 @@ use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit, TextelWidthMod
 
 #[doc = crate::_tags!(text layout)]
 /// Boundary policy for deriving layout symbols from text.
-#[doc = crate::_doc_meta!{location("text/layout")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/layout", enum TextBreakMode),
+    test_size_of(TextBreakMode = 1|8; niche Option)
+}]
 /// This controls where text may become separate layout symbols before
 /// inline layout negotiation happens.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -34,8 +36,10 @@ _impl_init![Self::Whitespace => TextBreakMode];
 
 #[doc = crate::_tags!(text layout)]
 /// Elision policy for derived layout symbols.
-#[doc = crate::_doc_meta!{location("text/layout")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/layout", enum TextElideMode),
+    test_size_of(TextElideMode = 1|8; niche Option)
+}]
 /// This controls which derived symbols may disappear during layout negotiation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextElideMode {
@@ -51,10 +55,9 @@ _impl_init![Self::None => TextElideMode];
 #[doc = crate::_tags!(text layout)]
 /// Spatial cohesion rules for a text symbol during layout.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextCohesion = 1|8),
+    location("text/layout", enum TextCohesion),
+    test_size_of(TextCohesion = 1|8; niche Option),
 }]
-///
 /// This enum defines what a layout engine is allowed to do with a symbol
 /// when negotiating limited inline space. It expresses layout permissions only;
 /// it does not encode meaning, style, or language semantics.
@@ -83,10 +86,9 @@ _impl_init![Self::Atomic => TextCohesion];
 #[doc = crate::_tags!(text layout quant)]
 /// Mapping between a contiguous text range and its consumed inline space.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextLayoutSpan = 12|96),
+    location("text/layout", struct TextLayoutSpan),
+    test_size_of(TextLayoutSpan = 12|96; niche !Option),
 }]
-///
 /// A `TextLayoutSpan` records that a contiguous range of symbols contributed
 /// a given amount of inline space during a layout step.
 ///
@@ -131,10 +133,9 @@ impl TextLayoutSpan {
 #[doc = crate::_tags!(text layout io)]
 /// Layout participation record for a single text symbol.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextSymbol = 8|64),
+    location("text/layout", struct TextSymbol),
+    test_size_of(TextSymbol = 8|64; niche Option),
 }]
-///
 /// A `TextSymbol` describes how a unit of text participates in layout:
 /// how much inline space it consumes and what spatial constraints apply under limited space.
 ///
@@ -158,10 +159,9 @@ impl TextSymbol {
 #[doc = crate::_tags!(text layout)]
 /// Policy bundle for deriving layout symbols from text.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextSymbolConfig = 3|24),
+    location("text/layout", struct TextSymbolConfig),
+    test_size_of(TextSymbolConfig = 3|24; niche Option),
 }]
-///
 /// `TextSymbolConfig` describes how text is converted into layout symbols:
 /// where boundaries may occur, how widths are measured, and which symbols
 /// may be omitted during layout negotiation.

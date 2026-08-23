@@ -10,8 +10,10 @@ use crate::{ConstInit, Sign};
 
 #[doc = crate::_tags!(fmt num)]
 /// Configuration for numeric formatting.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtNumConf),
+    test_size_of(FmtNumConf = 6|48; niche Option),
+}]
 /// This configuration applies uniformly to integers and floating-point numbers.
 /// Fields that do not apply to a given number type are ignored.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -100,7 +102,10 @@ impl FmtNumConf {
 
 #[doc = crate::_tags!(fmt num)]
 /// Controls how the sign of a number is formatted.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtNumSign),
+    test_size_of(FmtNumSign = 1|8; niche Option),
+}]
 ///
 /// This enum specifies whether a sign glyph (`'-'` or `'+'`) is emitted,
 /// independently of the numeric magnitude.

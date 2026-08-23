@@ -6,8 +6,9 @@
 // REWORK: Replace the current namespace-based API with a `num_fmt!` macro.
 #[doc = crate::_tags!(fmt num rework)]
 /// Const number formatter.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtNum),
+}]
 /// Provides a lightweight, allocation-free interface
 /// for writing numeric values into an existing byte buffer.
 ///

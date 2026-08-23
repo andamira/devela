@@ -16,8 +16,13 @@ mod _test;
 
 #[doc = crate::_tags!(time)]
 /// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.
-#[doc = crate::_doc_meta!{location("phys/time")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time", struct TimeDelta),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(TimeDelta = 12|96; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(TimeDelta = 16|128; niche !Option),
+}]
 /// Supports negative values, allowing representation of both past and future offsets.
 #[doc = crate::_doc_vendor!("jiff")]
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]

@@ -9,8 +9,13 @@ use crate::{InvalidText, MismatchedCapacity, NotEnoughSpace};
 
 #[doc = crate::_tags!(string)]
 /// A borrowed UTF-8 string buffer over caller-provided bytes.
-#[doc = crate::_doc_meta!{location("text/str")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/str", struct StrBuf),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(StrBuf = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(StrBuf = 24|192; niche Option),
+}]
 /// It stores a valid UTF-8 prefix inside a mutable byte slice,
 /// leaving the remaining bytes as spare capacity.
 ///

@@ -11,11 +11,11 @@ use crate::{UiAction, UiEntry, UiKey, UiRole, UiText};
 #[doc = crate::_tags!(ui interaction)]
 /// Activatable command control.
 #[doc = crate::_doc_meta! {
-    location("ui/widget"),
+    location("ui/widget", struct UiButton),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(UiButton = 24|192),
+    test_size_of(UiButton = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(UiButton = 40|320),
+    test_size_of(UiButton = 40|320; niche Option),
 }]
 /// Carries the stable key and human text
 /// used to describe a button across UI frames.

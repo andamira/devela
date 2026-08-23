@@ -10,7 +10,7 @@ use crate::ConstInit;
 #[doc = crate::_tags!(interaction)]
 /// Keypad keys.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum KeyPad),
     test_size_of(KeyPad = 1|8; niche Option),
 }]
 #[repr(u8)]

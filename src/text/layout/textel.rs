@@ -17,7 +17,7 @@ use crate::{_impl_init, TextUnit, enumint};
 #[doc = crate::_tags!(text layout data_structure)]
 /// A discrete textual element for cell-like lines, grids, or canvases.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", struct Textel),
     test_size_of(Textel<u8, ()> = 1|8),
 }]
 /// `T` is the textual value. `M` is optional representation metadata, such as
@@ -104,7 +104,7 @@ enumint! {
     #[doc = crate::_tags!(text layout quant)]
     /// Cell-like inline extent occupied by a textel.
     #[doc = crate::_doc_meta!{
-        location("text/layout"),
+        location("text/layout", struct TextelWidth),
         test_size_of(TextelWidth = 1|8; niche Option),
     }]
     /// This is a compact bounded measure, suitable for terminal-like grids,
@@ -143,7 +143,7 @@ impl Default for TextelWidth {
 #[doc = crate::_tags!(text layout)]
 /// Width policy for deriving textel inline extent.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", enum TextelWidthMode),
     test_size_of(TextelWidthMode = 1|8; niche Option),
 }]
 /// This controls how much cell-like inline space a textual unit occupies.

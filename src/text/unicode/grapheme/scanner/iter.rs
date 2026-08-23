@@ -15,7 +15,7 @@ use crate::{
 #[doc = crate::_tags!(text iterator)]
 /// Owns grapheme segmentation state while scanning a string slice.
 #[doc = crate::_doc_meta!{
-    location("text/unicode/grapheme"),
+    location("text/unicode/grapheme", struct GraphemeIter),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: GraphemeIter<'_, char> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

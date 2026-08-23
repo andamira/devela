@@ -8,7 +8,7 @@ use crate::{ConstInit, KeyDead, KeyMedia, KeyMod, KeyPad};
 #[doc = crate::_tags!(interaction)]
 /// Keyboard codes, used in [`EventKey`][crate::EventKey].
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct Key),
     test_size_of(Key = 8|64; niche Option),
 }]
 ///

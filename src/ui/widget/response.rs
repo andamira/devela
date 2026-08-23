@@ -12,8 +12,8 @@ crate::set! {
     #[doc = crate::_tags!(ui set)]
     /// Interaction response flags produced by a UI item.
     #[doc = crate::_doc_meta! {
-        location("ui/widget"),
-        test_size_of(UiResponseFlags = 1|8),
+        location("ui/widget", struct UiResponseFlags),
+        test_size_of(UiResponseFlags = 1|8; niche !Option),
     }]
     #[must_use]
     #[repr(transparent)]
@@ -38,11 +38,11 @@ crate::set! {
 #[doc = crate::_tags!(ui interaction result)]
 /// Interaction result for a UI item.
 #[doc = crate::_doc_meta! {
-    location("ui/widget"),
+    location("ui/widget", struct UiResponse),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(UiResponse = 12|96),
+    test_size_of(UiResponse = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(UiResponse = 16|128),
+    test_size_of(UiResponse = 16|128; niche Option),
 }]
 /// Captures what happened to one UI identity during the current frame,
 /// such as focus, activation, or value changes.

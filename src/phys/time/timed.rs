@@ -7,8 +7,9 @@ use crate::ConstInit;
 
 #[doc = crate::_tags!(time)]
 /// A value paired with a time-like companion.
-#[doc = crate::_doc_meta!{location("phys/time")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time", struct Timed),
+}]
 /// `Timed<V, T>` is a minimal carrier for attaching timing information to a value,
 /// without assuming a specific source, origin, or policy.
 ///
@@ -32,7 +33,9 @@ pub struct Timed<V, T> {
 
 #[doc = crate::_tags!(time maybe)]
 /// A value paired with an optional time-like companion.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type MaybeTimed),
+}]
 pub type MaybeTimed<V, T> = Timed<V, Option<T>>;
 
 #[rustfmt::skip]

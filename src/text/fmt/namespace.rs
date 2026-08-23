@@ -10,7 +10,7 @@ use ::core::fmt::{from_fn, write};
 
 #[doc = crate::_tags!(text namespace)]
 /// A string formatting namespace.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
+#[doc = crate::_doc_meta!{location("text/fmt", struct Fmt)}]
 ///
 /// See also the [`std::fmt`] module.
 #[derive(Debug)]

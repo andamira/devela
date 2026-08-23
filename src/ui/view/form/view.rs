@@ -6,10 +6,9 @@
 #[doc = crate::_tags!(ui)]
 /// Projection form of a UI view.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
-    test_size_of(UiViewForm = 1|8),
+    location("ui/view", enum UiViewForm),
+    test_size_of(UiViewForm = 1|8; niche Option),
 }]
-///
 /// Describes the broad presentation form a UI view is intended for,
 /// without selecting a concrete backend.
 #[must_use]

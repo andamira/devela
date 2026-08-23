@@ -9,8 +9,8 @@ use crate::{Cmp, Lunit, RegionS2, UiNum, UiRect};
 #[doc = crate::_tags!(ui layout quant)]
 /// Cell size in logical UI layout space.
 #[doc = crate::_doc_meta! {
-    location("ui/view/scale"),
-    test_size_of(UiCellMetric = 8|64),
+    location("ui/view/scale", struct UiCellMetric),
+    test_size_of(UiCellMetric = 8|64; niche !Option),
 }]
 /// Defines the logical width and height represented by one discrete output cell.
 ///

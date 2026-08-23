@@ -12,7 +12,7 @@ use KeyState::{Press, Release, Repeat};
 #[doc = crate::_tags!(ui text event)]
 /// Preset key mapping for [`TextInputAction`].
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", enum TextInputKeymapPreset),
     test_size_of(TextInputKeymapPreset = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -61,7 +61,7 @@ pub enum TextInputKeymapPreset {
 #[doc = crate::_tags!(ui text event)]
 /// Maps platform-agnostic keyboard events to text input actions.
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", struct TextInputKeymap),
     test_size_of(TextInputKeymap = 1|8; niche Option),
 }]
 /// Backends should translate native keyboard events into [`EventKey`] first.

@@ -10,7 +10,7 @@ use crate::{_impl_init, impl_trait, is, set};
 #[doc = crate::_tags!(event interaction member)]
 /// A normalized pressable pointer/mouse button.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventButton),
     test_size_of(EventButton = 2|16; niche Option),
 }]
 /// `Left`, `Middle`, and `Right` represent the three primary conventional buttons.
@@ -87,7 +87,7 @@ impl EventButton {
 #[doc = crate::_tags!(event interaction)]
 /// Represents the state of a button.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventButtonState),
     test_size_of(EventButtonState = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
@@ -108,10 +108,9 @@ set! {
     #[doc = crate::_tags!(event interaction set)]
     /// A semantic bitmask of currently held pressable buttons.
     #[doc = crate::_doc_meta!{
-        location("ui/event"),
-        test_size_of(EventButtons = 1|8), // option = 2|16
+        location("ui/event", struct EventButtons),
+        test_size_of(EventButtons = 1|8; niche !Option),
     }]
-    ///
     /// The bits represent normalized button roles, not raw backend button numbers.
     ///
     /// This means:

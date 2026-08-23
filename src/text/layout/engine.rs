@@ -10,10 +10,9 @@ use crate::{TextLineIter, TextSymbol, TextUnit};
 #[doc = crate::_tags!(text layout namespace)]
 /// Text layout engine configuration.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", struct TextLayout),
     test_size_of(TextLayout = 0),
 }]
-///
 /// `TextLayout` performs one-dimensional layout negotiation between a
 /// symbol stream and an available inline extent. It holds layout policies
 /// but does not store mutable state.

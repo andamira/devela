@@ -4,65 +4,65 @@ use crate::{_reexport, _tags};
 
 /* macros */
 
-_reexport! { rust: core, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core, location: "text/fmt" => macro format_args, tag: _tags!(fmt),
     doc: "Constructs parameters for the other string-formatting macros.",
     format_args
 }
-_reexport! { rust: core, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core, location: "text/fmt" => macro write, tag: _tags!(fmt),
     doc: "Writes formatted data into a buffer.",
     write
 }
-_reexport! { rust: core, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core, location: "text/fmt" => macro writeln, tag: _tags!(fmt),
     doc: "Writes formatted data into a buffer, with a newline appended.",
     writeln
 }
 
 /* traits */
 
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait Binary, tag: _tags!(fmt num),
     doc: "`b` formatting.",
     Binary
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait Debug, tag: _tags!(fmt debug),
     doc: "`?` formatting. (Derivable)",
     Debug
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait Display, tag: _tags!(fmt),
     doc: "Format trait for an empty format, `{}`.",
     Display
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait LowerExp, tag: _tags!(fmt num),
     doc: "`e` formatting.",
     LowerExp
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait LowerHex, tag: _tags!(fmt num),
     doc: "`x` formatting.",
     LowerHex
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait Octal, tag: _tags!(fmt num),
     doc: "`o` formatting.",
     Octal
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait Pointer, tag: _tags!(fmt),
     doc: "`p` formatting.",
     Pointer
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait UpperExp, tag: _tags!(fmt num),
     doc: "`E` formatting.",
     UpperExp
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt num),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait UpperHex, tag: _tags!(fmt num),
     doc: "`X` formatting.",
     UpperHex
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait FmtWrite, tag: _tags!(fmt),
     doc: "Writing or formatting into Unicode-accepting buffers or streams.",
     @Write as FmtWrite
 }
 
 /* enums */
 
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => trait FmtAlignment, tag: _tags!(fmt),
     doc: "Possible alignments returned by `Formatter::align`.",
     @Alignment as FmtAlignment
 }
@@ -71,7 +71,7 @@ _reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
 
 #[doc = crate::_tags!(fmt result)]
 /// The type returned by formatter methods.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
+#[doc = crate::_doc_meta!{location("text/fmt", type FmtResult)}]
 ///
 /// Note that this is not the same as [`core::fmt::Result`], since this one
 /// doesn't hardcode the returned type to `()`.
@@ -79,39 +79,39 @@ pub type FmtResult<T> = Result<T, FmtError>;
 
 /* structs */
 
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct FmtArguments, tag: _tags!(fmt),
     doc: "Represents a safely precompiled version of a format string and its arguments.",
     @Arguments as FmtArguments
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct DebugList, tag: _tags!(fmt debug),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugList
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct DebugMap, tag: _tags!(fmt debug),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugMap
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct DebugSet, tag: _tags!(fmt debug),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugSet
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct DebugStruct, tag: _tags!(fmt debug),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugStruct
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt debug),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct DebugTuple, tag: _tags!(fmt debug),
     doc: "A struct to help with [`Debug`] implementations.",
     DebugTuple
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt error),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct FmtError, tag: _tags!(fmt error),
     doc: "The error type which is returned from formatting a message into a stream.",
     @Error as FmtError
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct FmtFromFn, tag: _tags!(fmt),
     doc: "Implements [`Debug`] and [`Display`] via the provided closure.",
     @FromFn as FmtFromFn
 }
-_reexport! { rust: core::fmt, location: "text/fmt", tag: _tags!(fmt),
+_reexport! { rust: core::fmt, location: "text/fmt" => struct Formatter, tag: _tags!(fmt),
     doc: "Configuration for formatting.",
     Formatter
 }

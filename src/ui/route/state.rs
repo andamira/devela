@@ -13,8 +13,8 @@ macro_rules! define_ui_state {
         #[doc = crate::_tags!(ui interaction)]
         #[doc = $doc]
         #[doc = crate::_doc_meta! {
-            location("ui/route"),
-            test_size_of($name = 8|64),
+            location("ui/route", struct $name),
+            test_size_of($name = 8|64; niche !Option),
         }]
         #[must_use]
         #[repr(transparent)]

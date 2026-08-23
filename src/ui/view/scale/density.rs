@@ -9,7 +9,7 @@ use crate::{Cmp, Lunit, RatioU32, RegionS2, UiNum, UiRect, unwrap};
 #[doc = crate::_tags!(ui quant)]
 /// Physical output pixels per logical UI pixel.
 #[doc = crate::_doc_meta! {
-    location("ui/view/scale"),
+    location("ui/view/scale", struct UiDensity),
     test_size_of(UiDensity = 8; niche Option),
 }]
 #[must_use]

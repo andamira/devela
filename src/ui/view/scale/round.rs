@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(ui quant)]
 /// Rounding policy used when projecting UI layout space.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
+    location("ui/view", enum UiRound),
     test_size_of(UiRound = 1|8; niche Option),
 }]
 #[must_use]

@@ -9,7 +9,7 @@
 #[doc = crate::_tags!(ui text)]
 /// One-line editable text state over caller-chosen storage.
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", struct TextInput),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: TextInput<&mut [u8]> = 28|224; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -30,7 +30,7 @@ pub struct TextInput<B> {
 #[doc = crate::_tags!(ui text)]
 /// Configuration for [`TextInput`].
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", struct TextInputConfig),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TextInputConfig = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -54,7 +54,7 @@ impl TextInputConfig {
 #[doc = crate::_tags!(ui text interaction)]
 /// Editing command consumed by [`TextInput`].
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", enum TextInputAction),
     test_size_of(TextInputAction = 4|32; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -93,7 +93,7 @@ pub enum TextInputAction {
 #[doc = crate::_tags!(ui text result)]
 /// Result of applying a [`TextInputAction`].
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", enum TextInputOutcome),
     test_size_of(TextInputOutcome = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -117,7 +117,7 @@ pub enum TextInputOutcome {
 #[doc = crate::_tags!(ui text)]
 /// Reason why an action was rejected.
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", enum TextInputReject),
     test_size_of(TextInputReject = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -135,7 +135,7 @@ pub enum TextInputReject {
 #[doc = crate::_tags!(ui text)]
 /// Borrowed view of a text input.
 #[doc = crate::_doc_meta!{
-    location("ui/text"),
+    location("ui/text", struct TextInputView),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TextInputView = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

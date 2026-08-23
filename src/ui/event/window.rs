@@ -12,7 +12,7 @@ use crate::String;
 #[doc = crate::_tags!(event interaction)]
 /// Events related to a window, viewport, or presentation surface.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventWindow),
     #[cfg(not(feature = "alloc"))]
     test_size_of(EventWindow = 16|128; niche Option),
     #[cfg(feature = "alloc")]

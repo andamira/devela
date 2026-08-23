@@ -7,7 +7,7 @@ use crate::is;
 
 #[doc = crate::_tags!(code text namespace)]
 /// ASCII code-space constants, digit conversions, and lookup data.
-#[doc = crate::_doc_meta!{location("text")}]
+#[doc = crate::_doc_meta!{location("text/ascii", struct Ascii)}]
 #[derive(Debug)]
 pub struct Ascii;
 

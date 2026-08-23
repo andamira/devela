@@ -10,8 +10,8 @@ use TextBreakKind as Break;
 #[doc = crate::_tags!(text layout)]
 /// Reason why a wrapped text line ended.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextBreakKind = 1|8),
+    location("text/layout", enum TextBreakKind),
+    test_size_of(TextBreakKind = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextBreakKind {
@@ -30,8 +30,8 @@ _impl_init![Self::Between => TextBreakKind];
 #[doc = crate::_tags!(text layout)]
 /// A wrapped visual text line.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextLine = 24),
+    location("text/layout", struct TextLine),
+    test_size_of(TextLine = 24|192; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct TextLine {
@@ -67,11 +67,11 @@ impl TextLine {
 #[doc = crate::_tags!(text layout iterator)]
 /// Iterates wrapped visual lines over text segments.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", struct TextWrapIter),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TextWrapIter = 24|192),
+    test_size_of(TextWrapIter = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TextWrapIter = 40|320),
+    test_size_of(TextWrapIter = 40|320; niche Option),
 }]
 ///
 /// `TextWrapIter` applies simple prose wrapping over semantic segments:

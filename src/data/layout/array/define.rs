@@ -7,8 +7,9 @@ use crate::{ArrayCoordIter, ArrayLayout, ArrayShape};
 
 #[doc = crate::_tags!(data_structure mem)]
 /// A logical array over backing storage.
-#[doc = crate::_doc_meta!{location("data/layout/array")}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", struct Array),
+}]
 /// An array joins:
 /// - backing data of type `D`;
 /// - an [`ArrayLayout`] mapping logical coordinates into that data.

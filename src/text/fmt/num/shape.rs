@@ -7,8 +7,10 @@ use crate::is;
 
 #[doc = crate::_tags!(fmt num)]
 /// Describes the structural shape of a formatted number.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtNumShape),
+    test_size_of(FmtNumShape = 6|48; niche !Option),
+}]
 /// The shape captures the lengths of the numeric regions and prefixes,
 /// independent of padding, alignment, or styling.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

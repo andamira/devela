@@ -7,8 +7,10 @@ use crate::{Boundary1d, Cmp, ConstInit, is};
 
 #[doc = crate::_tags!(fmt num)]
 /// Numeric digit grouping configuration.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtNumGroup),
+    test_size_of(FmtNumGroup = 12|96; niche Option),
+}]
 /// This type controls structural digit grouping for formatted numbers,
 /// such as thousands separators, without performing layout or localization.
 ///

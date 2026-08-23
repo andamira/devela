@@ -8,11 +8,11 @@ use crate::UiId;
 #[doc = crate::_tags!(ui)]
 /// Human-readable text associated with a UI identity.
 #[doc = crate::_doc_meta! {
-    location("ui/semantic"),
+    location("ui/semantic", struct UiText),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(UiText = 24|192),
+    test_size_of(UiText = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(UiText = 40|320),
+    test_size_of(UiText = 40|320; niche Option),
 }]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

@@ -11,7 +11,7 @@ use crate::{NonMaxU64, SplitMix64, unwrap};
 #[doc = crate::_tags!(ui uid)]
 /// Stable author-provided UI identity seed.
 #[doc = crate::_doc_meta!{
-    location("ui/frame"),
+    location("ui/frame", struct UiKey),
     test_size_of(UiKey = 8|64; niche Option),
 }]
 #[must_use]
@@ -38,7 +38,7 @@ impl UiKey {
 #[doc = crate::_tags!(ui uid)]
 /// Resolved UI identity within a frame.
 #[doc = crate::_doc_meta!{
-    location("ui/frame"),
+    location("ui/frame", struct UiId),
     test_size_of(UiId = 8|64; niche Option),
 }]
 #[must_use]
@@ -65,8 +65,8 @@ impl UiId {
 #[doc = crate::_tags!(ui uid)]
 /// Scoped UI identity namespace.
 #[doc = crate::_doc_meta!{
-    location("ui/frame"),
-    test_size_of(UiScope = 8|64),
+    location("ui/frame", struct UiScope),
+    test_size_of(UiScope = 8|64; niche Option),
 }]
 #[must_use]
 #[repr(transparent)]

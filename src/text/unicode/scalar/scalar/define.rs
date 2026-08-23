@@ -19,7 +19,7 @@ pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 #[doc = crate::_tags!(construction text)]
 /// Concisely creates any kind of Unicode scalar.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar", macro ch)}]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! ch {
@@ -41,10 +41,11 @@ pub use ch;
 /* public types */
 
 #[doc = crate::_tags!(text)]
-/// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset
-/// (ASCII).
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
-///
+/// A 7-bit [Unicode scalar][scalar], limited to [basic latin][0w] subset (ASCII).
+#[doc = crate::_doc_meta!{
+    location("text/unicode/scalar", struct char7),
+    test_size_of(char7 = 1|8; niche Option)
+}]
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
 ///
 /// See also: [`char8`], [`char16`], [`char`][crate::char].
@@ -59,8 +60,10 @@ pub struct char7(pub(super) NonMaxU8);
 #[doc = crate::_tags!(text)]
 /// An 8-bit [Unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/unicode/scalar", struct char8),
+    test_size_of(char8 = 1|8; niche !Option)
+}]
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes),
 /// because each possible value is a valid Unicode scalar.
 ///
@@ -77,8 +80,10 @@ pub struct char8(pub(crate) u8);
 #[doc = crate::_tags!(text)]
 /// A 16-bit [Unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/unicode/scalar", struct char16),
+    test_size_of(char16 = 2|16; niche Option)
+}]
 /// It can represent every scalar from the [Basic Multilingual Plane][0w] (BMP),
 /// the first and most important plane in the Unicode standard (also known as
 /// plane 0), containing nearly all commonly used writing systems and symbols.
@@ -97,10 +102,9 @@ pub struct char16(pub(super) NonSurrogateU16);
 #[doc = crate::_tags!(text)]
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation.
 #[doc = crate::_doc_meta!{
-    location("text/unicode/scalar"),
-    test_size_of(charu = 4),
+    location("text/unicode/scalar", struct charu),
+    test_size_of(charu = 4|32; niche !Option),
 }]
-///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///
 /// `Option<charu>` occupies extra space (8 bytes),
@@ -116,10 +120,9 @@ pub struct charu(pub(super) NonNiche<u32>);
 /// A 32-bit [Unicode scalar][scalar], with UTF-8 representation,
 /// and niche-memory optimization.
 #[doc = crate::_doc_meta!{
-    location("text/unicode/scalar"),
+    location("text/unicode/scalar", struct charu_niche),
     test_size_of(charu_niche = 4; niche Option),
 }]
-///
 /// It stores the UTF-8 bytes in big-endian order, similarly as a [`str`].
 ///
 /// `Option<charu_niche>` is the same size as `charu_niche`,

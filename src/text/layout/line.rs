@@ -9,7 +9,7 @@ use crate::{TextCursor, TextLayout, TextLayoutSpan, TextLayoutStep, TextSymbol, 
 #[doc = crate::_tags!(text layout iterator)]
 /// Iterates fixed-width inline layout steps over a symbol stream.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", struct TextLineIter),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TextLineIter = 24|192),
     #[cfg(target_pointer_width = "64")]

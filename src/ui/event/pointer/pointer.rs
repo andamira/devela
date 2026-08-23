@@ -10,7 +10,7 @@ use crate::{_impl_init, EventButton, EventButtonState, EventButtons, KeyMods, f3
 #[doc = crate::_tags!(event interaction)]
 /// Represents a basic mouse event.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct EventMouse),
     test_size_of(EventMouse = 16|128; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -46,7 +46,7 @@ impl EventMouse {
 #[doc = crate::_tags!(event interaction)]
 /// Represents a pointer event (mouse, touch, or pen).
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct EventPointer),
     test_size_of(EventPointer = 36|288; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -113,7 +113,7 @@ impl EventPointer {
 #[doc = crate::_tags!(event interaction)]
 /// Enum representing the type of pointer.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventPointerKind),
     test_size_of(EventPointerKind = 1|8),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -129,7 +129,7 @@ _impl_init! { Self::Mouse => EventPointerKind }
 
 // /// Represents the phase of a pointer (useful for touch events).
 // #[doc = crate::_doc_meta!{
-//     location("ui/event"),
+//     location("ui/event", enum EventPointerPhase),
 //     test_size_of(EventPointerPhase = 1|8; niche Option),
 // }]
 // #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

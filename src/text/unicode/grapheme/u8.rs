@@ -6,17 +6,17 @@
 // - definitions
 // - trait impls
 
-use crate::{
-    CharIter, GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringU8, char7, char8, char16,
-    charu, unwrap,
-};
+use crate::{CharIter, MismatchedCapacity, char7, char8, char16, charu, unwrap};
+use crate::{GraphemeMachine, GraphemeScanner, StringU8};
 
 /* definitions */
 
 #[doc = crate::_tags!(text)]
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringU8`]."]]
-#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/unicode/grapheme", struct GraphemeU8),
+    test_size_of(__: GraphemeU8<15> = 16|128; niche Option),
+}]
 /// ## Methods
 ///
 /// - [Constructors](#constructors):

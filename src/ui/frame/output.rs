@@ -7,7 +7,9 @@ use crate::{LayoutReceipt, UiDraw, UiDrawList, UiDrawListView, UiView};
 
 #[doc = crate::_tags!(ui)]
 /// A completed backend-neutral UI frame over caller-chosen storage.
-#[doc = crate::_doc_meta! { location("ui/frame") }]
+#[doc = crate::_doc_meta! {
+    location("ui/frame", struct UiOutput),
+}]
 /// Aggregates the spatial, visual, and drawing records produced during one UI frame.
 ///
 /// The three streams have distinct roles:
@@ -73,7 +75,7 @@ where
 #[doc = crate::_tags!(ui lifetime)]
 /// A borrowed read-only view over a completed backend-neutral UI frame.
 #[doc = crate::_doc_meta! {
-    location("ui/frame"),
+    location("ui/frame", struct UiOutputView),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: UiOutputView<u8, &str> = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]

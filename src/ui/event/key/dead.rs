@@ -13,7 +13,7 @@ use crate::{ConstInit, NonZeroU32, impl_trait, is};
 #[doc = crate::_tags!(interaction)]
 /// Dead-key accent operators used during text composition.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum KeyDead),
     test_size_of(KeyDead = 1|8; niche Option),
 }]
 ///

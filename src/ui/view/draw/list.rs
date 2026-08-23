@@ -10,11 +10,11 @@ use crate::{PhantomData, UiDraw};
 #[doc = crate::_tags!(ui data_structure lifetime)]
 /// A borrowed view over an ordered UI draw sequence.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
+    location("ui/view", type UiDrawListView),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: UiDrawListView<'_, u8, &str> = 8|64),
+    test_size_of(__: UiDrawListView<'_, u8, &str> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: UiDrawListView<'_, u8, &str> = 16|128),
+    test_size_of(__: UiDrawListView<'_, u8, &str> = 16|128; niche Option),
 }]
 /// It preserves the painter ordering of the underlying
 /// [`UiDrawList`] without taking ownership of its storage.
@@ -23,11 +23,11 @@ pub type UiDrawListView<'a, S, T = &'a str> = UiDrawList<S, T, &'a [UiDraw<S, T>
 #[doc = crate::_tags!(ui data_structure)]
 /// An ordered UI draw sequence over caller-chosen storage.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
+    location("ui/view", struct UiDrawList),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 8|64),
+    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 16|128),
+    test_size_of(__: UiDrawList<u8, &str, &[devela::UiDraw<u8, &str>]> = 16|128; niche Option),
 }]
 /// The list is a backend-neutral display list in resolved logical UI space.
 ///

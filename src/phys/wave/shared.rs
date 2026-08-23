@@ -2,7 +2,10 @@
 
 #[doc = crate::_tags!(wave)]
 /// Distinguishes the role of a component in wavelet analysis.
-#[doc = crate::_doc_meta!{location("phys/wave")}]
+#[doc = crate::_doc_meta!{
+    location("phys/wave", enum WaveletUnitRole),
+    test_size_of(WaveletUnitRole = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum WaveletUnitRole {
     /// Represents the base approximation in the wavelet transform,
@@ -15,8 +18,10 @@ pub enum WaveletUnitRole {
 
 #[doc = crate::_tags!(wave)]
 /// A Haar wavelet is a simple, piecewise-constant wavelet.
-#[doc = crate::_doc_meta!{location("phys/wave")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/wave", struct WaveletHaar),
+    test_size_of(WaveletHaar = 0),
+}]
 /// It is ideal for basic signal decomposition and testing.
 ///
 /// - <https://en.wikipedia.org/wiki/Haar_wavelet>.

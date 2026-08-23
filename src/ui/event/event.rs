@@ -15,7 +15,7 @@ use crate::{
 #[doc = crate::_tags!(event)]
 /// A fully-typed event with optional timing and metadata.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct Event),
     #[cfg(target_pointer_width = "32")]
     test_size_of(Event = 60|480; niche Option),
     #[cfg(target_pointer_width = "64")]

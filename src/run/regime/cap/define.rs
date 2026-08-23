@@ -8,8 +8,8 @@ use crate::{ColorDepth, Extent2, NonMaxU16, NonMaxU32, set, test_size_of};
 #[doc = crate::_tags!(runtime)]
 /// The capabilities supported by a `Runtime`.
 #[doc = crate::_doc_meta!{
-    location("run/regime"),
-    test_size_of(RunCap = 28|224),
+    location("run/regime", struct RunCap),
+    test_size_of(RunCap = 28|224; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCap {
@@ -32,8 +32,8 @@ pub struct RunCap {
 #[doc = crate::_tags!(runtime audio)]
 /// Runtime audio capabilities.
 #[doc = crate::_doc_meta!{
-    location("run/regime"),
-    test_size_of(RunCapAudio = 1|8),
+    location("run/regime", struct RunCapAudio),
+    test_size_of(RunCapAudio = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapAudio {
@@ -44,8 +44,8 @@ pub struct RunCapAudio {
 #[doc = crate::_tags!(runtime color)]
 /// Runtime color capabilities.
 #[doc = crate::_doc_meta!{
-    location("run/regime"),
-    test_size_of(RunCapColor = 4|32),
+    location("run/regime", struct RunCapColor),
+    test_size_of(RunCapColor = 4|32; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct RunCapColor {
@@ -60,7 +60,7 @@ pub struct RunCapColor {
 #[doc = crate::_tags!(runtime image)]
 /// Runtime image capabilities.
 #[doc = crate::_doc_meta!{
-    location("run/regime"),
+    location("run/regime", struct RunCapImage),
     test_size_of(RunCapImage = 12|96),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -75,8 +75,8 @@ set! {
     #[doc = crate::_tags!(runtime interaction set)]
     /// Runtime input capabilities.
     #[doc = crate::_doc_meta!{
-        location("run/regime"),
-        test_size_of(RunCapInput = 1|8),
+        location("run/regime", struct RunCapInput),
+        test_size_of(RunCapInput = 1|8; niche !Option),
     }]
     pub struct RunCapInput(u8) {
         /// Gamepad input capabilities.
@@ -96,8 +96,8 @@ set! {
     #[doc = crate::_tags!(runtime set)]
     /// Runtime system capabilities.
     #[doc = crate::_doc_meta!{
-        location("run/regime"),
-        test_size_of(RunCapSystem = 2|16),
+        location("run/regime", struct RunCapSystem),
+        test_size_of(RunCapSystem = 2|16; niche !Option),
     }]
     pub struct RunCapSystem(u16) {
         /// Current or monotonic time can be queried.
@@ -125,8 +125,8 @@ set! {
     #[doc = crate::_tags!(runtime text set)]
     /// Runtime text capabilities.
     #[doc = crate::_doc_meta!{
-        location("run/regime"),
-        test_size_of(RunCapText = 1|8),
+        location("run/regime", struct RunCapText),
+        test_size_of(RunCapText = 1|8; niche !Option),
     }]
     pub struct RunCapText(u8) {
         /// Text output.
@@ -151,7 +151,10 @@ set! {
 test_size_of![RunCapWindow = 1 | 8];
 #[doc = crate::_tags!(runtime)]
 /// Runtime window capabilities.
-#[doc = crate::_doc_meta!{location("run/regime")}]
+#[doc = crate::_doc_meta!{
+    location("run/regime", struct RunCapWindow),
+    test_size_of(RunCapWindow = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct RunCapWindow {
     /// Whether multiple windows are supported.

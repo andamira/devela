@@ -8,8 +8,9 @@ use ::core::fmt;
 
 #[doc = crate::_tags!(time)]
 /// A full time split from years to nanoseconds.
-#[doc = crate::_doc_meta!{location("phys/time")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time", struct TimeSplit),
+}]
 /// See also the related aliases:
 /// - [`TimeSplitNorm`][TimeSplitNorm],
 ///   [`TimeSplitYearDay`]`/`[`Norm`][TimeSplitYearDayNorm],
@@ -44,83 +45,90 @@ pub struct TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
 #[doc = crate::_tags!(time)]
 /// A time split from years to nanoseconds, normalized *(152b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
+    location("phys/time", type TimeSplitNorm),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TimeSplitNorm = 20|160),
+    test_size_of(TimeSplitNorm = 20|160; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TimeSplitNorm = 24|192),
+    test_size_of(TimeSplitNorm = 24|192; niche !Option),
 }]
 pub type TimeSplitNorm = TimeSplit<u64, u8, u8, u8, u8, u8, u16, u16, u16>;
 
 #[doc = crate::_tags!(time)]
 /// A time split from years to days.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type TimeSplitYearDay),
+}]
 pub type TimeSplitYearDay<Y, MO, D> = TimeSplit<Y, MO, D, (), (), (), (), (), ()>;
 #[doc = crate::_tags!(time)]
 /// A time split from years to days, normalized *(80b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
+    location("phys/time", type TimeSplitYearDayNorm),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TimeSplitYearDayNorm = 12|96),
+    test_size_of(TimeSplitYearDayNorm = 12|96; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TimeSplitYearDayNorm = 16|128),
+    test_size_of(TimeSplitYearDayNorm = 16|128; niche !Option),
 }]
 pub type TimeSplitYearDayNorm = TimeSplit<u64, u8, u8, (), (), (), (), (), ()>;
 
 #[doc = crate::_tags!(time)]
 /// A time split from years to seconds.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type TimeSplitYearSec),
+}]
 pub type TimeSplitYearSec<Y, MO, D, H, M, S> = TimeSplit<Y, MO, D, H, M, S, (), (), ()>;
 #[doc = crate::_tags!(time)]
 /// A time split from years to seconds, normalized *(104b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
+    location("phys/time", type TimeSplitYearSecNorm),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TimeSplitYearSecNorm = 16|128),
+    test_size_of(TimeSplitYearSecNorm = 16|128; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TimeSplitYearSecNorm = 16|128),
+    test_size_of(TimeSplitYearSecNorm = 16|128; niche !Option),
 }]
 pub type TimeSplitYearSecNorm = TimeSplit<u64, u8, u8, u8, u8, u8, (), (), ()>;
 
 #[doc = crate::_tags!(time)]
 /// A time split from hours to seconds.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type TimeSplitHourSec),
+}]
 pub type TimeSplitHourSec<H, M, S> = TimeSplit<(), (), (), H, M, S, (), (), ()>;
 #[doc = crate::_tags!(time)]
 /// A time split from hours to seconds, normalized *(80b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
+    location("phys/time", type TimeSplitHourSecNorm),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TimeSplitHourSecNorm = 12|96),
+    test_size_of(TimeSplitHourSecNorm = 12|96; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TimeSplitHourSecNorm = 16|128),
+    test_size_of(TimeSplitHourSecNorm = 16|128; niche !Option),
 }]
 pub type TimeSplitHourSecNorm = TimeSplit<(), (), (), u64, u8, u8, (), (), ()>;
 
 #[doc = crate::_tags!(time)]
 /// A time split from hours to nanoseconds.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type TimeSplitHourNano),
+}]
 pub type TimeSplitHourNano<H, M, S, MS, US, NS> = TimeSplit<(), (), (), H, M, S, MS, US, NS>;
 #[doc = crate::_tags!(time)]
 /// A time split from hours to nanoseconds, normalized *(128b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
-    #[cfg(target_pointer_width = "32")]
-    test_size_of(TimeSplitHourNanoNorm = 16|128),
-    #[cfg(target_pointer_width = "64")]
-    test_size_of(TimeSplitHourNanoNorm = 16|128),
+    location("phys/time", type TimeSplitHourNano),
+    test_size_of(TimeSplitHourNanoNorm = 16|128; niche !Option),
 }]
 pub type TimeSplitHourNanoNorm = TimeSplit<(), (), (), u64, u8, u8, u16, u16, u16>;
 
 #[doc = crate::_tags!(time)]
 /// A time split from milliseconds to nanoseconds.
-#[doc = crate::_doc_meta!{location("phys/time")}]
+#[doc = crate::_doc_meta!{
+    location("phys/time", type TimeSplitMilliNano),
+}]
 pub type TimeSplitMilliNano<MS, US, NS> = TimeSplit<(), (), (), (), (), (), MS, US, NS>;
 #[doc = crate::_tags!(time)]
 /// A time split from milliseconds to nanoseconds, normalized *(48b payload)*.
 #[doc = crate::_doc_meta!{
-    location("phys/time"),
-    test_size_of(TimeSplitMilliNanoNorm = 6|48),
+    location("phys/time", type TimeSplitMilliNanoNorm),
+    test_size_of(TimeSplitMilliNanoNorm = 6|48; niche !Option),
 }]
 pub type TimeSplitMilliNanoNorm = TimeSplit<(), (), (), (), (), (), u16, u16, u16>;
 

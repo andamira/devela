@@ -5,7 +5,10 @@
 
 #[doc = crate::_tags!(runtime)]
 /// Control returned by a runtime step.
-#[doc = crate::_doc_meta!{location("run/cycle")}]
+#[doc = crate::_doc_meta!{
+    location("run/cycle", enum RunControl),
+    test_size_of(RunControl = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum RunControl {
     /// Continue running.
@@ -16,7 +19,10 @@ pub enum RunControl {
 
 #[doc = crate::_tags!(runtime)]
 /// High-level phases of a running system.
-#[doc = crate::_doc_meta!{location("run/cycle")}]
+#[doc = crate::_doc_meta!{
+    location("run/cycle", enum RunPhase),
+    test_size_of(RunPhase = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum RunPhase {
     /// The run exists but has not started normal progression yet.
@@ -41,8 +47,10 @@ impl RunPhase {
 
 #[doc = crate::_tags!(runtime)]
 /// Manages run phases and guards phase transitions.
-#[doc = crate::_doc_meta!{location("run/cycle")}]
-///
+#[doc = crate::_doc_meta!{
+    location("run/cycle", struct RunCycle),
+    test_size_of(RunCycle = 1|8; niche Option),
+}]
 /// `RunCycle` tracks the high-level lifecycle of a running system.
 ///
 /// It is intentionally small:

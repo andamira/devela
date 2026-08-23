@@ -11,10 +11,9 @@ use crate::{UiId, UiRect};
 #[doc = crate::_tags!(ui)]
 /// Frame-local region that can receive routed interaction.
 #[doc = crate::_doc_meta! {
-    location("ui/route"),
-    test_size_of(HitRegion = 24|192),
+    location("ui/route", struct HitRegion),
+    test_size_of(HitRegion = 24|192; niche Option),
 }]
-///
 /// Connects a resolved UI identity with the layout region used for hit testing
 /// and interaction routing.
 #[must_use]

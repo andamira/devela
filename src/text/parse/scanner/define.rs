@@ -14,13 +14,12 @@ use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextU
 #[doc = crate::_tags!(text parser)]
 /// A byte-position scanner over source text.
 #[doc = crate::_doc_meta!{
-    location("text/parse"),
+    location("text/parse", struct TextScanner),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TextScanner = 12|96),
     #[cfg(target_pointer_width = "64")]
     test_size_of(TextScanner = 24|192),
 }]
-///
 /// `TextScanner` provides incremental, allocation-free traversal over a borrowed
 /// text source, exposing byte-oriented operations suitable for building parsers.
 /// It Owns traversal state and delegates stateless string/slice operations

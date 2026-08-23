@@ -15,10 +15,9 @@ use crate::{ConstInit, impl_trait, is, set};
 #[doc = crate::_tags!(interaction member)]
 /// Modifier key codes (when pressed by themselves)
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
-    test_size_of(KeyMod = 1|8),
+    location("ui/event", enum KeyMod),
+    test_size_of(KeyMod = 1|8; niche Option),
 }]
-///
 /// These keys modify the behavior of other keys when held down.
 //
 // - https://docs.rs/crossterm/latest/crossterm/event/enum.ModifierKey.html
@@ -63,8 +62,8 @@ set! {
     #[doc = crate::_tags!(interaction set)]
     /// A bitfield of key modifiers (Shift, Control…) + extra (repeating, composing).
     #[doc = crate::_doc_meta!{
-        location("ui/event"),
-        test_size_of(KeyMods = 2|16), // option = 4|32
+        location("ui/event", struct KeyMods),
+        test_size_of(KeyMods = 2|16; niche !Option),
     }]
     #[repr(transparent)]
     pub struct KeyMods(u16) {

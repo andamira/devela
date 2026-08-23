@@ -6,8 +6,8 @@
 #[doc = crate::_tags!(ui ord)]
 /// Visual ordering layer for a UI view.
 #[doc = crate::_doc_meta! {
-    location("ui/view"),
-    test_size_of(UiLayer = 2|16),
+    location("ui/view", struct UiLayer),
+    test_size_of(UiLayer = 2|16; niche !Option),
 }]
 #[must_use]
 #[repr(transparent)]

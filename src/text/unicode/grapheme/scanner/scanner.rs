@@ -14,13 +14,12 @@ use crate::{
 #[doc = crate::_tags!(text iterator)]
 /// Borrows grapheme segmentation state while scanning a string slice.
 #[doc = crate::_doc_meta!{
-    location("text/unicode/grapheme"),
+    location("text/unicode/grapheme", struct GraphemeScanner),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: GraphemeScanner<'_, char> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
     test_size_of(__: GraphemeScanner<'_, char> = 24|192; niche Option),
 }]
-///
 /// Can process different text representations (`&str`, `&[u8]`) while
 /// tracking grapheme cluster boundaries through a `GraphemeMachine`.
 ///

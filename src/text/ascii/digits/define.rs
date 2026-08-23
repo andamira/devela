@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(text num namespace)]
 /// Provides ASCII digit operations and conversions for unsigned integer primitives.
-#[doc = crate::_doc_meta!{location("text")}]
+#[doc = crate::_doc_meta!{location("text/ascii", struct Digits)}]
 ///
 /// Enables efficient ASCII digit extraction, counting, and conversion
 /// for unsigned integer types. All operations are `const` and designed for

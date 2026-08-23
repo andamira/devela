@@ -10,10 +10,9 @@ use crate::_impl_init;
 #[doc = crate::_tags!(text)]
 /// Basic text-domain unit.
 #[doc = crate::_doc_meta!{
-    location("text"),
-    test_size_of(TextUnit = 4|32),
+    location("text", type TextUnit),
+    test_size_of(TextUnit = 4|32; niche !Option),
 }]
-///
 /// `TextUnit` is the base primitive quantity used by text-related abstractions.
 ///
 /// Depending on context, it may represent:
@@ -31,10 +30,9 @@ pub type TextUnit = u32;
 #[doc = crate::_tags!(text layout)]
 /// Position within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_meta!{
-    location("text"),
-    test_size_of(TextIndex = 4|32),
+    location("text", struct TextIndex),
+    test_size_of(TextIndex = 4|32; niche !Option),
 }]
-///
 /// The sequence may represent bytes, Unicode scalars, graphemes, layout symbols,
 /// or other text-derived units chosen by the caller.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -67,10 +65,9 @@ impl TextIndex {
 #[doc = crate::_tags!(text)]
 /// Continuation point within a caller-defined text traversal.
 #[doc = crate::_doc_meta!{
-    location("text"),
-    test_size_of(TextCursor = 4|32),
+    location("text", struct TextCursor),
+    test_size_of(TextCursor = 4|32; niche !Option),
 }]
-///
 /// A `TextCursor` marks where a text-oriented process should resume.
 ///
 /// The underlying sequence may represent bytes, Unicode scalars, graphemes,
@@ -97,10 +94,9 @@ impl TextCursor {
 #[doc = crate::_tags!(text quant)]
 /// A half-open range within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_meta!{
-    location("text"),
-    test_size_of(TextRange = 8|64),
+    location("text", struct TextRange),
+    test_size_of(TextRange = 8|64; niche !Option),
 }]
-///
 /// `TextRange` covers the interval `[start, end)`,
 /// including `start` and excluding `end`.
 ///

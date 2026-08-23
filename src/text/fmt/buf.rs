@@ -14,8 +14,9 @@ crate::_use! {compat::from_utf8}
 
 #[doc = crate::_tags!(fmt)]
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", macro format_buf),
+}]
 /// This is implemented via [`FmtWriter::format`] and [`format_args!`][crate::format_args].
 ///
 /// # Examples
@@ -46,8 +47,13 @@ pub use format_buf;
 
 #[doc = crate::_tags!(fmt)]
 /// A specialized formatter with a fixed byte buffer and truncation detection.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct FmtWriter),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(FmtWriter = 16|128; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(FmtWriter = 32|256; niche Option),
+}]
 /// It should be faster at runtime than the default formatter.
 #[derive(Debug)]
 pub struct FmtWriter<'a> {
@@ -126,7 +132,6 @@ impl<'a> FmtWriter<'a> {
         let _ = ::core::fmt::write(&mut w, args);
         is![w.is_truncated(), Err(w.written_len()), Ok(w.written_len())]
     }
-
     /// Writes formatted output into the given byte buffer, returning the number of written bytes.
     pub fn format_len_unchecked(buf: &'a mut [u8], args: FmtArguments) -> usize {
         let mut w = Self::new(buf);
@@ -159,7 +164,6 @@ impl<'a> FmtWriter<'a> {
         self.len += n;
         n
     }
-
     /// Writes a string slice, returning the actually written part.
     ///
     /// Returns `Err` if truncation occurred, with the truncated result.
@@ -190,7 +194,6 @@ impl<'a> FmtWriter<'a> {
             Err(e) => Self::get_str_from_slice(self.buf, e.valid_up_to()),
         }
     }
-
     #[must_use]
     #[doc = _DOC_AS_INTO_STR_CONST!()]
     pub const fn as_str_const(&'a self) -> &'a str {
@@ -217,7 +220,6 @@ impl<'a> FmtWriter<'a> {
             unsafe { Str::from_utf8_unchecked(valid_range) }
         } _ => { from_utf8(valid_range).unwrap() }} // could use dep_simdutf8 (non-const)
     }
-
     const fn get_str_from_slice_const(slice: &[u8], valid_len: usize) -> &str {
         let valid_range = slice![slice, ..valid_len];
         cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {

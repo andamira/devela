@@ -11,7 +11,7 @@ use crate::{ConstInit, Key, KeyMods, KeyState};
 #[doc = crate::_tags!(event interaction)]
 /// Represents a keyboard event.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct EventKey),
     test_size_of(EventKey = 20|160; niche Option),
 }]
 ///
@@ -88,7 +88,7 @@ mod ffi {
     #[doc = crate::_tags!(event interaction ffi)]
     /// An FFI-safe version of [`EventKey`].
     #[doc = crate::_doc_meta!{
-        location("ui/event"),
+        location("ui/event", struct EventKeyFfi),
         test_size_of(EventKeyFfi = 20|160; niche Option),
     }]
     #[repr(C)]

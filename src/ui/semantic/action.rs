@@ -8,8 +8,8 @@ crate::enumset! {
     #[doc = crate::_tags!(ui interaction member)]
     /// Human-facing action exposed by a UI identity.
     #[doc = crate::_doc_meta! {
-        location("ui/semantic"),
-        test_size_of(UiAction = 1|8),
+        location("ui/semantic", enum UiAction),
+        test_size_of(UiAction = 1|8; niche Option),
     }]
     #[must_use]
     pub enum UiAction(
@@ -17,8 +17,8 @@ crate::enumset! {
         #[doc = crate::_tags!(ui set)]
         /// Set of semantic actions exposed by a UI identity.
         #[doc = crate::_doc_meta! {
-            location("ui/semantic"),
-            test_size_of(UiActions = 2|16),
+            location("ui/semantic", struct UiActions),
+            test_size_of(UiActions = 2|16; niche !Option),
         }]
         #[must_use]
         #[repr(transparent)]

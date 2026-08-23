@@ -5,7 +5,7 @@
 
 #[doc = crate::_tags!(text namespace)]
 /// Unicode scalars-related low-level *const* operations.
-#[doc = crate::_doc_meta!{location("text/unicode/scalar")}]
+#[doc = crate::_doc_meta!{location("text/unicode/scalar", struct Char)}]
 ///
 /// # Terminology
 /// - A **code point** is an integer in `U+0000..=U+10FFFF`.

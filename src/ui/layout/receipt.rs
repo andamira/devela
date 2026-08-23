@@ -11,8 +11,8 @@ use crate::{Cmp, Interval, Lunit, Ordering, UiId, UiRect};
 #[doc = crate::_tags!(layout)]
 /// One-axis result of spatial negotiation.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(Layout1d = 8|64),
+    location("ui/layout", struct Layout1d),
+    test_size_of(Layout1d = 8|64; niche !Option),
 }]
 /// Records how much one-dimensional space was available and how much was
 /// consumed by a placement.
@@ -82,8 +82,8 @@ impl Layout1d {
 #[doc = crate::_tags!(layout)]
 /// Frame-local record of assigned layout space.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(LayoutReceipt = 24|192),
+    location("ui/layout", struct LayoutReceipt),
+    test_size_of(LayoutReceipt = 24|192; niche Option),
 }]
 /// Connects a resolved UI identity with the concrete layout region assigned to it.
 #[must_use]

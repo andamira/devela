@@ -7,8 +7,13 @@ use crate::{RunPhase, RunStep, RuntimeTick};
 
 #[doc = crate::_tags!(runtime time)]
 /// A per-frame snapshot passed to rendering or other backend-facing work.
-#[doc = crate::_doc_meta!{location("run/time")}]
-///
+#[doc = crate::_doc_meta!{
+    location("run/time", struct RunFrame),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(RunFrame = 20|160; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(RunFrame = 32|256; niche Option),
+}]
 /// `RunFrame` pairs the logical step snapshot with short-lived backend context.
 ///
 /// It exposes:

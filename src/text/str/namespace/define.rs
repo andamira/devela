@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(string namespace)]
 /// A string slice namespace.
-#[doc = crate::_doc_meta!{location("text/str")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/str", struct Str),
+}]
 /// Provides stateless, non-allocating operations over valid UTF-8 string slices.
 ///
 /// - For scalar-level Unicode operations see [`Char`][crate::Char].

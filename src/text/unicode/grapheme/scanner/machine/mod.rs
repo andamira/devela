@@ -18,10 +18,9 @@ use state::GraphemeMachineState;
 #[doc = concat!["Streaming ", crate::_ABBR_EGC!(), " boundary detector."]]
 /// Streaming grapheme cluster boundary detector.
 #[doc = crate::_doc_meta!{
-    location("text/unicode/grapheme"),
+    location("text/unicode/grapheme", struct GraphemeMachine),
     test_size_of(GraphemeMachine = 3|24; niche Option),
 }]
-///
 /// Sequentially processes Unicode code points,
 /// returning whether each starts a new cluster or continues the current one.
 ///
@@ -116,8 +115,10 @@ impl GraphemeMachine {
 
 #[doc = crate::_tags!(text)]
 /// Indicates how to handle a code point when detecting grapheme cluster boundaries.
-#[doc = crate::_doc_meta!{location("text/unicode/grapheme")}]
-///
+#[doc = crate::_doc_meta!{
+    location("text/unicode/grapheme", enum GraphemeBoundary),
+    test_size_of(GraphemeBoundary = 1|8; niche Option),
+}]
 /// Returned by [`GraphemeMachine`] for each code point processed, indicating
 /// whether the code point continues the current grapheme cluster or starts a new one.
 ///

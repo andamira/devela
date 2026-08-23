@@ -11,32 +11,32 @@ use crate::{Extent2, Lunit, Position2, RegionS2, Stride2};
 #[doc = crate::_tags!(ui layout)]
 /// A 2-dimensional layout extent.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(UiExt = 8|64),
+    location("ui/layout", type UiExt),
+    test_size_of(UiExt = 8|64; niche !Option),
 }]
 pub type UiExt = Extent2<Lunit>;
 
 #[doc = crate::_tags!(ui layout)]
 /// A 2-dimensional layout position.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(UiPos = 8|64),
+    location("ui/layout", type UiPos),
+    test_size_of(UiPos = 8|64; niche !Option),
 }]
 pub type UiPos = Position2<Lunit>;
 
 #[doc = crate::_tags!(ui layout)]
 /// A 2-dimensional layout stride.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(UiStride = 8|64),
+    location("ui/layout", type UiStride),
+    test_size_of(UiStride = 8|64; niche !Option),
 }]
 pub type UiStride = Stride2<Lunit>;
 
 #[doc = crate::_tags!(ui layout)]
 /// A 2-dimensional layout region.
 #[doc = crate::_doc_meta!{
-    location("ui/layout"),
-    test_size_of(UiRect = 16|128),
+    location("ui/layout", type UiRect),
+    test_size_of(UiRect = 16|128; niche !Option),
 }]
 pub type UiRect = RegionS2<Lunit>;
 

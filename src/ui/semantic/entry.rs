@@ -11,8 +11,8 @@ use crate::{UiAction, UiActions, UiFlags, UiId, UiRole};
 #[doc = crate::_tags!(ui)]
 /// Compact semantic record for a UI identity.
 #[doc = crate::_doc_meta! {
-    location("ui/semantic"),
-    test_size_of(UiEntry = 16|128),
+    location("ui/semantic", struct UiEntry),
+    test_size_of(UiEntry = 16|128; niche Option),
 }]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

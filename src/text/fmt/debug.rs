@@ -7,7 +7,7 @@ use crate::{Debug, FmtResult, Formatter};
 
 #[doc = crate::_tags!(fmt debug)]
 /// Extension for contextual debugging.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
+#[doc = crate::_doc_meta!{location("text/fmt", trait DebugExt)}]
 ///
 /// Types implementing this trait support formatting with a caller-supplied context.
 /// The context is defined per-type via the `Ctx` associated type, allowing each type
@@ -46,7 +46,13 @@ pub trait DebugExt {
 
 #[doc = crate::_tags!(fmt debug)]
 /// A [`Debug`] adapter for formatting a value with a [`DebugExt`] context.
-#[doc = crate::_doc_meta!{location("text/fmt")}]
+#[doc = crate::_doc_meta!{
+    location("text/fmt", struct DebugWith),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: DebugWith<()> = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: DebugWith<()> = 16|128; niche Option),
+}]
 pub struct DebugWith<'a, T: DebugExt + ?Sized> {
     value: &'a T,
     ctx: &'a T::Ctx,
@@ -60,5 +66,12 @@ impl<'a, T: DebugExt + ?Sized> DebugWith<'a, T> {
 impl<T: DebugExt + ?Sized> Debug for DebugWith<'_, T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         self.value.fmt_with(f, self.ctx)
+    }
+}
+
+impl DebugExt for () {
+    type Ctx = ();
+    fn fmt_with(&self, f: &mut Formatter, _ctx: &Self::Ctx) -> FmtResult<()> {
+        f.write_str("()")
     }
 }

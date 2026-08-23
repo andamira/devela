@@ -11,8 +11,9 @@ pub use weekday::Weekday;
 
 #[doc = crate::_tags!(time)]
 /// Returns `true` if the provided `year` is a leap year.
-#[doc = crate::_doc_meta!{location("phys/time")}]
-///
+#[doc = crate::_doc_meta!{
+    location("phys/time", fn is_leap_year), // RETHINK
+}]
 /// A leap year occurs every four years to help synchronize the calendar year
 /// with the solar year or the length of time it takes the Earth to complete
 /// its orbit around the Sun, which is about 365.25 days. A year is

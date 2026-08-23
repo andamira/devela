@@ -8,10 +8,9 @@ use crate::{_impl_init, EventButtons, KeyMods, Position2};
 #[doc = crate::_tags!(event interaction)]
 /// Represents a normalized wheel-scroll event.
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", struct EventWheel),
     test_size_of(EventWheel = 20|160; niche Option),
 }]
-///
 /// Carries signed horizontal and vertical scroll deltas at a cursor position,
 /// expressed in the semantic [`unit`][Self::unit].
 ///
@@ -108,7 +107,7 @@ impl EventWheel {
 #[doc = crate::_tags!(event interaction)]
 /// The semantic unit carried by an [`EventWheel`].
 #[doc = crate::_doc_meta!{
-    location("ui/event"),
+    location("ui/event", enum EventWheelUnit),
     test_size_of(EventWheelUnit = 1|8; niche Option),
 }]
 /// This describes the meaning of `delta_x` and `delta_y` after backend normalization.

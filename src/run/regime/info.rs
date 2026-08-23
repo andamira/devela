@@ -10,11 +10,11 @@ crate::items! {
     #[doc = crate::_tags!(runtime)]
     /// Runtime system identity metadata.
     #[doc = crate::_doc_meta!{
-        location("run/regime"),
+        location("run/regime", struct RunSystemInfo),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(RunSystemInfo = 36|288),
+        test_size_of(RunSystemInfo = 36|288; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(RunSystemInfo = 72|576),
+        test_size_of(RunSystemInfo = 72|576; niche Option),
     }]
     #[derive(Clone, Debug, Default, PartialEq, Eq)]
     #[crate::macro_apply(crate::__doc_show(feature = "alloc"))]

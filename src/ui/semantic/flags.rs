@@ -7,8 +7,8 @@ crate::set! {
     #[doc = crate::_tags!(ui set)]
     /// Semantic state flags of a UI identity.
     #[doc = crate::_doc_meta! {
-        location("ui/semantic"),
-        test_size_of(UiFlags = 2|16),
+        location("ui/semantic", struct UiFlags),
+        test_size_of(UiFlags = 2|16; niche !Option),
     }]
     #[must_use]
     #[repr(transparent)]

@@ -8,8 +8,8 @@ use crate::{_impl_init, TextCursor, TextUnit};
 #[doc = crate::_tags!(text layout result)]
 /// Result of testing whether text fits within an inline extent.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
-    test_size_of(TextFit = 1),
+    location("text/layout", enum TextFit),
+    test_size_of(TextFit = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TextFit {
@@ -30,11 +30,11 @@ _impl_init![Self::None => TextFit];
 #[doc = crate::_tags!(text layout result)]
 /// Result of a single text layout step.
 #[doc = crate::_doc_meta!{
-    location("text/layout"),
+    location("text/layout", struct TextLayoutStep),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(TextLayoutStep = 20|160),
+    test_size_of(TextLayoutStep = 20|160; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(TextLayoutStep = 24|192),
+    test_size_of(TextLayoutStep = 24|192; niche Option),
 }]
 ///
 /// A layout step consumes a prefix of the symbol stream within a given inline extent,

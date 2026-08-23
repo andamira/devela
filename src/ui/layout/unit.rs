@@ -9,8 +9,8 @@ crate::bound_int! {
     #[doc = crate::_tags!(ui layout quant)]
     /// Fixed-point scalar used for UI layout negotiation.
     #[doc = crate::_doc_meta!{
-        location("ui/layout"),
-        test_size_of(Lunit = 4|32),
+        location("ui/layout", struct Lunit),
+        test_size_of(Lunit = 4|32; niche !Option),
     }]
     /// `Lunit` is expressed in logical layout space. It is not a device pixel,
     /// physical pixel, terminal cell, typographic point, or real-world length.
