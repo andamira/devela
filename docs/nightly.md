@@ -104,13 +104,12 @@ See also
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `c`[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
-        `c` `const_slice_from_ref`
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
-- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull)
+- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951)
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
 - 1.??: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)

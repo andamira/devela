@@ -263,6 +263,8 @@ Legend:
 > - <https://github.com/rust-lang/rust/milestone/125>
 
 - 1.83: `✓`[char::MIN](https://github.com/rust-lang/rust/pull/130154)
+- 1.83: ` `[const_array_from_ref](https://github.com/rust-lang/rust/issues/90206)
+        ` ` `const_slice_from_ref`
 - 1.83: ` `[const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
 - 1.83: `✓`[const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
 - 1.83: ` `[const_extern_fn](https://github.com/rust-lang/rust/pull/129753)
