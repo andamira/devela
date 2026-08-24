@@ -100,6 +100,45 @@ fn cell_bounds_are_unit_regions() {
     assert_eq!(GRID.cell_bounds(Position2::new([2, 2])), None,);
 }
 #[test]
+fn cell_indices_are_x_fastest_and_reversible() {
+    assert_eq!(GRID.cell_index(pos![0_u32, 0]), Some(0));
+    assert_eq!(GRID.cell_index(pos![1_u32, 0]), Some(1));
+    assert_eq!(GRID.cell_index(pos![2_u32, 0]), Some(2));
+    assert_eq!(GRID.cell_index(pos![0_u32, 1]), Some(3));
+    assert_eq!(GRID.cell_index(pos![2_u32, 1]), Some(5));
+    assert_eq!(GRID.coord_at(0), Some(pos![0_u32, 0]));
+    assert_eq!(GRID.coord_at(3), Some(pos![0_u32, 1]));
+    assert_eq!(GRID.coord_at(5), Some(pos![2_u32, 1]));
+    assert_eq!(GRID.coord_at(6), None);
+}
+#[test]
+fn canonical_index_matches_dense_first_array_storage() {
+    let grid = RasterGrid::new(ext![3_u32, 2]);
+    let shape = grid.try_array_shape().unwrap();
+    let layout = ArrayLayout::dense_first(shape).unwrap();
+    for coord in grid.coords() {
+        let [x, y] = coord.dim;
+        assert_eq!(
+            layout.storage_index([x as usize, y as usize]),
+            Some(grid.cell_index(coord).unwrap() as usize),
+        );
+    }
+}
+#[test]
+fn every_coordinate_round_trips_through_its_index() {
+    for coord in GRID.coords() {
+        let index = GRID.cell_index(coord).unwrap();
+        assert_eq!(GRID.coord_at(index), Some(coord));
+    }
+}
+#[test]
+fn full_u32_grid_indices_remain_exact() {
+    let grid = RasterGrid::new(ext![u32::MAX, u32::MAX]);
+    let last = pos![u32::MAX - 1, u32::MAX - 1];
+    assert_eq!(grid.cell_index(last), Some(grid.cell_count() - 1));
+    assert_eq!(grid.coord_at(grid.cell_count() - 1), Some(last));
+}
+#[test]
 fn traversal_consumes_into_array_coordinates() {
     let grid = RasterGrid::new(Extent2::new([3, 2]));
     let shape = grid.try_array_shape().unwrap();
@@ -160,9 +199,12 @@ fn small_grid_projects_to_array_shape() {
 }
 #[test]
 #[cfg(target_pointer_width = "32")]
-fn array_projection_rejects_unaddressable_cell_count() {
+fn array_projection_preserves_unaddressable_shape() {
     let grid = RasterGrid::new(Extent2::new([u32::MAX, 2]));
-    assert!(grid.try_array_shape().is_err());
+    let shape = grid.try_array_shape().unwrap();
+    assert_eq!(shape.lengths(), &[usize::MAX, 2]);
+    assert!(shape.element_count().is_err());
+    assert!(ArrayLayout::dense_first(shape).is_err());
 }
 #[cfg(target_pointer_width = "32")]
 #[test]

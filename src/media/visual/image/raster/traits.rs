@@ -19,7 +19,7 @@
 
 #[cfg(feature = "unsafe_layout")]
 use crate::MemPod;
-use crate::{Boundary1d, Extent2};
+use crate::{Boundary1d, Extent2, Position2, RasterGrid, is};
 
 /* typed-sample family */
 
@@ -46,6 +46,18 @@ pub trait RasterView {
     fn raster_extent(&self) -> Extent2<u32>;
     /// Returns the dense sample slice in row-major order.
     fn raster_samples(&self) -> &[Self::Sample];
+
+    /* provided */
+
+    /// Returns the sample at `coord`.
+    ///
+    /// Coordinates use canonical raster space: upper-left origin,
+    /// positive x rightward, positive y downward.
+    fn raster_get(&self, coord: Position2<u32>) -> Option<&Self::Sample> {
+        let index = RasterGrid::new(self.raster_extent()).cell_index(coord)?;
+        is! { index > usize::MAX as u64, return None }
+        self.raster_samples().get(index as usize)
+    }
 }
 
 #[rustfmt::skip]
@@ -67,6 +79,12 @@ pub trait RasterBuf: RasterView {
     /// Fills the whole raster with one sample value.
     fn raster_fill(&mut self, sample: Self::Sample) where Self::Sample: Clone {
         self.raster_samples_mut().fill(sample);
+    }
+    /// Returns exclusive access to the sample at `coord`.
+    fn raster_get_mut(&mut self, coord: Position2<u32>) -> Option<&mut Self::Sample> {
+        let index = RasterGrid::new(self.raster_extent()).cell_index(coord)?;
+        is! { index > usize::MAX as u64, return None }
+        self.raster_samples_mut().get_mut(index as usize)
     }
 }
 

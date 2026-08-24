@@ -215,10 +215,13 @@
 ##### media::visual::image::raster
 - new types: `Adam7Pass`, `Adam7Row`, `Adam7Rows`, `RasterElement`, `RasterGrid`, `RasterLineIter`, `RasterSlice`, `RasterByteSlice`.
 - remove types: `RasterBytesMut`, `RasterBytesRef`, `RasterMut`, `RasterRef`.
-- update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
+- update `RasterBuf`: add method `raster_get_mut`.
 - update `RasterLayout`:
-  - add method `is_valid`.
+  - add methods: `is_valid`, `row_offset_bytes`, `pixel_offset_bytes`.
+  - support machine-addressable byte lengths beyond `u32`.
   - change `bytes_per_line` field to u32.
+- update `RasterView`: add method `raster_get`.
+- update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
 
 ## num
 - rename `num::lin` to `num::alg`.

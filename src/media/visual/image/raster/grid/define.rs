@@ -119,6 +119,58 @@ impl RasterGrid {
         Some(RegionS2::new(coord, Extent2::new([1, 1])))
     }
 
+    /* indexing */
+
+    /// Returns the canonical logical index of `coord`.
+    ///
+    /// Raster indices are x-fast and independent of physical storage:
+    ///
+    /// ```text
+    /// index = y * width + x
+    /// ```
+    ///
+    /// The returned `u64` can represent every cell of every `u32 × u32`
+    /// raster grid.
+    ///
+    /// Returns `None` when `coord` lies outside the grid.
+    #[must_use]
+    pub const fn cell_index(&self, coord: Position2<u32>) -> Option<u64> {
+        is! { !self.contains(coord), return None }
+        let [x, y] = coord.dim;
+        Some(y as u64 * self.width() as u64 + x as u64)
+    }
+    /// Returns the coordinate at the canonical logical `index`.
+    ///
+    /// This is the inverse of [`cell_index`][Self::cell_index].
+    ///
+    /// Returns `None` when `index >= self.cell_count()`.
+    #[must_use]
+    pub const fn coord_at(&self, index: u64) -> Option<Position2<u32>> {
+        is! { index >= self.cell_count(), return None }
+        // `index < cell_count()` implies a non-zero width.
+        let width = self.width() as u64;
+        let (x, y) = (index % width, index / width);
+        Some(Position2::new([x as u32, y as u32]))
+    }
+
+    /* traversal */
+
+    /// Returns an exhaustive iterator over the raster-cell coordinates.
+    ///
+    /// Coordinates are yielded as [`Position2<u32>`] values in canonical
+    /// raster order, with `x` changing fastest:
+    ///
+    /// ```text
+    /// [0, 0], [1, 0], …, [width - 1, 0],
+    /// [0, 1], [1, 1], …
+    /// ```
+    ///
+    /// Traversal is independent of sample storage, physical layout,
+    /// and machine-addressable array coordinates.
+    pub const fn coords(&self) -> RasterCoordIter {
+        RasterCoordIter::new(*self)
+    }
+
     /* projections */
 
     /// Projects this raster grid into a two-dimensional [`ArrayShape`].
@@ -143,23 +195,5 @@ impl RasterGrid {
             return Err(Overflow(None));
         }
         Ok(ArrayShape::new([width as usize, height as usize]))
-    }
-
-    /* traversal */
-
-    /// Returns an exhaustive iterator over the raster-cell coordinates.
-    ///
-    /// Coordinates are yielded as [`Position2<u32>`] values in canonical
-    /// raster order, with `x` changing fastest:
-    ///
-    /// ```text
-    /// [0, 0], [1, 0], …, [width - 1, 0],
-    /// [0, 1], [1, 1], …
-    /// ```
-    ///
-    /// Traversal is independent of sample storage, physical layout,
-    /// and machine-addressable array coordinates.
-    pub const fn coords(&self) -> RasterCoordIter {
-        RasterCoordIter::new(*self)
     }
 }

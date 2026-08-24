@@ -4,7 +4,7 @@
 //
 // > How are pixels represented in memory?
 
-use crate::{Boundary1d, Extent2, is, unwrap};
+use crate::{Boundary1d, Extent2, Position2, is, unwrap};
 
 #[doc = crate::_tags!(image layout)]
 /// Describes the extent and memory stepping of raster storage.
@@ -83,14 +83,53 @@ impl RasterLayout {
             None => false,
         }
     }
-
     /// Returns the minimum byte length required by this layout.
     pub const fn min_len_bytes(self) -> Option<usize> {
         is! { !self.is_valid(), return None }
         let [width, height] = self.extent.dim;
         is! { width == 0 || height == 0, return Some(0) }
-        let row_used = unwrap![some?(width as usize).checked_mul(self.bytes_per_pixel as usize)];
-        let prior_rows = unwrap![some?(height - 1).checked_mul(self.bytes_per_line)] as usize;
-        prior_rows.checked_add(row_used)
+        let row_used = width as u64 * self.bytes_per_pixel as u64;
+        let prior_rows = (height as u64 - 1) * self.bytes_per_line as u64;
+        let len = unwrap![some? prior_rows.checked_add(row_used)];
+        is! { len > usize::MAX as u64, None, Some(len as usize) }
+    }
+
+    /// Returns the byte offset of logical row `y` in physical storage.
+    ///
+    /// The offset is measured from the beginning of the backing byte storage.
+    /// [`row_start`][Self::row_start] determines whether logical row `0`
+    /// is stored first or last.
+    ///
+    /// Returns `None` when:
+    /// - the layout is invalid;
+    /// - `y` lies outside the raster;
+    /// - or the resulting offset is not representable as a `usize`.
+    #[must_use]
+    pub const fn row_offset_bytes(self, y: u32) -> Option<usize> {
+        is! { !self.is_valid() || y >= self.extent.dim[1], return None }
+        let height = self.extent.dim[1];
+        let stored_y = match self.row_start {
+            Boundary1d::Upper => y,
+            Boundary1d::Lower => height - 1 - y,
+        };
+        let offset = stored_y as u64 * self.bytes_per_line as u64;
+        is! { offset > usize::MAX as u64, None, Some(offset as usize) }
+    }
+    /// Returns the byte offset of the first stored byte of `coord`.
+    ///
+    /// The input coordinate is always expressed in canonical logical raster
+    /// space. Row orientation and padding are resolved by this layout.
+    ///
+    /// Returns `None` for an invalid layout, an external coordinate,
+    /// or an offset that cannot be represented as a `usize`.
+    #[must_use]
+    pub const fn pixel_offset_bytes(self, coord: Position2<u32>) -> Option<usize> {
+        let [x, y] = coord.dim;
+        let [width, height] = self.extent.dim;
+        is! { x >= width || y >= height, return None }
+        let row = unwrap![some? self.row_offset_bytes(y)] as u64;
+        let pixel = x as u64 * self.bytes_per_pixel as u64;
+        let offset = unwrap![some? row.checked_add(pixel)];
+        is! { offset > usize::MAX as u64, None, Some(offset as usize) }
     }
 }
