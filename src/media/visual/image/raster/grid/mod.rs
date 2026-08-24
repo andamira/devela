@@ -6,14 +6,14 @@
 #[cfg(test)]
 mod _test;
 
-// mod adam7; // TODO
+mod adam7; // Adam7 interlaced raster traversal
 mod define; // RasterGrid
 mod coord; // RasterCoordIter
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // adam7::_all::*,
+            adam7::{Adam7Pass, Adam7Row, Adam7Rows},
             define::RasterGrid,
             coord::RasterCoordIter,
         };

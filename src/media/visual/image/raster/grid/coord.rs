@@ -8,8 +8,8 @@ use crate::{IteratorFused, Position2, RasterGrid, is};
 #[doc = crate::_tags!(image iterator)]
 /// An iterator over the coordinates of a raster grid.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster/grid"),
-    test_size_of(RasterCoordIter = 32|256),
+    location("media/visual/image/raster/grid", struct RasterCoordIter),
+    test_size_of(RasterCoordIter = 32|256; niche !Option),
 }]
 /// Coordinates are yielded in canonical raster order, with `x` changing fastest.
 ///

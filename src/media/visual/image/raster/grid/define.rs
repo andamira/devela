@@ -10,8 +10,8 @@ use crate::{ArrayShape, Extent2, Overflow, Position2, RasterCoordIter, RegionS2}
 #[doc = crate::_tags!(image layout)]
 /// A finite logical grid of canonical raster cells.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster/grid"),
-    test_size_of(RasterGrid = 8|64),
+    location("media/visual/image/raster/grid", struct RasterGrid),
+    test_size_of(RasterGrid = 8|64; niche !Option),
 }]
 /// `RasterGrid` defines the logical geometry of a two-dimensional raster,
 /// independently of its samples and physical storage.
