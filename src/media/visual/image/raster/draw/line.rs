@@ -48,20 +48,24 @@ use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets, unwra
 /// The recurrence avoids floating-point arithmetic, division during iteration,
 /// and doubled deltas that could overflow at the full `i64` raster-lattice range.
 ///
+/// Constructor-time clipping uses widened integer arithmetic to jump directly
+/// to the exact recurrence state at a selected major-axis step.
+/// Iteration itself remains incremental and division-free.
+///
 /// # Grid clipping
 ///
-/// The complete integer line is rasterized in signed lattice space and cells
-/// outside the grid are skipped. Empty grids and lines whose bounding boxes
-/// are trivially disjoint from the grid produce no elements immediately.
+/// The candidate major-axis interval is restricted to the portion overlapping the raster grid.
 ///
-/// Consequently, work is generally proportional to:
-/// ```text
-/// max(abs(end.x - start.x), abs(end.y - start.y)) + 1
-/// ```
-/// rather than only to the number of emitted cells.
+/// The iterator reconstructs the exact integer-rasterization state at the
+/// clipped interval boundaries, so clipping does not restart or alter the
+/// underlying line recurrence. The emitted sequence therefore remains identical
+/// to rasterizing the complete line and discarding cells outside the grid.
 ///
-/// This type represents an aliased line only. Antialiasing, stroke width,
-/// caps, joins, paint, and compositing are separate operations.
+/// Candidates outside the grid along the minor axis are still skipped during iteration.
+///
+/// After construction, candidate work is bounded by the grid extent along the
+/// line's major axis: at most `width` candidates for an x-major line or
+/// `height` candidates for a y-major line.
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RasterLineIter {
@@ -84,14 +88,13 @@ impl RasterLineIter {
 
     /// Creates an aliased raster-line iterator.
     ///
-    /// `start` and `end` are signed raster-lattice positions and may lie
-    /// outside `grid`. Emitted [`RasterElement`] coordinates are always
-    /// contained `u32` raster-cell coordinates.
+    /// `start` and `end` are signed raster-lattice positions and may lie outside `grid`.
+    /// Emitted [`RasterElement`] coordinates are always contained `u32` raster-cell coordinates.
     pub const fn new(grid: RasterGrid, start: Position2<i64>, end: Position2<i64>) -> Self {
         let dx = start.dim[0].abs_diff(end.dim[0]);
         let dy = start.dim[1].abs_diff(end.dim[1]);
         let (major_axis, major_delta, minor_delta) = is![dx >= dy, (0, dx, dy), (1, dy, dx)];
-        lets! { major = major_axis as usize, minor = 1 - major};
+        lets! { major = major_axis as usize, minor = 1 - major };
         // Canonical traversal always increases along the major axis.
         let forward = start.dim[major] <= end.dim[major];
         let (canonical_start, canonical_end) = is![forward, (start, end), (end, start)];
@@ -100,14 +103,48 @@ impl RasterLineIter {
             1,
             is![canonical_start.dim[minor] > canonical_end.dim[minor], -1, 0]
         ];
-        let finished = !line_bounds_intersect(grid, start, end);
+        lets! { mut position = start, mut iter_end = end, mut error = major_delta / 2 }
+        let mut finished = !line_bounds_intersect(grid, start, end);
+        if !finished {
+            if let Some((first_step, last_step)) =
+                grid_major_step_range(grid, canonical_start, canonical_end, major_axis)
+            {
+                let (first_position, first_error) = state_at(
+                    canonical_start,
+                    major_axis,
+                    major_delta,
+                    minor_delta,
+                    minor_step,
+                    first_step,
+                );
+                let (last_position, last_error) = state_at(
+                    canonical_start,
+                    major_axis,
+                    major_delta,
+                    minor_delta,
+                    minor_step,
+                    last_step,
+                );
+                if forward {
+                    position = first_position;
+                    iter_end = last_position;
+                    error = first_error;
+                } else {
+                    position = last_position;
+                    iter_end = first_position;
+                    error = last_error;
+                }
+            } else {
+                finished = true;
+            }
+        }
         Self {
             grid,
-            position: start,
-            end,
+            position,
+            end: iter_end,
             major_delta,
             minor_delta,
-            error: major_delta / 2,
+            error,
             major_axis,
             minor_step,
             forward,
@@ -208,6 +245,44 @@ const fn line_bounds_intersect(
     is! { min_x >= grid.width() as i64, return false }
     is! { min_y >= grid.height() as i64, return false }
     true
+}
+/// Returns the canonical major-step interval that can overlap the grid.
+const fn grid_major_step_range(
+    grid: RasterGrid,
+    canonical_start: Position2<i64>,
+    canonical_end: Position2<i64>,
+    major_axis: u8,
+) -> Option<(u64, u64)> {
+    let major = major_axis as usize;
+    let extent = if major == 0 { grid.width() } else { grid.height() };
+    is! { extent == 0, return None }
+    let start = canonical_start.dim[major];
+    let end = canonical_end.dim[major];
+    let grid_end = extent as i64 - 1;
+    is! { end < 0 || start > grid_end, return None } // Canonical major coords always increase
+    let first = is! { start < 0, start.abs_diff(0), 0 };
+    let last = is! { end > grid_end, start.abs_diff(grid_end), start.abs_diff(end) };
+    Some((first, last))
+}
+/// Reconstructs the exact canonical line state after `step` major steps.
+const fn state_at(
+    canonical_start: Position2<i64>,
+    major_axis: u8,
+    major_delta: u64,
+    minor_delta: u64,
+    minor_step: i8,
+    step: u64,
+) -> (Position2<i64>, u64) {
+    is! { major_delta == 0, return (canonical_start, 0) }
+    lets! { major = major_axis as usize, minor = 1 - major }
+    // `u128` makes the full i64 lattice safe.
+    let total = (major_delta / 2) as u128 + step as u128 * minor_delta as u128;
+    let minor_steps = total / major_delta as u128;
+    let error = (total % major_delta as u128) as u64;
+    let mut dim = canonical_start.dim;
+    dim[major] = (dim[major] as i128 + step as i128) as i64;
+    dim[minor] = (dim[minor] as i128 + minor_step as i128 * minor_steps as i128) as i64;
+    (Position2::new(dim), error)
 }
 
 /* traits */

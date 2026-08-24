@@ -219,4 +219,31 @@ mod line_iter {
             assert_eq!(line.next(), None);
         }
     }
+    #[test]
+    fn clips_extreme_horizontal_line_to_grid_candidate_span() {
+        let grid = RasterGrid::new(ext![5, 4]);
+        let mut forward = RasterLineIter::new(grid, pos![i64::MIN, 1], pos![i64::MAX, 1]);
+        assert_eq!(forward.size_hint(), (0, Some(5)));
+        for x in 0..5 {
+            assert_eq!(forward.next().map(RasterElement::coord), Some(pos![x, 1]),);
+        }
+        assert_eq!(forward.next(), None);
+        let mut backward = RasterLineIter::new(grid, pos![i64::MAX, 1], pos![i64::MIN, 1]);
+        assert_eq!(backward.size_hint(), (0, Some(5)));
+        for x in (0..5).rev() {
+            assert_eq!(backward.next().map(RasterElement::coord), Some(pos![x, 1]),);
+        }
+        assert_eq!(backward.next(), None);
+    }
+    #[test]
+    fn clips_extreme_diagonal_without_losing_exact_state() {
+        let grid = RasterGrid::new(ext![4, 4]);
+        let mut line =
+            RasterLineIter::new(grid, pos![i64::MIN, i64::MIN], pos![i64::MAX, i64::MAX]);
+        assert_eq!(line.size_hint(), (0, Some(4)));
+        for i in 0..4 {
+            assert_eq!(line.next().map(RasterElement::coord), Some(pos![i, i]),);
+        }
+        assert_eq!(line.next(), None);
+    }
 }
