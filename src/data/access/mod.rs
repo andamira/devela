@@ -29,6 +29,7 @@ mod cursor; // Retained positional access over ordered data
 pub mod iter; // Composable external and lending traversal
 mod offset; // Explicit positional access: read_at!, write_at!
 pub mod route; // Segmented routes before domain-specific interpretation
+mod transfer; // Caller-buffered gather/scatter transfers
 
 crate::structural_mods! { // _mods, _pub_mods
     _mods {
@@ -36,6 +37,7 @@ crate::structural_mods! { // _mods, _pub_mods
             // address::_all::*,
             cursor::_all::*,
             offset::_all::*,
+            transfer::StridedBlocks,
         };
     }
     _pub_mods {

@@ -7,7 +7,7 @@
 //! scanline filtering, compression, and image formats are separate concerns.
 //
 
-use crate::{Extent2, IteratorFused, is, whilst};
+use crate::{Extent2, IteratorFused, StridedBlocks, is, unwrap, whilst};
 
 #[doc = crate::_tags!(image)]
 /// One of the seven canonical passes of Adam7 interlacing.
@@ -106,6 +106,21 @@ impl Adam7Row {
     pub const fn x_step(self) -> u32 { self.pass.x_step() }
     /// Returns the number of samples in this compact pass row.
     pub const fn len(self) -> u32 { self.len }
+
+    /// Returns this row's samples as strided fixed-width storage blocks.
+    ///
+    /// Each image-space sample occupies `block_len` consecutive storage elements.
+    /// The row's x origin and step are scaled accordingly.
+    ///
+    /// Use a block length of `1` when each raster cell occupies one typed element.
+    ///
+    /// Returns `None` if `block_len` is zero
+    /// or the scaled storage geometry overflows `usize`.
+    pub const fn strided_blocks(self, block_len: usize) -> Option<StridedBlocks> {
+        let start = unwrap![some? (self.x_start() as usize).checked_mul(block_len)];
+        let stride = unwrap![some? (self.x_step() as usize).checked_mul(block_len)];
+        StridedBlocks::new(start, stride, block_len, self.len() as usize)
+    }
 }
 
 #[doc = crate::_tags!(image iterator)]
@@ -266,5 +281,26 @@ mod _test {
         assert_eq!(rows.size_hint(), (0, Some(0)));
         assert_eq!(rows.next(), None);
         assert_eq!(rows.next(), None);
+    }
+    #[test]
+    fn row_gathers_typed_elements_with_strided_blocks() {
+        let row = Adam7Rows::new(Extent2::new([8, 8]))
+            .find(|row| row.pass_index() == 6 && row.pass_y() == 0)
+            .unwrap();
+        assert_eq!(row.y(), 0);
+        assert_eq!(row.x_start(), 1);
+        assert_eq!(row.x_step(), 2);
+        assert_eq!(row.len(), 4);
+        let blocks = row.strided_blocks(1).unwrap();
+        let src = [0, 1, 2, 3, 4, 5, 6, 7];
+        let mut dst = [0; 4];
+        assert_eq!(blocks.gather_into(&src, &mut dst), Some(4));
+        assert_eq!(dst, [1, 3, 5, 7]);
+        let bytes = row.strided_blocks(4).unwrap();
+        assert_eq!(bytes.start(), 4);
+        assert_eq!(bytes.stride(), 8);
+        assert_eq!(bytes.block_len(), 4);
+        assert_eq!(bytes.count(), 4);
+        assert_eq!(bytes.transfer_len(), 16);
     }
 }

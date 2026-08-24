@@ -77,6 +77,7 @@
 - update `test_size_of!`: support negative niche `Option` testing.
 
 ### data::access
+- new type `StridedBlocks`.
 - move macros from `code::util`: `read_at`, `write_at`.
 
 #### data::access::route
