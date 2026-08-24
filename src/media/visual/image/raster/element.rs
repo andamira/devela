@@ -7,11 +7,8 @@ use crate::{Coverage8, Position2};
 #[doc = crate::_tags!(image quant)]
 /// One rasterization output element for a single raster cell.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
-    #[cfg(target_pointer_width = "32")]
-    test_size_of(RasterElement = 12 ),
-    #[cfg(target_pointer_width = "64")]
-    test_size_of(RasterElement = 24 ),
+    location("media/visual/image/raster", struct RasterElement),
+    test_size_of(RasterElement = 12; niche !Option),
 }]
 /// A `RasterElement` associates a canonical raster cell coordinate
 /// with a quantized coverage value.
@@ -25,25 +22,23 @@ use crate::{Coverage8, Position2};
 /// or by clipped rasterization routines.
 ///
 /// See also [`Coverage8`].
+#[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct RasterElement {
-    coord: Position2<usize>,
+    coord: Position2<u32>,
     coverage: Coverage8,
 }
-
 impl RasterElement {
-    #[must_use]
     /// Creates a raster element from a coordinate and coverage.
-    pub const fn new(coord: Position2<usize>, coverage: Coverage8) -> Self {
+    pub const fn new(coord: Position2<u32>, coverage: Coverage8) -> Self {
         Self { coord, coverage }
     }
-    #[must_use]
     /// Creates a fully covered raster element.
-    pub const fn full(coord: Position2<usize>) -> Self {
+    pub const fn full(coord: Position2<u32>) -> Self {
         Self { coord, coverage: Coverage8::FULL }
     }
     /// Returns the target raster-cell coordinate.
-    pub const fn coord(self) -> Position2<usize> {
+    pub const fn coord(self) -> Position2<u32> {
         self.coord
     }
     /// Returns the quantized raster coverage.
@@ -51,7 +46,7 @@ impl RasterElement {
         self.coverage
     }
     /// Returns the coordinate and coverage as a pair.
-    pub const fn into_parts(self) -> (Position2<usize>, Coverage8) {
+    pub const fn into_parts(self) -> (Position2<u32>, Coverage8) {
         (self.coord, self.coverage)
     }
 }
@@ -61,8 +56,8 @@ mod _test {
     use super::*;
     use crate::{Slice, const_assert};
 
-    const P0: Position2<usize> = Position2::new([0, 0]);
-    const P1: Position2<usize> = Position2::new([3, 7]);
+    const P0: Position2<u32> = Position2::new([0, 0]);
+    const P1: Position2<u32> = Position2::new([3, 7]);
 
     const E0: RasterElement = RasterElement::new(P0, Coverage8::ZERO);
     const E1: RasterElement = RasterElement::new(P1, Coverage8::new(128));
@@ -70,14 +65,14 @@ mod _test {
 
     #[test]
     const fn constructors_and_accessors_are_const() {
-        const_assert!(Slice::<usize>::eq(&E0.coord().dim, &P0.dim));
+        const_assert!(Slice::<u32>::eq(&E0.coord().dim, &P0.dim));
         const_assert!(eq E0.coverage().get(), 0);
-        const_assert!(Slice::<usize>::eq(&E1.coord().dim, &P1.dim));
+        const_assert!(Slice::<u32>::eq(&E1.coord().dim, &P1.dim));
         const_assert!(eq E1.coverage().get(), 128);
-        const_assert!(Slice::<usize>::eq(&E2.coord().dim, &P1.dim));
+        const_assert!(Slice::<u32>::eq(&E2.coord().dim, &P1.dim));
         const_assert!(eq E2.coverage().get(), 255);
-        const COORD_COVERAGE: (Position2<usize>, Coverage8) = E1.into_parts();
-        const_assert!(Slice::<usize>::eq(&COORD_COVERAGE.0.dim, &P1.dim));
+        const COORD_COVERAGE: (Position2<u32>, Coverage8) = E1.into_parts();
+        const_assert!(Slice::<u32>::eq(&COORD_COVERAGE.0.dim, &P1.dim));
         const_assert!(eq COORD_COVERAGE.1.get(), 128);
     }
     #[test]

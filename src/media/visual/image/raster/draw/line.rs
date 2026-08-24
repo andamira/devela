@@ -4,16 +4,13 @@
 //
 // > Which raster cells represent a one-cell-wide lattice line?
 
-use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets};
+use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets, unwrap};
 
 #[doc = crate::_tags!(image iterator)]
 /// An iterator over the covered cells of an aliased raster line.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster/draw"),
-    #[cfg(target_pointer_width = "32")]
-    test_size_of(RasterLineIter = 40|320),
-    #[cfg(target_pointer_width = "64")]
-    test_size_of(RasterLineIter = 80|640),
+    location("media/visual/image/raster/draw", struct RasterLineIter),
+    test_size_of(RasterLineIter = 72|576; niche Option),
 }]
 /// `RasterLineIter` rasterizes a one-cell-wide line
 /// between two signed raster-lattice positions.
@@ -49,7 +46,7 @@ use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets};
 /// a bounded unsigned error recurrence decides when to advance the minor axis.
 ///
 /// The recurrence avoids floating-point arithmetic, division during iteration,
-/// and doubled deltas that could overflow at the full `isize` coordinate range.
+/// and doubled deltas that could overflow at the full `i64` raster-lattice range.
 ///
 /// # Grid clipping
 ///
@@ -69,12 +66,12 @@ use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets};
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RasterLineIter {
     grid: RasterGrid,
-    position: Position2<isize>,
-    end: Position2<isize>,
+    position: Position2<i64>,
+    end: Position2<i64>,
 
-    major_delta: usize,
-    minor_delta: usize,
-    error: usize,
+    major_delta: u64,
+    minor_delta: u64,
+    error: u64,
 
     major_axis: u8,
     minor_step: i8,
@@ -87,24 +84,22 @@ impl RasterLineIter {
 
     /// Creates an aliased raster-line iterator.
     ///
-    /// `start` and `end` are signed raster-lattice positions. They may lie
-    /// outside `grid`; only contained cells are emitted.
-    pub const fn new(grid: RasterGrid, start: Position2<isize>, end: Position2<isize>) -> Self {
-        let dx = abs_diff(start.dim[0], end.dim[0]);
-        let dy = abs_diff(start.dim[1], end.dim[1]);
-        let (major_axis, major_delta, minor_delta) =
-            if dx >= dy { (0, dx, dy) } else { (1, dy, dx) };
+    /// `start` and `end` are signed raster-lattice positions and may lie
+    /// outside `grid`. Emitted [`RasterElement`] coordinates are always
+    /// contained `u32` raster-cell coordinates.
+    pub const fn new(grid: RasterGrid, start: Position2<i64>, end: Position2<i64>) -> Self {
+        let dx = start.dim[0].abs_diff(end.dim[0]);
+        let dy = start.dim[1].abs_diff(end.dim[1]);
+        let (major_axis, major_delta, minor_delta) = is![dx >= dy, (0, dx, dy), (1, dy, dx)];
         lets! { major = major_axis as usize, minor = 1 - major};
         // Canonical traversal always increases along the major axis.
         let forward = start.dim[major] <= end.dim[major];
-        let (canonical_start, canonical_end) = is! { forward, (start, end), (end, start) };
-        let minor_step = if canonical_start.dim[minor] < canonical_end.dim[minor] {
-            1
-        } else if canonical_start.dim[minor] > canonical_end.dim[minor] {
-            -1
-        } else {
-            0
-        };
+        let (canonical_start, canonical_end) = is![forward, (start, end), (end, start)];
+        let minor_step = is![
+            canonical_start.dim[minor] < canonical_end.dim[minor],
+            1,
+            is![canonical_start.dim[minor] > canonical_end.dim[minor], -1, 0]
+        ];
         let finished = !line_bounds_intersect(grid, start, end);
         Self {
             grid,
@@ -159,13 +154,9 @@ impl RasterLineIter {
     /// Advances one step in canonical positive-major-axis order.
     const fn advance_forward(&mut self) {
         let major = self.major_axis as usize;
-        // SAFE: the current major coordinate lies strictly before the endpoint.
+        // Safe: current major coordinate is strictly before the endpoint.
         self.position.dim[major] += 1;
         is! { self.minor_delta == 0, return }
-        // Equivalent to:
-        //   error += minor_delta;
-        //   if error >= major_delta { error -= major_delta; step minor; }
-        // but arranged so the addition cannot overflow `usize`.
         let gap = self.major_delta - self.minor_delta;
         if self.error >= gap {
             self.error -= gap;
@@ -174,14 +165,12 @@ impl RasterLineIter {
             self.error += self.minor_delta;
         }
     }
-
     /// Advances one step against canonical positive-major-axis order.
     const fn advance_backward(&mut self) {
         let major = self.major_axis as usize;
-        // SAFE: the current major coordinate lies strictly after the endpoint.
+        // Safe: current major coordinate is strictly after the endpoint.
         self.position.dim[major] -= 1;
         is! { self.minor_delta == 0, return }
-        // Exact inverse of `advance_forward`.
         if self.error < self.minor_delta {
             self.error += self.major_delta - self.minor_delta;
             self.step_minor(-self.minor_step);
@@ -191,31 +180,24 @@ impl RasterLineIter {
     }
     const fn step_minor(&mut self, step: i8) {
         let minor = 1 - self.major_axis as usize;
-        if step > 0 {
-            self.position.dim[minor] += 1;
-        } else if step < 0 {
-            self.position.dim[minor] -= 1;
-        }
+        is![step > 0, self.position.dim[minor] += 1, is![step < 0, self.position.dim[minor] -= 1]];
     }
     const fn candidate_upper_bound(&self) -> Option<usize> {
         is! { self.finished, return Some(0) }
         let major = self.major_axis as usize;
-        abs_diff(self.position.dim[major], self.end.dim[major]).checked_add(1)
+        let delta = self.position.dim[major].abs_diff(self.end.dim[major]);
+        let count = unwrap![some? delta.checked_add(1)];
+        is! { count > usize::MAX as u64, None, Some(count as usize) }
     }
 }
 
 /* helpers */
 
-/// Returns the absolute difference without overflowing signed arithmetic.
-const fn abs_diff(a: isize, b: isize) -> usize {
-    is! { a <= b, (b as i128 - a as i128) as usize, (a as i128 - b as i128) as usize }
-}
-
 /// Returns whether the line's bounding box intersects the grid.
 const fn line_bounds_intersect(
     grid: RasterGrid,
-    start: Position2<isize>,
-    end: Position2<isize>,
+    start: Position2<i64>,
+    end: Position2<i64>,
 ) -> bool {
     is! { grid.is_empty(), return false }
     let min_x = if start.dim[0] <= end.dim[0] { start.dim[0] } else { end.dim[0] };
@@ -223,8 +205,8 @@ const fn line_bounds_intersect(
     let min_y = if start.dim[1] <= end.dim[1] { start.dim[1] } else { end.dim[1] };
     let max_y = if start.dim[1] >= end.dim[1] { start.dim[1] } else { end.dim[1] };
     is! { max_x < 0 || max_y < 0, return false }
-    is! { min_x >= 0 && min_x as usize >= grid.width(), return false }
-    is! { min_y >= 0 && min_y as usize >= grid.height(), return false }
+    is! { min_x >= grid.width() as i64, return false }
+    is! { min_y >= grid.height() as i64, return false }
     true
 }
 
@@ -237,7 +219,6 @@ impl Iterator for RasterLineIter {
         Self::next(self)
     }
     fn size_hint(&self) -> (usize, Option<usize>) {
-        // Clipping means no positive lower bound can be promised.
         (0, self.candidate_upper_bound())
     }
 }

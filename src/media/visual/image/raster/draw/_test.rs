@@ -1,19 +1,16 @@
 // devela/src/media/visual/image/raster/draw/_test.rs
 
-use crate::{Coverage8, IteratorFused, Position2, Slice, const_assert, ext, pos};
+use crate::{Coverage8, Extent2, IteratorFused, Position2, Slice, const_assert, ext, pos};
 use crate::{RasterElement, RasterGrid};
 
 mod line_iter {
     use super::*;
     use crate::RasterLineIter;
 
-    const GRID: RasterGrid = match RasterGrid::try_new(ext![8, 8]) {
-        Ok(grid) => grid,
-        Err(_) => panic!("unexpected RasterGrid overflow"),
-    };
+    const GRID: RasterGrid = RasterGrid::new(ext![8, 8]);
     const CONST_LINE: [RasterElement; 5] = {
-        let mut iter = RasterLineIter::new(GRID, pos![1_isize, 1], pos![5_isize, 3]);
-        let mut elements = [RasterElement::full(pos![0_usize, 0]); 5];
+        let mut iter = RasterLineIter::new(GRID, pos![1_i64, 1], pos![5_i64, 3]);
+        let mut elements = [RasterElement::full(pos![0_u32, 0]); 5];
         let mut len = 0;
         while let Some(element) = iter.next() {
             if len == elements.len() {
@@ -30,11 +27,11 @@ mod line_iter {
 
     #[test]
     const fn construction_and_iteration_are_const() {
-        const_assert!(Slice::<usize>::eq(&CONST_LINE[0].coord().dim, &[1, 1],));
-        const_assert!(Slice::<usize>::eq(&CONST_LINE[1].coord().dim, &[2, 2],));
-        const_assert!(Slice::<usize>::eq(&CONST_LINE[2].coord().dim, &[3, 2],));
-        const_assert!(Slice::<usize>::eq(&CONST_LINE[3].coord().dim, &[4, 3],));
-        const_assert!(Slice::<usize>::eq(&CONST_LINE[4].coord().dim, &[5, 3],));
+        const_assert!(Slice::<u32>::eq(&CONST_LINE[0].coord().dim, &[1, 1],));
+        const_assert!(Slice::<u32>::eq(&CONST_LINE[1].coord().dim, &[2, 2],));
+        const_assert!(Slice::<u32>::eq(&CONST_LINE[2].coord().dim, &[3, 2],));
+        const_assert!(Slice::<u32>::eq(&CONST_LINE[3].coord().dim, &[4, 3],));
+        const_assert!(Slice::<u32>::eq(&CONST_LINE[4].coord().dim, &[5, 3],));
         const_assert!(CONST_LINE[0].coverage().is_full());
         const_assert!(CONST_LINE[1].coverage().is_full());
         const_assert!(CONST_LINE[2].coverage().is_full());
@@ -42,26 +39,36 @@ mod line_iter {
         const_assert!(CONST_LINE[4].coverage().is_full());
     }
     #[test]
+    fn accepts_positions_beyond_i32() {
+        let grid = RasterGrid::new(Extent2::new([4, 4]));
+        let mut line = RasterLineIter::new(
+            grid,
+            Position2::new([i32::MAX as i64 + 1, 0]),
+            Position2::new([i32::MAX as i64 + 10, 0]),
+        );
+        assert_eq!(line.next(), None);
+    }
+    #[test]
     fn covers_every_octant() {
-        let grid = RasterGrid::try_new(ext![11, 11]).unwrap();
-        let origin = [5_isize, 5_isize];
+        let grid = RasterGrid::new(ext![11, 11]);
+        let origin = [5_i64, 5_i64];
         // Caller traversal agrees with canonical positive-major traversal.
-        const BASE_FORWARD: [[isize; 2]; 5] = [[0, 0], [1, 1], [2, 1], [3, 2], [4, 2]];
+        const BASE_FORWARD: [[i64; 2]; 5] = [[0, 0], [1, 1], [2, 1], [3, 2], [4, 2]];
         // Caller traversal runs opposite the canonical direction.
         //
-        // This is the canonical sequence traversed backward and expressed
-        // relative to the caller's starting point.
-        const BASE_BACKWARD: [[isize; 2]; 5] = [[0, 0], [1, 0], [2, 1], [3, 1], [4, 2]];
+        // This is the canonical sequence traversed backward
+        // and expressed relative to the caller's starting point.
+        const BASE_BACKWARD: [[i64; 2]; 5] = [[0, 0], [1, 0], [2, 1], [3, 1], [4, 2]];
         for swap in [false, true] {
-            for sign_x in [-1_isize, 1] {
-                for sign_y in [-1_isize, 1] {
-                    let transform = |coord: [isize; 2]| {
+            for sign_x in [-1_i64, 1] {
+                for sign_y in [-1_i64, 1] {
+                    let transform = |coord: [i64; 2]| -> Position2<u32> {
                         let [x, y] = coord;
                         let [x, y] = if swap { [y, x] } else { [x, y] };
-                        pos![(origin[0] + x * sign_x) as usize, (origin[1] + y * sign_y) as usize,]
+                        pos![(origin[0] + x * sign_x) as u32, (origin[1] + y * sign_y) as u32]
                     };
                     let end = transform([4, 2]);
-                    let end_signed = pos![end.dim[0] as isize, end.dim[1] as isize,];
+                    let end_signed = pos![end.dim[0] as i64, end.dim[1] as i64];
                     // The delta of magnitude four is the major axis.
                     let major_sign = if swap { sign_y } else { sign_x };
                     let expected = if major_sign > 0 { BASE_FORWARD } else { BASE_BACKWARD };
@@ -80,16 +87,11 @@ mod line_iter {
     }
     #[test]
     fn reversing_endpoints_reverses_the_exact_sequence() {
-        let grid = RasterGrid::try_new(ext![8, 8]).unwrap();
+        let grid = RasterGrid::new(ext![8, 8]);
         let mut forward = RasterLineIter::new(grid, pos![1, 1], pos![5, 3]);
         let mut backward = RasterLineIter::new(grid, pos![5, 3], pos![1, 1]);
-        let expected_forward = [
-            pos![1_usize, 1],
-            pos![2_usize, 2],
-            pos![3_usize, 2],
-            pos![4_usize, 3],
-            pos![5_usize, 3],
-        ];
+        let expected_forward =
+            [pos![1_u32, 1], pos![2_u32, 2], pos![3_u32, 2], pos![4_u32, 3], pos![5_u32, 3]];
         let expected_backward = [
             expected_forward[4],
             expected_forward[3],
@@ -108,7 +110,7 @@ mod line_iter {
     }
     #[test]
     fn clips_by_skipping_external_cells() {
-        let grid = RasterGrid::try_new(ext![5, 4]).unwrap();
+        let grid = RasterGrid::new(ext![5, 4]);
         let mut line = RasterLineIter::new(grid, pos![-2, 1], pos![6, 1]);
         for x in 0..5 {
             let element = line.next().unwrap();
@@ -119,7 +121,7 @@ mod line_iter {
     }
     #[test]
     fn clipped_reversal_is_exact() {
-        let grid = RasterGrid::try_new(ext![5, 4]).unwrap();
+        let grid = RasterGrid::new(ext![5, 4]);
         let mut forward = RasterLineIter::new(grid, pos![-2, 1], pos![6, 1]);
         let mut backward = RasterLineIter::new(grid, pos![6, 1], pos![-2, 1]);
         for x in 0..5 {
@@ -141,11 +143,11 @@ mod line_iter {
     }
     #[test]
     fn empty_and_trivially_disjoint_lines_finish_immediately() {
-        let empty = RasterGrid::try_new(ext![0, usize::MAX]).unwrap();
+        let empty = RasterGrid::new(ext![0, u32::MAX]);
         let mut line = RasterLineIter::new(empty, pos![0, 0], pos![20, 20]);
         assert!(line.is_finished());
         assert_eq!(line.next(), None);
-        let mut negative = RasterLineIter::new(GRID, pos![isize::MIN, 0], pos![isize::MIN + 1, 1]);
+        let mut negative = RasterLineIter::new(GRID, pos![i64::MIN, 0], pos![i64::MIN + 1, 1]);
         assert!(negative.is_finished());
         assert_eq!(negative.next(), None);
     }
@@ -165,9 +167,9 @@ mod line_iter {
     }
     #[test]
     fn lines_obey_structural_raster_invariants() {
-        let grid = RasterGrid::try_new(ext![11, 11]).unwrap();
-        let origin = Position2::new([5_isize, 5]);
-        let cases: [(Position2<isize>, Position2<isize>); 11] = [
+        let grid = RasterGrid::new(ext![11, 11]);
+        let origin = Position2::new([5_i64, 5]);
+        let cases: [(Position2<i64>, Position2<i64>); 11] = [
             // Eight octants.
             (origin, Position2::new([9, 7])),
             (origin, Position2::new([7, 9])),
@@ -190,7 +192,7 @@ mod line_iter {
             let expected_start = grid.checked_coord(start).unwrap();
             let expected_end = grid.checked_coord(end).unwrap();
             let mut line = RasterLineIter::new(grid, start, end);
-            let mut previous: Option<Position2<usize>> = None;
+            let mut previous: Option<Position2<u32>> = None;
             let mut count = 0;
             while let Some(element) = line.next() {
                 let coord = element.coord();

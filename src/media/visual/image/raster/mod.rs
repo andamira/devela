@@ -1,7 +1,7 @@
 // devela/src/media/visual/image/raster/mod.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL_IMAGE_RASTER!()] // public
-#![doc = crate::_doc!(modules: crate::media::visual::image; raster: draw)]
+#![doc = crate::_doc!(modules: crate::media::visual::image; raster: draw, grid)]
 #![doc = crate::_doc!(flat:"media")]
 #![doc = crate::_doc!(hr)]
 //
