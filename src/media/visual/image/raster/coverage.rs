@@ -43,10 +43,14 @@ impl Coverage8 {
     /// Complete coverage.
     pub const FULL: Self = Self(u8::MAX);
 
+    /* constructors */
+
     /// Creates coverage from its normalized 8-bit representation.
     ///
     /// Every `u8` value is valid.
     pub const fn new(value: u8) -> Self { Self(value) }
+
+    /* queries */
 
     /// Returns the normalized 8-bit representation.
     #[must_use]
@@ -59,6 +63,50 @@ impl Coverage8 {
     /// Returns whether coverage is complete.
     #[must_use]
     pub const fn is_full(self) -> bool { self.0 == u8::MAX }
+
+    /* arithmetic */
+
+    /// Returns the complementary coverage.
+    ///
+    /// The result represents `1 - coverage`.
+    #[must_use]
+    pub const fn complement(self) -> Self { Self(u8::MAX - self.0) }
+
+    /// Returns the normalized product of two coverage factors.
+    ///
+    /// The exact real-valued operation is:
+    /// ```text
+    /// (self / 255) × (other / 255)
+    /// ```
+    /// and the result is rounded to the nearest representable `Coverage8`.
+    ///
+    /// This is numerical modulation of coverage factors,
+    /// not a geometric intersection operation.
+    #[must_use]
+    pub const fn product(self, other: Self) -> Self {
+        Self(Self::mul_unorm8(self.0, other.0))
+    }
+    /// Scales an unsigned normalized 8-bit value by this coverage.
+    ///
+    /// `value` is interpreted as a normalized scalar in `0..=255`.
+    ///
+    /// The result is rounded to the nearest representable `u8`.
+    #[must_use]
+    pub const fn scale_u8(self, value: u8) -> u8 {
+        Self::mul_unorm8(self.0, value)
+    }
+
+    /* private */
+
+    // Divide-free form of the reference formula:
+    // ((a as u16 * b as u16 + 127) / 255) as u8
+    //
+    // Can't panic: 255 × 255 = 65025 && 65025 + 128 = 65153
+    const fn mul_unorm8(a: u8, b: u8) -> u8 {
+        let product = a as u16 * b as u16;
+        let biased = product + 128;
+        ((biased + (biased >> 8)) >> 8) as u8
+    }
 }
 
 _impl_init![Self::ZERO => Coverage8];
@@ -83,7 +131,7 @@ impl From<Coverage8> for u8 {
 #[cfg(test)]
 mod _test {
     use super::*;
-    use crate::{ConstInit, const_assert};
+    use crate::{ConstInit, const_assert, is};
 
     const ZERO: Coverage8 = Coverage8::new(0);
     const MIDDLE: Coverage8 = Coverage8::new(128);
@@ -103,6 +151,16 @@ mod _test {
         const_assert!(eq Coverage8::INIT.get(), 0);
     }
     #[test]
+    const fn arithmetic_is_const() {
+        const_assert!(eq Coverage8::ZERO.complement().get(), 255);
+        const_assert!(eq Coverage8::FULL.complement().get(), 0);
+        const_assert!(eq Coverage8::new(128).complement().get(), 127);
+        const_assert!(eq Coverage8::new(137).product(Coverage8::FULL).get(), 137);
+        const_assert!(eq Coverage8::new(137).product(Coverage8::ZERO).get(), 0);
+        const_assert!(eq Coverage8::new(128).product(Coverage8::new(128)).get(), 64);
+        const_assert!(eq Coverage8::new(128).scale_u8(200), 100);
+    }
+    #[test]
     fn every_encoding_round_trips() {
         let mut value = u8::MIN;
         loop {
@@ -110,9 +168,7 @@ mod _test {
             assert_eq!(coverage.get(), value);
             assert_eq!(Coverage8::from(value), coverage);
             assert_eq!(u8::from(coverage), value);
-            if value == u8::MAX {
-                break;
-            }
+            is! { value == u8::MAX, break }
             value += 1;
         }
     }
@@ -125,5 +181,40 @@ mod _test {
         assert!(Coverage8::ZERO < Coverage8::new(1));
         assert!(Coverage8::new(127) < Coverage8::new(128));
         assert!(Coverage8::new(254) < Coverage8::FULL);
+    }
+    #[test]
+    fn complement_is_exact_and_involutive() {
+        let mut value = u8::MIN;
+        loop {
+            let coverage = Coverage8::new(value);
+            let complement = coverage.complement();
+            assert_eq!(value as u16 + complement.get() as u16, u8::MAX as u16);
+            assert_eq!(complement.complement(), coverage);
+            is! { value == u8::MAX, break }
+            value += 1;
+        }
+    }
+    #[test]
+    fn product_matches_rounded_normalized_reference() {
+        for a in u8::MIN..=u8::MAX {
+            for b in u8::MIN..=u8::MAX {
+                let expected = ((a as u16 * b as u16 + 127) / 255) as u8;
+                let ca = Coverage8::new(a);
+                let cb = Coverage8::new(b);
+                assert_eq!(ca.product(cb).get(), expected);
+                assert_eq!(ca.scale_u8(b), expected);
+                assert_eq!(ca.product(cb), cb.product(ca));
+            }
+        }
+    }
+    #[test]
+    fn product_has_zero_and_full_identities() {
+        for value in u8::MIN..=u8::MAX {
+            let coverage = Coverage8::new(value);
+            assert_eq!(coverage.product(Coverage8::ZERO), Coverage8::ZERO);
+            assert_eq!(coverage.product(Coverage8::FULL), coverage);
+            assert_eq!(Coverage8::ZERO.product(coverage), Coverage8::ZERO);
+            assert_eq!(Coverage8::FULL.product(coverage), coverage);
+        }
     }
 }
