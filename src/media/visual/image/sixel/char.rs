@@ -7,7 +7,10 @@ use crate::{Display, FmtResult, FmtWriter, Formatter, StringU8, format_buf, is, 
 
 #[doc = crate::_tags!(image term)]
 /// A sixel character.
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
+#[doc = crate::_doc_meta!{
+    location("media/visual/image", struct SixelChar),
+    test_size_of(SixelChar = 1|8; niche !Option),
+}]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct SixelChar(u8);
@@ -342,7 +345,7 @@ impl SixelChar {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     // use super::*;
     //
     // #[test]

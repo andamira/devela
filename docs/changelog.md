@@ -224,6 +224,9 @@
 - update `RasterView`: add method `raster_get`.
 - update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
 
+##### media::visual::image::sixel
+- refactor and harden sixel image geometry.
+
 ## num
 - rename `num::lin` to `num::alg`.
 - new module `signal`.

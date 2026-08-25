@@ -6,20 +6,27 @@
 
 #[allow(unused, reason = "__dbg")]
 use crate::{__dbg, slog};
-use crate::{Cmp, Digits, NotEnoughSpace, is, lets, slice, unwrap, whilst, write_at};
+use crate::{Cmp, Digits, Extent2, NotEnoughSpace, is, lets, slice, unwrap, whilst, write_at};
 use crate::{SixelChar, SixelColor, SixelPalette};
 
 #[doc = crate::_tags!(image term)]
 /// Encoder for Sixel graphics with fixed buffer output
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image", struct SixelEncoder),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: SixelEncoder<0> = 4|32; niche !Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: SixelEncoder<255> = 1024|8192; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: SixelEncoder<0> = 8|64; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: SixelEncoder<255> = 1032|8256; niche Option),
+}]
 /// # Features
 /// Enabling the `unsafe_sync` and `__dbg` features defines
 /// [`__LOGGER_sixel_encoder_64_64`] for diagnostic output.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SixelEncoder<const MAX_COLORS: usize> {
-    width: usize,
-    height: usize,
     palette: SixelPalette<MAX_COLORS>,
 }
 
@@ -38,23 +45,18 @@ __dbg! { slog! {
 
 /// Methods
 /// - new
-/// - with_palette
+// - with_palette
 /// - palette_mut
 /// - encode_rgb
 impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Create a new encoder with empty palette
     pub const fn new() -> Self {
-        Self { width: 0, height: 0, palette: SixelPalette::new() }
+        Self { palette: SixelPalette::new() }
     }
-    /// Create encoder with predefined palette
-    pub const fn with_palette(
-        width: usize,
-        height: usize,
-        palette: SixelPalette<MAX_COLORS>,
-    ) -> Self {
-        Self { width, height, palette }
-    }
-
+    // /// Create encoder with predefined palette
+    // pub const fn with_palette(palette: SixelPalette<MAX_COLORS>) -> Self {
+    //     Self { palette }
+    // }
     /// Get the palette (mutable)
     pub const fn palette_mut(&mut self) -> &mut SixelPalette<MAX_COLORS> {
         &mut self.palette
@@ -64,18 +66,14 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     ///
     /// - RLE encoding is used when the same sixel character repeats 4 or more times.
     #[rustfmt::skip]
-    pub const fn encode_rgb(&mut self, rgb: &[u8], width: usize, height: usize, buf: &mut [u8])
+    pub const fn encode_rgb(&mut self, rgb: &[u8], extent: Extent2<u32>, buf: &mut [u8])
         -> Result<usize, NotEnoughSpace> {
         __dbg![slog!{clear sixel_encoder:64+64}]; // slog point of entry
-
         let mut off = 0;
         off += unwrap![ok? Self::write_sixel_start_simple(slice![mut buf, off,..])];
-
-        self.width = width;
-        self.height = height;
-
-        unwrap![ok? self.build_palette(rgb, width, height)];
+        unwrap![ok? self.build_palette(rgb, extent)];
         off += self.palette.write_definitions(slice![mut buf, off, ..]);
+        let [width, height] = extent.dim;
 
         // process each horizontal band
         let mut band_y = 0;
@@ -104,9 +102,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                     // outputting the current run and starting a new one with the same character
                     let is_same_char = is![let Some(c) = current_char, sixel_char.eq(c), false];
                     match (is_same_char, repeat_count == 255) {
-                        (true, false) => {
-                            repeat_count += 1;
-                        }
+                        (true, false) => repeat_count += 1,
                         (true, true) => { // Split run: output but keep same character
                             if let Some(char) = current_char {
                                 off += unwrap![ok? Self::write_rle_run(slice![mut buf, off,..],
@@ -132,7 +128,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
                 // return to start for next color
                 is! { idx != self.palette.len() as u16 - 1, write_at![buf, +=off, b'$'];}
             }
-            band_y += 6;
+            band_y += band_height;
             is! { band_y < height, write_at![buf, +=off, b'-'];} // move to next band?
         }
         off += unwrap![ok? Self::write_sixel_end(slice![mut buf, off,..])];
@@ -150,12 +146,13 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
 #[rustfmt::skip]
 impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Builds the palette from the given rgb byte buffer.
-    const fn build_palette(&mut self, rgb: &[u8], w: usize, h: usize) -> Result<(), NotEnoughSpace> {
+    const fn build_palette(&mut self, rgb: &[u8], extent: Extent2<u32>) -> Result<(), NotEnoughSpace> {
+        let [w, h] = extent.dim;
         self.palette = SixelPalette::new();
         unwrap![ok? self.palette.add_color(SixelColor::BLACK)];
         whilst! { i in 0..(w * h); {
             // is![self.palette.is_full(), break]; // early termination MAYBE for another version
-            let idx = i * 3;
+            let idx = (i * 3) as usize;
             let color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
             if !color.is_black() { let _ = self.palette.find_or_add(color); }
         }}
@@ -163,12 +160,12 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     }
 
     /// Build sixel bits for a specific color in a column.
-    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: usize, x: usize, band_y: usize,
-        band_height: usize, target_color: SixelColor) -> u8 {
+    const fn build_sixel_bits_for_color(&self, rgb: &[u8], width: u32, x: u32, band_y: u32,
+        band_height: u32, target_color: SixelColor) -> u8 {
         let mut sixel_bits = 0u8;
         whilst! { dy in 0..band_height; {
             let y = band_y + dy;
-            let idx = (y * width + x) * 3;
+            let idx = ((y * width + x) * 3) as usize;
             // only process if within bounds
             if idx + 2 < rgb.len() {
                 let pixel_color = SixelColor::from_rgb888(rgb[idx], rgb[idx + 1], rgb[idx + 2]);
@@ -191,15 +188,13 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
     /// Returns an error if the buffer doesn't have at least 21 bytes, for good measure.
     pub const fn write_sixel_start(
         buf: &mut [u8],
-        width: usize,
-        height: usize,
+        extent: Extent2<u32>,
     ) -> Result<usize, NotEnoughSpace> {
-        let needed = 5 + 6 + 5 + 1 + 5; // assume we require 5+5 digits for raster dimensions
+        let [width, height] = extent.dim;
+        let (wd, hd) = (Digits(width), Digits(height));
+        let needed = 12 + wd.count_digits10() as usize + hd.count_digits10() as usize;
         is![buf.len() < needed, return Err(NotEnoughSpace(Some(needed)))];
-
-        let (width_digits, height_digits) = (Digits(width), Digits(height));
         let mut offset = 0;
-
         // initial sequence (6 bytes)
         write_at!(
             buf, +=offset, b'\x1b', b'P', // CIS
@@ -209,9 +204,9 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         // raster attributes opening sequence (5 bytes)
         // https://vt100.net/docs/vt3xx-gp/chapter14.html#S14.3.2
         write_at!(buf, +=offset, b'"', b'1', b';', b'1', b';'); // pixel aspect ratio
-        offset += width_digits.write_digits10(buf, offset);
+        offset += wd.write_digits10(buf, offset);
         write_at!(buf, +=offset, b';'); // + 1 byte
-        offset += height_digits.write_digits10(buf, offset);
+        offset += hd.write_digits10(buf, offset);
         Ok(offset)
     }
     /// Write sixel sequence start with full raster attributes
@@ -251,7 +246,7 @@ impl<const MAX_COLORS: usize> SixelEncoder<MAX_COLORS> {
         if count >= 4 {
             let digits = Digits(count);
             let dcount = digits.count_digits10();
-            let needed = 1 + dcount as usize;
+            let needed = 2 + dcount as usize;
             is![buffer.len() < needed, return Err(NotEnoughSpace(Some(needed)))];
 
             write_at![buffer, +=off, b'!'];

@@ -8,8 +8,10 @@ use crate::{Cmp, Digits, Display, FmtResult, Formatter, format_buf, is, write_at
 #[must_use]
 #[doc = crate::_tags!(color term)]
 /// Sixel color representation.
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image", struct SixelColor),
+    test_size_of(SixelColor = 3|24; niche !Option),
+}]
 /// It stores r, g, b components (0-99 each).
 ///
 /// The default color is black.
@@ -238,7 +240,7 @@ impl Display for SixelColor {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::SixelColor;
 
     #[test]

@@ -9,7 +9,7 @@ use crate::{Extent2, RasterFormat};
 /// Basic metadata for one raster image.
 #[doc = crate::_doc_meta!{
     location("media/visual/image", struct ImageInfo),
-    test_size_of(ImageInfo = 12 | 96),
+    test_size_of(ImageInfo = 12|96),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ImageInfo {
@@ -24,7 +24,7 @@ pub struct ImageInfo {
 /// Basic metadata for one image frame.
 #[doc = crate::_doc_meta!{
     location("media/visual/image", struct ImageFrameInfo),
-    test_size_of(ImageFrameInfo = 16 | 128),
+    test_size_of(ImageFrameInfo = 16|128),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ImageFrameInfo {
@@ -39,9 +39,9 @@ pub struct ImageFrameInfo {
 #[doc = crate::_doc_meta!{
     location("media/visual/image", struct ImageFrameSpan),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(ImageFrameSpan = 24 | 192),
+    test_size_of(ImageFrameSpan = 24|192),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(ImageFrameSpan = 32 | 256),
+    test_size_of(ImageFrameSpan = 32|256),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct ImageFrameSpan {
