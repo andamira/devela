@@ -12,7 +12,7 @@ use crate::{Extent2, IteratorFused, StridedBlocks, is, unwrap, whilst};
 #[doc = crate::_tags!(image)]
 /// One of the seven canonical passes of Adam7 interlacing.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster/grid"),
+    location("media/visual/image/raster/grid", struct Adam7Pass),
     test_size_of(Adam7Pass = 5|40; niche !Option),
 }]
 /// A pass describes a sparse rectangular sampling grid over an image.

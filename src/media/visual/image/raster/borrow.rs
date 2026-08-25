@@ -17,7 +17,7 @@ use crate::{RasterView, RasterViewBytes, RasterViewPacked};
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed dense raster view over typed samples.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
+    location("media/visual/image/raster", struct RasterSlice),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: RasterSlice<u32, &[u32]> = 28|224),
     #[cfg(target_pointer_width = "64")]
@@ -160,7 +160,7 @@ impl<T: RasterSamplePacked, B: AsRef<[T]>> RasterViewPacked for RasterSlice<T, B
 #[doc = crate::_tags!(image lifetime)]
 /// Borrowed byte raster view with explicit row layout.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
+    location("media/visual/image/raster", struct RasterByteSlice),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: RasterByteSlice<&[u8]> = 28|224),
     #[cfg(target_pointer_width = "64")]

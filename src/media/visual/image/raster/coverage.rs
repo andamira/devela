@@ -8,8 +8,8 @@ use crate::_impl_init;
 #[doc = crate::_tags!(image quant)]
 /// Normalized 8-bit raster-sample coverage.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
-    test_size_of(Coverage8 = 1|8),
+    location("media/visual/image/raster", struct Coverage8),
+    test_size_of(Coverage8 = 1|8; niche !Option),
 }]
 /// `Coverage8` represents how much of one raster sampling footprint
 /// is covered by rasterized geometry.

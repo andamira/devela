@@ -88,14 +88,14 @@
 )]
 // ----------------------------
 // `nightly_stable_1_100`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_100, feature(bool_toggle,))]
-#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature(,))]
-#![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature(,))]
+#![cfg_attr(nightly_stable_1_100, feature(bool_toggle, never_type,))]
+#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_101`: core, alloc, std:
 // #![cfg_attr(nightly_stable_1_101, feature(,))]
-// #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(,))]
-// #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature(,))]
+// #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri):
 #![cfg_attr(
@@ -123,6 +123,7 @@
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
+        mem_conjure_zst,
         more_qualified_paths,
         new_range_api,
         offset_of_enum,
@@ -133,6 +134,7 @@
         str_as_str,
         supertrait_item_shadowing,
         trim_prefix_suffix,
+        unwrap_infallible,
         unsafe_cell_from_mut,
     )
 )]

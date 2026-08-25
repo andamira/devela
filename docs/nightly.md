@@ -83,6 +83,7 @@ See also
 
 - 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
+- 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
@@ -125,6 +126,7 @@ See also
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `c`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
+- 1.??: `c`[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
 - 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `c`[new_range_api](https://github.com/rust-lang/rust/pull/152304) from:new_range_api
@@ -148,6 +150,7 @@ See also
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
+- 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 
 # … may be stable even later
 

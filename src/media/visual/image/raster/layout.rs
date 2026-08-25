@@ -9,7 +9,7 @@ use crate::{Boundary1d, Extent2, Position2, is, unwrap};
 #[doc = crate::_tags!(image layout)]
 /// Describes the extent and memory stepping of raster storage.
 #[doc = crate::_doc_meta!{
-    location("media/visual/image/raster"),
+    location("media/visual/image/raster", struct RasterLayout),
     #[cfg(target_pointer_width = "32")]
     test_size_of(RasterLayout = 16|128),
     #[cfg(target_pointer_width = "64")]

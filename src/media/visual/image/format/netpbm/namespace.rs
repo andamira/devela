@@ -10,8 +10,10 @@ use PnmFormat::{P1, P2, P3, P4, P5, P6};
 
 #[doc = crate::_tags!(image codec)]
 /// Encoding and decoding for <abbr title="Portable anymap format">PNM</abbr> images.
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/image", struct Pnm),
+    test_size_of(Pnm = 0),
+}]
 /// PNM is the classic Netpbm family of simple bitmap formats:
 /// - PBM: portable bitmap, monochrome.
 /// - PGM: portable graymap, grayscale.

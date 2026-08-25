@@ -10,12 +10,18 @@ use crate::ParseIntErrorKind;
 
 #[doc = crate::_tags!(image result)]
 /// An image-related result.
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
+#[doc = crate::_doc_meta!{location("media/visual/image", type ImageResult)}]
 pub type ImageResult<T> = crate::Result<T, ImageError>;
 
 #[doc = crate::_tags!(image error_composite)]
 /// An image-related error.
-#[doc = crate::_doc_meta!{location("media/visual/image")}]
+#[doc = crate::_doc_meta!{
+    location("media/visual/image", enum ImageError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(ImageError = 12|96),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(ImageError = 24|192),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ImageError {
     /// Invalid image size, with an optional width and height.
