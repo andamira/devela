@@ -2,8 +2,10 @@
 
 #[doc = crate::_tags!(codec)]
 /// The primary mode for data encoding.
-#[doc = crate::_doc_meta!{location("data/codec", enum EncodingMode)}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/codec", enum EncodingMode),
+    test_size_of(EncodingMode = 1|8; niche Option),
+}]
 /// This enum is used to guide encoding/decoding strategies.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum EncodingMode {

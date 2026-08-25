@@ -6,8 +6,10 @@
 crate::bitfield! {
     #[doc = crate::_tags!(example bit mem data_structure)]
     /// A compact packet header.
-    #[doc = crate::_doc_meta!{location("data/codec/bin", macro bitfield)}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("data/codec/bin", macro bitfield),
+        test_size_of(BitfieldExample = 2|16; niche !Option),
+    }]
     /// It has been generated with the [`bitfield!`][crate::bitfield] macro like this:
     /// ```
     /// # use devela::bitfield;

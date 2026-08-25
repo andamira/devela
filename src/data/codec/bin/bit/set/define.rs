@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction bit set)]
 /// Defines a compact set backed by an integer bit mask.
-#[doc = crate::_doc_meta!{location("data/codec/bin", macro set)}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/codec/bin", macro set),
+}]
 #[doc = include_str!["./_docs_set.md"]]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

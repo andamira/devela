@@ -58,7 +58,6 @@ impl BrailleByte {
         )]
     }
     /// Encodes `byte` as a UTF-8-backed Unicode scalar.
-    #[must_use]
     pub const fn encode_charu(byte: u8) -> charu {
         charu::from_char(Self::encode(byte))
     }

@@ -22,7 +22,8 @@ use ::devela::{CryptoError, impl_trait, is, unwrap, whilst};
 
 #[doc = _tags!(crypto hash)]
 /// A generated one-time password code.
-#[doc = _doc_location!("data/codec/crypto")]
+#[doc = _doc_location!("data/codec/crypto", struct Otp)]
+// TODO: _doc_meta + test_size_of
 ///
 /// Provides HOTP and TOTP constructors as defined by [RFC 4226] and [RFC 6238].
 ///

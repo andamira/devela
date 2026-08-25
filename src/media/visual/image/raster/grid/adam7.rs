@@ -105,6 +105,7 @@ impl Adam7Row {
     /// Returns the image-space horizontal step between samples.
     pub const fn x_step(self) -> u32 { self.pass.x_step() }
     /// Returns the number of samples in this compact pass row.
+    #[allow(clippy::len_without_is_empty)]
     pub const fn len(self) -> u32 { self.len }
 
     /// Returns this row's samples as strided fixed-width storage blocks.

@@ -69,7 +69,6 @@ impl Coverage8 {
     /// Returns the complementary coverage.
     ///
     /// The result represents `1 - coverage`.
-    #[must_use]
     pub const fn complement(self) -> Self { Self(u8::MAX - self.0) }
 
     /// Returns the normalized product of two coverage factors.
@@ -82,7 +81,6 @@ impl Coverage8 {
     ///
     /// This is numerical modulation of coverage factors,
     /// not a geometric intersection operation.
-    #[must_use]
     pub const fn product(self, other: Self) -> Self {
         Self(Self::mul_unorm8(self.0, other.0))
     }

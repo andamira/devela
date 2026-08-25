@@ -10,8 +10,9 @@ use crate::{
 
 #[doc = crate::_tags!(fmt data_structure)]
 /// A formatting wrapper for core [arrays][array], implementing [`Display`] and [`Debug`].
-#[doc = crate::_doc_meta!{location("data/layout/array", struct ArrayFmt)}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", struct ArrayFmt),
+}]
 /// It is created by the [`ArrayExt::fmt`] method.
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ArrayExt>(&'a T);
@@ -22,8 +23,9 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
 #[doc = crate::_tags!(data_structure)]
 /// Extension trait providing convenience methods for [`[T; N]`][array] arrays.
-#[doc = crate::_doc_meta!{location("data/layout/array", trait ArrayExt)}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/layout/array", trait ArrayExt),
+}]
 /// This trait is sealed and cannot be implemented for any other type.
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ArrayExt: Sealed {

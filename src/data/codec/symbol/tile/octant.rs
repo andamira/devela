@@ -60,7 +60,6 @@ impl Octant {
         unwrap![some char::from_u32( Self::BASE + Self::dedicated_index(mask) as u32)]
     }
     /// Encodes a 2×4 octant pattern as a UTF-8-backed Unicode scalar.
-    #[must_use]
     pub const fn encode_charu(pattern: u8) -> charu {
         charu::from_char(Self::encode(pattern))
     }

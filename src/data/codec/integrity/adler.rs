@@ -14,9 +14,8 @@ lane! {
 /// Adler-32 checksum.
 #[doc = crate::_doc_meta!{
     location("data/codec", struct Adler32),
-    test_size_of(Adler32 = 4|32),
+    test_size_of(Adler32 = 4|32; niche !Option),
 }]
-///
 /// A lightweight checksum consisting of two 16-bit accumulators (`a` and `b`)
 /// updated modulo 65521, the largest prime below 2^16.
 /// The final checksum packs `b` in the high 16 bits and `a` in the low 16 bits.
@@ -30,6 +29,7 @@ lane! {
 /// making it suitable for checksumming streaming data.
 ///
 /// For details, see <https://en.wikipedia.org/wiki/Adler-32>.
+#[must_use]
 #[derive(Debug, Copy, Clone)]
 pub struct Adler32 {
     /// Running sum of bytes.
@@ -63,30 +63,29 @@ impl Adler32 {
         Adler32 { a: sum as u16, b: (sum >> 16) as u16 }
     }
 
-    /* */
+    /* operations */
 
     /// Returns the current Adler-32 checksum as a packed `u32`.
+    #[must_use]
     pub const fn checksum(&self) -> u32 {
         ((self.b as u32) << 16) | self.a as u32
     }
-
     /// Computes the Adler-32 checksum of a byte slice.
     ///
     /// This is a convenience wrapper that does not require
     /// constructing an [`Adler32`] value explicitly.
+    #[must_use]
     pub const fn checksum_bytes(bytes: &[u8]) -> u32 {
         let mut new = Adler32::new();
         new.write_bytes(bytes);
         new.checksum()
     }
-
     /// Updates the checksum with the given bytes.
     ///
     /// This method may be called multiple times to checksum data streams.
     pub const fn write_bytes(&mut self, bytes: &[u8]) {
         self.update_chunked(bytes);
     }
-
     /// Internal Adler-32 update routine.
     ///
     /// Implements the standard Adler-32 update step:
@@ -99,13 +98,10 @@ impl Adler32 {
         const MOD: u32 = 65521;
         const OUTER_CHUNK: usize = 5552 * INNER_CHUNK;
         const INNER_CHUNK: usize = 4;
-        let mut a = self.a as u32;
-        let mut b = self.b as u32;
+        let (mut a, mut b) = (self.a as u32, self.b as u32);
         let mut a_vec = Lane4::<u32>([0; INNER_CHUNK]);
         let mut b_vec = a_vec;
-
         let (bytes, final_remainder) = bytes.split_at(bytes.len() - bytes.len() % INNER_CHUNK);
-
         // vectorized outer processing (full OUTER_CHUNK blocks)
         let (outer_count, remainder_outer_chunk) = Slice::chunks_exact::<OUTER_CHUNK>(bytes);
         whilst! { i in 0..outer_count; {
@@ -132,7 +128,6 @@ impl Adler32 {
             a_vec.add_assign_plain(val);
             b_vec.add_assign_plain(a_vec);
         }}
-
         // combine vector lanes into scalar a and b
         b += remainder_outer_chunk.len() as u32 * a;
         a_vec.rem_scalar_assign_plain(MOD);
@@ -144,7 +139,6 @@ impl Adler32 {
         b_vec.0[3] += (MOD - a_vec.0[3]) * 3;
         whilst! { i in 0..a_vec.0.len(); { a += a_vec.0[i]; }}
         whilst! { i in 0..b_vec.0.len(); { b += b_vec.0[i]; }}
-
         // final scalar remainder (bytes < 4)
         whilst! { i in 0..final_remainder.len(); {
             a += final_remainder[i] as u32;
@@ -158,7 +152,7 @@ impl Adler32 {
 
 #[cfg(test)]
 #[rustfmt::skip]
-mod tests {
+mod _test {
     use crate::{Adler32, Hash};
 
     #[test]
@@ -170,7 +164,6 @@ mod tests {
         assert_eq![0x64A607E0, Adler32::checksum_bytes(b"ABCDEFGHIJKLMNOPQRSTUVWXYZ")];
         assert_eq![0x11E60398, Adler32::checksum_bytes(b"Wikipedia")];
     }
-
     #[test]
     fn write_bytes() {
         let full = Adler32::checksum_bytes(b"HelloWorld");
@@ -179,7 +172,6 @@ mod tests {
         st.write_bytes(b"World");
         assert_eq!(full, st.checksum());
     }
-
     #[test]
     fn many_small_updates() {
         let input = b"abcdefghij1234567890";
@@ -192,7 +184,6 @@ mod tests {
         }
         assert_eq!(full, b.checksum());
     }
-
     #[test]
     fn hash_struct() {
         #[derive(Hash)]

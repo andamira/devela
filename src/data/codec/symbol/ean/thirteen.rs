@@ -19,16 +19,16 @@ impl Ean<13> {
     /// `0 = A`, `1 = B`.
     #[rustfmt::skip]
     const LEFT_B_MASK: [u8; 10] = [
-        0b000000, // 0: AAAAAA -- UPC-A form; Ean13 rejects leading zero
-        0b001011, // 1: AABABB
-        0b001101, // 2: AABBAB
-        0b001110, // 3: AABBBA
-        0b010011, // 4: ABAABB
-        0b011001, // 5: ABBAAB
-        0b011100, // 6: ABBBAA
-        0b010101, // 7: ABABAB
-        0b010110, // 8: ABABBA
-        0b011010, // 9: ABBABA
+        0b00_0000, // 0: AAAAAA -- UPC-A form; Ean13 rejects leading zero
+        0b00_1011, // 1: AABABB
+        0b00_1101, // 2: AABBAB
+        0b00_1110, // 3: AABBBA
+        0b01_0011, // 4: ABAABB
+        0b01_1001, // 5: ABBAAB
+        0b01_1100, // 6: ABBBAA
+        0b01_0101, // 7: ABABAB
+        0b01_0110, // 8: ABABBA
+        0b01_1010, // 9: ABBABA
     ];
 
     /* digits */

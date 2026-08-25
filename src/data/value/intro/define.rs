@@ -6,8 +6,9 @@
 #![doc = crate::_tags!(wip)]
 #[doc = crate::_tags!(introspect)]
 /// Introspection core trait.
-#[doc = crate::_doc_meta!{location("data/value", trait Introspect)}]
-///
+#[doc = crate::_doc_meta!{
+    location("data/value", trait Introspect),
+}]
 /// Provides structural metadata about types and values.
 /// Implement for any type to describe its fundamental properties.
 ///
