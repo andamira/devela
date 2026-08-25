@@ -217,7 +217,7 @@
   - make all methods const.
 
 ##### media::visual::image::raster
-- new types: `Adam7Pass`, `Adam7Row`, `Adam7Rows`, `RasterElement`, `RasterGrid`, `RasterLineIter`, `RasterSlice`, `RasterByteSlice`.
+- new types: `Adam7Pass`, `Adam7Row`, `Adam7Rows`, `Interlace`, `InterlaceSet`, `RasterElement`, `RasterGrid`, `RasterLineIter`, `RasterSlice`, `RasterByteSlice`.
 - remove types: `RasterBytesMut`, `RasterBytesRef`, `RasterMut`, `RasterRef`.
 - update `RasterBuf`: add method `raster_get_mut`.
 - update `RasterLayout`:
