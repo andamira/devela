@@ -3,7 +3,7 @@
 //! Defines [`set!`]
 //
 
-#[doc = crate::_tags!(construction set bit)]
+#[doc = crate::_tags!(construction bit set)]
 /// Defines a compact set backed by an integer bit mask.
 #[doc = crate::_doc_meta!{location("data/codec/bin", macro set)}]
 ///

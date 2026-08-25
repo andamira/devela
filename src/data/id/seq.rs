@@ -264,7 +264,7 @@ macro_rules! id_seq {
 pub use id_seq;
 
 #[cfg(test)]
-mod test {
+mod _test {
     use crate::{AnyExt, AtomicOrdering};
 
     #[test]

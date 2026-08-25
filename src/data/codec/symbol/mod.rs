@@ -4,6 +4,7 @@
 //
 
 // mod aztec;
+mod braille; // BrailleByte
 // mod code128;
 // mod datamatrix;
 // mod ean;
@@ -13,14 +14,15 @@
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     aztec::_all::*,
-        //     code128::_all::*,
-        //     datamatrix::_all::*,
-        //     ean::_all::*,
-        //     pdf417::_all::*,
-        //     qr::_all::*,
-        //     upc::_all::*,
-        // };
+        pub use super::{
+            // aztec::_all::*,
+            braille::BrailleByte,
+            // code128::_all::*,
+            // datamatrix::_all::*,
+            // ean::_all::*,
+            // pdf417::_all::*,
+            // qr::_all::*,
+            // upc::_all::*,
+        };
     }
 }

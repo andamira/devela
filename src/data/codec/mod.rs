@@ -21,7 +21,7 @@
 //   and radix encodings are re-exported directly from this module.
 //
 
-pub mod bin; // Binary representation atoms.
+pub mod bin; // Binary representation atoms
 pub mod crypto; // Cryptographic primitives
 // mod detect; // WIP Format detection
 mod encode; // Composable codecs for reading and writing values
@@ -30,7 +30,7 @@ pub mod hash; // Hashing algorithms (Fnv, Fx…)
 mod integrity; // Integrity codecs (Adler32, Crc32…)
 pub mod pack; // Packed data representations
 mod radix; // Radix-based encodings (Base32, Base64, Base58…)
-// mod symbol; // WIP Symbolic codes that encode data into visual marks.
+mod symbol; // Symbolic codes that encode data into visual marks
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
@@ -39,7 +39,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             encode::_all::*,
             integrity::_all::*,
             radix::_all::*,
-            // symbol::_all::*,
+            symbol::_all::*,
         };
     }
     _pub_mods {
