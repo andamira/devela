@@ -13,7 +13,7 @@ mod braille; // BrailleByte
 // mod ean;
 // mod pdf417;
 // mod qr;
-mod tile; // Octant, Quadrant, Sextant
+mod tile; // Unicode codecs for subdivided character-cell tiles
 // mod upc;
 mod yijing; // YijingHexagram
 
@@ -27,7 +27,7 @@ crate::structural_mods! { // _mods
             // ean::_all::*,
             // pdf417::_all::*,
             // qr::_all::*,
-            tile::_all::{Quadrant, Sextant}, // Octant
+            tile::_all::{Octant, Quadrant, Sextant},
             // upc::_all::*,
             yijing::YijingHexagram,
         };
