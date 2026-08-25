@@ -3,6 +3,7 @@
 //! Defines [`Ean8`].
 //
 
+use super::_helper;
 use crate::{is, read_at, unwrap, whilst, write_at};
 
 #[doc = crate::_tags!(codec namespace)]
@@ -54,14 +55,7 @@ impl Ean8 {
     /// Returns `None` if any input value is greater than 9.
     #[must_use]
     pub const fn check_digit(data: [u8; 7]) -> Option<u8> {
-        let mut sum = 0_u16;
-        whilst! { i in 0..data.len(); {
-            let digit = data[i];
-            is! { digit > 9, return None }
-            let weight = if i.is_multiple_of(2) { 3 } else { 1 };
-            sum += digit as u16 * weight;
-        }}
-        Some(((10 - sum % 10) % 10) as u8)
+        _helper::ean_check_digit(&data)
     }
 
     /// Appends the calculated check digit to seven GTIN-8 data digits.
@@ -89,20 +83,17 @@ impl Ean8 {
     #[must_use]
     pub const fn encode(digits: [u8; 8]) -> Option<u128> {
         is! { !Self::is_valid(digits), return None }
-        let mut modules = Self::GUARD as u128;
-        let mut i = 0;
-        while i < 4 {
-            modules = (modules << 7) | Self::SET_A[digits[i] as usize] as u128;
-            i += 1;
-        }
-        modules = (modules << 5) | Self::CENTER as u128;
-        while i < 8 {
-            let a = Self::SET_A[digits[i] as usize];
+        let mut modules = _helper::GUARD as u128;
+        whilst! { i in 0..4; {
+            modules = (modules << 7) | _helper::SET_A[digits[i] as usize] as u128;
+        }}
+        modules = (modules << 5) | _helper::CENTER as u128;
+        whilst! { i in i,..8; {
+            let a = _helper::SET_A[digits[i] as usize];
             let c = a ^ 0x7F;
             modules = (modules << 7) | c as u128;
-            i += 1;
-        }
-        Some((modules << 3) | Self::GUARD as u128)
+        }}
+        Some((modules << 3) | _helper::GUARD as u128)
     }
 
     /* decoding */
@@ -115,64 +106,32 @@ impl Ean8 {
     pub const fn decode(modules: u128) -> Option<[u8; 8]> {
         is! { modules >> Self::MODULES != 0, return None } // The representation must be canonical
         // Guards.
-        if ((modules >> 64) & 0b111) != Self::GUARD as u128
-            || ((modules >> 31) & 0b1_1111) != Self::CENTER as u128
-            || (modules & 0b111) != Self::GUARD as u128
+        if ((modules >> 64) & 0b111) != _helper::GUARD as u128
+            || ((modules >> 31) & 0b1_1111) != _helper::CENTER as u128
+            || (modules & 0b111) != _helper::GUARD as u128
         {
             return None;
         }
         let mut digits = [0_u8; 8];
         // Left half: number set A.
-        let mut i = 0;
-        while i < 4 {
+        whilst! { i in 0..4; {
             let shift = 57 - i * 7;
             let pattern = ((modules >> shift) & 0x7F) as u8;
-            digits[i] = match Self::decode_a(pattern) {
+            digits[i] = match _helper::decode_a(pattern) {
                 Some(digit) => digit,
                 None => return None,
             };
-            i += 1;
-        }
+        }}
         // Right half: number set C, the bitwise complement of A.
-        while i < 8 {
+        whilst! { i in i,..8; {
             let shift = 24 - (i - 4) * 7;
             let pattern = ((modules >> shift) & 0x7F) as u8;
-            digits[i] = match Self::decode_a(pattern ^ 0x7F) {
+            digits[i] = match _helper::decode_a(pattern ^ 0x7F) {
                 Some(digit) => digit,
                 None => return None,
             };
-            i += 1;
-        }
-        is! { Self::is_valid(digits), Some(digits), None }
-    }
-
-    /* private */
-
-    /// Normal left/right guard pattern.
-    const GUARD: u8 = 0b101;
-
-    /// Centre guard pattern.
-    const CENTER: u8 = 0b01010;
-
-    /// Number set A, from leftmost to rightmost module.
-    #[rustfmt::skip]
-    const SET_A: [u8; 10] = [
-        0b0001101, // 0
-        0b0011001, // 1
-        0b0010011, // 2
-        0b0111101, // 3
-        0b0100011, // 4
-        0b0110001, // 5
-        0b0101111, // 6
-        0b0111011, // 7
-        0b0110111, // 8
-        0b0001011, // 9
-    ];
-    const fn decode_a(pattern: u8) -> Option<u8> {
-        whilst! { digit in 0..Self::SET_A.len(); {
-            is! { Self::SET_A[digit] == pattern, return Some(digit as u8) }
         }}
-        None
+        is! { Self::is_valid(digits), Some(digits), None }
     }
 }
 
