@@ -13,7 +13,7 @@ mod braille; // BrailleByte
 // mod ean;
 // mod pdf417;
 // mod qr;
-mod quadrant; // Quadrant4
+mod tile; // Octant, Quadrant, Sextant
 // mod upc;
 mod yijing; // YijingHexagram
 
@@ -27,7 +27,7 @@ crate::structural_mods! { // _mods
             // ean::_all::*,
             // pdf417::_all::*,
             // qr::_all::*,
-            quadrant::Quadrant4,
+            tile::_all::{Quadrant, Sextant}, // Octant
             // upc::_all::*,
             yijing::YijingHexagram,
         };

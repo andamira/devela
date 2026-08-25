@@ -1,6 +1,6 @@
-// devela/src/data/codec/symbol/quadrant.rs
+// devela/src/data/codec/symbol/tile/quadrant.rs
 //
-//! Defines [`Quadrant4`].
+//! Defines [`Quadrant`].
 //
 
 use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
@@ -8,8 +8,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 #[doc = crate::_tags!(codec namespace)]
 /// Reversibly maps 4-bit patterns to 2×2 Unicode quadrant characters.
 #[doc = crate::_doc_meta!{
-    location("data/codec/symbol", struct Quadrant4),
-    test_size_of(Quadrant4 = 0),
+    location("data/codec/symbol", struct Quadrant),
+    test_size_of(Quadrant = 0),
 }]
 ///
 /// Bits map to filled quadrants as follows:
@@ -23,17 +23,17 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::Quadrant4;
-/// assert_eq!(Quadrant4::encode(0b0000), Some(' '));
-/// assert_eq!(Quadrant4::encode(0b1000), Some('▘'));
-/// assert_eq!(Quadrant4::encode(0b0001), Some('▗'));
-/// assert_eq!(Quadrant4::encode(0b1111), Some('█'));
-/// assert_eq!(Quadrant4::decode('▚'), Some(0b1001));
+/// # use devela::Quadrant;
+/// assert_eq!(Quadrant::encode(0b0000), Some(' '));
+/// assert_eq!(Quadrant::encode(0b1000), Some('▘'));
+/// assert_eq!(Quadrant::encode(0b0001), Some('▗'));
+/// assert_eq!(Quadrant::encode(0b1111), Some('█'));
+/// assert_eq!(Quadrant::decode('▚'), Some(0b1001));
 /// ```
 #[derive(Debug)]
-pub struct Quadrant4;
+pub struct Quadrant;
 
-impl Quadrant4 {
+impl Quadrant {
     /// Number of representable quadrant patterns.
     pub const PATTERN_COUNT: usize = 16;
 
@@ -147,54 +147,54 @@ mod _test {
         const EXPECTED: [char; 16] =
             [' ', '▗', '▝', '▐', '▖', '▄', '▞', '▟', '▘', '▚', '▀', '▜', '▌', '▙', '▛', '█'];
         for pattern in 0..16 {
-            assert_eq!(Quadrant4::encode(pattern as u8), Some(EXPECTED[pattern]));
+            assert_eq!(Quadrant::encode(pattern as u8), Some(EXPECTED[pattern]));
         }
     }
     #[test]
     fn scalar_roundtrip_all_patterns() {
         for pattern in 0..16 {
-            let ch = Quadrant4::encode(pattern).unwrap();
-            assert_eq!(Quadrant4::decode(ch), Some(pattern));
+            let ch = Quadrant::encode(pattern).unwrap();
+            assert_eq!(Quadrant::decode(ch), Some(pattern));
         }
     }
     #[test]
     fn rejects_invalid() {
-        assert_eq!(Quadrant4::encode(16), None);
-        assert_eq!(Quadrant4::encode(u8::MAX), None);
-        assert_eq!(Quadrant4::decode('A'), None);
-        assert_eq!(Quadrant4::decode('░'), None);
-        assert_eq!(Quadrant4::decode('●'), None);
+        assert_eq!(Quadrant::encode(16), None);
+        assert_eq!(Quadrant::encode(u8::MAX), None);
+        assert_eq!(Quadrant::decode('A'), None);
+        assert_eq!(Quadrant::decode('░'), None);
+        assert_eq!(Quadrant::decode('●'), None);
     }
     #[test]
     fn lengths() {
-        assert_eq!(Quadrant4::encoded_len(&[]), Some(0));
-        assert_eq!(Quadrant4::encoded_len(&[0]), Some(1));
-        assert_eq!(Quadrant4::encoded_len(&[1]), Some(3));
-        assert_eq!(Quadrant4::encoded_len(&[0, 1, 15, 0]), Some(8));
-        assert_eq!(Quadrant4::decoded_len(""), Some(0));
-        assert_eq!(Quadrant4::decoded_len(" ▗█ "), Some(4));
-        assert_eq!(Quadrant4::decoded_len("A"), None);
+        assert_eq!(Quadrant::encoded_len(&[]), Some(0));
+        assert_eq!(Quadrant::encoded_len(&[0]), Some(1));
+        assert_eq!(Quadrant::encoded_len(&[1]), Some(3));
+        assert_eq!(Quadrant::encoded_len(&[0, 1, 15, 0]), Some(8));
+        assert_eq!(Quadrant::decoded_len(""), Some(0));
+        assert_eq!(Quadrant::decoded_len(" ▗█ "), Some(4));
+        assert_eq!(Quadrant::decoded_len("A"), None);
     }
     #[test]
     fn slice_roundtrip_all_patterns() {
         let input = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        let mut encoded = [0; 16 * Quadrant4::MAX_UTF8_LEN];
-        let text = Quadrant4::encode_to_slice(&input, &mut encoded).unwrap();
+        let mut encoded = [0; 16 * Quadrant::MAX_UTF8_LEN];
+        let text = Quadrant::encode_to_slice(&input, &mut encoded).unwrap();
         assert_eq!(text, " ▗▝▐▖▄▞▟▘▚▀▜▌▙▛█");
         assert_eq!(text.len(), 46);
-        assert_eq!(Quadrant4::encoded_len(&input), Some(text.len()));
+        assert_eq!(Quadrant::encoded_len(&input), Some(text.len()));
         let mut decoded = [0; 16];
-        assert_eq!(Quadrant4::decode_from_slice(text, &mut decoded), Some(input.as_slice()));
+        assert_eq!(Quadrant::decode_from_slice(text, &mut decoded), Some(input.as_slice()));
     }
     #[test]
     fn slice_rejects_invalid_input_and_small_buffers() {
         let mut encoded = [0; 2];
-        assert_eq!(Quadrant4::encode_to_slice(&[1], &mut encoded), None);
+        assert_eq!(Quadrant::encode_to_slice(&[1], &mut encoded), None);
         let mut encoded = [0; 8];
-        assert_eq!(Quadrant4::encode_to_slice(&[16], &mut encoded), None);
+        assert_eq!(Quadrant::encode_to_slice(&[16], &mut encoded), None);
         let mut decoded = [0; 1];
-        assert_eq!(Quadrant4::decode_from_slice("▘▗", &mut decoded), None);
+        assert_eq!(Quadrant::decode_from_slice("▘▗", &mut decoded), None);
         let mut decoded = [0; 4];
-        assert_eq!(Quadrant4::decode_from_slice("▘A▗", &mut decoded), None);
+        assert_eq!(Quadrant::decode_from_slice("▘A▗", &mut decoded), None);
     }
 }
