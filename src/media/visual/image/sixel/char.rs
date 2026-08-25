@@ -3,7 +3,8 @@
 //! Defines [`SixelChar`].
 //
 
-use crate::{Display, FmtResult, FmtWriter, Formatter, StringU8, format_buf, is, unwrap};
+use crate::{Display, FmtResult, FmtWriter, Formatter, format_buf, is, unwrap};
+use crate::{StringU8, YijingHexagram};
 
 #[doc = crate::_tags!(image term)]
 /// A sixel character.
@@ -149,18 +150,13 @@ impl SixelChar {
     /// - Returns `None` if the character is not in the hexagram range (U+4DC0..=U+4DFF).
     /// - Standard mapping: filled pixels represent broken lines.
     pub const fn from_hexagram(hexagram: char) -> Option<Self> {
-        let h = hexagram as usize;
-        if h >= 0x4DC0 && h <= 0x4DFF {
-            Some(Self::from_bitmask(Self::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
-        } else {
-            None
-        }
+        unwrap![some_map YijingHexagram::decode(hexagram), |pat| Self::from_bitmask(pat)]
     }
     /// Converts to an I Ching hexagram character using standard mapping.
     ///
     /// - Standard mapping: filled pixels represent broken lines.
     pub const fn to_hexagram(self) -> char {
-        Self::SIXEL_TO_CHAR_HEXAGRAM[self.as_bitmask() as usize]
+        unwrap![some YijingHexagram::encode(self.as_bitmask())]
     }
 
     /// Creates a sixel from an I Ching hexagram character.
@@ -168,18 +164,13 @@ impl SixelChar {
     /// - Returns `None` if the character is not in the hexagram range (U+4DC0..=U+4DFF).
     /// - Inverted mapping: filled pixels represent unbroken lines.
     pub const fn from_hexagram_inverted(hexagram: char) -> Option<Self> {
-        let h = hexagram as usize;
-        if h >= 0x4DC0 && h <= 0x4DFF {
-            Some(Self::from_bitmask(!Self::CHAR_HEXAGRAM_TO_SIXEL[h - 0x4DC0]))
-        } else {
-            None
-        }
+        unwrap![some_map YijingHexagram::decode(hexagram), |pat| Self::from_bitmask(!pat)]
     }
     /// Converts to an I Ching hexagram character using inverted mapping.
     ///
     /// - Inverted mapping: filled pixels represent unbroken lines.
     pub const fn to_hexagram_inverted(self) -> char {
-        Self::SIXEL_TO_CHAR_HEXAGRAM[(!self.as_bitmask() & Self::MASK) as usize]
+        unwrap![some YijingHexagram::encode(!self.as_bitmask() & Self::MASK)]
     }
 
     /* string */
@@ -284,64 +275,6 @@ impl Display for SixelChar {
         let b = self.to_braille();
         f.write_str(format_buf!(&mut buf, "[{c}{b}0b_{m:06b}]").unwrap())
     }
-}
-
-impl SixelChar {
-    /// Lookup table for fast conversion from sixel bitmask to I-Ching hexagram Unicode scalar.
-    ///
-    /// - Standard mapping: filled pixels represent broken lines.
-    #[rustfmt::skip]
-    // size: 256 bytes
-    const SIXEL_TO_CHAR_HEXAGRAM: [char; 64] = [
-        '\u{4DC0}','\u{4DEA}','\u{4DCD}','\u{4DE1}','\u{4DC8}','\u{4DC4}','\u{4DD9}','\u{4DCA}',
-        '\u{4DC9}','\u{4DF9}','\u{4DE5}','\u{4DF5}','\u{4DFC}','\u{4DFA}','\u{4DE8}','\u{4DD2}',
-        '\u{4DCC}','\u{4DF0}','\u{4DDD}','\u{4DF6}','\u{4DE4}','\u{4DFE}','\u{4DD5}','\u{4DE3}',
-        '\u{4DD8}','\u{4DD0}','\u{4DD4}','\u{4DF2}','\u{4DE9}','\u{4DC2}','\u{4DDA}','\u{4DD7}',
-        '\u{4DEB}','\u{4DDB}','\u{4DF1}','\u{4DDF}','\u{4DF8}','\u{4DEF}','\u{4DD1}','\u{4DED}',
-        '\u{4DC5}','\u{4DEE}','\u{4DFF}','\u{4DE7}','\u{4DFB}','\u{4DDC}','\u{4DC3}','\u{4DC6}',
-        '\u{4DE0}','\u{4DDE}','\u{4DF7}','\u{4DFD}','\u{4DF4}','\u{4DE6}','\u{4DF3}','\u{4DCE}',
-        '\u{4DCB}','\u{4DEC}','\u{4DE2}','\u{4DCF}','\u{4DD3}','\u{4DC7}','\u{4DD6}','\u{4DC1}',
-    ];
-
-    /// Lookup table for fast conversion from I-Ching hexagram Unicode scalar to sixel bitmask.
-    ///
-    /// - Standard mapping: filled pixels represent broken lines.
-    ///
-    /// You have to subtract 0x4dc0 from char to get the index array.
-    #[rustfmt::skip]
-    // size: 64 bytes
-    const CHAR_HEXAGRAM_TO_SIXEL: [u8; 64] = [
-        // NEW ORDER, REVERSING THE BITS to have the correct top/down order
-        0b_000000, 0b_111111, 0b_011101, 0b_101110, 0b_000101, 0b_101000, 0b_101111, 0b_111101,
-        0b_000100, 0b_001000, 0b_000111, 0b_111000, 0b_010000, 0b_000010, 0b_110111, 0b_111011,
-        0b_011001, 0b_100110, 0b_001111, 0b_111100, 0b_011010, 0b_010110, 0b_111110, 0b_011111,
-        0b_011000, 0b_000110, 0b_011110, 0b_100001, 0b_101101, 0b_010010, 0b_110001, 0b_100011,
-        0b_110000, 0b_000011, 0b_111010, 0b_010111, 0b_010100, 0b_001010, 0b_110101, 0b_101011,
-        0b_001110, 0b_011100, 0b_000001, 0b_100000, 0b_111001, 0b_100111, 0b_101001, 0b_100101,
-        0b_010001, 0b_100010, 0b_011011, 0b_110110, 0b_110100, 0b_001011, 0b_010011, 0b_110010,
-        0b_100100, 0b_001001, 0b_101100, 0b_001101, 0b_001100, 0b_110011, 0b_010101, 0b_101010,
-    ];
-
-    #[cfg(test)]
-    const _SIXEL_HEXAGRAM_CORRESPONDANCE: () = {
-        let mut index = 0;
-        while index < 64 {
-            let bitmask = Self::CHAR_HEXAGRAM_TO_SIXEL[index];
-            let char_from_bitmask = Self::SIXEL_TO_CHAR_HEXAGRAM[bitmask as usize];
-            let char_code = char_from_bitmask as u32;
-            let index_from_char = (char_code - 0x4DC0) as usize;
-
-            // Verify that SIXEL_TO_CHAR_HEXAGRAM[bitmask] gives a character
-            // whose code point corresponds to the original index
-            assert!(index_from_char == index);
-
-            // Verify that CHAR_HEXAGRAM_TO_SIXEL[index_from_char] gives back the original bitmask
-            let roundtrip_bitmask = Self::CHAR_HEXAGRAM_TO_SIXEL[index_from_char];
-            assert!(roundtrip_bitmask == bitmask);
-
-            index += 1;
-        }
-    };
 }
 
 #[cfg(test)]

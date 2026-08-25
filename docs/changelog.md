@@ -84,8 +84,8 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 ### data::codec
-- new types: `BrailleByte`, `Radix`.
-- make `pack` module public.
+- new types: `Radix`.
+- make modules public: `pack`, `symbol`.
 - remove type: `Base`.
 - remove type aliases: `Base16`, `Base32`, `Base32Padded`, `Base32Crockford`, `Base32Hex`, `Base64`, `Base64Padded`.
 
@@ -96,6 +96,9 @@
   - unit-only methods: `iter`, `for_each[_while]`.
   - impl for the associated enum, unit-only constant: `ALL`.
   - impl `From<enum>` for the associated set.
+
+#### data::codec::symbol
+- new types: `BrailleByte`, `YijingHexagram`.
 
 ### data::id
 - new macros: `handle!`, `handle_gen!`.

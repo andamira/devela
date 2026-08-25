@@ -1,6 +1,9 @@
 // devela/src/data/codec/symbol/mod.rs
 //
-//! Symbolic codes that encode data into visual marks.
+#![doc = crate::_DOC_DATA_CODEC_SYMBOL!()] // public
+#![doc = crate::_doc!(modules: crate::data::codec; symbol)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
 //
 
 // mod aztec;
@@ -11,6 +14,7 @@ mod braille; // BrailleByte
 // mod pdf417;
 // mod qr;
 // mod upc;
+mod yijing; // YijingHexagram
 
 crate::structural_mods! { // _mods
     _mods {
@@ -23,6 +27,7 @@ crate::structural_mods! { // _mods
             // pdf417::_all::*,
             // qr::_all::*,
             // upc::_all::*,
+            yijing::YijingHexagram,
         };
     }
 }
