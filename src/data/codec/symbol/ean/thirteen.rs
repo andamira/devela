@@ -1,50 +1,12 @@
 // devela/src/data/codec/symbol/ean/thirteen.rs
 //
-//! Defines [`Ean13`].
+//! Implements EAN-13 for [`Ean<13>`][crate::Ean].
 //
 
 use super::_helper;
-use crate::{is, lets, read_at, unwrap, whilst, write_at};
+use crate::{Ean, is, lets, read_at, unwrap, whilst, write_at};
 
-#[doc = crate::_tags!(codec namespace)]
-/// Reversibly maps valid GTIN-13 digits to 95-module EAN-13 barcode patterns.
-#[doc = crate::_doc_meta!{
-    location("data/codec/symbol", struct Ean13),
-    test_size_of(Ean13 = 0),
-}]
-/// The thirteen digits are supplied from left to right, including the
-/// mandatory check digit in the last position.
-///
-/// The first digit is encoded implicitly through the A/B number-set pattern
-/// of the six left-side symbol characters.
-///
-/// Encoded symbols occupy the low 95 bits of a [`u128`]:
-/// ```text
-/// bit 94                                                   bit 0
-///   │                                                        │
-///   ▼                                                        ▼
-/// 101  [6 left digits, A/B]  01010  [6 right digits, C]  101
-/// ```
-///
-/// A set bit represents a dark module and a cleared bit a light module.
-/// Quiet zones and vertical rendering geometry are not included.
-///
-/// # Example
-/// ```
-/// # use devela::Ean13;
-/// let digits = [4, 0, 0, 6, 3, 8, 1, 3, 3, 3, 9, 3, 1];
-///
-/// assert!(Ean13::is_valid(digits));
-/// let modules = Ean13::encode(digits).unwrap();
-/// assert_eq!(Ean13::decode(modules), Some(digits));
-/// ```
-#[derive(Debug)]
-pub struct Ean13;
-
-impl Ean13 {
-    /// Number of digits including the mandatory check digit.
-    pub const DIGITS: usize = 13;
-
+impl Ean<13> {
     /// Number of digits preceding the check digit.
     pub const DATA_DIGITS: usize = 12;
 
@@ -183,6 +145,7 @@ impl Ean13 {
 #[cfg(test)]
 mod _test {
     use super::*;
+    type Ean13 = Ean<13>;
 
     #[test]
     fn canonical_symbol() {

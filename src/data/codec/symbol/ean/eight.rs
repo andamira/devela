@@ -1,47 +1,12 @@
 // devela/src/data/codec/symbol/ean/eight.rs
 //
-//! Defines [`Ean8`].
+//! Implements EAN-8 for [`Ean<8>`][crate::Ean].
 //
 
 use super::_helper;
-use crate::{is, read_at, unwrap, whilst, write_at};
+use crate::{Ean, is, read_at, unwrap, whilst, write_at};
 
-#[doc = crate::_tags!(codec namespace)]
-/// Reversibly maps valid GTIN-8 digits to 67-module EAN-8 barcode patterns.
-#[doc = crate::_doc_meta!{
-    location("data/codec/symbol", struct Ean8),
-    test_size_of(Ean8 = 0),
-}]
-/// The eight digits are supplied from left to right, including the mandatory
-/// check digit in the last position.
-///
-/// Encoded symbols occupy the low 67 bits of a [`u128`]:
-/// ```text
-/// bit 66                                      bit 0
-///   │                                           │
-///   ▼                                           ▼
-/// 101  [4 left digits]  01010  [4 right digits]  101
-/// ```
-///
-/// A set bit represents a dark module (bar), and a cleared bit a light module
-/// (space). Quiet zones and vertical rendering geometry are not included.
-///
-/// # Example
-/// ```
-/// # use devela::Ean8;
-/// let digits = [9, 6, 3, 8, 5, 0, 7, 4];
-/// assert!(Ean8::is_valid(digits));
-///
-/// let modules = Ean8::encode(digits).unwrap();
-/// assert_eq!(Ean8::decode(modules), Some(digits));
-/// ```
-#[derive(Debug)]
-pub struct Ean8;
-
-impl Ean8 {
-    /// Number of digits in an EAN-8 symbol, including its check digit.
-    pub const DIGITS: usize = 8;
-
+impl Ean<8> {
     /// Number of digits preceding the check digit.
     pub const DATA_DIGITS: usize = 7;
 
@@ -57,7 +22,6 @@ impl Ean8 {
     pub const fn check_digit(data: [u8; 7]) -> Option<u8> {
         _helper::ean_check_digit(&data)
     }
-
     /// Appends the calculated check digit to seven GTIN-8 data digits.
     ///
     /// Returns `None` if any input value is greater than 9.
@@ -89,9 +53,7 @@ impl Ean8 {
         }}
         modules = (modules << 5) | _helper::CENTER as u128;
         whilst! { i in i,..8; {
-            let a = _helper::SET_A[digits[i] as usize];
-            let c = a ^ 0x7F;
-            modules = (modules << 7) | c as u128;
+            modules = (modules << 7) | _helper::set_c(digits[i]) as u128;
         }}
         Some((modules << 3) | _helper::GUARD as u128)
     }
@@ -117,19 +79,13 @@ impl Ean8 {
         whilst! { i in 0..4; {
             let shift = 57 - i * 7;
             let pattern = ((modules >> shift) & 0x7F) as u8;
-            digits[i] = match _helper::decode_a(pattern) {
-                Some(digit) => digit,
-                None => return None,
-            };
+            digits[i] = unwrap![some? _helper::decode_a(pattern)];
         }}
         // Right half: number set C, the bitwise complement of A.
         whilst! { i in i,..8; {
             let shift = 24 - (i - 4) * 7;
             let pattern = ((modules >> shift) & 0x7F) as u8;
-            digits[i] = match _helper::decode_a(pattern ^ 0x7F) {
-                Some(digit) => digit,
-                None => return None,
-            };
+            digits[i] = unwrap![some? _helper::decode_c(pattern)];
         }}
         is! { Self::is_valid(digits), Some(digits), None }
     }
@@ -138,6 +94,7 @@ impl Ean8 {
 #[cfg(test)]
 mod _test {
     use super::*;
+    type Ean8 = Ean<8>;
 
     #[test]
     fn check_digits() {

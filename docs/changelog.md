@@ -98,7 +98,7 @@
   - impl `From<enum>` for the associated set.
 
 #### data::codec::symbol
-- new types: `BrailleByte`, `Ean8`, `Ean13`, `Octant`, `Quadrant`, `Sextant`, `YijingHexagram`.
+- new types: `BrailleByte`, `Ean`, `Octant`, `Quadrant`, `Sextant`, `YijingHexagram`.
 
 ### data::id
 - new macros: `handle!`, `handle_gen!`.

@@ -5,14 +5,15 @@
 
 mod _helper;
 
-mod eight; // Ean8
-mod thirteen; // Ean13
+mod define; // Ean
+
+mod eight; // impl EAN-8
+mod thirteen; // impl EAN-13
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            eight::Ean8,
-            thirteen::Ean13,
+            define::Ean,
         };
     }
 }
