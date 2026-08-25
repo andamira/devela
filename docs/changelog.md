@@ -84,7 +84,7 @@
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
 
 ### data::codec
-- new types: `Radix`.
+- new types: `Crc`, `Radix`.
 - make modules public: `pack`, `symbol`.
 - remove type: `Base`.
 - remove type aliases: `Base16`, `Base32`, `Base32Padded`, `Base32Crockford`, `Base32Hex`, `Base64`, `Base64Padded`.

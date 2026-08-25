@@ -6,14 +6,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod adler; // Adler32
-// mod crc; // Crc32 WIP
+mod adler; // Adler-32 checksum
+mod crc; // Cyclic redundancy checks
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            adler::*,
-            // crc::*,
+            adler::Adler32,
+            crc::Crc,
         };
     }
 }
