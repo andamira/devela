@@ -12,16 +12,18 @@ mod _reexport_core;
 
 mod iter; // CharIter
 mod namespace; // Char
+mod offset; // scalar_offset!
 mod scalar; // ch!, char7, char8, char16, charu, charu_niche
 mod unicode_scalar; // UnicodeScalar
 
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            iter::*,
-            namespace::_all::*,
+            iter::CharIter,
+            namespace::_all::Char,
+            offset::scalar_offset,
             scalar::_all::*,
-            unicode_scalar::*,
+            unicode_scalar::UnicodeScalar,
         };
     }
     _reexports {

@@ -359,6 +359,7 @@
 - rename `StringNonul` to `StringNonNul`.
 
 ### text::unicode
+- new macro: `scalar_offset!`.
 - new type `GraphemeIter`.
 - update `CharIter`:
   - add methods: `byte_pos`, `as_bytes`, `as_str`, `remaining_bytes`, `is_empty`, `peek_char`, `peek_charu`, `peek_scalar`.
