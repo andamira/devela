@@ -1,7 +1,7 @@
 // devela/src/data/codec/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
-#![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash, pack)]
+#![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash, pack, symbol)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 //!
