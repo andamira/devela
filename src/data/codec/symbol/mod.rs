@@ -10,7 +10,7 @@
 mod braille; // BrailleByte
 // mod code128;
 // mod datamatrix;
-// mod ean;
+mod ean; // European Article Number barcodes
 // mod pdf417;
 // mod qr;
 mod tile; // Unicode codecs for subdivided character-cell tiles
@@ -24,7 +24,7 @@ crate::structural_mods! { // _mods
             braille::BrailleByte,
             // code128::_all::G*
             // datamatrix::_all::*,
-            // ean::_all::*,
+            ean::_all::Ean8, // Ean13
             // pdf417::_all::*,
             // qr::_all::*,
             tile::_all::{Octant, Quadrant, Sextant},
