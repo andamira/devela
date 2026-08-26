@@ -135,6 +135,14 @@ macro_rules! impl_non_value {
                 const INIT: Self = if V == 0 { Self::MIN } else {
                     $crate::unwrap![some_guaranteed_or_ub Self::new(0)] };
             }
+            impl<const V: $IP> $crate::WordTry for $name<V> {
+                type Repr = $IP;
+                type Error = $crate::InvalidValue;
+                fn raw(self) -> Self::Repr { self.get() }
+                fn try_from_raw(raw: Self::Repr) -> $crate::Result<Self, Self::Error> {
+                    $crate::unwrap![some_ok_or Self::new(raw), $crate::InvalidValue]
+                }
+            }
 
             impl<const V: $IP> $name<V> {
                 /* constants */

@@ -12,13 +12,13 @@
 //! extent textual units occupy before or during layout/rendering.
 //
 
-use crate::{_impl_init, TextUnit, enumint};
+use crate::{_impl_init, InvalidValue, TextUnit, enumint, unwrap, word};
 
 #[doc = crate::_tags!(text layout data_structure)]
 /// A discrete textual element for cell-like lines, grids, or canvases.
 #[doc = crate::_doc_meta!{
     location("text/layout", struct Textel),
-    test_size_of(Textel<u8, ()> = 1|8),
+    test_size_of(Textel<u8, ()> = 1|8; niche !Option),
 }]
 /// `T` is the textual value. `M` is optional representation metadata, such as
 /// width, occupancy, continuation state, or backend-specific placement information.
@@ -137,6 +137,13 @@ impl Default for TextelWidth {
     /// Returns zero occupied inline cells.
     fn default() -> Self {
         Self::ZERO
+    }
+}
+word! {
+    impl TextelWidth => u8 {
+        type Error = InvalidValue;
+        raw(width) { width.get() }
+        try_from_raw(raw) { unwrap![some_ok_or Self::new(raw), InvalidValue] }
     }
 }
 

@@ -3,7 +3,7 @@
 //! Defines [`ValueKind4`].
 //
 
-use crate::{InvalidValue, ValueKind, word};
+use crate::{InvalidValue, ValueKind, is, unwrap, word};
 
 // (16 variants)
 #[doc = crate::_tags!(data value)]
@@ -89,22 +89,19 @@ impl ValueKind4 {
     /// Narrows a [`ValueKind`] if it belongs to the compact universal band.
     #[must_use]
     pub const fn from_kind(kind: ValueKind) -> Option<Self> {
-        if kind.is_compact() { Self::from_code(kind.code()) } else { None }
+        is! { kind.is_compact(), Self::from_code(kind.code()), None }
+    }
+    /// Condenses a [`ValueKind`] into this compact band,
+    /// mapping non-compact kinds to [`Escape`](#variant.Escape).
+    pub const fn condense(kind: ValueKind) -> ValueKind4 {
+        unwrap! { some_or Self::from_kind(kind), Self::Escape }
     }
 }
 
 word! {
     impl ValueKind4 => u8 {
         type Error = InvalidValue;
-
-        raw(kind) {
-            kind.code()
-        }
-        try_from_raw(raw) {
-            match Self::from_code(raw) {
-                Some(kind) => Ok(kind),
-                None => Err(InvalidValue),
-            }
-        }
+        raw(kind) { kind.code() }
+        try_from_raw(raw) { unwrap![some_ok_or Self::from_code(raw), InvalidValue] }
     }
 }

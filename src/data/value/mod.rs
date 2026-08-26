@@ -12,6 +12,7 @@ mod of; // Oneof
 
 // mod decode; // ValueDecode WIP
 mod kind; // ValueKind, ValueKind4, WIP ValueKindSet
+// mod profile; // WIP ValueProfile
 // mod schema; // WIP Schemas for encoded data structures.
 // mod value; // value! WIP
 #[cfg(feature = "_tuple")]
@@ -25,6 +26,7 @@ crate::structural_mods! { // _mods, _pub_mods
             of::_all::*,
             kind::*,
             intro::_all::*
+            // profile::*,
             // schema::_all::*,
             // value::*,
         };

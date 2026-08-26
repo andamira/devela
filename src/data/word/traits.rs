@@ -24,6 +24,11 @@ use crate::Infallible;
 /// is outside the representation admitted by `Self`. Parsing, external lookup,
 /// resource resolution, and other contextual validation are separate concerns.
 ///
+/// Other constructors on `Self` need not define this canonical correspondence.
+/// They may accept broader input domains and project them into valid values.
+/// Only [`raw`](#method.raw) and [`try_from_raw`](#method.try_from_raw)
+/// define the exact representation lens required by this trait.
+///
 /// # Laws
 ///
 /// Implementations must preserve the raw representation exactly:

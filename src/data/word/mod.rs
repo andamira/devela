@@ -13,6 +13,13 @@
 //! [`Word`] is the total case: every value of the raw representation is
 //! admitted, establishing an exact correspondence between the two domains.
 //!
+//! Canonical reconstruction is distinct from other ways of constructing a
+//! value. Domain-specific constructors may accept broader inputs and project,
+//! clamp, wrap, quantize, reserve, or otherwise normalize them when that is
+//! useful to the abstraction. Such operations do not weaken the word contract:
+//! [`WordTry::try_from_raw`] must reconstruct admitted raw representations
+//! exactly and reject, rather than normalize, non-admitted ones.
+//!
 //! This is a value-level representational contract, not a memory-layout or
 //! serialization guarantee. A word and its raw representation need not have
 //! identical Rust layouts, and reconstruction concerns representation validity

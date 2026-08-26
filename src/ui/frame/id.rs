@@ -1,12 +1,17 @@
 // devela/src/ui/frame/id.rs
 //
 //! Defines [`UiId`], [`UiKey`], [`UiScope`].
+//!
+//! UI identities intentionally reserve `u64::MAX` so `Option<UiKey>` and
+//! `Option<UiId>` retain a niche. Their ergonomic constructors project that
+//! single input into the usable identity domain, while their [`WordTry`]
+//! representations remain exact and reject the reserved raw value.
 //
 // Boundary: keys are author-local inputs; resolved ids are the tokens shared with
 // layout, routing, semantics, widgets, and presentation.
 //
 
-use crate::{NonMaxU64, SplitMix64, unwrap};
+use crate::{InvalidValue, NonMaxU64, SplitMix64, unwrap, word};
 
 #[doc = crate::_tags!(ui uid)]
 /// Stable author-provided UI identity seed.
@@ -22,16 +27,19 @@ impl UiKey {
     /// The root identity seed.
     pub const ROOT: Self = Self(unwrap![some_guaranteed_or_ub NonMaxU64::new(0)]);
 
-    /// Constructs a key from its raw integer value.
+    /// Constructs a key from an integer seed.
     ///
-    /// If `raw == u64::MAX`, it is lossily mapped to `u64::MAX - 1`.
+    /// `u64::MAX` is reserved to preserve the `Option<UiKey>` niche
+    /// and is mapped to `u64::MAX - 1`.
     pub const fn new(raw: u64) -> Self {
         Self(NonMaxU64::new_lossy(raw))
     }
-    /// Returns the raw integer value.
-    #[must_use]
-    pub const fn raw(self) -> u64 {
-        self.0.get()
+}
+word! {
+    impl UiKey => u64 {
+        type Error = InvalidValue;
+        raw(key) { key.0.get() }
+        try_from_raw(raw) { unwrap![some_ok_or NonMaxU64::new(raw), InvalidValue] }
     }
 }
 
@@ -49,16 +57,19 @@ impl UiId {
     /// The resolved root identity.
     pub const ROOT: Self = Self(unwrap![some_guaranteed_or_ub NonMaxU64::new(0)]);
 
-    /// Constructs an id from its raw integer value.
+    /// Constructs an id from an integer seed.
     ///
-    /// If `raw == u64::MAX`, it is lossily mapped to `u64::MAX - 1`.
+    /// `u64::MAX` is reserved to preserve the `Option<UiKey>` niche
+    /// and is mapped to `u64::MAX - 1`.
     pub const fn new(raw: u64) -> Self {
         Self(NonMaxU64::new_lossy(raw))
     }
-    /// Returns the raw integer value.
-    #[must_use]
-    pub const fn raw(self) -> u64 {
-        self.0.get()
+}
+word! {
+    impl UiId => u64 {
+        type Error = InvalidValue;
+        raw(id) { id.0.get() }
+        try_from_raw(raw) { unwrap![some_ok_or NonMaxU64::new(raw), InvalidValue] }
     }
 }
 
