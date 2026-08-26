@@ -3,7 +3,7 @@
 //! Fixed binary tags.
 //
 
-use crate::{_impl_init, Word, impl_trait, whilst};
+use crate::{_impl_init, impl_trait, whilst, word};
 
 #[must_use]
 #[doc = crate::_tags!(data codec)]
@@ -15,7 +15,6 @@ use crate::{_impl_init, Word, impl_trait, whilst};
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, Eq, PartialOrd, Ord)]
 pub struct BinTag4([u8; 4]);
-_impl_init![BinTag4::new([0; 4]) => BinTag4];
 
 #[rustfmt::skip]
 impl BinTag4 {
@@ -67,8 +66,7 @@ impl BinTag4 {
     #[must_use]
     pub const fn is_fourcc(self) -> bool {
         let b = self.0;
-        let mut seen_space = false;
-        let mut seen_symbol = false;
+        let (mut seen_space, mut seen_symbol) = (false, false);
         whilst! { i in 0..4; {
             if b[i] == b' ' {
                 seen_space = true;
@@ -125,12 +123,10 @@ impl BinTag4 {
         b == b' ' || (b >= 0x21 && b <= 0x7E)
     }
 }
+
+/* impl traits */
+
+_impl_init![BinTag4::new([0; 4]) => BinTag4];
 impl_trait![PartialEq for BinTag4 |self, other| Self::eq(*self, *other)];
 impl_trait![Hash for BinTag4 |self, s| self.bytes().hash(s)];
-
-#[rustfmt::skip]
-impl Word for BinTag4 {
-    type Repr = [u8; 4];
-    fn raw(self) -> Self::Repr { self.0 }
-    fn from_raw(raw: Self::Repr) -> Self { Self(raw) }
-}
+word! { impl BinTag4([u8; 4]); }

@@ -35,7 +35,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
-            word::*,
+            word::{Word, WordTry, word},
         };
     }
     _pub_mods {

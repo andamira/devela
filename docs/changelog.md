@@ -76,6 +76,11 @@
 - update `structural_mods!`: remove the `_workspace_internals` branch.
 - update `test_size_of!`: support negative niche `Option` testing.
 
+## data
+- new trait `WordTry`.
+- refactor `Word` to be auto-implemented for `WordTry::Error = Infallible`.
+- refactor `word!` to support fallible representations.
+
 ### data::access
 - new type `StridedBlocks`.
 - move macros from `code::util`: `read_at`, `write_at`.
