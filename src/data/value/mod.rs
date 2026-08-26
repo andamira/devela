@@ -12,7 +12,7 @@ mod of; // Oneof
 
 // mod decode; // ValueDecode WIP
 mod kind; // ValueKind, ValueKind4, WIP ValueKindSet
-// mod profile; // WIP ValueProfile
+// mod profile; // WIP ValueLayout, ValueProfile
 // mod schema; // WIP Schemas for encoded data structures.
 // mod value; // value! WIP
 #[cfg(feature = "_tuple")]

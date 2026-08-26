@@ -26,8 +26,8 @@
 //!
 //! - [`link`][mod@link] provides fixed-arity named direct relations.
 //! - [`graph`] provides arbitrary connectivity over vertex domains.
-//! - Spatial topology may describe locality, neighborhood, and partitioning
-//!   independently of geometric coordinates and metrics.
+// - Spatial topology may describe locality, neighborhood, and partitioning
+//   independently of geometric coordinates and metrics.
 //
 
 pub mod graph; // Graph connectivity over indexed vertex domains

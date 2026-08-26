@@ -1,6 +1,6 @@
 // devela/src/data/codec/bin/bit/mod.rs
 //
-#![doc = crate::_DOC_DATA_CODEC_BIN_BIT!()] // private
+#![doc = crate::_DOC_DATA_CODEC_BIN_BIT!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec::bin; bit)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]

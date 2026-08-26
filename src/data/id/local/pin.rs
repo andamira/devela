@@ -1,4 +1,4 @@
-// devela/src/data/id/pin.rs
+// devela/src/data/id/local/pin.rs
 //
 //! Defines [`IdPin`].
 //
@@ -9,7 +9,7 @@ use crate::Pin;
 #[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned stack-allocated reference.
 #[doc = crate::_doc_meta!{
-    location("data/id", struct IdPin),
+    location("data/id/local", struct IdPin),
     #[cfg(target_pointer_width = "32")]
     test_size_of(IdPin = 4|32; niche Option),
     #[cfg(target_pointer_width = "64")]

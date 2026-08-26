@@ -363,6 +363,7 @@ mod _reexports {
     #[allow(unused_imports)]
     pub use super::{
         code::{ConstInit, const_assert, unwrap},
+        data::{ByteCursor, WordTry, arena, handle, pool},
         // error::{};
         // geom::{};
         // lang::{};

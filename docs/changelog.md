@@ -91,11 +91,12 @@
 
 ### data::codec
 - new types: `Crc`, `Radix`.
-- make modules public: `pack`, `symbol`.
+- make modules public: `integrity`, `pack`, `symbol`.
 - remove type: `Base`.
 - remove type aliases: `Base16`, `Base32`, `Base32Padded`, `Base32Crockford`, `Base32Hex`, `Base64`, `Base64Padded`.
 
 #### data::codec::bin
+- make module public: `bit`.
 - move `enumset!` from `code::util`.
 - update `enumset!`: impl methods for the associated set:
   - `<contains|has|with|without|with_toggled|insert|remove|toggle|>_variant`, `for_each_set[_while]`.
@@ -107,9 +108,14 @@
 - new types: `BrailleByte`, `Ean`, `Octant`, `Quadrant`, `Sextant`, `YijingHexagram`.
 
 ### data::id
+- new module: `local`.
+- make `handle` and `uuid` modules public.
+
+#### data::id::handle
 - new macros: `handle!`, `handle_gen!`.
 - rename old `handle!` to `handle_span!`.
-- make `handle` and `uuid` modules public.
+
+#### data::id::local
 - update `id_seq!`:
   - make relaxed ordering default.
   - expose explicit ordering variants.

@@ -4,8 +4,8 @@
 #![doc = crate::_doc!(modules: crate; _doc: features, macros, nightly, vendored)]
 //#![doc = crate::_doc!(br+hr)] // gives way to the first root module
 //
-// #![cfg(any(doc, test))] // RETHINK
-#![cfg_attr(nightly_doc, doc(cfg(any(doc, test))))]
+#![cfg(doc)]
+#![cfg_attr(nightly_doc, doc(cfg(doc)))]
 
 // #[doc(hidden)] // TEMP
 // #[cfg(feature = "std")]

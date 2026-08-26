@@ -1,7 +1,7 @@
 // devela/src/data/codec/mod.rs
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
-#![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash, pack, symbol)]
+#![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash, integrity, pack, symbol)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 //!
@@ -27,17 +27,16 @@ pub mod crypto; // Cryptographic primitives
 mod encode; // Composable codecs for reading and writing values
 // pub mod frame; // WIP Framing codecs for bounded byte sequences
 pub mod hash; // Hashing algorithms (Fnv, Fx…)
-mod integrity; // Integrity codecs (Adler32, Crc32…)
+pub mod integrity; // Integrity codecs (Adler32, Crc32…)
 pub mod pack; // Packed data representations
 mod radix; // Radix-based encodings (Base32, Base64, Base58…)
 pub mod symbol; // Symbolic codes that encode data into visual marks
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         pub use super::{
             // detect::_all::*,
             encode::_all::*,
-            integrity::_all::*,
             radix::_all::*,
         };
     }
@@ -47,6 +46,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             crypto::_all::*,
             // frame::_all::*,
             hash::_all::*,
+            integrity::_all::*,
             pack::_all::*,
             symbol::_all::*,
         };
@@ -56,6 +56,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
         pub use super::{
             bin::{bitfield, set},
             hash::HasherFx,
+            integrity::Crc,
         };
     }
     _crate_internals {

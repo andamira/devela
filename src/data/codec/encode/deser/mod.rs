@@ -1,4 +1,4 @@
-// devela/src/data/value/schema/deser/mod.rs
+// devela/src/data/codec/encode/deser/mod.rs
 //
 //! Format-neutral value serialization.
 //

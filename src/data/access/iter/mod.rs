@@ -4,6 +4,20 @@
 #![doc = crate::_doc!(modules: crate::data::access; iter)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! devela regularizes the standard iterator family around two shared prefixes.
+//!
+//! Iterator traits use the `Iterator*` family where practical:
+//! `DoubleEndedIterator` becomes [`IteratorDoubleEnded`],
+//! `ExactSizeIterator` becomes [`IteratorExactSize`],
+//! `IntoIterator` becomes [`IteratorInto`], and so on.
+//! [`Iterator`] itself retains its conventional name.
+//!
+//! The shorter `Iter*` prefix is used for
+//! iterator namespace operations and related constructors.
+//!
+//! [`IteratorLending`] extends this vocabulary to
+//! iteration whose yielded values borrow from the iterator itself.
 //
 
 mod _reexport_core;

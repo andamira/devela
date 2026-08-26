@@ -7,14 +7,12 @@
 //
 // > What fields/kinds exist inside a value or record
 
-// mod deser;
 // mod octect; // SchemaPrimOctect
 // mod prim; // SchemaPrim
 
 crate::structural_mods! { // _mods
     _mods {
         // pub use super::{
-        //     deser::*,
         //     octect::*,
         //     prim::*,
         // };

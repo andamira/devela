@@ -39,7 +39,7 @@ word! {
     impl UiKey => u64 {
         type Error = InvalidValue;
         raw(key) { key.0.get() }
-        try_from_raw(raw) { unwrap![some_ok_or NonMaxU64::new(raw), InvalidValue] }
+        try_from_raw(raw) { Ok(Self(unwrap![some_ok_or? NonMaxU64::new(raw), InvalidValue])) }
     }
 }
 
@@ -69,7 +69,7 @@ word! {
     impl UiId => u64 {
         type Error = InvalidValue;
         raw(id) { id.0.get() }
-        try_from_raw(raw) { unwrap![some_ok_or NonMaxU64::new(raw), InvalidValue] }
+        try_from_raw(raw) { Ok(Self(unwrap![some_ok_or? NonMaxU64::new(raw), InvalidValue])) }
     }
 }
 

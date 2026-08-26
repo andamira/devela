@@ -1,4 +1,4 @@
-// devela/src/data/id/registry.rs
+// devela/src/data/id/local/registry.rs
 //
 //! Defines [`IdRegistry`]
 //!
@@ -10,7 +10,7 @@
 #[doc = crate::_tags!(uid)]
 /// Maps backend/native identifiers into stable, compact internal IDs.
 #[doc = crate::_doc_meta!{
-    location("data/id", struct IdRegistry),
+    location("data/id/local", struct IdRegistry),
     test_size_of(__: IdRegistry<i32, 16> = 132|1056; niche !Option),
     test_size_of(__: IdRegistry<char, 16> = 132|1056; niche Option),
 }]

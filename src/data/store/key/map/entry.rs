@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(data_structure)]
 /// Represents an entry in a [static map] allowing for in-place mutation or insertion.
 #[doc = crate::_doc_meta!{
-    location("data/id", enum StaticMapEntry),
+    location("data/store/key", enum StaticMapEntry),
     #[cfg(target_pointer_width = "32")]
     test_size_of(__: StaticMapEntry<char> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]

@@ -8,7 +8,7 @@
 //! The data tree separates several independent concerns:
 //!
 //! - [`Access`](access) determines how values are reached and traversed.
-//! - [`Codecs`](codec) transform values between representations.
+//! - [`Codecs`](codec) transform or derive data representations.
 //! - [`Identification`](id) distinguishes values through identities and contextual references.
 //! - [`Layout`](layout) determines how values are positioned and grouped.
 //! - [`Storage`](store) governs how values remain and are recovered.
@@ -32,7 +32,7 @@ pub mod topol; // Relational topology over structured data
 pub mod value; // Semantic value categories and composable data forms
 pub mod word; // Data words with exact canonical raw representations
 
-crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+crate::structural_mods! { // _pub_mods, _crate_internals, _reexports, _hidden
     _pub_mods {
         #[doc(inline)]
         pub use super::{
@@ -44,6 +44,18 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
             topol::_all::*,
             value::_all::*,
             word::_all::{Word, WordTry, word},
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            access::{ByteCursor, IteratorLending},
+            codec::{HasherFx, bitfield, set},
+            id::handle::handle,
+            layout::array::Array,
+            store::{arena::arena, pool::pool},
+            value::ValueKind,
+            word::WordTry,
         };
     }
     _crate_internals {

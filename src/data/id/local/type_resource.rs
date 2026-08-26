@@ -1,4 +1,4 @@
-// devela/src/data/id/type_resource.rs
+// devela/src/data/id/local/type_resource.rs
 //
 //! Type-safe resource IDs.
 //
@@ -12,7 +12,7 @@
 #[doc = crate::_tags!(code uid construction)]
 /// Defines zero-cost, zero-sized, type-safe *resource* IDs.
 #[doc = crate::_doc_meta!{
-    location("data/id", macro type_resource),
+    location("data/id/local", macro type_resource),
 }]
 /// This macro generates zero-sized types associated with an inner ID type.
 /// These types enable strong type safety at compile time
@@ -71,7 +71,7 @@ pub use type_resource;
 #[doc = crate::_tags!(code uid)]
 /// Represents an association between a resource and its inner data type.
 #[doc = crate::_doc_meta!{
-    location("data/id", trait TypeResourced),
+    location("data/id/local", trait TypeResourced),
 }]
 ///
 /// See also: [`TypeResource`] and [`type_resource!`].
@@ -83,7 +83,7 @@ pub trait TypeResourced {
 #[doc = crate::_tags!(code uid)]
 /// A newtype-based ID that associates a resource with its inner ID.
 #[doc = crate::_doc_meta!{
-    location("data/id", struct TypeResource),
+    location("data/id/local", struct TypeResource),
 }]
 ///
 /// # Examples

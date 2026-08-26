@@ -47,9 +47,9 @@ crate::structural_mods! { // _mods, _pub_mods, _hidden
     _reexports {
         #[doc(inline)]
         pub use super::{
-            arena::{arena, arena_bytes},
-            key::{map},
-            pool::{pool, pool_seq},
+            arena::arena,
+            key::map,
+            pool::pool,
         };
     }
     _hidden {

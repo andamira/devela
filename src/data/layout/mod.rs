@@ -18,6 +18,7 @@
 //! - [`Buffers`](buffer) add bounded occupancy in linear or cyclic order.
 //! - [`DST storage`](dst) supports dynamically sized representations
 //!   without requiring heap allocation.
+//! - [`Linked structures`](linked) represent explicit sequential linkage.
 //
 
 pub mod array; // Contiguous homogeneous storage with dimensional projections

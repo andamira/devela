@@ -20,8 +20,7 @@
 // - Cursors maintain an explicit position within ordered data.
 //! - [`ByteCursor`] maintains an explicit position within ordered byte data.
 //! - [`Iterators`](iter) expose successive elements through traversal protocols.
-//! - [`Routes`](route) represent ordered segments before domain-specific
-//!   interpretation.
+//! - [`Routes`](route) represent ordered segments before domain-specific interpretation.
 //
 
 // mod address; // Symbolic and contextual references interpreted through resolution
@@ -31,7 +30,7 @@ mod offset; // Explicit positional access: read_at!, write_at!
 pub mod route; // Segmented routes before domain-specific interpretation
 mod transfer; // Caller-buffered gather/scatter transfers
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::structural_mods! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
             // address::_all::*,
@@ -44,6 +43,13 @@ crate::structural_mods! { // _mods, _pub_mods
         pub use super::{
             iter::_all::*,
             route::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            iter::IteratorLending,
+            route::Route,
         };
     }
 }

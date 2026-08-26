@@ -1,4 +1,4 @@
-// devela/src/data/id/pin_box.rs
+// devela/src/data/id/local/pin_box.rs
 //
 //! Defines [`IdPinBox`].
 //
@@ -8,7 +8,7 @@ use crate::{Box, Pin};
 #[doc = crate::_tags!(uid allocation)]
 /// A unique identifier based on a pinned heap-allocated memory address.
 #[doc = crate::_doc_meta!{
-    location("data/id", struct IdPinBox),
+    location("data/id/local", struct IdPinBox),
     #[cfg(target_pointer_width = "32")]
     test_size_of(IdPinBox = 4|32; niche Option),
     #[cfg(target_pointer_width = "64")]
