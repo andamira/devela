@@ -3,6 +3,8 @@
 //! Defines [`HttpStatusClass`], [`HttpStatus`].
 //
 
+use crate::{InvalidValue, word};
+
 #[doc = crate::_tags!(network protocol)]
 /// The response class of an HTTP status code.
 #[doc = crate::_doc_meta!{location("sys/net/http")}]
@@ -166,6 +168,21 @@ impl HttpStatus {
     pub const LOOP_DETECTED: Self = Self(508);
     /// `511 Network Authentication Required`.
     pub const NETWORK_AUTHENTICATION_REQUIRED: Self = Self(511);
+}
+
+word! {
+    impl HttpStatus => u16 {
+        type Error = InvalidValue;
+        raw(status) {
+            status.code()
+        }
+        try_from_raw(raw) {
+            match Self::from_code(raw) {
+                Some(status) => Ok(status),
+                None => Err(InvalidValue),
+            }
+        }
+    }
 }
 
 /// # Fundamental methods

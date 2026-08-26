@@ -3,14 +3,19 @@
 //!
 //
 
-use crate::SignalNext;
+use crate::{SignalNext, word};
 
 #[doc = crate::_tags!(num signal wave primitive)]
 /// A normalized cycle phase represented as wrapping `u32`.
 #[repr(transparent)]
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct Phase),
+    test_size_of(Phase = 4|32; niche !Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Phase(pub u32);
+
+word! { impl Phase(u32); }
 
 #[rustfmt::skip]
 impl Phase {
@@ -25,8 +30,6 @@ impl Phase {
 
     /// Creates a phase from its raw wrapping representation.
     pub const fn new(raw: u32) -> Self { Self(raw) }
-    /// Returns the raw wrapping representation.
-    pub const fn raw(self) -> u32 { self.0 }
 
     /// Advances this phase by `step`, wrapping at the end of the cycle.
     pub const fn advance(self, step: PhaseStep) -> Self {
@@ -41,10 +44,15 @@ impl Phase {
 
 #[doc = crate::_tags!(num signal wave primitive)]
 /// A wrapping phase increment.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct PhaseStep),
+    test_size_of(PhaseStep = 4|32; niche !Option),
+}]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhaseStep(pub u32);
+
+word! { impl PhaseStep(u32); }
 
 #[rustfmt::skip]
 impl PhaseStep {
@@ -55,17 +63,13 @@ impl PhaseStep {
     pub const fn new(raw: u32) -> Self {
         Self(raw)
     }
-    /// Returns the raw wrapping representation.
-    pub const fn raw(self) -> u32 {
-        self.0
-    }
 }
 
 #[doc = crate::_tags!(num signal wave)]
 /// A stateful phase accumulator.
 #[doc = crate::_doc_meta!{
-    location("num/signal"),
-    test_size_of(PhaseAccum = 8|64),
+    location("num/signal", struct PhaseAccum),
+    test_size_of(PhaseAccum = 8|64; niche !Option),
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhaseAccum {

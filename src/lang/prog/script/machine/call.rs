@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::ScriptMachine;
-use crate::{ConstInit, NonMaxU16, unwrap};
+use crate::{ConstInit, InvalidValue, NonMaxU16, WordTry, unwrap};
 
 #[doc = crate::_tags!(lang uid)]
 /// A compact contextual identifier for a host operation.
@@ -37,6 +37,17 @@ impl ScriptCallId {
     #[must_use]
     pub const fn raw(self) -> u16 {
         self.0.get()
+    }
+}
+
+impl WordTry for ScriptCallId {
+    type Repr = u16;
+    type Error = InvalidValue;
+    fn raw(self) -> Self::Repr {
+        ScriptCallId::raw(self)
+    }
+    fn try_from_raw(raw: Self::Repr) -> Result<Self, Self::Error> {
+        unwrap![some_ok_or ScriptCallId::new(raw), InvalidValue]
     }
 }
 

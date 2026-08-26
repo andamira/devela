@@ -95,7 +95,6 @@ macro_rules! handle {
     (%parse_fields [$($done:tt)*] [$($bad:tt)+] [$($tail:tt)*]) => {
         compile_error!("invalid handle field; expected `name: Prim;` or `name: Prim + Repr;`");
     };
-
     // normalized kernel
     (%define
         [ $( $field:ident : $Prim:ident, $Repr:ty; )+ ]
@@ -116,6 +115,16 @@ macro_rules! handle {
             }
         }
 
+        $crate::word! {
+            impl $Handle => ($($Repr,)+) {
+                raw(handle) { handle.into_parts() }
+                from_raw(raw) {
+                    let ($($field,)+) = raw;
+                    Self::new($($field),+)
+                }
+            }
+        }
+
         /// Fundamental const methods over the whole handle.
         #[allow(dead_code)]
         impl $Handle {
@@ -127,7 +136,6 @@ macro_rules! handle {
                 $( let $field = $crate::MaybeNiche::<$Repr>::new($field); )+
                 Self { $($field),+ }
             }
-
             /// Creates a new handle from primitive carrier components.
             ///
             /// Returns an error if any component violates its representation invariant.
@@ -138,7 +146,6 @@ macro_rules! handle {
                 )+
                 Ok(Self { $($field),+ })
             }
-
             /// Creates a new handle from `usize` components.
             ///
             /// Returns an error if any value does not fit its primitive carrier or
@@ -159,7 +166,6 @@ macro_rules! handle {
             $vis const fn into_parts(self) -> ($($Repr,)+) {
                 ($(self.$field.get(),)+)
             }
-
             /// Returns the primitive carrier components in declaration order.
             #[must_use]
             $vis const fn into_prim(self) -> ($($Prim,)+) {
@@ -213,6 +219,9 @@ crate::items! {
         assert_eq![index.get(), 7];
         assert_eq![kind, 15];
         assert_eq![revision, 3];
+        let raw = handle.raw();
+        assert_eq!(HandleExample::from_raw(raw), handle);
+        assert_eq!(HandleExample::try_from_raw(raw), Ok(handle));
     }
     #[test]
     fn handle_rejects_invalid_niche_value() {

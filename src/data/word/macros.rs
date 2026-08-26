@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(data word construction)]
 /// Defines word newtypes or implements a canonical [`WordTry`][crate::WordTry] representation.
 #[doc = crate::_doc_meta!{
-    location("data", macro word),
+    location("data/word", macro word),
 }]
 /// The short `struct` forms define transparent single-field words.
 ///

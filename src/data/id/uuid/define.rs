@@ -7,7 +7,7 @@ use crate::{Ascii, ConstInit, FromRandTry, Pcg32, RandTry, Str};
 use crate::{TextCursor, TextParseError, UuidNonNil, UuidVariant, UuidVersion};
 #[cfg(feature = "time")]
 use crate::{TimePoint, TimeSource, TimeSourceCfg};
-use crate::{impl_trait, is, slice, unwrap, whilst};
+use crate::{impl_trait, is, slice, unwrap, whilst, word};
 
 #[doc = crate::_tags!(uid)]
 /// A standardized portable 128-bit identifier.
@@ -19,6 +19,8 @@ use crate::{impl_trait, is, slice, unwrap, whilst};
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Uuid([u8; 16]);
+
+word! { impl Uuid([u8; 16]); }
 
 impl Uuid {
     /* constants */

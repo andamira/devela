@@ -10,11 +10,11 @@ use crate::Infallible;
 #[doc = crate::_tags!(data word)]
 /// A copyable word with an exact canonical raw representation.
 #[doc = crate::_doc_meta!{
-    location("data", trait WordTry),
+    location("data/word", trait WordTry),
 }]
 /// A `WordTry` can be losslessly peeled into [`Repr`](#associatedtype.Repr),
 /// while reconstruction may reject raw representations
-/// that do not satisfy the word's invariants.
+/// not satisfying the invariants.
 ///
 /// The raw representation is a canonical value-level representation.
 /// It does not by itself imply that `Self` and `Repr` have identical
@@ -56,7 +56,7 @@ pub trait WordTry: Copy + Eq {
 #[doc = crate::_tags!(data word)]
 /// A [`WordTry`] that admits the complete domain of its raw representation.
 #[doc = crate::_doc_meta!{
-    location("data", trait Word),
+    location("data/word", trait Word),
 }]
 /// `Word` is implemented automatically for every
 /// `WordTry<Error = Infallible>`.

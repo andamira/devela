@@ -3,7 +3,7 @@
 //! Defines [`UuidNonNil`].
 //
 
-use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait};
+use crate::{InvalidValue, NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait, word};
 
 #[doc = crate::_tags!(uid niche)]
 /// A UUID excluding [`Uuid::NIL`] to provide a memory niche.
@@ -15,6 +15,21 @@ use crate::{NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait};
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct UuidNonNil(NonZeroU128);
+
+word! {
+    impl UuidNonNil => [u8; 16] {
+        type Error = InvalidValue;
+        raw(uuid) {
+            uuid.into_bytes()
+        }
+        try_from_raw(raw) {
+            match Self::from_bytes(raw) {
+                Some(uuid) => Ok(uuid),
+                None => Err(InvalidValue),
+            }
+        }
+    }
+}
 
 impl UuidNonNil {
     /* constants */

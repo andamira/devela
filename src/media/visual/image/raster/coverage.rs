@@ -3,7 +3,7 @@
 //! Defines [`Coverage8`].
 //
 
-use crate::_impl_init;
+use crate::{_impl_init, word};
 
 #[doc = crate::_tags!(image quant)]
 /// Normalized 8-bit raster-sample coverage.
@@ -107,8 +107,9 @@ impl Coverage8 {
     }
 }
 
-_impl_init![Self::ZERO => Coverage8];
+word! { impl Coverage8(u8); }
 
+_impl_init![Self::ZERO => Coverage8];
 impl Default for Coverage8 {
     /// Returns no coverage.
     fn default() -> Self {

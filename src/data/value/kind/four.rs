@@ -3,7 +3,7 @@
 //! Defines [`ValueKind4`].
 //
 
-use crate::ValueKind;
+use crate::{InvalidValue, ValueKind, word};
 
 // (16 variants)
 #[doc = crate::_tags!(data value)]
@@ -90,5 +90,21 @@ impl ValueKind4 {
     #[must_use]
     pub const fn from_kind(kind: ValueKind) -> Option<Self> {
         if kind.is_compact() { Self::from_code(kind.code()) } else { None }
+    }
+}
+
+word! {
+    impl ValueKind4 => u8 {
+        type Error = InvalidValue;
+
+        raw(kind) {
+            kind.code()
+        }
+        try_from_raw(raw) {
+            match Self::from_code(raw) {
+                Some(kind) => Ok(kind),
+                None => Err(InvalidValue),
+            }
+        }
     }
 }
