@@ -83,6 +83,7 @@ See also
 
 - 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
+- 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 
 
@@ -140,7 +141,7 @@ See also
 - 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
+- 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534) WAIT
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)

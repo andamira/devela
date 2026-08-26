@@ -89,7 +89,7 @@
 // ----------------------------
 // `nightly_stable_1_100`: core, alloc, std:
 #![cfg_attr(nightly_stable_1_100, feature(bool_toggle, never_type,))]
-#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature())]
+#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature(smart_pointer_try_map,))]
 #![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 // ----------------------------
 // `nightly_stable_1_101`: core, alloc, std:
@@ -144,8 +144,8 @@
         box_take,
         btree_extract_if,
         new_zeroed_alloc,
+        // smart_pointer_map,
         string_from_utf8_lossy_owned,
-        smart_pointer_try_map, //smart_pointer_map
     )
 )]
 #![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
