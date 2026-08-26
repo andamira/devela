@@ -76,7 +76,8 @@
 - update `structural_mods!`: remove the `_workspace_internals` branch.
 - update `test_size_of!`: support negative niche `Option` testing.
 
-## data
+## data::word
+- make module public.
 - new trait `WordTry`.
 - refactor `Word` to be auto-implemented for `WordTry::Error = Infallible`.
 - refactor `word!` to support fallible representations.

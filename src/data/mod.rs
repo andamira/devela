@@ -14,12 +14,13 @@
 //! - [`Storage`](store) governs how values remain and are recovered.
 //! - [`Topology`](topol) describes connectivity, adjacency, and ordered relations.
 //! - [`Values`](value) provide the semantic forms carried by these structures.
+//! - [`Words`](mod@word) expose exact canonical raw representations of copyable values.
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_DATA_MODULES =
-    crate::_doc!(modules: crate; data: access, codec, id, layout, store, topol, value);
+    crate::_doc!(modules: crate; data: access, codec, id, layout, store, topol, value, word);
 }
 
 pub mod access; // Mechanisms of reachability and traversal
@@ -29,15 +30,9 @@ pub mod layout; // Structural arrangement of elements in memory or sequence
 pub mod store; // Retained data stores and retrieval semantics
 pub mod topol; // Relational topology over structured data
 pub mod value; // Semantic value categories and composable data forms
-mod word; // Fixed-width encoded data words
+pub mod word; // Data words with exact canonical raw representations
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
-    _mods {
-        #[doc(inline)]
-        pub use super::{
-            word::{Word, WordTry, word},
-        };
-    }
+crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         #[doc(inline)]
         pub use super::{
@@ -48,6 +43,7 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
             store::_all::*,
             topol::_all::*,
             value::_all::*,
+            word::_all::{Word, WordTry, word},
         };
     }
     _crate_internals {

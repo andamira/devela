@@ -1,0 +1,42 @@
+// devela/src/data/word/mod.rs
+//
+#![doc = crate::_DOC_DATA_WORD!()] // public
+#![doc = crate::_doc!(modules: crate::data; word)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
+//! Words are copyable representational atoms with one canonical raw form.
+//!
+//! [`WordTry`] identifies a type exactly with an admitted subset of its raw
+//! representation domain. Peeling into that representation is always possible,
+//! while reconstruction may reject raw values outside the admitted subset.
+//!
+//! [`Word`] is the total case: every value of the raw representation is
+//! admitted, establishing an exact correspondence between the two domains.
+//!
+//! This is a value-level representational contract, not a memory-layout or
+//! serialization guarantee. A word and its raw representation need not have
+//! identical Rust layouts, and reconstruction concerns representation validity
+//! rather than parsing, storage lookup, resource resolution, or other
+//! contextual state.
+//!
+//! [`word!`] generates these interfaces for transparent newtypes and for
+//! explicitly supplied representation lenses.
+//!
+//! Here, *word* denotes a small self-contained copyable representational atom;
+//! it does not specifically mean a target-machine word.
+//
+
+#[cfg(test)]
+mod _test;
+
+mod macros; // word!
+mod traits; // Word, WordTry
+
+crate::structural_mods! { // _mods
+    _mods {
+        pub use super::{
+            macros::word,
+            traits::{Word, WordTry},
+        };
+    }
+}

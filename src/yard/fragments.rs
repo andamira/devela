@@ -107,7 +107,7 @@ its own flat view of all its public children.";
     _DOC_DATA_TOPOL_SPATIAL = "Locality, neighborhood, and partitioning over indexed domains.";
     _DOC_DATA_VALUE         = "Semantic value categories and composable data forms.";
     _DOC_DATA_VALUE_SCHEMA  = "Schemas for encoded values.";
-    _DOC_DATA_WORD          = "Raw-representable data words.";
+    _DOC_DATA_WORD          = "Data words with exact canonical raw representations.";
 
     // 3. error (where failure becomes explicit)
     _DOC_ERROR        = "Failure types, result aliases, and recovery semantics";
