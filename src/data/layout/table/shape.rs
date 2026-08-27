@@ -3,7 +3,7 @@
 //! Defines [`TableShape`].
 //
 
-use crate::{ArrayShape, ConstInit, Overflow, TableCoord};
+use crate::{ArrayShape, ConstInit, Overflow, TableCoord, TableCoordIter, unwrap};
 
 #[doc = crate::_tags!(data_structure)]
 /// The numbers of rows and columns in a table.
@@ -44,7 +44,6 @@ impl TableShape {
     pub const fn cell_count(self) -> Result<usize, Overflow> {
         self.shape.element_count()
     }
-
     /// Returns whether `coord` lies within this table shape.
     pub const fn contains(self, coord: TableCoord) -> bool {
         self.shape.contains_coord(coord.as_array())
@@ -56,6 +55,16 @@ impl TableShape {
     /// Creates a table shape from an array shape interpreted as
     /// `[rows, columns]`.
     pub const fn from_array(shape: ArrayShape<2>) -> Self { Self { shape } }
+
+    /// Returns an iterator over every logical table coordinate.
+    ///
+    /// Coordinates are yielded row by row, with columns changing fastest.
+    ///
+    /// # Errors
+    /// Returns [`Overflow`] if the cell count is not representable.
+    pub const fn try_coords(self) -> Result<TableCoordIter, Overflow> {
+        unwrap![=ok_map self.cell_count(), |count| TableCoordIter::new(self, count)]
+    }
 }
 
 impl ConstInit for TableShape {

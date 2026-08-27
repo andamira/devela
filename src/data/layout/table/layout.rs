@@ -3,7 +3,7 @@
 //! Defines [`TableLayout`].
 //
 
-use crate::{ArrayLayout, ConstInit, Overflow, TableCoord, TableShape};
+use crate::{ArrayLayout, ConstInit, Overflow, TableCoord, TableCoordIter, TableShape};
 
 #[doc = crate::_tags!(data_structure mem)]
 /// An affine mapping from table cells to linear storage positions.
@@ -98,6 +98,12 @@ impl TableLayout {
     /// with axes `[row, column]`.
     pub const fn from_array(layout: ArrayLayout<2>) -> Self {
         Self { layout }
+    }
+    /// Returns an iterator over every logical table coordinate.
+    ///
+    /// Coordinate order is independent of physical storage order.
+    pub const fn coords(self) -> TableCoordIter {
+        TableCoordIter::new(self.shape(), self.cell_count())
     }
 }
 

@@ -29,7 +29,7 @@ mod shape;
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            coord::TableCoord,
+            coord::{TableCoord, TableCoordIter},
             layout::TableLayout,
             shape::TableShape,
         };
