@@ -1,7 +1,7 @@
 // devela/src/data/store/key/mod.rs
 //
 #![doc = crate::_DOC_DATA_STORE_KEY!()] // public
-#![doc = crate::_doc!(modules: crate::data::store; key: map)]
+#![doc = crate::_doc!(modules: crate::data::store; key: map, set)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
@@ -9,33 +9,22 @@
 //! through unique keys, including maps, sets, and other key-value structures.
 //
 
-#[cfg(feature = "alloc")]
-mod _reexport_alloc;
-mod _reexport_dep;
-
 pub mod map; // Key-value maps organized by lookup and storage strategy
-mod set; // SparseSet[Array|Error], LinuxSparseSet
-// mod trie;
+pub mod set; // Sets organized by membership and storage strategy
+// mod trie; // FUTURE
 
-crate::structural_mods! { // _mods, pub_mods, _reexports
-    _mods {
-        pub use super::{
-            set::*,
-            // trie::*,
-        };
-    }
+crate::structural_mods! { // pub_mods, _reexports
     _pub_mods {
         pub use super::{
-            map::*,
+            map::_all::*,
+            set::_all::*,
         };
     }
     _reexports {
         #[doc(inline)]
         pub use super::{
             map::map,
+            set::SparseSetArray,
         };
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
-        pub use super::_reexport_dep::*;
     }
 }

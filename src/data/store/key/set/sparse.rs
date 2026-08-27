@@ -12,7 +12,7 @@ pub(crate) type SparseSetResult<T> = Result<T, SparseSetError>;
 #[doc = crate::_tags!(data_structure error set)]
 /// Sparse-set operation error.
 #[doc = crate::_doc_meta!{
-    location("data/store/key", enum SparseSetError),
+    location("data/store/key/set", enum SparseSetError),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum SparseSetError {
@@ -32,7 +32,7 @@ pub enum SparseSetError {
 #[doc = crate::_tags!(data_structure set)]
 /// A sparse integer set with constant-time insertion, removal, lookup and clearing.
 #[doc = crate::_doc_meta!{
-    location("data/store/key", struct SparseSetArray),
+    location("data/store/key/set", struct SparseSetArray),
 }]
 /// Values are `usize`s in the range `0..SPARSE`.
 ///

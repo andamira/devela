@@ -11,7 +11,7 @@ use core::slice::Iter as IterSlice;
 #[doc = crate::_tags!(data_structure platform set)]
 /// A Linux mmap-backed sparse set with lazily zeroed storage.
 #[doc = crate::_doc_meta!{
-    location("data/store/key", struct LinuxSparseSet),
+    location("data/store/key/set", struct LinuxSparseSet),
     #[cfg(target_pointer_width = "32")]
     test_size_of(LinuxSparseSet = 28|224; niche Option),
     #[cfg(target_pointer_width = "64")]

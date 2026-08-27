@@ -178,6 +178,9 @@
   - normalize tombstone probing and reuse.
   - make collision tests hasher-independent.
 
+#### data::store::key::set
+- make module public.
+
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
 - new type: `PoolIter`.

@@ -1,4 +1,4 @@
-// devela/src/data/store/key/_reexport_dep.rs
+// devela/src/data/store/key/set/_reexport_dep.rs
 
 #![allow(unused_imports, unused_macros, reason = "dep_hashbrown|std feature-gate")]
 
@@ -28,7 +28,7 @@ mod hashbrown_reexports {
     #[doc = crate::_tags!(data_structure hash set)]
     #[doc = _hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc_meta!{location("data/store/key", struct HashSet)}]
+    #[doc = crate::_doc_meta!{location("data/store/key/set", struct HashSet)}]
     #[doc = _hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use crate::_dep::hashbrown::HashSet;
@@ -41,7 +41,7 @@ mod std_reexports {
     #[doc = crate::_tags!(data_structure hash set)]
     #[doc = super::_hashbrown_or_std!(start)]
     /// An unordered hash set implemented as a `HashMap` where the value is `()`
-    #[doc = crate::_doc_meta!{location("data/store/key", struct HashSet)}]
+    #[doc = crate::_doc_meta!{location("data/store/key/set", struct HashSet)}]
     #[doc = super::_hashbrown_or_std!(end)]
     #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
     pub use std::collections::HashSet;
@@ -49,7 +49,7 @@ mod std_reexports {
 
 #[doc = crate::_tags!(data_structure hash set)]
 /// The `HashSet` in the standard library.
-#[doc = crate::_doc_meta!{location("data/store/key", struct HashSetStd)}]
+#[doc = crate::_doc_meta!{location("data/store/key/set", struct HashSetStd)}]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
@@ -70,7 +70,7 @@ mod aliases {
 
     #[doc = crate::_tags!(data_structure hash set)]
     /// A [`HashSet`] using a default Fx hasher.
-    #[doc = crate::_doc_meta!{location("data/store/key", type HashSetFx)}]
+    #[doc = crate::_doc_meta!{location("data/store/key/set", type HashSetFx)}]
     ///
     /// To create with a reserved capacity,
     /// use `HashSetFx::with_capacity_and_hasher(num, Default::default())`.

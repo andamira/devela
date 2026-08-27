@@ -102,6 +102,7 @@ its own flat view of all its public children.";
     _DOC_DATA_STORE_INTERN  = "Canonical stores for deduplicated values and shared identity.";
     _DOC_DATA_STORE_KEY     = "Keyed stores and lookup structures.";
     _DOC_DATA_STORE_KEY_MAP = "Key-value maps organized by lookup and storage strategy.";
+    _DOC_DATA_STORE_KEY_SET = "Sets organized by membership and storage strategy.";
     _DOC_DATA_STORE_POOL    = "Reusable stores with generational handles and individual reclamation.";
     _DOC_DATA_TOPOL         = "Connectivity and structural relations independent of storage.";
     _DOC_DATA_TOPOL_GRAPH   = "Graph connectivity over indexed vertex domains.";
