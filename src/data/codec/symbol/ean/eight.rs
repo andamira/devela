@@ -52,7 +52,7 @@ impl Ean<8> {
             modules = (modules << 7) | _helper::SET_A[digits[i] as usize] as u128;
         }}
         modules = (modules << 5) | _helper::CENTER as u128;
-        whilst! { i in i,..8; {
+        whilst! { i in ..8; {
             modules = (modules << 7) | _helper::set_c(digits[i]) as u128;
         }}
         Some((modules << 3) | _helper::GUARD as u128)
@@ -82,7 +82,7 @@ impl Ean<8> {
             digits[i] = unwrap![some? _helper::decode_a(pattern)];
         }}
         // Right half: number set C, the bitwise complement of A.
-        whilst! { i in i,..8; {
+        whilst! { i in ..8; {
             let shift = 24 - (i - 4) * 7;
             let pattern = ((modules >> shift) & 0x7F) as u8;
             digits[i] = unwrap![some? _helper::decode_c(pattern)];

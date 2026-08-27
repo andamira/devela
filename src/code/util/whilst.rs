@@ -112,6 +112,12 @@
 /// let start = 0;
 /// whilst![x in start,..4; vals[x] = x];
 /// assert_eq!(vals, [0, 1, 2, 3]);
+///
+/// // Omitting the start continues an existing range variable.
+/// let mut vals = [0; 8];
+/// whilst![i in 0..4; vals[i] = i];
+/// whilst![i in ..8; vals[i] = i];
+/// assert_eq!(vals, [0, 1, 2, 3, 4, 5, 6, 7]);
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -276,6 +282,26 @@ macro_rules! whilst {
         $($label:)? while $var >= $min { $body; $var -= $step; }
     };
     (
+    // continue forward from an existing binding
+    $($label:lifetime:)?
+    $var:ident in .. $max:expr; $body:expr) => {
+        $($label:)? while $var < $max { $body; $var += 1; }
+    };
+    ($($label:lifetime:)?
+     $var:ident in ..= $max:expr; $body:expr) => {
+        $($label:)? while $var <= $max { $body; $var += 1; }
+    };
+    (
+    // continue forward from an existing binding, with custom step
+    $($label:lifetime:)?
+    $var:ident in .. $max:expr; $step:expr; $body:expr) => {
+        $($label:)? while $var < $max { $body; $var += $step; }
+    };
+    ($($label:lifetime:)?
+     $var:ident in ..= $max:expr; $step:expr; $body:expr) => {
+        $($label:)? while $var <= $max { $body; $var += $step; }
+    };
+    (
     // forward (in)
     $($label:lifetime:)?
     $var:ident in $min:literal .. $max:expr; $body:expr) => {
@@ -426,6 +452,27 @@ mod tests {
         //
         let mut b = 0; whilst![x in 0.0,..5.0; 0.5; b+=1]; assert_eq![b, 10];
         let mut b = 0; whilst![x in 0.0,..=5.0; 0.5; b+=1]; assert_eq![b, 11];
+
+        /* continuation */
+        let mut values = [0usize; 4]; let mut n = 0;
+        whilst![i in 0..2; { values[n] = i; n += 1 }];
+        whilst![i in ..4; { values[n] = i; n += 1 }];
+        assert_eq![values, [0, 1, 2, 3]];
+
+        let mut values = [0usize; 4]; let mut n = 0;
+        whilst![i in 0..2; { values[n] = i; n += 1 }];
+        whilst![i in ..=3; { values[n] = i; n += 1 }];
+        assert_eq![values, [0, 1, 2, 3]];
+
+        let mut values = [0usize; 4]; let mut n = 0;
+        whilst![i in 0..4; 2; { values[n] = i; n += 1 }];
+        whilst![i in ..8; 2; { values[n] = i; n += 1 }];
+        assert_eq![values, [0, 2, 4, 6]];
+
+        let mut values = [0usize; 5]; let mut n = 0;
+        whilst![i in 0..4; 2; { values[n] = i; n += 1 }];
+        whilst![i in ..=8; 2; { values[n] = i; n += 1 }];
+        assert_eq![values, [0, 2, 4, 6, 8]];
 
         /* backward */
         // start:literal

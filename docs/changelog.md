@@ -71,7 +71,9 @@
 
 ### code::util
 - new modules: `assert`, `cfg`, `debug`, `synth`, `token`.
-- extend `whilst!` with indexed slice iteration.
+- update `whilst!`:
+  - add indexed slice iteration.
+  - add forward range continuation with `i in ..end` and `i in ..=end`.
 - update `doclink!` and `_reexport!`: support linking to the item directly.
 - update `structural_mods!`: remove the `_workspace_internals` branch.
 - update `test_size_of!`: support negative niche `Option` testing.
