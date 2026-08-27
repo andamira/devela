@@ -19,8 +19,8 @@ See the linked modifications for detailed changes.
   as the [`AppEnv`] trait and related structs ([*modifications*][M_etcetera]).
 - <i id="fmtor"></i>[fmtor] by Tyler Ruckinger,
   as `OptionExt`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
-- <i id="fxhash"></i>[fxhash] by Christopher Breeden,
-  as the [`HasherFx`] struct ([*modifications*][M_fxhash]).
+- <i id="rustc-hash"></i>[rustc_hash] by Christopher Breeden,
+  as the [`HasherFx`] struct ([*modifications*][M_rustc-hash]).
 - <i id="macro_rules_attribute"></i>[macro_rules_attribute] by Daniel Henry-Mantilla,
   as the [`macro_apply`], [`macro_derive`], [`macro_derive_with`] proc-macros
   and the [`macro_apply_alias!`] and [`macro_derive_alias!`] decl-macros
@@ -67,8 +67,8 @@ See the linked modifications for detailed changes.
   [`fmt_or`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or
   [`fmt_or_else`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or_else
   [`fmt_or_empty`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or_empty
-[fxhash]: https://crates.io/crates/fxhash/0.2.1
-  [M_fxhash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/fxhash.md
+[rustc_hash]: https://crates.io/crates/rustc-hash/2.1.3
+  [M_rustc-hash]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/rustc-hash.md
   [`HasherFx`]: https://docs.rs/devela/latest/devela/data/codec/hash/struct.HasherFx.html
 [macro_rules_attribute]: https://crates.io/crates/macro_rules_attribute/0.2.0
   [M_macro_rules_attribute]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/macro_rules_attribute.md

@@ -17,7 +17,7 @@
   [`fmt_or`]: crate::code::result::OptionExt::fmt_or
   [`fmt_or_else`]: crate::code::result::OptionExt::fmt_or_else
   [`fmt_or_empty`]: crate::code::result::OptionExt::fmt_or_empty
-  [M_fxhash]: crate::_doc::vendored::fxhash
+  [M_rustc-hash]: crate::_doc::vendored::rustc_hash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
   [M_macro_rules_attribute]: crate::_doc::vendored::macro_rules_attribute
   [`macro_apply`]: crate::code::util::synth::macro_apply

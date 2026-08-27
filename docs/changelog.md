@@ -105,6 +105,9 @@
   - impl for the associated enum, unit-only constant: `ALL`.
   - impl `From<enum>` for the associated set.
 
+#### data::codec::hash
+- update `HasherFx`: replace vendored version from `fxhash` to `rustc-hash`.
+
 #### data::codec::symbol
 - new types: `BrailleByte`, `Ean`, `Octant`, `Quadrant`, `Sextant`, `YijingHexagram`.
 

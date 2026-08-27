@@ -10,7 +10,7 @@ mod _reexport_core;
 #[cfg(feature = "std")]
 mod _reexport_std;
 
-mod fx; // HasherBuildFx, HasherFx.
+mod fx; // HasherBuildFx, HasherFx
 
 #[cfg(feature = "hash")]
 crate::items! {
@@ -21,7 +21,7 @@ crate::items! {
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            fx::*,
+            fx::{HasherBuildFx, HasherFx},
         };
         #[cfg(feature = "hash")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "hash")))]
