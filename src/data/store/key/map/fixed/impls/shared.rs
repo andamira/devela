@@ -1,4 +1,4 @@
-// devela/src/data/store/key/map/impls/shared.rs
+// devela/src/data/store/key/map/fixed/impls/shared.rs
 
 #[doc(hidden)]
 #[macro_export]
@@ -16,11 +16,11 @@ macro_rules! __map_impl_shared {
                 value: V,
             ) -> Result<(), $crate::NotEnoughSpace> {
                 match self.entry(key) {
-                    $crate::StaticMapEntry::Occupied(slot) => {
+                    $crate::MapFixedEntry::Occupied(slot) => {
                         *slot = value; // Overwrite existing value
                         Ok(())
                     }
-                    $crate::StaticMapEntry::Vacant(index) if index < N => {
+                    $crate::MapFixedEntry::Vacant(index) if index < N => {
                         self.keys[index] = key;
                         self.values[index] = value;
                         Ok(())

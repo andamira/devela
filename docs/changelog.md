@@ -168,7 +168,10 @@
   - add raw UTF-8 span operations.
   - make rollback marks optional.
 
-#### data::store::key
+#### data::store::key::map
+- make module public.
+- rename `StaticMapEntry` to `MapFixedEntry`.
+- rename example types: `MapStatic*` to `MapFixed`.
 - update `map!`:
   - use `HasherFx` fast path.
   - preserve custom hasher expressions.

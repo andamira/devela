@@ -1,8 +1,8 @@
-// devela/src/data/store/key/map/impls/runtime.rs
+// devela/src/data/store/key/map/fixed/impls/constrs
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __map_impl_runtime {
+macro_rules! __map_impl_const {
     (
         $(#[$attr:meta])*
         $vis:vis $NAME:ident, KEY:$KEY:ty,
@@ -10,30 +10,39 @@ macro_rules! __map_impl_runtime {
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
     ) => {
         $(#[$attr])*
-
-        $(#[$attr])*
-        /// A runtime static hashmap with stored `empty` and `tomb` markers.
+        #[doc = concat!("A fully `const` static hashmap with compile-time `",
+            stringify!($KEY), "` keys.")]
         ///
-        /// This variant stores its marker values as **fields**, enabling runtime
-        /// initialization, cloning, and dynamic configuration.
-        /// All operations follow the same hashing and probing logic as the const variant,
-        /// but methods are non-const to allow greater flexibility.
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+        /// This variant defines its `EMPTY` and `TOMB` markers as **associated constants**
+        /// and exposes only `const fn` methods, allowing construction and use in
+        /// compile-time contexts.
+        ///
+        /// All hashing, probing, and insertion logic mirror the runtime variant,
+        /// but with stricter compile-time guarantees and no stored marker fields.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis struct $NAME<K: Copy, V, const N: usize> {
             keys: [K; N],
             values: [V; N],
-            empty: K,
-            tomb: K,
         }
 
         $crate::__map_impl_shared![$NAME, KEY:$KEY, HASHER: | $HASH_ARG | $HASH_EXPR];
 
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
+            /// Compile-time key value used to mark empty slots.
+            pub const EMPTY: $KEY = $EMPTY as $KEY;
+            /// Compile-time key value used to mark deleted slots.
+            pub const TOMB: $KEY = $TOMB as $KEY;
+
             /// Returns the key value used to mark empty slots.
-            pub fn empty(&self) -> $KEY { self.empty }
+            pub const fn empty(&self) -> $KEY { $EMPTY }
             /// Returns the key value used to mark deleted slots.
-            pub fn tomb(&self) -> $KEY { self.tomb }
+            pub const fn tomb(&self) -> $KEY { $TOMB }
+        }
+
+        impl<V: Copy + $crate::ConstInit, const N: usize>
+            $crate::ConstInit for $NAME<$KEY, V, N> {
+            const INIT: Self = Self::new();
         }
         impl<V: Default, const N: usize> Default for $NAME<$KEY, V, N> {
             /// Creates an empty hashmap.
@@ -47,36 +56,31 @@ macro_rules! __map_impl_runtime {
                 Self {
                     keys: [$EMPTY; N],
                     values: $crate::init_array![default [V; N], "safe_data", "unsafe_array"],
-                    empty: $EMPTY,
-                    tomb: $TOMB,
+                }
+            }
+        }
+
+        #[allow(unused)]
+        impl<V: Copy + $crate::ConstInit, const N: usize> $NAME<$KEY, V, N> {
+            /// Creates an empty hashmap.
+            ///
+            /// # Panics
+            /// Panics in debug if `EMPTY` and `TOMB` are equal,
+            /// or if any of them are out of range for `$KEY`.
+            #[allow(clippy::float_cmp_const)]
+            pub const fn new() -> Self {
+                Self:: debug_assert_invariants();
+                Self {
+                    keys: [$EMPTY; N],
+                    values: [V::INIT; N],
                 }
             }
         }
 
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
-            /// Constructs a new static map with runtime EMPTY and TOMB values.
-            pub fn new() -> Self where V: Default {
-                Self::default()
-            }
-            /// Creates an empty hashmap, by cloning a `value`.
-            ///
-            /// # Panics
-            /// Panics in debug if `EMPTY` and `TOMB` are equal,
-            /// or if any of them are out of range for `$KEY`.
-            #[allow(unexpected_cfgs, reason = "init_array")]
-            fn new_cloned(value: V) -> Self where V: Clone {
-                Self:: debug_assert_invariants();
-                Self {
-                    keys: [$EMPTY; N],
-                    values: $crate::init_array![clone [V; N], "safe_data", "unsafe_array", value],
-                    empty: $EMPTY,
-                    tomb: $TOMB,
-                }
-            }
-
             /// Retrieves some shared reference to the value associated with the given key.
-            pub fn get_ref(&self, key: $KEY) -> Option<&V> {
+            pub const fn get_ref(&self, key: $KEY) -> Option<&V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 $crate::whilst! { i in 0..N; {
@@ -86,9 +90,8 @@ macro_rules! __map_impl_runtime {
                 }}
                 None
             }
-
             /// Retrieves some exclusive reference to the value associated with the given key.
-            pub fn get_mut(&mut self, key: $KEY) -> Option<&mut V> {
+            pub const fn get_mut(&mut self, key: $KEY) -> Option<&mut V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 $crate::whilst! { i in 0..N; {
@@ -99,17 +102,17 @@ macro_rules! __map_impl_runtime {
                 None
             }
             /// Retrieves an entry for a given key.
-            pub fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<'_, V> {
+            pub const fn entry(&mut self, key: $KEY) -> $crate::MapFixedEntry<'_, V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 let mut tombstone_index = None;
                 $crate::whilst! { i in 0..N; {
                     if self.keys[index] == self.empty() {
-                        return $crate::StaticMapEntry::Vacant(
+                        return $crate::MapFixedEntry::Vacant(
                             $crate::unwrap![some_or tombstone_index, index]);
                     }
                     if self.keys[index] == key {
-                        return $crate::StaticMapEntry::Occupied(&mut self.values[index]);
+                        return $crate::MapFixedEntry::Occupied(&mut self.values[index]);
                     }
                     if self.keys[index] == self.tomb() && tombstone_index.is_none() {
                         tombstone_index = Some(index);
@@ -117,13 +120,13 @@ macro_rules! __map_impl_runtime {
                     index = (index + 1) % N;
                 }}
                 // If full, return N (invalid index)
-                $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
+                $crate::MapFixedEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
             }
 
             /* introspection */
 
             /// Returns the number of occupied slots in the hashmap.
-            pub fn len(&self) -> usize {
+            pub const fn len(&self) -> usize {
                 let mut count = 0;
                 $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() { count += 1; }
@@ -131,19 +134,19 @@ macro_rules! __map_impl_runtime {
                 count
             }
             /// Returns `true` if the hashmap contains no entries.
-            pub fn is_empty(&self) -> bool { self.len() == 0 }
+            pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
             /// Returns `true` if the hashmap is completely full.
-            pub fn is_full(&self) -> bool { self.len() == N }
+            pub const fn is_full(&self) -> bool { self.len() == N }
 
             /// Determines if rebuilding the table would improve efficiency.
             ///
             /// # Heuristic:
             /// - Rebuild if `TOMB` slots exceed `N / 2` (half the table size).
-            pub fn should_rebuild(&self) -> bool { self.deleted_count() >= N / 2 }
+            pub const fn should_rebuild(&self) -> bool { self.deleted_count() >= N / 2 }
 
             /// Returns the number of deleted (TOMB) slots.
-            pub fn deleted_count(&self) -> usize {
+            pub const fn deleted_count(&self) -> usize {
                 let mut count = 0;
                 $crate::whilst! { i in 0..N; {
                     if self.keys[i] == self.tomb() { count += 1; }
@@ -152,17 +155,17 @@ macro_rules! __map_impl_runtime {
             }
 
             /// Returns the load factor as a fraction of total capacity.
-            pub fn load_factor(&self) -> f32 { self.len() as f32 / N as f32 }
+            pub const fn load_factor(&self) -> f32 { self.len() as f32 / N as f32 }
 
             /* utility */
 
             /// Ensures the given key is not EMPTY or TOMB.
-            fn debug_assert_valid_key(key: $KEY) {
+            const fn debug_assert_valid_key(key: $KEY) {
                 debug_assert!(key != $EMPTY, "Key cannot be `EMPTY` marker");
                 debug_assert!(key != $TOMB, "Key cannot be `TOMB` marker");
             }
             /// Ensures the type invariants hold.
-            fn debug_assert_invariants() {
+            const fn debug_assert_invariants() {
                 debug_assert![$EMPTY != $TOMB, "`$EMPTY` and `$TOMB` must be distinct"];
                 debug_assert![($EMPTY as i128) >= (<$KEY>::MIN as i128)
                     && ($EMPTY as i128) <= (<$KEY>::MAX as i128),
@@ -171,7 +174,10 @@ macro_rules! __map_impl_runtime {
                     && ($TOMB as i128) <= (<$KEY>::MAX as i128),
                     "`$TOMB` value is out of range for type `$KEY`"];
             }
+        }
 
+        #[allow(unused)]
+        impl<V: Copy, const N: usize> $NAME<$KEY, V, N> {
             /// Inserts a key-value pair.
             ///
             /// # Returns
@@ -186,7 +192,7 @@ macro_rules! __map_impl_runtime {
             /// - If the slot contains another key, **probes forward** until an open slot is found.
             /// - If no open slots exist, returns an error.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub fn insert(&mut self, key: $KEY, value: V)
+            pub const fn insert(&mut self, key: $KEY, value: V)
                 -> Result<(), $crate::NotEnoughSpace> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
@@ -215,10 +221,6 @@ macro_rules! __map_impl_runtime {
                     Err($crate::NotEnoughSpace(Some(1)))
                 }
             }
-        }
-
-        #[allow(unused)]
-        impl<V: Copy, const N: usize> $NAME<$KEY, V, N> {
             /// Retrieves a value by key.
             ///
             /// # Returns
@@ -230,7 +232,7 @@ macro_rules! __map_impl_runtime {
             /// - If a `TOMB` (deleted slot) is encountered, it **continues probing**.
             /// - If an `EMPTY` slot is reached, the key is **not in the table**.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub fn get(&self, key: $KEY) -> Option<V> {
+            pub const fn get(&self, key: $KEY) -> Option<V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 $crate::whilst! { i in 0..N; {
@@ -240,6 +242,10 @@ macro_rules! __map_impl_runtime {
                 }}
                 None
             }
+        }
+
+        #[allow(unused)]
+        impl<V: Copy + $crate::ConstInit, const N: usize> $NAME<$KEY, V, N> {
             /// Removes a key-value pair.
             ///
             /// # Returns
@@ -252,7 +258,7 @@ macro_rules! __map_impl_runtime {
             /// - **Does NOT free the slot for immediate reuse**.
             /// - New insertions only reuse a `TOMB` slot if no earlier `EMPTY` slots exist.
             #[allow(clippy::float_cmp, clippy::float_cmp_const)]
-            pub fn remove(&mut self, key: $KEY) -> bool {
+            pub const fn remove(&mut self, key: $KEY) -> bool {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
                 $crate::whilst! { i in 0..N; {
@@ -262,16 +268,12 @@ macro_rules! __map_impl_runtime {
                 }}
                 false
             }
-        }
-
-        #[allow(unused)]
-        impl<V: Copy + Default, const N: usize> $NAME<$KEY, V, N> {
             /// Removes a key-value pair and optionally rebuilds the table.
             ///
             /// # Behavior
             /// - Calls `remove()`, returning `true` if the key was found.
             /// - If `should_rebuild()` returns `true`, calls `rebuild()`.
-            pub fn remove_rebuild(&mut self, key: $KEY) -> bool {
+            pub const fn remove_rebuild(&mut self, key: $KEY) -> bool {
                 let removed = self.remove(key);
                 if removed && self.should_rebuild() { self.rebuild(); }
                 removed
@@ -283,7 +285,7 @@ macro_rules! __map_impl_runtime {
             /// # When to Call?
             /// - When **many deletions have occurred**.
             /// - If lookups start taking significantly longer.
-            pub fn rebuild(&mut self) { *self = self.rebuilt(); }
+            pub const fn rebuild(&mut self) { *self = self.rebuilt(); }
 
             /// Returns a rebuilt version of the table with `TOMB` slots removed.
             ///
@@ -291,7 +293,7 @@ macro_rules! __map_impl_runtime {
             ///
             /// # Complexity
             /// - **O(N)** worst-case when all slots are occupied.
-            pub fn rebuilt(&self) -> Self {
+            pub const fn rebuilt(&self) -> Self {
                 let mut new_table = Self::new();
                 $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() {

@@ -1,4 +1,4 @@
-// devela/src/data/store/key/map/_test.rs
+// devela/src/data/store/key/map/fixed/_test.rs
 //
 //!
 //
@@ -10,7 +10,7 @@ use crate::map;
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod v_non_copy {
-    use crate::{MapStaticU8Example as TestMapU8, StaticMapEntry, String, ToString};
+    use crate::{MapFixedEntry, MapFixedU8Example as TestMapU8, String, ToString};
 
     #[test]
     fn get_ref() {
@@ -33,7 +33,7 @@ mod v_non_copy {
         let mut map = TestMapU8::<u8, u32, 4>::default();
         map.insert(1, 100).unwrap();
         match map.entry(1) {
-            StaticMapEntry::Occupied(v) => {
+            MapFixedEntry::Occupied(v) => {
                 *v = 200; // Modify in place
             }
             _ => panic!("Expected occupied entry"),
@@ -43,7 +43,7 @@ mod v_non_copy {
     #[test]
     fn entry_vacant() {
         let mut map = TestMapU8::<u8, u32, 4>::default();
-        assert!(matches!(map.entry(1), StaticMapEntry::Vacant(_)));
+        assert!(matches!(map.entry(1), MapFixedEntry::Vacant(_)));
         map.insert(1, 100).unwrap();
         assert_eq!(map.get_ref(1), Some(&100));
     }
@@ -104,7 +104,7 @@ mod v_non_copy {
 }
 
 mod k_u8 {
-    use crate::MapStaticConstU8Example as TestMapU8;
+    use crate::MapFixedConstU8Example as TestMapU8;
 
     #[test]
     const fn map_custom_empty_tomb() {
@@ -165,7 +165,7 @@ mod k_u8 {
 
 #[rustfmt::skip]
 mod k_u8_panicking {
-    use crate::MapStaticConstU8Example as TestMapU8;
+    use crate::MapFixedConstU8Example as TestMapU8;
 
     #[allow(unused)] type M = TestMapU8::<u8, u32, 4>;
     #[test] #[cfg(debug_assertions)] #[should_panic(expected = "Key cannot be `EMPTY` marker")]

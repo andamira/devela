@@ -1,20 +1,21 @@
-// devela/src/data/store/key/map/entry.rs
+// devela/src/data/store/key/map/fixed/entry.rs
 //
-//! Defines [`StaticMapEntry`].
+//! Defines [`MapFixedEntry`].
 //
 
 #[doc = crate::_tags!(data_structure)]
-/// Represents an entry in a [static map] allowing for in-place mutation or insertion.
+/// Represents an entry in a [fixed-capacity map`],
+/// allowing in-place mutation or insertion.
 #[doc = crate::_doc_meta!{
-    location("data/store/key", enum StaticMapEntry),
+    location("data/store/key/map", enum MapFixedEntry),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: StaticMapEntry<char> = 8|64; niche Option),
+    test_size_of(__: MapFixedEntry<char> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: StaticMapEntry<char> = 16|128; niche Option),
+    test_size_of(__: MapFixedEntry<char> = 16|128; niche Option),
 }]
-/// [static map]: crate::map
+/// [fixed-capacity map]: crate::map!
 #[derive(Debug)]
-pub enum StaticMapEntry<'a, V> {
+pub enum MapFixedEntry<'a, V> {
     /// An entry that contains a value.
     ///
     /// Provides a mutable reference to the stored value, allowing in-place modification.

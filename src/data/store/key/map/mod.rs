@@ -1,24 +1,28 @@
 // devela/src/data/store/key/map/mod.rs
 //
-//! Defines the [`map!`] macro and the [`StaticEntry`] enum.
+#![doc = crate::_DOC_DATA_STORE_KEY_MAP!()] // public
+#![doc = crate::_doc!(modules: crate::data::store::key; map)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(extends: collections)]
 //
 
-#[cfg(test)]
-mod _test;
-#[cfg(any(test, feature = "_docs_examples"))]
-mod _example;
+#[cfg(feature = "alloc")]
+mod _reexport_alloc;
+mod _reexport_dep;
 
-mod define; // map!
-mod impls; // hidden macros for map! variants
-mod entry; // StaticMapEntry
+mod fixed; // Fixed-capacity open-addressed hash maps with mutable entries
+// mod perfect; // Immutable perfect-hash maps over statically known key sets
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            define::map,
-            entry::StaticMapEntry,
+            fixed::_all::*,
+            // perfect::_all::*,
         };
-        #[cfg(any(test, feature = "_docs_examples"))]
-        pub use super::_example::*;
+    }
+    _reexports {
+        #[cfg(feature = "alloc")]
+        pub use super::_reexport_alloc::*;
+        pub use super::_reexport_dep::*;
     }
 }

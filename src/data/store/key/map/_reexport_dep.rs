@@ -1,0 +1,94 @@
+// devela/src/data/store/key/map/_reexport_dep.rs
+
+#![allow(unused_imports, unused_macros, reason = "dep_hashbrown|std feature-gate")]
+
+/* from `hashbrown` or `std` */
+
+#[allow(unused_macros)]
+macro_rules! _hashbrown_or_std {
+    (start) => {
+        "<span class='stab portability'
+        title='re-exported from either `hashbrown` or `std`'>`≡std`</span>"
+    };
+    (end) => {
+        "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hasmap) crate
+        or from [`std::collections`](https::doc.rust-lang.org/std/collections)*.
+        \n\n---"
+    };
+}
+use _hashbrown_or_std;
+
+// types from hashbrown have preference over those from std.
+#[cfg(feature = "dep_hashbrown")]
+pub use hashbrown_reexports::*;
+#[cfg(feature = "dep_hashbrown")]
+mod hashbrown_reexports {
+    use super::_hashbrown_or_std;
+
+    #[doc = crate::_tags!(data_structure hash)]
+    #[doc = _hashbrown_or_std!(start)]
+    /// An unordered hash map with quadratic probing and SIMD lookup.
+    #[doc = crate::_doc_meta!{location("data/store/key/map", struct HashMap)}]
+    #[doc = _hashbrown_or_std!(end)]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+    pub use crate::_dep::hashbrown::HashMap;
+
+    #[doc = crate::_tags!(data_structure hash)]
+    #[doc = _hashbrown_or_std!(start)]
+    /// A view into a single entry in a map, which may either be vacant or occupied.
+    #[doc = crate::_doc_meta!{location("data/store/key/map", struct HashMapEntry)}]
+    #[doc = _hashbrown_or_std!(end)]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+    pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
+}
+
+#[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
+pub use std_reexports::*;
+#[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
+mod std_reexports {
+    #[doc = crate::_tags!(data_structure hash)]
+    #[doc = super::_hashbrown_or_std!(start)]
+    /// An unordered hash map with quadratic probing and SIMD lookup.
+    #[doc = crate::_doc_meta!{location("data/store/key/map", struct HashMap)}]
+    #[doc = super::_hashbrown_or_std!(end)]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+    pub use std::collections::hash_map::HashMap;
+
+    #[doc = crate::_tags!(data_structure hash)]
+    #[doc = super::_hashbrown_or_std!(start)]
+    /// A view into a single entry in a map, which may either be vacant or occupied.
+    #[doc = crate::_doc_meta!{location("data/store/key/map", struct HashMapEntry)}]
+    #[doc = super::_hashbrown_or_std!(end)]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+    pub use std::collections::hash_map::Entry as HashMapEntry;
+}
+
+#[doc = crate::_tags!(data_structure hash)]
+/// The `HashMap` in the standard library.
+#[doc = crate::_doc_meta!{location("data/store/key/map", struct HashMapStd)}]
+#[cfg(feature = "std")]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
+pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
+
+#[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
+pub use aliases::*;
+#[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
+#[cfg_attr(
+    nightly_doc,
+    doc(cfg(all(
+        feature = "hash",
+        any(feature = "std", all(feature = "dep_hashbrown", feature = "hash"))
+    )))
+)]
+mod aliases {
+    use super::HashMap;
+    use crate::HasherBuildFx;
+
+    #[doc = crate::_tags!(data_structure hash)]
+    /// A [`HashMap`] using a default Fx hasher.
+    #[doc = crate::_doc_meta!{location("data/store/key/map", type HashMapFx)}]
+    ///
+    /// To create with a reserved capacity,
+    /// use `HashMapFx::with_capacity_and_hasher(num, Default::default())`.
+    pub type HashMapFx<K, V> = HashMap<K, V, HasherBuildFx>;
+}

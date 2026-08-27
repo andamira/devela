@@ -1,4 +1,4 @@
-// devela/src/data/store/key/map/define.rs
+// devela/src/data/store/key/map/fixed/define.rs
 //
 //! Defines the [`map!`] macro.
 //
@@ -7,7 +7,7 @@
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a custom static hashmap.
 #[doc = crate::_doc_meta!{
-    location("data/store/key", macro map),
+    location("data/store/key/map", macro map),
 }]
 /// # Arguments
 /// - `$NAME`:      the name of the new hashmap.
@@ -39,11 +39,11 @@
 "Uses `TypeId` hashes as keys and provides type-oriented helper methods. |"]]
 ///
 /// # Examples
-/// See [`MapStaticConstU8Example`], [`MapStaticU8Example`], [`MapStaticTypeIdExample`].
+/// See [`MapFixedConstU8Example`], [`MapFixedU8Example`], [`MapFixedTypeIdExample`].
 ///
-/// [`MapStaticConstU8Example`]: crate::MapStaticConstU8Example
-/// [`MapStaticU8Example`]: crate::MapStaticU8Example
-/// [`MapStaticTypeIdExample`]: crate::MapStaticTypeIdExample
+/// [`MapFixedConstU8Example`]: crate::MapFixedConstU8Example
+/// [`MapFixedU8Example`]: crate::MapFixedU8Example
+/// [`MapFixedTypeIdExample`]: crate::MapFixedTypeIdExample
 ///
 /// Overview
 /// ```
