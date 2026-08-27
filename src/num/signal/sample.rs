@@ -7,7 +7,9 @@
 
 #[doc = crate::_tags!(num signal)]
 /// A stateless or externally indexed signal.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalAt),
+}]
 pub trait SignalAt<X> {
     /// The sampled value type.
     type Sample;

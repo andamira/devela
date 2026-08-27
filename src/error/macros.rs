@@ -13,8 +13,9 @@
 
 #[doc = crate::_tags!(construction error)]
 /// Defines individual and composite error types.
-#[doc = crate::_doc_meta!{location("error")}]
-///
+#[doc = crate::_doc_meta!{
+    location("error", macro define_error),
+}]
 /// It can also implement `From` and `TryFrom` traits between them.
 ///
 /** # Examples
@@ -339,7 +340,7 @@ macro_rules! define_error· {
 pub use define_error· as define_error;
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::define_error;
 
     #[test]
@@ -427,7 +428,6 @@ mod tests {
             CompositeSubset::try_from(CompositeSuperset::SuperSingle(Some(2))),
             Ok(CompositeSubset::SubSingle(Some(2)))
         ];
-
         assert_eq![
             CompositeSuperset::SuperMultiple(4, 6),
             CompositeSubset::SubMultiple(4, 6).into()
@@ -436,7 +436,6 @@ mod tests {
             CompositeSubset::try_from(CompositeSuperset::SuperMultiple(5, 7)),
             Ok(CompositeSubset::SubMultiple(5, 7))
         ];
-
         assert_eq![
             CompositeSuperset::SuperStruct { f1: true, f2: Some('z') },
             CompositeSubset::SubStruct { f1: true, f2: Some('z') }.into()
@@ -445,7 +444,6 @@ mod tests {
             CompositeSubset::try_from(CompositeSuperset::SuperStruct { f1: true, f2: None }),
             Ok(CompositeSubset::SubStruct { f1: true, f2: None })
         ];
-
         assert![CompositeSubset::try_from(CompositeSuperset::SuperUnit).is_err()];
     }
 }

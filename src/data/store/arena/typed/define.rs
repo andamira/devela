@@ -44,8 +44,12 @@
 ///     pub Mark;
 /// }
 /// ```
-/// [`mark`](#method.mark) snapshots the current insertion frontier and
-/// [`rollback`](#method.rollback) removes every value inserted after it.
+/// [`mark`](#method.mark) records the current insertion frontier.
+/// [`rollback`](#method.rollback) retracts the arena to that frontier,
+/// reclaiming every value inserted after it.
+///
+/// A mark is a frontier checkpoint, not a snapshot of arena state:
+/// mutations to values retained before the mark are not reverted.
 ///
 /// The mark stores the frontier as `usize`, independently of the handle index
 /// representation, so the frontier after a completely full arena remains representable.
@@ -59,9 +63,11 @@
 /// # Handle validity
 ///
 /// Handles contain only an index and no arena-instance identity or generation.
-/// Rolling back or clearing invalidates handles to reclaimed values, but that
-/// invalidation is not remembered. If a later insertion reuses the same index,
-/// an old handle for that index can resolve again to the new value.
+/// After rollback or clearing, handles into the reclaimed region no longer resolve.
+///
+/// This invalidation is not remembered. If later insertion reuses the same index,
+/// an old handle can resolve again to the new value. Arena handles therefore act
+/// as storage coordinates, not as generational identities.
 ///
 /// Use [`pool!`][crate::pool!] when individual reclamation and bounded stale-handle
 /// rejection are required.

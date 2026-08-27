@@ -162,13 +162,13 @@ macro_rules! __arena_impl_array {
                     <$Mark>::new(self.len)
                 }
 
-                /// Removes every value inserted after `mark`.
+                /// Retracts the insertion frontier to `mark`, reclaiming its suffix.
                 ///
-                /// Returns `false` without changing the arena if `mark` lies ahead
-                /// of the current frontier.
+                /// Returns `false` without changing the arena
+                /// if `mark` lies ahead of the current frontier.
                 ///
-                /// Reclaimed handles are not permanently invalidated: later insertion
-                /// may reuse their indices.
+                /// Reclaimed handles are not permanently invalidated:
+                /// later insertion may reuse their indices.
                 $mvis fn rollback(&mut self, mark: $Mark) -> bool {
                     if mark.0.gt(self.len) { return false; }
                     while self.len.gt(mark.0) {

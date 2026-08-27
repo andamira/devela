@@ -143,13 +143,13 @@ macro_rules! __arena_impl_vec {
                 #[must_use]
                 $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.values.len()) }
 
-                /// Removes every value inserted after `mark`.
+                /// Retracts the insertion frontier to `mark`, reclaiming its suffix.
                 ///
-                /// Returns `false` without changing the arena if `mark` lies ahead
-                /// of the current frontier.
+                /// Returns `false` without changing the arena
+                /// if `mark` lies ahead of the current frontier.
                 ///
-                /// Reclaimed handles are not permanently invalidated: later insertion
-                /// may reuse their indices.
+                /// Reclaimed handles are not permanently invalidated:
+                /// later insertion may reuse their indices.
                 $mvis fn rollback(&mut self, mark: $Mark) -> bool {
                     if mark.0 > self.values.len() { return false; }
                     self.values.truncate(mark.0);

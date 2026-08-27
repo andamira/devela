@@ -9,7 +9,9 @@ use crate::SignalAt;
 
 #[doc = crate::_tags!(num signal)]
 /// A stateful signal that emits one sample per step.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", trait SignalNext),
+}]
 pub trait SignalNext {
     /// The emitted sample type.
     type Sample;
@@ -21,7 +23,9 @@ pub trait SignalNext {
 
 #[doc = crate::_tags!(num signal)]
 /// Emits the same sample every time.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalConst),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalConst<T> {
     /// The sample value emitted or returned every time.
@@ -48,7 +52,9 @@ impl<X, T: Copy> SignalAt<X> for SignalConst<T> {
 
 #[doc = crate::_tags!(num signal)]
 /// Wraps a function or closure as a signal.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalFn),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalFn<F> {
     /// The function or closure used to produce signal samples.

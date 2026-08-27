@@ -1,13 +1,15 @@
 // devela/src/num/signal/curve.rs
 //
-//!
+//! Defines [`CurveRamp`].
 //
 
 use crate::{Add, Mul, SignalAt, Sub};
 
 #[doc = crate::_tags!(num signal)]
 /// A linear ramp from `start` to `end`.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct CurveRamp),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct CurveRamp<T> {
     /// The value returned at the beginning of the ramp.

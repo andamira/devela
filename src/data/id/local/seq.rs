@@ -133,9 +133,13 @@ macro_rules! id_seq {
             /// [`Relaxed`]: $crate::AtomicOrdering::Relaxed
             #[must_use]
             $vis fn new_with_ordering(ordering: $crate::AtomicOrdering) -> Option<Self> {
-                let id = $static.fetch_update(ordering, $crate::AtomicOrdering::Relaxed,
-                    |id| { if id == <$prim>::MAX { None } else { Some(id + 1) } }
-                ).ok()?;
+                cfg_select! { feature = "dep_portable_atomic" => { // WAIT
+                    let id = $static.fetch_update(ordering, $crate::AtomicOrdering::Relaxed,
+                        |id| { if id == <$prim>::MAX { None } else { Some(id + 1) }}).ok()?;
+                } _ => {
+                    let id = $static.try_update(ordering, $crate::AtomicOrdering::Relaxed,
+                        |id| { if id == <$prim>::MAX { None } else { Some(id + 1) }}).ok()?;
+                }}
                 Some(Self { id })
             }
             #[doc = concat!("Generates a unique `", $sname,

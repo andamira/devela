@@ -12,7 +12,9 @@ use crate::{Mul, SignalAt, SignalNext};
 
 #[doc = crate::_tags!(num signal)]
 /// Clamps each sample to `[min, max]`.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalClamp),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalClamp<S, T> {
     /// The signal whose samples are clamped.
@@ -56,7 +58,9 @@ where
 
 #[doc = crate::_tags!(num signal)]
 /// Maps each sample through a function.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalMap),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalMap<S, F> {
     /// The signal whose samples are transformed.
@@ -93,7 +97,9 @@ where
 
 #[doc = crate::_tags!(num signal)]
 /// Multiplies each sample by a fixed factor.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalScale),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalScale<S, K> {
     /// The signal whose samples are scaled.
@@ -132,7 +138,9 @@ where
 
 #[doc = crate::_tags!(num signal)]
 /// Combines two signals sample-by-sample.
-#[doc = crate::_doc_meta!{location("num/signal")}]
+#[doc = crate::_doc_meta!{
+    location("num/signal", struct SignalZip),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SignalZip<A, B, F> {
     /// The first input signal.

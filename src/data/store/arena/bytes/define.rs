@@ -64,9 +64,8 @@
 ///
 /// Supplying a mark type adds `mark` and `rollback`.
 ///
-/// A mark stores the current byte frontier using the configured cursor
-/// primitive. Rolling back reclaims the suffix written after that frontier.
-/// A mark ahead of the current frontier is rejected.
+/// A mark records a storage frontier, not a snapshot of the retained bytes:
+/// mutations before that frontier are not reverted by rollback.
 ///
 /// Like handles, marks are relative to the arena instance that produced them.
 /// Reclamation does not permanently invalidate their coordinates: later writes

@@ -106,10 +106,16 @@ macro_rules! __arena_bytes_impl_array {
             /* snapshot and rollback */
 
             $(
-                /// Creates a rollback mark at the current byte length.
+                /// Returns a mark at the current byte frontier.
                 $mvis const fn mark(&self) -> $Mark { <$Mark>::new(self.len) }
 
-                /// Rolls back to `mark`, returning whether the mark was valid.
+                /// Retracts the byte frontier to `mark`, reclaiming the written suffix.
+                ///
+                /// Returns `false` without changing the arena if `mark` lies ahead
+                /// of the current frontier.
+                ///
+                /// Handles whose spans extend beyond the new frontier no longer resolve.
+                /// This invalidation is not permanent: later writes may reuse their coordinates.
                 $mvis const fn rollback(&mut self, mark: $Mark) -> bool {
                     if mark.0 <= self.len { self.len = mark.0; true } else { false }
                 }
