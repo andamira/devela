@@ -3,7 +3,7 @@
 //! Defines [`ArrayLayout`].
 //
 
-use crate::{ArrayCoordIter, ArrayShape, Overflow, is, unwrap, whilst};
+use crate::{ArrayCoordIter, ArrayShape, ConstInit, Overflow, is, unwrap, whilst};
 
 #[doc = crate::_tags!(data_structure mem)]
 /// An affine mapping from array coordinates to linear storage positions.
@@ -49,6 +49,14 @@ pub struct ArrayLayout<const RANK: usize> {
     offset: usize,
     strides: [isize; RANK],
 }
+
+#[rustfmt::skip]
+impl<const RANK: usize> ConstInit for ArrayLayout<RANK> {
+    const INIT: Self = Self { shape: ArrayShape::INIT, offset: 0, strides: [0; RANK] };
+}
+#[rustfmt::skip]
+impl<const RANK: usize> Default for ArrayLayout<RANK> { fn default() -> Self { Self::INIT } }
+
 #[rustfmt::skip]
 impl<const RANK: usize> ArrayLayout<RANK> {
     /// Creates a dense layout whose last axis varies fastest.
@@ -164,6 +172,11 @@ impl<const RANK: usize> ArrayLayout<RANK> {
 mod _test {
     use super::*;
 
+    #[test]
+    fn init_is_canonical_dense_last() {
+        assert_eq!(ArrayLayout::<3>::INIT, ArrayLayout::dense_last(ArrayShape::INIT).unwrap(),);
+        assert_eq!(ArrayLayout::<0>::INIT, ArrayLayout::dense_last(ArrayShape::INIT).unwrap(),);
+    }
     #[test]
     fn dense_last_layout() {
         let shape = ArrayShape::new([2, 3, 4]);

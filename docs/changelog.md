@@ -152,6 +152,10 @@
 #### data::layout::linked
 - make module public.
 
+#### data::layout::table
+- make module public.
+- new types: `TableCoord`, `TableLayout`, `TableShape`.
+
 ### data::store
 - make `pool` and `arena` modules public.
 

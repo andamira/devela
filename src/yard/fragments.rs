@@ -94,7 +94,7 @@ its own flat view of all its public children.";
         $crate::_ABBR_FIFO!(), " order."];
     _DOC_DATA_LAYOUT_STACK  = concat!["Homogeneous data structures that process elements in ",
         $crate::_ABBR_LIFO!(), " order."];
-    _DOC_DATA_LAYOUT_TABLE  = "Tabular and heterogeneous data processing.";
+    _DOC_DATA_LAYOUT_TABLE  = "Tabular structure over rows, columns, and cells.";
     _DOC_DATA_STORE         = "Retained data stores and retrieval semantics.";
     _DOC_DATA_STORE_ARENA   = "Monotonic stores with stable positions and collective reclamation.";
     _DOC_DATA_STORE_DB      = "Persistent queryable stores with schema and transactional semantics.";

@@ -3,7 +3,7 @@
 //! Defines [`ArrayShape`].
 //
 
-use crate::{ArrayCoordIter, Overflow, is, unwrap, whilst};
+use crate::{ArrayCoordIter, ConstInit, Overflow, is, unwrap, whilst};
 
 #[doc = crate::_tags!(data_structure)]
 /// The ordered lengths of an array's logical axes.
@@ -25,6 +25,12 @@ use crate::{ArrayCoordIter, Overflow, is, unwrap, whilst};
 pub struct ArrayShape<const RANK: usize> {
     pub(super) lengths: [usize; RANK],
 }
+
+#[rustfmt::skip]
+impl<const RANK: usize> ConstInit for ArrayShape<RANK> { const INIT: Self = Self::new([0; RANK]); }
+#[rustfmt::skip]
+impl<const RANK: usize> Default for ArrayShape<RANK> { fn default() -> Self { Self::INIT } }
+
 #[rustfmt::skip]
 impl<const RANK: usize> ArrayShape<RANK> {
     /// The number of axes.
