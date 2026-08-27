@@ -1,11 +1,12 @@
 // devela/src/lang/sem/mod.rs
 //
-#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_SEM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; sem)]
 #![doc = crate::_doc!(flat:"lang")]
+#![doc = crate::_doc!(hr)]
 //
 
+mod cue; // Semantic prompts offered for contextual interpretation.
 // mod derive; // Rules, inference, normalization, rewriting
 // mod find; // Matching, selection, and traversal
 // mod interp; // Situated readings and interpretation
@@ -17,15 +18,16 @@
 
 crate::structural_mods! { // _mods
     _mods {
-        // pub use super::{
-        //     derive::_all::*,
-        //     find::_all::*,
-        //     interp::_all::*,
-        //     map::_all::*,
-        //     qual::_all::*,
-        //     rel::_all::*,
-        //     schema::_all::*,
-        //     world::_all::*,
-        // };
+        pub use super::{
+            cue::Cue,
+            // derive::_all::*,
+            // find::_all::*,
+            // interp::_all::*,
+            // map::_all::*,
+            // qual::_all::*,
+            // rel::_all::*,
+            // schema::_all::*,
+            // world::_all::*,
+        };
     }
 }

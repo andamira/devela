@@ -186,7 +186,7 @@ its own flat view of all its public children.";
     _DOC_LANG_REPR_MARKUP      = "Tagged document and markup languages.";
     _DOC_LANG_REPR_STYLE       = "Stylesheet and presentation languages.";
     _DOC_LANG_REPR_TEXT        = "Text-authored representation languages.";
-    _DOC_LANG_SEM              = "Semantic relations, independent of form and execution.";
+    _DOC_LANG_SEM           = "Semantic relations, independent of form and execution.";
 
     // 6. media (artifacts made perceivable)
     _DOC_MEDIA              = "Media formats, representation, and synthesis";

@@ -224,6 +224,10 @@
 - make module public.
 - new types: `PointSegmentRelation`, `Turn`.
 
+### lang::sem
+- make module public.
+- new type `Cue`.
+
 ##### lang::prog::ffi::js
 - update `Js`:
   - improve safety of string-related methods.

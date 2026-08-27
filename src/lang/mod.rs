@@ -20,7 +20,7 @@ mod gram; // grammar machinery WIP
 mod hum; // human languages WIP
 mod repr; // representation languages WIP
 pub mod prog; // programming languages
-mod sem; // semantic relations WIP
+pub mod sem; // semantic relations
 
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals
     _mods {
@@ -29,12 +29,12 @@ crate::structural_mods! { // _mods, _pub_mods, _crate_internals
             gram::_all::*,
             hum::_all::*,
             repr::_all::*,
-            sem::_all::*,
         };
     }
     _pub_mods {
         pub use super::{
             prog::_all::*,
+            sem::_all::*,
         };
     }
     _crate_internals {
