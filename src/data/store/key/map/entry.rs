@@ -12,7 +12,6 @@
     #[cfg(target_pointer_width = "64")]
     test_size_of(__: StaticMapEntry<char> = 16|128; niche Option),
 }]
-///
 /// [static map]: crate::map
 #[derive(Debug)]
 pub enum StaticMapEntry<'a, V> {

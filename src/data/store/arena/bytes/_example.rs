@@ -5,7 +5,6 @@
 
 use crate::arena_bytes;
 
-#[cfg(any(test, feature = "_docs_examples"))]
 arena_bytes! {
     [cursor: u8 + crate::NonMaxU8;]
 

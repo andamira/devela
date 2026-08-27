@@ -5,15 +5,20 @@
 
 #[cfg(test)]
 mod _test;
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example;
 
 mod define; // map!
-mod entry; // StaticEntry
+mod impls; // hidden macros for map! variants
+mod entry; // StaticMapEntry
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            define::*,
-            entry::*,
+            define::map,
+            entry::StaticMapEntry,
         };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example::*;
     }
 }

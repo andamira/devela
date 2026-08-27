@@ -10,9 +10,7 @@ use crate::map;
 #[cfg(feature = "alloc")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod v_non_copy {
-    use crate::{StaticMapEntry, String, ToString};
-
-    super::map![const TestMapU8, KEY: u8];
+    use crate::{MapStaticU8Example as TestMapU8, StaticMapEntry, String, ToString};
 
     #[test]
     fn get_ref() {
@@ -30,7 +28,6 @@ mod v_non_copy {
         }
         assert_eq!(map.get_ref(1), Some(&"Hello, World!".to_string()));
     }
-
     #[test]
     fn entry_occupied() {
         let mut map = TestMapU8::<u8, u32, 4>::default();
@@ -46,23 +43,16 @@ mod v_non_copy {
     #[test]
     fn entry_vacant() {
         let mut map = TestMapU8::<u8, u32, 4>::default();
-        match map.entry(1) {
-            StaticMapEntry::Vacant(idx) => {
-                map.keys[idx] = 1;
-                map.values[idx] = 100;
-            }
-            _ => panic!("Expected vacant entry"),
-        }
+        assert!(matches!(map.entry(1), StaticMapEntry::Vacant(_)));
+        map.insert(1, 100).unwrap();
         assert_eq!(map.get_ref(1), Some(&100));
     }
-
     #[test]
     fn insert_move() {
         let mut map = TestMapU8::<u8, String, 4>::default();
         map.insert_move(1, "Hello".to_string()).unwrap();
         assert_eq!(map.get_ref(1), Some(&"Hello".to_string()));
     }
-
     #[test]
     fn replace() {
         let mut map = TestMapU8::<u8, String, 4>::default();
@@ -87,7 +77,6 @@ mod v_non_copy {
     #[test]
     fn type_id() {
         use crate::{Hash, Hasher, HasherFx, TypeId};
-
         /// Hashes a `TypeId` into a `u64` using `HasherFx`.
         fn hash_type_id<T: 'static>() -> u64 {
             let mut hasher = HasherFx::<u64>::new();
@@ -96,23 +85,18 @@ mod v_non_copy {
         }
         struct Empty;
         struct Tomb;
-
         super::map![TypeIdMapU8, KEY:u64,
             EMPTY:hash_type_id::<Empty>(),
             TOMB:hash_type_id::<Tomb>()];
         let mut map: TypeIdMapU8<u64, char, 4> = TypeIdMapU8::new();
-
         // Insert some type-based keys
         let type_a = hash_type_id::<i32>();
         let type_b = hash_type_id::<f64>();
-
         assert!(map.insert(type_a, 'A').is_ok());
         assert!(map.insert(type_b, 'B').is_ok());
-
         // Retrieve values
         assert_eq!(map.get_ref(type_a), Some(&'A'));
         assert_eq!(map.get_ref(type_b), Some(&'B'));
-
         // Ensure a non-existent key returns `None`
         let unknown_type = hash_type_id::<bool>();
         assert_eq!(map.get_ref(unknown_type), None);
@@ -120,7 +104,7 @@ mod v_non_copy {
 }
 
 mod k_u8 {
-    super::map![const TestMapU8, KEY:u8];
+    use crate::MapStaticConstU8Example as TestMapU8;
 
     #[test]
     const fn map_custom_empty_tomb() {
@@ -181,7 +165,7 @@ mod k_u8 {
 
 #[rustfmt::skip]
 mod k_u8_panicking {
-    super::map![const TestMapU8, KEY:u8];
+    use crate::MapStaticConstU8Example as TestMapU8;
 
     #[allow(unused)] type M = TestMapU8::<u8, u32, 4>;
     #[test] #[cfg(debug_assertions)] #[should_panic(expected = "Key cannot be `EMPTY` marker")]
