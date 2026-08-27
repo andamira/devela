@@ -169,10 +169,11 @@ mod k_u8 {
     }
     #[test]
     fn map_collision() {
-        let mut map = TestMapU8::<u8, u32, 2>::new();
-        assert_eq!(map.hash_index(1), map.hash_index(3)); // make sure keys collide
+        super::map![const CollisionMapU8, KEY: u8, HASHER: |_bytes| 0];
+        let mut map = CollisionMapU8::<u8, u32, 2>::new();
+        assert_eq!(map.hash_index(1), map.hash_index(3));
         assert_eq!(map.insert(1, 100), Ok(()));
-        assert_eq!(map.insert(3, 200), Ok(())); // collides with 1, probes forward
+        assert_eq!(map.insert(3, 200), Ok(()));
         assert_eq!(map.get(1), Some(100));
         assert_eq!(map.get(3), Some(200));
     }
@@ -230,10 +231,11 @@ mod k_f32 {
     }
     #[test]
     fn map_collision() {
-        let mut map = TestMapF32::<f32, u32, 2>::new();
-        assert_eq!(map.hash_index(0.3), map.hash_index(1.3)); // make sure keys collide
+        super::map![const CollisionMapF32, KEY: f32, HASHER: |_bytes| 0];
+        let mut map = CollisionMapF32::<f32, u32, 2>::new();
+        assert_eq!(map.hash_index(0.3), map.hash_index(1.3));
         assert_eq!(map.insert(0.3, 100), Ok(()));
-        assert_eq!(map.insert(1.3, 200), Ok(())); // collides with 1, probes forward
+        assert_eq!(map.insert(1.3, 200), Ok(()));
         assert_eq!(map.get(0.3), Some(100));
         assert_eq!(map.get(1.3), Some(200));
     }
@@ -272,10 +274,11 @@ mod k_char {
     }
     #[test]
     fn map_collision() {
-        let mut map = TestMapChar::<char, u32, 2>::new();
-        assert_eq!(map.hash_index('a'), map.hash_index('c')); // make sure keys collide
+        super::map![const CollisionMapChar, KEY: char, HASHER: |_bytes| 0];
+        let mut map = CollisionMapChar::<char, u32, 2>::new();
+        assert_eq!(map.hash_index('a'), map.hash_index('c'));
         assert_eq!(map.insert('a', 100), Ok(()));
-        assert_eq!(map.insert('c', 200), Ok(())); // collides with 'a', probes forward
+        assert_eq!(map.insert('c', 200), Ok(()));
         assert_eq!(map.get('a'), Some(100));
         assert_eq!(map.get('c'), Some(200));
     }

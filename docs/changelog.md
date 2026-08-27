@@ -166,6 +166,13 @@
   - add raw UTF-8 span operations.
   - make rollback marks optional.
 
+#### data::store::key
+- update `map!`:
+  - use `HasherFx` fast path.
+  - preserve custom hasher expressions.
+  - normalize tombstone probing and reuse.
+  - make collision tests hasher-independent.
+
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
 - new type: `PoolIter`.

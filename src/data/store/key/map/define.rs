@@ -146,7 +146,7 @@ macro_rules! map {
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
@@ -158,7 +158,7 @@ macro_rules! map {
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
@@ -195,9 +195,8 @@ macro_rules! map {
             values: [V; N],
         }
 
-        $crate::map![%shared $NAME, KEY:$KEY,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
-        ];
+        // implement shared methods
+        $crate::map![%shared $NAME, KEY:$KEY, HASHER: | $HASH_ARG | $HASH_EXPR];
 
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
@@ -255,39 +254,33 @@ macro_rules! map {
             pub const fn get_ref(&self, key: $KEY) -> Option<&V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(&self.values[index]); }
                     if self.keys[index] == self.empty() { return None; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
-
             /// Retrieves some exclusive reference to the value associated with the given key.
             pub const fn get_mut(&mut self, key: $KEY) -> Option<&mut V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(&mut self.values[index]); }
                     if self.keys[index] == self.empty() { return None; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
-
             /// Retrieves an entry for a given key.
             pub const fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<'_, V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
                 let mut tombstone_index = None;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == self.empty() {
-                        return $crate::StaticMapEntry::Vacant(index);
+                        return $crate::StaticMapEntry::Vacant(
+                            $crate::unwrap![some_or tombstone_index, index]);
                     }
                     if self.keys[index] == key {
                         return $crate::StaticMapEntry::Occupied(&mut self.values[index]);
@@ -296,8 +289,7 @@ macro_rules! map {
                         tombstone_index = Some(index);
                     }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 // If full, return N (invalid index)
                 $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
             }
@@ -307,47 +299,34 @@ macro_rules! map {
             /// Returns the number of occupied slots in the hashmap.
             pub const fn len(&self) -> usize {
                 let mut count = 0;
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() { count += 1; }
-                    i += 1;
-                }
+                }}
                 count
             }
-
             /// Returns `true` if the hashmap contains no entries.
-            pub const fn is_empty(&self) -> bool {
-                self.len() == 0
-            }
+            pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
             /// Returns `true` if the hashmap is completely full.
-            pub const fn is_full(&self) -> bool {
-                self.len() == N
-            }
+            pub const fn is_full(&self) -> bool { self.len() == N }
 
             /// Determines if rebuilding the table would improve efficiency.
             ///
             /// # Heuristic:
             /// - Rebuild if `TOMB` slots exceed `N / 2` (half the table size).
-            pub const fn should_rebuild(&self) -> bool {
-                self.deleted_count() >= N / 2
-            }
+            pub const fn should_rebuild(&self) -> bool { self.deleted_count() >= N / 2 }
 
             /// Returns the number of deleted (TOMB) slots.
             pub const fn deleted_count(&self) -> usize {
                 let mut count = 0;
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] == self.tomb() { count += 1; }
-                    i += 1;
-                }
+                }}
                 count
             }
 
             /// Returns the load factor as a fraction of total capacity.
-            pub const fn load_factor(&self) -> f32 {
-                self.len() as f32 / N as f32
-            }
+            pub const fn load_factor(&self) -> f32 { self.len() as f32 / N as f32 }
 
             /* utility */
 
@@ -388,28 +367,31 @@ macro_rules! map {
                 -> Result<(), $crate::NotEnoughSpace> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
                 let mut tombstone_index = None;
-                while i < N {
-                    if self.keys[index] == self.empty() || self.keys[index] == self.tomb() {
-                        let slot = if let Some(tomb) = tombstone_index { tomb } else { index };
-                        self.keys[slot] = key;
-                        self.values[slot] = value;
+                $crate::whilst! { i in 0..N; {
+                    if self.keys[index] == key {
+                        self.values[index] = value;
                         return Ok(());
                     }
-                    if self.keys[index] == key {
-                        self.values[index] = value; // Overwrite existing value
+                    if self.keys[index] == self.empty() {
+                        let slot = $crate::unwrap![some_or tombstone_index, index];
+                        self.keys[slot] = key;
+                        self.values[slot] = value;
                         return Ok(());
                     }
                     if self.keys[index] == self.tomb() && tombstone_index.is_none() {
                         tombstone_index = Some(index);
                     }
                     index = (index + 1) % N;
-                    i += 1;
+                }}
+                if let Some(slot) = tombstone_index {
+                    self.keys[slot] = key;
+                    self.values[slot] = value;
+                    Ok(())
+                } else {
+                    Err($crate::NotEnoughSpace(Some(1)))
                 }
-                Err($crate::NotEnoughSpace(Some(1)))
             }
-
             /// Retrieves a value by key.
             ///
             /// # Returns
@@ -424,13 +406,11 @@ macro_rules! map {
             pub const fn get(&self, key: $KEY) -> Option<V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(self.values[index]); }
                     if self.keys[index] == self.empty() { return None; } // end of probe chain
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
         }
@@ -452,16 +432,13 @@ macro_rules! map {
             pub const fn remove(&mut self, key: $KEY) -> bool {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { self.keys[index] = self.tomb(); return true; }
                     if self.keys[index] == self.empty() { return false; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 false
             }
-
             /// Removes a key-value pair and optionally rebuilds the table.
             ///
             /// # Behavior
@@ -472,7 +449,6 @@ macro_rules! map {
                 if removed && self.should_rebuild() { self.rebuild(); }
                 removed
             }
-
             /// Rebuilds the table by removing `TOMB` slots and optimizing key placement.
             ///
             /// Calls [`Self::rebuilt()`] and replaces `self` with the optimized table.
@@ -490,13 +466,11 @@ macro_rules! map {
             /// - **O(N)** worst-case when all slots are occupied.
             pub const fn rebuilt(&self) -> Self {
                 let mut new_table = Self::new();
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() {
                         let _ = new_table.insert(self.keys[i], self.values[i]);
                     }
-                    i += 1;
-                }
+                }}
                 new_table
             }
         }
@@ -511,7 +485,7 @@ macro_rules! map {
         $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
@@ -522,7 +496,7 @@ macro_rules! map {
         $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:$EMPTY, TOMB:$TOMB,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
@@ -559,9 +533,7 @@ macro_rules! map {
         }
 
         // implement shared methods
-        $crate::map![%shared $NAME, KEY:$KEY,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
-        ];
+        $crate::map![%shared $NAME, KEY:$KEY, HASHER: | $HASH_ARG | $HASH_EXPR];
 
         #[allow(unused)]
         impl<V, const N: usize> $NAME<$KEY, V, N> {
@@ -570,7 +542,6 @@ macro_rules! map {
             /// Returns the key value used to mark deleted slots.
             pub fn tomb(&self) -> $KEY { self.tomb }
         }
-
         impl<V: Default, const N: usize> Default for $NAME<$KEY, V, N> {
             /// Creates an empty hashmap.
             ///
@@ -595,7 +566,6 @@ macro_rules! map {
             pub fn new() -> Self where V: Default {
                 Self::default()
             }
-
             /// Creates an empty hashmap, by cloning a `value`.
             ///
             /// # Panics
@@ -616,13 +586,11 @@ macro_rules! map {
             pub fn get_ref(&self, key: $KEY) -> Option<&V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(&self.values[index]); }
                     if self.keys[index] == self.empty() { return None; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
 
@@ -630,25 +598,22 @@ macro_rules! map {
             pub fn get_mut(&mut self, key: $KEY) -> Option<&mut V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(&mut self.values[index]); }
                     if self.keys[index] == self.empty() { return None; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
-
             /// Retrieves an entry for a given key.
             pub fn entry(&mut self, key: $KEY) -> $crate::StaticMapEntry<'_, V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
                 let mut tombstone_index = None;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == self.empty() {
-                        return $crate::StaticMapEntry::Vacant(index);
+                        return $crate::StaticMapEntry::Vacant(
+                            $crate::unwrap![some_or tombstone_index, index]);
                     }
                     if self.keys[index] == key {
                         return $crate::StaticMapEntry::Occupied(&mut self.values[index]);
@@ -657,8 +622,7 @@ macro_rules! map {
                         tombstone_index = Some(index);
                     }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 // If full, return N (invalid index)
                 $crate::StaticMapEntry::Vacant($crate::unwrap![some_or tombstone_index, N])
             }
@@ -668,47 +632,34 @@ macro_rules! map {
             /// Returns the number of occupied slots in the hashmap.
             pub fn len(&self) -> usize {
                 let mut count = 0;
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() { count += 1; }
-                    i += 1;
-                }
+                }}
                 count
             }
-
             /// Returns `true` if the hashmap contains no entries.
-            pub fn is_empty(&self) -> bool {
-                self.len() == 0
-            }
+            pub fn is_empty(&self) -> bool { self.len() == 0 }
 
             /// Returns `true` if the hashmap is completely full.
-            pub fn is_full(&self) -> bool {
-                self.len() == N
-            }
+            pub fn is_full(&self) -> bool { self.len() == N }
 
             /// Determines if rebuilding the table would improve efficiency.
             ///
             /// # Heuristic:
             /// - Rebuild if `TOMB` slots exceed `N / 2` (half the table size).
-            pub fn should_rebuild(&self) -> bool {
-                self.deleted_count() >= N / 2
-            }
+            pub fn should_rebuild(&self) -> bool { self.deleted_count() >= N / 2 }
 
             /// Returns the number of deleted (TOMB) slots.
             pub fn deleted_count(&self) -> usize {
                 let mut count = 0;
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] == self.tomb() { count += 1; }
-                    i += 1;
-                }
+                }}
                 count
             }
 
             /// Returns the load factor as a fraction of total capacity.
-            pub fn load_factor(&self) -> f32 {
-                self.len() as f32 / N as f32
-            }
+            pub fn load_factor(&self) -> f32 { self.len() as f32 / N as f32 }
 
             /* utility */
 
@@ -746,26 +697,30 @@ macro_rules! map {
                 -> Result<(), $crate::NotEnoughSpace> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
                 let mut tombstone_index = None;
-                while i < N {
-                    if self.keys[index] == self.empty() || self.keys[index] == self.tomb() {
-                        let slot = if let Some(tomb) = tombstone_index { tomb } else { index };
-                        self.keys[slot] = key;
-                        self.values[slot] = value;
+                $crate::whilst! { i in 0..N; {
+                    if self.keys[index] == key {
+                        self.values[index] = value;
                         return Ok(());
                     }
-                    if self.keys[index] == key {
-                        self.values[index] = value; // Overwrite existing value
+                    if self.keys[index] == self.empty() {
+                        let slot = $crate::unwrap![some_or tombstone_index, index];
+                        self.keys[slot] = key;
+                        self.values[slot] = value;
                         return Ok(());
                     }
                     if self.keys[index] == self.tomb() && tombstone_index.is_none() {
                         tombstone_index = Some(index);
                     }
                     index = (index + 1) % N;
-                    i += 1;
+                }}
+                if let Some(slot) = tombstone_index {
+                    self.keys[slot] = key;
+                    self.values[slot] = value;
+                    Ok(())
+                } else {
+                    Err($crate::NotEnoughSpace(Some(1)))
                 }
-                Err($crate::NotEnoughSpace(Some(1)))
             }
         }
 
@@ -785,16 +740,13 @@ macro_rules! map {
             pub fn get(&self, key: $KEY) -> Option<V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { return Some(self.values[index]); }
                     if self.keys[index] == self.empty() { return None; } // end of probe chain
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
-
             /// Removes a key-value pair.
             ///
             /// # Returns
@@ -810,13 +762,11 @@ macro_rules! map {
             pub fn remove(&mut self, key: $KEY) -> bool {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key { self.keys[index] = self.tomb(); return true; }
                     if self.keys[index] == self.empty() { return false; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 false
             }
         }
@@ -833,7 +783,6 @@ macro_rules! map {
                 if removed && self.should_rebuild() { self.rebuild(); }
                 removed
             }
-
             /// Rebuilds the table by removing `TOMB` slots and optimizing key placement.
             ///
             /// Calls [`Self::rebuilt()`] and replaces `self` with the optimized table.
@@ -851,13 +800,11 @@ macro_rules! map {
             /// - **O(N)** worst-case when all slots are occupied.
             pub fn rebuilt(&self) -> Self {
                 let mut new_table = Self::new();
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[i] != self.empty() && self.keys[i] != self.tomb() {
                         let _ = new_table.insert(self.keys[i], self.values[i]);
                     }
-                    i += 1;
-                }
+                }}
                 new_table
             }
         }
@@ -877,7 +824,7 @@ macro_rules! map {
             and `tomb` markers and behavior.\n\n"]
             $vis $NAME, KEY: u64,
             EMPTY: type_id_hash::<Empty>(), TOMB: type_id_hash::<Tomb>(),
-            HASHER: |bytes| $crate::HasherFx::<usize>::hash_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
         ];
 
         struct Empty;
@@ -909,7 +856,6 @@ macro_rules! map {
                 let key = Self::type_id_hash::<T>();
                 self.get_mut(key)
             }
-
             /// Inserts a value paired with the given type `T`.
             ///
             /// Calls [`insert`][Self::insert] with the hash of its type id.
@@ -990,25 +936,21 @@ macro_rules! map {
             /* const */ fn _replace_internal(&mut self, key: $KEY) -> Option<&mut V> {
                 Self::debug_assert_valid_key(key);
                 let mut index = self.hash_index(key);
-                let mut i = 0;
-                while i < N {
+                $crate::whilst! { i in 0..N; {
                     if self.keys[index] == key {
                         self.keys[index] = self.tomb();
                         return Some(&mut self.values[index]);
                     }
                     if self.keys[index] == self.empty() { return None; }
                     index = (index + 1) % N;
-                    i += 1;
-                }
+                }}
                 None
             }
 
             /* introspection */
 
             /// Returns the total capacity of the hashmap (fixed at `N`).
-            pub const fn capacity(&self) -> usize {
-                N
-            }
+            pub const fn capacity(&self) -> usize { N }
 
             /* utility */
 
