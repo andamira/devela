@@ -111,7 +111,7 @@ impl<'a> ByteCursor<&'a mut [u8]> {
         self.pos
     }
     /// Advances by exactly `len` bytes.
-    pub const fn skip_exact(&mut self, len: usize) -> Result<(), NotEnoughSpace> {
+    pub const fn advance_exact(&mut self, len: usize) -> Result<(), NotEnoughSpace> {
         if self.can_write(len) {
             self.pos += len;
             Ok(())

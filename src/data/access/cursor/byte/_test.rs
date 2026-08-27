@@ -28,7 +28,7 @@ fn read_bounds() {
     let mut cur = ByteCursor::reader(&bytes);
     assert_eq!(cur.take_4(), None);
     assert_eq!(cur.pos(), 0);
-    assert_eq!(cur.skip_exact(4), Err(UnexpectedEof(Some(4))));
+    assert_eq!(cur.advance_exact(4), Err(UnexpectedEof(Some(4))));
     assert_eq!(cur.pos(), 0);
     assert_eq!(cur.advance(99), 3);
     assert!(cur.is_eof());

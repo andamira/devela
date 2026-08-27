@@ -85,6 +85,7 @@
 ### data::access
 - new type `StridedBlocks`.
 - move macros from `code::util`: `read_at`, `write_at`.
+- rename `ByteCursor` methods: `skip_exact` to `advance_exact`.
 
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
