@@ -55,7 +55,7 @@ pub trait RandSeedable: Sized {
 /// Source behavior and suitability are described by [`RandQualities`].
 ///
 /// Infallible sources use [`Infallible`][crate::Infallible] as their error type.
-// and automatically implement [`Rand`]. TODO
+/// and automatically implement [`Rand`].
 pub trait RandTry {
     /* required */
 
@@ -133,12 +133,15 @@ pub trait RandTry {
     /// Attempts to return a uniformly random integer in `0..upper`.
     ///
     /// Uses rejection sampling to avoid modulo bias.
+    ///
+    /// # Panics
+    /// Panics if `upper == 0`.
     fn rand_try_below(&mut self, upper: u64) -> Result<u64, Self::Error> {
         assert!(upper > 0);
-        let zone = u64::MAX - (u64::MAX % upper);
+        let threshold = upper.wrapping_neg() % upper;
         loop {
             let v = self.rand_try_next_u64()?;
-            is! { v < zone, return Ok(v % upper) }
+            is! { v >= threshold, return Ok(v % upper) }
         }
     }
     /// Attempts to return a uniformly random integer in `low..high`.

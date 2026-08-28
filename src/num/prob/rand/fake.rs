@@ -8,13 +8,12 @@ use crate::{Infallible, InfallibleResult, NotEnoughElements, RandQualities, Rand
 #[doc = crate::_tags!(rand fake)]
 /// A test-friendly random source backed by a fixed sequence.
 #[doc = crate::_doc_meta!{
-    location("num/prob/rand"),
+    location("num/prob/rand", struct RandFake),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: RandFake<4> = 36),
+    test_size_of(__: RandFake<4> = 36; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RandFake<4> = 40),
+    test_size_of(__: RandFake<4> = 40; niche !Option),
 }]
-///
 /// `RandFake` replays caller-provided `u64` values so
 /// random-dependent code can be tested with a known stream.
 ///
@@ -35,28 +34,24 @@ pub struct RandFake<const N: usize, const PANIC: bool = false> {
     index: usize,
 }
 
+#[rustfmt::skip]
 impl<const N: usize, const PANIC: bool> RandFake<N, PANIC> {
     /// Creates a fake random source from a fixed output sequence.
-    pub const fn new(values: [u64; N]) -> Self {
-        Self { values, index: 0 }
-    }
+    pub const fn new(values: [u64; N]) -> Self { Self { values, index: 0 } }
+
     /// Returns the number of values already consumed.
-    pub const fn index(&self) -> usize {
-        self.index
-    }
+    pub const fn index(&self) -> usize { self.index }
+
     /// Returns the number of values not yet consumed.
-    pub const fn remaining(&self) -> usize {
-        N - self.index
-    }
+    pub const fn remaining(&self) -> usize { N - self.index }
+
     /// Returns whether no values remain.
-    pub const fn is_empty(&self) -> bool {
-        self.index == N
-    }
+    pub const fn is_empty(&self) -> bool { self.index == N }
+
     /// Resets the source to the beginning of the sequence.
-    pub const fn reset(&mut self) {
-        self.index = 0;
-    }
+    pub const fn reset(&mut self) { self.index = 0; }
 }
+
 impl<const N: usize> RandFake<N, false> {
     /// Converts this source into panicking mode.
     ///

@@ -278,12 +278,36 @@ macro_rules! rand_pcg {
             /// Returns a uniformly distributed value in `0..bound`.
             ///
             /// Uses rejection sampling to avoid modulo bias.
+            ///
+            /// # Panics
+            /// Panics if `bound == 0`.
             #[must_use]
             pub const fn next_bounded(&mut self, bound: $output) -> $output {
-                debug_assert!(bound > 0);
+                assert!(bound > 0);
                 let threshold = bound.wrapping_neg() % bound;
                 loop {
                     let r = self.[<next_ $output>]();
+                    if r >= threshold { return r % bound; }
+                }
+            }
+            /// Returns a uniformly distributed `u64` value in `0..bound`.
+            ///
+            /// Uses the generator's native output width when `bound` fits,
+            /// otherwise draws a full `u64`.
+            ///
+            /// Uses rejection sampling to avoid modulo bias.
+            ///
+            /// # Panics
+            /// Panics if `bound == 0`.
+            #[must_use]
+            pub const fn next_bounded_u64(&mut self, bound: u64) -> u64 {
+                assert!(bound > 0);
+                if bound <= <$output>::MAX as u64 {
+                    return self.next_bounded(bound as $output) as u64;
+                }
+                let threshold = bound.wrapping_neg() % bound;
+                loop {
+                    let r = self.next_u64();
                     if r >= threshold { return r % bound; }
                 }
             }

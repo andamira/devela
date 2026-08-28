@@ -302,6 +302,9 @@
 #### num::prob::rand
 - rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
 - remove `own_next_*` methods from the rest of the PRNGs.
+- update `rand_pcg!`:
+  - add method `next_bounded_u64`.
+  - make explicit the `next_bounded` zero-bound contract
 
 ### num::quant
 - new type: `Scale`.

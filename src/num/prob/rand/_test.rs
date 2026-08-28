@@ -47,7 +47,7 @@ fn shuffle_empty_and_singleton() {
 }
 #[test]
 fn shuffle_deterministic_swaps() {
-    let mut rng = RandFake::new([0, 0, 0]);
+    let mut rng = RandFake::new([4, 3, 2]);
     let mut values = [0, 1, 2, 3];
     rng.rand_shuffle(&mut values);
     assert_eq![values, [1, 2, 3, 0]];
@@ -60,7 +60,7 @@ fn choose_reservoir_none_when_no_valid_items() {
 }
 #[test]
 fn choose_reservoir_keeps_latest_when_roll_is_zero() {
-    let mut rng = RandFake::new([0, 0, 0]);
+    let mut rng = RandFake::new([1, 2, 3]);
     let data = [1, 2, 3, 4, 5];
     assert_eq![Some(5), rng.rand_choose_reservoir(data, |v| *v % 2 != 0)];
 }
@@ -81,4 +81,14 @@ fn choose_scored_resolves_ties_fairly() {
     let mut rng = RandFake::new([42, 42, 0]);
     let data = ['a', 'b'];
     assert_eq![Some('b'), rng.rand_choose_scored(data, |_| true)];
+}
+#[test]
+fn bounded_sampling_uses_full_u64_domain() {
+    let mut rng = RandFake::new([u64::MAX]);
+    assert_eq!(rng.rand_below(2), 1);
+}
+#[test]
+fn bounded_sampling_rejects_low_threshold_values() {
+    let mut rng = RandFake::new([0, 4]);
+    assert_eq!(rng.rand_below(3), 1);
 }

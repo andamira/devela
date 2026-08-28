@@ -11,8 +11,8 @@
 //!
 //! - [`RandTry`] and [`Rand`] define fallible and infallible random sources.
 //! - [`RandQualities`] describes source behavior and suitability.
-// - [`RandSeedable`] and [`RandSeedableTry`] construct generators from explicit
-//   seed material or another random source.
+//! - [`RandSeedable`] constructs generators from explicit seed material
+//!   or another random source.
 //! - [`FromRandTry`] and [`FromRand`] construct random values.
 //!
 //! # Canonical generators
