@@ -67,7 +67,8 @@
 - remove trait method: `OptResExt::transpose_result`.
 - update `unwrap!`:
   - add new arms: `some_or?`, `=some_or`, `=ok_or`, `err_or?`, `=err_or`, `=sok_or`, `serr_or?`, `=serr_or`, `=some_map`, `=some_map_into`, `=ok_map`, `=ok_map_into`, `=err_map`.
-- add match-supporting arms for: `<some|ok|err|sok|err>[_expect|_or|_or?]`.
+  - add match-supporting arms for: `<some|ok|err|sok|serr>[_expect|_or|_or?]`.
+  - support patterns in mapping arms.
 
 ### code::util
 - new modules: `assert`, `cfg`, `debug`, `synth`, `token`.
