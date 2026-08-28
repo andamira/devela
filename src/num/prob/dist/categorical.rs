@@ -3,7 +3,7 @@
 //! Defines [`DistCategorical`].
 //
 
-use crate::{DistError, NonZeroU64, Pcg32, Rand, Sign, is, unwrap, whilst};
+use crate::{DistError, NonZeroU64, Pcg32, Probability, Rand, Sign, is, unwrap, whilst};
 
 #[doc = crate::_tags!(num)]
 /// A finite categorical distribution represented by integer weights.
@@ -48,15 +48,11 @@ impl<'a> DistCategorical<'a> {
     pub const fn new(weights: &'a [u64]) -> Result<Self, DistError> {
         let mut total = 0u64;
         whilst! { i in 0..weights.len(); {
-            total = match total.checked_add(weights[i]) {
-                Some(total) => total,
-                None => return Err(DistError::Overflow(Some(Sign::Positive))),
-            };
+            total = unwrap![some_ok_or? total.checked_add(weights[i]),
+                DistError::Overflow(Some(Sign::Positive))]
         }}
-        match NonZeroU64::new(total) {
-            Some(total) => Ok(Self { weights, total }),
-            None => Err(DistError::PositiveRequired),
-        }
+        unwrap![some_ok_map_or NonZeroU64::new(total),
+            |total| Self { weights, total }, DistError::PositiveRequired]
     }
     /// Returns the relative weights of all categories.
     #[must_use]
@@ -92,6 +88,12 @@ impl<'a> DistCategorical<'a> {
             ticket -= weight;
         }}
         None
+    }
+    /// Returns the exact probability of the category at `index`.
+    #[must_use]
+    pub const fn probability_of(&self, index: usize) -> Option<Probability> {
+        let weight = unwrap![some? self.weight(index)];
+        Probability::new(weight, self.total.get())
     }
     /// Samples a category index using an infallible random source.
     ///
@@ -177,5 +179,13 @@ mod _test {
         assert_eq!(dist.index_at(2), Some(3));
         assert_eq!(dist.index_at(3), Some(3));
         assert_eq!(dist.index_at(4), Some(3));
+    }
+    #[test]
+    fn categorical_exposes_exact_category_probabilities() {
+        let dist = DistCategorical::new(&[0, 2, 3]).unwrap();
+        assert_eq!(dist.probability_of(0), Some(Probability::ZERO));
+        assert_eq!(dist.probability_of(1), Probability::new(2, 5));
+        assert_eq!(dist.probability_of(2), Probability::new(3, 5));
+        assert_eq!(dist.probability_of(3), None);
     }
 }
