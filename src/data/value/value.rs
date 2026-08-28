@@ -3,7 +3,7 @@
 //! Defines Value<8|16|32|64|128>.
 //
 
-use crate::{ValueKind4, is, unwrap};
+use crate::{ValueKind4, cast, is, unwrap};
 
 macro_rules! define_value {
     () => {
@@ -36,15 +36,8 @@ macro_rules! define_value {
             assert!(<$Unsigned>::BITS - 4 == $payload);
         };
 
+        /// # Constants
         impl $Name {
-            /* private */
-
-            const fn pack(kind: ValueKind4, payload: $Unsigned) -> Self {
-                Self(((kind.code() as $Unsigned) << Self::KIND_SHIFT) | payload)
-            }
-
-            /* constants */
-
             /// The total word width.
             pub const BITS: u32 = <$Unsigned>::BITS;
 
@@ -83,7 +76,9 @@ macro_rules! define_value {
 
             /// The canonical true value.
             pub const TRUE: Self = Self::pack(ValueKind4::Bool, 1);
-
+        }
+        /// # Methods
+        impl $Name {
             /* queries */
 
             /// Returns the compact semantic kind.
@@ -96,6 +91,7 @@ macro_rules! define_value {
             pub const fn payload(self) -> $Unsigned {
                 self.0 & Self::PAYLOAD_MASK
             }
+
             /// Returns whether an unsigned value fits in the payload.
             #[must_use]
             pub const fn fits_payload(value: $Unsigned) -> bool {
@@ -112,18 +108,75 @@ macro_rules! define_value {
                 value >= Self::INT_MIN && value <= Self::INT_MAX
             }
 
-            /* constructors */
+            /// Returns whether `payload` is canonical for `kind` in this value representation.
+            #[must_use]
+            pub const fn is_canonical_payload(kind: ValueKind4, payload: $Unsigned) -> bool {
+                is! { payload > Self::PAYLOAD_MAX, return false }
+                match kind {
+                    ValueKind4::Nil => payload == 0,
+                    ValueKind4::Bool => payload <= 1,
+                    ValueKind4::Int | ValueKind4::UInt => true,
+                    ValueKind4::Float => false, // FUTURE IMPROVE
+                    ValueKind4::Char => Self::payload_to_char(payload).is_some(),
+                    ValueKind4::Symbol
+                    | ValueKind4::Enum
+                    | ValueKind4::Ref
+                    | ValueKind4::Bytes
+                    | ValueKind4::Text
+                    | ValueKind4::List
+                    | ValueKind4::Set
+                    | ValueKind4::Table
+                    | ValueKind4::Callable
+                    | ValueKind4::Escape => true,
+                }
+            }
+
+            /* representation */
+
+            /// Creates a value from a kind and payload when the combination is canonical.
+            #[must_use]
+            pub const fn try_from_parts(kind: ValueKind4, payload: $Unsigned) -> Option<Self> {
+                is![Self::is_canonical_payload(kind, payload),
+                    Some(Self::pack(kind, payload)), None]
+            }
+            /// Decomposes this value into its compact kind and payload.
+            ///
+            /// The returned parts can be passed to [`try_from_parts`](#method.try_from_parts)
+            /// to reconstruct the same value.
+            #[must_use]
+            pub const fn into_parts(self) -> (ValueKind4, $Unsigned) {
+                (self.kind(), self.payload())
+            }
+
+            /* immediate values */
 
             /// Creates a boolean value.
             #[must_use]
             pub const fn from_bool(value: bool) -> Self {
                 is! { value, Self::TRUE, Self::FALSE }
             }
+            /// Returns the boolean value when this is a boolean.
+            #[must_use]
+            pub const fn as_bool(self) -> Option<bool> {
+                is! { !matches!(self.kind(), ValueKind4::Bool), return None }
+                match self.payload() {
+                    0 => Some(false),
+                    1 => Some(true),
+                    _ => None,
+                }
+            }
+
             /// Creates an unsigned integer if it fits directly.
             #[must_use]
             pub const fn try_from_uint(value: $Unsigned) -> Option<Self> {
                 is! { Self::fits_uint(value), Some(Self::pack(ValueKind4::UInt, value)), None }
             }
+            /// Returns the unsigned integer when this is an unsigned integer.
+            #[must_use]
+            pub const fn as_uint(self) -> Option<$Unsigned> {
+                is! { matches!(self.kind(), ValueKind4::UInt), Some(self.payload()), None }
+            }
+
             /// Creates a signed integer if it fits directly.
             #[must_use]
             pub const fn try_from_int(value: $Signed) -> Option<Self> {
@@ -133,25 +186,45 @@ macro_rules! define_value {
                     None
                 }
             }
-
-            /// Returns the boolean value when this is a boolean.
-            #[must_use]
-            pub const fn to_bool(self) -> Option<bool> {
-                is! { matches!(self.kind(), ValueKind4::Bool), Some(self.payload() != 0), None }
-            }
-            /// Returns the unsigned integer when this is an unsigned integer.
-            #[must_use]
-            pub const fn to_uint(self) -> Option<$Unsigned> {
-                is! { matches!(self.kind(), ValueKind4::UInt), Some(self.payload()), None }
-            }
             /// Returns the signed integer when this is a signed integer.
             #[must_use]
-            pub const fn to_int(self) -> Option<$Signed> {
+            pub const fn as_int(self) -> Option<$Signed> {
                 if matches!(self.kind(), ValueKind4::Int) {
                     Some(((self.payload() << Self::KIND_BITS) as $Signed) >> Self::KIND_BITS)
                 } else {
                     None
                 }
+            }
+
+            /// Creates a character value if its Unicode scalar fits in the payload.
+            #[must_use]
+            pub const fn try_from_char(value: char) -> Option<Self> {
+                let payload = unwrap![some? Self::char_to_payload(value)];
+                Some(Self::pack(ValueKind4::Char, payload))
+            }
+            /// Returns the character when this is a canonical character value.
+            #[must_use]
+            pub const fn as_char(self) -> Option<char> {
+                is! { !matches!(self.kind(), ValueKind4::Char), return None }
+                Self::payload_to_char(self.payload())
+            }
+        }
+        // Private
+        impl $Name {
+            const fn pack(kind: ValueKind4, payload: $Unsigned) -> Self {
+                Self(((kind.code() as $Unsigned) << Self::KIND_SHIFT) | payload)
+            }
+            /// Converts a Unicode scalar into this value's payload carrier when it fits.
+            const fn char_to_payload(value: char) -> Option<$Unsigned> {
+                let code = value as u32;
+                let payload = unwrap![ok_or cast![checked code => $Unsigned], return None];
+                is![Self::fits_payload(payload), Some(payload), None]
+            }
+            /// Converts a payload into a Unicode scalar when canonical.
+            const fn payload_to_char(payload: $Unsigned) -> Option<char> {
+                is! { payload > Self::PAYLOAD_MAX, return None }
+                let code = unwrap![ok_or cast![checked payload => u32], return None];
+                char::from_u32(code)
             }
         }
     };
@@ -170,20 +243,65 @@ mod _test {
         assert_eq!(Value8::PAYLOAD_MAX, 15);
         assert_eq!(Value8::NIL.kind(), ValueKind4::Nil);
         assert_eq!(Value8::NIL.payload(), 0);
-        assert_eq!(Value8::FALSE.to_bool(), Some(false));
-        assert_eq!(Value8::TRUE.to_bool(), Some(true));
+        assert_eq!(Value8::FALSE.as_bool(), Some(false));
+        assert_eq!(Value8::TRUE.as_bool(), Some(true));
         for value in 0..=Value8::UINT_MAX {
-            let word = Value8::try_from_uint(value).unwrap();
-            assert_eq!(word.kind(), ValueKind4::UInt);
-            assert_eq!(word.to_uint(), Some(value));
+            assert_eq!(Value8::try_from_uint(value).unwrap().as_uint(), Some(value));
         }
         for value in Value8::INT_MIN..=Value8::INT_MAX {
-            let word = Value8::try_from_int(value).unwrap();
-            assert_eq!(word.kind(), ValueKind4::Int);
-            assert_eq!(word.to_int(), Some(value));
+            assert_eq!(Value8::try_from_int(value).unwrap().as_int(), Some(value));
         }
         assert_eq!(Value8::try_from_int(-9), None);
         assert_eq!(Value8::try_from_int(8), None);
         assert_eq!(Value8::try_from_uint(16), None);
+    }
+    #[test]
+    fn value8_immediate_kind_projection() {
+        let value = Value8::try_from_int(3).unwrap();
+        assert_eq!(value.as_int(), Some(3));
+        assert_eq!(value.as_uint(), None);
+        assert_eq!(value.as_bool(), None);
+        assert_eq!(value.as_char(), None);
+    }
+    #[test]
+    fn value8_canonical_parts_roundtrip() {
+        let mut valid = 0;
+        for code in 0..16 {
+            let kind = ValueKind4::from_code(code).unwrap();
+            for payload in 0..=Value8::PAYLOAD_MAX {
+                let value = Value8::try_from_parts(kind, payload);
+                if let Some(value) = value {
+                    valid += 1;
+                    assert_eq!(value.kind(), kind);
+                    assert_eq!(value.payload(), payload);
+                    let (kind2, payload2) = value.into_parts();
+                    assert_eq!((kind2, payload2), (kind, payload));
+                    assert_eq!(Value8::try_from_parts(kind2, payload2), Some(value));
+                }
+            }
+        }
+        // Nil: 1
+        // Bool: 2
+        // Int + UInt + Char: 3 × 16
+        // ten token kinds: 10 × 16
+        // Float: 0
+        assert_eq!(valid, 211);
+    }
+    #[test]
+    fn chars_by_grade() {
+        assert!(Value8::try_from_char('\u{000F}').is_some());
+        assert!(Value8::try_from_char('\u{0010}').is_none());
+        assert!(Value16::try_from_char('\u{0FFF}').is_some());
+        assert!(Value16::try_from_char('\u{1000}').is_none());
+        assert_eq!(Value32::try_from_char('\u{10FFFF}').unwrap().as_char(), Some('\u{10FFFF}'));
+    }
+    #[test]
+    fn char_canonical_boundaries() {
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0xD7FF).is_some());
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0xD800).is_none());
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0xDFFF).is_none());
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0xE000).is_some());
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0x10_FFFF).is_some());
+        assert!(Value32::try_from_parts(ValueKind4::Char, 0x11_0000).is_none());
     }
 }

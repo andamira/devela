@@ -13,6 +13,7 @@ use crate::{InvalidValue, ValueKind, is, unwrap, word};
     test_size_of(ValueKind4 = 1|8; niche Option),
 }]
 /// It mirrors the compact universal band of [`ValueKind`].
+#[must_use]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValueKind4 {
@@ -81,7 +82,6 @@ impl ValueKind4 {
         }
     }
     /// Widens this compact kind to [`ValueKind`].
-    #[must_use]
     pub const fn to_kind(self) -> ValueKind {
         ValueKind::from_code(self.code())
     }
@@ -92,7 +92,6 @@ impl ValueKind4 {
     }
     /// Condenses a [`ValueKind`] into this compact band,
     /// mapping non-compact kinds to [`Escape`](#variant.Escape).
-    #[must_use]
     pub const fn condense(kind: ValueKind) -> ValueKind4 {
         unwrap! { some_or Self::from_kind(kind), Self::Escape }
     }

@@ -10,6 +10,7 @@
     location("data/value", enum ValueKind),
     test_size_of(ValueKind = 1|8; niche Option),
 }]
+#[must_use]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValueKind {
@@ -71,7 +72,6 @@ impl ValueKind {
     pub const fn code(self) -> u8 {
         self as u8
     }
-    #[must_use]
     /// Returns a kind from its raw 8-bit code.
     ///
     /// Unknown codes map to [`Unknown`][Self::Unknown].
