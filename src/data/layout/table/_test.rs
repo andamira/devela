@@ -174,7 +174,65 @@ mod backing {
         }
         assert_eq!(table.get(TableCoord::new(0, 1)), Some(&9));
     }
+    #[test]
+    fn empty_axis_traversal() {
+        let layout = TableLayout::row_major(TableShape::new(3, 0)).unwrap();
+        let table = Table::<[(); 0]>::try_from_array([], layout).unwrap();
+        assert!(table.row_iter(0).is_some());
+        assert!(table.row_iter(0).unwrap().is_empty());
+        assert!(table.row_iter(2).is_some());
+        assert!(table.row_iter(3).is_none());
+        assert!(table.column_iter(0).is_none());
+    }
+    #[test]
+    fn empty_rows_still_have_columns() {
+        let layout = TableLayout::row_major(TableShape::new(0, 3)).unwrap();
+        let table = Table::<[(); 0]>::try_from_array([], layout).unwrap();
+        assert!(table.row_iter(0).is_none());
+        assert!(table.column_iter(0).is_some());
+        assert!(table.column_iter(0).unwrap().is_empty());
+        assert!(table.column_iter(2).is_some());
+        assert!(table.column_iter(3).is_none());
+    }
+    #[test]
+    fn axis_iteration_respects_layout() {
+        let shape = TableShape::new(2, 3);
+        let row_major =
+            Table::try_from_array([0, 1, 2, 3, 4, 5], TableLayout::row_major(shape).unwrap())
+                .unwrap();
+        let mut row = row_major.row_iter(1).unwrap();
+        assert_eq!(row.next(), Some(&3));
+        assert_eq!(row.next(), Some(&4));
+        assert_eq!(row.next(), Some(&5));
+        assert_eq!(row.next(), None);
+        let mut column = row_major.column_iter(1).unwrap();
+        assert_eq!(column.next(), Some(&1));
+        assert_eq!(column.next(), Some(&4));
+        assert_eq!(column.next(), None);
+        let column_major =
+            Table::try_from_array([0, 1, 2, 3, 4, 5], TableLayout::column_major(shape).unwrap())
+                .unwrap();
+        let mut row = column_major.row_iter(1).unwrap();
+        assert_eq!(row.next(), Some(&1));
+        assert_eq!(row.next(), Some(&3));
+        assert_eq!(row.next(), Some(&5));
+        let mut column = column_major.column_iter(1).unwrap();
+        assert_eq!(column.next(), Some(&2));
+        assert_eq!(column.next(), Some(&3));
+    }
+    #[test]
+    fn mutable_axis_iteration() {
+        let layout = TableLayout::row_major(TableShape::new(2, 3)).unwrap();
+        let mut table = Table::try_from_array([0, 1, 2, 3, 4, 5], layout).unwrap();
+        {
+            let mut column = table.column_iter_mut(1).unwrap();
 
+            *column.next().unwrap() += 10;
+            *column.next().unwrap() += 20;
+            assert!(column.next().is_none());
+        }
+        assert_eq!(table.storage(), &[0, 11, 2, 3, 24, 5]);
+    }
     #[cfg(feature = "alloc")]
     mod alloc {
         use super::*;

@@ -34,7 +34,7 @@ crate::iter_strided! {
     /// - `front <= back`, or the iterator is empty.
     /// - All generated indices lie within `storage`.
     ///
-    /// If these conditions are violated, advancing or peeking may panic.
+    /// Safe construction establishes these invariants.
     /// No unsafe code is used.
     pub struct StridedIter: ref (usize)
 }

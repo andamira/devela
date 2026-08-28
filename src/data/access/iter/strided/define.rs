@@ -337,9 +337,6 @@ macro_rules! iter_strided {
             /// Iteration proceeds from `front` toward `back` (inclusive limit)
             /// in steps of `stride`. The iterator is empty if `front > back`.
             ///
-            /// This constructor does not validate that generated indices
-            /// lie within the `slice`. Violations will cause panics during iteration.
-            ///
             /// # Panics
             /// Panics if:
             /// - `stride == 0`;
