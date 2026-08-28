@@ -154,7 +154,7 @@
 
 #### data::layout::table
 - make module public.
-- new types: `TableCoord`, `TableCoordIter`, `TableLayout`, `TableShape`.
+- new types: `Table`, `TableCoord`, `TableCoordIter`, `TableLayout`, `TableShape`.
 
 ### data::store
 - make `pool` and `arena` modules public.

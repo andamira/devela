@@ -9,6 +9,18 @@ use crate::{ArrayCoordIter, ArrayLayout, ArrayShape};
 /// A logical array over backing storage.
 #[doc = crate::_doc_meta!{
     location("data/layout/array", struct Array),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:Array<[u8; 6], 1> = 20|160; niche !Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:Array<[u8; 6], 2> = 28|224; niche !Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__:Array<[u8; 6], 3> = 36|288; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:Array<[u8; 6], 1> = 32|256; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:Array<[u8; 6], 2> = 48|384; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__:Array<[u8; 6], 3> = 64|512; niche !Option),
 }]
 /// An array joins:
 /// - backing data of type `D`;

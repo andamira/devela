@@ -5,12 +5,12 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Tables distinguish two logical axes as rows and columns while delegating
-//! general dimensional shape and affine storage mapping to
-//! [`ArrayShape`] and [`ArrayLayout`].
+//! Tables interpret two-dimensional array structure as rows and columns.
+//! [`ArrayShape`] supplies dimensional extent, while [`ArrayLayout`] maps
+//! logical cells to physical storage.
 //!
-//! This module describes tabular structure only. Cell value semantics,
-//! schema, persistence, and encoded representations are independent concerns.
+//! This module defines tabular structure and access only. Cell semantics,
+//! schema, persistence, and encoded representations remain separate concerns.
 //!
 //! [`ArrayShape`]: crate::ArrayShape
 //! [`ArrayLayout`]: crate::ArrayLayout
@@ -19,8 +19,8 @@
 #[cfg(test)]
 mod _test;
 
-// mod define; //
-// mod backing; //
+mod define; // Table
+mod backing;
 
 mod coord;
 mod layout;
@@ -30,6 +30,7 @@ crate::structural_mods! { // _mods
     _mods {
         pub use super::{
             coord::{TableCoord, TableCoordIter},
+            define::Table,
             layout::TableLayout,
             shape::TableShape,
         };
