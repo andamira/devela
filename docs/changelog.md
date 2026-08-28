@@ -78,16 +78,15 @@
 - update `structural_mods!`: remove the `_workspace_internals` branch.
 - update `test_size_of!`: support negative niche `Option` testing.
 
-## data::word
-- make module public.
-- new trait `WordTry`.
-- refactor `Word` to be auto-implemented for `WordTry::Error = Infallible`.
-- refactor `word!` to support fallible representations.
-
 ### data::access
 - new type `StridedBlocks`.
 - move macros from `code::util`: `read_at`, `write_at`.
 - rename `ByteCursor` methods: `skip_exact` to `advance_exact`.
+
+#### data::access::iter
+- update `StridedIterMut`:
+  - make the canonical index `usize`.
+  - make all safe constructors establish bounds invariants.
 
 #### data::access::route
 - new types: `Route`, `RouteAnchor`, `RouteName`, `RouteSeg`.
@@ -201,6 +200,12 @@
 #### data::topol::link
 - new macro `link!`.
 - new example type: `LinkExample`.
+
+### data::word
+- make module public.
+- new trait `WordTry`.
+- refactor `Word` to be auto-implemented for `WordTry::Error = Infallible`.
+- refactor `word!` to support fallible representations.
 
 ## error
 - new root module.

@@ -17,8 +17,8 @@
 ///
 /// # Variants
 ///
-/// - `: ref ($P)` generates an immutable iterator over `&[T]`.
-/// - `: mut ($P)` generates a mutable iterator over `&mut [T]`.
+/// - `: ref ($P)` generates an immutable standard iterator over `&[T]`.
+/// - `: mut ($P)` generates a mutable lending iterator over `&mut [T]`.
 ///
 /// ## Index Type Parameter
 ///
@@ -113,37 +113,33 @@ macro_rules! iter_strided {
             /* constructors */
 
             /// Creates a mutable strided iterator
-            /// from a starting index, a number of elements, and a stride.
+            /// from a starting index, an element count, and a stride.
             ///
-            /// Generates indices:
-            /// `start + k * stride` for `k` in `0..remaining`.
+            /// Generates `start + k * stride` for `k` in `0..remaining`.
             ///
             /// # Panics
-            /// Panics if `stride == 0`.
-            /// May panic when advanced if indices are out of bounds.
-            pub const fn from_count(
-                slice: &'a mut [T],
-                start: $P,
-                remaining: $P,
-                stride: $P,
-            ) -> Self {
+            /// Panics if:
+            /// - `stride == 0`;
+            /// - computing the final index overflows;
+            /// - the final generated index lies outside `slice`.
+            pub const fn from_count(slice: &'a mut [T], start: $P, remaining: $P, stride: $P)
+                -> Self {
                 $crate::unwrap![some_map_into_expect <$NZ>::new(stride),
                     |v| Self::from_count_nz(slice, start, remaining, v), "stride must be > 0"]
             }
             /// Like [`from_count`][Self::from_count] but takes a non-zero stride.
+            ///
             /// # Panics
-            /// Panics in case of overflow.
-            pub const fn from_count_nz(
-                slice: &'a mut [T],
-                start: $P,
-                remaining: $P,
-                stride: $NZ,
-            ) -> Self {
-                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride) }
+            /// Panics if:
+            /// - computing the final index overflows;
+            /// - the final generated index lies outside `slice`.
+            pub const fn from_count_nz(slice: &'a mut [T], start: $P, remaining: $P, stride: $NZ)
+                -> Self {
+                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride); }
                 let off = stride.get().checked_mul(remaining - 1)
                     .expect("overflow in stride multiplication");
                 let back = start.checked_add(off).expect("overflow in back computation");
-                Self { slice, front: start, back, stride }
+                Self::from_parts(slice, start, back, stride)
             }
 
             /// Creates a mutable strided iterator
@@ -153,8 +149,10 @@ macro_rules! iter_strided {
             /// in steps of `stride`. The iterator is empty if `front > back`.
             ///
             /// # Panics
-            /// Panics if `stride == 0`.
-            /// May panic when advanced if indices are out of bounds.
+            /// Panics if:
+            /// - `stride == 0`;
+            /// - non-empty bounds are not stride-aligned;
+            /// - `back` lies outside `slice`.
             pub const fn from_bounds(slice: &'a mut [T], front: $P, back: $P, stride: $P) -> Self {
                 $crate::unwrap![some_map_into_expect <$NZ>::new(stride),
                     |v| Self::from_parts(slice, front, back, v), "stride must be > 0"]
@@ -305,37 +303,32 @@ macro_rules! iter_strided {
             /* constructors */
 
             /// Creates a strided iterator
-            /// from a starting index, a number of elements, and a stride.
+            /// from a starting index, an element count, and a stride.
             ///
-            /// Generates indices:
-            /// `start + k * stride` for `k` in `0..remaining`.
+            /// Generates `start + k * stride` for `k` in `0..remaining`.
             ///
             /// # Panics
-            /// Panics if `stride == 0`.
-            /// May panic when advanced if indices are out of bounds.
-            pub const fn from_count(
-                slice: &'a [T],
-                start: $P,
-                remaining: $P,
-                stride: $P,
-            ) -> Self {
+            /// Panics if:
+            /// - `stride == 0`;
+            /// - computing the final index overflows;
+            /// - the final generated index lies outside `slice`.
+            pub const fn from_count(slice: &'a [T], start: $P, remaining: $P, stride: $P) -> Self {
                 $crate::unwrap![some_map_into_expect <$NZ>::new(stride),
                     |v| Self::from_count_nz(slice, start, remaining, v), "stride must be > 0"]
             }
             /// Like [`from_count`][Self::from_count] but takes a non-zero stride.
+            ///
             /// # Panics
-            /// Panics in case of overflow.
-            pub const fn from_count_nz(
-                slice: &'a [T],
-                start: $P,
-                remaining: $P,
-                stride: $NZ,
-            ) -> Self {
-                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride) }
+            /// Panics if:
+            /// - computing the final index overflows;
+            /// - the final generated index lies outside `slice`.
+            pub const fn from_count_nz(slice: &'a [T], start: $P, remaining: $P, stride: $NZ)
+                -> Self {
+                if remaining == 0 { return $crate::iter_strided!(%empty slice, stride); }
                 let off = stride.get().checked_mul(remaining - 1)
                     .expect("overflow in stride multiplication");
                 let back = start.checked_add(off).expect("overflow in back computation");
-                Self { slice, front: start, back, stride }
+                Self::from_parts(slice, start, back, stride)
             }
 
             /// Creates a strided iterator
@@ -348,8 +341,10 @@ macro_rules! iter_strided {
             /// lie within the `slice`. Violations will cause panics during iteration.
             ///
             /// # Panics
-            /// Panics if `stride == 0`.
-            /// May panic when advanced if indices are out of bounds.
+            /// Panics if:
+            /// - `stride == 0`;
+            /// - non-empty bounds are not stride-aligned;
+            /// - `back` lies outside `slice`.
             pub const fn from_bounds(slice: &'a [T], front: $P, back: $P, stride: $P) -> Self {
                 $crate::unwrap![some_map_into_expect <$NZ>::new(stride),
                     |v| Self::from_parts(slice, front, back, v), "stride must be > 0"]

@@ -2,6 +2,8 @@
 
 #![allow(dead_code)]
 
+use crate::{StridedIter, StridedIterMut};
+
 crate::iter_strided! {
     /// 8-bit strided iterator for testing.
     struct StridedIterU8: ref (u8)
@@ -24,7 +26,6 @@ fn basic_forward() {
     assert_eq!(it.next(), None);
     assert_eq!(it.len(), 0);
 }
-
 #[test]
 fn basic_backward() {
     let data = [0, 1, 2, 3, 4, 5];
@@ -34,7 +35,6 @@ fn basic_backward() {
     assert_eq!(it.next_back(), Some(&1));
     assert_eq!(it.next_back(), None);
 }
-
 #[test]
 fn forward_backward_mix() {
     let data = [10, 11, 12, 13, 14];
@@ -47,7 +47,6 @@ fn forward_backward_mix() {
     assert_eq!(it.next(), None);
     assert_eq!(it.next_back(), None);
 }
-
 #[test]
 fn empty_when_front_gt_back() {
     let data = [1, 2, 3];
@@ -56,7 +55,6 @@ fn empty_when_front_gt_back() {
     assert_eq!(it.next(), None);
     assert_eq!(it.next_back(), None);
 }
-
 #[test]
 fn single_element() {
     let data = [42];
@@ -65,27 +63,22 @@ fn single_element() {
     assert_eq!(it.next(), None);
     assert_eq!(it.next_back(), None);
 }
-
 #[test]
 fn max_u8_range_stride_1() {
     let mut it = StridedIterU8::from_bounds(&DATA_U8, 0, 255, 1);
-
     for i in 0..=255 {
         assert_eq!(it.next(), Some(&i));
     }
     assert_eq!(it.next(), None);
 }
-
 #[test]
 fn stride_two_full_range() {
     let mut it = StridedIterU8::from_bounds(&DATA_U8, 0, 254, 2);
-
     for i in (0..=254).step_by(2) {
         assert_eq!(it.next(), Some(&i));
     }
     assert_eq!(it.next(), None);
 }
-
 #[test]
 fn sentinel_no_wrap_after_last() {
     let data = [0, 1, 2];
@@ -93,17 +86,14 @@ fn sentinel_no_wrap_after_last() {
     assert_eq!(it.next(), Some(&0));
     assert_eq!(it.next(), Some(&2));
     assert_eq!(it.next(), None);
-
     // ensure no revival
     assert_eq!(it.next(), None);
     assert_eq!(it.next_back(), None);
 }
-
 #[test]
 fn len_matches_iteration() {
     let data = &DATA_U8[..=50];
     let mut it = StridedIterU8::from_bounds(&data, 5, 45, 5);
-
     let expected = it.len() as usize;
     let mut count = 0;
     while it.next().is_some() {
@@ -112,10 +102,28 @@ fn len_matches_iteration() {
     assert_eq!(count, expected);
     assert_eq!(it.len(), 0);
 }
-
 #[test]
 #[should_panic]
 fn stride_zero_panics() {
     let data = [1, 2, 3];
     let _ = StridedIterU8::from_count(&data, 0, 1, 0);
+}
+#[test]
+#[should_panic(expected = "index out of bounds")]
+fn from_count_rejects_out_of_bounds() {
+    let data = [0, 1, 2];
+    let _ = StridedIter::from_count(&data, 1, 2, 2);
+}
+#[test]
+#[should_panic(expected = "index out of bounds")]
+fn from_count_mut_rejects_out_of_bounds() {
+    let mut data = [0, 1, 2];
+    let _ = StridedIterMut::from_count(&mut data, 1, 2, 2);
+}
+#[test]
+fn empty_count_allows_out_of_bounds_start() {
+    let data = [0, 1, 2];
+    let mut iter = StridedIter::from_count(&data, usize::MAX, 0, 1);
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.len(), 0);
 }

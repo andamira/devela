@@ -47,7 +47,7 @@ crate::iter_strided! {
         #[cfg(target_pointer_width = "32")]
         test_size_of(__: StridedIterMut<u32> = 20|160; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: StridedIterMut<u32> = 32|256; niche Option),
+        test_size_of(__: StridedIterMut<u32> = 40|320; niche Option),
     }]
     /// This is the mutable counterpart of [`StridedIter`].
     ///
@@ -66,13 +66,15 @@ crate::iter_strided! {
     /// - `front <= back`, or the iterator is empty.
     /// - All generated indices lie within `storage`.
     ///
-    /// # Aliasing
+    /// # Lending
     ///
-    /// Even if indices repeat due to improper construction,
-    /// simultaneous mutable aliases are prevented because each
-    /// yielded reference is tied to `&mut self`.
+    /// Each yielded exclusive reference is tied to the current mutable
+    /// borrow of the iterator. Consequently this type implements the
+    /// lending-iterator traits rather than [`Iterator`].
     ///
-    /// If bounds conditions are violated, advancing or peeking may panic.
+    /// A yielded reference must cease to be borrowed
+    /// before the iterator can advance again.
+    ///
     /// No unsafe code is used.
-    pub struct StridedIterMut: mut (u32)
+    pub struct StridedIterMut: mut (usize)
 }
