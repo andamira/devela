@@ -229,13 +229,13 @@ impl<'a, T> Table<&'a [T]> {
     /// Returns an iterator over the cells of `row`.
     ///
     /// Returns `None` if `row` is out of bounds.
-    pub const fn row_iter(&self, row: usize) -> Option<StridedIter<'_, T>> {
+    pub const fn row_iter(&self, row: usize) -> Option<StridedIter<'a, T>> {
         row_iter_ref(self.storage(), self.layout(), row)
     }
     /// Returns an iterator over the cells of `column`.
     ///
     /// Returns `None` if `column` is out of bounds.
-    pub const fn column_iter(&self, column: usize) -> Option<StridedIter<'_, T>> {
+    pub const fn column_iter(&self, column: usize) -> Option<StridedIter<'a, T>> {
         column_iter_ref(self.storage(), self.layout(), column)
     }
 }
@@ -304,7 +304,7 @@ impl<'a, T> Table<&'a mut [T]> {
         Table::from_array(self.array.into_shared())
     }
 
-    /* logical traversal */ // WIP
+    /* logical traversal */
 
     /// Returns an iterator over the cells of `row`.
     ///
@@ -382,6 +382,35 @@ impl<T> Table<Box<[T]>> {
         Table::from_array(self.array.reborrow_mut())
     }
 
+    /* logical traversal */
+
+    /// Returns an iterator over the cells of `row`.
+    ///
+    /// Returns `None` if `row` is out of bounds.
+    pub fn row_iter(&self, row: usize) -> Option<StridedIter<'_, T>> {
+        row_iter_ref(self.storage(), self.layout(), row)
+    }
+    /// Returns a mutable lending iterator over the cells of `row`.
+    ///
+    /// Returns `None` if `row` is out of bounds.
+    pub fn row_iter_mut(&mut self, row: usize) -> Option<StridedIterMut<'_, T>> {
+        let layout = self.layout();
+        row_iter_mut(self.storage_mut(), layout, row)
+    }
+    /// Returns an iterator over the cells of `column`.
+    ///
+    /// Returns `None` if `column` is out of bounds.
+    pub fn column_iter(&self, column: usize) -> Option<StridedIter<'_, T>> {
+        column_iter_ref(self.storage(), self.layout(), column)
+    }
+    /// Returns a mutable lending iterator over the cells of `column`.
+    ///
+    /// Returns `None` if `column` is out of bounds.
+    pub fn column_iter_mut(&mut self, column: usize) -> Option<StridedIterMut<'_, T>> {
+        let layout = self.layout();
+        column_iter_mut(self.storage_mut(), layout, column)
+    }
+
     /* converting */
 
     /// Converts this boxed-slice-backed table into a vector-backed table.
@@ -439,6 +468,35 @@ impl<T> Table<Vec<T>> {
     /// Returns an exclusive table view reborrowed for the lifetime of `self`.
     pub fn reborrow_mut(&mut self) -> Table<&mut [T]> {
         Table::from_array(self.array.reborrow_mut())
+    }
+
+    /* logical traversal */
+
+    /// Returns an iterator over the cells of `row`.
+    ///
+    /// Returns `None` if `row` is out of bounds.
+    pub fn row_iter(&self, row: usize) -> Option<StridedIter<'_, T>> {
+        row_iter_ref(self.storage(), self.layout(), row)
+    }
+    /// Returns a mutable lending iterator over the cells of `row`.
+    ///
+    /// Returns `None` if `row` is out of bounds.
+    pub fn row_iter_mut(&mut self, row: usize) -> Option<StridedIterMut<'_, T>> {
+        let layout = self.layout();
+        row_iter_mut(self.storage_mut(), layout, row)
+    }
+    /// Returns an iterator over the cells of `column`.
+    ///
+    /// Returns `None` if `column` is out of bounds.
+    pub fn column_iter(&self, column: usize) -> Option<StridedIter<'_, T>> {
+        column_iter_ref(self.storage(), self.layout(), column)
+    }
+    /// Returns a mutable lending iterator over the cells of `column`.
+    ///
+    /// Returns `None` if `column` is out of bounds.
+    pub fn column_iter_mut(&mut self, column: usize) -> Option<StridedIterMut<'_, T>> {
+        let layout = self.layout();
+        column_iter_mut(self.storage_mut(), layout, column)
     }
 
     /* converting */

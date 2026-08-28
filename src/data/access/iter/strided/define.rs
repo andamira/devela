@@ -32,13 +32,13 @@
 ///
 /// ## Invariants
 ///
-/// The generated iterator assumes:
-/// - `stride > 0`
-/// - `front` and `back` are stride-aligned
-/// - Generated indices lie within the slice bounds
+/// Safely constructed iterators maintain:
+/// - `stride > 0`;
+/// - stride-aligned non-empty bounds;
+/// - all generated indices within the slice.
 ///
-/// # Panics
-/// Panics when iterating if any generated index is out of bounds for the slice.
+/// Empty iterators address no elements
+/// and need not have an in-bounds nominal position.
 ///
 /// ## Examples
 ///

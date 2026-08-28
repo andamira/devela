@@ -247,5 +247,33 @@ mod backing {
             let table = table.into_vec();
             assert_eq!(table.layout(), layout);
         }
+        #[test]
+        fn allocating_backends_support_axis_traversal() {
+            let shape = TableShape::new(2, 3);
+            let layout = TableLayout::column_major(shape).unwrap();
+            let mut table = Table::try_from_vec(vec_![0, 1, 2, 3, 4, 5], layout).unwrap();
+            // Direct Vec-backed shared traversal.
+            {
+                let mut row = table.row_iter(1).unwrap();
+                assert_eq!(row.next(), Some(&1));
+                assert_eq!(row.next(), Some(&3));
+                assert_eq!(row.next(), Some(&5));
+                assert_eq!(row.next(), None);
+            }
+            // Direct Vec-backed mutable traversal.
+            {
+                let mut column = table.column_iter_mut(1).unwrap();
+                *column.next().unwrap() += 10;
+                *column.next().unwrap() += 20;
+                assert!(column.next().is_none());
+            }
+            assert_eq!(table.storage(), &[0, 1, 12, 23, 4, 5]);
+            // Conversion preserves both layout and traversal semantics.
+            let table = table.into_boxed();
+            let mut column = table.column_iter(1).unwrap();
+            assert_eq!(column.next(), Some(&12));
+            assert_eq!(column.next(), Some(&23));
+            assert_eq!(column.next(), None);
+        }
     }
 }
