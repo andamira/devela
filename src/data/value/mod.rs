@@ -37,7 +37,7 @@ crate::structural_mods! { // _mods, _pub_mods
             intro::_all::*,
             // profile::*,
             // schema::_all::*,
-            value::*,
+            value::_all::*,
         };
     }
     _pub_mods {

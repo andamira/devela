@@ -229,10 +229,8 @@ macro_rules! word {
                 $raw_body
             }
             /// Reconstructs the word exactly from any raw representation.
-            #[must_use]
             pub const fn from_raw($raw: $repr) -> Self $from_body
             /// Attempts to reconstruct the word from its raw representation.
-            #[must_use]
             pub const fn try_from_raw(raw: $repr) -> $crate::Result<Self, $crate::Infallible> {
                 Ok(Self::from_raw(raw))
             }
@@ -261,7 +259,6 @@ macro_rules! word {
                 $raw_body
             }
             /// Attempts exact reconstruction from a raw representation.
-            #[must_use]
             pub const fn try_from_raw($raw: $repr,) -> $crate::Result<Self, $error> $try_body
         }
 
