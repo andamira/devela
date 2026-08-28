@@ -15,11 +15,15 @@ use crate::{DistError, NonZeroU64, Pcg32, Rand, Sign, is, unwrap, whilst};
     test_size_of(DistCategorical = 24|192; niche Option),
 }]
 /// Each category is identified by its index in the weight slice and has probability
-///
 /// `weights[index] / total_weight`.
 ///
+/// For category $i$ with weight $w_i$,
+/// $$
+/// P(X=i) = \frac{w_i} {\sum_{j=0}^{k-1} w_j}
+/// $$
+///
 /// Zero individual weights are allowed.
-/// The total weight must be nonzero and must fit in `u64`.
+/// The total weight must be positive and must fit in `u64`.
 ///
 /// Weights are retained exactly and are not normalized or reduced.
 ///
@@ -36,10 +40,10 @@ impl<'a> DistCategorical<'a> {
     /// Constructs a categorical distribution from relative integer weights.
     ///
     /// # Errors
-    /// Returns [`DistError::PositiveRequired`]
+    /// Returns [`PositiveRequired`][DistError::PositiveRequired]
     /// if all weights are zero or the slice is empty.
     ///
-    /// Returns [`DistError::Overflow`]
+    /// Returns [`Overflow`][DistError::Overflow]
     /// if their sum exceeds `u64::MAX`.
     pub const fn new(weights: &'a [u64]) -> Result<Self, DistError> {
         let mut total = 0u64;
@@ -95,16 +99,18 @@ impl<'a> DistCategorical<'a> {
     #[must_use]
     pub fn sample<R: Rand + ?Sized>(&self, rng: &mut R) -> usize {
         let ticket = rng.rand_below(self.total.get());
+        // SAFETY: `ticket < total`, and `total` is the exact sum of all weights,
+        // so `index_at(ticket)` must resolve to a category.
         unwrap![some_guaranteed_or_ub self.index_at(ticket)]
     }
     /// Samples a category index using the canonical const-capable [`Pcg32`].
-    ///
-    /// This is the const-compatible counterpart of [`sample`][Self::sample].
     ///
     /// This performs a linear scan over the weights.
     #[must_use]
     pub const fn sample_pcg32(&self, rng: &mut Pcg32) -> usize {
         let ticket = rng.next_bounded_u64(self.total.get());
+        // SAFETY: `ticket < total`, and `total` is the exact sum of all weights,
+        // so `index_at(ticket)` must resolve to a category.
         unwrap![some_guaranteed_or_ub self.index_at(ticket)]
     }
 }

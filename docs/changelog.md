@@ -212,6 +212,9 @@
 - move `<data|num|text>::error` to `error::<data|num|text>`.
 - move `code::error` contents here.
 
+### error::num
+- new type: `DistError`.
+
 ### geom::affine
 - new types: `Simplex`, `SimplexFacetView`, `SimplexFacetIter`.
 - update `Point`:
@@ -304,9 +307,12 @@
 #### num::grain::niche
 - move `enumint!` and `EnumintI8Example` from `code::util`.
 
+#### num::prob
+- new type: `Probability`.
+
 #### num::prob::dist
 - make module public.
-- new types: `DistCategorical`, `DistError`.
+- new type: `DistCategorical`.
 
 #### num::prob::rand
 - rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
