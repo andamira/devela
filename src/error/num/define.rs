@@ -1,6 +1,6 @@
 // devela/src/error/num/define.rs
 //
-//!
+//! Numeric-related error types.
 //
 // TOC
 // - individual errors:
@@ -12,7 +12,9 @@
 //   - NonZeroRequired
 //   - Overflow
 // - composite errors:
+//   - IntError, IntResult
 //   - NicheValueError
+//   - DistError
 
 use crate::{
     _tags, DOC_INVALID_VALUE, DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED, InvalidValue, NotImplemented,
@@ -113,10 +115,30 @@ pub type IntResult<T> = crate::Result<T, IntError>;
 
 define_error! { composite: fmt(f)
     /// Invalid or problematic values for niche types.
-    #[doc = crate::_doc_meta!{location("num")}]
+    #[doc = crate::_doc_meta!{
+        location("num", enum NicheValueError),
+    }]
     pub enum NicheValueError {
         +tag: _tags!(num),
         DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),
         DOC_INVALID_VALUE: +const InvalidValue => InvalidValue,
+    }
+}
+define_error! { composite: fmt(f)
+    /// Errors validating or constructing probability distributions.
+    #[doc = crate::_doc_meta!{
+        location("error/num", enum DistError),
+    }]
+    pub enum DistError {
+        +tag: _tags!(num),
+        DOC_POSITIVE_REQUIRED: +const PositiveRequired => PositiveRequired,
+
+        +tag: _tags!(num),
+        DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),
+
+        // MAYBE:
+        // NonNegativeRequired, //
+        // IncompatibleBounds,  // uniform distributions, truncation, etc.
+        // InvalidValue,        // NaN or domain-specific invalid parameter
     }
 }

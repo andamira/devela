@@ -299,6 +299,10 @@
 #### num::grain::niche
 - move `enumint!` and `EnumintI8Example` from `code::util`.
 
+#### num::prob::dist
+- make module public.
+- new types: `DistCategorical`, `DistError`.
+
 #### num::prob::rand
 - rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
 - remove `own_next_*` methods from the rest of the PRNGs.

@@ -1,14 +1,14 @@
 // devela/src/num/prob/mod.rs
 //
 #![doc = crate::_DOC_NUM_PROB!()] // public
-#![doc = crate::_doc!(modules: crate::num; prob: rand)]
+#![doc = crate::_doc!(modules: crate::num; prob: dist, rand)]
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //!
 //! > What is the structure of uncertainty?
 //
 
-// mod dist; // Probability distributions
+pub mod dist; // Probability distributions
 // mod estim; // Estimation & inference
 // mod fit; // Model fitting
 // mod markov; // Stochastic matrices, chains, traces
@@ -18,13 +18,13 @@ pub mod rand; // Random number generation
 crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         // pub use super::{
-        //     dist::_all::*,
         //     estim::_all::*,
         //     fit::_all::*,
         // };
     }
     _pub_mods {
         pub use super::{
+            dist::_all::*,
             // markov::_all::*,
             rand::_all::*,
             // stats::_all::*,
