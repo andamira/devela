@@ -202,6 +202,9 @@
 - new macro `link!`.
 - new example type: `LinkExample`.
 
+### data::value
+- new types: `Value[8|16|32|64|128]`.
+
 ### data::word
 - make module public.
 - new trait `WordTry`.
