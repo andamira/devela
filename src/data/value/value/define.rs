@@ -1,4 +1,4 @@
-// devela/src/data/value/value.rs
+// devela/src/data/value/value/define.rs
 //
 //! Defines Value<8|16|32|64|128>.
 //
@@ -27,6 +27,7 @@ macro_rules! define_value {
             location("data/value", struct $Name),
             test_size_of($Name = $bytes|$bits; niche !Option),
         }]
+        #[must_use]
         #[repr(transparent)]
         #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
         pub struct $Name($Unsigned);
@@ -149,7 +150,6 @@ macro_rules! define_value {
             /* immediate values */
 
             /// Creates a boolean value.
-            #[must_use]
             pub const fn from_bool(value: bool) -> Self {
                 is! { value, Self::TRUE, Self::FALSE }
             }
@@ -225,7 +225,6 @@ macro_rules! define_value {
                 char::from_u32(code)
             }
         }
-
         // impl WordTry
         word! {
             impl $Name => $Unsigned {
