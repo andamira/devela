@@ -113,6 +113,7 @@ See also
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
 - 1.??: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
+- 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)

@@ -148,7 +148,10 @@
         string_from_utf8_lossy_owned,
     )
 )]
-#![cfg_attr(all(nightly_stable_later, feature = "std"), feature(once_wait, path_is_empty,))]
+#![cfg_attr(
+    all(nightly_stable_later, feature = "std"),
+    feature(once_wait, path_is_empty, exitcode_exit_method,)
+)]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 //
 // documentation
