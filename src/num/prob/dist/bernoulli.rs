@@ -32,12 +32,10 @@ pub struct DistBernoulli {
 
 impl DistBernoulli {
     /// Constructs a Bernoulli distribution with the given probability of `true`.
-    #[must_use]
     pub const fn new(probability: Probability) -> Self {
         Self { probability }
     }
     /// Returns the probability of the given outcome.
-    #[must_use]
     pub const fn probability_of(self, outcome: bool) -> Probability {
         is! { outcome, self.probability, self.probability.complement() }
     }

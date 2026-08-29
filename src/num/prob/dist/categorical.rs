@@ -49,30 +49,30 @@ impl<'a> DistCategorical<'a> {
         let mut total = 0u64;
         whilst! { i in 0..weights.len(); {
             total = unwrap![some_ok_or? total.checked_add(weights[i]),
-                DistError::Overflow(Some(Sign::Positive))]
+                DistError::Overflow(Some(Sign::Positive))];
         }}
         unwrap![some_ok_map_or NonZeroU64::new(total),
             |total| Self { weights, total }, DistError::PositiveRequired]
+    }
+    /// Returns the number of categories.
+    #[must_use]
+    pub const fn category_count(&self) -> usize {
+        self.weights.len()
     }
     /// Returns the relative weights of all categories.
     #[must_use]
     pub const fn weights(&self) -> &'a [u64] {
         self.weights
     }
-    /// Returns the number of categories.
+    /// Returns the weight of the category at `index`.
     #[must_use]
-    pub const fn len(&self) -> usize {
-        self.weights.len()
+    pub const fn weight(&self, index: usize) -> Option<u64> {
+        is! { index < self.weights.len(), Some(self.weights[index]), None }
     }
     /// Returns the total weight.
     #[must_use]
     pub const fn total_weight(&self) -> u64 {
         self.total.get()
-    }
-    /// Returns the weight of the category at `index`.
-    #[must_use]
-    pub const fn weight(&self, index: usize) -> Option<u64> {
-        is! { index < self.weights.len(), Some(self.weights[index]), None }
     }
     /// Returns the category containing `ticket` in cumulative weight space.
     ///
@@ -135,14 +135,14 @@ mod _test {
     fn categorical_const_and_generic_pcg32_sampling_agree() {
         let mut rng = Pcg32::new(1, 2);
         assert_eq!(CONST_SAMPLE, CONST_DIST.sample(&mut rng));
-        assert!(CONST_SAMPLE < CONST_DIST.len());
+        assert!(CONST_SAMPLE < CONST_DIST.category_count());
     }
     #[test]
     fn categorical_constructs_and_exposes_weights() {
         let weights = [2, 3, 1];
         let dist = DistCategorical::new(&weights).unwrap();
         assert_eq!(dist.weights(), &weights);
-        assert_eq!(dist.len(), 3);
+        assert_eq!(dist.category_count(), 3);
         assert_eq!(dist.total_weight(), 6);
         assert_eq!(dist.weight(0), Some(2));
         assert_eq!(dist.weight(2), Some(1));

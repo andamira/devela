@@ -325,6 +325,10 @@
   - add method `next_bounded_u64`.
   - make explicit the `next_bounded` zero-bound contract
 
+#### num::prob::stats
+- make module public.
+- new type: `StatsMoment`.
+
 ### num::quant
 - new type: `Scale`.
 - add nonzero-denominator primitive aliases: `Ratio<I|U><8|16|32|64|128|size>`.

@@ -111,7 +111,6 @@ impl Probability {
     /// $$
     /// P(A^\complement) = 1 - P(A) = \frac{d-n}{d}.
     /// $$
-    #[must_use]
     pub const fn complement(self) -> Self {
         let (num, den) = self.ratio.num_den();
         // `num <= den` is a Probability invariant, and the existing denominator is nonzero.
