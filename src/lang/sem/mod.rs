@@ -12,7 +12,7 @@ mod cue; // Semantic prompts offered for contextual interpretation.
 // mod interp; // Situated readings and interpretation
 // mod map; // Mappings between semantic regions
 // mod qual; // Semantic qualification
-// mod rel; // Abstract relational semantics
+mod rel; // Semantic relations
 // mod schema; // Compile-time semantic vocabulary
 // mod world; // Concrete semantic items and relations
 
@@ -25,7 +25,7 @@ crate::structural_mods! { // _mods
             // interp::_all::*,
             // map::_all::*,
             // qual::_all::*,
-            // rel::_all::*,
+            rel::_all::*,
             // schema::_all::*,
             // world::_all::*,
         };

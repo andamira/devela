@@ -238,7 +238,7 @@
 
 ### lang::sem
 - make module public.
-- new type `Cue`.
+- new types: `Cue`, `Relation`.
 
 ##### lang::prog::ffi::js
 - update `Js`:
