@@ -3,7 +3,7 @@
 //! Dense/sparse integer sets.
 //
 
-use crate::is;
+use crate::{ConstInit, is, slice, whilst};
 
 // Result alias for sparse-set operations.
 pub(crate) type SparseSetResult<T> = Result<T, SparseSetError>;
@@ -33,6 +33,10 @@ pub enum SparseSetError {
 /// A sparse integer set with constant-time insertion, removal, lookup and clearing.
 #[doc = crate::_doc_meta!{
     location("data/store/key/set", struct SparseSetArray),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: SparseSetArray<8, 8> = 68|544; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: SparseSetArray<8, 8> = 136|1088; niche !Option),
 }]
 /// Values are `usize`s in the range `0..SPARSE`.
 ///
@@ -80,55 +84,59 @@ impl<const DENSE: usize, const SPARSE: usize> SparseSetArray<DENSE, SPARSE> {
 
     /// Returns the live dense values.
     #[must_use]
-    pub fn as_slice(&self) -> &[usize] { &self.dense[..self.count] }
+    pub const fn as_slice(&self) -> &[usize] { slice![&self.dense, ..self.count] }
 
     /// Returns an iterator over the stored values.
     pub fn iter(&self) -> core::slice::Iter<'_, usize> { self.as_slice().iter() }
 
     /// Returns `true` if `value` is present.
     #[must_use]
-    pub fn contains(&self, value: usize) -> bool {
+    pub const fn contains(&self, value: usize) -> bool {
         contains_raw(&self.dense, &self.sparse, self.count, value)
     }
     /// Inserts `value`.
     ///
     /// Returns `Ok(true)` if the value was newly inserted.
     /// Returns `Ok(false)` if the value was already present.
-    pub fn insert(&mut self, value: usize) -> SparseSetResult<bool> {
+    pub const fn insert(&mut self, value: usize) -> SparseSetResult<bool> {
         insert_raw(&mut self.dense, &mut self.sparse, &mut self.count, value)
     }
     /// Removes `value`.
     ///
     /// Returns `Ok(true)` if the value was present.
     /// Returns `Ok(false)` if the value was absent.
-    pub fn remove(&mut self, value: usize) -> SparseSetResult<bool> {
+    pub const fn remove(&mut self, value: usize) -> SparseSetResult<bool> {
         remove_raw(&mut self.dense, &mut self.sparse, &mut self.count, value)
     }
     /// Checks the internal dense/sparse consistency.
     ///
     /// # Panics
     /// Panics if the internal invariant is broken.
-    pub fn check_consistency(&self) {
+    pub const fn check_consistency(&self) {
         check_consistency_raw(&self.dense, &self.sparse, self.count);
     }
 }
-
+impl<const DENSE: usize, const SPARSE: usize> ConstInit for SparseSetArray<DENSE, SPARSE> {
+    const INIT: Self = Self::new();
+}
 impl<const DENSE: usize, const SPARSE: usize> Default for SparseSetArray<DENSE, SPARSE> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-pub(super) fn contains_raw(dense: &[usize], sparse: &[usize], count: usize, value: usize) -> bool {
-    if value >= sparse.len() {
-        return false;
-    }
-
+pub(super) const fn contains_raw(
+    dense: &[usize],
+    sparse: &[usize],
+    count: usize,
+    value: usize,
+) -> bool {
+    is! { value >= sparse.len(), return false }
     let index = sparse[value];
     index < count && dense[index] == value
 }
 
-pub(super) fn insert_raw(
+pub(super) const fn insert_raw(
     dense: &mut [usize],
     sparse: &mut [usize],
     count: &mut usize,
@@ -142,8 +150,7 @@ pub(super) fn insert_raw(
     *count += 1;
     Ok(true)
 }
-
-pub(super) fn remove_raw(
+pub(super) const fn remove_raw(
     dense: &mut [usize],
     sparse: &mut [usize],
     count: &mut usize,
@@ -159,20 +166,19 @@ pub(super) fn remove_raw(
     *count = last_index;
     Ok(true)
 }
-
-#[allow(clippy::needless_range_loop)]
-pub(super) fn check_consistency_raw(dense: &[usize], sparse: &[usize], count: usize) {
+pub(super) const fn check_consistency_raw(dense: &[usize], sparse: &[usize], count: usize) {
     assert!(count <= dense.len());
-    for index in 0..count {
+    whilst! { index in 0..count; {
         let value = dense[index];
         assert!(value < sparse.len());
-        assert_eq!(sparse[value], index);
-    }
+        assert!(sparse[value] == index);
+    }}
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn basic_sparse_set() {
         let mut set = SparseSetArray::<5, 10_000>::new();

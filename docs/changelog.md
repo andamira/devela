@@ -188,6 +188,7 @@
 
 #### data::store::key::set
 - make module public.
+- update `SparseSet`: make most methods const.
 
 #### data::store::pool
 - new macros: `pool!`, `pool_seq!`.
