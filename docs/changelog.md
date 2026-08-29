@@ -113,6 +113,10 @@
 #### data::codec::symbol
 - new types: `BrailleByte`, `Ean`, `Octant`, `Quadrant`, `Sextant`, `YijingHexagram`.
 
+### data::history
+- new module.
+- new types: `DerivedFrom`, `RevisionOf`.
+
 ### data::id
 - new module: `local`.
 - make `handle` and `uuid` modules public.

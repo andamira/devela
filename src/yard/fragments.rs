@@ -81,6 +81,8 @@ its own flat view of all its public children.";
     _DOC_DATA_CODEC_INTEGRITY = "Integrity checks and correction codes.";
     _DOC_DATA_CODEC_PACK    = "Packed data representations.";
     _DOC_DATA_CODEC_SYMBOL  = "Symbolic codes that encode data into visual marks.";
+    _DOC_DATA_HISTORY       = "Origins and evolution of data across derivations and change.";
+    _DOC_DATA_HISTORY_REL   = "Historical relations between data and its antecedents.";
     _DOC_DATA_ID            = "Identifiers and references for stable and contextual distinction.";
     _DOC_DATA_ID_HANDLE     = "Compact contextual references interpreted and validated by a resolver.";
     _DOC_DATA_ID_LOCAL      = "Locally scoped identities and allocation mechanisms.";
