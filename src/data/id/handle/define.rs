@@ -115,17 +115,9 @@ macro_rules! handle {
             }
         }
 
-        $crate::word! {
-            impl $Handle => ($($Repr,)+) {
-                raw(handle) { handle.into_parts() }
-                from_raw(raw) {
-                    let ($($field,)+) = raw;
-                    Self::new($($field),+)
-                }
-            }
-        }
-
-        /// Fundamental const methods over the whole handle.
+        /// # Core handle methods
+        ///
+        /// Construction, decomposition and const-compatible comparison.
         #[allow(dead_code)]
         impl $Handle {
             /* constructors */
@@ -213,6 +205,20 @@ macro_rules! handle {
         [ $( $field:ident : $Prim:ident, $Repr:ty; )+ ]
         $vis:vis $Handle:ident
     ) => {
+        // Canonical Word representation
+        $crate::word! {
+            impl $Handle => ($($Repr,)+) {
+                raw(handle) { handle.into_parts() }
+                from_raw(raw) {
+                    let ($($field,)+) = raw;
+                    Self::new($($field),+)
+                }
+            }
+        }
+
+        /// # Scalar packing
+        ///
+        /// Packs the primitive component bits into unsigned scalar carriers.
         #[allow(dead_code)]
         impl $Handle {
             /// The total bit width of all primitive components.
@@ -269,8 +275,7 @@ macro_rules! handle {
         /// Primitive component bits are read from low to high in declaration order.
         ///
         /// # Errors
-        /// Returns an error if bits outside the handle's packed representation are set,
-        /// or if any reconstructed component violates its representation invariant.
+        /// Returns an error if extra bits are set or a component violates its invariant.
         $vis const fn [<try_unpack_ $Pack>](packed: $Pack) -> Result<Self, $crate::InvalidValue> {
             // A wider scalar must not carry information beyond this handle.
             if Self::PACK_BITS < <$Pack>::BITS && (packed >> Self::PACK_BITS) != 0 {

@@ -25,7 +25,7 @@
 //! reusable location. It is distinct from a general revision, version, or timestamp.
 //
 
-#[cfg(any(test, feature = "_docs_examples"))]
+#[cfg(any(test, doctest, feature = "_docs_examples"))]
 mod _example; // HandleSpanExample
 
 mod define; // handle!
@@ -40,7 +40,7 @@ crate::structural_mods! { // _mods
             generation::handle_gen,
             span::handle_span,
         };
-        #[cfg(any(test, feature = "_docs_examples"))]
+        #[cfg(any(test, doctest, feature = "_docs_examples"))]
         pub use super::_example::*;
     }
 }
