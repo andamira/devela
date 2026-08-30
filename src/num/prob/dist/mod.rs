@@ -14,7 +14,7 @@
 //! const-compatible forms with explicit preparation and sampling costs.
 //
 
-mod bernoulli; // DistBernoulli
+mod binomial; // DistBernoulli, DistBinomial
 mod categorical; // DistCategorical
 // mod continuous;
 // mod sample;
@@ -23,7 +23,7 @@ mod categorical; // DistCategorical
 crate::structural_mods! { // _mods, _reexports
     _mods {
         pub use super::{
-            bernoulli::DistBernoulli,
+            binomial::{DistBernoulli, DistBinomial},
             categorical::DistCategorical,
             // continuous::*,
             // sample::*,

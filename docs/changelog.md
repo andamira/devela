@@ -321,7 +321,7 @@
 
 #### num::prob::dist
 - make module public.
-- new types: `DistBernoulli`, `DistCategorical`.
+- new types: `DistBernoulli`, `DistBinomial`, `DistCategorical`.
 
 #### num::prob::rand
 - rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
