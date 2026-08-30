@@ -49,7 +49,6 @@ _DOC_HANDLE_SPAN_METHODS = concat!(crate::_DOC_HANDLE_METHODS!(), r#"
 "#);
 }
 
-#[cfg(any(test, feature = "_docs_examples"))]
 handle! {
     [
         index: u8 + crate::NonMaxU8;
@@ -88,7 +87,6 @@ handle! {
     pub HandleExample;
 }
 
-#[cfg(any(test, feature = "_docs_examples"))]
 handle_gen! {
     [
         index: u8;
@@ -108,7 +106,6 @@ handle_gen! {
     #[doc = crate::_DOC_HANDLE_GEN_METHODS!()]
     pub HandleGenExample;
 }
-#[cfg(any(test, feature = "_docs_examples"))]
 handle_span! {
     [ offset: u8 + crate::NonMaxU8; ]
 

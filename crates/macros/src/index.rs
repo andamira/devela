@@ -300,3 +300,24 @@ pub fn paste(input: TS) -> TS { body_paste(input) }
 /// ```
 #[proc_macro] #[rustfmt::skip]
 pub fn repeat(input: TS) -> TS { body_repeat(input) }
+
+/// Declares source-file modules using devela's module layout convention.
+#[doc = crate::_doc_location!(proc "code/util/synth", macro mods_in)]
+///
+/// - Ordinary `mod` declarations use Rust's conventional module-file lookup.
+/// - `mod_` declarations use `_.rs` as the root of a module directory.
+///
+/// Attributes and visibility modifiers are preserved.
+///
+/// # Example
+/// ```ignore
+/// crate::mods_in! {
+///     mod leaf;       // loads `leaf.rs`
+///     mod_ branch;    // loads `branch/_.rs`
+///
+///     pub mod public;
+///     pub(crate) mod_ internal;
+/// }
+/// ```
+#[proc_macro] #[rustfmt::skip]
+pub fn mods_in(input: TS) -> TS { body_mods_in(input) }

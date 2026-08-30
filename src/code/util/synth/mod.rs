@@ -45,6 +45,7 @@ structural::structural_mods! { // _mods, _reexports,
         #[doc = crate::_tags!(code procedural_macro)]
         pub use devela_macros::{
             field_of,
+            mods_in,
             repeat,
         };
     }
