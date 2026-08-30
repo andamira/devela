@@ -68,8 +68,8 @@
 ///
 /// # Handle validity
 ///
-/// Handles are relative to the pool instance that produced them. They do not
-/// encode a pool identity.
+/// Handles are relative to the pool instance that produced them.
+/// They do not encode a pool identity.
 ///
 /// Removing a sequence advances its slot generation before that slot can be
 /// reused, so stale handles are normally rejected. Generations eventually wrap,
@@ -241,6 +241,8 @@ macro_rules! pool_seq {
             meta_pool: $MetaPool:ident;
         ]
     ) => {
+        // Reuse the ordinary array pool as the private sequence-identity layer:
+        // it owns generations, handle validation, and free sequence slots.
         $crate::__pool_impl_array! {
             [
                 index: $iprim + $Index;
@@ -249,6 +251,7 @@ macro_rules! pool_seq {
             $MetaPool;
             $Handle;
         }
+        // Layer contiguous sequence/cell storage over that identity pool.
         $crate::__pool_seq_impl_array! {
             [cell: $cprim]
             [private:
@@ -259,6 +262,30 @@ macro_rules! pool_seq {
             $(#[$pool_attr])*
             $vis $Pool;
             $hvis $Handle;
+        }
+        $crate::pool_seq! { %impl_common_core
+            [index: $iprim + $Index; cell: $cprim;]
+            $vis $Pool;
+        }
+    };
+    (%impl_common_core
+        [
+            index: $iprim:ident + $Index:ty;
+            cell: $cprim:ident;
+        ]
+        $vis:vis $Pool:ident;
+    ) => {
+        impl<T, const SEQS: usize, const CELLS: usize> $Pool<T, SEQS, CELLS> {
+            /// The maximum fixed sequence capacity representable by this pool.
+            $vis const MAX_CAPACITY: usize = {
+                match $crate::MaybeNiche::<$Index>::MAX.try_to_usize() {
+                    Ok(max) => max.saturating_add(1),
+                    Err(_) => usize::MAX,
+                }
+            };
+
+            /// The maximum fixed cell capacity representable by this pool.
+            $vis const MAX_CELL_CAPACITY: usize = $cprim::MAX as usize;
         }
     };
 }

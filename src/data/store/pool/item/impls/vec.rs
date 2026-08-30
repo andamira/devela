@@ -28,7 +28,7 @@ macro_rules! __pool_impl_vec {
         #[allow(dead_code)]
         impl<T> $Pool<T> {
             /// Verifies the representation laws required by this pool.
-            const __VALID_CONFIG: () = {
+            const _VALID_CONFIG: () = {
                 assert!(!$crate::MaybeNiche::<$Index>::HAS_NEGATIVE,
                     "the pool index representation must be unsigned");
                 assert!($crate::MaybeNiche::<$Index>::IS_CONTIGUOUS,
@@ -43,7 +43,7 @@ macro_rules! __pool_impl_vec {
             /// Returns a new empty pool.
             #[must_use]
             $vis const fn new() -> Self {
-                let () = Self::__VALID_CONFIG;
+                let () = Self::_VALID_CONFIG;
                 Self {
                     values: $crate::Vec::<$crate::Option<T>>::new(),
                     generations: $crate::Vec::<$crate::MaybeNiche<$Generation>>::new(),
@@ -59,8 +59,8 @@ macro_rules! __pool_impl_vec {
             /// or if the allocation cannot be created.
             #[must_use]
             $vis fn with_capacity(capacity: usize) -> Self {
-                let () = Self::__VALID_CONFIG;
-                assert!(capacity <= Self::__index_capacity(),
+                let () = Self::_VALID_CONFIG;
+                assert!(capacity <= Self::MAX_CAPACITY,
                     "the requested pool capacity exceeds its index representation");
                 Self {
                     values: $crate::Vec::<$crate::Option<T>>::with_capacity(capacity),
@@ -80,7 +80,7 @@ macro_rules! __pool_impl_vec {
                 let generations = self.generations.capacity();
                 let free = self.free.capacity();
                 let storage = $crate::Cmp($crate::Cmp(values).min(generations)).min(free);
-                $crate::Cmp(storage).min(Self::__index_capacity())
+                $crate::Cmp(storage).min(Self::MAX_CAPACITY)
             }
             /// Returns the number of introduced slots.
             #[must_use]
@@ -107,18 +107,18 @@ macro_rules! __pool_impl_vec {
             /// Returns whether `handle` currently resolves to a value.
             #[must_use]
             $hvis fn contains(&self, handle: $Handle) -> bool {
-                self.__resolve_index(handle).is_some()
+                self._resolve_index(handle).is_some()
             }
             /// Returns a shared reference to the value resolved by `handle`.
             #[must_use]
             $hvis fn get(&self, handle: $Handle) -> Option<&T> {
-                let index = $crate::unwrap![some? self.__resolve_index(handle)];
+                let index = $crate::unwrap![some? self._resolve_index(handle)];
                 self.values[index].as_ref()
             }
             /// Returns an exclusive reference to the value resolved by `handle`.
             #[must_use]
             $hvis fn get_mut(&mut self, handle: $Handle) -> Option<&mut T> {
-                let index = $crate::unwrap![some? self.__resolve_index(handle)];
+                let index = $crate::unwrap![some? self._resolve_index(handle)];
                 self.values[index].as_mut()
             }
 
@@ -130,8 +130,8 @@ macro_rules! __pool_impl_vec {
             /// or both handles resolve to the same slot.
             #[must_use]
             $hvis fn get2_mut(&mut self, a: $Handle, b: $Handle) -> Option<(&mut T, &mut T)> {
-                let a_index = $crate::unwrap![some? self.__resolve_index(a)];
-                let b_index = $crate::unwrap![some? self.__resolve_index(b)];
+                let a_index = $crate::unwrap![some? self._resolve_index(a)];
+                let b_index = $crate::unwrap![some? self._resolve_index(b)];
                 if a_index == b_index { return None; }
                 if a_index < b_index {
                     let (left, right) = self.values.split_at_mut(b_index);
@@ -155,7 +155,7 @@ macro_rules! __pool_impl_vec {
             /// # Errors
             /// Returns `value` unchanged when the pool is full.
             $hvis fn insert(&mut self, value: T) -> Result<$Handle, T> {
-                let Some((index_usize, index)) = self.__acquire_slot() else { return Err(value); };
+                let Some((index_usize, index)) = self._acquire_slot() else { return Err(value); };
                 let generation = self.generations[index_usize];
                 self.values[index_usize] = Some(value);
                 self.len += 1;
@@ -167,7 +167,7 @@ macro_rules! __pool_impl_vec {
             /// # Errors
             /// Returns `value` unchanged if `handle` does not currently resolve.
             $hvis fn replace(&mut self, handle: $Handle, value: T) -> Result<T, T> {
-                let index = $crate::unwrap![some_ok_or? self.__resolve_index(handle), value];
+                let index = $crate::unwrap![some_ok_or? self._resolve_index(handle), value];
                 match self.values[index].as_mut() {
                     Some(slot) => Ok($crate::Mem::replace(slot, value)),
                     None => Err(value), // unreachable while pool invariants hold (IMPROVE?)
@@ -178,9 +178,9 @@ macro_rules! __pool_impl_vec {
             ///
             /// The vacated slot advances its generation before it can be reused.
             $hvis fn remove(&mut self, handle: $Handle) -> Option<T> {
-                let index = self.__resolve_index(handle)?;
+                let index = self._resolve_index(handle)?;
                 let value = self.values[index].take()?;
-                self.generations[index] = Self::__next_generation(self.generations[index]);
+                self.generations[index] = Self::_next_generation(self.generations[index]);
                 self.free.push($crate::MaybeNiche(handle.get_index()));
                 self.len -= 1;
                 Some(value)
@@ -190,7 +190,7 @@ macro_rules! __pool_impl_vec {
                 self.free.clear();
                 for index in (0..self.values.len()).rev() {
                     if self.values[index].take().is_some() {
-                        self.generations[index] = Self::__next_generation(self.generations[index]);
+                        self.generations[index] = Self::_next_generation(self.generations[index]);
                     }
                     let encoded = $crate::MaybeNiche::<$Index>::try_from_usize(index).unwrap();
                     self.free.push(encoded);
@@ -216,20 +216,20 @@ macro_rules! __pool_impl_vec {
 
             /* private */
 
-            fn __acquire_slot(&mut self) -> Option<(usize, $crate::MaybeNiche<$Index>)> {
+            fn _acquire_slot(&mut self) -> Option<(usize, $crate::MaybeNiche<$Index>)> {
                 if let Some(index) = self.free.pop() {
                     let index_usize = index.try_to_usize().ok()?;
                     return Some((index_usize, index));
                 }
                 let index_usize = self.values.len();
                 let index = $crate::MaybeNiche::<$Index>::try_from_usize(index_usize).ok()?;
-                self.__reserve_one_slot();
+                self._reserve_one_slot();
                 self.values.push(None);
                 self.generations
                     .push(<$crate::MaybeNiche::<$Generation> as $crate::ConstInit>::INIT);
                 Some((index_usize, index))
             }
-            fn __reserve_one_slot(&mut self) {
+            fn _reserve_one_slot(&mut self) {
                 self.values.reserve(1);
                 self.generations.reserve(1);
                 let slot_capacity = self.values.capacity().min(self.generations.capacity());

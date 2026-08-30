@@ -66,7 +66,9 @@ macro_rules! __pool_seq_impl_array {
             const _VALID_CONFIG: () = {
                 const fn require_uint<P: $crate::PrimUint>() {}
                 require_uint::<$cprim>();
-                assert!(CELLS <= $cprim::MAX as usize,
+                assert!(SEQS <= Self::MAX_CAPACITY,
+                    "the sequence capacity exceeds its index representation");
+                assert!(CELLS <= Self::MAX_CELL_CAPACITY,
                     "the cell capacity exceeds its representation");
             };
 
@@ -87,7 +89,7 @@ macro_rules! __pool_seq_impl_array {
 
             /* capacity */
 
-            /// Returns the maximum number of simultaneously live sequences.
+            /// Returns the configured sequence capacity.
             #[must_use]
             $vis const fn capacity(&self) -> usize { SEQS }
 
@@ -107,7 +109,7 @@ macro_rules! __pool_seq_impl_array {
             #[must_use]
             $vis const fn remaining(&self) -> usize { self.seqs.remaining() }
 
-            /// Returns the total cell capacity.
+            /// Returns the configured cell capacity.
             #[must_use]
             $vis const fn cell_capacity(&self) -> usize { CELLS }
 

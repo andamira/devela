@@ -231,12 +231,20 @@ macro_rules! pool {
         }
     };
     (%impl_common_core
-     $(const$($_c:lifetime)?)?
-     [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
-     $vis:vis $Pool:ident;
-     $hvis:vis $Handle:ident;
+        $(const$($_c:lifetime)?)?
+        [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
+        $vis:vis $Pool:ident;
+        $hvis:vis $Handle:ident;
     ) => {
             /* capacity */
+
+            /// The maximum fixed capacity representable by this pool.
+            $vis const MAX_CAPACITY: usize = {
+                match $crate::MaybeNiche::<$Index>::MAX.try_to_usize() {
+                    Ok(max) => max.saturating_add(1),
+                    Err(_) => usize::MAX,
+                }
+            };
 
             /// Returns the number of occupied slots.
             #[must_use]
@@ -257,7 +265,7 @@ macro_rules! pool {
 
             /* private */
 
-            $(const$($_c)?)? fn __resolve_index(&self, handle: $Handle) -> Option<usize> {
+            $(const$($_c)?)? fn _resolve_index(&self, handle: $Handle) -> Option<usize> {
                 let index = $crate::unwrap![ok_some?
                     $crate::MaybeNiche(handle.get_index()).try_to_usize()];
                 if index >= self.values.len() { return None; }
@@ -267,14 +275,14 @@ macro_rules! pool {
                 $crate::is!{ self.values[index].is_none(), return None }
                 Some(index)
             }
-            $(const$($_c)?)? fn __handle_at(&self, index: usize) -> Option<$Handle> {
+            $(const$($_c)?)? fn _handle_at(&self, index: usize) -> Option<$Handle> {
                 if index >= self.values.len() || self.values[index].is_none() { return None; }
                 let encoded =
                     $crate::unwrap![ok_some? $crate::MaybeNiche::<$Index>::try_from_usize(index)];
                 let generation = self.generations[index];
                 Some($Handle::new(encoded.get(), generation.get()))
             }
-            const fn __next_generation(current: $crate::MaybeNiche<$Generation>)
+            const fn _next_generation(current: $crate::MaybeNiche<$Generation>)
                 -> $crate::MaybeNiche<$Generation> {
                 let mut candidate = current.get_prim();
                 loop {
@@ -284,17 +292,11 @@ macro_rules! pool {
                     }
                 }
             }
-            const fn __index_capacity() -> usize {
-                match $crate::MaybeNiche::<$Index>::MAX.try_to_usize() {
-                    Ok(max) => max.saturating_add(1),
-                    Err(_) => usize::MAX,
-                }
-            }
     };
     (%impl_common_iter
-     [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
-     $vis:vis $Pool:ident;
-     $hvis:vis $Handle:ident;
+        [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
+        $vis:vis $Pool:ident;
+        $hvis:vis $Handle:ident;
     ) => {
             /// Iterates over current handles in ascending slot order.
             $hvis fn handles(&self) -> impl Iterator<Item = $Handle> + '_ {
@@ -305,7 +307,7 @@ macro_rules! pool {
                 self.values.iter().enumerate()
                     .filter_map(|(index, value)| {
                         let value = value.as_ref()?;
-                        let handle = self.__handle_at(index)?;
+                        let handle = self._handle_at(index)?;
                         Some((handle, value))
                     })
             }
@@ -322,10 +324,10 @@ macro_rules! pool {
             }
     };
     (%impl_common_iter_traits
-     $(const$($_c:lifetime)?)?
-     [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
-     $vis:vis $Pool:ident;
-     $hvis:vis $Handle:ident;
+        $(const$($_c:lifetime)?)?
+        [index: $iprim:ident + $Index:ty; generation: $gprim:ident + $Generation:ty;]
+        $vis:vis $Pool:ident;
+        $hvis:vis $Handle:ident;
     ) => {
         impl<'a, T $($($_c)?, const CAP: usize)?> $crate::IteratorInto
             for &'a $Pool<T$($($_c)?, CAP)?> {
