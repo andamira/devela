@@ -25,12 +25,12 @@
 //! reusable location. It is distinct from a general revision, version, or timestamp.
 //
 
+#[cfg(any(test, feature = "_docs_examples"))]
+mod _example; // HandleSpanExample
+
 mod define; // handle!
 mod generation; // handle_gen!
 mod span; // handle_span!
-
-#[cfg(any(test, feature = "_docs_examples"))]
-mod _example; // HandleSpanExample
 
 crate::structural_mods! { // _mods
     _mods {
