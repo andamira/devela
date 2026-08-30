@@ -35,7 +35,7 @@ macro_rules! __arena_impl_vec {
 
             /* construction */
 
-            /// Returns a new empty arena.
+            /// Returns a new allocating empty arena.
             #[must_use]
             $vis const fn new() -> Self {
                 let () = Self::__VALID_CONFIG;

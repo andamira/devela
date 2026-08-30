@@ -165,8 +165,8 @@
 
 #### data::store::arena
 - rename old `arena!` to `arena_bytes!`.
-- new macro: `arena!`.
-- new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`.
+- new macros: `arena!`, `arena_string!`.
+- new example types: `ArenaExample`, `ArenaHandleExample`, `ArenaMarkExample`, `ArenaAllocExample`, `ArenaAllocHandleExample`, `ArenaAllocMarkExample`, `ArenaStringExample`, `ArenaStringHandleExample`, `ArenaStringMarkExample`, `ArenaStringAllocExample`, `ArenaStringAllocHandleExample`, `ArenaStringAllocMarkExample`.
 - update `arena_bytes!`:
   - separate cursor primitives from handle representations.
   - add initialized `push_filled` and `push_zeroed` spans.

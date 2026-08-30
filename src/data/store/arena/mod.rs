@@ -14,14 +14,17 @@
 //! by clearing an arena, rolling back where marks are enabled,
 //! truncating byte regions, or discarding the arena.
 //!
-//! Two arena forms are provided:
+//! Three arena forms are provided:
 //!
 //! - [`arena!`] generates typed arenas over either fixed-capacity static storage
-//!   or growable allocating storage, with optional rollback marks.
+//!   or growable allocating storage, with compact index handles and optional rollback marks.
 //! - [`arena_bytes!`] generates byte arenas over either fixed-capacity static storage
 //!   or growable allocating storage, with span handles and optional rollback marks.
+//! - [`arena_string!`] generates packed UTF-8 string arenas over either
+//!   fixed-capacity static storage or growable allocating storage,
+//!   with compact index handles and optional rollback marks.
 //!
-//! Typed arena handles contain only an index.
+//! Typed- and string-arena handles contain only an index.
 //! Byte-arena handles describe an offset and length.
 //! Both are storage coordinates rather than generational identities:
 //! rollback, truncation, or clearing invalidates reclaimed handles, and later
@@ -29,12 +32,14 @@
 //
 
 mod bytes; // arena_bytes!
+mod string; // arena_string!
 mod typed; // arena!
 
 crate::structural_mods! { // _mods, _hidden
     _mods {
         pub use super::{
             bytes::_all::*,
+            string::_all::*,
             typed::_all::*,
         };
     }
