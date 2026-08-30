@@ -105,6 +105,15 @@ impl<'a> DistCategorical<'a> {
         // so `index_at(ticket)` must resolve to a category.
         unwrap![some_guaranteed_or_ub self.index_at(ticket)]
     }
+    /// Attempts to sample a category index using a fallible random source.
+    ///
+    /// This performs a linear scan over the weights.
+    pub fn sample_try<R: RandTry + ?Sized>(&self, rng: &mut R) -> Result<usize, R::Error> {
+        let ticket = rng.rand_try_below(self.total.get())?;
+        // SAFETY: `ticket < total`, and `total` is the exact sum of all weights,
+        // so `index_at(ticket)` must resolve to a category.
+        Ok(unwrap![some_guaranteed_or_ub self.index_at(ticket)])
+    }
     /// Samples a category index using the canonical const-capable [`Pcg32`].
     ///
     /// This performs a linear scan over the weights.
@@ -114,15 +123,6 @@ impl<'a> DistCategorical<'a> {
         // SAFETY: `ticket < total`, and `total` is the exact sum of all weights,
         // so `index_at(ticket)` must resolve to a category.
         unwrap![some_guaranteed_or_ub self.index_at(ticket)]
-    }
-    /// Attempts to sample a category index using a fallible random source.
-    ///
-    /// This performs a linear scan over the weights.
-    pub fn sample_try<R: RandTry + ?Sized>(&self, rng: &mut R) -> Result<usize, R::Error> {
-        let ticket = rng.rand_try_below(self.total.get())?;
-        // SAFETY: `ticket < total`, and `total` is the exact sum of all weights,
-        // so `index_at(ticket)` must resolve to a category.
-        Ok(unwrap![some_guaranteed_or_ub self.index_at(ticket)])
     }
 }
 

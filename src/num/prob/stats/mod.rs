@@ -5,7 +5,7 @@
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //!
-//! > What can we infer about uncertainty from data?
+//! > How can observed data be summarized?
 //!
 //! Statistical summaries describe observed data independently of how
 //! that data was produced.
@@ -14,13 +14,11 @@
 //! while derived measures expose interpretations of the retained state.
 //
 
-// mod estim; //
 mod moment; // StatsMoment
 
 crate::structural_mods! { // _mods
     _mods {
         pub use super::{
-            // estim::_all::*,
             moment::StatsMoment,
         };
     }

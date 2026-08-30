@@ -38,7 +38,6 @@ impl Default for StatsMoment {
 
 impl StatsMoment {
     /// Creates an empty accumulator.
-    #[must_use]
     pub const fn new() -> Self {
         Self { count: 0, mean: 0.0, m2: 0.0 }
     }

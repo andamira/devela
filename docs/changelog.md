@@ -323,6 +323,10 @@
 - make module public.
 - new types: `DistBernoulli`, `DistBinomial`, `DistCategorical`.
 
+#### num::prob::markov
+- new module.
+- new type `MarkovKernel`.
+
 #### num::prob::rand
 - rename `own_next_*` methods from `rand_pcg!` generated PRNGS to `step_*`.
 - remove `own_next_*` methods from the rest of the PRNGs.
