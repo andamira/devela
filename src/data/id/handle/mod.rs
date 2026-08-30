@@ -32,7 +32,7 @@ mod define; // handle!
 mod generation; // handle_gen!
 mod span; // handle_span!
 
-crate::structural_mods! { // _mods
+crate::structural_mods! { // _mods, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -41,6 +41,15 @@ crate::structural_mods! { // _mods
             span::handle_span,
         };
         #[cfg(any(test, doctest, feature = "_docs_examples"))]
-        pub use super::_example::*;
+        pub use super::_example::{HandleExample, HandleGenExample, HandleSpanExample};
+    }
+    _hidden {
+        #[cfg(any(test, doctest, feature = "_docs_examples"))]
+        pub use super::_example::{
+            _DOC_HANDLE_METHODS,
+            _DOC_HANDLE_INDEX_METHODS,
+            _DOC_HANDLE_GEN_METHODS,
+            _DOC_HANDLE_SPAN_METHODS,
+        };
     }
 }

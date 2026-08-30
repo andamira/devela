@@ -72,6 +72,7 @@ crate::structural_mods! { // _pub_mods, _crate_internals, _reexports, _hidden
     _hidden {
         pub use super::{
             codec::_hidden::*,
+            id::_hidden::*,
             store::_hidden::*,
         };
     }

@@ -29,7 +29,7 @@ pub mod arena; // Monotonic stores with stable handles and collective reclamatio
 pub mod key; // Keyed stores and lookup structures
 pub mod pool; // Reusable stores with stable handles and individual reclamation
 
-crate::structural_mods! { // _mods, _pub_mods, _hidden
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         pub use super::{
             // cache::_all::*,

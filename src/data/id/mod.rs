@@ -22,7 +22,7 @@ pub mod local; // Locally scoped identities and allocation mechanisms
 // mod snowflake; // FUTURE Time-ordered identifiers for distributed generation
 pub mod uuid; // Standardized portable 128-bit identifiers
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports
+crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         // pub use super::snowflake::*;
     }
@@ -41,5 +41,8 @@ crate::structural_mods! { // _mods, _pub_mods, _reexports
             local::id_seq,
             uuid::{Uuid, UuidV7Generator}
         };
+    }
+    _hidden {
+        pub use super::handle::_hidden::*;
     }
 }
