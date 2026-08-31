@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __map_impl_runtime {
+macro_rules! __map_impl_runtime· {
     (
         $(#[$attr:meta])*
         $vis:vis $NAME:ident, KEY:$KEY:ty,
@@ -303,3 +303,4 @@ macro_rules! __map_impl_runtime {
         }
     };
 }
+pub use __map_impl_runtime· as __map_impl_runtime;

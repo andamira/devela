@@ -1,4 +1,4 @@
-// devela_macros::bodies::compile
+// devela_macros/src/bodies/compile.rs
 //
 //! Bodies related to compile control.
 //

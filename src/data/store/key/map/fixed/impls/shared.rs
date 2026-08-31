@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __map_impl_shared {
+macro_rules! __map_impl_shared· {
     (
         $NAME:ident, KEY:$KEY:ty,
         HASHER: | $HASH_ARG:ident | $HASH_EXPR:expr $(,)?
@@ -92,3 +92,4 @@ macro_rules! __map_impl_shared {
         }
     };
 }
+pub use __map_impl_shared· as __map_impl_shared;

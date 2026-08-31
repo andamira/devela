@@ -1,4 +1,4 @@
-// devela_macros::index
+// devela_macros/src/index.rs
 //
 // NOTE: proc. macro crates can only export procedural macros.
 //
@@ -54,8 +54,10 @@ pub(crate) use __crate_name;
 use proc_macro::TokenStream as TS;
 use std::collections::HashSet;
 
-mod bodies;
-mod copied;
+#[path = "bodies/_.rs"]
+mod bodies; // Proc-macros bodies
+#[path = "copied/_.rs"]
+mod copied; // Copied helpers from devela
 use {bodies::*, copied::*};
 
 // mod _doc;

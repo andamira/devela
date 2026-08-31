@@ -1,6 +1,6 @@
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __pool_impl_array {
+macro_rules! __pool_impl_array· {
     (
      [
       index: $iprim:ident + $Index:ty;
@@ -241,3 +241,4 @@ macro_rules! __pool_impl_array {
         }
     };
 }
+pub use __pool_impl_array· as __pool_impl_array;

@@ -72,7 +72,7 @@ mod impl_traits {
 }
 
 #[cfg(test)]
-mod test {
+mod _test {
     use alloc::{sync::Arc, vec};
 
     use super::IdPinBox;

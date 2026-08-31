@@ -121,7 +121,7 @@ buffer_ring!(
 // NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! buffer_ring {
+macro_rules! buffer_ring· {
     (
     // STATIC (option)
     // struct definition + optional implementations
@@ -412,4 +412,4 @@ macro_rules! buffer_ring {
     };
 }
 #[doc(inline)]
-pub use crate::buffer_ring;
+pub use buffer_ring· as buffer_ring;

@@ -62,7 +62,7 @@
 /// [`GraphAdjAllocEdgeExample`]: crate::GraphAdjAllocEdgeExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! graph_adj {
+macro_rules! graph_adj· {
     (
         [
             vertex: $vprim:ident $(+ $VertexIndex:ty)?;
@@ -219,4 +219,4 @@ macro_rules! graph_adj {
     };
 }
 #[doc(inline)]
-pub use graph_adj;
+pub use graph_adj· as graph_adj;

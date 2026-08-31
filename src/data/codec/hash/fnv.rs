@@ -193,7 +193,7 @@ macro_rules! _impl_hash_fnv {
 _impl_hash_fnv!();
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::HasherFnv;
 
     #[test]

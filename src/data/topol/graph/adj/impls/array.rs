@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __graph_adj_impl_array {
+macro_rules! __graph_adj_impl_array· {
     (
         [vertex: $vprim:ident + $VertexIndex:ty;]
         [edge: $eprim:ident + $EdgeIndex:ty;]
@@ -373,3 +373,4 @@ macro_rules! __graph_adj_impl_array {
         }
     };
 }
+pub use __graph_adj_impl_array· as __graph_adj_impl_array;

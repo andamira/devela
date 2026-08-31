@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __pool_seq_impl_array {
+macro_rules! __pool_seq_impl_array· {
     (
         [cell: $cprim:ident]
         [private:
@@ -543,3 +543,4 @@ macro_rules! __pool_seq_impl_array {
         }
     };
 }
+pub use __pool_seq_impl_array· as __pool_seq_impl_array;

@@ -57,7 +57,7 @@
 /// [`HandleExample`]: crate::HandleExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! handle {
+macro_rules! handle· {
     (
         [ $($fields:tt)* ]
         $(#[$attr:meta])*
@@ -299,7 +299,7 @@ macro_rules! handle {
     }};
 }
 #[doc(inline)]
-pub use handle;
+pub use handle· as handle;
 
 #[cfg(test)]
 mod _test {

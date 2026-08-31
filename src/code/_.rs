@@ -23,8 +23,7 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
         any, convert, hint, init, marker, ops, panic, result, source, util);
 }
 
-// NOTE: this module has to remain outside mods_in!:
-#[path = "util/_.rs"]
+#[path = "util/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`.
 pub mod util; // Cross-cutting code and macro utilities
 
 util::mods_in! {

@@ -1,6 +1,6 @@
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __graph_adj_impl_vec {
+macro_rules! __graph_adj_impl_vec· {
     (
         [vertex: $vprim:ident + $VertexIndex:ty;]
         [edge: $eprim:ident + $EdgeIndex:ty;]
@@ -346,3 +346,4 @@ macro_rules! __graph_adj_impl_vec {
         }
     };
 }
+pub use __graph_adj_impl_vec· as __graph_adj_impl_vec;

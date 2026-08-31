@@ -109,7 +109,7 @@
 /// [`ArenaBytesAllocExample`]: crate::ArenaBytesAllocExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! arena_bytes {
+macro_rules! arena_bytes· {
     (
         [cursor: $cprim:ident $(+ $Cursor:ty)?;]
 
@@ -227,4 +227,4 @@ macro_rules! arena_bytes {
     };
 }
 #[doc(inline)]
-pub use arena_bytes;
+pub use arena_bytes· as arena_bytes;

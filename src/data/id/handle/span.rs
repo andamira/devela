@@ -38,7 +38,7 @@
 /// [`HandleSpanExample`]: crate::HandleSpanExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! handle_span {
+macro_rules! handle_span· {
     (
         [ offset: $oprim:ident; ]
         $(#[$handle_attr:meta])*
@@ -93,4 +93,4 @@ macro_rules! handle_span {
     };
 }
 #[doc(inline)]
-pub use handle_span;
+pub use handle_span· as handle_span;

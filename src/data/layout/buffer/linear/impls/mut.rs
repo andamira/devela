@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __buffer_linear_impl_slice_mut {
+macro_rules! __buffer_linear_impl_slice_mut· {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
@@ -195,3 +195,4 @@ macro_rules! __buffer_linear_impl_slice_mut {
         }
     };
 }
+pub use __buffer_linear_impl_slice_mut· as __buffer_linear_impl_slice_mut;

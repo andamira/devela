@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __arena_impl_vec {
+macro_rules! __arena_impl_vec· {
     (
      [index: $iprim:ident + $Index:ty;]
      $(#[$arena_attr:meta])* $vis:vis $Arena:ident;
@@ -188,3 +188,4 @@ macro_rules! __arena_impl_vec {
         }
     };
 }
+pub use __arena_impl_vec· as __arena_impl_vec;

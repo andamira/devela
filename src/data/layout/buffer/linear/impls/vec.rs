@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __buffer_linear_impl_vec {
+macro_rules! __buffer_linear_impl_vec· {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
 
         impl<T> Default for $name<T, ::alloc::vec::Vec<T>> {
@@ -153,3 +153,4 @@ macro_rules! __buffer_linear_impl_vec {
         }
     };
 }
+pub use __buffer_linear_impl_vec· as __buffer_linear_impl_vec;

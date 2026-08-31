@@ -10,7 +10,7 @@
 //! input material belongs to [`token`][super::token].
 //
 
-// NOTE: this module has to remain outside mods_in!
+// BOOTSTRAP: defines `mods_out!`.
 mod structural; // mods_out!, structural_mods!
 
 mods_in! {

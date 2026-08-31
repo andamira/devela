@@ -1,0 +1,21 @@
+// devela/src/data/value/schema/_.rs
+//
+#![doc = crate::_DOC_DATA_CODEC_SCHEMA!()] // public
+#![doc = crate::_doc!(modules: crate::data::codec; schema)]
+#![doc = crate::_doc!(flat:"data")]
+#![doc = crate::_doc!(hr)]
+//
+// > What fields/kinds exist inside a value or record
+
+crate::mods_in! {
+    // mod octect; // SchemaPrimOctect
+    // mod prim; // SchemaPrim
+}
+crate::mods_out! { // _mods
+    _mods {
+        // pub use super::{
+        //     octect::*,
+        //     prim::*,
+        // };
+    }
+}

@@ -21,7 +21,7 @@ pub(crate) const fn _hex<const N: usize>(s: &str) -> [u8; N] {
 /// The generated method is allocation-free and const-friendly.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __crypto_impl_hmac {
+macro_rules! __crypto_impl_hmac· {
     ($Self:ident) => {
         $crate::paste! {
             /// Computes the HMAC of `message` using the given `key`.
@@ -69,11 +69,11 @@ macro_rules! __crypto_impl_hmac {
     };
 }
 #[doc(hidden)]
-pub use __crypto_impl_hmac;
+pub use __crypto_impl_hmac· as __crypto_impl_hmac;
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __crypto_impl_otp {
+macro_rules! __crypto_impl_otp· {
     (hash: $name:ident, otp: $otp:path, doc: $doc:literal) => { $crate::paste! {
         #[doc = $doc " impls"]
         impl $name {
@@ -139,4 +139,4 @@ macro_rules! __crypto_impl_otp {
     }};
 }
 #[doc(hidden)]
-pub use __crypto_impl_otp;
+pub use __crypto_impl_otp· as __crypto_impl_otp;

@@ -68,7 +68,7 @@
 /// [`StridedIterMut`][crate::StridedIterMut].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! iter_strided {
+macro_rules! iter_strided· {
     (
         $(#[$attr:meta])* $vis:vis struct $name:ident : mut ($P:ty)
     ) => {
@@ -546,4 +546,4 @@ macro_rules! iter_strided {
     };
 }
 #[doc(inline)]
-pub use crate::iter_strided;
+pub use iter_strided· as iter_strided;

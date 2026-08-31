@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __arena_impl_array {
+macro_rules! __arena_impl_array· {
     (
      [index: $iprim:ident + $Index:ty;]
      $(#[$arena_attr:meta])* $vis:vis $Arena:ident;
@@ -257,3 +257,4 @@ macro_rules! __arena_impl_array {
         }
     };
 }
+pub use __arena_impl_array· as __arena_impl_array;

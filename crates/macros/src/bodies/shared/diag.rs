@@ -1,4 +1,4 @@
-// devela_macros::bodies::shared::diag
+// devela_macros/src/bodies/shared/diag.rs
 //
 //! Token-level diagnostics for procedural macro bodies.
 //!

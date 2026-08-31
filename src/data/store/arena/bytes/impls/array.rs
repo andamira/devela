@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __arena_bytes_impl_array {
+macro_rules! __arena_bytes_impl_array· {
     (
         [cursor: $cprim:ident]
         [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
@@ -444,3 +444,4 @@ macro_rules! __arena_bytes_impl_array {
         }
     };
 }
+pub use __arena_bytes_impl_array· as __arena_bytes_impl_array;

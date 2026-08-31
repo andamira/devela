@@ -212,10 +212,11 @@ pub(crate) use __crate_name;
 
 /* root modules */
 
-#[path = "code/_.rs"]
+#[path = "code/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`.
 pub mod code; // Code structure, semantics, and foundational utilities
-
-pub mod data; // Structural abstractions for organizing and manipulating data
+crate::mods_in! {
+    pub mod_ data; // Structural abstractions for organizing and manipulating data
+}
 pub mod error; // Failure types, result aliases, and recovery semantics
 pub mod geom; // Geometric types, operations, and spatial constructs
 pub mod lang; // Language structure and meaning across domains

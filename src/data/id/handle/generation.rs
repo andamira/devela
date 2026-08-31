@@ -45,7 +45,7 @@
 /// [`HandleGenExample`]: crate::HandleGenExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! handle_gen {
+macro_rules! handle_gen· {
     (
         [
             index: $iprim:ident;
@@ -134,7 +134,7 @@ macro_rules! handle_gen {
     };
 }
 #[doc(inline)]
-pub use handle_gen;
+pub use handle_gen· as handle_gen;
 
 #[cfg(test)]
 crate::items! {

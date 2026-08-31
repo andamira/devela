@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __buffer_linear_impl_array {
+macro_rules! __buffer_linear_impl_array· {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
         $(#[$impl_attr])*
         ///
@@ -262,3 +262,4 @@ macro_rules! __buffer_linear_impl_array {
         }
     };
 }
+pub use __buffer_linear_impl_array· as __buffer_linear_impl_array;

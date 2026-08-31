@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __buffer_ring_impl_option {
+macro_rules! __buffer_ring_impl_option· {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
 
         impl<T, const CAP: usize> Default for $name<T, [Option<T>; CAP]> {
@@ -539,3 +539,4 @@ macro_rules! __buffer_ring_impl_option {
         }
     };
 }
+pub use __buffer_ring_impl_option· as __buffer_ring_impl_option;

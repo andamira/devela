@@ -161,7 +161,7 @@
 /// [`ArenaStringAllocMarkExample`]: crate::ArenaStringAllocMarkExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! arena_string {
+macro_rules! arena_string· {
     (
         [
             index: $iprim:ident $(+ $Index:ty)?;
@@ -334,4 +334,4 @@ macro_rules! arena_string {
     };
 }
 #[doc(inline)]
-pub use arena_string;
+pub use arena_string· as arena_string;

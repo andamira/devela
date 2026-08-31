@@ -58,7 +58,7 @@
 /// [`LinkExample`]: crate::LinkExample
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! link {
+macro_rules! link· {
     (
         [ $($fields:tt)* ]
         $(#[$attr:meta])*
@@ -284,4 +284,4 @@ macro_rules! link {
       }};
 }
 #[doc(inline)]
-pub use crate::link;
+pub use link· as link;

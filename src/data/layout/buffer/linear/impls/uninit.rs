@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __buffer_linear_impl_uninit {
+macro_rules! __buffer_linear_impl_uninit· {
     ($(#[$impl_attr:meta])* $name:ident, $I:ty, $P:ty) => {
 
         impl<T, const CAP: usize> Default for $name<T, [$crate::MaybeUninit<T>; CAP]> {
@@ -311,3 +311,4 @@ macro_rules! __buffer_linear_impl_uninit {
         }
     };
 }
+pub use __buffer_linear_impl_uninit· as __buffer_linear_impl_uninit;

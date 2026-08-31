@@ -116,7 +116,7 @@ mod impls {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     #[test]

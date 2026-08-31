@@ -61,7 +61,7 @@
 /// [`GraphCsrAllocEdgeExample`]: crate::GraphCsrAllocEdgeExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! graph_csr {
+macro_rules! graph_csr· {
     (
         [
             vertex: $vprim:ident $(+ $VertexIndex:ty)?;
@@ -211,6 +211,5 @@ macro_rules! graph_csr {
         }
     };
 }
-
 #[doc(inline)]
-pub use graph_csr;
+pub use graph_csr· as graph_csr;

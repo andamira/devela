@@ -171,7 +171,7 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use crate::{_hex, Otp, Sha1};
     #[test]
     fn otp_rejects_invalid_digits() {

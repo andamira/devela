@@ -21,7 +21,7 @@
 // - RFC 4231, Test Vectors for HMAC-SHA-224, HMAC-SHA-256, HMAC-SHA-384, and HMAC-SHA-512.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __crypto_impl_sha2 {
+macro_rules! __crypto_impl_sha2· {
     ($(#[$attr:meta])*
      $vis:vis struct $Self:ident;
      word: u32,
@@ -340,7 +340,7 @@ macro_rules! __crypto_impl_sha2 {
     };
 }
 #[doc(hidden)]
-pub use __crypto_impl_sha2;
+pub use __crypto_impl_sha2· as __crypto_impl_sha2;
 
 /// SHA-2 32-bit-word round constants.
 ///

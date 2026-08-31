@@ -9,7 +9,6 @@
 #[doc = crate::_doc_meta!{
     location("data/layout/array", macro init_array),
 }]
-///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.
 /// - `$init`: a function with an `usize` argument that returns `$T`.
@@ -69,7 +68,7 @@
 // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! init_array {
+macro_rules! init_array· {
     (
     /* safe initializations */
 
@@ -274,4 +273,4 @@ macro_rules! init_array {
     }};
 }
 #[doc(inline)]
-pub use init_array;
+pub use init_array· as init_array;

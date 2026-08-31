@@ -1,6 +1,6 @@
 // devela/src/code/util/doclink.rs
 //
-//! Defines [`doclink!`].
+//! Constructs links to local and published Rust documentation.
 //
 // TOC
 // - doclink! (*internet*)

@@ -139,7 +139,7 @@
 // NOTE: The index type is passed as a token group to allow complex or path-qualified types.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! buffer_linear {
+macro_rules! buffer_linear· {
     (
     // STATIC (array, uninit, option)
     // struct definition + optional implementations
@@ -545,4 +545,4 @@ macro_rules! buffer_linear {
     };
 }
 #[doc(inline)]
-pub use crate::buffer_linear;
+pub use buffer_linear· as buffer_linear;

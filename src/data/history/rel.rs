@@ -13,7 +13,7 @@ use crate::Relation;
 #[doc = crate::_tags!(data)]
 /// A historical predicate stating that the subject was derived from the object.
 #[doc = crate::_doc_meta! {
-    location("data/history/rel", struct DerivedFrom),
+    location("data/history", struct DerivedFrom),
 }]
 /// Used as the predicate of a [`Relation`], the subject is the resulting datum
 /// and the object is its antecedent. `via` may identify or describe the rule,
@@ -61,7 +61,7 @@ impl<V: Default> Default for DerivedFrom<V> {
 #[doc = crate::_tags!(data)]
 /// A historical predicate stating that the subject is a revision of the object.
 #[doc = crate::_doc_meta! {
-    location("data/history/rel", struct RevisionOf),
+    location("data/history", struct RevisionOf),
 }]
 /// A revision preserves historical continuity with its antecedent while
 /// allowing its contents or representation to change. `via` may identify

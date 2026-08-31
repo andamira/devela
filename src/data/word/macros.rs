@@ -53,7 +53,7 @@
 /// Explicit representation forms must obey the [`WordTry`][crate::WordTry] round-trip laws.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! word {
+macro_rules! word· {
     /* definitions: tuple, fallible */
     (
         $(#[$meta:meta])*
@@ -273,4 +273,4 @@ macro_rules! word {
     };
 }
 #[doc(inline)]
-pub use word;
+pub use word· as word;

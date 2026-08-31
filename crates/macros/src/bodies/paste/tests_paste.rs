@@ -1,4 +1,4 @@
-// devela_macros::bodies::paste::tests_paste
+// devela_macros/src/bodies/paste/tests_paste.rs
 
 /// ```
 /// use devela_macros::paste;

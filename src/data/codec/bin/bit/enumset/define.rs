@@ -238,7 +238,7 @@ pub use enumset· as enumset;
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __enumset_to_set_pattern {
+macro_rules! __enumset_to_set_pattern· {
     ($enum_name:ident, $variant_name:ident) => {
         $enum_name::$variant_name // Unit variant
     };
@@ -249,9 +249,11 @@ macro_rules! __enumset_to_set_pattern {
         $enum_name::$variant_name { .. } // Struct variant
     };
 }
+pub use __enumset_to_set_pattern· as __enumset_to_set_pattern;
+
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __enumset_impl_enum_blocks {
+macro_rules! __enumset_impl_enum_blocks· {
     ( // End
         [$($impl_gen:tt)*][$enum_name:ident][$($ty_gen:tt)*][$($where:tt)*] ) => {};
     ( // Emit one impl block, then recurse
@@ -265,9 +267,11 @@ macro_rules! __enumset_impl_enum_blocks {
         }
     };
 }
+pub use __enumset_impl_enum_blocks· as __enumset_impl_enum_blocks;
+
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __enumset_impl_unit_iter {
+macro_rules! __enumset_impl_unit_iter· {
     (
         [$enum_vis:vis] [$enum_name:ident] [$set_name:ident]
         [$($impl_gen:tt)*] [$($ty_gen:tt)*] [$($where:tt)*]
@@ -314,3 +318,4 @@ macro_rules! __enumset_impl_unit_iter {
     // Non-unit enum: do not generate enum-value iteration.
     ($($tt:tt)*) => {};
 }
+pub use __enumset_impl_unit_iter· as __enumset_impl_unit_iter;

@@ -116,7 +116,7 @@
 /// [`PoolAllocHandleExample`]: crate::PoolAllocHandleExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! pool {
+macro_rules! pool· {
     (
         [
             index: $iprim:ident $(+ $Index:ty)?;
@@ -344,4 +344,4 @@ macro_rules! pool {
     };
 }
 #[doc(inline)]
-pub use pool;
+pub use pool· as pool;

@@ -1,4 +1,4 @@
-// devela_macros::copied::_doc_vendor
+// devela_macros/src/copied/_doc_vendor.rs
 //
 //! Recreates devela's `_doc_vendor!` macro without `#[macro_export]`.
 //

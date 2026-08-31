@@ -1,4 +1,4 @@
-// devela_macros::bodies::paste::error
+// devela_macros/src/bodies/paste/error.rs
 //
 //! `paste!`-local diagnostics.
 //

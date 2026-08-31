@@ -115,7 +115,7 @@
 /// [`PoolSeqHandleExample`]: crate::PoolSeqHandleExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! pool_seq {
+macro_rules! pool_seq· {
     (
         [
             index: $iprim:ident $(+ $Index:ty)?;
@@ -290,4 +290,4 @@ macro_rules! pool_seq {
     };
 }
 #[doc(inline)]
-pub use pool_seq;
+pub use pool_seq· as pool_seq;

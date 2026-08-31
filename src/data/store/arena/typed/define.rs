@@ -147,7 +147,7 @@
 /// [`ArenaAllocMarkExample`]: crate::ArenaAllocMarkExample
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! arena {
+macro_rules! arena· {
     (
         [ index: $iprim:ident $(+ $Index:ty)?; ]
 
@@ -267,4 +267,4 @@ macro_rules! arena {
     };
 }
 #[doc(inline)]
-pub use arena;
+pub use arena· as arena;

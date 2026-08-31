@@ -122,7 +122,7 @@ impl StridedBlocks {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     #[test]

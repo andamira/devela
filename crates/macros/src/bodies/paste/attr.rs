@@ -1,4 +1,4 @@
-// devela_macros::bodies::paste::attr
+// devela_macros/src/bodies/paste/attr.rs
 //
 //! Special `#[doc = …]`/nested attribute handling.
 //

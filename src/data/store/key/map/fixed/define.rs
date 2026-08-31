@@ -122,7 +122,7 @@
 /// ```
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! map {
+macro_rules! map· {
     (
     // Const variant
     // ----------------------------------------------------------------------------------------
@@ -303,4 +303,4 @@ macro_rules! map {
     };
 }
 #[doc(inline)]
-pub use map;
+pub use map· as map;

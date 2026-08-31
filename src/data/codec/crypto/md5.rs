@@ -25,7 +25,7 @@
 // - RFC 2202, Test Cases for HMAC-MD5 and HMAC-SHA-1.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __crypto_impl_md5 {
+macro_rules! __crypto_impl_md5· {
     ($(#[$attr:meta])* $vis:vis struct $Self:ident) => {
         $(#[$attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -222,4 +222,4 @@ macro_rules! __crypto_impl_md5 {
     };
 }
 #[doc(hidden)]
-pub use __crypto_impl_md5;
+pub use __crypto_impl_md5· as __crypto_impl_md5;

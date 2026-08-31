@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __arena_string_impl_vec {
+macro_rules! __arena_string_impl_vec· {
     (
         [index: $iprim:ident + $Index:ty;]
         [cursor: $cprim:ident + $Cursor:ty;]
@@ -249,3 +249,4 @@ macro_rules! __arena_string_impl_vec {
         }
     };
 }
+pub use __arena_string_impl_vec· as __arena_string_impl_vec;

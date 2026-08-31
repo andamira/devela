@@ -53,7 +53,7 @@
 /// [`Relaxed`]: crate::AtomicOrdering::Relaxed
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! id_seq {
+macro_rules! id_seq· {
     (
         $(#[$attr:meta])*
         $vis:vis $name:ident,
@@ -264,11 +264,11 @@ macro_rules! id_seq {
     };
 }
 #[doc(inline)]
-pub use id_seq;
+pub use id_seq· as id_seq;
 
 #[cfg(test)]
 mod _test {
-    use crate::{AnyExt, AtomicOrdering};
+    use crate::{AnyExt, AtomicOrdering, id_seq};
 
     #[test]
     fn id_seq_start_uniqueness_end() {

@@ -1,4 +1,4 @@
-// devela_macros::bodies::derive
+// devela_macros/src/bodies/derive.rs
 //
 //! Attribute-position adapters for `macro_rules!`.
 //

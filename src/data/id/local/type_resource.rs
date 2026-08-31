@@ -199,7 +199,7 @@ mod impls {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use crate::AnyExt;
 
     type_resource![ClosureId: u64];

@@ -1,8 +1,8 @@
-// devela/src/data/store/key/map/fixed/impls/constrs
+// devela/src/data/store/key/map/fixed/impls/const.rs
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __map_impl_const {
+macro_rules! __map_impl_const· {
     (
         $(#[$attr:meta])*
         $vis:vis $NAME:ident, KEY:$KEY:ty,
@@ -305,3 +305,4 @@ macro_rules! __map_impl_const {
         }
     };
 }
+pub use __map_impl_const· as __map_impl_const;

@@ -1,6 +1,6 @@
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __pool_impl_vec {
+macro_rules! __pool_impl_vec· {
     (
      [
       index: $iprim:ident + $Index:ty;
@@ -243,3 +243,4 @@ macro_rules! __pool_impl_vec {
         }
     };
 }
+pub use __pool_impl_vec· as __pool_impl_vec;
