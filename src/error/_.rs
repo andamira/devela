@@ -1,4 +1,4 @@
-// devela/src/error/mod.rs
+// devela/src/error/_.rs
 //
 #![doc = crate::_DOC_ERROR!()] // public, root
 #![doc = crate::_DOC_ERROR_MODULES!()]
@@ -12,21 +12,22 @@ crate::CONST! { pub(crate) _DOC_ERROR_MODULES =
     crate::_doc!(modules: crate; error: data, num, text); // media, ui
 }
 
-mod _reexport_core;
-#[cfg(feature = "std")]
-mod _reexport_std;
+crate::mods_in! {
+    mod _reexport_core;
+    #[cfg(feature = "std")]
+    mod _reexport_std;
 
-// mod context; // ContextualError WIP
-mod kind; // reusable failure categories
-mod macros; // define_error!
+    // mod context; // ContextualError WIP
+    mod kind; // reusable failure categories
+    mod macros; // define_error!
 
-pub mod data; // Data-related error types
-// pub mod media; // Media-related error types.
-pub mod num; // Numeric-related error types.
-pub mod text; // Text-related error types.
-// pub mod ui; // WIP
-
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _crate_internals
+    pub mod_ data; // Data-related error types
+    // pub mod_ media; // Media-related error types.
+    pub mod_ num; // Numeric-related error types.
+    pub mod text; // Text-related error types.
+    // pub mod_ ui; // WIP
+}
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             // context::*,

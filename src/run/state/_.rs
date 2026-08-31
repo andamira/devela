@@ -1,4 +1,4 @@
-// devela/src/run/state/mod.rs
+// devela/src/run/state/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_RUN_STATE!()] // public
@@ -7,12 +7,13 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod context;
-// mod log;
-mod machine; // WIP
-// mod scene;
-
-crate::structural_mods! { // _mods, _reexports
+crate::mods_in! {
+    // mod context;
+    // mod_ log;
+    mod_ machine; // WIP
+    // mod_ scene;
+}
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             // context::*,

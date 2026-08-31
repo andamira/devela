@@ -1,4 +1,4 @@
-// devela/src/org/mod.rs
+// devela/src/org/_.rs
 //
 #![cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 //
@@ -15,16 +15,17 @@ crate::CONST! { pub(crate) _DOC_ORG_MODULES =
     crate::_doc!(modules: crate; org: _); // agent, care, econ, gov, inst, moral, role
 }
 
-// pub mod agent; // Agents participating in intentional and coordinated action.
-// pub mod econ; // Exchange, incentives, labor, and allocation of value and resources.
-// pub mod gov; // Collective authority, decision, rule, and enforcement.
-// pub mod inst; // Persistent organizational forms, services, and procedures.
-// pub mod know; // Social production, recognition, circulation, and exclusion of knowledge.
-// pub mod moral; // Principles of responsibility, obligation, virtue, and judgment.
-// pub mod norm; // Shared expectations, practices, and informal social regulation.
-// pub mod role; // Social positions and their associated duties, authority, and scope.
-
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_in! {
+    // pub mod_ agent; // Agents participating in intentional and coordinated action.
+    // pub mod_ econ; // Exchange, incentives, labor, and allocation of value and resources.
+    // pub mod_ gov; // Collective authority, decision, rule, and enforcement.
+    // pub mod_ inst; // Persistent organizational forms, services, and procedures.
+    // pub mod_ know; // Social production, recognition, circulation, and exclusion of knowledge.
+    // pub mod_ moral; // Principles of responsibility, obligation, virtue, and judgment.
+    // pub mod_ norm; // Shared expectations, practices, and informal social regulation.
+    // pub mod_ role; // Social positions and their associated duties, authority, and scope.
+}
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         // pub use super::{
         //     agent::_all::*,

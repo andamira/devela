@@ -1,4 +1,4 @@
-// devela/src/org/inst/mod.rs
+// devela/src/org/inst/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_INST!()] // public
@@ -7,14 +7,15 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod change; // reform, decay, collapse
-// pub mod form; // organizational forms (state, guild, clan)
-// pub mod interop; // relations between institutions
-// pub mod policy; // internal policies and procedures
-// pub mod rules; // founding rules and purposes
-// pub mod service; // institutional functions (health, education, aid)
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ change; // reform, decay, collapse
+    // pub mod_ form; // organizational forms (state, guild, clan)
+    // pub mod_ interop; // relations between institutions
+    // pub mod_ policy; // internal policies and procedures
+    // pub mod_ rules; // founding rules and purposes
+    // pub mod_ service; // institutional functions (health, education, aid)
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     agreement::_all::*,

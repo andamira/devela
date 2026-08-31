@@ -1,4 +1,4 @@
-// devela/src/vita/play/mod.rs
+// devela/src/vita/play/_.rs
 //
 #![doc = crate::_DOC_VITA_PLAY!()] // public
 #![doc = crate::_doc!(modules: crate::vita; play: game)]
@@ -6,13 +6,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod comp; // computer and simulated games
-// pub mod dance; // expressive movement
-pub mod game; // games across cultures
-// pub mod music;// music, rhythm, embodied sound
-// pub mod sport; // play-oriented physical competition
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ comp; // computer and simulated games
+    // pub mod_ dance; // expressive movement
+    pub mod_ game; // games across cultures
+    // pub mod_ music;// music, rhythm, embodied sound
+    // pub mod_ sport; // play-oriented physical competition
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         pub use super::{
             // comp::_all::*,

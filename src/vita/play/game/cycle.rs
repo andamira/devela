@@ -2,8 +2,9 @@
 
 #[doc = crate::_tags!(game)]
 /// A repeated structural grouping of turns, phases, or recurrent play segments.
-#[doc = crate::_doc_meta!{location("vita/play/game", struct GameCycle)}]
-///
+#[doc = crate::_doc_meta!{
+    location("vita/play/game", struct GameCycle),
+}]
 /// Represents one recurring loop in the formal organization of play.
 ///
 /// A cycle groups repeated play structure within a session.

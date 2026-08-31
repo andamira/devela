@@ -1,4 +1,4 @@
-// devela/src/org/econ/mod.rs
+// devela/src/org/econ/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_ECON!()] // public
@@ -7,14 +7,15 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod exchange; // trade, barter, transfer
-// pub mod incentive; // motivation via reward/penalty
-// pub mod labor; // work as economic input
-// pub mod market; // structured exchange systems
-// pub mod resource; // scarcity, allocation
-// pub mod value; // what is valued
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ exchange; // trade, barter, transfer
+    // pub mod_ incentive; // motivation via reward/penalty
+    // pub mod_ labor; // work as economic input
+    // pub mod_ market; // structured exchange systems
+    // pub mod_ resource; // scarcity, allocation
+    // pub mod_ value; // what is valued
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     exchange::_all::*,

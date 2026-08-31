@@ -1,4 +1,4 @@
-// devela/src/run/mod.rs
+// devela/src/run/_.rs
 //
 #![doc = crate::_DOC_RUN!()] // public, root
 #![doc = crate::_DOC_RUN_MODULES!()]
@@ -13,16 +13,17 @@ crate::CONST! { pub(crate) _DOC_RUN_MODULES =
     crate::_doc!(modules: crate; run: app, cycle, regime, time); // state
 }
 
-pub mod app; // AppControl
-pub mod cycle; // RunCycle, RunControl, RunPhase
-mod driver; // RunDriver
-mod iface; // RunApp
-mod permission; // Permission<Error|Query|State>
-pub mod regime; // RunCap*, RunService
-// pub mod state; // WIP
-pub mod time; // RunPacer, RunStep, Runtime, RuntimeTick
-
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_in! {
+    pub mod_ app; // AppControl
+    pub mod_ cycle; // RunCycle, RunControl, RunPhase
+    mod_ driver; // RunDriver
+    mod iface; // RunApp
+    mod permission; // Permission<Error|Query|State>
+    pub mod_ regime; // RunCap*, RunService
+    // pub mod_ state; // WIP
+    pub mod_ time; // RunPacer, RunStep, Runtime, RuntimeTick
+}
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             iface::*,

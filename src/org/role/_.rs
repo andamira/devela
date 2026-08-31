@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod assign; // role assignment and delegation
-// pub mod duty; // obligations tied to roles
-// pub mod office; // formal positions
-// pub mod replace; // transfer and replacement
-// pub mod scope; // authority and responsibility bounds
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ assign; // role assignment and delegation
+    // pub mod_ duty; // obligations tied to roles
+    // pub mod_ office; // formal positions
+    // pub mod_ replace; // transfer and replacement
+    // pub mod_ scope; // authority and responsibility bounds
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     assign::_all::*,

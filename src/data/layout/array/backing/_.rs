@@ -7,7 +7,7 @@
 //! while preserving the same layout invariant.
 //
 
-use crate::{ArrayLayout, MismatchedCapacity, is};
+use crate::{ArrayLayout, MismatchedCapacity};
 
 crate::mods_in! {
     mod fixed; // Array implementations over fixed native arrays

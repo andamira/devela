@@ -1,4 +1,4 @@
-// devela/src/run/app/mod.rs
+// devela/src/run/app/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_RUN_APP!()] // private
@@ -7,9 +7,10 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod control;
-
-crate::structural_mods! { // _mods
+crate::mods_in! {
+    mod control;
+}
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             control::*,

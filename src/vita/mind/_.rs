@@ -1,4 +1,4 @@
-// devela/src/vita/mind/mod.rs
+// devela/src/vita/mind/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_MIND!()] // public
@@ -7,12 +7,13 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod history; // memory, lived time, historiography
-// pub mod learn; // learning, development
-// pub mod psyche; // cognition, perception, psychology
-// pub mod ritual; // spirituality, ceremony, meaning-in-practice
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ history; // memory, lived time, historiography
+    // pub mod_ learn; // learning, development
+    // pub mod_ psyche; // cognition, perception, psychology
+    // pub mod_ ritual; // spirituality, ceremony, meaning-in-practice
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     history::_all::*,

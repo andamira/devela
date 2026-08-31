@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod authority; // legitimacy, sovereignty
-// pub mod conflict; // dispute resolution, war
-// pub mod decision; // collective decision processes
-// pub mod enforce; // enforcement mechanisms
-// pub mod rule; // laws, policies, regulations
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ authority; // legitimacy, sovereignty
+    // pub mod_ conflict; // dispute resolution, war
+    // pub mod_ decision; // collective decision processes
+    // pub mod_ enforce; // enforcement mechanisms
+    // pub mod_ rule; // laws, policies, regulations
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     authority::_all::*,

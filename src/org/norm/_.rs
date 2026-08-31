@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod approval; // approval, disapproval, reputation
-// pub mod conflict; // norm clashes and ambiguity
-// pub mod evolution; // norm evolution and decay
-// pub mod practice; // shared practices and defaults
-// pub mod tradition; // customs, traditions, etiquette
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ approval; // approval, disapproval, reputation
+    // pub mod_ conflict; // norm clashes and ambiguity
+    // pub mod_ evolution; // norm evolution and decay
+    // pub mod_ practice; // shared practices and defaults
+    // pub mod_ tradition; // customs, traditions, etiquette
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     approval::_all::*,

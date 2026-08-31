@@ -1,4 +1,4 @@
-// devela/src/org/agent/mod.rs
+// devela/src/org/agent/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_AGENT!()] // public
@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod autonomy; // independence, control, delegation
-// pub mod capacity; // abilities, limits, resources
-// pub mod intent; // goals, preferences, motivations
-// pub mod kind; // individual, group, collective, artificial
-// pub mod name; // persistence, recognition, naming
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ autonomy; // independence, control, delegation
+    // pub mod_ capacity; // abilities, limits, resources
+    // pub mod_ intent; // goals, preferences, motivations
+    // pub mod_ kind; // individual, group, collective, artificial
+    // pub mod_ name; // persistence, recognition, naming
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     autonomy::_all::*,

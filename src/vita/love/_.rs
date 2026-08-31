@@ -1,4 +1,4 @@
-// devela/src/vita/love/mod.rs
+// devela/src/vita/love/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_LOVE!()] // public
@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod care; // nurturing, dependency, support
-// pub mod friend; // friendship, trust, affinity
-// pub mod kin; // family, lineage, household
-// pub mod sex; // intimacy, sexuality
-// pub mod tribe; // community, belonging
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ care; // nurturing, dependency, support
+    // pub mod_ friend; // friendship, trust, affinity
+    // pub mod_ kin; // family, lineage, household
+    // pub mod_ sex; // intimacy, sexuality
+    // pub mod_ tribe; // community, belonging
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     care::_all::*,

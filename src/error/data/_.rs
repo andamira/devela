@@ -1,12 +1,13 @@
-// devela/src/error/data/mod.rs
+// devela/src/error/data/_.rs
 //
 //! Data-related errors.
 //
 
-mod capacity;
-mod other;
-
-crate::structural_mods! { // _mods
+crate::mods_in! {
+    mod capacity;
+    mod other;
+}
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             capacity::*,

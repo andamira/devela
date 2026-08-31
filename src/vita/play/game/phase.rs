@@ -2,8 +2,9 @@
 
 #[doc = crate::_tags!(game)]
 /// A named subdivision within a turn or cycle of play.
-#[doc = crate::_doc_meta!{location("vita/play/game", struct GamePhase)}]
-///
+#[doc = crate::_doc_meta!{
+    location("vita/play/game", struct GamePhase),
+}]
 /// Represents an internal structural segment with its own timing, permissions, or procedures.
 ///
 /// A phase structures when actions or resolutions may occur inside a turn or cycle.

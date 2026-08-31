@@ -1,4 +1,4 @@
-// devela/src/vita/mod.rs
+// devela/src/vita/_.rs
 //
 #![doc = crate::_DOC_VITA!()] // public, root
 #![doc = crate::_DOC_VITA_MODULES!()]
@@ -12,14 +12,15 @@ crate::CONST! { pub(crate) _DOC_VITA_MODULES =
     crate::_doc!(modules: crate; vita: play); // body, craft, home, love, mind
 }
 
-// pub mod body; // Embodied capability, health, and physical limits of living beings.
-// pub mod craft; // Practical, learned ways of shaping material reality to support life.
-// pub mod home; // Inhabited space, from dwelling to built and shared environments.
-// pub mod love; // Relational life, from kinship and care to intimacy and community.
-// pub mod mind; // Cognition, memory, meaning, and inner orientation of lived experience.
-pub mod play; // Expression, play, and shared enjoyment beyond necessity or survival.
-
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_in! {
+    // pub mod_ body; // Embodied capability, health, and physical limits of living beings.
+    // pub mod_ craft; // Practical, learned ways of shaping material reality to support life.
+    // pub mod_ home; // Inhabited space, from dwelling to built and shared environments.
+    // pub mod_ love; // Relational life, from kinship and care to intimacy and community.
+    // pub mod_ mind; // Cognition, memory, meaning, and inner orientation of lived experience.
+    pub mod_ play; // Expression, play, and shared enjoyment beyond necessity or survival.
+}
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             // body::_all::*,

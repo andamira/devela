@@ -1,4 +1,4 @@
-// devela/src/vita/home/mod.rs
+// devela/src/vita/home/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_HOME!()] // public
@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod build; // architecture, construction, built environment
-// pub mod cook; // cooking, meals, kitchen, gastronomy
-// pub mod dwell; // habitation, domestic life
-// pub mod land; // landscape, terrain
-// pub mod urban; // cities, infrastructure
-
-crate::structural_mods! { // _pub_mods
+crate::mods_in! {
+    // pub mod_ build; // architecture, construction, built environment
+    // pub mod_ cook; // cooking, meals, kitchen, gastronomy
+    // pub mod_ dwell; // habitation, domestic life
+    // pub mod_ land; // landscape, terrain
+    // pub mod_ urban; // cities, infrastructure
+}
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     build::_all::*,
