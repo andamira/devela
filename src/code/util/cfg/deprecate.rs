@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Configures a feature as deprecated, warning if it is enabled.
-#[doc = crate::_doc_meta!{location("code/util/cfg", macro deprecate_feature)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/cfg", macro deprecate_feature),
+}]
 /// You can only call this macro once per deprecated feature.
 ///
 /// # Examples
@@ -19,7 +20,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! deprecate_feature {
+macro_rules! deprecate_feature· {
     (     old:   $old_feature:literal
       $(, new:   $new_feature:literal )?
       $(, since:       $since:literal )?
@@ -65,4 +66,4 @@ macro_rules! deprecate_feature {
     };
 }
 #[doc(inline)]
-pub use deprecate_feature;
+pub use deprecate_feature· as deprecate_feature;

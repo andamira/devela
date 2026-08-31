@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(assert mem)]
 /// Tests the stack size of a type.
-#[doc = crate::_doc_meta!{location("code/util/assert", macro test_size_of)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/assert", macro test_size_of),
+}]
 /// Optionally checks the matching bit count and whether `Option<T>` preserves
 /// or changes the stack size of `T`.
 ///
@@ -118,7 +119,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! test_size_of {
+macro_rules! test_size_of· {
     // Assertion-only mode with an explicit negative niche-size check.
     (assert $ty:ty = $bytes:literal $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {{
         $crate::test_size_of![assert $ty = $bytes $(| $bits)?];
@@ -373,4 +374,4 @@ macro_rules! test_size_of {
     };
 }
 #[doc(inline)]
-pub use test_size_of;
+pub use test_size_of· as test_size_of;

@@ -8,8 +8,9 @@
 
 #[doc = crate::_tags!(code uid construction)]
 /// Defines zero-cost, zero-sized, generic *marker* IDs.
-#[doc = crate::_doc_meta!{location("code/marker", macro type_marker)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/marker", macro type_marker),
+}]
 /// These marker types carry no runtime data and serve as compile-time indicators
 /// of state, configuration, or constraints, helping enforce type-level invariants
 /// without introducing runtime overhead.
@@ -42,7 +43,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! type_marker {
+macro_rules! type_marker· {
     // without generics
     ($(#[$meta:meta])* $name:ident) => {
         $(#[$meta])*
@@ -102,41 +103,32 @@ macro_rules! type_marker {
     };
 }
 #[doc(inline)]
-pub use type_marker;
+pub use type_marker· as type_marker;
 
 #[cfg(test)]
-mod tests {
-    use crate::TypeId;
+mod _test {
+    use crate::{TypeId, type_marker};
 
     #[test]
     fn type_marker_multiple() {
         type_marker![ZeroG; OneG<A>];
-
         let zero = ZeroG;
         let one = OneG::<char>::new();
-
         assert_eq![0, size_of_val(&zero)];
         assert_eq![0, size_of_val(&one)];
     }
-
     #[test]
     fn type_marker_no_generics() {
         type_marker![ZeroG];
-
         let zero = ZeroG;
-
         assert_eq![0, size_of_val(&zero)];
     }
-
     #[test]
     fn type_marker_generics() {
         type_marker![Two<A, B>];
-
         let two = Two::<i32, i64>::new();
-
         assert_eq![0, size_of_val(&two)];
         assert_eq![0, size_of::<Two<char, bool>>()];
-
         assert_eq![TypeId::of::<Two<i32, i64>>(), TypeId::of::<Two<i32, i64>>()];
         assert_ne![TypeId::of::<Two<i32, i64>>(), TypeId::of::<Two<char, bool>>()];
     }

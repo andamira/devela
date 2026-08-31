@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code debug)]
 /// Returns a best-effort name of the enclosing function.
-#[doc = crate::_doc_meta!{location("code/util/debug", macro fn_name)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/debug", macro fn_name),
+}]
 /// This is a diagnostic helper based on [`core::any::type_name_of_val`].
 /// The exact format is not guaranteed by Rust, so this macro must not be
 /// used for semantic program behavior.
@@ -23,7 +24,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! fn_name {
+macro_rules! fn_name· {
     () => {{
         fn f() {}
         let name = ::core::any::type_name_of_val(&f);
@@ -31,4 +32,4 @@ macro_rules! fn_name {
     }};
 }
 #[doc(inline)]
-pub use fn_name;
+pub use fn_name· as fn_name;

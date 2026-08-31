@@ -12,8 +12,9 @@ impl<T> Sealed for Option<T> {}
 
 #[doc = crate::_tags!(result)]
 /// Extension trait providing additional methods for [`Option`].
-#[doc = crate::_doc_meta!{location("code/result", trait OptionExt)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", trait OptionExt),
+}]
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`ResultExt`][crate::ResultExt], [`OptResExt`][crate::OptResExt].

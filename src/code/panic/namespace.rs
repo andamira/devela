@@ -10,7 +10,9 @@ use ::std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook};
 
 #[doc = crate::_tags!(namespace)]
 /// Panic-related operations.
-#[doc = crate::_doc_meta!{location("code/panic", struct Panic)}]
+#[doc = crate::_doc_meta!{
+    location("code/panic", struct Panic),
+}]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[derive(Debug)]
 pub struct Panic;

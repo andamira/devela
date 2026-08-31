@@ -15,8 +15,9 @@
 
 #[doc = crate::_tags!(code value)]
 /// Hooks operations into a value without breaking its flow.
-#[doc = crate::_doc_meta!{location("code/ops", trait Hook)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops", trait Hook),
+}]
 /// `Hook` provides a way to intercept a value,
 /// allowing mutation (`hook`) or observation (`tap`) while preserving identity.
 ///
@@ -64,8 +65,9 @@ impl<T: Sized> Hook for T {}
 
 #[doc = crate::_tags!(code value)]
 /// Hooks one or more mutation steps into a value and returns it.
-#[doc = crate::_doc_meta!{location("code/ops", macro hook)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops", macro hook),
+}]
 /// `hook!` binds a value to a local mutable name, applies a sequence of
 /// side-effecting operations to it, and then returns the value.
 ///
@@ -98,7 +100,7 @@ impl<T: Sized> Hook for T {}
 /// For transformations that replace the value, see [`morph!`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! hook {
+macro_rules! hook· {
     // (comma separated)
     // expr-sequence form
     ($t:expr, |$v:ident| $($step:expr),+ $(,)?) => {{
@@ -120,12 +122,13 @@ macro_rules! hook {
     }};
 }
 #[doc(inline)]
-pub use hook;
+pub use hook· as hook;
 
 #[doc = crate::_tags!(code value)]
 /// Morphs a value by threading it through a function.
-#[doc = crate::_doc_meta!{location("code/ops", trait Morph)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops", trait Morph),
+}]
 /// `Morph` provides a fluent way to pass a value (by value, shared reference,
 /// or exclusive reference) into a transformation and return the result.
 ///
@@ -175,8 +178,9 @@ impl<T: ?Sized, R> Morph<R> for T {}
 
 #[doc = crate::_tags!(code value)]
 /// Morphs a value through one or more transformation steps and returns the result.
-#[doc = crate::_doc_meta!{location("code/ops", macro morph)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops", macro morph),
+}]
 /// `morph!` expresses a left-to-right transformation pipeline
 /// without explicit intermediate bindings in user code.
 ///
@@ -202,7 +206,7 @@ impl<T: ?Sized, R> Morph<R> for T {}
 /// For pipelines that preserve value identity and mutate in place, see [`hook!`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! morph {
+macro_rules! morph· {
     // (comma separated)
     // base case: single-step
     ($t:expr, |$v:ident| $e:expr $(,)?) => {{ let $v = $t; $e }};
@@ -220,4 +224,4 @@ macro_rules! morph {
     }};
 }
 #[doc(inline)]
-pub use morph;
+pub use morph· as morph;

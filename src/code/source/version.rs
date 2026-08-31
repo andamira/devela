@@ -8,8 +8,10 @@ use crate::{Digits, Slice, Str, is, unwrap, whilst, write_at};
 
 #[doc = crate::_tags!(code)]
 /// A compact three-part semantic version core.
-#[doc = crate::_doc_meta!{location("code/source", struct Version)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/source", struct Version),
+    test_size_of(Version = 6|48; niche !Option),
+}]
 /// Stores the numeric `major.minor.patch` part of a semantic version.
 ///
 /// This type intentionally does not store pre-release or build metadata.
@@ -145,8 +147,13 @@ impl Version {
 
 #[doc = crate::_tags!(code)]
 /// A semantic version with optional borrowed metadata.
-#[doc = crate::_doc_meta!{location("code/source", struct VersionFull)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/source", struct VersionFull),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(VersionFull = 24|192; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(VersionFull = 40|320; niche !Option),
+}]
 /// Extends [`Version`] with optional pre-release and build metadata.
 ///
 /// Formats as:

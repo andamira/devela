@@ -8,8 +8,9 @@
 ///
 /// This is useful when a macro generates another `macro_rules!` macro
 /// whose matcher or transcriber needs nested repetitions.
-#[doc = crate::_doc_meta!{location("code/util/token", macro macro_dollar)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro macro_dollar),
+}]
 /// The body is written as a temporary macro arm that receives the dollar token,
 /// conventionally named `$d`.
 ///
@@ -54,18 +55,20 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! macro_dollar {
+macro_rules! macro_dollar· {
     ($($body:tt)*) => {
         macro_rules! __macro_dollar_289B9D1C9f3a7c2b { $($body)* }
         __macro_dollar_289B9D1C9f3a7c2b! { $ }
     };
 }
 #[doc(inline)]
-pub use macro_dollar;
+pub use macro_dollar· as macro_dollar;
 
 #[cfg(test)]
 #[rustfmt::skip]
 mod _test {
+    use super::macro_dollar;
+
     const MACRO_DOLLAR_SENTINEL: usize = 123;
 
     #[test]
@@ -171,7 +174,7 @@ mod _test {
     #[test]
     fn supports_item_scope_visibility_reexport() {
         mod local_mod {
-            macro_dollar! { ($d:tt) => {
+            super::macro_dollar! { ($d:tt) => {
                 macro_rules! exported_probe {
                     ($d($t:tt)*) => {
                         stringify!($d($t)*)

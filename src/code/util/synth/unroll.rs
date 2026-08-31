@@ -8,7 +8,7 @@ mod codegen {
     include!(concat!(env!("OUT_DIR"), "/build/unroll.rs")); // `unroll!` macro
 }
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::codegen::unroll;

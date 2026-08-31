@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code fmt)]
 /// *`s`kip `f`ormatting* macro.
-#[doc = crate::_doc_meta!{location("code/util/token", macro sf)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro sf),
+}]
 /// Preserves the formatting of the code provided as arguments, by relying on
 /// the fact that `rustfmt` does not usually apply formatting inside macros.
 ///
@@ -24,6 +25,6 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
+macro_rules! sf· { ( $($line:tt)+ ) => { $($line)+ }; }
 #[doc(inline)]
-pub use sf;
+pub use sf· as sf;

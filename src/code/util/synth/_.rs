@@ -10,18 +10,21 @@
 //! input material belongs to [`token`][super::token].
 //
 
-mod r#const; // CONST!
-mod derive; // macro_apply_alias!, macro_derive_alias!
-mod impl_trait; // impl_trait!
-mod items; // items!
-mod maybe; // maybe!, maybe_slot!
-mod methods; // methods_as_fns!
-mod structural; // structural_mods!
-#[cfg(feature = "_unroll")]
-mod unroll; // unroll!
-mod use_as; // use_as!
+// NOTE: this module has to remain outside mods_in!
+mod structural; // mods_out!, structural_mods!
 
-structural::structural_mods! { // _mods, _reexports,
+mods_in! {
+    mod r#const; // CONST!
+    mod_ derive; // macro_apply_alias!, macro_derive_alias!
+    mod impl_trait; // impl_trait!
+    mod items; // items!
+    mod maybe; // maybe!, maybe_slot!
+    mod methods; // methods_as_fns!
+    #[cfg(feature = "_unroll")]
+    mod unroll; // unroll!
+    mod use_as; // use_as!
+}
+structural::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -31,7 +34,7 @@ structural::structural_mods! { // _mods, _reexports,
             items::items,
             maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
-            structural::structural_mods,
+            structural::{structural_mods, mods_out},
             use_as::use_as,
         };
         #[cfg(feature = "_unroll")]
@@ -48,5 +51,8 @@ structural::structural_mods! { // _mods, _reexports,
             mods_in,
             repeat,
         };
+    }
+    _hidden {
+        pub use super::derive::_hidden::*;
     }
 }

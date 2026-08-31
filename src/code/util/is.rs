@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Conditional evaluation.
-#[doc = crate::_doc_meta!{location("code/util", macro is)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util", macro is),
+}]
 /// Combines:
 /// 1. `if`/`else` conditions
 /// 2. `if let` pattern matching
@@ -75,7 +76,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! is {
+macro_rules! is· {
     /* if */
     ($cond:expr, $then:expr) => {
         $crate::is!(%if $cond, { $then }) };
@@ -177,10 +178,12 @@ macro_rules! is {
     };
 }
 #[doc(inline)]
-pub use is;
+pub use is· as is;
 
 #[cfg(test)]
-mod tests {
+mod _test {
+    use super::is;
+
     #[test]
     fn is_if_expr() {
         assert_eq!('a', is![true, 'a', 'b']);

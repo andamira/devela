@@ -55,8 +55,9 @@ _reexport! { rust: core,
 #[doc = crate::_tags!(code)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Panics the current thread.
-#[doc = crate::_doc_meta!{location("code/panic", macro panic_)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/panic", macro panic_),
+}]
 #[doc = "*Re-exported from [`core::panic`][macro@::core::panic]*."]
 #[doc = "\n\n---"]
 ///

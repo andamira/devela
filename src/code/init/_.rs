@@ -1,4 +1,4 @@
-// devela/src/code/init/mod.rs
+// devela/src/code/init/_.rs
 //
 #![doc = crate::_DOC_CODE_INIT!()] // public
 #![doc = crate::_doc!(modules: crate::code; init)]
@@ -6,11 +6,12 @@
 #![doc = crate::_doc!(extends: default)]
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-mod r#const;
-
-crate::structural_mods! { // _mods, _reexports, _crate_internals
+    mod r#const;
+}
+crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::r#const::ConstInit;
     }

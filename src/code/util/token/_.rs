@@ -1,4 +1,4 @@
-// devela/src/code/util/token/mod.rs
+// devela/src/code/util/token/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_TOKEN!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; token)]
@@ -10,15 +10,16 @@
 //! higher-level Rust structure belongs to [`synth`][super::synth].
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-mod capture; // capture_[first|last|tail_tuple]!
-mod dollar; // macro_dollar!
-mod ident; // ident_const_index!
-mod sf; // sf!
-mod type_count; // type_count!
-
-crate::structural_mods! { // _mods, _reexports,
+    mod capture; // capture_[first|last|tail_tuple]!
+    mod dollar; // macro_dollar!
+    mod ident; // ident_const_index!
+    mod sf; // sf!
+    mod type_count; // type_count!
+}
+crate::mods_out! { // _mods, _reexports,
     _mods {
         #[doc(inline)]
         pub use super::{

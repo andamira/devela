@@ -1,4 +1,4 @@
-// devela/src/code/result/mod.rs
+// devela/src/code/result/_.rs
 //
 #![doc = crate::_DOC_CODE_RESULT!()] // public
 #![doc = crate::_doc!(modules: crate::code; result)]
@@ -14,17 +14,18 @@
 //! and mismatch-aware comparisons ([`Mismatch`]).
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-// mod enumatch; // enumatch! WIP
-mod mismatch; // Mismatch
-mod opt_res; // OptRes, sok, serr
+    // mod_ enumatch; // enumatch! TODO
+    mod mismatch; // Mismatch
+    mod_ opt_res; // OptRes, sok, serr
 
-// #[cfg(feature = "_tuple")]
-// #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
-// mod menu; // WIP
-
-crate::structural_mods! { // _mods, _reexports
+    // #[cfg(feature = "_tuple")]
+    // #[cfg_attr(nightly_doc, doc(cfg(feature = "_tuple")))]
+    // mod menu; // MAYBE
+}
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             // enumatch::*,

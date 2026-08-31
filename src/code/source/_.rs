@@ -1,4 +1,4 @@
-// devela/src/code/source/mod.rs
+// devela/src/code/source/_.rs
 //
 #![doc = crate::_DOC_CODE_SOURCE!()] // public
 #![doc = crate::_doc!(modules: crate::code; source)]
@@ -15,14 +15,15 @@
 //! [`util::synth`][crate::code::util::synth], respectively.
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-mod include; // include_from!, mod_from!, mod_path!
-mod location; // CodeLocation
-mod span; // CodeSpan
-mod version; // Version, VersionFull
-
-crate::structural_mods! { // _mods, _reexports
+    mod include; // include_from!, mod_from!, mod_path!
+    mod location; // CodeLocation
+    mod span; // CodeSpan
+    mod version; // Version, VersionFull
+}
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             include::{include_from, mod_from, mod_path},

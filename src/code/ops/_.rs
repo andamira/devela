@@ -1,4 +1,4 @@
-// devela/src/code/ops/mod.rs
+// devela/src/code/ops/_.rs
 //
 #![doc = crate::_DOC_CODE_OPS!()] // public
 #![doc = crate::_doc!(modules: crate::code; ops: call, overload, range)]
@@ -13,20 +13,21 @@
 //! also contains small composition primitives such as [`Hook`] and [`Morph`].
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-pub mod call; // // Callability and invocation semantics
-mod guard; // ScopeGuard
-mod hook_morph; // Hook, Morph, hook!, morph!
-pub mod overload; // Overloadable operator traits
-mod punroll; // punroll!
-pub mod range; // Range bounds, values, and traits
+    pub mod_ call; // Callability and invocation semantics
+    mod guard; // ScopeGuard
+    mod hook_morph; // Hook, Morph, hook!, morph!
+    pub mod_ overload; // Overloadable operator traits
+    mod punroll; // punroll!
+    pub mod_ range; // Range bounds, values, and traits
 
-// #[cfg(feature = "std")]
-// pub mod _wip_fns; // WIP
-// mod _wip_closure; // WIP
-
-crate::structural_mods! { // _mods, _pub_mods
+    // #[cfg(feature = "std")]
+    // pub mod _wip_fns; // WIP
+    // mod _wip_closure; // WIP
+}
+crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::{
             guard::ScopeGuard,

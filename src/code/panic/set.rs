@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code platform)]
 /// Sets a panic handler based on the chosen strategy.
-#[doc = crate::_doc_meta!{location("code", macro set_panic_handler)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code", macro set_panic_handler),
+}]
 /// - `loop`: Enters an infinite loop, ensuring the program halts without undefined behavior.
 /// - `unreachable`: optimally halts execution based on the target architecture.
 ///   - `wasm32`: Uses `unreachable()` to signal an unrecoverable state.
@@ -20,7 +21,7 @@
 /// - `custom`: Uses a user-provided function (returning -> !) as the panic handler.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! set_panic_handler {
+macro_rules! set_panic_handler· {
     (loop) => {
         #[panic_handler]
         fn panic(_info: &::core::panic::PanicInfo) -> ! {
@@ -136,4 +137,4 @@ macro_rules! set_panic_handler {
     };
 }
 #[doc(inline)]
-pub use set_panic_handler;
+pub use set_panic_handler· as set_panic_handler;

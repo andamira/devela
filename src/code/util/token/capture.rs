@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Captures the first token from a list of inputs.
-#[doc = crate::_doc_meta!{location("code/util/token", macro capture_first)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro capture_first),
+}]
 /// Usage: `capture_first!(<category> <first>, <tail>*, <optional_comma>?);`
 ///
 /// # Examples
@@ -34,7 +35,9 @@ pub use capture_first· as capture_first;
 
 #[doc = crate::_tags!(code)]
 /// Captures all the tokens except the first one, as a tuple.
-#[doc = crate::_doc_meta!{location("code/util/token", macro capture_tail_tuple)}]
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro capture_tail_tuple),
+}]
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -74,7 +77,9 @@ pub use capture_tail_tuple· as capture_tail_tuple;
 
 #[doc = crate::_tags!(code)]
 /// Captures the last token from a list of inputs.
-#[doc = crate::_doc_meta!{location("code/util/token", macro capture_last)}]
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro capture_last),
+}]
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -114,7 +119,7 @@ macro_rules! capture_last· {
 pub use capture_last· as capture_last;
 
 #[cfg(test)]
-mod tests {
+mod _test {
     pub use super::*;
 
     #[test]

@@ -1,4 +1,4 @@
-// devela/src/code/convert/mod.rs
+// devela/src/code/convert/_.rs
 //
 #![doc = crate::_DOC_CODE_CONVERT!()] // public
 #![doc = crate::_doc!(modules: crate::code; convert)]
@@ -6,9 +6,10 @@
 #![doc = crate::_doc!(extends: convert)]
 //
 
-mod _reexport_core;
-
-crate::structural_mods! { // _reexports
+crate::mods_in! {
+    mod _reexport_core;
+}
+crate::mods_out! { // _reexports
     _reexports {
         pub use super::_reexport_core::*;
     }

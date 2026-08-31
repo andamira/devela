@@ -5,15 +5,16 @@
 
 #[doc = crate::_tags!(assert)]
 /// Asserts the equality of a series of expressions.
-#[doc = crate::_doc_meta!{location("code/util/assert", macro assert_eq_all)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/assert", macro assert_eq_all),
+}]
 /// Similar to [`assert_eq`] but supports more than 2 terms to test for equality.
 ///
 /// # Panics
 // TODO
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! assert_eq_all {
+macro_rules! assert_eq_all· {
     ($first:expr, $($rest:expr),+ $(,)?) => {{
         let first_val = &$first;
         $(
@@ -30,12 +31,13 @@ macro_rules! assert_eq_all {
     }};
 }
 #[doc(inline)]
-pub use assert_eq_all;
+pub use assert_eq_all· as assert_eq_all;
 
 #[doc = crate::_tags!(assert)]
 /// Asserts the approximate equality of a series of expressions within `tolerance`.
-#[doc = crate::_doc_meta!{location("code/util/assert", macro assert_approx_eq_all)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/assert", macro assert_approx_eq_all),
+}]
 /// This macro should work with any numeric type that supports comparison and
 /// subtraction, including signed and unsigned integers and floating-point numbers.
 ///
@@ -78,7 +80,7 @@ pub use assert_eq_all;
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! assert_approx_eq_all {
+macro_rules! assert_approx_eq_all· {
     (tolerance: $tolerance:expr, $first:expr, $($rest:expr),+ $(,)?) => {{
         let first_val = $first;
         $(
@@ -98,4 +100,4 @@ macro_rules! assert_approx_eq_all {
     }};
 }
 #[doc(inline)]
-pub use assert_approx_eq_all;
+pub use assert_approx_eq_all· as assert_approx_eq_all;

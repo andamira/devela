@@ -1,4 +1,4 @@
-// devela/src/code/util/mod.rs
+// devela/src/code/util/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL!()] // public
 #![doc = crate::_doc!(modules: crate::code; util: assert, cfg, debug, synth, token)]
@@ -39,21 +39,25 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-#[cfg(test)]
-mod _test;
-
-pub mod assert; // Assertion utilities
-pub mod cfg; // Conditional compilation and configuration
-pub mod debug; // Debugging and diagnostic helpers
-pub mod synth; // Code synthesis and macro composition
-pub mod token; // Macro token, fragment, and identifier utilities
-
+// NOTE: these modules have to remain outside mods_in!:
 mod doclink; // doclink!
-mod is; // is!
-mod lets; // lets!
-mod whilst; // whilst!
+#[path = "synth/_.rs"]
+pub mod synth; // Code synthesis and macro composition
 
-synth::structural_mods! { // _mods, _reexports, _crate_internals
+synth::mods_in! {
+    #[cfg(test)]
+    mod_ _test;
+
+    pub mod_ assert; // Assertion utilities
+    pub mod_ cfg; // Conditional compilation and configuration
+    pub mod_ debug; // Debugging and diagnostic helpers
+    pub mod_ token; // Macro token, fragment, and identifier utilities
+
+    mod is; // is!
+    mod lets; // lets!
+    mod whilst; // whilst!
+}
+synth::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -88,7 +92,10 @@ synth::structural_mods! { // _mods, _reexports, _crate_internals
     _hidden {
         #[doc(hidden)]
         pub use {
-            super::assert::_hidden::*,
+            super::{
+                assert::_hidden::*,
+                synth::_hidden::*,
+            },
             devela_macros::__macro_derive_helpers,
         };
     }

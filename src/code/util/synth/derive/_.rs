@@ -1,20 +1,22 @@
-// devela/src/code/util/derive/mod.rs
+// devela/src/code/util/derive/_.rs
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-mod alias; // macro_apply_alias!, derive_alias!
-
-crate::structural_mods! { // _mods, _reexports
+    mod alias; // macro_apply_alias!, derive_alias!
+}
+crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         pub use super::{
-            alias::*,
+            alias::{macro_apply_alias, macro_derive_alias},
         };
     }
     _reexports {
         /// Applies a declarative macro to the decorated item.
-        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_apply)}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location(proc "code/util", attr macro_apply),
+        }]
         /// Expands `#[macro_apply(m)] item` as `m! { item }`.
         ///
         /// The macro receives ownership of the item and must re-emit it if it should remain.
@@ -28,8 +30,9 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_macros::macro_apply;
 
         /// Runs classic derives and declarative derives from one list.
-        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_derive)}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location(proc "code/util", attr macro_derive),
+        }]
         /// Entries ending in `!` are called as declarative macros.
         /// Other entries are forwarded to Rust's built-in `derive`.
         ///
@@ -45,8 +48,9 @@ crate::structural_mods! { // _mods, _reexports
         pub use devela_macros::macro_derive;
 
         /// Runs declarative derive-like macros over the decorated item.
-        #[doc = crate::_doc_meta!{location(proc "code/util", attr macro_derive_with)}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location(proc "code/util", attr macro_derive_with),
+        }]
         /// Each macro receives a copy of the item and may emit impls or side-items.
         /// The original item is preserved.
         ///
@@ -60,5 +64,10 @@ crate::structural_mods! { // _mods, _reexports
         #[doc = crate::_doc_vendor!("macro_rules_attribute")]
         #[allow(rustdoc::invalid_html_tags)] #[doc = "<!--"]
         pub use devela_macros::macro_derive_with;
+    }
+    _hidden {
+        pub use super::{
+            alias::{__macro_drop_item, __macro_nested_derive},
+        };
     }
 }

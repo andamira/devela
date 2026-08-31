@@ -8,8 +8,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines attribute aliases usable from [`macro_apply`][crate::macro_apply].
-#[doc = crate::_doc_meta!{location("code/util/synth", macro macro_apply_alias)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro macro_apply_alias),
+}]
 /// These aliases expand to attributes,
 /// so they only apply where attributes are accepted.
 ///
@@ -58,7 +59,7 @@
 #[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! macro_apply_alias {
+macro_rules! macro_apply_alias· {
     () => {};
     (
         $(#[$meta:meta])*
@@ -122,12 +123,13 @@ macro_rules! macro_apply_alias {
     };
 }
 #[doc(inline)]
-pub use macro_apply_alias;
+pub use macro_apply_alias· as macro_apply_alias;
 
 #[doc = crate::_tags!(code)]
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
-#[doc = crate::_doc_meta!{location("code/util/synth", macro macro_derive_alias)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro macro_derive_alias),
+}]
 /// These aliases expand through declarative derive macros,
 /// so they apply to items inspected by `macro_derive`.
 ///
@@ -185,7 +187,7 @@ pub use macro_apply_alias;
 #[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! macro_derive_alias {
+macro_rules! macro_derive_alias· {
     () => {};
     (
         $(#[$meta:meta])*
@@ -253,21 +255,24 @@ macro_rules! macro_derive_alias {
     };
 }
 #[doc(inline)]
-pub use macro_derive_alias;
+pub use macro_derive_alias· as macro_derive_alias;
+
+/// Internal item eraser for nested derive expansion.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __macro_drop_item· {
+    ($it:item) => {};
+}
+pub use __macro_drop_item· as __macro_drop_item;
 
 /// Recursively applies #[derive(...)] then drops duplicate item.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __macro_nested_derive {
+macro_rules! __macro_nested_derive· {
     ( #[derive($($derives:tt)*)] $($item:tt)* ) => {
         #[$crate::macro_derive($($derives)*)]
         #[$crate::macro_apply($crate::__macro_drop_item!)]
         $($item)*
     };
 }
-/// Internal item eraser for nested derive expansion.
-#[doc(hidden)]
-#[macro_export]
-macro_rules! __macro_drop_item {
-    ($it:item) => {};
-}
+pub use __macro_nested_derive· as __macro_nested_derive;

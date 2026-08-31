@@ -1,4 +1,4 @@
-// devela/src/code/panic/mod.rs
+// devela/src/code/panic/_.rs
 //
 #![doc = crate::_DOC_CODE_PANIC!()] // public
 #![doc = crate::_doc!(modules: crate::code; panic)]
@@ -6,15 +6,16 @@
 #![doc = crate::_doc!(extends: panic)]
 //
 
-mod _reexport_core;
-#[cfg(feature = "std")]
-mod _reexport_std;
+crate::mods_in! {
+    mod _reexport_core;
+    #[cfg(feature = "std")]
+    mod _reexport_std;
 
-#[cfg(feature = "std")]
-mod namespace; // Panic
-mod set; // set_panic_handler!
-
-crate::structural_mods! { // _mods, _reexports
+    #[cfg(feature = "std")]
+    mod namespace; // Panic
+    mod set; // set_panic_handler!
+}
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::set::*;
         #[cfg(feature = "std")]

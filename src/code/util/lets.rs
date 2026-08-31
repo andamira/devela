@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// A concise macro for declaring multiple variables at once.
-#[doc = crate::_doc_meta!{location("code/util", macro lets)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util", macro lets),
+}]
 /// # Syntax
 /// - `name = expr` - immutable variable
 /// - `mut name = expr` - mutable variable

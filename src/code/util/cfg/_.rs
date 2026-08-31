@@ -1,4 +1,4 @@
-// devela/src/code/util/cfg/mod.rs
+// devela/src/code/util/cfg/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_CFG!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; cfg)]
@@ -6,11 +6,12 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-mod deprecate; // deprecate_feature!
-
-crate::structural_mods! { // _mods, _reexports,
+    mod deprecate; // deprecate_feature!
+}
+crate::mods_out! { // _mods, _reexports,
     _mods {
         #[doc(inline)]
         pub use super::{

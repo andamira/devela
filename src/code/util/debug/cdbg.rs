@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code debug)]
 /// *`c`ustomizable [`dbg!`]* macro.
-#[doc = crate::_doc_meta!{location("code/util/debug", macro cdbg)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/debug", macro cdbg),
+}]
 /// - By default uses `{:?}` instead of `{:#?}` for formatting.
 /// - By default doesn't show the location (file, line and column).
 /// - It can show the `$n` last components, instead of the full path.
@@ -50,7 +51,7 @@
 #[macro_export]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! cdbg {
+macro_rules! cdbg· {
     (
      // shows no location (pretty-print)                            cdbg![# x];
      # $v:expr $(,)?) => { $crate::cdbg![%fmt # concat!(stringify!($v), " = "), $v] };
@@ -232,4 +233,4 @@ macro_rules! cdbg {
     () => { () };
 }
 #[doc(inline)]
-pub use cdbg;
+pub use cdbg· as cdbg;

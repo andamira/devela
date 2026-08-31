@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Returns the total number of types received.
-#[doc = crate::_doc_meta!{location("code/util/token", macro type_count)}]
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro type_count),
+}]
 /// # Examples
 /// ```
 /// # use devela::type_count;
@@ -18,8 +20,8 @@
 // USEDBY: ...
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! type_count {
+macro_rules! type_count· {
     ($($T:ty),*) => { <[()]>::len(&[ $( { let _ = $crate::PhantomData::<$T>; () } ),* ]) };
 }
 #[doc(inline)]
-pub use type_count;
+pub use type_count· as type_count;

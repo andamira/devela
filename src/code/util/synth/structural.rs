@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro structural_mods)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro structural_mods),
+}]
 /// This macro generates a set of structural helper modules that centralize export logic
 /// according to intended visibility and usage. It reduces boilerplate and enforces a
 /// consistent module layout across workspace crates.
@@ -145,4 +146,7 @@ macro_rules! structural_mods· {
     };
 }
 #[doc(inline)]
+#[deprecated]
 pub use structural_mods· as structural_mods;
+#[doc(inline)]
+pub use structural_mods· as mods_out;

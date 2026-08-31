@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code fmt)]
 /// Groups *`items`* together and expands them as if they were written directly.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro items)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro items),
+}]
 /// It can be useful to apply an attribute to a group of items.
 ///
 /// It can also preserve the formatting of the code provided as arguments,
@@ -26,6 +27,6 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
+macro_rules! items· { ( $($item:item)* ) => { $($item)* }; }
 #[doc(inline)]
-pub use items;
+pub use items· as items;

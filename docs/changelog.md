@@ -80,7 +80,9 @@
 
 #### code::util::synth
 - new macro: `mods_in!`.
-- update `structural_mods!`: remove the `_workspace_internals` branch.
+- update `structural_mods!`:
+  - remove the `_workspace_internals` branch.
+  - make alias `mods_out!`.
 
 ### data::access
 - new type `StridedBlocks`.

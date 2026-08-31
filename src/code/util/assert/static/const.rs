@@ -5,10 +5,12 @@
 
 #[doc = crate::_tags!(assert)]
 /// Asserts various comparisons on constants.
-#[doc = crate::_doc_meta!{location("code/util/assert", macro const_assert)}]
+#[doc = crate::_doc_meta!{
+    location("code/util/assert", macro const_assert),
+}]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! const_assert {
+macro_rules! const_assert· {
     (   /* logical comparisons */
 
         // Asserts that a single expression evaluates to `true`.
@@ -97,10 +99,12 @@ macro_rules! const_assert {
     (@build $x:expr; $op:tt) => {};
 }
 #[doc(inline)]
-pub use const_assert;
+pub use const_assert· as const_assert;
 
 #[cfg(test)]
-mod tests {
+mod _test {
+    use super::const_assert;
+
     #[test]
     const fn const_assert_logic() {
         const_assert!(true && (true != false));

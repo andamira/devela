@@ -6,8 +6,9 @@
 // IMPROVE:MAYBE add: Debug, Display, PartialEq, PartialOrd, Drop
 #[doc = crate::_tags!(code maybe)]
 /// Macro helper for using optionally implemented traits, like `Default` or `Clone`.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro maybe)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro maybe),
+}]
 /// The first boolean argument says whether `$T` implements the given trait.
 ///
 /// # Examples
@@ -29,7 +30,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! maybe {
+macro_rules! maybe· {
     ( // Returns either Some(<$T>::default()) or `None`.
       default: $implements_default:stmt, $T:ty ) => {{
         /* didactic notes */
@@ -81,12 +82,13 @@ macro_rules! maybe {
     }};
 }
 #[doc(inline)]
-pub use maybe;
+pub use maybe· as maybe;
 
 #[doc = crate::_tags!(code maybe primitive)]
 /// Expands to a primitive slot from either a direct carrier or a wrapped outer type.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro maybe_slot)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro maybe_slot),
+}]
 /// The first argument is the outside type used for dispatch.
 ///
 /// This macro hardcodes a whitelist of type spellings treated as direct primitive

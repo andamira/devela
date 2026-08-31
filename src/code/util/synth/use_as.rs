@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Imports families of prefixed items under shorter local names.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro use_as)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro use_as),
+}]
 /// The shared prefix is prepended to each listed suffix to form its source name:
 /// - `Name` imports `PrefixName as Name`.
 /// - `Name as Alias` imports `PrefixName as Alias`.
@@ -37,7 +38,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! use_as {
+macro_rules! use_as· {
     ($( +$prefix:ident: $vis:vis $($path:ident)::+::{ $($items:tt)* } ),+ $(,)?) => {
         $( $crate::use_as![%[$prefix] [$vis] [$($path)::+] [] $($items)*]; )+
     };
@@ -75,4 +76,4 @@ macro_rules! use_as {
     };
 }
 #[doc(inline)]
-pub use use_as;
+pub use use_as· as use_as;

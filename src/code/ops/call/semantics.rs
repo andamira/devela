@@ -87,8 +87,9 @@ impl PartialOrd for CallSemantics {
 
 #[doc = crate::_tags!(exec)]
 /// When the callee identity becomes fixed.
-#[doc = crate::_doc_meta!{location("code/ops/call", enum CallBindTime)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops/call", enum CallBindTime),
+}]
 /// Ordered: `Compile < Build < Run`.
 ///
 /// Later binding increases runtime dynamism and reduces static visibility.
@@ -116,8 +117,9 @@ pub enum CallBindTime {
 
 #[doc = crate::_tags!(exec)]
 /// Where the callable's execution environment resides.
-#[doc = crate::_doc_meta!{location("code/ops/call", enum CallContext)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops/call", enum CallContext),
+}]
 /// Ordered: `None < Receiver < Captured`.
 ///
 /// This axis describes structural coupling, not argument types.
@@ -146,8 +148,9 @@ pub enum CallContext {
 
 #[doc = crate::_tags!(exec)]
 /// Mechanism by which control transfers to the callee.
-#[doc = crate::_doc_meta!{location("code/ops/call", enum CallDispatch)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops/call", enum CallDispatch),
+}]
 /// Ordered: `Direct < Branch < Indirect < Vtable`.
 ///
 /// Later variants introduce more indirection and reduce static visibility.
@@ -176,8 +179,9 @@ pub enum CallDispatch {
 
 #[doc = crate::_tags!(exec)]
 /// Whether the behavior set is fixed or extensible.
-#[doc = crate::_doc_meta!{location("code/ops/call", enum CallOpenness)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops/call", enum CallOpenness),
+}]
 /// Not ordered.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum CallOpenness {
@@ -194,8 +198,9 @@ pub enum CallOpenness {
 
 #[doc = crate::_tags!(exec)]
 /// Where the callable representation resides.
-#[doc = crate::_doc_meta!{location("code/ops/call", enum CallStorage)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops/call", enum CallStorage),
+}]
 /// Ordered: `Static < Inline < Arena < Heap`.
 ///
 /// Later variants increase allocation dynamism and indirection.

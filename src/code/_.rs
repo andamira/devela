@@ -1,4 +1,4 @@
-// devela/src/code/mod.rs
+// devela/src/code/_.rs
 //
 #![doc = crate::_DOC_CODE!()] // public, root
 #![doc = crate::_DOC_CODE_MODULES!()]
@@ -23,18 +23,22 @@ crate::CONST! { pub(crate) _DOC_CODE_MODULES =
         any, convert, hint, init, marker, ops, panic, result, source, util);
 }
 
-pub mod any; // Dynamic typing, type identity, and type inspection
-pub mod convert; // Type conversion and adaptation
-pub mod hint; // Compiler and execution hints
-pub mod init; // Default and const-friendly initialization
-pub mod marker; // Marker types, traits, and macros
-pub mod ops; // Operational syntax, semantics, and composition
-pub mod panic; // Panic hooks, unwinding, and abort strategies
-pub mod result; // Generic outcome and resolution types
-pub mod source; // Source-code location, provenance, and inclusion
+// NOTE: this module has to remain outside mods_in!:
+#[path = "util/_.rs"]
 pub mod util; // Cross-cutting code and macro utilities
 
-util::structural_mods! { // _pub_mods, _reexports, _crate_internals
+util::mods_in! {
+    pub mod_ any; // Dynamic typing, type identity, and type inspection
+    pub mod_ convert; // Type conversion and adaptation
+    pub mod_ hint; // Compiler and execution hints
+    pub mod_ init; // Default and const-friendly initialization
+    pub mod_ marker; // Marker types, traits, and macros
+    pub mod_ ops; // Operational syntax, semantics, and composition
+    pub mod_ panic; // Panic hooks, unwinding, and abort strategies
+    pub mod_ result; // Generic outcome and resolution types
+    pub mod_ source; // Source-code location, provenance, and inclusion
+}
+util::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         pub use super::{
             any::_all::*,

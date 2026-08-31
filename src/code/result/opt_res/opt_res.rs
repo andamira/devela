@@ -9,8 +9,9 @@
 
 #[doc = crate::_tags!(result)]
 /// An optional result type that combines success, failure, and absence.
-#[doc = crate::_doc_meta!{location("code/result", type OptRes)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", type OptRes),
+}]
 /// Combines [`Option`] and [`Result`] to provide a
 /// structured outcome type with three possible states:
 /// - A successful value ([`Ok`])
@@ -83,8 +84,9 @@ pub type OptRes<T, E> = Option<Result<T, E>>;
 
 #[doc = crate::_tags!(result)]
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Ok`]`(value))`.
-#[doc = crate::_doc_meta!{location("code/result", fn sok)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", fn sok),
+}]
 /// See also: [`serr`].
 pub const fn sok<T, E>(value: T) -> OptRes<T, E> {
     Some(Ok(value))
@@ -92,8 +94,9 @@ pub const fn sok<T, E>(value: T) -> OptRes<T, E> {
 
 #[doc = crate::_tags!(result)]
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Err`]`(error))`.
-#[doc = crate::_doc_meta!{location("code/result", fn serr)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", fn serr),
+}]
 /// See also: [`sok`].
 pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
     Some(Err(error))
@@ -105,8 +108,9 @@ impl<T, E> Sealed for OptRes<T, E> {}
 
 #[doc = crate::_tags!(result)]
 /// Extension trait providing additional methods for [`OptRes`].
-#[doc = crate::_doc_meta!{location("code/result", trait OptResExt)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", trait OptResExt),
+}]
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`OptionExt`][crate::OptionExt], [`ResultExt`][crate::ResultExt],

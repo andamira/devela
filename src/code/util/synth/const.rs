@@ -7,8 +7,9 @@
 
 #[doc = crate::_tags!(code construction)]
 /// A helper for constructing macro constants.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro CONST)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro CONST),
+}]
 /// It accepts either a series of expressions or a series of functions.
 ///
 /// # Examples

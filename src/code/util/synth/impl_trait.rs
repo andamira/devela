@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code construction)]
 /// A helper macro to concisely implement a few common utility traits.
-#[doc = crate::_doc_meta!{location("code/util/synth", macro impl_trait)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth", macro impl_trait),
+}]
 /// ## Traits supported
 /// - FromStr
 /// - Hash
@@ -43,7 +44,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! impl_trait {
+macro_rules! impl_trait· {
     (FromStr<$err:ty> for
     $( $(#[$impl_meta:meta])* $type:ident
        $([$($decl:tt)+][$($args:tt)+ ])? $(where $($bounded:ident),+ )?
@@ -111,14 +112,13 @@ macro_rules! impl_trait {
         )+
     };
 }
-
 #[doc(inline)]
-pub use impl_trait;
+pub use impl_trait· as impl_trait;
 
 #[cfg(test)]
 #[rustfmt::skip]
-mod tests {
-    use crate::{format_buf, ParseIntError, PhantomData};
+mod _test {
+    use crate::{format_buf, impl_trait, ParseIntError, PhantomData};
 
     struct S1 { v: i32 }
     struct S2 { v: i32 }

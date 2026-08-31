@@ -212,7 +212,9 @@ pub(crate) use __crate_name;
 
 /* root modules */
 
+#[path = "code/_.rs"]
 pub mod code; // Code structure, semantics, and foundational utilities
+
 pub mod data; // Structural abstractions for organizing and manipulating data
 pub mod error; // Failure types, result aliases, and recovery semantics
 pub mod geom; // Geometric types, operations, and spatial constructs

@@ -10,8 +10,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines standalone functions that call associated methods.
-#[doc = crate::_doc_meta!{location("code/util/synth/", macro methods_as_fns)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/synth/", macro methods_as_fns),
+}]
 /// Supports various function qualifiers (const, async, unsafe) and attributes.
 ///
 /** # Examples
@@ -103,7 +104,7 @@ pub use methods_as_fns· as methods_as_fns;
 /*
 #[cfg(test)]
 #[rustfmt::skip]
-mod tests {
+mod _test {
     #![allow(dead_code)]
 
     use crate::methods_as_fns;

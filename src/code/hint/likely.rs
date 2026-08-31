@@ -7,7 +7,9 @@ use crate::cold_path;
 
 #[doc = crate::_tags!(code)]
 /// Indicate that a given `condition` is likely to be true.
-#[doc = crate::_doc_meta!{location("code/hint", fn likely)}]
+#[doc = crate::_doc_meta!{
+    location("code/hint", fn likely),
+}]
 // WAIT: [likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 pub const fn likely(condition: bool) -> bool {
     if !condition {
@@ -18,7 +20,9 @@ pub const fn likely(condition: bool) -> bool {
 
 #[doc = crate::_tags!(code)]
 /// Indicate that a given `condition` is likely to be false.
-#[doc = crate::_doc_meta!{location("code/hint", fn unlikely)}]
+#[doc = crate::_doc_meta!{
+    location("code/hint", fn unlikely),
+}]
 // WAIT: [likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 pub const fn unlikely(condition: bool) -> bool {
     if condition {

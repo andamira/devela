@@ -1,12 +1,13 @@
-// devela/src/code/util/assert/static/mod.rs
+// devela/src/code/util/assert/static/_.rs
 //
 //! Static assertions.
 //
 
-mod r#const;
-// mod r#impl; // MAYBE
-
-crate::structural_mods! { // _mods
+crate::mods_in! {
+    mod r#const;
+    // mod r#impl; // MAYBE
+}
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             r#const::const_assert,

@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(result)]
 /// An unwrapper macro that works in compile-time.
-#[doc = crate::_doc_meta!{location("code/result", macro unwrap)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/result", macro unwrap),
+}]
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
 ///
 /// ### Naming and syntax
@@ -106,7 +107,7 @@
 /// extracting families where mismatch has a single failure policy.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! unwrap {
+macro_rules! unwrap· {
     (
       // Option<T>
       // ---------
@@ -982,4 +983,4 @@ macro_rules! unwrap {
     };
 }
 #[doc(inline)]
-pub use unwrap;
+pub use unwrap· as unwrap;

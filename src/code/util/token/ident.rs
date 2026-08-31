@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Defines a constant for every given identifier with a value of its index in the list.
-#[doc = crate::_doc_meta!{location("code/util/token", macro ident_const_index)}]
+#[doc = crate::_doc_meta!{
+    location("code/util/token", macro ident_const_index),
+}]
 /// # Examples
 /// ```
 /// # use devela::ident_const_index;
@@ -18,7 +20,7 @@
 // USEDBY: enumset macro
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! ident_const_index {
+macro_rules! ident_const_index· {
     ( // without commas:
         // $vis: the visibility of the constants (pub, pub(super), …).
         // $total: the total number of identifiers.
@@ -41,4 +43,4 @@ macro_rules! ident_const_index {
     }};
 }
 #[doc(inline)]
-pub use ident_const_index;
+pub use ident_const_index· as ident_const_index;

@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Compile-time pattern unroll over a width of `0..=8 || pow(2) <= 64`.
-#[doc = crate::_doc_meta!{location("code/ops", macro punroll)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/ops", macro punroll),
+}]
 /// Three forms are supported:
 /// - `punroll![N |i| stmt]`    Emits `stmt` once per index, with `i` bound each time.
 /// - `punroll![N [] |i| expr]` Produces an array `[expr(i0), expr(i1), …]`.
@@ -24,7 +25,7 @@
 // not even from a separate arm of the same macro, so each one has to be constructed in one step.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! punroll {
+macro_rules! punroll· {
     (0 |$i:ident| $stmt:stmt) => {};
     (0 [] |$i:ident| $expr:expr) => { [] };
     (0 () |$i:ident| $expr:expr) => { () };
@@ -132,11 +133,13 @@ macro_rules! punroll {
     };
 }
 #[doc(inline)]
-pub use punroll;
+pub use punroll· as punroll;
 
 #[rustfmt::skip]
 #[cfg(test)]
-mod tests {
+mod _test {
+    use super::punroll;
+
     #[test] fn statements() {
         let a=0; punroll![0 |i|a+=i]; assert_eq!(a, 0); //
         let mut a=0; punroll![1 |i|a+=i]; assert_eq!(a, 0+0);

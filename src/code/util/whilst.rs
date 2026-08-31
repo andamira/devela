@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// A flexible loop constructor supporting both `while`- and `for`-style syntaxes.
-#[doc = crate::_doc_meta!{location("code/util", macro whilst)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util", macro whilst),
+}]
 /// The `whilst!` macro unifies control over initialization, condition, and iteration steps
 /// in a single consistent form. It can be used as:
 ///
@@ -121,7 +122,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! whilst {
+macro_rules! whilst· {
     (
     /* `while` syntax */
 
@@ -349,11 +350,11 @@ macro_rules! whilst {
     };
 }
 #[doc(inline)]
-pub use whilst;
+pub use whilst· as whilst;
 
 #[cfg(test)]
-mod tests {
-    use crate::is;
+mod _test {
+    use crate::{is, whilst};
 
     #[test]
     fn whilst() {

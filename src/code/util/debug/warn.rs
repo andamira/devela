@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code debug)]
 /// Emits a compile-time warning with a provided message.
-#[doc = crate::_doc_meta!{location("code/util/debug", macro const_warn)}]
-///
+#[doc = crate::_doc_meta!{
+    location("code/util/debug", macro const_warn),
+}]
 /// # Example
 /// ```
 /// # use devela::const_warn;
@@ -36,7 +37,7 @@
 // IMPROVE: use a proc-macro leveraging nightly feature proc_macro_diagnostics
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! const_warn {
+macro_rules! const_warn· {
     ($msg:literal $(,)?) => {
         $crate::const_warn!(if true, $msg);
     };
@@ -59,4 +60,4 @@ macro_rules! const_warn {
     };
 }
 #[doc(inline)]
-pub use const_warn;
+pub use const_warn· as const_warn;
