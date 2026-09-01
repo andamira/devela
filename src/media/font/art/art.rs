@@ -12,9 +12,9 @@ use crate::{Ascii, is, unwrap};
 #[doc = crate::_doc_meta!{
     location("media/font"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: FontArt = 24|192),
+    test_size_of(FontArt = 24|192),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: FontArt = 32|256),
+    test_size_of(FontArt = 32|256),
 }]
 /// The glyphs are arranged sequentially starting from `first_glyph`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)] //, Debug,

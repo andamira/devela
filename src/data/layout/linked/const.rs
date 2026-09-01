@@ -29,9 +29,9 @@ struct ConstListItem<'a, T: 'a> {
 #[doc = crate::_doc_meta!{
     location("data/layout/linked", struct ConstList),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ConstList<i32> = 8|64; niche !Option),
+    test_size_of(ConstList<i32> = 8|64; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ConstList<i32> = 16|128; niche !Option),
+    test_size_of(ConstList<i32> = 16|128; niche !Option),
 }]
 /// A safe, predictable, and lightweight structure, suitable where immutability
 /// is an asset and compile-time guarantees matter more than list manipulation.
@@ -115,9 +115,9 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
 #[doc = crate::_doc_meta!{
     location("data/layout/linked", struct ConstListIter),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ConstListIter<i32> = 4|32; niche Option),
+    test_size_of(ConstListIter<i32> = 4|32; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ConstListIter<i32> = 8|64; niche Option),
+    test_size_of(ConstListIter<i32> = 8|64; niche Option),
 }]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

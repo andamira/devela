@@ -12,9 +12,9 @@ use crate::{ScriptMachine, ScriptOp};
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ScriptOutcome<u32> = 16|128; niche Option),
+    test_size_of(ScriptOutcome<u32> = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ScriptOutcome<u32> = 32|256; niche Option),
+    test_size_of(ScriptOutcome<u32> = 32|256; niche Option),
 }]
 /// An outcome explains why control returned to the caller.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

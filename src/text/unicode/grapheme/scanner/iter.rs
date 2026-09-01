@@ -17,9 +17,9 @@ use crate::{
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeIter),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: GraphemeIter<'_, char> = 12|96; niche Option),
+    test_size_of(GraphemeIter<'_, char> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: GraphemeIter<'_, char> = 24|192; niche Option),
+    test_size_of(GraphemeIter<'_, char> = 24|192; niche Option),
 }]
 ///
 /// This is the ergonomic single-buffer counterpart to [`GraphemeScanner`][crate::GraphemeScanner].

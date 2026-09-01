@@ -12,9 +12,9 @@ use crate::{ConstInit, ValueKind};
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ScriptValue<u32> = 12|96; niche Option),
+    test_size_of(ScriptValue<u32> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ScriptValue<u32> = 16|128; niche Option),
+    test_size_of(ScriptValue<u32> = 16|128; niche Option),
 }]
 /// Values are small, copyable machine-level data.
 ///

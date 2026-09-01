@@ -9,9 +9,9 @@ crate::iter_strided! {
     #[doc = crate::_doc_meta!{
         location("data/access/iter", struct StridedIter),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(__: StridedIter<u32> = 20|160; niche Option),
+        test_size_of(StridedIter<u32> = 20|160; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: StridedIter<u32> = 40|320; niche Option),
+        test_size_of(StridedIter<u32> = 40|320; niche Option),
     }]
     /// This is the immutable counterpart of [`StridedIterMut`].
     ///
@@ -45,9 +45,9 @@ crate::iter_strided! {
     #[doc = crate::_doc_meta!{
         location("data/access/iter", struct StridedIterMut),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(__: StridedIterMut<u32> = 20|160; niche Option),
+        test_size_of(StridedIterMut<u32> = 20|160; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: StridedIterMut<u32> = 40|320; niche Option),
+        test_size_of(StridedIterMut<u32> = 40|320; niche Option),
     }]
     /// This is the mutable counterpart of [`StridedIter`].
     ///

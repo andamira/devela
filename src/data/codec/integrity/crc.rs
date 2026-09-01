@@ -13,7 +13,7 @@ use crate::{ConstInit, Hasher, is, whilst};
 /// [`u64`](#impl-Crc<u64>).
 #[doc = crate::_doc_meta!{
     location("data/codec", struct Crc),
-    test_size_of(__: Crc<u64> = 8|64; niche !Option),
+    test_size_of(Crc<u64> = 8|64; niche !Option),
 }]
 /// Each integer width uses its conventional bare CRC model:
 /// - `Crc<u8>`: CRC-8/SMBUS.

@@ -11,8 +11,8 @@
 /// Maps backend/native identifiers into stable, compact internal IDs.
 #[doc = crate::_doc_meta!{
     location("data/id/local", struct IdRegistry),
-    test_size_of(__: IdRegistry<i32, 16> = 132|1056; niche !Option),
-    test_size_of(__: IdRegistry<char, 16> = 132|1056; niche Option),
+    test_size_of(IdRegistry<i32, 16> = 132|1056; niche !Option),
+    test_size_of(IdRegistry<char, 16> = 132|1056; niche Option),
 }]
 /// Used throughout the library anywhere a subsystem needs to allocate
 /// a small set of stable identifiers from arbitrary external handles.

@@ -76,7 +76,7 @@ impl XImageStore for XSurface {
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11"),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: XSurfaceFrame<'_> = 16|128; niche Option),
+    test_size_of(XSurfaceFrame<'_> = 16|128; niche Option),
 }]
 ///
 /// This exposes the retained X11 presentation surface for one frame.

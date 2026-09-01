@@ -77,9 +77,9 @@ where
 #[doc = crate::_doc_meta! {
     location("ui/frame", struct UiOutputView),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: UiOutputView<u8, &str> = 24|192; niche Option),
+    test_size_of(UiOutputView<u8, &str> = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: UiOutputView<u8, &str> = 48|384; niche Option),
+    test_size_of(UiOutputView<u8, &str> = 48|384; niche Option),
 }]
 /// Borrows the frame record streams without taking ownership of their storage.
 ///

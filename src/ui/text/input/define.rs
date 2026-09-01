@@ -11,9 +11,9 @@
 #[doc = crate::_doc_meta!{
     location("ui/text", struct TextInput),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: TextInput<&mut [u8]> = 28|224; niche Option),
+    test_size_of(TextInput<&mut [u8]> = 28|224; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: TextInput<&mut [u8]> = 56|448; niche Option),
+    test_size_of(TextInput<&mut [u8]> = 56|448; niche Option),
 }]
 /// The storage type determines ownership:
 /// - `TextInput<[u8; N]>` owns inline storage.

@@ -9,7 +9,7 @@ use crate::TimeSpan;
 /// Controls presentation cadence independently of simulation.
 #[doc = crate::_doc_meta!{
     location("run/time", struct RunPacer),
-    test_size_of(__: RunPacer<u32> = 8|64; niche !Option)
+    test_size_of(RunPacer<u32> = 8|64; niche !Option)
 }]
 /// `RunPacer` accumulates elapsed span and decides when presentation is due.
 #[derive(Clone, Copy, Debug, PartialEq)]

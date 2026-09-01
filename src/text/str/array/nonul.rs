@@ -19,7 +19,7 @@ const NUL_CHAR: char = '\0';
 /// A null-terminated UTF-8 string with up to `u8::MAX` bytes capacity.
 #[doc = crate::_doc_meta!{
     location("text/str", struct StringNonNul),
-    test_size_of(__: StringNonNul<15> = 15|120; niche !Option),
+    test_size_of(StringNonNul<15> = 15|120; niche !Option),
 }]
 /// Suited for write-once or protocol-level text where the length is rarely queried.
 /// Uses one less byte of storage, with length determined by scanning.

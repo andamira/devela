@@ -50,9 +50,9 @@ pub trait DebugExt {
 #[doc = crate::_doc_meta!{
     location("text/fmt", struct DebugWith),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: DebugWith<()> = 8|64; niche Option),
+    test_size_of(DebugWith<()> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: DebugWith<()> = 16|128; niche Option),
+    test_size_of(DebugWith<()> = 16|128; niche Option),
 }]
 pub struct DebugWith<'a, T: DebugExt + ?Sized> {
     value: &'a T,

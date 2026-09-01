@@ -10,9 +10,9 @@ use crate::{TermColor, TermColors, TermStyle, Termel};
 #[doc = crate::_doc_meta!{
     location("sys/os/term/grid"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: TermPen<devela::TermStyle, devela::TermColors> = 12|96),
+    test_size_of(TermPen<devela::TermStyle, devela::TermColors> = 12|96),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: TermPen<devela::TermStyle, devela::TermColors> = 16|128),
+    test_size_of(TermPen<devela::TermStyle, devela::TermColors> = 16|128),
 }]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

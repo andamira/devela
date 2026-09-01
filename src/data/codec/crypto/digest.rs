@@ -9,7 +9,7 @@ use crate::{is, whilst};
 /// A fixed-size message digest.
 #[doc = crate::_doc_meta!{
     location("data/codec/crypto", struct Digest),
-    test_size_of(__: Digest<32> = 32|256; niche !Option)
+    test_size_of(Digest<32> = 32|256; niche !Option)
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[must_use]

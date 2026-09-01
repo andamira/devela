@@ -10,9 +10,9 @@ use crate::TermSize;
 #[doc = crate::_doc_meta!{
     location("sys/os/term/backend"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: TermRenderer<&mut[u8]> = 36|288),
+    test_size_of(TermRenderer<&mut[u8]> = 36|288),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: TermRenderer<&mut[u8]> = 48|384),
+    test_size_of(TermRenderer<&mut[u8]> = 48|384),
 }]
 /// `TermRenderer<B>` treats `B` as initialized, contiguous byte storage through
 /// `AsRef<[u8]>` and `AsMut<[u8]>`. The renderer owns the active byte length,

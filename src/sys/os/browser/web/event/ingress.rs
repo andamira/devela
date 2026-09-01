@@ -11,13 +11,13 @@ use crate::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: WebEventIngress<0> = 8|64),
+    test_size_of(WebEventIngress<0> = 8|64),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: WebEventIngress<1> = 68|544; niche Option),
+    test_size_of(WebEventIngress<1> = 68|544; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: WebEventIngress<0> = 16|128),
+    test_size_of(WebEventIngress<0> = 16|128),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: WebEventIngress<1> = 80|640; niche Option),
+    test_size_of(WebEventIngress<1> = 80|640; niche Option),
 }]
 /// Receives browser callback payloads, translates them into normalized
 /// [`Event`] values, and stores them until polled by a runtime or UI surface.

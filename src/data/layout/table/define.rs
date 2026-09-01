@@ -10,9 +10,9 @@ use crate::{Array, TableCoordIter, TableLayout, TableShape};
 #[doc = crate::_doc_meta!{
     location("data/layout/table", struct Table),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__:Table<[u8; 6]> = 28|224; niche !Option),
+    test_size_of(Table<[u8; 6]> = 28|224; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__:Table<[u8; 6]> = 48|384; niche !Option),
+    test_size_of(Table<[u8; 6]> = 48|384; niche !Option),
 }]
 /// A table interprets a two-dimensional [`Array`] with axes `[row, column]`.
 ///

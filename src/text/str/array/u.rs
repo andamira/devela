@@ -36,7 +36,7 @@ macro_rules! impl_str_u {
         /// A UTF-8 string with fixed capacity that stores length explicitly.
         #[doc = crate::_doc_meta!{
             location("text/str", struct $name),
-            test_size_of(__: $name<15> = 16|128; niche Option),
+            test_size_of($name<15> = 16|128; niche Option),
         }]
         /// Suited for frequently inspected or manipulated text where constant-time
         /// length access is important. Uses extra space to provide O(1) length operations.

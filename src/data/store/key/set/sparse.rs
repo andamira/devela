@@ -34,9 +34,9 @@ pub enum SparseSetError {
 #[doc = crate::_doc_meta!{
     location("data/store/key/set", struct SparseSetArray),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: SparseSetArray<8, 8> = 68|544; niche !Option),
+    test_size_of(SparseSetArray<8, 8> = 68|544; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: SparseSetArray<8, 8> = 136|1088; niche !Option),
+    test_size_of(SparseSetArray<8, 8> = 136|1088; niche !Option),
 }]
 /// Values are `usize`s in the range `0..SPARSE`.
 ///

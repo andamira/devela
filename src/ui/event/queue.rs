@@ -13,13 +13,13 @@ use crate::{BufferRingU8, ConstInit, Event, MismatchedCapacity};
 #[doc = crate::_doc_meta!{
     location("ui/event", struct EventQueue),
     #[cfg(taret_pointer_width = "32")]
-    test_size_of(__: EventQueue<1> = 64|512),
+    test_size_of(EventQueue<1> = 64|512),
     #[cfg(taret_pointer_width = "32")]
-    test_size_of(__: EventQueue<4> = 244|2112),
+    test_size_of(EventQueue<4> = 244|2112),
     #[cfg(taret_pointer_width = "64")]
-    test_size_of(__: EventQueue<1> = 72|576),
+    test_size_of(EventQueue<1> = 72|576),
     #[cfg(taret_pointer_width = "64")]
-    test_size_of(__: EventQueue<4> = 264|2112),
+    test_size_of(EventQueue<4> = 264|2112),
 }]
 /// Stores normalized events produced by a backend before they are consumed
 /// by an application, UI, terminal, or runtime loop.

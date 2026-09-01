@@ -12,7 +12,7 @@ map! {
     /// Example fixed-capacity map with `u8` keys and const operations.
     #[doc = crate::_doc_meta!{
         location("data/store/key/map", struct MapFixedConstU8Example),
-        test_size_of(__: MapFixedConstU8Example<u8, u32, 4> = 20|160; niche !Option),
+        test_size_of(MapFixedConstU8Example<u8, u32, 4> = 20|160; niche !Option),
     }]
     /// Uses `u8::MIN` and `u8::MAX` as the empty and tombstone markers,
     /// and [`HasherFx`][crate::HasherFx] as the default hasher.
@@ -34,7 +34,7 @@ map! {
     /// Example fixed-capacity runtime map with `u8` keys.
     #[doc = crate::_doc_meta!{
         location("data/store/key/map", struct MapFixedU8Example),
-        test_size_of(__: MapFixedU8Example<u8, u32, 4> = 24|192; niche !Option),
+        test_size_of(MapFixedU8Example<u8, u32, 4> = 24|192; niche !Option),
     }]
     /// Unlike [`MapFixedConstU8Example`], its empty and tombstone markers
     /// are stored in each map value and its operations need not be const.
@@ -56,7 +56,7 @@ map! {
     /// Example fixed-capacity map keyed by Rust types.
     #[doc = crate::_doc_meta!{
         location("data/store/key/map", struct MapFixedTypeIdExample),
-        test_size_of(__: MapFixedTypeIdExample<devela::TypeId, u32, 4> = 112|896; niche !Option),
+        test_size_of(MapFixedTypeIdExample<devela::TypeId, u32, 4> = 112|896; niche !Option),
     }]
     /// Type identities are represented by 64-bit hashes of [`TypeId`][crate::TypeId].
     /// It extends the runtime map with type-oriented accessors.

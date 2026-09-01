@@ -10,9 +10,9 @@ use crate::{Infallible, InfallibleResult, NotEnoughElements, RandQualities, Rand
 #[doc = crate::_doc_meta!{
     location("num/prob/rand", struct RandFake),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: RandFake<4> = 36; niche !Option),
+    test_size_of(RandFake<4> = 36; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RandFake<4> = 40; niche !Option),
+    test_size_of(RandFake<4> = 40; niche !Option),
 }]
 /// `RandFake` replays caller-provided `u64` values so
 /// random-dependent code can be tested with a known stream.

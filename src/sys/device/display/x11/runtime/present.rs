@@ -14,9 +14,9 @@ use crate::{
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: XPresent<'_> = 24|192),
+    test_size_of(XPresent<'_> = 24|192),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: XPresent<'_> = 40|320),
+    test_size_of(XPresent<'_> = 40|320),
 }]
 /// This carries an already encoded pixel raster together with the storage
 /// metadata needed to adapt its scanlines to the active X11 image layout.

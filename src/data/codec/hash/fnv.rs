@@ -17,7 +17,7 @@ pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
 /// [usize](#impl-HasherFnv<usize>).
 #[doc = crate::_doc_meta!{
     location("data/codec/hash", struct HasherFnv),
-    test_size_of(__: HasherFnv<u64> = 8|64; niche !Option),
+    test_size_of(HasherFnv<u64> = 8|64; niche !Option),
 }]
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.
 ///

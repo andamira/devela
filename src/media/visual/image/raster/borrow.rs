@@ -19,9 +19,9 @@ use crate::{RasterView, RasterViewBytes, RasterViewPacked};
 #[doc = crate::_doc_meta!{
     location("media/visual/image/raster", struct RasterSlice),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: RasterSlice<u32, &[u32]> = 28|224),
+    test_size_of(RasterSlice<u32, &[u32]> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RasterSlice<u32, &[u32]> = 40|320),
+    test_size_of(RasterSlice<u32, &[u32]> = 40|320),
 }]
 /// This is the concrete borrowed form of [`RasterView`].
 ///
@@ -162,9 +162,9 @@ impl<T: RasterSamplePacked, B: AsRef<[T]>> RasterViewPacked for RasterSlice<T, B
 #[doc = crate::_doc_meta!{
     location("media/visual/image/raster", struct RasterByteSlice),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: RasterByteSlice<&[u8]> = 28|224),
+    test_size_of(RasterByteSlice<&[u8]> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RasterByteSlice<&[u8]> = 40|320),
+    test_size_of(RasterByteSlice<&[u8]> = 40|320),
 }]
 /// This is the concrete borrowed form of [`RasterViewBytes`].
 ///

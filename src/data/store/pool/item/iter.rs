@@ -10,9 +10,9 @@ use crate::{IteratorExactSize, IteratorFused, Mem, is};
 #[doc = crate::_doc_meta!{
     location("data/store/pool", struct PoolIter),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: PoolIter<&[Option<char>]> = 12|96),
+    test_size_of(PoolIter<&[Option<char>]> = 12|96),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: PoolIter<&[Option<char>]> = 24|192),
+    test_size_of(PoolIter<&[Option<char>]> = 24|192),
 }]
 /// Returned by [`pool!`][crate::pool!]'s methods [`iter`] and [`iter_mut`],
 /// and by reference iteration.

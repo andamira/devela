@@ -26,9 +26,9 @@ use ::devela::{Deref, DerefMut};
 #[doc = _doc_meta!{
     location("sys/mem", struct ScopeGuard),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ScopeGuard<(), fn((), &()), ()> = 8|64),
+    test_size_of(ScopeGuard<(), fn((), &()), ()> = 8|64),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ScopeGuard<(), fn((), &()), ()> = 16|128),
+    test_size_of(ScopeGuard<(), fn((), &()), ()> = 16|128),
 }]
 /// - The callback can take both a value and a state.
 /// - The state can be updated dynamically during the guard's lifetime.

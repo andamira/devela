@@ -10,9 +10,9 @@ use crate::{IteratorFused, PhantomData, slice};
 #[doc = crate::_doc_meta!{
     location("text/unicode/scalar", struct CharIter),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: CharIter<&[u8]> = 12|96; niche Option),
+    test_size_of(CharIter<&[u8]> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: CharIter<&[u8]> = 24|192; niche Option),
+    test_size_of(CharIter<&[u8]> = 24|192; niche Option),
 }]
 /// Implements `Iterator<Item = char>` by default, but provides specialized methods
 /// for other scalar types.

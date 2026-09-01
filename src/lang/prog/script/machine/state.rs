@@ -12,9 +12,9 @@ use ScriptError as Error;
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: ScriptMachine<u32, 4> = 56|448; niche Option),
+    test_size_of(ScriptMachine<u32, 4> = 56|448; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: ScriptMachine<u32, 4> = 80|640; niche Option),
+    test_size_of(ScriptMachine<u32, 4> = 80|640; niche Option),
 }]
 /// The machine stores suspended execution state independently of the
 /// program being executed. A host may therefore retain a machine between

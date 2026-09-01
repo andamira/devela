@@ -129,8 +129,8 @@ pub use interval· as interval;
 /// A range of values with `lower` and `upper` [`Bound`]s.
 #[doc = crate::_doc_meta!{
     location("num/quant"),
-    test_size_of(__: Interval<u8> = 4|32),
-    test_size_of(__: Interval<i32> = 16|128),
+    test_size_of(Interval<u8> = 4|32),
+    test_size_of(Interval<i32> = 16|128),
 }]
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,

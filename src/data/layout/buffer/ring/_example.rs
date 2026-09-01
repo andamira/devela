@@ -10,7 +10,7 @@ buffer_ring!(
     /// A static ring buffer over contiguous storage, made with [`buffer_ring!`].
     #[doc = crate::_doc_meta!{
         location("data/layout/buffer", struct BufferRingStaticExample),
-        test_size_of(__: BufferRingStaticExample<i8, [i8; 10]> = 12|96; niche Option),
+        test_size_of(BufferRingStaticExample<i8, [i8; 10]> = 12|96; niche Option),
     }]
     /// # Methods
     ///

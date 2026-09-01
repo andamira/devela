@@ -15,13 +15,13 @@ buffer_linear!(
     /// A static linear buffer over contiguous storage, made with [`buffer_linear!`].
     #[doc = crate::_doc_meta!{
         location("data/layout/buffer", struct BufferLinearStaticExample),
-        test_size_of(__: BufferLinearStaticExample<(), [(); 8]> = 1|8; niche Option),
-        test_size_of(__: BufferLinearStaticExample<u8, [u8; 8]> = 9|72; niche Option),
-        test_size_of(__: BufferLinearStaticExample<i32, [i32; 8]> = 36|288; niche Option),
+        test_size_of(BufferLinearStaticExample<(), [(); 8]> = 1|8; niche Option),
+        test_size_of(BufferLinearStaticExample<u8, [u8; 8]> = 9|72; niche Option),
+        test_size_of(BufferLinearStaticExample<i32, [i32; 8]> = 36|288; niche Option),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(__: BufferLinearStaticExample<char, &[i32]> = 12|96; niche Option),
+        test_size_of(BufferLinearStaticExample<char, &[i32]> = 12|96; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: BufferLinearStaticExample<char, &[i32]> = 24|192; niche Option),
+        test_size_of(BufferLinearStaticExample<char, &[i32]> = 24|192; niche Option),
     }]
     ///
     /// # Methods
@@ -261,9 +261,9 @@ buffer_linear!(
     #[doc = crate::_doc_meta!{
         location("data/layout/buffer", struct BufferLinearAllocExample),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(__: BufferLinearAllocExample<char, &[i32]> = 8|64; niche Option),
+        test_size_of(BufferLinearAllocExample<char, &[i32]> = 8|64; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: BufferLinearAllocExample<char, &[i32]> = 16|128; niche Option),
+        test_size_of(BufferLinearAllocExample<char, &[i32]> = 16|128; niche Option),
     }]
     /// # Methods
     ///

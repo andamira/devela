@@ -15,7 +15,7 @@ use crate::{GraphemeMachine, GraphemeScanner, StringU8};
 #[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringU8`]."]]
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeU8),
-    test_size_of(__: GraphemeU8<15> = 16|128; niche Option),
+    test_size_of(GraphemeU8<15> = 16|128; niche Option),
 }]
 /// ## Methods
 ///

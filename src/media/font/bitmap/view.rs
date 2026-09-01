@@ -9,9 +9,9 @@ use crate::{CharIter, Debug, FmtResult, Formatter, Region2, Slice, is, read_at, 
 #[doc = crate::_doc_meta!{
     location("media/font"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: FontBitmapView = 44|352),
+    test_size_of(FontBitmapView = 44|352),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: FontBitmapView = 64|512),
+    test_size_of(FontBitmapView = 64|512),
 }]
 /// Every glyph shares the same dimensions and metrics. Unicode scalar values
 /// are stored in sorted order and map one-to-one to glyph bitmap records.
@@ -218,9 +218,9 @@ impl<'a> FontBitmapView<'a> {
 #[doc = crate::_doc_meta!{
     location("media/font"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: GlyphBitmapView = 20|160),
+    test_size_of(GlyphBitmapView = 20|160),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: GlyphBitmapView = 32|256),
+    test_size_of(GlyphBitmapView = 32|256),
 }]
 /// Rows run from top to bottom. Pixels within each row run from left to right,
 /// beginning at the most-significant bit of each byte.

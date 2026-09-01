@@ -7,7 +7,7 @@
 /// EAN barcode codecs selected by digit count.
 #[doc = crate::_doc_meta!{
     location("data/codec/symbol", struct Ean),
-    test_size_of(__: Ean::<13> = 0),
+    test_size_of(Ean::<13> = 0),
 }]
 /// `N` identifies a supported standardized EAN form.
 ///

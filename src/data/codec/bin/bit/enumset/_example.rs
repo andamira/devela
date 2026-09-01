@@ -18,9 +18,9 @@ enumset! {
     #[doc = crate::_doc_meta!{
         location("data/codec/bin", enum EnumExample),
         #[cfg(target_pointer_width = "32")]
-        test_size_of(__: EnumExample<()> = 20|160; niche Option),
+        test_size_of(EnumExample<()> = 20|160; niche Option),
         #[cfg(target_pointer_width = "64")]
-        test_size_of(__: EnumExample<()> = 32|256; niche Option),
+        test_size_of(EnumExample<()> = 32|256; niche Option),
     }]
     /// It has an associated set [`EnumSetExample`].
     #[allow(dead_code)]

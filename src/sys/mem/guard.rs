@@ -32,9 +32,9 @@ thread_local! {
 #[doc = _doc_meta!{
     location("sys/mem", struct CurrentGuard),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: CurrentGuard<u64> = 8|64; niche Option),
+    test_size_of(CurrentGuard<u64> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: CurrentGuard<u64> = 16|128; niche Option),
+    test_size_of(CurrentGuard<u64> = 16|128; niche Option),
 }]
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
@@ -94,7 +94,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 /// A marker object representing the current instance of a type `T`.
 #[doc = _doc_meta!{
     location("sys/mem", struct Current),
-    test_size_of(__: Current<u64> = 0),
+    test_size_of(Current<u64> = 0),
 }]
 /// This struct does not hold any actual value but instead allows access to
 /// a globally tracked instance of `T`, typically managed through `CurrentGuard`.

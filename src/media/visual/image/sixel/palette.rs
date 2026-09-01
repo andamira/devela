@@ -10,13 +10,13 @@ use crate::{NotEnoughSpace, SixelColor};
 #[doc = crate::_doc_meta!{
     location("media/visual/image", struct SixelPalette),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: SixelPalette<0> = 4|32; niche !Option),
+    test_size_of(SixelPalette<0> = 4|32; niche !Option),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: SixelPalette<255> = 1028|8192; niche Option),
+    test_size_of(SixelPalette<255> = 1028|8192; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: SixelPalette<0> = 8|64; niche !Option),
+    test_size_of(SixelPalette<0> = 8|64; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: SixelPalette<255> = 1032|8256; niche Option),
+    test_size_of(SixelPalette<255> = 1032|8256; niche Option),
 }]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SixelPalette<const CAP: usize> {

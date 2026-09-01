@@ -11,9 +11,9 @@ use crate::{Rc, RefCell, Vec, vec_ as vec};
 #[doc = crate::_doc_meta!{
     location("data/layout/array", enum VecChunk),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: VecChunk<i32> = 16|128; niche Option),
+    test_size_of(VecChunk<i32> = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: VecChunk<i32> = 32|256; niche Option),
+    test_size_of(VecChunk<i32> = 32|256; niche Option),
 }]
 /// # Overview
 /// `VecChunk<A>` is an immutable data structure that allows O(1) complexity for append and

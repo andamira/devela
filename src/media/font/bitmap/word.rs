@@ -10,9 +10,9 @@ use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, unwrap, whilst};
 #[doc = crate::_doc_meta!{
     location("media/font"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: FontBitmapWord<()> = 28|224),
+    test_size_of(FontBitmapWord<()> = 28|224),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: FontBitmapWord<()> = 48|384),
+    test_size_of(FontBitmapWord<()> = 48|384),
 }]
 /// Glyph bits are stored row-major from the least-significant bit:
 /// left to right, then top to bottom.

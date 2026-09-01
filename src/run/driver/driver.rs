@@ -16,9 +16,9 @@ use crate::{
 #[doc = crate::_doc_meta!{
     location("run", struct RunDriver),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(__: RunDriver<()> = 12|96; niche Option),
+    test_size_of(RunDriver<()> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(__: RunDriver<()> = 16|128; niche Option),
+    test_size_of(RunDriver<()> = 16|128; niche Option),
 }]
 /// `RunDriver` owns a [`Runtime<T>`] and advances it one step at a time.
 /// For each step it:
