@@ -18,61 +18,60 @@
 }]
 /// It can also implement `From` and `TryFrom` traits between them.
 ///
-/** # Examples
-```
-# use devela::define_error;
-// Define simple individual error types
-define_error! {
-    individual:
-    /// A basic error with a code
-    pub struct ErrorCode(pub u32);
-    DOC_ERROR_CODE = "An error with a numeric code",
-    self + f => write!(f, "Error code: {}", self.0)
-}
-define_error! {
-    individual:
-    /// An error with message details
-    pub struct ErrorDetails {
-        pub code: u32,
-        pub message: &'static str,
-    }
-    DOC_ERROR_DETAILS = "An error with code and message details",
-    self + f => write!(f, "Error {}: {}", self.code, self.message)
-}
-
-// Define a composite error
-define_error! {
-    composite: fmt(f)
-    /// Container for multiple error types
-    pub enum CompositeError {
-        DOC_ERROR_CODE: +const CodeVariant(code|0: u32) => ErrorCode(*code),
-        DOC_ERROR_DETAILS: // ← this variant won't have const conversion
-            DetailsVariant { code: u32, message: &'static str } =>
-                ErrorDetails { code: *code, message: *message }
-    }
-}
-
-// Create individual errors
-let code_error = ErrorCode(42);
-let details_error = ErrorDetails {
-    code: 100,
-    message: "Example error",
-};
-
-// Automatic conversion to composite error
-let composite_from_code: CompositeError = code_error.into();
-let composite_from_details: CompositeError = details_error.into();
-
-// Try to convert back (only works for matching variants)
-match ErrorCode::try_from(composite_from_code) {
-    Ok(original) => println!("Successfully converted back: {}", original),
-    Err(_) => println!("Conversion failed - wrong variant"),
-}
-
-// Const conversion available for +const variants
-const CONST_ERROR: CompositeError = CompositeError::from_error_code(ErrorCode(99));
-```
-**/
+/// # Examples
+/// ```
+/// # use devela::define_error;
+/// // Define simple individual error types
+/// define_error! {
+///     individual:
+///     /// A basic error with a code
+///     pub struct ErrorCode(pub u32);
+///     DOC_ERROR_CODE = "An error with a numeric code",
+///     self + f => write!(f, "Error code: {}", self.0)
+/// }
+/// define_error! {
+///     individual:
+///     /// An error with message details
+///     pub struct ErrorDetails {
+///         pub code: u32,
+///         pub message: &'static str,
+///     }
+///     DOC_ERROR_DETAILS = "An error with code and message details",
+///     self + f => write!(f, "Error {}: {}", self.code, self.message)
+/// }
+///
+/// // Define a composite error
+/// define_error! {
+///     composite: fmt(f)
+///     /// Container for multiple error types
+///     pub enum CompositeError {
+///         DOC_ERROR_CODE: +const CodeVariant(code|0: u32) => ErrorCode(*code),
+///         DOC_ERROR_DETAILS: // ← this variant won't have const conversion
+///             DetailsVariant { code: u32, message: &'static str } =>
+///                 ErrorDetails { code: *code, message: *message }
+///     }
+/// }
+///
+/// // Create individual errors
+/// let code_error = ErrorCode(42);
+/// let details_error = ErrorDetails {
+///     code: 100,
+///     message: "Example error",
+/// };
+///
+/// // Automatic conversion to composite error
+/// let composite_from_code: CompositeError = code_error.into();
+/// let composite_from_details: CompositeError = details_error.into();
+///
+/// // Try to convert back (only works for matching variants)
+/// match ErrorCode::try_from(composite_from_code) {
+///     Ok(original) => println!("Successfully converted back: {}", original),
+///     Err(_) => println!("Conversion failed - wrong variant"),
+/// }
+///
+/// // Const conversion available for +const variants
+/// const CONST_ERROR: CompositeError = CompositeError::from_error_code(ErrorCode(99));
+/// ```
 // NOTES:
 // - alternative sections for tuple-struct and field-struct variants are indicated in the margin.
 // - we are employing the trick `$(;$($_a:lifetime)?)?` for the optional semicolon terminator,
@@ -110,8 +109,9 @@ macro_rules! define_error· {
         $(( $($e_vis:vis $e_ty:ty),+ $(,)? ))? $(;$($_a:lifetime)?)?              // tuple-struct↓
         $({ $($(#[$f_attr:meta])* $f_vis:vis $f_name:ident: $f_ty:ty),+ $(,)? })? // field-struct↑
         $($(#[$last_attributes:meta])*,)?
-        $(+location: $($location:literal)+ ,)?
-        $(+tag: $($tag:expr)+ ,)?
+        $(+location: $location:literal ,)?
+        $(+test_size_of($(#[$size_attr:meta])* $size:literal $($size_rest:tt)*),)*
+        $(+tag: $tag:expr ,)?
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -119,11 +119,17 @@ macro_rules! define_error· {
         // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms)
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
-        $( $(#[doc = $tag])+ )?
+        $( #[doc = $tag] )?
         #[doc = $crate::_tags!(error)] // IMPROVE: make optional
-        #[doc = $DOC_NAME!()]
-        $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
         $(#[$first_attributes])*
+        #[doc = $DOC_NAME!()]
+        #[doc = $crate::_doc_meta! {
+            $(location($location, struct $struct_name),)?
+            $(
+                $(#[$size_attr])*
+                test_size_of($struct_name = $size $($size_rest)*),
+            )*
+        }]
         $($(#[$last_attributes])*)?
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $struct_vis struct $struct_name
@@ -172,7 +178,8 @@ macro_rules! define_error· {
     // - From/TryFrom implementations for each individual error type
     // - Optional const conversion methods for variants marked with +const
     composite: fmt($fmt:ident)
-        $(+location: $($location:literal)+ ,)?
+        $(+location: $location:literal ,)?
+        $(+test_size_of($(#[$size_attr:meta])* $size:literal $($size_rest:tt)*),)*
         $(+tag: $tag:expr ,)?
         $(#[$enum_attr:meta])*
         $vis:vis enum $composite_error_name:ident { $(
@@ -191,7 +198,13 @@ macro_rules! define_error· {
         $(#[doc = $tag])?
         #[doc = $crate::_tags!(error_composite)] // IMPROVE: make optional
         $(#[$enum_attr])*
-        $(#[doc = $crate::_doc_location![$($location)?]])? // canonical location
+        #[doc = $crate::_doc_meta! {
+            $(location($location, enum $composite_error_name),)?
+            $(
+                $(#[$size_attr])*
+                test_size_of($composite_error_name = $size $($size_rest)*),
+            )*
+        }]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?

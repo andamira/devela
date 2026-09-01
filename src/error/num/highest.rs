@@ -7,12 +7,17 @@ use crate::Sign;
 
 #[doc = crate::_tags!(num result)]
 /// A numeric-related result.
-#[doc = crate::_doc_meta!{location("num")}]
+#[doc = crate::_doc_meta!{
+    location("num", type NumResult),
+}]
 pub type NumResult<T> = crate::Result<T, NumError>;
 
 #[doc = crate::_tags!(num error_composite)]
 /// A numeric-related error.
-#[doc = crate::_doc_meta!{location("num")}]
+#[doc = crate::_doc_meta!{
+    location("num", enum NumError),
+    test_size_of(NumError = 1|8; niche Option),
+}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum NumError {

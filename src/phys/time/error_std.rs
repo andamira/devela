@@ -17,6 +17,8 @@ use crate::{_tags, Duration, StdSystemTimeError, define_error};
 define_error! { individual:
     pub struct SystemTimeError(Duration);
     +location: "phys/time",
+    +test_size_of(#[cfg(target_pointer_width = "32")] 12|96; niche Option),
+    +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
     +tag: _tags!(time),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from `duration_since` and `elapsed` on `SystemTime`.\n\n
@@ -49,9 +51,12 @@ mod full_composite {
     }
 
     define_error! { composite: fmt(f)
-        #[doc = _tags!(time)]
+        +location: "phys/time",
+        +test_size_of(#[cfg(target_pointer_width = "32")] 20|160; niche Option),
+        +test_size_of(#[cfg(target_pointer_width = "64")] 40|320; niche Option),
+        +tag: _tags!(time),
+
         /// A time-related composite error.
-        #[doc = crate::_doc_meta!{location("phys/time/source")}]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
         #[non_exhaustive]
         pub enum TimeError {

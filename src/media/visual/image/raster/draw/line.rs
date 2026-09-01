@@ -10,6 +10,9 @@ use crate::{IteratorFused, Position2, RasterElement, RasterGrid, is, lets, unwra
 /// An iterator over the covered cells of an aliased raster line.
 #[doc = crate::_doc_meta!{
     location("media/visual/image/raster/draw", struct RasterLineIter),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(RasterLineIter = 68|544; niche Option),
+    #[cfg(target_pointer_width = "64")]
     test_size_of(RasterLineIter = 72|576; niche Option),
 }]
 /// `RasterLineIter` rasterizes a one-cell-wide line

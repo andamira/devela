@@ -51,7 +51,11 @@ pub use bare::*;
 ///
 /// // The array is stored in the heap.
 /// #[cfg(feature = "alloc")]
-/// assert_eq![8, size_of::<MyStructure::<u8, devela::Boxed, 100>>()];
+/// {
+///     #[cfg(target_pointer_width = "32")] let stack_size = 4;
+///     #[cfg(target_pointer_width = "64")] let stack_size = 8;
+///     assert_eq![stack_size, size_of::<MyStructure::<u8, devela::Boxed, 100>>()];
+/// }
 /// ```
 pub trait Storage {
     /// The stored associated type.
