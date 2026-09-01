@@ -16,8 +16,9 @@
 // #[cfg(not(doctest))]
 #[doc = crate::_tags!(internal)]
 /// Emits a location annotation for documentation.
-#[doc = crate::_doc_meta!{location("yard", macro _doc_location)}]
-///
+#[doc = crate::_doc_meta!{
+    location("yard", macro _doc_location),
+}]
 /// Location is usually the nearest publicly documented parent,
 /// instead of the conceptual private source module of origin.
 ///

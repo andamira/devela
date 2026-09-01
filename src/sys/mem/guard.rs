@@ -18,7 +18,7 @@ use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name, map,
     transmute,
 };
-::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
+::devela::_use_or_shim![_doc_meta, _doc_vendor, _tags];
 
 // Stores the current pointers for concrete types.
 map![typeid KeyCurrentMap];
@@ -29,8 +29,13 @@ thread_local! {
 
 #[doc = _tags!(guard)]
 /// A guard that temporarily sets a global current ptr for `T`, restoring the old one on drop.
-#[doc = _doc_location!("sys/mem")]
-///
+#[doc = _doc_meta!{
+    location("sys/mem", struct CurrentGuard),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: CurrentGuard<u64> = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: CurrentGuard<u64> = 16|128; niche Option),
+}]
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
 /// This is useful for tracking the current instance of a type within a thread.
@@ -87,8 +92,10 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 
 #[doc = _tags!(guard)]
 /// A marker object representing the current instance of a type `T`.
-#[doc = _doc_location!("sys/mem")]
-///
+#[doc = _doc_meta!{
+    location("sys/mem", struct Current),
+    test_size_of(__: Current<u64> = 0),
+}]
 /// This struct does not hold any actual value but instead allows access to
 /// a globally tracked instance of `T`, typically managed through `CurrentGuard`.
 ///

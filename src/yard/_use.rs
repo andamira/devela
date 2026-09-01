@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(internal)]
 /// Imports `from_utf8` and `from_utf8_mut` with a SIMD version, if available.
-#[doc = crate::_doc_meta!{location("yard", macro _use)}]
-///
+#[doc = crate::_doc_meta!{
+    location("yard", macro _use),
+}]
 /// # Features
 /// Uses the `dep_simdutf8` feature if enabled:
 /// - `compat` mode is an exact replacement of core's API.
@@ -60,8 +61,9 @@ pub use _use· as _use;
 
 #[doc = crate::_tags!(internal)]
 /// Imports known helpers or provides compatibility shims.
-#[doc = crate::_doc_meta!{location("yard", macro _use_or_shim)}]
-///
+#[doc = crate::_doc_meta!{
+    location("yard", macro _use_or_shim),
+}]
 /// Used by dual-purpose source files that must compile both inside devela
 /// and as standalone examples.
 ///
@@ -82,6 +84,7 @@ macro_rules! _use_or_shim· {
     ($($name:ident),+ $(,)?) => {
         $( $crate::_use_or_shim![%($) $name]; )+
     };
+
     (%($_d:tt) _tags) => {
         $crate::_use_or_shim![%shim _tags => { ($_d($tt:tt)*) => {""} } ];
         $crate::_use_or_shim![%import _tags];
@@ -94,6 +97,11 @@ macro_rules! _use_or_shim· {
         $crate::_use_or_shim![%shim _doc_location => { ($_d($tt:tt)*) => {""} } ];
         $crate::_use_or_shim![%import _doc_location];
     };
+    (%($_d:tt) _doc_meta) => {
+        $crate::_use_or_shim![%shim _doc_meta => { ($_d($tt:tt)*) => {""} } ];
+        $crate::_use_or_shim![%import _doc_meta];
+    };
+
     // imports the real macro
     (%import $name:ident) => {
         #[$crate::compile(env(__DEVELA_MEMBER))]
@@ -109,7 +117,7 @@ macro_rules! _use_or_shim· {
     (% $name:ident) => {
         compile_error!(concat!(
             "Unsupported helper for `_use_or_shim!`: `", stringify!($name),
-            "`. Supported names: `_doc`, `_doc_location`, `_tags`."
+            "`. Supported names: `_doc_location`, `_doc_meta`, `_doc_vendor`, `_tags`."
         ));
     };
 }

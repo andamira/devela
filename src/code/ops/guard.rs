@@ -19,12 +19,17 @@
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
 use ::devela::{Deref, DerefMut};
-::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
+::devela::_use_or_shim![_doc_meta, _doc_vendor, _tags];
 
 #[doc = _tags!(guard)]
 /// A general-purpose RAII guard that executes a callback on drop.
-#[doc = _doc_location!("code/ops", struct ScopeGuard)]
-///
+#[doc = _doc_meta!{
+    location("sys/mem", struct ScopeGuard),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(__: ScopeGuard<(), fn((), &()), ()> = 8|64),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(__: ScopeGuard<(), fn((), &()), ()> = 16|128),
+}]
 /// - The callback can take both a value and a state.
 /// - The state can be updated dynamically during the guard's lifetime.
 /// - The guard can be dismissed, preventing the callback from executing on drop.

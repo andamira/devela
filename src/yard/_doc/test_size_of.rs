@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(internal assert mem)]
 /// Emits compact rustdoc metadata for a type's checked stack size.
-#[doc = crate::_doc_meta!{location("yard", macro _doc_test_size_of)}]
-///
+#[doc = crate::_doc_meta!{
+    location("yard", macro _doc_test_size_of),
+}]
 /// The visible fragment shows the expected `size_of::<T>()` value.
 /// A hidden doctest calls [`test_size_of!`][crate::test_size_of]
 /// to verify the layout during doctests.

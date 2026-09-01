@@ -18,13 +18,14 @@
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
 use ::devela::{CryptoError, impl_trait, is, unwrap, whilst};
-::devela::_use_or_shim![_doc_location, _doc_vendor, _tags];
+::devela::_use_or_shim![_doc_meta, _doc_vendor, _tags];
 
 #[doc = _tags!(crypto hash)]
 /// A generated one-time password code.
-#[doc = _doc_location!("data/codec/crypto", struct Otp)]
-// TODO: _doc_meta + test_size_of
-///
+#[doc = _doc_meta!{
+    location("data/codec/crypto", struct Otp),
+    test_size_of(Otp = 8|64; niche !Option),
+}]
 /// Provides HOTP and TOTP constructors as defined by [RFC 4226] and [RFC 6238].
 ///
 /// SHA-1 is the HOTP algorithm mandated by RFC 4226, and remains the common

@@ -24,7 +24,6 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             availability::_doc_availability,
             doc::_doc,
             location::_doc_location,
-            test_size_of::_doc_test_size_of,
             warn::_doc_warn_miri,
         };
     }
@@ -35,6 +34,7 @@ crate::structural_mods! { // _mods, _crate_internals, _hidden
             vendor::_doc_vendor,
             // needed by rand_pcg!:
             meta::_doc_meta,
+            test_size_of::_doc_test_size_of,
         };
     }
 }

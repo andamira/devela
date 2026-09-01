@@ -476,5 +476,7 @@
 ### ui::widget
 - new types: `UiButton`, `UiResponse`, `UiResponseFlags`.
 
+## yard
+- update `use_or_shim!` macro to support `_doc_meta!`.
 
 [0.29.0]: https://github.com/andamira/devela/releases/tag/v0.29.0
