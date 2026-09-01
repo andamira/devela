@@ -224,6 +224,7 @@
 ## error
 - new root module.
 - update `define_error!`:
+  - make error tags explicit rather than automatic.
   - generate exact struct and enum locations through `_doc_meta!`.
   - support repeatable, cfg-qualified `+test_size_of` metadata.
 - move `<data|num|text>::error` to `error::<data|num|text>`.

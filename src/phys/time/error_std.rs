@@ -19,7 +19,7 @@ define_error! { individual:
     +location: "phys/time",
     +test_size_of(#[cfg(target_pointer_width = "32")] 12|96; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(time),
+    +tag: _tags!(time error),
     DOC_SYSTEM_TIME_ERROR =
     "Returned from `duration_since` and `elapsed` on `SystemTime`.\n\n
 This is basically a replication of `std::time::`[`SystemTimeError`][StdSystemTimeError].",
@@ -54,7 +54,7 @@ mod full_composite {
         +location: "phys/time",
         +test_size_of(#[cfg(target_pointer_width = "32")] 20|160; niche Option),
         +test_size_of(#[cfg(target_pointer_width = "64")] 40|320; niche Option),
-        +tag: _tags!(time),
+        +tag: _tags!(time error_composite),
 
         /// A time-related composite error.
         #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
@@ -69,8 +69,8 @@ mod full_composite {
                     value: Option<usize>,
                     /// The capacity limit involved in the check, if known.
                     limit: Option<usize>
-                }
-                => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
+                } => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
+            +tag: _tags!(time),
             DOC_SYSTEM_TIME_ERROR: +const
                 SystemTime(d|0: Duration) => SystemTimeError(*d)
         }

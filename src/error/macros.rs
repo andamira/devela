@@ -3,10 +3,9 @@
 //! Defines [`define_error!`].
 //
 // TOC
-// - define_error!
-// - tests
+// - macro define_error!
+// - mod _test
 //
-// IMPROVE: make the automatic error tag optional.
 // IMPROVE: do not depend on included types being Copy.
 // IMPROVE: make it possibe to share publicly (conditional compilation, macro_export arms).
 // IMPROVE: allow differentiating between the first doc line and additional docs.
@@ -95,7 +94,7 @@ macro_rules! define_error· {
     // - Field variant : `{ #[attr] vis1 field1: Type1, #[attr] vis2 field2: Type2, ... }`
     //
     // ## Documentation:
-    // - `+tag: "tag text",`              : Optional additional doc tag
+    // - `+tag: "tag text",`              : Optional doc tag
     // - `DOC_CONST_NAME = "doc string",` : Constant name and documentation string
     //
     // ## Display Implementation:
@@ -120,7 +119,6 @@ macro_rules! define_error· {
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
         $( #[doc = $tag] )?
-        #[doc = $crate::_tags!(error)] // IMPROVE: make optional
         $(#[$first_attributes])*
         #[doc = $DOC_NAME!()]
         #[doc = $crate::_doc_meta! {
@@ -154,7 +152,7 @@ macro_rules! define_error· {
     //
     // ## Variant Definitions (one or more):
     // For each variant:
-    // - `+tag: "tag text",` : Optional additional doc tag for the variant
+    // - `+tag: "tag text",` : Optional doc tag for the variant
     // - `variant_attr`      : Optional attributes for the variant
     // - `DOC_VARIANT`       : Constant name for variant documentation
     // - `+const`            : Optional flag to generate const conversion methods
@@ -196,7 +194,6 @@ macro_rules! define_error· {
         ),+ $(,)? }
     ) => {
         $(#[doc = $tag])?
-        #[doc = $crate::_tags!(error_composite)] // IMPROVE: make optional
         $(#[$enum_attr])*
         #[doc = $crate::_doc_meta! {
             $(location($location, enum $composite_error_name),)?
@@ -208,7 +205,6 @@ macro_rules! define_error· {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $composite_error_name { $(
             $(#[doc = $tag_variant])?
-            #[doc = $crate::_tags!(error)] // IMPROVE: make optional
             #[doc = $DOC_VARIANT!()]
             $(#[$variant_attr])*
             $variant_name

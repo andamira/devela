@@ -19,7 +19,10 @@ use ::core::str::Utf8Error; // replaced with InvalidUtf8
 /* individual errors */
 
 define_error! { individual: pub struct InvalidChar(char);
-    +location: "error/text", +tag: _tags!(text),
+    +location: "error/text",
+    +test_size_of(4|32; niche Option),
+    +tag: _tags!(text error),
+
     DOC_INVALID_CHAR = "An invalid given character was found.",
     self+f => write!(f, "An invalid {:?} character was found.", self.0)
 }
@@ -29,9 +32,13 @@ define_error! { individual:
         /// The index in the given string up to which valid UTF-8 was verified.
         pub valid_up_to: usize,
         /// The length of the error in bytes, if known.
-        pub error_len: Option<usize>
+        pub error_len: Option<usize>,
     }
-    +location: "error/text", +tag: _tags!(string),
+    +location: "error/text",
+    +test_size_of(#[cfg(target_pointer_width = "32")] 12|96; niche Option),
+    +test_size_of(#[cfg(target_pointer_width = "64")] 24|192; niche Option),
+    +tag: _tags!(string error),
+
     DOC_INVALID_UTF8 = "Invalid UTF-8 found while interpreting a byte sequence.\n\n
 This is basically a replication of `core::str::`[`Utf8Error`]`.",
     self+f => if let Some(len) = self.error_len {
@@ -52,24 +59,30 @@ impl InvalidUtf8 {
 /* composite errors */
 
 define_error! { composite: fmt(f)
-    #[doc = crate::_tags!(text)]
+    #[doc = crate::_tags!(text error_composite)]
     /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
-    #[doc = crate::_doc_meta!{location("error/text")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("error/text", enum InvalidText),
+        #[cfg(target_pointer_width = "32")]
+        test_size_of(InvalidText = 20|160; niche Option),
+        #[cfg(target_pointer_width = "64")]
+        test_size_of(InvalidText = 40|320; niche Option),
+    }]
     /// Used in methods of:
     /// [`StringNonNul`][crate::StringNonNul], and `StringU*`.
     pub enum InvalidText {
         +tag: _tags!(text),
-
         DOC_INVALID_CHAR: +const
             Char(c|0: char) => InvalidChar(*c),
 
+        +tag: _tags!(text),
         DOC_INVALID_UTF8: +const
             Utf8 {
                 #[doc = ""] valid_up_to: usize,
                 #[doc = ""] error_len: Option<usize>
             } => InvalidUtf8 { valid_up_to: *valid_up_to, error_len: *error_len },
 
+        +tag: _tags!(data),
         DOC_MISMATCHED_CAPACITY: +const MismatchedCapacity {
             /// Which boundary of the capacity constraint applies.
             bound: Boundary1d,
@@ -102,9 +115,12 @@ mod full_composite {
     pub type TextResult<T> = crate::Result<T, TextError>;
 
     define_error! { composite: fmt(f)
-        +tag: _tags!(text),
+        +tag: _tags!(text error_composite),
+
         /// A text-related composite error.
-        #[doc = crate::_doc_meta!{location("error/text")}]
+        #[doc = crate::_doc_meta!{
+            location("error/text"),
+        }]
         #[non_exhaustive]
         pub enum TextError {
             DOC_ELEMENT_NOT_FOUND: +const

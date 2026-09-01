@@ -27,7 +27,7 @@ define_error![individual: pub struct NoInverse;
     #[derive(Default)],
     +location: "error/num",
     +test_size_of(0),
-    +tag: _tags!(num),
+    +tag: _tags!(num error),
 
     DOC_NO_INVERSE = "An inverse doesn't exist.",
     self+f => f.write_str(DOC_NO_INVERSE!()),
@@ -36,7 +36,7 @@ define_error![individual: pub struct MismatchedSizes;
     #[derive(Default)],
     +location: "error/num",
     +test_size_of(0),
-    +tag: _tags!(num),
+    +tag: _tags!(num error),
 
     DOC_MISMATCHED_SIZES = "The provided values are not compatible in size.",
     self+f => f.write_str(DOC_MISMATCHED_SIZES!()),
@@ -44,7 +44,7 @@ define_error![individual: pub struct MismatchedSizes;
 define_error![individual: pub struct IncompatibleBounds;
     #[derive(Default)],
     +location: "error/num",
-    +test_size_of(0), +tag: _tags!(num),
+    +test_size_of(0), +tag: _tags!(num error),
 
     DOC_INCOMPATIBLE_BOUNDS = "The given bounds are incompatible.
 E.g. lower bound exceeds upper bound.", // IMPROVE +docs
@@ -53,26 +53,26 @@ E.g. lower bound exceeds upper bound.", // IMPROVE +docs
 
 define_error![individual: pub struct NonNegativeRequired;
     #[derive(Default)],
-    +location: "error/num", +test_size_of(0), +tag: _tags!(num),
+    +location: "error/num", +test_size_of(0), +tag: _tags!(num error),
     DOC_NON_NEGATIVE_REQUIRED = "A non-negative value is required.",
     self+f => f.write_str(DOC_NON_NEGATIVE_REQUIRED!()),
 ];
 define_error![individual: pub struct PositiveRequired;
     #[derive(Default)],
-    +location: "error/num", +test_size_of(0), +tag: _tags!(num),
+    +location: "error/num", +test_size_of(0), +tag: _tags!(num error),
     DOC_POSITIVE_REQUIRED = "A positive value is required.",
     self+f => f.write_str(DOC_POSITIVE_REQUIRED!()),
 ];
 define_error![individual: pub struct NonZeroRequired;
     #[derive(Default)],
-    +location: "error/num", +test_size_of(0), +tag: _tags!(num),
+    +location: "error/num", +test_size_of(0), +tag: _tags!(num error),
     DOC_NON_ZERO_REQUIRED = "A non-zero value is required.",
     self+f => f.write_str(DOC_NON_ZERO_REQUIRED!()),
 ];
 
 define_error![individual: pub struct Overflow(pub Option<Sign>);
     #[derive(Default)],
-    +location: "error/num", +test_size_of(1|8; niche Option), +tag: _tags!(num),
+    +location: "error/num", +test_size_of(1|8; niche Option), +tag: _tags!(num error),
     DOC_OVERFLOW = "An arithmetic overflow error, with an optional associated sign.",
     self+f => if let Some(sign) = self.0 {
         match sign {
@@ -88,7 +88,9 @@ define_error![individual: pub struct Overflow(pub Option<Sign>);
 /* composite errors */
 
 define_error! { composite: fmt(f)
-    +location: "error/num", +test_size_of(1|8; niche Option), +tag: _tags!(num),
+    +location: "error/num",
+    +test_size_of(1|8; niche Option),
+    +tag: _tags!(num error_composite),
 
     /// All possible integer operation errors.
     pub enum IntError {
@@ -134,19 +136,20 @@ pub type IntResult<T> = crate::Result<T, IntError>;
 define_error! { composite: fmt(f)
     +location: "error/num",
     +test_size_of(1|8; niche Option),
-    +tag: _tags!(num),
+    +tag: _tags!(num error_composite),
 
     /// Invalid or problematic values for niche types.
     pub enum NicheValueError {
         +tag: _tags!(num),
         DOC_OVERFLOW: +const Overflow(s|0: Option<Sign>) => Overflow(*s),
+        +tag: _tags!(value),
         DOC_INVALID_VALUE: +const InvalidValue => InvalidValue,
     }
 }
 define_error! { composite: fmt(f)
     +location: "error/num",
     +test_size_of(1|8; niche Option),
-    +tag: _tags!(num),
+    +tag: _tags!(num error_composite),
 
     /// Errors validating or constructing probability distributions.
     pub enum DistError {

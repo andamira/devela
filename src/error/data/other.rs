@@ -32,7 +32,8 @@ define_error! { individual: pub struct ElementNotFound;
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(0),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => f.write_str(DOC_ELEMENT_NOT_FOUND!()),
 }
@@ -43,7 +44,8 @@ define_error! { individual:
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.",
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
     } else { f.write_str("The given index is out of bounds.") }
@@ -55,7 +57,8 @@ define_error! { individual:
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_INVALID_AXIS_LENGTH = "The given axis has an invalid length.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
@@ -65,7 +68,8 @@ define_error! { individual: pub struct KeyAlreadyExists;
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(0),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => f.write_str(DOC_KEY_ALREADY_EXISTS!())
 }
@@ -74,7 +78,8 @@ define_error! { individual: pub struct MismatchedDimensions(pub Mismatch<usize, 
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 16|128; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 32|256; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
     self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
 }
@@ -82,7 +87,7 @@ define_error! { individual: pub struct MismatchedIndices;
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(0),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
     DOC_MISMATCHED_INDICES = "The given indices does not match the expected order.",
     self+f => f.write_str(DOC_MISMATCHED_INDICES!())
 }
@@ -91,7 +96,8 @@ define_error! { individual: pub struct NodeEmpty(pub Option<usize>);
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data ord),
+    +tag: _tags!(data ord error),
+
     DOC_NODE_EMPTY = "The node is empty.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
     } else { f.write_str(DOC_NODE_EMPTY!()) }
@@ -101,7 +107,8 @@ define_error! { individual: pub struct NodeLinkNotSet(pub Option<usize>);
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_NODE_LINK_NOT_SET = "The node link is not set.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
     } else { f.write_str(DOC_NODE_LINK_NOT_SET!()) }
@@ -111,7 +118,8 @@ define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_NODE_LINK_NOT_UNIQUE = "The node link is not unique.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
@@ -119,11 +127,13 @@ define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
 define_error! { individual:
     /// Optionally contains the minimum required number of elements.
     pub struct NotEnoughElements(pub Option<usize>);
+
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough elements. Requires at least `{n}` elements.")
@@ -135,11 +145,13 @@ define_error! { individual:
     /// This error represents a contingent failure: the operation may succeed
     /// after a change of state that frees or increases available space.
     pub struct NotEnoughSpace(pub Option<usize>);
+
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough space. Requires at least `{n}` free slots.")
@@ -151,7 +163,8 @@ define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements were added.")
     } else { f.write_str("Only a subset of elements was added.") }
@@ -163,7 +176,8 @@ define_error! { individual:
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
     +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
-    +tag: _tags!(data),
+    +tag: _tags!(data error),
+
     DOC_UNEXPECTED_EOF = "The input ended before the operation could complete.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Unexpected end of input. Requires at least `{n}` readable bytes.")
@@ -176,14 +190,20 @@ define_error! { individual:
 
 define_error! { composite: fmt(f)
     +location: "error/data",
+    +tag: _tags!(data error_composite),
+
     /// An error composite of [`NotEnoughElements`] + [`NotEnoughSpace`].
     pub enum DataNotEnough {
+        +tag: _tags!(data),
         DOC_NOT_ENOUGH_ELEMENTS: +const Elements(i|0: Option<usize>)  => NotEnoughElements(*i),
+        +tag: _tags!(data),
         DOC_NOT_ENOUGH_SPACE:    +const Space(i|0: Option<usize>)     => NotEnoughSpace(*i),
     }
 }
 define_error! { composite: fmt(f)
     +location: "error/data",
+    +tag: _tags!(data error_composite),
+
     /// An error composite of
     /// [`MismatchedCapacity`] + [`IndexOutOfBounds`] + [`MismatchedIndices`]
     ///
@@ -192,6 +212,7 @@ define_error! { composite: fmt(f)
     /// [`BitOps`][crate::BitOps],
     /// [`Bitwise`][crate::Bitwise].
     pub enum MismatchedBounds {
+        +tag: _tags!(data),
         DOC_MISMATCHED_CAPACITY: +const MismatchedCapacity {
             /// Which boundary of the capacity constraint applies.
             bound: Boundary1d,
@@ -201,8 +222,11 @@ define_error! { composite: fmt(f)
             limit: Option<usize>
         } => MismatchedCapacity { bound: *bound, value: *value, limit: *limit },
 
+        +tag: _tags!(data),
         DOC_INDEX_OUT_OF_BOUNDS: +const
             IndexOutOfBounds(i|0: Option<usize>) => IndexOutOfBounds(*i),
+
+        +tag: _tags!(data),
         DOC_MISMATCHED_INDICES: +const
             MismatchedIndices => MismatchedIndices,
     }
@@ -210,9 +234,14 @@ define_error! { composite: fmt(f)
 // MAYBE: Merge with DataNotEnough
 define_error! { composite: fmt(f)
     +location: "error/data",
+    +tag: _tags!(data error_composite),
+
     /// An error composite of [`NotEnoughSpace`] + [`PartiallyAdded`].
     pub enum PartialSpace {
+        +tag: _tags!(data),
         DOC_NOT_ENOUGH_SPACE: +const NotEnoughSpace(i|0: Option<usize>) => NotEnoughSpace(*i),
+
+        +tag: _tags!(data),
         DOC_PARTIALLY_ADDED:  +const PartiallyAdded(i|0: Option<usize>) => PartiallyAdded(*i),
     }
 }

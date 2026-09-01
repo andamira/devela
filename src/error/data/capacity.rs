@@ -3,7 +3,7 @@
 //! Defines [`MismatchedCapacity`].
 //
 
-use crate::{_TAG_DATA, Boundary1d, define_error};
+use crate::{_tags, Boundary1d, define_error};
 
 define_error! { individual:
     /// Represents an absolute mismatch: the operation cannot succeed
@@ -38,7 +38,7 @@ define_error! { individual:
         pub limit: Option<usize>,
     }
     +location: "error/data",
-    +tag: _TAG_DATA!(),
+    +tag: _tags!(data error),
     DOC_MISMATCHED_CAPACITY = "The operation did not satisfy a finite capacity constraint.",
     self+f => match (self.bound, self.value, self.limit) {
         (Boundary1d::Upper, Some(v), Some(l)) =>
