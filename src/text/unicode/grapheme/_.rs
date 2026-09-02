@@ -1,4 +1,4 @@
-// devela/src/text/unicode/grapheme/mod.rs
+// devela/src/text/unicode/grapheme/_.rs
 //
 #![doc = crate::_DOC_TEXT_UNICODE_GRAPHEME!()] // public
 #![doc = crate::_doc!(modules: crate::text::unicode; grapheme)]
@@ -11,18 +11,19 @@
 //! [0]: https://www.unicode.org/reports/tr29/
 //
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-mod grapheme; // Grapheme
-mod kind; // GraphemeKind
-mod nonul; // GraphemeNonNul
-mod scanner; // Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
-mod u8; // GraphemeU8
+    mod grapheme; // Grapheme
+    mod kind; // GraphemeKind
+    mod nonul; // GraphemeNonNul
+    mod_ scanner; // Grapheme[Boundary|Machine|Prop[Cb|InCb|s]|Scanner]
+    mod u8; // GraphemeU8
 
-#[cfg(feature = "alloc")]
-mod string; // GraphemeString
-
+    #[cfg(feature = "alloc")]
+    mod string; // GraphemeString
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

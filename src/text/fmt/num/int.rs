@@ -9,7 +9,7 @@ __impl_fmt_num_int!(unsigned u8, u16, u32, u64, u128, usize); // TEMP
 ///
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __impl_fmt_num_int {
+macro_rules! __impl_fmt_num_int· {
     () => {};
     (signed $($t:ty),+) => {$(
         impl $crate::FmtNum<$t> {
@@ -448,4 +448,4 @@ macro_rules! __impl_fmt_num_int {
         }
     )+ };
 }
-pub use __impl_fmt_num_int;
+pub use __impl_fmt_num_int· as __impl_fmt_num_int;

@@ -1,18 +1,10 @@
-// devela/src/text/unicode/grapheme/scanner/machine/mod.rs
+// devela/src/text/unicode/grapheme/scanner/machine/define.rs
 //
-//! Defines [`GraphemeMachine`].
+//! Defines [`GraphemeMachine`], [`GraphemeBoundary`].
 //
-// TOC
-// - struct GraphemeMachine
-// - enum GraphemeBoundary
 
+use super::GraphemeMachineState;
 use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
-
-#[cfg(test)]
-mod _test;
-
-mod state;
-use state::GraphemeMachineState;
 
 #[doc = crate::_tags!(text)]
 #[doc = concat!["Streaming ", crate::_ABBR_EGC!(), " boundary detector."]]

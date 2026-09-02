@@ -83,7 +83,7 @@
 /// ```
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
-macro_rules! scalar_offset {
+macro_rules! scalar_offset· {
     /* entry */
     (
         [
@@ -394,11 +394,11 @@ macro_rules! scalar_offset {
     };
 }
 #[doc(inline)]
-pub use scalar_offset;
+pub use scalar_offset· as scalar_offset;
 
 #[cfg(test)]
-mod tests {
-    use crate::{NonMaxU8, NonMaxU16};
+mod _test {
+    use crate::{NonMaxU8, NonMaxU16, scalar_offset};
 
     scalar_offset! {
         [

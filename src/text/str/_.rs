@@ -1,24 +1,25 @@
-// devela/src/text/str/mod.rs
+// devela/src/text/str/_.rs
 //
 #![doc = crate::_DOC_TEXT_STR!()] // public
 #![doc = crate::_doc!(modules: crate::text; str)]
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(extends: str, string)]
 
-mod _reexport;
+crate::mods_in! {
+    mod _reexport;
 
-mod array; // StringNonNul, StringU8, StringU16
-mod buf; // StrBuf
-mod ext; // StrExt, StringExt
-mod namespace; // Str
-mod small; // StringSmallAlloc
-
+    mod_ array; // StringNonNul, StringU8, StringU16
+    mod buf; // StrBuf
+    mod_ ext; // StrExt, StringExt
+    mod_ namespace; // Str
+    mod_ small; // StringSmallAlloc
+}
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             array::_all::*,
             buf::*,
-            ext::*,
+            ext::_all::*,
             namespace::_all::Str,
             small::_all::*,
         };

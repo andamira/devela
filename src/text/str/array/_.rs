@@ -1,11 +1,12 @@
-// devela/src/text/str/array/mod.rs
+// devela/src/text/str/array/_.rs
 //
 //!
 //
 
-mod nonul; // StringNonNul
-mod u; // StringU8, StringU16
-
+crate::mods_in! {
+    mod nonul; // StringNonNul
+    mod u; // StringU8, StringU16
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

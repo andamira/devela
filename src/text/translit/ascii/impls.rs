@@ -127,7 +127,7 @@ impl Translit {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::Translit;
 
     #[test]

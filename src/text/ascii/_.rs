@@ -5,11 +5,12 @@
 #![doc = crate::_doc!(flat:"text")]
 #![doc = crate::_doc!(extends: ascii)]
 
-mod char; // CharAscii
-mod digits; // Digits
-mod namespace; // Ascii
-mod set; // AsciiSet
-
+crate::mods_in! {
+    mod char; // CharAscii
+    mod_ digits; // Digits
+    mod namespace; // Ascii
+    mod set; // AsciiSet
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

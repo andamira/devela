@@ -8,7 +8,7 @@ __impl_fmt_num_float!(impl float f32|u64, f64|u128); // TEMP
 ///
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __impl_fmt_num_float {
+macro_rules! __impl_fmt_num_float· {
     () => {};
     // $t: floating-point primitive
     // $u: unsigned primitive to cast the integral part as
@@ -387,4 +387,4 @@ macro_rules! __impl_fmt_num_float {
         }
     )+ };
 }
-pub use __impl_fmt_num_float;
+pub use __impl_fmt_num_float· as __impl_fmt_num_float;

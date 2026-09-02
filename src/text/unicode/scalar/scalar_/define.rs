@@ -22,7 +22,7 @@ pub(crate) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 #[doc = crate::_doc_meta!{location("text/unicode/scalar", macro ch)}]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! ch {
+macro_rules! ch· {
     ( // charu
     u $char:literal) => { $crate::charu::from_char($char) };
     (u str $str:literal) => { $crate::charu::from_str_unchecked($str) };
@@ -36,7 +36,7 @@ macro_rules! ch {
     (c8 $char:literal) => { $crate::unwrap![some $crate::char8::try_from_char($char)] };
     (c16 $char:literal) => { $crate::unwrap![some $crate::char16::try_from_char($char)] };
 }
-pub use ch;
+pub use ch· as ch;
 
 /* public types */
 

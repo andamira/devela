@@ -1,4 +1,4 @@
-// devela/src/text/mod.rs
+// devela/src/text/_.rs
 //
 #![doc = crate::_DOC_TEXT!()] // public, root
 #![doc = crate::_DOC_TEXT_MODULES!()]
@@ -12,17 +12,18 @@ crate::CONST! { pub(crate) _DOC_TEXT_MODULES =
     crate::_doc!(modules: crate; text: ascii, fmt, layout, parse, str, unicode);
 }
 
-pub mod ascii; // AsciiSet, CharAscii
-// mod draw; // WIP Drawing with text.
-pub mod fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
-// mod generate; // WIP Procedures that produce text.
-pub mod layout; // TextLayout*, …
-mod metric; // TextCursor, TextIndex, TextRange, TextUnit
-pub mod parse; // ByteSearch, TextScanner, …
-pub mod str; // Str, StringNonNul, StringU*
-mod translit; // scalar_as_ascii_translit()
-pub mod unicode; // Unicode-defined text units and algorithms
-
+crate::mods_in! {
+    pub mod_ ascii; // AsciiSet, CharAscii
+        // mod_ draw; // WIP Drawing with text.
+    pub mod_ fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
+        // mod generate; // WIP Procedures that produce text.
+    pub mod_ layout; // TextLayout*, …
+        mod metric; // TextCursor, TextIndex, TextRange, TextUnit
+    pub mod_ parse; // ByteSearch, TextScanner, …
+    pub mod_ str; // Str, StringNonNul, StringU*
+        mod_ translit; // scalar_as_ascii_translit()
+    pub mod_ unicode; // Unicode-defined text units and algorithms
+}
 crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
@@ -49,6 +50,9 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         };
     }
     _hidden {
-        pub use super::fmt::_hidden::*;
+        pub use super::{
+            fmt::_hidden::*,
+            unicode::_hidden::*,
+        };
     }
 }

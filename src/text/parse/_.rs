@@ -1,14 +1,15 @@
-// devela/src/text/parse/mod.rs
+// devela/src/text/parse/_.rs
 //
 //! String parsing without structured semantics.
 //
 
-mod _reexport_core;
+crate::mods_in! {
+    mod _reexport_core;
 
-mod byte_search; // ByteSearch, dep_memchr fns alternatives
-mod error; // TextParseError[Kind]
-mod scanner; // TextScanner
-
+    mod byte_search; // ByteSearch, dep_memchr fns alternatives
+    mod error; // TextParseError[Kind]
+    mod_ scanner; // TextScanner
+}
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{

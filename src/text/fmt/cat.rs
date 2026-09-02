@@ -36,7 +36,7 @@ use crate::{FmtNum, Slice};
 ///   the behavior depends on the helper functions.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! fmtcat {
+macro_rules! fmtcat· {
     // Entry point: mutable offset variable (updated after writing)
     ($buf:ident, $offset:ident, $($elem:tt)*) => {{
         let mut pos = $offset;
@@ -80,10 +80,12 @@ macro_rules! fmtcat {
         $pos += $crate::Slice::copy_utf8_into(&mut $buf, $pos, $s.as_bytes());
     }};
 }
-pub use fmtcat;
+pub use fmtcat· as fmtcat;
 
 #[cfg(test)]
-mod tests {
+mod _test {
+    use super::fmtcat;
+
     #[test]
     fn fmtargs() {
         let name = "Alice";

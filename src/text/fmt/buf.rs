@@ -34,7 +34,7 @@ crate::_use! {compat::from_utf8}
 /// Makes use of the `unsafe_str` feature if enabled.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! format_buf {
+macro_rules! format_buf· {
     ($buf:expr, $($arg:tt)*) => {
         $crate::FmtWriter::format($buf, $crate::format_args![$($arg)*])
     };
@@ -43,7 +43,7 @@ macro_rules! format_buf {
     };
 }
 #[doc(inline)]
-pub use format_buf;
+pub use format_buf· as format_buf;
 
 #[doc = crate::_tags!(fmt)]
 /// A specialized formatter with a fixed byte buffer and truncation detection.

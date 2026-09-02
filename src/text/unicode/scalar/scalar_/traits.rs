@@ -3,7 +3,9 @@
 //! implementations of core traits
 //
 
-use crate::{MismatchedCapacity, paste, text::unicode::scalar::*, unwrap};
+use super::_crate_internals::NonSurrogateU16;
+use crate::{MismatchedCapacity, NonMaxU8, NonMaxU32, NonNiche, paste, unwrap};
+use crate::{char7, char8, char16, charu, charu_niche};
 
 /* Default, Display, Debug */
 

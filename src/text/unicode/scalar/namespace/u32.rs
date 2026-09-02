@@ -412,7 +412,7 @@ impl Char<u32> {
 ///
 /// Returns the number of bytes written. Does not validate scalar range.
 #[macro_export]
-macro_rules! __unicode_scalar_write_utf8_at {
+macro_rules! __unicode_scalar_write_utf8_at· {
     ($buf:ident, $offset:expr, $value:expr) => {{
         let off = $offset;
         let val = $value as u32;
@@ -442,4 +442,4 @@ macro_rules! __unicode_scalar_write_utf8_at {
         }
     }};
 }
-use __unicode_scalar_write_utf8_at;
+pub use __unicode_scalar_write_utf8_at· as __unicode_scalar_write_utf8_at;

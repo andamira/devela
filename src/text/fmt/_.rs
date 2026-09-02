@@ -1,4 +1,4 @@
-// devela/src/text/fmt/mod.rs
+// devela/src/text/fmt/_.rs
 //
 #![doc = crate::_DOC_TEXT_FMT!()] // public
 #![doc = crate::_doc!(modules: crate::text; fmt)]
@@ -6,18 +6,19 @@
 #![doc = crate::_doc!(extends: fmt)]
 //
 
-mod _reexport_core;
-#[cfg(feature = "alloc")]
-mod _reexport_alloc;
+crate::mods_in! {
+    mod _reexport_core;
+    #[cfg(feature = "alloc")]
+    mod _reexport_alloc;
 
-mod buf; // FmtWriter, format_buf!
-mod cat; // fmtcat!
-// mod case; // WIP
-mod debug; // DebugExt, DebugWith
-mod namespace; // Fmt
-mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, fmt_num! WIP
-// mod table; // WIP
-
+    mod buf; // FmtWriter, format_buf!
+    mod cat; // fmtcat!
+    // mod case; // WIP
+    mod debug; // DebugExt, DebugWith
+    mod namespace; // Fmt
+    mod_ num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, fmt_num! WIP
+    // mod table; // WIP
+}
 crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         pub use super::namespace::*;
