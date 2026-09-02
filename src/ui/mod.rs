@@ -82,7 +82,7 @@ pub mod view; // Projection of UI state into concrete presentation forms
 #[cfg(feature = "widget")]
 pub mod widget; // Semantic controls expressed through frame-local authorship
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(feature = "ui")]
         pub use super::{

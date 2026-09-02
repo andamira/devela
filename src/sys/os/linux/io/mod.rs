@@ -7,7 +7,7 @@ mod file; // LinuxFd, LinuxPipe, LinuxStat, (LINUX_<AT|F_CMD|FILENO|IOCTL|O_FLAG
 #[cfg(feature = "term")]
 mod term; // LinuxTermios, (LINUX_TERMIOS)
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::file::_all::*;
         #[cfg(feature = "term")]

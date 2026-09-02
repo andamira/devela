@@ -21,7 +21,7 @@ crate::items! {
     mod namespace; // Log
 }
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             diag::*,

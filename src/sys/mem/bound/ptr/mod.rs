@@ -13,7 +13,7 @@ mod namespace; // Ptr
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 mod fat;
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::namespace::Ptr;
 

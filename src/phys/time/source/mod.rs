@@ -96,7 +96,7 @@ mod span; // TimeSpan
 #[cfg(target_has_atomic = "64")]
 mod fake; // TimeFake, TimeFakeRef
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         #[cfg(feature = "time")]
         pub use super::{

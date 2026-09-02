@@ -11,7 +11,7 @@ mod _reexport_core;
 mod cmp; // Cmp, cmp!
 mod order; // Order
 
-crate::structural_mods! { // _mods, _reexports, _crate_internals
+crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             cmp::*,

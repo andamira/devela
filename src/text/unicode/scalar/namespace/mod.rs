@@ -17,7 +17,7 @@ mod slice; // Char<&[u8] | &[u8; N]>
 
 mod define; // Char
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::*,

@@ -17,7 +17,7 @@ mod impl_prime;
 mod impl_root;
 // mod impl_stats; // WIP
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::namespace::*;
     }

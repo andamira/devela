@@ -16,7 +16,7 @@ mod alloc;
 #[cfg(feature = "event")]
 mod event; // WIP TextInputKeymap[Preset]
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::*,

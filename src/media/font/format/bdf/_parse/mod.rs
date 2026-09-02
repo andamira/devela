@@ -9,7 +9,7 @@ mod number; // Bdf<Number>
 mod parser; // BdfParser
 mod syntax; // Bdf<Reader|Line|Fields>
 
-crate::structural_mods! { // crate_internals
+crate::mods_out! { // crate_internals
     // _reexports {
     //     use crate::BdfError as E;
     // }

@@ -13,7 +13,7 @@
 // mod stellar; // Stars and stellar evolution
 // mod radiation; // Astronomical radiation and spectra
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super:: {
         //     body::_all::*,

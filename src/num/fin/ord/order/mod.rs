@@ -11,7 +11,7 @@ mod namespace; // Order
 // mod peano;
 mod rowcol;
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::namespace::*;
     }

@@ -11,7 +11,7 @@ mod error; // MemHedgeError
 mod read; // MemHedgeRead
 mod state; // MemHedgeState
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             ctrl::*,

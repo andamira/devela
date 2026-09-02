@@ -23,7 +23,7 @@
 #[cfg(not(feature = "safe_sys"))]
 pub mod web; // Web[Document|Element|Event*|Permission*|Window*|Worker*]…
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         // #[cfg(any(doc, target_arch = "wasm32"))]
         #[cfg(all(feature = "web", not(windows)))]

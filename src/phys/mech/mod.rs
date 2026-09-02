@@ -16,7 +16,7 @@
 // pub mod soft;  // Deformable mechanical models and reduced forms
 // pub mod trans;  // Mechanical transmission, transformation, and transduction
 
-crate::structural_mods! { // _pub_mods
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     deform::_all::*,

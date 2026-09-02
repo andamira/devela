@@ -27,7 +27,7 @@ pub mod os; // Linux,
 // #[cfg(feature = "std")]
 // mod bench; // WIP
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             hw::_all::*,

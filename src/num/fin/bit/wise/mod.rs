@@ -9,7 +9,7 @@ mod _test;
 mod define; // Bitwise
 mod impls;
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::*,

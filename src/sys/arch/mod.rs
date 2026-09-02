@@ -29,7 +29,7 @@ mod _helper; // _ARCH!
 mod namespace; // Arch
 mod wasm; // Wasm
 
-crate::structural_mods! { // _mods, _reexports, _crate_internals
+crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             namespace::*,

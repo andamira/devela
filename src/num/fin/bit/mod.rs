@@ -16,7 +16,7 @@ mod ops; // BitOps
 mod span; // BitSpan
 mod wise; // Bitwise
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             ops::*,

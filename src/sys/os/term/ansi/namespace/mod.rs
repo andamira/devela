@@ -15,7 +15,7 @@ mod font; // font effect escape codes
 mod color; // color escape codes
 mod osc; // AnsiLink, OSC codes
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::*,

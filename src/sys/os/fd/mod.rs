@@ -11,7 +11,7 @@ mod _reexport_std;
 
 mod raw; // FdRaw
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         #[doc(inline)]
         pub use super::raw::FdRaw;

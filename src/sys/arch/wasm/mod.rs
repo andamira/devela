@@ -7,7 +7,7 @@ mod _reexport_core;
 
 mod namespace; // Wasm
 
-crate::structural_mods! { // _mods, reexports
+crate::mods_out! { // _mods, reexports
     _mods {
         pub use super::namespace::*;
     }

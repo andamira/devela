@@ -8,7 +8,7 @@ mod _test;
 
 mod generator; // rand_pcg!
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         rand_pcg![pub Pcg32: (u32)];
 

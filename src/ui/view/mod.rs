@@ -71,7 +71,7 @@ mod profile; // WIP Presentation profiles for fitting logical views into output 
 mod scale; // Pixel, density, and text scaling units for view projection
 mod view; // UiView, UiViewFlags
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             // cue::_all::*,

@@ -16,7 +16,7 @@ mod canvas; // Canvas, CanvasRead, CanvasTextel
 // mod paint; // Spatial sources of color and related drawing styles
 // mod stroke; // Width, caps, joins, and dashing
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             canvas::*,

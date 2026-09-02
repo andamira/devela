@@ -21,7 +21,7 @@ mod kernel; // MarkovKernel
 // mod trace; // MarkovTrace
 // mod walk; // MarkovWalk
 
-crate::structural_mods! {
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             // analysis::_all::*,

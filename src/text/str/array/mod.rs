@@ -6,7 +6,7 @@
 mod nonul; // StringNonNul
 mod u; // StringU8, StringU16
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             nonul::*,

@@ -64,7 +64,7 @@ mod std; // StdRand
 #[cfg(any(test, feature = "rand"))]
 mod fake; // RandFake
 
-crate::structural_mods! { // _mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             from::*,

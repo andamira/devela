@@ -23,7 +23,7 @@ mod u8; // GraphemeU8
 #[cfg(feature = "alloc")]
 mod string; // GraphemeString
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             grapheme::*,

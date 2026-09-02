@@ -23,7 +23,7 @@ pub mod str; // Str, StringNonNul, StringU*
 mod translit; // scalar_as_ascii_translit()
 pub mod unicode; // Unicode-defined text units and algorithms
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // draw::_all::*,

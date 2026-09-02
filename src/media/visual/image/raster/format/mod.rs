@@ -10,7 +10,7 @@ mod channels; //
 mod packed; //
 mod sample; //
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::base::RasterFormat;
     }

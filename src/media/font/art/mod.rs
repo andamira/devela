@@ -9,7 +9,7 @@
 mod art; // FontArt
 mod block_4_3; // FONT_ART_BLOCK_4_3
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             art::*,

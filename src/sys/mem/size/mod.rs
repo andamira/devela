@@ -9,7 +9,7 @@ mod expr; // size_of_expr!
 // #[cfg(feature = "alloc")]
 // mod heap; // WIP
 
-crate::structural_mods! { // _mods, _reexports, _hidden
+crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

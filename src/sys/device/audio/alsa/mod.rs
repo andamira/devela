@@ -23,7 +23,7 @@ mod error; // AlsaError
 mod namespace; // Alsa
 mod pcm; // AlsaPcmHandle
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             error::*,

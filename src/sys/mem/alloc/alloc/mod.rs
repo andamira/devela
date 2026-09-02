@@ -32,7 +32,7 @@ mod linux; // LinuxMmapAlloc
 )]
 mod wasm; // WasmAlloc
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::namespace::*;
         #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]

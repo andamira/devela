@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 mod alloc; // StringSmallAlloc
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[cfg(feature = "alloc")]
         pub use super::alloc::*;

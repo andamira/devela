@@ -14,7 +14,7 @@ mod c7;
 mod c8;
 mod utf8;
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::*,

@@ -54,7 +54,7 @@ mod receipt; // Layout1d, LayoutReceipt
 mod stack; // UiStack
 mod unit; // Lunit
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             metric::*,

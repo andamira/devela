@@ -6,9 +6,12 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! { // _mods
+// mod profile; // WIP UiViewProfile RENAME
+
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
+        //     profile::*,
         // };
     }
 }

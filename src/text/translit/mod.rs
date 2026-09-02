@@ -14,7 +14,7 @@ mod ascii; // Unicode scalar/string → ASCII approximation
 mod namespace; // Translit
 // mod slug; // identifier/url/file-safe text simplification
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::namespace::*;
         #[cfg(feature = "translit")]

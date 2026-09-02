@@ -11,7 +11,7 @@ mod cswap; // cswap!
 mod pin; // Pinned, ::core::pin::*
 mod ptr; // FatPtr, Ptr, ::core::ptr::*
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             align::_all::*,

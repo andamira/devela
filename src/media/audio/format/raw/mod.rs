@@ -10,7 +10,7 @@ mod buf; // PcmRawBuf
 mod error; // PcmRawError
 mod namespace; // PcmRaw
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             buf::*,

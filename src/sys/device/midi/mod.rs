@@ -3,7 +3,7 @@
 //! Midi functionality.
 //
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
     }
 }

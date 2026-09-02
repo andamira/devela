@@ -26,7 +26,7 @@ pub mod prob; // Probability theory and statistical inference
 pub mod quant; // Quantification, measurement, and numerical relationships
 pub mod signal; // Numerical signals and value evolution over domains
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         // pub use super::{
         //     intro::_all::*,

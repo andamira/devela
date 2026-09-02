@@ -22,7 +22,7 @@ crate::items! {
     mod xabc; // Xabc
 }
 
-crate::structural_mods! { // _mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

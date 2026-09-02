@@ -1,12 +1,12 @@
-// devela/src/code/util/synth/structural.rs
+// devela/src/code/util/synth/mods_out.rs
 //
-//! Defines the [`structural_mods!`] macro.
+//! Defines the [`mods_out!`] macro.
 //
 
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
 #[doc = crate::_doc_meta!{
-    location("code/util/synth", macro structural_mods),
+    location("code/util/synth", macro mods_out),
 }]
 /// This macro generates a set of structural helper modules that centralize export logic
 /// according to intended visibility and usage. It reduces boilerplate and enforces a
@@ -38,13 +38,13 @@
 ///
 /// # Usage Patterns
 /// ```ignore
-/// # use devela::structural_mods
+/// # use devela::mods_out;
 /// # mod some_module {}
 /// # mod other_module {}
 /// # pub mod public_module { pub(super) mod _all {} }
 /// # mod _reexport {}
 /// # mod internal_utils {}
-/// structural_mods! {
+/// mods_out! {
 ///     _mods {
 ///         pub use super::{some_module::*, other_module::*};
 ///     }
@@ -71,7 +71,7 @@
 // actually used, simply allowing us to detect the presence of the module during expansion.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! structural_mods· {
+macro_rules! mods_out· {
     (
         // Items inside should be pub.
         // Public items from non-public modules. They bubble up and show up in the current module.
@@ -147,6 +147,4 @@ macro_rules! structural_mods· {
 }
 #[doc(inline)]
 #[deprecated]
-pub use structural_mods· as structural_mods;
-#[doc(inline)]
-pub use structural_mods· as mods_out;
+pub use mods_out· as mods_out;

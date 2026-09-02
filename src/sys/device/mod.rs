@@ -18,7 +18,7 @@ pub mod audio; // {alsa}
 pub mod display; // {x11}
 // pub mod midi; //
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             audio::_all::*,

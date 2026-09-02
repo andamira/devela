@@ -16,7 +16,7 @@ mod canvas; // → canvas
 
 mod namespace; // Web, → permission
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             namespace::*,

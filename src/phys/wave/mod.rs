@@ -15,7 +15,7 @@ mod shared; // WaveletHaar, WaveletUnitRole
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod alloc;
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::shared::*;
 

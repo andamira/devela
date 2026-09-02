@@ -19,7 +19,7 @@ mod traits; // Num, NumRef, NumConst
 pub mod int; // Divisor, GcdReturn, Int[Alloc], [i|u]size_[down|up], NumInt[Ref], prime_number_theorem
 pub mod real; // Real-valued numeric domains and representations.
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

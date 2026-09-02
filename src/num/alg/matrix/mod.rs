@@ -17,7 +17,7 @@ mod primitive; // const primitive arithmetic
 // #[cfg(feature = "alloc")]
 // mod buf; // TODO MatrixBuf<T>: dynamic owning dense matrix
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::Matrix,

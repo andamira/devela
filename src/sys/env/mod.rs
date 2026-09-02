@@ -17,7 +17,7 @@ mod namespace;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod app;
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             arg::_all::*,

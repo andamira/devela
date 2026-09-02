@@ -17,7 +17,7 @@
 // mod time;        // normalized time, phase, progress
 // mod transform;   // translation, rotation, scale
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     object::*,

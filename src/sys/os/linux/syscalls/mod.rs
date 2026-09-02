@@ -22,7 +22,7 @@ items! { mod aarch64; use aarch64 as sys; }
 #[cfg(any_target_arch_riscv)]
 items! { mod riscv; use riscv as sys; }
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             consts::*,

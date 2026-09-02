@@ -13,7 +13,7 @@ mod iter; // SliceIter. SliceIterMut
 mod join; // const_join!
 mod namespace; // Slice, slice!
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{

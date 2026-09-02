@@ -25,7 +25,7 @@ mod tags; // docs for tagging items: _ABBR_!*, _TAG_*!, _tags!
 #[doc(inline)]
 pub use {_doc::_all::*, _policy::_devela_policy, _reexport_macro::_reexport, _use::_use};
 
-crate::structural_mods! { // _crate_internals, _hidden
+crate::mods_out! { // _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::{
             _doc::_crate_internals::*,

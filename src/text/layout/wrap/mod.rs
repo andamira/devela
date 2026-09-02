@@ -9,7 +9,7 @@ mod _test;
 mod iter; // TextBreakKind, TextLine, TextWrapIter
 mod segment; // TextSegment, TextSegmentKind
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             iter::*,

@@ -16,7 +16,7 @@ mod strip; // impl: Ansi:strip_codes
 mod print; // ansi_print, ansi_print_linux, ansi_print_std
 mod r#macro; // ansi!
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             namespace::*,

@@ -16,7 +16,7 @@ mod probability; // Probability
 pub mod rand; // Random number generation
 pub mod stats; // Descriptive statistics
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         pub use super::{
             // estim::_all::*,

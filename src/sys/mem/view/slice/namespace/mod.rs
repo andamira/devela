@@ -18,7 +18,7 @@ mod eq;
 mod define; // Slice
 mod r#macro; // slice!
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::Slice,

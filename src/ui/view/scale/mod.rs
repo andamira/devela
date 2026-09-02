@@ -11,7 +11,7 @@ mod density; // UiDensity
 mod round; // UiRound
 // mod scale; // UiScaleProfile, UiTextScale
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             cell::*,

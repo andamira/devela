@@ -6,7 +6,7 @@
 mod consts; // LINUX_ERRNO, LINUX_EXIT
 mod error; // LinuxError, LinuxResult
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             consts::*,

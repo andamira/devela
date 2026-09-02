@@ -9,7 +9,7 @@ crate::_unsafe_syscall_not_miri! {
 mod fd; } // LinuxFd
 mod seek; // LinuxSeekFrom
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
         pub use super::fd::*;

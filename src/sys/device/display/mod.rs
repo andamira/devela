@@ -17,7 +17,7 @@
 #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
 pub mod x11;
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         // #[cfg(feature = "cocoa")]
         // pub use super::cocoa::*;

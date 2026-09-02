@@ -11,7 +11,7 @@
 // mod contact; // mechanically active geometric contact
 // mod joint;   // persistent structured relations between bodies or parts
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     bound::_all::*,

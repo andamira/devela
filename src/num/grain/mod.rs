@@ -8,17 +8,19 @@
 
 // mod big; // TODO
 mod cast; // Cast, PrimCast, PrimJoin, PrimSplit, cast!
+// mod float; // Compact binary floating-point formats and representations
 mod lim; // Boundary-aware integer representations and arithmetic
 pub mod niche; // MaybeNiche, NonNiche*, NonZero*, Non<Max|Min|Value>*, nm!, nv!, nz!
 mod prim; // PrimFloat, PrimInt, PrimScalar, PrimSint, PrimUint
 pub mod wide; // lane!
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
             // big::_all::*,
             cast::_all::*,
+            // float::_all::*,
             lim::_all::*,
             prim::*,
         };

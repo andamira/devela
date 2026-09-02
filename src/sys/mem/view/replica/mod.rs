@@ -13,7 +13,7 @@ mod _test;
 mod error; // MemReplicaError
 mod slice; // MemReplicaSlice
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             error::*,

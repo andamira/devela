@@ -18,7 +18,7 @@ mod group; // FmtNumGroup,
 mod num; // FmtNum TEMP
 mod shape; // FmtNumShape
 
-crate::structural_mods! { // _mods, _hidden
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             conf::*,

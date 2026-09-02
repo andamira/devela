@@ -81,7 +81,6 @@ pub struct DistBinomial {
 
 impl DistBinomial {
     /// Constructs a binomial distribution.
-    #[must_use]
     pub const fn new(trials: u64, probability: Probability) -> Self {
         Self { trials, probability }
     }

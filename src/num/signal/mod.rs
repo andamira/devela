@@ -14,7 +14,7 @@ mod sample; // Sampling, stepping, and discrete realization
 mod transform; // Signal mapping, modulation, and transformation
 // mod weave; // Signal weaving, composition, and interconnection
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::{
             curve::CurveRamp,

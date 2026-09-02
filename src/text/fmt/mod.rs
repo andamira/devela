@@ -18,7 +18,7 @@ mod namespace; // Fmt
 mod num; // FmtNum, FmtNumGroup, FmtNumShape, FmtNumConf, FmtNumSign, fmt_num! WIP
 // mod table; // WIP
 
-crate::structural_mods! { // _mods, _reexports, _hidden
+crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         pub use super::namespace::*;
         pub use super::{

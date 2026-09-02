@@ -24,7 +24,7 @@ mod rgb; // Rgb[a][8|16|F32|F64], Rgb[a]Lin[F32|F64]
 // #[cfg(feature = "linear")]
 // mod xyz; // Xyz
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             color::Color,

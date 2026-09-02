@@ -12,7 +12,7 @@ mod trie;
 
 mod layout; // text-layout methods for GraphemeScanner
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             iter::GraphemeIter,

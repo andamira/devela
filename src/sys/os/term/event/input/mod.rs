@@ -13,7 +13,7 @@ mod state; // (TermInputState, TermParsed, TermParsedCsi, TermReply)
 mod csi; // impl parse control and csi methods for keys and mouse
 mod feed; // impl feed_* methods
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             parser::*,

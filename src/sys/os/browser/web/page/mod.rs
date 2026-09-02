@@ -6,7 +6,7 @@
 mod document; // WebDocument, WebElement
 mod window; // WebWindow
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             document::*,

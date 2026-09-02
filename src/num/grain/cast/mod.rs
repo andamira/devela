@@ -10,7 +10,7 @@ mod macros; // cast!
 mod namespace; // Cast
 mod traits; // PrimCast, PrimJoin, PrimSplit
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{

@@ -10,7 +10,7 @@
 // mod body; // Rigid-body mechanical state and composition
 // mod inertia; // Mass distribution, centers of mass, and rotational inertia
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     body::_all::*,

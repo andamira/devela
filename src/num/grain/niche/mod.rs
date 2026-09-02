@@ -80,7 +80,7 @@ mod absence; // MaybeNiche, NonNiche
 mod macros; // niche!, (NicheNew), niche_prim!
 mod mem; // NonMax*, NonMin*, NonValue*
 
-crate::structural_mods! { // _mods, _reexports, _hidden
+crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

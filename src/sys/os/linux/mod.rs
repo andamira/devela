@@ -31,7 +31,7 @@ pub mod process; // LinuxSig<action|set|siginfo>, LINUX_SIG<ACTION|AIGNAL>
 #[doc = crate::_tags!(time)]
 pub mod thread; // Linux<Clock|Instant|Time|Timespec>
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             // container::*,

@@ -6,7 +6,7 @@ mod cpu; // XCpuBuffer
 #[cfg(ffi_xcb_shm··)]
 mod shm; // XShmBuffer, (XShmCaps)
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             base::*,

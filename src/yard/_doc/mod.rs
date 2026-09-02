@@ -11,7 +11,7 @@ mod test_size_of; // _doc_test_size_of!
 mod vendor; // _doc_vendor!
 mod warn; // _doc_warn_miri!
 
-crate::structural_mods! { // _mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _crate_internals, _hidden
     // re-exported for documentation
     _mods {
         pub use super::{

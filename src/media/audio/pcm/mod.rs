@@ -15,7 +15,7 @@ mod layout; // PcmLayout
 mod sample; // PcmSample, PcmSampleType
 mod spec; // PcmSpec
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             buf::*,

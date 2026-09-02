@@ -16,7 +16,7 @@ pub mod grapheme; // Grapheme[NonNul|U8], Grapheme[Boundary|Machine|Prop[Cb|InCb
 #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
 pub mod scalar; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8]
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::mods_out! { // _mods, _pub_mods
     _mods {
         // pub use super::{
         //     // norm::*,

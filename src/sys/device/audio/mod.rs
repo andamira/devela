@@ -16,7 +16,7 @@ mod common; // AudioDevice, AudioDeviceDir
 mod alsa;
 // mod pulse;
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::common::*;
         #[cfg(all(feature = "alsa", not(feature = "safe_sys")))]

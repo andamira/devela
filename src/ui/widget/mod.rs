@@ -65,7 +65,7 @@ mod _test;
 mod button; // UiButton
 mod response; // UiResponse, UiResponseFlags
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             button::*,

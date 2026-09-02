@@ -13,7 +13,7 @@ mod ext; // StrExt, StringExt
 mod namespace; // Str
 mod small; // StringSmallAlloc
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             array::_all::*,

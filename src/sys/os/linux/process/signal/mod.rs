@@ -20,7 +20,7 @@ crate::items! {
     mod restorer;
 }
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             action::*,

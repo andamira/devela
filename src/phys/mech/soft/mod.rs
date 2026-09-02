@@ -12,7 +12,7 @@
 // mod sheet; // Thin deformables: membranes, shells, cloth-like models
 // mod volume; // Volumetric deformable mechanical models
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     lump::_all::*,

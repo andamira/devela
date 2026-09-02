@@ -42,7 +42,7 @@ pub mod term; // Ansi* Term*
 // #[cfg(feature = "windows")]
 // pub mod windows;
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
         pub use super::c::*;

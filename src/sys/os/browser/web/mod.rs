@@ -26,7 +26,7 @@ mod page; // document, elements, navigation, screen, window
 mod ui; // UI presenters implemented for the web
 mod work; // clocks, frames, timers, workers, scheduling
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             access::_all::*,

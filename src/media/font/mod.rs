@@ -19,7 +19,7 @@ mod namespace; // Fonts
 // mod outline; // Contour-based glyph representation
 // mod semantic; // Format-independent typographic meaning
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             art::_all::*,

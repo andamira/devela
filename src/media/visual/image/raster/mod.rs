@@ -20,7 +20,7 @@ mod layout; // Physical raster byte-storage layout
 // mod ops; // TODO Raster storage and image operations
 mod traits; // Typed and byte raster access contracts
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{

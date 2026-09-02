@@ -17,7 +17,7 @@ crate::_linux_syscall! { _ansi_define!(print ansi_print_linux); }
 crate::_std_not_linux_syscall! { _ansi_define!(print ansi_print_std); }
 crate::_not_std_or_linux_syscall! { _ansi_define!(fallback); }
 
-crate::structural_mods! {
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::ansi;
     }

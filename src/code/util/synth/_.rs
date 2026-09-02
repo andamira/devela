@@ -11,7 +11,7 @@
 //
 
 // BOOTSTRAP: defines `mods_out!`.
-mod structural; // mods_out!, structural_mods!
+mod mods_out; // mods_out!
 
 mods_in! {
     mod r#const; // CONST!
@@ -24,7 +24,7 @@ mods_in! {
     mod unroll; // unroll!
     mod use_as; // use_as!
 }
-structural::mods_out! { // _mods, _reexports, _hidden
+mods_out::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -34,7 +34,7 @@ structural::mods_out! { // _mods, _reexports, _hidden
             items::items,
             maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
-            structural::{structural_mods, mods_out},
+            mods_out::mods_out,
             use_as::use_as,
         };
         #[cfg(feature = "_unroll")]

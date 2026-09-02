@@ -28,7 +28,7 @@ crate::items! {
 #[cfg(feature = "rand")]
 mod macros;
 
-crate::structural_mods! { // _mods, _hidden
+crate::mods_out! { // _mods, _hidden
     _mods {
         #[cfg(feature = "rand")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]

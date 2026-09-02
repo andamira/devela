@@ -16,7 +16,7 @@ crate::items! {
     impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             constants::*,

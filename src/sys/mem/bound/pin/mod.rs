@@ -12,7 +12,7 @@ mod _reexport_core;
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
 mod pinned; // Pinned
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
         pub use super::pinned::*;

@@ -45,7 +45,7 @@ mod flags; // UiFlags
 mod role; // UiRole
 mod text; // UiText
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             action::*,

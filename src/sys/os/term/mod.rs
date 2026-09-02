@@ -20,7 +20,7 @@ mod session; // TermSession, TermPollPolicy, TermMode
 #[cfg(feature = "ui")]
 mod ui; // UI realizations for the terminal
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         pub use super::{
             backend::_all::*,

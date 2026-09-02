@@ -14,7 +14,7 @@ mod backing; // Backing
 mod maybe; // MaybeOwned
 mod ownership; // Ownership, BackingChoice
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             backing::*,

@@ -71,7 +71,7 @@ mod target; // EventTarget
 mod time; // EventTimestamp[Mode]
 mod window; // EventWindow
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             event::*,

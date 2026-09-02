@@ -7,7 +7,7 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
 mod time; // LinuxClock, LinuxInstant, LinuxTime, LinuxTimespec
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[cfg(feature = "time")]
         pub use super::time::*;

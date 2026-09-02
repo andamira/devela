@@ -11,14 +11,16 @@ pub mod color;
 pub mod draw;
 pub mod image;
 // pub mod lattice; // WIP
+// pub mod pattern; // WIP
 // pub mod video; //
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             color::_all::*,
             image::_all::*,
             // lattice::_all::*,
+            // pattern::_all::*,
             // video::_all::*,
         };
         #[cfg(feature = "draw")]

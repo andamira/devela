@@ -21,7 +21,7 @@ pub mod font;
 // pub mod motion; // WIP
 pub mod visual;
 
-crate::structural_mods! { // _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _pub_mods, _crate_internals, _hidden
     _pub_mods {
         #[cfg(feature = "audio")]
         pub use super::audio::_all::*;

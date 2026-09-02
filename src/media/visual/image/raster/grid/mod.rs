@@ -11,7 +11,7 @@ mod coord; // RasterCoordIter
 mod define; // RasterGrid
 mod interlace; // Bitmap raster interlacing methods
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             adam7::{Adam7Pass, Adam7Row, Adam7Rows},

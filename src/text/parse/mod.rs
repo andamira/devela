@@ -9,7 +9,7 @@ mod byte_search; // ByteSearch, dep_memchr fns alternatives
 mod error; // TextParseError[Kind]
 mod scanner; // TextScanner
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             byte_search::*,

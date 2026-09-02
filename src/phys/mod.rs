@@ -30,7 +30,7 @@ pub mod unit; // Physical units of measure and unit prefixes
 #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
 pub mod wave; // Wave primitives, wavelets
 
-crate::structural_mods! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             // astro::_all::*,

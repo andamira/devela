@@ -5,7 +5,7 @@
 
 mod cell; // TermCellUi
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             cell::*,

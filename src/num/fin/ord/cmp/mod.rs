@@ -9,7 +9,7 @@ mod _test;
 mod define; // Cmp
 mod macros; // cmp!
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{

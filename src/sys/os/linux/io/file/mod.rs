@@ -14,7 +14,7 @@ mod open; // LinuxOpenOptions
 mod pipe; // LinuxPipe, LinuxPipeFlags
 mod stat; // LinuxStat, LinuxFileType, (LINUX_S_IFMT)
 
-crate::structural_mods! { // _mods, crate_internals
+crate::mods_out! { // _mods, crate_internals
     _mods {
         pub use super::{
             fcntl::*,

@@ -19,7 +19,7 @@ mod _helper; // __lane_dispatch!, _dep_wide_compile!, _dep_wide_use!
 
 mod lane; // lane!
 
-crate::structural_mods! { // _reexports, _hidden
+crate::mods_out! { // _reexports, _hidden
     _mods {
         pub use super::lane::*;
 

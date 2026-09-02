@@ -19,7 +19,7 @@ cfg_select! {
                   _ => { mod no_std; } // no_std methods
 }
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::Float,

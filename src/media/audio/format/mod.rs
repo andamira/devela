@@ -13,7 +13,7 @@
 mod raw; // Headerless raw PCM audio.
 mod wav; // Waveform Audio File Format
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             // mp3::*,

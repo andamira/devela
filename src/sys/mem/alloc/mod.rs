@@ -9,7 +9,7 @@
 mod alloc; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc, reexports
 mod storage; // Bare, BareBox, Boxed, Storage
 
-crate::structural_mods! { // _mods, _hidden
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             alloc::_all::*,

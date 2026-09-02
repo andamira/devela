@@ -6,7 +6,7 @@
 #![doc = crate::_doc!(flat:"ui")]
 #![doc = crate::_doc!(hr)]
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         // };

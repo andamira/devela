@@ -11,7 +11,7 @@
 mod action; // LINUX_SIGACTION
 mod signal; // LINUX_SIGNAL
 
-crate::structural_mods! { // _crate_internals
+crate::mods_out! { // _crate_internals
     _crate_internals {
         pub(crate) use super::{
             action::*,

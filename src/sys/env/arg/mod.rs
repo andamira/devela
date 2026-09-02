@@ -12,7 +12,7 @@ mod os_ref; // ArgsOsRefIter + TEMP args_os_ref_iter (make impl for Env
 // #[cfg(feature = "shell")]
 // mod shell; // adapters
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     scan::*,

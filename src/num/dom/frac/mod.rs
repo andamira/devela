@@ -8,7 +8,7 @@ mod wrapper;
 
 // mod r#trait;
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[cfg(feature = "int")]
         pub use super::wrapper::*;

@@ -11,7 +11,7 @@
 // mod func;
 // mod poly;
 
-crate::structural_mods! { //_mods
+crate::mods_out! { //_mods
     _mods {
         // pub use super::{
         //     // eq::_all::*,

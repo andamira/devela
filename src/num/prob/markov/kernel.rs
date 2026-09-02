@@ -46,7 +46,6 @@ impl<'a> MarkovKernel<'a> {
         self.transitions.len()
     }
     /// Returns all transition distributions in state order.
-    #[must_use]
     pub const fn transitions(&self) -> &'a [DistCategorical<'a>] {
         self.transitions
     }

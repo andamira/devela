@@ -13,7 +13,7 @@ use crate::c_int;
 #[doc = crate::_doc_meta!{location("sys/os/fd")}]
 pub type FdRaw = c_int;
 
-crate::structural_mods! { //_mods
+crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::FdRaw;

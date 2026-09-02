@@ -18,7 +18,7 @@ mod ext_float; // FloatExt
 mod float_const; // FloatConst
 mod wrapper; // Float
 
-crate::structural_mods! { // _mods, _reexports, _crate_internals
+crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             alias::*,

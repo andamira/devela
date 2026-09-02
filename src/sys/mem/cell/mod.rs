@@ -17,7 +17,7 @@ mod option; // CellOptionExt
 // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
 // mod ghost; // WIP
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             hedge::_all::*,

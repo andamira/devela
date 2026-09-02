@@ -11,7 +11,7 @@
 // mod measure; // Stretch, strain, curvature, and other deformation measures
 // mod rest; // Stress-free and mechanically preferred configurations
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             law::_all::*,

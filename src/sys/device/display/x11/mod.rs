@@ -26,7 +26,7 @@ mod ui; // UI realization for X11 pixel surfaces
 mod window; // XWindow
 mod xkb; // (KeyRepeatFilter), (XkbInfo), (XkbState)
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             display::*,

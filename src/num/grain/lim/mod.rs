@@ -12,7 +12,7 @@
 mod bound; // bound_int!
 // mod norm; //
 
-crate::structural_mods! { // _mods, _crate_internals
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{

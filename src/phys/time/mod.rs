@@ -39,7 +39,7 @@ pub mod source; // TimeSource, TimeSourceCfg, TimeFake, TimeFakeRef
 // #[cfg(feature = "_destaque_u16")]
 // mod looper;
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::timed::*;
 

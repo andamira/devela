@@ -9,7 +9,7 @@
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 mod pod; // MemPod
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]

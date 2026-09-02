@@ -16,7 +16,7 @@ mod ext; // PathExt
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod fs_path; // FsPath
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         #[cfg(feature = "std")]
         pub use super::ext::*;

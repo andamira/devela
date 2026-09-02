@@ -7,7 +7,7 @@
 mod alloc; // StringExt
 mod slice; // StrExt
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             slice::*,

@@ -12,7 +12,7 @@
 // mod network; // Lumped fluid networks of channels, valves, and connected elements
 // mod spatial; // Spatially distributed fluid models
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     chamber::_all::*,

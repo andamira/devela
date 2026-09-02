@@ -17,7 +17,7 @@ pub mod http; // The HTTP protocol
 // mod smtp; // WIP The SMTP protocol
 // mod telegram; // WIP The Telegram protocol
 
-crate::structural_mods! { // _pubmods, _reexports, _crate_internals
+crate::mods_out! { // _pubmods, _reexports, _crate_internals
     _pub_mods {
         #[cfg(feature = "http")]
         pub use super::http::_all::*;

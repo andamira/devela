@@ -15,7 +15,7 @@
 // mod seismic; // Waves, earthquakes, and seismic models
 // mod tectonic; // Plates, deformation, and crustal motion
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         // pub use super::{
         //     atmos::_all::*,

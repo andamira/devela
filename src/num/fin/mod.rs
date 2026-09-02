@@ -15,7 +15,7 @@ pub mod ord; // Cmp, cmp!, Order
 // mod rank;
 // mod seq;
 
-crate::structural_mods! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{

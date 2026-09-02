@@ -82,7 +82,7 @@
 - new macro: `mods_in!`.
 - update `structural_mods!`:
   - remove the `_workspace_internals` branch.
-  - make alias `mods_out!`.
+  - rename to `mods_out!`.
 
 ### data::access
 - new type `StridedBlocks`.

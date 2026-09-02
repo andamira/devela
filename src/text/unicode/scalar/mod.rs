@@ -16,7 +16,7 @@ mod offset; // scalar_offset!
 mod scalar; // ch!, char7, char8, char16, charu, charu_niche
 mod unicode_scalar; // UnicodeScalar
 
-crate::structural_mods! { // _mods, _reexports
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             iter::CharIter,

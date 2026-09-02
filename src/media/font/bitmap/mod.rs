@@ -12,7 +12,7 @@ mod word; // FontBitmapWord
 mod fonts; // Fonts::BIT_3_3,  Fonts::BIT_3_5, Fonts::BIT_5_6
 mod termivela; // Fonts::TERMIVELA_*
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             view::*,

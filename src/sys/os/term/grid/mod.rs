@@ -18,7 +18,7 @@ mod termel; // Termel
 
 mod impls; // impls for TermGrid
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             color::*,

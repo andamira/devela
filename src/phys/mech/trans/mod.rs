@@ -10,7 +10,7 @@
 // pub mod machine; // Mechanical machines and transmission mechanisms.
 // pub mod port; // Mechanical energetic coupling and power-conjugate variables.
 
-crate::structural_mods! { // _pub_mods
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         //     machine::_all::*,

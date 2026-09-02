@@ -15,7 +15,7 @@ mod line; // EOL and line-oriented scanning
 mod quote; // quoted string scanning and decoding
 mod scalar; // UTF-8 scalar scanning
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::TextScanner,

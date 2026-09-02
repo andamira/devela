@@ -13,7 +13,7 @@ mod control; // LINUX_TERMIOS_CFLAG
 mod local; // LINUX_TERMIOS_LFLAG
 mod cc; // LINUX_TERMIOS_CC
 
-crate::structural_mods! { // _crate_internals
+crate::mods_out! { // _crate_internals
     _crate_internals {
         pub(crate) use super::{
             input::*,

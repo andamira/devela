@@ -21,7 +21,7 @@ mod state; // KeyState
 #[cfg_attr(nightly_doc, doc(cfg(feature = "ffi")))]
 mod ffi; // KeyFfi
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             dead::*,

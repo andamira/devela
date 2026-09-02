@@ -7,4 +7,4 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! {}
+crate::mods_out! {}

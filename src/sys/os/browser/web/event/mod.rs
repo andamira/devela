@@ -15,7 +15,7 @@ mod mouse; // WebEventMouse
 mod pointer; // WebEventPointer
 mod wheel; // WebEventWheel
 
-crate::structural_mods! { // _mods
+crate::mods_out! { // _mods
     _mods {
         #[cfg_attr(nightly_doc, doc(cfg(feature = "event")))]
         pub use super::{

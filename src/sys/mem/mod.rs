@@ -25,7 +25,7 @@ pub mod layout; // Memory layout, bit-validity, and representation invariants.
 pub mod size; // size_of_expr!, BitSized, ByteSized,
 pub mod view; // Typed and byte-level views over memory.
 
-crate::structural_mods! { // _mods, _pub_mods, _reexports, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         pub use super::{
             ext::*,

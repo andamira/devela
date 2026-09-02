@@ -20,7 +20,7 @@ crate::items! {
 
 // mod ext; // FileExt // WIP
 
-crate::structural_mods! { // _mods, _pub_mods
+crate::mods_out! { // _mods, _pub_mods
     _mods {
         #[cfg(feature = "std")]
         pub use super::{

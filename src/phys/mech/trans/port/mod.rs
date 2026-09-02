@@ -7,7 +7,7 @@
 #![doc = crate::_doc!(hr)]
 //
 
-crate::structural_mods! { // _pub_mods
+crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{
         // };
