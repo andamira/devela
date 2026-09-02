@@ -15,58 +15,83 @@ use crate::{Extent, Position, Stride};
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct Region),
+    test_size_of(Region<i32, u32, 2> = 16|128; niche !Option),
+}]
 /// See also: [`Region1`], [`Region2`], [`Region3`],
 /// [`RegionS`], [`RegionS1`], [`RegionS2`], [`RegionS3`].
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Region<P, E, const D: usize> {
-    ///
+    /// The position of the region.
     pub pos: Position<P, D>,
-    ///
+    /// The extent of the region.
     pub ext: Extent<E, D>,
 }
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Region`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Region1),
+    test_size_of(Region1<i32, u32> = 8|64; niche !Option),
+}]
 pub type Region1<P, E> = Region<P, E, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Region`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Region2),
+    test_size_of(Region2<i32, u32> = 16|128; niche !Option),
+}]
 pub type Region2<P, E> = Region<P, E, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Region`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Region3),
+    test_size_of(Region3<i32, u32> = 24|192; niche !Option),
+}]
 pub type Region3<P, E> = Region<P, E, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Position`]ed [`Extent`] sharing the **S**ame type.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type RegionS),
+    test_size_of(RegionS<f32, 2> = 16|128; niche !Option),
+}]
 pub type RegionS<T, const D: usize> = Region<T, T, D>;
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`RegionS`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type RegionS1),
+    test_size_of(RegionS1<f32> = 8|64; niche !Option),
+}]
 pub type RegionS1<T> = RegionS<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`RegionS`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type RegionS2),
+    test_size_of(RegionS2<f32> = 16|128; niche !Option),
+}]
 pub type RegionS2<T> = RegionS<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`RegionS`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type RegionS3),
+    test_size_of(RegionS3<f32> = 24|192; niche !Option),
+}]
 pub type RegionS3<T> = RegionS<T, 3>;
 
 #[doc = crate::_tags!(geom)]
 /// A [`Stride`]d [`Region`] defining structured traversal.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct RegionStrided),
+    test_size_of(RegionStrided<u32, i32, 2> = 24|192; niche !Option),
+}]
 /// `RegionStrided` extends `Region` by adding a stride, allowing
 /// structured access to subregions or non-contiguous patterns.
 ///

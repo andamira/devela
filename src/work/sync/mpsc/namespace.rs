@@ -10,7 +10,10 @@ use std::sync::mpsc::{channel, sync_channel};
 
 #[doc = crate::_tags!(concurrency namespace)]
 /// Multi-producer, single-consumer channel operations.
-#[doc = crate::_doc_meta!{location("work/sync/mpsc")}]
+#[doc = crate::_doc_meta!{
+    location("work/sync/mpsc", struct Mpsc),
+    test_size_of(Mpsc = 0),
+}]
 #[derive(Debug)]
 pub struct Mpsc;
 

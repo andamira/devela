@@ -22,8 +22,11 @@ use crate::{AsyncWaker, Box, VecDeque};
 
 #[doc = crate::_tags!(concurrency runtime)]
 /// Represents a single-thread stackless coroutine worker.
-#[doc = crate::_doc_meta!{location("work/task/coro")}]
-///
+#[doc = crate::_doc_meta!{
+    location("work/task/coro", struct CoroWorker),
+    // #[cfg(target_pointer_width = "64")] // TODO
+    test_size_of(CoroWorker<u32, ()> = 12|96; niche Option),
+}]
 /// It has a private status that can be either running or halted.
 #[derive(Clone, Copy, Debug)]
 pub struct CoroWorker<T, E> {
@@ -63,8 +66,13 @@ impl<T, E> CoroWorker<T, E> {
 #[doc = crate::_tags!(concurrency runtime)]
 /// A future that alternates between [`Ready`][AsyncPoll::Ready] and
 /// [`Pending`][AsyncPoll::Pending] status each time it's polled.
-#[doc = crate::_doc_meta!{location("work/task/coro")}]
-///
+#[doc = crate::_doc_meta!{
+    location("work/task/coro", struct CoroWork),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(CoroWork<u32, ()> = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(CoroWork<u32, ()> = 8|64; niche Option),
+}]
 /// This allows the coroutine to yield control back and be resumed later.
 #[derive(Debug)]
 pub struct CoroWork<'a, T, E> {
@@ -99,10 +107,15 @@ impl<T, E> Future for CoroWork<'_, T, E> {
 
 #[doc = crate::_tags!(concurrency runtime)]
 /// A managed dynamic collection of single-thread [`CoroWorker`] coroutines.
-#[doc = crate::_doc_meta!{location("work/task/coro")}]
-///
-/// It maintains a queue of coroutines in the stack, and runs them in a loop
-/// until they are all complete.
+#[doc = crate::_doc_meta!{
+    location("work/task/coro", struct CoroManager),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(CoroManager<u32, ()> = 16|128; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(CoroManager<u32, ()> = 32|256; niche Option),
+}]
+/// It maintains a queue of coroutines in the stack,
+/// and runs them in a loop until they are all complete.
 ///
 /// When a coroutine is polled and returns [`AsyncPoll::Pending`], it is put back
 /// into the queue to be run again later. If it returns [`AsyncPoll::Ready`]

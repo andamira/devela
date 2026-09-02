@@ -24,8 +24,10 @@ _impl_init![Self::Left => Boundary1d, Boundary2d, Boundary3d];
 
 #[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a one-dimensional boundary.
-#[doc = crate::_doc_meta!{location("geom/dir")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/dir", enum Boundary1d),
+    test_size_of(Boundary1d = 1|8; niche Option),
+}]
 /// Identifies the lower or upper side of a bounded [`Extent<T, 1>`] or other one-dimensional
 /// bounded domains, corresponding to the extrema of a totally ordered domain.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -65,8 +67,10 @@ impl Boundary1d {
 
 #[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a two-dimensional rectangular boundary.
-#[doc = crate::_doc_meta!{location("geom/dir")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/dir", enum Boundary2d),
+    test_size_of(Boundary2d = 1|8; niche Option),
+}]
 /// Identifies a side of a bounded [`Extent<T, 2>`], or other two-dimensional bounded domains.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Boundary2d {
@@ -104,8 +108,10 @@ impl Boundary2d {
 
 #[doc = crate::_tags!(geom dir)]
 /// Orientation relative to a three-dimensional bounding volume.
-#[doc = crate::_doc_meta!{location("geom/dir")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/dir", enum Boundary3d),
+    test_size_of(Boundary3d = 1|8; niche Option),
+}]
 /// Identifies a face of a bounded [`Extent<T, 3>`], or other three-dimensional bounded domains.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Boundary3d {

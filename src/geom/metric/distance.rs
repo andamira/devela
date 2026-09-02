@@ -8,8 +8,10 @@ use crate::{Extent, Orientation, Position};
 
 #[doc = crate::_tags!(geom)]
 /// A component-wise separation between locations in `D`-dimensional space.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct Distance),
+    test_size_of(Distance<f32, 2> = 8|64; niche !Option),
+}]
 /// `Distance` describes how far apart two locations are along each coordinate
 /// axis, without assigning a signed direction to that separation.
 ///
@@ -34,17 +36,26 @@ pub struct Distance<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Distance`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Distance1),
+    test_size_of(Distance1<f32> = 4|32; niche !Option),
+}]
 pub type Distance1<T> = Distance<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Distance`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Distance3),
+    test_size_of(Distance2<f32> = 8|64; niche !Option),
+}]
 pub type Distance2<T> = Distance<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Distance`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Distance3),
+    test_size_of(Distance3<f32> = 12|96; niche !Option),
+}]
 pub type Distance3<T> = Distance<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Distance];

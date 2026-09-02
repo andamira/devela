@@ -16,8 +16,9 @@ crate::_geom_dim_define_macro![($) pos, "a", Position, geom, "geom/metric"];
 
 #[doc = crate::_tags!(geom construction)]
 /// Constructs a [`Region`] from a [`Position`] and an [`Extent`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", macro region),
+}]
 /// Supports:
 /// - direct construction from position and extent expressions,
 /// - flat or grouped construction from raw components,
@@ -51,7 +52,7 @@ crate::_geom_dim_define_macro![($) pos, "a", Position, geom, "geom/metric"];
 /// ```
 #[macro_export]
 #[doc(hidden)]
-macro_rules! region {
+macro_rules! region· {
     (
     // flat 2D construction from raw components
      $x:expr, $y:expr, $w:expr, $h:expr $(,)?) => {
@@ -73,54 +74,54 @@ macro_rules! region {
     (
     // explicit component cast-construction; const-friendly
      checked => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+)
+        $crate::__geom_region_cast_ctor!(checked => $P, $E; $($pos),+; $($ext),+)
     };
     (checked? => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked? => $P, $E; $($pos),+; $($ext),+)
+        $crate::__geom_region_cast_ctor!(checked? => $P, $E; $($pos),+; $($ext),+)
     };
     (checked_unwrap => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(checked_unwrap => $P, $E; $($pos),+; $($ext),+)
+        $crate::__geom_region_cast_ctor!(checked_unwrap => $P, $E; $($pos),+; $($ext),+)
     };
     (checked_expect => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+, $msg:expr) => {
-        $crate::_geom_region_cast_ctor!(checked_expect => $P, $E; $($pos),+; $($ext),+, $msg)
+        $crate::__geom_region_cast_ctor!(checked_expect => $P, $E; $($pos),+; $($ext),+, $msg)
     };
     (saturating => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(saturating => $P, $E; $($pos),+; $($ext),+)
+        $crate::__geom_region_cast_ctor!(saturating => $P, $E; $($pos),+; $($ext),+)
     };
     (wrapping => $P:ty, $E:ty; $($pos:expr),+ $(,)?; $($ext:expr),+ $(,)?) => {
-        $crate::_geom_region_cast_ctor!(wrapping => $P, $E; $($pos),+; $($ext),+)
+        $crate::__geom_region_cast_ctor!(wrapping => $P, $E; $($pos),+; $($ext),+)
     };
 
     (
     // whole-region cast shorthand; runtime-only
      checked $from:expr => $P:ty, $E:ty
     ) => {
-        $crate::_geom_region_cast_ctor!(checked $from => $P, $E)
+        $crate::__geom_region_cast_ctor!(checked $from => $P, $E)
     };
     (checked? $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(checked? $from => $P, $E)
+        $crate::__geom_region_cast_ctor!(checked? $from => $P, $E)
     };
     (checked_unwrap $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(checked_unwrap $from => $P, $E)
+        $crate::__geom_region_cast_ctor!(checked_unwrap $from => $P, $E)
     };
     (checked_expect $from:expr => $P:ty, $E:ty, $msg:expr) => {
-        $crate::_geom_region_cast_ctor!(checked_expect $from => $P, $E, $msg)
+        $crate::__geom_region_cast_ctor!(checked_expect $from => $P, $E, $msg)
     };
     (saturating $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(saturating $from => $P, $E)
+        $crate::__geom_region_cast_ctor!(saturating $from => $P, $E)
     };
     (wrapping $from:expr => $P:ty, $E:ty) => {
-        $crate::_geom_region_cast_ctor!(wrapping $from => $P, $E)
+        $crate::__geom_region_cast_ctor!(wrapping $from => $P, $E)
     };
 }
 #[doc(inline)]
-pub use region;
+pub use region· as region;
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use crate::{
         Distance, Distance2, Extent, Extent2, Extent3, Position, Position2, Region2, Region3, dis,
-        ext, pos,
+        ext, pos, region,
     };
 
     #[test]

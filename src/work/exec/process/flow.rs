@@ -10,8 +10,13 @@ use crate::{Process, ProcessExt, ShellWordError};
 
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.
-#[doc = crate::_doc_meta!{location("work/process")}]
-///
+#[doc = crate::_doc_meta!{
+    location("work/process", struct CommandFlow),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(CommandFlow = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(CommandFlow = 24|192; niche Option),
+}]
 /// A `CommandFlow` represents one or more [`Command`]s executed as a single unit.
 /// In the current implementation, commands are arranged linearly, connecting
 /// the stdout of each command to the stdin of the next.

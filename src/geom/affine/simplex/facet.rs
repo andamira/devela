@@ -7,8 +7,13 @@ use crate::{Point, Sign, Simplex, is};
 
 #[doc = crate::_tags!(geom)]
 /// A borrowed facet of a [`Simplex`], represented by one omitted vertex.
-#[doc = crate::_doc_meta!{location("geom/affine")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/affine", struct SimplexFacetView),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(SimplexFacetView<f32, 2, 4> = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(SimplexFacetView<f32, 2, 4> = 16|128; niche Option),
+}]
 /// A facet is a codimension-one face of a simplex. This view borrows the
 /// original simplex and exposes its vertices in their original order, except
 /// for the vertex at [`omitted_index`](Self::omitted_index).
@@ -71,8 +76,13 @@ impl<'a, T, const D: usize, const V: usize> SimplexFacetView<'a, T, D, V> {
 
 #[doc = crate::_tags!(geom iterator)]
 /// An iterator over the facets of a [`Simplex`].
-#[doc = crate::_doc_meta!{location("geom/affine")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/affine", struct SimplexFacetIter),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(SimplexFacetIter<f32, 2, 4> = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(SimplexFacetIter<f32, 2, 4> = 24|192; niche Option),
+}]
 /// Facets are yielded in omitted-vertex order.
 #[must_use]
 #[derive(Clone, Debug)]

@@ -7,8 +7,10 @@
 
 #[doc = crate::_tags!(geom)]
 /// A coordinate point in `D`-dimensional affine space.
-#[doc = crate::_doc_meta!{location("geom/affine")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/affine", struct Point),
+    test_size_of(Point<f32, 2> = 8|64; niche !Option),
+}]
 /// A point represents a position, not a displacement.
 ///
 /// [`Vector`][crate::Vector] acts on a point by translation:
@@ -27,13 +29,19 @@ pub struct Point<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional affine point.
-#[doc = crate::_doc_meta!{location("geom/affine")}]
-pub type Point2d<T> = Point<T, 2>;
+#[doc = crate::_doc_meta!{
+    location("geom/affine", type Point2),
+    test_size_of(Point2<f32> = 8|64; niche !Option),
+}]
+pub type Point2<T> = Point<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional affine point.
-#[doc = crate::_doc_meta!{location("geom/affine")}]
-pub type Point3d<T> = Point<T, 3>;
+#[doc = crate::_doc_meta!{
+    location("geom/affine", type Point32),
+    test_size_of(Point3<f32> = 12|96; niche !Option),
+}]
+pub type Point3<T> = Point<T, 3>;
 
 /* implementations */
 
@@ -46,7 +54,7 @@ impl<T, const D: usize> Point<T, D> {
 /* manual impls for specific dimensionalities */
 
 #[rustfmt::skip]
-impl<T> Point2d<T> {
+impl<T> Point2<T> {
     /// Returns a copy of the first dimension `x`.
     #[must_use] pub const fn x(&self) -> T where T: Copy { self.coords[0] }
     /// Returns a copy of the second dimension `y`.
@@ -64,7 +72,7 @@ impl<T> Point2d<T> {
 }
 
 #[rustfmt::skip]
-impl<T> Point3d<T> {
+impl<T> Point3<T> {
     /// Returns a copy of the first dimension `x`.
     #[must_use] pub const fn x(&self) -> T where T: Copy { self.coords[0] }
     /// Returns a copy of the second dimension `y`.

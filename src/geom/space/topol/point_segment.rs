@@ -4,8 +4,10 @@ use crate::{_impl_init, Turn};
 
 #[doc = crate::_tags!(geom topol)]
 /// The relation of a point to a directed planar segment.
-#[doc = crate::_doc_meta!{location("geom/space")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/space",  enum PointSegmentRelation),
+    test_size_of(PointSegmentRelation = 1|8; niche Option)
+}]
 /// The reference segment is directed from its **origin** to its
 /// **destination**.
 ///

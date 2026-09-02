@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code platform runtime)]
 /// Builds a [`CommandFlow`][crate::CommandFlow] from one or more command invocations.
-#[doc = crate::_doc_meta!{location("work/process")}]
-///
+#[doc = crate::_doc_meta!{
+    location("work/process", macro cmd),
+}]
 /// Grammar (informal):
 /// - The `=>` operator constructs a linear flow,
 ///   connecting each command's stdout to the stdin of the next.
@@ -76,7 +77,7 @@
 /// Use `cmd!(@ "ls -F")` when shell-word splitting is intended.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! cmd {
+macro_rules! cmd· {
     // Entry point for a shell-parsed single-command flow.
     //   cmd!(@ "program arg")
     (@ $cmd:literal $(,)?) => {{
@@ -132,12 +133,12 @@ macro_rules! cmd {
     }};
 }
 #[doc(inline)]
-pub use cmd;
+pub use cmd· as cmd;
 
 #[cfg(feature = "shell")]
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __cmd_shell {
+macro_rules! __cmd_shell· {
     ($cmd:literal) => {{
         use $crate::ProcessExt as _;
         $crate::Process::command_shell($cmd).expect("invalid command literal")
@@ -146,8 +147,8 @@ macro_rules! __cmd_shell {
 #[cfg(not(feature = "shell"))]
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __cmd_shell {
+macro_rules! __cmd_shell· {
     ($cmd:literal) => {{ compile_error!("`cmd!(@ \"...\")` requires devela's `shell` feature") }};
 }
 #[doc(hidden)]
-pub use __cmd_shell;
+pub use __cmd_shell· as __cmd_shell;

@@ -11,7 +11,7 @@ use crate::{__doc_auto_hide, _reexport, _tags, macro_apply};
 /* from the `atomic` crate */
 
 _reexport! { "dep_atomic", "atomic", atomic,
-    location: "work/sync/atomic",
+    location: "work/sync/atomic" => struct Atomic,
     tag: _tags!(concurrency atomic),
     doc: "A generic atomic wrapper type.",
     Atomic
@@ -20,17 +20,20 @@ _reexport! { "dep_atomic", "atomic", atomic,
 /* from `portable-atomic` */
 
 _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    location: "work/sync/atomic", tag: _tags!(concurrency atomic),
+    location: "work/sync/atomic", // multiple imports
+    tag: _tags!(concurrency atomic),
     doc: "A thread-safe floating-point type.",
     AtomicF32, AtomicF64
 }
 _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    location: "work/sync/atomic", tag: _tags!(concurrency atomic),
+    location: "work/sync/atomic" => struct AtomicI128,
+    tag: _tags!(concurrency atomic),
     doc: "A thread-safe signed integer type.",
     AtomicI128
 }
 _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    location: "work/sync/atomic", tag: _tags!(concurrency atomic),
+    location: "work/sync/atomic" => struct AtomicU128,
+    tag: _tags!(concurrency atomic),
     doc: "A thread-safe unsigned integer type.",
     AtomicU128
 }
@@ -39,14 +42,14 @@ _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A thread-safe signed integer type.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{location("work/sync/atomic")}] // multiple imports
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize};
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A thread-safe signed integer type.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{location("work/sync/atomic")}] // multiple imports
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicUsize};
@@ -84,27 +87,35 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A raw pointer type which can be safely shared between threads.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic", struct AtomicPtr),
+}]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::AtomicPtr;
 //
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A raw pointer type which can be safely shared between threads.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic", struct AtomicPtr),
+}]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
 #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "ptr")))]
 pub use core::sync::atomic::AtomicPtr;
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A boolean type which can be safely shared between threads.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic", struct AtomicBool),
+}]
 #[cfg(feature = "dep_portable_atomic")]
 #[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use crate::_dep::portable_atomic::AtomicBool;
 //
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A boolean type which can be safely shared between threads.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}]
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic", struct AtomicBool),
+}]
 #[cfg(not(feature = "dep_portable_atomic"))]
 #[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use core::sync::atomic::AtomicBool;

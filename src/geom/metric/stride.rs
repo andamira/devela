@@ -8,8 +8,10 @@
 
 #[doc = crate::_tags!(geom)]
 /// A step size for traversing dimensions or repetitions.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct Stride),
+    test_size_of(Stride<u32, 2> = 8|64; niche !Option),
+}]
 /// `Stride` defines the spacing between adjacent elements in a structured layout.
 /// It does not define structure itself, but rather **how elements are accessed within it**.
 ///
@@ -29,17 +31,26 @@ pub struct Stride<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Stride`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Stride1),
+    test_size_of(Stride1<u32> = 4|32; niche !Option),
+}]
 pub type Stride1<T> = Stride<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Stride`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Stride2),
+    test_size_of(Stride2<u32> = 8|64; niche !Option),
+}]
 pub type Stride2<T> = Stride<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Stride`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Stride3),
+    test_size_of(Stride3<u32> = 12|96; niche !Option),
+}]
 pub type Stride3<T> = Stride<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Stride];

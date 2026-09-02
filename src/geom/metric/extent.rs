@@ -15,7 +15,10 @@ use crate::{is, whilst};
 
 #[doc = crate::_tags!(geom)]
 /// An orthogonal extension in `D`-space without a coordinate position.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct Extent),
+    test_size_of(Extent<f32, 2> = 8|64; niche !Option),
+}]
 ///
 /// Represents the lengths of each dimension in a multi-dimensional space,
 /// providing an origin-agnostic shape with the implied form of an orthotope
@@ -32,19 +35,28 @@ pub struct Extent<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Extent`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Extent1),
+    test_size_of(Extent1<f32> = 4|32; niche !Option),
+}]
 #[doc(alias = "Size")]
 pub type Extent1<T> = Extent<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Extent`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Extent2),
+    test_size_of(Extent2<f32> = 8|64; niche !Option),
+}]
 #[doc(alias = "Size")]
 pub type Extent2<T> = Extent<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Extent`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Extent3),
+    test_size_of(Extent3<f32> = 12|96; niche !Option),
+}]
 #[doc(alias = "Size")]
 pub type Extent3<T> = Extent<T, 3>;
 

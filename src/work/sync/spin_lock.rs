@@ -7,14 +7,16 @@ use crate::{
     AtomicBool, AtomicOrdering, Debug, Deref, DerefMut, FmtResult, Formatter, UnsafeCell,
     any_type_name, spin_loop,
 };
-// use crate::SleepSpin; // WIP
+// use crate::SleepSpin; // TODO
 #[cfg(feature = "std")]
 use crate::{Thread, ThreadExt};
 
 #[doc = crate::_tags!(concurrency)]
 /// A spinlock providing mutual exclusion without blocking.
-#[doc = crate::_doc_meta!{location("work/sync")}]
-///
+#[doc = crate::_doc_meta!{
+    location("work/sync", struct SpinLock),
+    test_size_of(SpinLock<u8> = 2|16; niche !Option),
+}]
 /// Uses an atomic flag for synchronization, with a configurable backoff strategy.
 ///
 /// # Examples

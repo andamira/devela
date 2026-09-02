@@ -32,13 +32,15 @@ sleep4![1.5]; // sleeps for 1.5 seconds
 // std version
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact thread sleep.
-#[doc = crate::_doc_meta!{location("work/thread")}]
+#[doc = crate::_doc_meta!{
+    location("work/thread", macro sleep4),
+}]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
 #[cfg(feature = "std")]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "linux", feature = "std"))))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! sleep4 {
+macro_rules! sleep4· {
     ($s:literal) => {
         ::std::thread::sleep($crate::Duration::from_secs_f64($s as f64));
     };
@@ -61,13 +63,15 @@ macro_rules! sleep4 {
 // linux version
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact thread sleep.
-#[doc = crate::_doc_meta!{location("work/thread")}]
+#[doc = crate::_doc_meta!{
+    location("work/thread", macro sleep4),
+}]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
 #[crate::macro_apply(crate::_linux_syscall_not_std)]
 #[cfg_attr(nightly_doc, doc(cfg(any(feature = "linux", feature = "std"))))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! sleep4 {
+macro_rules! sleep4· {
     ($s:literal) => {
         $crate::Linux::sleep($crate::Duration::from_secs_f64($s as f64))
             .expect("Linux::sleep failed");
@@ -93,4 +97,4 @@ macro_rules! sleep4 {
 
 #[cfg(any(feature = "std", all(feature = "linux", not(feature = "std"), not(miri))))]
 #[doc(inline)]
-pub use sleep4;
+pub use sleep4· as sleep4;

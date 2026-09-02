@@ -1,0 +1,59 @@
+// devela/src/work/future/_.rs
+//
+#![doc = crate::_DOC_WORK_FUTURE!()] // public
+#![doc = crate::_doc!(modules: crate::work; future)]
+#![doc = crate::_doc!(flat:"work")]
+#![doc = crate::_doc!(extends: future, task)]
+//!
+//! See also the fundamental [`async`] and [`await`] keywords and the
+//! [async book](https://rust-lang.github.io/async-book/).
+//!
+//! [`async`]: https://doc.rust-lang.org/std/keyword.async.html
+//! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
+//
+
+crate::mods_in! {
+    mod _reexport_core;
+
+    mod ext; // FutureExt
+
+    #[cfg(feature = "std")]
+    #[cfg(not(feature = "dep_portable_atomic_util"))]
+    mod block;
+}
+crate::mods_out! { // _mods, _reexports, _crate_internals
+    _mods {
+        pub use super::{
+            ext::FutureExt,
+        };
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+
+        /* from either `alloc` or `portable-atomic-util` and `alloc` */
+
+        #[doc = crate::_tags!(concurrency atomic runtime atomic_alloc_portable_util)]
+        #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+        /// The implementation of waking a task on an executor.
+        #[doc = crate::_doc_meta!{
+            location("work/future", trait AsyncWake),
+        }]
+        #[doc = "---\n\n---\n\n"]
+        pub use crate::_dep::portable_atomic_util::task::Wake as AsyncWake;
+        //
+        #[doc = crate::_tags!(concurrency atomic runtime atomic_alloc_portable_util)]
+        #[doc = crate::_doc_meta!{
+            location("work/future", trait AsyncWake),
+        }]
+        #[doc = "---\n\n---\n\n"]
+        #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+        #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+        pub use crate::_dep::_alloc::task::Wake as AsyncWake;
+    }
+    _crate_internals {
+        #[cfg(feature = "std")]
+        #[cfg(not(feature = "dep_portable_atomic_util"))]
+        pub(crate) use super::block::future_block;
+    }
+}

@@ -9,7 +9,7 @@ use crate::Orientation;
 crate::_geom_dim_define_macro![($) ori, "an", Orientation, geom dir, "geom/dir"];
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use crate::{Orientation, Orientation2, ori};
 
     #[test]

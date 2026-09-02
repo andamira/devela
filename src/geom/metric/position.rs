@@ -10,8 +10,10 @@ use crate::{Distance, Orientation};
 
 #[doc = crate::_tags!(geom)]
 /// A location in `D`-dimensional space.
-#[doc = crate::_doc_meta!{location("geom/metric")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/metric", struct Position),
+    test_size_of(Position<f32, 2> = 8|64; niche !Option),
+}]
 /// Represents an absolute position in a coordinate system.
 ///
 /// - Unlike [`Distance`], `Position` is **not relative**, it describes
@@ -28,17 +30,26 @@ pub struct Position<T, const D: usize> {
 
 #[doc = crate::_tags!(geom)]
 /// A 1-dimensional [`Position`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Position1),
+    test_size_of(Position1<f32> = 4|32; niche !Option),
+}]
 pub type Position1<T> = Position<T, 1>;
 
 #[doc = crate::_tags!(geom)]
 /// A 2-dimensional [`Position`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Position2),
+    test_size_of(Position2<f32> = 8|64; niche !Option),
+}]
 pub type Position2<T> = Position<T, 2>;
 
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional [`Position`].
-#[doc = crate::_doc_meta!{location("geom/metric")}]
+#[doc = crate::_doc_meta!{
+    location("geom/metric", type Position3),
+    test_size_of(Position3<f32> = 12|96; niche !Option),
+}]
 pub type Position3<T> = Position<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Position];

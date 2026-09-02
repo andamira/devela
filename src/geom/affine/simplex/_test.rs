@@ -1,4 +1,8 @@
 // devela/src/geom/affine/_test.rs
+//
+// TOC
+// - mod simplex
+// - mod facet
 
 use crate::{Point, Simplex};
 

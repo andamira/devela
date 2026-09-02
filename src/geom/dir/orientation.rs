@@ -11,8 +11,10 @@ use crate::{Distance, Position};
 
 #[doc = crate::_tags!(geom dir)]
 /// A unitless directional vector in `D`-dimensional space.
-#[doc = crate::_doc_meta!{location("geom/dir")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/dir", struct Orientation),
+    test_size_of(Orientation<f32, 2> = 8|64; niche !Option),
+}]
 /// Represents **only the direction of movement**, without an absolute
 /// reference point or inherent magnitude. It is **typically normalized**
 /// to remove scale dependence.
@@ -33,17 +35,26 @@ pub struct Orientation<T, const D: usize> {
 
 #[doc = crate::_tags!(geom dir)]
 /// A 1-dimensional [`Orientation`].
-#[doc = crate::_doc_meta!{location("geom/dir")}]
+#[doc = crate::_doc_meta!{
+    location("geom/dir", type Orientation1),
+    test_size_of(Orientation1<f32> = 4|32; niche !Option),
+}]
 pub type Orientation1<T> = Orientation<T, 1>;
 
 #[doc = crate::_tags!(geom dir)]
 /// A 2-dimensional [`Orientation`].
-#[doc = crate::_doc_meta!{location("geom/dir")}]
+#[doc = crate::_doc_meta!{
+    location("geom/dir", type Orientation3),
+    test_size_of(Orientation2<f32> = 8|64; niche !Option),
+}]
 pub type Orientation2<T> = Orientation<T, 2>;
 
 #[doc = crate::_tags!(geom dir)]
 /// A 3-dimensional [`Orientation`].
-#[doc = crate::_doc_meta!{location("geom/dir")}]
+#[doc = crate::_doc_meta!{
+    location("geom/dir", type Orientation3),
+    test_size_of(Orientation3<f32> = 12|96; niche !Option),
+}]
 pub type Orientation3<T> = Orientation<T, 3>;
 
 crate::_geom_dim_impl_common![common_methods: Orientation];

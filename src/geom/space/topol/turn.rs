@@ -2,8 +2,10 @@
 
 #[doc = crate::_tags!(geom topol)]
 /// The planar turn determined by three ordered points.
-#[doc = crate::_doc_meta!{location("geom/space")}]
-///
+#[doc = crate::_doc_meta!{
+    location("geom/space", enum Turn),
+    test_size_of(Turn = 1|8; niche Option)
+}]
 /// Given the ordered points `a`, `b`, and `c`, this classifies the sign of:
 ///
 /// ```text
@@ -65,7 +67,7 @@ impl Turn {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::Turn;
 
     const _: () = {
