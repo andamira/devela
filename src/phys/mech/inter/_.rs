@@ -1,4 +1,4 @@
-// devela/src/phys/mech/inter/mod.rs
+// devela/src/phys/mech/inter/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_INTER!()] // WIP
@@ -7,10 +7,11 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod bound;   // constrained mechanical relations and limits
-// mod contact; // mechanically active geometric contact
-// mod joint;   // persistent structured relations between bodies or parts
-
+crate::mods_in! {
+    // mod_ bound;   // constrained mechanical relations and limits
+    // mod_ contact; // mechanically active geometric contact
+    // mod_ joint;   // persistent structured relations between bodies or parts
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

@@ -1,4 +1,4 @@
-// devela/src/phys/unit/mod.rs
+// devela/src/phys/unit/_.rs
 //
 #![doc = crate::_DOC_PHYS_UNIT!()] // public
 #![doc = crate::_doc!(modules: crate::phys; unit)]
@@ -6,14 +6,15 @@
 #![doc = crate::_doc!(hr)]
 //
 
-mod _helper; // __phys_unit_impl_try_from!
+crate::mods_in! {
+    mod _helper; // __phys_unit_impl_try_from!
 
-mod bi; // UnitBi
-mod si; // UnitSi
-mod traits; // Unit
+    mod bi; // UnitBi
+    mod si; // UnitSi
+    mod traits; // Unit
 
-// mod heat;
-
+    // mod heat;
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

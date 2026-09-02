@@ -15,7 +15,7 @@ crate::mods_in! {
     mod result; // TextFit, TextLayoutStep
     mod symbol; // Text<Break|Elide>Mode, TextCohesion, TextLayoutSpan, TextSymbol[Config]
     mod textel; // Textel, TextelWidth, TextelWidthMode
-    mod wrap; // TextBreakKind, TextLine, TextSegment[Kind], TextWrapIter
+    mod_ wrap; // TextBreakKind, TextLine, TextSegment[Kind], TextWrapIter
 }
 crate::mods_out! { // _mods
     _mods {

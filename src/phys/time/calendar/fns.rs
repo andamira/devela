@@ -1,13 +1,7 @@
-// devela/src/phys/time/calendar/mod.rs
+// devela/src/phys/time/calendar/fns.rs
 //
-//! Month and Weekday types.
+//!
 //
-
-mod month;
-mod weekday;
-
-pub use month::Month;
-pub use weekday::Weekday;
 
 #[doc = crate::_tags!(time)]
 /// Returns `true` if the provided `year` is a leap year.

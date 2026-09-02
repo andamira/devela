@@ -1,4 +1,4 @@
-// devela/src/phys/time/delta/mod.rs
+// devela/src/phys/time/delta/define.rs
 //
 //! Defines the [`TimeDelta`] struct.
 //
@@ -7,12 +7,6 @@
 // - conversions
 //   - duration
 //   - system_instant
-
-mod basic;
-mod ops;
-
-#[cfg(test)]
-mod _test;
 
 #[doc = crate::_tags!(time)]
 /// A signed duration of time, stored as an `(i64, i32)` pair of secs and nanos.
@@ -27,17 +21,9 @@ mod _test;
 #[doc = crate::_doc_vendor!("jiff")]
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct TimeDelta {
-    secs: i64,
-    nanos: i32,
+    pub(super) secs: i64,
+    pub(super) nanos: i32,
 }
-
-const NANOS_PER_SEC: i32 = 1_000_000_000;
-const NANOS_PER_MILLI: i32 = 1_000_000;
-const NANOS_PER_MICRO: i32 = 1_000;
-const MILLIS_PER_SEC: i64 = 1_000;
-const MICROS_PER_SEC: i64 = 1_000_000;
-const SECS_PER_MINUTE: i64 = 60;
-const MINS_PER_HOUR: i64 = 60;
 
 /* conversions */
 

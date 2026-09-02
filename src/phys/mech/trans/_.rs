@@ -1,4 +1,4 @@
-// devela/src/phys/mech/trans/mod.rs
+// devela/src/phys/mech/trans/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_TRANS!()] // WIP
@@ -7,9 +7,10 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// pub mod machine; // Mechanical machines and transmission mechanisms.
-// pub mod port; // Mechanical energetic coupling and power-conjugate variables.
-
+crate::mods_in! {
+    // pub mod_ machine; // Mechanical machines and transmission mechanisms.
+    // pub mod_ port; // Mechanical energetic coupling and power-conjugate variables.
+}
 crate::mods_out! { // _pub_mods
     _pub_mods {
         // pub use super::{

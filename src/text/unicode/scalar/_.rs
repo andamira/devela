@@ -37,4 +37,4 @@ crate::mods_out! { // _mods, _reexports, _hidden
     }
     // _self_internals {} // TODO
 }
-use scalar_::_crate_internals::{NonSurrogateU16}; // IMPROVE
+use scalar_::_crate_internals::NonSurrogateU16; // IMPROVE

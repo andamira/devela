@@ -1,4 +1,4 @@
-// devela/src/phys/chem/mod.rs
+// devela/src/phys/chem/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_CHEM!()] // public
@@ -7,4 +7,5 @@
 #![doc = crate::_doc!(hr)]
 //
 
+crate::mods_in! {}
 crate::mods_out! {}

@@ -1,4 +1,4 @@
-// devela/src/phys/subs/mod.rs
+// devela/src/phys/subs/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_SUBS!()] // public
@@ -7,13 +7,14 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod body; // Body, Medium
-// mod iface; // interfaces, boundaries, layered media
-// mod mat; // MaterialKind, MaterialId
-// mod phase; // Phase
-// mod resp; // shared response properties
-// mod state; // substrate-side state distinctions
-
+crate::mods_in! {
+    // mod_ body; // Body, Medium
+    // mod_ iface; // interfaces, boundaries, layered media
+    // mod_ mat; // MaterialKind, MaterialId
+    // mod_ phase; // Phase
+    // mod_ resp; // shared response properties
+    // mod_ state; // substrate-side state distinctions
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

@@ -1,4 +1,4 @@
-// devela/src/phys/mech/deform/mod.rs
+// devela/src/phys/mech/deform/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_DEFORM!()] // WIP
@@ -7,10 +7,11 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod law; // Constitutive laws relating deformation to mechanical response
-// mod measure; // Stretch, strain, curvature, and other deformation measures
-// mod rest; // Stress-free and mechanically preferred configurations
-
+crate::mods_in! {
+    // mod_ law; // Constitutive laws relating deformation to mechanical response
+    // mod_ measure; // Stretch, strain, curvature, and other deformation measures
+    // mod rest; // Stress-free and mechanically preferred configurations
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

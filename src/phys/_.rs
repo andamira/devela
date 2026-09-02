@@ -1,4 +1,4 @@
-// devela/src/phys/mod.rs
+// devela/src/phys/_.rs
 //
 #![doc = crate::_DOC_PHYS!()] // public
 #![doc = crate::_DOC_PHYS_MODULES!()]
@@ -13,23 +13,24 @@ crate::CONST! { pub(crate) _DOC_PHYS_MODULES =
     // astro, bio, chem, elec, geo, heat, mech, optic, subs
 }
 
-// pub mod astro; // Astronomy-related abstractions
-// pub mod bio; // Biology-related abstractions
-// pub mod chem; // Chemistry-related abstractions
-// pub mod elec; // Electrical state, fields, transport, and energetic coupling
-// pub mod geo; // Geophysics-related abstractions
-// pub mod heat; // Thermodynamics and heat transfer
-// pub mod mech; // Mechanical state, response, interaction, and transmission
-// pub mod optic; // Optics and light transport in piecewise media
-// pub mod subs; // Physical substrates, bodies, phases, and material response properties
-pub mod time; // Time and calendar types and operations
-#[cfg(feature = "unit")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
-pub mod unit; // Physical units of measure and unit prefixes
-#[cfg(feature = "wave")]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
-pub mod wave; // Wave primitives, wavelets
-
+crate::mods_in! {
+    // pub mod_ astro; // Astronomy-related abstractions
+    // pub mod_ bio; // Biology-related abstractions
+    // pub mod_ chem; // Chemistry-related abstractions
+    // pub mod_ elec; // Electrical state, fields, transport, and energetic coupling
+    // pub mod_ geo; // Geophysics-related abstractions
+    // pub mod_ heat; // Thermodynamics and heat transfer
+    // pub mod_ mech; // Mechanical state, response, interaction, and transmission
+    // pub mod_ optic; // Optics and light transport in piecewise media
+    // pub mod_ subs; // Physical substrates, bodies, phases, and material response properties
+    pub mod_ time; // Time and calendar types and operations
+    #[cfg(feature = "unit")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unit")))]
+    pub mod_ unit; // Physical units of measure and unit prefixes
+    #[cfg(feature = "wave")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
+    pub mod_ wave; // Wave primitives, wavelets
+}
 crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{

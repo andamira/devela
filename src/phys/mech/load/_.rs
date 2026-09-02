@@ -1,4 +1,4 @@
-// devela/src/phys/mech/load/mod.rs
+// devela/src/phys/mech/load/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_LOAD!()] // WIP
@@ -7,11 +7,12 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod distr; // Distributed loading
-// mod force;
-// mod impulse;
-// mod torque;
-
+crate::mods_in! {
+    // mod distr; // Distributed loading
+    // mod force;
+    // mod impulse;
+    // mod torque;
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

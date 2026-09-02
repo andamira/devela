@@ -1,4 +1,4 @@
-// devela/src/phys/mech/rigid/mod.rs
+// devela/src/phys/mech/rigid/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_RIGID!()] // WIP
@@ -7,9 +7,10 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod body; // Rigid-body mechanical state and composition
-// mod inertia; // Mass distribution, centers of mass, and rotational inertia
-
+crate::mods_in! {
+    // mod_ body; // Rigid-body mechanical state and composition
+    // mod_ inertia; // Mass distribution, centers of mass, and rotational inertia
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

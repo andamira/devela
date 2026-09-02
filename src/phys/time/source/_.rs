@@ -1,4 +1,4 @@
-// devela/src/phys/time/source/mod.rs
+// devela/src/phys/time/source/_.rs
 //
 //! Time sources.
 //!
@@ -79,23 +79,24 @@
 #![cfg_attr(not(all(feature = "linux", feature = "unsafe_syscall")), doc = "[`LinuxInstant`]: #")]
 #![cfg_attr(not(all(feature = "js", not(windows))), doc = "[`JsInstant`]: #")]
 
-#[cfg(feature = "std")]
-mod _reexport_std;
+crate::mods_in! {
+    #[cfg(feature = "std")]
+    mod _reexport_std;
 
-#[cfg(feature = "time")]
-mod impl_source;
+    #[cfg(feature = "time")]
+    mod impl_source;
 
-#[cfg(feature = "time")]
-mod point; // TimePoint
-#[cfg(feature = "time")]
-mod source; // TimeSource, TimeSourceCfg
-#[cfg(feature = "time")]
-mod span; // TimeSpan
+    #[cfg(feature = "time")]
+    mod point; // TimePoint
+    #[cfg(feature = "time")]
+    mod source; // TimeSource, TimeSourceCfg
+    #[cfg(feature = "time")]
+    mod span; // TimeSpan
 
-#[cfg(feature = "time")]
-#[cfg(target_has_atomic = "64")]
-mod fake; // TimeFake, TimeFakeRef
-
+    #[cfg(feature = "time")]
+    #[cfg(target_has_atomic = "64")]
+    mod fake; // TimeFake, TimeFakeRef
+}
 crate::mods_out! { // _mods, _reexports
     _mods {
         #[cfg(feature = "time")]

@@ -1,4 +1,4 @@
-// devela/src/phys/mech/kine/mod.rs
+// devela/src/phys/mech/kine/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_KINE!()] // WIP
@@ -7,10 +7,11 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod acceleration;
-// mod trajectory;
-// mod velocity;
-
+crate::mods_in! {
+    // mod acceleration;
+    // mod trajectory;
+    // mod velocity;
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

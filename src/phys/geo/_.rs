@@ -1,4 +1,4 @@
-// devela/src/phys/geo/mod.rs
+// devela/src/phys/geo/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_GEO!()] // public
@@ -7,14 +7,15 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod atmos; // Atmosphere as a terrestrial physical system
-// mod gravity; // Terrestrial gravitational fields and anomalies
-// mod hydro; // Physically modeled terrestrial water systems
-// mod interior; // Layers, density, pressure, and thermal structure
-// mod magnet; // Geomagnetism
-// mod seismic; // Waves, earthquakes, and seismic models
-// mod tectonic; // Plates, deformation, and crustal motion
-
+crate::mods_in! {
+    // mod_ atmos; // Atmosphere as a terrestrial physical system
+    // mod_ gravity; // Terrestrial gravitational fields and anomalies
+    // mod_ hydro; // Physically modeled terrestrial water systems
+    // mod_ interior; // Layers, density, pressure, and thermal structure
+    // mod_ magnet; // Geomagnetism
+    // mod_ seismic; // Waves, earthquakes, and seismic models
+    // mod_ tectonic; // Plates, deformation, and crustal motion
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{
