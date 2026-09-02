@@ -1,4 +1,4 @@
-// devela/src/ui/mod.rs
+// devela/src/ui/_.rs
 //
 #![doc = crate::_DOC_UI!()] // public, root
 #![doc = crate::_DOC_UI_MODULES!()]
@@ -56,32 +56,30 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
     crate::_doc!(modules: crate; ui: event, frame, layout, route, semantic, text, view, widget);
 }
 
-#[cfg(feature = "ui")]
-mod _helper; // (UiNum)
+crate::mods_in! {
+        mod _helper; // (UiNum)
 
-#[cfg(feature = "event")]
-pub mod event; // Normalized input, control, and presentation-surface events
+        #[cfg(feature = "ui")]
+        mod_ intent; // WIP Desired UI configuration before capability-bound realization
+    #[cfg(feature = "event")]
+    pub mod_ event; // Normalized input, control, and presentation-surface events
+    #[cfg(feature = "ui")]
+    pub mod_ frame; // Frame context, scoped identity, and processing phases
+    #[cfg(feature = "ui")]
+    pub mod_ layout; // Canonical spatial vocabulary for deterministic arrangement
 
-#[cfg(feature = "ui")]
-mod intent; // WIP Desired UI configuration before capability-bound realization
-// mod notice; // WIP Attention requests, alarm discipline, and delivery routing
-
-#[cfg(feature = "ui")]
-pub mod frame; // Frame context, scoped identity, and processing phases
-#[cfg(feature = "ui")]
-pub mod layout; // Canonical spatial vocabulary for deterministic arrangement
-#[cfg(feature = "ui")]
-pub mod route; // Identity-based interaction regions and ownership state
-#[cfg(feature = "ui")]
-pub mod semantic; // Human-facing roles, actions, state, and text
-#[cfg(feature = "ui")]
-pub mod text; // Interactive text editing state.
-#[cfg(feature = "ui")]
-pub mod view; // Projection of UI state into concrete presentation forms
-
-#[cfg(feature = "widget")]
-pub mod widget; // Semantic controls expressed through frame-local authorship
-
+        // mod_ notice; // WIP Attention requests, alarm discipline, and delivery routing
+    #[cfg(feature = "ui")]
+    pub mod_ route; // Identity-based interaction regions and ownership state
+    #[cfg(feature = "ui")]
+    pub mod_ semantic; // Human-facing roles, actions, state, and text
+    #[cfg(feature = "ui")]
+    pub mod_ text; // Interactive text editing state.
+    #[cfg(feature = "ui")]
+    pub mod_ view; // Projection of UI state into concrete presentation forms
+    #[cfg(feature = "widget")]
+    pub mod_ widget; // Semantic controls expressed through frame-local authorship
+}
 crate::mods_out! { // _mods, _pub_mods, _crate_internals
     _mods {
         #[cfg(feature = "ui")]

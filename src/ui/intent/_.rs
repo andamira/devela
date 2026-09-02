@@ -1,4 +1,4 @@
-// devela/src/ui/intent/mod.rs
+// devela/src/ui/intent/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_UI_INTENT!()] // public
@@ -6,6 +6,7 @@
 #![doc = crate::_doc!(flat:"ui")]
 #![doc = crate::_doc!(hr)]
 
+crate::mods_in! {}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{

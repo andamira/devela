@@ -1,4 +1,4 @@
-// devela/src/ui/frame/mod.rs
+// devela/src/ui/frame/_.rs
 //
 #![doc = crate::_DOC_UI_FRAME!()] // public
 #![doc = crate::_doc!(modules: crate::ui; frame)]
@@ -37,12 +37,13 @@
 //! longer-lived UI memory, caches, or collected output is implied.
 //
 
-mod id; // UiId, UiKey, UiScope
-mod frame; // UiFrame, UiPhase
-// mod mem; // UiMemory
-// mod cache; // UiCache
-mod output; // UiOutput
-
+crate::mods_in! {
+    mod id; // UiId, UiKey, UiScope
+    mod frame; // UiFrame, UiPhase
+    // mod mem; // UiMemory
+    // mod cache; // UiCache
+    mod output; // UiOutput
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

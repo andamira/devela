@@ -1,6 +1,5 @@
-// devela/src/ui/widget/mod.rs
+// devela/src/ui/widget/_.rs
 //
-#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_UI_WIDGET!()] // public
 #![doc = crate::_doc!(modules: crate::ui; widget)]
 #![doc = crate::_doc!(flat:"ui")]
@@ -59,17 +58,18 @@
 //! [`UiText`]: crate::UiText
 //
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-mod button; // UiButton
-mod response; // UiResponse, UiResponseFlags
-
+    mod button; // UiButton
+    mod response; // UiResponse, UiResponseFlags
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            button::*,
-            response::*,
+            button::UiButton,
+            response::{UiResponse, UiResponseFlags},
         };
     }
 }

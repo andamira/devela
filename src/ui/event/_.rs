@@ -1,4 +1,4 @@
-// devela/src/ui/event/mod.rs
+// devela/src/ui/event/_.rs
 //
 #![doc = crate::_DOC_UI_EVENT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; event)]
@@ -61,24 +61,25 @@
 //
 //
 
-mod event; // Event
-mod id; // DeviceId, WindowId
-mod key; // EventKey[Ffi], Key[Ffi|Media|Mod|Mods|Pad|State]
-mod kind; // EventKind, EventKindTimed, EventTag
-mod pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
-mod queue; // EventQueue
-mod target; // EventTarget
-mod time; // EventTimestamp[Mode]
-mod window; // EventWindow
-
+crate::mods_in! {
+    mod event; // Event
+    mod id; // DeviceId, WindowId
+    mod_ key; // EventKey[Ffi], Key[Ffi|Media|Mod|Mods|Pad|State]
+    mod kind; // EventKind, EventKindTimed, EventTag
+    mod_ pointer; // Event[Button[State]|Mouse|Pointer[Type]|Wheel]
+    mod queue; // EventQueue
+    mod target; // EventTarget
+    mod time; // EventTimestamp[Mode]
+    mod window; // EventWindow
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
             event::*,
             id::*,
-            key::*,
+            key::_all::*,
             kind::*,
-            pointer::*,
+            pointer::_all::*,
             queue::*,
             target::*,
             time::*,

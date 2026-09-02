@@ -1,4 +1,4 @@
-// devela/src/ui/event/key/mod.rs
+// devela/src/ui/event/key/_.rs
 //
 //! Defines [`EventKey`], [`KeyState`].
 //
@@ -9,18 +9,19 @@
 //   - struct EventKeyFfi
 // - tests
 
-mod dead; // KeyDead
-mod event; // EventKey, EventKeyFfi
-mod key; // Key
-mod media; // KeyMedia, KeyMod, KeyMods
-mod mods; // KeyMod, KeyMods
-mod pad; // KeyPad
-mod state; // KeyState
+crate::mods_in! {
+    mod dead; // KeyDead
+    mod event; // EventKey, EventKeyFfi
+    mod key; // Key
+    mod media; // KeyMedia, KeyMod, KeyMods
+    mod mods; // KeyMod, KeyMods
+    mod pad; // KeyPad
+    mod state; // KeyState
 
-#[cfg(ffi··)]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "ffi")))]
-mod ffi; // KeyFfi
-
+    #[cfg(ffi··)]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "ffi")))]
+    mod ffi; // KeyFfi
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

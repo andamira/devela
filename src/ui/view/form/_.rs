@@ -1,4 +1,4 @@
-// devela/src/ui/view/form/mod.rs
+// devela/src/ui/view/form/_.rs
 //
 #![doc = crate::_DOC_UI_VIEW_FORM!()] // private
 #![doc = crate::_doc!(modules: crate::ui::view; form)]
@@ -6,12 +6,13 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod cell; // WIP
-// mod document; // WIP
-// mod graphic; // WIP
-// mod message; // WIP
-mod view; // UiViewForm
-
+crate::mods_in! {
+    // mod cell; // WIP
+    // mod document; // WIP
+    // mod graphic; // WIP
+    // mod message; // WIP
+    mod view; // UiViewForm
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

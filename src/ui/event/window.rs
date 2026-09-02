@@ -15,10 +15,11 @@ use crate::String;
     location("ui/event", enum EventWindow),
     #[cfg(not(feature = "alloc"))]
     test_size_of(EventWindow = 16|128; niche Option),
-    #[cfg(feature = "alloc")]
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "32")]
+    test_size_of(EventWindow = 16|128; niche Option),
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "64")]
     test_size_of(EventWindow = 24|192; niche Option),
 }]
-///
 /// Names and payloads are backend-agnostic and focus on
 /// stable cross-platform surface semantics.
 //

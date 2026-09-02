@@ -72,7 +72,9 @@ impl Default for EventTag {
     location("ui/event", type EventKindTimed),
     #[cfg(not(feature = "alloc"))]
     test_size_of(EventKindTimed = 40|320; niche Option),
-    #[cfg(feature = "alloc")]
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "32")]
+    test_size_of(EventKindTimed = 40|320; niche Option),
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "64")]
     test_size_of(EventKindTimed = 48|384; niche Option),
 }]
 pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
@@ -83,7 +85,9 @@ pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
     location("ui/event", enum EventKind),
     #[cfg(not(feature = "alloc"))]
     test_size_of(EventKind = 36|288; niche Option),
-    #[cfg(feature = "alloc")]
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "32")]
+    test_size_of(EventKind = 36|288; niche Option),
+    #[cfg(feature = "alloc")] #[cfg(target_pointer_size = "64")]
     test_size_of(EventKind = 40|320; niche Option),
 }]
 /// High-level, typed grouping of input and window interactions.

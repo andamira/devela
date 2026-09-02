@@ -1,6 +1,5 @@
-// devela/src/ui/view/mod.rs
+// devela/src/ui/view/_.rs
 //
-#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_UI_VIEW!()] // public
 #![doc = crate::_doc!(modules: crate::ui; view)]
 #![doc = crate::_doc!(flat:"ui")]
@@ -60,17 +59,18 @@
 //! [`UiRect`]: crate::UiRect
 //
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-// mod cue; // Interactive visual cues for view presentation
-mod draw; // UiDraw, UiDrawList, UiDrawListView
-mod form; // WIP UiViewForm: cell, document, graphic and message projection forms
-mod layer; // UiLayer
-mod profile; // WIP Presentation profiles for fitting logical views into output space
-mod scale; // Pixel, density, and text scaling units for view projection
-mod view; // UiView, UiViewFlags
-
+    // mod_ cue; // Interactive visual cues for view presentation
+    mod_ draw; // UiDraw, UiDrawList, UiDrawListView
+    mod_ form; // WIP UiViewForm: cell, document, graphic and message projection forms
+    mod layer; // UiLayer
+    mod_ profile; // WIP Presentation profiles for fitting logical views into output space
+    mod_ scale; // Pixel, density, and text scaling units for view projection
+    mod view; // UiView, UiViewFlags
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

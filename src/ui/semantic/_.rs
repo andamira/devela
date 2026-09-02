@@ -1,4 +1,4 @@
-// devela/src/ui/sem/mod.rs
+// devela/src/ui/semantic/_.rs
 //
 #![doc = crate::_DOC_UI_SEMANTIC!()] // public
 #![doc = crate::_doc!(modules: crate::ui; semantic)]
@@ -36,15 +36,16 @@
 //! No semantic tree, traversal order, or storage model is implied by these records.
 //
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-mod action; // UiAction, UiActions
-mod entry; // UiEntry
-mod flags; // UiFlags
-mod role; // UiRole
-mod text; // UiText
-
+    mod action; // UiAction, UiActions
+    mod entry; // UiEntry
+    mod flags; // UiFlags
+    mod role; // UiRole
+    mod text; // UiText
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

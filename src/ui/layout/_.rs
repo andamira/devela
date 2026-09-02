@@ -1,4 +1,4 @@
-// devela/src/ui/layout/mod.rs
+// devela/src/ui/layout/_.rs
 //
 #![doc = crate::_DOC_UI_LAYOUT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; layout)]
@@ -45,15 +45,16 @@
 //! intrinsic measurement protocol, or retained layout engine.
 //
 
-#[cfg(test)]
-mod _test;
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
 
-mod metric; // aliases: Ui<Ext|Pos|Rect|Stride|>
-// mod partition; // UiPartition, UiRemainder
-mod receipt; // Layout1d, LayoutReceipt
-mod stack; // UiStack
-mod unit; // Lunit
-
+    mod metric; // aliases: Ui<Ext|Pos|Rect|Stride|>
+    // mod partition; // UiPartition, UiRemainder
+    mod receipt; // Layout1d, LayoutReceipt
+    mod stack; // UiStack
+    mod unit; // Lunit
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{

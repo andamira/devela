@@ -1,6 +1,5 @@
 // devela/src/ui/text/mod.rs
 //
-#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_UI_TEXT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; text)]
 #![doc = crate::_doc!(flat:"ui")]
@@ -45,8 +44,9 @@
 //! It does not define focus acquisition, selection, composition, multiline layout, or rendering.
 //
 
-mod input; // TextInput[Action|Config|Outcome|Reject|View]
-
+crate::mods_in! {
+    mod_ input; // TextInput[Action|Config|Outcome|Reject|View]
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
