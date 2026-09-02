@@ -46,6 +46,7 @@ its own flat view of all its public children.";
     // 1. code (the grammar beneath the crate)
     _DOC_CODE            = "Code structure, semantics, and foundational utilities.";
     _DOC_CODE_ANY        = "Dynamic typing, type identity, and type inspection.";
+    _DOC_CODE_BUILD      = "Build-process support and integration.";
     _DOC_CODE_CONVERT    = "Type conversion and adaptation.";
     _DOC_CODE_HINT       = "Compiler and execution hints.";
     _DOC_CODE_INIT       = "Default and const-friendly initialization.";

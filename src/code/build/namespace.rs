@@ -1,6 +1,6 @@
-// devela/src/build/namespace.rs
+// devela/src/code/build/namespace.rs
 //
-//! Defines the [`Build`] namespace.
+//! Defines [`Build`].
 //
 // TOC
 // - directories
@@ -15,7 +15,7 @@ use std::{
 };
 
 #[doc = crate::_TAG_NAMESPACE!()] // NOTE: use tag directly to work from /build
-/// Build-related operations.
+/// Build-process environment, directives, and utilities.
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 #[derive(Debug)]
 pub struct Build;
