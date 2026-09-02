@@ -14,7 +14,10 @@ use devela::{_js_doc, _js_extern, _js_unsafe_ffi_doc, DiagLevel, DiagOut, Infall
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js", struct JsConsole),
+    test_size_of(JsConsole = 0),
+}]
 #[macro_apply(crate::__doc_show(feature = "unsafe_ffi"))]
 #[derive(Debug)]
 pub struct JsConsole;

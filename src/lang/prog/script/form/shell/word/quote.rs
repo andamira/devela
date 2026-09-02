@@ -8,8 +8,8 @@ use crate::{ShellWordError, is, whilst, write_at};
 #[doc = crate::_tags!(lang text)]
 /// Quotes shell words for command strings.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/script/form/shell"),
-    test_size_of(ShellQuote = 1|8),
+    location("lang/prog/script/form/shell", struct ShellQuote),
+    test_size_of(ShellQuote = 1|8; niche Option),
 }]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

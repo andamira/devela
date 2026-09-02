@@ -241,6 +241,7 @@
   - implement affine operations with vectors.
   - remove `PartialOrd` and `Ord` impls.
 - remove `Points`, `Points2d`, `VecPoints`.
+- rename `Point2d` to `Point2` and `Point3d` to `Point3`.
 - impl conversions between `Point` and `Position`.
 
 ### geom::dir

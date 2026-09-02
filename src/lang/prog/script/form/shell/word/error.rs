@@ -5,7 +5,13 @@
 
 #[doc = crate::_tags!(lang error_composite)]
 /// An error while parsing or quoting shell words.
-#[doc = crate::_doc_meta!{location("lang/prog/script/form/shell")}]
+#[doc = crate::_doc_meta!{
+    location("lang/prog/script/form/shell", enum ShellWordError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(ShellWordError = 8|64),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(ShellWordError = 16|128),
+}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ShellWordError {

@@ -9,8 +9,10 @@ use devela::{String, Vec};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript-related operations.
-#[doc = crate::_doc_meta!{location("lang/prog/ffi/js")}]
-///
+#[doc = crate::_doc_meta!{
+    location("lang/prog/ffi/js", struct Js),
+    test_size_of(Js = 0),
+}]
 /// See also: [`Web`][crate::Web].
 #[derive(Debug)]
 pub struct Js;

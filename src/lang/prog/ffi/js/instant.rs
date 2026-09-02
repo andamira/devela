@@ -10,10 +10,9 @@ use crate::{_impl_init, Display, impl_trait, js_number, js_uint32};
 #[doc = crate::_tags!(runtime time)]
 /// A high-resolution timestamp based on JavaScript's `performance.now()`.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/ffi/js"),
-    test_size_of(JsInstant = 8|64),
+    location("lang/prog/ffi/js", struct JsInstant),
+    test_size_of(JsInstant = 8|64; niche !Option),
 }]
-///
 /// The internal representation is a double-precision floating-point millisecond value.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -114,10 +113,9 @@ mod impl_web {
 #[doc = crate::_tags!(runtime time uid)]
 /// A handle to a JavaScript timeout.
 #[doc = crate::_doc_meta!{
-    location("lang/prog/ffi/js"),
-    test_size_of(JsTimeout = 4|32),
+    location("lang/prog/ffi/js", struct JsTimeout),
+    test_size_of(JsTimeout = 4|32; niche !Option),
 }]
-///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#return_value>.
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
