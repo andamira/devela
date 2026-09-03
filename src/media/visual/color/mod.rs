@@ -14,6 +14,9 @@ mod depth; // ColorDepth
 
 #[cfg(feature = "color")]
 mod gamma; // Gamma
+
+// mod halftone; // TODO
+
 #[cfg(feature = "color")]
 mod luminance; // Luma, Luminance
 #[cfg(feature = "color")]

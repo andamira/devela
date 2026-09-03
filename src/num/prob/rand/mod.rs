@@ -17,7 +17,7 @@
 //!
 //! # Canonical generators
 //!
-//! Devela keeps two complementary PRNGs always available:
+//! devela keeps two complementary PRNGs always available:
 //! - [`Pcg32`] is the canonical general-purpose generator.
 //! - [`SplitMix64`] is the canonical seed mixer and expander,
 //!   and also provides a compact 64-bit random stream.

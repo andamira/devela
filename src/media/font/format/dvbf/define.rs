@@ -11,9 +11,11 @@ use crate::{Slice, is, read_at, slice, unwrap, whilst};
 type DvbfResult<T> = crate::Result<T, DvbfError>;
 
 #[doc = crate::_tags!(font codec)]
-/// Devela Bitmap Font format operations and constants.
-#[doc = crate::_doc_meta!{location("media/font")}]
-///
+/// devela Bitmap Font format operations and constants.
+#[doc = crate::_doc_meta!{
+    location("media/font"),
+    test_size_of(Dvbf = 0),
+}]
 /// DVBF stores one fixed-metric monochrome bitmap-font strike in a compact,
 /// directly addressable binary representation.
 ///

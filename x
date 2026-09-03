@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # devela/x
 #
-# Devela workspace command wrapper
+# devela workspace command wrapper
 #
 # Supports:
 #   +toolchain          (e.g. +nightly, +1.94.0)

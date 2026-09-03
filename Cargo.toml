@@ -53,17 +53,26 @@
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
 resolver = "3"
 
-# ·------------------------------------------------------------------------------
+# ·-----------------------------------------------------------------------------
 # ┌╼devela_macros          : procedural macros
-# ╚═╦╼devela               : integrated library
-#   ║ ├╼build/main         : build, codegen, debug
-#   ║ └╼devela_postbuild   : post-build processing
+# ▼
+# devela                   : integrated library
+# ▲ ├╼build/main           : build, codegen, debug
+# │ └╼devela_postbuild     : post-build processing
+# │
+# ├╼devela_extend          : ecosystem extensions and adapters
+# ├╼devela_ffi             : foreign-language interface
+# └╼devela_sentinel        : downstream validation
 #   ╏
 members = [ # In sync with ./build/main/environment.rs
-	"crates/macros", # "crates/ffi",
+	"crates/macros",
 	".", # ← root package
 	# "build/post",
+	# "crates/extend", # WIP
 ]
+# adjacent standalone crates:
+#   "crates/ffi",
+#   "crates/sentinel",
 
 [workspace.package]
 # Centralizes member-package metadata.

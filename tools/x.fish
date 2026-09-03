@@ -1,6 +1,6 @@
 # devela/tools/x.fish
 #
-# Devela project launcher integration for fish
+# devela project launcher integration for fish
 #
 # Install:
 #   cp tools/x.fish ~/.config/fish/functions/x.fish

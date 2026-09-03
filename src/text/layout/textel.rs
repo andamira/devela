@@ -168,7 +168,7 @@ pub enum TextelWidthMode {
     /// Unicode East Asian Width based policy.
     EastAsian,
 
-    /// Devela's default terminal-like width policy.
+    /// devela's default terminal-like width policy.
     Terminal,
 }
 _impl_init![Self::Mono => TextelWidthMode];

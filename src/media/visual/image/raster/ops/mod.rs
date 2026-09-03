@@ -3,12 +3,14 @@
 //! Raster operations
 //
 
+// mod dither; // WIP Dithering
 // mod rotate; // Generic dense raster rotation
 
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{
-        //     rotate::*,
+        //     // dither::_all::*,
+        //     // rotate::*,
         // };
     }
 }
