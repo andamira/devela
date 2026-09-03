@@ -55,12 +55,11 @@ impl<'a> TextLineIter<'a> {
     pub const fn width(&self) -> TextUnit {
         self.width
     }
-    /// Returns whether this iterator has reached the end of the symbol stream.
+    /// Returns whether this iterator has terminated and can produce no further steps.
     #[must_use]
     pub const fn is_done(&self) -> bool {
         self.done
     }
-
     /// Computes the next fixed-width layout step.
     ///
     /// Writes the produced spans into `out_spans` and returns the step outcome.
@@ -69,13 +68,13 @@ impl<'a> TextLineIter<'a> {
     pub const fn next(&mut self, out_spans: &mut [TextLayoutSpan]) -> Option<TextLayoutStep> {
         is! { self.done, return None }
         let step = self.layout.step(self.symbols, self.cursor, Some(self.width), out_spans);
-        if step.span_count == 0 {
-            self.done = true;
-            return None;
-        }
         match step.carry {
             Some(cursor) => self.cursor = cursor,
             None => self.done = true,
+        }
+        if step.span_count == 0 {
+            self.done = true;
+            return None;
         }
         Some(step)
     }

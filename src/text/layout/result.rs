@@ -13,15 +13,14 @@ use crate::{_impl_init, TextCursor, TextUnit};
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TextFit {
-    /// All required symbols fit within the extent.
+    /// All remaining symbols were resolved; no continuation is required.
     Full,
 
-    /// Some symbols fit, but space was exhausted.
+    /// Some inline space was consumed, but continuation is still required.
     Partial,
 
-    /// No symbols fit within the extent.
-    ///
-    /// This is the default.
+    #[doc = crate::_tags!(init)]
+    /// No inline space was consumed and continuation is still required.
     #[default]
     None,
 }

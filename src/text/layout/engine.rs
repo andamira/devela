@@ -65,19 +65,20 @@ impl TextLayout {
                 index += 1;
             }};
         }
-
-        while index < symbols.len() && remaining > 0 {
+        while index < symbols.len() {
             let sym = symbols[index];
             match sym.cohesion {
-                // Elidable symbols may always be skipped.
+                // Elidable symbols may always be skipped, even with no space remaining.
                 TextCohesion::Elidable => index += 1,
+
                 // Atomic symbols must fit entirely or stop layout.
                 TextCohesion::Atomic => is![sym.units <= remaining, _consume_whole!(sym), break],
+
                 // Breakable symbols may be partially consumed if space runs out.
                 TextCohesion::Breakable => {
                     if sym.units <= remaining {
                         _consume_whole!(sym);
-                    } else {
+                    } else if remaining > 0 {
                         // Partial consumption: consume remaining space,
                         // do not advance the symbol index.
                         is![span_start.is_none(), span_start = Some(index)];
@@ -85,6 +86,8 @@ impl TextLayout {
                         consumed += remaining;
                         partial_break = true;
                         partial_index = index;
+                        break;
+                    } else {
                         break;
                     }
                 }
@@ -98,14 +101,6 @@ impl TextLayout {
             out_spans[0] = TextLayoutSpan::from_prim(start as u32, end, span_units);
             span_count = 1;
         }
-        // Fit classification is based on symbol exhaustion, not space exhaustion.
-        let fit = if consumed == 0 {
-            TextFit::None
-        } else if index >= symbols.len() {
-            TextFit::Full
-        } else {
-            TextFit::Partial
-        };
         // Carry cursor indicates where layout should resume.
         let carry = if partial_break {
             Some(TextCursor { index: TextIndex(partial_index as u32) })
@@ -113,6 +108,14 @@ impl TextLayout {
             Some(TextCursor { index: TextIndex(index as u32) })
         } else {
             None
+        };
+        // Fit classification follows completion first, then spatial progress.
+        let fit = if carry.is_none() {
+            TextFit::Full
+        } else if consumed == 0 {
+            TextFit::None
+        } else {
+            TextFit::Partial
         };
         TextLayoutStep { span_count, consumed, carry, fit }
     }

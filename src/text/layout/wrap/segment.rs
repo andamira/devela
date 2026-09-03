@@ -14,6 +14,7 @@ use TextSegmentKind as Kind;
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextSegmentKind {
+    #[doc = crate::_tags!(init)]
     /// Visible content that normally stays together.
     #[default]
     Box,

@@ -18,6 +18,7 @@ use crate::{_impl_init, Interval, TextIndex, TextRange, TextUnit, TextelWidthMod
 /// inline layout negotiation happens.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextBreakMode {
+    #[doc = crate::_tags!(init)]
     /// Break only at explicit whitespace boundaries.
     #[default]
     Whitespace,

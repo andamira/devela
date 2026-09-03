@@ -261,3 +261,69 @@ fn line_iter_width_zero() {
     assert!(iter.next(&mut spans).is_none());
     assert!(iter.is_done());
 }
+/// Example: empty symbol stream is already fully resolved.
+#[test]
+fn empty_symbols() {
+    let symbols = [];
+    let (_spans, step) = run(&symbols, 0, Some(10));
+    assert_eq!(step.span_count, 0);
+    assert_eq!(step.consumed, 0);
+    assert_eq!(step.fit, TextFit::Full);
+    assert!(step.carry.is_none());
+}
+/// Example: starting at the end is already fully resolved.
+#[test]
+fn cursor_at_end() {
+    let symbols = [
+        TextSymbol { units: 1, cohesion: TextCohesion::Atomic },
+        TextSymbol { units: 1, cohesion: TextCohesion::Atomic },
+    ];
+    let (_spans, step) = run(&symbols, 2, Some(10));
+    assert_eq!(step.span_count, 0);
+    assert_eq!(step.consumed, 0);
+    assert_eq!(step.fit, TextFit::Full);
+    assert!(step.carry.is_none());
+}
+/// Example: all elidable symbols are resolved at zero cost.
+#[test]
+fn all_elidable_symbols_are_skipped() {
+    let symbols = [
+        TextSymbol { units: 2, cohesion: TextCohesion::Elidable },
+        TextSymbol { units: 3, cohesion: TextCohesion::Elidable },
+    ];
+    let (_spans, step) = run(&symbols, 0, Some(1));
+    assert_eq!(step.span_count, 0);
+    assert_eq!(step.consumed, 0);
+    assert_eq!(step.fit, TextFit::Full);
+    assert!(step.carry.is_none());
+}
+/// Example: trailing elidable symbols are resolved after an exact fit.
+#[test]
+fn exact_fit_skips_trailing_elidable_symbols() {
+    let symbols = [
+        TextSymbol { units: 4, cohesion: TextCohesion::Atomic },
+        TextSymbol { units: 2, cohesion: TextCohesion::Elidable },
+        TextSymbol { units: 3, cohesion: TextCohesion::Elidable },
+    ];
+    let (spans, step) = run(&symbols, 0, Some(4));
+    assert_eq!(step.span_count, 1);
+    assert_eq!(spans[0].start().0, 0);
+    assert_eq!(spans[0].units, 4);
+    assert_eq!(step.consumed, 4);
+    assert_eq!(step.fit, TextFit::Full);
+    assert!(step.carry.is_none());
+}
+/// Example: zero extent still advances across leading elidable symbols.
+#[test]
+fn zero_extent_skips_leading_elidable_symbols() {
+    let symbols = [
+        TextSymbol { units: 2, cohesion: TextCohesion::Elidable },
+        TextSymbol { units: 3, cohesion: TextCohesion::Elidable },
+        TextSymbol { units: 1, cohesion: TextCohesion::Atomic },
+    ];
+    let (_spans, step) = run(&symbols, 0, Some(0));
+    assert_eq!(step.span_count, 0);
+    assert_eq!(step.consumed, 0);
+    assert_eq!(step.fit, TextFit::None);
+    assert_eq!(step.carry.unwrap().index.0, 2);
+}

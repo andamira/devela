@@ -15,6 +15,7 @@ use TextBreakKind as Break;
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextBreakKind {
+    #[doc = crate::_tags!(init)]
     /// The line ended between segments.
     #[default]
     Between,
