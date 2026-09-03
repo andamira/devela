@@ -57,21 +57,21 @@
       // Load CSS, and scripts sequentially
       const katexCSS = document.createElement("link");
       katexCSS.rel = "stylesheet";
-      katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.css"; // ↓ !=
-      katexCSS.integrity = "sha384-KfwFj/Q/jGrY4ijtfzWyW5NXzT5irvfnTq6aRnH2xPvLzLdi1XyVr7w4l2uwTq0V";
+      katexCSS.href = "https://cdn.jsdelivr.net/npm/katex@0.18.5/dist/katex.min.css"; // ↓ !=
+      katexCSS.integrity = "sha384-2dNi/m6JtSiviznrOIZ5fTiZ5As0In2QwkuXSgoqcQtCNplvJAbt+jveeN+8en73";
       katexCSS.crossOrigin = "anonymous";
       document.head.appendChild(katexCSS);
 
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/katex.min.js",
-        integrity: "sha384-OE4SMRr5gMJQzKSD08J46vKsKgY8NxVtO1LW+/q3NJ0WHsGsdN4oebgEjwwWuyvG" // !=
+        src: "https://cdn.jsdelivr.net/npm/katex@0.18.5/dist/katex.min.js",
+        integrity: "sha384-TTF8eEsEKInX2meLzP5V1z/npGYIElXYGksx93f0qBZHu6IL3PdzVB8objytx+TR" // !=
       });
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/contrib/auto-render.min.js",
+        src: "https://cdn.jsdelivr.net/npm/katex@0.18.5/dist/contrib/auto-render.min.js",
         integrity: "sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" // ==
       });
       await loadScript({
-        src: "https://cdn.jsdelivr.net/npm/katex@0.18.0/dist/contrib/copy-tex.min.js",
+        src: "https://cdn.jsdelivr.net/npm/katex@0.18.5/dist/contrib/copy-tex.min.js",
         integrity: "sha384-Pe2JWbaShhSRT0SESJ9XLPeAsi4yrNi7r/CiH0Coq7giBjK5a6Ae7XcybE8rNlQP" // ==
       });
 
