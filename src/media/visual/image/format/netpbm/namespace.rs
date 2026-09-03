@@ -5,7 +5,7 @@
 
 use super::{PnmCursor, PnmFormat};
 use crate::ImageError::{InsufficientBuffer, InvalidImageSize, InvalidPixel};
-use crate::{Extent2, ImageResult, unwrap};
+use crate::{Extent2, ImageFrameInfo, ImageInfo, ImageResult, RasterFormat, unwrap};
 use PnmFormat::{P1, P2, P3, P4, P5, P6};
 
 #[doc = crate::_tags!(image codec)]
@@ -54,6 +54,28 @@ impl Pnm {
         let h = unwrap![ok? Self::read_header(bytes)];
         Ok(Extent2::new([h.width, h.height]))
     }
+    /// Returns frame metadata for the first PNM image.
+    ///
+    /// The returned frame index is always `0`.
+    pub const fn frame_info(bytes: &[u8]) -> ImageResult<ImageFrameInfo> {
+        let h = unwrap![ok? Self::read_header(bytes)];
+        Ok(ImageFrameInfo { image: unwrap![ok? h.info()], index: 0 })
+    }
+    /// Returns image metadata declared by the first PNM header.
+    ///
+    /// Supports P1 through P6.
+    pub const fn info(bytes: &[u8]) -> ImageResult<ImageInfo> {
+        let h = unwrap![ok? Self::read_header(bytes)];
+        h.info()
+    }
+
+    /// Returns the raster format produced by [`Pnm::decode_u8`].
+    ///
+    /// P1/P2/P4/P5 decode to `GRAY8`; P3/P6 decode to `RGB8`.
+    pub const fn decoded_format_u8(bytes: &[u8]) -> ImageResult<RasterFormat> {
+        let h = unwrap![ok? Self::read_header(bytes)];
+        Ok(h.decoded_raster_format_u8())
+    }
     /// Returns the number of `u8` samples produced by [`Pnm::decode_u8`].
     ///
     /// This is `width * height * channels`, where PBM and PGM produce one
@@ -61,6 +83,14 @@ impl Pnm {
     pub const fn decoded_len_u8(bytes: &[u8]) -> ImageResult<usize> {
         let h = unwrap![ok? Self::read_header(bytes)];
         h.sample_len()
+    }
+    /// Returns metadata for the raster produced by [`Pnm::decode_u8`].
+    pub const fn decoded_info_u8(bytes: &[u8]) -> ImageResult<ImageInfo> {
+        let h = unwrap![ok? Self::read_header(bytes)];
+        Ok(ImageInfo {
+            extent: h.extent_u32(),
+            format: h.decoded_raster_format_u8(),
+        })
     }
 
     /* decode */

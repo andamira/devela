@@ -30,11 +30,15 @@ impl RasterFormat {
 
     /* gray */
 
+    /// 1-bit grayscale/bitmap raster format in sRGB space.
+    pub const GRAY1: Self = Self::_new(Channels::Gray, Sample::U1, Transfer::Srgb, Alpha::None);
     /// 8-bit grayscale in sRGB space.
     pub const GRAY8: Self = Self::_new(Channels::Gray, Sample::U8, Transfer::Srgb, Alpha::None);
     /// 8-bit grayscale with straight alpha in sRGB space.
     pub const GRAYA8: Self =
         Self::_new(Channels::GrayAlpha, Sample::U8, Transfer::Srgb, Alpha::Straight);
+    /// 16-bit grayscale in sRGB space.
+    pub const GRAY16: Self = Self::_new(Channels::Gray, Sample::U16, Transfer::Srgb, Alpha::None);
 
     /* byte-interleaved rgb */
 
@@ -49,6 +53,8 @@ impl RasterFormat {
     pub const RGBX8: Self = Self::_new(Channels::Rgbx, Sample::U8, Transfer::Srgb, Alpha::Opaque);
     /// Byte-interleaved 32-bit ARGB with straight alpha in sRGB space.
     pub const ARGB8: Self = Self::_new(Channels::Argb, Sample::U8, Transfer::Srgb, Alpha::Straight);
+    /// 48-bit RGB in sRGB space.
+    pub const RGB16: Self = Self::_new(Channels::Rgb, Sample::U16, Transfer::Srgb, Alpha::None);
 
     /* byte-interleaved bgr */
 

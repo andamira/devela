@@ -9,9 +9,12 @@ use crate::_impl_init;
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[allow(dead_code, reason = "Not exposed: U16, U32, F64")]
 pub(crate) enum RasterSampleFormat {
-    /// Unknown or unspecified sample representation.
     #[default]
+    #[doc = crate::_tags!(init)]
+    /// Unknown or unspecified sample representation.
     Unknown,
+    /// Unsigned 1-bit integer sample.
+    U1,
     /// Unsigned 8-bit integer sample.
     U8,
     /// Unsigned 16-bit integer sample.
@@ -30,6 +33,7 @@ impl RasterSampleFormat {
     pub const fn bits(self) -> Option<u16> {
         match self {
             Self::Unknown => None,
+            Self::U1 => Some(1),
             Self::U8 => Some(8),
             Self::U16 => Some(16),
             Self::U32 => Some(32),
@@ -47,6 +51,6 @@ impl RasterSampleFormat {
     }
     /// Returns whether this sample format uses integer values.
     pub const fn is_integer(self) -> bool {
-        matches!(self, Self::U8 | Self::U16 | Self::U32)
+        matches!(self, Self::U1 | Self::U8 | Self::U16 | Self::U32)
     }
 }

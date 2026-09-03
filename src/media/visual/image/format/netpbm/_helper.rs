@@ -9,16 +9,14 @@
 // - struct PnmHeader
 
 use crate::ImageError::{InsufficientBuffer, InvalidImageSize, InvalidMagicNumber, InvalidPixel};
-use crate::{ByteCursor, Digits, Extent2, ImageResult, TextScanner};
-use crate::{Mem, is, slice, unwrap, whilst};
+use crate::{ByteCursor, Digits, Extent2, ImageInfo, ImageResult, RasterFormat, TextScanner};
+use crate::{Mem, cast, is, slice, unwrap, whilst};
 use PnmFormat::{P1, P2, P3, P4, P5, P6};
 
 // misc. fns
 crate::sf! {
     /// Returns whether `byte` is PNM whitespace.
     const fn is_ws(byte: u8) -> bool { matches![byte, b' ' | b'\n' | b'\r' | b'\t' | 0x0b | 0x0c] }
-    /// Returns whether `byte` is an ASCII decimal digit.
-    const fn is_digit(byte: u8) -> bool { byte >= b'0' && byte <= b'9' }
 }
 
 /// A PNM-specific cursor over generic byte storage.
@@ -217,6 +215,27 @@ impl PnmFormat {
     pub(crate) const fn is_bitmap(self) -> bool { matches![self, Self::P1 | Self::P4] }
     /// Returns the number of decoded channels.
     pub(crate) const fn channels(self) -> u8 { match self { Self::P3 | Self::P6 => 3, _ => 1 } }
+
+    /// Returns the raster format produced by `Pnm::decode_u8`.
+    pub(crate) const fn decoded_raster_format_u8(self) -> RasterFormat {
+        match self {
+            Self::P1 | Self::P2 | Self::P4 | Self::P5 => RasterFormat::GRAY8,
+            Self::P3 | Self::P6 => RasterFormat::RGB8,
+        }
+    }
+    /// Returns the declared raster format for this PNM format and max sample value.
+    ///
+    /// Assumes `max_value` has already been validated and normalized:
+    /// PBM formats use `max_value = 1`.
+    pub(crate) const fn raster_format(self, max_value: u16) -> RasterFormat {
+        match self {
+            Self::P1 | Self::P4 => RasterFormat::GRAY1,
+            Self::P2 | Self::P5 if max_value <= u8::MAX as u16 => RasterFormat::GRAY8,
+            Self::P2 | Self::P5 => RasterFormat::GRAY16,
+            Self::P3 | Self::P6 if max_value <= u8::MAX as u16 => RasterFormat::RGB8,
+            Self::P3 | Self::P6 => RasterFormat::RGB16,
+        }
+    }
 }
 
 /// Parsed PNM header metadata.
@@ -231,9 +250,22 @@ pub(crate) struct PnmHeader {
     pub data_offset: usize,
 }
 impl PnmHeader {
+    /// Returns the declared generic image metadata.
+    pub(crate) const fn info(self) -> ImageResult<ImageInfo> {
+        let width = unwrap![ok_or? cast!(checked self.width => u32), InvalidImageSize(None)];
+        let height = unwrap![ok_or? cast!(checked self.height => u32), InvalidImageSize(None)];
+        Ok(ImageInfo {
+            extent: Extent2::new([width, height]),
+            format: self.raster_format(),
+        })
+    }
     /// Returns the declared image extent.
     pub(crate) const fn extent(self) -> Extent2<usize> {
         Extent2::new([self.width, self.height])
+    }
+    /// Returns the image extent as public image metadata.
+    pub(crate) const fn extent_u32(self) -> Extent2<u32> {
+        Extent2::new([self.width as u32, self.height as u32])
     }
     /// Returns the unpacked decoded sample count.
     pub(crate) const fn sample_len(self) -> ImageResult<usize> {
@@ -245,5 +277,13 @@ impl PnmHeader {
     pub(crate) const fn packed_bitmap_len(self) -> ImageResult<usize> {
         let row = Mem::bytes_from_bits(self.width);
         unwrap![some_ok_or row.checked_mul(self.height), InvalidImageSize(None)]
+    }
+    /// Returns the declared raster format described by this header.
+    pub(crate) const fn raster_format(self) -> RasterFormat {
+        self.format.raster_format(self.max_value)
+    }
+    /// Returns the raster format produced by `Pnm::decode_u8`.
+    pub(crate) const fn decoded_raster_format_u8(self) -> RasterFormat {
+        self.format.decoded_raster_format_u8()
     }
 }
