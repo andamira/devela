@@ -4,6 +4,7 @@
 #![doc = crate::_DOC_GEOM_MODULES!()]
 #![doc = crate::_doc!(flat:"geom")]
 #![doc = crate::_doc!(hr)]
+//!
 //! Foundational abstractions for reasoning about space, structure, and spatial relationships.
 //!
 //! ## Coordinate roles

@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_DATA_STORE!()] // public
 #![doc = crate::_doc!(modules: crate::data; store: arena, key, pool)] // cache, db, intern
 #![doc = crate::_doc!(flat:"data")]
-#![doc = crate::_doc!(hr)]
+#![doc = crate::_doc!(extends: collections)]
 //!
 //! Storage governs how values remain and are recovered.
 //!

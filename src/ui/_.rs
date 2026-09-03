@@ -57,6 +57,7 @@ crate::CONST! { pub(crate) _DOC_UI_MODULES =
 }
 
 crate::mods_in! {
+        #[cfg(feature = "ui")]
         mod _helper; // (UiNum)
 
         #[cfg(feature = "ui")]
