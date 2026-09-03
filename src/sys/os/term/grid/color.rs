@@ -1,17 +1,21 @@
 // devela/src/sys/os/term/grid/color.rs
 //
-//! Defines , [`TermColorKind`], [`TermColorMode`], [`TermColor`], [`TermColors`].
+//! Defines [`TermColorKind`], [`TermColorMode`], [`TermColor`], [`TermColors`].
 //
 
 use crate::{AnsiColor, AnsiColor3, AnsiColor8};
 
 #[doc = crate::_tags!(term color)]
 /// The stored representation of a terminal color.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", enum TermColorKind),
+    test_size_of(TermColorMode = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TermColorKind {
+    #[doc = crate::_tags!(init)]
     /// Uses the terminal's default color.
     #[default]
     Default = 0,
@@ -36,11 +40,15 @@ impl TermColorKind {
 
 #[doc = crate::_tags!(term color)]
 /// The composition mode of one terminal color.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", enum TermColorMode),
+    test_size_of(TermColorMode = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TermColorMode {
+    #[doc = crate::_tags!(init)]
     /// Replaces the color beneath it.
     #[default]
     Opaque = 0,
@@ -67,10 +75,9 @@ crate::bitfield! {
     #[doc = crate::_tags!(term color bit)]
     /// A packed terminal color and its composition mode.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term"),
-        test_size_of(TermColor = 4|32),
+        location("sys/os/term", struct TermColor),
+        test_size_of(TermColor = 4|32; niche !Option),
     }]
-    ///
     /// The low 24 bits store either an RGB value or an indexed palette value.
     /// The remaining defined bits select the representation and composition mode.
     #[must_use]
@@ -171,9 +178,21 @@ crate::bitfield! {
                 AnsiColor::Rgb(rgb) => Some(Self::rgb(rgb)),
             }
         }
+        /// Converts a 3-bit ANSI color using the dark ANSI palette.
+        pub const fn from_ansi3_dark(color: AnsiColor3) -> Self { Self::indexed(color as u8) }
+
+        /// Converts a 3-bit ANSI color using the bright ANSI palette.
+        pub const fn from_ansi3_bright(color: AnsiColor3) -> Self { Self::indexed(color as u8 + 8) }
+
+        /// Converts an 8-bit ANSI palette color into a packed terminal color.
+        pub const fn from_ansi8(color: AnsiColor8) -> Self { Self::indexed(color.0) }
+
         /// Converts an opaque color into its ANSI representation.
         ///
         /// Non-opaque and reserved colors return `None`.
+        ///
+        /// Indexed colors `0..=15` are canonicalized to [`AnsiColor::Dark`] or
+        /// [`AnsiColor::Bright`]; higher indices use [`AnsiColor::Palette`].
         #[must_use]
         pub const fn to_ansi(self) -> Option<AnsiColor> {
             if !self.is_opaque() { return None; }
@@ -202,10 +221,9 @@ crate::bitfield! {
 #[doc = crate::_tags!(term color)]
 /// Packed foreground and background terminal colors.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
-    test_size_of(TermColors = 8|64),
+    location("sys/os/term", struct TermColors),
+    test_size_of(TermColors = 8|64; niche !Option),
 }]
-///
 /// The foreground occupies the low 32 bits and the background the high 32 bits.
 #[must_use]
 #[repr(transparent)]
@@ -224,6 +242,29 @@ impl TermColors {
     }
     /// Creates a color pair from its raw representation.
     pub const fn from_bits(bits: u64) -> Self { Self { bits } }
+
+    /// Creates a foreground and background color pair from a pair of ANSI colors.
+    ///
+    /// Returns `None` for [`AnsiColor::None`], which represents absence
+    /// rather than a resolved terminal color.
+    pub const fn from_ansi(fg: AnsiColor, bg: AnsiColor) -> Option<Self> {
+        match (TermColor::from_ansi(fg), TermColor::from_ansi(bg)) {
+            (Some(fg), Some(bg)) => Some(Self::new(fg, bg)),
+            _ => None,
+        }
+    }
+    /// Creates a foreground and background pair using the dark ANSI palette.
+    pub const fn from_ansi3_dark(fg: AnsiColor3, bg: AnsiColor3) -> Self {
+        Self::new(TermColor::from_ansi3_dark(fg), TermColor::from_ansi3_dark(bg))
+    }
+    /// Creates a foreground and background pair using the bright ANSI palette.
+    pub const fn from_ansi3_bright(fg: AnsiColor3, bg: AnsiColor3) -> Self {
+        Self::new(TermColor::from_ansi3_bright(fg), TermColor::from_ansi3_bright(bg))
+    }
+    /// Creates a foreground and background pair from 8-bit ANSI palette colors.
+    pub const fn from_ansi8(fg: AnsiColor8, bg: AnsiColor8) -> Self {
+        Self::new(TermColor::from_ansi8(fg), TermColor::from_ansi8(bg))
+    }
 
     /// Returns the raw packed representation.
     #[must_use]
@@ -262,7 +303,7 @@ impl TermColors {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     #[test]
@@ -317,11 +358,32 @@ mod tests {
             assert_eq!(color.to_ansi(), Some(ansi));
         }
         assert_eq!(TermColor::from_ansi(AnsiColor::None), None);
+        assert_eq!(
+            TermColor::from_ansi8(AnsiColor8(7)).to_ansi(),
+            Some(AnsiColor::Dark(AnsiColor3::White)),
+        );
+        assert_eq!(
+            TermColor::from_ansi8(AnsiColor8(8)).to_ansi(),
+            Some(AnsiColor::Bright(AnsiColor3::Black)),
+        );
     }
     #[test]
     fn reserved_bits_are_not_canonical() {
         let color = TermColor::from_bits(0xF000_0000);
         assert!(!color.is_canonical());
         assert_eq!(color.canonicalized(), TermColor::DEFAULT);
+    }
+    #[test]
+    fn ansi_constructors() {
+        assert_eq!(TermColor::from_ansi3_dark(AnsiColor3::Black), TermColor::indexed(0),);
+        assert_eq!(TermColor::from_ansi3_dark(AnsiColor3::White), TermColor::indexed(7),);
+        assert_eq!(TermColor::from_ansi3_bright(AnsiColor3::Black), TermColor::indexed(8),);
+        assert_eq!(TermColor::from_ansi3_bright(AnsiColor3::White), TermColor::indexed(15),);
+        assert_eq!(TermColor::from_ansi8(AnsiColor8(255)), TermColor::indexed(255),);
+        let colors = TermColors::from_ansi8(AnsiColor8(42), AnsiColor8(203));
+        assert_eq!(colors.fg().index(), Some(42));
+        assert_eq!(colors.bg().index(), Some(203));
+        assert_eq!(TermColors::from_ansi(AnsiColor::None, AnsiColor::Default), None,);
+        assert_eq!(TermColors::from_ansi(AnsiColor::Default, AnsiColor::None), None,);
     }
 }

@@ -420,6 +420,10 @@
   - remove the `event` feature gate when possible.
   - add methods: `listen_signals`, `listen_app_controls`, `listen_resize`.
 
+##### sys::os::term::grid
+- update `TermColor`, `TermColors`:
+  - add ANSI color conversion constructors.
+
 ### text::ascii
 - rename `AsciiLut` to `Ascii`.
   - new constant: `DIGITS_BASE36_LOWER`.
