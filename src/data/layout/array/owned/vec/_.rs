@@ -9,7 +9,6 @@
 crate::mods_in! {
     mod _reexport_alloc;
 
-    mod_ chunk; // VecChunk
     mod ext; // VecExt
     // mod d2; // Vec2d WIP
     // mod hvec; // HVec ? WIP
@@ -17,7 +16,6 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
-            chunk::_all::*,
             ext::*,
         };
         // pub use super::d2::_all::*;

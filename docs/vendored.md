@@ -42,8 +42,6 @@ See the linked modifications for detailed changes.
 - <i id="static_assertions"></i>[static_assertions] by Nikolai Vazquez,
   as part of the [`const_assert!`] macro and the [`ConstBool`] trait
   ([*modifications*][M_static_assertions]).
-- <i id="tailcall-chunk"></i>[tailcall-chunk] by Tushar Mathur,
-  as the [`VecChunk`] struct ([*modifications*][M_tailcall-chunk]).
 - <i id="tupl"></i>[tupl] by *Dragoteryx*,
   as part of the [`Tuple`] trait ([*modifications*][M_tupl]).
 
@@ -103,9 +101,6 @@ See the linked modifications for detailed changes.
   [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/static_assertions.md
   [`const_assert!`]: https://docs.rs/devela/latest/devela/code/util/assert/macro.const_assert.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/fin/logic/trait.ConstBool.html
-[tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
-  [M_tailcall-chunk]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tailcall-chunk.md
-  [`VecChunk`]: https://docs.rs/devela/latest/devela/data/list/array/struct.VecChunk.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
   [M_tupl]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/tupl.md
   [`Tuple`]: https://docs.rs/devela/latest/devela/data/list/tuple/trait.Tuple.html

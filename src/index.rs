@@ -212,9 +212,12 @@ pub(crate) use __crate_name;
 
 /* root modules */
 
-#[path = "code/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`.
+#[path = "code/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`
 pub mod code; // Code structure, semantics, and foundational utilities
+
 crate::mods_in! {
+    pub mod_ _doc; // Extra documentation about the library
+
     pub mod_ data; // Structural abstractions for organizing and manipulating data
     pub mod_ error; // Failure types, result aliases, and recovery semantics
     pub mod_ geom; // Geometric types, operations, and spatial constructs
@@ -235,8 +238,6 @@ pub mod yard; // Scaffolding, taxonomy, and documentation support.
 
 #[doc(hidden)]
 pub use yard::dep as _dep;
-
-pub mod _doc;
 
 /* structural re-exports */
 

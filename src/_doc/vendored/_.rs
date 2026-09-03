@@ -23,7 +23,6 @@ crate::_doc_vendor! { mod: "rustc-hash", rustc_hash }
 crate::_doc_vendor! { mod: "stack_dst", stack_dst }
 crate::_doc_vendor! { mod: "stated-scope-guard", stated_scope_guard }
 crate::_doc_vendor! { mod: "static_assertions", static_assertions }
-crate::_doc_vendor! { mod: "tailcall-chunk", tailcall_chunk }
 crate::_doc_vendor! { mod: "tupl", tupl }
 // MIT
 crate::_doc_vendor! { mod: "crunchy", crunchy }

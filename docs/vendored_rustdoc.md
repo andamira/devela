@@ -42,8 +42,6 @@
   [M_static_assertions]: crate::_doc::vendored::static_assertions
   [`const_assert!`]: crate::code::util::assert::const_assert
   [`ConstBool`]: crate::num::fin::logic::ConstBool
-  [M_tailcall-chunk]: crate::_doc::vendored::tailcall_chunk
-  [`VecChunk`]: crate::data::layout::array::VecChunk
   [M_tupl]: crate::_doc::vendored::tupl
   [`Tuple`]: crate::data::value::tuple::Tuple
 

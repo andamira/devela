@@ -144,6 +144,7 @@
 ### data::layout
 - remove trait: `DataDesta`.
 - remove types: `Destaque`, `Stack`.
+- remove vendored item: `VecChunk`.
 
 #### data::layout::array
 - new types: `Array`, `ArrayCoordIter`, `ArrayShape`, `ArrayLayout`.
