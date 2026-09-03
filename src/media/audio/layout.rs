@@ -8,8 +8,10 @@ use crate::{_impl_init, impl_trait};
 
 #[doc = crate::_tags!(audio)]
 /// Individual spatial audio channel positions.
-#[doc = crate::_doc_meta!{location("media/audio")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio", enum AudioChannel),
+    test_size_of(AudioChannel = 1|8; niche Option),
+}]
 /// These labels represent the canonical channel roles used in
 /// multichannel layouts (L, R, C, LFE, surrounds, back channels).
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -72,7 +74,10 @@ impl AudioChannel {
 
 #[doc = crate::_tags!(audio)]
 /// Fixed, discrete multichannel audio layouts (1.0, 2.0, 5.1, 7.1, …).
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio"),
+    test_size_of(AudioChannels = 1|8; niche Option),
+}]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum AudioChannels {
     /// Mono layout (1 channel).

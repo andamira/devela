@@ -1,0 +1,31 @@
+// devela/src/media/audio/format/wav/_.rs
+//
+//! RIFF/WAVE support for PCM-family audio.
+//!
+//! This module parses and writes simple WAVE containers around raw PCM-family
+//! payloads. It supports classic PCM, IEEE float, and WAVE_FORMAT_EXTENSIBLE
+//! metadata for PCM/float subformats.
+//!
+//! The audio payload remains raw interleaved bytes.
+//! Use [`PcmRaw`] or [`PcmRawBuf`] to materialize typed samples explicitly.
+//
+
+crate::mods_in! {
+    #[cfg(test)]
+    mod_ _test;
+
+    mod buf; // PcmWavBuf
+    mod error; // PcmWavError
+    mod fmt; // PcmWavFmt
+    mod namespace; // PcmWav
+}
+crate::mods_out! { // _mods
+    _mods {
+        pub use super::{
+            buf::*,
+            error::*,
+            fmt::*,
+            namespace::*,
+        };
+    }
+}

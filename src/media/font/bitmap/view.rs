@@ -7,7 +7,7 @@ use crate::{CharIter, Debug, FmtResult, Formatter, Region2, Slice, is, read_at, 
 #[doc = crate::_tags!(font)]
 /// A validated, borrowed view over fixed-metric monochrome bitmap-font data.
 #[doc = crate::_doc_meta!{
-    location("media/font"),
+    location("media/font", struct FontBitmapView),
     #[cfg(target_pointer_width = "32")]
     test_size_of(FontBitmapView = 44|352),
     #[cfg(target_pointer_width = "64")]
@@ -216,7 +216,7 @@ impl<'a> FontBitmapView<'a> {
 #[doc = crate::_tags!(font)]
 /// A borrowed view over one fixed-size monochrome glyph bitmap.
 #[doc = crate::_doc_meta!{
-    location("media/font"),
+    location("media/font", struct GlyphBitmapView),
     #[cfg(target_pointer_width = "32")]
     test_size_of(GlyphBitmapView = 20|160),
     #[cfg(target_pointer_width = "64")]

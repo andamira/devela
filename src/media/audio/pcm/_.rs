@@ -1,0 +1,29 @@
+// devela/src/media/audio/pcm/_.rs
+//
+#![doc = crate::_DOC_MEDIA_AUDIO_PCM!()] // public
+#![doc = crate::_doc!(modules: crate::media::audio; pcm)]
+#![doc = crate::_doc!(flat:"media")]
+#![doc = crate::_doc!(hr)]
+//
+
+crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
+
+    mod buf; // PcmBuf
+    mod io; // PcmStream, PcmDrain, PcmSink, PcmSource, PcmSinkPlanar, PcmSourcePlanar
+    mod layout; // PcmLayout
+    mod sample; // PcmSample, PcmSampleType
+    mod spec; // PcmSpec
+}
+crate::mods_out! { // _mods
+    _mods {
+        pub use super::{
+            buf::*,
+            io::*,
+            layout::*,
+            sample::*,
+            spec::*,
+        };
+    }
+}

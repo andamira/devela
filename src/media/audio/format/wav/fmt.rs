@@ -7,7 +7,10 @@ use crate::{AudioChannels, PcmSample, PcmSpec, PcmWav, PcmWavError, is};
 
 #[doc = crate::_tags!(audio parser)]
 /// Parsed WAVE `fmt` chunk.
-#[doc = crate::_doc_meta!{location("media/audio"), test_size_of(PcmWavFmt = 28|224)}]
+#[doc = crate::_doc_meta!{
+    location("media/audio", struct PcmWavFmt),
+    test_size_of(PcmWavFmt = 28|224),
+}]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct PcmWavFmt {

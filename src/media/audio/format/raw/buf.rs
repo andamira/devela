@@ -10,7 +10,7 @@ use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
 #[doc = crate::_tags!(audio data)]
 /// Raw PCM byte buffer over borrowed or owned storage.
 #[doc = crate::_doc_meta!{
-    location("media/audio"),
+    location("media/audio", struct PcmRawBuf),
     #[cfg(target_pointer_width = "32")]
     test_size_of(PcmRawBuf_Slice_x32: PcmRawBuf<&[u8]> = 16|128),
     #[cfg(target_pointer_width = "64")]
@@ -20,7 +20,6 @@ use crate::{AudioChannels, PcmRaw, PcmRawError, PcmSample, PcmSpec};
     #[cfg(target_pointer_width = "64")]
     test_size_of(PcmRawBuf_Vec_x64: PcmRawBuf<Vec<u8>> = 32|256),
 }]
-///
 /// Raw PCM contains no header and no embedded metadata. The caller must provide
 /// the [`PcmSpec`] that describes the byte stream.
 ///

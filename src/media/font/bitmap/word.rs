@@ -8,7 +8,7 @@ use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, unwrap, whilst};
 #[doc = crate::_tags!(font)]
 /// A fixed-size bitmap font packed into glyph words.
 #[doc = crate::_doc_meta!{
-    location("media/font"),
+    location("media/font", struct FontBitmapWord),
     #[cfg(target_pointer_width = "32")]
     test_size_of(FontBitmapWord<()> = 28|224),
     #[cfg(target_pointer_width = "64")]

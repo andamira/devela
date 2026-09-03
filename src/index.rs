@@ -222,6 +222,7 @@ crate::mods_in! {
     pub mod_ error; // Failure types, result aliases, and recovery semantics
     pub mod_ geom; // Geometric types, operations, and spatial constructs
     pub mod_ lang; // Language structure and meaning across domains
+    pub mod_ media; // Media formats, representation, and synthesis
     pub mod_ org; // Coordination and structure of collective action
     pub mod_ vita; // Lived practices of embodied beings
     pub mod_ phys; // Physical quantities, units, and models of the natural world
@@ -230,7 +231,6 @@ crate::mods_in! {
     pub mod_ text; // Symbolic sequences, encodings, and text processing
     pub mod_ work; // Computational work, its coordination, and its execution
 }
-pub mod media; // Media formats, representation, and synthesis
 pub mod num; // Numeric abstractions and formal computation
 pub mod sys; // System interfaces and hardware abstractions
 // internal:

@@ -7,8 +7,9 @@ use crate::{Extent, Position, RegionS2};
 
 #[doc = crate::_tags!(image)]
 /// A writable 2D drawing surface over abstract spatial units.
-#[doc = crate::_doc_meta!{location("media/visual/draw")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/draw", trait Canvas),
+}]
 /// `Canvas` defines the minimal common contract for placing color on a drawable
 /// region, independently of backend, storage, or presentation strategy.
 ///
@@ -54,8 +55,9 @@ pub trait Canvas {
 
 #[doc = crate::_tags!(image)]
 /// Read access to colors from a canvas-like surface.
-#[doc = crate::_doc_meta!{location("media/visual/draw")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/draw", trait CanvasRead),
+}]
 /// This is separate from [`Canvas`] because some draw targets support writing
 /// but not efficient or meaningful readback.
 pub trait CanvasRead: Canvas {
@@ -67,8 +69,9 @@ pub trait CanvasRead: Canvas {
 
 #[doc = crate::_tags!(image text)]
 /// A [`Canvas`] that can place text render elements.
-#[doc = crate::_doc_meta!{location("media/visual/draw")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/draw", trait CanvasTextel),
+}]
 /// `CanvasTextel` extends color-based drawing with discrete text-oriented marks,
 /// such as terminal cells or other glyph-bearing render units.
 ///

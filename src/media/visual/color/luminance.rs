@@ -8,8 +8,9 @@ use crate::{NumConst, Rgb};
 
 #[doc = crate::_tags!(color)]
 /// A generic luminance-like component.
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", struct Lum),
+}]
 /// Represents either physical luminance, gamma-encoded luma, or perceptual lightness,
 /// depending on the `LINEAR` and `LIGHTNESS` flags.
 ///
@@ -30,8 +31,9 @@ pub struct Lum<T, const LINEAR: bool = true, const LIGHTNESS: bool = false> {
 
 #[doc = crate::_tags!(color)]
 /// Physical [luminance].
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", type Luminance),
+}]
 /// Linear light intensity, measured in cd/m² or normalized to [0.0, 1.0].
 ///
 /// [luminance]: https://en.wikipedia.org/wiki/Luminance
@@ -39,8 +41,9 @@ pub type Luminance<T> = Lum<T, true, false>;
 
 #[doc = crate::_tags!(color)]
 /// Perceptual [lightness] (L*).
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", type Lightness),
+}]
 /// Non-linear encoding of luminance,
 /// normalized to [0.0, 1.0] for floats or 0..=MAX for integers.
 ///
@@ -49,8 +52,9 @@ pub type Lightness<T> = Lum<T, false, true>;
 
 #[doc = crate::_tags!(color)]
 /// Gamma-encoded [luma] (Y′).
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", type Luma),
+}]
 /// A non-linear approximation of luminance, typically used in video systems.
 ///
 /// [luma]: https://en.wikipedia.org/wiki/Luma_(video)
@@ -58,8 +62,9 @@ pub type Luma<T> = Lum<T, false, false>;
 
 #[doc = crate::_tags!(color)]
 /// Linearized perceptual lightness (L* in linear space).
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", type LinearLightness),
+}]
 /// Use cases include:
 /// - Combining linear luminance (for precise computations)
 ///   and perceptual lightness (for display scaling).

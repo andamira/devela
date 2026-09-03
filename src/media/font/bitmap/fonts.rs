@@ -8,7 +8,6 @@ use crate::{FontBitmapWord, Fonts};
 impl Fonts {
     #[doc = crate::_tags!(font)]
     /// A simple 3x3 bitmap font.
-    #[doc = crate::_doc_meta!{location("media/font")}]
     ///
     /// Notes:
     /// - It includes all 95 ASCII characters from space `' '` to tilde `'~'`.

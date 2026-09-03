@@ -10,7 +10,7 @@ use crate::{Ascii, is, unwrap};
 #[doc = crate::_tags!(font)]
 /// A simple Unicode-Art font for rendering fixed-size glyphs.
 #[doc = crate::_doc_meta!{
-    location("media/font"),
+    location("media/font", struct FontArt),
     #[cfg(target_pointer_width = "32")]
     test_size_of(FontArt = 24|192),
     #[cfg(target_pointer_width = "64")]

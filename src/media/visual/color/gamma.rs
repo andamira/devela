@@ -11,8 +11,9 @@ use crate::{Float, is};
 
 #[doc = crate::_tags!(color)]
 /// Gamma correction curves.
-#[doc = crate::_doc_meta!{location("media/visual/color")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", struct Gamma),
+}]
 /// Used for encoding and decoding linear luminance or tristimulus values
 /// via power-law transformations (e.g. $v^γ$ and $v^{(1/γ)}$).
 ///
