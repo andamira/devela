@@ -32,6 +32,7 @@
 - remove `_doc/examples` module.
 - new tag: `_TAG_<REWORK|STATE|TOPOL>`.
 - clarify public module and hidden scope features.
+- document project constitution.
 - update katex to v0.18.0.
 
 ## examples
