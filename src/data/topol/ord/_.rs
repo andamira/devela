@@ -11,12 +11,14 @@
 
 crate::mods_in! {
     mod concat; // Concat
+    mod seq; // SeqNode
 }
 crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
             concat::Concat,
+            seq::SeqNode,
         };
     }
 }

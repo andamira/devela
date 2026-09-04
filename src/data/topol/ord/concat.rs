@@ -12,9 +12,9 @@ use crate::ConstInit;
 }]
 /// The `left` part precedes the `right` part in the composition.
 ///
-/// `Concat` describes only the ordered composition itself. It does not
-/// imply contiguity, homogeneous part types, storage, ownership, or
-/// geometric extent.
+/// `Concat` describes only the ordered composition itself.
+/// It does not imply contiguity, homogeneous part types,
+/// storage, ownership, or geometric extent.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Concat<L, R = L> {

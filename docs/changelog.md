@@ -216,7 +216,7 @@
 - new example type: `LinkExample`.
 
 #### data::topol::ord
-- new type `Concat`.
+- new types: `Concat`, `SeqNode`.
 
 ### data::value
 - new types: `Value[8|16|32|64|128]`.
