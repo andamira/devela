@@ -22,8 +22,9 @@ use ::core::{f16, f128};
 
 #[doc = crate::_tags!(logic ord namespace)]
 /// Provides comparing methods for `T`.
-#[doc = crate::_doc_meta!{location("num/fin/ord")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/ord", struct Cmp),
+}]
 /// This wrapper exposes comparison operations as value methods,
 /// enabling uniform and const-evaluable comparisons across primitives.
 ///

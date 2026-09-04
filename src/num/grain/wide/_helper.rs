@@ -1,6 +1,6 @@
 // devela/src/num/grain/wide/_helper.rs
 //
-//! Defines [__lane_dispatch!], [`_dep_wide_compile!`], [`_dep_wide_use!`].
+//! Defines [__lane_dispatch!], [`_simd_use!`], [`_dep_wide_compile!`], [`_dep_wide_use!`].
 //
 
 /* __lane_dispatch! */
@@ -11,7 +11,7 @@
 #[doc(hidden)]
 #[macro_export]
 #[cfg(nightly_simd)]
-macro_rules! __lane_dispatch {
+macro_rules! __lane_dispatch· {
     // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
     // never wide
@@ -25,7 +25,7 @@ macro_rules! __lane_dispatch {
 #[macro_export]
 #[cfg(not(nightly_simd))]
 #[cfg(feature = "dep_wide")]
-macro_rules! __lane_dispatch {
+macro_rules! __lane_dispatch· {
     // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
     // never wide
@@ -39,7 +39,7 @@ macro_rules! __lane_dispatch {
 #[macro_export]
 #[cfg(not(nightly_simd))]
 #[cfg(not(feature = "dep_wide"))]
-macro_rules! __lane_dispatch {
+macro_rules! __lane_dispatch· {
     // always plain
     (plain: $s:ident, $fn:ident($($a:tt)*)) => { $crate::paste! { $s.[<$fn _plain>]($($a)*) }};
     // never wide
@@ -49,9 +49,9 @@ macro_rules! __lane_dispatch {
 }
 
 #[doc(hidden)]
-pub use __lane_dispatch;
+pub use __lane_dispatch· as __lane_dispatch;
 
-/* simd_use */
+/* _simd_use */
 
 /// Defines a Simd alias over `core::simd::Simd` for the given element type and lane count.
 ///
@@ -90,7 +90,7 @@ pub use _simd_use· as _simd_use;
 #[doc(hidden)]
 #[macro_export]
 #[cfg(not(feature = "dep_wide"))]
-macro_rules! _dep_wide_compile {
+macro_rules! _dep_wide_compile· {
     ($($tt:tt)*) => {};
 }
 
@@ -112,7 +112,7 @@ macro_rules! _dep_wide_compile {
 #[doc(hidden)]
 #[macro_export]
 #[cfg(feature = "dep_wide")]
-macro_rules! _dep_wide_compile {
+macro_rules! _dep_wide_compile· {
     ( // add, sub, mul, neg, sum, min, max, clap
         for ALL_OR_ELSE $t:ty, $L:literal;
         $(#[$attr:meta])*
@@ -318,7 +318,7 @@ macro_rules! _dep_wide_compile {
     }
 }
 #[doc(hidden)]
-pub use _dep_wide_compile;
+pub use _dep_wide_compile· as _dep_wide_compile;
 
 /// Selects the appropriate `dep_wide` SIMD vector types
 /// for the given element type and lane count.
@@ -329,7 +329,7 @@ pub use _dep_wide_compile;
 /// It also imports the common comparison and alignment traits used by wide-SIMD operations.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! _dep_wide_use {
+macro_rules! _dep_wide_use· {
     ($t:ty, $L:literal) => {
         // x2
         #[$crate::compile(all(same($t, f64), same($L, 2)))]
@@ -400,4 +400,4 @@ macro_rules! _dep_wide_use {
     };
 }
 #[doc(hidden)]
-pub use _dep_wide_use;
+pub use _dep_wide_use· as _dep_wide_use;

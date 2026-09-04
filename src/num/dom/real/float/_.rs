@@ -1,0 +1,42 @@
+// devela/src/num/dom/real/float/mod.rs
+//
+#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
+#![doc = crate::_doc!(modules: crate::num::dom::real; float)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
+//
+
+crate::mods_in! {
+    mod _reexport_core;
+
+    pub(crate) mod _consts; // PI, TAU, SQRT2, …
+    pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
+    mod _internal; // _FloatInternals
+
+    mod alias; // fsize
+    mod bits; // f[32|64]bits[_niche]
+    mod ext_float; // FloatExt
+    mod float_const; // FloatConst
+    mod_ wrapper; // Float
+}
+crate::mods_out! { // _mods, _reexports, _crate_internals
+    _mods {
+        pub use super::{
+            alias::fsize,
+            bits::*,
+            ext_float::FloatExt,
+            float_const::FloatConst,
+            wrapper::_all::Float,
+        };
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            _consts::*,
+            _docs::*,
+            _internal::*,
+        };
+    }
+}

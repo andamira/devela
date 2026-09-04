@@ -6,8 +6,9 @@
 #[rustfmt::skip]
 #[doc = crate::_tags!(logic ord)]
 /// Provides comparison operations using an operation-first syntax.
-#[doc = crate::_doc_meta!{location("num/fin/ord")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/ord", macro cmp),
+}]
 /// A thin macro wrapper over [`Cmp`][crate::Cmp].
 /// Expands directly to the corresponding `Cmp` method.
 ///
@@ -71,11 +72,11 @@ macro_rules! cmp· {
 pub use cmp· as cmp;
 
 #[cfg(test)]
-mod tests {
-    use crate::cmp;
+mod _test {
+    use super::cmp;
 
     #[test]
-    fn test_cmp() {
+    fn basic() {
         let [a, b] = [1_u32, 2];
 
         assert_eq![cmp!(min a b), a];

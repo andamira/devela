@@ -8,8 +8,9 @@ use crate::{Cast, ConstInit, Slice, slice};
 
 #[doc = crate::_tags!(rand rework)]
 /// The `XorShift64` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct XorShift64),
+}]
 /// It has a 64-bit state and generates 64-bit numbers.
 ///
 /// This is the classic 64-bit *XorShift* by George Marsaglia.
@@ -167,7 +168,9 @@ crate::__impl_dep_rand_core!(XorShift64
 
 #[doc = crate::_tags!(rand)]
 /// 275 × good triplets for 64-bit xorshift. (825 Bytes)
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", const XOROSHIFT_64_TRIPLETS),
+}]
 #[doc(hidden)]
 #[rustfmt::skip]
 #[allow(dead_code)]

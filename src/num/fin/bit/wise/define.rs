@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides constant bitwise operations on `T`.
-#[doc = crate::_doc_meta!{location("num/fin")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin", struct Bitwise),
+}]
 /// It's implemented for: [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
 /// ## Panic behavior

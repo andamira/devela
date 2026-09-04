@@ -8,7 +8,7 @@
 #![allow(clippy::crate_in_macro_def, reason = "crate::*")]
 
 // mathematical constants
-crate::CONST! { hidden macro_export,
+crate::CONST! { pub(crate),
     /* pi */
 
     PI =

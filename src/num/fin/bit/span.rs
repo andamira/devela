@@ -7,8 +7,11 @@ use crate::{Bitwise, MismatchedBounds};
 
 #[doc = crate::_tags!(bit data_structure)]
 /// A contiguous span of bits in an integer carrier.
-#[doc = crate::_doc_meta!{location("bin")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/bit", struct BitSpan),
+    test_size_of(BitSpan<u8> = 16|128; niche !Option),
+    test_size_of(BitSpan<u32> = 20|160; niche !Option),
+}]
 /// Stores the bounds and derived masks for a packed field.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct BitSpan<T> {
@@ -156,7 +159,7 @@ macro_rules! impl_bit_span {
 impl_bit_span![u8, u16, u32, u64, u128, usize];
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::BitSpan;
 
     #[test]

@@ -22,8 +22,9 @@ macro_rules! _num_dom_real_float_define_fbits {
 
         #[doc = crate::_tags!(num ffi)]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
-        #[doc = crate::_doc_meta!{location("num/dom/real")}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location("num/dom/real", struct $non_niche),
+        }]
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
         /// Ordering and hashing operate on the raw bit pattern, not the numeric value.
         /// All bit patterns are preserved, including NaNs and signed zeroes.
@@ -69,8 +70,9 @@ macro_rules! _num_dom_real_float_define_fbits {
 
         #[doc = crate::_tags!(num niche)]
         #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NM "`]."]
-        #[doc = crate::_doc_meta!{location("num/dom/real")}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location("num/dom/real", struct $niche),
+        }]
         /// This preserves all IEEE-754 bit patterns except the prohibited value.
         /// Ordering and hashing operate on the masked bit pattern.
         /// Signed zeroes and all NaNs are represented, with a single NaN payload

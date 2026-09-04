@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(construction code num)]
 /// Defines a fixed-width lane type.
-#[doc = crate::_doc_meta!{location("num/grain")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain", macro lane),
+}]
 /// It has optional implementations for the given integer and floating-point primitive types.
 ///
 /// It offers parallel APIs, depending on the method suffix.
@@ -40,7 +41,7 @@
 /// for the exact methods implementations.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! lane {
+macro_rules! lane· {
     (
     /* public macro arms */
 
@@ -730,4 +731,4 @@ macro_rules! lane {
     }}; // %impl_float
 }
 #[doc(inline)]
-pub use lane;
+pub use lane· as lane;

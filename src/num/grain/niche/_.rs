@@ -1,0 +1,103 @@
+// devela/src/num/grain/niche/_.rs
+//
+#![doc = crate::_DOC_NUM_GRAIN_NICHE!()] // public
+#![doc = crate::_doc!(modules: crate::num::grain; niche)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(extends: num)]
+//!
+//! This module provides niche-constrained numeric representations and
+//! related utilities for domain modeling, sentinel values, and
+//! memory-efficient data structures.
+//!
+//! Niche types prohibit specific values while preserving a compact
+//! in-memory representation, enabling zero-cost optimizations and
+//! improved layout efficiency.
+//!
+//! ## Core Niche Types
+//!
+//! - `NonZero<I|U>*` (re-exported)
+//!   - Standard zero-prohibiting types with niche optimization.
+//!
+//! - `NonValue<I|U>*`, generic over `<const V>`.
+//!   - General extension of `NonZero*` guaranteeing `value != V`.
+//!   - **Implementation**: Stores transformed value in `NonZero*`.
+//!   - **Optimizations**: Automatic instruction selection per case.
+//!
+//! ## Absence and Adapters
+//!
+//! - [`NonNiche`]
+//!   - A concrete representation that mirrors the API of niche-constrained
+//!     types while storing values unchanged.
+//!   - Useful for selecting a non-optimized but API-compatible representation.
+//!
+//! - [`MaybeNiche`]
+//!   - A representation-agnostic adapter over primitive integers,
+//!     niche-optimized types, and non-optimized parallels.
+//!   - Enables generic code to remain independent of the chosen
+//!     numeric representation.
+//!
+//! ## Recommended Defaults
+//!
+//! ### `NonMaxU*` = `NonValueU*<MAX>`
+//! - Preserve zero while prohibiting `MAX`.
+//! - Suitable for indices and counters where `MAX` is reserved.
+//! - Ideal for: collection indices, counters, bitmask handling.
+//! - **Optimization**: Single `NOT` instruction.
+//!
+//! ### `NonMinI*` = `NonValueI*<MIN>`
+//! - Preserve zero with a symmetric signed range.
+//! - Useful when `MIN` is problematic.
+//! - Ideal for: mathematical ranges, circular buffers, DSP algorithms.
+//! - **Optimization**: `LEA` instruction fusion.
+//!
+//! ## Optimization Characteristics
+//! | Type            | Prohibits | Storage       | Optimization | vs `NonZero*`         |
+//! |-----------------|-----------|---------------|--------------|-----------------------|
+//! | `NonMaxU*`      | MAX       | `!value`      | `NOT`        | Keeps zero, drops MAX |
+//! | `NonMinI*`      | MIN       | `value ^ MIN` | `LEA`        | Keeps zero, drops MIN |
+//! | `NonValue*`     | Custom V  | `value ^ V`   | `XOR`        | Fully general         |
+//! | `NonZero*`      | 0         | raw value     | -            | Classic case          |
+//!
+//! ## Usage Guide
+//! | Use Case                  | Recommended Type       | Advantage                     |
+//! |---------------------------|------------------------|-------------------------------|
+//! | Must prohibit zero        | `NonZero*`             | Standard solution             |
+//! | Custom sentinel value     | `NonValue*<SENTINEL>`  | Flexible prohibited value     |
+//! | Index/counter handling    | `NonMaxU*`             | Avoids overflow edge cases    |
+//! | Mathematical purity       | `NonMinI*`             | Mathematical clarity          |
+//! | API-only abstraction      | `MaybeNiche`           | Representation-agnostic       |
+//! | No constraints needed     | Primitive / `NonNiche` | Maximum simplicity            |
+//
+
+crate::mods_in! {
+    mod _reexport_core;
+
+    #[cfg(any(test, feature = "_docs_examples"))]
+    mod _example_enumint; // EnumintI8Example
+
+    mod impls; // impl ConstInit, BitSized
+
+    mod absence; // MaybeNiche, NonNiche
+    mod macros; // niche!, (NicheNew), niche_prim!
+    mod_ mem; // NonMax*, NonMin*, NonValue*
+}
+crate::mods_out! { // _mods, _reexports, _hidden
+    _mods {
+        #[doc(inline)]
+        pub use super::{
+            absence::*,
+            macros::{niche, niche_prim},
+            mem::_all::*,
+        };
+        #[cfg(any(test, feature = "_docs_examples"))]
+        pub use super::_example_enumint::EnumintI8Example;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+        #[doc = crate::_tags!(construction num niche procedural_macro)]
+        pub use devela_macros::enumint;
+    }
+    _hidden {
+        pub use super::macros::NicheNew;
+    }
+}

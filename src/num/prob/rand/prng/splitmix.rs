@@ -9,8 +9,10 @@ use crate::{
 
 #[doc = crate::_tags!(rand)]
 /// SplitMix64 pseudo-random number generator.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct SplitMix64),
+    test_size_of(SplitMix64 = 8|64; niche !Option)
+}]
 /// A small 64-bit-state generator useful for seed expansion,
 /// simple streams, and diffusing weak seed material.
 ///

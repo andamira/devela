@@ -16,8 +16,10 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 #[doc = crate::_tags!(rand)]
 /// The `Xoroshiro128++`
 /// <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct Xoroshiro128pp),
+    test_size_of(Xoroshiro128pp = 16|128; niche !Option),
+}]
 /// It has a 128-bit state and generates 32-bit numbers.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

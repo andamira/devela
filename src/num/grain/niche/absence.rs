@@ -21,7 +21,7 @@
 // TOC
 // - struct MaybeNiche
 // - struct NonNiche
-// - tests
+// - mod _test
 
 use crate::{
     Cast, ConstInit, InvalidValue, NicheValueError, NonValueI8, NonValueI16, NonValueI32,
@@ -31,8 +31,9 @@ use crate::{
 
 #[doc = crate::_tags!(maybe niche)]
 /// A zero-cost wrapper that abstracts over niche and non-niche types.
-#[doc = crate::_doc_meta!{location("num/grain/niche")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain/niche", struct MaybeNiche),
+}]
 /// `MaybeNiche<T>` is a transparent wrapper that preserves the representation
 /// semantics of `T` without imposing a niche choice, and introduces no
 /// invariants of its own.
@@ -356,8 +357,9 @@ impl_maybe![];
 
 #[doc = crate::_tags!(no niche)]
 /// A zero-cost wrapper that mimics a niche type without using a niche.
-#[doc = crate::_doc_meta!{location("num/grain/niche")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain/niche", struct NonNiche),
+}]
 /// `NonNiche` represents the absence of niche constraints while preserving
 /// API symmetry with niche-optimized numeric types.
 ///
@@ -430,7 +432,7 @@ macro_rules! impl_non {
 impl_non![];
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::{MaybeNiche, NonNiche, NonValueU8, NonZero};
 
     #[test]

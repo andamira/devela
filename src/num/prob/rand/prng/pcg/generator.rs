@@ -46,7 +46,7 @@ crate::_ABBR_PRNG!(), " type."]]
 /// PCG family reference: <https://www.pcg-random.org>
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! rand_pcg {
+macro_rules! rand_pcg· {
     (
     /* public API */
 
@@ -532,4 +532,4 @@ macro_rules! rand_pcg {
     };
 }
 #[doc(inline)]
-pub use rand_pcg;
+pub use rand_pcg· as rand_pcg;

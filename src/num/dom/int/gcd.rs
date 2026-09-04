@@ -8,8 +8,9 @@ use ::core::fmt;
 #[doc = crate::_tags!(num result)]
 /// A return type for the calculated
 /// <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-#[doc = crate::_doc_meta!{location("num/dom/int")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/dom/int", struct GcdReturn),
+}]
 /// The coefficients are the solutions to the equation $ \text{gcd}(a, b) = ax + by $.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

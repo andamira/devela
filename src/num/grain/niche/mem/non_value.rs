@@ -5,31 +5,30 @@
 
 use crate::items;
 
-impl_non_value![U 8, u8];
-impl_non_value![U 16, u16];
-impl_non_value![U 32, u32];
-impl_non_value![U 64, u64];
-impl_non_value![U 128, u128];
+impl_non_value![U 1|8, u8];
+impl_non_value![U 2|16, u16];
+impl_non_value![U 4|32, u32];
+impl_non_value![U 8|64, u64];
+impl_non_value![U 16|128, u128];
 
-impl_non_value![I 8, i8];
-impl_non_value![I 16, i16];
-impl_non_value![I 32, i32];
-impl_non_value![I 64, i64];
-impl_non_value![I 128, i128];
+impl_non_value![I 1|8, i8];
+impl_non_value![I 2|16, i16];
+impl_non_value![I 4|32, i32];
+impl_non_value![I 8|64, i64];
+impl_non_value![I 16|128, i128];
 
 #[cfg(target_pointer_width = "8")]
-items! { impl_non_value![U 8, usize]; impl_non_value![I 8, isize]; }
+items! { impl_non_value![U 1|8, usize]; impl_non_value![I 1|8, isize]; }
 #[cfg(target_pointer_width = "16")]
-items! { impl_non_value![U 16, usize]; impl_non_value![I 16, isize]; }
+items! { impl_non_value![U 2|16, usize]; impl_non_value![I 2|16, isize]; }
 #[cfg(target_pointer_width = "32")]
-items! { impl_non_value![U 32, usize]; impl_non_value![I 32, isize]; }
+items! { impl_non_value![U 4|32, usize]; impl_non_value![I 4|32, isize]; }
 #[cfg(target_pointer_width = "64")]
-items! { impl_non_value![U 64, usize]; impl_non_value![I 64, isize]; }
+items! { impl_non_value![U 8|64, usize]; impl_non_value![I 8|64, isize]; }
 #[cfg(target_pointer_width = "128")]
-items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
+items! { impl_non_value![U 16|128, usize]; impl_non_value![I 16|128, isize]; }
 
 /// Implements a `NonValue[I|U]B<V>`.
-#[doc = crate::_doc_meta!{location("num/grain/niche")}]
 ///
 /// - `I` or `U` means a signed or unsigned type, respectively.
 /// - `B` represents the bit-size, from [8, 16, 32, 64, 128].
@@ -57,9 +56,13 @@ items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 macro_rules! impl_non_value {
     // Defines a new unsigned non-value type.
     // E.g.: impl_non_value![U 32, u32] would generate NonValueU32 and NonMaxU32
-    (I $bits:literal, $IP:ty) => { impl_non_value![@MIN, "A signed", i, $bits, $IP]; };
-    (U $bits:literal, $IP:ty) => { impl_non_value![@MAX, "An unsigned", u, $bits, $IP]; };
-    (@$XTR:ident, $doc:literal, $s:ident, $b:literal, $IP:ty) => {
+    (I $bytes:literal | $bits:literal, $IP:ty) => {
+        impl_non_value![@MIN, "A signed", i, $bytes|$bits, $IP];
+    };
+    (U $bytes:literal | $bits:literal, $IP:ty) => {
+        impl_non_value![@MAX, "An unsigned", u, $bytes|$bits, $IP];
+    };
+    (@$XTR:ident, $doc:literal, $s:ident, $B:literal|$b:literal, $IP:ty) => {
         $crate::paste!{
             impl_non_value![@
                 [<NonValue $IP:camel>],   // $name
@@ -69,7 +72,7 @@ macro_rules! impl_non_value {
                 $doc,
                 $IP,
                 $s,
-                $b
+                $B|$b
             ];
         }
     };
@@ -82,9 +85,10 @@ macro_rules! impl_non_value {
     // $doc:  the specific beginning of the documentation.
     // $IP:   the type of the corresponding integer primitive. E.g. i8
     // $s:    the sign identifier: i or u.
-    // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    @$name:ident, $n0:ident, $nm:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
-        => { $crate::paste! {
+    // $B:    the byts of the type, from 1 to 16
+    // $b:    the bits of the type, from 8 to 128
+    @$name:ident, $n0:ident, $nm:ident, $XTR:ident, $doc:literal,
+        $IP:ty, $s:ident, $B:literal | $b:literal) => { $crate::paste! {
 
         // NOTE: the inner module is necessary to get the full docs for the alias.
         pub use [<__impls_ $name >]::*;
@@ -94,8 +98,10 @@ macro_rules! impl_non_value {
 
             #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal some specific value." ]
-            #[doc = crate::_doc_meta!{location("num/grain/niche")}]
-            ///
+            #[doc = crate::_doc_meta!{
+                location("num/grain/niche", struct $name),
+                test_size_of($name<13> = $B|$b; niche Option),
+            }]
             #[doc = "It has the same memory layout optimization as [`NonZero<" $IP
             ">`][crate::NonZero], so that `Option<" $name ">` is the same size as `" $name "`."]
             ///
@@ -115,8 +121,9 @@ macro_rules! impl_non_value {
             #[doc = crate::_tags!(num niche)]
             #[doc = $doc " integer that is known not to equal its [`"
             $XTR "`][" $IP "::" $XTR "] value."]
-            #[doc = crate::_doc_meta!{location("num/grain/niche")}]
-            ///
+            #[doc = crate::_doc_meta!{
+                location("num/grain/niche", type $nm),
+            }]
             /// Unlike the `NonValue*` types in general, this type alias implements
             /// the [`Default`] and [`ConstInit`][crate::ConstInit] traits.
             pub type $nm = $crate::$name <{$IP::$XTR}>;

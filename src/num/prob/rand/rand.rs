@@ -7,8 +7,9 @@ use crate::{Cast, Infallible, RandQualities, is, whilst};
 
 #[doc = crate::_tags!(rand)]
 /// Construction from explicit seed material or another random source.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", trait RandSeedable),
+}]
 /// `RandSeedable` defines a portable byte-backed seed representation and
 /// provides construction from explicit seed material or another random source.
 ///
@@ -47,8 +48,9 @@ pub trait RandSeedable: Sized {
 
 #[doc = crate::_tags!(rand)]
 /// Fallible source of raw random data.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", trait RandTry),
+}]
 /// `RandTry` is the core trait for random sources that may fail, such as
 /// OS calls, hardware RNGs, host APIs, finite buffers, and fallible adapters.
 ///
@@ -240,8 +242,9 @@ impl<R> Rand for R where R: RandTry<Error = Infallible> + ?Sized {}
 
 #[doc = crate::_tags!(rand)]
 /// Infallible source of raw random data.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", trait Rand),
+}]
 /// `Rand` is implemented automatically for every [`RandTry`] source
 /// whose error type is [`Infallible`].
 ///

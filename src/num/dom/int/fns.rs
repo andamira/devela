@@ -6,8 +6,9 @@ use crate::FloatExt;
 
 #[doc = crate::_tags!(num)]
 /// The prime number theorem formula.
-#[doc = crate::_doc_meta!{location("num/dom/int")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/dom/int", fn prime_number_theorem),
+}]
 /// Returns the approximate count of primes less than the given `n`.
 ///
 /// $$ \large \pi(x) \sim \frac{x}{\ln(x)} $$

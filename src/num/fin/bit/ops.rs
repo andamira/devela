@@ -13,8 +13,9 @@ use crate::{Bitwise, MismatchedBounds};
 
 #[doc = crate::_tags!(num namespace)]
 /// Provides bitwise operations on `T`.
-#[doc = crate::_doc_meta!{location("num/fin")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin", trait BitOps),
+}]
 /// See also [`Bitwise`] for the related const wrapper.
 #[rustfmt::skip]
 pub trait BitOps where Self: Sized {

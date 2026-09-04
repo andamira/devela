@@ -8,8 +8,10 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 #[doc = crate::_tags!(rand)]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct Xyza8a),
+    test_size_of(Xyza8a = 4|32; niche !Option),
+}]
 /// It has a 0.8% chance of falling into a poor quality short chain,
 /// a some degree of care is required to seed it. However, the quality of the
 /// random numbers is excellent for such a small state (32 bits), and it passes
@@ -139,8 +141,10 @@ impl Xyza8a {
 #[doc = crate::_tags!(rand)]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
 /// with 32-bit of state, based on the *XorShift* algorithm.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct Xyza8b),
+    test_size_of(Xyza8b = 4|32; niche !Option),
+}]
 /// It has an almost optimal cycle so no real care is required
 /// for seeding except avoiding all zeros, but it fails many of the die hard
 /// random number tests.

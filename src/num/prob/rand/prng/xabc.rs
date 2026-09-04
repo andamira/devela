@@ -8,8 +8,10 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct Xabc),
+    test_size_of(Xabc = 4|32; niche !Option)
+}]
 /// It has a 32-bit state and generates 8-bit numbers.
 ///
 /// This is a small PRNG, experimentally verified to have at least a 50 million

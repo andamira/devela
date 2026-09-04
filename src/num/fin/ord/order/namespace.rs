@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(num layout namespace)]
 /// Unified namespace for multi-dimensional ordering schemes.
-#[doc = crate::_doc_meta!{location("num/fin/ord")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/ord", struct Order),
+    test_size_of(Order = 0),
+}]
 /// `Order` provides a set of static functions that map discrete coordinates
 /// from higher-dimensional integer spaces to a single linear index, and back,
 /// using different locality-preserving strategies.

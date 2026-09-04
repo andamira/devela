@@ -7,7 +7,7 @@
 #[doc(hidden)]
 #[macro_export]
 #[cfg(not(feature = "dep_rand_core"))]
-macro_rules! __impl_dep_rand_core {
+macro_rules! __impl_dep_rand_core· {
     ($rng:ident $(<$(const $C:ident: $T:ty),+ $(,)?>)?) => {};
 }
 
@@ -15,7 +15,7 @@ macro_rules! __impl_dep_rand_core {
 #[doc(hidden)]
 #[macro_export]
 #[cfg(feature = "dep_rand_core")]
-macro_rules! __impl_dep_rand_core {
+macro_rules! __impl_dep_rand_core· {
     ($rng:ident $(<$(const $C:ident: $T:ty),+ $(,)?>)?) => {
         $crate::_devela_policy! {
             item_attr devela { #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_rand_core")))] }
@@ -50,4 +50,4 @@ macro_rules! __impl_dep_rand_core {
     };
 }
 #[doc(hidden)]
-pub use __impl_dep_rand_core;
+pub use __impl_dep_rand_core· as __impl_dep_rand_core;

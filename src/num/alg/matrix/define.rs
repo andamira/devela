@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(lin)]
 /// A static `R × C` matrix backed by a contiguous row-major array.
-#[doc = crate::_doc_meta! { location("num/alg") }]
+#[doc = crate::_doc_meta! {
+    location("num/alg", struct Matrix)
+}]
 /// `R` is the number of rows and `C` is the number of columns.
 ///
 /// Elements are stored in row-major order: all columns of the first row,

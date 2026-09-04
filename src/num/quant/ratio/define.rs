@@ -23,7 +23,7 @@ It stores the numerator and denominator as separate terms.";
 #[doc = crate::_tags!(quant)]
 /// A proportional relation `n / d`.
 #[doc = crate::_doc_meta!{
-    location("num/quant"),
+    location("num/quant", struct Ratio),
     test_size_of(RatioI32 = 8; niche Option),
 }]
 #[doc = _DOC_RATIO!()]
@@ -75,7 +75,9 @@ macro_rules! _impl_ratio_prim {
     (% $Name:ident, $N:ty, $D:ty, $Unsigned:ty, $Upcasted:ty, $is_signed:tt) => {
         #[doc = crate::_tags!(quant)]
         #[doc = concat!("An `", stringify!($N), "` [`Ratio`] with a nonzero denominator.")]
-        #[doc = crate::_doc_meta!{location("num/quant")}]
+        #[doc = crate::_doc_meta!{
+            location("num/quant", type $Name),
+        }]
         #[doc = _DOC_RATIO!()]
         pub type $Name = Ratio<$N, $D>;
 

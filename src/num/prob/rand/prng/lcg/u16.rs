@@ -8,8 +8,10 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 #[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct Lcg16),
+    test_size_of(Lcg16 = 2|16; niche !Option),
+}]
 /// Based on original code from Ken Musgrave, 1985, in Graphics Gems II.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Lcg16(u16);

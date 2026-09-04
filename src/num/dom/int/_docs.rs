@@ -5,7 +5,7 @@
 // notation: _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*
 #![allow(unused, reason = "if only compiling either unsigned or signed…")]
 
-crate::CONST! { hidden macro_export,
+crate::CONST! { pub(crate),
 /* core */
 
 _DOC_INT_FORMULA_SCALE = r#"$$ \large v^{\prime} = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap

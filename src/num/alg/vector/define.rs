@@ -7,8 +7,9 @@
 
 #[doc = crate::_tags!(lin)]
 /// A fixed `D`-dimensional coordinate vector.
-#[doc = crate::_doc_meta!{location("num/alg")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/alg", struct Vector),
+}]
 /// Its components are expressed in a chosen basis. Vector addition and scalar
 /// multiplication are available when supported by the component type.
 ///
@@ -23,13 +24,17 @@ pub struct Vector<T, const D: usize> {
 
 #[doc = crate::_tags!(lin)]
 /// A static 2-dimensional vector.
-#[doc = crate::_doc_meta!{location("num/alg")}]
-pub type Vector2d<T> = Vector<T, 2>;
+#[doc = crate::_doc_meta!{
+    location("num/alg", type Vector2),
+}]
+pub type Vector2<T> = Vector<T, 2>;
 
 #[doc = crate::_tags!(lin)]
 /// A static 3-dimensional vector.
-#[doc = crate::_doc_meta!{location("num/alg")}]
-pub type Vector3d<T> = Vector<T, 3>;
+#[doc = crate::_doc_meta!{
+    location("num/alg", type Vector3),
+}]
+pub type Vector3<T> = Vector<T, 3>;
 
 mod impl_traits {
     use crate::{ConstInit, Debug, FmtResult, Formatter, Hash, Hasher, Vector, init_array};

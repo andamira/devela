@@ -10,8 +10,9 @@ use crate::Cast;
 
 #[doc = crate::_tags!(num primitive)]
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
-#[doc = crate::_doc_meta!{location("num/grain")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain", trait PrimJoin),
+}]
 /// Methods expecting an array are more efficient than the ones expecting an
 /// slice. On the other hand slices of any lenght are supported as follows:
 /// - If the slice contains fewer elements than required, the method will

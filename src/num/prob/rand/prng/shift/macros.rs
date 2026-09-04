@@ -8,8 +8,9 @@ use crate::{XorShift16, XorShift32, XorShift64};
 
 #[doc = crate::_tags!(construction rand)]
 /// Constructs a *XorShift* prng with custom bits, basis, triplet and seed.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", macro rand_xorshift),
+}]
 /// It can construct custom instances of [`XorShift16`], [`XorShift32`] and [`XorShift64`].
 ///
 /// The given `$triplet` is an index for an array of good triples with a maximum of:
@@ -52,8 +53,9 @@ pub use rand_xorshift· as rand_xorshift;
 
 #[doc = crate::_tags!(construction code rand)]
 /// Generates a XORSHIFT sequence using the given operation basis and shift triplet.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", macro _xorshift_basis),
+}]
 /// # Usage:
 /// `_xorshift_basis![<basis>: (<a>, <b>, <c>) <state>];`
 ///

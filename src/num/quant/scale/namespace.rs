@@ -12,7 +12,9 @@ use crate::{
 
 #[doc = crate::_tags!(quant primitive namespace)]
 /// Provides const proportional scaling for primitive numbers.
-#[doc = crate::_doc_meta! { location("num/quant") }]
+#[doc = crate::_doc_meta! {
+    location("num/quant", struct Scale),
+}]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Scale<T>(pub T);

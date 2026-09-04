@@ -12,8 +12,9 @@ type Result<T> = crate::Result<T, Overflow>;
 
 #[doc = crate::_tags!(num primitive)]
 /// Offers methods for casting between primitives.
-#[doc = crate::_doc_meta!{location("num/grain")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain", trait PrimCast),
+}]
 /// See also the [`Cast`] type for the equivalent *const* methods.
 /// # Errors
 /// Checked methods will return [`Overflow`]

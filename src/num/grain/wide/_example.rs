@@ -8,8 +8,9 @@ use crate::lane;
 lane! {
     #[doc = crate::_tags!(example code num)]
     /// Example fixed-width pack of 4 × `i32` lanes.
-    #[doc = crate::_doc_meta!{location("num/grain")}]
-    ///
+    #[doc = crate::_doc_meta!{
+        location("num/grain/wide", struct Lane4_i32Example),
+    }]
     /// Generated with [`lane!`].
     ///
     /// # Methods

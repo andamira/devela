@@ -7,8 +7,9 @@ use crate::{Cast, Char, Rand, RandTry, Result};
 
 #[doc = crate::_tags!(rand construction)]
 /// Fallible construction from a source of randomness.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", trait FromRandTry),
+}]
 /// `FromRandTry` defines a type's canonical random construction.
 ///
 /// Implementations should document their distribution and constraints.
@@ -21,8 +22,9 @@ pub trait FromRandTry: Sized {
 
 #[doc = crate::_tags!(rand construction)]
 /// Infallible construction from a source of randomness.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", trait FromRand),
+}]
 /// `FromRand` is implemented automatically for types implementing
 /// [`FromRandTry`] when used with an infallible [`Rand`] source.
 pub trait FromRand: FromRandTry {

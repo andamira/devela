@@ -2,7 +2,7 @@
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __bound_int_impl_signed {
+macro_rules! __bound_int_impl_signed· {
     (
         attrs[$($attr:tt)*] vis[$vis:vis] name[$Name:ident]
         repr[$Repr:ty] carrier[$Carrier:ty] unsigned[$Unsigned:ty] up[$Up:ty]
@@ -532,3 +532,4 @@ macro_rules! __bound_int_impl_signed {
         compile_error!(concat!("bound_int!: unknown op group `", stringify!($bad), "`"));
     };
 }
+pub use __bound_int_impl_signed· as __bound_int_impl_signed;

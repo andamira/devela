@@ -7,8 +7,8 @@ crate::set! {
     #[doc = crate::_tags!(rand set)]
     /// Semantic qualities of a random source.
     #[doc = crate::_doc_meta!{
-        location("num/prob/rand"),
-        test_size_of(RandQualities = 1),
+        location("num/prob/rand", struct RandQualities),
+        test_size_of(RandQualities = 1|8; niche !Option),
     }]
     /// These qualities describe source behavior and suitability independently
     /// of its output width, state size, and fallibility.

@@ -19,8 +19,9 @@ use ::core::ops::{
 
 #[doc = crate::_tags!(quant)]
 /// Creates an [`Interval`] using extended range notation.
-#[doc = crate::_doc_meta!{location("num/quant")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/quant", macro interval),
+}]
 /// # Syntax
 ///
 /// ## Closed Lower Bound `[l, …`
@@ -129,9 +130,9 @@ pub use interval· as interval;
 #[doc = crate::_tags!(quant)]
 /// A range of values with `lower` and `upper` [`Bound`]s.
 #[doc = crate::_doc_meta!{
-    location("num/quant"),
-    test_size_of(Interval<u8> = 4|32),
-    test_size_of(Interval<i32> = 16|128),
+    location("num/quant", struct Interval),
+    test_size_of(Interval<u8> = 4|32; niche Option),
+    test_size_of(Interval<i32> = 16|128; niche Option),
 }]
 /// The `Interval` type allows modeling ranges of values with optional inclusion
 /// or exclusion at each bound. This is useful for mathematical operations,
@@ -742,7 +743,7 @@ mod impl_traits {
 
 #[cfg(test)]
 #[rustfmt::skip]
-mod tests {
+mod _test {
     use super::*;
 
     #[test]

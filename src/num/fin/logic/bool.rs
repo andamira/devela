@@ -11,8 +11,9 @@ use crate::sf;
 
 #[doc = crate::_tags!(code logic)]
 /// Allows to convert compile-time constants into type-level booleans.
-#[doc = crate::_doc_meta!{location("num/fin/logic")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/logic", trait ConstBool),
+}]
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
 #[diagnostic::on_unimplemented(
@@ -34,8 +35,9 @@ sf! {
 
 #[doc = crate::_tags!(code logic)]
 /// Converts a *const* `bool` expression to a type-level boolean.
-#[doc = crate::_doc_meta!{location("num/fin/logic")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/logic", macro const_bool),
+}]
 /// Internally, it leverages the [`ConstBool`] trait and a trick related to array sizes:
 /// - Arrays of size `[(); 0]` are mapped to [`False`].
 /// - Arrays of size `[(); 1]` are mapped to [`True`].
@@ -53,16 +55,18 @@ sf! {
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! const_bool {
+macro_rules! const_bool· {
     ($bool:expr) => {{ <[(); { $bool as usize }] as $crate::ConstBool>::VALUE }};
 }
 #[doc(inline)]
-pub use const_bool;
+pub use const_bool· as const_bool;
 
 #[doc = crate::_tags!(code logic)]
 /// A type-level logical *true*.
-#[doc = crate::_doc_meta!{location("num/fin/logic")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/logic", struct True),
+    test_size_of(True = 0)
+}]
 /// The second state in binary and ternary logic.
 ///
 /// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`False`] type.
@@ -71,8 +75,10 @@ pub struct True;
 
 #[doc = crate::_tags!(code logic)]
 /// A type-level logical *false*.
-#[doc = crate::_doc_meta!{location("num/fin/logic")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/fin/logic", struct False),
+    test_size_of(False = 0)
+}]
 /// The first state in binary and ternary logic.
 ///
 /// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`True`] type.

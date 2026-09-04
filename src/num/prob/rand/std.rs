@@ -8,7 +8,9 @@ use crate::{Hasher, HasherBuild, Infallible, RandQualities, RandTry, RandomState
 #[cfg(feature = "std")]
 #[doc = crate::_tags!(rand)]
 /// Standard-library hash-random source.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct StdRand),
+}]
 #[derive(Clone, Copy, Debug, Default)]
 pub struct StdRand;
 

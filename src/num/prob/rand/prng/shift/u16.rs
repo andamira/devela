@@ -8,8 +8,9 @@ use crate::{Cast, ConstInit};
 
 #[doc = crate::_tags!(rand rework)]
 /// The `XorShift16` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct XorShift16),
+}]
 /// It has a 16-bit state and generates 16-bit numbers.
 ///
 /// This is [John Metcalf's 16-bit] (7, 9, 8) version of George Marsaglia's
@@ -170,8 +171,9 @@ crate::__impl_dep_rand_core!(XorShift16
 
 #[doc = crate::_tags!(rand)]
 /// 4 × good triplets for 16-bit xorshift. (243 Bytes)
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", const XOROSHIFT_16_TRIPLETS),
+}]
 /// There are 60 shift triplets with the maximum period 2^16-1. 4 triplets pass
 /// a series of lightweight randomness tests including randomly plotting various
 /// n × n matrices using the high bits, low bits, reversed bits, etc. These are:

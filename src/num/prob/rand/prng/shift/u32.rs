@@ -8,8 +8,9 @@ use crate::{Cast, ConstInit, Slice, slice};
 
 #[doc = crate::_tags!(rand rework)]
 /// The `XorShift32` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct XorShift32),
+}]
 /// It has a 32-bit state and generates 32-bit numbers.
 ///
 /// This is the classic 32-bit *XorShift* algorithm by George Marsaglia.
@@ -167,7 +168,9 @@ crate::__impl_dep_rand_core!(XorShift32
 
 #[doc = crate::_tags!(rand)]
 /// 81 × good triplets for 32-bit xorshift. (243 Bytes)
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", const XOROSHIFT_32_TRIPLETS),
+}]
 #[doc(hidden)]
 #[rustfmt::skip]
 #[allow(dead_code)]

@@ -7,7 +7,7 @@
 // - formulas: _FLOAT_FORMULA_*
 
 // documentation constants
-crate::CONST! { hidden macro_export,
+crate::CONST! { pub(crate),
 // identities
 _FLOAT_CONST_ONE = r#"The multiplicative identity 1."#;
 _FLOAT_CONST_ZERO = r#"The additive identity 0."#;
@@ -261,7 +261,7 @@ _FLOAT_CONST_LN_10 = r#"ln(10)
 }
 
 // formulas
-crate::CONST! { hidden macro_export,
+crate::CONST! { pub(crate),
 /* Rounding */
 
 _FLOAT_FORMULA_FLOOR = r#"$$

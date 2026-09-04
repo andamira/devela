@@ -1,0 +1,23 @@
+// devela/src/num/expr/_.rs
+//
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_NUM_EXPR!()] // public
+#![doc = crate::_doc!(modules: crate::num; expr)]
+#![doc = crate::_doc!(flat:"num")]
+#![doc = crate::_doc!(hr)]
+//
+
+crate::mods_in! {
+    // mod eq;
+    // mod func;
+    // mod poly;
+}
+crate::mods_out! { //_mods
+    _mods {
+        // pub use super::{
+        //     // eq::_all::*,
+        //     func::_all::*,
+        //     // poly::_all::*,
+        // };
+    }
+}

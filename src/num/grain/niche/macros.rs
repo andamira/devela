@@ -10,8 +10,9 @@
 
 #[doc = crate::_tags!(num niche construction)]
 /// Creates a primitive-backed niche value with compile-time type selection.
-#[doc = crate::_doc_meta!{location("num/grain/niche")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/grain/niche", macro niche),
+}]
 /// `niche!` constructs a niche wrapper over a primitive carrier,
 /// using the excluded value as a small invariant.
 ///
@@ -45,7 +46,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! niche {
+macro_rules! niche· {
     /* lossy: specific */
     (lossy $num:expr; != 0) => {{ $crate::NicheNew($num).to_lossy_non_zero() }};
     (lossy $num:expr, $T:ty; != 0) => {{ $crate::NicheNew::<$T>($num).to_lossy_non_zero() }};
@@ -71,11 +72,13 @@ macro_rules! niche {
     ($num:expr, $T:ty; != $V:expr) => {{ $crate::NicheNew::<$T>($num).to_non_value::<{ $V }>() }};
 }
 #[doc(inline)]
-pub use niche;
+pub use niche· as niche;
 
 #[doc = crate::_tags!(num niche construction)]
 /// Private helper to construct niche types.
-#[doc = crate::_doc_meta!{location("num/grain/niche")}]
+#[doc = crate::_doc_meta!{
+    location("num/grain/niche", struct NicheNew),
+}]
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct NicheNew<T>(pub T);
@@ -139,8 +142,9 @@ macro_rules! _generate_niche_prim {
     ($_d:tt $( $XTR:ident: $($P:ty),+ $(,)? );+ $(;)?) => { $crate::paste! {
         #[doc = crate::_tags!(niche primitive)]
         /// Maps a niche representation type to its primitive carrier type.
-        #[doc = crate::_doc_meta!{location("num/grain/niche")}]
-        ///
+        #[doc = crate::_doc_meta!{
+            location("num/grain/niche", macro niche_prim),
+        }]
         /// `niche_prim!` performs a purely syntactic, compile-time mapping from a
         /// supported niche type (for example `NonMaxU8`, `NonValueU16<…>`,
         /// `MaybeNiche<NonZero<i32>>`) to its underlying primitive numeric type
@@ -264,6 +268,4 @@ crate::items! {
     #[test]
     #[should_panic(expected = "value must not be MAX")]
     fn test_niche_non_max_panic() { let max = u8::MAX; let _panic = niche![max; != MAX]; }
-
-
 }

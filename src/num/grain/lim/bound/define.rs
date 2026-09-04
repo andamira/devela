@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(construction num)]
 /// Defines a bounded integer wrapper with embedded boundary metadata.
-#[doc = crate::_doc_meta!{location("num/grain/lim")}]
+#[doc = crate::_doc_meta!{
+    location("num/grain/lim", macro bound_int),
+}]
 /// The generated type stores a primitive carrier through [`MaybeNiche`][crate::MaybeNiche].
 ///
 /// The `value_bits(...)` argument chooses how many low bits encode the payload.
@@ -60,7 +62,7 @@
 /// See [`BoundI8Example`][crate::BoundI8Example].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! bound_int {
+macro_rules! bound_int· {
     (
         $(#[$attr:meta])*
         $vis:vis struct $Name:ident : repr($Repr:ty => $Carrier:tt);
@@ -627,4 +629,4 @@ macro_rules! bound_int {
     };
 }
 #[doc(inline)]
-pub use bound_int;
+pub use bound_int· as bound_int;

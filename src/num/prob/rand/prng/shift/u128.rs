@@ -8,8 +8,9 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand rework)]
 /// The `XorShift128` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
-#[doc = crate::_doc_meta!{location("num/prob/rand")}]
-///
+#[doc = crate::_doc_meta!{
+    location("num/prob/rand", struct XorShift128),
+}]
 /// It has a 128-bit state and generates 64-bit numbers.
 ///
 /// See also [`XorShift128p`][crate::XorShift128p].
