@@ -11,14 +11,16 @@
 
 crate::mods_in! {
     mod concat; // Concat
-    mod seq; // SeqNode
+    mod_ seq; // Ordered sequence topology and succession
 }
 crate::mods_out! { // _mods
     _mods {
-        #[doc(inline)]
         pub use super::{
             concat::Concat,
-            seq::SeqNode,
+            seq::_all::{
+                SeqNext, SeqPrevNext,
+                SeqNode,
+            },
         };
     }
 }
