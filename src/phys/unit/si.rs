@@ -140,7 +140,8 @@ impl UnitSi {
     ///
     /// # Examples
     /// ```
-    /// # use devela::UnitSi;
+    /// use devela::UnitSi;
+    ///
     /// assert_eq![UnitSi::Giga.symbol(), "G"];
     /// assert_eq![UnitSi::Micro.symbol(), "µ"];
     /// ```

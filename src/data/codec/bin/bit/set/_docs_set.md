@@ -110,7 +110,8 @@ because their generated `is_*` methods conflict with methods provided by the set
 
 # Examples
 ```
-# use devela::set;
+use devela::set;
+
 set! {
     /// A small set example.
     pub struct SmallSet(u16) {

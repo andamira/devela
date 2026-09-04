@@ -12,7 +12,8 @@
 /// Expands directly to the corresponding `Cmp` method.
 ///
 /// ```rust
-/// # use devela::{Cmp, cmp};
+/// use devela::{Cmp, cmp};
+///
 /// let [a, b] = [1u8, 2];
 /// assert_eq![
 ///     cmp!(min a b),

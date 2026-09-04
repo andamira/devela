@@ -72,7 +72,8 @@ handle! {
     /// Their interpretation and external validity are left to the resolver.
     ///
     /// ```
-    /// # use devela::{handle, NonMaxU8};
+    /// use devela::{handle, NonMaxU8};
+    ///
     /// handle! {
     ///     [
     ///         index: u8 + NonMaxU8;

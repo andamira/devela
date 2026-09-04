@@ -34,7 +34,8 @@
 /// # Examples
 /// A full 8-bit interval uses every byte representation:
 /// ```
-/// # use devela::scalar_offset;
+/// use devela::scalar_offset;
+///
 /// scalar_offset! {
 ///     [
 ///         range: '\u{2800}'..='\u{28FF}';
@@ -51,7 +52,8 @@
 ///
 /// A smaller interval may select a niche-aware representation:
 /// ```
-/// # use devela::{NonMaxU8, scalar_offset};
+/// use devela::{NonMaxU8, scalar_offset};
+///
 /// scalar_offset! {
 ///     [
 ///         range: '\u{2500}'..='\u{257F}';
@@ -66,7 +68,8 @@
 ///
 /// Ranges that cross the surrogate block are rejected:
 /// ```compile_fail
-/// # use devela::scalar_offset;
+/// use devela::scalar_offset;
+///
 /// scalar_offset! {
 ///     [range: '\u{D7FF}'..='\u{E000}'; offset: u16;]
 ///     InvalidScalarRange;
@@ -75,7 +78,8 @@
 ///
 /// The range must also fit the chosen carrier:
 /// ```compile_fail
-/// # use devela::scalar_offset;
+/// use devela::scalar_offset;
+///
 /// scalar_offset! {
 ///     [range: '\u{2800}'..='\u{2900}'; offset: u8;]
 ///     TooWideForU8;

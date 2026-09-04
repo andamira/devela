@@ -31,7 +31,8 @@ crate::_geom_dim_define_macro![($) pos, "a", Position, geom, "geom/metric"];
 ///
 /// # Examples
 /// ```
-/// # use devela::{region, pos, ext, Region2, Region3};
+/// use devela::{region, pos, ext, Region2, Region3};
+///
 /// // construct
 /// let a = region!(1_i32, 2, 3_u32, 4);
 /// assert_eq![a, Region2::new(pos!(1, 2), ext!(3, 4))];

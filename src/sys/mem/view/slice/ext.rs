@@ -77,7 +77,8 @@ pub trait SliceExt<T>: Sealed {
     /// Panics if the length of the slice is less than the length of the array.
     /// # Examples
     /// ```
-    /// # use devela::SliceExt;
+    /// use devela::SliceExt;
+    ///
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// ```
@@ -95,7 +96,8 @@ pub trait SliceExt<T>: Sealed {
     /// Converts `&[T]` to `Vec<U>` when `U` implements `From<T>`.
     /// # Examples
     /// ```
-    /// # use devela::SliceExt;
+    /// use devela::SliceExt;
+    ///
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// ```
@@ -110,7 +112,8 @@ pub trait SliceExt<T>: Sealed {
     /// Tries to convert `&[T]` to `Vec<U>` when `U` implements `TryFrom<T>`.
     /// # Examples
     /// ```
-    /// # use devela::SliceExt;
+    /// use devela::SliceExt;
+    ///
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```

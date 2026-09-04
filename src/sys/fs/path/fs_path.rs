@@ -27,7 +27,8 @@ use crate::PathBuf;
 /// while the `_ts` suffixed variants can do so, optionally.
 ///
 /// ```
-/// # use devela::FsPath;
+/// use devela::FsPath;
+///
 /// # fn main() {
 /// # let some_path = FsPath::new("some_path");
 /// assert_eq![some_path.exists(), some_path.exists_ts(true)];

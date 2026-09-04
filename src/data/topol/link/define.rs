@@ -24,7 +24,8 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{NonMaxU8, NonMaxU16, link};
+/// use devela::{NonMaxU8, NonMaxU16, link};
+///
 /// link! {
 ///     [
 ///         next: u8 + NonMaxU8;

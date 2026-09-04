@@ -44,7 +44,8 @@
 /// # Example
 ///
 /// ```
-/// # use devela::Radix;
+/// use devela::Radix;
+///
 /// let mut encoded = [0; 4];
 /// let len = Radix::<64>::URL_UNPADDED
 ///     .encode_to_slice(&[0xfb, 0xff], &mut encoded)

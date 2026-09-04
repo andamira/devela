@@ -22,9 +22,11 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::init_array;
+// IMPROVE: remove alloc/Vec, use ConstInit:
 /// # #[cfg(feature = "alloc")]
-/// # use devela::{Vec, ConstInit}; // IMPROVE: remove alloc/Vec, use ConstInit
+/// # use devela::{Vec, ConstInit};
+/// use devela::init_array;
+///
 /// assert_eq![[2,4,6], init_array![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], init_array![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];

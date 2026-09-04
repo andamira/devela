@@ -118,7 +118,8 @@
 /// # Example
 ///
 /// ```
-/// # use devela::{NonMaxU8, NonMaxU16, arena_string};
+/// use devela::{NonMaxU8, NonMaxU16, arena_string};
+///
 /// arena_string! {
 ///     [
 ///         index: u8 + NonMaxU8;

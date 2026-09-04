@@ -10,7 +10,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut data = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut data[..]).bubble();
     /// assert_eq![data, [-13, -5, 0, 1, 4, 7]];
@@ -41,7 +42,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
     /// let values = [64, 4, 2, 8];
     /// let mut freq = [0; 4];
@@ -80,7 +82,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).insertion();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -99,7 +102,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).selection();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -121,7 +125,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).shaker();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -173,7 +178,8 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).quick_lomuto();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -206,7 +212,8 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).quick_3way();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -243,7 +250,8 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).quick_hoare();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];

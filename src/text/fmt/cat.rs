@@ -18,7 +18,8 @@ use crate::{FmtNum, Slice};
 ///
 /// # Examples
 /// ```
-/// # use devela::{StringU8, fmtcat};
+/// use devela::{StringU8, fmtcat};
+///
 /// let one = "Alice";
 /// let score = 42u8;
 /// let two = StringU8::<8>::from_str_unchecked("Bob");

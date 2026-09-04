@@ -104,7 +104,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::arena;
+/// use devela::arena;
+///
 /// // Static storage, with rollback marks.
 /// arena! {
 ///     [index: u8;]

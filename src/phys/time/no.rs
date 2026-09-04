@@ -20,7 +20,8 @@ use crate::{Ordering, TimePoint, TimeScale, TimeSource, TimeSpan};
 ///
 /// # Examples
 /// ```
-/// # use devela::{NoTime, TimeSplit};
+/// use devela::{NoTime, TimeSplit};
+///
 /// let split = TimeSplit::new_hour_nano(12u8, 30u8, 45u8, 500u16, (), ());
 /// ```
 pub type NoTime = ();

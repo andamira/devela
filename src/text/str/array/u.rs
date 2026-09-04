@@ -165,7 +165,7 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::" $name ";"]
+            #[doc = "use devela::" $name ";\n\n"]
             #[doc = "let mut s = " $name "::<10>::new();"]
             #[doc = "assert![size_of_val(&s) >= 10 + size_of::<" $P ">()]; // + padding"]
             /// ```
@@ -197,7 +197,8 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
             /// assert_eq![s.as_str(), "Hello Wørld!"];
             /// ```
@@ -241,7 +242,8 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 4 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, char};
+            /// use devela::{StringU8, char};
+            ///
             /// assert_eq![StringU8::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
             /// assert![StringU8::<3>::from_char('🐛').is_err()];
             /// ```
@@ -264,7 +266,8 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 1 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, char7};
+            /// use devela::{StringU8, char7};
+            ///
             /// let s = StringU8::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
             /// assert_eq![s.as_str(), "@"];
             ///
@@ -287,7 +290,8 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 2 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, char8};
+            /// use devela::{StringU8, char8};
+            ///
             /// let s = StringU8::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
             /// assert_eq![s.as_str(), "ß"];
             ///
@@ -312,7 +316,8 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 3 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, char16};
+            /// use devela::{StringU8, char16};
+            ///
             /// let s = StringU8::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
             /// assert_eq![s.as_str(), "€"];
             ///
@@ -337,7 +342,8 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 4 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, charu};
+            /// use devela::{StringU8, charu};
+            ///
             /// let s = StringU8::<4>::from_charu(charu::from_char('🐛')).unwrap();
             /// assert_eq![s.as_str(), "🐛"];
             ///
@@ -364,12 +370,14 @@ macro_rules! impl_str_u {
             /// Will always succeed if `CAP >= 3 && CAP <= Self::MAX_CAPACITY`.
             /// # Examples
             /// ```
-            /// # use devela::{StringU8, charu};
+            /// use devela::{StringU8, charu};
+            ///
             /// let s = StringU8::<3>::from_charu_unchecked(charu::from_char('€'));
             /// assert_eq![s, "€"]
             /// ```
             /// ```should_panic
-            /// # use devela::{StringU8, charu};
+            /// use devela::{StringU8, charu};
+            ///
             /// StringU8::<2>::from_charu_unchecked(charu::from_char('€'));
             /// ```
             pub const fn from_charu_unchecked(c: charu) -> Self {
@@ -610,7 +618,8 @@ macro_rules! impl_str_u {
             /// It only checks the first `self.len()` bytes.
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let mut a = StringU8::<16>::from_str_unchecked("hello world!");
             /// let mut b = StringU8::<16>::from_str_unchecked("hello world!!!");
             /// assert![!a.eq(&b)];
@@ -662,7 +671,8 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let mut s = StringU8::<16>::new();
             /// s.push_str("hello worlð!");
             /// assert_eq![s.len(), 13];
@@ -737,7 +747,8 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let mut s = StringU8::<5>::new();
             /// assert_eq!(s.push_str("café"), 5);
             /// assert_eq!(s, "café");
@@ -964,7 +975,8 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let chars = ['a', 'b', 'c', '€', 'さ'];
             /// let mut s = StringU8::<6>::new();
             /// s.extend(chars);
@@ -984,7 +996,8 @@ macro_rules! impl_str_u {
             ///
             /// # Examples
             /// ```
-            /// # use devela::StringU8;
+            /// use devela::StringU8;
+            ///
             /// let chars = ['a', 'b', 'c', '€', 'さ'];
             /// assert_eq!(StringU8::<9>::from_iter(chars), "abc€さ");
             /// assert_eq!(StringU8::<6>::from_iter(chars), "abc€");

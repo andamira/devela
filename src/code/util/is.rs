@@ -24,7 +24,8 @@
 ///
 /// 1. Replacing `if`:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// is![true, print!("true")];
 /// let s = is![1 > 0, true, false];
 /// assert_eq!(s, true);
@@ -32,7 +33,8 @@
 ///
 /// 2. Statement-style branches:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// let mut n = 0;
 /// is![true, n += 1;];
 /// is![false, n += 10;, n += 1;];
@@ -41,7 +43,8 @@
 ///
 /// 3. Omitted branches:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// let mut n = 0;
 /// is![false, , n += 1;]; // only else
 /// is![true, n += 1;,];   // empty else
@@ -50,7 +53,8 @@
 ///
 /// 4. Replacing `if let`:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// let num = Some(123);
 /// is![let Some(n) = num, println!("num:{n}"), {
 ///     dbg![num];
@@ -59,7 +63,8 @@
 ///
 /// 5. `if let` with statement and omitted branches:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// let mut n = 0;
 /// is![let Some(v) = Some(2), n += v;];
 /// is![let Some(_) = None::<usize>, , n += 1;];
@@ -68,7 +73,8 @@
 ///
 /// Nested:
 /// ```
-/// # use devela::is;
+/// use devela::is;
+///
 /// let mut n = 2;
 /// let is_true = Some(true);
 /// is![let Some(b) = is_true, is![b, n += 3;]];

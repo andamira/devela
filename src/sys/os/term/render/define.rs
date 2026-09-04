@@ -91,7 +91,8 @@ use crate::TermSize;
 ///
 /// # Examples
 /// ```no_run
-/// # use devela::{AnsiColor, AnsiColor3, IoResult, TermRenderer, ansi};
+/// use devela::{AnsiColor, AnsiColor3, IoResult, TermRenderer, ansi};
+///
 /// fn main() -> IoResult<()> {
 ///     let mut r = TermRenderer::from_buf([0u8; 4096], 80, 24);
 ///

@@ -14,7 +14,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::FmtNum;
+/// use devela::FmtNum;
+///
 /// let mut buf = [0u8; 8];
 /// let len = FmtNum(-123i32).write(&mut buf, 0);
 /// assert_eq!(&buf[..len], b"-123");

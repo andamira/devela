@@ -47,7 +47,8 @@
 ///
 /// Overview
 /// ```
-/// # use devela::map;
+/// use devela::map;
+///
 /// // 1. Const hashmap
 /// map![
 ///     #[doc(hidden)] // supports attributes
@@ -63,7 +64,8 @@
 ///
 /// Basic usage
 /// ```
-/// # use devela::map;
+/// use devela::map;
+///
 /// // Define a static hashmap with `u16` keys and default hasher
 /// map![const ExampleMap, KEY: u16];
 ///
@@ -95,7 +97,8 @@
 ///
 /// Custom hashers
 /// ```
-/// # use devela::{map, HasherFx};
+/// use devela::{map, HasherFx};
+///
 /// // Define a static hashmap using `HasherFx` with a custom seed
 /// map![const ExampleMapFxSeeded, KEY: u16,
 ///     HASHER: |b| HasherFx::<usize>::hash_bytes_with_seed(123, b)
@@ -105,7 +108,8 @@
 /// assert_eq!(map.get(1), Some(100));
 ///
 /// # #[cfg(feature = "hash")] {
-/// # use devela::HasherPengy;
+/// use devela::HasherPengy;
+///
 /// // Define a static hashmap using a stateful pengy hasher
 /// # #[cfg(feature = "hash")]
 /// map![const ExampleMapPengy, KEY: u16,

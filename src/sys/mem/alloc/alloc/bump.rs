@@ -28,7 +28,8 @@ use crate::{
 ///
 /// # Examples
 /// ```ignore
-/// # use devela::BumpAlloc;
+/// use devela::BumpAlloc;
+///
 /// #[global_allocator]
 /// static ALLOCATOR: BumpAlloc = BumpAlloc::new(0x10000, 0x20000);
 /// ```

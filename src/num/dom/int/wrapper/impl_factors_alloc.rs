@@ -61,7 +61,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t
                 ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![Int(-24_" $t
@@ -95,7 +96,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![Int(-24_" $t
@@ -131,7 +133,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert![Int(0_" $t ").factors_prime().is_empty()];"]
@@ -167,7 +170,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
@@ -180,7 +184,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
                 #[doc = "assert_eq![Int(24_" $t
             ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![Int(-24_" $t
@@ -227,7 +232,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t
                 ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert![Int(0_" $t ").factors().is_empty()];"]
@@ -258,7 +264,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert![Int(0_" $t ").factors_proper().is_empty()];"]
@@ -291,7 +298,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert![Int(0_" $t ").factors_prime().is_empty()];"]
             #[doc = "assert![Int(1_" $t ").factors_prime().is_empty()];"]
@@ -326,7 +334,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
             #[must_use]
@@ -338,7 +347,8 @@ macro_rules! __impl_int_factors_alloc {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert![Int(0_" $t ").factors_prime_unique_exp().is_empty()];"]

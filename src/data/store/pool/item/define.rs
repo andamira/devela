@@ -75,7 +75,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonMaxU16, pool};
+/// use devela::{NonMaxU16, pool};
+///
 /// // Static storage is the default.
 /// pool! {
 ///     [

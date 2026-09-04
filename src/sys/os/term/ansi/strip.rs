@@ -43,7 +43,8 @@ impl Ansi {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Ansi;
+    /// use devela::Ansi;
+    ///
     /// let input = b"Hello \x1B[32mWorld\x1B[0m!";
     /// let mut output = [0u8; 20];
     /// let len = Ansi::strip_codes(input, &mut output);

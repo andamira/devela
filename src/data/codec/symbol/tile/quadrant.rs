@@ -23,7 +23,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::Quadrant;
+/// use devela::Quadrant;
+///
 /// assert_eq!(Quadrant::encode(0b0000), Some(' '));
 /// assert_eq!(Quadrant::encode(0b1000), Some('▘'));
 /// assert_eq!(Quadrant::encode(0b0001), Some('▗'));

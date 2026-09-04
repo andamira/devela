@@ -21,7 +21,8 @@ impl Linux {
     ///
     /// # Example
     /// ```no_run
-    /// # use devela::{Linux, LinuxOpenOptions};
+    /// use devela::{Linux, LinuxOpenOptions};
+    ///
     /// let fd = Linux::open_fd(
     ///     c"/tmp/test",
     ///     LinuxOpenOptions::read_write().create().mode(0o644),

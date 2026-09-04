@@ -12,7 +12,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::capture_first;
+/// use devela::capture_first;
+///
 /// assert_eq![5, capture_first!(expr 5, 6, 7)];
 /// assert_eq![42, capture_first!(literal 42, "hello", true)];
 /// ```

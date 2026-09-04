@@ -88,7 +88,8 @@ impl<T: PartialOrd> Cmp<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Cmp;
+    /// use devela::Cmp;
+    ///
     /// assert_eq![Some(0.4), Cmp(1.0).pclamp(0.2, 0.4)];
     /// assert_eq![Some(0.2), Cmp(0.0).pclamp(0.2, 0.4)];
     /// //
@@ -116,7 +117,8 @@ impl<T: PartialOrd> Cmp<T> {
     /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
-    /// # use devela::Cmp;
+    /// use devela::Cmp;
+    ///
     /// assert_eq![Some(0.4), Cmp(0.2).pmax(0.4)];
     /// //
     /// assert_eq![None, Cmp(0.2).pmax(f32::NAN)];
@@ -138,7 +140,8 @@ impl<T: PartialOrd> Cmp<T> {
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Examples
     /// ```
-    /// # use devela::Cmp;
+    /// use devela::Cmp;
+    ///
     /// assert_eq![Some(0.2), Cmp(0.2).pmin(0.4)];
     /// //
     /// assert_eq![None, Cmp(0.2).pmin(f32::NAN)];
@@ -158,7 +161,8 @@ impl<T: PartialOrd> Cmp<T> {
     /// Returns `None` if comparisons are indeterminate.
     /// # Examples
     /// ```
-    /// # use devela::Cmp;
+    /// use devela::Cmp;
+    ///
     /// assert_eq![Some((0.2, 0.4)), Cmp(0.4).pminmax(0.2)];
     /// //
     /// assert_eq![None, Cmp(0.2).pminmax(f32::NAN)];
@@ -272,7 +276,8 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Cmp;
+            /// use devela::Cmp;
+            ///
             #[doc = "assert_eq![2.0, Cmp(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Cmp(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
@@ -284,7 +289,8 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Cmp;
+            /// use devela::Cmp;
+            ///
             #[doc = "assert_eq![2.0, Cmp(2.0" $f ").max(-1.0)];"]
             #[doc = "assert_eq![2.0, Cmp(1.0" $f ").max(2.0)];"]
             #[doc = "assert_eq![0.0, Cmp(-0.0" $f ").max(0.0)];"]
@@ -299,7 +305,8 @@ macro_rules! _num_fin_ord_cmp_impl_prims {
             /// # Examples
             /// ```
             #[cfg_attr(nightly_float, doc = "# #![feature(f16, f128)]")]
-            /// # use devela::Cmp;
+            /// use devela::Cmp;
+            ///
             #[doc = "assert_eq![-1.0, Cmp(2.0" $f ").min(-1.0)];"]
             #[doc = "assert_eq![1.0, Cmp(1.0" $f ").min(2.0)];"]
             #[doc = "assert_eq![-0.0, Cmp(-0.0" $f ").min(0.0)];"]

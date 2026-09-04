@@ -17,7 +17,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::ArrayFrom;
+/// use devela::ArrayFrom;
+///
 /// let arr = ArrayFrom("hello").to_array::<5>();
 /// assert_eq!(arr, *b"hello");
 /// ```

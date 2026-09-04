@@ -10,8 +10,8 @@
 }]
 /// # Examples
 /// ```
-/// # use devela::type_count;
-/// # use core::time::Duration;
+/// use devela::{Duration, type_count};
+///
 /// assert_eq![0, type_count!()];
 /// assert_eq![1, type_count!([f32; 4])];
 /// assert_eq![3, type_count!(u8, (), Duration)];

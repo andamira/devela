@@ -10,7 +10,8 @@
 }]
 /// # Examples
 /// ```
-/// # use devela::ident_const_index;
+/// use devela::ident_const_index;
+///
 /// ident_const_index![pub, 3; first, second, third]; // with commas
 /// assert![0 == first && 1 == second && 2 == third];
 ///

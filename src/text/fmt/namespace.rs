@@ -40,7 +40,8 @@ impl Fmt {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Fmt;
+    /// use devela::Fmt;
+    ///
     /// let mut buf = [0u8; 32]; // Big enough to fit everything
     /// let s = Fmt::format_buf(&mut buf, format_args!["Test: {} {}", "foo", 42]);
     /// assert_eq!(Ok("Test: foo 42"), s);

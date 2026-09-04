@@ -14,7 +14,7 @@ use crate::FloatExt;
 ///
 /// # Examples
 /// ```
-/// use devela::num::prime_number_theorem as pi;
+/// use devela::prime_number_theorem as pi;
 ///
 /// // Showing the % difference against the real amount, if known.
 /// // Note how precision increases in direct relationship to the power.

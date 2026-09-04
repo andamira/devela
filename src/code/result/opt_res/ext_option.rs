@@ -47,9 +47,9 @@ pub trait OptionExt<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// # extern crate devela as devela;
-    /// # use core::{cmp::min, ops::Add};
-    /// use devela::OptionExt;
+    /// use core::cmp::min;
+    /// use devela::{Add, OptionExt};
+    ///
     /// let (x, y) = (Some(2), Some(4));
     ///
     /// assert_eq!(x.reduce(y, Add::add), Some(6));
@@ -102,7 +102,8 @@ pub trait OptionExt<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// # use devela::OptionExt;
+    /// use devela::OptionExt;
+    ///
     /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
     /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
     /// ```

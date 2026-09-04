@@ -11,7 +11,8 @@ define_error! { individual:
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Boundary1d, MismatchedCapacity};
+    /// use devela::{Boundary1d, MismatchedCapacity};
+    ///
     /// // Upper-bound violation. Capacity is fixed at 8, value tried was 12:
     /// let err = MismatchedCapacity::too_large(12, 8);
     /// assert_eq!(err.bound, Boundary1d::Upper);

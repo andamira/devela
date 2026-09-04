@@ -25,7 +25,8 @@ use crate::Pin;
 ///
 /// # Examples
 /// ```
-/// # use devela::IdPin;
+/// use devela::IdPin;
+///
 /// let mut data1: u8 = 0;
 /// let id1 = IdPin::new(&mut data1);
 /// ```

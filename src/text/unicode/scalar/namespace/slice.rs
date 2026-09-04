@@ -23,7 +23,8 @@ impl Char<&[u8]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// // Valid UTF-8 sequence
     /// let result = Char(b"\xE2\x82\xAC").to_char(0); // €
     /// assert_eq!(result, Some(('€', 3)));
@@ -70,7 +71,8 @@ impl Char<&[u8]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// // Valid UTF-8 sequence
     /// let result = Char(b"\xE2\x82\xAC").to_char_lenient(0); // €
     /// assert_eq!(result, ('€', 3));
@@ -125,7 +127,8 @@ impl Char<&[u8]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// assert_eq!(Char("Ħ".as_bytes()).to_scalar(0), Some((u32::from('Ħ'), 2)));
     ///
     /// let invalid = b"\x80"; // Invalid leading byte
@@ -192,7 +195,8 @@ impl Char<&[u8]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// assert!(Char(b"\xE0\x80\x80").has_overlong_encoding(0, 3)); // overlong encoding
     /// assert!(!Char(b"\xE0\xA0\x80").has_overlong_encoding(0, 3)); // valid 3-byte sequence
     /// ```
@@ -222,7 +226,8 @@ impl Char<&[u8]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// assert!(Char(b"\xE2\x82\xAC").has_valid_continuation(0, 3)); // euro sign €
     /// assert!(!Char(b"\xE2\x41\xAC").has_valid_continuation(0, 3)); // second byte is ASCII 'A'
     /// assert!(!Char(b"\xC2").has_valid_continuation(0, 2)); // incomplete sequence

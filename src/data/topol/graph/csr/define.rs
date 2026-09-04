@@ -27,7 +27,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonMaxU8, NonMaxU16, graph_csr};
+/// use devela::{NonMaxU8, NonMaxU16, graph_csr};
+///
 /// graph_csr! {
 ///     [
 ///         vertex: u8 + NonMaxU8;

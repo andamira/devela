@@ -21,7 +21,8 @@
 ///
 /// Element coordinates use `(row, column)` order.
 /// ```
-/// # use devela::Matrix;
+/// use devela::Matrix;
+///
 /// let matrix = Matrix::<_, 2, 3, 6>::new([
 ///     1, 2, 3,
 ///     4, 5, 6,

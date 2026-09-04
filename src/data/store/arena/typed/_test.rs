@@ -101,7 +101,7 @@ fn static_max_capacity_matches_frontier_repr() {
 
 /**
 ```compile_fail, E0080
-# use devela::ArenaExample as Arena;
+use devela::ArenaExample as Arena;
 let _ = Arena::<(), 255>::new();
 ```
 **/

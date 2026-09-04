@@ -19,7 +19,8 @@
 /// # Examples
 /// ```
 /// # #![cfg_attr(nightly_simd, feature(portable_simd))]
-/// # use devela::lane;
+/// use devela::lane;
+///
 /// // 1. Auto lane definition
 /// lane!(auto Lane4 lanes(4); signed(i32); float(f32););
 /// // 2. Custom lane definition

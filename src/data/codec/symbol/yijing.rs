@@ -24,7 +24,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::YijingHexagram;
+/// use devela::YijingHexagram;
+///
 /// assert_eq!(YijingHexagram::encode(0b000000), Some('䷀'));
 /// assert_eq!(YijingHexagram::encode(0b111111), Some('䷁'));
 /// assert_eq!(YijingHexagram::decode('䷀'), Some(0b000000));

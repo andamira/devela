@@ -18,7 +18,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hello world!";
     /// assert_eq!(Str::lsplit(s, 0), "");
     /// assert_eq!(Str::lsplit(s, 3), "Hel");
@@ -35,7 +36,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Cmp, Str};
+    /// use devela::{Cmp, Str};
+    ///
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::lsplit_checked(s, 0), Some(""));
     /// assert_eq!(Str::lsplit_checked(s, 3), Some("Hel"));
@@ -56,7 +58,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<16>::from_str("Hello world!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };
@@ -76,7 +79,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Cmp, Str, StringU8};
+    /// use devela::{Cmp, Str, StringU8};
+    ///
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };
@@ -102,7 +106,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hello world!";
     /// assert_eq!(Str::rsplit(s, 0), "");
     /// assert_eq!(Str::rsplit(s, 3), "ld!");
@@ -119,7 +124,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Cmp, Str};
+    /// use devela::{Cmp, Str};
+    ///
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::rsplit_checked(s, 0), Some(""));
     /// assert_eq!(Str::rsplit_checked(s, 3), Some("ld!"));
@@ -140,7 +146,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };
@@ -160,7 +167,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Cmp, Str, StringU8};
+    /// use devela::{Cmp, Str, StringU8};
+    ///
     /// let mut s = StringU8::<16>::from_str("Hellø wørld!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };
@@ -188,7 +196,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hello world!";
     /// assert_eq!(Str::msplit_left(s, 0), "");
     /// assert_eq!(Str::msplit_left(s, 1), " ");
@@ -217,7 +226,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::msplit_left_checked(s, 0), Some(""));
     /// assert_eq!(Str::msplit_left_checked(s, 1), Some(" "));
@@ -249,7 +259,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let ms = unsafe { s.as_mut_str() };
@@ -281,7 +292,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let ms = unsafe { s.as_mut_str() };
@@ -318,7 +330,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let s = "Hello world!";
     /// assert_eq!(Str::msplit_right(&s, 0), "");
     /// assert_eq!(Str::msplit_right(&s, 1), "w");
@@ -347,7 +360,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hellø wørld!";
     /// assert_eq!(Str::msplit_right_checked(s, 0), Some(""));
     /// assert_eq!(Str::msplit_right_checked(s, 1), Some("w"));
@@ -381,7 +395,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<12>::from_str("Hello world!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };
@@ -413,7 +428,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{Str, StringU8};
+    /// use devela::{Str, StringU8};
+    ///
     /// let mut s = StringU8::<14>::from_str("Hellø wørld!").unwrap();
     /// # #[cfg(feature = "unsafe_str")] {
     /// let s = unsafe { s.as_mut_str() };

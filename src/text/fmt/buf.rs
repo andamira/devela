@@ -21,7 +21,8 @@ crate::_use! {compat::from_utf8}
 ///
 /// # Examples
 /// ```
-/// # use devela::format_buf;
+/// use devela::format_buf;
+///
 /// let mut buf = [0u8; 12];
 /// let s = format_buf![&mut buf, "Test: {} {}", "foo", 4];
 /// assert_eq!(Ok("Test: foo 4"), s);
@@ -97,7 +98,8 @@ impl<'a> FmtWriter<'a> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::FmtWriter;
+    /// use devela::FmtWriter;
+    ///
     /// let mut buf = [0u8; 32]; // Big enough to fit everything
     /// let s = FmtWriter::format(&mut buf, format_args!["Test: {} {}", "foo", 42]);
     /// assert_eq!(Ok("Test: foo 42"), s);
@@ -120,7 +122,8 @@ impl<'a> FmtWriter<'a> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::FmtWriter;
+    /// use devela::FmtWriter;
+    ///
     /// let mut buf = [0u8; 32];
     /// assert_eq![Ok(12), FmtWriter::format_len(&mut buf, format_args!["Test: {} {}", "foo", 42])];
     ///
@@ -145,7 +148,8 @@ impl<'a> FmtWriter<'a> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::FmtWriter;
+    /// use devela::FmtWriter;
+    ///
     /// const fn create_message(buf: &mut [u8]) -> &str {
     ///     let mut writer = FmtWriter::new(buf);
     ///     writer.write_str_truncate("Hello");

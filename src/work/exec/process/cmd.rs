@@ -30,7 +30,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::cmd;
+/// use devela::cmd;
+///
 /// # #[cfg(not(miri))] {
 /// let arg1 = "-F";
 /// let cmd2 = "grep";
@@ -68,7 +69,8 @@
 ///
 /// Without `@`, a string is treated as one argv word:
 /// ```no_run
-/// # use devela::cmd;
+/// use devela::cmd;
+///
 /// # #[cfg(not(miri))] {
 /// cmd!("ls -F").run();      // executes a program named `ls -F`
 /// cmd!("ls -F", ".").run(); // executes `ls -F` with `.` as its argument

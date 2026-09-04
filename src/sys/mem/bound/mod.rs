@@ -22,8 +22,9 @@ crate::mods_out! { // _mods, _reexports
     }
     _reexports {
         #[doc(inline)]
-        pub use devela::sys::mem::bound::{
-            CacheAlign, MemAligned, cswap,
+        pub use super::{
+            align::{CacheAlign, MemAligned},
+            cswap::cswap,
         };
     }
 }

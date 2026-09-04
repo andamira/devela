@@ -42,11 +42,13 @@ sf! {
 ///
 /// # Examples
 /// ```
-/// # use devela::{const_bool, True};
+/// use devela::{const_bool, True};
+///
 /// const _: True = const_bool![4 == 4];
 /// ```
 /// ```compile_fail
-/// # use devela::{const_bool, True};
+/// use devela::{const_bool, True};
+///
 /// const _: True = const_bool![3 == 4];
 /// ```
 #[macro_export]

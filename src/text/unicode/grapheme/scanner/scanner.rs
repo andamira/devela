@@ -54,7 +54,8 @@ impl<'a> GraphemeScanner<'a, charu> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{GraphemeMachine, GraphemeScanner, GraphemeU8, charu};
+    /// use devela::{GraphemeMachine, GraphemeScanner, GraphemeU8, charu};
+    ///
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
     /// let mut scanner = GraphemeScanner::<charu>::new(&mut machine, input);
@@ -87,7 +88,8 @@ impl<'a> GraphemeScanner<'a, charu> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{GraphemeMachine, GraphemeScanner, charu};
+    /// use devela::{GraphemeMachine, GraphemeScanner, charu};
+    ///
     /// let input = "H€🧑‍🌾";
     /// let mut machine = GraphemeMachine::new();
     /// let mut scanner = GraphemeScanner::<charu>::new(&mut machine, input);

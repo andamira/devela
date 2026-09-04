@@ -21,7 +21,8 @@ impl Str {
     /// and returns a reference to the new `&str`.
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let mut buf = [0_u8; 12];
     /// let repeated = Str::repeat_into("ay", 3, &mut buf);
     /// assert_eq![repeated, "ayayay"];
@@ -79,7 +80,8 @@ impl Str {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", Str::new_counter(&mut buf, 14, '*'));
     /// assert_eq!("_3_5_7_9_12_15_", Str::new_counter(&mut buf, 15, '_'));

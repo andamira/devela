@@ -77,7 +77,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonNul;
+    /// use devela::StringNonNul;
+    ///
     /// let mut s = StringNonNul::<10>::new();
     /// assert_eq![size_of_val(&s), 10];
     /// ```
@@ -107,7 +108,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringU8;
+    /// use devela::StringU8;
+    ///
     /// let s = StringU8::<13>::from_str("Hello Wørld!").unwrap();
     /// assert_eq![s.as_str(), "Hello Wørld!"];
     /// ```
@@ -156,7 +158,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, MismatchedCapacity};
+    /// use devela::{StringNonNul, MismatchedCapacity};
+    ///
     /// # fn main() -> Result<(), MismatchedCapacity> {
     /// let mut s = StringNonNul::<4>::new_checked()?;
     /// assert_eq![0, s.len()];
@@ -191,7 +194,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// It only checks the first `self.len()` bytes.
     /// # Examples
     /// ```
-    /// # use devela::StringNonNul;
+    /// use devela::StringNonNul;
+    ///
     /// let mut a = StringNonNul::<16>::from_str_unchecked("hello world!");
     /// let mut b = StringNonNul::<16>::from_str_unchecked("hello world!!!");
     /// assert![!a.eq(&b)];
@@ -310,7 +314,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonNul;
+    /// use devela::StringNonNul;
+    ///
     /// let mut s = StringNonNul::<16>::new();
     /// s.push_str("hello worlð!");
     /// assert_eq![s.len(), 13];
@@ -343,7 +348,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonNul;
+    /// use devela::StringNonNul;
+    ///
     /// let mut s = StringNonNul::<16>::new();
     /// s.push('h');
     /// assert_eq![s.len(), 1];
@@ -427,7 +433,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::StringNonNul;
+    /// use devela::StringNonNul;
+    ///
     /// let mut s = StringNonNul::<8>::new();
     /// s.push_str("hello");
     ///
@@ -490,7 +497,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, char};
+    /// use devela::{StringNonNul, char};
+    ///
     /// assert_eq![StringNonNul::<4>::from_char('🐛').unwrap().as_str(), "🐛"];
     /// assert_eq![StringNonNul::<4>::from_char('\0').unwrap().as_str(), ""];
     /// assert![StringNonNul::<3>::from_char('🐛').is_err()];
@@ -520,7 +528,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 1.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, char7};
+    /// use devela::{StringNonNul, char7};
+    ///
     /// let s = StringNonNul::<1>::from_char7(char7::try_from_char('@').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "@"];
     /// let s = StringNonNul::<1>::from_char7(char7::try_from_char('\0').unwrap()).unwrap();
@@ -548,7 +557,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 2.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, char8};
+    /// use devela::{StringNonNul, char8};
+    ///
     /// let s = StringNonNul::<2>::from_char8(char8::try_from_char('ß').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "ß"];
     /// let s = StringNonNul::<2>::from_char8(char8::try_from_char('\0').unwrap()).unwrap();
@@ -579,7 +589,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 3.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, char16};
+    /// use devela::{StringNonNul, char16};
+    ///
     /// let s = StringNonNul::<3>::from_char16(char16::try_from_char('€').unwrap()).unwrap();
     /// assert_eq![s.as_str(), "€"];
     /// let s = StringNonNul::<3>::from_char16(char16::try_from_char('\0').unwrap()).unwrap();
@@ -611,7 +622,8 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, charu};
+    /// use devela::{StringNonNul, charu};
+    ///
     /// let s = StringNonNul::<4>::from_charu(charu::from_char('🐛')).unwrap();
     /// assert_eq![s.as_str(), "🐛"];
     /// let s = StringNonNul::<4>::from_charu(charu::from_char('\0')).unwrap();
@@ -644,12 +656,14 @@ impl<const CAP: usize> StringNonNul<CAP> {
     /// Will always succeed if `CAP` >= 4.
     /// # Examples
     /// ```
-    /// # use devela::{StringNonNul, charu};
+    /// use devela::{StringNonNul, charu};
+    ///
     /// let s = StringNonNul::<3>::from_charu_unchecked(charu::from_char('€'));
     /// assert_eq![s, "€"]
     /// ```
     /// ```should_panic
-    /// # use devela::{StringNonNul, charu};
+    /// use devela::{StringNonNul, charu};
+    ///
     /// StringNonNul::<2>::from_charu_unchecked(charu::from_char('€'));
     /// ```
     pub const fn from_charu_unchecked(c: charu) -> Self {
@@ -895,7 +909,8 @@ mod impl_traits {
         ///
         /// # Examples
         /// ```
-        /// # use devela::StringNonNul;
+        /// use devela::StringNonNul;
+        ///
         /// let chars = ['a', 'b', 'c', '€', 'さ'];
         /// let mut s = StringNonNul::<6>::new();
         /// s.extend(chars);
@@ -917,7 +932,8 @@ mod impl_traits {
         ///
         /// # Examples
         /// ```
-        /// # use devela::StringNonNul;
+        /// use devela::StringNonNul;
+        ///
         /// let chars = ['a', 'b', 'c', '€', 'さ'];
         /// assert_eq!(StringNonNul::<9>::from_iter(chars), "abc€さ");
         /// assert_eq!(StringNonNul::<6>::from_iter(chars), "abc€");

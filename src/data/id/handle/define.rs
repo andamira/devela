@@ -35,7 +35,8 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{NonMaxU16, handle};
+/// use devela::{NonMaxU16, handle};
+///
 /// handle! {
 ///     [
 ///         index: u16 + NonMaxU16;

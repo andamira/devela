@@ -15,7 +15,8 @@ It abstracts away specific backend implementations.
 
 # Examples
 ```
-# use devela::{Ansi, AnsiColor3, ansi_print};
+use devela::{Ansi, AnsiColor3, ansi_print};
+
 ansi_print(&Ansi::ERASE_SCREEN_B);
 ansi_print(&Ansi::CURSOR_MOVE3_B(120, 80));
 ansi_print(&Ansi::COLORS_BRIGHT_BG_B(AnsiColor3::Blue, AnsiColor3::Black));

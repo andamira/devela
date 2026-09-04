@@ -21,7 +21,8 @@ use crate::{BinTag4, RiffChunk, RiffChunkIter, RiffError, is, slice, unwrap, wri
 ///
 /// # Example
 /// ```
-/// # use devela::{BinTag4, Riff};
+/// use devela::{BinTag4, Riff};
+///
 /// let bytes = b"RIFF\x10\0\0\0WAVEfmt \x04\0\0\0\x01\0\x02\0";
 ///
 /// let root = Riff::root(bytes)?;

@@ -56,7 +56,8 @@ macro_rules! impl_frac {
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
             /// # Examples
             /// ```
-            /// # use devela::Frac;
+            /// use devela::Frac;
+            ///
             #[doc = "assert![Frac([2_" $i ", 1]).is_valid()];"]
             #[doc = "assert![!Frac([2_" $i ", 0]).is_valid()];"]
             /// ```
@@ -67,7 +68,8 @@ macro_rules! impl_frac {
             /// `(numerator.abs() < denominator.abs())`.
             /// # Examples
             /// ```
-            /// # use devela::Frac;
+            /// use devela::Frac;
+            ///
             #[doc = "assert![Frac([2_" $i ", 3]).is_proper()];"]
             #[doc = "assert![!Frac([3_" $i ", 3]).is_proper()];"]
             #[doc = "assert![!Frac([4_" $i ", 3]).is_proper()];"]
@@ -128,7 +130,8 @@ macro_rules! impl_frac {
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
             /// # Examples
             /// ```
-            /// # use devela::{Frac, Int};
+            /// use devela::{Frac, Int};
+            ///
             #[doc = "assert![Frac([Int(2_" $i "), Int(1)]).is_valid()];"]
             #[doc = "assert![!Frac([Int(2_" $i "), Int(0)]).is_valid()];"]
             /// ```
@@ -139,7 +142,8 @@ macro_rules! impl_frac {
             /// `(numerator.abs() < denominator.abs())`.
             /// # Examples
             /// ```
-            /// # use devela::{Frac, Int};
+            /// use devela::{Frac, Int};
+            ///
             #[doc = "assert![Frac([Int(2_" $i "), Int(3)]).is_proper()];"]
             #[doc = "assert![!Frac([Int(3_" $i "), Int(3)]).is_proper()];"]
             #[doc = "assert![!Frac([Int(4_" $i "), Int(3)]).is_proper()];"]

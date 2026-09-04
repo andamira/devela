@@ -21,7 +21,8 @@ use ::core::{marker, ptr};
 }]
 /// # Examples
 /// ```
-/// # use devela::data::DstValueUsize;
+/// use devela::DstValueUsize;
+///
 /// let v = DstValueUsize::<[u8], 16>::new([1,2,3], |v| v);
 /// ```
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
@@ -37,7 +38,8 @@ pub type DstValueUsize<DST /*: ?Sized*/, const CAP: usize> = DstValue<DST, DstAr
 ///
 /// # Examples
 /// ```
-/// # use {devela::data::{DstArray, DstValue}, core::fmt::Display};
+/// use devela::{Display, DstArray, DstValue};
+///
 /// let val = DstValue::<dyn Display, DstArray<usize, 2>>::new(123456, |v| v as _)
 ///     .expect("Insufficient size");
 /// assert_eq!( format!("{}", val), "123456" );
@@ -58,7 +60,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::{DstArray, DstValue}, core::fmt::Display};
+    /// use devela::{Display, DstArray, DstValue};
+    ///
     /// let val = DstValue::<dyn Display, DstArray<usize, 2>>::new(1234, |v| v as _)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -80,7 +83,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
+    /// use devela::{Display, DstValue, MaybeUninit};
+    ///
     /// let val = DstValue::<dyn Display, _>::in_buffer([MaybeUninit::new(0u64); 2], 1234, |v| v)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -139,7 +143,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::{DstArray, DstValue}, core::fmt::Display};
+    /// use devela::{Display, DstArray, DstValue};
+    ///
     /// let mut value = DstValue::<dyn Display, DstArray<usize, 2>>::new(1234, |v| v)
     ///     .unwrap();
     /// assert_eq!(format!("{}", value), "1234");
@@ -196,7 +201,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Construct from a `str` using a default-constructed buffer
     /// # Examples
     /// ```
-    /// # use {devela::data::{DstArray, DstValue}, core::fmt::Display};
+    /// use devela::{Display, DstArray, DstValue};
+    ///
     /// let val = DstValue::<str, DstArray<u8, 32>>::new_str("Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
@@ -212,7 +218,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
+    /// use devela::{Display, DstValue, MaybeUninit};
+    ///
     /// let val = DstValue::new_str_in_buffer([MaybeUninit::new(0u8); 32], "Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
@@ -233,7 +240,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstValue};
+    /// use devela::{DstArray, DstValue};
+    ///
     /// let mut s = DstValue::<str, DstArray<usize, 8>>::new_str("Foo").unwrap();
     /// s.append_str("Bar").unwrap();
     /// assert_eq!(&s[..], "FooBar");
@@ -269,7 +277,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstValue};
+    /// use devela::{DstArray, DstValue};
+    ///
     /// let mut s = DstValue::<str, DstArray<usize, 8>>::new_str("FooBar").unwrap();
     /// s.truncate(3);
     /// assert_eq!(&s[..], "Foo");

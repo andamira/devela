@@ -44,7 +44,8 @@
 ///
 /// Immutable:
 /// ```
-/// # use devela::iter_strided;
+/// use devela::iter_strided;
+///
 /// iter_strided!(pub struct RowIter : ref (usize));
 /// let data = [0, 1, 2, 3, 4, 5];
 /// let mut it = RowIter::from_count(&data, 1, 3, 2);
@@ -56,7 +57,8 @@
 ///
 /// Mutable:
 /// ```
-/// # use devela::iter_strided;
+/// use devela::iter_strided;
+///
 /// iter_strided!(pub struct ChannelIter : mut (u16));
 /// let mut data = [0, 1, 2, 3];
 /// let mut it = ChannelIter::from_bounds(&mut data, 0, 2, 2);

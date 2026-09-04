@@ -65,7 +65,8 @@ macro_rules! __impl_int_prime {
             /// already been checked in previous iterations.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert![Int(127_" $t ").is_prime()];"]
             #[doc = "assert![Int(2_" $t ").is_prime()];"]
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
@@ -95,7 +96,8 @@ macro_rules! __impl_int_prime {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(30_" $t ").prime_nth()];"]
@@ -125,7 +127,8 @@ macro_rules! __impl_int_prime {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![1, Int(2_" $t ").prime_pi()];"]
             #[doc = "assert_eq![2, Int(3_" $t ").prime_pi()];"]
             #[doc = "assert_eq![31, Int(127_" $t ").prime_pi()];"]
@@ -154,7 +157,8 @@ macro_rules! __impl_int_prime {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(2), Int(4_" $t ").totient()];"]
             #[doc = "assert_eq![Int(6), Int(9_" $t ").totient()];"]
             #[doc = "assert_eq![Int(12), Int(13_" $t ").totient()];"]
@@ -198,7 +202,8 @@ macro_rules! __impl_int_prime {
             /// already been checked in previous iterations.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert![Int(127_" $t ").is_prime()];"]
             #[doc = "assert![Int(2_" $t ").is_prime()];"]
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
@@ -223,7 +228,8 @@ macro_rules! __impl_int_prime {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(251)), Int(53_" $t ").prime_nth()];"]
@@ -251,7 +257,8 @@ macro_rules! __impl_int_prime {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![1, Int(2_" $t ").prime_pi()];"]
             #[doc = "assert_eq![2, Int(3_" $t ").prime_pi()];"]
             #[doc = "assert_eq![31, Int(127_" $t ").prime_pi()];"]
@@ -276,7 +283,8 @@ macro_rules! __impl_int_prime {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc = "assert_eq![Int(2), Int(4_" $t ").totient()];"]
             #[doc = "assert_eq![Int(6), Int(9_" $t ").totient()];"]
             #[doc = "assert_eq![Int(12), Int(13_" $t ").totient()];"]

@@ -19,7 +19,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::define_error;
+/// use devela::define_error;
+///
 /// // Define simple individual error types
 /// define_error! {
 ///     individual:

@@ -31,7 +31,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonMaxU8, NonMaxU16, graph_adj};
+/// use devela::{NonMaxU8, NonMaxU16, graph_adj};
+///
 /// graph_adj! {
 ///     [
 ///         vertex: u8 + NonMaxU8;

@@ -23,7 +23,8 @@ use crate::Relation;
 ///
 /// # Example
 /// ```
-/// # use devela::{DerivedFrom, Relation};
+/// use devela::{DerivedFrom, Relation};
+///
 /// let derivation = Relation {
 ///     subject: "output.dvbf",
 ///     predicate: DerivedFrom::with("BDF-to-DVBF"),
@@ -71,7 +72,8 @@ impl<V: Default> Default for DerivedFrom<V> {
 ///
 /// # Example
 /// ```
-/// # use devela::{Relation, RevisionOf};
+/// use devela::{Relation, RevisionOf};
+///
 /// let revision = Relation {
 ///     subject: 3,
 ///     predicate: RevisionOf::new(),

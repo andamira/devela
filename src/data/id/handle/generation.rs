@@ -30,7 +30,8 @@
 /// # Examples
 /// A simple handle for a pool.
 /// ```
-/// # use devela::{NonMaxU32, handle_gen};
+/// use devela::{NonMaxU32, handle_gen};
+///
 /// handle_gen! {
 ///     [
 ///       index: u32 + NonMaxU32;

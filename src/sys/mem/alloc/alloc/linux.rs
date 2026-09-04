@@ -23,7 +23,8 @@ use crate::{GlobalAlloc, Libc, Mem, MemLayout, Ptr, c_void, is};
 ///
 /// # Examples
 /// ```ignore
-/// # use devela::LinuxMmapAlloc;
+/// use devela::LinuxMmapAlloc;
+///
 /// #[global_allocator]
 /// static ALLOCATOR: LinuxMmapAlloc = LinuxMmapAlloc::INIT;
 /// ```

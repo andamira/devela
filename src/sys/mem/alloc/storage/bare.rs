@@ -27,7 +27,8 @@ pub type Bare = ();
 ///
 /// # Examples
 /// ```
-/// # use devela::BareBox;
+/// use devela::BareBox;
+///
 /// let byte = BareBox::new(0_u8);
 /// ```
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
@@ -52,7 +53,8 @@ impl<T> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// let b = BareBox::new(42);
     /// let inner = b.into_inner();
     /// assert_eq!(42, inner);
@@ -64,7 +66,8 @@ impl<T> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// const B: BareBox<char> = BareBox::new('a');
     /// const REF: &char = B.as_ref();
     /// assert_eq!('a', *REF);
@@ -76,7 +79,8 @@ impl<T> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// const fn modify_value(mut b: BareBox<char>) -> BareBox<char> {
     ///     let mb = b.as_mut();
     ///     *mb = 'z';
@@ -92,7 +96,8 @@ impl<T> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// let mut b = BareBox::new(42);
     /// let old = b.replace(100);
     /// assert_eq!(42, old);
@@ -107,7 +112,8 @@ impl<T> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// let b = BareBox::new(0);
     /// assert!(b.is_default());
     /// ```
@@ -123,7 +129,8 @@ impl<T: Copy> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// const B: BareBox<i32> = BareBox::new(42);
     /// const I: i32 = B.into_inner_copy();
     /// assert_eq!(42, I);
@@ -137,7 +144,8 @@ impl<T: Copy> BareBox<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// let b = BareBox::new(2);
     /// let squared = b.map(|x| x * x);
     /// assert_eq!(4, *squared);
@@ -153,7 +161,8 @@ impl<T: Copy> BareBox<Option<T>> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// const B: BareBox<Option<char>> = BareBox::new(Some('a'));
     /// const BU: char = B.unwrap_copy_or('c');
     /// assert_eq!['a', BU];
@@ -172,7 +181,8 @@ impl<T: Copy, E: Copy> BareBox<Result<T, E>> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::BareBox;
+    /// use devela::BareBox;
+    ///
     /// const B: BareBox<Result<char, ()>> = BareBox::new(Ok('a'));
     ///
     /// const BU: char = B.unwrap_copy_or('c');

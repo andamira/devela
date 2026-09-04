@@ -19,7 +19,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::id_seq;
+/// use devela::id_seq;
+///
 /// id_seq![AppId, u8];
 ///
 /// assert_eq![AppId::generated_ids(), 0];
@@ -43,7 +44,8 @@
 ///
 /// Only unsigned primitive integers are accepted:
 /// ```compile_fail
-/// # use devela::id_seq;
+/// use devela::id_seq;
+///
 /// id_seq![SignedId, i8];
 /// ```
 ///

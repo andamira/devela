@@ -31,6 +31,7 @@
 - remove `zall` and `zall_` public root modules.
 - remove `_doc/examples` module.
 - new tag: `_TAG_<REWORK|STATE|TOPOL>`.
+- refactor doc examples: unhide imports.
 - clarify public module and hidden scope features.
 - document project constitution.
 - update katex to v0.18.5.

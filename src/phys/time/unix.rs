@@ -49,7 +49,8 @@ impl TimeUnixI64 {
     ///
     /// # Examples
     /// ```
-    /// # use devela::TimeUnixI64;
+    /// use devela::TimeUnixI64;
+    ///
     /// assert_eq!["1970-01-01_00:00:01", TimeUnixI64::new(1).to_string()];
     /// assert_eq!["1969-12-31_23:59:59", TimeUnixI64::new(-1).to_string()];
     /// assert_eq!["2038-01-19_03:14:07", TimeUnixI64::new(i32::MAX as i64).to_string()];
@@ -73,7 +74,8 @@ impl TimeUnixI64 {
     ///
     /// # Examples
     /// ```
-    /// # use devela::TimeUnixI64;
+    /// use devela::TimeUnixI64;
+    ///
     /// assert_eq![(1970, 1, 1, 0, 0, 1), TimeUnixI64::new(1).split().to_tuple_y_s().unwrap()];
     /// assert_eq![(1969, 12, 31, 23, 59, 59),
     ///     TimeUnixI64::new(-1).split().to_tuple_y_s().unwrap()];
@@ -167,7 +169,8 @@ impl TimeUnixU32 {
     ///
     /// # Examples
     /// ```
-    /// # use devela::TimeUnixU32;
+    /// use devela::TimeUnixU32;
+    ///
     /// assert_eq!["1970-01-01_00:00:00", TimeUnixU32::new(0).to_string()];
     /// assert_eq!["2106-02-07_06:28:15", TimeUnixU32::new(u32::MAX).to_string()];
     /// ```
@@ -188,7 +191,8 @@ impl TimeUnixU32 {
     ///
     /// # Examples
     /// ```
-    /// # use devela::TimeUnixU32;
+    /// use devela::TimeUnixU32;
+    ///
     /// assert_eq![(1970, 1, 1, 0, 0, 1), TimeUnixU32::new(1).split().to_tuple_y_s().unwrap()];
     /// assert_eq![(2038, 1, 19, 3, 14, 7),
     ///     TimeUnixU32::new(i32::MAX as u32).split().to_tuple_y_s().unwrap()];

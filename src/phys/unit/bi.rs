@@ -85,7 +85,8 @@ impl UnitBi {
     ///
     /// # Examples
     /// ```
-    /// # use devela::UnitBi;
+    /// use devela::UnitBi;
+    ///
     /// assert_eq![UnitBi::Gibi.symbol(), "Gi"];
     /// ```
     #[must_use]

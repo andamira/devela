@@ -43,7 +43,8 @@ use crate::{Point, SimplexFacetIter, SimplexFacetView, is};
 ///
 /// # Example
 /// ```
-/// # use devela::{Point, Simplex};
+/// use devela::{Point, Simplex};
+///
 /// let triangle = Simplex::<i32, 2, 3>::new([
 ///     Point::new([0, 0]),
 ///     Point::new([4, 0]),

@@ -40,7 +40,8 @@ use crate::{ArrayCoordIter, ArrayLayout, ArrayShape};
 /// # Examples
 /// º
 /// ```
-/// # use devela::{ArrayLayout, ArrayShape, Array};
+/// use devela::{ArrayLayout, ArrayShape, Array};
+///
 /// let storage = [0, 1, 2, 3, 4, 5];
 /// let shape = ArrayShape::new([2, 3]);
 /// let layout = ArrayLayout::dense_last(shape)?;

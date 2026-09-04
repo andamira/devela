@@ -23,7 +23,8 @@ use devela::{Borrow, String, Vec};
 /// However, the trait itself is `core`-compatible
 /// # Examples
 /// ```ignore
-/// # use devela::{Ownership, MaybeOwned};
+/// use devela::{Ownership, MaybeOwned};
+///
 /// #[cfg(feature = "alloc")]
 /// impl Ownership for str {
 ///     type Owned = String;  // String implements Borrow<str>

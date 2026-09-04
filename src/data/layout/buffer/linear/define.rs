@@ -85,7 +85,8 @@
 ///
 /// ### Static buffer (default)
 /// ```
-/// # use devela::buffer_linear;
+/// use devela::buffer_linear;
+///
 /// buffer_linear!(
 ///     /// Static linear buffer.
 ///     pub struct BufferU8: (u8); array
@@ -98,7 +99,8 @@
 ///
 /// ### View buffer
 /// ```
-/// # use devela::buffer_linear;
+/// use devela::buffer_linear;
+///
 /// buffer_linear!(
 ///     /// Read-only linear view.
 ///     pub struct BufferViewU8: view (u8); slice
@@ -113,7 +115,8 @@
 /// ```
 /// # #[cfg(feature = "__std")] extern crate alloc;
 /// # #[cfg(feature = "__std")] {
-/// # use devela::buffer_linear;
+/// use devela::buffer_linear;
+///
 /// buffer_linear!(
 ///     /// Dynamic linear buffer.
 ///     pub struct BufferU8: alloc (u8); vec
@@ -127,7 +130,8 @@
 ///
 /// ### Separate implementation blocks
 /// ```
-/// # use devela::buffer_linear;
+/// use devela::buffer_linear;
+///
 /// buffer_linear!(pub struct BufferSplit: view (u8););
 /// buffer_linear!(impl BufferSplit: view (u8); slice, slice_mut);
 /// ```

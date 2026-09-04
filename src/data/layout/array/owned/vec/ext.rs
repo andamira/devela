@@ -23,7 +23,8 @@ pub trait VecExt<T>: Sealed {
     /// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.
     /// # Examples
     /// ```
-    /// # use devela::VecExt;
+    /// use devela::VecExt;
+    ///
     /// assert_eq![vec![1_u16, 2, 3], vec![1_u8, 2, 3].vec_into_vec::<u16>()];
     /// assert_eq![vec![1_u16, 2, 3], vec![1_u8, 2, 3].vec_into_vec::<u16>()];
     /// ```
@@ -35,7 +36,8 @@ pub trait VecExt<T>: Sealed {
     /// Tries to convert `Vec<T>` to `Vec<U>` when `U` implements `TryFrom<T>`.
     /// # Examples
     /// ```
-    /// # use devela::VecExt;
+    /// use devela::VecExt;
+    ///
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec::<_, i32>()];
     /// ```

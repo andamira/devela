@@ -17,7 +17,8 @@ impl Str {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Str;
+    /// use devela::Str;
+    ///
     /// let s = "Hello world!";
     /// assert_eq!(Str::take_first(s, 0), "");
     /// assert_eq!(Str::take_first(s, 3), "Hel");

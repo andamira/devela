@@ -83,7 +83,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonMaxU16, pool_seq};
+/// use devela::{NonMaxU16, pool_seq};
+///
 /// pool_seq! {
 ///     [
 ///         index: u8;

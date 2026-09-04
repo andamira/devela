@@ -92,7 +92,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{DstArray, DstQueue};
+    /// use devela::{DstArray, DstQueue};
+    ///
     /// let mut list = DstQueue::<str, DstArray<usize, 8>>::new();
     /// list.push_back_str("Hello");
     /// list.push_back_str("world");
@@ -110,7 +111,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{DstArray, DstQueue};
+    /// use devela::{DstArray, DstQueue};
+    ///
     /// let mut list = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -133,7 +135,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::{DstArray, DstQueue}, core::{any::Any, fmt::Debug}};
+    /// use devela::{Any, Debug, DstArray, DstQueue};
+    ///
     /// trait DebugAny: 'static + Any + Debug { fn as_any(&self) -> &dyn Any; }
     /// impl<DST: Debug + Any + 'static> DebugAny for DST { fn as_any(&self) -> &dyn Any { self } }
     /// let mut list = {
@@ -199,7 +202,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::{DstArray, DstQueue};
+    /// use devela::{DstArray, DstQueue};
+    ///
     /// let mut queue = DstQueue::<[String], DstArray<usize, 8>>::new();
     /// queue.push_cloned(&["1".to_owned()]);
     /// ```
@@ -215,7 +219,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::{DstArray, DstQueue};
+    /// use devela::{DstArray, DstQueue};
+    ///
     /// let mut queue = DstQueue::<[usize], DstArray<usize, 8>>::new();
     /// queue.push_copied(&[1]);
     /// ```
@@ -240,7 +245,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::{DstArray, DstQueue};
+    /// use devela::{DstArray, DstQueue};
+    ///
     /// let mut stack = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.front().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);

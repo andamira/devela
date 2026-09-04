@@ -36,7 +36,8 @@ impl Mem {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// use devela::Mem;
+    ///
     /// assert_eq!(Mem::align_down(13, 8), 8);
     /// assert_eq!(Mem::align_down(16, 8), 16);
     /// ```
@@ -87,7 +88,8 @@ impl Mem {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// use devela::Mem;
+    ///
     /// let result_from_ffi_fn: Result<(), &i32> = Err(&1);
     /// let result_copied: Result<(), i32> = result_from_ffi_fn.map_err(Mem::copy);
     /// ```
@@ -243,7 +245,8 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts`].
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// use devela::Mem;
+    ///
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -268,7 +271,8 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts_mut`].
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// use devela::Mem;
+    ///
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -296,7 +300,8 @@ impl Mem {
     /// This is a safer interface to `core::slice::`[`from_raw_parts`], for `Sized` types.
     /// # Examples
     /// ```
-    /// # use devela::Mem;
+    /// use devela::Mem;
+    ///
     /// const DATA: u32 = 1234;
     /// const BYTES: &[u8] = Mem::as_bytes_sized(&DATA);
     ///

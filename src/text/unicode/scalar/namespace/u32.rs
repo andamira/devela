@@ -65,7 +65,8 @@ impl Char<u32> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// assert!(Char('A' as u32).is_valid_code()); // regular character
     /// assert!(Char(0x00).is_valid_code());       // NULL is valid
     /// assert!(Char(0x10FFFF).is_valid_code());   // maximum Unicode code point
@@ -87,7 +88,8 @@ impl Char<u32> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Char;
+    /// use devela::Char;
+    ///
     /// assert!(Char('A' as u32).is_valid_scalar()); // regular character
     /// assert!(Char(0x00).is_valid_scalar());       // NULL is valid
     /// assert!(Char(0x10FFFF).is_valid_scalar());   // maximum Unicode scalar

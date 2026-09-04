@@ -13,7 +13,8 @@ impl Digits<u64> {
     #[doc = _DOC_COUNT_DIGITS_10!()]
     /// # Examples
     /// ```
-    /// # use devela::text::Digits;
+    /// use devela::Digits;
+    ///
     /// assert_eq![1, Digits(0_u64).count_digits10()];
     /// assert_eq![4, Digits(9876_u64).count_digits10()];
     /// ```

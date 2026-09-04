@@ -12,7 +12,8 @@
 ///
 /// Tuple and named forms admit every raw representation by default:
 /// ```
-/// # use devela::word;
+/// use devela::word;
+///
 /// word! { pub struct TupleWord(u32); }
 /// word! { pub struct NamedWord { bits: u32 } }
 ///
@@ -22,7 +23,8 @@
 ///
 /// A fallible form specifies the rejected representation domain:
 /// ```
-/// # use devela::word;
+/// use devela::word;
+///
 /// #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 /// pub struct NibbleError;
 ///
@@ -38,7 +40,8 @@
 ///
 /// Existing types may also provide an explicit representation lens:
 /// ```
-/// # use devela::word;
+/// use devela::word;
+///
 /// #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 /// struct Pair { low: u8, high: u8 }
 ///

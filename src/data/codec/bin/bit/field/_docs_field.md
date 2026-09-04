@@ -67,7 +67,8 @@ because `bitfield!` generates the methods `is_empty` and `is_full`.
 
 # Examples
 ```
-# use devela::bitfield;
+use devela::bitfield;
+
 bitfield! {
     struct Header(u16) {
         KIND = 0..=3;

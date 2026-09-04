@@ -13,7 +13,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
     /// let freq = Sort(&mut data[..]).counting();
     /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
@@ -47,7 +48,8 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Sort;
+    /// use devela::Sort;
+    ///
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).merge();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];

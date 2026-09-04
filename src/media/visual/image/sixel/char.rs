@@ -187,7 +187,8 @@ impl SixelChar {
     /// Uses ANSI escape codes for coloring and resets formatting at the end.
     /// # Examples
     /// ```ignore
-    /// # use devela::{Ansi, SixelChar, write_at};
+    /// use devela::{Ansi, SixelChar, write_at};
+    ///
     /// let (mut offset, mut result) = (0, [0; 65]);
     /// write_at![result, +=offset, @Ansi::BLACK_BG, @Ansi::RED, b'@', @'⠁'];
     /// assert_eq![
@@ -220,7 +221,8 @@ impl SixelChar {
     /// The output shows pixels from top to bottom.
     /// # Examples
     /// ```
-    /// # use devela::SixelChar;
+    /// use devela::SixelChar;
+    ///
     /// assert_eq![SixelChar::from_bitmask(0b111001).to_string_box(), "■□□■■■"];
     /// ```
     pub const fn to_string_box(&self) -> StringU8<20> {

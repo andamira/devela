@@ -19,7 +19,8 @@ use crate::{String, format};
 }]
 /// # Examples
 /// ```
-/// # use devela::Timecode;
+/// use devela::Timecode;
+///
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 004ns");
 /// ```

@@ -17,7 +17,7 @@
 ///
 /** # Examples
 ```
-# use devela::methods_as_fns;
+use devela::methods_as_fns;
 struct MyType;
 impl MyType {
     pub const fn add(a: i32, b: i32) -> i32 { a + b }

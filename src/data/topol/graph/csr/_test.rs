@@ -164,11 +164,11 @@ fn incoming_reachability_and_acyclicity() {
 
 /**
 ```compile_fail,E0080
-# use devela::GraphCsrExample as Graph;
+use devela::GraphCsrExample as Graph;
 let _ = Graph::<256, 0>::from_parts([None; 256], []);
 ```
 ```compile_fail,E0080
-# use devela::{GraphCsrExample as Graph, GraphCsrVertexExample as Vertex};
+use devela::{GraphCsrExample as Graph, GraphCsrVertexExample as Vertex};
 let v = Vertex::try_from_usize(0).unwrap();
 let _ = Graph::<1, 65_536>::from_parts(
     [None],

@@ -21,7 +21,8 @@ use crate::{Thread, ThreadExt};
 ///
 /// # Examples
 /// ```
-/// # use devela::SpinLock;
+/// use devela::SpinLock;
+///
 /// let lock = SpinLock::<i32, 5, 10, 100>::new(42);
 ///
 /// let mut guard = lock.lock(); // Acquire the lock

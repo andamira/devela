@@ -25,7 +25,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::Octant;
+/// use devela::Octant;
+///
 /// assert_eq!(Octant::encode(0x00), ' ');
 /// assert_eq!(Octant::encode(0xF0), '▌');
 /// assert_eq!(Octant::encode(0x0F), '▐');

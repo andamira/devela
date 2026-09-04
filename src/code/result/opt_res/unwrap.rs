@@ -30,12 +30,11 @@
 /// - `PAT => EXPR` further refines the selected payload and produces `EXPR`
 ///   from the pattern bindings; may be refutable.
 ///
-///
 /// Forms are provided only where these dimensions compose with clear semantics;
 /// not every possible combination is defined.
 ///
-///
 /// #### Selectors
+///
 /// - **`some`** - `Option<T>`
 /// - **`ok`** - `Result<T, E>` (success case)
 /// - **`err`** - `Result<T, E>` (error case)
@@ -91,7 +90,8 @@
 ///
 /// For example:
 /// ```
-/// # use devela::unwrap;
+/// use devela::unwrap;
+///
 /// enum Value { Int(i32), Bool(bool) }
 ///
 /// let value = Some(Value::Int(7));

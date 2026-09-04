@@ -33,7 +33,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::read_at;
+/// use devela::read_at;
+///
 /// let bytes = *b"RIFF\x24\0\0\0WAVE";
 /// let mut offset = 0;
 ///
@@ -60,7 +61,8 @@
 ///
 /// Fixed-width reads also compose directly with binary representations:
 /// ```
-/// # use devela::read_at;
+/// use devela::read_at;
+///
 /// let bytes = [0xC1, 2, 3, 4, 5, 6, 7, 8];
 ///
 /// let mut field = read_at!(bytes, 0, @8);

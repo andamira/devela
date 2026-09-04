@@ -16,7 +16,8 @@ use crate::{Debug, FmtResult, Formatter};
 ///
 /// # Examples
 /// ```
-/// # use devela::{DebugExt, FmtResult, Formatter};
+/// use devela::{DebugExt, FmtResult, Formatter};
+///
 /// enum Mode { Hex, Dec }
 /// struct Value(u32);
 /// impl DebugExt for Value {

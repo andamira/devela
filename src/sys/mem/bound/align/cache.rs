@@ -34,7 +34,8 @@
 /// # Examples
 /// Alignment and padding:
 /// ```
-/// # use devela::CacheAlign;
+/// use devela::CacheAlign;
+///
 /// let array = [CacheAlign::new(1i8), CacheAlign::new(2i8)];
 /// let addr1 = &*array[0] as *const i8 as usize;
 /// let addr2 = &*array[1] as *const i8 as usize;
@@ -48,7 +49,8 @@
 /// different cache lines so that concurrent threads pushing and popping elements don't invalidate
 /// each other's cache lines:
 /// ```ignore
-/// # use devela::{CacheAlign, AtomicUsize};
+/// use devela::{CacheAlign, AtomicUsize};
+///
 /// struct Queue<T> {
 ///     head: CacheAlign<AtomicUsize>,
 ///     tail: CacheAlign<AtomicUsize>,
@@ -155,7 +157,8 @@ impl<T> CacheAlign<T> {
     #[must_use]
     /// Pads and aligns a value to the length of a cache line.
     /// ```
-    /// # use devela::CacheAlign;
+    /// use devela::CacheAlign;
+    ///
     /// let padded_value = CacheAlign::new(1);
     /// ```
     pub const fn new(t: T) -> CacheAlign<T> { CacheAlign::<T> { value: t } }
@@ -163,7 +166,8 @@ impl<T> CacheAlign<T> {
     #[must_use]
     /// The inner value.
     /// ```
-    /// # use devela::CacheAlign;
+    /// use devela::CacheAlign;
+    ///
     /// let padded_value = CacheAlign::new(7);
     /// let value = padded_value.into_inner();
     /// assert_eq!(value, 7);

@@ -40,7 +40,8 @@
 ///
 /// EAN-8:
 /// ```
-/// # use devela::Ean;
+/// use devela::Ean;
+///
 /// let digits = [9, 6, 3, 8, 5, 0, 7, 4];
 ///
 /// assert!(Ean::<8>::is_valid(digits));
@@ -50,7 +51,8 @@
 ///
 /// EAN-13:
 /// ```
-/// # use devela::Ean;
+/// use devela::Ean;
+///
 /// let digits = [4, 0, 0, 6, 3, 8, 1, 3, 3, 3, 9, 3, 1];
 ///
 /// assert!(Ean::<13>::is_valid(digits));

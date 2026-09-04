@@ -23,7 +23,8 @@
 ///
 /// ## Examples
 /// ```
-/// # use devela::impl_trait;
+/// use devela::impl_trait;
+///
 /// struct S0(usize);
 /// struct S1<T> { v: T }
 /// struct S2<'a, T> { v: &'a T }

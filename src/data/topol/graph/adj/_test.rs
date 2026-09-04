@@ -209,11 +209,11 @@ fn incoming_reachability_and_acyclicity() {
 
 /**
 ```compile_fail,E0080
-# use devela::GraphAdjExample as Graph;
+use devela::GraphAdjExample as Graph;
 let _ = Graph::<256, 0>::new();
 ```
 ```compile_fail,E0080
-# use devela::GraphAdjExample as Graph;
+use devela::GraphAdjExample as Graph;
 let _ = Graph::<0, 65536>::new();
 ```
 **/

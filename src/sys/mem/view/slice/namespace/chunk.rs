@@ -11,7 +11,8 @@ impl<T> Slice<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// let bytes = b"abcdefg";
     /// let (count, rem) = Slice::chunks_exact::<3>(bytes);
     /// assert_eq!(count, 2); // "abc", "def"
@@ -38,7 +39,8 @@ impl<T> Slice<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// let b = b"abcdefgh";
     /// assert_eq!(Slice::chunk::<3>(b, 0), Some(&b"abc"[..]));
     /// assert_eq!(Slice::chunk::<3>(b, 1), Some(&b"def"[..]));
@@ -56,7 +58,8 @@ impl<T> Slice<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// let mut b = *b"abcdef";
     /// if let Some(ch) = Slice::chunk_mut::<3>(&mut b, 1) {
     ///     ch[0] = b'X';

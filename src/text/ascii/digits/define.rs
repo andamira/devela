@@ -57,7 +57,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{Digits, Slice};
+/// use devela::{Digits, Slice};
+///
 /// let dec = Digits(12345_u32);
 /// assert_eq!(dec.digit_at_index10(0), b'5');
 /// assert_eq!(dec.digit_at_index10(4), b'1');

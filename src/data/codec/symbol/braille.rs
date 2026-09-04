@@ -23,7 +23,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::BrailleByte;
+/// use devela::BrailleByte;
+///
 /// let input = [0x00, 0x55, 0xAA, 0xFF];
 /// let mut encoded = [0; 12];
 ///

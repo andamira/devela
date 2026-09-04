@@ -38,7 +38,8 @@ struct ConstListItem<'a, T: 'a> {
 ///
 /// # Examples
 /// ```
-/// # use devela::ConstList;
+/// use devela::ConstList;
+///
 /// const MY_LIST: ConstList<'static, i32> = ConstList::new()
 ///     .push(2)
 ///     .push(4)

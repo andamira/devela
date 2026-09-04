@@ -66,7 +66,8 @@ expression is used once per command.
 # Examples
 
 ```
-# use devela::{ansi, const_assert};
+use devela::{ansi, const_assert};
+
 assert_eq![&[27, 91, 49, 109], ansi![b: bold]];
 assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansi![b: bold, ITALIC]];
 assert_eq![&[27, 91, 50, 59, 51, 72], ansi![b: cursor_move1(3, 2)]];

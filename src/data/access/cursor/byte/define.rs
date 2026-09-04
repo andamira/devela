@@ -34,7 +34,8 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{ByteCursor, NotEnoughSpace};
+/// use devela::{ByteCursor, NotEnoughSpace};
+///
 /// let bytes = b"RIFF\x24\x00\x00\x00WAVE";
 /// let mut cur = ByteCursor::reader(bytes);
 ///

@@ -19,7 +19,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::sf;
+/// use devela::sf;
+///
 /// // rustfmt has no powers here
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```

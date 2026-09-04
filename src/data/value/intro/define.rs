@@ -12,9 +12,9 @@
 /// Provides structural metadata about types and values.
 /// Implement for any type to describe its fundamental properties.
 ///
-///
 /// ```ignore
-/// # use devela::Introspect;
+/// use devela::Introspect;
+///
 /// enum MyKind { A, B, C }
 ///
 /// struct MyTypeA;

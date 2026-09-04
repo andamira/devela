@@ -30,7 +30,8 @@
 ///
 /// Defines a macro that captures any token sequence:
 /// ```
-/// # use devela::macro_dollar;
+/// use devela::macro_dollar;
+///
 /// macro_dollar! { ($d:tt) => {
 ///     macro_rules! capture_tokens {
 ///         ($d($item:tt)*) => {
@@ -43,7 +44,8 @@
 ///
 /// Defines a macro with a repeated matcher and optional trailing comma:
 /// ```
-/// # use devela::macro_dollar;
+/// use devela::macro_dollar;
+///
 /// macro_dollar! { ($d:tt) => {
 ///     macro_rules! capture_idents {
 ///         ($d($item:ident),+ $d(,)?) => {

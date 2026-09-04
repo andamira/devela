@@ -19,7 +19,8 @@ crate::mods_in! {
 }]
 /// # Examples
 /// ```
-/// # use devela::data::{DstArray, DstQueue};
+/// use devela::{DstArray, DstQueue};
+///
 /// let mut queue = DstQueue::<str, DstArray<usize, 8>>::new();
 /// queue.push_back_str("Hello");
 /// queue.push_back_str("World");
@@ -40,7 +41,8 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
 }]
 /// # Examples
 /// ```
-/// # use devela::data::DstQueueUsize;
+/// use devela::DstQueueUsize;
+///
 /// let mut queue = DstQueueUsize::<[u8], 16>::new();
 /// queue.push_copied(&[1]);
 /// ```

@@ -52,7 +52,8 @@ to expand to the current crate name.
 
 # Examples
 ```
-# use devela::doclink;
+use devela::doclink;
+
 /// Links to [`AnotherExample`] and [some module].
 #[doc = doclink!(crate_name \"[`AnotherExample`]\" \"path/to/module\" @item struct AnotherExample)]
 #[doc = doclink!(crate_name \"[some module]\" \"path/to/some_module\" @mod)]

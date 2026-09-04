@@ -58,7 +58,8 @@ use crate::__ansi_consts;
 ///
 /// # Examples
 /// ```
-/// # use devela::Ansi;
+/// use devela::Ansi;
+///
 /// assert_eq![Ansi::ITALIC_B, *b"\x1b[3m"];
 /// assert_eq![Ansi::ITALIC, "\x1b[3m"];
 /// ```

@@ -15,8 +15,9 @@
 /// ## Examples
 /// ```
 /// mod bar {
+///     use devela::fn_name;
+///
 ///     pub fn sample_function() {
-///         # use devela::fn_name;
 ///         assert!(fn_name!().ends_with("bar::sample_function"));
 ///     }
 /// }

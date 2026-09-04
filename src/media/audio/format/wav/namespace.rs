@@ -35,7 +35,8 @@ use crate::{
 ///
 /// # Example
 /// ```
-/// # use devela::{AudioChannels, PcmRaw, PcmSample, PcmSpec, PcmWav, PcmWavError, PcmWavFmt};
+/// use devela::{AudioChannels, PcmRaw, PcmSample, PcmSpec, PcmWav, PcmWavError, PcmWavFmt};
+///
 /// # fn main() -> Result<(), PcmWavError> {
 /// let spec = PcmSpec::new(PcmSample::I16, AudioChannels::Stereo, 44_100);
 /// let fmt = PcmWavFmt::from_spec(spec)?;

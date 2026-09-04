@@ -32,7 +32,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{Slice, Str, write_at};
+/// use devela::{Slice, Str, write_at};
+///
 /// let mut bytes = [0u8; 8];
 /// let mut offset = 0;
 ///

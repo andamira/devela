@@ -52,7 +52,8 @@ use ::core::ops::{
 ///
 /// # Examples
 /// ```
-/// # use devela::interval;
+/// use devela::interval;
+///
 /// # let (x, y) = (10, 20);
 /// # fn calc() -> i32 { 10 }
 /// # fn other() -> i32 { 20 }
@@ -253,7 +254,8 @@ impl<T: Copy> Interval<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Interval;
+    /// use devela::Interval;
+    ///
     /// let r = Interval::from(1..3usize);
     /// assert_eq!("bc", &"abcd"[r.to_tuple()]);
     /// ```
@@ -370,7 +372,8 @@ impl<T: PartialOrd> Interval<T> {
     /// Checks if the interval contains the given value.
     ///
     /// ```
-    /// # use devela::Interval;
+    /// use devela::Interval;
+    ///
     /// let interval = Interval::closed(1, 5);
     /// assert!(interval.contains(&3));
     /// assert!(!interval.contains(&6));

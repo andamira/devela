@@ -140,7 +140,7 @@ fn unit_only_iteration() {
 
 /**
 ```compile_fail
-# use devela::enumset;
+use devela::enumset;
 enumset! { enum E(pub ES: u8) { A(bool) } }
 let _ = E::ALL;
 ```

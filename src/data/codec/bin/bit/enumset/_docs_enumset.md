@@ -32,7 +32,8 @@ would collide with common methods. Avoid:
 
 # Examples
 ```
-# use devela::enumset;
+use devela::enumset;
+
 enumset! {
     #[derive(Debug)]
     pub enum MyEnum(pub MyEnumSet: u8) {
@@ -64,7 +65,8 @@ assert![es.contains(MyEnumSet::Variant1)];
 
 Unit-only enums also support enum-value iteration:
 ```
-# use devela::enumset;
+use devela::enumset;
+
 enumset! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq)]
     pub enum Mode(pub ModeSet: u8) {

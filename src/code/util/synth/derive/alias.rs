@@ -22,7 +22,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{macro_apply_alias, macro_apply};
+/// use devela::{macro_apply_alias, macro_apply};
+///
 /// macro_apply_alias! {
 ///     inline_must =
 ///         #[inline]
@@ -40,7 +41,8 @@
 ///
 /// Passing arguments:
 /// ```
-/// # use devela::{macro_apply_alias, macro_apply};
+/// use devela::{macro_apply_alias, macro_apply};
+///
 /// macro_apply_alias! {
 ///     repr_doc($repr:ident, $doc:literal) =
 ///         #[repr($repr)]
@@ -138,7 +140,8 @@ pub use macro_apply_alias· as macro_apply_alias;
 ///
 /// # Example
 /// ```
-/// # use devela::{macro_derive_alias, macro_derive};
+/// use devela::{macro_derive_alias, macro_derive};
+///
 /// macro_derive_alias! {
 ///     CopyEq = #[derive(Clone, Copy, PartialEq, Eq)];
 ///     Value = #[derive(CopyEq!, Debug)];
@@ -156,7 +159,8 @@ pub use macro_apply_alias· as macro_apply_alias;
 ///
 /// Passing arguments:
 /// ```
-/// # use devela::{macro_derive_alias, macro_derive};
+/// use devela::{macro_derive_alias, macro_derive};
+///
 /// macro_rules! derive_label {
 ///     (
 ///         ($label:literal)

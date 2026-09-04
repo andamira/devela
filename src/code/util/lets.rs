@@ -22,7 +22,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::lets;
+/// use devela::lets;
+///
 /// // Basic declarations
 /// lets! { name = "John", mut age = 30; active: bool = true, }
 ///

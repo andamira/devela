@@ -45,7 +45,8 @@ use crate::{PhantomData, is, whilst};
 ///
 /// Borrowed interleaved stereo samples:
 /// ```
-/// # use devela::{AudioChannels, PcmBuf, PcmSample};
+/// use devela::{AudioChannels, PcmBuf, PcmSample};
+///
 /// let pcm = PcmBuf::from_parts(
 ///     &[0i16, 1, 2, 3][..],
 ///     PcmSample::I16,
@@ -58,7 +59,8 @@ use crate::{PhantomData, is, whilst};
 ///
 /// Borrowed planar stereo samples:
 /// ```
-/// # use devela::{AudioChannels, PcmBuf, PcmSample, PcmSpec};
+/// use devela::{AudioChannels, PcmBuf, PcmSample, PcmSpec};
+///
 /// let left = [0i16, 2];
 /// let right = [1i16, 3];
 /// let planes: &[&[i16]] = &[&left, &right];

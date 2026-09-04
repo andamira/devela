@@ -11,7 +11,8 @@
 /// Expands directly to the corresponding `Cast` method.
 ///
 /// ```rust
-/// # use devela::{Cast, cast};
+/// use devela::{Cast, cast};
+///
 /// // numeric cast
 /// let c: u64 = 2000;
 /// assert_eq![

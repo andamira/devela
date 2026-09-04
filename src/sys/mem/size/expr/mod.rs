@@ -18,7 +18,8 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 ///
 /// # Examples
 /// ```
-/// # use devela::size_of_expr;
+/// use devela::size_of_expr;
+///
 /// async fn f() {
 ///     let x = 1;
 ///     core::future::ready(()).await;

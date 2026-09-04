@@ -24,7 +24,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{niche, NonZeroU8, NonMaxU8, NonMinI8, NonValueU8};
+/// use devela::{niche, NonZeroU8, NonMaxU8, NonMinI8, NonValueU8};
+///
 /// let a: NonZeroU8     = niche!(42_u8;  != 0);
 /// let b: NonMaxU8      = niche!(42_u8;  != MAX);
 /// let c: NonMinI8      = niche!(-42_i8; != MIN);
@@ -172,7 +173,8 @@ macro_rules! _generate_niche_prim {
         ///
         /// # Examples
         /// ```
-        /// # use devela::{NonValueU8, niche_prim};
+        /// use devela::{NonValueU8, niche_prim};
+        ///
         /// let x: niche_prim!(NonValueU8<43>) = 3_u8;
         /// ```
         #[macro_export]

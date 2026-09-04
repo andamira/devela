@@ -86,7 +86,8 @@ impl<T: Sized> Hook for T {}
 ///
 /// # Examples
 /// ```
-/// # use devela::{const_assert, is, hook};
+/// use devela::{const_assert, is, hook};
+///
 /// /* expression syntax */
 /// const ARRAY: [u8; 4] = [3, 1, 4, 1];
 /// const DATA: [u8; 4] = hook!(ARRAY; |v| v[0] = 9; v[3] = 7);
@@ -199,7 +200,8 @@ impl<T: ?Sized, R> Morph<R> for T {}
 ///
 /// # Examples
 /// ```
-/// # use devela::{const_assert, is, morph};
+/// use devela::{const_assert, is, morph};
+///
 /// const S: &str = morph!(3u8, |v| v as usize, v * 2, v + 1, if v == 7 { "7" } else { "not7" });
 /// const_assert![eq_str S, "7"];
 /// ```

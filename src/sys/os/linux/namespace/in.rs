@@ -120,7 +120,8 @@ impl Linux {
     ///
     /// # Examples
     /// ```no_run
-    /// # use devela::Linux;
+    /// use devela::Linux;
+    ///
     /// let mut name_buffer = [0_u8; 32];
     /// let name: &str = Linux::prompt::<32>("Enter your name: ", &mut name_buffer).unwrap();
     /// ```
@@ -133,7 +134,8 @@ impl Linux {
     ///
     /// # Examples
     /// ```no_run
-    /// # use devela::Linux;
+    /// use devela::Linux;
+    ///
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_line::<32>(&mut buf).unwrap();
     /// ```
@@ -145,7 +147,8 @@ impl Linux {
     ///
     /// # Examples
     /// ```no_run
-    /// # use devela::Linux;
+    /// use devela::Linux;
+    ///
     /// let mut buf = [0_u8; 32];
     /// let name: &str = Linux::get_str::<32>(&mut buf, '\n').unwrap();
     /// ```

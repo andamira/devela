@@ -25,7 +25,8 @@
 /// # Examples
 /// Sort copied arrays of primitives:
 /// ```
-/// # use devela::Sort;
+/// use devela::Sort;
+///
 /// let mut arr = [4i32, 7, -5, 1, -13, 0]; // signed primitives
 /// assert_eq![Sort(arr).bubble_array(),    [-13, -5, 0, 1, 4, 7]];
 /// assert_eq![Sort(arr).insertion_array(), [-13, -5, 0, 1, 4, 7]];

@@ -15,7 +15,8 @@ The single-argument form also accepts floating-point literals:
 
 # Examples
 ```
-# use devela::sleep4;
+use devela::sleep4;
+
 sleep4![1, 0, 500]; // sleeps for 1 second + 500 microseconds
 sleep4![1.5]; // sleeps for 1.5 seconds
 ```

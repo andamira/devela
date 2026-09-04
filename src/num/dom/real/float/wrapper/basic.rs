@@ -223,7 +223,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             #[doc = crate::_FLOAT_FORMULA_SCALE!()]
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., 0., 1.), 0.125];"]]
             #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., -1., 1.), -0.75];"]]
             #[doc = cc!["assert_eq![Float(0.125_", sfy![$f], ").scale(0., 1., 0., 360.), 45.];"]]
@@ -243,7 +244,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             #[doc = crate::_FLOAT_FORMULA_LERP!()]
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
             // TODO more examples extrapolated
             /// ```
@@ -396,7 +398,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp(40., 80.), 50.];"]]
             #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp(40., 80.), 80.];"]]
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp(40., 80.), 40.];"]]
@@ -423,7 +426,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_total(40., 80.), 50.];"]]
             #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp_total(40., 80.), 80.];"]]
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_total(40., 80.), 40.];"]]
@@ -451,7 +455,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_nan(40., 80.), 50.];"]]
             #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp_nan(40., 80.), 80.];"]]
             #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_nan(40., 80.), 40.];"]]
@@ -465,7 +470,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").max_nan(80.), 80.];"]]
             #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").max_nan(80.), 100.];"]]
             /// ```
@@ -489,7 +495,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").min_nan(80.), 50.];"]]
             #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").min_nan(80.), 80.];"]]
             /// ```
@@ -542,7 +549,8 @@ macro_rules! _num_dom_real_float_impl_basic {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Float;
+            /// use devela::Float;
+            ///
             /// let coefficients = [2.0, -6.0, 2.0, -1.0];
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&coefficients), 5.0];"]]
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&[]), 0.0];"]]

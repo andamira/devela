@@ -112,7 +112,6 @@ impl EventWheel {
 }]
 /// This describes the meaning of `delta_x` and `delta_y` after backend normalization.
 ///
-///
 /// # Notes
 /// - [`Step`][Self::Step] is the default and represents
 ///   discrete wheel notches or equivalent semantic steps.

@@ -96,7 +96,8 @@ impl Ptr {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Ptr;
+    /// use devela::Ptr;
+    ///
     /// const STACK_SIZE: usize = 2 << 20; // assume a 2 MB stack size
     ///
     /// let in_stack: [i32; 10] = [0; 10];

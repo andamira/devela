@@ -21,7 +21,8 @@ use crate::{Mem, NonZeroUsize, Wasm};
 ///
 /// # Examples
 /// ```ignore
-/// # use devela::WasmAlloc;
+/// use devela::WasmAlloc;
+///
 /// #[global_allocator]
 /// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
 /// ```

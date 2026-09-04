@@ -37,7 +37,8 @@ items! { impl_non_value![U 128, usize]; impl_non_value![I 128, isize]; }
 ///
 /// # Examples
 /// ```
-/// # use devela::{NonValueI8, NonValueU8, NonMaxU16, NonMinI8};
+/// use devela::{NonValueI8, NonValueU8, NonMaxU16, NonMinI8};
+///
 /// assert![NonValueI8::<3>::new(2).is_some()];
 /// assert![NonValueI8::<3>::new(3).is_none()];
 ///
@@ -100,7 +101,8 @@ macro_rules! impl_non_value {
             ///
             /// # Examples
             /// ```ignore
-            /// # use devela::NonValueI8;
+            /// use devela::NonValueI8;
+            ///
             /// assert![NonValueI8::<13>::new(13).is_none()];
             /// assert![NonValueI8::<13>::new(12).unwrap().get() == 12];
             /// ```
@@ -198,7 +200,8 @@ macro_rules! impl_non_value {
                 ///
                 /// # Examples
                 /// ```
-                /// # use devela::{NonValueI8, NonValueU8};
+                /// use devela::{NonValueI8, NonValueU8};
+                ///
                 /// let x = assert_eq![NonValueU8::<255>::new_lossy(255).get(), 254];
                 /// let y = assert_eq![NonValueI8::<-128>::new_lossy(-128).get(), -127];
                 /// ```

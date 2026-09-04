@@ -68,7 +68,8 @@
 /// # Examples
 /// Assertion checks:
 /// ```
-/// # use devela::{NonZeroU8, test_size_of};
+/// use devela::{NonZeroU8, test_size_of};
+///
 /// test_size_of![assert u8 = 1];
 /// test_size_of![assert u16 = 2|16];
 /// test_size_of![assert [u8; 4] = 4];
@@ -86,7 +87,8 @@
 ///
 /// Fallible checks:
 /// ```
-/// # use devela::test_size_of;
+/// use devela::test_size_of;
+///
 /// let mut buf = [0; 128];
 ///
 /// let (ok, ty, msg) = test_size_of![check_into &mut buf; u16 = 2|16];
@@ -102,7 +104,8 @@
 ///
 /// Printable checks:
 /// ```
-/// # use devela::test_size_of;
+/// use devela::test_size_of;
+///
 /// let mut buf = [0; 128];
 ///
 /// let (ok, line) = test_size_of![line_into &mut buf; u16 = 2|16];
@@ -112,7 +115,8 @@
 ///
 /// Generated tests:
 /// ```
-/// # use devela::{NonZeroU8, test_size_of};
+/// use devela::{NonZeroU8, test_size_of};
+///
 /// test_size_of![u32 = 4];
 /// test_size_of![u8_no_niche: u8 = 1; niche !Option];
 /// test_size_of![nonzero_u8_niche: ::NonZeroU8 = 1; niche Option];

@@ -16,7 +16,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::items;
+/// use devela::items;
+///
 /// #[cfg(feature = "something")]
 /// items! {
 ///     mod something {

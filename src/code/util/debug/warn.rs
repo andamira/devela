@@ -10,7 +10,8 @@
 }]
 /// # Example
 /// ```
-/// # use devela::const_warn;
+/// use devela::const_warn;
+///
 /// fn main() {
 ///     const_warn!("hello warning!");
 ///     const_warn!(if size_of::<u8>() == 1, "byte alert!!");

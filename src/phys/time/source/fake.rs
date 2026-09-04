@@ -26,7 +26,8 @@ use crate::{AtomicOrdering, AtomicU64, TimeScale, TimeSourceCfg};
 ///
 /// # Example:
 /// ```
-/// # use devela::{TimeFake, TimeScale};
+/// use devela::{TimeFake, TimeScale};
+///
 /// // Create an independent fake clock starting at t = 100 ms
 /// let clock = TimeFake::new(100, TimeScale::Millis);
 ///
@@ -121,7 +122,8 @@ impl TimeFake {
 ///
 /// # Examples
 /// ```
-/// # use devela::{TimeFake, TimeFakeRef, TimeSourceCfg};
+/// use devela::{TimeFake, TimeFakeRef, TimeSourceCfg};
+///
 /// // Create a fake clock
 /// let clock = TimeFake::new_millis(500);
 ///

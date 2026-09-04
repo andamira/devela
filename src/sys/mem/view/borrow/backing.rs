@@ -19,7 +19,8 @@ use devela::RangeFull;
 ///
 /// # Examples
 /// ```ignore
-/// # use devela::{Backing, MaybeOwned};
+/// use devela::{Backing, MaybeOwned};
+///
 /// fn process(mode: Backing<'_>) -> MaybeOwned<'_, str> {
 ///     match mode {
 ///         Backing::Buf(buffer) => MaybeOwned::borrowed(/*...*/),

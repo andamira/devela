@@ -77,7 +77,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -98,7 +99,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// use devela::{Int, IntError::NonNegativeRequired};
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
@@ -124,7 +126,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// use devela::{Int, IntError::NonNegativeRequired};
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
@@ -162,7 +165,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// use devela::{Int, IntError::NonNegativeRequired};
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -203,7 +207,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// use devela::{Int, IntError::NonNegativeRequired};
+            ///
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -253,7 +258,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, IntError::NonNegativeRequired};
+            /// use devela::{Int, IntError::NonNegativeRequired};
+            ///
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -309,7 +315,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -330,7 +337,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Int(4)];"]
@@ -349,7 +357,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Int(4)];"]
@@ -385,7 +394,8 @@ macro_rules! __impl_int_root {
             #[doc = _DOC_INT_ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -422,7 +432,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -457,7 +468,8 @@ macro_rules! __impl_int_root {
             ///
             /// # Examples
             /// ```
-            /// # use devela::Int;
+            /// use devela::Int;
+            ///
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]

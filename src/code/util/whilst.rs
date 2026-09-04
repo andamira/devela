@@ -13,7 +13,8 @@
 ///
 /// - A **`while`-like** loop, with optional initialization, pre-step, and post-step:
 /// ```
-/// # use devela::{is, lets, whilst};
+/// use devela::{is, lets, whilst};
+///
 /// // With init, post-step only
 /// let mut sum = 0;
 /// whilst![x = 0; x < 5; {; x += 1} sum += x];
@@ -50,7 +51,7 @@
 ///
 /// - A **`for`-like** loop, iterating over indexed storage or numeric ranges:
 /// ```
-/// # use devela::whilst;
+/// use devela::whilst;
 ///
 /// /* slices */
 ///

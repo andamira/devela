@@ -30,7 +30,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::type_resource;
+/// use devela::type_resource;
+///
 /// type_resource![Id0:u8]; // single definition and resource
 /// type_resource![Id1,Id2:u16]; // multiple definitions, same resource
 /// type_resource![Id3,Id4:u32; Id5:u64; Id6,Id7:i8]; // diferent resources
@@ -88,7 +89,8 @@ pub trait TypeResourced {
 ///
 /// # Examples
 /// ```
-/// # use devela::type_resource;
+/// use devela::type_resource;
+///
 /// type_resource![Id1, Id2: u32];
 /// let (id1, id2) = (Id1::new(42), Id2::new(42));
 ///
@@ -96,7 +98,8 @@ pub trait TypeResourced {
 /// assert_eq!(*id1.get(), *id2.get());
 /// ```
 /// ```compile_fail
-/// # use devela::type_resource;
+/// use devela::type_resource;
+///
 /// # type_resource![Id1, Id2: u32];
 /// # let (id1, id2) = (Id1::new(42), Id2::new(42));
 /// assert_eq!(id1, id2); // type mismatch compile error

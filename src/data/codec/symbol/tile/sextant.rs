@@ -23,7 +23,8 @@ use crate::{Str, charu, is, slice, unwrap, whilst, write_at};
 ///
 /// # Example
 /// ```
-/// # use devela::Sextant;
+/// use devela::Sextant;
+///
 /// assert_eq!(Sextant::encode(0b000000), Some(' '));
 /// assert_eq!(Sextant::encode(0b100000), Some('🬀'));
 /// assert_eq!(Sextant::encode(0b111000), Some('▌'));

@@ -60,7 +60,8 @@ pub enum DivisorInner<T> {
 ///
 /// ## Examples
 /// ```
-/// # use devela::divisor;
+/// use devela::divisor;
+///
 /// // Define and implement a divisor type for a single primitive:
 /// divisor![pub struct DivU8 : (u8) impl];
 /// let d = DivU8::new(5).unwrap();
@@ -201,7 +202,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(-21).unwrap();"]]
             /// # }
             /// ```
@@ -242,7 +244,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(-15).unwrap();"]]
             /// assert_eq!(d.get(), -15);
             /// # }
@@ -265,7 +268,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(-9).unwrap();"]]
             /// assert!(d.divides(27));
             /// # }
@@ -280,7 +284,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(21).unwrap();"]]
             /// let rem = d.rem_of(-30);
             /// assert_eq!(rem, -9);
@@ -303,7 +308,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(13).unwrap();"]]
             /// let div = d.div_of(-30);
             /// assert_eq!(div, -2);
@@ -361,7 +367,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let _d = DivisorExample::<", stringify![$t], ">::new(5);"]]
             /// # }
             /// ```
@@ -394,7 +401,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(7).unwrap();"]]
             /// assert_eq!(d.get(), 7);
             /// # }
@@ -416,7 +424,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(17).unwrap();"]]
             /// assert!(d.divides(34));
             /// # }
@@ -431,7 +440,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(11).unwrap();"]]
             /// let rem = d.rem_of(30);
             /// assert_eq!(rem, 8);
@@ -447,7 +457,8 @@ macro_rules! divisor {
             /// # Examples
             /// ```
             /// # #[cfg(feature = "_docs_examples")] {
-            /// # use devela::DivisorExample;
+            /// use devela::DivisorExample;
+            ///
             #[doc = concat!["let d = DivisorExample::<", stringify![$t], ">::new(17).unwrap();"]]
             /// let div = d.div_of(34);
             /// assert_eq!(div, 2);

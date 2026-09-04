@@ -14,7 +14,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{const_assert, const_join};
+/// use devela::{const_assert, const_join};
+///
 /// /* string slices */
 ///
 /// const SBASE: &str = "path/to";

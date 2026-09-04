@@ -38,7 +38,8 @@
 ///
 /// # Usage Patterns
 /// ```ignore
-/// # use devela::mods_out;
+/// use devela::mods_out;
+///
 /// # mod some_module {}
 /// # mod other_module {}
 /// # pub mod public_module { pub(super) mod _all {} }

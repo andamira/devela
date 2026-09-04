@@ -121,7 +121,8 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 ///
 /// # Example
 /// ```
-/// # use devela_macros::ident_total;
+/// use devela_macros::ident_total;
+///
 /// assert_eq![ident_total!(a, a 東 r#true; a3 != 3a), 5];
 /// ```
 #[proc_macro] #[rustfmt::skip]
@@ -140,7 +141,8 @@ pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 ///
 /// # Example
 /// ```
-/// # use devela_macros::ident_total_unique;
+/// use devela_macros::ident_total_unique;
+///
 /// assert_eq![ident_total_unique!(a, a 東 r#true; a3 != 3a), [5, 4]];
 /// ```
 #[proc_macro] #[rustfmt::skip]
@@ -159,7 +161,8 @@ pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 ///
 /// # Example
 /// ```
-/// # use devela_macros::ident_unique;
+/// use devela_macros::ident_unique;
+///
 /// assert_eq![ident_unique!(a, a 東 r#true; a3 != 3a), 4];
 /// ```
 #[proc_macro] #[rustfmt::skip]
@@ -269,7 +272,8 @@ pub fn enumint(input: TS) -> TS { body_enumint(input) }
 ///
 /// # Example
 /// ```
-/// # use devela_macros::field_of;
+/// use devela_macros::field_of;
+///
 /// let my_tuple = (42, 100, 300);
 /// let value = field_of!(my_tuple, 1); // expands to `my_tuple.1`
 /// assert_eq!(value, 100);
@@ -295,7 +299,8 @@ pub fn paste(input: TS) -> TS { body_paste(input) }
 ///
 /// # Example
 /// ```
-/// # use devela_macros::repeat;
+/// use devela_macros::repeat;
+///
 /// let mut a = 0;
 /// repeat![3, a += 1];
 /// assert_eq![a, 3];

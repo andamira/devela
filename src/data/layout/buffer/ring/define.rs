@@ -64,7 +64,6 @@ buffer_ring!(
 /// Primitive unsigned integers and supported niche wrappers are accepted
 /// through [`MaybeNiche`][crate::MaybeNiche].
 ///
-///
 /// ## Storage backends
 ///
 /// Backends are opt-in and selected after the struct declaration.
@@ -90,10 +89,10 @@ buffer_ring!(
 ///   It supports moving arbitrary `T` values in and out
 ///   without requiring replacement values.
 ///
-///
 /// ## Examples
 /// ```
-/// # use devela::buffer_ring;
+/// use devela::buffer_ring;
+///
 /// buffer_ring!(
 ///     /// Static ring buffer.
 ///     pub struct RingU8: (u8);

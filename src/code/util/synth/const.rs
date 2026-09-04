@@ -14,7 +14,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::CONST;
+/// use devela::CONST;
 ///
 /// CONST!{ /* Supports empty declarations */ }
 ///

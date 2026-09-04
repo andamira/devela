@@ -56,8 +56,9 @@ pub trait ResultExt<T, E>: Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// # use devela::OptionExt;
-    // /// # use core::{cmp::min, ops::Add};
+    // /// use core::cmp::min;
+    // /// use devela::{Add, OptionExt};
+    // ///
     // /// let x = Some(2);
     // /// let y = Some(4);
     // ///

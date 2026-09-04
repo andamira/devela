@@ -34,7 +34,8 @@ It stores the numerator and denominator as separate terms.";
 ///
 /// # Examples
 /// ```
-/// # use devela::RatioU8;
+/// use devela::RatioU8;
+///
 /// let aspect_ratio = RatioU8::new(16, 9).unwrap();
 /// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

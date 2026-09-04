@@ -81,7 +81,8 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{NonMaxU16, arena_bytes};
+/// use devela::{NonMaxU16, arena_bytes};
+///
 /// arena_bytes! {
 ///     [cursor: u16 + NonMaxU16;]
 ///

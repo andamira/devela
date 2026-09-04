@@ -3,7 +3,11 @@
 //! Defines [`MemPod`].
 //
 
-use ::core::{mem::MaybeUninit, num::*};
+use devela::{ManuallyDrop, MaybeUninit, PhantomData, Wrapping};
+use devela::{
+    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8,
+    NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+};
 
 #[doc = crate::_tags!(mem)]
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
@@ -53,7 +57,7 @@ use ::core::{mem::MaybeUninit, num::*};
 ///
 /// # Examples
 /// ```rust
-/// use devela::sys::mem::MemPod;
+/// use devela::MemPod;
 ///
 /// // Define a simple structure that can be safely used as POD.
 /// #[derive(Copy, Clone)]
@@ -139,9 +143,9 @@ _impl_mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isiz
 
 unsafe impl<T: MemPod, const N: usize> MemPod for [T; N] {}
 unsafe impl<T: MemPod> MemPod for MaybeUninit<T> {}
-unsafe impl<T: MemPod> MemPod for ::core::mem::ManuallyDrop<T> {}
-unsafe impl<T: MemPod> MemPod for ::core::num::Wrapping<T> {}
-unsafe impl<T: ?Sized + 'static> MemPod for ::core::marker::PhantomData<T> {}
+unsafe impl<T: MemPod> MemPod for ManuallyDrop<T> {}
+unsafe impl<T: MemPod> MemPod for Wrapping<T> {}
+unsafe impl<T: ?Sized + 'static> MemPod for PhantomData<T> {}
 
 unsafe impl<T: MemPod> MemPod for Option<T> {}
 _impl_mem_pod![option:

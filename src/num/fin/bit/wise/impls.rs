@@ -23,7 +23,7 @@ use crate::{
 
 // helper for the methods examples
 macro_rules! _example {
-    (%open) => { concat!["\n# Examples\n", "```\n", "# use devela::Bitwise;\n"] };
+    (%open) => { concat!["\n# Examples\n", "```\n", "use devela::Bitwise;\n\n"] };
     (%close) => { "\n```\n" };
     // raw body: useful for static methods.
     ($body:expr) => { concat![_example!(%open), $body, _example!(%close)] };

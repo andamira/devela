@@ -13,7 +13,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::{assert_eq_all, maybe, NonZeroU8};
+/// use devela::{assert_eq_all, maybe, NonZeroU8};
+///
 /// assert_eq![maybe![default:true, u8], Some(0)];
 /// assert_eq![maybe![default:true, &str], Some("")];
 /// assert_eq![maybe![default:false, u8], None];
@@ -25,7 +26,8 @@
 /// assert_eq_all![&s1, &s2, &s3];
 /// ```
 /// ```compile_fail
-/// # use devela::{maybe, NonZeroU8};
+/// use devela::{maybe, NonZeroU8};
+///
 /// let _ = maybe![default:true, NonZeroU8];
 /// ```
 #[macro_export]
@@ -121,7 +123,8 @@ pub use maybe· as maybe;
 ///
 /// # Examples
 /// ```
-/// # use devela::maybe_slot;
+/// use devela::maybe_slot;
+///
 /// let mut a: u32 = 5;
 /// let b = maybe_slot!(u32, a, .0);
 /// assert_eq![b, 5];

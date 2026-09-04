@@ -140,7 +140,7 @@ macro_rules! _geom_dim_define_macro {
         ///
         /// # Examples
         /// ```
-        #[doc = "# use devela::{" $Wrap ", " $Wrap "2, " $Wrap "3, " $name "};"]
+        #[doc = "use devela::{" $Wrap ", " $Wrap "2, " $Wrap "3, " $name "};\n\n"]
         #[doc = "// construct"]
         #[doc = "let a = " $name "!(4, 7);"]
         #[doc = "assert_eq![a.x(), 4_i32];"]

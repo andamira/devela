@@ -14,7 +14,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// let mut buf = [0u8; 4];
     /// assert_eq!(Slice::copy_into(&mut buf, 1, b"abc"), 3);
     /// assert_eq!(&buf, b"\0abc");
@@ -36,7 +37,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
     /// let mut buf = [0u8; 5];
     /// assert_eq!(Slice::copy_str_into(&mut buf, 0, "hellø"), 4);
@@ -63,7 +65,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// // 'o' (1 byte) would fit, but 'ø' (2 bytes) must be dropped
     /// let mut buf = [0u8; 5];
     /// assert_eq!(Slice::copy_utf8_into(&mut buf, 0, "hellø".as_bytes()), 4);
@@ -166,7 +169,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_leading(b"000123", b'0'), b"123");
     /// ```
     #[must_use]
@@ -180,7 +184,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 2), b"00123");
     /// assert_eq!(Slice::trim_leading_keep(b"000123", b'0', 10), b"000123");
@@ -198,7 +203,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_leading_min_len(b"000000", b'0', 1), b"0");
     /// assert_eq!(Slice::trim_leading_min_len(b"000123", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_leading_min_len(b"000123", b'0', 4), b"0123");
@@ -217,7 +223,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_trailing(b"123000", b'0'), b"123");
     /// ```
     #[must_use]
@@ -231,7 +238,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 2), b"12300");
     /// assert_eq!(Slice::trim_trailing_keep(b"123000", b'0', 10), b"123000");
@@ -249,7 +257,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_trailing_min_len(b"000000", b'0', 1), b"0");
     /// assert_eq!(Slice::trim_trailing_min_len(b"123000", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_trailing_min_len(b"123000", b'0', 4), b"1230");
@@ -268,7 +277,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_edges(b"000123000", b'0'), b"123");
     /// ```
     #[must_use]
@@ -281,7 +291,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 1), b"01230");
     /// assert_eq!(Slice::trim_edges_keep(b"000123000", b'0', 2), b"0012300");
@@ -297,7 +308,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 4), b"0123");
     /// assert_eq!(Slice::trim_edges_min_len_left(b"000123000", b'0', 5), b"01230");
@@ -328,7 +340,8 @@ impl Slice<u8> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::Slice;
+    /// use devela::Slice;
+    ///
     /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 0), b"123");
     /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 4), b"1230");
     /// assert_eq!(Slice::trim_edges_min_len_right(b"000123000", b'0', 5), b"01230");

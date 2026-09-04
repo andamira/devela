@@ -48,7 +48,8 @@ pub(crate) use _js_doc;
 ///
 /// # Examples
 /// ```ignore
-/// # use devela::_js_extern;
+/// use devela::_js_extern;
+///
 /// _js_extern! {
 ///     [ module: "env" ]
 ///     pub safe fn same_fn_name(x: f64, y: f64, w: f64, h: f64);

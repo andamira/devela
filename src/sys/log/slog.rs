@@ -225,7 +225,8 @@ macro_rules! slog {
 ///
 /// # Examples
 /// ```
-/// # use devela::slog;
+/// use devela::slog;
+///
 /// slog!(new 4+32);
 /// slog!(4+32 "init ok");
 /// slog!(4+32 "processing step ", %2u8, ".");
@@ -323,7 +324,8 @@ macro_rules! slog {
         ///
         /// Query it with the [`slog!`] macro, like this:
         /// ```
-        /// # use devela::*;
+        /// use devela::*;
+        ///
         /// # #[cfg(feature = "__std")]
         #[doc = "slog![for_each " $($id ":" )? $CAP "+" $LEN " |i, s, _| println!(\"[{i}] {s}\")];"]
         /// ```

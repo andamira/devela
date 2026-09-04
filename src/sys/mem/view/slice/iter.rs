@@ -87,7 +87,8 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 ///
 /// # Examples
 /// ```
-/// # use devela::{IteratorLending, SliceIterMut};
+/// use devela::{IteratorLending, SliceIterMut};
+///
 /// let mut array = [0, 1, 2, 3];
 /// let mut it = SliceIterMut::new(&mut array);
 /// while let Some(x) = it.next() {

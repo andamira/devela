@@ -69,7 +69,8 @@ unsafe impl<T: MemPod, const CAP: usize> DstBuf for [MaybeUninit<T>; CAP] {
 ///
 /// # Examples
 /// ```
-/// # use {devela::data::DstQueue, core::mem::MaybeUninit};
+/// use devela::{DstQueue, MaybeUninit};
+///
 /// let mut buf = DstQueue::<str, Vec<MaybeUninit<u8>>>::new();
 /// buf.push_back_str("Hello world!");
 /// buf.push_back_str("This is a very long string");

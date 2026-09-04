@@ -102,7 +102,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// let c = charu::from_str("A").unwrap();
             /// assert_eq!(c.to_utf8_bytes(), [b'A', 0, 0, 0]);
             ///
@@ -168,7 +169,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// let ascii = charu::from_utf8(b"A").unwrap();
             /// assert_eq!(ascii.to_utf8_bytes(), [b'A', 0, 0, 0]);
             ///
@@ -222,7 +224,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// let (c, len) = charu::from_utf8_prefix(b"A").unwrap();
             /// assert!(c.to_utf8_bytes() == [b'A', 0, 0, 0] && len == 1);
             /// let (c, len) = charu::from_utf8_prefix(b"\xC2\xA2 rest").unwrap(); // ¢
@@ -273,7 +276,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// assert!(charu::from_utf8_byte_array([b'A', 0, 0, 0]).is_some());    // Valid
             /// assert!(charu::from_utf8_byte_array([0xC2, 0xA2, 0, 0]).is_some()); // Valid (¢)
             /// assert!(charu::from_utf8_byte_array([0xC0, 0x80, 0, 0]).is_none()); // overlong enc.
@@ -368,7 +372,7 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::" $name ";"]
+            #[doc = "use devela::" $name ";\n\n"]
             #[doc = "let c = " $name "::from_char('A');"]
             /// let mut buf = [0u8; 4];
             /// assert_eq!(c.as_str_into(&mut buf), "A");
@@ -406,7 +410,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// let c = charu::from_char('A');
             /// assert_eq!(c.to_utf8_bytes(), [0x41, 0, 0, 0]);
             ///
@@ -428,7 +433,8 @@ macro_rules! _text_char_scalar_charu_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::charu;
+            /// use devela::charu;
+            ///
             /// let c = charu::from_char('A');
             /// assert_eq!(c.first_utf8_byte(), 0x41);
             ///

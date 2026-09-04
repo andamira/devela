@@ -12,7 +12,8 @@ crate::bitfield! {
     }]
     /// It has been generated with the [`bitfield!`][crate::bitfield] macro like this:
     /// ```
-    /// # use devela::bitfield;
+    /// use devela::bitfield;
+    ///
     /// bitfield! {
     ///     /// A compact packet header.
     ///     pub struct BitfieldExample(u16) {

@@ -59,7 +59,8 @@ impl<T: Any> CurrentGuard<'_, T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::{CurrentGuard};
+    /// use devela::{CurrentGuard};
+    ///
     /// # struct MyType { data: u64} impl MyType { fn new() -> Self { Self { data:0 } }}
     /// let mut my_value = MyType::new();
     /// let guard = CurrentGuard::new(&mut my_value);

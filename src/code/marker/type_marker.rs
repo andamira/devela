@@ -24,7 +24,8 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::type_marker;
+/// use devela::type_marker;
+///
 /// type_marker![Id0];
 /// type_marker![Id1<A>];
 /// type_marker![Id2<A, B>; Id3<A>; Id4];

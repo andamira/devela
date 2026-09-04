@@ -60,7 +60,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.next_char().unwrap(), 'C']; // Basic Latin
@@ -91,7 +92,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.next_char7().unwrap(), "C"]; // Basic Latin
@@ -113,7 +115,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.next_char8().unwrap(), "C"]; // Basic Latin
@@ -139,7 +142,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.next_char16().unwrap(), "C"]; // Basic Latin
@@ -167,7 +171,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.next_charu().unwrap(), "C"]; // Basic Latin
@@ -245,7 +250,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.find_char7().unwrap(), "C"]; // Basic Latin
@@ -270,7 +276,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.find_char8().unwrap(), "C"]; // Basic Latin
@@ -295,7 +302,8 @@ impl<'a> CharIter<'a, &str> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CharIter;
+    /// use devela::CharIter;
+    ///
     /// let input = "CÐ€𐌅G";
     /// let mut iter = CharIter::<&str>::new(input);
     /// assert_eq![iter.find_char16().unwrap(), "C"]; // Basic Latin

@@ -24,7 +24,8 @@
 /// # Examples
 /// A simple handle for an arena.
 /// ```
-/// # use devela::{NonMaxUsize, handle_span};
+/// use devela::{NonMaxUsize, handle_span};
+///
 /// handle_span! {
 ///     [
 ///       offset: usize+NonMaxUsize;

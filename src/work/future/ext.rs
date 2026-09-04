@@ -20,7 +20,8 @@ crate::CONST! {
 # Examples
 ```
 # #[cfg(not(feature = "dep_portable_atomic_util"))] {
-# use devela::FutureExt as _;
+use devela::FutureExt as _;
+
 let future = async {};
 let result = future.block_on();
 # }
