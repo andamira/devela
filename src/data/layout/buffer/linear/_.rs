@@ -17,7 +17,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
-            define::*,
+            define::buffer_linear,
         };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;

@@ -23,10 +23,10 @@ crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         pub use super::namespace::*;
         pub use super::{
-            buf::*,
-            cat::*,
+            buf::{FmtWriter, format_buf},
+            cat::fmtcat,
             // case::*,
-            debug::*,
+            debug::{DebugExt, DebugWith},
             num::_all::*,
             // table::*,
         };

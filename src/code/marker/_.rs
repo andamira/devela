@@ -10,15 +10,15 @@ crate::mods_in! {
     mod _reexport_core;
 
     mod prim; // Prim, PrimFitPtr, PrimIndex, IndexRepr
-    mod repr; // Repr
+    mod repr; // ReprMode
     mod type_marker; // zero-cost generic type markers
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             prim::*,
-            repr::*,
-            type_marker::*,
+            repr::ReprMode,
+            type_marker::type_marker,
         };
     }
     _reexports {

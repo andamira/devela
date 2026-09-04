@@ -17,7 +17,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
-            dynamic::*,
+            dynamic::{assert_approx_eq_all, assert_eq_all},
             r#static::_all::*,
             test_size_of::_all::test_size_of,
         };

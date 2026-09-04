@@ -5,15 +5,18 @@
 
 crate::mods_in! {
     mod r#macro; // sleep4!
+
     // pub use sleeper::*; // TODO
     // pub use spin::*; // TODO
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            r#macro::*, // NOTE: keep the wildcard
-            // sleeper::Sleeper,
-            // spin::Spin,
-        };
+        #[crate::macro_apply(crate::_std_or_linux_syscall)]
+        pub use super::r#macro::sleep4;
+
+        // pub use super::{
+        //     // sleeper::Sleeper,
+        //     // spin::Spin,
+        // };
     }
 }

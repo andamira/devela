@@ -11,13 +11,15 @@ crate::mods_in! {
     #[cfg(feature = "std")]
     mod _reexport_std;
 
+    mod handler; // set_panic_handler!
+
     #[cfg(feature = "std")]
     mod namespace; // Panic
-    mod set; // set_panic_handler!
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
-        pub use super::set::*;
+        pub use super::handler::set_panic_handler;
+
         #[cfg(feature = "std")]
         pub use super::namespace::Panic;
     }

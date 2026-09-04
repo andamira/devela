@@ -16,11 +16,11 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            ext_option::*,
-            ext_result::*,
+            ext_option::OptionExt,
+            ext_result::ResultExt,
             fmt::*,
             opt_res::*,
-            unwrap::*,
+            unwrap::unwrap,
         };
     }
 }
