@@ -111,10 +111,9 @@ impl FmtNumConf {
 /// independently of the numeric magnitude.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum FmtNumSign {
+    #[doc = crate::_tags!(init)]
     /// Only print '-' for negative numbers.
     /// (`-42 → -42`, `42 → 42`)
-    ///
-    /// This is the default.
     #[default]
     NegativeOnly,
 

@@ -25,6 +25,7 @@ pub enum LinuxRandomMode {
     /// This uses no `getrandom` flags.
     Secure,
 
+    #[doc = crate::_tags!(init)]
     /// Cryptographic randomness without blocking.
     ///
     /// This uses `GRND_NONBLOCK`. If the kernel randomness source is not ready,

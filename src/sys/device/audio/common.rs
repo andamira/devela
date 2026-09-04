@@ -80,6 +80,7 @@ pub enum AudioDeviceDir {
     Playback,
     /// Input-capable endpoint.
     Capture,
+    #[doc = crate::_tags!(init)]
     /// Input/output-capable endpoint.
     #[default]
     Duplex,
@@ -137,6 +138,7 @@ impl AudioDeviceDir {
 /// or from an input endpoint as [`Capture`](Self::Capture).
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum AudioStreamDir {
+    #[doc = crate::_tags!(init)]
     /// Output stream direction.
     ///
     /// Audio flows from the program to an output device.

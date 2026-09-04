@@ -11,6 +11,7 @@ use crate::{GraphemePropCb, GraphemePropInCb, GraphemeProps, Mem, impl_trait};
 /// clusters may not be supported by the underlying system.
 #[derive(Clone, Copy, Debug, Default, Eq)]
 pub(crate) enum GraphemeMachineState {
+    #[doc = crate::_tags!(init)]
     /// Initial state at text start or after a boundary.
     #[default]
     Base,

@@ -26,6 +26,7 @@ pub enum TimeScale {
     Days,
     Hours,
     Minutes,
+    #[doc = crate::_tags!(init)]
     /// Default time scale.
     #[default]
     Seconds,

@@ -8,6 +8,7 @@
 #[doc = crate::_doc_meta!{location("sys/mem/cell")}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum MemHedgeError {
+    #[doc = crate::_tags!(init)]
     /// The control object is not idle and cannot be armed again yet.
     #[default]
     Busy,

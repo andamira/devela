@@ -14,6 +14,7 @@ use crate::ConstInit;
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum KeyState {
+    #[doc = crate::_tags!(init)]
     /// The key was pressed.
     #[default]
     Press,

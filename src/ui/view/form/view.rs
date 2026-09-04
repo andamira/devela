@@ -14,6 +14,7 @@
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum UiViewForm {
+    #[doc = crate::_tags!(init)]
     /// Cell-oriented presentation.
     ///
     /// Suitable for terminals, text grids, tile grids,

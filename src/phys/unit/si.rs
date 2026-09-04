@@ -45,6 +45,7 @@ pub enum UnitSi {
     /// 10^1
     Deca,
 
+    #[doc = crate::_tags!(init)]
     /// 10^0 (no prefix)
     #[default]
     None,

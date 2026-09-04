@@ -11,6 +11,7 @@ use TermelOccupancy::{Continuation, Origin, Reserved, Unoccupied};
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TermelOccupancy {
+    #[doc = crate::_tags!(init)]
     /// No terminal element occupies this position.
     #[default]
     Unoccupied = 0,

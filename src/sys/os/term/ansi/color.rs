@@ -137,6 +137,7 @@ impl AnsiColor {
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum AnsiColor3 {
+    #[doc = crate::_tags!(init)]
     /// 0 Black
     #[default]
     Black = 0,

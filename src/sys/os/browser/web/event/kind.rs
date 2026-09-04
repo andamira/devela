@@ -25,7 +25,8 @@ use crate::{KeyState, is};
 #[non_exhaustive]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum WebEventKind {
-    /// Unknown event. Default case.
+    #[doc = crate::_tags!(init)]
+    /// Unknown event.
     #[default]
     Unknown = 0,
 

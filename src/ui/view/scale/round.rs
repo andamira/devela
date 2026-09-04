@@ -18,6 +18,7 @@ pub enum UiRound {
     /// Round toward positive infinity.
     Ceil,
 
+    #[doc = crate::_tags!(init)]
     /// Round to the nearest value.
     ///
     /// Halfway cases currently round away from zero.

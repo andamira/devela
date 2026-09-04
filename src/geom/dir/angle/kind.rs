@@ -16,6 +16,7 @@ use crate::{FloatConst, Interval};
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Hash)]
 pub enum AngleKind {
+    #[doc = crate::_tags!(init)]
     /// = 0º = 360º (1τ), a full turn, or no turn.
     #[default]
     Full,

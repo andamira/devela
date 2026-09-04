@@ -161,7 +161,8 @@ pub enum Key {
     /// Physical keys that have no universal name.
     Scancode(u16),
 
-    /// Unknown key code (default).
+    #[doc = crate::_tags!(init)]
+    /// Unknown key code.
     // mapped to:
     // - crossterm: Null,
     #[default]

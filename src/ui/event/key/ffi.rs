@@ -93,6 +93,7 @@ pub enum KeyFfi {
     /// A physical scancode key.
     Scancode(u16),
 
+    #[doc = crate::_tags!(init)]
     #[default]
     Unknown,
 }

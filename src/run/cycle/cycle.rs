@@ -25,9 +25,8 @@ pub enum RunControl {
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum RunPhase {
+    #[doc = crate::_tags!(init)]
     /// The run exists but has not started normal progression yet.
-    ///
-    /// This is the default phase.
     #[default]
     Init = 0,
     /// The run is actively progressing.

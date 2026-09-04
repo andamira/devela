@@ -16,6 +16,7 @@ use crate::{_impl_init, impl_trait};
 /// multichannel layouts (L, R, C, LFE, surrounds, back channels).
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum AudioChannel {
+    #[doc = crate::_tags!(init)]
     /// Left
     #[default]
     L,
@@ -83,9 +84,8 @@ pub enum AudioChannels {
     /// Mono layout (1 channel).
     Mono = 0,
 
+    #[doc = crate::_tags!(init)]
     /// Stereo layout: L, R.
-    ///
-    /// This is the default.
     #[default]
     Stereo,
 

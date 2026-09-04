@@ -25,6 +25,7 @@ pub enum Turn {
     /// A right, or clockwise, turn.
     Right = -1,
 
+    #[doc = crate::_tags!(init)]
     /// No turn; the three points are collinear.
     #[default]
     Collinear = 0,

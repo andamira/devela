@@ -131,6 +131,7 @@ impl RasterFormat {
 /// Alpha-channel interpretation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub(crate) enum RasterAlpha {
+    #[doc = crate::_tags!(init)]
     /// No alpha component is present.
     #[default]
     None,
@@ -146,6 +147,7 @@ _impl_init![Self::None => RasterAlpha];
 /// Transfer curve used to interpret color sample values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub(crate) enum RasterTransfer {
+    #[doc = crate::_tags!(init)]
     /// Unknown or unspecified transfer curve.
     #[default]
     Unknown,

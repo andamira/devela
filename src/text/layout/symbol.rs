@@ -44,6 +44,7 @@ _impl_init![Self::Whitespace => TextBreakMode];
 /// This controls which derived symbols may disappear during layout negotiation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TextElideMode {
+    #[doc = crate::_tags!(init)]
     /// No derived symbol is marked as elidable.
     #[default]
     None,

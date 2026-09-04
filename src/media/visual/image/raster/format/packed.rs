@@ -24,6 +24,7 @@ use crate::_impl_init;
     reason = "Only exposed: Rgb332, Rgb565, Xrgb8888, Argb8888 Bgr332, Bgr565, Xbgr8888, Abgr8888"
 )]
 pub(crate) enum RasterPackedChannels {
+    #[doc = crate::_tags!(init)]
     /// Unknown or unspecified packed layout.
     #[default]
     Unknown,

@@ -64,6 +64,7 @@ impl UiFrame {
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum UiPhase {
+    #[doc = crate::_tags!(init)]
     /// Initial frame setup.
     #[default]
     Begin,

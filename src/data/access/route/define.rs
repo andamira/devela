@@ -75,6 +75,7 @@ impl<'a> Route<'a> {
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum RouteAnchor {
+    #[doc = crate::_tags!(init)]
     /// No explicit anchor.
     #[default]
     Relative,

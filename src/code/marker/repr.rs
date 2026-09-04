@@ -11,6 +11,7 @@
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ReprMode {
+    #[doc = crate::_tags!(init)]
     /// Shows the direct underlying representation.
     #[default]
     Raw,

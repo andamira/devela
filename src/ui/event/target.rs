@@ -49,6 +49,7 @@ pub enum EventTarget {
     /// - etc.
     Device(DeviceId),
 
+    #[doc = crate::_tags!(init)]
     /// Event is not associated with any specific window or device.
     ///
     /// Examples:

@@ -22,7 +22,8 @@ pub enum Sign {
     /// A negative sign (-).
     Negative = -1,
 
-    /// The zero sign (0). (The default)
+    #[doc = crate::_tags!(init)]
+    /// The zero sign (0).
     #[default]
     Zero = 0,
 

@@ -9,9 +9,9 @@ use crate::_impl_init;
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[allow(dead_code, reason = "Not exposed: U16, U32, F64")]
 pub(crate) enum RasterSampleFormat {
-    #[default]
     #[doc = crate::_tags!(init)]
     /// Unknown or unspecified sample representation.
+    #[default]
     Unknown,
     /// Unsigned 1-bit integer sample.
     U1,

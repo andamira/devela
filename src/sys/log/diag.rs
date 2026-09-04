@@ -12,6 +12,7 @@
 pub enum DiagLevel {
     Trace,
     Debug,
+    #[doc = crate::_tags!(init)]
     #[default]
     Info,
     Warn,

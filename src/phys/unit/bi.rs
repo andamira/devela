@@ -36,6 +36,7 @@ pub enum UnitBi {
     Mebi = 20,
     /// 2^10.
     Kibi = 10,
+    #[doc = crate::_tags!(init)]
     /// 2^0 (no prefix).
     #[default]
     None = 0,

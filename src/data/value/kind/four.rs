@@ -17,6 +17,7 @@ use crate::{InvalidValue, ValueKind, is, unwrap, word};
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValueKind4 {
+    #[doc = crate::_tags!(init)]
     /// No value.
     #[default]
     Nil = 0,

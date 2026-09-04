@@ -10,6 +10,7 @@ crate::test_size_of!(TermInputState = 18 | 144);
 /// Internal parser state.
 #[derive(Clone, Debug, Default)]
 pub(crate) enum TermInputState {
+    #[doc = crate::_tags!(init)]
     /// No partial sequence is active.
     #[default]
     Ground,

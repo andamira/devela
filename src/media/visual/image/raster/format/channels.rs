@@ -9,6 +9,7 @@ use crate::{_impl_init, RasterPackedChannels, RasterSampleFormat};
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[allow(dead_code, reason = "Not exposed: Xrgb, Xbgr")]
 pub(crate) enum RasterChannels {
+    #[doc = crate::_tags!(init)]
     /// Unknown or unspecified channel model.
     #[default]
     Unknown,

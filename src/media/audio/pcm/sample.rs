@@ -19,6 +19,7 @@ use crate::{_impl_init, impl_trait};
 pub enum PcmSample {
     I8,
     U8,
+    #[doc = crate::_tags!(init)]
     #[default]
     I16,
     I24,

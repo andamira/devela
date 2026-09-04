@@ -54,6 +54,7 @@ pub enum TermPollPolicy {
     /// or it is flushed by another policy.
     Pending,
 
+    #[doc = crate::_tags!(init)]
     /// Non-blocking. Resolves pending lone `ESC` after ready bytes are drained.
     ///
     /// Best for games and frame loops.

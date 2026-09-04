@@ -61,7 +61,8 @@ use ::core::fmt;
 #[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[repr(u8)]
 pub enum CharAscii {
-    /// U+0000 (Default variant)
+    #[doc = crate::_tags!(init)]
+    /// U+0000
     #[default]
     Null = 0,
     /// U+0001

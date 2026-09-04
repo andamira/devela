@@ -23,9 +23,8 @@ use crate::{ConstInit, ValueKind};
 /// references but does not interpret or validate them.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum ScriptValue<R> {
+    #[doc = crate::_tags!(init)]
     /// The absence of a value.
-    ///
-    /// This is the default.
     #[default]
     Nil,
 

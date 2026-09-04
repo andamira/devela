@@ -11,6 +11,7 @@
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[repr(u8)]
 pub enum ColorDepth {
+    #[doc = crate::_tags!(init)]
     /// No selectable color.
     #[default]
     Mono = 0,

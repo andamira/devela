@@ -17,6 +17,7 @@ use KeyState::{Press, Release, Repeat};
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TextInputKeymapPreset {
+    #[doc = crate::_tags!(init)]
     /// Platform-neutral single-line editing keys.
     ///
     /// Supported mappings:

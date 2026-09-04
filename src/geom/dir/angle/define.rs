@@ -92,11 +92,10 @@ impl<T> Angle<T> {
 #[repr(i8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum AngleDirection {
+    #[doc = crate::_tags!(init)]
     /// By convention, **positive** angles represent a **counterclockwise** rotation.
     ///
-    /// Also known as the Right-Handed Rule.
-    ///
-    /// This is the default direction of rotation.
+    /// Also known as the Right-Handed Rule. This is the default direction of rotation.
     #[default]
     Positive = 1,
 

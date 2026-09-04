@@ -32,7 +32,8 @@ crate::enumset! {
         /// Used to declare, filter, and query coarse event categories.
         pub EventTagSet: u8
     ) {
-        /// No event or an empty placeholder. (Default)
+        #[doc = crate::_tags!(init)]
+        /// No event or an empty placeholder.
         None,
         /// A keyboard event.
         Key,
@@ -101,6 +102,7 @@ pub type EventKindTimed = MaybeTimed<EventKind, EventTimestamp>;
 #[non_exhaustive]
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventKind {
+    #[doc = crate::_tags!(init)]
     /// An unknown, empty or absent event.
     #[default]
     None,

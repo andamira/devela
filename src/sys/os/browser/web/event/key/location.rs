@@ -17,7 +17,8 @@ use crate::{KeyMod, KeyMods};
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum WebKeyLocation {
-    /// The key is not identified as being located in a particular area of the keyboard. (Default)
+    #[doc = crate::_tags!(init)]
+    /// The key is not identified as being located in a particular area of the keyboard.
     #[default]
     Standard = 0,
     /// On the left side of the keyboard.

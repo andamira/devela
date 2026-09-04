@@ -11,7 +11,8 @@
 /// native terminal state machinery, such as Linux termios.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TermLineMode {
-    /// Line-buffered terminal input. This is the default.
+    #[doc = crate::_tags!(init)]
+    /// Line-buffered terminal input.
     #[default]
     Line,
 

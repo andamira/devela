@@ -15,6 +15,7 @@
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValueKind {
     /* 4-bit compact universal band 0..=15 */
+    #[doc = crate::_tags!(init)]
     /// No value.
     #[default]
     Nil = 0,

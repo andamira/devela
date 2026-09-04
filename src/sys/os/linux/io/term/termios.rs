@@ -386,7 +386,8 @@ pub enum LinuxTermiosCharSize {
     Bits6 = 6,
     /// 7-bit characters.
     Bits7 = 7,
-    /// 8-bit characters. (This the default)
+    #[doc = crate::_tags!(init)]
+    /// 8-bit characters.
     #[default]
     Bits8 = 8,
 }

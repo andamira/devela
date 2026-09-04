@@ -22,6 +22,7 @@ use crate::{_impl_init, impl_trait, is, set};
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButton {
+    #[doc = crate::_tags!(init)]
     /// Left mouse button.
     #[default]
     Left,
@@ -92,9 +93,8 @@ impl EventButton {
 }]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventButtonState {
+    #[doc = crate::_tags!(init)]
     /// The button was pressed.
-    ///
-    /// This is the default.
     #[default]
     Pressed,
     /// The button was released.

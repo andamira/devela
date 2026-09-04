@@ -21,6 +21,7 @@ use crate::{
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum EventTimestampMode {
+    #[doc = crate::_tags!(init)]
     /// Use heuristic selection (integer, float, or dual).
     #[default]
     Auto,

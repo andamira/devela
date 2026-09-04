@@ -23,6 +23,7 @@ use crate::{_impl_init, impl_trait};
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum PcmLayout {
+    #[doc = crate::_tags!(init)]
     /// Channel samples are mixed by frame: `LRLRLR…`.
     #[default]
     Interleaved,

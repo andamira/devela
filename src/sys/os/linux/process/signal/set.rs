@@ -259,7 +259,7 @@ impl From<LinuxSigset> for LinuxSignalSet {
 /// Signal numbers start at `1`, while mask bits start at `0`,
 /// so signal `n` is stored in bit `n - 1`.
 ///
-/// For the semantic Devela set, use [`LinuxSignalSet`].
+/// For the semantic devela set, use [`LinuxSignalSet`].
 //
 // This one resembles the [`sigset_t`] structure from libc.
 // [`sigset_t`]: https://man7.org/linux/man-pages/man7/system_data_types.7.html

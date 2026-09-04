@@ -128,6 +128,7 @@ impl EventWheel {
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum EventWheelUnit {
+    #[doc = crate::_tags!(init)]
     /// Discrete semantic wheel steps.
     #[default]
     Step,
