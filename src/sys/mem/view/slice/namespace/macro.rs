@@ -8,8 +8,9 @@ use crate::{Slice, Str};
 
 #[doc = crate::_tags!(namespace)]
 /// Invokes [`Slice`] [range methods][Slice#range-api-methods-for-subslicing] using short notation.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view", macro slice),
+}]
 /// # Syntax
 /// `(s = slice, l = lower bound, u = upper bound)`
 ///

@@ -10,7 +10,7 @@ use crate::{
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over a shared slice.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/view"),
+    location("sys/mem/view", struct SliceIter),
     #[cfg(target_pointer_width = "32")]
     test_size_of(SliceIter<'_, char> = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -73,7 +73,7 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over an exclusive slice.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/view"),
+    location("sys/mem/view", struct SliceIter),
     #[cfg(target_pointer_width = "32")]
     test_size_of(SliceIterMut<'_, char> = 16|128),
     #[cfg(target_pointer_width = "64")]

@@ -25,12 +25,11 @@ pub mod browser; // Web*
 mod c; // Libc
 pub mod fd;
 
+#[doc = crate::_tags!(linux)]
 #[cfg(feature = "_linux_abi")]
-crate::__doc_auto_hide_features! { (("_linux_abi"))
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
-    #[doc = crate::_tags!(linux)]
-    pub mod linux;
-}
+#[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
+#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("_linux_abi")))))]
+pub mod linux;
 
 // #[doc = crate::_tags!(apple)]
 // #[cfg(feature = "macos")]

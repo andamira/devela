@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Swaps two mutable variables in a *compile-time* friendly manner.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/bound", macro cswap),
+}]
 /// For that it uses either:
 /// 1. a temporary variable.
 /// 3. [`Mem::swap`][crate::Mem::swap] over their respective mutable references.
@@ -16,7 +17,7 @@
 /// [xor swap method]: https://en.wikipedia.org/wiki/XOR_swap_algorithm
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! cswap {
+macro_rules! cswap· {
     (   // defaults to `tmp`
         $a:expr, $b:expr) => {{ $crate::cswap![tmp: $a, $b]; }};
     (xor // deprecated(since = "0.23.0", note = "Use `xor:`")
@@ -37,4 +38,4 @@ macro_rules! cswap {
         $a:expr, $b:expr) => {{ $a ^= $b; $b ^= $a; $a ^= $b; }};
 }
 #[doc(inline)]
-pub use cswap;
+pub use cswap· as cswap;

@@ -11,8 +11,9 @@ use devela::{
 
 #[doc = crate::_tags!(mem)]
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
-#[doc = crate::_doc_meta!{location("sys/mem/layout")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/layout", trait MemPod),
+}]
 /// Types that implement this trait are guaranteed to be safe for certain
 /// low-level memory operations, such as transmuting to and from byte slices,
 /// copying, and interfacing with C code.

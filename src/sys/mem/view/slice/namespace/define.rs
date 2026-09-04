@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(lifetime namespace)]
 /// Slice-related operations, most of them *const*.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view", struct Slice),
+    test_size_of(Slice<u64> = 0),
+}]
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///

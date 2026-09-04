@@ -12,8 +12,17 @@ use devela::{Deref, Hash, Hasher, Ordering, Ownership};
 
 #[doc = crate::_tags!(maybe lifetime)]
 /// A container that may hold either a borrowed or owned value.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem", enum MaybeOwned),
+    #[cfg(all(not(feature = "alloc"), target_pointer_width = "32"))]
+    test_size_of(MaybeOwned<str> = 8|64; niche Option),
+    #[cfg(all(not(feature = "alloc"), target_pointer_width = "64"))]
+    test_size_of(MaybeOwned<str> = 16|128; niche Option),
+    #[cfg(all(feature = "alloc", target_pointer_width = "32"))]
+    test_size_of(MaybeOwned<str> = 12|96; niche Option),
+    #[cfg(all(feature = "alloc", target_pointer_width = "64"))]
+    test_size_of(MaybeOwned<str> = 24|192; niche Option),
+}]
 /// Unlike [`Cow`], this:
 /// - Uses the [`Ownership`] trait for flexible backing types.
 /// - Supports any `?Sized` type.
@@ -39,7 +48,6 @@ impl<'a, T: ?Sized + Ownership> MaybeOwned<'a, T> {
     pub const fn is_borrowed(&self) -> bool {
         matches!(self, MaybeOwned::Borrowed(_))
     }
-
     /// Returns `true` if the value is owned.
     pub const fn is_owned(&self) -> bool {
         #[cfg(not(feature = "alloc"))]

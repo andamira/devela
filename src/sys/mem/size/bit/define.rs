@@ -7,8 +7,9 @@ use crate::{ByteSized, Mem};
 
 #[doc = crate::_tags!(mem)]
 /// Type size information in bits.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/size", trait BitSized),
+}]
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
 ///
 /// E.g. a `bool` has a BitSized of 1 bit.

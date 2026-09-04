@@ -8,8 +8,9 @@ use devela::RangeFull;
 
 #[doc = crate::_tags!(maybe lifetime)]
 /// Controls how memory is provided for a value.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view", enum Backing),
+}]
 /// Complements [`MaybeOwned`][super::MaybeOwned] by specifying whether to:
 /// - Use an existing mutable buffer (`Buf`)
 /// - Allocate new memory (`Alloc`)

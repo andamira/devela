@@ -16,8 +16,10 @@ use ::core::{
 
 #[doc = crate::_tags!(mem namespace)]
 /// Memory-related operations.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem", struct Mem),
+    test_size_of(Mem = 0),
+}]
 /// See also: [`MemExt`][crate::MemExt], [`MemAligned`][crate::MemAligned]
 /// [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 #[derive(Debug)]

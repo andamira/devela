@@ -11,8 +11,9 @@ use crate::{Box, ConstInit, Storage};
 
 #[doc = crate::_tags!(mem)]
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`Box`].
-#[doc = crate::_doc_meta!{location("sys/mem/alloc")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/alloc", struct Boxed),
+}]
 /// Equivalent to the [`Bare`] marker struct which uses a [`BareBox`] for the underlying storage.
 // #[cfg_attr(feature = "dep_rkyv", derive(Archive, Serialize, Deserialize))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

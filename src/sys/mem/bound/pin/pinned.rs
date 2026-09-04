@@ -7,8 +7,9 @@ use crate::Pin;
 
 #[doc = crate::_tags!(mem lifetime)]
 /// A wrapper for structurally pinned data.
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/bound", struct Pinned),
+}]
 /// Up to 8 generics can be supplied for 8 structurally pinned fields.
 #[rustfmt::skip]
 #[derive(Debug)]

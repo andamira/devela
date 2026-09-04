@@ -8,7 +8,7 @@ use crate::{MemReplicaError, Slice, is, unwrap, whilst};
 #[doc = crate::_tags!(mem lifetime)]
 /// Mutable replicated view over a backing slice.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/view"),
+    location("sys/mem/view", struct MemReplicaSlice),
     #[cfg(target_pointer_width = "32")]
     test_size_of(MemReplicaSlice<'_, [u8; 1024], 2> = 32|256),
     #[cfg(target_pointer_width = "64")]

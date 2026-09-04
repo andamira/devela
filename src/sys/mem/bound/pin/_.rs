@@ -1,0 +1,24 @@
+// devela/src/sys/mem/bound/pin/_.rs
+//
+#![doc = crate::_DOC_SYS_MEM_BOUND_PIN!()] // private
+#![doc = crate::_doc!(modules: crate::sys::mem; pin)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: pin)]
+//
+
+crate::mods_in! {
+    mod _reexport_core;
+
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
+    mod pinned; // Pinned
+}
+crate::mods_out! { // _mods, _reexports
+    _mods {
+        #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
+        pub use super::pinned::*;
+    }
+    _reexports {
+        pub use super::_reexport_core::*;
+    }
+}

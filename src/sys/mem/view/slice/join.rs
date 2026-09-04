@@ -5,8 +5,9 @@
 
 #[doc = crate::_tags!(code)]
 /// Joins multiple byte slices or string slices in compile-time.
-#[doc = crate::_doc_meta!{location("sys/mem/view")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/view", macro const_join),
+}]
 /// It leverages the [`ArrayFrom`][crate::ArrayFrom] struct.
 ///
 /// Note that these operations are slow and should not be used for fast paths,

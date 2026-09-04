@@ -18,8 +18,9 @@ impl<T> Sealed for Vec<T> {}
 
 #[doc = crate::_tags!(namespace)]
 /// Extension trait providing additional methods for [`&[T]`][slice].
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem", trait SliceExt),
+}]
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods,
@@ -127,8 +128,9 @@ pub trait SliceExt<T>: Sealed {
 
 #[doc = crate::_tags!(namespace)]
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
-#[doc = crate::_doc_meta!{location("sys/mem")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem", trait SliceExtMut),
+}]
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`Slice`][crate::Slice] for *const* methods.

@@ -9,8 +9,13 @@ use crate::{MemHedgeError, MemHedgeState};
 
 #[doc = crate::_tags!(mem concurrency atomic)]
 /// Shared control plane for one hedged read request at a time.
-#[doc = crate::_doc_meta!{location("sys/mem/cell")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/cell", struct MemHedgeCtrl),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(MemHedgeCtrl = 256|2048; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(MemHedgeCtrl = 512|4096; niche !Option),
+}]
 /// `MemHedgeCtrl` does not own data and does not spawn workers.
 /// It only coordinates a request lifecycle:
 ///

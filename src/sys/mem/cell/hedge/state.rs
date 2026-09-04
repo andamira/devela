@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(mem concurrency atomic)]
 /// Lifecycle state of a hedged read request.
-#[doc = crate::_doc_meta!{location("sys/mem/cell")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/mem/cell", enum MemHedgeState),
+    test_size_of(MemHedgeState = 1|8; niche Option),
+}]
 /// The control object begins in [`Idle`](Self::Idle).
 /// A caller then [`arm`s][crate::MemHedgeCtrl::arm] it with a logical index,
 /// making it [`Armed`](Self::Armed).

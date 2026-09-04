@@ -5,7 +5,9 @@
 
 #[doc = crate::_tags!(mem concurrency error)]
 /// Errors produced by hedged control-state operations.
-#[doc = crate::_doc_meta!{location("sys/mem/cell")}]
+#[doc = crate::_doc_meta!{
+    location("sys/mem/cell", enum MemHedgeError),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum MemHedgeError {
     #[doc = crate::_tags!(init)]
