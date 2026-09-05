@@ -21,4 +21,5 @@ crate::_reexport! { rust: core::arch::wasm32,
     location("sys/arch", struct w_v128),
     origin(rust core::arch::wasm32; renamed(v128 as w_v128)),
 }]
+#[allow(non_camel_case_types)]
 pub struct w_v128([u8; 16]);

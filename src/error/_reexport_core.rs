@@ -2,12 +2,14 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: core::error, location: "error", tag: _tags!(code error),
+_reexport! { rust: core::error,
+    location: "error" => trait Error, tag: _tags!(code error),
     doc: "A trait representing the basic expectations for error values.",
     Error
 }
 
-_reexport! { rust: core, location: "error", tag: _tags!(code error),
+_reexport! { rust: core,
+    location: "error" => macro compile_error, tag: _tags!(code error),
     doc: "Causes compilation to fail with the given message when encountered.",
     compile_error
 }

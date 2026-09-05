@@ -11,8 +11,8 @@ _reexport! { rust: core::ops,
 
 /* `core::clone` */
 
-// NOTE: the trait and the derive macro have the same name
+// NOTE: the following trait and the corresponding derive macro have the same name:
 _reexport! { rust: core::clone,
-    location: "code/ops" /* … */, tag: _tags!(value),
+    location: "code/ops" => trait Clone, tag: _tags!(value),
     doc: "A common trait that allows explicit creation of a duplicate value. (Derivable)", Clone
 }

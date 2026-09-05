@@ -6,21 +6,23 @@
 
 use crate::{_reexport, _tags};
 
-// enums
-_reexport! { rust: core::sync::atomic, location: "work/sync/atomic",
-    tag: _tags!(concurrency atomic ord),
+/* enums */
+
+_reexport! { rust: core::sync::atomic,
+    location: "work/sync/atomic" => enum AtomicOrdering, tag: _tags!(concurrency atomic ord),
     doc: "Atomic memory ordering.",
     @Ordering as AtomicOrdering
 }
 
-// functions
-_reexport! { rust: core::sync::atomic, location: "work/sync/atomic",
-    tag: _tags!(concurrency atomic),
+/* functions */
+
+_reexport! { rust: core::sync::atomic,
+    location: "work/sync/atomic" => fn atomic_fence, tag: _tags!(concurrency atomic),
     doc: "An atomic fence.",
     @fence as atomic_fence
 }
-_reexport! { rust: core::sync::atomic, location: "work/sync/atomic",
-    tag: _tags!(concurrency atomic),
+_reexport! { rust: core::sync::atomic,
+    location: "work/sync/atomic" => fn atomic_compiler_fence, tag: _tags!(concurrency atomic),
     doc: "A compiler memory fence.",
     @compiler_fence as atomic_compiler_fence
 }

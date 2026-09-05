@@ -3,24 +3,40 @@
 use crate::{_reexport, _tags};
 
 // See: <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code),
-doc: "Zero-sized type used to mark things that \"act like\" they own a `T`.", PhantomData }
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code),
-doc: "A marker type which does not implement `Unpin`.", PhantomPinned }
+_reexport! { rust: core::marker,
+    location: "code/marker" => struct PhantomData, tag: _tags!(code),
+    doc: "Zero-sized type used to mark things that \"act like\" they own a `T`.", PhantomData
+}
+_reexport! { rust: core::marker,
+    location: "code/marker" => struct PhantomPinned, tag: _tags!(code),
+    doc: "A marker type which does not implement `Unpin`.", PhantomPinned
+}
 
-// NOTE: the trait and the derive macro have the same name
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code),
-doc: "Types whose values can be duplicated simply by copying bits. (Derivable)", Copy }
+/* traits */
 
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code concurrency),
-doc: "Types that can be transferred across thread boundaries.", Send }
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code concurrency),
-doc: "Types for which it is safe to share references between threads.", Sync }
+// NOTE: the following trait and the corresponding derive macro have the same name:
+_reexport! { rust: core::marker,
+    location: "code/marker" => trait Copy, tag: _tags!(code),
+    doc: "Types whose values can be duplicated simply by copying bits. (Derivable)", Copy
+}
 
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code),
-doc: "Types with a constant size known at compile time.", Sized }
-_reexport! { rust: core::marker, location: "code/marker", tag: _tags!(code),
-doc: "Types that do not require any pinning guarantees.", Unpin }
+_reexport! { rust: core::marker,
+    location: "code/marker" => trait Send, tag: _tags!(code concurrency),
+    doc: "Types that can be transferred across thread boundaries.", Send
+}
+_reexport! { rust: core::marker,
+    location: "code/marker" => trait Sync, tag: _tags!(code concurrency),
+    doc: "Types for which it is safe to share references between threads.", Sync
+}
+
+_reexport! { rust: core::marker,
+    location: "code/marker" => trait Sized, tag: _tags!(code),
+    doc: "Types with a constant size known at compile time.", Sized
+}
+_reexport! { rust: core::marker,
+    location: "code/marker" => trait Unpin, tag: _tags!(code),
+    doc: "Types that do not require any pinning guarantees.", Unpin
+}
 
 // /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 // See also:

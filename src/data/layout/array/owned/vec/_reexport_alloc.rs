@@ -8,8 +8,7 @@ _reexport! { rust: alloc::vec,
     Vec
 }
 
-// NOTE: the macro and the module have the same name
-//
+// NOTE: the following macro and the corresponding module have the same name:
 #[doc = _tags!(construction data_structure)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
 /// Creates a [`Vec`] containing the arguments.

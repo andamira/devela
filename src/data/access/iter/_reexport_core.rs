@@ -9,53 +9,61 @@
 
 use crate::{_reexport, _tags};
 
-// NOTE: interator implementation structs are not re-exported
+// NOTE: interator implementation structs are not re-exported.
+// NOTE: functions are re-exported as methods of the Iter namespace.
 
-/* core traits */
+/* traits */
 
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorDoubleEnded, tag: _tags!(iterator),
     doc: "An iterator able to yield elements from both ends.",
     @DoubleEndedIterator as IteratorDoubleEnded
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorExactSize, tag: _tags!(iterator),
     doc: "An iterator that knows its exact length.",
     @ExactSizeIterator as IteratorExactSize
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorExtend, tag: _tags!(iterator),
     doc: "Extend a collection with the contents of an iterator.",
     @Extend as IteratorExtend
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorFrom, tag: _tags!(iterator),
     doc: "Conversion from an [`Iterator`].",
     @FromIterator as IteratorFrom
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorFused, tag: _tags!(iterator),
     doc: "An iterator that always continues to yield `None` when exhausted.",
     @FusedIterator as IteratorFused
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorInto, tag: _tags!(iterator),
     doc: "Conversion into an [`Iterator`].",
     @IntoIterator as IteratorInto
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait Iterator, tag: _tags!(iterator),
     doc: "A trait for dealing with iterators.",
     Iterator
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator num),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorProduct, tag: _tags!(iterator num),
     doc: "Represents types that can be created by multiplying elements of an iterator.",
     @Product as IteratorProduct
 }
-_reexport! { rust: core::iter, location: "data/access/iter", tag: _tags!(iterator num),
+_reexport! { rust: core::iter,
+    location: "data/access/iter" => trait IteratorSum, tag: _tags!(iterator num),
     doc: "Represents types that can be created by summing up an iterator.",
     @Sum as IteratorSum
 }
 
-/* core functions */
-
-// These are re-exported as methods of the Iter namespace.
+/* structs */
 
 _reexport! { rust: core::iter, extra_flags:(nightly_coro),
-    location: "data/access/iter", tag: _tags!(iterator runtime),
+    location: "data/access/iter" => struct IterFromCoroutine, tag: _tags!(iterator runtime),
     doc: "Creates an iterator where each iteration calls the provided coroutine.",
     @FromCoroutine as IterFromCoroutine
 }

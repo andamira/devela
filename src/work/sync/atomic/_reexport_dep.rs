@@ -20,10 +20,16 @@ _reexport! { "dep_atomic", "atomic", atomic,
 /* from `portable-atomic` */
 
 _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    location: "work/sync/atomic", // multiple imports
+    location: "work/sync/atomic" => struct AtomicF32,
     tag: _tags!(concurrency atomic),
     doc: "A thread-safe floating-point type.",
-    AtomicF32, AtomicF64
+    AtomicF32,
+}
+_reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    location: "work/sync/atomic" => struct AtomicF64,
+    tag: _tags!(concurrency atomic),
+    doc: "A thread-safe floating-point type.",
+    AtomicF64
 }
 _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     location: "work/sync/atomic" => struct AtomicI128,
@@ -42,14 +48,18 @@ _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A thread-safe signed integer type.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}] // multiple imports
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic"), // multiple imports
+}]
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize};
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
 /// A thread-safe signed integer type.
-#[doc = crate::_doc_meta!{location("work/sync/atomic")}] // multiple imports
+#[doc = crate::_doc_meta!{
+    location("work/sync/atomic"), // multiple imports
+}]
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::{AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicUsize};

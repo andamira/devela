@@ -10,8 +10,7 @@ _reexport! { rust: core, location: "sys/env" => macro option_env, tag: _tags!(co
 }
 
 #[doc = _tags!(code)]
-// NOTE: the macro and the module have the same name
-//
+// NOTE: the following macro and the corresponding module have the same name:
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Inspects an environment variable at compile time.
 #[doc = crate::_doc_meta!{

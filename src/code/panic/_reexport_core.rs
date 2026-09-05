@@ -50,8 +50,7 @@ _reexport! { rust: core,
     doc: "Indicates unimplemented code.", unimplemented
 }
 
-// NOTE: the macro and the module have the same name
-//
+// NOTE: the following macro and the corresponding module have the same name:
 #[doc = crate::_tags!(code)]
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Panics the current thread.

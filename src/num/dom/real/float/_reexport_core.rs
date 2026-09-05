@@ -3,7 +3,7 @@
 use crate::{_reexport, _tags};
 
 _reexport! { rust: core::num,
-    location: "num/dom/real",
+    location: "num/dom/real" => enum FloatCategory,
     tag: _tags!(NUM),
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory

@@ -2,15 +2,20 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: core::array, location: "data/layout/array", tag: _tags!(data_structure),
+/* fns */
+
+_reexport! { rust: core::array,
+    location: "data/layout/array" => fn array_from_fn, tag: _tags!(data_structure),
     doc: "Creates an array `[T; N]`, where each `T` is returned from `cb` from its index.",
     @from_fn as array_from_fn
 }
-_reexport! { rust: core::array, location: "data/layout/array", tag: _tags!(data_structure),
+_reexport! { rust: core::array,
+    location: "data/layout/array" => fn array_from_mut, tag: _tags!(data_structure),
     doc: "Converts a mutable reference to `T` into `&mut [T; 1]` (without copying).",
     @from_mut as array_from_mut
 }
-_reexport! { rust: core::array, location: "data/layout/array", tag: _tags!(data_structure),
+_reexport! { rust: core::array,
+    location: "data/layout/array" => fn from_ref, tag: _tags!(data_structure),
     doc: "Converts a reference to `T` into `&[T; 1]` (without copying).",
     @from_ref as array_from_ref
 }

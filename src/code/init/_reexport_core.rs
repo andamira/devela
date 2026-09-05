@@ -5,8 +5,10 @@
 
 use crate::{_reexport, _tags};
 
-/* `core::default` */
+/* traits */
 
-// NOTE: the trait and the derive macro have the same name
-_reexport! { rust: core::default, location: "code/init" /* … */, tag: _tags!(init),
-doc: "A trait for giving a type a useful default value. (Derivable)", Default }
+// NOTE: the following trait and the corresponding derive macro have the same name:
+_reexport! { rust: core::default,
+    location: "code/init" => trait Default, tag: _tags!(init),
+    doc: "A trait for giving a type a useful default value. (Derivable)", Default
+}
