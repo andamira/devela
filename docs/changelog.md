@@ -496,6 +496,9 @@
 ### ui::widget
 - new types: `UiButton`, `UiResponse`, `UiResponseFlags`.
 
+## vita
+- hide the module.
+
 ## yard
 - update `use_or_shim!` macro to support `_doc_meta!`.
 
