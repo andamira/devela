@@ -2,12 +2,14 @@
 
 use crate::{_reexport, _tags};
 
-_reexport! { rust: core::pin, location: "sys/mem", tag: _tags!(code mem lifetime),
+_reexport! { rust: core::pin,
+    location: "sys/mem/bound" => macro pin, tag: _tags!(code mem lifetime),
     doc: "Constructs a <code>[Pin]<[&mut] T></code>, by pinning a `value: T` locally.",
     pin
 }
 
-_reexport! { rust: core::pin, location: "sys/mem", tag: _tags!(lifetime mem guard),
+_reexport! { rust: core::pin,
+    location: "sys/mem/bound" => struct Pin, tag: _tags!(lifetime mem guard),
     doc: "A pointer which pins its pointee in place.",
     Pin
 }

@@ -1,4 +1,4 @@
-// devela/src/sys/mem/layout/mod.rs
+// devela/src/sys/mem/layout/_.rs
 //
 #![doc = crate::_DOC_SYS_MEM_LAYOUT!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; layout)]

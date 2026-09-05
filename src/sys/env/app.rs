@@ -7,8 +7,9 @@ use crate::{Env, Path, PathBuf, is};
 
 #[doc = crate::_tags!(platform)]
 /// Application specific metadata.
-#[doc = crate::_doc_meta!{location("sys/env")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/env", struct AppConfig),
+}]
 /// It is used together with [`AppEnv`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct AppConfig {
@@ -102,8 +103,9 @@ impl AppConfig {
 
 #[doc = crate::_tags!(platform)]
 /// Manages directory paths in an environment-aware manner.
-#[doc = crate::_doc_meta!{location("sys/env")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/env", trait AppEnv),
+}]
 #[doc = crate::_doc_vendor!("etcetera")]
 #[rustfmt::skip]
 pub trait AppEnv {
@@ -208,7 +210,9 @@ fn app_in(mut base: PathBuf, path: &Path) -> PathBuf { base.push(path); base }
 
 #[doc = crate::_tags!(linux)]
 /// Xdg enviroment for directories.
-#[doc = crate::_doc_meta!{location("sys/env")}]
+#[doc = crate::_doc_meta!{
+    location("sys/env", struct AppXdg),
+}]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppXdg {
     home: PathBuf,
@@ -266,8 +270,9 @@ impl AppEnv for AppXdg {
 
 #[doc = crate::_tags!(unix)]
 /// Unix enviroment for directories.
-#[doc = crate::_doc_meta!{location("sys/env")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/env", struct AppUnix),
+}]
 /// This constructs directories specific to an application using
 /// its `unixy_name`, which is derived from the application's name.
 ///
@@ -303,7 +308,9 @@ impl AppEnv for AppUnix {
 
 #[doc = crate::_tags!(apple)]
 /// Apple enviroment for directories.
-#[doc = crate::_doc_meta!{location("sys/env")}]
+#[doc = crate::_doc_meta!{
+    location("sys/env", struct AppApple),
+}]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppApple {
     home: PathBuf,
@@ -344,7 +351,9 @@ impl AppEnv for AppApple {
 
 #[doc = crate::_tags!(windows)]
 /// Windows enviroment for directories.
-#[doc = crate::_doc_meta!{location("sys/env")}]
+#[doc = crate::_doc_meta!{
+    location("sys/env", struct AppWindows),
+}]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AppWindows {
     home: PathBuf,

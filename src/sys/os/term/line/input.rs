@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(term interaction)]
 /// How terminal input is delivered to an application.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", enum TermLineMode),
+    test_size_of(TermLineMode = 1|8; niche Option),
+}]
 /// This is a semantic line-discipline request. Backends apply it through their
 /// native terminal state machinery, such as Linux termios.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

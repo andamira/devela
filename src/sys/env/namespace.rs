@@ -25,7 +25,10 @@ use crate::{IterArgsOsRef, args_os_ref_iter};
 
 #[doc = crate::_tags!(namespace)]
 /// A namespaced wrapper for `std::env` functions and constants.
-#[doc = crate::_doc_meta!{location("sys/os")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os", struct Env),
+    test_size_of(Env = 0),
+}]
 #[derive(Debug)]
 pub struct Env;
 

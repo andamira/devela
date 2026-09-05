@@ -8,8 +8,10 @@ use crate::{_js_doc, WebDocument, WebWindow};
 
 #[doc = crate::_tags!(web namespace)]
 /// A Web API namespace.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct Web),
+    test_size_of(Web = 0),
+}]
 /// # Methods
 /// - core APis
 //   - [console](#web-api-console)

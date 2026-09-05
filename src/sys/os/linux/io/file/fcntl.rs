@@ -13,8 +13,9 @@ use crate::c_int;
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] File descriptor commands (for `fcntl`).
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
-//
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_F_CMD),
+}]
 // - /usr/include/asm-generic/fcntl.h
 // - /usr/include/bits/fcntl-linux.h
 //

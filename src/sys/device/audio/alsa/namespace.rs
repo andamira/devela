@@ -13,8 +13,10 @@ use crate::{CStr, Ptr};
 
 #[doc = crate::_tags!(audio linux namespace)]
 /// ALSA operations.
-#[doc = crate::_doc_meta!{location("sys/device/audio")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/audio", struct Alsa),
+    test_size_of(Alsa = 0),
+}]
 /// # Availability
 /// Methods that call ALSA are available
 /// when the native `asound` library is discoverable at build time.

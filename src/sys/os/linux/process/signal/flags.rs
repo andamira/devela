@@ -11,8 +11,8 @@ set! {
     #[doc = crate::_tags!(linux signal set)]
     /// Input flags for [`LinuxSigaction`].
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/session"),
-        test_size_of(LinuxSigactionFlags = 1|8),
+        location("sys/os/term/session", enum LinuxSigactionFlags),
+        test_size_of(LinuxSigactionFlags = 1|8; niche !Option),
     }]
     pub struct LinuxSigactionFlags(u8) {
         /// Do not notify when child processes stop or resume.

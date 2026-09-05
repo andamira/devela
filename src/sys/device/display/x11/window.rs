@@ -19,7 +19,7 @@ pub(crate) struct XWindowState {
 #[doc = crate::_tags!(unix uid guard)]
 /// X11 top-level drawable host and presentation target.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XWindow),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XWindow = 16|128),
 }]

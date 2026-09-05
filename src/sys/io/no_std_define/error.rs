@@ -11,15 +11,21 @@ use crate::{IoRead, IoWrite};
 
 #[doc = crate::_tags!(io result maybe_std)]
 /// A specialized [`Result`] type for I/O operations.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", type IoResult),
+}]
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
 pub type IoResult<T> = Result<T, IoError>;
 
 #[doc = crate::_tags!(io error_composite maybe_std)]
 /// Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", struct IoError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(IoError = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(IoError = 24|192; niche Option),
+}]
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
 // #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…
 // WAIT: [Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
@@ -54,8 +60,10 @@ struct Custom {
 
 #[doc = crate::_tags!(io error_composite maybe_std)]
 /// A list specifying general categories of I/O error.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", enum IoErrorKind),
+    test_size_of(IoErrorKind = 1|8; niche Option),
+}]
 /// This list is intended to grow over time and it is not recommended to
 /// exhaustively match against it.
 ///

@@ -8,8 +8,13 @@ use crate::{HttpError, HttpMethod, HttpStatus, HttpVersion, TextScanner};
 
 #[doc = crate::_tags!(network protocol parser lifetime)]
 /// Borrowed HTTP request line.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", struct HttpRequestLine),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(HttpRequestLine = 24|192; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(HttpRequestLine = 48|384; niche Option),
+}]
 /// Represents `METHOD SP request-target SP HTTP-version`.
 ///
 /// This type does not include headers or a message body.

@@ -7,7 +7,10 @@ use crate::{LINUX_O_FLAGS as O, c_int, c_mode_t};
 
 #[doc = crate::_tags!(linux fs)]
 /// Options used to open a Linux file descriptor.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LinuxOpenOptions),
+    test_size_of(LinuxOpenOptions = 8|64; niche !Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct LinuxOpenOptions {
     flags: c_int,

@@ -9,7 +9,9 @@ use crate::{EventKind, TermPollPolicy};
 
 #[doc = crate::_tags!(term platform)]
 /// Backend interface for terminal host adapters.
-#[doc = crate::_doc_meta!{location("sys/os/term/backend")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term/backend", trait TermBackend),
+}]
 pub trait TermBackend: Sized {
     /// Backend error type.
     type Error;

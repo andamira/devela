@@ -21,7 +21,7 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 #[doc = crate::_tags!(term linux)]
 /// Linux terminal frontend.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", struct TermLinux),
     #[cfg(not(feature = "event"))]
     test_size_of(TermLinux = 44|352),
 

@@ -8,7 +8,7 @@ use crate::Digits;
 #[doc = crate::_tags!(term color)]
 /// Complete ANSI color selection
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", enum AnsiColor),
     test_size_of(AnsiColor = 4|32; niche Option),
 }]
 /// Covers all terminal color modes:
@@ -133,7 +133,10 @@ impl AnsiColor {
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 3-bit color codes, 8 colors.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", enum AnsiColor3),
+    test_size_of(AnsiColor3 = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum AnsiColor3 {
@@ -187,7 +190,10 @@ impl AnsiColor3 {
 
 #[doc = crate::_tags!(term color)]
 /// ANSI 8-bit color codes, 256 colors.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", struct AnsiColor8),
+    test_size_of(AnsiColor8 = 1|8; niche !Option),
+}]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AnsiColor8(pub u8);

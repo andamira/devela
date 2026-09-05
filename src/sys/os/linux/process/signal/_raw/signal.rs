@@ -7,8 +7,9 @@ use crate::c_int;
 
 #[doc = crate::_tags!(linux signal abi)]
 /// Linux standard signals constants.
-#[doc = crate::_doc_meta!{location("sys/os/linux/process")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/process", struct LINUX_SIGNAL),
+}]
 /// Each signal has a current disposition, which determines how the process
 /// behaves when it is delivered the signal.
 ///

@@ -12,8 +12,9 @@ use ::core::cmp;
 
 #[doc = crate::_tags!(io maybe_std)]
 /// The `IoSeek` trait provides a cursor which can be moved within a stream of bytes.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", trait IoSeek),
+}]
 /// This struct is generally created by calling [`bytes`][IoRead::bytes] on a reader.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Seek.html>.
@@ -31,11 +32,11 @@ impl<S: IoSeek + ?Sized> IoSeek for &mut S {
 #[doc = crate::_tags!(io maybe_std)]
 /// A cursor position used by [`IoSeek`].
 #[doc = crate::_doc_meta!{
-    location("sys/io"),
+    location("sys/io", enum IoSeekFrom),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(IoSeekFrom = 12|96),
+    test_size_of(IoSeekFrom = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(IoSeekFrom = 16|128),
+    test_size_of(IoSeekFrom = 16|128; niche Option),
 }]
 #[derive(Copy, PartialEq, Eq, Clone, Debug)]
 pub enum IoSeekFrom {
@@ -59,8 +60,10 @@ pub enum IoSeekFrom {
 
 #[doc = crate::_tags!(io maybe_std)]
 /// Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", struct IoCursor),
+    test_size_of(IoCursor<[u8; 8]> = 16|128; niche !Option),
+}]
 /// See <https://doc.rust-lang.org/std/io/struct.Cursor.html>.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct IoCursor<T> {

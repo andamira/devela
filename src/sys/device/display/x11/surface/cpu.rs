@@ -8,7 +8,7 @@ use crate::{Vec, XDisplay, XError, XImageStore, vec_ as vec};
 #[doc = crate::_tags!(unix runtime)]
 /// Cpu-backed pixel buffer for X11 image upload.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XCpuBuffer),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XCpuBuffer = 32|256; niche Option),
 }]

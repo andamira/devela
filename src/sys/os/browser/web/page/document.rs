@@ -12,8 +12,10 @@ use devela::{_js_doc, _js_method_str_alloc, js_bool, js_int32, js_uint32};
 
 #[doc = crate::_tags!(web uid)]
 /// Handle to the brower's global [Document] associated APIs.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct WebDocument),
+    test_size_of(WebDocument = 0),
+}]
 /// [Document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]

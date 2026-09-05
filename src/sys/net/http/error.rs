@@ -5,7 +5,13 @@
 
 #[doc = crate::_tags!(network protocol error)]
 /// HTTP parsing and formatting error.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", enum HttpError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(HttpError = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(HttpError = 16|128; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum HttpError {
     /// The request line is empty.

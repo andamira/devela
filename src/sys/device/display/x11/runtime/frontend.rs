@@ -10,8 +10,9 @@ use crate::{is, whilst};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed X11 backend context for one runtime frame.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XFrameCtx),
+}]
 /// Provides temporary access to the display connection and target window
 /// during rendering and presentation.
 pub(crate) struct XFrameCtx<'a> {
@@ -21,8 +22,9 @@ pub(crate) struct XFrameCtx<'a> {
 
 #[doc = crate::_tags!(unix runtime)]
 /// A single-window X11 runtime backend.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XBackend),
+}]
 /// `XBackend` owns the X11 display connection and window used for event
 /// collection and per-frame backend access.
 #[derive(Debug)]
@@ -63,8 +65,9 @@ impl RunBackend for XBackend {
 
 #[doc = crate::_tags!(unix runtime)]
 /// An X11 frontend for frame-driven runtimes.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XFrontend),
+}]
 /// Owns the current X11 runtime backend and its presentation finalizer,
 /// while leaving runtime control, app logic, and rendering policy external.
 ///

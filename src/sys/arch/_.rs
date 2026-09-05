@@ -28,7 +28,7 @@ crate::mods_in! {
     mod _helper; // _ARCH!
 
     mod_ namespace; // Arch
-    mod_ wasm; // Wasm
+    mod_ wasm; // Wasm, w_v128
 }
 crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {

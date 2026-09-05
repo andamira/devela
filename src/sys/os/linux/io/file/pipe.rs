@@ -12,8 +12,8 @@ use crate::{Linux, LinuxFd, LinuxResult};
 #[doc = crate::_tags!(linux fs io)]
 /// An owned Linux anonymous pipe.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io"),
-    test_size_of(LinuxPipe = 8|64),
+    location("sys/os/linux/io", struct LinuxPipe),
+    test_size_of(LinuxPipe = 8|64; niche !Option),
 }]
 #[must_use]
 #[derive(Debug)]
@@ -51,7 +51,10 @@ impl LinuxPipe {
 
 #[doc = crate::_tags!(linux fs io)]
 /// Flags used when creating a Linux pipe.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LinuxPipeFlags),
+    test_size_of(LinuxPipeFlags = 4|32; niche !Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub struct LinuxPipeFlags {
     bits: c_int,

@@ -11,7 +11,7 @@ use crate::{EventButton, EventButtonState, EventButtons, EventKey, EventTimestam
 #[doc = crate::_tags!(unix event)]
 /// Wrapper for an XCB event.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XEvent),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XEvent = 8|64),
 }]

@@ -7,8 +7,9 @@ use crate::{Extent2, PhantomData};
 
 #[doc = crate::_tags!(term data_structure)]
 /// A dense row-major grid of terminal-space elements.
-#[doc = crate::_doc_meta!{location("sys/os/term/grid")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term/grid", struct TermGrid),
+}]
 /// The grid occupies the first `width × height` elements of its storage.
 /// Any remaining storage is retained but lies outside the grid.
 ///

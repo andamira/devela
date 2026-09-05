@@ -5,31 +5,36 @@ use crate::SocketAddr;
 #[allow(unused_imports)]
 use crate::{_reexport, _tags};
 
-/* std structs */
+/* structs */
 
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
+_reexport! { rust: std::net,
+    location: "sys/net" => struct TcpListener, tag: _tags!(network),
     doc: "A TCP socket server, listening for connections.",
     TcpListener
 }
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
+_reexport! { rust: std::net,
+    location: "sys/net" => struct TcpStream, tag: _tags!(network),
     doc: "A TCP stream between a local and a remote socket.",
     TcpStream
 }
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
+_reexport! { rust: std::net,
+    location: "sys/net" => struct UdpSocket, tag: _tags!(network),
     doc: "A UDP socket.",
     UdpSocket
 }
 
-/* std enums */
+/* enums */
 
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
+_reexport! { rust: std::net,
+    location: "sys/net" => enum TcpShutdown, tag: _tags!(network),
     doc: "Possible values which can be passed to the [`TcpStream::shutdown`] method.",
     @Shutdown as TcpShutdown
 }
 
-/* std traits */
+/* traits */
 
-_reexport! { rust: std::net, location: "sys/net", tag: _tags!(network),
+_reexport! { rust: std::net,
+    location: "sys/net" => enum TcpSocketAddrs, tag: _tags!(network),
     doc: "Objects which can be converted or resolved to one or more [`SocketAddr`] values.",
     ToSocketAddrs
 }

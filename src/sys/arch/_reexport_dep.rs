@@ -25,22 +25,28 @@ use crate::{_reexport, _tags};
 #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_safe_arch")))]
 pub use crate::_dep::safe_arch::round_op as arch_round;
 
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m128, tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of four `f32` lanes.", m128
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m256, tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of eight `f32` lanes.", m256
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m128d, tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of two `f64` values.", m128d
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m128i, tag: _tags!(platform),
     doc: "The data for a 128-bit SSE register of integer data.", m128i
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m256d, tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of four `f64` values.", m256d
 }
-_reexport! { "dep_safe_arch", "safe_arch", safe_arch, location: "sys/arch", tag: _tags!(platform),
+_reexport! { "dep_safe_arch", "safe_arch", safe_arch,
+    location: "sys/arch" => struct m256i, tag: _tags!(platform),
     doc: "The data for a 256-bit AVX register of integer data.", m256i
 }
 

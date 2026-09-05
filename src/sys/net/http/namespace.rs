@@ -8,7 +8,10 @@ use crate::{is, whilst};
 
 #[doc = crate::_tags!(network protocol)]
 /// HTTP protocol operations.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", struct Http),
+    test_size_of(Http = 0),
+}]
 #[derive(Debug)]
 pub struct Http;
 impl Http {
@@ -24,7 +27,13 @@ impl Http {
 
 #[doc = crate::_tags!(network protocol)]
 /// HTTP request method.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", enum HttpMethod),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(HttpMethod = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(HttpMethod = 24|192; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum HttpMethod<'a> {
     /// `GET`.

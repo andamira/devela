@@ -8,11 +8,11 @@ use crate::{LINUX_SEEK, c_int, c_off_t};
 #[doc = crate::_tags!(linux fs)]
 /// A Linux file-positioning directive.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io"),
+    location("sys/os/linux/io", enum LinuxSeekFrom),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(LinuxSeekFrom = 12|96),
+    test_size_of(LinuxSeekFrom = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(LinuxSeekFrom = 16|128),
+    test_size_of(LinuxSeekFrom = 16|128; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LinuxSeekFrom {

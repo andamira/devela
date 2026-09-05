@@ -19,8 +19,9 @@ use crate::{TermColor, TermColors, TermStyle, Textel};
 
 #[doc = crate::_tags!(term text layout color data_structure)]
 /// A terminal-flavored textual element.
-#[doc = crate::_doc_meta!{location("sys/os/term/grid")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term/grid", struct Termel),
+}]
 /// A termel wraps a [`Textel`] and adds terminal style and colors. The wrapped
 /// textel carries both the textual value and optional representation metadata.
 ///

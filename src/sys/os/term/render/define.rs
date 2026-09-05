@@ -8,7 +8,7 @@ use crate::TermSize;
 #[doc = crate::_tags!(term runtime)]
 /// Terminal renderer over caller-provided byte-frame storage.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term/backend"),
+    location("sys/os/term/backend", struct TermRenderer),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TermRenderer<&mut[u8]> = 36|288),
     #[cfg(target_pointer_width = "64")]

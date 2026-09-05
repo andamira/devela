@@ -16,11 +16,11 @@ use crate::{LinuxSigactionFlags, LinuxSigactionHandler, LinuxSiginfo, LinuxSigse
 #[doc = crate::_tags!(linux signal abi)]
 /// Examine and change a signal action.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/process"),
+    location("sys/os/linux/process", struct LinuxSigaction),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(LinuxSigaction = 16|128),
+    test_size_of(LinuxSigaction = 16|128; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(LinuxSigaction = 32|256),
+    test_size_of(LinuxSigaction = 32|256; niche !Option),
 }]
 ///
 /// Represents the [`sigaction`] structure from libc.

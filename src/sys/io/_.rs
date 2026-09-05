@@ -1,0 +1,45 @@
+// devela/src/sys/io/_.rs
+//
+#![doc = crate::_DOC_SYS_IO!()] // public
+#![doc = crate::_doc!(modules: crate::sys; io)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: io)]
+//!
+//! Provides unified traits, buffers, transports, and no-std foundations for
+//! reading, writing, and transforming data across abstract sources and sinks,
+//! independent of filesystems, networks, or specific hardware.
+//!
+#![doc = crate::_doc_vendor!("no_std_io")]
+//
+// safety
+#![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
+
+crate::mods_in! {
+    mod duplex; // IoDuplex
+    #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+    #[cfg_attr(nightly_doc, doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))))]
+    mod io; // Io
+    mod text; // TextOut // WIP
+
+    #[cfg(not(feature = "std"))]
+    mod_ no_std_define;
+    #[cfg(feature = "std")]
+    mod std_reexports;
+}
+
+crate::mods_out! { // _mods
+    _mods {
+        pub use super::{
+            duplex::*,
+            text::*,
+        };
+
+        #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+        pub use super::io::*;
+
+        cfg_select! {
+            feature = "std" => { pub use super::std_reexports::*; }
+                          _ => { pub use super::no_std_define::_all::*; }
+        }
+    }
+}

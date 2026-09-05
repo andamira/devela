@@ -10,8 +10,10 @@ use devela::{JsInstant, JsTimeout, js_bool, js_int32, js_uint32};
 
 #[doc = crate::_tags!(ui web)]
 /// Handle to the browser's global [Window] and [Screen] associated APIs.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct WebWindow),
+    test_size_of(WebWindow = 0),
+}]
 /// [Window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
 /// [Screen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/screen
 #[repr(C)]
@@ -139,10 +141,10 @@ _js_extern! {
 
 #[doc = crate::_tags!(ui web)]
 /// Aggregates the live state of a [`WebWindow`], including geometry and screen context.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
-/// It has a size of 52 Bytes.
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct WebWindowState),
+    test_size_of(WebWindowState = 48|384; niche !Option),
+}]
 /// ### Performance
 /// All fields are fetched in a single JS→Rust call.
 #[repr(C)]

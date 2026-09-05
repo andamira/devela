@@ -11,7 +11,7 @@ use crate::{impl_trait, is};
 #[doc = crate::_tags!(event web)]
 /// A web API Mouse Event.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", struct WebEventMouse),
     test_size_of(WebEventMouse = 32|256; niche Option),
 }]
 ///

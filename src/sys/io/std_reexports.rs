@@ -5,124 +5,152 @@
 
 use crate::{_TAG_ERROR, _TAG_ERROR_COMPOSITE, _TAG_IO, _TAG_RESULT, _reexport};
 
-/* io traits */
+/* traits */
 
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => trait IoBufRead, tag: _TAG_IO!(),
     doc: "A type of `Read`er which has an internal buffer.",
     @BufRead as IoBufRead
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => trait IoRead, tag: _TAG_IO!(),
     doc: "Allows for reading bytes from a source.",
     @Read as IoRead
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => trait IoSeek, tag: _TAG_IO!(),
     doc: "Provides a cursor which can be moved within a stream of bytes.",
     @Seek as IoSeek
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => trait IoWrite, tag: _TAG_IO!(),
     doc: "A trait for objects which are byte-oriented sinks.",
     @Write as IoWrite
 }
 
-/* io structs */
+/* structs */
 
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoBufReader, tag: _TAG_IO!(),
     doc: "Adds buffering to any reader.",
     @BufReader as IoBufReader
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoBufWriter, tag: _TAG_IO!(),
     doc: "Wraps a writer and buffers its output.",
     @BufWriter as IoBufWriter
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoBytes, tag: _TAG_IO!(),
     doc: "An iterator over `u8` values of a reader.",
     @Bytes as IoBytes
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoChain, tag: _TAG_IO!(),
     doc: "Adapter to chain together two readers.",
     @Chain as IoChain
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoCursor, tag: _TAG_IO!(),
     doc: "Wraps an in-memory buffer and provides it with an [`IoSeek`] implementation.",
     @Cursor as IoCursor
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoEmpty, tag: _TAG_IO!(),
     doc: "Ignores any data written via [`IoWrite`], and read via [`IoRead`].",
     @Empty as IoEmpty
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!() _TAG_ERROR_COMPOSITE!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoError, tag: _TAG_IO!() _TAG_ERROR_COMPOSITE!(),
     doc: "Error type for [`IoRead`], [`IoWrite`], [`IoSeek`] operations.",
     @Error as IoError
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!() _TAG_ERROR!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoIntoInnerError, tag: _TAG_IO!() _TAG_ERROR!(),
     doc: "An error returned by [`IoBufWriter::into_inner`]",
     @IntoInnerError as IoIntoInnerError
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoPipeReader, tag: _TAG_IO!(),
     doc: "Read end of an anonymous pipe.",
     @PipeReader as IoPipeReader
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoPipeWriter, tag: _TAG_IO!(),
     doc: "Write end of an anonymous pipe.",
     @PipeWriter as IoPipeWriter
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoSlice, tag: _TAG_IO!(),
     doc: "A buffer type used with `IoWrite::write_vectored`.",
     IoSlice
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoSliceMut, tag: _TAG_IO!(),
     doc: "A buffer type used with `IoRead::read_vectored`.",
     IoSliceMut
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoLineWriter, tag: _TAG_IO!(),
     doc: "Like `BufWriter`, but flushing whenever a newline (`0x0a`, `'\n'`) is detected.",
     @LineWriter as IoLineWriter
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoLines, tag: _TAG_IO!(),
     doc: "An iterator over the lines of an instance of [`IoBufRead`].",
     @Lines as IoLines
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoRepeat, tag: _TAG_IO!(),
     doc: "A reader which yields one byte over and over and over and over and over and…",
     @Repeat as IoRepeat
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!() _TAG_RESULT!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoResult, tag: _TAG_IO!() _TAG_RESULT!(),
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoSink, tag: _TAG_IO!(),
     doc: "A writer which will move data into the void.",
     @Sink as IoSink
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct IoSplit, tag: _TAG_IO!(),
     doc: "An iterator over the contents of an instance of BufRead split on a particular byte.",
     @Split as IoSplit
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct Stderr, tag: _TAG_IO!(),
     doc: "A handle to the standard error stream of a process.",
     Stderr
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct Stdin, tag: _TAG_IO!(),
     doc: "A handle to the standard input stream of a process.",
     Stdin
 }
-_reexport! { rust: std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: std::io,
+    location: "sys/io" => struct Stdout, tag: _TAG_IO!(),
     doc: "A handle to the global standard output stream of the current process.",
     Stdout
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => struct IoTake, tag: _TAG_IO!(),
     doc: "Reader adapter which limits the bytes read from an underlying reader.",
     @Take as IoTake
 }
 // @WriterPanicked as IoWriterPanicked
 
-/* io enums */
+/* enums */
 
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!() _TAG_ERROR_COMPOSITE!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => enum IoErrorKind, tag: _TAG_IO!() _TAG_ERROR_COMPOSITE!(),
     doc: "A list specifying general categories of I/O error.",
     @ErrorKind as IoErrorKind
 }
-_reexport! { rust: not(std)|std::io, location: "sys/io", tag: _TAG_IO!(),
+_reexport! { rust: not(std)|std::io,
+    location: "sys/io" => enum IoSeekFrom, tag: _TAG_IO!(),
     doc: "A cursor position used by [`IoSeek`].",
     @SeekFrom as IoSeekFrom
 }

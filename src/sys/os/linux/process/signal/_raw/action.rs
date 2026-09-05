@@ -9,7 +9,9 @@ use crate::{LINUX_SIGNAL, LinuxSigaction};
 
 #[doc = crate::_tags!(linux signal abi)]
 /// Linux flag constants for [`LinuxSigaction`].
-#[doc = crate::_doc_meta!{location("sys/os/linux/process")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/process", struct LINUX_SIGACTION),
+}]
 #[allow(non_camel_case_types)]
 #[derive(Debug)]
 pub(crate) struct LINUX_SIGACTION;

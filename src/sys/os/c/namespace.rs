@@ -11,8 +11,10 @@ use {
 
 #[doc = crate::_tags!(platform namespace)]
 /// Raw C/POSIX system interfaces exposed through the platform's libc.
-#[doc = crate::_doc_meta!{location("sys/os")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os", struct Libc),
+    test_size_of(Libc = 0),
+}]
 /// Thin, unsafe bindings that provide direct access to C ABI functions
 /// for memory mapping, shared memory, file descriptors, and other
 /// low-level operations. These are unmodified system calls as provided

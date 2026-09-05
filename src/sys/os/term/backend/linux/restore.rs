@@ -32,7 +32,7 @@ crate::set! {
 #[doc = crate::_tags!(term linux guard)]
 /// Linux terminal session restore payload.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", struct TermLinuxRestore),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TermLinuxRestore = 48|384),
     #[cfg(target_pointer_width = "64")]

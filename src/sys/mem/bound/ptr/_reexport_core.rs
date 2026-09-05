@@ -3,13 +3,15 @@
 use crate::{_reexport, _tags};
 
 // structs
-_reexport! { rust: core::ptr, location: "sys/mem", tag: _tags!(mem niche),
+_reexport! { rust: core::ptr,
+    location: "sys/mem/bound" => struct PtrNonNull, tag: _tags!(mem niche),
     doc: "`*mut T` but non-zero and *covariant*.",
     @NonNull as PtrNonNull
 }
 
 // functions
-_reexport! { rust: core::ptr, location: "sys/mem", tag: _tags!(mem),
+_reexport! { rust: core::ptr,
+    location: "sys/mem/bound" => fn fn_addr_eq, tag: _tags!(mem),
     doc: "Compares the addresses of the two function pointers for equality.",
-    fn_addr_eq // NOTE: Can't be namespaced yet in Ptr::fn_addr_eq because of WAIT:fn_ptr_trait
+    fn_addr_eq // NOTE: Can't be namespaced in Ptr::fn_addr_eq because: WAIT:4EVER: fn_ptr_trait
 }

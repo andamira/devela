@@ -6,7 +6,7 @@ use crate::{PermissionError, PermissionQuery, PermissionState};
 #[doc = crate::_tags!(web)]
 /// A point-in-time classification of cached browser permission queries.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", struct WebPermissionSnapshot),
     test_size_of(WebPermissionSnapshot = 24|192),
 }]
 /// The contained sets form a partial partition of the queried permission kinds:

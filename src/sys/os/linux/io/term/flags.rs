@@ -12,10 +12,9 @@ set! {
     #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] input flags.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/session"),
-        test_size_of(LinuxTermiosInputFlags = 2|16),
+        location("sys/os/linux/io/term", struct LinuxTermiosInputFlags),
+        test_size_of(LinuxTermiosInputFlags = 2|16; niche !Option),
     }]
-    ///
     pub struct LinuxTermiosInputFlags(u16) {
         /// Ignore BREAK condition on input.
         IGNBRK  = 0;
@@ -82,8 +81,8 @@ set! {
     #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] output flags.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/session"),
-        test_size_of(LinuxTermiosOutputFlags = 4|32),
+        location("sys/os/linux/io/term", struct LinuxTermiosOutputFlags),
+        test_size_of(LinuxTermiosOutputFlags = 4|32; niche !Option),
     }]
     ///
     /// NOTE: Some constants in this group are masked delay fields,
@@ -217,8 +216,8 @@ set! {
     #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] control flags.
     #[doc = crate::_doc_meta!{
-        location("sys/os/linux/io/term"),
-        test_size_of(LinuxTermiosControlFlags = 2|16),
+        location("sys/os/linux/io/term", struct LinuxTermiosControlFlags),
+        test_size_of(LinuxTermiosControlFlags = 2|16; niche !Option),
     }]
     /// NOTE: `CSIZE`/`CS5`/`CS6`/`CS7`/`CS8` are a masked character-size field,
     /// not independent flags. Prefer [`LinuxTermios::set_char_size`] when changing it.
@@ -278,7 +277,7 @@ set! {
     #[doc = crate::_tags!(linux term set)]
     /// [`LinuxTermios`] local flags.
     #[doc = crate::_doc_meta!{
-        location("sys/os/linux/io/term"),
+        location("sys/os/linux/io/term", struct LinuxTermiosLocalFlags),
         test_size_of(LinuxTermiosLocalFlags = 4|32),
     }]
     pub struct LinuxTermiosLocalFlags(u32) {

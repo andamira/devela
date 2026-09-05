@@ -7,7 +7,13 @@ use crate::{NotEnoughSpace, TermColor};
 
 #[doc = crate::_tags!(term data_structure error)]
 /// Terminal grid construction, access, and rendering error.
-#[doc = crate::_doc_meta!{location("sys/os/term/grid")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term/grid", enum TermGridError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(TermGridError = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(TermGridError = 24|192; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum TermGridError {
     /// The grid extent overflows the index representation.

@@ -1,0 +1,40 @@
+// devela/src/sys/device/audio/alsa/_.rs
+//
+// #![doc = crate::_DOC_SYS_DEVICE_AUDIO!()]
+//! Advanced Linux Sound Architecture (ALSA).
+#![doc = crate::_doc!(modules: crate::sys::device; audio)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
+//!
+//! # Features
+//! The `alsa` feature automatically enables: `audio` and `unsafe_ffi`.
+//
+#![cfg_attr(not(ffi_alsa··), allow(dead_code, unused_imports))]
+
+crate::mods_in! {
+    #[cfg(all(test, not(miri)))]
+    mod _test;
+
+    pub(crate) mod _raw; //
+
+    #[cfg(ffi_alsa··)]
+    mod hint;
+
+    mod error; // AlsaError
+    mod namespace; // Alsa
+    mod pcm; // AlsaPcmHandle
+}
+crate::mods_out! { // _mods, _crate_internals
+    _mods {
+        pub use super::{
+            error::*,
+            namespace::*,
+            pcm::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::_raw as _alsa_raw;
+        #[cfg(ffi_alsa··)]
+        pub(crate) use super::hint::*;
+    }
+}

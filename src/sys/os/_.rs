@@ -1,0 +1,70 @@
+// devela/src/sys/os/_.rs
+//
+#![doc = crate::_DOC_SYS_OS!()] // public
+#![doc = crate::_doc!(modules: crate::sys; os: browser, fd, term, linux)] // windows
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: os)]
+//!
+//! Kernel-backed or virtualized environments that define the core capability
+//! surfaces available to applications. This includes native OS layers
+//! (Linux, macOS, Windows), compatibility layers (libc), and sandboxed
+//! host environments such as browser runtimes.
+//
+// OSes: (https://doc.rust-lang.org/beta/rustc/platform-support.html)
+// - https://motor-os.org/ | https://github.com/moturus/motor-os
+// - https://hermit-os.org/ | https://github.com/hermit-os/hermit-rs
+// - https://source.android.com/docs/security/features/trusty
+// - https://wasi.dev/ | https://github.com/WebAssembly/WASI
+
+crate::mods_in! {
+    // #[cfg(feature = "android")]
+    // pub mod_ android;
+    #[doc = crate::_tags!(web)]
+    pub mod_ browser; // Web*
+        #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
+        mod_ c; // Libc
+    pub mod_ fd;
+    #[doc = crate::_tags!(linux)]
+    #[cfg(feature = "_linux_abi")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("_linux_abi")))))]
+    pub mod_ linux;
+    // #[doc = crate::_tags!(apple)]
+    // #[cfg(feature = "macos")]
+    // pub mod_ macos;
+    #[cfg(feature = "term")]
+    #[doc = crate::_tags!(term)]
+    pub mod_ term; // Ansi* Term*
+    // #[doc = crate::_tags!(windows)]
+    // #[cfg(feature = "windows")]
+    // pub mod_ windows;
+}
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
+    _mods {
+        #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
+        pub use super::c::*;
+    }
+    _pub_mods {
+        pub use super::{
+            browser::_all::*,
+            fd::_all::*,
+        };
+        // #[cfg(feature = "android")]
+        // pub use super::android::_all::*;
+        #[cfg(feature = "_linux_abi")]
+        pub use super::linux::_all::*;
+        #[cfg(feature = "term")]
+        pub use super::term::_all::*;
+        // #[cfg(feature = "macos")]
+        // pub use super::macos::_all::*;
+        // #[cfg(feature = "windows")]
+        // pub use super::windows::_all::*;
+    }
+    _crate_internals {
+        #[cfg(feature = "_linux_abi")]
+        pub(crate) use super::linux::_crate_internals::*;
+        #[cfg(feature = "term")]
+        pub(crate) use super::term::_crate_internals::*;
+        pub(crate) use super::browser::_crate_internals::*;
+    }
+}

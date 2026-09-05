@@ -13,12 +13,13 @@
 
 #[doc = crate::_tags!(linux code)]
 /// Defines the program entry point and main fn translation layer for Linux systems.
-#[doc = crate::_doc_meta!{location("sys/os/linux")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux", macro linux_entry),
+}]
 /// Handles architecture-specific entry point setup and Rust-to-C ABI translation.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! linux_entry {
+macro_rules! linux_entry· {
     (
     // The main() function will return LinuxResult, and get converted to LINUX_EXIT
     linux_result) => {
@@ -106,4 +107,4 @@ macro_rules! linux_entry {
     };
 }
 #[doc(inline)]
-pub use linux_entry;
+pub use linux_entry· as linux_entry;

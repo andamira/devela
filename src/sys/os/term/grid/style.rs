@@ -7,8 +7,8 @@ crate::set! {
     #[doc = crate::_tags!(term text set)]
     /// A compact set of broadly supported terminal text styles.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term"),
-        test_size_of(TermStyle = 1|8),
+        location("sys/os/term", struct TermStyle),
+        test_size_of(TermStyle = 1|8; niche !Option),
     }]
     ///
     /// Its bits occupy the low byte of [`TermStyleExt`] with the same meanings.
@@ -43,8 +43,8 @@ crate::set! {
     #[doc = crate::_tags!(term text set)]
     /// A complete set of terminal text styles.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term"),
-        test_size_of(TermStyleExt = 2|16),
+        location("sys/os/term", struct TermStyleExt),
+        test_size_of(TermStyleExt = 2|16; niche !Option),
     }]
     ///
     /// The low byte has the same representation as [`TermStyle`].

@@ -4,7 +4,9 @@ use crate::c_uint;
 
 #[doc = crate::_tags!(internal linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] control flags.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_TERMIOS_CFLAG),
+}]
 #[derive(Debug)]
 pub(crate) struct LINUX_TERMIOS_CFLAG;
 

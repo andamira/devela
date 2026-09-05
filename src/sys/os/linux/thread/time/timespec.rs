@@ -14,8 +14,13 @@ use crate::TimeDelta;
 
 #[doc = crate::_tags!(linux time abi)]
 /// Represents the libc [`timespec`] structure. Time in seconds and nanoseconds.
-#[doc = crate::_doc_meta!{location("sys/os/linux/thread")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/thread", struct LinuxTimespec),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(LinuxTimespec = 8|64; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(LinuxTimespec = 16|128; niche !Option),
+}]
 /// [`timespec`]: https://man7.org/linux/man-pages/man3/timespec.3type.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[repr(C)]

@@ -4,7 +4,9 @@ use crate::c_uchar;
 
 #[doc = crate::_tags!(linux term)]
 /// [`LinuxTermios`][crate::LinuxTermios] special characters symbolic indices.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_TERMIOS_CC),
+}]
 #[derive(Debug)]
 pub struct LINUX_TERMIOS_CC;
 

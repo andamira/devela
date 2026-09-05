@@ -11,7 +11,13 @@ use crate::{_impl_init, ConstInit, impl_trait};
 
 #[doc = crate::_tags!(audio io)]
 /// Borrowed description of an audio endpoint.
-#[doc = crate::_doc_meta!{location("media/audio")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio", struct AudioDevice),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(AudioDevice = 28|224; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AudioDevice = 56|448; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AudioDevice<'a> {
     /// Backend device identifier.
@@ -54,7 +60,13 @@ impl<'a> AudioDevice<'a> {
 #[cfg(feature = "alloc")]
 #[doc = crate::_tags!(audio io)]
 /// Owned or borrowed description of an audio endpoint.
-#[doc = crate::_doc_meta!{location("sys/device/audio")}]
+#[doc = crate::_doc_meta!{
+    location("sys/device/audio", struct AudioDeviceCow),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(AudioDeviceCow = 40|320; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AudioDeviceCow = 80|640; niche Option),
+}]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct AudioDeviceCow<'a> {
     /// Backend-specific device identifier.
@@ -69,8 +81,10 @@ pub struct AudioDeviceCow<'a> {
 
 #[doc = crate::_tags!(audio dir)]
 /// Direction capability of an audio endpoint.
-#[doc = crate::_doc_meta!{location("media/audio")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio", enum AudioDeviceDir),
+    test_size_of(AudioDeviceDir = 1|8; niche Option),
+}]
 /// An endpoint may support output as [`Playback`](Self::Playback),
 /// input as [`Capture`](Self::Capture), both directions as
 /// [`Duplex`](Self::Duplex), or have an unknown capability.
@@ -132,8 +146,10 @@ impl AudioDeviceDir {
 
 #[doc = crate::_tags!(audio dir)]
 /// Direction of an audio stream.
-#[doc = crate::_doc_meta!{location("media/audio")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio", enum AudioStreamDir),
+    test_size_of(AudioStreamDir = 1|8; niche Option),
+}]
 /// A stream can move audio toward an output endpoint as [`Playback`](Self::Playback),
 /// or from an input endpoint as [`Capture`](Self::Capture).
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

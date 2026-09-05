@@ -28,7 +28,7 @@ pub(crate) struct XWindowConfigureDelta {
 #[doc = crate::_tags!(unix runtime guard)]
 /// A connection to an X11 display server.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XDisplay),
     #[cfg(all(target_pointer_width = "64", ffi_xcb_shm··))]
     test_size_of(XDisplay = 248|1984; niche Option),
     #[cfg(all(target_pointer_width = "64", not(ffi_xcb_shm··)))]

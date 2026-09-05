@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(linux namespace)]
 /// Linux-related operations.
-#[doc = crate::_doc_meta!{location("sys/os/linux")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux", struct Linux),
+    test_size_of(Linux = 0),
+}]
 /// # Features
 /// All the methods depend on the features `linux` and `unsafe_syscall`.
 ///

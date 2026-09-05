@@ -9,7 +9,7 @@ crate::enumset! {
     #[doc = crate::_tags!(linux signal member)]
     /// A linux signal
     #[doc = crate::_doc_meta!{
-        location("sys/os/linux/process"),
+        location("sys/os/linux/process", enum LinuxSignal),
         test_size_of(LinuxSignal = 1|8; niche Option),
     }]
     /// The enum discriminants are zero-based semantic indices, not raw Linux
@@ -28,8 +28,8 @@ crate::enumset! {
         #[doc = crate::_tags!(linux signal set)]
         /// A compact semantic set of standard Linux signals.
         #[doc = crate::_doc_meta!{
-            location("sys/os/linux/process"),
-            test_size_of(LinuxSignalSet = 4|32),
+            location("sys/os/linux/process", struct LinuxSignalSet),
+            test_size_of(LinuxSignalSet = 4|32; niche !Option),
         }]
         /// This is not the raw Linux `sigset_t` mask. Signal bits are stored
         /// compactly from zero: `SIGHUP` is bit `0`, `SIGINT` is bit `1`, …
@@ -248,11 +248,11 @@ impl From<LinuxSigset> for LinuxSignalSet {
 #[doc = crate::_tags!(linux signal set abi)]
 /// A raw Linux kernel signal mask.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/process"),
+    location("sys/os/linux/process", struct LinuxSigset),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(LinuxSigset = 4|32),
+    test_size_of(LinuxSigset = 4|32; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(LinuxSigset = 8|64),
+    test_size_of(LinuxSigset = 8|64; niche !Option),
 }]
 /// This is the mask representation passed to raw Linux signal syscalls.
 ///

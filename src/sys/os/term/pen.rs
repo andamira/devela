@@ -8,7 +8,7 @@ use crate::{TermColor, TermColors, TermStyle, Termel};
 #[doc = crate::_tags!(term text color)]
 /// Reusable terminal style and colors for constructing elements.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term/grid"),
+    location("sys/os/term/grid", struct TermPen),
     #[cfg(target_pointer_width = "32")]
     test_size_of(TermPen<devela::TermStyle, devela::TermColors> = 12|96),
     #[cfg(target_pointer_width = "64")]

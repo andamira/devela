@@ -5,8 +5,10 @@
 
 #[doc = crate::_tags!(term runtime member)]
 /// Terminal capability flag.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", enum TermCap),
+    test_size_of(TermCap = 1|8; niche Option),
+}]
 /// These flags describe independent terminal features.
 /// Ordered or exclusive properties, such as color depth,
 /// are stored separately in [`TermCaps`][crate::TermCaps].

@@ -72,7 +72,7 @@ impl Ansi {
 #[doc = crate::_tags!(term string)]
 /// An OSC sequence with semicolon-separated fields.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", struct AnsiOsc),
     #[cfg(target_pointer_width = "32")]
     test_size_of(AnsiOsc1: AnsiOsc<'_, 1> = 16|128),
     #[cfg(target_pointer_width = "64")]
@@ -148,7 +148,7 @@ impl<'a> AnsiOsc<'a, 1> {
 #[doc = crate::_tags!(term web string)]
 /// A terminal hyperlink using the OSC 8 escape sequence.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", struct AnsiLink),
     #[cfg(target_pointer_width = "32")]
     test_size_of(AnsiLink: AnsiLink<'_> = 24|192),
     #[cfg(target_pointer_width = "64")]

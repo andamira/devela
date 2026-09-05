@@ -6,28 +6,38 @@ pub use fd_reexports::*;
 mod fd_reexports {
     use crate::{_reexport, _tags};
 
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs guard),
+    /* structs */
+
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => struct FdOwned, tag: _tags!(fs guard),
         doc: "An owned file descriptor.",
         @OwnedFd as FdOwned
     }
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs lifetime),
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => struct FdBorrowed, tag: _tags!(fs lifetime),
         doc: "A borrowed file descriptor.",
         @BorrowedFd as FdBorrowed
     }
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs),
+
+    /* traits */
+
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => trait AsFd, tag: _tags!(fs),
         doc: "A trait to borrow the file descriptor from an underlying object.",
         AsFd
     }
-
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs uid),
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => trait AsFdRaw, tag: _tags!(fs uid),
         doc: "A trait to extract the raw file descriptor from an underlying object.",
         @AsRawFd as AsFdRaw
     }
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs uid value),
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => trait FromFdRaw, tag: _tags!(fs uid value),
         doc: "Expresses the ability to construct an object from a raw file descriptor.",
         @FromRawFd as FromFdRaw
     }
-    _reexport! { rust: std::os::fd, location: "sys/os/fd", tag: _tags!(fs uid value),
+    _reexport! { rust: std::os::fd,
+        location: "sys/os/fd" => trait IntoFdRaw, tag: _tags!(fs uid value),
         doc: "Expresses the ability to consume an object and own its raw file descriptor.",
         @IntoRawFd as IntoFdRaw
     }

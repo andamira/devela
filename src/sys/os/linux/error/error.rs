@@ -20,13 +20,20 @@ use crate::{
 
 #[doc = crate::_tags!(linux result)]
 /// The return type for Linux-related functions that can fail.
-#[doc = crate::_doc_meta!{location("sys/os/linux")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux", type LinuxResult),
+}]
 pub type LinuxResult<T> = crate::Result<T, LinuxError>;
 
 #[doc = crate::_tags!(linux error_composite)]
 /// Represents a Linux-related error.
-#[doc = crate::_doc_meta!{location("sys/os/linux")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux", enum LinuxError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(LinuxError = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(LinuxError = 24|192; niche Option),
+}]
 /// Encapsulates errors that can occur when interacting with Linux syscalls or
 /// performing Linux-specific operations.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

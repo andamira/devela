@@ -229,10 +229,10 @@ crate::mods_in! {
     pub mod_ phys; // Physical quantities, units, and models of the natural world
     pub mod_ run; // Temporal coordination and staging of a running system
     pub mod_ ui; // Interactive surfaces, input semantics, and presentation state
+    pub mod_ sys; // System interfaces and hardware abstractions
     pub mod_ text; // Symbolic sequences, encodings, and text processing
     pub mod_ work; // Computational work, its coordination, and its execution
 }
-pub mod sys; // System interfaces and hardware abstractions
 // internal:
 pub mod yard; // Scaffolding, taxonomy, and documentation support.
 

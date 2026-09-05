@@ -17,7 +17,7 @@ use crate::{Ptr, c_int, c_uint, is, whilst};
 #[doc = crate::_tags!(audio linux guard)]
 /// Owned ALSA PCM stream handle.
 #[doc = crate::_doc_meta!{
-    location("sys/device/audio"),
+    location("sys/device/audio", struct AlsaPcmHandle),
     #[cfg(target_pointer_width = "32")]
     test_size_of(AlsaPcmHandle = 16|128),
     #[cfg(target_pointer_width = "64")]

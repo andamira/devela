@@ -4,7 +4,7 @@ use crate::{_reexport, _tags};
 
 /* core macros */
 
-_reexport! { rust: core, location: "sys/env", tag: _tags!(code),
+_reexport! { rust: core, location: "sys/env" => macro option_env, tag: _tags!(code),
     doc: "Optionally inspects an environment variable at compile time.",
     option_env
 }
@@ -14,8 +14,9 @@ _reexport! { rust: core, location: "sys/env", tag: _tags!(code),
 //
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Inspects an environment variable at compile time.
-#[doc = crate::_doc_meta!{location("sys/env")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/env", macro env_),
+}]
 #[doc = "*Re-exported from [`core::env`][macro@::core::env]*."]
 #[doc = "\n\n---"]
 ///

@@ -8,8 +8,9 @@ use ::core::{cmp, fmt};
 
 #[doc = crate::_tags!(io maybe_std)]
 /// A trait for objects which are byte-oriented sinks.
-#[doc = crate::_doc_meta!{location("sys/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/io", trait IoWrite),
+}]
 /// See <https://doc.rust-lang.org/std/io/trait.Write.html>.
 #[rustfmt::skip]
 pub trait IoWrite {

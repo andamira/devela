@@ -1,0 +1,65 @@
+// devela/src/sys/os/linux/_.rs
+//
+#![doc = crate::_DOC_SYS_OS_LINUX!()] // public
+#![doc = crate::_doc!(modules: crate::sys::os; linux: io, process, thread)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(extends: os)]
+//!
+//! # Supported architectures
+//! Most of Linux functionality is feature-gated for the following target architectures:
+//! - `x86-64`, `x86`, `ARM`, `AArch64`, `RISC-V RV32`, `RISC-V RV64`.
+//
+// NOTE: doc cfg attributes for target_arch are hidden from reexports
+// in order to be have a more concise documentation in the libera crate.
+// This is achieved by attaching a brief version to the item itself,
+// and attaching a complete version to the module that reexports them.
+//
+// This is so both for syscalls and safe syscall wrappers. And when more
+// platforms are supported they will all need to be updated accordingly.
+
+crate::mods_in! {
+        // mod container; // WIP
+        mod_ error; // LinuxError, LinuxResult, LINUX_<ERRNO|EXIT>
+
+    #[doc = crate::_tags!(io)]
+    pub mod_ io; // LinuxStat, LinuxTermios, LINUX_<FILENO|IOCTL|TERMIOS_*|…>-
+
+        mod_ namespace; // Linux
+
+    // #[doc = crate::_tags!()]
+    pub mod_ process; // LinuxSig<action|set|siginfo>, LINUX_SIG<ACTION|AIGNAL>
+
+        mod rand; // LinuxRandomMode
+
+        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        mod_ syscalls; // LINUX_SYS
+
+    #[doc = crate::_tags!(time)]
+    pub mod_ thread; // Linux<Clock|Instant|Time|Timespec>
+}
+crate::mods_out! { // _mods, _pub_mods, _crate_internals
+    _mods {
+        pub use super::{
+            // container::*,
+            error::*,
+            namespace::Linux,
+            rand::*,
+        };
+        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        pub use super::syscalls::_all::*;
+    }
+    _pub_mods {
+        pub use super::{
+            io::_all::*,
+            process::_all::*,
+            thread::_all::*,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            io::_crate_internals::*,
+            namespace::_crate_internals::*,
+            process::_crate_internals::*,
+        };
+    }
+}

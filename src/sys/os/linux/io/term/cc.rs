@@ -8,10 +8,9 @@ use crate::LINUX_TERMIOS_CC as CC;
 #[doc = crate::_tags!(linux term)]
 /// A symbolic index into [`LinuxTermios::c_cc`][crate::LinuxTermios::c_cc].
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io/term"),
-    test_size_of(LinuxTermiosCc = 1|8),
+    location("sys/os/linux/io/term", struct LinuxTermiosCc),
+    test_size_of(LinuxTermiosCc = 1|8; niche !Option),
 }]
-///
 /// These constants identify slots in the terminal control-character array.
 /// They are indices, not character values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

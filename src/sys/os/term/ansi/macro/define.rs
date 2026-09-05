@@ -15,7 +15,9 @@ macro_rules! _ansi_define {
     (%emit ($d:tt) print $print_method:ident) => {
         #[doc = crate::_tags!(term)]
         /// Concatenates or prints [`Ansi`][crate::Ansi] escape codes.
-        #[doc = crate::_doc_meta!{location("sys/os/term")}]
+        #[doc = crate::_doc_meta!{
+            location("sys/os/term", macro ansi),
+        }]
         #[doc = _docs::_DOC_ANSI!()]
         #[macro_export]
         #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -107,7 +109,9 @@ macro_rules! _ansi_define {
     (%emit ($d:tt) fallback) => {
         #[doc = crate::_tags!(term)]
         /// Concatenates [`Ansi`][crate::Ansi] escape codes.
-        #[doc = crate::_doc_meta!{location("sys/os/term")}]
+        #[doc = crate::_doc_meta!{
+            location("sys/os/term", macro ansi),
+        }]
         #[doc = _docs::_DOC_ANSI!()]
         #[macro_export]
         #[cfg_attr(cargo_primary_package, doc(hidden))]

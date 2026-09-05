@@ -6,8 +6,8 @@
 #[doc = crate::_tags!(term layout ffi)]
 /// The size of the terminal.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
-    test_size_of(TermSize = 8|64),
+    location("sys/os/term", struct TermSize),
+    test_size_of(TermSize = 8|64; niche !Option),
 }]
 ///
 /// ## Used by

@@ -9,7 +9,7 @@ use crate::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
 #[doc = crate::_tags!(event web)]
 /// Pollable ingress queue for normalized web events.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", struct WebEventIngress),
     #[cfg(target_pointer_width = "32")]
     test_size_of(WebEventIngress<0> = 8|64),
     #[cfg(target_pointer_width = "32")]

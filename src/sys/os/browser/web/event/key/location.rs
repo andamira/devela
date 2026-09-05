@@ -11,8 +11,10 @@ use crate::{KeyMod, KeyMods};
 
 #[doc = crate::_tags!(interaction web)]
 /// Which part of the keyboard the key event originates from.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", enum WebKeyLocation),
+    test_size_of(WebKeyLocation = 1|8; niche Option),
+}]
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#keyboard_locations>
 #[repr(u8)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

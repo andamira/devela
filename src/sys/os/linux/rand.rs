@@ -7,8 +7,10 @@ use crate::c_uint;
 
 #[doc = crate::_tags!(rand linux)]
 /// Linux `getrandom` randomness mode.
-#[doc = crate::_doc_meta!{location("sys/os/linux")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux", enum LinuxRandomMode),
+    test_size_of(LinuxRandomMode = 1|8; niche Option),
+}]
 /// This selects the Linux `getrandom` policy
 /// used by the configurable `Linux::random_*_with` methods.
 ///

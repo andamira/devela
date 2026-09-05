@@ -9,11 +9,11 @@ use crate::{c_void, impl_trait};
 #[doc = crate::_tags!(linux signal abi)]
 /// Additional information about a signal.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/process"),
+    location("sys/os/linux/process", struct LinuxSiginfo),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(LinuxSiginfo = 40|320),
+    test_size_of(LinuxSiginfo = 40|320; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(LinuxSiginfo = 48|384),
+    test_size_of(LinuxSiginfo = 48|384; niche !Option),
 }]
 /// Represents the [`siginfo_t`] structure from libc.
 ///

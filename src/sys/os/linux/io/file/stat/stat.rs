@@ -13,7 +13,10 @@ use crate::{LINUX_S_IFMT, c_long, c_uint, c_ulong};
 
 #[doc = crate::_tags!(linux fs)]
 /// A Linux file type.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", enum LinuxFileType),
+    test_size_of(LinuxFileType = 8|64; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum LinuxFileType {
     /// A regular file.
@@ -45,7 +48,7 @@ pub enum LinuxFileType {
 #[doc = crate::_tags!(linux fs abi)]
 /// File status structure matching libc's stat ([man 2 stat])
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io"),
+    location("sys/os/linux/io", struct LinuxStat),
     #[cfg(target_pointer_width = "32")]
     test_size_of(LinuxStat = 76|608),
     #[cfg(target_pointer_width = "64")]

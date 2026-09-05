@@ -8,10 +8,9 @@ use crate::{_impl_init, EventKind, Key, TermInputState, TermParsed};
 #[doc = crate::_tags!(term event parser)]
 /// Parses terminal input bytes into normalized events.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
-    test_size_of(TermInputParser = 19|152),
+    location("sys/os/term", struct TermInputParser),
+    test_size_of(TermInputParser = 19|152; niche Option),
 }]
-///
 /// `TermInputParser` is a byte-fed state machine. It accepts ordinary bytes,
 /// UTF-8 text, and terminal escape sequences, returning an [`EventKind`] when
 /// a complete input event has been recognized.

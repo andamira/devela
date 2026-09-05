@@ -9,10 +9,9 @@ use crate::{UiCellMetric, UiDrawKind, UiDrawListView, UiRound};
 #[doc = crate::_tags!(term ui)]
 /// A cell-form UI adapter for terminal grids.
 #[doc = crate::_doc_meta! {
-    location("sys/os/term"),
-    test_size_of(TermCellUi = 8|64),
+    location("sys/os/term", struct TermCellUi),
+    test_size_of(TermCellUi = 8|64; niche !Option),
 }]
-///
 /// Projects backend-neutral UI drawing records into a [`TermGrid`] of
 /// [`Termel<char>`] values.
 ///

@@ -7,7 +7,10 @@ use crate::{HttpError, HttpRequestLine, HttpStatus, Version};
 
 #[doc = crate::_tags!(network protocol)]
 /// HTTP protocol version.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", enum HttpVersion),
+    test_size_of(HttpVersion = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum HttpVersion {
     /// `HTTP/1.0`.

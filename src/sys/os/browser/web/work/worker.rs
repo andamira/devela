@@ -15,10 +15,9 @@ use crate::{AsyncPoll, Web, js_uint32};
 #[doc = crate::_tags!(web uid)]
 /// A handle to a JavaScript Web Worker.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
-    test_size_of(WebWorker = 4|32),
+    location("sys/os/browser/web", struct WebWorker),
+    test_size_of(WebWorker = 4|32; niche !Option),
 }]
-///
 /// - <https://developer.mozilla.org/en-US/docs/Web/API/Worker>.
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -55,7 +54,10 @@ impl WebWorker {
 
 #[doc = crate::_tags!(web error)]
 /// Errors that can occur when working with JavaScript Web Workers.
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", enum WebWorkerError),
+    test_size_of(WebWorkerError = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WebWorkerError {
     /// The worker script provided was invalid.
@@ -68,7 +70,10 @@ pub enum WebWorkerError {
 
 #[doc = crate::_tags!(web uid)]
 /// Represents a job running inside a [`WebWorker`].
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct WebWorkerJob),
+    test_size_of(WebWorkerJob = 8|64; niche !Option),
+}]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct WebWorkerJob {
     pub(crate) worker: WebWorker,

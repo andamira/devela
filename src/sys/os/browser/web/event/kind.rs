@@ -8,10 +8,9 @@ use crate::{KeyState, is};
 #[doc = crate::_tags!(event web uid)]
 /// A typed selector for web event names used by the web API browser bridge.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", enum WebEventKind),
     test_size_of(WebEventKind = 4|32; niche Option),
 }]
-///
 /// # Role
 /// - Selects the exact web event name passed to `addEventListener`.
 /// - Bridges raw browser events into web API callbacks and normalized events.

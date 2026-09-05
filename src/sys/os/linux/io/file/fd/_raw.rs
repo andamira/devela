@@ -11,7 +11,9 @@ use crate::c_int;
 
 #[doc = crate::_tags!(linux fs abi)]
 /// Linux `AT_*` constants for `*at` syscalls.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_AT),
+}]
 #[derive(Debug)]
 pub(crate) struct LINUX_AT;
 impl LINUX_AT {
@@ -59,7 +61,9 @@ impl LINUX_AT {
 
 #[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] Standard file descriptor numbers.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_FILENO),
+}]
 #[derive(Debug)]
 pub(crate) struct LINUX_FILENO;
 impl LINUX_FILENO {
@@ -73,8 +77,9 @@ impl LINUX_FILENO {
 
 #[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] file creation and status flags.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_O_FLAGS),
+}]
 /// Used with `sys_open`, `sys_fcntl`, etc.
 //
 // - /usr/include/asm-generic/fcntl.h
@@ -154,8 +159,9 @@ impl LINUX_O_FLAGS {
 
 #[doc = crate::_tags!(linux fs abi)]
 /// [`Linux`][crate::Linux] Seek commands (for `lseek`).
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
-//
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_SEEK),
+}]
 // Architecture independent
 // - /usr/include/unistd.h
 // - /usr/include/bits/fcntl-linux.h

@@ -9,8 +9,9 @@ use crate::TermLineMode;
 
 #[doc = crate::_tags!(term guard)]
 /// Scoped terminal session guard.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", struct TermSession),
+}]
 /// Keeps backend-specific restoration state alive until dropped.
 ///
 /// The restore payload defines the actual cleanup behavior. For example, a
@@ -37,7 +38,7 @@ impl<R> TermSession<R> {
 #[doc = crate::_tags!(term event)]
 /// Terminal event polling policy.
 #[doc = crate::_doc_meta!{
-    location("sys/os/term"),
+    location("sys/os/term", enum TermPollPolicy),
     #[cfg(feature = "time")]
     test_size_of(TermPollPolicy = 16),
     #[cfg(not(feature = "time"))]
@@ -76,8 +77,8 @@ crate::set! {
     #[doc = crate::_tags!(term runtime set)]
     /// Terminal session mode request.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term"),
-        test_size_of(TermMode = 4|32),
+        location("sys/os/term", struct TermMode),
+        test_size_of(TermMode = 4|32; niche !Option),
     }]
     /// This compact set describes the state changes requested for a scoped [`TermSession`].
     ///

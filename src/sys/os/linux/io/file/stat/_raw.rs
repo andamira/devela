@@ -9,8 +9,9 @@ use crate::c_uint;
 
 #[doc = crate::_tags!(linux fs)]
 /// [`Linux`][crate::Linux] File mode and permission bits.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io")}]
-//
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io", struct LINUX_S_IFMT),
+}]
 // Architecture independent
 // - /usr/include/linux/stat.h
 // - /usr/include/bits/stat.h (glibc)

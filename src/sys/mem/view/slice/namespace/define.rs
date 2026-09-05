@@ -1,4 +1,4 @@
-// devela/src/sys/mem/view/slice/namespace/mod.rs
+// devela/src/sys/mem/view/slice/namespace/define.rs
 //
 //! Defines [`Slice`].
 //

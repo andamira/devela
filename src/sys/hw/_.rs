@@ -1,0 +1,30 @@
+// devela/src/sys/hw/_.rs
+//
+#![doc = crate::_tags!(wip)]
+#![doc = crate::_DOC_SYS_HW!()] // public
+#![doc = crate::_doc!(modules: crate::sys; hw)]
+#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(hr)]
+//
+
+// mod block; // Block storage
+// mod capture; // Image/surface capture hardware
+// mod hid; // Human interface devices WIP Evdev*
+// mod link; // Communication links
+// mod pin; // Pin-level hardware interfaces
+// mod sensor; // Measurement sensors
+// mod usb; // USB bus/devices
+
+crate::mods_out! { // _mods
+    _mods {
+        // pub use super::{
+        //     block::_all::*,
+        //     capture::_all::*,
+        //     hid::_all::*,
+        //     link::_all::*,
+        //     pin::_all::*,
+        //     sensor::_all::*,
+        //     usb::_all::*,
+        // };
+    }
+}

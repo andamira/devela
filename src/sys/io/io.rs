@@ -14,7 +14,10 @@ use crate::{IoEmpty, IoRead, IoRepeat, IoResult, IoWrite};
 
 #[doc = crate::_tags!(io namespace)]
 /// I/O-related operations.
-#[doc = crate::_doc_meta!{location("sys/io")}]
+#[doc = crate::_doc_meta!{
+    location("sys/io", struct Io),
+    test_size_of(Io = 0),
+}]
 #[derive(Debug)]
 pub struct Io;
 

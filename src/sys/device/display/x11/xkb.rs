@@ -11,8 +11,9 @@ use super::{_raw, XError};
 use crate::{Bitwise, Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct KeyRepeatFilter),
+}]
 /// This is stored in [`XDisplay`][crate::XDisplay], and used in [`crate::XEvent::to_event_key`].
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub(crate) struct KeyRepeatFilter {
@@ -52,8 +53,9 @@ impl KeyRepeatFilter {
 }
 
 /// Intermediate result combining semantic + physical keys + modifiers.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XkbKeyInfo),
+}]
 /// This is produced by [`XkbState::translate_key`] and consumed by [`crate::XEvent::to_event_key]`.
 #[derive(Debug)]
 pub(crate) struct XkbKeyInfo {
@@ -120,8 +122,9 @@ impl XkbKeyInfo {
 // }
 
 /// XKB translation state.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XkbState),
+}]
 /// Provides keysym interpretation, physical-key identification,
 /// and modifier mapping for X11 keyboard events.
 ///

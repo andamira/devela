@@ -31,8 +31,13 @@ macro_rules! _slog_guard {
 
 #[doc = crate::_tags!(log)]
 /// Fixed-capacity static logger with owned byte buffers.
-#[doc = crate::_doc_meta!{location("sys/log")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/log", struct LoggerStatic),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(LoggerStatic<8, 16> = 200|1600; niche !Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(LoggerStatic<8, 16> = 272|2176; niche !Option),
+}]
 /// Each logger is identified by its capacity (`CAP`) as the number of stored messages,
 /// and each message's maximum length (`MSG_LEN`).
 ///
@@ -186,8 +191,9 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 // no-op macro placeholder
 #[doc = crate::_tags!(fake log)]
 /// Static global logger macro, compile-time friendly.
-#[doc = crate::_doc_meta!{location("sys/log")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/log", macro slog),
+}]
 /// This inert implementation preserves call-site ergonomics
 /// when the logging backend is not enabled.
 ///
@@ -198,14 +204,15 @@ impl<const CAP: usize, const MSG_LEN: usize> LoggerStatic<CAP, MSG_LEN> {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
 #[cfg(not(feature = "unsafe_sync"))]
 #[macro_export]
-macro_rules! slog {
+macro_rules! slog· {
     ($($tt:tt)*) => {};
 }
 
 #[doc = crate::_tags!(log)]
 /// Static global logger macro, compile-time friendly.
-#[doc = crate::_doc_meta!{location("sys/log")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/log", macro slog),
+}]
 /// Defines and operates on [`LoggerStatic`] instances for fixed-capacity logging.
 /// Each logger is identified by its `(CAP, MSG_LEN)` pair and may optionally have
 /// an extra identifier for multiple independent instances.
@@ -244,7 +251,7 @@ macro_rules! slog {
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
 #[cfg(feature = "unsafe_sync")]
-macro_rules! slog {
+macro_rules! slog· {
     (
     /* public API*/
 
@@ -370,4 +377,4 @@ macro_rules! slog {
     };
 }
 #[doc(inline)]
-pub use slog;
+pub use slog· as slog;

@@ -8,7 +8,7 @@ use crate::{Display, Error, FmtResult, Formatter};
 #[doc = crate::_tags!(unix error)]
 /// XCB/X11 error categories.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", enum XError),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XError = 24|192; niche Option),
 }]

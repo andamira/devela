@@ -7,8 +7,10 @@ use crate::{Linux, LinuxClock, LinuxTimespec, TimeScale, TimeSource, TimeSourceC
 
 #[doc = crate::_tags!(linux time)]
 /// A fast monotonic Linux time source.
-#[doc = crate::_doc_meta!{location("sys/os/linux/thread")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/thread", struct LinuxInstant),
+    test_size_of(LinuxInstant = 0),
+}]
 /// This is the canonical fixed Linux numeric source.
 /// It uses `CLOCK_MONOTONIC` and projects time as `u64` nanoseconds.
 #[derive(Debug)]
@@ -67,8 +69,10 @@ impl TimeSource<u32> for LinuxInstant {
 
 #[doc = crate::_tags!(linux time)]
 /// A configurable family of Linux clocks.
-#[doc = crate::_doc_meta!{location("sys/os/linux/thread")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/thread", struct LinuxTime),
+    test_size_of(LinuxTime = 0),
+}]
 /// Each [`LinuxClock`] selects a concrete Linux timeline and exposes it
 /// through the common `TimeSourceCfg<u64>` interface using nanosecond values.
 #[derive(Debug)]

@@ -1,0 +1,33 @@
+// devela/src/sys/os/linux/syscalls/_.rs
+//
+//! Linux syscalls.
+//
+// - https://doc.rust-lang.org/reference/inline-assembly.html
+// - https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
+
+use crate::items;
+
+crate::mods_in! {
+    mod_ consts; // LINUX_SYS
+    mod shared_docs;
+}
+crate::mods_out! { // _mods
+    _mods {
+        pub use super::{
+            consts::*, // (no mods_out!)
+            sys::*,
+        };
+    }
+}
+
+// re-export arch-specific module:
+#[cfg(target_arch = "x86_64")]
+items! { mod x86_64; use x86_64 as sys; }
+#[cfg(target_arch = "x86")]
+items! { mod x86; use x86 as sys; }
+#[cfg(target_arch = "arm")]
+items! { mod arm; use arm as sys; }
+#[cfg(target_arch = "aarch64")]
+items! { mod aarch64; use aarch64 as sys; }
+#[cfg(any_target_arch_riscv)]
+items! { mod riscv; use riscv as sys; }

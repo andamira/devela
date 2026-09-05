@@ -7,7 +7,10 @@ use TermelOccupancy::{Continuation, Origin, Reserved, Unoccupied};
 
 #[doc = crate::_tags!(term text layout bit)]
 /// The cell-space occupancy represented by terminal-element metadata.
-#[doc = crate::_doc_meta!{location("sys/os/term/grid")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/term/grid", enum TermelOccupancy),
+    test_size_of(TermelOccupancy = 1|8; niche Option),
+}]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum TermelOccupancy {
@@ -39,8 +42,8 @@ crate::bitfield! {
     #[doc = crate::_tags!(term text layout bit)]
     /// Compact terminal-cell occupancy metadata for a [`Termel`][crate::Termel].
     #[doc = crate::_doc_meta!{
-        location("sys/os/term/grid"),
-        test_size_of(TermelMeta = 1),
+        location("sys/os/term/grid", struct TermelMeta),
+        test_size_of(TermelMeta = 1|8; niche !Option),
     }]
     ///
     /// An origin stores its occupied column width.

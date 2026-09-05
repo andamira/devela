@@ -10,10 +10,9 @@ crate::bitfield! {
     #[doc = crate::_tags!(term runtime set bit)]
     /// Terminal capability bits.
     #[doc = crate::_doc_meta!{
-        location("sys/os/term"),
-        test_size_of(TermCaps = 4|32),
+        location("sys/os/term", struct TermCaps),
+        test_size_of(TermCaps = 4|32; niche !Option),
     }]
-    ///
     /// Stores independent terminal feature flags plus the maximum known color depth.
     ///
     /// See also [`TermCap`].

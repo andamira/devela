@@ -19,7 +19,7 @@ use crate::{impl_trait, is};
 #[doc = crate::_tags!(event web)]
 /// A web API Pointer Event.
 #[doc = crate::_doc_meta!{
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", struct WebEventPointer),
     test_size_of(WebEventPointer = 48|384; niche Option),
 }]
 /// Represents a JavaScript pointer event containing relevant properties.

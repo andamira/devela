@@ -11,8 +11,10 @@ use devela::{_js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int3
 
 #[doc = crate::_tags!(web uid)]
 /// Handle to a DOM [Element].
-#[doc = crate::_doc_meta!{location("sys/os/browser/web")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/browser/web", struct WebElement),
+    test_size_of(WebElement = 4|32; niche !Option),
+}]
 /// [Element]: https://developer.mozilla.org/en-US/docs/Web/API/Element
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]

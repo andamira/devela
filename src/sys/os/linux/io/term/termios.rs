@@ -23,10 +23,9 @@ use crate::{
 #[doc = crate::_tags!(linux term abi)]
 /// Represents the [`termios`] structure from libc, used to control terminal I/O.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io"),
-    test_size_of(LinuxTermios = 36|288),
+    location("sys/os/linux/io", struct LinuxTermios),
+    test_size_of(LinuxTermios = 36|288; niche !Option),
 }]
-///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.
 ///
@@ -376,7 +375,10 @@ impl LinuxTermios {
 
 #[doc = crate::_tags!(linux term)]
 /// A Linux termios character size.
-#[doc = crate::_doc_meta!{location("sys/os/linux/io/term")}]
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/io/term", enum LinuxTermiosCharSize),
+    test_size_of(LinuxTermiosCharSize = 1|8; niche Option),
+}]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[repr(u8)]
 pub enum LinuxTermiosCharSize {

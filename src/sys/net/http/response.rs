@@ -8,8 +8,13 @@ use crate::{HttpError, HttpMethod, HttpStatus, HttpVersion, TextScanner};
 
 #[doc = crate::_tags!(network protocol)]
 /// HTTP response head.
-#[doc = crate::_doc_meta!{location("sys/net/http")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/net/http", struct HttpResponseHead),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(HttpResponseHead = 20|160; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(HttpResponseHead = 40|320; niche Option),
+}]
 /// Represents an HTTP status line and basic representation headers.
 ///
 /// The current encoder writes the textual HTTP/1 wire format.

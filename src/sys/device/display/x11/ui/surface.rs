@@ -9,7 +9,7 @@ use crate::{UiDensity, UiDrawKind, UiDrawListView, UiRound};
 #[doc = crate::_tags!(ui unix)]
 /// A graphic-form UI adapter for X11 pixel surfaces.
 #[doc = crate::_doc_meta! {
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XSurfaceUi),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XSurfaceUi = 12|96),
 }]

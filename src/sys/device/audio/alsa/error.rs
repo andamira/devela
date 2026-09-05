@@ -11,7 +11,7 @@ use crate::{PcmLayout, PcmSample, PcmSpec};
 #[doc = crate::_tags!(audio linux error)]
 /// ALSA PCM error.
 #[doc = crate::_doc_meta!{
-    location("sys/device/audio"),
+    location("sys/device/audio", enum AlsaError),
     #[cfg(target_pointer_width = "64")]
     test_size_of(AlsaError = 24|192),
 }]

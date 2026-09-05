@@ -6,10 +6,9 @@ crate::enumset! {
     #[doc = crate::_tags!(web member)]
     /// A browser permission kind.
     #[doc = crate::_doc_meta!{
-        location("sys/os/browser/web"),
-        test_size_of(WebPermission = 1|8),
+        location("sys/os/browser/web", enum WebPermission),
+        test_size_of(WebPermission = 1|8; niche Option),
     }]
-    ///
     /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API>
     /// - <https://developer.mozilla.org/en-US/docs/Web/API/Permissions#browser_compatibility>
     #[must_use]
@@ -19,8 +18,8 @@ crate::enumset! {
         #[doc = crate::_tags!(web set)]
         /// A set of browser permission kinds.
         #[doc = crate::_doc_meta!{
-            location("sys/os/browser/web"),
-            test_size_of(WebPermissionSet = 4|32),
+            location("sys/os/browser/web", struct WebPermissionSet),
+            test_size_of(WebPermissionSet = 4|32; niche !Option),
         }]
         #[must_use]
         pub WebPermissionSet: u32

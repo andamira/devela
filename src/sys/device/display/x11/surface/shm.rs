@@ -7,8 +7,9 @@ use crate::{Libc, XDisplay, XError, XImageFormat, XImageStore, XWindow};
 
 #[doc = crate::_tags!(unix runtime)]
 /// MIT-SHM capabilities reported by the X server.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XShmCaps),
+}]
 /// This is an explicit capability snapshot gathered once from the display.
 ///
 /// It answers whether MIT-SHM is present and which shared-pixmap properties
@@ -24,7 +25,7 @@ pub(crate) struct XShmCaps {
 #[doc = crate::_tags!(unix runtime)]
 /// MIT-SHM-backed pixel buffer for X11 image upload.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XShmBuffer),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XShmBuffer = 48|384),
 }]

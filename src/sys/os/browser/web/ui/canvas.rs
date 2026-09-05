@@ -8,7 +8,7 @@ use crate::{UiDensity, UiDrawKind, UiDrawListView, UiRound, Web, is};
 #[doc = crate::_tags!(ui web)]
 /// A graphic-form UI adapter for an HTML canvas.
 #[doc = crate::_doc_meta! {
-    location("sys/os/browser/web"),
+    location("sys/os/browser/web", struct WebCanvasUi),
     #[cfg(target_pointer_width = "32")]
     test_size_of(WebCanvasUi = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]

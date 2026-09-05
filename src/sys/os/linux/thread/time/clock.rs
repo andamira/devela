@@ -13,8 +13,10 @@ use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 /// [`Linux`][crate::Linux] clock identifiers.
 ///
 /// Used for [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.
-#[doc = crate::_doc_meta!{location("sys/os/linux/thread")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/linux/thread", enum LinuxClock),
+    test_size_of(LinuxClock = 4|32; niche Option),
+}]
 /// See [clock_gettime(2)] for detailed information about each clock type.
 ///
 /// [clock_gettime(2)]: https://www.man7.org/linux/man-pages/man2/clock_gettime.2.html

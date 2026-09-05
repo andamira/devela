@@ -7,8 +7,10 @@ use crate::__ansi_consts;
 
 #[doc = crate::_tags!(term namespace)]
 /// ANSI escape codes.
-#[doc = crate::_doc_meta!{location("sys/os/term")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/os/term", struct Ansi),
+    test_size_of(Ansi = 0),
+}]
 /// # Return types
 /// Constants ending with `_B` contain a byte array.
 /// Those without `_B` contain a string slice.

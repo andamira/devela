@@ -13,8 +13,8 @@ const INVALID_FD: FdRaw = -1;
 #[doc = crate::_tags!(linux fs abi)]
 /// An owned Linux file descriptor.
 #[doc = crate::_doc_meta!{
-    location("sys/os/linux/io"),
-    test_size_of(LinuxFd = 4|32),
+    location("sys/os/linux/io", struct LinuxFd),
+    test_size_of(LinuxFd = 4|32; niche !Option),
 }]
 #[must_use]
 #[derive(Debug)]

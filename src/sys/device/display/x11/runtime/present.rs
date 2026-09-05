@@ -12,7 +12,7 @@ use crate::{
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed byte-backed presentation artifact for X11.
 #[doc = crate::_doc_meta!{
-    location("sys/device/display/x11"),
+    location("sys/device/display/x11", struct XPresent),
     #[cfg(target_pointer_width = "32")]
     test_size_of(XPresent<'_> = 24|192),
     #[cfg(target_pointer_width = "64")]
@@ -61,8 +61,9 @@ impl<'a> XPresent<'a> {
 
 #[doc = crate::_tags!(unix runtime)]
 /// Validated plan for copying raster rows into an X11 surface.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XCopyLayout),
+}]
 /// This separates meaningful pixel bytes from source and destination row
 /// padding. Construction verifies compatible depth and stored pixel width,
 /// valid strides, representable lengths, and sufficient source storage.
@@ -133,8 +134,9 @@ impl XCopyLayout {
 
 #[doc = crate::_tags!(unix runtime)]
 /// A minimal X11 presenter for byte-backed image artifacts.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XPresenter),
+}]
 /// `XPresenter` consumes [`XPresent`] artifacts
 /// and applies them to the current X11 frame context.
 #[derive(Debug)]
@@ -277,8 +279,9 @@ impl<'ctx> RunPresent<Event, XFrameCtx<'ctx>> for XPresenter {
 
 #[doc = crate::_tags!(unix runtime)]
 /// Projects a byte-backed X11 image scene into a borrowed presentation artifact.
-#[doc = crate::_doc_meta!{location("sys/device/display/x11")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XRasterRenderer),
+}]
 /// It borrows image bytes from the scene and packages them
 /// as an [`XPresent`] for an `XPresenter` to upload.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
