@@ -1,4 +1,4 @@
-# Changelog from 2022 to 2024
+# Changelogs from 2022 to 2024
 
 
 [macros/0.12.0] - 2024-12-01

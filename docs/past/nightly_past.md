@@ -8,13 +8,43 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.98 became stable on [2026-08-20](https://releases.rs/docs/1.98.0/)
+> - <https://github.com/rust-lang/rust/milestone/145>
+> - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.98.0>
+
+- 1.98: ` `[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
+- 1.98: ` `[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
+- 1.98: `✓`[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
+- 1.98: ` `[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
+- 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/pull/152544)
+- 1.98: `→`[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
+- 1.98: ` `[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
+- 1.98: ` `[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
+- 1.98: ` `[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912)
+- 1.98: `…`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
+- 1.98: `…`[substr_range](https://github.com/rust-lang/rust/pull/141266)
+
+# 1.97 became stable on [2026-07-09](https://releases.rs/docs/1.97.0/)
+> - <https://github.com/rust-lang/rust/milestone/144>
+> - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.97.0>
+
+- 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
+- 1.97: `…`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
+- 1.97: `…`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
+- 1.97: `…`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
+- 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
+- 1.97: `…`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
+- 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
+
 # 1.96 became stable on [2026-05-28](https://releases.rs/docs/1.96.0/)
 > - <https://github.com/rust-lang/rust/milestone/142>
 > - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.96.0>
 
 - 1.96: `→`[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
-- 1.96: `→`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
+- 1.96: `✓`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
 - 1.96: ` `[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
 - 1.96: ` `[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
 - 1.96: `✓`[new_range_api](https://github.com/rust-lang/rust/pull/154620) (new_range_api)

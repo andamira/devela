@@ -23,38 +23,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.97 will be stable on [2026-07-09](https://releases.rs/docs/1.97.0/) `nightly_stable_1_97`
-> - <https://github.com/rust-lang/rust/milestone/144>
-<!-- > - <https://blog.rust-lang.org/2026/07/09/Rust-1.97.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.97.0> -->
-
-- 1.97: ` `[Stabilize build.warnings](https://github.com/rust-lang/cargo/pull/16796)
-- 1.97: `c`[cfg_target_has_atomic_equal_alignment](https://github.com/rust-lang/rust/pull/155006)
-- 1.97: `c`[int_lowest_highest_one](https://github.com/rust-lang/rust/pull/155147)
-- 1.97: `c`[isolate_most_least_significant_one](https://github.com/rust-lang/rust/pull/155130)
-- 1.97: ` `[pin_ergonomics](https://github.com/rust-lang/rust/pull/144537) (only the pin_drop part)
-- 1.97: `c`[uint_bit_width](https://github.com/rust-lang/rust/pull/155131)
-- 1.97: ` `[--remap-path-prefix](https://github.com/rust-lang/rust/pull/155307)
-
-
-# 1.98 will be stable on [2026-08-20](https://releases.rs/docs/1.98.0/) `nightly_stable_1_98`
-> - <https://github.com/rust-lang/rust/milestone/145>
-<!-- > - <https://blog.rust-lang.org/2026/08/20/Rust-1.98.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.98.0> -->
-
-- 1.98: `c`[atomic_from_mut](https://github.com/rust-lang/rust/pull/158573)
-- 1.98: `a`[box_as_ptr](https://github.com/rust-lang/rust/pull/157876)
-- 1.98: ` `[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
-- 1.98: `c`[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
-- 1.98: `c`[int_format_into](https://github.com/rust-lang/rust/pull/152544)
-- 1.98: ` `[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
-- 1.98: `c`[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
-- 1.98: `c`[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
-- 1.98: `a`[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912)
-- 1.98: `c`[strip_circumfix](https://github.com/rust-lang/rust/pull/158012)
-- 1.98: `c`[substr_range](https://github.com/rust-lang/rust/pull/141266)
-
-
 # 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
 > - <https://github.com/rust-lang/rust/milestone/147>
 <!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->

@@ -15,6 +15,10 @@
 
 # Project
 
+## infra
+### cargo
+- bump MSRV to 1.98.1
+
 ## worskspace
 - add cargo aliases: `c_<x|a|r><32|64>l`.
 
