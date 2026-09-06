@@ -1,5 +1,16 @@
 <!-- devela/docs/nightly.md -->
 
+This page tracks unstable Rust features relevant to devela and the `nightly_*`
+configuration flags used to enable them before stabilization.
+
+Stable Rust remains the baseline. Nightly support is opt-in and is used to try
+upcoming language and library facilities early, and to ease their adoption
+once they become stable.
+
+Entries are grouped by expected stable release when one is known.
+
+---
+
 Legend:
 - ` ` = not enabled / can't be enabled
 - `i` = not enabled (incomplete_features).
@@ -99,7 +110,6 @@ See also
 - 1.??: `c`[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
 - 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: `c`[new_range_api](https://github.com/rust-lang/rust/pull/152304) from:new_range_api
 - 1.??: `c`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `c`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
@@ -207,23 +217,22 @@ See also
 - [doc_cfg](https://github.com/rust-lang/rust/issues?q=state%3Aopen%20label%3A%22F-doc_cfg%22)
 
 # Rust project Goals:
-- <https://rust-lang.github.io/rust-project-goals/>
-  - <https://rust-lang.github.io/rust-project-goals/2026/goals.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/const-generics.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/macro-improvements.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/move-trait.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/open-enums.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/open-namespaces.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/reflection-and-comptime.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/unsafe-fields.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/wasm-components.html>
-    - <https://rust-lang.github.io/rust-project-goals/2026/roadmap-rust-for-linux.html>
-- [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
-- [expanded const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
-- [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
-- [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
-- [optimize clippy & linting](https://github.com/rust-lang/rust-project-goals/issues/114)
-- [reborrow traits](https://github.com/rust-lang/rust-project-goals/issues/106)
-- [reflection and comptime](https://github.com/rust-lang/rust-project-goals/issues/406)
-- [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
-- [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
+- <https://goals.rust-lang.org/>
+  - <https://goals.rust-lang.org/2026/goals.html>
+    - <https://goals.rust-lang.org/2026/highlights.html>
+    - <https://goals.rust-lang.org/2026/const-generics.html>
+    - <https://goals.rust-lang.org/2026/macro-improvements.html>
+    - <https://goals.rust-lang.org/2026/move-trait.html>
+    - <https://goals.rust-lang.org/2026/open-enums.html>
+    - <https://goals.rust-lang.org/2026/open-namespaces.html>
+    - <https://goals.rust-lang.org/2026/reflection-and-comptime.html>
+    - <https://goals.rust-lang.org/2026/unsafe-fields.html>
+    - <https://goals.rust-lang.org/2026/wasm-components.html>
+    - <https://goals.rust-lang.org/2026/roadmap-rust-for-linux.html>
+- [2026 milestone](https://github.com/rust-lang/goals/milestone/7)
+  - [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
+  - [full const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
+  - [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
+  - [reborrow traits](https://github.com/rust-lang/rust-project-goals/issues/106)
+  - [reflection and comptime](https://github.com/rust-lang/rust-project-goals/issues/406)
+  - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)

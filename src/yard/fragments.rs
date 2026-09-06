@@ -39,7 +39,11 @@ crate::CONST! { hidden macro_export,
 
     _DOC_ALL_ = "All crate items re-exported, grouped by their root modules.";
     _DOC_ALL_PLUS_ = "\n\nEach root module appears here and provides
-its own flat view of all its public children.";
+its own flat view of all its public children.
+
+Click on the `▽` symbol after the list of submodules to switch to hierarchical view,
+and `◉` to switch back to flat view.
+";
 
     /* thematic modules tree */
 

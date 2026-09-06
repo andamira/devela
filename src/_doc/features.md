@@ -1,185 +1,143 @@
 <!-- devela/src/_doc/features.md -->
 
-## Features and Flags
+## Features and flags
 
-Features are grouped in the following categories:
-- [*Development*](#development-features) (`__*`)
-- [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
-- [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
-- [*Safety*](#safety-features) (`safe*`, `unsafe*`)
-- [*Scope*](#scope-features)  (`_*`)
-- [*Dependency*](#dependency-features) (`dep_*`)
+devela has no default Cargo features. Its baseline remains `no_std` compatible
+and does not require allocation.
 
-Flags are grouped in the following categories:
-- [*Nightly*](#nightly-flags) (`nightly_*`)
-- *reflection* (`*··`)
+Features are grouped by purpose: environment, public modules and capabilities,
+safety, implementation scope, optional dependencies, and development support.
+Compiler configuration flags form a separate layer, chiefly for nightly Rust
+and internal feature reflection.
 
-There are no features enabled by default.
-
-Features from *different categories* are designed to be (for the most part)
-*independent from each other*, to be orthogonally composable.
-
-Note however that not all features are additive,
-e.g. it's not possible to enable at the same time `std` and `no_std`,
-nor `safe` and `unsafe`.
-
-
-### Development features
-
-Intended for development and internal purposes, like debugging and maintenance.
-
-- `__dbg`    : for debugging purposes, shows enabled features and reflection flags.
-- `__no_test`: its purpose is to exclude certain examples from being tested.
-- `__publish`: for when publishing to crates.io or building online docs.
-
+These groups are meant to compose. One feature may imply another when the first
+has little useful meaning without it; independently useful capabilities remain
+separately selectable.
 
 ### Environment features
 
-By default the crate is `no_std` compatible without allocation.
+Without `std`, devela compiles as `no_std`.
 
-- `std`: disables `no_std` compatibility and enables `std` functionality.
-- `alloc`: enables `alloc` functionality.
-- `no_std`: enables functionality incompatible with or substitute of `std`.
+`alloc` enables functionality requiring Rust's allocation facilities.
+`std` implies `alloc` and enables functionality requiring the standard library.
 
+The `no_std` feature has a narrower meaning: it enables functionality
+that is specifically incompatible with, or acts as a substitute for, `std`.
+It is not necessary merely to compile devela without the standard library.
 
-### Module features
+`std` and `no_std` are mutually exclusive.
 
-Visible module features are grouped by public meaning.
+### Module and capability features
 
-A bare root-module feature, such as `ui`, `media`, or `num`, enables the
-canonical public substrate of that module. It should remain useful on its own
-and should avoid pulling adjunct layers that are not always needed.
+Public module features such as `data`, `num`, `media`, or `ui`
+enable the main public functionality of that part of the library.
 
-Each root module also has a public `*_all` feature, such as `ui_all`,
-`media_all`, or `num_all`. This enables the complete public family associated
-with that module, including its public adjunct features.
+Feature-gated root families also provide a corresponding `*_all` feature.
+For example, `ui_all` enables `ui`, `event`, and `widget`. These features select
+the intended broad public family, but do not necessarily include every platform,
+backend, or optional dependency associated with that namespace.
 
-A public adjunct feature may live under a module namespace while remaining
-independently gated when it represents a meaningful supported layer. Examples:
-`event`, `widget`, `font`, `image`, `time`, `process`.
+This distinction is especially visible in `sys_all`, which enables the standard
+`sys`, `io`, and `net` family while leaving platform-facing capabilities such as
+`web`, `linux`, `term`, and `x11` independently selectable.
 
-The root `all` feature enables the public `*_all` feature of each root module.
-
-Module-family reflection flags named with the `··` suffix are set
-when any feature in the corresponding public family is enabled.
-
+`all` enables the `*_all` families of the feature-gated root modules. It is a
+broad library selection, not a synonym for enabling every Cargo feature.
 
 ### Safety features
 
-They offer a convenient way to opt in and out of safety in a granular fashion.
+Safety features follow two independent axes.
 
-- `unsafe_*` features enable the use of unsafe by *purpose*.
-- `safe_*` features disable the use of unsafe per *module*.
+Features named `safe_*` forbid unsafe code within a module or module family.
+For example, `safe_media` includes its audio, font, and visual safety scopes,
+while `safe_sys` includes `safe_io` and `safe_mem`.
 
-To be able to use any unsafe functionality it's necessary to:
-1. enable the corresponding `unsafe` feature.
-2. don't enable that module's `safe` feature.
+Features named `unsafe_*` enable unsafe implementation capabilities by purpose,
+such as `unsafe_ffi`, `unsafe_layout`, or `unsafe_syscall`.
 
-- `safe`: forbids `unsafe` (and overrides unsafe features), including
-  - `safe_code`
-  - `safe_data`
-  - `safe_lang`
-  - `safe_media`
-    - `safe_audio`
-    - `safe_color`
-    - `safe_draw`
-    - `safe_font`
-    - `safe_image`
-  - `safe_num`
-  - `safe_phys`
-    - `safe_time`
-  - `safe_sys`
-    - `safe_io`
-    - `safe_mem`
-  - `safe_text`
-  - `safe_work`
-  - `safe_ui`
+`safe` enables the library-wide module safety set. `unsafe` enables all
+supported unsafe-purpose features. Enabling `safe` together with `unsafe`
+or any `unsafe_*` feature is rejected.
 
-- `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), including:
-  - `unsafe_array`: faster array initialization, `UninitArray`.
-  - `unsafe_ffi`: unsafe foreign function calls (WASM, OS, external C).
-  - `unsafe_hint`: unreachable_unchecked, assert_unchecked.
-  - `unsafe_layout`: `MemPod`, DSTs in the stack, `AnyExt::downcast*`.
-  - `unsafe_niche`: unchecked niche constructors.
-  - `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
-  - `unsafe_slice`: extra slice methods, avoid bound checks.
-  - `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
-  - `unsafe_sync`: `SpinLock`, implement `Send` and `Sync`.
-  - `unsafe_syscall`: os syscalls.
-  - `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
+Individual `safe_*` features may instead be combined with selected unsafe
+purposes to forbid unsafe code only in particular parts of the library.
 
-- `safest`: forbids `unsafe` even in dependencies (except for the standard library).
+`safest` extends `safe` by forbidding unsafe code transitively in dependencies,
+apart from Rust's `core`, `alloc`, and `std`.
 
+When an `unsafe_*` feature changes the behavior or implementation of an
+otherwise available API, the effect is described in that item's `# Features`
+section. For example, [`RasterSamplePacked`] accepts any [`MemPod`] sample type
+when `unsafe_layout` is enabled.
+
+[`RasterSamplePacked`]: crate::media::visual::image::raster::RasterSamplePacked
+[`MemPod`]: crate::sys::mem::MemPod
 
 ### Scope features
 
-Scope features are semi-hidden features used to expand implementation coverage,
-documentation coverage, generated code, or internal capability breadth.
+Features beginning with a single underscore, such as `_tuple`, `_unroll`, or
+`_docs`, are semi-hidden scope controls. They expand generated implementations,
+documentation coverage, or other internal scope.
 
-They are usually prefixed with `_`. Enabling them may increase compilation time significantly.
+They are not ordinary public capabilities and may noticeably increase compile time.
+Examples include:
 
-Public `*_all` module features, such as `data_all`, are not scope features.
-They enable complete public feature families. Hidden `_module_all` features,
-such as `_data_all`, are internal scope expansions.
+`_unroll*` selecting greater generated unrolling depth;
+`_tuple*` selecting greater generated tuple arity;
+`_data_all` expanding hidden data coverage;
+`_max` and `_maxest` selecting broad internal coverage;
+`_docs*` assembling documentation configurations;
+and `_linux_abi` exposing additional Linux ABI scope.
 
-#### Documentation scope
-
-- `_docs[_min|_nodep]`: enables the most complete or customized documentation
-  configuration.
-
-#### `code` scope
-
-Implements the [`unroll!`] macro for a selected maximum recursion depth (64 by default).
-
-- `_unroll[_128|_256|_512|_1024|_2048]`
-
-#### `data` scope
-
-Expands internal data-structure coverage and generated implementations.
-
-- `_data_all`: enables all hidden data scope expansions.
-- `_tuple[_24|_36|_48|_72]`: implements the [`Tuple`] trait for a selected
-  maximum arity (12 by default).
-
-[`unroll!`]: crate::code::util::unroll
-[`Tuple`]: crate::data::value::Tuple
-
+Public features such as `data_all` or `ui_all` are not scope features despite
+their similar suffix: they select public capability families.
 
 ### Dependency features
 
-- Optional external dependencies.
-- Re-exported from the hidden [`devela::_dep`] root module.
-- Can be enabled with the `dep_crate_name` feature in snake_case.
+Optional external dependencies use the `dep_*` prefix,
+with dashes converted to underscores where necessary.
 
-- `dep_all`: enables all the optional dependencies.
+For example, `dep_hashbrown` or `dep_rand_core` selects that external dependency
+explicitly. `dep_all` enables the complete optional-dependency set.
 
-There are also the following groups of dependencies:
-- `work_deps`: enables `work`, `dep_atomic`, `dep_portable_atomic`.
+A capability may enable a dependency feature transitively when that dependency
+is intrinsic to the capability. Convenience groups such as `work_deps`
+may also select a small related set together.
 
+### Development features
+
+Features beginning with `__` are reserved for development, maintenance, testing,
+publishing, and documentation machinery rather than normal library capability.
+
+Current examples include `__dbg`, `__std`, `__publish`, `__docs_internal`,
+`__disable_native_libs`, `__exclude_test`, and `__force_miri_dst`.
+
+Their exact set may change with project tooling
+and should not be treated as a stable public capability surface.
 
 ### Nightly flags
 
-Usage example:
+Nightly configuration uses compiler `cfg` flags rather than Cargo features.
+
+For example:
+
 ```sh
-RUSTFLAGS="--cfg nightly_coro --cfg nightly_stable_next1" cargo +nightly build
+RUSTFLAGS="--cfg nightly_simd" cargo +nightly build
 ```
 
-- `nightly`: enables the nightly cfg flags:
-  - `nightly_allocator`: enables [`allocator_api`].
-  <!-- - `nightly_autodiff`: enables [`autodiff`]. FEATURE_DISABLED:nightly_autodiff -->
-  - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
-  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
-  - `nightly_float`: enables [`f16`, `f128`].
-  - `nightly_simd`: enables [`portable_simd`].
-  - `nightly_stable`: enables stabilized features marked to be released *soon*™:
-    - `nightly_stable_{MSRV +1 | +2}`: the next 2 versions
-    - `nightly_stable_later`: later than that but hopefully *soon enough*.
+Specific flags enable selected unstable facilities, while versioned
+`nightly_stable_*` flags cover functionality expected from upcoming stable Rust
+releases. `nightly_stable_later` collects candidates farther from the current MSRV.
 
-[`allocator_api`]: https://github.com/rust-lang/rust/issues/32838
-[`autodiff`]: https://github.com/rust-lang/rust/issues/124509
-[`coroutines`]: https://github.com/rust-lang/rust/issues/43122
-[`doc_cfg`]: https://github.com/rust-lang/rust/issues/43781
-[`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
-[`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
-[`portable_simd`]: https://github.com/rust-lang/rust/issues/86656
+The maintained release-by-release inventory lives in `docs/nightly.md`.
 
+### Reflection flags
+
+devela's build machinery derives internal reflection flags
+from enabled features and configuration.
+
+These use a `··` suffix, such as `num··`, `dep··`, or `nightly··`, and answer
+questions such as whether any feature in a broader family is active.
+
+They are internal summary flags. Users normally enable the original Cargo
+feature or `nightly_*` configuration flag rather than setting them directly.
