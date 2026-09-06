@@ -67,7 +67,7 @@ macro_rules! __pool_impl_array· {
             $vis const fn capacity(&self) -> usize { CAP }
 
             // MAX_CAPACITY, len, is_empty, remaining
-            $crate::pool! {%impl_common_core const
+            $crate::__pool! {%impl_common_core const
                 [ index: $iprim + $Index; generation: $gprim + $Generation; ]
                 $vis $Pool; $hvis $Handle;
             }
@@ -211,7 +211,7 @@ macro_rules! __pool_impl_array· {
             }
 
             // MAYBE: concrete const-capable handle/entry iterator when needed.
-            $crate::pool! {%impl_common_iter
+            $crate::__pool! {%impl_common_iter
                 [ index: $iprim + $Index; generation: $gprim + $Generation; ]
                 $vis $Pool; $hvis $Handle;
             }
@@ -235,7 +235,7 @@ macro_rules! __pool_impl_array· {
             }
         }
 
-        $crate::pool! {%impl_common_iter_traits const
+        $crate::__pool! {%impl_common_iter_traits const
             [ index: $iprim + $Index; generation: $gprim + $Generation; ]
             $vis $Pool; $hvis $Handle;
         }

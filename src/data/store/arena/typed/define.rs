@@ -3,6 +3,9 @@
 //! Defines [`arena!`].
 //
 
+#[cfg(all(doc, feature = "_docs_examples"))]
+use crate::ArenaExample;
+
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines an owning typed arena with static or allocating storage.
 #[doc = crate::_doc_meta!{
@@ -44,8 +47,8 @@
 ///     pub Mark;
 /// }
 /// ```
-/// [`mark`](#method.mark) records the current insertion frontier.
-/// [`rollback`](#method.rollback) retracts the arena to that frontier,
+/// [`mark`][ArenaExample::mark] records the current insertion frontier.
+/// [`rollback`][ArenaExample::rollback] retracts the arena to that frontier,
 /// reclaiming every value inserted after it.
 ///
 /// A mark is a frontier checkpoint, not a snapshot of arena state:
@@ -74,7 +77,7 @@
 ///
 /// # Capacity
 ///
-/// [`capacity`](#method.capacity) reports usable storage without further growth:
+/// [`capacity`][ArenaExample::capacity] reports usable storage without further growth:
 ///
 /// For a static arena, the configured representation stores both handle indices
 /// and the current insertion frontier. It must therefore represent every frontier
@@ -84,9 +87,9 @@
 /// An allocating arena stores its frontier in Vec and may therefore use
 /// the full representable index range.
 ///
-/// [`remaining`](#method.remaining) returns `capacity() - len()`.
+/// [`remaining`][ArenaExample::remaining] returns `capacity() - len()`.
 /// For an allocating arena, `remaining() == 0` does not necessarily mean that
-/// insertion must fail: the vector may grow. [`is_full`](#method.is_full)
+/// insertion must fail: the vector may grow. [`is_full`][ArenaExample::is_full]
 /// indicates that no further index can be represented.
 ///
 /// # Representation requirements
@@ -136,11 +139,9 @@
 /// ```
 ///
 /// See:
-/// [`ArenaExample`], [`ArenaAllocExample`],
-/// [`ArenaHandleExample`], [`ArenaAllocHandleExample`],
-/// [`ArenaMarkExample`], [`ArenaAllocMarkExample`].
+/// - [`ArenaExample`], [`ArenaHandleExample`], [`ArenaMarkExample`].
+/// - [`ArenaAllocExample`], [`ArenaAllocHandleExample`], [`ArenaAllocMarkExample`].
 ///
-/// [`ArenaExample`]: crate::ArenaExample
 /// [`ArenaAllocExample`]: crate::ArenaAllocExample
 /// [`ArenaHandleExample`]: crate::ArenaHandleExample
 /// [`ArenaAllocHandleExample`]: crate::ArenaAllocHandleExample
@@ -163,108 +164,13 @@ macro_rules! arena· {
             $mvis:vis $Mark:ident $(;)?
         )?
     ) => {
-        $crate::arena! { %normalize_index
+        $crate::__arena! { %normalize_index
             [kind: $($kind)?]
             [index: $iprim $(+ $Index)?]
             [arena: $(#[$arena_attr])* $vis $Arena]
             [handle: $(#[$handle_attr])* $hvis $Handle]
             [mark: $($(#[$mark_attr])* $mvis $Mark)?]
         }
-    };
-    (%normalize_index
-        [kind: $($kind:ident)?]
-        [index: $iprim:ident]
-        $($rest:tt)*
-    ) => {
-        $crate::arena! { %generate
-            [kind: $($kind)?]
-            [index: $iprim + $iprim]
-            $($rest)*
-        }
-    };
-    (%normalize_index
-        [kind: $($kind:ident)?]
-        [index: $iprim:ident + $Index:ty]
-        $($rest:tt)*
-    ) => {
-        $crate::arena! { %generate
-            [kind: $($kind)?]
-            [index: $iprim + $Index]
-            $($rest)*
-        }
-    };
-    (%generate
-        [kind: $($kind:ident)?]
-        [index: $iprim:ident + $Index:ty]
-        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
-        [handle: $(#[$handle_attr:meta])* $hvis:vis $Handle:ident]
-        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
-    ) => {
-        $crate::handle! {
-            [index: $iprim + $Index;]
-            $(#[$handle_attr])* $hvis $Handle
-        }
-        $crate::arena! { %backend
-            [kind: $($kind)?]
-            [index: $iprim + $Index]
-            [arena: $(#[$arena_attr])* $vis $Arena]
-            [handle: $hvis $Handle]
-            [mark: $($(#[$mark_attr])* $mvis $Mark)?]
-        }
-    };
-    (%backend
-        [kind:]
-        $($rest:tt)*) => {
-        $crate::arena! { %backend [kind: static] $($rest)* }
-    };
-    (%backend
-        [kind: static]
-        [index: $iprim:ident + $Index:ty]
-        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
-        [handle: $hvis:vis $Handle:ident]
-        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
-    ) => {
-        $crate::__arena_impl_array! {
-            [index: $iprim + $Index;]
-            $(#[$arena_attr])* $vis $Arena;
-            $hvis $Handle;
-            [mark: $($mvis $Mark)?]
-        }
-        $(
-            $(#[$mark_attr])*
-            #[repr(transparent)]
-            #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            $mvis struct $Mark($crate::MaybeNiche<$Index>);
-
-            #[allow(dead_code)]
-            impl $Mark {
-                const fn new(mark: $crate::MaybeNiche<$Index>) -> Self { Self(mark) }
-            }
-        )?
-    };
-    (%backend
-        [kind: alloc]
-        [index: $iprim:ident + $Index:ty]
-        [arena: $(#[$arena_attr:meta])* $vis:vis $Arena:ident]
-        [handle: $hvis:vis $Handle:ident]
-        [mark: $($(#[$mark_attr:meta])* $mvis:vis $Mark:ident)?]
-    ) => {
-        $crate::__arena_impl_vec! {
-            [index: $iprim + $Index;]
-            $(#[$arena_attr])* $vis $Arena;
-            $hvis $Handle;
-            [mark: $($mvis $Mark)?]
-        }
-        $(
-            $(#[$mark_attr])*
-            #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            $mvis struct $Mark(usize);
-
-            #[allow(dead_code)]
-            impl $Mark {
-                const fn new(mark: usize) -> Self { Self(mark) }
-            }
-        )?
     };
 }
 #[doc(inline)]

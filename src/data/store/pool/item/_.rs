@@ -22,6 +22,7 @@ crate::mods_in! {
     mod _example;
 
     mod define; // pool!
+    mod _internal; // __pool!
     mod_ impls; // hidden macros for pool variants
     mod iter; // PoolIter
 }
@@ -34,8 +35,10 @@ crate::mods_out! { // _mods
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;
     }
-
     _hidden {
-        pub use super::impls::_hidden::*;
+        pub use super::{
+            _internal::__pool,
+            impls::_hidden::*,
+        };
     }
 }

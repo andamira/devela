@@ -38,6 +38,7 @@
 - refactor doc examples: unhide imports.
 - add `init` tag to default enum variants.
 - clarify public module and hidden scope features.
+- refactor public macros to hide their private API.
 - document project constitution.
 - update katex to v0.18.5.
 

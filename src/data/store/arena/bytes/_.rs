@@ -10,7 +10,7 @@ crate::mods_in! {
     mod _example;
 
     mod define; // arena_bytes!
-    mod _internal; // __ArenaBytesArray
+    mod _internal; // __ArenaBytesArray, __arena_bytes!
     mod_ impls; // hidden macros for arena variants
     // mod field; // WIP ArenaField
     // mod primitive; // WIP ArenaPrimitive
@@ -29,7 +29,7 @@ crate::mods_out! { // _mods, _hidden
     }
     _hidden {
         pub use super::{
-            _internal::*,
+            _internal::{__ArenaBytesArray, __arena_bytes},
             impls::_hidden::*,
         };
     }

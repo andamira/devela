@@ -10,6 +10,7 @@ crate::mods_in! {
     mod _example;
 
     mod define; // arena!
+    mod _internal; // __arena!
     mod_ impls; // hidden macros for arena variants
 }
 crate::mods_out! { // _mods, _hidden
@@ -19,6 +20,9 @@ crate::mods_out! { // _mods, _hidden
         pub use super::_example::*;
     }
     _hidden {
-        pub use super::impls::_hidden::*;
+        pub use super::{
+            _internal::__arena,
+            impls::_hidden::*,
+        };
     }
 }

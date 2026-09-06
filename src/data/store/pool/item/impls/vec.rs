@@ -87,7 +87,7 @@ macro_rules! __pool_impl_vec· {
             $vis const fn slot_count(&self) -> usize { self.values.len() }
 
             // len, is_empty, remaining
-            $crate::pool! {%impl_common_core
+            $crate::__pool! {%impl_common_core
                 [ index: $iprim + $Index; generation: $gprim + $Generation; ]
                 $vis $Pool; $hvis $Handle;
             }
@@ -209,7 +209,7 @@ macro_rules! __pool_impl_vec· {
                 $crate::PoolIter::_new(self.values.as_mut_slice(), self.len)
             }
 
-            $crate::pool! {%impl_common_iter
+            $crate::__pool! {%impl_common_iter
                 [ index: $iprim + $Index; generation: $gprim + $Generation; ]
                 $vis $Pool; $hvis $Handle;
             }
@@ -237,7 +237,7 @@ macro_rules! __pool_impl_vec· {
             }
         }
 
-        $crate::pool! {%impl_common_iter_traits
+        $crate::__pool! {%impl_common_iter_traits
             [ index: $iprim + $Index; generation: $gprim + $Generation; ]
             $vis $Pool; $hvis $Handle;
         }

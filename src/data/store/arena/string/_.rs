@@ -10,9 +10,10 @@ crate::mods_in! {
     mod _example;
 
     mod define; // arena_string!
+    mod _internal; // __arena_string!
     mod_ impls; // hidden macros for arena_string variants
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             define::arena_string,
@@ -21,6 +22,9 @@ crate::mods_out! { // _mods
         pub use super::_example::*;
     }
     _hidden {
-        pub use super::impls::_hidden::*;
+        pub use super::{
+            _internal::__arena_string,
+            impls::_hidden::*,
+        };
     }
 }
