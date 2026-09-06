@@ -205,14 +205,14 @@ crate::mods_in! {
     pub mod_ sys; // System interfaces and hardware abstractions
     pub mod_ text; // Symbolic sequences, encodings, and text processing
     pub mod_ work; // Computational work, its coordination, and its execution
-}
-// internal:
-pub mod yard; // Scaffolding, taxonomy, and documentation support.
 
+    // internal
+    pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
+}
 #[doc(hidden)]
 pub use yard::dep as _dep;
 
-/* structural re-exports */
+/* manual mods_out!: */
 
 #[rustfmt::skip]
 #[doc = crate::_DOC_ALL_!()]
@@ -250,6 +250,9 @@ pub mod all_ {
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
     #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), _COMMON_DOC!("ui")]]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
+    #[doc = crate::_tags!(wip)]
+    #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
     #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), _COMMON_DOC!("vita")]]
     pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), _COMMON_DOC!("work")]]

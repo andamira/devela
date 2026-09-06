@@ -9,7 +9,7 @@
 // #[cfg(doctest)]
 // #[doc(hidden)]
 // #[macro_export]
-// macro_rules! _doc_location {
+// macro_rules! _doc_location· {
 //     ($($tt:tt)*) => { "" }
 // }
 
@@ -48,7 +48,7 @@
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
 #[allow(clippy::crate_in_macro_def, reason = "to invoke __crate_name from crate of invocation")]
-macro_rules! _doc_location {
+macro_rules! _doc_location· {
     /* direct forms --------------------------------------------------------- */
 
     // for an item defined in devela.
@@ -188,4 +188,4 @@ macro_rules! _doc_location {
     };
 }
 #[doc(inline)]
-pub use _doc_location;
+pub use _doc_location· as _doc_location;

@@ -9,13 +9,13 @@
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]
 #[macro_export(local_inner_macros)] // local modifier needed to enable resolution
-macro_rules! _tags {
+macro_rules! _tags· {
     () => {""};
     ($($tag:ident)+) => { concat![$( $crate::_tags![@$tag], " "),+] };
     (@$tag:ident) =>  { $crate::paste! { [<_TAG_ $tag:upper>] !() }};
 }
 #[allow(unused)]
-pub use _tags;
+pub use _tags· as _tags;
 
 // helper for defining doc tags with an associated symbol and title attribute
 macro_rules! _define_symbol_tags {

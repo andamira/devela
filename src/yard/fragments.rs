@@ -136,6 +136,7 @@ its own flat view of all its public children.";
     _DOC_GEOM_DIR_NAV      = "Spatial navigation and facing semantics.";
     _DOC_GEOM_FIG          = "Concrete geometric figures and objects.";
     _DOC_GEOM_FIG_CURVE    = "Curved geometric primitives and parametric paths.";
+    _DOC_GEOM_FIG_FOLD     = "Discrete folded structures and crease patterns.";
     _DOC_GEOM_FIG_LINE     = "Linear geometric primitives such as segments and rays.";
     _DOC_GEOM_FIG_POLY     = "Polygonal and polyhedral geometric figures.";
     _DOC_GEOM_FIG_SET      = "Collections of geometric figures for aggregation and derivation.";

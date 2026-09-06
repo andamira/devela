@@ -12,7 +12,7 @@
 #![cfg_attr(feature = "safe_vita", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_VITA_MODULES =
-    crate::_doc!(modules: crate; vita: play); // body, craft, home, love, mind
+    crate::_doc!(modules: crate; vita); // body, craft, home, love, mind, play
 }
 
 crate::mods_in! {
