@@ -1,6 +1,6 @@
 // devela/src/sys/device/display/x11/image.rs
 //
-//! Defines [`XImageMode`], (`XImageFormat`), (`XImageStore`).
+//! Defines [`XImageMode`], (`XImageFormat`), (`XVisualFormat`), (`XImageStore`).
 //
 
 use super::{XDisplay, XError};
@@ -31,6 +31,7 @@ pub enum XImageMode {
 /// X11 image layout selected for byte-backed pixel upload.
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XImageFormat),
+    test_size_of(XImageFormat = 4|32; niche !Option),
 }]
 /// Describes how one logical raster is stored in memory for upload to the X server.
 ///
@@ -44,11 +45,23 @@ pub(crate) struct XImageFormat {
     pub(crate) bits_per_pixel: u8,
     /// Required scanline padding in bits.
     pub(crate) scanline_pad_bits: u8,
+    /// Image byte order.
+    pub(crate) image_byte_order: u8,
 }
 impl XImageFormat {
     /// Builds an image layout for `width` from one X11 pixmap format.
-    pub const fn new(depth: u8, bits_per_pixel: u8, scanline_pad_bits: u8) -> Self {
-        Self { depth, bits_per_pixel, scanline_pad_bits }
+    pub const fn new(
+        depth: u8,
+        bits_per_pixel: u8,
+        scanline_pad_bits: u8,
+        image_byte_order: u8,
+    ) -> Self {
+        Self {
+            depth,
+            bits_per_pixel,
+            scanline_pad_bits,
+            image_byte_order,
+        }
     }
 
     /// Returns the stored bytes per scanline for `width`.
@@ -62,6 +75,22 @@ impl XImageFormat {
     pub const fn len_bytes(self, width: u16, height: u16) -> usize {
         self.bytes_per_line(width) as usize * height as usize
     }
+}
+
+#[doc = crate::_tags!(unix runtime)]
+/// TODO
+#[doc = crate::_doc_meta!{
+    location("sys/device/display/x11", struct XImageFormat),
+    test_size_of(XVisualFormat = 18|128; niche !Option),
+}]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct XVisualFormat {
+    pub(crate) visual_id: u32,
+    pub(crate) class: u8,
+    pub(crate) bits_per_rgb: u8,
+    pub(crate) red_mask: u32,
+    pub(crate) green_mask: u32,
+    pub(crate) blue_mask: u32,
 }
 
 /// Retained X11 image storage used by surface backends.

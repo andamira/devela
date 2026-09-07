@@ -7,7 +7,10 @@
 
 #[cfg(ffi_xcb_shm··)]
 use super::XShmCaps;
-use super::{_raw, KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XWindowState, XkbState};
+use super::{
+    _raw, KeyRepeatFilter, XAtoms, XError, XEvent, XImageFormat, XVisualFormat, XWindowState,
+    XkbState,
+};
 use crate::{ConstInit, Extent, Libc, Position, Ptr, Vec, c_int, is, lets, vec_ as vec};
 use crate::{
     Event, EventButton, EventButtonState, EventButtons, EventKind, EventMouse, EventQueue,
@@ -44,6 +47,7 @@ pub struct XDisplay {
     screen_num: c_int,
     pub(super) depth: u8,
     pub(super) image_format: XImageFormat,
+    pub(super) visual_format: XVisualFormat,
     #[cfg(ffi_xcb_shm··)]
     pub(super) shm_caps: Option<XShmCaps>,
     xkb: XkbState,
@@ -81,7 +85,9 @@ impl XDisplay {
         }
         let screen: *const _raw::xcb_screen_t = iter.data;
         let depth = unsafe { (*screen).root_depth };
-        let image_format = Self::query_image_format(setup, depth)?;
+        let byte_order = unsafe { (*setup).image_byte_order };
+        let image_format = Self::query_image_format(setup, depth, byte_order)?;
+        let visual_format = Self::query_visual_format(screen)?;
         #[cfg(ffi_xcb_shm··)]
         let shm_caps = Self::query_shm_caps(conn);
 
@@ -106,7 +112,7 @@ impl XDisplay {
         let windows = vec![];
         let queue = EventQueue::new();
 
-        Ok(Self { conn, screen, screen_num, depth, image_format,
+        Ok(Self { conn, screen, screen_num, depth, image_format, visual_format,
             #[cfg(ffi_xcb_shm··)]
             shm_caps,
             xkb, pending, repeat_filter, atoms, windows, queue, })
@@ -293,16 +299,45 @@ impl XDisplay {
     fn query_image_format(
         setup: *const _raw::xcb_setup_t,
         depth: u8,
+        byte_order: u8,
     ) -> Result<XImageFormat, XError> {
         let mut it = unsafe { _raw::xcb_setup_pixmap_formats_iterator(setup) };
         while it.rem > 0 && !it.data.is_null() {
             let fmt = unsafe { &*it.data };
             if fmt.depth == depth {
-                return Ok(XImageFormat::new(fmt.depth, fmt.bits_per_pixel, fmt.scanline_pad));
+                return Ok(XImageFormat::new(
+                    fmt.depth,
+                    fmt.bits_per_pixel,
+                    fmt.scanline_pad,
+                    byte_order,
+                ));
             }
             unsafe { _raw::xcb_format_next(&mut it) };
         }
         Err(XError::Other("no pixmap format for root depth"))
+    }
+    fn query_visual_format(screen: *const _raw::xcb_screen_t) -> Result<XVisualFormat, XError> {
+        let screen = unsafe { &*screen };
+        let mut depths = unsafe { _raw::xcb_screen_allowed_depths_iterator(screen) };
+        while depths.rem > 0 && !depths.data.is_null() {
+            let mut visuals = unsafe { _raw::xcb_depth_visuals_iterator(depths.data) };
+            while visuals.rem > 0 && !visuals.data.is_null() {
+                let visual = unsafe { &*visuals.data };
+                if visual.visual_id == screen.root_visual {
+                    return Ok(XVisualFormat {
+                        visual_id: visual.visual_id,
+                        class: visual._class,
+                        bits_per_rgb: visual.bits_per_rgb_value,
+                        red_mask: visual.red_mask,
+                        green_mask: visual.green_mask,
+                        blue_mask: visual.blue_mask,
+                    });
+                }
+                unsafe { _raw::xcb_visualtype_next(&mut visuals) };
+            }
+            unsafe { _raw::xcb_depth_next(&mut depths) };
+        }
+        Err(XError::Other("root visual not found"))
     }
     #[cfg(ffi_xcb_shm··)]
     fn query_shm_caps(conn: *mut _raw::xcb_connection_t) -> Option<XShmCaps> {

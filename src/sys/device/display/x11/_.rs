@@ -33,7 +33,7 @@ crate::mods_out! { // _mods, _crate_internals
             display::*,
             error::*,
             event::*,
-            image::*,
+            image::XImageMode,
             runtime::_all::*,
             surface::_all::*,
             window::*,
@@ -45,6 +45,7 @@ crate::mods_out! { // _mods, _crate_internals
         pub(crate) use super::{
             _raw::_crate_internals::*,
             atoms::*,
+            image::{XImageFormat, XImageStore, XVisualFormat},
             xkb::*,
             surface::_crate_internals::*,
         };

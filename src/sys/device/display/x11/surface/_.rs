@@ -20,7 +20,8 @@ crate::mods_out! { // _mods, _crate_internals
     _crate_internals {
         pub(crate) use super::{
             _base::{XSurface, XSurfaceStorage},
-            shm::XShmCaps,
         };
+        #[cfg(ffi_xcb_shm··)]
+        pub(crate) use super::shm::XShmCaps;
     }
 }

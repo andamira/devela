@@ -22,14 +22,22 @@
 //   - xcb_flush()
 //   - xcb_generate_id()
 // * setup
-//   - xcb_format_t
-//   - xcb_format_iterator_t
 //   - xcb_setup_t
 //   - xcb_screen_t
 //   - xcb_screen_iterator_t
+//   - xcb_format_t
+//   - xcb_format_iterator_t
+//   - xcb_depth_t
+//   - xcb_depth_iterator_t
+//   - xcb_visualtype_t
+//   - xcb_visualtype_iterator_t
 //   - xcb_get_setup()
-//   - xcb_setup_pixmap_formats_iterator()
 //   - xcb_setup_roots_iterator()
+//   - xcb_setup_pixmap_formats_iterator()
+//   - xcb_screen_allowed_depths_iterator()
+//   - xcb_depth_next()
+//   - xcb_depth_visuals_iterator()
+//   - xcb_visualtype_next()
 // * window/gc
 //   - xcb_create_gc()
 //   - xcb_free_gc()
@@ -123,29 +131,6 @@ unsafe extern "C" {
 /* setup structs */
 
 #[doc = crate::_tags!(unix ffi)]
-/// X11 pixmap format descriptor.
-/// - <https://xcb.freedesktop.org/manual/structxcb__format__t.html>
-#[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub(crate) struct xcb_format_t {
-    pub depth: u8,
-    pub bits_per_pixel: u8,
-    pub scanline_pad: u8,
-    _pad0: [u8; 5],
-}
-
-#[doc = crate::_tags!(unix ffi)]
-/// /// Iterator over X11 pixmap formats.
-/// - <https://xcb.freedesktop.org/manual/structxcb__format__iterator__t.html>
-#[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub(crate) struct xcb_format_iterator_t {
-    pub data: *mut xcb_format_t,
-    pub rem: c_int,
-    pub index: c_int,
-}
-
-#[doc = crate::_tags!(unix ffi)]
 /// Xcb setup.
 /// - <https://xcb.freedesktop.org/manual/structxcb__setup__t.html>
 #[repr(C)]
@@ -210,11 +195,109 @@ pub(crate) struct xcb_screen_iterator_t {
     pub(in super::super) index: c_int,
 }
 
+#[doc = crate::_tags!(unix ffi)]
+/// X11 pixmap format descriptor.
+/// - <https://xcb.freedesktop.org/manual/structxcb__format__t.html>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct xcb_format_t {
+    pub depth: u8,
+    pub bits_per_pixel: u8,
+    pub scanline_pad: u8,
+    _pad0: [u8; 5],
+}
+
+#[doc = crate::_tags!(unix ffi)]
+/// Iterator over X11 pixmap formats.
+/// - <https://xcb.freedesktop.org/manual/structxcb__format__iterator__t.html>
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct xcb_format_iterator_t {
+    pub data: *mut xcb_format_t,
+    pub rem: c_int,
+    pub index: c_int,
+}
+
+#[doc = crate::_tags!(unix ffi)]
+/// A depth descriptor.
+///
+/// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_depth_t.html>
+#[repr(C)]
+#[derive(Debug)]
+pub(crate) struct xcb_depth_t {
+    pub depth: u8,
+    pub _pad0: u8,
+    pub visuals_len: u16,
+    pub _pad1: [u8; 4],
+}
+
+#[doc = crate::_tags!(unix ffi iterator)]
+/// A depth iterator.
+///
+/// Returned by [`xcb_screen_allowed_depths_iterator`].
+/// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_depth_iterator_t.html>
+#[repr(C)]
+#[derive(Debug)]
+pub(crate) struct xcb_depth_iterator_t {
+    pub(in super::super) data: *mut xcb_depth_t,
+    pub(in super::super) rem: c_int,
+    pub(in super::super) index: c_int,
+}
+
+#[doc = crate::_tags!(unix ffi)]
+/// A visual type descriptor.
+/// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_visualtype_t.html>
+#[repr(C)]
+pub(crate) struct xcb_visualtype_t {
+    pub visual_id: u32,
+    pub _class: u8,
+    pub bits_per_rgb_value: u8,
+    pub colormap_entries: u16,
+    pub red_mask: u32,
+    pub green_mask: u32,
+    pub blue_mask: u32,
+    pub _pad0: [u8; 4],
+}
+
+#[doc = crate::_tags!(unix ffi iterator)]
+/// A visual type iterator.
+/// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_visualtype_iterator_t.html>
+#[repr(C)]
+pub(crate) struct xcb_visualtype_iterator_t {
+    pub data: *mut xcb_visualtype_t,
+    pub rem: c_int,
+    pub index: c_int,
+}
+
 #[link(name = "xcb")]
 unsafe extern "C" {
     /// Access the data returned by the server.
     /// - <https://xcb.freedesktop.org/manual/group__XCB__Core__API.html#:~:text=xcb_get_setup>
     pub(crate) fn xcb_get_setup(c: *mut xcb_connection_t) -> *const xcb_setup_t;
+
+    /// Returns an iterator for the roots field inside the `xcb_setup_t` struct.
+    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_setup_roots_iterator.html>
+    pub(crate) fn xcb_setup_roots_iterator(setup: *const xcb_setup_t) -> xcb_screen_iterator_t;
+
+    /// Returns an iterator over the allowed depths.
+    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_screen_allowed_depths_iterator.html>
+    pub(crate) fn xcb_screen_allowed_depths_iterator(
+        screen: *const xcb_screen_t,
+    ) -> xcb_depth_iterator_t;
+
+    /// Advances a depth iterator to its next element.
+    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_depth_next.html>
+    pub(crate) fn xcb_depth_next(iter: *mut xcb_depth_iterator_t);
+
+    /// Returns an iterator over the visuals of a depth.
+    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_depth_visuals_iterator.html>
+    pub(crate) fn xcb_depth_visuals_iterator(
+        depth: *const xcb_depth_t,
+    ) -> xcb_visualtype_iterator_t;
+
+    /// Advances a visual-type iterator to its next element.
+    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_visualtype_next.html>
+    pub(crate) fn xcb_visualtype_next(iter: *mut xcb_visualtype_iterator_t);
 
     /// Returns an iterator over the setup pixmap formats.
     /// - <https://xcb.freedesktop.org/manual/group__XCB____API.html#:~:text=xcb_setup_pixmap_formats_iterator>
@@ -225,10 +308,6 @@ unsafe extern "C" {
     /// Advances a pixmap-format iterator by one entry.
     /// - <https://xcb.freedesktop.org/manual/group__XCB____API.html#:~:text=xcb_format_next>
     pub(crate) fn xcb_format_next(iter: *mut xcb_format_iterator_t);
-
-    /// Returns an iterator for the roots field inside the `xcb_setup_t` struct.
-    /// - <https://xcb-d.dpldocs.info/xcb.xproto.xcb_setup_roots_iterator.html>
-    pub(crate) fn xcb_setup_roots_iterator(setup: *const xcb_setup_t) -> xcb_screen_iterator_t;
 }
 
 /* window / graphics context */

@@ -394,7 +394,9 @@
 
 ##### sys::device::display::x11
 - new type `XSurfaceUi`.
-- update `XDisplay::wait_event` to skip internal empty events.
+- update `XDisplay`:
+  - retain image byte order and root visual format.
+  - update `wait_event` to skip internal empty events.
 - update `XSurfaceFrame`:
   - add field: `bits_per_pixel`.
   - add method: `raster_layout`.

@@ -3,7 +3,7 @@
 //! Defines [`XSurfaceFrame`].
 //
 
-use crate::{XImageMode, XImageStore, XSurface, is, unwrap, RasterLayout, Boundary1d, ext};
+use crate::{Boundary1d, RasterLayout, XImageMode, XImageStore, XSurface, ext, is, unwrap};
 
 #[doc = crate::_tags!(unix runtime)]
 /// Borrowed mutable X11 surface for direct frame rendering.
