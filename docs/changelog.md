@@ -308,7 +308,10 @@
   - support machine-addressable byte lengths beyond `u32`.
   - change `bytes_per_line` field to u32.
 - update `RasterView`: add method `raster_get`.
-- update `RasterViewBytes`: add methods: `raster_bytes_per_pixel_bytes`, `raster_row_start_bytes`.
+- update `RasterViewBytes`:
+  - add methods: `raster_bytes_per_pixel_bytes`, `raster_get_bytes`, `raster_row_start_bytes`.
+- update `RasterBufBytes`:
+  - add method: `raster_get_bytes_mut`.
 
 ##### media::visual::image::sixel
 - refactor and harden sixel image geometry.
@@ -392,7 +395,9 @@
 ##### sys::device::display::x11
 - new type `XSurfaceUi`.
 - update `XDisplay::wait_event` to skip internal empty events.
-- update `XSurfaceFrame`: add `bits_per_pixel` field.
+- update `XSurfaceFrame`:
+  - add field: `bits_per_pixel`.
+  - add method: `raster_layout`.
 - fix `XPresent`, `XSurfaceFrame` and `XCpuBuffer`'s raster stride and row-orientation handling.
 
 #### sys::mem::alloc

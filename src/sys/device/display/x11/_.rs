@@ -44,9 +44,9 @@ crate::mods_out! { // _mods, _crate_internals
     _crate_internals {
         pub(crate) use super::{
             _raw::_crate_internals::*,
-
             atoms::*,
             xkb::*,
+            surface::_crate_internals::*,
         };
     }
 }

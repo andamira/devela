@@ -15,7 +15,7 @@
 //   - (trait Sealed)
 //   - trait RasterSamplePacked
 //   - trait RasterViewPacked
-//
+// * helpers
 
 #[cfg(feature = "unsafe_layout")]
 use crate::MemPod;
@@ -155,6 +155,21 @@ pub trait RasterViewBytes {
 
     /* provided */
 
+    /// Returns the stored bytes of the pixel at `coord`.
+    ///
+    /// Coordinates use canonical raster space: upper-left origin,
+    /// positive x rightward, positive y downward.
+    fn raster_get_bytes(&self, coord: Position2<u32>) -> Option<&[u8]> {
+        let (start, end) = raster_pixel_span_bytes(
+            self.raster_extent_bytes(),
+            self.raster_bytes_per_pixel_bytes(),
+            self.raster_bytes_per_line(),
+            self.raster_row_start_bytes(),
+            coord,
+        )?;
+        self.raster_bytes().get(start..end)
+    }
+
     /// Returns the total exposed byte length.
     fn raster_len_bytes(&self) -> usize {
         self.raster_bytes().len()
@@ -203,6 +218,20 @@ where
 pub trait RasterBufBytes: RasterViewBytes {
     /// Returns the raw raster bytes mutably.
     fn raster_bytes_mut(&mut self) -> &mut [u8];
+
+    /* provided */
+
+    /// Returns exclusive access to the stored bytes of the pixel at `coord`.
+    fn raster_get_bytes_mut(&mut self, coord: Position2<u32>) -> Option<&mut [u8]> {
+        let (start, end) = raster_pixel_span_bytes(
+            self.raster_extent_bytes(),
+            self.raster_bytes_per_pixel_bytes(),
+            self.raster_bytes_per_line(),
+            self.raster_row_start_bytes(),
+            coord,
+        )?;
+        self.raster_bytes_mut().get_mut(start..end)
+    }
 }
 impl<T> RasterBufBytes for T
 where
@@ -325,4 +354,27 @@ where
         let [w, _h] = self.raster_extent().dim;
         w as usize * self.raster_bytes_per_pixel()
     }
+}
+
+/* helpers */
+
+fn raster_pixel_span_bytes(
+    extent: Extent2<u32>,
+    bytes_per_pixel: usize,
+    bytes_per_line: usize,
+    row_start: Boundary1d,
+    coord: Position2<u32>,
+) -> Option<(usize, usize)> {
+    let [width, height] = extent.dim;
+    let [x, y] = coord.dim;
+    is! { x >= width || y >= height || bytes_per_pixel == 0, return None }
+    let row = match row_start {
+        Boundary1d::Upper => y,
+        Boundary1d::Lower => height - 1 - y,
+    } as usize;
+    let start = row
+        .checked_mul(bytes_per_line)?
+        .checked_add((x as usize).checked_mul(bytes_per_pixel)?)?;
+    let end = start.checked_add(bytes_per_pixel)?;
+    Some((start, end))
 }

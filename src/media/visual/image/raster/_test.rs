@@ -119,3 +119,21 @@ fn raster_element_addresses_dense_sample_storage() {
     assert_eq!(raster.raster_get(pos![2, 1]), Some(&7));
     assert_eq!(raster.samples, [0, 0, 0, 0, 0, 7]);
 }
+#[test]
+fn byte_get_obeys_stride() {
+    let layout = RasterLayout::interleaved(ext![2, 2], 2, 6, Boundary1d::Upper); // 2 bytes padding
+    let bytes = [1, 2, 3, 4, 0, 0, 5, 6, 7, 8];
+    let raster = RasterByteSlice::new(RasterFormat::BGR565, layout, &bytes).unwrap();
+    assert_eq!(raster.raster_get_bytes(pos![1, 0]), Some(&[3, 4][..]));
+    assert_eq!(raster.raster_get_bytes(pos![0, 1]), Some(&[5, 6][..]));
+}
+#[test]
+fn byte_get_obeys_lower_first_rows() {
+    let layout = RasterLayout::interleaved(ext![2, 2], 2, 6, Boundary1d::Lower);
+    let bytes = [1, 2, 3, 4, 0, 0, 5, 6, 7, 8];
+    let raster = RasterByteSlice::new(RasterFormat::BGR565, layout, &bytes).unwrap();
+    assert_eq!(raster.raster_get_bytes(pos![0, 0]), Some(&[5, 6][..]));
+    assert_eq!(raster.raster_get_bytes(pos![1, 0]), Some(&[7, 8][..]));
+    assert_eq!(raster.raster_get_bytes(pos![0, 1]), Some(&[1, 2][..]));
+    assert_eq!(raster.raster_get_bytes(pos![1, 1]), Some(&[3, 4][..]));
+}
