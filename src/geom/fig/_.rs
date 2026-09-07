@@ -1,5 +1,6 @@
 // devela/src/geom/fig/_.rs
 //
+#![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_FIG!()] // public
 #![doc = crate::_doc!(modules: crate::geom; fig)]
 #![doc = crate::_doc!(flat:"geom")]

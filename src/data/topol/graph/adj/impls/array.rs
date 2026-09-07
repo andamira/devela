@@ -133,15 +133,9 @@ macro_rules! __graph_adj_impl_array· {
                 /// Returns its edge handle, or `None` if either vertex does not
                 /// belong to this graph or no further edge can be stored.
                 $evis const fn add_edge(&mut self, from: $Vertex, to: $Vertex) -> Option<$Edge> {
-                    let from_index = match Self::__vertex_index(from) {
-                        Some(index) => index,
-                        None => return None,
-                    };
+                    let from_index = $crate::unwrap![some? Self::__vertex_index(from)];
                     if Self::__vertex_index(to).is_none() || self.is_full() { return None; }
-                    let edge = match $Edge::try_from_usize(self.len) {
-                        Ok(edge) => edge,
-                        Err(_) => return None,
-                    };
+                    let edge = $crate::unwrap![ok_some? $Edge::try_from_usize(self.len)];
                     self.edges[self.len] = Some([<__ $Graph EdgeSlot>] {
                         target: to,
                         next: self.heads[from_index],

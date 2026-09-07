@@ -37,9 +37,8 @@ define_error! { individual: pub struct ElementNotFound;
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => f.write_str(DOC_ELEMENT_NOT_FOUND!()),
 }
-define_error! { individual:
+define_error! { individual: pub struct IndexOutOfBounds(pub Option<usize>);
     /// Optionally contains the given index.
-    pub struct IndexOutOfBounds(pub Option<usize>);
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
@@ -50,9 +49,8 @@ define_error! { individual:
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
     } else { f.write_str("The given index is out of bounds.") }
 }
-define_error! { individual:
+define_error! { individual: pub struct InvalidAxisLength(pub Option<usize>);
     /// Optionally contains the given axis number.
-    pub struct InvalidAxisLength(pub Option<usize>);
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
@@ -124,9 +122,8 @@ define_error! { individual: pub struct NodeLinkNotUnique(pub Option<usize>);
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { f.write_str(DOC_NODE_LINK_NOT_UNIQUE!()) }
 }
-define_error! { individual:
+define_error! { individual: pub struct NotEnoughElements(pub Option<usize>);
     /// Optionally contains the minimum required number of elements.
-    pub struct NotEnoughElements(pub Option<usize>);
 
     #[derive(Default)],
     +location: "error/data",
@@ -139,13 +136,11 @@ define_error! { individual:
         write!(f, "Not enough elements. Requires at least `{n}` elements.")
     } else { f.write_str("Not enough elements.") }
 }
-define_error! { individual:
+define_error! { individual: pub struct NotEnoughSpace(pub Option<usize>);
     /// Optionally contains the minimum required free capacity.
     ///
     /// This error represents a contingent failure: the operation may succeed
     /// after a change of state that frees or increases available space.
-    pub struct NotEnoughSpace(pub Option<usize>);
-
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
@@ -169,9 +164,8 @@ define_error! { individual: pub struct PartiallyAdded(pub Option<usize>);
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements were added.")
     } else { f.write_str("Only a subset of elements was added.") }
 }
-define_error! { individual:
+define_error! { individual: pub struct UnexpectedEof(pub Option<usize>);
     /// Optionally contains the minimum required number of readable bytes.
-    pub struct UnexpectedEof(pub Option<usize>);
     #[derive(Default)],
     +location: "error/data",
     +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),

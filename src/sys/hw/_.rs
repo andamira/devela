@@ -7,14 +7,16 @@
 #![doc = crate::_doc!(hr)]
 //
 
-// mod block; // Block storage
-// mod capture; // Image/surface capture hardware
-// mod hid; // Human interface devices WIP Evdev*
-// mod link; // Communication links
-// mod pin; // Pin-level hardware interfaces
-// mod sensor; // Measurement sensors
-// mod usb; // USB bus/devices
-
+crate::mods_in! {
+    // mod_ block; // Block storage
+    // mod_ capture; // Image/surface capture hardware
+    // mod_ hid; // Human interface devices WIP Evdev*
+    // mod_ link; // Communication links
+    // mod_ mcu; // Microcontrollers
+    // mod_ pin; // Pin-level hardware interfaces
+    // mod_ sensor; // Measurement sensors
+    // mod_ usb; // USB bus/devices
+}
 crate::mods_out! { // _mods
     _mods {
         // pub use super::{
@@ -22,6 +24,7 @@ crate::mods_out! { // _mods
         //     capture::_all::*,
         //     hid::_all::*,
         //     link::_all::*,
+        //     mcu::_all::*,
         //     pin::_all::*,
         //     sensor::_all::*,
         //     usb::_all::*,

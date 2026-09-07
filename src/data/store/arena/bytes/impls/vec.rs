@@ -160,6 +160,7 @@ macro_rules! __arena_bytes_impl_vec· {
 
             /// Compares two arenas for equality.
             #[must_use]
+            #[allow(clippy::should_implement_trait)]
             $vis fn eq(&self, other: &Self) -> bool {
                 $crate::Slice::<u8>::eq(self.as_bytes(), other.as_bytes())
             }

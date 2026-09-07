@@ -209,10 +209,8 @@ macro_rules! __pool_seq_impl_array· {
                     len: len as $cprim,
                     capacity: len as $cprim,
                 };
-                let handle = match self.seqs.insert_copy(meta) {
-                    Ok(handle) => handle,
-                    Err(_) => { self._release_span(start, len); return None; }
-                };
+                let Ok(handle) = self.seqs.insert_copy(meta)
+                    else { self._release_span(start, len); return None; };
                 $crate::whilst! { i in 0..len; {
                     self.cells[start + i] = values[i];
                 }}
@@ -293,10 +291,8 @@ macro_rules! __pool_seq_impl_array· {
                 $crate::whilst! { i in 0..len; {
                     self.cells[new_start + i] = self.cells[old_start + i];
                 }}
-                let meta = match self.seqs.get_mut(handle) {
-                    Some(meta) => meta,
-                    None => { self._release_span(new_start, target); return false; }
-                };
+                let Some(meta) = self.seqs.get_mut(handle)
+                    else { self._release_span(new_start, target); return false; };
                 meta.start = new_start as $cprim;
                 meta.capacity = target as $cprim;
                 self._release_span(old_start, capacity);

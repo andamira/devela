@@ -20,13 +20,13 @@ _DOC_HANDLE_METHODS = r#"
 
 [`Word`]: crate::Word
 "#;
-_DOC_HANDLE_INDEX_METHODS = concat!(crate::_DOC_HANDLE_METHODS!(), r#"
+_DOC_HANDLE_INDEX_METHODS = concat!($crate::_DOC_HANDLE_METHODS!(), r#"
 - Index:
   [`get_index`](#method.get_index),
   [`get_index_prim`](#method.get_index_prim),
   [`get_index_usize`](#method.get_index_usize).
 "#);
-_DOC_HANDLE_GEN_METHODS = concat!(crate::_DOC_HANDLE_METHODS!(), r#"
+_DOC_HANDLE_GEN_METHODS = concat!($crate::_DOC_HANDLE_METHODS!(), r#"
 - Index:
   [`get_index`](#method.get_index),
   [`get_index_prim`](#method.get_index_prim),
@@ -36,7 +36,7 @@ _DOC_HANDLE_GEN_METHODS = concat!(crate::_DOC_HANDLE_METHODS!(), r#"
   [`get_generation_prim`](#method.get_generation_prim),
   [`get_generation_usize`](#method.get_generation_usize).
 "#);
-_DOC_HANDLE_SPAN_METHODS = concat!(crate::_DOC_HANDLE_METHODS!(), r#"
+_DOC_HANDLE_SPAN_METHODS = concat!($crate::_DOC_HANDLE_METHODS!(), r#"
 - Offset:
   [`get_offset`](#method.get_offset),
   [`get_offset_prim`](#method.get_offset_prim),

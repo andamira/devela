@@ -76,7 +76,7 @@ macro_rules! __graph_csr_impl_vec· {
                     previous = start;
                 }
                 for &target in targets.iter() {
-                    if Self::_vertex_index_in(vertices, target).is_none() { return None; }
+                    Self::_vertex_index_in(vertices, target)?;
                 }
                 Some(Self { starts, targets })
             }

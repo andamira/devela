@@ -205,7 +205,7 @@ macro_rules! __graph_adj_impl_vec· {
                 /// Returns `None` if `vertex` lies outside the graph domain.
                 #[must_use]
                 $vis fn out_degree(&self, vertex: $Vertex) -> Option<usize> {
-                    if self.__vertex_index(vertex).is_none() { return None; }
+                    self.__vertex_index(vertex)?;
                     let mut count = 0;
                     let mut edge = self.first_out_edge(vertex);
                     while let Some(current) = edge {
