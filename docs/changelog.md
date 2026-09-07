@@ -191,6 +191,10 @@
   - add raw UTF-8 span operations.
   - make rollback marks optional.
 
+#### data::store::intern
+- new module.
+- new macro: `intern_string!`.
+
 #### data::store::key::map
 - make module public.
 - rename `StaticMapEntry` to `MapFixedEntry`.

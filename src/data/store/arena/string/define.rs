@@ -3,6 +3,9 @@
 //! Defines [`arena_string!`].
 //
 
+#[cfg(all(doc, feature = "_docs_examples"))]
+use crate::ArenaStringExample;
+
 #[doc = crate::_tags!(construction data_structure)]
 /// Defines a packed UTF-8 string arena with static or allocating storage.
 #[doc = crate::_doc_meta!{
@@ -41,7 +44,8 @@
 ///   The arena owns growable storage and has the type `Arena`.
 ///   It requires the `alloc` feature.
 ///
-///   [`capacity`](#method.capacity) and [`byte_capacity`](#method.byte_capacity)
+///   [`capacity`][ArenaStringExample::capacity] and
+///   [`byte_capacity`][ArenaStringExample::byte_capacity]
 ///   report storage currently available without reallocating. The arena may grow
 ///   until either the configured string-index or byte-cursor representation is
 ///   exhausted.
@@ -84,12 +88,13 @@
 ///
 /// # Packed representation
 ///
-/// [`as_bytes`](#method.as_bytes) exposes the concatenated UTF-8 bytes of all
+/// [`as_bytes`][ArenaStringExample::as_bytes] exposes the concatenated UTF-8 bytes of all
 /// retained strings in insertion order.
 ///
 /// Entry boundaries are not encoded in that byte slice itself; they remain part
-/// of the arena's string-indexed structure. Use [`get`](#method.get),
-/// [`iter`](#method.iter), or [`entries`](#method.entries) when those boundaries matter.
+/// of the arena's string-indexed structure. Use [`get`][ArenaStringExample::get],
+/// [`iter`][ArenaStringExample::iter], or [`entries`][ArenaStringExample::entries]
+/// when those boundaries matter.
 ///
 /// # Optional marks
 ///
@@ -107,8 +112,8 @@
 /// }
 /// ```
 ///
-/// [`mark`](#method.mark) records the current string insertion frontier.
-/// [`rollback`](#method.rollback) retracts the arena to that frontier and
+/// [`mark`][ArenaStringExample::mark] records the current string insertion frontier.
+/// [`rollback`][ArenaStringExample::rollback] retracts the arena to that frontier and
 /// automatically restores the corresponding packed-byte frontier.
 ///
 /// Marks contain frontier coordinates only; they do not identify an arena
@@ -147,12 +152,9 @@
 /// ```
 ///
 /// See:
-/// [`ArenaStringExample`],
-/// [`ArenaStringHandleExample`],
-/// [`ArenaStringMarkExample`],
-/// [`ArenaStringAllocExample`],
-/// [`ArenaStringAllocHandleExample`],
-/// [`ArenaStringAllocMarkExample`].
+/// - [`ArenaStringExample`], [`ArenaStringHandleExample`], [`ArenaStringMarkExample`].
+/// - [`ArenaStringAllocExample`], [`ArenaStringAllocHandleExample`],
+///   [`ArenaStringAllocMarkExample`].
 ///
 /// [`ArenaStringExample`]: crate::ArenaStringExample
 /// [`ArenaStringHandleExample`]: crate::ArenaStringHandleExample

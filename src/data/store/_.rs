@@ -26,7 +26,7 @@ crate::mods_in! {
     pub mod_ arena; // Monotonic stores with stable handles and collective reclamation
     // mod cache; // Stores that retain values to reduce recomputation or retrieval cost
     // mod db; // Persistent queryable stores with schema and transactional semantics
-    // pub mod intern; // Canonical stores for deduplicated values and shared identity
+    pub mod_ intern; // Canonical stores for deduplicated values and shared identity
     pub mod_ key; // Keyed stores and lookup structures
     pub mod_ pool; // Reusable stores with stable handles and individual reclamation
 }
@@ -40,7 +40,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _pub_mods {
         pub use super::{
             arena::_all::*,
-            // intern::_all::*,
+            intern::_all::*,
             key::_all::*,
             pool::_all::*,
         };
@@ -49,6 +49,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         #[doc(inline)]
         pub use super::{
             arena::arena,
+            intern::intern_string,
             key::map::map,
             pool::pool,
         };
@@ -56,6 +57,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _hidden {
         pub use super::{
             arena::_hidden::*,
+            intern::_hidden::*,
             key::_hidden::*,
             pool::_hidden::*,
         };
