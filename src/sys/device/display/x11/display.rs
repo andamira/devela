@@ -33,11 +33,10 @@ pub(crate) struct XWindowConfigureDelta {
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XDisplay),
     #[cfg(all(target_pointer_width = "64", ffi_xcb_shm··))]
-    test_size_of(XDisplay = 248|1984; niche Option),
+    test_size_of(XDisplay = 272|2176; niche Option),
     #[cfg(all(target_pointer_width = "64", not(ffi_xcb_shm··)))]
-    test_size_of(XDisplay = 240|1920; niche Option),
+    test_size_of(XDisplay = 264|2112; niche Option),
 }]
-///
 /// Wraps an `xcb_connection_t` and its associated screen information.
 /// Represents the root environment required to create windows and interact with the X server.
 #[derive(Debug)]
@@ -88,6 +87,8 @@ impl XDisplay {
         let byte_order = unsafe { (*setup).image_byte_order };
         let image_format = Self::query_image_format(setup, depth, byte_order)?;
         let visual_format = Self::query_visual_format(screen)?;
+        // eprintln!("image:  {image_format:?}"); // DEBUG
+        // eprintln!("visual: {visual_format:?}"); // DEBUG
         #[cfg(ffi_xcb_shm··)]
         let shm_caps = Self::query_shm_caps(conn);
 

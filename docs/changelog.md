@@ -398,8 +398,9 @@
   - retain image byte order and root visual format.
   - update `wait_event` to skip internal empty events.
 - update `XSurfaceFrame`:
-  - add field: `bits_per_pixel`.
-  - add method: `raster_layout`.
+  - remove field: `bytes_per_line`.
+  - add fields: `image_format`, `visual_format`.
+  - add methods: `raster_layout`, `supports_rgb8`, `encode_rgb8`, `write_rgb8`, `supports_native_pixels`, `write_native_pixel`.
 - fix `XPresent`, `XSurfaceFrame` and `XCpuBuffer`'s raster stride and row-orientation handling.
 
 #### sys::mem::alloc
