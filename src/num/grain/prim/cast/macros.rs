@@ -1,4 +1,4 @@
-// devela/src/num/grain/cast/macros.rs
+// devela/src/num/grain/prim/cast/macros.rs
 //
 //! Defines [`cast!`].
 //
@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(num primitive)]
 /// Provides *const* primitive casting, joining and splitting operations.
 #[doc = crate::_doc_meta!{
-    location("num/grain", macro cast),
+    location("num/grain/prim", macro cast),
 }]
 /// A thin macro wrapper over [`Cast`][crate::Cast].
 /// Expands directly to the corresponding `Cast` method.

@@ -9,7 +9,7 @@
 crate::mods_in! {
     mod _reexport_core;
 
-    mod prim; // Prim, PrimFitPtr, PrimIndex, IndexRepr
+    mod prim; // Prim, PrimFitPtr
     mod repr; // ReprMode
     mod type_marker; // zero-cost generic type markers
 }

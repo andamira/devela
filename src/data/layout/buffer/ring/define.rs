@@ -405,7 +405,7 @@ macro_rules! buffer_ring· {
     // only allow implementations over unsigned integers of size <= pointer-width
     (%guard_index_repr $I:ty) => {
         const __GUARD_INDEX_REPR: () = {
-            const fn __index_repr<I: $crate::IndexRepr>() {}
+            const fn __index_repr<I: $crate::ReprIndex>() {}
             __index_repr::<$I>();
         };
     };

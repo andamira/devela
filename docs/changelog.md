@@ -66,7 +66,7 @@
 - move the root `build` module here.
 
 ### code::marker
-- fix `IndexRepr` impl for `usize`.
+- update `PrimFitPtr` pointer-width coverage.
 
 ### code::ops
 - new modules: `call`, `overload`, `range`.
@@ -341,9 +341,15 @@
 
 ### num::grain
 - new macro `bound_int!`.
+- make `prim` module public.
 
 #### num::grain::niche
 - move `enumint!` and `EnumintI8Example` from `code::util`.
+
+#### num::grain::prim
+- new traits: `ReprInt`, `ReprSint`, `ReprUint`.
+- move here `PrimScalar`, `PrimInt`, `PrimSint`, `PrimUint`, `PrimFloat`, `PrimIndex`.
+- rename `IndexRepr` to `ReprIndex`.
 
 #### num::prob
 - new type: `Probability`.

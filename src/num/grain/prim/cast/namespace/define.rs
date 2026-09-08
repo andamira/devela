@@ -1,9 +1,9 @@
-// devela/src/num/grain/cast/namespace/define.rs
+// devela/src/num/grain/prim/cast/namespace/define.rs
 
 #[doc = crate::_tags!(num primitive namespace)]
 /// Provides *const* casting, joining and splitting operations between primitives.
 #[doc = crate::_doc_meta!{
-    location("num/grain", struct Cast),
+    location("num/grain/prim", struct Cast),
 }]
 /// See also the related traits: [`PrimCast`], [`PrimJoin`], [`PrimSplit`],
 /// and macro: [`cast!`].

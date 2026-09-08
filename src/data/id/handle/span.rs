@@ -87,7 +87,7 @@ macro_rules! handle_span· {
             const fn __allowed<P, I>()
             where
                 P: $crate::PrimIndex,
-                I: $crate::IndexRepr<Prim = P>,
+                I: $crate::ReprIndex<Prim = P>,
             {}
             __allowed::<$P, $I>();
         };

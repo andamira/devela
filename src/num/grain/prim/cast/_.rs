@@ -1,6 +1,6 @@
-// devela/src/num/grain/cast/_.rs
+// devela/src/num/grain/prim/cast/_.rs
 //
-//! Helpers for converting between primitives.
+//! Casting between primitives.
 //
 
 crate::mods_in! {

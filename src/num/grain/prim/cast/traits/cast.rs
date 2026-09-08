@@ -1,4 +1,4 @@
-// devela/src/num/grain/cast/traits/cast.rs
+// devela/src/num/grain/prim/cast/traits/cast.rs
 //
 //! fns to cast between primitives in a checked manner.
 //
@@ -13,7 +13,7 @@ type Result<T> = crate::Result<T, Overflow>;
 #[doc = crate::_tags!(num primitive)]
 /// Offers methods for casting between primitives.
 #[doc = crate::_doc_meta!{
-    location("num/grain", trait PrimCast),
+    location("num/grain/prim", trait PrimCast),
 }]
 /// See also the [`Cast`] type for the equivalent *const* methods.
 /// # Errors

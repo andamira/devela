@@ -235,8 +235,8 @@ and `◉` to switch back to flat view.
     _DOC_NUM_FIN_LOGIC   = "Truth systems, reachability, constraints.";
     _DOC_NUM_FIN_ORD     = "Algorithms and structures based on relative ordering.";
     _DOC_NUM_GRAIN       = "Structural granularity and representation of numeric values.";
-    _DOC_NUM_GRAIN_CAST  = "Casting between primitives.";
     _DOC_NUM_GRAIN_NICHE = "Specialized numeric types and behaviors.";
+    _DOC_NUM_GRAIN_PRIM  = "Primitive numeric types, families, and representations.";
     _DOC_NUM_GRAIN_WIDE  = "Wide numeric types and parallel arithmetic.";
     _DOC_NUM_LEARN       = "Adaptive numeric systems for prediction and training.";
     _DOC_NUM_OPTIM       = "Objective functions, constraints, and numerical optimization.";
