@@ -1,15 +1,27 @@
 # devela changelog
 
-[0.29.0-wip] unreleased
-=======================
+[0.29.0] 20260908
+=================
 
-> .
-> —
+> What I cannot create, I do not understand.
+> — Richard Feynman
 
 ```
+This release expands storage, computation, and UI foundations,
+while refining the module structure, feature boundaries, and documentation.
 ```
 
 ## Key changes:
+
+- msrv bump: minimum supported Rust version increased to 1.98.1.
+- storage and identity: add arenas, pools, string interning, handles, and UUIDs.
+- data structures: add graphs, ring buffers, arrays, tables, and sequence links.
+- values and scripting: add compact values and a script machine with host calls.
+- UI foundations: add frames, layout, routing, semantics, text input, and widgets.
+- text and media: expand text layout, graphemes, bitmap fonts, rasters, and PNM.
+- mathematics: refine algebra and ratios; add probability, statistics, and signals.
+- system interfaces: improve Linux I/O, terminal controls, browser events, and X11.
+- structure and docs: adopt `mods_in!`/`mods_out!`; clarify features and design.
 
 ------------------------------------------------------------------------------
 
@@ -381,8 +393,6 @@
 ### num::signal
 - new traits: `SignalAt`, `SignalNext`.
 - new types: `CurveRamp`, `Phase[Step|Accum]`, `Signal<Clamp|Const|Fn|Map|Scale|Zip>`.
-
-### phys::mech
 
 ### phys::time
 - remove the `time` feature-gate from `[Maybe]Timed`.
