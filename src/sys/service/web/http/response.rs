@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/response.rs
+// devela/src/sys/net/web/http/response.rs
 //
 //! Defines [`HttpResponseHead`].
 //
@@ -9,7 +9,7 @@ use crate::{HttpError, HttpMethod, HttpStatus, HttpVersion, TextScanner};
 #[doc = crate::_tags!(network protocol)]
 /// HTTP response head.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", struct HttpResponseHead),
+    location("sys/net/web/http", struct HttpResponseHead),
     #[cfg(target_pointer_width = "32")]
     test_size_of(HttpResponseHead = 20|160; niche Option),
     #[cfg(target_pointer_width = "64")]

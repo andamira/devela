@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/status.rs
+// devela/src/sys/net/web/http/status.rs
 //
 //! Defines [`HttpStatusClass`], [`HttpStatus`].
 //
@@ -8,7 +8,7 @@ use crate::{InvalidValue, word};
 #[doc = crate::_tags!(network protocol)]
 /// The response class of an HTTP status code.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", enum HttpStatusClass),
+    location("sys/net/web/http", enum HttpStatusClass),
     test_size_of(HttpStatusClass = 1|8; niche Option),
 }]
 #[repr(u8)]
@@ -29,7 +29,7 @@ pub enum HttpStatusClass {
 #[doc = crate::_tags!(network protocol)]
 /// HTTP response status code.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", struct HttpStatus),
+    location("sys/net/web/http", struct HttpStatus),
     test_size_of(HttpStatus = 2|16; niche !Option),
 }]
 /// Valid HTTP status codes are in the inclusive range `100..=599`.

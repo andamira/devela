@@ -10,7 +10,7 @@
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 // docs
 crate::CONST! { pub(crate) _DOC_SYS_MODULES =
-    crate::_doc!(modules: crate; sys: arch, device, env, fs, io, log, mem, net, os); // hw
+    crate::_doc!(modules: crate; sys: arch, device, env, fs, io, log, mem, net, os, service); // hw
 }
 
 crate::mods_in! {
@@ -21,11 +21,12 @@ crate::mods_in! {
     pub mod_ env; // Process environment inspection and manipulation
     pub mod_ fs; // Filesystem abstractions
     pub mod_ io; // I/O primitives and stream interfaces
-        mod_ hw; // Low-level hardware and driver-facing system interfaces WIP
+        mod_ hw; // Low-level hardware and driver-facing system interfaces
     pub mod_ log; // Execution timing, measurement, and benchmark instrumentation
     pub mod_ mem; // Memory primitives, layout contracts, and safe access foundations
-    pub mod_ net; // Networking functionality
+    pub mod_ net; // Network connectivity, addressing, routing, and transport
     pub mod_ os; // Operating systems and supervisors
+    pub mod_ service; // Application-level protocols for networked services
 }
 
 crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
@@ -45,6 +46,7 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
             mem::_all::*,
             net::_all::*,
             os::_all::*,
+            service::_all::*,
         };
         // #[cfg(feature = "std")]
         // pub use super::bench::_all::*; // WIP
@@ -54,8 +56,9 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
         pub(crate) use super::{
             arch::_crate_internals::*,
             device::_crate_internals::*,
-            net::_crate_internals::*,
+            // net::_crate_internals::*,
             os::_crate_internals::*,
+            service::_crate_internals::*,
         };
     }
     _hidden {

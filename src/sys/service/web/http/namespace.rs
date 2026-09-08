@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/namespace.rs
+// devela/src/sys/net/web/http/namespace.rs
 //
 //! Defines [`Http`], [`HttpMethod`].
 //
@@ -9,7 +9,7 @@ use crate::{is, whilst};
 #[doc = crate::_tags!(network protocol)]
 /// HTTP protocol operations.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", struct Http),
+    location("sys/net/web/http", struct Http),
     test_size_of(Http = 0),
 }]
 #[derive(Debug)]

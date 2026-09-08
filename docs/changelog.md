@@ -445,6 +445,10 @@
 - update `TermColor`, `TermColors`:
   - add ANSI color conversion constructors.
 
+### sys::service
+- new module.
+- move `sys::net::http` here.
+
 ### text::ascii
 - rename `AsciiLut` to `Ascii`.
   - new constant: `DIGITS_BASE36_LOWER`.

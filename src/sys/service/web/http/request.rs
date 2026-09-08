@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/request.rs
+// devela/src/sys/net/web/http/request.rs
 //
 //! Defines [`HttpRequestLine`].
 //
@@ -9,7 +9,7 @@ use crate::{HttpError, HttpMethod, HttpStatus, HttpVersion, TextScanner};
 #[doc = crate::_tags!(network protocol parser lifetime)]
 /// Borrowed HTTP request line.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", struct HttpRequestLine),
+    location("sys/net/web/http", struct HttpRequestLine),
     #[cfg(target_pointer_width = "32")]
     test_size_of(HttpRequestLine = 24|192; niche Option),
     #[cfg(target_pointer_width = "64")]

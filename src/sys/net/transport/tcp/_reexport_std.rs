@@ -1,7 +1,5 @@
-// devela/src/sys/net/_reexport_std.rs
+// devela/src/sys/net/transport/tcp/_reexport_std.rs
 
-#[cfg(doc)]
-use crate::SocketAddr;
 #[allow(unused_imports)]
 use crate::{_reexport, _tags};
 
@@ -17,11 +15,6 @@ _reexport! { rust: std::net,
     doc: "A TCP stream between a local and a remote socket.",
     TcpStream
 }
-_reexport! { rust: std::net,
-    location: "sys/net" => struct UdpSocket, tag: _tags!(network),
-    doc: "A UDP socket.",
-    UdpSocket
-}
 
 /* enums */
 
@@ -29,12 +22,4 @@ _reexport! { rust: std::net,
     location: "sys/net" => enum TcpShutdown, tag: _tags!(network),
     doc: "Possible values which can be passed to the [`TcpStream::shutdown`] method.",
     @Shutdown as TcpShutdown
-}
-
-/* traits */
-
-_reexport! { rust: std::net,
-    location: "sys/net" => enum TcpSocketAddrs, tag: _tags!(network),
-    doc: "Objects which can be converted or resolved to one or more [`SocketAddr`] values.",
-    ToSocketAddrs
 }

@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/error.rs
+// devela/src/sys/net/web/http/error.rs
 //
 //! Defines [`HttpError`].
 //
@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(network protocol error)]
 /// HTTP parsing and formatting error.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", enum HttpError),
+    location("sys/net/web/http", enum HttpError),
     #[cfg(target_pointer_width = "32")]
     test_size_of(HttpError = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]

@@ -1,4 +1,4 @@
-// devela/src/sys/net/http/version.rs
+// devela/src/sys/net/web/http/version.rs
 //
 //! Defines [`HttpVersion`].
 //
@@ -8,7 +8,7 @@ use crate::{HttpError, HttpRequestLine, HttpStatus, Version};
 #[doc = crate::_tags!(network protocol)]
 /// HTTP protocol version.
 #[doc = crate::_doc_meta!{
-    location("sys/net/http", enum HttpVersion),
+    location("sys/net/web/http", enum HttpVersion),
     test_size_of(HttpVersion = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

@@ -300,7 +300,9 @@ run = []
 run_all = ["run"]
 
 sys = []
-sys_all = ["sys", "io", "net"] # EXCLUDED: "device", (os: "web", "linux", "term", "windows")
+sys_all = [ # EXCLUDED: "device", (os: "web", "linux", "term", "windows")
+	"sys", "io", "net", "service",
+	]
 	# arch
 		# simd = ["fontdue?/simd"]
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
@@ -314,14 +316,15 @@ sys_all = ["sys", "io", "net"] # EXCLUDED: "device", (os: "web", "linux", "term"
 		# midi = []
 	# fs
 	io = []
-	net = ["http"]
-		http = []
+	net = []
 	# os
 		# browser
 			web = ["js", "unsafe_ffi"]
 		linux = ["_linux_abi", "unsafe_syscall"]
 		term = [] # media::image::sixel
 		windows = []
+	service = ["http"]
+		http = []
 
 text = []
 text_all = ["text", "grapheme", "translit"]

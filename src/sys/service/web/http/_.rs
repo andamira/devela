@@ -1,7 +1,7 @@
-// devela/src/sys/net/http/_.rs
+// devela/src/sys/net/web/http/_.rs
 //
-#![doc = crate::_DOC_SYS_NET!()] // public
-#![doc = crate::_doc!(modules: crate::sys::net; http)]
+#![doc = crate::_DOC_SYS_SERVICE_WEB_HTTP!()] // public
+#![doc = crate::_doc!(modules: crate::sys::service::web; http)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //
