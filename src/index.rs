@@ -1,19 +1,17 @@
 // devela/src/index.rs
 //
-//! A development substrate of coherence.
+//! *A development substrate of coherence.*
 //!
-//! devela is a general-purpose development library
-//! built from small, composable abstractions.
+//! devela is a general-purpose Rust library
+//! built from small, reusable abstractions.
 //!
-//! Its modules are organized by domain, and common abstractions are reused
-//! across them. Higher-level facilities can build on simpler parts
-//! instead of introducing separate unnecessary layers.
+//! It provides foundations without assuming more than a problem needs.
+//! Allocation, runtime choice, platform support, and other capabilities
+//! are added explicitly, while simpler forms remain useful on their own.
 //!
-//! Important choices stay explicit instead of being coupled unnecessarily.
-//! Representation, ownership, capability, and environment can vary independently.
-//! Richer facilities do not replace the simpler forms they build on.
-//!
-//! The library is still taking shape.
+//! Common abstractions are shared across domains rather than repeated
+//! for each particular use. The modules below organize the library
+//! by the kinds of problems they address.
 //
 
 /* crate configuration */
@@ -211,10 +209,10 @@ crate::mods_in! {
     pub mod_ media; // Media formats, representation, and synthesis
     pub mod_ num; // Numeric abstractions and formal computation
     pub mod_ org; // Coordination and structure of collective action
-    pub mod_ vita; // Lived practices of embodied beings
     pub mod_ phys; // Physical quantities, units, and models of the natural world
     pub mod_ run; // Temporal coordination and staging of a running system
     pub mod_ ui; // Interactive surfaces, input semantics, and presentation state
+    pub mod_ vita; // Lived practices of embodied beings
     pub mod_ sys; // System interfaces and hardware abstractions
     pub mod_ text; // Symbolic sequences, encodings, and text processing
     pub mod_ work; // Computational work, its coordination, and its execution

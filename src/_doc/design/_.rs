@@ -1,14 +1,15 @@
 // devela/src/_doc/design/_.rs
 //
 //! Principles, structure, and API conventions.
-#![doc = crate::_doc!(modules: crate::_doc; design: constitution)] // api, structure
+#![doc = crate::_doc!(modules: crate::_doc; design: principles, structure)] // api
 #![doc = crate::_doc!(hr)]
 //!
-//! The library takes shape through many small decisions
-//! that gradually form recurring patterns.
+//! The library takes shape through many small decisions that gradually
+//! form recurring patterns.
 //!
-//! This section develops the principles and structural ideas
-//! that help those decisions remain coherent.
+//! This section gathers the principles behind
+//! them, the structure they produce across the library, and the
+//! conventions that give its public APIs a consistent shape.
 //
 
 // /// Library API design.
@@ -17,11 +18,11 @@
 // }
 
 /// Design principles, constraints, and enduring project posture.
-pub mod constitution {
-    #![doc = include_str!("./constitution.md")]
+pub mod principles {
+    #![doc = include_str!("./principles.md")]
 }
 
-// /// # Library structure and source organization.
-// pub mod structure {
-//     #![doc = include_str!("./structure.md")]
-// }
+/// # Library structure and source organization.
+pub mod structure {
+    #![doc = include_str!("./structure.md")]
+}

@@ -8,7 +8,7 @@
 //! outside the documentation of any single item or module.
 //!
 //! It gives space to ideas, conventions, and accumulated knowledge
-//! that concern the library as a whole. This material evolves with the code.
+//! that concern the library as a whole, evolving with the code.
 //
 #![cfg(doc)]
 #![cfg(not(doctest))]

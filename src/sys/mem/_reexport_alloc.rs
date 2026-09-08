@@ -5,7 +5,7 @@ use crate::{_reexport, _tags};
 use crate::{Bare, BareBox, Boxed, Storage};
 
 _reexport! { rust: alloc::boxed,
-    location: "sys::mem" => struct Box, tag: _tags!(mem),
+    location: "sys/mem" => struct Box, tag: _tags!(mem),
     doc: "A pointer type that uniquely owns a heap allocation of type `T`.",
     +doc: "It is used as the underlying [`Storage`] for the [`Boxed`] marker struct,
     just as a [`BareBox`] is used as the storage for [`Bare`].
@@ -18,12 +18,12 @@ possible for other types to opt in to move-from-deref.
 }
 
 _reexport! { rust: alloc::rc,
-    location: "sys::mem" => struct Rc, tag: _tags!(mem lifetime),
+    location: "sys/mem" => struct Rc, tag: _tags!(mem lifetime),
     doc: "A single-threaded reference-counting pointer.",
     Rc
 }
 _reexport! { rust: alloc::rc,
-    location: "sys::mem" => struct RcWeak, tag: _tags!(mem lifetime),
+    location: "sys/mem" => struct RcWeak, tag: _tags!(mem lifetime),
     doc: "A version of `Rc` that holds a non-owning ref to the managed allocation.",
     @Weak as RcWeak
 }

@@ -263,9 +263,9 @@ A macro invocation expands as a syntactic construct; it cannot generally
 be used to contribute an arbitrary partial sequence of tokens
 to a surrounding array, tuple, or similar construct.
 
-For example, `punroll!` builds its complete array or tuple in the arm performing
-the repetition rather than trying to have another invocation emit only the
-interior elements.
+For example, [`punroll!`][crate::punroll] builds its complete array or tuple
+in the arm performing the repetition rather than trying to have another
+invocation emit only the interior elements.
 
 This is an easy limitation to run into when first decomposing a large macro.
 

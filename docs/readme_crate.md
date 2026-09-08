@@ -1,31 +1,36 @@
 # devela
 
-devela is a library for growing coherent systems in Rust.
+devela is a general-purpose Rust library built from small, composable parts.
+Its modules cover data, mathematics, text, media, and system interfaces.
 
-It provides small, composable, portable abstractions across code,<br>
-data, numbers, geometry, media, text, runtime, systems, UI, and work.
+The library supports stable Rust and `no_std`, with features for allocation,
+`std`, and platform support. Many APIs work with fixed or caller-provided storage.
 
-It is for creative tools, games, terminals, portable frontends,<br>
-low-level interfaces, experimental languages, and systems<br>
-that grow from primitives instead of frameworks.
+The library is pre-1.0 and still taking shape. APIs may change between releases.
 
-Its way is simple:<br>
-`core` first, stable Rust first, explicit features,<br>
-visible state transitions, fixed storage where possible,<br>
-and generator macros for shaping each use to its needed form.
+## Getting started
 
-While rooted in Rust, it keeps a practical openness to<br>
-other languages, native platforms, host runtimes,<br>
-foreign ABIs, devices, and external tools.
+Add the library to your `Cargo.toml`:
 
-devela is pre-1.0 and alive:<br>
-some parts are solid, some are emerging,<br>
-always unfolding toward long-term semantic clarity.
-
-It is…
-```poetry
-the soil I return to, where ideas take root and grow
-friction dissolved, leaving only the working flow
-a quiet dedication to learn, discover and share
-where code and craft fuse to a circled square
+```toml
+[dependencies]
+devela = "0.29"
 ```
+
+No Cargo features are enabled by default. The baseline supports `no_std`
+and does not require allocation.
+
+Enable `alloc` or `std` as needed; `std` includes `alloc`.
+Additional features select the functionality you want to use.
+See [Features and configuration][features] for the available choices.
+
+## Documentation
+
+* [API documentation][api]: browse the library by module.
+* [All items][items]: explore a flat view of the public API.
+* [Design notes][design]: understand the principles behind the library.
+
+[features]: https://docs.rs/devela/latest/devela/_doc/reference/features/index.html
+[api]: https://docs.rs/devela/latest/devela/
+[items]: https://docs.rs/devela/latest/devela/all/
+[design]: https://docs.rs/devela/latest/devela/_doc/design/

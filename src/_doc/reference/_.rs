@@ -7,7 +7,7 @@
 //! Some project knowledge is mostly about keeping facts straight.
 //!
 //! This section keeps the material that supports the library over time,
-//! including configuration, tracked capabilities, inventories, and provenance.
+//! including configurations, inventories, and provenance.
 //
 
 /// Cargo features and configuration flags.
