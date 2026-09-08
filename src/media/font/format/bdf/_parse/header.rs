@@ -248,9 +248,9 @@ const fn read_startfont(reader: &mut BdfReader<'_>) -> BdfResult<BdfVersion> {
 }
 const fn parse_version(token: &[u8], line: u32) -> BdfResult<Version> {
     let mut scanner = TextScanner::from_bytes(token);
-    let major = unwrap![ok_err_map? scanner.expect_ascii_u64(), |__|E::invalid_value(line)];
+    let major = unwrap![ok_err_map? scanner.expect_ascii_u64(), |_v|E::invalid_value(line)];
     is! { !scanner.eat_byte(b'.'), return Err(E::invalid_value(line)) }
-    let minor = unwrap![ok_err_map? scanner.expect_ascii_u64(), |__|E::invalid_value(line)];
+    let minor = unwrap![ok_err_map? scanner.expect_ascii_u64(), |_v|E::invalid_value(line)];
     if !scanner.is_eof() || major > u16::MAX as u64 || minor > u16::MAX as u64 {
         return Err(E::invalid_value(line));
     }

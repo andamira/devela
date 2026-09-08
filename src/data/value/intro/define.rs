@@ -3,7 +3,7 @@
 //! Defines the [`Introspect`] struct.
 //
 
-#![doc = crate::_tags!(wip)]
+#[doc = crate::_tags!(wip)]
 #[doc = crate::_tags!(introspect)]
 /// Introspection core trait.
 #[doc = crate::_doc_meta!{

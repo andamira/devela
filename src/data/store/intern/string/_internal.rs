@@ -3,6 +3,7 @@
 //! Defines [`__intern_string!`].
 //
 
+#[doc(hidden)]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! __intern_string· {

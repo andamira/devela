@@ -114,21 +114,21 @@ impl<'a> BdfFields<'a> {
         let token = bdf_try!(self.token());
         let mut scanner = TextScanner::from_bytes(token);
         let value = unwrap![ok_err_map? scanner.expect_ascii_u64(),
-            |__| E::invalid_value(self.line)];
+            |_v| E::invalid_value(self.line)];
         is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
     }
     pub(super) const fn usize(&mut self) -> BdfResult<usize> {
         let token = bdf_try!(self.token());
         let mut scanner = TextScanner::from_bytes(token);
         let value = unwrap![ok_err_map? scanner.expect_ascii_usize(),
-            |__| E::invalid_value(self.line)];
+            |_v| E::invalid_value(self.line)];
         is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
     }
     pub(super) const fn i64(&mut self) -> BdfResult<i64> {
         let token = bdf_try!(self.token());
         let mut scanner = TextScanner::from_bytes(token);
         let value = unwrap![ok_err_map? scanner.expect_ascii_i64(),
-            |__| E::invalid_value(self.line)];
+            |_v| E::invalid_value(self.line)];
         is! { scanner.is_eof(), Ok(value), Err(E::invalid_value(self.line)) }
     }
     pub(super) const fn u32(&mut self) -> BdfResult<u32> {
