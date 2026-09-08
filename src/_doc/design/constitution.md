@@ -1,4 +1,4 @@
-<!-- devela/src/_doc/constitution.md -->
+<!-- devela/src/_doc/design/constitution.md -->
 
 > This constitution is authoritative for current design decisions,
 > but remains revisable as devela evolves.

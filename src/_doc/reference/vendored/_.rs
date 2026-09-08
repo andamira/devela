@@ -1,9 +1,9 @@
-// devela/src/_doc/vendored/_.rs
+// devela/src/_doc/reference/vendored/_.rs
 //
 //!
 // In sync with:
-#![doc = include_str!("../../../docs/vendored_rustdoc.md")] // has to come before
-#![doc = include_str!("../../../docs/vendored.md")]
+#![doc = include_str!("../../../../docs/vendored_rustdoc.md")] // has to come before
+#![doc = include_str!("../../../../docs/vendored.md")]
 //
 
 // Detailed list of modifications in adapted work.

@@ -1,62 +1,62 @@
 <!-- devela/docs/vendored_rustdoc.md -->
 
-<!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
+<!-- Updated intra-doc links, to be loaded from: _doc::reference::vendored -->
 
 <!-- license: Apache-2.0 OR MIT -->
-  [M_argv]: crate::_doc::vendored::argv
+  [M_argv]: crate::_doc::reference::vendored::argv
   [`IterArgsOsRef`]: crate::sys::env::IterArgsOsRef
   [`Env::args_os_ref`]: crate::sys::env::Env#method.args_os_ref
-  [M_bytehound-preload]: crate::_doc::vendored::bytehound_preload
+  [M_bytehound-preload]: crate::_doc::reference::vendored::bytehound_preload
   [`SpinLock`]: crate::work::sync::SpinLock
   [`SpinLockGuard`]: crate::work::sync::SpinLockGuard
   [`ConstList`]: crate::data::layout::linked::ConstList
-  [M_crossbeam-utils]: crate::_doc::vendored::crossbeam_utils
+  [M_crossbeam-utils]: crate::_doc::reference::vendored::crossbeam_utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
-  [M_etcetera]: crate::_doc::vendored::etcetera
+  [M_etcetera]: crate::_doc::reference::vendored::etcetera
   [`AppEnv`]: crate::sys::env::AppEnv
   [`fmt_or`]: crate::code::result::OptionExt::fmt_or
   [`fmt_or_else`]: crate::code::result::OptionExt::fmt_or_else
   [`fmt_or_empty`]: crate::code::result::OptionExt::fmt_or_empty
-  [M_rustc-hash]: crate::_doc::vendored::rustc_hash
+  [M_rustc-hash]: crate::_doc::reference::vendored::rustc_hash
   [`HasherFx`]: crate::data::codec::hash::HasherFx
-  [M_macro_rules_attribute]: crate::_doc::vendored::macro_rules_attribute
+  [M_macro_rules_attribute]: crate::_doc::reference::vendored::macro_rules_attribute
   [`macro_apply`]: crate::code::util::synth::macro_apply
   [`macro_derive`]: crate::code::util::synth::macro_derive
   [`macro_derive_with`]: crate::code::util::synth::macro_derive_with
   [`macro_apply_alias!`]: crate::code::util::synth::macro_apply_alias
   [`macro_derive_alias!`]: crate::code::util::synth::macro_derive_alias
-  [M_mini-alloc]: crate::_doc::vendored::mini_alloc
+  [M_mini-alloc]: crate::_doc::reference::vendored::mini_alloc
   [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
-  [M_no_std_io]: crate::_doc::vendored::no_std_io
+  [M_no_std_io]: crate::_doc::reference::vendored::no_std_io
   [`io`]: crate::sys::io
-  [M_pastey]: crate::_doc::vendored::pastey
+  [M_pastey]: crate::_doc::reference::vendored::pastey
   [`paste!`]: crate::code::paste
-  [M_pollster]: crate::_doc::vendored::pollster
+  [M_pollster]: crate::_doc::reference::vendored::pollster
   [`block_on`]: crate::work::future::FutureExt#method.block_on
-  [M_quickdiv]: crate::_doc::vendored::quickdiv
+  [M_quickdiv]: crate::_doc::reference::vendored::quickdiv
   [`divisor`]: crate::num::divisor
-  [M_stack_dst]: crate::_doc::vendored::stack_dst
+  [M_stack_dst]: crate::_doc::reference::vendored::stack_dst
   [`data::layout::dst`]: crate::data::layout::dst
-  [M_stated-scope-guard]: crate::_doc::vendored::stated_scope_guard
+  [M_stated-scope-guard]: crate::_doc::reference::vendored::stated_scope_guard
   [`ScopeGuard`]: crate::code::ScopeGuard
-  [M_static_assertions]: crate::_doc::vendored::static_assertions
+  [M_static_assertions]: crate::_doc::reference::vendored::static_assertions
   [`const_assert!`]: crate::code::util::assert::const_assert
   [`ConstBool`]: crate::num::fin::logic::ConstBool
-  [M_tupl]: crate::_doc::vendored::tupl
+  [M_tupl]: crate::_doc::reference::vendored::tupl
   [`Tuple`]: crate::data::value::tuple::Tuple
 
 <!-- license: MIT -->
-  [M_crunchy]: crate::_doc::vendored::crunchy
+  [M_crunchy]: crate::_doc::reference::vendored::crunchy
   [`unroll!`]: crate::code::util::synth::unroll
-  [M_current]: crate::_doc::vendored::current
+  [M_current]: crate::_doc::reference::vendored::current
   [`Current`]: crate::sys::mem::Current
   [`CurrentGuard`]: crate::sys::mem::CurrentGuard
-  [M_grapheme_machine]: crate::_doc::vendored::grapheme_machine
+  [M_grapheme_machine]: crate::_doc::reference::vendored::grapheme_machine
   [`GraphemeMachine`]: crate::text::unicode::grapheme::GraphemeMachine
   [`text::grapheme`]: crate::text::unicode::grapheme
-  <!-- [M_musl]: crate::_doc::vendored::musl -->
+  <!-- [M_musl]: crate::_doc::reference::vendored::musl -->
   [`Linux`]: crate::sys::os::linux::Linux
-  [M_object-id]: crate::_doc::vendored::object_id
+  [M_object-id]: crate::_doc::reference::vendored::object_id
   [`IdPin`]: crate::data::id::IdPin
   [`IdPinBox`]: crate::IdPinBox
   [`as_bytes`]: crate::sys::mem::Mem::as_bytes
@@ -67,16 +67,16 @@
 <!-- license: Other compatible -->
   [`Xyza8a`]: crate::num::prob::rand::Xyza8a
   [`Xyza8b`]: crate::num::prob::rand::Xyza8b
-  [M_apply]: crate::_doc::vendored::apply
+  [M_apply]: crate::_doc::reference::vendored::apply
   [`Hook`]: crate::code::ops::Hook
   [`Morph`]: crate::code::ops::Morph
   [`Fonts::BIT_3_5`]: crate::media::font::Fonts::BIT_3_5
   [`Fonts::BIT_5_6`]: crate::media::font::Fonts::BIT_5_6
-  [M_jiff]: crate::_doc::vendored::jiff
+  [M_jiff]: crate::_doc::reference::vendored::jiff
   [`TimeDelta`]: crate::phys::time::TimeDelta
-  [M_pengyhash]: crate::_doc::vendored::pengyhash
+  [M_pengyhash]: crate::_doc::reference::vendored::pengyhash
   [`HasherPengy`]: crate::data::codec::hash::HasherPengy
   [`size_of_expr!`]: crate::sys::mem::size_of_expr
-  [M_termivela]: crate::_doc::vendored::termivela
+  [M_termivela]: crate::_doc::reference::vendored::termivela
   [Termivela]: crate::media::font::Fonts#termivela
   [`Xabc`]: crate::num::prob::rand::Xabc

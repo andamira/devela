@@ -1,4 +1,4 @@
-<!-- devela/src/_doc/macros/comment-style-guide.md -->
+<!-- devela/src/_doc/practice/macros/common.md -->
 
 Macros sit at one of Rust's more interesting boundaries:
 code can help shape the code that the compiler will later understand.
@@ -9,8 +9,8 @@ families of items, encode small domain-specific grammars, adapt one syntactic fo
 into another, or generate a structure specialized to the needs of its caller.
 
 For macros that a library can define, Rust provides two main families:
-[declarative macros][crate::_doc::macros::declarative] and
-[procedural macros][crate::_doc::macros::procedural].
+[declarative macros][crate::_doc::practice::macros::declarative] and
+[procedural macros][crate::_doc::practice::macros::procedural].
 
 Declarative macros, defined with `macro_rules!`, describe transformations by
 matching token patterns and transcribing their captures. They are especially well

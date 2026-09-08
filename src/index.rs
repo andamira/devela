@@ -1,6 +1,19 @@
 // devela/src/index.rs
 //
 //! A development substrate of coherence.
+//!
+//! devela is a general-purpose development library
+//! built from small, composable abstractions.
+//!
+//! Its modules are organized by domain, and common abstractions are reused
+//! across them. Higher-level facilities can build on simpler parts
+//! instead of introducing separate unnecessary layers.
+//!
+//! Important choices stay explicit instead of being coupled unnecessarily.
+//! Representation, ownership, capability, and environment can vary independently.
+//! Richer facilities do not replace the simpler forms they build on.
+//!
+//! The library is still taking shape.
 //
 
 /* crate configuration */

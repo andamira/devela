@@ -17,9 +17,9 @@ const fn read_embedded(bytes: &'static [u8]) -> FontBitmapView<'static> {
 /// # Termivela
 ///
 /// These embedded strikes are derived from
-/// [Terminus Font][crate::_doc::vendored#terminus-font].
+/// [Terminus Font][crate::_doc::reference::vendored#terminus-font].
 ///
-/// See the recorded [Termivela modifications][crate::_doc::vendored::termivela].
+/// See the recorded [Termivela modifications][crate::_doc::reference::vendored::termivela].
 impl Fonts {
     /// The regular 8×16 Termivela monochrome bitmap font.
     pub const TERMIVELA_8_16: FontBitmapView<'static> = read_embedded(REGULAR_BYTES);

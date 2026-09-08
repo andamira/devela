@@ -1,4 +1,4 @@
-<!-- devela/src/_doc/features.md -->
+<!-- devela/src/_doc/reference/features.md -->
 
 ## Features and flags
 
@@ -29,20 +29,39 @@ It is not necessary merely to compile devela without the standard library.
 
 ### Module and capability features
 
-Public module features such as `data`, `num`, `media`, or `ui`
-enable the main public functionality of that part of the library.
+Public module-family features provide two possible breadth grades.
 
-Feature-gated root families also provide a corresponding `*_all` feature.
-For example, `ui_all` enables `ui`, `event`, and `widget`. These features select
-the intended broad public family, but do not necessarily include every platform,
-backend, or optional dependency associated with that namespace.
+A bare family feature, such as `data`, `media`, `num`, or `ui`, enables a
+lightweight coherent base for that domain. It is intended to remain useful on
+its own and to avoid compiling unrelated capabilities merely because they share
+the same thematic namespace.
 
-This distinction is especially visible in `sys_all`, which enables the standard
-`sys`, `io`, and `net` family while leaving platform-facing capabilities such as
-`web`, `linux`, `term`, and `x11` independently selectable.
+Where a broader distinction is useful, the corresponding `*_all` feature
+selects the full ordinary public family. It always includes the bare feature
+and adds the public capabilities associated with that domain. For example,
+`ui_all` currently enables `ui`, `event`, and `widget`.
 
-`all` enables the `*_all` families of the feature-gated root modules. It is a
-broad library selection, not a synonym for enabling every Cargo feature.
+Specific capability features remain independently selectable. They should imply
+only the minimum other features required for their meaningful operation, and
+cross-family dependencies should prefer the narrowest sufficient feature grade.
+
+The module taxonomy and Cargo feature graph therefore need not coincide exactly.
+A capability may belong to a module structurally while remaining outside that
+module family's lightweight base.
+
+The `*_all` suffix describes thematic breadth, not every feature that can affect
+that module. Environment, safety, scope, optional dependencies, nightly
+configuration, and platform- or backend-specific selections remain orthogonal,
+except where a selected capability intrinsically requires them.
+
+This distinction is especially visible in `sys_all`, which selects the ordinary
+portable `sys` family while leaving target-, operating-system-, and
+backend-specific capabilities independently selectable.
+
+The root `all` feature enables the `*_all` grade of each feature-gated root
+module. It is a broad thematic library selection, not a synonym for enabling
+every Cargo feature.
+
 
 ### Safety features
 

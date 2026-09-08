@@ -1,4 +1,4 @@
-<!-- devela/src/_doc/macros/declarative.md -->
+<!-- devela/src/_doc/practice/macros/declarative.md -->
 
 Declarative macros are Rust's pattern-based macro system, defined with `macro_rules!`.
 
