@@ -1,7 +1,7 @@
 // devela/src/data/value/schema/_.rs
 //
-#![doc = crate::_DOC_DATA_CODEC_SCHEMA!()] // public
-#![doc = crate::_doc!(modules: crate::data::codec; schema)]
+#![doc = crate::_DOC_DATA_VALUE_SCHEMA!()] // public
+#![doc = crate::_doc!(modules: crate::data::value; schema)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //

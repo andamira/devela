@@ -6,14 +6,10 @@
 // #![doc = crate::_QUO_DATA_ACCESS_ROUTE!()]
 #![doc = crate::_doc!(hr)]
 //!
-//! Backend-neutral segmented access routes.
+//! Routes express ordered reachability as a sequence of uninterpreted segments.
 //!
-//! A route is ordered reachability without resolver, storage,
-//! transport, filesystem, URL, or platform semantics.
-//!
-//! Routes are structural. They can later be interpreted as filesystem paths,
-//! URL paths, command paths, UI routes, asset keys, symbolic addresses,
-//! or virtual resource locations.
+//! A route carries no resolver, storage, transport,
+//! filesystem, URL, or platform semantics of its own.
 //
 
 crate::mods_in! {

@@ -5,17 +5,11 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, hash, iter, vec)]
 //!
-//! The data tree separates several independent concerns:
+//! This module treats data primarily as structure
+//! rather than domain-specific meaning.
 //!
-//! - [`Access`](mod@access) determines how values are reached and traversed.
-//! - [`Codecs`](mod@codec) transform or derive data representations.
-//! - [`Identification`](mod@id) distinguishes values through identities and contextual references.
-//! - [`Layout`](mod@layout) determines how values are positioned and grouped.
-//! - [`History`](mod@history) records how values originate and evolve.
-//! - [`Storage`](mod@store) governs how values remain and are recovered.
-//! - [`Topology`](mod@topol) describes connectivity, adjacency, and ordered relations.
-//! - [`Values`](mod@value) provide the semantic forms carried by these structures.
-//! - [`Words`](mod@word) expose exact canonical raw representations of copyable values.
+//! It separates questions such as how a value is represented,
+//! reached, identified, arranged, retained, and related.
 //
 // safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
@@ -36,7 +30,6 @@ crate::mods_in! {
     pub mod_ value; // Semantic value categories and composable data forms
     pub mod_ word; // Data words with exact canonical raw representations
 }
-
 crate::mods_out! { // _pub_mods, _crate_internals, _reexports, _hidden
     _pub_mods {
         #[doc(inline)]

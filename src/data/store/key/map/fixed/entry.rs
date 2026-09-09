@@ -4,7 +4,7 @@
 //
 
 #[doc = crate::_tags!(data_structure)]
-/// Represents an entry in a [fixed-capacity map`],
+/// Represents an entry in a [fixed-capacity map]
 /// allowing in-place mutation or insertion.
 #[doc = crate::_doc_meta!{
     location("data/store/key/map", enum MapFixedEntry),

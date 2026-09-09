@@ -5,8 +5,10 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, vec)]
 //!
-//! Array primitives, owning utilities,
-//! and logical multidimensional views over backing storage.
+//! Arrays give contiguous homogeneous storage a dimensional structure.
+//!
+//! Storage and dimensional interpretation remain separate, allowing
+//! the same backing form to support different shapes and coordinate mappings.
 //
 
 crate::mods_in! {

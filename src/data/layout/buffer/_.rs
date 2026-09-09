@@ -4,6 +4,13 @@
 #![doc = crate::_doc!(modules: crate::data::layout; buffer)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Buffers distinguish available storage capacity
+//! from the portion currently occupied by meaningful values.
+//!
+//! Their layout governs where insertion and removal occur
+//! and how occupied positions progress through the backing storage,
+//! including linear and cyclic arrangements.
 //
 
 crate::mods_in! {

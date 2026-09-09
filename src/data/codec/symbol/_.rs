@@ -4,6 +4,12 @@
 #![doc = crate::_doc!(modules: crate::data::codec; symbol)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Symbol codecs map data to and from structured marks
+//! intended for visual or symbolic representation.
+//!
+//! The symbols may be textual, tiled, barcoded,
+//! or otherwise visually encoded.
 //
 
 crate::mods_in! {

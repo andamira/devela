@@ -4,6 +4,12 @@
 #![doc = crate::_doc!(modules: crate::data::codec; crypto)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Cryptographic codecs implement standardized transformations
+//! used for digests, authentication, and related security constructions.
+//!
+//! Their cryptographic suitability depends on the particular algorithm
+//! and the protocol in which it is used.
 //
 
 crate::mods_in! {

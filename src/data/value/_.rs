@@ -5,15 +5,14 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Values describe the semantic forms carried by data independently of
-//! storage, identity, and canonical raw representation.
+//! Values describe semantic data forms independently of
+//! identity, storage, and canonical raw representation.
 //!
-//! [`ValueKind`] classifies broad semantic categories, while [`ValueKind4`]
-//! provides its compact universal band. [`NoData`] represents absence and
-//! [`Oneof`] represents a fixed choice among alternatives.
+//! This includes value categories, absence, alternatives,
+//! and compact self-describing forms.
 //!
 //! Exact canonical representation belongs to [`data::word`][mod@crate::data::word],
-//! arrangement and retention belong to [`data::layout`][crate::data::layout]
+//! while arrangement and retention belong to [`data::layout`][crate::data::layout]
 //! and [`data::store`][crate::data::store].
 //
 

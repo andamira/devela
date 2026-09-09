@@ -4,9 +4,16 @@
 #![doc = crate::_doc!(modules: crate::data::codec::bin; bit)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
-//
-//! > If a named item is a thing that can be present, use `set!`.
-//! > If a named item is a slot that can hold a value, use `bitfield!`.
+//!
+//! Bit-level structures use the bits of an integer
+//! as independently meaningful parts of a compact representation.
+//!
+//! There are two common roles:
+//! bits representing the presence of named members,
+//! and bit ranges acting as fields carrying values.
+//!
+//! - If a named item is a thing that can be present, use `set!`.
+//! - If a named item is a slot that can hold a value, use `bitfield!`.
 //
 
 crate::mods_in! {

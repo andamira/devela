@@ -5,22 +5,14 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! These abstractions operate over data supplied by another context.
-//! They may change what is current or reachable without relocating or
-//! taking ownership of the underlying values.
+//! Access concerns how existing data is reached and traversed.
 //!
-//! Access does not determine identity, physical arrangement, or retention.
-//! Those concerns belong to [`data::id`](crate::data::id),
-//! [`data::layout`](crate::data::layout), and
-//! [`data::store`](crate::data::store).
+//! An access mechanism may retain a current position, expose successive values,
+//! describe a route, or transfer through caller-provided storage.
 //!
-//! - Addresses interpret reachability through a resolver.
-// - [`Addresses`](address) express symbolic or contextual references
-//   for later resolution.
-// - Cursors maintain an explicit position within ordered data.
-//! - [`ByteCursor`] maintains an explicit position within ordered byte data.
-//! - [`Iterators`](iter) expose successive elements through traversal protocols.
-//! - [`Routes`](route) represent ordered segments before domain-specific interpretation.
+//! Identity, physical arrangement, and retention belong respectively to
+//! [`data::id`][crate::data::id], [`data::layout`][crate::data::layout],
+//! and [`data::store`][crate::data::store].
 //
 
 crate::mods_in! {

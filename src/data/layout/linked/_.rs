@@ -5,11 +5,9 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
-//! They enable efficient insertion and deletion at any position,
-//! storing a sequence of elements of the same type, each pointing to the next.
+//! Linked layouts represent sequence order through explicit element relations.
 //!
-//! - [`ConstList`] represents immutable linear succession through shared links.
-//! - [`LinkedList`] provides mutable owned linkage when allocation is available.
+//! The links establish succession independently of how elements are owned or stored.
 //
 
 crate::mods_in! {

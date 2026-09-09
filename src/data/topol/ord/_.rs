@@ -5,8 +5,8 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Ordered topology describes precedence, succession, and composition
-//! independently of storage and geometric position.
+//! Ordered topology describes relative order as structure,
+//! independent of storage or geometry.
 //
 
 crate::mods_in! {

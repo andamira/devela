@@ -5,20 +5,11 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
 //!
-//! Some transformations are reversible encodings and decodings. Others derive
-//! fingerprints, integrity values, authenticated forms, or packed structures
-//! without preserving a direct inverse.
+//! Codecs act on the representation of data.
 //!
-//! Codecs do not determine what a value means, where it is stored, or which
-//! identity it carries. They operate on the representation crossing those
-//! boundaries.
-//!
-//! - [`Cryptography`](crypto) provides cryptographic transforms,
-//!   authentication mechanisms, and secure digests.
-//! - [`Hashing`](hash) derives compact fingerprints from data.
-// TODO:
-// - Binary atoms, general encoders, integrity checks, packed forms,
-//   and radix encodings are re-exported directly from this module.
+//! Some transformations are reversible encodings and decodings.
+//! Others derive fingerprints, integrity values, authenticated forms,
+//! symbolic forms, or packed structures without preserving a direct inverse.
 //
 
 crate::mods_in! {

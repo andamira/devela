@@ -4,6 +4,10 @@
 #![doc = crate::_doc!(modules: crate::data::codec; bin: bit)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Binary structure is expressed directly through bits and bytes.
+//!
+//! These primitives form building blocks for larger encodings and formats.
 //
 
 crate::mods_in! {

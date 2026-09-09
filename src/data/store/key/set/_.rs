@@ -4,6 +4,12 @@
 #![doc = crate::_doc!(modules: crate::data::store::key; set)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
+//!
+//! Sets represent membership of distinct values
+//! without associating a separate payload with each member.
+//!
+//! Implementations may trade memory for lookup,
+//! insertion, removal, or clearing costs.
 //
 
 crate::mods_in! {

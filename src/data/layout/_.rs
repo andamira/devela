@@ -5,21 +5,15 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: array, collections, vec)]
 //!
-//! Layout determines how values are positioned and grouped.
+//! Layout describes how values occupy and relate to positions within storage.
 //!
-//! It describes where elements reside, how positions correspond,
-//! and which portion of a capacity is logically occupied.
+//! It covers physical placement, logical coordinate mappings,
+//! capacity and occupancy, and structural order,
+//! where those properties arise from the arrangement itself.
 //!
-//! It does not provide durable identity or govern reclamation;
-//! those concerns belong to [`data::id`](crate::data::id) and
-//! [`data::store`](crate::data::store).
-//!
-//! - [`Arrays`](mod@array) add dimensions and coordinate mappings.
-//! - [`Buffers`](mod@buffer) add bounded occupancy in linear or cyclic order.
-//! - [`DST storage`](mod@dst) supports dynamically sized representations
-//!   without requiring heap allocation.
-//! - [`Linked structures`](mod@linked) represent explicit sequential linkage.
-//! - [`Tables`](mod@table) distinguish rows, columns, and cells over tabular layouts.
+//! Layout does not provide durable identity ([`data::id`][crate::data::id])
+//! nor determine the lifecycle of the values being arranged
+//! ([`data::store`][crate::data::store]).
 //
 
 crate::mods_in! {

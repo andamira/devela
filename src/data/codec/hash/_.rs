@@ -4,6 +4,13 @@
 #![doc = crate::_doc!(modules: crate::data::codec; hash)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: hash)]
+//!
+//! Hashing derives compact fingerprints from arbitrary input.
+//!
+//! Hash values are useful for lookup, partitioning,
+//! change detection, and related structural purposes.
+//!
+//! Collision resistance needs a cryptographic hash; authentication needs a keyed MAC.
 //
 
 crate::mods_in! {

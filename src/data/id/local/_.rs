@@ -5,13 +5,14 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Identity in this module is scoped by a local execution, allocation,
-//! registry, or type context rather than by a portable external format.
+//! Local identities are meaningful within a context
+//! that establishes and bounds their uniqueness.
 //!
-//! - [`IdPin`] and [`IdPinBox`] anchor identity to stable memory locations.
-//! - [`IdRegistry`] maps external identities into compact local identities.
-//! - [`id_seq!`] allocates sequential identities within a local generator.
-//! - [`TypeResource`] distinguishes otherwise compatible IDs by resource type.
+//! The context may be a stable memory location,
+//! a registry, a sequential allocator, or a resource type.
+//!
+//! Local identities rely on that surrounding context to determine
+//! what they distinguish and for how long the distinction remains valid.
 //
 
 crate::mods_in! {

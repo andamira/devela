@@ -4,6 +4,12 @@
 #![doc = crate::_doc!(modules: crate::data::codec; pack)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
+//!
+//! Packing changes how data is physically carried
+//! without defining its higher-level meaning.
+//!
+//! This includes compression and structured containers
+//! with explicit boundaries and metadata.
 //
 
 crate::mods_in! {

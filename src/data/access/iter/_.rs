@@ -5,6 +5,8 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
+//! Iteration exposes successive values through a traversal protocol.
+//!
 //! devela regularizes the standard iterator family around two shared prefixes.
 //!
 //! Iterator traits use the `Iterator*` family where practical:

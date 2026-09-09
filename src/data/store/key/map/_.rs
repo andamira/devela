@@ -4,6 +4,11 @@
 #![doc = crate::_doc!(modules: crate::data::store::key; map)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
+//! Maps associate each admitted key with a value
+//! and recover that value through key lookup.
+//!
+//! Implementations may differ in capacity,
+//! allocation, hashing, and storage strategy.
 //
 
 crate::mods_in! {

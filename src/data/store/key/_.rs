@@ -5,8 +5,13 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
-//! Provides tools for mapping, indexing, and efficiently organizing data
-//! through unique keys, including maps, sets, and other key-value structures.
+//! Keyed storage recovers or classifies values through a lookup key
+//! rather than through their physical position.
+//!
+//! Keys may associate values with other values, as in maps,
+//! or represent membership directly, as in sets.
+//!
+//! The lookup strategy and backing storage determine performance and capacity.
 //
 
 crate::mods_in! {

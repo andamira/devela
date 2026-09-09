@@ -5,21 +5,11 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(extends: collections)]
 //!
-//! Storage governs how values remain and are recovered.
+//! Storage governs how values remain available across operations.
 //!
-//! A store retains values across operations and defines how they are inserted,
-//! retrieved, reclaimed, and potentially reused.
-//!
-//! [`Layout`](crate::data::layout) describes arrangement and occupancy.
-//! [`Identity`](crate::data::id) distinguishes one entity from another.
-//! Storage determines the lifecycle of the retained values themselves.
-//!
-//! - [`Arenas`](mod@arena) advance monotonically and reclaim storage collectively.
-// - [`Caches`](cache) retain computed or retrieved values to avoid repeated work.
-// - [`Databases`](db) persist and query structured data under schema and transaction policies.
-// - [`Interners`](intern) canonicalize equal values into shared representatives.
-//! - [`Keyed stores`](key) recover values through keys and lookup structures.
-//! - [`Pools`](mod@pool) reclaim and reuse individual slots.
+//! A store defines a retention model: how values enter it, how they are found,
+//! when they cease to be retained, and whether reclaimed capacity
+//! or identities may later be reused.
 //
 
 crate::mods_in! {

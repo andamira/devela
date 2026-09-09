@@ -1,6 +1,10 @@
 // devela/src/data/value/tuple/_.rs
 //
-//! Heterogeneous data structures, random-access, sequentially allocated and statically sized.
+//! Tuples are statically sized heterogeneous product values with positional access.
+//!
+//! This module extends Rust tuple values with structural introspection,
+//! iteration, and formatting facilities while preserving
+//! their fixed arity and heterogeneous element types.
 //
 // NOTE: re-exports the code-generated [`Tuple`] trait, and defines related items.
 //

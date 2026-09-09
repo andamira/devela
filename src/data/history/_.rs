@@ -5,10 +5,10 @@
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Historical relations are expressed as semantic [`Relation`][crate::Relation]s.
+//! History records semantic relations between data and its antecedents.
 //!
-//! They conventionally point from a result or later state
-//! toward its source or predecessor.
+//! These relations describe provenance and continuity
+//! rather than retaining old values themselves.
 //
 //
 

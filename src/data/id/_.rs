@@ -4,17 +4,17 @@
 #![doc = crate::_doc!(modules: crate::data; id: handle, local, uuid)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
-//
-//! Identifiers distinguish values across storage, position, representation,
-//! or execution contexts, with guarantees that depend on the identifier form.
-//! Different forms provide different scopes and resolution models:
 //!
-//! - [`Handles`](mod@handle) refer to stored values through a particular
-//!   resolving context.
-//! - [`Local identities`](mod@local) distinguish values within bounded
-//!   execution, allocation, registry, or type contexts.
-//! - [`UUIDs`](mod@uuid) provide standardized portable 128-bit identifiers
-//!   without requiring a shared local allocator.
+//! Identity distinguishes one value from another
+//! independently of its current representation or physical position.
+//!
+//! Different identity forms make different assumptions about scope:
+//! - Handles are meaningful through a resolver.
+//! - Local identities are bounded by a local execution or allocation context.
+//! - UUIDs carry identity across contexts without a shared allocator.
+//!
+//! Choosing an identifier means choosing both how distinction is represented
+//! and where that distinction remains meaningful.
 //
 
 crate::mods_in! {
