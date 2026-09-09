@@ -1,8 +1,8 @@
 # devela
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
-[![MSRV 1.96.0](https://flat.badgen.net/badge/MSRV/1.96.0/purple)](https://releases.rs/docs/1.96.0/)
-[![Documentation](https://flat.badgen.net/badge/docs/260612/green)](https://docs.rs/devela/)
+[![MSRV 1.98.1](https://flat.badgen.net/badge/MSRV/1.98.1/purple)](https://releases.rs/docs/1.98.1/)
+[![Documentation](https://flat.badgen.net/badge/docs/260909/green)](https://docs.rs/devela/)
 &nbsp;<sup>←published</sup>
 <br/>
 [![Repository](https://flat.badgen.net/badge/github/v0.29.0/blue?icon=git)](https://github.com/andamira/devela)
