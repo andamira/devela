@@ -5,9 +5,9 @@
 [![Documentation](https://flat.badgen.net/badge/docs/260909/green)](https://docs.rs/devela/)
 &nbsp;<sup>←published</sup>
 <br/>
-[![Repository](https://flat.badgen.net/badge/github/v0.29.0/blue?icon=git)](https://github.com/andamira/devela)
+[![Repository](https://flat.badgen.net/badge/github/v0.30.0/blue?icon=git)](https://github.com/andamira/devela)
 [![MSRV ahead 1.98.1](https://flat.badgen.net/badge/MSRV/1.98.1/blue)](https://releases.rs/docs/1.98.1/)
-[![Documentation ahead](https://flat.badgen.net/badge/docs/260614/blue)](https://andamira.github.io/devela/unpublished/devela/)
+[![Documentation ahead](https://flat.badgen.net/badge/docs/260909/blue)](https://andamira.github.io/devela/unpublished/devela/)
 &nbsp;<sup>←unpublished</sup>
 
 ---
