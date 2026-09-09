@@ -7,9 +7,3 @@ _reexport! { rust: core::error,
     doc: "A trait representing the basic expectations for error values.",
     Error
 }
-
-_reexport! { rust: core,
-    location: "error" => macro compile_error, tag: _tags!(code error),
-    doc: "Causes compilation to fail with the given message when encountered.",
-    compile_error
-}

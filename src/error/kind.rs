@@ -1,6 +1,9 @@
 // devela/src/error/kind.rs
 //
-//! Reusable failure categories.
+#![doc = crate::_DOC_ERROR_KIND!()] // public
+#![doc = crate::_doc!(modules: crate::error; kind)]
+#![doc = crate::_doc!(flat:"error")]
+#![doc = crate::_doc!(hr)]
 //
 // TOC
 // - individual error types:
@@ -17,7 +20,7 @@ use crate::{_tags, define_error};
 
 define_error![individual: pub struct FailedErrorConversion;
     #[derive(Default)],
-    +location: "error",
+    +location: "error/kind",
     +tag: _tags!(value error),
 
     DOC_FAILED_CONVERSION = "A failed conversion between two error types.",
@@ -25,7 +28,7 @@ define_error![individual: pub struct FailedErrorConversion;
 ];
 define_error![individual: pub struct NotImplemented;
     #[derive(Default)],
-    +location: "error",
+    +location: "error/kind",
     +tag: _tags!(no error),
 
     DOC_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
@@ -33,7 +36,7 @@ define_error![individual: pub struct NotImplemented;
 ];
 define_error![individual: pub struct NotSupported;
     #[derive(Default)],
-    +location: "error",
+    +location: "error/kind",
     +tag: _tags!(no error),
 
     DOC_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
@@ -42,7 +45,7 @@ define_error![individual: pub struct NotSupported;
 
 define_error![individual: pub struct InvalidValue;
     #[derive(Default)],
-    +location: "error",
+    +location: "error/kind",
     +tag: _tags!(value error),
 
     DOC_INVALID_VALUE = "An invalid value was received for the given type or operation.",
@@ -52,7 +55,7 @@ define_error![individual: pub struct InvalidValue;
 /* composite errors */
 
 define_error! { composite: fmt(f)
-    +location: "error",
+    +location: "error/kind",
     +tag: _tags!(no error_composite),
 
     /// An error composite of [`NotImplemented`] + [`NotSupported`].

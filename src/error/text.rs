@@ -2,7 +2,7 @@
 //
 #![doc = crate::_DOC_ERROR_TEXT!()] // public
 #![doc = crate::_doc!(modules: crate::error; text)]
-#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(flat:"error")]
 #![doc = crate::_doc!(hr)]
 //
 // TOC

@@ -4,7 +4,7 @@
 #![doc = crate::_DOC_CODE_MODULES!()]
 #![doc = crate::_doc!(flat:"code")]
 #![doc = crate::_doc!(extends:
-    any, clone, convert, default, hint, marker, ops, panic, range, result)]
+    any, backtrace, clone, convert, default, hint, marker, ops, panic, range, result)]
 //!
 //! These facilities describe concerns shared across otherwise unrelated domains:
 //! type identity and conversion, initialization and markers, operational and

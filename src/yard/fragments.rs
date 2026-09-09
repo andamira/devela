@@ -121,7 +121,7 @@ and `◉` to switch back to flat view.
     _DOC_DATA_WORD          = "Data words with exact canonical raw representations.";
 
     // 3. error (where failure becomes explicit)
-    _DOC_ERROR        = "Failure types, result aliases, and recovery semantics";
+    _DOC_ERROR        = "Failure representation, classification, and composition.";
     _DOC_ERROR_KIND   = "Reusable failure categories and error atoms.";
     _DOC_ERROR_DATA   = "Data-related error types and result aliases.";
     _DOC_ERROR_NUM    = "Numeric error types and result aliases.";

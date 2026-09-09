@@ -34,7 +34,7 @@
 /// - `_hidden`: Public but hidden items (`pub`, `doc(hidden)`).
 ///
 /// An `_all` module is always generated. It aggregates exports from `_mods`, `_pub_mods`,
-/// and `_reexports` when present.
+/// and `_reexports`, when present.
 ///
 /// # Usage Patterns
 /// ```ignore
@@ -53,7 +53,7 @@
 ///         #[doc(inline)]
 ///         pub use super::public_module::_all::*;
 ///     }
-///     _pub_mods {
+///     _reexports {
 ///         pub use super::_reexport::*;
 ///     }
 ///     _crate_internals {
@@ -62,10 +62,10 @@
 /// }
 /// ```
 /// # Notes
-/// - Generated modules use `#[allow(unused_imports)]` to avoid warnings caused by
-///   intra-crate visibility boundaries.
-/// - Each module in the hierarchy must forward its structural exports upward to preserve
-///   the intended public API surface.
+/// - Generated modules use `#[allow(unused_imports)]` to avoid warnings
+///   caused by intra-crate visibility boundaries.
+/// - Each module in the hierarchy must forward its structural exports upward
+///   to preserve the intended public API surface.
 //
 // We use the pattern `$(_mods$($has_mods:lifetime)?)?` where the optional lifetime parameter
 // serves as a marker to conditionally include the module in `_all`. The lifetime is never
@@ -77,18 +77,18 @@ macro_rules! mods_out· {
         // Items inside should be pub.
         // Public items from non-public modules. They bubble up and show up in the current module.
         $( $(_mods$($has_mods:lifetime)?)? { $($block_mods:tt)* } )?
-        //
+
         // Items inside should be pub & doc(inline).
         // Public items from public modules. They bubble up but are hidden in the current module.
         $( $(_pub_mods$($has_pub_mods:lifetime)?)? { $($block_pub_mods:tt)* } )?
-        //
+
         // Items inside should be pub.
         $( $(_reexports$($has_reexports:lifetime)?)? { $($block_reexports:tt)* } )?
-        //
+
         // Items inside should be pub(crate).
         // They are re-exported from the root of the current crate.
         $( _crate_internals { $($block_crate_internals:tt)* } )?
-        //
+
         // Items inside should be pub & doc(hidden).
         // They are publicly re-exported from the root of the crate.
         $( _hidden { $($block_hidden:tt)* } )?

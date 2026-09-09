@@ -3,7 +3,7 @@
 #![doc = crate::_DOC_CODE_UTIL!()] // public
 #![doc = crate::_doc!(modules: crate::code; util: assert, cfg, debug, synth, token)]
 #![doc = crate::_doc!(flat:"code")]
-#![doc = crate::_doc!(hr)]
+#![doc = crate::_doc!(extends: backtrace)]
 //!
 //! This module collects small, cross-cutting facilities for authoring,
 //! checking, inspecting, and transforming Rust code.

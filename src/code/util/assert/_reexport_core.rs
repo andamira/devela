@@ -2,7 +2,7 @@
 
 use crate::{_reexport, _tags};
 
-/* `core` macros */
+/* macros */
 
 // assert
 _reexport! { rust: core,
@@ -21,7 +21,7 @@ _reexport! { rust: core,
     location: "code/util/assert" => macro assert_matches, tag: _tags!(assert),
     doc: "Asserts that an expression matches the provided pattern.", assert_matches
 }
-//
+// debug_assert
 _reexport! { rust: core,
     location: "code/util/assert" => macro debug_assert, tag: _tags!(assert),
     doc: "Asserts that a boolean expression is true at runtime.", debug_assert
@@ -37,4 +37,11 @@ _reexport! { rust: core,
 _reexport! { rust: core,
     location: "code/util/assert" => macro debug_assert_matches, tag: _tags!(assert),
     doc: "Asserts that an expression matches the provided pattern.", debug_assert_matches
+}
+
+// compile
+_reexport! { rust: core,
+    location: "code/util/assert" => macro compile_error, tag: _tags!(code assert),
+    doc: "Causes compilation to fail with the given message when encountered.",
+    compile_error
 }
