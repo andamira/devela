@@ -128,6 +128,7 @@ See also
 - 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
+- 1.??: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
