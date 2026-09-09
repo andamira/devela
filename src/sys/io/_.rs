@@ -23,23 +23,25 @@ crate::mods_in! {
 
     #[cfg(not(feature = "std"))]
     mod_ no_std_define;
-    #[cfg(feature = "std")]
-    mod std_reexports;
-}
 
+    // mod _reexport_core; // WAIT:io_error
+    #[cfg(feature = "std")]
+    mod _reexport_std;
+}
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
             duplex::*,
             text::*,
         };
-
         #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
         pub use super::io::*;
-
-        cfg_select! {
-            feature = "std" => { pub use super::std_reexports::*; }
-                          _ => { pub use super::no_std_define::_all::*; }
-        }
+        #[cfg(not(feature = "std"))]
+        pub use super::no_std_define::_all::*;
+    }
+    _reexports {
+        // pub use super::_reexport_core::*;
+        #[cfg(feature = "std")]
+        pub use super::_reexport_std::*;
     }
 }

@@ -1,6 +1,6 @@
 // devela/src/data/value/value/_.rs
 //
-// WAIT:circular-module https://github.com/rust-lang/rust/issues/162080
+// WAIT:1.100:[circular-module][https://github.com/rust-lang/rust/issues/162080=
 //
 //! Defines Value<8|16|32|64|128>.
 //

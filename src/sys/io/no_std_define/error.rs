@@ -28,7 +28,7 @@ pub type IoResult<T> = Result<T, IoError>;
 }]
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
 // #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…
-// WAIT: [Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
+// WAIT:1.?? [io_error](https://github.com/rust-lang/rust/issues/154046)
 pub struct IoError {
     repr: Repr,
 }
@@ -221,7 +221,6 @@ pub enum IoErrorKind {
     /// A filename was invalid.
     ///
     /// This error can also cause if it exceeded the filename length limit.
-    // WAIT:1.87 [io_error_more](https://github.com/rust-lang/rust/pull/134076)
     InvalidFilename,
 
     /// Program argument list too long.

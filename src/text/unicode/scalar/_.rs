@@ -14,7 +14,7 @@ crate::mods_in! {
     mod_ iter; // CharIter
     mod_ namespace; // Char
     mod offset; // scalar_offset!
-    mod_ scalar_; // ch!, char7, char8, char16, charu, charu_niche (WAIT:circular-module)
+    mod_ scalar_; // ch!, char7, char8, char16, charu, charu_niche (WAIT:1.100:circular-module)
     mod unicode_scalar; // UnicodeScalar
 }
 crate::mods_out! { // _mods, _reexports, _hidden

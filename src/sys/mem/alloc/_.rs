@@ -7,7 +7,7 @@
 //
 
 crate::mods_in! {
-    mod_ alloc_; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc, reexports WAIT:circular-module
+    mod_ alloc_; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc… WAIT:1.100:circular-module
     mod_ storage; // Bare, BareBox, Boxed, Storage
 }
 crate::mods_out! { // _mods, _hidden

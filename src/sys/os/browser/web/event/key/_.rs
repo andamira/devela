@@ -4,7 +4,7 @@
 //
 
 crate::mods_in! {
-    mod_ key_; // WebEventKey WAIT:circular-module
+    mod_ key_; // WebEventKey WAIT:1.100:circular-module
     mod location; // WebKeyLocation, impl:KeyMod,KeyMods
 
     mod media; // impl:KeyMedia
