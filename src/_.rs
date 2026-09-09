@@ -1,4 +1,4 @@
-// devela/src/index.rs
+// devela/src/_.rs
 //
 //! *A development substrate of coherence.*
 //!
@@ -39,8 +39,8 @@
 // RUSTFLAGS="--cfg nightly_stable" cargo +nightly build
 // RUSTDOCFLAGS="--cfg nightly_stable" cargo +nightly doc
 // ```
-// (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs],
-//  ../build/main/features.rs::FLAGS_NIGHTLY) && ../src/base/core/src/index.rs
+// (In sync with ../Cargo.toml::[workpace.lints.rust.unexpected_cfgs]
+//  && ../build/main/features.rs::FLAGS_NIGHTLY)
 #![cfg_attr(nightly_doc, doc(test(attr(feature(doc_cfg)))))] // enable for all doctests
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))] // configured below
 #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]

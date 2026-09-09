@@ -24,7 +24,7 @@ publish = true
 metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 
 [lib]
-path = "src/index.rs"
+path = "src/_.rs"
 proc-macro = true
 bench = false
 

@@ -85,7 +85,7 @@ license = "MIT OR Apache-2.0"
 edition = "2024"
 
 [lib]
-path = "src/index.rs"
+path = "src/_.rs"
 bench = false
 
 [package]
@@ -359,7 +359,7 @@ work_all = ["work", "process", "thread", "sync"]
 # The `safest` feature forbids unsafe transitively in dependencies
 # (except for Rust's `core`, `alloc` and `std`).
 #
-# In sync with ./build/main/features.rs::[UN]SAFE & ./src/index.rs::safety)
+# In sync with ./build/main/features.rs::[UN]SAFE & ./src/_.rs::safety)
 
 safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
@@ -759,7 +759,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 
 # missing_crate_level_docs = "warn" # no documentation at the crate root (or any binary)
 #
-# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in index.rs & other places
+# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in /src/_.rs & other places
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
 [workspace.lints.clippy]
@@ -858,14 +858,14 @@ check-cfg = [ # Allowed configuration flags:
 	# --------------------------------------------------------------------------
 	# They are prefixed with `nightly_`.
 	# Enabling any of these will set the `nightly··` reflection flag.
-	# In sync with: ./src/index.rs, ./build/main/features.rs && ./docs/nightly.md.
+	# In sync with: ./src/_.rs, ./build/main/features.rs && ./docs/nightly.md.
 	#
 	## Links
 	# - https://doc.rust-lang.org/unstable-book/library-features.html
 	# - https://releases.rs/
 	# - ./tools/release_dates.rs
 	# - ./docs/nightly.md
-	"cfg(nightly)", # [12] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/index.rs)
+	"cfg(nightly)", # [12] (in sync with ./build/main/features.rs::FLAGS_NIGHTLY & ./src/_.rs)
 		#
 		# Unstable nightly features without clear stabilization timeline
 		"cfg(nightly_unstable)",
@@ -875,7 +875,7 @@ check-cfg = [ # Allowed configuration flags:
 			"cfg(nightly_allocator)", # allocator_api
 			#
 			# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
-			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out in index.rs)
+			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out in ./src/_.rs)
 			#
 			# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 			# https://rust-lang.zulipchat.com/#narrow/channel/390790-wg-autodiff

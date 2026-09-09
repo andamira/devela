@@ -18,7 +18,7 @@ crate::mods_in! {
         mod _use; // _use!
 
         mod alias; // aliases for attributes and derives
-    pub mod dep; // dependencies; reexported hidden from /index.rs
+    pub mod dep; // dependencies; reexported hidden from /src/_.rs
         mod fragments; // doclines for root modules: _DOC_*!
         mod tags; // docs for tagging items: _ABBR_!*, _TAG_*!, _tags!
 }
