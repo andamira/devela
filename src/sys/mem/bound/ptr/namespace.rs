@@ -215,7 +215,7 @@ impl Ptr {
     /// See `core::ptr::`[`with_exposed_provenance`]
     /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].
     #[must_use]
-    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
+    pub const fn with_exposed_provenance<T>(addr: usize) -> *const T {
         with_exposed_provenance(addr)
     }
     /// Converts an address back to a mutable pointer,
@@ -224,7 +224,7 @@ impl Ptr {
     /// See `core::ptr::`[`with_exposed_provenance_mut`]
     /// and `<ptr>::`[`expose_provenance`][pointer#method.expose_provenance].
     #[must_use]
-    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
+    pub const fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
         with_exposed_provenance_mut(addr)
     }
 
@@ -234,7 +234,7 @@ impl Ptr {
     /// `<ptr>::`[`with_addr`][pointer#method.with_addr],
     /// and `<ptr>::`[`map_addr`][pointer#method.map_addr].
     #[must_use]
-    pub fn without_provenance<T>(addr: usize) -> *const T {
+    pub const fn without_provenance<T>(addr: usize) -> *const T {
         without_provenance(addr)
     }
     /// Creates a pointer with the given address and no *provenance*.
@@ -243,7 +243,7 @@ impl Ptr {
     /// `<ptr>::`[`with_addr`][pointer#method.with_addr],
     /// and `<ptr>::`[`map_addr`][pointer#method.map_addr].
     #[must_use]
-    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
+    pub const fn without_provenance_mut<T>(addr: usize) -> *mut T {
         without_provenance_mut(addr)
     }
 }
