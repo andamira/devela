@@ -1,0 +1,28 @@
+# devela/examples/hw/mcu/avr/atmega328p/nano_led/Cargo.toml
+
+[workspace]
+
+[package]
+name = "avr_atmega328p_nano_led"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "nano-led"
+path = "main.rs"
+
+[dependencies.devela]
+path = "../../../../../../.."
+default-features = false
+features = ["unsafe_mmio"]
+# features = ["unsafe_mmio", "_docs_examples", "all", "unsafe"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.debug]
+panic = "abort"

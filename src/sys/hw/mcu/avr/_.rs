@@ -4,7 +4,7 @@
 //
 
 crate::mods_in! {
-    // mod_ atmega328p;
+    mod_ atmega328p;
     mod port;
     mod register;
     // mod timer;
@@ -13,7 +13,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            // atmega328p::_all::Atmega328p,
+            atmega328p::_all::Atmega328p,
             port::AvrPort,
             register::AvrReg8,
             // timer::AvrTimer,

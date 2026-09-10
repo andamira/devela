@@ -27,7 +27,8 @@
 - new tag: `_TAG_HW`.
 
 ## examples
-- add minimal no_std environment examples.
+- add minimal no_std `sys/env` examples.
+- add `sys/hw/mcu` examples: `nano_led`.
 
 ---
 
@@ -53,7 +54,7 @@
 - make module public.
 
 #### sys::hw::mcu::avr
-- new types: `AvrPort`, `AvrReg8`.
+- new types: `Atmega328p`, `AvrPort`, `AvrReg8`.
 
 ### sys::mem
 - make `Ptr` provenance-related methods const:
