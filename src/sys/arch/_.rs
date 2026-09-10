@@ -20,10 +20,10 @@
 //
 
 crate::mods_in! {
-    mod _reexport_dep;
     mod _reexport_core;
     #[cfg(feature = "std")]
     mod _reexport_std;
+    mod _reexport_dep;
 
     mod _helper; // _ARCH!
 
@@ -38,10 +38,10 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use super::_reexport_dep::*;
         pub use super::_reexport_core::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
+        pub use super::_reexport_dep::*;
     }
     _crate_internals {
         pub(crate) use super::_helper::*;
