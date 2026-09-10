@@ -8,7 +8,7 @@
 // - macro _impl_arch!
 // - implementations for Arch
 
-#![allow(clippy::too_many_arguments)]
+#![allow(clippy::too_many_arguments, unused_imports)]
 
 use crate::{_dep::safe_arch::*, Arch};
 

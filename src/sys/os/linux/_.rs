@@ -31,7 +31,7 @@ crate::mods_in! {
 
         mod rand; // LinuxRandomMode
 
-        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
         mod_ syscalls; // LINUX_SYS
 
     #[doc = crate::_tags!(time)]
@@ -45,7 +45,7 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             namespace::Linux,
             rand::*,
         };
-        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::syscalls::_all::*;
     }
     _pub_mods {

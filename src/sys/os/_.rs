@@ -19,22 +19,29 @@
 crate::mods_in! {
     // #[cfg(feature = "android")]
     // pub mod_ android;
+
     #[doc = crate::_tags!(web)]
     pub mod_ browser; // Web*
+
         #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
         mod_ c; // Libc
+
     pub mod_ fd;
+
     #[doc = crate::_tags!(linux)]
     #[cfg(feature = "_linux_abi")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "linux")))]
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("_linux_abi")))))]
     pub mod_ linux;
+
     // #[doc = crate::_tags!(apple)]
     // #[cfg(feature = "macos")]
     // pub mod_ macos;
+
     #[cfg(feature = "term")]
     #[doc = crate::_tags!(term)]
     pub mod_ term; // Ansi* Term*
+
     // #[doc = crate::_tags!(windows)]
     // #[cfg(feature = "windows")]
     // pub mod_ windows;

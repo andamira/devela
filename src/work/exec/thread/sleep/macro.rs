@@ -23,10 +23,10 @@ sleep4![1.5]; // sleeps for 1.5 seconds
 
 # Features
 - With the `std` feature enabled it leverages [`Thread::sleep`].
-- With the `linux` feature enabled it leverages [`Linux::sleep`].
+- With the `linux` feature enabled it leverages [`Linux`]`::sleep`.
 
 [`Thread::sleep`]: crate::Thread#method.sleep
-[`Linux::sleep`]: crate::Linux::sleep
+[`Linux`]: crate::Linux
 "#;
 }
 

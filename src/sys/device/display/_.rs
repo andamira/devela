@@ -1,7 +1,11 @@
 // devela/src/sys/device/display/mod.rs
 //
 #![doc = crate::_DOC_SYS_DEVICE_DISPLAY!()] // public
-#![doc = crate::_doc!(modules: crate::sys::device; display: x11)]
+//
+#![cfg_attr(all(unix, feature = "x11", not(feature = "safe_sys")),
+    doc = crate::_doc!(modules: crate::sys::device; display: x11))]
+#![cfg_attr(not(all(unix, feature = "x11", not(feature = "safe_sys"))),
+    doc = crate::_doc!(modules: crate::sys::device; display))]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!

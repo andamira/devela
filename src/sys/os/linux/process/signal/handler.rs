@@ -5,7 +5,9 @@
 
 #[cfg(doc)]
 use crate::Linux;
-use crate::{AtomicPtr, LinuxSiginfo, LinuxSignal, Ptr, c_void};
+#[crate::macro_apply(crate::_linux_syscall)]
+use crate::{AtomicPtr, LinuxSignal, Ptr};
+use crate::{LinuxSiginfo, c_void};
 
 #[cfg(target_pointer_width = "32")]
 crate::test_size_of!(LinuxSigactionHandler = 4 | 32);
@@ -19,6 +21,7 @@ pub(crate) union LinuxSigactionHandler {
     pub(super) sa_sigaction: extern "C" fn(i32, *mut LinuxSiginfo, *mut c_void),
 }
 
+#[crate::macro_apply(crate::_linux_syscall)]
 /// Simple Rust handlers indexed by signal number.
 ///
 /// This table stores user-provided `fn(i32)` handlers registered through
@@ -31,6 +34,7 @@ pub(crate) union LinuxSigactionHandler {
 pub(crate) static LINUX_SIG_HANDLERS: [AtomicPtr<()>; LinuxSignal::TABLE_LEN] =
     [const { AtomicPtr::new(Ptr::null_mut()) }; LinuxSignal::TABLE_LEN];
 
+#[crate::macro_apply(crate::_linux_syscall)]
 /// RT/siginfo-shaped Rust handlers indexed by signal number.
 ///
 /// This is the canonical dispatch table used by the kernel-facing `SA_SIGINFO`

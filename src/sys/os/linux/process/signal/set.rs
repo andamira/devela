@@ -103,10 +103,13 @@ crate::enumset! {
         pub const MIN_NUMBER: c_int = 1;
         /// Highest supported standard Linux signal number.
         pub const MAX_NUMBER: c_int = Self::SIGSYS.as_c_int();
+
+        #[crate::macro_apply(crate::_linux_syscall)]
         /// Number of slots needed when indexing directly by raw signal number.
         ///
         /// Slot `0` is unused.
         pub(crate) const TABLE_LEN: usize = Self::MAX_NUMBER as usize + 1;
+
         const __: () = {
             assert!(LinuxSignal::SIGHUP.as_c_int() == 1);
             assert!(LinuxSignal::SIGINT.as_c_int() == 2);
@@ -119,7 +122,10 @@ crate::enumset! {
             assert!(LinuxSignal::SIGSYS.as_index() == 30);
 
             assert!(LinuxSignal::MAX_NUMBER == 31);
-            assert!(LinuxSignal::TABLE_LEN == 32);
+
+            // #[crate::macro_apply(crate::_linux_syscall)]
+            #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+            { assert!(LinuxSignal::TABLE_LEN == 32); }
         };
     }
     impl enum #[doc = "# Methods"] {

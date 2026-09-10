@@ -10,7 +10,7 @@ crate::mods_in! {
     mod clock; // LinuxClock
     mod timespec; // LinuxTimespec
 
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
     mod instant; // LinuxInstant, LinuxTime
 }
 crate::mods_out! { // _mods
@@ -19,7 +19,7 @@ crate::mods_out! { // _mods
             clock::*,
             timespec::*,
         };
-        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::instant::*;
     }
 }

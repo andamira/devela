@@ -4,7 +4,7 @@
 use crate::{_reexport, _tags};
 
 #[cfg(target_arch = "wasm32")]
-#[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))]
+// #[cfg_attr(nightly_doc, doc(cfg(target_arch = "wasm32")))] // FIXME
 crate::_reexport! { rust: core::arch::wasm32,
     location: "sys/arch" => struct w_v128,
     tag: _tags!(platform mem num),

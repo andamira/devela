@@ -6,13 +6,13 @@
 crate::mods_in! {
     mod _raw; // Raw Linux file-descriptor constants.
 
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
     mod fd; // LinuxFd
     mod seek; // LinuxSeekFrom
 }
 crate::mods_out! { // _mods, _crate_internals
     _mods {
-        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::fd::*;
         pub use super::seek::*;
     }

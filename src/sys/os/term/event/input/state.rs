@@ -127,7 +127,9 @@ impl TermDecModeStatus {
             _ => None,
         }
     }
-    #[cfg_attr(not(all(feature = "linux", feature = "time")), expect(dead_code))]
+    #[cfg(feature = "time")]
+    #[crate::macro_apply(crate::_linux_syscall)]
+    // NOTE: used by TermLinux::query_dec_private_mode_supported()
     pub(crate) const fn is_supported(self) -> bool {
         !matches!(self, Self::NotRecognized)
     }

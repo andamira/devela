@@ -6,7 +6,9 @@
 //
 
 crate::mods_in! {
-    #[cfg(all(feature = "linux", not(miri)))]
+    #[cfg(all( // WAIT:1.99:apply
+        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target,
+    ))]
     mod_ linux;
     // mod macos; // TermMacos
     // mod std; // TermStd
@@ -18,11 +20,11 @@ crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::r#trait::*;
 
-        #[cfg(all(feature = "linux", not(miri)))]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::linux::_all::*;
     }
     _crate_internals {
-        #[cfg(all(feature = "linux", not(miri)))]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::linux::_crate_internals::*;
     }
 }

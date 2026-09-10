@@ -3,6 +3,7 @@
 //!
 //
 
+#[allow(unused)]
 use crate::Arch;
 
 /// # Portable abstractions over architecture-dependent instructions.

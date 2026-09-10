@@ -88,9 +88,10 @@ impl LinuxOpenOptions {
         self.flags &= !O::CLOEXEC;
         self
     }
+}
 
-    /* internals */
-
+#[crate::macro_apply(crate::_linux_syscall)]
+impl LinuxOpenOptions {
     /// Returns the raw Linux open flags.
     #[must_use]
     pub(crate) const fn flags(self) -> c_int {

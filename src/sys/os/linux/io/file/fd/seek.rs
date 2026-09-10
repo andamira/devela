@@ -3,7 +3,9 @@
 //! Defines [`LinuxSeekFrom`].
 //
 
-use crate::{LINUX_SEEK, c_int, c_off_t};
+use crate::c_off_t;
+#[crate::macro_apply(crate::_linux_syscall)]
+use crate::{LINUX_SEEK, c_int};
 
 #[doc = crate::_tags!(linux fs)]
 /// A Linux file-positioning directive.
@@ -32,6 +34,7 @@ pub enum LinuxSeekFrom {
     Hole(c_off_t),
 }
 
+#[crate::macro_apply(crate::_linux_syscall)]
 impl LinuxSeekFrom {
     /// Returns the raw Linux `offset` and `whence`.
     pub(crate) const fn raw(self) -> (c_off_t, c_int) {

@@ -10,15 +10,16 @@ use crate::{Duration, Linux, LinuxTimespec};
 use crate::{LINUX_ERRNO, LinuxError, LinuxResult as Result, c_int};
 
 #[doc = crate::_tags!(linux time uid)]
-/// [`Linux`][crate::Linux] clock identifiers.
+/// [`Linux`] clock identifiers.
 ///
-/// Used for [`sys_clock_gettime`][crate::Linux::sys_clock_gettime] and related time functions.
+/// Used for `Linux::sys_clock_gettime` and related time functions.
 #[doc = crate::_doc_meta!{
     location("sys/os/linux/thread", enum LinuxClock),
     test_size_of(LinuxClock = 4|32; niche Option),
 }]
 /// See [clock_gettime(2)] for detailed information about each clock type.
 ///
+/// [`Linux`]: crate::Linux
 /// [clock_gettime(2)]: https://www.man7.org/linux/man-pages/man2/clock_gettime.2.html
 #[repr(i32)] // == c_int
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -160,7 +161,7 @@ impl LinuxClock {
     }
 }
 
-#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+#[crate::macro_apply(crate::_linux_syscall)]
 impl LinuxClock {
     /// Gets the current time for this clock
     pub fn get_time(self) -> Result<LinuxTimespec> {

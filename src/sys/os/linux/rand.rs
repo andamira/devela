@@ -15,11 +15,11 @@ use crate::c_uint;
 /// used by the configurable `Linux::random_*_with` methods.
 ///
 /// The default mode is [`SecureNonblock`][Self::SecureNonblock], exposed as
-/// [`Linux::RANDOM_MODE`]. It requests cryptographic random bytes without
+/// [`Linux`]`::RANDOM_MODE`. It requests cryptographic random bytes without
 /// blocking; if the kernel randomness source is not ready, the operation
 /// returns an error instead.
 ///
-///  [`Linux::RANDOM_MODE`]: crate::Linux::RANDOM_MODE
+/// [`Linux`]: crate::Linux
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum LinuxRandomMode {
     /// Cryptographic randomness, allowing the syscall to block.

@@ -18,7 +18,7 @@ pub(crate) fn main() -> Result<(), IoError> {
     Build::println_heading("Aliases:");
 
     let mut aliases = Vec::with_capacity(20);
-    arch_aliases(&mut aliases);
+    target_aliases(&mut aliases);
 
     #[cfg(feature = "__dbg")]
     Build::println(format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
@@ -26,23 +26,26 @@ pub(crate) fn main() -> Result<(), IoError> {
     Ok(())
 }
 
-// 2
-// - any_target_arch_linux
-// - any_target_arch_riscv
-#[allow(unused_variables)]
-fn arch_aliases(aliases: &mut Vec<&'static str>) {
-    let target_arch = var("CARGO_CFG_TARGET_ARCH").unwrap();
+// 3
+// any_target_arch_linux
+// any_target_arch_riscv
+// linux_syscall_target
+fn target_aliases(aliases: &mut Vec<&'static str>) {
+    let arch = var("CARGO_CFG_TARGET_ARCH").unwrap();
+    let os = var("CARGO_CFG_TARGET_OS").unwrap();
 
-    if target_arch == "x86"
-        || target_arch == "x86_64"
-        || target_arch == "arm"
-        || target_arch == "aarch64"
-        || target_arch == "riscv32"
-        || target_arch == "riscv64"
-    {
+    let linux_arch =
+        matches!(arch.as_str(), "x86" | "x86_64" | "arm" | "aarch64" | "riscv32" | "riscv64");
+
+    if linux_arch {
         new_alias(aliases, "any_target_arch_linux");
     }
-    if target_arch == "riscv32" || target_arch == "riscv64" {
+
+    if matches!(arch.as_str(), "riscv32" | "riscv64") {
         new_alias(aliases, "any_target_arch_riscv");
+    }
+
+    if linux_arch && matches!(os.as_str(), "linux" | "none") {
+        new_alias(aliases, "linux_syscall_target");
     }
 }

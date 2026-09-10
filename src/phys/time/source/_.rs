@@ -119,7 +119,7 @@ crate::mods_out! { // _mods, _reexports
         pub use crate::JsInstant;
 
         #[cfg(all(feature = "time", feature = "linux"))]
-        #[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use crate::{LinuxInstant, LinuxTime};
     }
 }

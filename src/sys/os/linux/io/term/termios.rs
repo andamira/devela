@@ -11,7 +11,7 @@
 // - struct LinuxTermiosCharSize
 
 use crate::c_uint;
-#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+#[crate::macro_apply(crate::_linux_syscall)]
 use crate::{
     LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, Linux, LinuxError, LinuxResult as Result, TermSize, is,
 };
@@ -79,8 +79,7 @@ impl LinuxTermios {
 }
 
 /// # Linux terminal state syscalls
-#[cfg(any_target_arch_linux)]
-#[crate::macro_apply(crate::_unsafe_syscall_not_miri)]
+#[crate::macro_apply(crate::_linux_syscall)]
 impl LinuxTermios {
     /// Reads the current terminal termios state.
     pub fn read_state() -> Result<LinuxTermios> {

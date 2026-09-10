@@ -37,6 +37,7 @@ crate::macro_apply_alias! {
     pub __doc_auto_show_features($values:tt) =
         #[cfg_attr(nightly_doc, doc(auto_cfg(show(feature, values $values))))];
 
+
     /* safety */
 
     /// Compiles an item for the safe/default implementation path.
@@ -60,6 +61,7 @@ crate::macro_apply_alias! {
         #[cfg(all(not(feature = $safe), feature = $unsafe))]
         #[$crate::macro_apply($crate::__doc_show(feature = $unsafe))];
 
+
     /* ffi */
 
     pub(crate) _js_safe_ffi = #[cfg(any(not(feature = "unsafe_ffi"), windows))];
@@ -68,44 +70,51 @@ crate::macro_apply_alias! {
         #[cfg(all(feature = "unsafe_ffi", not(windows)))]
         #[$crate::macro_apply($crate::__doc_show(feature = "unsafe_ffi"))];
 
-    /* linux & std */
+
+    /* arches */
+
+    /// Compiles an architecture-specific item on its target and in aggregated x86_64 docs.
+    pub(crate) _arch_doc($target:meta) = #[cfg(any($target, all(doc, target_arch = "x86_64")))];
+
+    /* miri */
 
     // unsafe_syscall && !miri
     pub(crate) _unsafe_syscall_not_miri = #[cfg(all(feature = "unsafe_syscall", not(miri)))];
 
-    // (_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
-    pub(crate) _linux_syscall = #[cfg(
-        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
-    )];
 
-    // !(_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
-    pub(crate) _not_linux_syscall = #[cfg(not(
-        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
+    /* linux & std */
+
+    // _linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target
+    pub(crate) _linux_syscall = #[cfg(all(
+        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target,
     ))];
 
-    // !std && (_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
+    // !(_linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target)
+    pub(crate) _not_linux_syscall = #[cfg(not(all(
+        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target,
+    )))];
+
+    // !std && (_linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target)
     pub(crate) _linux_syscall_not_std = #[cfg(all(
         not(feature = "std"),
-        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux
+        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target,
     ))];
 
-    // std || (_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
+    // std || (_linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target)
     pub _std_or_linux_syscall = #[cfg(any(
         feature = "std",
-        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
+        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target),
     ))];
 
-    // std && !(_linux_abi && unsafe_syscall && !miri && supported_linux_arch)
+    // std && !(_linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target)
     pub(crate) _std_not_linux_syscall = #[cfg(all(
         feature = "std",
-        not(all(
-            feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux
-        ))
+        not(all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target))
     ))];
 
-    // !(std || (_linux_abi && unsafe_syscall && !miri && supported_linux_arch))
+    // !(std || (_linux_abi && unsafe_syscall && !miri && Linux-syscall-compatible target))
     pub _not_std_or_linux_syscall = #[cfg(not(any(
         feature = "std",
-        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), any_target_arch_linux)
+        all(feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target)
     )))];
 }
