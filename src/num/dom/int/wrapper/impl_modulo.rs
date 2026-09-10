@@ -16,10 +16,12 @@
 //   - modulo_mul_inv (uc)
 //   - modulo_div (uc)
 
+#[allow(unused)]
+use crate::usize_up;
 use crate::{
     Int,
     IntError::{NoInverse, NonZeroRequired, Overflow},
-    IntResult as Result, ValueQuant, cif, is, isize_up, paste, unwrap, usize_up,
+    IntResult as Result, ValueQuant, cif, is, isize_up, paste, unwrap,
 };
 
 // helper function to be called from the cold path branch when modulus == 0.

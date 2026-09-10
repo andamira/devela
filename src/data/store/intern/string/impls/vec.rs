@@ -227,7 +227,8 @@ macro_rules! __intern_string_impl_vec· {
                 let nn = (None, None);
                 let slots = self.slots.len();
                 if slots == 0 { return nn; }
-                let mut slot = $crate::HasherFx::<usize>::hash_bytes(string.as_bytes()) % slots;
+                let mut slot =
+                    $crate::HasherFx::<usize>::hash_bytes_native(string.as_bytes()) % slots;
                 $crate::whilst! { probed in 0..slots; {
                     let stored = self.slots[slot];
                     if stored.get_prim() == Self::EMPTY.get_prim() { return (None, Some(slot)); }
@@ -258,7 +259,7 @@ macro_rules! __intern_string_impl_vec· {
                 self.slots.resize(slot_count, Self::EMPTY);
                 self.slots.fill(Self::EMPTY);
                 for (symbol, string) in self.strings.entries() {
-                    let mut slot = $crate::HasherFx::<usize>::hash_bytes(string.as_bytes())
+                    let mut slot = $crate::HasherFx::<usize>::hash_bytes_native(string.as_bytes())
                         % slot_count;
                     loop {
                         if self.slots[slot].get_prim() == Self::EMPTY.get_prim() {

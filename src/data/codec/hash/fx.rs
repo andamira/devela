@@ -2,15 +2,21 @@
 //
 //! Defines [`HasherBuildFx`], [`HasherFx`].
 //
+// NOTE: We avoid impl usize on 16-bit.
 
-use crate::{ConstInit, Hash, Hasher, HasherBuildDefault, is, lets};
+use crate::{ConstInit, Hash, Hasher, HasherBuildDefault, lets};
+
+#[cfg(target_pointer_width = "16")]
+type DefaultSize = u32;
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+type DefaultSize = usize;
 
 #[doc = crate::_tags!(hash init)]
 /// A builder for default Fx hashers.
 #[doc = crate::_doc_meta!{
     location("data/codec/hash", type HasherBuildFx),
 }]
-pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
+pub type HasherBuildFx = HasherBuildDefault<HasherFx<DefaultSize>>;
 
 #[doc = crate::_tags!(hash)]
 /// A fast non-cryptographic Fx hasher based on the algorithm used by rustc.
@@ -18,7 +24,8 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
     location("data/codec/hash", struct HasherFx),
     test_size_of(HasherFx<u64> = 8|64; niche !Option),
 }]
-/// `usize` is target-native; `u32` and `u64` provide fixed-width variants.
+/// `usize` provides the native state on 32- and 64-bit targets.
+/// On 16-bit targets the default hasher uses a 32-bit state.
 ///
 /// Integer values use polynomial mixing,
 /// while byte slices use a wyhash-inspired compressor.
@@ -62,6 +69,7 @@ const SEED2: u64 = 0x1319_8a2e_0370_7344;
 const PREVENT_TRIVIAL_ZERO_COLLAPSE: u64 = 0xa409_3822_299f_31d0;
 
 /// Whether the target efficiently supports widening `u64 × u64 → u128` multiplication.
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 const WIDE_MIX: bool = cfg!(any(
     all(target_pointer_width = "64", not(any(target_arch = "sparc64", target_arch = "wasm64"))),
     target_arch = "aarch64",
@@ -72,7 +80,11 @@ const WIDE_MIX: bool = cfg!(any(
 /* common state implementation */
 
 macro_rules! impl_fx {
-    () => { impl_fx![u32: K32, ROTATE32; u64: K64, ROTATE64; usize: K, ROTATE]; };
+    () => {
+        impl_fx![u32: K32, ROTATE32; u64: K64, ROTATE64];
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        impl_fx![usize: K, ROTATE];
+    };
     ($($t:ty: $k:ident, $rotate:ident);+ $(;)?) => {
         $(
             impl ConstInit for HasherFx<$t> { const INIT: Self = Self { state: 0 }; }
@@ -200,6 +212,27 @@ impl HasherFx<u32> {
         state = Self::add_to_hash(state, (compressed >> 32) as u32);
         Self::finalize(state)
     }
+
+    /// Hashes a primitive's little-endian bytes through the integer fast path.
+    pub const fn hash_primitive_bytes(bytes: &[u8]) -> u32 {
+        let mut state = 0;
+        let mut cursor = 0;
+        while bytes.len() - cursor >= 4 {
+            state = Self::add_to_hash(state, read_u32_le(bytes, cursor));
+            cursor += 4;
+        }
+        if bytes.len() - cursor >= 2 {
+            state = Self::add_to_hash(
+                state,
+                u16::from_le_bytes([bytes[cursor], bytes[cursor + 1]]) as u32,
+            );
+            cursor += 2;
+        }
+        if bytes.len() - cursor != 0 {
+            state = Self::add_to_hash(state, bytes[cursor] as u32);
+        }
+        Self::finalize(state)
+    }
 }
 impl HasherFx<u64> {
     /// Hashes a byte slice with the default seed.
@@ -213,6 +246,35 @@ impl HasherFx<u64> {
         Self::finalize(state)
     }
 }
+
+impl HasherFx<usize> {
+    /// Hashes a byte slice using the target-default Fx state.
+    #[must_use]
+    pub const fn hash_bytes_native(bytes: &[u8]) -> usize {
+        #[cfg(target_pointer_width = "16")]
+        {
+            HasherFx::<u32>::hash_bytes(bytes) as usize
+        }
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        {
+            Self::hash_bytes(bytes)
+        }
+    }
+
+    /// Hashes primitive bytes using the target-default Fx state.
+    #[must_use]
+    pub const fn hash_primitive_bytes_native(bytes: &[u8]) -> usize {
+        #[cfg(target_pointer_width = "16")]
+        {
+            HasherFx::<u32>::hash_primitive_bytes(bytes) as usize
+        }
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        {
+            Self::hash_primitive_bytes(bytes)
+        }
+    }
+}
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 impl HasherFx<usize> {
     /// Hashes a byte slice with the default seed.
     pub const fn hash_bytes(bytes: &[u8]) -> usize {
@@ -232,9 +294,16 @@ impl HasherFx<usize> {
     /// Hashes a primitive's little-endian bytes through the integer fast path.
     ///
     /// Use [`Self::hash_bytes`] for arbitrary byte slices.
+    #[cfg(target_pointer_width = "32")]
+    pub const fn hash_primitive_bytes(bytes: &[u8]) -> usize {
+        HasherFx::<u32>::hash_primitive_bytes(bytes) as usize
+    }
+    /// Hashes a primitive's little-endian bytes through the integer fast path.
+    ///
+    /// Use [`Self::hash_bytes`] for arbitrary byte slices.
+    #[cfg(target_pointer_width = "64")]
     pub const fn hash_primitive_bytes(bytes: &[u8]) -> usize {
         lets! { mut state = 0, mut cursor = 0 }
-        #[cfg(target_pointer_width = "64")]
         while bytes.len() - cursor >= 8 {
             state = Self::add_to_hash(state, read_u64_le(bytes, cursor) as usize);
             cursor += 8;
@@ -250,7 +319,9 @@ impl HasherFx<usize> {
             );
             cursor += 2;
         }
-        is! { bytes.len() - cursor != 0, state = Self::add_to_hash(state, bytes[cursor] as usize) }
+        if bytes.len() - cursor != 0 {
+            state = Self::add_to_hash(state, bytes[cursor] as usize)
+        }
         Self::finalize(state)
     }
 }
@@ -283,6 +354,10 @@ impl Hasher for HasherFx<u32> {
         self.state = Self::add_to_hash(self.state, (i >> 96) as u32);
     }
     fn write_usize(&mut self, i: usize) {
+        #[cfg(target_pointer_width = "16")]
+        {
+            self.write_u16(i as u16);
+        }
         #[cfg(target_pointer_width = "32")]
         {
             self.write_u32(i as u32);
@@ -324,6 +399,8 @@ impl Hasher for HasherFx<u64> {
         Self::finalize(self.state)
     }
 }
+
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 impl Hasher for HasherFx<usize> {
     fn write(&mut self, bytes: &[u8]) {
         let compressed = hash_bytes::<WIDE_MIX>(bytes);
@@ -440,22 +517,24 @@ mod _test {
     }
     #[test]
     fn native_matches_fixed_width() {
+        #[cfg(target_pointer_width = "16")]
+        assert_eq!(
+            HasherFx::<usize>::hash_bytes_native(b"devela"),
+            HasherFx::<u32>::hash_bytes(b"devela") as usize,
+        );
         #[cfg(target_pointer_width = "32")]
-        {
-            assert_eq!(
-                HasherFx::<usize>::hash_bytes(b"devela"),
-                HasherFx::<u32>::hash_bytes(b"devela") as usize
-            );
-        }
+        assert_eq!(
+            HasherFx::<usize>::hash_bytes(b"devela"),
+            HasherFx::<u32>::hash_bytes(b"devela") as usize
+        );
         #[cfg(target_pointer_width = "64")]
-        {
-            assert_eq!(
-                HasherFx::<usize>::hash_bytes(b"devela"),
-                HasherFx::<u64>::hash_bytes(b"devela") as usize
-            );
-        }
+        assert_eq!(
+            HasherFx::<usize>::hash_bytes(b"devela"),
+            HasherFx::<u64>::hash_bytes(b"devela") as usize
+        );
     }
     #[test]
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
     fn primitive_bytes_match_integer_hash() {
         macro_rules! check {
             ($($v:expr),+ $(,)?) => {

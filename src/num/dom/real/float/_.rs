@@ -22,7 +22,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
-            alias::fsize,
+            alias::*,
             bits::*,
             ext_float::FloatExt,
             float_const::FloatConst,

@@ -28,14 +28,17 @@ crate::mods_in! {
     mod _helper; // _ARCH!
 
     mod_ namespace; // Arch
+
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
     mod_ wasm; // Wasm, w_v128
 }
 crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             namespace::_all::Arch,
-            wasm::_all::*,
         };
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        pub use super::wasm::_all::*;
     }
     _reexports {
         pub use super::_reexport_core::*;

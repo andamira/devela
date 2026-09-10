@@ -8,12 +8,14 @@
 // - maybe use NonMax for the signed representation.
 
 // IMPROVE: remove FloatExt, replace by Float, to simplify from_float_normalized
+#[allow(unused_imports)]
+use crate::FloatConst;
 #[allow(unused)]
 #[cfg(not(feature = "std"))]
 use crate::FloatExt;
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+use crate::fsize;
 use crate::{Angle, AngleDirection, AngleKind};
-#[allow(unused_imports)]
-use crate::{FloatConst, fsize};
 
 /// Implement `Angle` methods with an integer representation:
 ///
@@ -27,8 +29,17 @@ use crate::{FloatConst, fsize};
 /// $f: the associated floating point type
 macro_rules! _geom_dir_angle_impl_int {
     () => {
-        _geom_dir_angle_impl_int![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64, isize:fsize];
-        _geom_dir_angle_impl_int![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];
+        _geom_dir_angle_impl_int![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64];
+        _geom_dir_angle_impl_int![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64];
+
+        #[cfg(target_pointer_width = "16")]
+        _geom_dir_angle_impl_int![sint isize:f32];
+        #[cfg(target_pointer_width = "16")]
+        _geom_dir_angle_impl_int![uint usize:f32];
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        _geom_dir_angle_impl_int![sint isize:fsize];
+        #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+        _geom_dir_angle_impl_int![uint usize:fsize];
     };
 
     // integers common methods

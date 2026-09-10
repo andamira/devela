@@ -126,6 +126,7 @@ pub use crate::_dep::portable_atomic::AtomicBool;
 #[doc = crate::_doc_meta!{
     location("work/sync/atomic", struct AtomicBool),
 }]
+// #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic_load_store = "8"))] // WAIT
 #[cfg(not(feature = "dep_portable_atomic"))]
 #[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use core::sync::atomic::AtomicBool;

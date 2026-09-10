@@ -16,7 +16,10 @@
 //
 
 crate::mods_in! {
-    #[cfg(any(test, feature = "_docs_examples"))]
+    #[cfg(all(
+        any(test, feature = "_docs_examples"),
+        any(feature = "dep_portable_atomic", target_has_atomic = "64"),
+    ))]
     mod _example; // IdSeqU64Example
 
     mod pin; // IdPin
@@ -39,7 +42,10 @@ crate::mods_out! { // _mods
         #[cfg(feature = "alloc")]
         pub use super::pin_box::IdPinBox;
 
-        #[cfg(any(test, feature = "_docs_examples"))]
+        #[cfg(all(
+            any(test, feature = "_docs_examples"),
+            any(feature = "dep_portable_atomic", target_has_atomic = "64"),
+        ))]
         pub use super::_example::IdSeqU64Example;
     }
 }

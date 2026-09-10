@@ -53,10 +53,12 @@ macro_rules! __impl_int_elem {
             u128  :u128     |i128     |"-10"
           //usize :usize_up |isize_up |"-11"]; // MAYBE
         ];
-        #[cfg(target_pointer_width = "32")]
-        __impl_int_elem![unsigned usize  :usize_up |isize_up |"-11"];
-        #[cfg(target_pointer_width = "64")]
-        __impl_int_elem![unsigned usize  :usize_up |isize_up |"-11"];
+        #[cfg(any(
+            target_pointer_width = "16",
+            target_pointer_width = "32",
+            target_pointer_width = "64"
+        ))]
+        __impl_int_elem![unsigned usize :usize_up |isize_up |"-11"];
     };
     (signed $( $t:ty : $ut:ty | $up:ty |$d:literal ),+) => {
         $( __impl_int_elem![@signed   $t :$ut :$up |$d]; )+

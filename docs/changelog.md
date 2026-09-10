@@ -39,11 +39,14 @@
 ### code::util::debug
 - move `Backtrace` and `BacktraceStatus` from `error`.
 
+#### data::codec::hash
+- use 32-bit state for default Fx and FNV hashing on 16-bit targets.
+
 ## error
 - make `kind` public.
 
 ## sys
-- restrict Linux syscall-backed APIs to compatible Linux/freestanding targets, fixing cross-target builds.
+- restrict Linux syscall-backed APIs to compatible Linux/freestanding targets.
 - avoid detecting host native libraries as available when cross-compiling.
 
 ### sys::hw

@@ -9,6 +9,7 @@
 crate::mods_in! {
     mod _reexport_core;
 
+    #[cfg(all(target_has_atomic = "8", target_has_atomic = "ptr"))]
     mod_ hedge; // MemHedgeCtrl, MemHedgeError, MemHedgeRead, MemHedgeState
     mod option; // CellOptionExt
 
@@ -20,9 +21,10 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
-            hedge::_all::*,
             option::CellOptionExt,
         };
+        #[cfg(all(target_has_atomic = "8", target_has_atomic = "ptr"))]
+        pub use super:: hedge::_all::*;
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
         // pub use super::ghost::_all::*; // WIP
         // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]

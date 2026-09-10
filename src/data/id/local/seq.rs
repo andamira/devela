@@ -9,6 +9,8 @@
     location("data/id/local", macro id_seq),
 }]
 /// The underlying representation must implement [`PrimUint`].
+/// The corresponding atomic integer type must also be available,
+/// either natively on the target or through `dep_portable_atomic`.
 ///
 /// IDs are generated sequentially from `0` up to one less than the
 /// primitive maximum. The maximum value is reserved as the permanent
@@ -268,7 +270,7 @@ macro_rules! id_seq· {
 #[doc(inline)]
 pub use id_seq· as id_seq;
 
-#[cfg(test)]
+#[cfg(all(test, any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
 mod _test {
     use crate::{AnyExt, AtomicOrdering, id_seq};
 

@@ -5,7 +5,9 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{GcdReturn, Int, IntResult as Result, NumInt, ValueQuant, isize_up};
+#[allow(unused)]
+use crate::isize_up;
+use crate::{GcdReturn, Int, IntResult as Result, NumInt, ValueQuant};
 
 // $t:     the primitive type
 // $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).

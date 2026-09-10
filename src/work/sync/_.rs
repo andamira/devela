@@ -12,7 +12,11 @@ crate::mods_in! {
     #[cfg(feature = "std")]
     mod _reexport_std;
 
-    #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
+    #[cfg(all(
+        feature = "unsafe_sync",
+        not(feature = "safe_work"),
+        any(feature = "dep_portable_atomic", target_has_atomic = "8"),
+    ))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
     mod spin_lock; // SpinLock, SpinLockGuard
 
@@ -23,7 +27,11 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods, _pub_mods
     _mods {
-        #[cfg(all(not(feature = "safe_work"), feature = "unsafe_sync"))]
+        #[cfg(all(
+            feature = "unsafe_sync",
+            not(feature = "safe_work"),
+            any(feature = "dep_portable_atomic", target_has_atomic = "8"),
+        ))]
         pub use super::spin_lock::*;
         // pub use super::counter::*;
         // pub use super::queue::*;

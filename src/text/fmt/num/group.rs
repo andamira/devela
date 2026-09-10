@@ -9,6 +9,9 @@ use crate::{Boundary1d, Cmp, ConstInit, is};
 /// Numeric digit grouping configuration.
 #[doc = crate::_doc_meta!{
     location("text/fmt", struct FmtNumGroup),
+    #[cfg(target_pointer_width = "16")]
+    test_size_of(FmtNumGroup = 10|80; niche Option),
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
     test_size_of(FmtNumGroup = 12|96; niche Option),
 }]
 /// This type controls structural digit grouping for formatted numbers,
@@ -48,8 +51,6 @@ impl ConstInit for FmtNumGroup {
 
 #[rustfmt::skip]
 impl FmtNumGroup {
-    const _SIZE: () = const { assert![size_of::<Self>() == 12]; };
-
     /* constructors */
 
     /// Creates a default grouping configuration of 3 for the left part, and no separator.

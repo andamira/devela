@@ -2,12 +2,17 @@
 
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
+#[cfg(target_pointer_width = "16")]
+type DefaultSize = u32;
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+type DefaultSize = usize;
+
 #[doc = crate::_tags!(hash init)]
 /// A builder for default Fnv hashers.
 #[doc = crate::_doc_meta!{
-    location("data/codec/hash", type HasherBuidFnv),
+    location("data/codec/hash", type HasherBuildFnv),
 }]
-pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
+pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<DefaultSize>>;
 
 #[doc = crate::_tags!(hash)]
 /// A Fowler–Noll–Vo hasher, implemented for
@@ -19,6 +24,9 @@ pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
     location("data/codec/hash", struct HasherFnv),
     test_size_of(HasherFnv<u64> = 8|64; niche !Option),
 }]
+/// `usize` provides the native state on 32- and 64-bit targets.
+/// On 16-bit targets the default hasher uses a 32-bit state.
+///
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.
 ///
 /// See

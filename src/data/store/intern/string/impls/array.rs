@@ -200,7 +200,8 @@ macro_rules! __intern_string_impl_array· {
             const fn _probe(&self, string: &str) -> (Option<$Symbol>, Option<usize>) {
                 let nn = (None, None);
                 if SLOTS == 0 { return nn; }
-                let mut slot = $crate::HasherFx::<usize>::hash_bytes(string.as_bytes()) % SLOTS;
+                let mut slot =
+                    $crate::HasherFx::<usize>::hash_bytes_native(string.as_bytes()) % SLOTS;
                 $crate::whilst! { probed in 0..SLOTS; {
                     let stored = self.slots[slot];
                     if stored.get_prim() == Self::EMPTY.get_prim() { return (None, Some(slot)); }

@@ -138,7 +138,7 @@ macro_rules! map· {
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes_native(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
@@ -150,7 +150,7 @@ macro_rules! map· {
             $(#[$attr])*
             $vis const $NAME, KEY:$KEY,
             EMPTY:$EMPTY, TOMB:$TOMB,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes_native(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
@@ -188,7 +188,7 @@ macro_rules! map· {
         $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:<$KEY>::MIN, TOMB:<$KEY>::MAX,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes_native(bytes)
         ];
     };
     (// Custom Empty/Tomb, Default Hasher:
@@ -199,7 +199,7 @@ macro_rules! map· {
         $crate::map![
             $(#[$attr])*
             $vis $NAME, KEY:$KEY, EMPTY:$EMPTY, TOMB:$TOMB,
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes_native(bytes)
         ];
     };
     (// Custom Hasher, Default Empty/Tomb:
@@ -242,7 +242,7 @@ macro_rules! map· {
             and `tomb` markers and behavior.\n\n"]
             $vis $NAME, KEY: u64,
             EMPTY: type_id_hash::<Empty>(), TOMB: type_id_hash::<Tomb>(),
-            HASHER:|bytes| $crate::HasherFx::<usize>::hash_primitive_bytes(bytes)
+            HASHER:|bytes| $crate::HasherFx::<usize>::hash_bytes_native(bytes)
         ];
 
         struct Empty;

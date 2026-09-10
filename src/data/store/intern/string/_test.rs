@@ -66,9 +66,9 @@ fn collisions_compare_strings_not_hashes() {
     const SLOTS: usize = 3;
     let mut pair = None;
     'outer: for (a_i, &a) in WORDS.iter().enumerate() {
-        let ah = HasherFx::<usize>::hash_bytes(a.as_bytes()) % SLOTS;
+        let ah = HasherFx::<usize>::hash_bytes_native(a.as_bytes()) % SLOTS;
         for &b in &WORDS[a_i + 1..] {
-            let bh = HasherFx::<usize>::hash_bytes(b.as_bytes()) % SLOTS;
+            let bh = HasherFx::<usize>::hash_bytes_native(b.as_bytes()) % SLOTS;
             if ah == bh {
                 pair = Some((a, b));
                 break 'outer;
