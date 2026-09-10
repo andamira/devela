@@ -20,6 +20,8 @@
 ## workspace
 - rename `src/index.rs` to `src/_.rs`.
 
+## examples
+- add minimal no_std environment examples.
 
 ---
 
