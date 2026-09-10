@@ -96,6 +96,7 @@ _define_symbol_tags! {
     // RAII abstractions whose semantics are driven by scope exit (`Drop`).
     _TAG_GUARD, "Scoped guard", "🔒";
     _TAG_HASH, "Hashing", "🔀";
+    _TAG_HW, "Hardware", "🔩";
     _TAG_IMAGE, "Image", "🖼️";
     _TAG_INIT, "Initialization", "🌱";
     // Human intent vocabulary

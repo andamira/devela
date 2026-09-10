@@ -279,9 +279,9 @@ pub mod all_ {
 pub use all::*;
 #[doc = crate::_DOC_ALL!()]
 pub mod all {
-    #[allow(unused_imports)]
-    #[rustfmt::skip]
     #[doc(inline)]
+    #[rustfmt::skip]
+    #[allow(unused_imports)]
     pub use super::{
         code::_all::*,
         data::_all::*,
@@ -356,22 +356,23 @@ mod _hidden {
 pub use _reexports::*;
 mod _reexports {
     #[doc(inline)]
+    #[rustfmt::skip]
     #[allow(unused_imports)]
     pub use super::{
-        code::{ConstInit, const_assert, unwrap},
-        data::{ByteCursor, WordTry, arena, handle, pool},
-        // error::{};
-        // geom::{};
-        // lang::{};
-        // media::{};
-        // num::{};
-        // org::{};
-        // phys::{};
-        // run::{};
-        // sys::{};
-        // text::{};
-        // ui::{};
-        // vita::{};
-        // work::{};
+        code::{ConstInit, const_assert, unwrap}, // 3
+        data::{ByteCursor, WordTry, arena, handle, pool}, // 5
+        // error::{}; // 0
+        // geom::{}; //
+        // lang::{}; //
+        // media::{}; //
+        // num::{}; //
+        // org::{}; //
+        // phys::{}; //
+        // run::{}; //
+        // sys::{}; //
+        // text::{}; //
+        // ui::{}; //
+        // vita::{}; //
+        // work::{}; //
     };
 }

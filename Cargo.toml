@@ -158,7 +158,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 143/300 (157 remaining), 116 visible, 27 hidden
+[features] # 145/300 (155 remaining), 118 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -399,9 +399,9 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	"devela_macros/unsafe",
 	#
 	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
-	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
-	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # `unsafe··`	[11]
+	"unsafe_mmio", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
+	"unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
+] # `unsafe··`	[12]
 
 	# List of unsafe purposes (orthogonal to safe modules):
 
@@ -414,6 +414,8 @@ unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	]
 	unsafe_layout  = [ # MemPod, DSTs in the stack, AnyExt::downcast*, Mem::*
 		"devela_macros/unsafe_layout"
+	]
+	unsafe_mmio   = [ # direct memory-mapped device I/O
 	]
 	unsafe_niche   = [ # unchecked niche constructors
 	]
