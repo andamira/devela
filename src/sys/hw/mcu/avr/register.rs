@@ -8,7 +8,7 @@ use crate::{Ptr, is};
 #[doc = crate::_tags!(hw)]
 /// An 8-bit AVR memory-mapped hardware register.
 #[doc = crate::_doc_meta!{
-    location("hw/mcu/avr", struct AvrReg8),
+    location("sys/hw/mcu/avr", struct AvrReg8),
     test_size_of(AvrReg8 = 2|16; niche !Option),
 }]
 #[repr(transparent)]

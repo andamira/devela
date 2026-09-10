@@ -54,7 +54,10 @@
 - make module public.
 
 #### sys::hw::mcu::avr
-- new types: `Atmega328p`, `AvrPort`, `AvrReg8`.
+- new types: `Atmega328p`, `AvrPort`, `AvrReg8`, `AvrUsart`.
+
+#### sys::hw::mcu::board
+- new type: `ArduinoNano`.
 
 ### sys::mem
 - make `Ptr` provenance-related methods const:

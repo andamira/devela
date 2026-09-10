@@ -8,7 +8,7 @@ use crate::AvrReg8;
 #[doc = crate::_tags!(hw io)]
 /// An AVR GPIO port described by its `PINx`, `DDRx`, and `PORTx` registers.
 #[doc = crate::_doc_meta!{
-    location("hw/mcu/avr", struct AvrPort),
+    location("sys/hw/mcu/avr", struct AvrPort),
     test_size_of(AvrPort = 6|48; niche !Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
