@@ -52,6 +52,18 @@
 //! A hardware event and an interrupt are separate concepts. An event can
 //! set a flag that software polls, request an interrupt when enabled,
 //! affect a hardware output, or some combination of these.
+//!
+//! # Interrupt vocabulary
+//!
+//! - **interrupt source** — a hardware condition capable of requesting service.
+//! - **interrupt flag** — records that the corresponding event occurred.
+//! - **interrupt enable** — allows a particular source to request an interrupt.
+//! - **global interrupt enable** — CPU-wide gate for interrupt handling.
+//! - **vector** — the entry point associated with an interrupt source.
+//! - **ISR** — *interrupt service routine*, the function executed for a vector.
+//!
+//! A peripheral interrupt normally requires both its local enable and the CPU's
+//! global interrupt enable. Event flags may still be set while interrupts are disabled.
 //
 
 crate::mods_in! {

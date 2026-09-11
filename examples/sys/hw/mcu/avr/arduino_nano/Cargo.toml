@@ -11,7 +11,11 @@ publish = false
 [dependencies.devela]
 path = "../../../../../.."
 default-features = false
-features = ["mcu", "unsafe_mmio"]
+features = [
+	"mcu", # expose MCU support
+	"unsafe_hint", # permit architecture-specific CPU instructions
+	"unsafe_mmio" # permit direct hardware-register access
+]
 
 [profile.release]
 opt-level = "s"

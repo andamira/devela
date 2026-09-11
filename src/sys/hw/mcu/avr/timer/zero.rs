@@ -134,8 +134,9 @@ impl AvrTimer0 {
 /// # Operational API
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl AvrTimer0 {
-    const WGM01: u8 = 1 << 1; // TCCR0A
     const OCF0A: u8 = 1 << 1; // TIFR0
+    const OCIE0A: u8 = 1 << 1; // TIMSK0
+    const WGM01: u8 = 1 << 1; // TCCR0A
 
     fn prescaler_bits(prescaler: u16) -> Option<u8> {
         match prescaler {
@@ -150,8 +151,13 @@ impl AvrTimer0 {
 
     /// Configures CTC mode with `OCR0A` as TOP and starts the timer.
     ///
-    /// The counter advances from zero through `top`, inclusive, so one compare
-    /// interval contains `top + 1` timer ticks. Its duration is therefore:
+    ///
+    /// Timer0 interrupts are initially disabled
+    /// and the output-compare pins remain disconnected.
+    ///
+    /// The counter advances from zero through `top`, inclusive,
+    /// so one compare interval contains `top + 1` timer ticks.
+    /// Its duration is therefore:
     ///
     /// `prescaler × (top + 1) / source_clock`
     ///
@@ -169,7 +175,7 @@ impl AvrTimer0 {
             self.tccr0a_reg().write(Self::WGM01); // WGM02:0 = 0b010: CTC, with OC0A/B disconnected
             self.counter_reg().write(0);
             self.compare_a_reg().write(top);
-            self.interrupt_mask_reg().write(0); // Polling configuration: no Timer0 interrupts
+            self.interrupt_mask_reg().write(0); // Start with Timer0 interrupts disabled
             self.interrupt_flag_reg().write(Self::OCF0A); // TIFR0 flags are write-one-to-clear
             // WGM02 remains zero; CS02:0 selects the prescaled clock.
             self.tccr0b_reg().write(clock);
@@ -191,5 +197,26 @@ impl AvrTimer0 {
     pub unsafe fn clear_compare_a_match(self) {
         // OCF0A is write-one-to-clear: do not read-modify-write TIFR0.
         unsafe { self.interrupt_flag_reg().write(Self::OCF0A) };
+    }
+
+    /// Enables the output-compare A interrupt.
+    ///
+    /// A compare match can request an interrupt when global interrupts are also enabled.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its interrupt mask must not be concurrently modified.
+    pub unsafe fn enable_compare_a_interrupt(self) {
+        let reg = self.interrupt_mask_reg();
+        unsafe { reg.write(reg.read() | Self::OCIE0A) };
+    }
+    /// Disables the output-compare A interrupt.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its interrupt mask must not be concurrently modified.
+    pub unsafe fn disable_compare_a_interrupt(self) {
+        let reg = self.interrupt_mask_reg();
+        unsafe { reg.write(reg.read() & !Self::OCIE0A) };
     }
 }

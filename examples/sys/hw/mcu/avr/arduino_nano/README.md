@@ -10,11 +10,12 @@ devela dependency. Each program lives under `src/bin/`.
 
 ## Programs
 
-| Binary       | Demonstrates                            | Result                                |
-| ------------ | --------------------------------------- | ------------------------------------- |
-| `led_on`     | GPIO output through PORTB / PB5         | Turns on the built-in D13 LED         |
-| `timer0_ctc` | Timer0 CTC polling with a 1 ms interval | Toggles the built-in LED every 500 ms |
-| `usart_tx`   | USART0 transmission at 9600 baud, 8N1   | Sends `hello from devela` over serial |
+| Binary             | Demonstrates                            | Result                                |
+| ------------------ | --------------------------------------- | ------------------------------------- |
+| `led_on`           | GPIO output through PORTB / PB5         | Turns on the built-in D13 LED         |
+| `timer0_ctc`       | Timer0 CTC polling with a 1 ms interval | Toggles the built-in LED every 500 ms |
+| `timer0_interrupt` | Timer0 compare interrupt                | Toggles the built-in LED every 250 ms |
+| `usart_tx`         | USART0 transmission at 9600 baud, 8N1   | Sends `hello from devela` over serial |
 
 ## Requirements
 
