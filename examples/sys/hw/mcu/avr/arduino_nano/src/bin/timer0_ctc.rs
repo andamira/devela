@@ -1,4 +1,4 @@
-// devela/examples/sys/hw/mcu/board/arduino/nano/src/bin/timer0_ctc.rs
+// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/timer0_ctc.rs
 //
 //! Blinks the built-in LED using Timer0 CTC polling.
 //

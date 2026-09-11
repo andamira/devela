@@ -11,6 +11,9 @@ use crate::{Ptr, is};
     location("sys/hw/mcu/avr", struct AvrReg8),
     test_size_of(AvrReg8 = 2|16; niche !Option),
 }]
+/// `8` refers to the register's value width.
+/// The descriptor stores its 16-bit data-space address;
+/// [`read`][Self::read] and [`write`][Self::write] transfer one byte.
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AvrReg8(u16);
@@ -26,6 +29,8 @@ impl AvrReg8 {
     pub const fn addr(self) -> u16 { self.0 }
 
     /// Returns its I/O-space address, when one exists.
+    ///
+    /// AVR's standard I/O space `0x00..=0x3F` is mapped into data space at `0x20..=0x5F`.
     #[must_use]
     pub const fn io_addr(self) -> Option<u8> {
         is! { self.0 >= 0x20 && self.0 <= 0x5f, Some((self.0 - 0x20) as u8), None }

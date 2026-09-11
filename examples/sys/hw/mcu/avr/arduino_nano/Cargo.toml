@@ -1,15 +1,15 @@
-# devela/examples/sys/hw/mcu/board/arduino/nano/Cargo.toml
+# devela/examples/sys/hw/mcu/avr/arduino_nano/Cargo.toml
 
 [workspace]
 
 [package]
-name = "arduino-nano-examples"
+name = "board_arduino_nano"
 # version = "0.0.0"
 edition = "2024"
 publish = false
 
 [dependencies.devela]
-path = "../../../../../../.."
+path = "../../../../../.."
 default-features = false
 features = ["mcu", "unsafe_mmio"]
 

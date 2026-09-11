@@ -1,4 +1,4 @@
-# devela/examples/hw/mcu/board/arduino/nano/.cargo/config.toml
+# devela/examples/hw/mcu/avr/arduino_nano/.cargo/config.toml
 
 [build]
 target = "avr-none"

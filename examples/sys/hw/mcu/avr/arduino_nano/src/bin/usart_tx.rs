@@ -1,4 +1,4 @@
-// devela/examples/sys/hw/mcu/board/arduino/nano/src/bin/usart_tx.rs
+// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/usart_tx.rs
 //
 //! Sends `hello from devela` over serial.
 //

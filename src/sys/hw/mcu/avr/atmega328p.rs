@@ -1,4 +1,4 @@
-// devela/src/sys/hw/mcu/avr/atmega328p/namespace.rs
+// devela/src/sys/hw/mcu/avr/atmega328p.rs
 //
 //! Defines [`Atmega328p`].
 //
@@ -13,10 +13,16 @@ use crate::{AvrPort, AvrTimer0, AvrUsart};
     location("sys/hw/mcu/avr/atmega328p", struct Atmega328p),
     test_size_of(Atmega328p = 0),
 }]
-/// GPIO pins use the AVR port notation `Pxy`, where `x` identifies the port
-/// and `y` the bit within that 8-bit port.
+/// The device provides 32 × 8-bit general-purpose working registers,
+/// 32 KiB of Flash program memory, 2 KiB of SRAM, and 1 KiB of EEPROM.
+/// The CPU working registers are distinct from memory-mapped peripheral
+/// registers such as [`AvrReg8`][crate::AvrReg8]. Runtime data and the stack
+/// share SRAM, while Flash and EEPROM are separate storage spaces.
 ///
-/// For example, `PB5` is port B bit 5.
+/// Its timer/counter peripherals comprise two 8-bit timers (Timer/Counter0
+/// and Timer/Counter2) and one 16-bit timer (Timer/Counter1). GPIO pins use
+/// the AVR notation `Pxy`, where `x` identifies the port and `y` the bit
+/// within it; for example, `PB5` is port B bit 5.
 ///
 /// See also the [datasheet pdf].
 ///
@@ -35,7 +41,7 @@ impl Atmega328p {
     /// GPIO port D.
     pub const PORT_D: AvrPort = AvrPort::new(0x29, 0x2A, 0x2B);
 
-    /// Timer/Counter 0 peripheral.
+    /// Timer/Counter0 peripheral.
     pub const TIMER_0: AvrTimer0 = AvrTimer0::new(0x44, 0x45, 0x46, 0x47, 0x48, 0x6E, 0x35);
 
     /// USART 0 peripheral.

@@ -1,6 +1,6 @@
 // devela/sys/hw/mcu/avr/timer/_.rs
 //
-//! Avr timers.
+//! AVR timers.
 //
 
 crate::mods_in! {

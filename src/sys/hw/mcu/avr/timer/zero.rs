@@ -79,12 +79,12 @@ impl AvrTimer0 {
     #[must_use]
     pub const fn counter_reg(self) -> AvrReg8 { self.tcnt0_reg() }
 
-    /// Returns output compare register A
+    /// Returns the output compare register A
     /// ([`OCR0A`](#method.ocr0a_reg)).
     #[must_use]
     pub const fn compare_a_reg(self) -> AvrReg8 { self.ocr0a_reg() }
 
-    /// Returns output compare register B
+    /// Returns the output compare register B
     /// ([`OCR0B`](#method.ocr0b_reg)).
     #[must_use]
     pub const fn compare_b_reg(self) -> AvrReg8 { self.ocr0b_reg() }
@@ -102,31 +102,31 @@ impl AvrTimer0 {
 /// # Datasheet registers API
 #[rustfmt::skip]
 impl AvrTimer0 {
-    /// Returns its Timer/Counter control register A (`TCCR0A`).
+    /// Returns the Timer/Counter control register A (`TCCR0A`).
     #[must_use]
     pub const fn tccr0a_reg(self) -> AvrReg8 { self.tccr0a }
 
-    /// Returns its Timer/Counter control register B (`TCCR0B`).
+    /// Returns the Timer/Counter control register B (`TCCR0B`).
     #[must_use]
     pub const fn tccr0b_reg(self) -> AvrReg8 { self.tccr0b }
 
-    /// Returns its Timer/Counter register (`TCNT0`).
+    /// Returns the Timer/Counter register (`TCNT0`).
     #[must_use]
     pub const fn tcnt0_reg(self) -> AvrReg8 { self.tcnt0 }
 
-    /// Returns its output compare register A (`OCR0A`).
+    /// Returns the output compare register A (`OCR0A`).
     #[must_use]
     pub const fn ocr0a_reg(self) -> AvrReg8 { self.ocr0a }
 
-    /// Returns its output compare register B (`OCR0B`).
+    /// Returns the output compare register B (`OCR0B`).
     #[must_use]
     pub const fn ocr0b_reg(self) -> AvrReg8 { self.ocr0b }
 
-    /// Returns its interrupt mask register (`TIMSK0`).
+    /// Returns the interrupt mask register (`TIMSK0`).
     #[must_use]
     pub const fn timsk0_reg(self) -> AvrReg8 { self.timsk0 }
 
-    /// Returns its interrupt flag register (`TIFR0`).
+    /// Returns the interrupt flag register (`TIFR0`).
     #[must_use]
     pub const fn tifr0_reg(self) -> AvrReg8 { self.tifr0 }
 }

@@ -1,4 +1,4 @@
-<!-- devela/examples/sys/hw/mcu/board/arduino/nano/README.md -->
+<!-- devela/examples/sys/hw/mcu/avr/arduino_nano/README.md -->
 
 # Arduino Nano examples
 
@@ -10,10 +10,11 @@ devela dependency. Each program lives under `src/bin/`.
 
 ## Programs
 
-| Binary     | Demonstrates                          | Result                                |
-| ---------- | ------------------------------------- | ------------------------------------- |
-| `led_on`   | GPIO output through PORTB / PB5       | Turns on the built-in D13 LED         |
-| `usart_tx` | USART0 transmission at 9600 baud, 8N1 | Sends `hello from devela` over serial |
+| Binary       | Demonstrates                            | Result                                |
+| ------------ | --------------------------------------- | ------------------------------------- |
+| `led_on`     | GPIO output through PORTB / PB5         | Turns on the built-in D13 LED         |
+| `timer0_ctc` | Timer0 CTC polling with a 1 ms interval | Toggles the built-in LED every 500 ms |
+| `usart_tx`   | USART0 transmission at 9600 baud, 8N1   | Sends `hello from devela` over serial |
 
 ## Requirements
 
@@ -28,26 +29,13 @@ The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
 
 ## Build and flash
 
-Build an example without flashing it:
-
 ```sh
 ./run.sh build led_on
-./run.sh build usart_tx
-```
-
-Build and flash it:
-
-```sh
 ./run.sh run led_on
-./run.sh run usart_tx
 ```
 
-`run` is the default action, and `led_on` is the default binary,
-so this is equivalent to `./run.sh run led_on`:
-
-```sh
-./run.sh
-```
+Replace led_on with any binary listed above.
+`run` and `led_on` are the defaults, so `./run.sh` builds and flashes led_on.
 
 The runner builds a release binary, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.
@@ -99,8 +87,7 @@ hello from devela
 
 On the board tested here, opening `picocom` resets the Nano and the one-shot
 message appears automatically. To receive it again, exit and reopen `picocom`.
-
-To exit `picocom`, press `Ctrl+A`, then `Ctrl+X`.
+To exit press `Ctrl+A`, then `Ctrl+X`.
 
 The upload and application serial rates are separate:
 

@@ -1,4 +1,4 @@
-// devela/examples/sys/hw/mcu/board/arduino/nano/src/bin/led_on.rs
+// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/led_on.rs
 //
 //! Turns on the Arduino Nano built-in LED using direct ATmega328P MMIO.
 //

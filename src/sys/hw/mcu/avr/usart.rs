@@ -11,8 +11,6 @@ use crate::AvrReg8;
     location("sys/hw/mcu/avr", struct AvrUsart),
     test_size_of(AvrUsart = 12|96; niche !Option),
 }]
-/// An AVR USART described by its control, baud-rate, and data registers.
-///
 /// Values can safely be copied and inspected. Operations that access the
 /// described registers are unsafe because the addresses must correspond to
 /// the active device and access must respect the peripheral's hardware state.
@@ -65,32 +63,32 @@ impl AvrUsart {
 #[rustfmt::skip]
 impl AvrUsart {
     /// Returns the status and operating-flags register
-    /// ([`UCSRnA`][Self::ucsra_reg]).
+    /// ([`UCSRnA`](#method.ucsra_reg)).
     #[must_use]
     pub const fn status_reg(self) -> AvrReg8 { self.ucsra_reg() }
 
     /// Returns the transmitter, receiver, and interrupt control register
-    /// ([`UCSRnB`][Self::ucsrb_reg]).
+    /// ([`UCSRnB`](#method.ucsrb_reg)).
     #[must_use]
     pub const fn control_reg(self) -> AvrReg8 { self.ucsrb_reg() }
 
     /// Returns the operating-mode and frame-format control register
-    /// ([`UCSRnC`][Self::ucsrc_reg]).
+    /// ([`UCSRnC`](#method.ucsrc_reg)).
     #[must_use]
     pub const fn frame_reg(self) -> AvrReg8 { self.ucsrc_reg() }
 
     /// Returns the low baud-rate register
-    /// ([`UBRRnL`][Self::ubrrl_reg]).
+    /// ([`UBRRnL`](#method.ubrrl_reg)).
     #[must_use]
     pub const fn baud_low_reg(self) -> AvrReg8 { self.ubrrl_reg() }
 
     /// Returns the high baud-rate register
-    /// ([`UBRRnH`][Self::ubrrh_reg]).
+    /// ([`UBRRnH`](#method.ubrrh_reg)).
     #[must_use]
     pub const fn baud_high_reg(self) -> AvrReg8 { self.ubrrh_reg() }
 
     /// Returns the transmit and receive data register
-    /// ([`UDRn`][Self::udr_reg]).
+    /// ([`UDRn`](#method.udr_reg)).
     #[must_use]
     pub const fn data_reg(self) -> AvrReg8 { self.udr_reg() }
 }
@@ -98,15 +96,15 @@ impl AvrUsart {
 /// # Datasheet registers API
 #[rustfmt::skip]
 impl AvrUsart {
-    /// Returns its USART control and status register A (`UCSRnA`).
+    /// Returns the USART control and status register A (`UCSRnA`).
     #[must_use]
     pub const fn ucsra_reg(self) -> AvrReg8 { self.ucsra }
 
-    /// Returns its USART control and status register B (`UCSRnB`).
+    /// Returns the USART control and status register B (`UCSRnB`).
     #[must_use]
     pub const fn ucsrb_reg(self) -> AvrReg8 { self.ucsrb }
 
-    /// Returns its USART control and status register C (`UCSRnC`).
+    /// Returns the USART control and status register C (`UCSRnC`).
     #[must_use]
     pub const fn ucsrc_reg(self) -> AvrReg8 { self.ucsrc }
 
@@ -118,7 +116,7 @@ impl AvrUsart {
     #[must_use]
     pub const fn ubrrh_reg(self) -> AvrReg8 { self.ubrrh }
 
-    /// Returns its USART data register (`UDRn`).
+    /// Returns the USART data register (`UDRn`).
     #[must_use]
     pub const fn udr_reg(self) -> AvrReg8 { self.udr }
 }
@@ -226,7 +224,7 @@ impl AvrUsart {
     }
     /// Queues one byte for transmission, waiting until the USART can accept it.
     ///
-    /// This waits for space in the transmit data register;
+    /// Waits for space in the transmit data register;
     /// it does not wait for the byte to finish shifting onto the wire.
     ///
     /// # Safety
@@ -237,7 +235,7 @@ impl AvrUsart {
     }
     /// Queues all bytes for transmission, waiting for space as needed.
     ///
-    /// This returns after the final byte has been accepted by the USART,
+    /// Returns after the final byte has been accepted by the USART,
     /// which may be before that byte has finished transmitting on the wire.
     ///
     /// # Safety
