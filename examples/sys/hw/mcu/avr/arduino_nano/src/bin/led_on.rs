@@ -6,13 +6,13 @@
 #![no_std]
 #![no_main]
 
-use devela::{ArduinoNano, set_panic_handler};
+use devela::{BoardArduinoNano, set_panic_handler};
 
 set_panic_handler! { loop }
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    unsafe { ArduinoNano::LED.set_output_high() }
+    unsafe { BoardArduinoNano::LED.set_output_high() }
 
     loop {}
 }

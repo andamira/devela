@@ -65,7 +65,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            atmega328p::Atmega328p,
+            atmega328p::McuAtmega328p,
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,

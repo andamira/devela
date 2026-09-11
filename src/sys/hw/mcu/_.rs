@@ -31,9 +31,8 @@ crate::mods_out! { // _pub_mods, _reexports
     _reexports {
         #[doc(inline)]
         pub use super::{
-            avr::{Atmega328p, AvrPort, AvrReg8, AvrUsart},
-            // board::{},
-            // esp32::{Esp32C3, EspReg32},
+            avr::McuAtmega328p,
+            board::BoardArduinoNano,
         };
     }
 }

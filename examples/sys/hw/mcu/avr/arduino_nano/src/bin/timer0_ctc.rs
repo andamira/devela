@@ -6,19 +6,19 @@
 #![no_std]
 #![no_main]
 
-use devela::{ArduinoNano, Atmega328p, set_panic_handler};
+use devela::{BoardArduinoNano, McuAtmega328p, set_panic_handler};
 
 set_panic_handler! { loop }
 
 // 16 MHz / 64 = 250 kHz.
 // 250 timer counts = 1 ms.
 // CTC counts 0..=OCR0A, therefore OCR0A = 249.
-const TIMER0_TOP_1MS: u8 = (ArduinoNano::CPU_HZ / 64 / 1_000 - 1) as u8;
+const TIMER0_TOP_1MS: u8 = (BoardArduinoNano::CPU_HZ / 64 / 1_000 - 1) as u8;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let timer = Atmega328p::TIMER_0;
-    let led = ArduinoNano::LED;
+    let timer = McuAtmega328p::TIMER_0;
+    let led = BoardArduinoNano::LED;
 
     unsafe {
         led.set_output_low();

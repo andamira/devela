@@ -1,6 +1,6 @@
 // devela/src/sys/hw/mcu/avr/atmega328p.rs
 //
-//! Defines [`Atmega328p`].
+//! Defines [`McuAtmega328p`].
 //
 // 35 Register Summary:
 // https://onlinedocs.microchip.com/oxy/GUID-0EC909F9-8FB7-46B2-BF4B-05290662B5C3-en-US-12.1.1/GUID-05F454E7-6DE3-4D77-9C23-FEBE05568812.html
@@ -10,8 +10,8 @@ use crate::{AvrPort, AvrTimer0, AvrUsart};
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/avr/atmega328p", struct Atmega328p),
-    test_size_of(Atmega328p = 0),
+    location("sys/hw/mcu/avr/atmega328p", struct McuAtmega328p),
+    test_size_of(McuAtmega328p = 0),
 }]
 /// The device provides 32 × 8-bit general-purpose working registers,
 /// 32 KiB of Flash program memory, 2 KiB of SRAM, and 1 KiB of EEPROM.
@@ -29,9 +29,9 @@ use crate::{AvrPort, AvrTimer0, AvrUsart};
 /// [datasheet pdf]: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
 
 #[derive(Debug)]
-pub struct Atmega328p;
+pub struct McuAtmega328p;
 
-impl Atmega328p {
+impl McuAtmega328p {
     /// GPIO port B.
     pub const PORT_B: AvrPort = AvrPort::new(0x23, 0x24, 0x25);
 
