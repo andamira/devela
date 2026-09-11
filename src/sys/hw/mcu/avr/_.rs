@@ -16,7 +16,7 @@ crate::mods_in! {
     mod pin;
     mod port;
     mod register;
-    // mod timer;
+    mod_ timer;
     mod usart;
 }
 crate::mods_out! { // _mods
@@ -26,7 +26,7 @@ crate::mods_out! { // _mods
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,
-            // timer::AvrTimer,
+            timer::_all::AvrTimer0,
             usart::AvrUsart,
         };
     }

@@ -28,7 +28,7 @@
 
 ## examples
 - add minimal no_std `sys/env` examples.
-- add `sys/hw/mcu/board/arduino/nano` examples: `led_on`, `usart_tx`.
+- add `sys/hw/mcu/board/arduino/nano` examples: `led_on`, `timer0_ctc`, `usart_tx`.
 
 ---
 
@@ -54,7 +54,7 @@
 - make module public.
 
 #### sys::hw::mcu::avr
-- new types: `Atmega328p`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`.
+- new types: `Atmega328p`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrTimer0`, `AvrUsart`.
 
 #### sys::hw::mcu::board
 - new type: `ArduinoNano`.
