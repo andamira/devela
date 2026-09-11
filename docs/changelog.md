@@ -29,6 +29,7 @@
 ## examples
 - add minimal no_std `sys/env` examples.
 - add `sys/hw/mcu/avr/arduino_nano` examples: `led_on`, `timer0_ctc`, `usart_tx`.
+- add `sys/hw/mcu/esp32/c3_supermini_oled042` example: `led`.
 
 ---
 
@@ -57,7 +58,10 @@
 - new types: `AvrPin`, `AvrPort`, `AvrReg8`, `AvrTimer0`, `AvrUsart`, `McuAtmega328p`.
 
 #### sys::hw::mcu::board
-- new types: `BoardArduinoNano`.
+- new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.
+
+#### sys::hw::mcu::esp32
+- new types: `EspReg32`, `McuEsp32C3`.
 
 ### sys::mem
 - make `Ptr` provenance-related methods const:

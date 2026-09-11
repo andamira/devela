@@ -1,0 +1,20 @@
+# devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/Cargo.toml
+
+[workspace]
+
+[package]
+name = "board_supermini_oled_042"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies.devela]
+path = "../../../../../.."
+default-features = false
+features = ["mcu", "unsafe_mmio"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"

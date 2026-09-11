@@ -1,0 +1,9 @@
+# devela/examples/hw/mcu/board/supermini_oled042/.cargo/config.toml
+
+[build]
+target = "riscv32imc-unknown-none-elf"
+
+[target.riscv32imc-unknown-none-elf]
+rustflags = [
+    "-C", "link-arg=-Tlink.x",
+]

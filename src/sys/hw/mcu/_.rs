@@ -18,21 +18,22 @@
 crate::mods_in! {
     pub mod_ avr;
     pub mod_ board;
-    // pub mod_ esp32;
+    pub mod_ esp32;
 }
 crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
         pub use super::{
             avr::_all::*,
             board::_all::*,
-            // esp32::_all::*,
+            esp32::_all::*,
         };
     }
     _reexports {
         #[doc(inline)]
         pub use super::{
             avr::McuAtmega328p,
-            board::BoardArduinoNano,
+            board::{BoardArduinoNano, BoardSuperMiniOled042},
+            esp32::McuEsp32C3,
         };
     }
 }

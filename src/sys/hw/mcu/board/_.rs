@@ -14,11 +14,13 @@
 
 crate::mods_in! {
     mod_ arduino;
+    mod_ generic;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
             arduino::_all::BoardArduinoNano,
+            generic::_all::BoardSuperMiniOled042,
         };
     }
 }
