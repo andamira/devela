@@ -51,6 +51,7 @@
 #![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
+#![cfg_attr(all(target_arch = "avr", feature = "unsafe_hint"), feature(asm_experimental_arch))]
 #![cfg_attr(nightly_coro, feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(nightly_float, feature(f16, f128))]
 #![cfg_attr(nightly_simd, feature(portable_simd))]

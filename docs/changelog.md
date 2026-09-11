@@ -22,6 +22,7 @@
 
 ## features & flags
 - new features: `mcu`, `unsafe_mmio`.
+- new nightly feature: `asm_experimental_arch`.
 
 ## documentation
 - new tag: `_TAG_HW`.
@@ -50,6 +51,9 @@
 ## sys
 - restrict Linux syscall-backed APIs to compatible Linux/freestanding targets.
 - avoid detecting host native libraries as available when cross-compiling.
+
+### sys::Arch
+- add AVR instructions.
 
 ### sys::hw
 - make module public.

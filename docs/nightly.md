@@ -18,6 +18,7 @@ Legend:
 - `a` = enabled by non-specific cfg flag (and depends on `alloc`)
 - `s` = enabled by non-specific cfg flag (and depends on `std`)
 - `F` = enabled by some specific cfg flag, shown afterwards.
+- `A` = enabled by some cfg target_arch, shown afterwards.
 - `D` = disabled, feature previously enabled as `F`
 - `✓` = enabled already
 
@@ -145,6 +146,8 @@ See also
         = `nightly_float` flag
 - 1.??: `F`[portable_simd](https://github.com/rust-lang/rust/issues/86656)
         = `nightly_simd` flag
+- 1.??: `A`[asm_experimental_arch](https://github.com/rust-lang/rust/issues/93335)
+        = `avr` target_arch
 
 - 1.??: `D`[autodiff](https://github.com/rust-lang/rust/issues/124509)
           `nightly_autodiff` flag
