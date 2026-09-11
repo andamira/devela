@@ -768,10 +768,10 @@ unknown_lints = "allow" # unrecognized lint attributes
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in /src/_.rs & other places
 redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
-[workspace.lints.cargo]
-# https://doc.rust-lang.org/cargo/reference/lints.html
-# ------------------------------------------------------------------------------
-non_kebab_case_bins = "warn"
+# [workspace.lints.cargo] WAIT:1.100:cargo-lints
+# # https://doc.rust-lang.org/cargo/reference/lints.html
+# # ------------------------------------------------------------------------------
+# non_kebab_case_bins = "warn"
 
 [workspace.lints.clippy]
 # https://doc.rust-lang.org/clippy/lints.html

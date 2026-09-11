@@ -61,10 +61,11 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
 
 - 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
+- 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
 - 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
-- 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
+- 1.100: ` `[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
