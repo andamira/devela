@@ -54,7 +54,7 @@
 - make module public.
 
 #### sys::hw::mcu::avr
-- new types: `Atmega328p`, `AvrPort`, `AvrReg8`, `AvrUsart`.
+- new types: `Atmega328p`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`.
 
 #### sys::hw::mcu::board
 - new type: `ArduinoNano`.

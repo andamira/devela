@@ -3,6 +3,8 @@
 //! Defines [`ArduinoNano`].
 //
 
+use crate::{Atmega328p, AvrPin};
+
 #[doc = crate::_tags!(hw namespace)]
 /// Classic Arduino Nano board namespace.
 #[doc = crate::_doc_meta!{
@@ -15,4 +17,7 @@ pub struct ArduinoNano;
 impl ArduinoNano {
     /// Nominal CPU clock frequency in hertz.
     pub const CPU_HZ: u32 = 16_000_000;
+
+    /// Built-in LED on digital pin D13 (`PB5` on the ATmega328P).
+    pub const LED: AvrPin = AvrPin::new(Atmega328p::PORT_B, 5);
 }
