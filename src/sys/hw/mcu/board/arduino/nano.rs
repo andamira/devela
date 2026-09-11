@@ -11,6 +11,9 @@ use crate::{Atmega328p, AvrPin};
     location("sys/hw/mcu/board/arduino", struct ArduinoNano),
     test_size_of(ArduinoNano = 0),
 }]
+/// See also the [datasheet pdf].
+///
+/// [datasheet pdf]: https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf
 #[derive(Debug)]
 pub struct ArduinoNano;
 

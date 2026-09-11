@@ -13,6 +13,15 @@ use crate::{AvrPort, AvrUsart};
     location("sys/hw/mcu/avr/atmega328p", struct Atmega328p),
     test_size_of(Atmega328p = 0),
 }]
+/// GPIO pins use the AVR port notation `Pxy`, where `x` identifies the port
+/// and `y` the bit within that 8-bit port.
+///
+/// For example, `PB5` is port B bit 5.
+///
+/// See also the [datasheet pdf].
+///
+/// [datasheet pdf]: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
+
 #[derive(Debug)]
 pub struct Atmega328p;
 
