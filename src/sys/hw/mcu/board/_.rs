@@ -9,7 +9,7 @@
 //! clocking, connector pin mappings, onboard devices, and fixed wiring.
 //!
 //! Silicon-specific peripherals and register layouts belong
-//! to the MCU family modules, such as [`crate::sys::hw::mcu::avr`].
+//! to the MCU family modules, such as [`sys::hw::mcu::avr`][super::avr].
 //
 
 crate::mods_in! {

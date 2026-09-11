@@ -3,7 +3,7 @@
 //! Defines [`ArduinoNano`].
 //
 
-use crate::{Atmega328p, AvrPin};
+use crate::{Atmega328p, AvrPin, AvrUsart};
 
 #[doc = crate::_tags!(hw namespace)]
 /// Classic Arduino Nano board namespace.
@@ -23,4 +23,7 @@ impl ArduinoNano {
 
     /// Built-in LED on digital pin D13 (`PB5` on the ATmega328P).
     pub const LED: AvrPin = AvrPin::new(Atmega328p::PORT_B, 5);
+
+    /// USART connected to the board's serial RX/TX interface.
+    pub const USART: AvrUsart = Atmega328p::USART_0;
 }

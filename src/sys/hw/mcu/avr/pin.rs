@@ -9,7 +9,7 @@ use crate::AvrPort;
 /// An AVR GPIO pin identified by its port and bit position.
 #[doc = crate::_doc_meta!{
     location("sys/hw/mcu/avr", struct AvrPin),
-    test_size_of(AvrPin = 7|56; niche !Option),
+    test_size_of(AvrPin = 8|64; niche !Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AvrPin {
