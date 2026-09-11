@@ -8,7 +8,7 @@ use crate::{AvrPin, AvrUsart, McuAtmega328p};
 #[doc = crate::_tags!(hw namespace)]
 /// Classic Arduino Nano board namespace.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/board/arduino", struct BoardArduinoNano),
+    location("sys/hw/mcu/board", struct BoardArduinoNano),
     test_size_of(BoardArduinoNano = 0),
 }]
 /// See also the [datasheet pdf].

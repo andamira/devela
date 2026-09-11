@@ -4,7 +4,6 @@
 #![doc = crate::_doc!(modules: crate::sys; device: audio, display)] // gpu, midi
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
-#![doc = crate::_QUO_SYS_DEVICE!()]
 //!
 //! Usable runtime device interfaces exposed by the host.
 //!

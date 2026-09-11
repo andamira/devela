@@ -1,7 +1,7 @@
 // devela/sys/hw/mcu/_.rs
 //
 #![doc = crate::_DOC_SYS_HW_MCU!()] // public
-#![doc = crate::_doc!(modules: crate::sys::hw; mcu: avr, board)] // esp32
+#![doc = crate::_doc!(modules: crate::sys::hw; mcu: avr, board, esp32)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!

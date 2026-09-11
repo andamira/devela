@@ -10,7 +10,7 @@ use crate::{AvrPort, AvrTimer0, AvrUsart};
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/avr/atmega328p", struct McuAtmega328p),
+    location("sys/hw/mcu/avr", struct McuAtmega328p),
     test_size_of(McuAtmega328p = 0),
 }]
 /// The device provides 32 × 8-bit general-purpose working registers,
@@ -22,7 +22,7 @@ use crate::{AvrPort, AvrTimer0, AvrUsart};
 /// Its timer/counter peripherals comprise two 8-bit timers (Timer/Counter0
 /// and Timer/Counter2) and one 16-bit timer (Timer/Counter1). GPIO pins use
 /// the AVR notation `Pxy`, where `x` identifies the port and `y` the bit
-/// within it; for example, `PB5` is port B bit 5.
+/// within it; E.g. `PB5` is port B bit 5.
 ///
 /// See also the [datasheet pdf].
 ///

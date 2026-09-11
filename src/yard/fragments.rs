@@ -286,7 +286,6 @@ and `◉` to switch back to flat view.
 
     // 10. run (where execution becomes actual)
     _DOC_RUN               = "Temporal coordination and staging of a running system.";
-    _QUO_RUN               = "> Where execution exists, progresses, and becomes concrete.";
     _DOC_RUN_APP           = "Application-level runtime semantics.";
     _DOC_RUN_CYCLE         = "Phases and transitions of a running system.";
     _DOC_RUN_TIME          = "Temporal structure and progression within a run.";
@@ -306,7 +305,6 @@ and `◉` to switch back to flat view.
     _DOC_SYS             = "System interfaces and hardware abstractions.";
     _DOC_SYS_ARCH        = "Architecture-specific intrinsics.";
     _DOC_SYS_DEVICE      = "Live system device interfaces.";
-    _QUO_SYS_DEVICE      = "> Usable system devices exposed to running programs.";
     _DOC_SYS_DEVICE_AUDIO       = "Audio device backends and stream interfaces.";
     _DOC_SYS_DEVICE_DISPLAY     = "Display backends for windows, surfaces, and events.";
     _DOC_SYS_DEVICE_DISPLAY_X11 = "X11 display backend.";
@@ -322,7 +320,6 @@ and `◉` to switch back to flat view.
     _DOC_SYS_LOG_BENCH   = "Execution timing, measurement, and benchmark instrumentation.";
     _DOC_SYS_LOG_TRACE   = "Structured diagnostic spans, events, and causality.";
     _DOC_SYS_MEM             = "Memory primitives, layout contracts, and safe access foundations.";
-    _QUO_SYS_MEM             = "> How bytes live, move, and are validated.";
     _DOC_SYS_MEM_ALLOC       = "Allocation strategies and ownership-backed storage abstractions.";
     _DOC_SYS_MEM_BOUND       = "Addressing, alignment, and movement constraints over memory.";
     _DOC_SYS_MEM_BOUND_PIN   = "Types that pin data to a location in memory.";
@@ -369,7 +366,6 @@ and `◉` to switch back to flat view.
     _DOC_TEXT_FMT        = "Text and string formatting.";
     _DOC_TEXT_GENERATE   = "Procedures that produce text.";
     _DOC_TEXT_LAYOUT     = "Spatial arrangement of text within available extent.";
-    _QUO_TEXT_LAYOUT     = "> A negotiation between a symbolic sequence and bounded space.";
     _DOC_TEXT_METRIC     = "Text measures, positions, cursors, and ranges.";
     _DOC_TEXT_PARSE      = "Lightweight parsing over string slices.";
     _DOC_TEXT_STR        = "String types, views, and storage invariants.";
@@ -380,7 +376,6 @@ and `◉` to switch back to flat view.
 
     // 13. ui (contact between human and system)
     _DOC_UI = "Interactive surfaces, input semantics, and presentation state.";
-    _QUO_UI = "> How humans interact with what exists.";
     _DOC_UI_EVENT    = "Normalized input, control, and presentation-surface events.";
     _DOC_UI_FRAME    = "Frame context, scoped identity, and processing phases";
     _DOC_UI_INTENT   = "Desired UI configuration before capability-bound realization.";
@@ -426,6 +421,5 @@ and `◉` to switch back to flat view.
 
     // 16. yard (where the crate tends itself)
     _DOC_YARD       = "Scaffolding, taxonomy, and documentation support.";
-    _QUO_YARD       = "> This space exists so the rest can be clean.";
     _DOC_YARD_DEPS  = "Re-exported dependencies.";
 }

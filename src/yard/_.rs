@@ -7,7 +7,8 @@
 #![doc = crate::_DOC_YARD!()] // internal
 #![doc = crate::_doc!(modules: crate; yard: dep)]
 #![doc = crate::_doc!(hr)]
-#![doc = crate::_QUO_YARD!()]
+//!
+//! > This space exist so the rest can be clean.
 //
 
 crate::mods_in! {

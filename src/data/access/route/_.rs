@@ -3,7 +3,6 @@
 #![doc = crate::_DOC_DATA_ACCESS_ROUTE!()] // public
 #![doc = crate::_doc!(modules: crate::data::access; route)]
 #![doc = crate::_doc!(flat:"data")]
-// #![doc = crate::_QUO_DATA_ACCESS_ROUTE!()]
 #![doc = crate::_doc!(hr)]
 //!
 //! Routes express ordered reachability as a sequence of uninterpreted segments.
