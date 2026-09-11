@@ -1,22 +1,17 @@
-# devela/examples/hw/mcu/avr/atmega328p/nano_led/Cargo.toml
+# devela/examples/sys/hw/mcu/board/arduino/nano/Cargo.toml
 
 [workspace]
 
 [package]
-name = "avr_atmega328p_nano_led"
-version = "0.0.0"
+name = "arduino-nano-examples"
+# version = "0.0.0"
 edition = "2024"
 publish = false
-
-[[bin]]
-name = "nano-led"
-path = "main.rs"
 
 [dependencies.devela]
 path = "../../../../../../.."
 default-features = false
 features = ["unsafe_mmio"]
-# features = ["unsafe_mmio", "_docs_examples", "all", "unsafe"]
 
 [profile.release]
 opt-level = "s"
@@ -26,3 +21,6 @@ panic = "abort"
 
 [profile.debug]
 panic = "abort"
+
+[lints.cargo]
+non_kebab_case_bins = "allow"

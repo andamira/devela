@@ -21,9 +21,9 @@ Cargo.lock
 /crates/ffi/examples/odin_import/main
 /crates/ffi/examples/odin_load/main
 /crates/ffi/examples/**/*.exe
+/crates/ffi/examples/**/libs
+/crates/ffi/examples/**/bin
 
-**/examples/**/libs/
-**/examples/**/bin/
 **/examples/**/*.o
 **/examples/**/*.so
 **/examples/**/*.a

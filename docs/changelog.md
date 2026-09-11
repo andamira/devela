@@ -28,7 +28,7 @@
 
 ## examples
 - add minimal no_std `sys/env` examples.
-- add `sys/hw/mcu` examples: `nano_led`.
+- add `sys/hw/mcu/board/arduino/nano` examples: `led_on`, `usart_tx`.
 
 ---
 

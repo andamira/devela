@@ -1,0 +1,8 @@
+# devela/examples/hw/mcu/board/arduino/nano/.cargo/config.toml
+
+[build]
+target = "avr-none"
+rustflags = ["-C", "target-cpu=atmega328p"]
+
+[unstable]
+build-std = ["core"]

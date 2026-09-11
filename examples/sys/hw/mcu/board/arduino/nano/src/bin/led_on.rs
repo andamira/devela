@@ -1,4 +1,4 @@
-// devela/examples/hw/mcu/avr/atmega328p/nano_led/main.rs
+// devela/examples/sys/hw/mcu/board/arduino/nano/src/bin/led_on.rs
 //
 //! Turns on the Arduino Nano built-in LED using direct ATmega328P MMIO.
 //
@@ -6,14 +6,11 @@
 #![no_std]
 #![no_main]
 
-use devela::{Atmega328p, PanicInfo};
+use devela::{Atmega328p, set_panic_handler};
+
+set_panic_handler! { loop }
 
 const LED: u8 = 1 << 5; // Nano D13 → ATmega328P PB5.
-
-#[panic_handler]
-fn panic(_info: &PanicInfo<'_>) -> ! {
-    loop {}
-}
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
