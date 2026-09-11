@@ -8,7 +8,7 @@
 #[doc = crate::_doc_meta!{
     location("code", macro set_panic_handler),
 }]
-/// - `loop`: Enters an infinite loop, ensuring the program halts without undefined behavior.
+/// - `loop`: Defines a panic handler that spins indefinitely.
 /// - `unreachable`: optimally halts execution based on the target architecture.
 ///   - `wasm32`: Uses `unreachable()` to signal an unrecoverable state.
 ///   - `x86_64`: Uses `_mm_pause()` to reduce CPU power consumption.
@@ -19,14 +19,24 @@
 /// - `web`: Logs panic info to the Web console. It requires the `js` feature.
 ///   - Accepts the size of the log buffer size in bytes. Defaults to `1024` bytes.
 /// - `custom`: Uses a user-provided function (returning -> !) as the panic handler.
+///
+/// # Examples
+/// A minimal `no_std` executable can spin indefinitely after a panic:
+/// ```ignore
+/// #![no_std]
+/// #![no_main]
+///
+/// devela::set_panic_handler! { loop }
+/// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! set_panic_handler· {
     (loop) => {
         #[panic_handler]
         fn panic(_info: &::core::panic::PanicInfo) -> ! {
-            ::core::hint::spin_loop();
-            loop {}
+            loop {
+                ::core::hint::spin_loop();
+            }
         }
     };
     (unreachable) => {
