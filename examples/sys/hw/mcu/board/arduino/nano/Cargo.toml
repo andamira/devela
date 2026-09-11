@@ -11,7 +11,7 @@ publish = false
 [dependencies.devela]
 path = "../../../../../../.."
 default-features = false
-features = ["unsafe_mmio"]
+features = ["mcu", "unsafe_mmio"]
 
 [profile.release]
 opt-level = "s"

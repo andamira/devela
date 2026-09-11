@@ -22,6 +22,7 @@ crate::mods_in! {
     // pub mod_ capture; // Image/surface capture hardware
     // pub mod_ hid; // Human interface devices WIP Evdev*
     // pub mod_ link; // Communication links
+    #[cfg(feature = "mcu")]
     pub mod_ mcu; // Microcontroller units
     // pub mod_ pin; // Pin-level hardware interfaces
     // pub mod_ sensor; // Measurement sensors
@@ -29,15 +30,16 @@ crate::mods_in! {
 }
 crate::mods_out! { // _pub_mods
     _pub_mods {
-        pub use super::{
-            // block::_all::*,
-            // capture::_all::*,
-            // hid::_all::*,
-            // link::_all::*,
-            mcu::_all::*,
-            // pin::_all::*,
-            // sensor::_all::*,
-            // usb::_all::*,
-        };
+        // pub use super::{
+        //     // block::_all::*,
+        //     // capture::_all::*,
+        //     // hid::_all::*,
+        //     // link::_all::*,
+        //     // pin::_all::*,
+        //     // sensor::_all::*,
+        //     // usb::_all::*,
+        // };
+        #[cfg(feature = "mcu")]
+        pub use super::mcu::_all::*;
     }
 }

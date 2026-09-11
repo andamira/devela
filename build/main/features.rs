@@ -260,10 +260,10 @@ mod reflection {
     pub const UNSAFE: FlagsFeatures = FlagsFeatures {
         ref_flags: &["unsafe··"],
         features: &[
-            "unsafe", // [11]
+            "unsafe", // [12]
             "unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
-            "unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
-            "unsafe_sync", "unsafe_syscall", "unsafe_thread",
+            "unsafe_mmio", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
+            "unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
         ]
     };
 
@@ -331,7 +331,9 @@ mod reflection {
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
         features: &["sys", "io", "net", "http",
-            /* os: */ "linux", "term", "windows"]
+            /* hw: */ "mcu",
+            /* os: */ "linux", "term", "windows"
+        ]
     };
         // pub const MEM: FlagsFeatures = FlagsFeatures {
         //     ref_flags: &["mem··"],

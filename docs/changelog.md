@@ -21,7 +21,7 @@
 - rename `src/index.rs` to `src/_.rs`.
 
 ## features & flags
-- new feature: `unsafe_mmio`.
+- new features: `mcu`, `unsafe_mmio`.
 
 ## documentation
 - new tag: `_TAG_HW`.
