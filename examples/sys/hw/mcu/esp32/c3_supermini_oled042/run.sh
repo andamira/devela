@@ -56,7 +56,6 @@ build() {
         llvm-size "$ELF"
     fi
 }
-
 flash() {
     command -v espflash >/dev/null 2>&1 || {
         echo "error: espflash not found" >&2
@@ -69,6 +68,10 @@ flash() {
     ESPFLASH_PORT="$PORT" \
         espflash write-bin 0x0 "$IMAGE"
 }
+inspect() {
+	rust-nm -n "$ELF" | grep ' _start$'
+	rust-objdump -d --disassemble-symbols=_start "$ELF"
+}
 
 case "${1:-run}" in
     build)
@@ -78,8 +81,11 @@ case "${1:-run}" in
         build
         flash
         ;;
+    inspect)
+        inspect
+        ;;
     *)
-        echo "usage: $0 [build|run|flash]" >&2
+        echo "usage: $0 [build|run|flash|inspect]" >&2
         exit 2
         ;;
 esac

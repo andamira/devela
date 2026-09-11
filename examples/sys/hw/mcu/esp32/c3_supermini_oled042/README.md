@@ -65,14 +65,15 @@ Back up any factory firmware first if it needs to be preserved.
 
 ## Direct boot
 
-The example currently keeps its minimal startup assembly and linker script local and explicit.
+The example uses devela's `esp32_c3_direct_boot!` macro for the minimal
+ESP32-C3 startup sequence.
 
-The linker script describes the ESP32-C3 flash and RAM layout and places the
-direct-boot header at the beginning of the image. The startup code establishes
-the RISC-V stack and global pointer, initializes `.data` and `.bss`, then enters Rust `main`.
+The macro establishes the RISC-V stack and global pointer, initializes
+`.data` and `.bss`, then enters the supplied Rust function.
 
-These pieces are intentionally visible while the initial runtime support is being developed;
-they are candidates for reusable devela support once the interface is settled.
+The linker script remains local for now. It describes the ESP32-C3 flash
+and RAM layout and places the ROM direct-boot header at the beginning of
+the image. Reusable linker integration is still being developed.
 
 ## Size
 

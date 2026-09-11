@@ -65,6 +65,7 @@
 - new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.
 
 #### sys::hw::mcu::esp32
+- new macro: `esp32_c3_direct_boot!`.
 - new types: `EspReg32`, `McuEsp32C3`.
 
 ### sys::mem
