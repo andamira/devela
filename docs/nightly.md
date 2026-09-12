@@ -90,7 +90,7 @@ See also
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
-- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951)
+- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
@@ -120,10 +120,10 @@ See also
 - 1.??: `s`[path_is_empty](https://github.com/rust-lang/rust/pull/157065)
 - 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
 - 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
-- 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168)
+- 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534) WAIT
+- 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
@@ -135,6 +135,7 @@ See also
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
+- 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
 
 # … may be stable even later
 

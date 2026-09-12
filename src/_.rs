@@ -116,7 +116,7 @@
         offset_of_enum,
         offset_of_slice,
         optimize_attribute,
-        random, //random_source,
+        random, // random_source,
         refcell_try_map,
         str_as_str,
         supertrait_item_shadowing,
@@ -131,8 +131,9 @@
         box_take,
         btree_extract_if,
         new_zeroed_alloc,
-        // smart_pointer_map,
+        smart_pointer_map,
         string_from_utf8_lossy_owned,
+        vec_from_fn,
     )
 )]
 #![cfg_attr(
