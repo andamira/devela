@@ -3,6 +3,8 @@
 //! Defines [`BoardSuperMiniOled042`].
 //
 
+use crate::Esp32C3Pin;
+
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 SuperMini board with a 0.42-inch OLED.
 #[doc = crate::_doc_meta!{
@@ -14,9 +16,6 @@
 pub struct BoardSuperMiniOled042;
 
 impl BoardSuperMiniOled042 {
-    /// GPIO connected to the active-low blue LED.
-    pub const LED_GPIO: u8 = 8;
-
-    /// Bit mask for the active-low blue LED.
-    pub const LED_MASK: u32 = 1 << Self::LED_GPIO;
+    /// Built-in active-low blue LED on GPIO8.
+    pub const LED: Esp32C3Pin = Esp32C3Pin::new(8);
 }

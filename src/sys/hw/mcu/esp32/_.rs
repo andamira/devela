@@ -10,7 +10,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            c3::_all::{McuEsp32C3, esp32_c3_direct_boot},
+            c3::_all::*,
             register::EspReg32,
         };
     }

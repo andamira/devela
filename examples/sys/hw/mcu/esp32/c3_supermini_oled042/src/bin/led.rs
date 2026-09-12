@@ -6,21 +6,15 @@
 #![no_std]
 #![no_main]
 
-use devela::{BoardSuperMiniOled042, McuEsp32C3, esp32_c3_direct_boot, set_panic_handler};
+use devela::{BoardSuperMiniOled042, esp32_c3_direct_boot, set_panic_handler};
 
-esp32_c3_direct_boot! { main }
 set_panic_handler! { loop }
+esp32_c3_direct_boot! { main }
 
 fn main() -> ! {
-    let led = BoardSuperMiniOled042::LED_MASK;
-
     unsafe {
-        // McuEsp32C3::GPIO_OUT_W1TS.write(led); // high → LED OFF
-
-        // Set the intended level before enabling the output driver.
-        McuEsp32C3::GPIO_OUT_W1TC.write(led); // low → LED ON
-        McuEsp32C3::GPIO_ENABLE_W1TS.write(led);
+        BoardSuperMiniOled042::LED.set_output_low() // ON
+        // BoardSuperMiniOled042::LED.set_output_high() // OFF
     }
-
     loop {}
 }
