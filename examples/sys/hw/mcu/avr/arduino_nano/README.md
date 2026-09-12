@@ -15,6 +15,7 @@ devela dependency. Each program lives under `src/bin/`.
 - `timer0_interrupt` — Timer0 compare interrupt; toggles the LED every 250 ms.
 - `timer1_capture` — Timer1 input capture; timestamps a rising edge on PB0 / ICP1.
 - `timer1_ctc` — 16-bit Timer1 CTC polling; toggles the LED directly every 500 ms.
+- `usart_chat` — interactive USART0 command/response console at 9600 baud, 8N1.
 - `usart_tx` — USART0 transmission at 9600 baud, 8N1; sends `hello from devela`.
 
 
