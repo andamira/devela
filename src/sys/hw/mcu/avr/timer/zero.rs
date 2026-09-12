@@ -71,67 +71,6 @@ impl AvrTimer0 {
     }
 }
 
-/// # Semantic registers API
-#[rustfmt::skip]
-impl AvrTimer0 {
-    /// Returns the counter value register
-    /// ([`TCNT0`](#method.tcnt0_reg)).
-    #[must_use]
-    pub const fn counter_reg(self) -> AvrReg8 { self.tcnt0_reg() }
-
-    /// Returns the output compare register A
-    /// ([`OCR0A`](#method.ocr0a_reg)).
-    #[must_use]
-    pub const fn compare_a_reg(self) -> AvrReg8 { self.ocr0a_reg() }
-
-    /// Returns the output compare register B
-    /// ([`OCR0B`](#method.ocr0b_reg)).
-    #[must_use]
-    pub const fn compare_b_reg(self) -> AvrReg8 { self.ocr0b_reg() }
-
-    /// Returns the interrupt mask register
-    /// ([`TIMSK0`](#method.timsk0_reg)).
-    #[must_use]
-    pub const fn interrupt_mask_reg(self) -> AvrReg8 { self.timsk0_reg() }
-
-    /// Returns the interrupt flag register
-    /// ([`TIFR0`](#method.tifr0_reg)).
-    #[must_use]
-    pub const fn interrupt_flag_reg(self) -> AvrReg8 { self.tifr0_reg() }
-}
-
-/// # Datasheet registers API
-#[rustfmt::skip]
-impl AvrTimer0 {
-    /// Returns the Timer/Counter control register A (`TCCR0A`).
-    #[must_use]
-    pub const fn tccr0a_reg(self) -> AvrReg8 { self.tccr0a }
-
-    /// Returns the Timer/Counter control register B (`TCCR0B`).
-    #[must_use]
-    pub const fn tccr0b_reg(self) -> AvrReg8 { self.tccr0b }
-
-    /// Returns the Timer/Counter register (`TCNT0`).
-    #[must_use]
-    pub const fn tcnt0_reg(self) -> AvrReg8 { self.tcnt0 }
-
-    /// Returns the output compare register A (`OCR0A`).
-    #[must_use]
-    pub const fn ocr0a_reg(self) -> AvrReg8 { self.ocr0a }
-
-    /// Returns the output compare register B (`OCR0B`).
-    #[must_use]
-    pub const fn ocr0b_reg(self) -> AvrReg8 { self.ocr0b }
-
-    /// Returns the interrupt mask register (`TIMSK0`).
-    #[must_use]
-    pub const fn timsk0_reg(self) -> AvrReg8 { self.timsk0 }
-
-    /// Returns the interrupt flag register (`TIFR0`).
-    #[must_use]
-    pub const fn tifr0_reg(self) -> AvrReg8 { self.tifr0 }
-}
-
 /// # Operational API
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl AvrTimer0 {
@@ -228,4 +167,65 @@ impl AvrTimer0 {
         let reg = self.interrupt_mask_reg();
         unsafe { reg.write(reg.read() & !Self::OCIE0A) };
     }
+}
+
+/// # Semantic registers API
+#[rustfmt::skip]
+impl AvrTimer0 {
+    /// Returns the counter value register
+    /// ([`TCNT0`](#method.tcnt0_reg)).
+    #[must_use]
+    pub const fn counter_reg(self) -> AvrReg8 { self.tcnt0_reg() }
+
+    /// Returns the output compare register A
+    /// ([`OCR0A`](#method.ocr0a_reg)).
+    #[must_use]
+    pub const fn compare_a_reg(self) -> AvrReg8 { self.ocr0a_reg() }
+
+    /// Returns the output compare register B
+    /// ([`OCR0B`](#method.ocr0b_reg)).
+    #[must_use]
+    pub const fn compare_b_reg(self) -> AvrReg8 { self.ocr0b_reg() }
+
+    /// Returns the interrupt mask register
+    /// ([`TIMSK0`](#method.timsk0_reg)).
+    #[must_use]
+    pub const fn interrupt_mask_reg(self) -> AvrReg8 { self.timsk0_reg() }
+
+    /// Returns the interrupt flag register
+    /// ([`TIFR0`](#method.tifr0_reg)).
+    #[must_use]
+    pub const fn interrupt_flag_reg(self) -> AvrReg8 { self.tifr0_reg() }
+}
+
+/// # Datasheet registers API
+#[rustfmt::skip]
+impl AvrTimer0 {
+    /// Returns the Timer/Counter control register A (`TCCR0A`).
+    #[must_use]
+    pub const fn tccr0a_reg(self) -> AvrReg8 { self.tccr0a }
+
+    /// Returns the Timer/Counter control register B (`TCCR0B`).
+    #[must_use]
+    pub const fn tccr0b_reg(self) -> AvrReg8 { self.tccr0b }
+
+    /// Returns the Timer/Counter register (`TCNT0`).
+    #[must_use]
+    pub const fn tcnt0_reg(self) -> AvrReg8 { self.tcnt0 }
+
+    /// Returns the output compare register A (`OCR0A`).
+    #[must_use]
+    pub const fn ocr0a_reg(self) -> AvrReg8 { self.ocr0a }
+
+    /// Returns the output compare register B (`OCR0B`).
+    #[must_use]
+    pub const fn ocr0b_reg(self) -> AvrReg8 { self.ocr0b }
+
+    /// Returns the interrupt mask register (`TIMSK0`).
+    #[must_use]
+    pub const fn timsk0_reg(self) -> AvrReg8 { self.timsk0 }
+
+    /// Returns the interrupt flag register (`TIFR0`).
+    #[must_use]
+    pub const fn tifr0_reg(self) -> AvrReg8 { self.tifr0 }
 }

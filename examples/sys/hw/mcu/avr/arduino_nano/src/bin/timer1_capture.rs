@@ -6,9 +6,7 @@
 #![no_std]
 #![no_main]
 
-use devela::{
-    AvrPin, BoardArduinoNano, McuAtmega328p, set_panic_handler,
-};
+use devela::{AvrPin, BoardArduinoNano, McuAtmega328p, set_panic_handler};
 
 set_panic_handler! { loop }
 
