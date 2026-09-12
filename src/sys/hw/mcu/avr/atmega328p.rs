@@ -5,7 +5,7 @@
 // 35 Register Summary:
 // https://onlinedocs.microchip.com/oxy/GUID-0EC909F9-8FB7-46B2-BF4B-05290662B5C3-en-US-12.1.1/GUID-05F454E7-6DE3-4D77-9C23-FEBE05568812.html
 
-use crate::{AvrPort, AvrTimer0, AvrUsart};
+use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrUsart};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
@@ -43,6 +43,17 @@ impl McuAtmega328p {
 
     /// Timer/Counter0 peripheral.
     pub const TIMER_0: AvrTimer0 = AvrTimer0::new(0x44, 0x45, 0x46, 0x47, 0x48, 0x6E, 0x35);
+
+    #[rustfmt::skip]
+    /// Timer/Counter1 peripheral.
+    pub const TIMER_1: AvrTimer1 = AvrTimer1::new(
+        0x80, 0x81, 0x82,
+        0x84, 0x85,
+        0x86, 0x87,
+        0x88, 0x89,
+        0x8A, 0x8B,
+        0x6F, 0x36,
+    );
 
     /// USART 0 peripheral.
     pub const USART_0: AvrUsart = AvrUsart::new(0xC0, 0xC1, 0xC2, 0xC4, 0xC5, 0xC6);

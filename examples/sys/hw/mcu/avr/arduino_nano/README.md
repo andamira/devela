@@ -10,12 +10,14 @@ devela dependency. Each program lives under `src/bin/`.
 
 ## Programs
 
-| Binary             | Demonstrates                            | Result                                |
-| ------------------ | --------------------------------------- | ------------------------------------- |
-| `led_on`           | GPIO output through PORTB / PB5         | Turns on the built-in D13 LED         |
-| `timer0_ctc`       | Timer0 CTC polling with a 1 ms interval | Toggles the built-in LED every 500 ms |
-| `timer0_interrupt` | Timer0 compare interrupt                | Toggles the built-in LED every 250 ms |
-| `usart_tx`         | USART0 transmission at 9600 baud, 8N1   | Sends `hello from devela` over serial |
+## Programs
+
+- `led_on` — GPIO output through PORTB / PB5; turns on the built-in D13 LED.
+- `timer0_ctc` — Timer0 CTC polling at 1 ms; toggles the LED every 500 ms.
+- `timer0_interrupt` — Timer0 compare interrupt; toggles the LED every 250 ms.
+- `timer1_ctc` — 16-bit Timer1 CTC polling; toggles the LED directly every 500 ms.
+- `usart_tx` — USART0 transmission at 9600 baud, 8N1; sends `hello from devela`.
+
 
 ## Requirements
 
@@ -35,8 +37,8 @@ The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
 ./run.sh run led_on
 ```
 
-Replace led_on with any binary listed above.
-`run` and `led_on` are the defaults, so `./run.sh` builds and flashes led_on.
+Replace `led_on` with any binary listed above.
+`run` and `led_on` are the defaults, so `./run.sh` builds and flashes `led_on`.
 
 The runner builds a release binary, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.

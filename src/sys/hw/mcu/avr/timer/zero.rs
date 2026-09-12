@@ -99,6 +99,7 @@ impl AvrTimer0 {
     #[must_use]
     pub const fn interrupt_flag_reg(self) -> AvrReg8 { self.tifr0_reg() }
 }
+
 /// # Datasheet registers API
 #[rustfmt::skip]
 impl AvrTimer0 {
@@ -134,6 +135,8 @@ impl AvrTimer0 {
 /// # Operational API
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl AvrTimer0 {
+    /* private helpers */
+
     const OCF0A: u8 = 1 << 1; // TIFR0
     const OCIE0A: u8 = 1 << 1; // TIMSK0
     const WGM01: u8 = 1 << 1; // TCCR0A
@@ -148,6 +151,8 @@ impl AvrTimer0 {
             _ => None,
         }
     }
+
+    /* public API */
 
     /// Configures CTC mode with `OCR0A` as TOP and starts the timer.
     ///
@@ -171,12 +176,16 @@ impl AvrTimer0 {
             panic!("AVR Timer0 prescaler is not supported");
         };
         unsafe {
-            self.tccr0b_reg().write(0); // Stop before taking ownership of its configuration
-            self.tccr0a_reg().write(Self::WGM01); // WGM02:0 = 0b010: CTC, with OC0A/B disconnected
+            // Stop before taking ownership of its configuration.
+            self.tccr0b_reg().write(0);
+            // WGM02:0 = 0b010: CTC, with OC0A/B disconnected.
+            self.tccr0a_reg().write(Self::WGM01);
             self.counter_reg().write(0);
             self.compare_a_reg().write(top);
-            self.interrupt_mask_reg().write(0); // Start with Timer0 interrupts disabled
-            self.interrupt_flag_reg().write(Self::OCF0A); // TIFR0 flags are write-one-to-clear
+            // Start with Timer0 interrupts disabled.
+            self.interrupt_mask_reg().write(0);
+            // TIFR0 flags are write-one-to-clear.
+            self.interrupt_flag_reg().write(Self::OCF0A);
             // WGM02 remains zero; CS02:0 selects the prescaled clock.
             self.tccr0b_reg().write(clock);
         }

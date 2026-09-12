@@ -81,7 +81,7 @@ crate::mods_out! { // _mods
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,
-            timer::_all::AvrTimer0,
+            timer::_all::{AvrTimer0, AvrTimer1},
             usart::AvrUsart,
         };
     }
