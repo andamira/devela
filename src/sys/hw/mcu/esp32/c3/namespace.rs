@@ -3,7 +3,7 @@
 //! Defines [`McuEsp32C3`].
 //
 
-use crate::EspReg32;
+use crate::{EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
@@ -88,4 +88,60 @@ impl McuEsp32C3 {
 
     /// GPIO input-value register.
     pub const GPIO_IN: EspReg32 = EspReg32::new(Self::GPIO_BASE + 0x003c);
+
+    /// USB Serial/JTAG peripheral base address.
+    pub const USB_SERIAL_JTAG_BASE: u32 = 0x6004_3000;
+
+    /// Native USB Serial/JTAG controller.
+    pub const USB_SERIAL_JTAG: EspUsbSerialJtag = EspUsbSerialJtag::new(Self::USB_SERIAL_JTAG_BASE);
+}
+
+impl McuEsp32C3 {
+    const WDT_WKEY: u32 = 0x50D8_3AA1;
+
+    const TIMG0_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6001_F048);
+    const TIMG0_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6001_F064);
+
+    const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
+    const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
+
+    /// Disables the watchdog states left active by ROM flash boot.
+    ///
+    /// Direct boot bypasses the usual SDK startup that handles these
+    /// boot-time watchdogs. Unless they are fed, reconfigured, or disabled,
+    /// they can reset a long-running application shortly after startup.
+    ///
+    /// This disables the Timer Group 0 MWDT and the RTC watchdog,
+    /// including their flash-boot modes.
+    ///
+    /// # Safety
+    /// No other code may concurrently configure these watchdogs.
+    pub unsafe fn disable_boot_watchdogs() {
+        const WDT_WRITE_KEY: u32 = 0x50D8_3AA1;
+
+        const WDT_ENABLE: u32 = 1 << 31;
+
+        const MWDT_FLASHBOOT_ENABLE: u32 = 1 << 14;
+        const MWDT_CONFIG_UPDATE: u32 = 1 << 22;
+
+        const RWDT_FLASHBOOT_ENABLE: u32 = 1 << 12;
+
+        unsafe {
+            // TG0 MWDT: unlock its protected configuration,
+            // disable normal and flash-boot operation, commit, and relock.
+            Self::TIMG0_WDT_WPROTECT.write(WDT_WRITE_KEY);
+
+            let config = Self::TIMG0_WDT_CONFIG0.read();
+            Self::TIMG0_WDT_CONFIG0
+                .write((config & !(WDT_ENABLE | MWDT_FLASHBOOT_ENABLE)) | MWDT_CONFIG_UPDATE);
+            Self::TIMG0_WDT_WPROTECT.write(0);
+
+            // RTC WDT: a separate watchdog with its own protected control block.
+            Self::RTC_WDT_WPROTECT.write(WDT_WRITE_KEY);
+
+            let config = Self::RTC_WDT_CONFIG0.read();
+            Self::RTC_WDT_CONFIG0.write(config & !(WDT_ENABLE | RWDT_FLASHBOOT_ENABLE));
+            Self::RTC_WDT_WPROTECT.write(0);
+        }
+    }
 }

@@ -30,7 +30,7 @@
 ## examples
 - add minimal no_std `sys/env` examples.
 - add `sys/hw/mcu/avr/arduino_nano` examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_ctc`, `timer1_capture`, `usart_chat`, `usart_tx`.
-- add `sys/hw/mcu/esp32/c3_supermini_oled042` example: `led`.
+- add `sys/hw/mcu/esp32/c3_supermini_oled042` example: `led`, `usb_serial_chat`, `usb_serial_tx`.
 
 ---
 
@@ -72,8 +72,8 @@
 
 #### sys::hw::mcu::esp32
 - new macro: `esp32_c3_direct_boot!`.
-- new types: `EspReg32`, `McuEsp32C3`.
-- add ESP32-C3 direct-boot startup and linker support.
+- new types: `Esp32C3Pin`, `EspReg32`, `EspUsbSerialJtag`, `McuEsp32C3`.
+- add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
 
 ### sys::mem
 - make `Ptr` provenance-related methods const:

@@ -13,7 +13,7 @@ esp32_c3_direct_boot! { main }
 
 fn main() -> ! {
     unsafe {
-        BoardSuperMiniOled042::LED.set_output_low() // ON
+        BoardSuperMiniOled042::LED.set_output_low() // Active-low LED: low means ON
         // BoardSuperMiniOled042::LED.set_output_high() // OFF
     }
     loop {}

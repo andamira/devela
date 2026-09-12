@@ -3,7 +3,7 @@
 //! Defines [`BoardSuperMiniOled042`].
 //
 
-use crate::Esp32C3Pin;
+use crate::{Esp32C3Pin, EspUsbSerialJtag, McuEsp32C3};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 SuperMini board with a 0.42-inch OLED.
@@ -18,4 +18,7 @@ pub struct BoardSuperMiniOled042;
 impl BoardSuperMiniOled042 {
     /// Built-in active-low blue LED on GPIO8.
     pub const LED: Esp32C3Pin = Esp32C3Pin::new(8);
+
+    /// Native USB serial interface exposed through the board's USB connector.
+    pub const USB_SERIAL: EspUsbSerialJtag = McuEsp32C3::USB_SERIAL_JTAG;
 }

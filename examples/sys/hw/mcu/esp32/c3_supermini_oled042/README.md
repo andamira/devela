@@ -4,12 +4,14 @@
 
 Minimal bare-metal examples for an ESP32-C3 SuperMini board with a 0.42-inch OLED.
 
-The current example uses devela's ESP32-C3 MMIO definitions directly and boots
-through the ESP32-C3 ROM direct-boot path, without an ESP HAL or runtime crate.
+They boot through the ESP32-C3 ROM direct-boot path
+and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 ## Examples
 
-- `led` — Turns on the board's active-low blue LED on GPIO8.
+* `led` — Turns on the board's active-low blue LED on GPIO8.
+* `usb_serial_tx` — Sends `hello from devela` over the native USB Serial/JTAG interface.
+* `usb_serial_chat` — Runs a small interactive command console over native USB serial.
 
 ## Requirements
 
@@ -32,27 +34,34 @@ Install `espflash` for flashing:
 cargo install espflash --locked
 ```
 
-On Linux, the serial device is typically `/dev/ttyACM0`.
+On Linux, the USB serial device is typically `/dev/ttyACM0`.
 The user needs permission to access it, commonly through the `dialout` group.
 
 ## Build and flash
 
-Build without flashing:
-
-```sh
-./run.sh build
-```
-
-Build and flash:
+The runner defaults to the `led` binary:
 
 ```sh
 ./run.sh
 ```
 
+Select another example with the second argument:
+
+```sh
+./run.sh run usb_serial_tx
+./run.sh run usb_serial_chat
+```
+
+Build without flashing:
+
+```sh
+./run.sh build usb_serial_chat
+```
+
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyACM1 ./run.sh
+PORT=/dev/ttyACM1 ./run.sh run usb_serial_chat
 ```
 
 The runner builds a release ELF, converts it to a raw binary, verifies the
@@ -61,20 +70,52 @@ ESP32-C3 direct-boot header, and writes it directly at flash address `0x0`.
 Flashing replaces the firmware stored at the beginning of flash.
 Back up any factory firmware first if it needs to be preserved.
 
+## USB serial
+
+The USB serial examples use the ESP32-C3's native USB Serial/JTAG peripheral,
+exposed on Linux through the same `/dev/ttyACM*` device used for flashing.
+
+Because flashing and console access share this connection, the firmware can
+begin running before a terminal such as `picocom` has opened the serial port.
+The examples therefore wait for the first received byte before sending their
+initial output. Checking for received data does not consume that byte, so
+`usb_serial_chat` still processes it as the first byte of the command line.
+
+For example:
+
+```sh
+picocom /dev/ttyACM0
+```
+
+Then type a command such as:
+
+```text
+ping
+```
+
+The initial synchronization happens once after reset. Disconnecting and
+reopening the terminal does not restart the firmware or repeat the welcome
+message; an already-running `usb_serial_chat` continues accepting commands.
+
+USB Serial/JTAG transports bytes over USB rather than a UART bitstream,
+so there is no device-side baud-rate configuration.
+
 ## Direct boot
 
-The example uses devela's `esp32_c3_direct_boot!` macro for the minimal
+The examples use devela's `esp32_c3_direct_boot!` macro for the minimal
 ESP32-C3 startup sequence.
 
-The macro establishes the RISC-V stack and global pointer, initializes
-`.data` and `.bss`, then enters the supplied Rust function.
+Before entering the supplied Rust function, it establishes the RISC-V stack
+and global pointer, initializes `.data` and `.bss`, and disables the watchdog
+states left active by ROM flash boot.
 
 devela also provides the matching `esp32_c3_direct_boot.x` linker script.
-Its build script makes the linker resource available for the `riscv32imc-unknown-none-elf`
-target, and this example selects it from `.cargo/config.toml`.
+Its build script makes the linker resource available for the
+`riscv32imc-unknown-none-elf` target, and this example selects it from
+`.cargo/config.toml`.
 
 ## Size
 
-An initial release build of `led` produced a 128-byte raw direct-boot image.
+The runner reports the raw image size after each build.
 
-Exact sizes may vary with compiler and toolchain versions.
+Exact sizes may vary with the example, compiler, and toolchain version.
