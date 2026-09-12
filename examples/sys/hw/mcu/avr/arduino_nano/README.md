@@ -8,6 +8,7 @@ ATmega328P, using devela's AVR and direct MMIO support.
 The examples share one AVR target configuration, build/flash runner, and
 devela dependency. Each program lives under `src/bin/`.
 
+
 ## Programs
 
 - `led_on` — GPIO output through PORTB / PB5; turns on the built-in D13 LED.
@@ -15,6 +16,7 @@ devela dependency. Each program lives under `src/bin/`.
 - `timer0_interrupt` — Timer0 compare interrupt; toggles the LED every 250 ms.
 - `timer1_capture` — Timer1 input capture; timestamps a rising edge on PB0 / ICP1.
 - `timer1_ctc` — 16-bit Timer1 CTC polling; toggles the LED directly every 500 ms.
+- `timer1_pwm` — Timer1 fast PWM on PB1 / OC1A (D9); fades an external LED.
 - `usart_chat` — interactive USART0 command/response console at 9600 baud, 8N1.
 - `usart_tx` — USART0 transmission at 9600 baud, 8N1; sends `hello from devela`.
 
@@ -29,6 +31,7 @@ rustup component add rust-src --toolchain nightly
 ```
 
 The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
+
 
 ## Build and flash
 
@@ -68,6 +71,7 @@ UPLOAD_BAUD=57600 ./run.sh run led_on
 The upload baud rate must match the bootloader; it is independent of any
 serial baud rate configured by the firmware itself.
 
+
 ## USART
 
 Flash the USART example:
@@ -98,6 +102,13 @@ The upload and application serial rates are separate:
 115200 or 57600   host ↔ bootloader, while flashing
 9600              firmware ↔ host, while the program is running
 ```
+
+
+## PWM output
+
+`timer1_pwm` drives Nano D9 / PB1 / OC1A.
+Connect D9 through a current-limiting resistor and LED to GND.
+
 
 ## Size
 

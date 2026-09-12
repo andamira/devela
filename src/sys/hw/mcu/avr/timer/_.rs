@@ -166,6 +166,31 @@
 //! The underlying timer event is the same.
 //!
 //!
+//! # PWM
+//!
+//! Pulse-width modulation repeatedly changes an output
+//! according to the timer's counting cycle and a compare point.
+//!
+//! In fast PWM, the counter repeatedly counts from BOTTOM through TOP:
+//!
+//! ```text
+//! BOTTOM ───────── compare ───────── TOP
+//!    │                │               │
+//!    └──── high ──────┴──── low ──────┘
+//! ```
+//!
+//! In a non-inverting output, the pin is set at BOTTOM and cleared
+//! on compare match. TOP therefore determines the PWM period,
+//! while the compare value determines the pulse width.
+//!
+//! ```text
+//! frequency = source_frequency / (prescaler × (TOP + 1))
+//! ```
+//!
+//! PWM output is generated directly by the timer hardware; software only
+//! configures the counting mode, compare value, and output connection.
+//!
+//!
 //! # Choosing a timer operation
 //!
 //! Use **normal/free-running counting** when continuous elapsed ticks are useful.
