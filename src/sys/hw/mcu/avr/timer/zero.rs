@@ -8,7 +8,7 @@ use crate::AvrReg8;
 #[doc = crate::_tags!(hw)]
 /// A classic AVR 8-bit Timer/Counter0 peripheral.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/avr", struct AvrTimer0),
+    location("sys/hw/mcu/avr/timer", struct AvrTimer0),
     test_size_of(AvrTimer0 = 14|112; niche !Option),
 }]
 /// It is described by its control, counter, compare, and interrupt registers.

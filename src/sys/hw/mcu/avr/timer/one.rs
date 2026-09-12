@@ -8,26 +8,19 @@ use crate::AvrReg8;
 #[doc = crate::_tags!(hw)]
 /// A classic AVR 16-bit Timer/Counter1 peripheral.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/avr", struct AvrTimer1),
+    location("sys/hw/mcu/avr/timer", struct AvrTimer1),
     test_size_of(AvrTimer1 = 26|208; niche !Option),
 }]
 /// It is described by its control, counter, capture, compare, and interrupt registers.
 ///
-/// Timer1's 16-bit counter, capture, and compare registers are exposed to the
-/// 8-bit AVR CPU as pairs of byte registers. Timer1 coordinates paired accesses
-/// through a temporary high-byte register, so accesses must follow the peripheral's
-/// ordering rules and can require protection from concurrent Timer1 access.
+/// Timer1's 16-bit counter, capture, and compare registers are exposed to the 8-bit
+/// AVR CPU as pairs of byte registers. Timer1 coordinates paired accesses through a
+/// shared temporary high-byte register, so accesses must follow the peripheral's
+/// ordering rules and may require protection from concurrent Timer1 access.
 ///
 /// Values can safely be copied and inspected. Operations that access the
 /// described registers are unsafe because the addresses must correspond to
 /// the active device and access must respect the peripheral's hardware state.
-/// Timer1's 16-bit registers do not imply a 16-bit AVR data bus. The CPU accesses
-/// them as two 8-bit locations. Timer1 coordinates those byte accesses internally
-/// through a temporary high-byte register so the running counter does not tear
-/// merely because it changes between the CPU's two byte instructions.
-/// The temporary register is shared across Timer1's 16-bit registers,
-/// however, so an interrupt accessing another such register
-/// can interfere with an unfinished two-byte access.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AvrTimer1 {
     tccr1a: AvrReg8,
@@ -176,8 +169,16 @@ impl AvrTimer1 {
 impl AvrTimer1 {
     /* private helpers */
 
-    const WGM12: u8 = 1 << 3;
-    const OCF1A: u8 = 1 << 1;
+    // TCCR1B
+    const ICNC1: u8 = 1 << 7; // input-capture noise canceler
+    const ICES1: u8 = 1 << 6; // input-capture edge select
+    const WGM12: u8 = 1 << 3; // waveform-generation mode bit 2
+
+    // TIFR1
+    const ICF1: u8 = 1 << 5; // input-capture flag
+    const OCF1B: u8 = 1 << 2; // output-compare B match flag
+    const OCF1A: u8 = 1 << 1; // output-compare A match flag
+    const TOV1: u8 = 1 << 0; // timer overflow flag
 
     fn prescaler_bits(prescaler: u16) -> Option<u8> {
         match prescaler {
@@ -189,6 +190,7 @@ impl AvrTimer1 {
             _ => None,
         }
     }
+
     /// Reads a latched Timer1 16-bit register pair.
     ///
     /// Reading the low byte first copies the logical register's high byte into
@@ -221,8 +223,37 @@ impl AvrTimer1 {
         }
     }
 
-    /* public API */
+    /* configuration */
 
+    /// Configures normal mode and starts the timer.
+    ///
+    /// The counter runs from `0x0000` through `0xFFFF` and then wraps to zero.
+    /// Timer1 interrupts are initially disabled and output-compare pins remain
+    /// disconnected.
+    ///
+    /// # Panics
+    /// Panics if `prescaler` is not one of `1`, `8`, `64`, `256`, or `1024`.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device and not be concurrently configured.
+    /// No interrupt may access Timer1's 16-bit registers during the paired counter write.
+    pub unsafe fn configure_normal(self, prescaler: u16) {
+        let Some(clock) = Self::prescaler_bits(prescaler) else {
+            panic!("AVR Timer1 prescaler is not supported");
+        };
+        unsafe {
+            // Stop before taking ownership of its configuration.
+            self.tccr1b_reg().write(0);
+            // WGM13:0 = 0b0000: normal mode; OC1A/B disconnected.
+            self.tccr1a_reg().write(0);
+            self.tccr1c_reg().write(0);
+            self.interrupt_mask_reg().write(0);
+            self.set_counter(0);
+            // Clear all Timer1 event flags.
+            self.interrupt_flag_reg().write(Self::ICF1 | Self::OCF1B | Self::OCF1A | Self::TOV1);
+            self.tccr1b_reg().write(clock);
+        }
+    }
     /// Configures CTC mode with `OCR1A` as TOP and starts the timer.
     ///
     /// The counter advances from zero through `top`, inclusive,
@@ -261,22 +292,7 @@ impl AvrTimer1 {
         }
     }
 
-    /// Returns whether an output-compare A match is pending.
-    ///
-    /// # Safety
-    /// The timer must belong to the active device.
-    #[must_use]
-    pub unsafe fn compare_a_match_pending(self) -> bool {
-        unsafe { self.interrupt_flag_reg().read() & Self::OCF1A != 0 }
-    }
-    /// Clears the output-compare A match flag.
-    ///
-    /// # Safety
-    /// The timer must belong to the active device.
-    pub unsafe fn clear_compare_a_match(self) {
-        // OCF1A is write-one-to-clear: do not read-modify-write TIFR1.
-        unsafe { self.interrupt_flag_reg().write(Self::OCF1A) };
-    }
+    /* counter */
 
     /// Returns the current 16-bit counter value.
     ///
@@ -297,5 +313,96 @@ impl AvrTimer1 {
     /// access may interfere with its shared temporary register.
     pub unsafe fn set_counter(self, value: u16) {
         unsafe { Self::write_16(self.tcnt1h_reg(), self.tcnt1l_reg(), value) }
+    }
+
+    /* output compare */
+
+    /// Returns whether an output-compare A match is pending.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device.
+    #[must_use]
+    pub unsafe fn compare_a_match_pending(self) -> bool {
+        unsafe { self.interrupt_flag_reg().read() & Self::OCF1A != 0 }
+    }
+    /// Clears the output-compare A match flag.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device.
+    pub unsafe fn clear_compare_a_match(self) {
+        // OCF1A is write-one-to-clear: do not read-modify-write TIFR1.
+        unsafe { self.interrupt_flag_reg().write(Self::OCF1A) };
+    }
+
+    /* input capture */
+
+    /// Selects rising edges for input capture.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its control register must not be concurrently modified.
+    pub unsafe fn set_capture_rising_edge(self) {
+        let reg = self.tccr1b_reg();
+        unsafe { reg.write(reg.read() | Self::ICES1) };
+    }
+    /// Selects falling edges for input capture.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its control register must not be concurrently modified.
+    pub unsafe fn set_capture_falling_edge(self) {
+        let reg = self.tccr1b_reg();
+        unsafe { reg.write(reg.read() & !Self::ICES1) };
+    }
+
+    /// Enables the input-capture noise canceler.
+    ///
+    /// The input must remain stable for four consecutive system-clock samples,
+    /// introducing four system-clock cycles of capture delay.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its control register must not be concurrently modified.
+    pub unsafe fn enable_capture_noise_cancel(self) {
+        let reg = self.tccr1b_reg();
+        unsafe { reg.write(reg.read() | Self::ICNC1) };
+    }
+    /// Disables the input-capture noise canceler.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device
+    /// and its control register must not be concurrently modified.
+    pub unsafe fn disable_capture_noise_cancel(self) {
+        let reg = self.tccr1b_reg();
+        unsafe { reg.write(reg.read() & !Self::ICNC1) };
+    }
+
+    /// Returns whether an input-capture event is pending.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device.
+    #[must_use]
+    pub unsafe fn input_capture_pending(self) -> bool {
+        unsafe { self.interrupt_flag_reg().read() & Self::ICF1 != 0 }
+    }
+    /// Returns the most recently captured 16-bit counter value.
+    ///
+    /// Reading `ICR1L` snapshots the corresponding high byte
+    /// so both bytes represent the same capture event.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device. No concurrent Timer1 16-bit
+    /// access may interfere with its shared temporary register.
+    #[must_use]
+    pub unsafe fn capture_value(self) -> u16 {
+        unsafe { Self::read_16_latched(self.icr1l_reg(), self.icr1h_reg()) }
+    }
+    /// Clears the input-capture flag.
+    ///
+    /// # Safety
+    /// The timer must belong to the active device.
+    pub unsafe fn clear_input_capture(self) {
+        // ICF1 is write-one-to-clear: do not read-modify-write TIFR1.
+        unsafe { self.interrupt_flag_reg().write(Self::ICF1) };
     }
 }

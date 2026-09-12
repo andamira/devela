@@ -1,7 +1,7 @@
 // devela/sys/hw/mcu/avr/_.rs
 //
 #![doc = crate::_DOC_SYS_HW_MCU_AVR!()] // public
-#![doc = crate::_doc!(modules: crate::sys::hw::mcu; avr)]
+#![doc = crate::_doc!(modules: crate::sys::hw::mcu; avr: timer)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -31,27 +31,12 @@
 //! between AVR families. The abstractions here therefore distinguish general
 //! AVR concepts from the layout of a particular device.
 //!
-//! # Timer/counter vocabulary
+//! # Timers
 //!
-//! - **clock** — the source of timing ticks.
-//! - **prescaler** — divides the source clock before it reaches the counter.
-//! - **tick** — one counter-clock event.
-//! - **counter** — the value advanced by timer ticks.
-//! - **BOTTOM** — the lowest value in the counting sequence, normally zero.
-//! - **MAX** — the largest value representable by the physical counter.
-//! - **TOP** — the highest value reached in the current counting mode.
-//! - **compare** — detects when the counter equals a configured compare value.
-//! - **compare match** — the event produced by a successful comparison.
-//! - **event flag** — a register bit recording that a hardware event occurred.
-//! - **overflow** — the event associated with the end of a counting cycle;
-//!   its exact timing depends on the counting mode.
-//! - **CTC** — *Clear Timer on Compare Match*: a compare value supplies TOP,
-//!   and the timer starts again from BOTTOM after reaching it.
-//! - **PWM** — uses periodic counting and compare points to control output duty.
+//! AVR timer/counters combine clocked counters with compare, capture,
+//! event, interrupt, and waveform-generation facilities.
 //!
-//! A hardware event and an interrupt are separate concepts. An event can
-//! set a flag that software polls, request an interrupt when enabled,
-//! affect a hardware output, or some combination of these.
+//! See the [`timer`] module for the timer model and its terminology.
 //!
 //! # Interrupt vocabulary
 //!
@@ -67,22 +52,32 @@
 //
 
 crate::mods_in! {
-    mod atmega328p;
-    mod pin;
-    mod port;
-    mod register;
-    mod_ timer;
-    mod usart;
+        mod atmega328p;
+        mod pin;
+        mod port;
+        mod register;
+    pub mod_ timer;
+        mod usart;
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
             atmega328p::McuAtmega328p,
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,
-            timer::_all::{AvrTimer0, AvrTimer1},
             usart::AvrUsart,
+        };
+    }
+    _pub_mods {
+        pub use super::{
+            timer::_all::{AvrTimer0, AvrTimer1},
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            timer::_all::{AvrTimer0, AvrTimer1},
         };
     }
 }
