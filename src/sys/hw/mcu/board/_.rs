@@ -15,12 +15,14 @@
 crate::mods_in! {
     mod_ arduino;
     mod_ generic;
+    // mod_ waveshare;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
             arduino::_all::BoardArduinoNano,
             generic::_all::BoardSuperMiniOled042,
+            // waveshare::_all::BoardWaveshareC6TouchLcd147,
         };
     }
 }

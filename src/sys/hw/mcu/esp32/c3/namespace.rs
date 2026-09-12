@@ -3,7 +3,7 @@
 //! Defines [`McuEsp32C3`].
 //
 
-use crate::{EspReg32, EspUsbSerialJtag};
+use crate::{__cfg_item_unsafe_show, EspReg32, EspUsbSerialJtag, macro_apply};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
@@ -96,6 +96,8 @@ impl McuEsp32C3 {
     pub const USB_SERIAL_JTAG: EspUsbSerialJtag = EspUsbSerialJtag::new(Self::USB_SERIAL_JTAG_BASE);
 }
 
+/* private helpers */
+#[allow(dead_code)]
 impl McuEsp32C3 {
     const WDT_WKEY: u32 = 0x50D8_3AA1;
 
@@ -104,7 +106,10 @@ impl McuEsp32C3 {
 
     const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
     const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
+}
 
+#[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl McuEsp32C3 {
     /// Disables the watchdog states left active by ROM flash boot.
     ///
     /// Direct boot bypasses the usual SDK startup that handles these

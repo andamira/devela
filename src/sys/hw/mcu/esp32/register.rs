@@ -36,14 +36,16 @@ impl EspReg32 {
     pub const fn as_mut_ptr(self) -> *mut u32 {
         Ptr::without_provenance_mut(self.0 as usize)
     }
+}
 
+#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl EspReg32 {
     /// Performs a volatile read from this register.
     ///
     /// # Safety
     /// This must be a readable 32-bit register on the active device,
     /// and any hardware effects caused by reading it must be valid here.
     #[must_use]
-    #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
     pub unsafe fn read(self) -> u32 {
         unsafe { Ptr::read_volatile(self.as_ptr()) }
     }
@@ -53,7 +55,6 @@ impl EspReg32 {
     /// # Safety
     /// This must be a writable 32-bit register on the active device,
     /// and the write must obey that register's hardware semantics.
-    #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
     pub unsafe fn write(self, value: u32) {
         unsafe { Ptr::write_volatile(self.as_mut_ptr(), value) }
     }

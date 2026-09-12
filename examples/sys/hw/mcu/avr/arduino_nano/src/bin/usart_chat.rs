@@ -17,9 +17,9 @@ pub extern "C" fn main() -> ! {
     let (uart, led) = (BoardArduinoNano::USART, BoardArduinoNano::LED);
 
     unsafe {
-        led.set_output_low();
-        uart.configure_rx_tx_8n1(BoardArduinoNano::CPU_HZ, 9_600);
+        led.set_output_low(); // Active-high LED: low means OFF.
 
+        uart.configure_rx_tx_8n1(BoardArduinoNano::CPU_HZ, 9_600);
         uart.write_bytes_blocking(
             b"devela nano ready\r\n\
               commands: ping, led on, led off, status\r\n\
@@ -47,7 +47,7 @@ pub extern "C" fn main() -> ! {
                 byte if len < line.len() => {
                     line[len] = byte;
                     len += 1;
-                    // uart.write_byte_blocking(byte); // Echo characters received from picocom
+                    uart.write_byte_blocking(byte); // Echo characters received
                 }
                 _ => {
                     // Line full: ignore further bytes until Enter/backspace.

@@ -68,7 +68,7 @@ UPLOAD_BAUD=57600 ./run.sh run led_on
 The upload baud rate must match the bootloader; it is independent of any
 serial baud rate configured by the firmware itself.
 
-## USART output
+## USART
 
 Flash the USART example:
 
