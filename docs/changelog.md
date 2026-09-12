@@ -36,6 +36,9 @@
 
 # Modules
 
+### code
+- add `Build` methods: `emit_link_search`, `rerun_if_changed`.
+
 ### code::util::assert
 - move `compile_error!` from `error`.
 
@@ -67,6 +70,7 @@
 #### sys::hw::mcu::esp32
 - new macro: `esp32_c3_direct_boot!`.
 - new types: `EspReg32`, `McuEsp32C3`.
+- add ESP32-C3 direct-boot startup and linker support.
 
 ### sys::mem
 - make `Ptr` provenance-related methods const:

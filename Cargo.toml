@@ -111,7 +111,8 @@ include = [
 	"/Cargo.toml",
 	## source code
 	"/build/main/**/*.rs", "/build/main/**/*.md", "/build/main/dep_all",
-	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html", "/src/**/*.js",
+	"/src/**/*.rs", "/src/**/*.md",
+	"/src/**/*.html", "/src/**/*.js", "/src/**/*.x",
 	## documentation
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
 	## examples included from /src/_doc

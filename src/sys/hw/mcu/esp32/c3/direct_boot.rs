@@ -5,16 +5,18 @@
 
 #[doc = crate::_tags!(hw code)]
 /// Defines the minimal ESP32-C3 ROM direct-boot entry point.
-///
-/// The linker layout must provide the symbols expected by this startup:
-/// `__global_pointer$`, `__stack_top`, `__data_load`, `__data_start`,
-/// `__data_end`, `__bss_start`, and `__bss_end`.
-///
-/// The supplied Rust entry function is called after the stack and global
-/// pointer are initialized, `.data` is copied to RAM, and `.bss` is cleared.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/esp32/c3", macro esp32_c3_direct_boot),
+    location("sys/hw/mcu/esp32", macro esp32_c3_direct_boot),
 }]
+/// Use this together with devela's `esp32_c3_direct_boot.x` linker script.
+/// The script is made available to the linker when targeting `riscv32imc-unknown-none-elf`.
+///
+/// Select it with:
+/// `-C link-arg=-Tesp32_c3_direct_boot.x`.
+///
+/// The script provides the memory layout and symbols required by the startup
+/// sequence. The supplied Rust function is entered after the stack and global
+/// pointer are established, `.data` is copied to RAM, and `.bss` is cleared.
 #[macro_export]
 macro_rules! esp32_c3_direct_boot· {
     ($main:ident) => {

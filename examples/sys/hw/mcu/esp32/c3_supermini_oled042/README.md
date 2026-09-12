@@ -9,9 +9,7 @@ through the ESP32-C3 ROM direct-boot path, without an ESP HAL or runtime crate.
 
 ## Examples
 
-| Binary | Description                                        |
-| ------ | -------------------------------------------------- |
-| `led`  | Turns on the board's active-low blue LED on GPIO8. |
+- `led` — Turns on the board's active-low blue LED on GPIO8.
 
 ## Requirements
 
@@ -71,9 +69,9 @@ ESP32-C3 startup sequence.
 The macro establishes the RISC-V stack and global pointer, initializes
 `.data` and `.bss`, then enters the supplied Rust function.
 
-The linker script remains local for now. It describes the ESP32-C3 flash
-and RAM layout and places the ROM direct-boot header at the beginning of
-the image. Reusable linker integration is still being developed.
+devela also provides the matching `esp32_c3_direct_boot.x` linker script.
+Its build script makes the linker resource available for the `riscv32imc-unknown-none-elf`
+target, and this example selects it from `.cargo/config.toml`.
 
 ## Size
 

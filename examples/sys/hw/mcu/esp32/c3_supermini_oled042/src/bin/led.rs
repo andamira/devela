@@ -15,6 +15,8 @@ fn main() -> ! {
     let led = BoardSuperMiniOled042::LED_MASK;
 
     unsafe {
+        // McuEsp32C3::GPIO_OUT_W1TS.write(led); // high → LED OFF
+
         // Set the intended level before enabling the output driver.
         McuEsp32C3::GPIO_OUT_W1TC.write(led); // low → LED ON
         McuEsp32C3::GPIO_ENABLE_W1TS.write(led);

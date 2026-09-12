@@ -1,10 +1,11 @@
 // devela/build/main/mod.rs
 //
-//! Build-time configuration and code generation.
+//! Build-time configuration, linking support, and code generation.
 //!
 //! Contains logic executed during `cargo build`, including:
 //! - Feature flag management
 //! - Compile-time environment inspection
+//! - Target linker support
 //! - Procedural code generation
 //!
 #![doc = include_str!("./Mod.md")]
@@ -55,6 +56,7 @@ mod features;
 mod native;
 
 mod codegen; // tuple, unroll
+mod linking; // target linker support
 
 fn main() {
     if let Err(err) = try_main() {
@@ -72,6 +74,7 @@ fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     features::main()?;
 
     codegen::main()?;
+    linking::main()?;
 
     #[cfg(feature = "__dbg")]
     Build::println_start_end("main build script", false);

@@ -8,7 +8,7 @@ set -eu
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 TARGET_DIR="$DIR/target"
 TARGET="riscv32imc-unknown-none-elf"
-BIN="led"
+BIN="${2:-led}"
 
 ELF="$TARGET_DIR/$TARGET/release/$BIN"
 IMAGE="$TARGET_DIR/$TARGET/release/$BIN.bin"
@@ -30,7 +30,7 @@ find_objcopy() {
 build() {
     cd "$DIR"
 
-    cargo build --release --target-dir "$TARGET_DIR"
+    cargo build --release --bin "$BIN" --target-dir "$TARGET_DIR"
 
     OBJCOPY="$(find_objcopy)"
     "$OBJCOPY" -O binary "$ELF" "$IMAGE"
@@ -69,8 +69,8 @@ flash() {
         espflash write-bin 0x0 "$IMAGE"
 }
 inspect() {
-	rust-nm -n "$ELF" | grep ' _start$'
-	rust-objdump -d --disassemble-symbols=_start "$ELF"
+    rust-nm -n "$ELF" | grep ' _start$'
+    rust-objdump -d --disassemble-symbols=_start "$ELF"
 }
 
 case "${1:-run}" in
@@ -82,10 +82,11 @@ case "${1:-run}" in
         flash
         ;;
     inspect)
+        build
         inspect
         ;;
     *)
-        echo "usage: $0 [build|run|flash|inspect]" >&2
+        echo "usage: $0 [build|run|flash|inspect] [binary]" >&2
         exit 2
         ;;
 esac

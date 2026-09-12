@@ -1,4 +1,4 @@
-/* devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/link.x */
+/* devela/src/sys/hw/mcu/esp32/c3/direct_boot.x */
 
 /* ESP32-C3 direct-boot memory layout. */
 
@@ -6,8 +6,10 @@ ENTRY(_start)
 
 MEMORY
 {
+    /* 4 MiB flash mappings. */
     IROM (rx)  : ORIGIN = 0x42000000, LENGTH = 0x400000
     DROM (r)   : ORIGIN = 0x3c000000, LENGTH = 0x400000
+    /* Internal SRAM. */
     RAM  (rw)  : ORIGIN = 0x3fc80000, LENGTH = 0x50000
 }
 
@@ -16,8 +18,8 @@ SECTIONS
     /*
      * ESP32-C3 direct-boot magic.
      *
-     * The ROM maps flash at IROM/DROM and jumps to IROM + 8 when
-     * these two words are found at flash offset zero.
+     * The ROM maps flash at IROM/DROM and jumps to IROM + 8
+     * when these two words are found at flash offset zero.
      */
     .header ORIGIN(IROM) : AT(0)
     {
@@ -52,8 +54,8 @@ SECTIONS
     __flash_after_rodata = LOADADDR(.rodata) + SIZEOF(.rodata);
 
     /*
-     * Writable initialized data lives in RAM, with its initial bytes
-     * stored at the next physical flash offset.
+     * Writable initialized data lives in RAM,
+     * with its initial bytes stored at the next physical flash offset.
      */
     .data ORIGIN(RAM) : AT(__flash_after_rodata)
     {
@@ -84,21 +86,17 @@ SECTIONS
     } > RAM
 
     /*
-     * RISC-V ABI global pointer. This follows the arrangement used by
-     * Espressif's direct-boot reference linker script.
+     * RISC-V ABI global pointer. This follows the arrangement
+     * used by Espressif's direct-boot reference linker script.
      */
-    __global_pointer$ =
-        MIN(__sdata_start + 0x800,
-            MAX(__data_start + 0x800, __bss_end - 0x800));
+    __global_pointer$ = MIN(__sdata_start + 0x800, MAX(__data_start + 0x800, __bss_end - 0x800));
 
     /* The RISC-V ABI requires a suitably aligned stack; RAM ends aligned. */
     __stack_top = ORIGIN(RAM) + LENGTH(RAM);
 
-    ASSERT(__flash_after_data <= LENGTH(IROM),
-        "direct-boot image exceeds mapped flash")
+    ASSERT(__flash_after_data <= LENGTH(IROM), "direct-boot image exceeds mapped flash")
 
-    ASSERT(__bss_end + 0x4000 <= __stack_top,
-        "less than 16 KiB remain for stack")
+    ASSERT(__bss_end + 0x4000 <= __stack_top, "less than 16 KiB remain for stack")
 
     /DISCARD/ :
     {

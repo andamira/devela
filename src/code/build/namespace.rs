@@ -39,10 +39,22 @@ impl Build {
     pub fn manifest_path() -> PathBuf {
         PathBuf::from(env::var("CARGO_MANIFEST_PATH").expect("CARGO_MANIFEST_PATH not set"))
     }
+
     /// Marks an environment variable as affecting build-script reruns.
     // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
     pub fn rerun_if_env_changed(var: &str) {
         println!("cargo:rerun-if-env-changed={var}");
+    }
+    /// Marks a path as affecting build-script reruns.
+    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-changed
+    pub fn rerun_if_changed(path: impl Display) {
+        println!("cargo:rerun-if-changed={path}");
+    }
+
+    /// Adds a path to rustc's linker search paths.
+    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-search
+    pub fn emit_link_search(path: impl Display) {
+        println!("cargo:rustc-link-search={path}");
     }
 }
 
