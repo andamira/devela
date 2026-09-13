@@ -31,6 +31,7 @@
 - add minimal no_std `sys/env` examples.
 - add `sys/hw/mcu/avr/arduino_nano` examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_ctc`, `timer1_capture`, `timer2_ctc`, `timer1_pwm`, `usart_chat`, `usart_tx`.
 - add `sys/hw/mcu/esp32/c3_supermini_oled042` example: `led`, `usb_serial_chat`, `usb_serial_tx`.
+- add `sys/hw/mcu/esp32/s3_bringup` example.
 
 ---
 
