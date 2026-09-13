@@ -2,8 +2,6 @@
 //
 //! Defines [`McuAtmega328p`].
 //
-// 35 Register Summary:
-// https://onlinedocs.microchip.com/oxy/GUID-0EC909F9-8FB7-46B2-BF4B-05290662B5C3-en-US-12.1.1/GUID-05F454E7-6DE3-4D77-9C23-FEBE05568812.html
 
 use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrUsart};
 
@@ -19,15 +17,20 @@ use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrUsart};
 /// registers such as [`AvrReg8`][crate::AvrReg8]. Runtime data and the stack
 /// share SRAM, while Flash and EEPROM are separate storage spaces.
 ///
-/// Its timer/counter peripherals comprise two 8-bit timers (Timer/Counter0
-/// and Timer/Counter2) and one 16-bit timer (Timer/Counter1). GPIO pins use
-/// the AVR notation `Pxy`, where `x` identifies the port and `y` the bit
-/// within it; E.g. `PB5` is port B bit 5.
+/// Its timer/counter peripherals comprise:
+/// - two 8-bit timers (Timer/Counter0 and Timer/Counter2),
+/// - one 16-bit timer (Timer/Counter1).
 ///
-/// See also the [datasheet pdf].
+/// GPIO pins use the AVR notation `Pxy`, where `x` identifies the port
+/// and `y` the bit within it; for example, `PB5` is port B bit 5.
 ///
-/// [datasheet pdf]: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
-
+/// See also:
+///
+/// - [ATmega328P product page]
+/// - [ATmega48A/PA/88A/PA/168A/PA/328/P datasheet]
+///
+/// [ATmega328P product page]: https://www.microchip.com/en-us/product/atmega328p
+/// [ATmega48A/PA/88A/PA/168A/PA/328/P datasheet]: https://www.microchip.com/DS40002061
 #[derive(Debug)]
 pub struct McuAtmega328p;
 

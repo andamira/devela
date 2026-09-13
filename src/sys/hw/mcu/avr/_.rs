@@ -7,6 +7,11 @@
 //!
 //! AVR microcontrollers.
 //!
+//! - [AVR family landing page]
+//! - [AVR instruction set manual](https://www.microchip.com/DS40002198)
+//!
+//! [AVR family landing page]: https://www.microchip.com/en-us/products/microcontrollers/8-bit-mcus/avr-mcus
+//!
 //! This module models silicon-facing AVR concepts such as memory-mapped registers,
 //! GPIO ports and pins, serial peripherals, and concrete devices. Board-specific
 //! wiring and connector names belong under [`sys::hw::mcu::board`][super::board].

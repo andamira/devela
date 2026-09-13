@@ -11,9 +11,17 @@ use crate::{AvrPin, AvrUsart, McuAtmega328p};
     location("sys/hw/mcu/board", struct BoardArduinoNano),
     test_size_of(BoardArduinoNano = 0),
 }]
-/// See also the [datasheet pdf].
+/// The board is based on [`McuAtmega328p`].
 ///
-/// [datasheet pdf]: https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf
+/// See also:
+///
+/// - [Arduino Nano documentation]
+/// - [pinout]
+/// - [datasheet]
+///
+/// [Arduino Nano documentation]: https://docs.arduino.cc/hardware/nano
+/// [pinout]: https://docs.arduino.cc/resources/pinouts/A000005-full-pinout.pdf
+/// [datasheet]: https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf
 #[derive(Debug)]
 pub struct BoardArduinoNano;
 

@@ -21,6 +21,22 @@ use crate::AvrReg8;
 /// Values can safely be copied and inspected. Operations that access the
 /// described registers are unsafe because the addresses must correspond to
 /// the active device and access must respect the peripheral's hardware state.
+///
+/// # Methods
+///
+/// The operational API is grouped by timer function:
+///
+/// - [Configuration](#configuration) — [`configure_ctc`](#method.configure_ctc)
+///   selects CTC mode and the timer clock.
+/// - [Output compare](#output-compare) — reports and clears
+///   output-compare A match events.
+/// - [Interrupt](#interrupt) — enables or disables the output-compare
+///   A interrupt. CPU-wide interrupt control remains separate.
+///
+/// [Semantic] and [datasheet] register accessors are also provided for lower-level use.
+///
+/// [Semantic]: #semantic-registers-api
+/// [datasheet]: #datasheet-registers-api
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct AvrTimer0 {
     tccr0a: AvrReg8,
@@ -71,14 +87,18 @@ impl AvrTimer0 {
     }
 }
 
-/// # Operational API
-#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer0 {
-    /* private helpers */
+/* private helpers */
 
-    const OCF0A: u8 = 1 << 1; // TIFR0
-    const OCIE0A: u8 = 1 << 1; // TIMSK0
-    const WGM01: u8 = 1 << 1; // TCCR0A
+#[allow(dead_code)]
+impl AvrTimer0 {
+    // TCCR0A
+    const WGM01: u8 = 1 << 1; // waveform-generation mode bit 1
+
+    // TIFR0
+    const OCF0A: u8 = 1 << 1; // output-compare A match flag
+
+    // TIMSK0
+    const OCIE0A: u8 = 1 << 1; // output-compare A interrupt enable
 
     fn prescaler_bits(prescaler: u16) -> Option<u8> {
         match prescaler {
@@ -90,11 +110,12 @@ impl AvrTimer0 {
             _ => None,
         }
     }
+}
 
-    /* public API */
-
+/// # Configuration
+#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl AvrTimer0 {
     /// Configures CTC mode with `OCR0A` as TOP and starts the timer.
-    ///
     ///
     /// Timer0 interrupts are initially disabled
     /// and the output-compare pins remain disconnected.
@@ -129,7 +150,11 @@ impl AvrTimer0 {
             self.tccr0b_reg().write(clock);
         }
     }
+}
 
+/// # Output compare
+#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl AvrTimer0 {
     /// Returns whether an output-compare A match is pending.
     ///
     /// # Safety
@@ -146,7 +171,11 @@ impl AvrTimer0 {
         // OCF0A is write-one-to-clear: do not read-modify-write TIFR0.
         unsafe { self.interrupt_flag_reg().write(Self::OCF0A) };
     }
+}
 
+/// # Interrupt
+#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl AvrTimer0 {
     /// Enables the output-compare A interrupt.
     ///
     /// A compare match can request an interrupt when global interrupts are also enabled.
