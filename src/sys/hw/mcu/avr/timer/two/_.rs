@@ -8,10 +8,11 @@ crate::mods_in! {
 
     // impls
     mod config; // # Configuration
+    mod clock; // # Clock
     mod count; // # Counter, # Overflow
     mod compare; // # Output compare
+    mod pwm; // # PWM
     mod interrupt; // # Interrupt
-    // mod pwm; // # PWM
     mod registers; // # Semantic & Datasheet registers API
 }
 crate::mods_out! { // _mods

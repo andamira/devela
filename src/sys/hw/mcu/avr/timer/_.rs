@@ -191,6 +191,17 @@
 //! configures the counting mode, compare value, and output connection.
 //!
 //!
+//! # Asynchronous clocking
+//!
+//! Some timers can run from a clock independent of the CPU clock.
+//! ATmega328P Timer2 can use a separate 32.768 kHz oscillator, allowing
+//! it to continue as an independent timebase while synchronous clocks stop.
+//!
+//! Register writes that cross between clock domains do not take effect
+//! immediately. Hardware exposes update-busy flags so software can wait
+//! until the timer has received the new values.
+//!
+//!
 //! # Choosing a timer operation
 //!
 //! Use **normal/free-running counting** when continuous elapsed ticks are useful.

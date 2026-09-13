@@ -30,15 +30,15 @@ use crate::AvrReg8;
 ///   [`configure_ctc`](#method.configure_ctc) select a counting mode and clock.
 /// - [Counter](#counter) — [`counter`](#method.counter) and [`set_counter`](#method.set_counter)
 ///   access the running 16-bit count.
-/// - [Output compare](#output-compare) — compare values and match events are available
-///   independently for channels A and B.
-/// - [Input capture](#input-capture) — selects the capture edge and filtering, reports capture
-///   events, and reads the captured counter value.
 /// - [Overflow](#overflow) — reports and clears counter-overflow events.
-/// - [Interrupt](#interrupt) — enables or disables each Timer1 interrupt source.
-///   CPU-wide interrupt control remains separate.
+/// - [Output compare](#output-compare) — compare values and match events
+///   are available independently for channels A and B.
+/// - [Input capture](#input-capture) — selects the capture edge and filtering,
+///   reports capture events, and reads the captured counter value.
 /// - [PWM](#pwm) — configures fast PWM and connects the Timer1
 ///   compare channels to their hardware output pins.
+/// - [Interrupt](#interrupt) — enables or disables each Timer1 interrupt source.
+///   CPU-wide interrupt control remains separate.
 ///
 /// [Semantic] and [datasheet] register accessors are also provided for lower-level use.
 ///

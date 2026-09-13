@@ -11,8 +11,8 @@ crate::mods_in! {
     mod count; // # Counter, # Overflow
     mod compare; // # Output compare
     mod capture; // # Capture
-    mod interrupt; // # Interrupt
     mod pwm; // # PWM
+    mod interrupt; // # Interrupt
     mod registers; // # Semantic & Datasheet registers API
 }
 crate::mods_out! { // _mods

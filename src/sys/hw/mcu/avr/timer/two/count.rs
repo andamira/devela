@@ -16,9 +16,14 @@ impl AvrTimer2 {
 
     /// Sets the 8-bit counter value.
     ///
+    /// In asynchronous operation, the write is synchronized into the Timer2
+    /// clock domain. Before writing `TCNT2` again, wait for the previous update
+    /// to complete with [`wait_for_asynchronous_update`](#method.wait_for_asynchronous_update).
+    ///
     /// # Safety
     /// The timer must belong to the active device
     /// and its counter register must not be concurrently modified.
+    /// In asynchronous operation, no previous `TCNT2` update may still be pending.
     pub unsafe fn set_counter(self, value: u8) {
         unsafe { self.counter_reg().write(value) }
     }
