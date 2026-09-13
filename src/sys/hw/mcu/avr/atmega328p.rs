@@ -3,7 +3,7 @@
 //! Defines [`McuAtmega328p`].
 //
 
-use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrUsart};
+use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
@@ -57,6 +57,9 @@ impl McuAtmega328p {
         0x8A, 0x8B,
         0x6F, 0x36,
     );
+
+    /// Timer/Counter2 peripheral.
+    pub const TIMER_2: AvrTimer2 = AvrTimer2::new(0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB6, 0x70, 0x37);
 
     /// USART 0 peripheral.
     pub const USART_0: AvrUsart = AvrUsart::new(0xC0, 0xC1, 0xC2, 0xC4, 0xC5, 0xC6);

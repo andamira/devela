@@ -76,13 +76,13 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
     }
     _pub_mods {
         pub use super::{
-            timer::_all::{AvrTimer0, AvrTimer1},
+            timer::_all::{AvrTimer0, AvrTimer1, AvrTimer2},
         };
     }
     _reexports {
         #[doc(inline)]
         pub use super::{
-            timer::_all::{AvrTimer0, AvrTimer1},
+            timer::_all::{AvrTimer0, AvrTimer1, AvrTimer2},
         };
     }
 }

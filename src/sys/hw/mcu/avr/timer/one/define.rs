@@ -115,7 +115,7 @@ impl AvrTimer1 {
 
 /* private helpers */
 
-#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+#[allow(unused)]
 impl AvrTimer1 {
     // TCCR1A
     pub(super) const COM1A1: u8 = 1 << 7; // compare-output A mode bit 1
@@ -155,7 +155,10 @@ impl AvrTimer1 {
             _ => None,
         }
     }
+}
 
+#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl AvrTimer1 {
     /// Reads a latched Timer1 16-bit register pair.
     ///
     /// Reading the low byte first copies the logical register's high byte into

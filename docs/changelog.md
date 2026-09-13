@@ -29,7 +29,7 @@
 
 ## examples
 - add minimal no_std `sys/env` examples.
-- add `sys/hw/mcu/avr/arduino_nano` examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_ctc`, `timer1_capture`, `timer1_pwm`, `usart_chat`, `usart_tx`.
+- add `sys/hw/mcu/avr/arduino_nano` examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_ctc`, `timer1_capture`, `timer2_ctc`, `timer1_pwm`, `usart_chat`, `usart_tx`.
 - add `sys/hw/mcu/esp32/c3_supermini_oled042` example: `led`, `usb_serial_chat`, `usb_serial_tx`.
 
 ---
@@ -65,7 +65,7 @@
 - new types: `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.
 
 #### sys::hw::mcu::avr::timer
-- new types: `AvrTimer0`, `AvrTimer1`.
+- new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.
 
 #### sys::hw::mcu::board
 - new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.

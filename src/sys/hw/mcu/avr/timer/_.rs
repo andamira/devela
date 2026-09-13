@@ -243,14 +243,16 @@
 //
 
 crate::mods_in! {
-    mod_ one;
     mod zero;
+    mod_ one;
+    mod_ two;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            one::_all::AvrTimer1,
             zero::AvrTimer0,
+            one::_all::AvrTimer1,
+            two::_all::AvrTimer2,
         };
     }
 }
