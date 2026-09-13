@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/two/clock.rs
 
-use crate::AvrTimer2;
-
 /// # Clock
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer2 {
+impl crate::AvrTimer2 {
     /// Returns whether Timer2 is using asynchronous clocking.
     ///
     /// # Safety

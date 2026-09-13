@@ -1,15 +1,13 @@
 // devela/sys/hw/mcu/avr/timer/one/config.rs
 
-use crate::AvrTimer1;
-
 /// # Configuration
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer1 {
+impl crate::AvrTimer1 {
     /// Configures normal mode and starts the timer.
     ///
     /// The counter runs from `0x0000` through `0xFFFF` and then wraps to zero.
-    /// Timer1 interrupts are initially disabled and output-compare pins remain
-    /// disconnected.
+    /// Timer1 interrupts are initially disabled, output-compare pins remain
+    /// disconnected, and both compare values are reset to zero.
     ///
     /// # Panics
     /// Panics if `prescaler` is not one of `1`, `8`, `64`, `256`, or `1024`.
@@ -32,8 +30,10 @@ impl AvrTimer1 {
             // Start with Timer1 interrupts disabled.
             self.interrupt_mask_reg().write(0);
 
-            // Start counting from BOTTOM.
+            // Start counting from BOTTOM and reset both compare channels.
             self.set_counter(0);
+            self.set_compare_a(0);
+            self.set_compare_b(0);
 
             // Start without pending Timer1 events.
             self.interrupt_flag_reg().write(Self::EVENT_FLAGS);
@@ -50,7 +50,7 @@ impl AvrTimer1 {
     /// `period = prescaler × (top + 1) / source_clock`
     ///
     /// Timer1 interrupts are initially disabled
-    /// and output-compare pins remain disconnected.
+    /// and output-compare B is reset to zero.
     ///
     /// # Panics
     /// Panics if `prescaler` is not one of `1`, `8`, `64`, `256`, or `1024`.
@@ -74,9 +74,11 @@ impl AvrTimer1 {
             // Start with Timer1 interrupts disabled.
             self.interrupt_mask_reg().write(0);
 
-            // Start counting from BOTTOM and configure TOP.
+            // Start counting from BOTTOM, configure TOP,
+            // and reset the unused compare channel.
             self.set_counter(0);
             self.set_compare_a(top);
+            self.set_compare_b(0);
 
             // Start without pending Timer1 events.
             self.interrupt_flag_reg().write(Self::EVENT_FLAGS);

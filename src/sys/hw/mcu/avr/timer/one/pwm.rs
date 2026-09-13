@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/one/pwm.rs
 
-use crate::AvrTimer1;
-
 /// # PWM
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer1 {
+impl crate::AvrTimer1 {
     /// Configures fast PWM with `ICR1` as TOP and starts the timer.
     ///
     /// Timer1 counts upward from BOTTOM through `top` and then begins again

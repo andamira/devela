@@ -88,7 +88,7 @@ impl AvrTimer2 {
 
 /* private helpers */
 
-#[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+#[allow(dead_code)]
 impl AvrTimer2 {
     // TCCR2A
     pub(super) const COM2A1: u8 = 1 << 7; // compare-output A mode bit 1

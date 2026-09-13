@@ -95,7 +95,11 @@ impl AvrTimer0 {
     const WGM01: u8 = 1 << 1; // waveform-generation mode bit 1
 
     // TIFR0
+    const OCF0B: u8 = 1 << 2; // output-compare B match flag
     const OCF0A: u8 = 1 << 1; // output-compare A match flag
+    const TOV0: u8 = 1 << 0; // overflow flag
+
+    const EVENT_FLAGS: u8 = Self::OCF0B | Self::OCF0A | Self::TOV0;
 
     // TIMSK0
     const OCIE0A: u8 = 1 << 1; // output-compare A interrupt enable
@@ -136,16 +140,24 @@ impl AvrTimer0 {
             panic!("AVR Timer0 prescaler is not supported");
         };
         unsafe {
-            // Stop before taking ownership of its configuration.
+            // Stop before taking ownership of the configuration.
             self.tccr0b_reg().write(0);
+
             // WGM02:0 = 0b010: CTC, with OC0A/B disconnected.
             self.tccr0a_reg().write(Self::WGM01);
-            self.counter_reg().write(0);
-            self.compare_a_reg().write(top);
+
             // Start with Timer0 interrupts disabled.
             self.interrupt_mask_reg().write(0);
-            // TIFR0 flags are write-one-to-clear.
-            self.interrupt_flag_reg().write(Self::OCF0A);
+
+            // Start counting from BOTTOM, configure TOP,
+            // and reset the unused compare channel.
+            self.counter_reg().write(0);
+            self.compare_a_reg().write(top);
+            self.compare_b_reg().write(0);
+
+            // Start without pending Timer0 events.
+            self.interrupt_flag_reg().write(Self::EVENT_FLAGS);
+
             // WGM02 remains zero; CS02:0 selects the prescaled clock.
             self.tccr0b_reg().write(clock);
         }

@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/two/interrupt.rs
 
-use crate::AvrTimer2;
-
 /// # Interrupt
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer2 {
+impl crate::AvrTimer2 {
     /// Enables the output-compare A interrupt.
     ///
     /// A compare-A match can request an interrupt when global interrupts

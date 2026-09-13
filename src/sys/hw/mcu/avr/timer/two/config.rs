@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/two/config.rs
 
-use crate::AvrTimer2;
-
 /// # Configuration
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer2 {
+impl crate::AvrTimer2 {
     /// Configures normal synchronous counting and starts the timer.
     ///
     /// The counter runs from `0x00` through `0xFF` and wraps to zero.
@@ -84,7 +82,7 @@ impl AvrTimer2 {
 
             // Establish complete asynchronous state while stopped.
             self.tccr2a_reg().write(0);
-            self.tccr2b_reg().write(clock);
+            self.tccr2b_reg().write(0);
             self.counter_reg().write(0);
             self.compare_a_reg().write(0);
             self.compare_b_reg().write(0);
@@ -115,7 +113,7 @@ impl AvrTimer2 {
             self.asynchronous_status_reg().write(Self::AS2);
 
             self.tccr2a_reg().write(Self::WGM21);
-            self.tccr2b_reg().write(clock);
+            self.tccr2b_reg().write(0);
             self.counter_reg().write(0);
             self.compare_a_reg().write(top);
             self.compare_b_reg().write(0);

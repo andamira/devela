@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/one/capture.rs
 
-use crate::AvrTimer1;
-
 /// # Input capture
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer1 {
+impl crate::AvrTimer1 {
     /// Selects rising edges for input capture.
     ///
     /// # Safety

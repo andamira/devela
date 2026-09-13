@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/two/pwm.rs
 
-use crate::AvrTimer2;
-
 /// # PWM
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer2 {
+impl crate::AvrTimer2 {
     /// Configures synchronous fast PWM with fixed `0xFF` TOP and starts the timer.
     ///
     /// The PWM frequency is:

@@ -1,10 +1,8 @@
 // devela/sys/hw/mcu/avr/timer/one/count.rs
 
-use crate::AvrTimer1;
-
 /// # Counter
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer1 {
+impl crate::AvrTimer1 {
     /// Returns the current 16-bit counter value.
     ///
     /// The low-byte access snapshots the corresponding high byte
@@ -29,7 +27,7 @@ impl AvrTimer1 {
 
 /// # Overflow
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
-impl AvrTimer1 {
+impl crate::AvrTimer1 {
     /// Returns whether a Timer1 overflow is pending.
     ///
     /// # Safety
