@@ -24,6 +24,7 @@ crate::mods_in! {
     // pub mod_ link; // Communication links
     #[cfg(feature = "mcu")]
     pub mod_ mcu; // Microcontroller units
+    // #[cfg(feature = "mcu")]
     // pub mod_ pin; // Pin-level hardware interfaces
     // pub mod_ sensor; // Measurement sensors
     // pub mod_ usb; // USB bus/devices
@@ -35,11 +36,13 @@ crate::mods_out! { // _pub_mods
         //     // capture::_all::*,
         //     // hid::_all::*,
         //     // link::_all::*,
-        //     // pin::_all::*,
         //     // sensor::_all::*,
         //     // usb::_all::*,
         // };
         #[cfg(feature = "mcu")]
-        pub use super::mcu::_all::*;
+        pub use super::{
+            // pin::_all::*,
+            mcu::_all::*,
+        };
     }
 }
