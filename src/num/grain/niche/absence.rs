@@ -23,11 +23,9 @@
 // - struct NonNiche
 // - mod _test
 
-use crate::{
-    Cast, ConstInit, InvalidValue, NicheValueError, NonValueI8, NonValueI16, NonValueI32,
-    NonValueI64, NonValueI128, NonValueIsize, NonValueU8, NonValueU16, NonValueU32, NonValueU64,
-    NonValueU128, NonValueUsize, NonZero, Overflow, unwrap,
-};
+use crate::{BittenU8, Cast, ConstInit, InvalidValue, NicheValueError, NonZero, Overflow, unwrap};
+use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
+use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
 
 #[doc = crate::_tags!(maybe niche)]
 /// A zero-cost wrapper that abstracts over niche and non-niche types.
@@ -93,6 +91,17 @@ pub struct MaybeNiche<T: Copy>(pub T);
 macro_rules! impl_maybe {
     () => {
         impl_maybe!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
+
+        impl_maybe![% false, u8, BittenU8<0>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<1>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<2>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<3>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<4>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<5>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<6>, *get, ^new];
+        impl_maybe![% true, u8, BittenU8<7>, *get, ^new];
+        impl_maybe![% false, u8, BittenU8<8>, *get, ^new];
+
     };
     ($($T:ty),+) => {
         // % $is_niche, $prim, $T
@@ -433,7 +442,7 @@ impl_non![];
 
 #[cfg(test)]
 mod _test {
-    use super::{MaybeNiche, NonNiche, NonValueU8, NonZero};
+    use super::{BittenU8, MaybeNiche, NonNiche, NonValueU8, NonZero};
 
     #[test]
     fn maybe_niche() {
@@ -463,5 +472,18 @@ mod _test {
         assert_eq![nv1.is_contiguous(), false];
         assert_eq![nv1.is_niche(), true];
         assert_eq![nv1.has_zero(), true];
+    }
+    #[test]
+    fn maybe_niche_bitten_u8() {
+        type B = BittenU8<3>;
+        assert_eq!(MaybeNiche::<B>::MIN.prim(), 0);
+        assert_eq!(MaybeNiche::<B>::MAX.prim(), 31);
+        assert_eq!(MaybeNiche::<B>::ZERO.unwrap().prim(), 0);
+        assert_eq!(MaybeNiche::<B>::try_from_prim(31).unwrap().prim(), 31);
+        assert!(MaybeNiche::<B>::try_from_prim(32).is_err());
+        assert_eq!(MaybeNiche::<B>::from_prim_lossy(255).prim(), 31);
+        assert!(MaybeNiche::<B>::IS_NICHE);
+        assert!(MaybeNiche::<B>::IS_CONTIGUOUS);
+        assert!(!MaybeNiche::<B>::HAS_NEGATIVE);
     }
 }

@@ -256,7 +256,7 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
 // #[doc = base::_tags!(construction niche procedural_macro)]
 /// Defines a compact enum over a contiguous integer interval.
-#[doc = crate::_doc_location!(proc "code/util", macro enumint)]
+#[doc = crate::_doc_location!(proc "num/grain/niche", macro enumint)]
 ///
 #[doc = include_str!("docs/enumint.md")]
 // #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]

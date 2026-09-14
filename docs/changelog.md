@@ -52,6 +52,9 @@
 ## error
 - make `kind` public.
 
+#### num::grain::niche
+- new type `BittenU8`.
+
 ## sys
 - restrict Linux syscall-backed APIs to compatible Linux/freestanding targets.
 - avoid detecting host native libraries as available when cross-compiling.

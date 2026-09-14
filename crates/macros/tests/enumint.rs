@@ -14,6 +14,19 @@ enumint!(pub PublicU4, u8, 2, 5);
 enumint!(pub(crate) CrateI6, i16, -2, 3);
 
 #[test]
+fn enumint_eq_hash() {
+    const EQ: bool = U4::P3.eq(U4::P3);
+    const NE: bool = U4::P3.eq(U4::P4);
+
+    fn assert_eq_hash<T: Eq + core::hash::Hash>() {}
+
+    assert!(EQ);
+    assert!(!NE);
+    assert_eq_hash::<U4>();
+    assert_eq_hash::<I6>();
+}
+
+#[test]
 fn enumint_constants_and_niches() {
     assert_eq!(U4::MIN, 2);
     assert_eq!(U4::MAX, 5);

@@ -7,12 +7,14 @@ crate::mods_in! {
     #[cfg(test)]
     mod _test;
 
+    mod bitten; // WIP BittenU*
     mod non_value; // NonValue*, NonMax*, NonMin*
 }
 crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
         pub use super::{
+            bitten::*,
             non_value::*,
         };
     }

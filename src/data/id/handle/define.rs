@@ -33,6 +33,10 @@
 /// Each representation must be supported by [`MaybeNiche`]
 /// with the declared primitive carrier.
 ///
+/// [`BittenU8<B>`][crate::BittenU8] can be used for byte components
+/// whose valid domain is a smaller contiguous range starting at zero,
+/// while retaining `u8` as the primitive carrier.
+///
 /// # Example
 /// ```
 /// use devela::{NonMaxU16, handle};
@@ -304,7 +308,8 @@ pub use handle· as handle;
 
 #[cfg(test)]
 mod _test {
-    use crate::{HandleExample, PoolHandleExample, Value32, ValueKind4, const_assert, unwrap};
+    use crate::{BittenU8, HandleExample, PoolHandleExample, Value32, ValueKind4};
+    use crate::{const_assert, handle, unwrap};
 
     #[test]
     fn components() {
@@ -369,5 +374,30 @@ mod _test {
         const H2: HandleExample = unwrap![ok HandleExample::try_unpack_u32(P)];
         const_assert!(eq P, 0x0003_0F07);
         const_assert!(H.eq(H2));
+    }
+    #[test]
+    fn bitten_support() {
+        handle! { [index: u8 + BittenU8<3>;] pub BittenHandle; }
+
+        let zero = BittenHandle::from_prim(0).unwrap();
+        let max = BittenHandle::from_prim(31).unwrap();
+
+        // Accepted domain.
+        assert_eq!(zero.get_index_prim(), 0);
+        assert_eq!(max.get_index_prim(), 31);
+        assert_eq!(max.get_index().get(), 31);
+        assert_eq!(max.get_index_usize(), Ok(31));
+        assert_eq!(max.into_prim(), (31,));
+        // BittenU8<3> represents exactly 0..=31.
+        assert!(BittenHandle::from_prim(32).is_err());
+        assert!(BittenHandle::from_prim(u8::MAX).is_err());
+        // The niche survives through MaybeNiche and the generated handle.
+        assert_eq!(size_of::<BittenHandle>(), 1);
+        assert_eq!(size_of::<Option<BittenHandle>>(), 1);
+        // Primitive packing still validates the representation on reconstruction.
+        let packed = max.try_pack_u8().unwrap();
+        assert_eq!(packed, 31);
+        assert_eq!(BittenHandle::try_unpack_u8(packed), Ok(max));
+        assert!(BittenHandle::try_unpack_u8(32).is_err());
     }
 }

@@ -10,6 +10,7 @@
 
 #![expect(private_bounds, reason = "Sealed traits")]
 
+use crate::BittenU8;
 use crate::{NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU128, NonMaxUsize};
 use crate::{NonMinI8, NonMinI16, NonMinI32, NonMinI64, NonMinI128, NonMinIsize};
 use crate::{PrimIndex, PrimInt, PrimSint, PrimUint, items};
@@ -30,7 +31,7 @@ _impl_prim![Sealed for
 ];
 
 #[doc = crate::_tags!(num primitive niche)]
-/// Integer representations backed by a primitive integer.
+/// Integer representations associated with a primitive integer carrier.
 #[doc = crate::_doc_meta!{
     location("num/grain/prim", trait ReprInt),
 }]
@@ -40,7 +41,7 @@ _impl_prim![Sealed for
 /// Implementations include primitive integers and selected niche-backed types.
 #[doc(alias = "IntegerRepresentation")]
 pub trait ReprInt: Sealed + Copy + 'static {
-    /// The primitive integer backing this representation.
+    /// The primitive integer carrier of this representation.
     type Prim: PrimInt;
 }
 items! {
@@ -70,8 +71,19 @@ items! {
     impl ReprInt for NonMinIsize { type Prim = isize; }
 }
 
+macro_rules! _impl_bitten_u8_repr {
+    ($($B:literal),+ $(,)?) => {
+        $(
+            impl Sealed for BittenU8<$B> {}
+            impl ReprInt for BittenU8<$B> { type Prim = u8; }
+            impl ReprIndex for BittenU8<$B> {}
+        )+
+    };
+}
+_impl_bitten_u8_repr![0, 1, 2, 3, 4, 5, 6, 7, 8];
+
 #[doc = crate::_tags!(num primitive niche)]
-/// Integer representations backed by a signed primitive integer.
+/// Integer representations with a signed primitive integer carrier.
 #[doc = crate::_doc_meta!{
     location("num/grain/prim", trait ReprSint),
 }]
@@ -86,7 +98,7 @@ where
 }
 
 #[doc = crate::_tags!(num primitive niche)]
-/// Integer representations backed by an unsigned primitive integer.
+/// Integer representations with an unsigned primitive integer carrier.
 #[doc = crate::_doc_meta!{
     location("num/grain/prim", trait ReprUint),
 }]
@@ -108,8 +120,8 @@ where
 /// The represented domain is non-negative, starts at zero, and is contiguous,
 /// while its primitive carrier is suitable for machine-addressable indexing.
 ///
-/// Implementations include primitive index integers and selected niche-backed
-/// representations such as `NonMaxU*`.
+/// Implementations include primitive index integers and selected
+/// niche-backed representations such as `NonMaxU*` and [`BittenU8`].
 ///
 /// See also [`PrimIndex`], which classifies the primitive carriers themselves.
 #[doc(alias = "IndexRepresentation")]

@@ -267,6 +267,12 @@ pub(crate) fn body_enumint(input: TokenStream1) -> TokenStream1 {
                 #wrapped_body
             }
 
+            /* queries */
+
+            /// Returns whether `self` and `other` represent the same value.
+            #[must_use]
+            pub const fn eq(self, other: Self) -> bool { self.get() == other.get() }
+
             /* getters */
 
             /// Returns the underlying integer representation.

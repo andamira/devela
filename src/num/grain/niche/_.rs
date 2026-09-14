@@ -5,13 +5,13 @@
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(extends: num)]
 //!
-//! This module provides niche-constrained numeric representations and
-//! related utilities for domain modeling, sentinel values, and
-//! memory-efficient data structures.
+//! This module provides niche-constrained numeric representations
+//! and related utilities for domain modeling, sentinel values,
+//! bounded domains, and memory-efficient data structures.
 //!
-//! Niche types prohibit specific values while preserving a compact
-//! in-memory representation, enabling zero-cost optimizations and
-//! improved layout efficiency.
+//! Niche types restrict the set of valid values while preserving compact
+//! representations. The excluded representations can provide
+//! niches for enclosing types such as `Option`.
 //!
 //! ## Core Niche Types
 //!
@@ -22,6 +22,15 @@
 //!   - General extension of `NonZero*` guaranteeing `value != V`.
 //!   - **Implementation**: Stores transformed value in `NonZero*`.
 //!   - **Optimizations**: Automatic instruction selection per case.
+//!
+//! - [`BittenU8`], generic over `<const B>`.
+//!   - Retains the zero-based range `0..=2^(8 - B) - 1`.
+//!   - Reserves the upper byte range as niches for `B = 1..=7`.
+//!   - Useful for compact power-of-two-bounded indices and identifiers.
+//!
+//! - [`enumint!`]
+//!   - Generates an enum over an arbitrary contiguous integer interval.
+//!   - Useful when the desired valid interval is not covered by a predefined type.
 //!
 //! ## Absence and Adapters
 //!
@@ -51,22 +60,27 @@
 //! - **Optimization**: `LEA` instruction fusion.
 //!
 //! ## Optimization Characteristics
-//! | Type            | Prohibits | Storage       | Optimization | vs `NonZero*`         |
-//! |-----------------|-----------|---------------|--------------|-----------------------|
-//! | `NonMaxU*`      | MAX       | `!value`      | `NOT`        | Keeps zero, drops MAX |
-//! | `NonMinI*`      | MIN       | `value ^ MIN` | `LEA`        | Keeps zero, drops MIN |
-//! | `NonValue*`     | Custom V  | `value ^ V`   | `XOR`        | Fully general         |
-//! | `NonZero*`      | 0         | raw value     | -            | Classic case          |
+//!
+//! | Type            |  Prohibits  | Storage           | Optimization | vs `NonZero*`         |
+//! |-----------------|-------------|-------------------|--------------|-----------------------|
+//! | `NonMaxU*`      | MAX         | `!value`          | `NOT`        | Keeps zero, drops MAX |
+//! | `NonMinI*`      | MIN         | `value ^ MIN`     | `LEA`        | Keeps zero, drops MIN |
+//! | `NonValue*`     | Custom V    | `value ^ V`       | `XOR`        | Fully general         |
+//! | `NonZero*`      | 0           | raw value         | -            | Classic case          |
+//! | `BittenU8<B>`   | upper range | enum discriminant | direct       | multiple niches       |
 //!
 //! ## Usage Guide
-//! | Use Case                  | Recommended Type       | Advantage                     |
-//! |---------------------------|------------------------|-------------------------------|
-//! | Must prohibit zero        | `NonZero*`             | Standard solution             |
-//! | Custom sentinel value     | `NonValue*<SENTINEL>`  | Flexible prohibited value     |
-//! | Index/counter handling    | `NonMaxU*`             | Avoids overflow edge cases    |
-//! | Mathematical purity       | `NonMinI*`             | Mathematical clarity          |
-//! | API-only abstraction      | `MaybeNiche`           | Representation-agnostic       |
-//! | No constraints needed     | Primitive / `NonNiche` | Maximum simplicity            |
+//!
+//! | Use Case                       | Recommended Type       | Advantage                         |
+//! |--------------------------------|------------------------|-----------------------------------|
+//! | Must prohibit zero             | `NonZero*`             | Standard solution                 |
+//! | Custom sentinel value          | `NonValue*<SENTINEL>`  | Flexible prohibited value         |
+//! | Reserve one terminal sentinel  | `NonMaxU*`             | Keeps zero, excludes `MAX`        |
+//! | Power-of-two bounded byte ID   | `BittenU8<B>`          | Multiple upper niches             |
+//! | Arbitrary contiguous interval  | `enumint!`             | Exact finite domain               |
+//! | Mathematical signed range      | `NonMinI*`             | Avoids `MIN`                      |
+//! | API-only abstraction           | `MaybeNiche`           | Representation-agnostic           |
+//! | No constraints needed          | Primitive / `NonNiche` | Maximum simplicity                |
 //
 
 crate::mods_in! {
