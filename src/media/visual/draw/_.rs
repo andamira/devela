@@ -12,6 +12,7 @@
 
 crate::mods_in! {
     // mod_ blend; // Source/destination compositing and blend operations
+    // mod_ interop; // SVG, …
     mod canvas; // Canvas, CanvasRead, CanvasTextel
     // mod list; // Retained drawing operations
     // mod_ paint; // Spatial sources of color and related drawing styles
@@ -22,6 +23,7 @@ crate::mods_out! { // _mods
         pub use super::{
             // blend::_all::*,
             canvas::*,
+            // interop::_all::*,
             // list::*,
             // paint::_all::*,
             // stroke::*,

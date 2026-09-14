@@ -33,16 +33,18 @@ crate::CONST! { pub(crate) _DOC_GEOM_MODULES =
 crate::mods_in! {
     mod _helper; // _geom_dim_impl_common!, __geom_dim_cast_ctor!
 
-    pub mod_ affine; // Structure of space under translation and linear combination.
-    pub mod_ dir; // Spatial navigation and facing semantics.
+    pub mod_ affine; // Structure of space under translation and linear combination
+    pub mod_ dir; // Spatial navigation and facing semantics
 
     #[cfg(feature = "fig")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "fig")))]
-    pub mod_ fig; // Concrete geometric figures and objects.
+    pub mod_ fig; // Concrete geometric figures and objects
 
-    pub mod_ metric; // Measurement of space: distances, extents, and magnitudes.
-    mod_ rel; // Spatial predicates and semantic relations between geometric entities. WIP
-    pub mod_ space; // Global organization, decomposition, and structure of space.
+    // pub mod_ interop; // External geometric representations and interchange MAYBE
+
+    pub mod_ metric; // Measurement of space: distances, extents, and magnitudes
+    mod_ rel; // Spatial predicates and semantic relations between geometric entities WIP
+    pub mod_ space; // Global organization, decomposition, and structure of space
 }
 crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
     _mods {

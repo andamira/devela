@@ -8,7 +8,6 @@
 
 crate::mods_in! {
     // mod_ html; // WIP
-    // mod_ svg;
     // mod_ xml;
 }
 crate::mods_out! { // _mods
@@ -16,7 +15,6 @@ crate::mods_out! { // _mods
         // pub use super::{
         //     html::_all::*,
         //     // xml::_all::*,
-        //     // svg::_all::*,
         // };
     }
 }

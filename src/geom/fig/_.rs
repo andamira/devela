@@ -10,7 +10,7 @@
 crate::mods_in! {
     // mod_ curve; // Curved geometric primitives and parametric paths
     // mod_ fold; // Discrete folded structures and crease patterns
-    // mod_ line; // Linear geometric primitives such as segments and rays
+    // mod_ mesh; //
     // mod_ poly; // Polygonal and polyhedral geometric figures
     // mod_ set; // Sets of figures
 }
@@ -19,7 +19,7 @@ crate::mods_out! { // _mods
         // pub use super::{
         //     curve::_all::*,
         //     fold::_all::*,
-        //     line::_all::*,
+        //     mesh::_all::*,
         //     poly::_all::*,
         //     set::_all::*,
         // };
