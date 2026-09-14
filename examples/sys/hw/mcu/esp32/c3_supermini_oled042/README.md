@@ -9,9 +9,10 @@ and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 ## Examples
 
-* `led` — Turns on the board's active-low blue LED on GPIO8.
-* `usb_serial_tx` — Sends `hello from devela` over the native USB Serial/JTAG interface.
-* `usb_serial_chat` — Runs a small interactive command console over native USB serial.
+- `i2c_probe` — Probes the board's built-in OLED over I²C.
+- `led` — Turns on the board's active-low blue LED on GPIO8.
+- `usb_serial_tx` — Sends `hello from devela` over the native USB Serial/JTAG interface.
+- `usb_serial_chat` — Runs a small interactive command console over native USB serial.
 
 ## Requirements
 

@@ -1,4 +1,4 @@
-# devela/examples/hw/mcu/board/supermini_oled042/.cargo/config.toml
+# devela/examples/hw/mcu/esp32/supermini_oled042/.cargo/config.toml
 
 [build]
 target = "riscv32imc-unknown-none-elf"

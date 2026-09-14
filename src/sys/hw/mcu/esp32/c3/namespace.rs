@@ -3,7 +3,7 @@
 //! Defines [`McuEsp32C3`].
 //
 
-use crate::{__cfg_item_unsafe_show, EspReg32, EspUsbSerialJtag, macro_apply};
+use crate::{__cfg_item_unsafe_show, Esp32C3Pin, EspI2c, EspReg32, EspUsbSerialJtag, macro_apply};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
@@ -60,6 +60,7 @@ use crate::{__cfg_item_unsafe_show, EspReg32, EspUsbSerialJtag, macro_apply};
 #[derive(Debug)]
 pub struct McuEsp32C3;
 
+// # GPIO
 impl McuEsp32C3 {
     /// GPIO peripheral base address.
     pub const GPIO_BASE: u32 = 0x6000_4000;
@@ -88,6 +89,18 @@ impl McuEsp32C3 {
 
     /// GPIO input-value register.
     pub const GPIO_IN: EspReg32 = EspReg32::new(Self::GPIO_BASE + 0x003c);
+}
+
+// # I2C, UART and USB serial
+impl McuEsp32C3 {
+    /// External crystal frequency.
+    pub const XTAL_HZ: u32 = 40_000_000;
+
+    /// I²C0 peripheral base address.
+    pub const I2C0_BASE: u32 = 0x6001_3000;
+
+    /// I²C0 controller.
+    pub const I2C0: EspI2c = EspI2c::new(Self::I2C0_BASE);
 
     /// USB Serial/JTAG peripheral base address.
     pub const USB_SERIAL_JTAG_BASE: u32 = 0x6004_3000;
@@ -108,6 +121,94 @@ impl McuEsp32C3 {
     const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
 }
 
+#[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl McuEsp32C3 {
+    /// Enables I²C0, routes it through `sda` and `scl`,
+    /// and configures it as a master at `bus_hz` from the 40 MHz XTAL.
+    ///
+    /// The routed pins are configured for open-drain operation with input
+    /// enabled and their weak internal pull-ups enabled.
+    ///
+    /// # Safety
+    /// I²C0 and both GPIOs must not be concurrently configured or accessed.
+    pub unsafe fn prepare_i2c0(sda: Esp32C3Pin, scl: Esp32C3Pin, bus_hz: u32) {
+        const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600C_0010);
+        const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600C_0018);
+        const I2C0_CLOCK: u32 = 1 << 7;
+        const I2C0_RESET: u32 = 1 << 7;
+
+        const SCL_SIGNAL: u32 = 53;
+        const SDA_SIGNAL: u32 = 54;
+
+        unsafe {
+            let clock = SYSTEM_PERIP_CLK_EN0;
+            clock.write(clock.read() | I2C0_CLOCK);
+
+            let reset = SYSTEM_PERIP_RST_EN0;
+            reset.write(reset.read() | I2C0_RESET);
+            reset.write(reset.read() & !I2C0_RESET);
+
+            Self::prepare_i2c0_pin(sda, SDA_SIGNAL);
+            Self::prepare_i2c0_pin(scl, SCL_SIGNAL);
+
+            Self::I2C0.configure_master_xtal(Self::XTAL_HZ, bus_hz);
+        }
+    }
+
+    unsafe fn prepare_i2c0_pin(pin: Esp32C3Pin, signal: u32) {
+        const IO_MUX_GPIO0: u32 = 0x6000_9004;
+        const GPIO_PIN0: u32 = McuEsp32C3::GPIO_BASE + 0x74;
+        const GPIO_FUNC0_IN: u32 = McuEsp32C3::GPIO_BASE + 0x154;
+        const GPIO_FUNC0_OUT: u32 = McuEsp32C3::GPIO_BASE + 0x554;
+
+        const PAD_DRIVER: u32 = 1 << 2;
+
+        const FUN_PULL_DOWN: u32 = 1 << 7;
+        const FUN_PULL_UP: u32 = 1 << 8;
+        const FUN_INPUT_ENABLE: u32 = 1 << 9;
+        const FUN_SELECT_MASK: u32 = 0b111 << 12;
+        const FUN_GPIO: u32 = 1 << 12;
+
+        const INPUT_MATRIX_ENABLE: u32 = 1 << 6;
+
+        let gpio = pin.gpio() as u32;
+
+        let io_mux = EspReg32::new(IO_MUX_GPIO0 + gpio * 4);
+        let pin_reg = EspReg32::new(GPIO_PIN0 + gpio * 4);
+        let input = EspReg32::new(GPIO_FUNC0_IN + signal * 4);
+        let output = EspReg32::new(GPIO_FUNC0_OUT + gpio * 4);
+
+        unsafe {
+            // I²C idles high.
+            pin.set_high();
+
+            // Open-drain pad.
+            pin_reg.write(pin_reg.read() | PAD_DRIVER);
+
+            // GPIO function, input enabled, weak internal pull-up,
+            // and no internal pull-down.
+            io_mux.write(
+                (io_mux.read() & !(FUN_SELECT_MASK | FUN_PULL_DOWN))
+                    | FUN_GPIO
+                    | FUN_INPUT_ENABLE
+                    | FUN_PULL_UP,
+            );
+
+            // Peripheral output → GPIO.
+            //
+            // Clearing bits 8..10 also selects:
+            // - non-inverted output,
+            // - output-enable controlled by the peripheral,
+            // - non-inverted output-enable.
+            output.write((output.read() & !0x7ff) | signal);
+
+            // GPIO → peripheral input through the GPIO matrix.
+            input.write((input.read() & !0x7f) | INPUT_MATRIX_ENABLE | gpio);
+        }
+    }
+}
+
+//
 #[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl McuEsp32C3 {
     /// Disables the watchdog states left active by ROM flash boot.

@@ -316,6 +316,7 @@ and `◉` to switch back to flat view.
     _DOC_SYS_HW_MCU_AVR       = "AVR microcontrollers and peripheral foundations.";
     _DOC_SYS_HW_MCU_AVR_TIMER = "AVR timer/counter peripherals and timing concepts.";
     _DOC_SYS_HW_MCU_BOARD     = "Microcontroller development boards.";
+    _DOC_SYS_HW_PIN           = "Pin-level hardware interfaces and signal buses.";
     _DOC_SYS_IO          = "I/O primitives and stream interfaces.";
     _DOC_SYS_LOG         = "Instrumentation, diagnostics, logging, tracing, and measurement.";
     _DOC_SYS_LOG_BENCH   = "Execution timing, measurement, and benchmark instrumentation.";

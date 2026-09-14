@@ -1,7 +1,7 @@
 // devela/src/sys/hw/_.rs
 //
 #![doc = crate::_DOC_SYS_HW!()] // public
-#![doc = crate::_doc!(modules: crate::sys; hw: mcu)] //
+#![doc = crate::_doc!(modules: crate::sys; hw: mcu, pin)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -24,8 +24,8 @@ crate::mods_in! {
     // pub mod_ link; // Communication links
     #[cfg(feature = "mcu")]
     pub mod_ mcu; // Microcontroller units
-    // #[cfg(feature = "mcu")]
-    // pub mod_ pin; // Pin-level hardware interfaces
+    #[cfg(feature = "mcu")]
+    pub mod_ pin; // Pin-level hardware interfaces and signal buses.
     // pub mod_ sensor; // Measurement sensors
     // pub mod_ usb; // USB bus/devices
 }
@@ -41,7 +41,7 @@ crate::mods_out! { // _pub_mods
         // };
         #[cfg(feature = "mcu")]
         pub use super::{
-            // pin::_all::*,
+            pin::_all::*,
             mcu::_all::*,
         };
     }
