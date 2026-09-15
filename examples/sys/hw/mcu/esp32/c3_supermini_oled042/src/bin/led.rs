@@ -6,15 +6,15 @@
 #![no_std]
 #![no_main]
 
-use devela::{BoardSuperMiniOled042, esp32_c3_direct_boot, set_panic_handler};
+use devela::BoardSuperMiniOled042 as Board;
 
-set_panic_handler! { loop }
-esp32_c3_direct_boot! { main }
+devela::set_panic_handler! { loop }
+devela::esp32_c3_direct_boot! { main }
 
 fn main() -> ! {
     unsafe {
-        BoardSuperMiniOled042::LED.set_output_low() // Active-low LED: low means ON
-        // BoardSuperMiniOled042::LED.set_output_high() // OFF
+        Board::LED.set_output_low() // Active-low LED: low means ON
+        // Board::LED.set_output_high() // OFF
     }
     loop {}
 }

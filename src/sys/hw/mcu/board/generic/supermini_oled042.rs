@@ -3,7 +3,7 @@
 //! Defines [`BoardSuperMiniOled042`].
 //
 
-use crate::{Esp32C3Pin, EspI2c, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
+use crate::{Esp32C3Pin, Esp32C3Uart, EspI2c, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 SuperMini board with a 0.42-inch OLED.
@@ -11,19 +11,42 @@ use crate::{Esp32C3Pin, EspI2c, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
     location("sys/hw/mcu/board", struct BoardSuperMiniOled042),
     test_size_of(BoardSuperMiniOled042 = 0),
 }]
-/// ESP32-C3 SuperMini board with an onboard 0.42-inch OLED.
+/// A compact generic development board based on [`McuEsp32C3`],
+/// with an onboard 0.42-inch monochrome OLED.
 ///
-/// This namespace describes the tested 72×40 I²C OLED variant
-/// and its fixed board wiring.
+/// This definition targets the common OLED variant tested by devela:
 ///
-/// See also [`McuEsp32C3`][crate::McuEsp32C3].
+/// - active-low blue LED on GPIO8,
+/// - 72 × 40 OLED over I²C0,
+/// - OLED SDA on GPIO5 and SCL on GPIO6,
+/// - OLED address `0x3c`,
+/// - native USB Serial/JTAG through the USB connector,
+/// - direct UART0 routing on GPIO20 RX and GPIO21 TX.
+///
+/// Boards sold under this name are not controlled by a single vendor
+/// and variants exist, so their wiring should be checked before assuming parity.
+///
+/// See also:
+///
+/// - [ESP32-C3 hardware reference]
+/// - [SuperMini board notes]
+/// - [0.42-inch OLED board notes]
+///
+/// [ESP32-C3 hardware reference]: https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/hw-reference/index.html
+/// [SuperMini board notes]: https://sigmdel.ca/michel/ha/esp8266/super_mini_esp32c3_en.html
+/// [0.42-inch OLED board notes]: https://github.com/ESP32Home/oled_042
+
 #[derive(Debug)]
 pub struct BoardSuperMiniOled042;
 
+/// # Board I/O
 impl BoardSuperMiniOled042 {
     /// Built-in active-low blue LED on GPIO8.
     pub const LED: Esp32C3Pin = Esp32C3Pin::new(8);
+}
 
+/// # OLED
+impl BoardSuperMiniOled042 {
     /// I²C controller connected to the OLED.
     pub const OLED_I2C: EspI2c = McuEsp32C3::I2C0;
 
@@ -44,6 +67,12 @@ impl BoardSuperMiniOled042 {
 
     /// OLED visible height in pixels.
     pub const OLED_HEIGHT: usize = 40;
+}
+
+/// # Serial
+impl BoardSuperMiniOled042 {
+    /// UART0, directly routed to GPIO20 RX and GPIO21 TX.
+    pub const UART0: Esp32C3Uart = McuEsp32C3::UART0;
 
     /// Native USB serial interface exposed through the board's USB connector.
     pub const USB_SERIAL: EspUsbSerialJtag = McuEsp32C3::USB_SERIAL_JTAG;

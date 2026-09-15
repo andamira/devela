@@ -6,17 +6,15 @@
 #![no_std]
 #![no_main]
 
-use devela::{
-    BoardSuperMiniOled042, EspUsbSerialJtag, esp32_c3_direct_boot, is, set_panic_handler,
-};
+use devela::{BoardSuperMiniOled042 as Board, EspUsbSerialJtag, is};
 
-set_panic_handler! { loop }
-esp32_c3_direct_boot! { main }
+devela::set_panic_handler! { loop }
+devela::esp32_c3_direct_boot! { main }
 
 const LINE_CAPACITY: usize = 32;
 
 fn main() -> ! {
-    let (serial, led) = (BoardSuperMiniOled042::USB_SERIAL, BoardSuperMiniOled042::LED);
+    let (serial, led) = (Board::USB_SERIAL, Board::LED);
 
     unsafe {
         led.set_output_high(); // Active-low LED: high means OFF
@@ -62,7 +60,7 @@ fn main() -> ! {
 }
 
 unsafe fn handle_command(serial: EspUsbSerialJtag, command: &[u8]) {
-    let led = BoardSuperMiniOled042::LED;
+    let led = Board::LED;
     unsafe {
         if command == b"ping" {
             serial.write_bytes_blocking(b"pong\r\n");

@@ -10,6 +10,18 @@
 //!
 //! Silicon-specific peripherals and register layouts belong
 //! to the MCU family modules, such as [`sys::hw::mcu::avr`][super::avr].
+//!
+//! # Boards
+//!
+//! | Board                   | MCU           |       Clock | Onboard I/O | Display    | Host / serial          |
+//! | ----------------------- | ------------- | ----------: | ----------- | ---------- | ---------------------- |
+//! | `BoardArduinoNano`      | McuAtmega328p |      16 MHz | D13 LED     | —          | USB–UART               |
+//! | `BoardSuperMiniOled042` | McuEsp32C3    | 40 MHz XTAL | GPIO8 LED   | 72×40 OLED | USB Serial/JTAG, UART0 |
+//!
+//! ```txt
+//! ◇  hardware capability not yet exposed by devela
+//! —  not present / not applicable
+//! ```
 //
 
 crate::mods_in! {

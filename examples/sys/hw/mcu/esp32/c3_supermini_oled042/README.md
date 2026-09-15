@@ -7,12 +7,14 @@ Minimal bare-metal examples for an ESP32-C3 SuperMini board with a 0.42-inch OLE
 They boot through the ESP32-C3 ROM direct-boot path
 and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
+
 ## Examples
 
 - `i2c_probe` — Probes the board's built-in OLED over I²C.
 - `led` — Turns on the board's active-low blue LED on GPIO8.
-- `usb_serial_tx` — Sends `hello from devela` over the native USB Serial/JTAG interface.
+- `uart_echo` — Tests UART0 TX/RX through GPIO20 and GPIO21.
 - `usb_serial_chat` — Runs a small interactive command console over native USB serial.
+
 
 ## Requirements
 
@@ -38,6 +40,7 @@ cargo install espflash --locked
 On Linux, the USB serial device is typically `/dev/ttyACM0`.
 The user needs permission to access it, commonly through the `dialout` group.
 
+
 ## Build and flash
 
 The runner defaults to the `led` binary:
@@ -49,7 +52,6 @@ The runner defaults to the `led` binary:
 Select another example with the second argument:
 
 ```sh
-./run.sh run usb_serial_tx
 ./run.sh run usb_serial_chat
 ```
 
@@ -70,6 +72,27 @@ ESP32-C3 direct-boot header, and writes it directly at flash address `0x0`.
 
 Flashing replaces the firmware stored at the beginning of flash.
 Back up any factory firmware first if it needs to be preserved.
+
+
+## UART0
+
+`uart_echo` tests the ESP32-C3's direct UART0 connection at 115200 baud:
+
+| ESP32-C3 | USB–UART |
+|----------|----------|
+| GPIO21 TX | RX |
+| GPIO20 RX | TX |
+| GND | GND |
+
+The board remains powered and flashed through its USB connector.
+Do **not** connect the USB–UART adapter's power pins.
+
+Open the adapter with local echo disabled:
+
+```sh
+picocom -b 115200 /dev/ttyUSB0
+```
+
 
 ## USB serial
 
@@ -101,6 +124,7 @@ message; an already-running `usb_serial_chat` continues accepting commands.
 USB Serial/JTAG transports bytes over USB rather than a UART bitstream,
 so there is no device-side baud-rate configuration.
 
+
 ## Direct boot
 
 The examples use devela's `esp32_c3_direct_boot!` macro for the minimal
@@ -114,6 +138,7 @@ devela also provides the matching `esp32_c3_direct_boot.x` linker script.
 Its build script makes the linker resource available for the
 `riscv32imc-unknown-none-elf` target, and this example selects it from
 `.cargo/config.toml`.
+
 
 ## Size
 

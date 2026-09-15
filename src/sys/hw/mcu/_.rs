@@ -13,6 +13,19 @@
 //! - silicon peripherals from development-board wiring,
 //! - target/compiler support from runtime support,
 //! - host-side build and flashing tools from firmware dependencies.
+//!
+//! # Microcontrollers
+//!
+//! | MCU             | Core              | Memory                                 | GPIO | Timers                         | Serial                    | Analog      | Radio        |
+//! | --------------- | ----------------- | -------------------------------------- | ---: | ------------------------------ | ------------------------- | ----------- | ------------ |
+//! | `McuAtmega328p` | AVR 8-bit, 20 MHz | 32 KiB Flash, 2 KiB SRAM, 1 KiB EEPROM |   23 | T0/T1/T2                       | USART0, ◇SPI, ◇TWI        | ◇10-bit ADC | —            |
+//! | `McuEsp32C3`    | RV32IMC, 160 MHz  | 384 KiB ROM, 400 KiB SRAM, ext. Flash  |   22 | ◇GPTimer, ◇SYSTIMER, watchdogs | UART0, ◇UART1, I²C0, ◇SPI | ◇12-bit ADC | ◇Wi-Fi, ◇BLE |
+//!
+//! ```txt
+//! ◇  hardware capability not yet exposed by devela
+//! —  not present / not applicable
+//! ```
+//!
 //
 
 crate::mods_in! {

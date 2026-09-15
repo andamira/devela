@@ -3,7 +3,8 @@
 //! Defines [`McuEsp32C3`].
 //
 
-use crate::{__cfg_item_unsafe_show, Esp32C3Pin, EspI2c, EspReg32, EspUsbSerialJtag, macro_apply};
+use crate::{__cfg_item_unsafe_show, macro_apply};
+use crate::{Esp32C3Pin, Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
@@ -11,56 +12,50 @@ use crate::{__cfg_item_unsafe_show, Esp32C3Pin, EspI2c, EspReg32, EspUsbSerialJt
     location("sys/hw/mcu/esp32", struct McuEsp32C3),
     test_size_of(McuEsp32C3 = 0),
 }]
-/// ESP32-C3 microcontroller namespace.
+/// The ESP32-C3 is a single-core 32-bit RISC-V microcontroller with a
+/// maximum CPU frequency of 160 MHz, 384 KiB of ROM, and 400 KiB of SRAM.
 ///
-/// # GPIO model
+/// It integrates 2.4 GHz Wi-Fi and Bluetooth LE, alongside peripherals
+/// including two UARTs, I²C, SPI, timers, watchdogs, and USB Serial/JTAG.
+/// The main ESP32-C3 variants provide GPIO0 through GPIO21.
 ///
-/// GPIO0 through GPIO21 correspond to bits 0 through 21 in the GPIO registers exposed here.
+/// devela currently provides direct-boot startup support together with
+/// low-level access to GPIO, I²C0, UART0, and USB Serial/JTAG.
 ///
-/// Simple digital output involves two independent pieces of state:
+/// # GPIO
+///
+/// Simple digital output has two independent pieces of state:
+///
 /// - [`GPIO_OUT`] holds the output levels.
 /// - [`GPIO_ENABLE`] selects which pins actively drive those levels.
 ///
-/// The `W1TS` and `W1TC` variants modify selected bits
-/// without requiring a read-modify-write:
+/// Their `W1TS` and `W1TC` variants set or clear selected bits without
+/// requiring a read-modify-write.
 ///
-/// - `W1TS`: writing `1` sets the selected bit.
-/// - `W1TC`: writing `1` clears the selected bit.
+/// IO MUX and the GPIO matrix provide the wider pin-routing system.
+/// Peripheral use therefore may require more than the basic GPIO registers.
 ///
-/// For example, to drive GPIO8 low:
-/// ```ignore
-/// let gpio8 = 1 << 8;
+/// See also:
 ///
-/// unsafe {
-///     McuEsp32C3::GPIO_OUT_W1TC.write(gpio8);
-///     McuEsp32C3::GPIO_ENABLE_W1TS.write(gpio8);
-/// }
-/// ```
-///
-/// Setting the desired output level before enabling the driver
-/// avoids briefly driving an unintended level.
-///
-/// To drive the same output high afterwards:
-/// ```ignore
-/// unsafe {
-///     McuEsp32C3::GPIO_OUT_W1TS.write(gpio8);
-/// }
-/// ```
-///
-/// # GPIO configuration
-///
-/// The output registers are only part of the ESP32-C3 GPIO system.
-/// IO MUX configures the pads and their electrical behavior, while the GPIO matrix
-/// can route peripheral signals between internal peripherals and external pins.
-///
-/// Not every GPIO use therefore consists only of writing the registers above.
+/// - [ESP32-C3 datasheet]
+/// - [ESP32-C3 Technical Reference Manual]
+/// - [ESP32-C3 hardware reference]
 ///
 /// [`GPIO_OUT`]: #associatedconstant.GPIO_OUT
 /// [`GPIO_ENABLE`]: #associatedconstant.GPIO_ENABLE
+/// [ESP32-C3 datasheet]: https://documentation.espressif.com/esp32-c3_datasheet_en.pdf
+/// [ESP32-C3 Technical Reference Manual]: https://documentation.espressif.com/esp32-c3_technical_reference_manual_en.pdf
+/// [ESP32-C3 hardware reference]: https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/hw-reference/index.html
 #[derive(Debug)]
 pub struct McuEsp32C3;
 
-// # GPIO
+/// # Clock
+impl McuEsp32C3 {
+    /// External crystal frequency.
+    pub const XTAL_HZ: u32 = 40_000_000;
+}
+
+/// # GPIO
 impl McuEsp32C3 {
     /// GPIO peripheral base address.
     pub const GPIO_BASE: u32 = 0x6000_4000;
@@ -91,25 +86,25 @@ impl McuEsp32C3 {
     pub const GPIO_IN: EspReg32 = EspReg32::new(Self::GPIO_BASE + 0x003c);
 }
 
-// # I2C, UART and USB serial
+/// # Peripherals
 impl McuEsp32C3 {
-    /// External crystal frequency.
-    pub const XTAL_HZ: u32 = 40_000_000;
-
     /// I²C0 peripheral base address.
     pub const I2C0_BASE: u32 = 0x6001_3000;
-
     /// I²C0 controller.
     pub const I2C0: EspI2c = EspI2c::new(Self::I2C0_BASE);
 
+    /// UART0 peripheral base address.
+    pub const UART0_BASE: u32 = 0x6000_0000;
+    /// UART0 controller.
+    pub const UART0: Esp32C3Uart = Esp32C3Uart::new(Self::UART0_BASE);
+
     /// USB Serial/JTAG peripheral base address.
     pub const USB_SERIAL_JTAG_BASE: u32 = 0x6004_3000;
-
     /// Native USB Serial/JTAG controller.
     pub const USB_SERIAL_JTAG: EspUsbSerialJtag = EspUsbSerialJtag::new(Self::USB_SERIAL_JTAG_BASE);
 }
 
-/* private helpers */
+/* private registers */
 #[allow(dead_code)]
 impl McuEsp32C3 {
     const WDT_WKEY: u32 = 0x50D8_3AA1;
@@ -121,6 +116,7 @@ impl McuEsp32C3 {
     const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
 }
 
+/// # I²C
 #[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl McuEsp32C3 {
     /// Enables I²C0, routes it through `sda` and `scl`,
@@ -208,7 +204,60 @@ impl McuEsp32C3 {
     }
 }
 
-//
+/// # UART
+#[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
+impl McuEsp32C3 {
+    /// Enables UART0 and selects its direct IO-MUX pins:
+    /// GPIO20 for RX and GPIO21 for TX.
+    ///
+    /// This does not configure baud rate or framing.
+    ///
+    /// # Safety
+    /// UART0 and GPIO20/21 must not be concurrently configured.
+    pub unsafe fn prepare_uart0_default() {
+        const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600C_0010);
+        const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600C_0018);
+
+        const UART0_CLOCK: u32 = 1 << 2;
+        const UART0_RESET: u32 = 1 << 2;
+        const UART_RST_CORE: u32 = 1 << 23;
+        const UART_MEMORY_CLOCK: u32 = 1 << 24;
+
+        const IO_MUX_RX: EspReg32 = EspReg32::new(0x6000_9054);
+        const IO_MUX_TX: EspReg32 = EspReg32::new(0x6000_9058);
+
+        const INPUT_ENABLE: u32 = 1 << 9;
+        const FUNCTION_MASK: u32 = 0b111 << 12;
+
+        unsafe {
+            // Keep UART0 and its FIFO memory clocked.
+            let clock = SYSTEM_PERIP_CLK_EN0;
+            clock.write(clock.read() | UART0_CLOCK | UART_MEMORY_CLOCK);
+
+            // Reset the UART peripheral and core together.
+            //
+            // The ESP32-C3 requires the core reset around the peripheral-reset
+            // pulse to avoid transient UART output during initialization.
+            let reset = SYSTEM_PERIP_RST_EN0;
+            let uart_clock = Self::UART0.clock_config_reg();
+
+            reset.write(reset.read() & !UART0_RESET);
+            uart_clock.write(uart_clock.read() | UART_RST_CORE);
+            reset.write(reset.read() | UART0_RESET);
+            reset.write(reset.read() & !UART0_RESET);
+            uart_clock.write(uart_clock.read() & !UART_RST_CORE);
+
+            // Function 0 directly connects GPIO20/21 to U0RXD/U0TXD.
+            let rx = IO_MUX_RX;
+            rx.write((rx.read() & !FUNCTION_MASK) | INPUT_ENABLE);
+
+            let tx = IO_MUX_TX;
+            tx.write(tx.read() & !FUNCTION_MASK);
+        }
+    }
+}
+
+/// # Boot watchdogs
 #[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl McuEsp32C3 {
     /// Disables the watchdog states left active by ROM flash boot.
