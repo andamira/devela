@@ -15,7 +15,7 @@ use crate::McuEsp32C3;
 /// It does not configure the IO MUX, GPIO matrix, pull resistors, or input path.
 /// Those are independent parts of the ESP32-C3 pin configuration.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/mcu/esp32/c3", struct Esp32C3Pin),
+    location("sys/hw/mcu/esp32", struct Esp32C3Pin),
     test_size_of(Esp32C3Pin = 1|8; niche !Option),
 }]
 #[repr(transparent)]

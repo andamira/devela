@@ -38,6 +38,7 @@ use crate::{__cfg_item_unsafe_show, EspReg32, is, macro_apply};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Esp32C3Uart(u32);
 
+/// # Registers
 #[rustfmt::skip]
 impl Esp32C3Uart {
     /// Creates a UART controller from its register base address.
@@ -73,7 +74,7 @@ impl Esp32C3Uart {
     pub const fn clock_config_reg(self) -> EspReg32 { EspReg32::new(self.0 + 0x78) }
 }
 
-/* */
+/* private helpers */
 #[allow(dead_code)]
 impl Esp32C3Uart {
     const FIFO_CAPACITY: u32 = 128;
@@ -193,12 +194,18 @@ impl Esp32C3Uart {
 #[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl Esp32C3Uart {
     /// Returns the number of bytes currently held in the receive FIFO.
+    ///
+    /// # Safety
+    /// This must describe the active UART peripheral and not be concurrently read.
     #[must_use]
     pub unsafe fn rx_len(self) -> u16 {
         unsafe { (self.status_reg().read() & Self::RXFIFO_COUNT_MASK) as u16 }
     }
 
     /// Returns whether a received byte is ready.
+    ///
+    /// # Safety
+    /// This must describe the active UART peripheral and not be concurrently read.
     #[must_use]
     pub unsafe fn rx_ready(self) -> bool {
         unsafe { self.rx_len() != 0 }
@@ -227,6 +234,9 @@ impl Esp32C3Uart {
 #[macro_apply(__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl Esp32C3Uart {
     /// Returns the number of bytes currently held in the transmit FIFO.
+    ///
+    /// # Safety
+    /// This must describe the active UART peripheral and not be concurrently written.
     #[must_use]
     pub unsafe fn tx_len(self) -> u16 {
         unsafe {
@@ -235,6 +245,9 @@ impl Esp32C3Uart {
         }
     }
     /// Returns whether the transmit FIFO can accept another byte.
+    ///
+    /// # Safety
+    /// This must describe the active UART peripheral and not be concurrently written.
     #[must_use]
     pub unsafe fn tx_ready(self) -> bool {
         unsafe { self.tx_len() < Self::FIFO_CAPACITY as u16 }

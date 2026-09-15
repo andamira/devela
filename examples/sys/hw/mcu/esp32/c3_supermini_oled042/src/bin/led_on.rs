@@ -1,4 +1,4 @@
-// devela/examples/sys/hw/mcu/esp/c3_supermini_oled042/src/bin/led.rs
+// devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/src/bin/led_on.rs
 //
 //! Turns on the board's GPIO8 LED using direct ESP32-C3 MMIO.
 //

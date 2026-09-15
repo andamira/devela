@@ -19,7 +19,6 @@ devela dependency. Each program lives under `src/bin/`.
 - `timer1_pwm` — Timer1 fast PWM on PB1 / OC1A (D9); fades an external LED.
 - `timer2_ctc` — 8-bit Timer2 CTC polling; toggles the LED directly every 500 ms.
 - `usart_chat` — interactive USART0 command/response console at 9600 baud, 8N1.
-- `usart_tx` — USART0 transmission at 9600 baud, 8N1; sends `hello from devela`.
 
 
 ## Requirements
@@ -78,7 +77,7 @@ serial baud rate configured by the firmware itself.
 Flash the USART example:
 
 ```sh
-./run.sh run usart_tx
+./run.sh run usart_chat
 ```
 
 Then open the serial port at the 9600 baud rate configured by the firmware:
@@ -90,7 +89,9 @@ picocom -b 9600 /dev/ttyUSB0
 The program sends:
 
 ```text
-hello from devela
+devela nano ready
+commands: ping, help, led on, led off, status, help
+>
 ```
 
 On the board tested here, opening `picocom` resets the Nano and the one-shot

@@ -6,9 +6,9 @@
 #![no_std]
 #![no_main]
 
-use devela::{AvrPin, BoardArduinoNano, McuAtmega328p, set_panic_handler};
+use devela::{AvrPin, BoardArduinoNano as Board, McuAtmega328p as Mcu, is};
 
-set_panic_handler! { loop }
+devela::set_panic_handler! { loop }
 
 // 16 MHz / 64 = 250 kHz.
 // 50,000 ticks = 200 ms.
@@ -16,9 +16,9 @@ const TRIGGER_AT: u16 = 50_000;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let timer = McuAtmega328p::TIMER_1;
-    let icp1 = AvrPin::new(McuAtmega328p::PORT_B, 0); // PB0 / Nano D8
-    let led = BoardArduinoNano::LED;
+    let timer = Mcu::TIMER_1;
+    let icp1 = AvrPin::new(Mcu::PORT_B, 0); // PB0 / Nano D8
+    let led = Board::LED;
 
     unsafe {
         led.set_output_low();
@@ -47,8 +47,6 @@ pub extern "C" fn main() -> ! {
         unsafe { timer.clear_input_capture() };
 
         // The captured timestamp should be at or just after TRIGGER_AT.
-        if captured >= TRIGGER_AT {
-            unsafe { led.toggle() };
-        }
+        is! { captured >= TRIGGER_AT, unsafe { led.toggle() } }
     }
 }

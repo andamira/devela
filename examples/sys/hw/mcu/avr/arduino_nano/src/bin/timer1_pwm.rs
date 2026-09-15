@@ -6,9 +6,9 @@
 #![no_std]
 #![no_main]
 
-use devela::{AvrPin, BoardArduinoNano, McuAtmega328p, is, set_panic_handler};
+use devela::{AvrPin, McuAtmega328p as Mcu, is};
 
-set_panic_handler! { loop }
+devela::set_panic_handler! { loop }
 
 // 16 MHz / 8 / (1999 + 1) = 1 kHz PWM.
 const PWM_TOP: u16 = 1_999;
@@ -19,8 +19,8 @@ const DUTY_STEP: u16 = 2;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let timer = McuAtmega328p::TIMER_1;
-    let pwm = AvrPin::new(McuAtmega328p::PORT_B, 1); // PB1 / OC1A / Nano D9
+    let timer = Mcu::TIMER_1;
+    let pwm = AvrPin::new(Mcu::PORT_B, 1); // PB1 / OC1A / Nano D9
 
     unsafe {
         pwm.set_output_low();

@@ -8,10 +8,10 @@ They boot through the ESP32-C3 ROM direct-boot path
 and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 
-## Examples
+## Programs
 
 - `i2c_probe` — Probes the board's built-in OLED over I²C.
-- `led` — Turns on the board's active-low blue LED on GPIO8.
+- `led_on` — Turns on the board's active-low blue LED on GPIO8.
 - `uart_echo` — Tests UART0 TX/RX through GPIO20 and GPIO21.
 - `usb_serial_chat` — Runs a small interactive command console over native USB serial.
 
@@ -43,7 +43,7 @@ The user needs permission to access it, commonly through the `dialout` group.
 
 ## Build and flash
 
-The runner defaults to the `led` binary:
+The runner defaults to the `led_on` binary:
 
 ```sh
 ./run.sh
@@ -93,10 +93,20 @@ Open the adapter with local echo disabled:
 picocom -b 115200 /dev/ttyUSB0
 ```
 
+It comprises a three-way diagnostic:
+```
+C3 TX only   → startup banner verifies TX
+C3 RX only   → typing any single character toggles the LED
+both         → received characters are echoed
+```
+
+Note that some ROM output and binary flashing traffic
+is expected to show before the example takes control.
+
 
 ## USB serial
 
-The USB serial examples use the ESP32-C3's native USB Serial/JTAG peripheral,
+The USB serial example uses the ESP32-C3's native USB Serial/JTAG peripheral,
 exposed on Linux through the same `/dev/ttyACM*` device used for flashing.
 
 Because flashing and console access share this connection, the firmware can

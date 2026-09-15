@@ -1,7 +1,7 @@
 #!/bin/sh
 # devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/run.sh
 #
-# Builds and optionally flashes the ESP32-C3 direct-boot LED example.
+# Builds and optionally flashes an ESP32-C3 direct-boot example.
 
 set -eu
 

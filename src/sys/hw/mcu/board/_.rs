@@ -18,8 +18,8 @@
 //! | `BoardArduinoNano`      | McuAtmega328p |      16 MHz | D13 LED     | —          | USB–UART               |
 //! | `BoardSuperMiniOled042` | McuEsp32C3    | 40 MHz XTAL | GPIO8 LED   | 72×40 OLED | USB Serial/JTAG, UART0 |
 //!
+// ◇  hardware capability not yet exposed by devela
 //! ```txt
-//! ◇  hardware capability not yet exposed by devela
 //! —  not present / not applicable
 //! ```
 //

@@ -6,9 +6,9 @@
 #![no_std]
 #![no_main]
 
-use devela::{BoardArduinoNano, McuAtmega328p, set_panic_handler};
+use devela::{BoardArduinoNano, McuAtmega328p as Mcu};
 
-set_panic_handler! { loop }
+devela::set_panic_handler! { loop }
 
 // 16 MHz / 256 = 62.5 kHz.
 // 31,250 counts = 500 ms.
@@ -17,8 +17,7 @@ const TIMER1_TOP_500MS: u16 = (BoardArduinoNano::CPU_HZ / 256 / 2 - 1) as u16;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let timer = McuAtmega328p::TIMER_1;
-    let led = BoardArduinoNano::LED;
+    let (timer, led) = (Mcu::TIMER_1, Board::LED);
 
     unsafe {
         led.set_output_low();

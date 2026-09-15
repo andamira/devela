@@ -17,6 +17,9 @@ use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 /// registers such as [`AvrReg8`][crate::AvrReg8]. Runtime data and the stack
 /// share SRAM, while Flash and EEPROM are separate storage spaces.
 ///
+/// devela currently provides low-level GPIO access,
+/// all three timer/counters, and USART0.
+///
 /// Its timer/counter peripherals comprise:
 /// - two 8-bit timers (Timer/Counter0 and Timer/Counter2),
 /// - one 16-bit timer (Timer/Counter1).
@@ -34,6 +37,7 @@ use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 #[derive(Debug)]
 pub struct McuAtmega328p;
 
+/// # GPIO
 impl McuAtmega328p {
     /// GPIO port B.
     pub const PORT_B: AvrPort = AvrPort::new(0x23, 0x24, 0x25);
@@ -43,7 +47,10 @@ impl McuAtmega328p {
 
     /// GPIO port D.
     pub const PORT_D: AvrPort = AvrPort::new(0x29, 0x2A, 0x2B);
+}
 
+/// # Timers
+impl McuAtmega328p {
     /// Timer/Counter0 peripheral.
     pub const TIMER_0: AvrTimer0 = AvrTimer0::new(0x44, 0x45, 0x46, 0x47, 0x48, 0x6E, 0x35);
 
@@ -60,7 +67,10 @@ impl McuAtmega328p {
 
     /// Timer/Counter2 peripheral.
     pub const TIMER_2: AvrTimer2 = AvrTimer2::new(0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB6, 0x70, 0x37);
+}
 
+/// # Serial
+impl McuAtmega328p {
     /// USART 0 peripheral.
     pub const USART_0: AvrUsart = AvrUsart::new(0xC0, 0xC1, 0xC2, 0xC4, 0xC5, 0xC6);
 }

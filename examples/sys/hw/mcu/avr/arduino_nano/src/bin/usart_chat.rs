@@ -6,23 +6,23 @@
 #![no_std]
 #![no_main]
 
-use devela::{AvrUsart, BoardArduinoNano, is, set_panic_handler};
+use devela::{AvrUsart, BoardArduinoNano as Board, is};
 
-set_panic_handler! { loop }
+devela::set_panic_handler! { loop }
 
 const LINE_CAPACITY: usize = 32;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let (uart, led) = (BoardArduinoNano::USART, BoardArduinoNano::LED);
+    let (uart, led) = (Board::USART, Board::LED);
 
     unsafe {
         led.set_output_low(); // Active-high LED: low means OFF.
 
-        uart.configure_rx_tx_8n1(BoardArduinoNano::CPU_HZ, 9_600);
+        uart.configure_rx_tx_8n1(Board::CPU_HZ, 9_600);
         uart.write_bytes_blocking(
             b"devela nano ready\r\n\
-              commands: ping, led on, led off, status\r\n\
+              commands: ping, led on, led off, status, help\r\n\
               > ",
         );
 
@@ -58,7 +58,7 @@ pub extern "C" fn main() -> ! {
 }
 
 unsafe fn handle_command(uart: AvrUsart, command: &[u8]) {
-    let led = BoardArduinoNano::LED;
+    let led = Board::LED;
     unsafe {
         if command == b"ping" {
             uart.write_bytes_blocking(b"pong\r\n");
@@ -74,6 +74,8 @@ unsafe fn handle_command(uart: AvrUsart, command: &[u8]) {
             } else {
                 uart.write_bytes_blocking(b"led=off\r\n");
             }
+        } else if command == b"help" {
+            uart.write_bytes_blocking(b"commands: ping, led on, led off, status, help\r\n");
         } else {
             uart.write_bytes_blocking(b"unknown command\r\n");
         }

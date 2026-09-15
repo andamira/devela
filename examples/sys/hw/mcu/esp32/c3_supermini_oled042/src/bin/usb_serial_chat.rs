@@ -25,7 +25,7 @@ fn main() -> ! {
 
         serial.write_bytes_blocking(
             b"devela esp32-c3 ready\r\n\
-              commands: ping, led on, led off, status\r\n\
+              commands: ping, led on, led off, status, help\r\n\
               > ",
         );
 
@@ -77,7 +77,7 @@ unsafe fn handle_command(serial: EspUsbSerialJtag, command: &[u8]) {
                 serial.write_bytes_blocking(b"led=off\r\n");
             }
         } else if command == b"help" {
-            serial.write_bytes_blocking(b"commands: ping, led on, led off, status\r\n");
+            serial.write_bytes_blocking(b"commands: ping, led on, led off, status, help\r\n");
         } else {
             serial.write_bytes_blocking(b"unknown command\r\n");
         }

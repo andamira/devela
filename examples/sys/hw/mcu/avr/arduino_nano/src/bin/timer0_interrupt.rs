@@ -7,14 +7,14 @@
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
-use devela::{Arch, BoardArduinoNano, McuAtmega328p, set_panic_handler};
+use devela::{Arch, BoardArduinoNano as Board, McuAtmega328p as Mcu};
 
-set_panic_handler! { loop }
+devela::set_panic_handler! { loop }
 
 // 16 MHz / 64 = 250 kHz.
 // 250 timer counts = 1 ms.
 // CTC counts 0..=OCR0A, therefore OCR0A = 249.
-const TIMER0_TOP_1MS: u8 = (BoardArduinoNano::CPU_HZ / 64 / 1_000 - 1) as u8;
+const TIMER0_TOP_1MS: u8 = (Board::CPU_HZ / 64 / 1_000 - 1) as u8;
 
 // ATmega328P Timer/Counter0 Compare Match A vector.
 #[unsafe(export_name = "__vector_14")]
@@ -26,7 +26,7 @@ pub extern "avr-interrupt" fn timer0_compare_a() {
         MILLIS += 1;
 
         if MILLIS == 250 {
-            BoardArduinoNano::LED.toggle();
+            Board::LED.toggle();
             MILLIS = 0;
         }
     }
@@ -34,12 +34,12 @@ pub extern "avr-interrupt" fn timer0_compare_a() {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let timer = McuAtmega328p::TIMER_0;
+    let timer = Mcu::TIMER_0;
 
     Arch::disable_interrupts();
 
     unsafe {
-        BoardArduinoNano::LED.set_output_low();
+        Board::LED.set_output_low();
 
         timer.configure_ctc(TIMER0_TOP_1MS, 64);
         timer.enable_compare_a_interrupt();
