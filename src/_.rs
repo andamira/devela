@@ -70,7 +70,7 @@
 )]
 //
 // `nightly_stable_1_100`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_100, feature(bool_toggle, drop_guard, never_type,))]
+#![cfg_attr(nightly_stable_1_100, feature(bool_toggle, drop_guard, never_type, unsafe_cell_access))]
 #![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature(smart_pointer_try_map,))]
 #![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 //

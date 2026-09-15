@@ -68,6 +68,7 @@ See also
 - 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 - 1.100: ` `[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
+- 1.100: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
@@ -131,7 +132,6 @@ See also
 - 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
-- 1.??: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
