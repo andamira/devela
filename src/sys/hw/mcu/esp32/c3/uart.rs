@@ -210,11 +210,7 @@ impl Esp32C3Uart {
     /// This must describe the active UART peripheral and not be concurrently read.
     #[must_use]
     pub unsafe fn try_read_byte(self) -> Option<u8> {
-        if unsafe { self.rx_ready() } {
-            Some(unsafe { self.fifo_reg().read() as u8 })
-        } else {
-            None
-        }
+        is! { unsafe { self.rx_ready() }, Some(unsafe { self.fifo_reg().read() as u8 }), None }
     }
     /// Reads one received byte, waiting until one is available.
     ///

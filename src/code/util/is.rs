@@ -172,15 +172,15 @@ macro_rules! is· {
     /* internals */
     (% if $cond:expr, $then:block) => {
         #[allow(clippy::question_mark, reason = "to remain const-friendly")]
-        if $cond $then };
+        if ($cond) $then };
     (% if $cond:expr, $then:block, $else:block) => {
-        if $cond $then else $else
+        if ($cond) $then else $else
     };
     (% let $pat:pat = $cond:expr, $then:block) => {
         #[allow(clippy::question_mark, reason = "to remain const-friendly")]
-        if let $pat = $cond $then };
+        if let $pat = ($cond) $then };
     (% let $pat:pat = $cond:expr, $then:block, $else:block) => {
-        if let $pat = $cond $then else $else
+        if let $pat = ($cond) $then else $else
     };
 }
 #[doc(inline)]
