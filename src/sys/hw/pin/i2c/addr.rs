@@ -26,7 +26,6 @@ impl I2cAddr7 {
         assert!(addr < 0x80, "I²C 7-bit address must fit in 7 bits");
         Self(addr)
     }
-
     /// Creates a 7-bit I²C address if `addr` fits in 7 bits.
     #[must_use]
     pub const fn new_checked(addr: u8) -> Option<Self> {
@@ -37,5 +36,20 @@ impl I2cAddr7 {
     #[must_use]
     pub const fn get(self) -> u8 {
         self.0
+    }
+
+    /// Returns the on-wire address byte for a write transfer.
+    ///
+    /// The 7-bit address is shifted left and the read/write bit is cleared.
+    #[must_use]
+    pub const fn write_address_byte(self) -> u8 {
+        self.0 << 1
+    }
+    /// Returns the on-wire address byte for a read transfer.
+    ///
+    /// The 7-bit address is shifted left and the read/write bit is set.
+    #[must_use]
+    pub const fn read_address_byte(self) -> u8 {
+        self.0 << 1 | 1
     }
 }

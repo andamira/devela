@@ -125,14 +125,14 @@ impl McuEsp32C3 {
     ///
     /// # Safety
     /// I²C0 and both GPIOs must not be concurrently configured or accessed.
-    pub unsafe fn prepare_i2c0(sda: Esp32C3Pin, scl: Esp32C3Pin, bus_hz: u32) {
+    pub unsafe fn prepare_i2c0(sda: Esp32C3Pin, scl: Esp32C3Pin, bus_hz: u32) -> EspI2c {
         const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600C_0010);
         const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600C_0018);
         const I2C0_CLOCK: u32 = 1 << 7;
         const I2C0_RESET: u32 = 1 << 7;
 
-        const SCL_SIGNAL: u32 = 53;
-        const SDA_SIGNAL: u32 = 54;
+        const SCL_SIGNAL: u8 = 53;
+        const SDA_SIGNAL: u8 = 54;
 
         unsafe {
             let clock = SYSTEM_PERIP_CLK_EN0;
@@ -147,57 +147,13 @@ impl McuEsp32C3 {
 
             Self::I2C0.configure_master_xtal(Self::XTAL_HZ, bus_hz);
         }
+        Self::I2C0
     }
-
-    unsafe fn prepare_i2c0_pin(pin: Esp32C3Pin, signal: u32) {
-        const IO_MUX_GPIO0: u32 = 0x6000_9004;
-        const GPIO_PIN0: u32 = McuEsp32C3::GPIO_BASE + 0x74;
-        const GPIO_FUNC0_IN: u32 = McuEsp32C3::GPIO_BASE + 0x154;
-        const GPIO_FUNC0_OUT: u32 = McuEsp32C3::GPIO_BASE + 0x554;
-
-        const PAD_DRIVER: u32 = 1 << 2;
-
-        const FUN_PULL_DOWN: u32 = 1 << 7;
-        const FUN_PULL_UP: u32 = 1 << 8;
-        const FUN_INPUT_ENABLE: u32 = 1 << 9;
-        const FUN_SELECT_MASK: u32 = 0b111 << 12;
-        const FUN_GPIO: u32 = 1 << 12;
-
-        const INPUT_MATRIX_ENABLE: u32 = 1 << 6;
-
-        let gpio = pin.gpio() as u32;
-
-        let io_mux = EspReg32::new(IO_MUX_GPIO0 + gpio * 4);
-        let pin_reg = EspReg32::new(GPIO_PIN0 + gpio * 4);
-        let input = EspReg32::new(GPIO_FUNC0_IN + signal * 4);
-        let output = EspReg32::new(GPIO_FUNC0_OUT + gpio * 4);
-
+    unsafe fn prepare_i2c0_pin(pin: Esp32C3Pin, signal: u8) {
         unsafe {
-            // I²C idles high.
-            pin.set_high();
-
-            // Open-drain pad.
-            pin_reg.write(pin_reg.read() | PAD_DRIVER);
-
-            // GPIO function, input enabled, weak internal pull-up,
-            // and no internal pull-down.
-            io_mux.write(
-                (io_mux.read() & !(FUN_SELECT_MASK | FUN_PULL_DOWN))
-                    | FUN_GPIO
-                    | FUN_INPUT_ENABLE
-                    | FUN_PULL_UP,
-            );
-
-            // Peripheral output → GPIO.
-            //
-            // Clearing bits 8..10 also selects:
-            // - non-inverted output,
-            // - output-enable controlled by the peripheral,
-            // - non-inverted output-enable.
-            output.write((output.read() & !0x7ff) | signal);
-
-            // GPIO → peripheral input through the GPIO matrix.
-            input.write((input.read() & !0x7f) | INPUT_MATRIX_ENABLE | gpio);
+            pin.configure_open_drain_pullup();
+            pin.matrix_route_output(signal);
+            pin.matrix_route_input(signal);
         }
     }
 }

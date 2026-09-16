@@ -13,23 +13,23 @@ devela::esp32_c3_direct_boot! { main }
 
 fn main() -> ! {
     let serial = Board::USB_SERIAL;
+
     unsafe {
         while !serial.rx_ready() {} // Let the host reopen USB after flashing
-        serial.write_bytes_blocking(b"preparing i2c0...\r\n");
-        Mcu::prepare_i2c0(Board::OLED_SDA, Board::OLED_SCL, Board::OLED_I2C_HZ);
 
-        serial.write_bytes_blocking(b"probing oled at 0x3c...\r\n");
-        match Board::OLED_I2C.probe_blocking(Board::OLED_ADDR) {
+        let i2c = Board::prepare_oled_i2c();
+
+        match i2c.probe_blocking(Board::OLED_ADDR) {
             Ok(()) => serial.write_bytes_blocking(b"ACK!\r\n"),
             Err(_) => serial.write_bytes_blocking(b"no ACK\r\n"),
         }
 
         serial.write_bytes_blocking(b"initializing oled...\r\n");
-        Board::OLED_I2C.write_blocking(Board::OLED_ADDR, OLED_INIT).unwrap();
+        i2c.write_blocking(Board::OLED_ADDR, OLED_INIT).unwrap();
 
         serial.write_bytes_blocking(b"drawing 1px border...\r\n");
-        Board::OLED_I2C.write_blocking(Board::OLED_ADDR, OLED_WINDOW).unwrap();
-        Board::OLED_I2C.write_blocking(Board::OLED_ADDR, &OLED_BORDER).unwrap();
+        i2c.write_blocking(Board::OLED_ADDR, OLED_WINDOW).unwrap();
+        i2c.write_blocking(Board::OLED_ADDR, &OLED_BORDER).unwrap();
 
         serial.write_bytes_blocking(b"done\r\n");
     }

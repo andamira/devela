@@ -47,9 +47,6 @@ impl BoardSuperMiniOled042 {
 
 /// # OLED
 impl BoardSuperMiniOled042 {
-    /// I²C controller connected to the OLED.
-    pub const OLED_I2C: EspI2c = McuEsp32C3::I2C0;
-
     /// OLED I²C bus frequency in hertz.
     pub const OLED_I2C_HZ: u32 = 400_000;
 
@@ -67,6 +64,29 @@ impl BoardSuperMiniOled042 {
 
     /// OLED visible height in pixels.
     pub const OLED_HEIGHT: usize = 40;
+
+    /// Number of 8-pixel pages in the OLED framebuffer.
+    pub const OLED_PAGE_COUNT: usize = Self::OLED_HEIGHT / 8;
+
+    /// Number of bytes in one native 1-bit OLED frame.
+    pub const OLED_FRAME_BYTES: usize = Self::OLED_WIDTH * Self::OLED_PAGE_COUNT;
+
+    /// SSD1306 GDDRAM column corresponding to visible column zero.
+    pub const OLED_RAM_COLUMN_OFFSET: u8 = 28;
+
+    /// Last SSD1306 GDDRAM column occupied by the visible OLED area.
+    pub const OLED_RAM_COLUMN_LAST: u8 = Self::OLED_RAM_COLUMN_OFFSET + Self::OLED_WIDTH as u8 - 1;
+
+    /// Last SSD1306 GDDRAM page occupied by the visible OLED area.
+    pub const OLED_RAM_PAGE_LAST: u8 = Self::OLED_PAGE_COUNT as u8 - 1;
+
+    /// Prepares the I²C bus connected to the onboard OLED.
+    ///
+    /// # Safety
+    /// I²C0 and GPIO5/6 must not be concurrently configured or accessed.
+    pub unsafe fn prepare_oled_i2c() -> EspI2c {
+        unsafe { McuEsp32C3::prepare_i2c0(Self::OLED_SDA, Self::OLED_SCL, Self::OLED_I2C_HZ) }
+    }
 }
 
 /// # Serial

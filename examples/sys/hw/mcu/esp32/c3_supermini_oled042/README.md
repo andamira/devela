@@ -10,8 +10,8 @@ and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 ## Programs
 
-- `i2c_probe` — Probes the board's built-in OLED over I²C.
 - `led_on` — Turns on the board's active-low blue LED on GPIO8.
+- `oled` — Initializes the onboard 72×40 OLED and draws a test pattern over I²C.
 - `uart_echo` — Tests UART0 TX/RX through GPIO20 and GPIO21.
 - `usb_serial_chat` — Runs a small interactive command console over native USB serial.
 

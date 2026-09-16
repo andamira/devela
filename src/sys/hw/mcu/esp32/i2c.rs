@@ -21,13 +21,8 @@ pub struct EspI2c(u32);
 
 #[rustfmt::skip]
 impl EspI2c {
-    /// Hardware TX/RX FIFO capacity in bytes.
+    /// Hardware transmit/receive FIFO capacity in bytes.
     pub const FIFO_LEN: usize = 32;
-
-    /// Maximum payload accepted by [`write_blocking`](#method.write_blocking).
-    ///
-    /// One FIFO byte is reserved for the target address.
-    pub const MAX_WRITE_LEN: usize = Self::FIFO_LEN - 1;
 
     /// Creates a controller from its register base address.
     #[must_use]
@@ -105,7 +100,6 @@ impl EspI2c {
 
     const INT_NACK: u32 = 1 << 10;
     const INT_TIMEOUT: u32 = 1 << 8;
-    const INT_COMPLETE: u32 = 1 << 7;
     const INT_ARBITRATION: u32 = 1 << 5;
     const INT_ALL: u32 = 0x3ffff;
 
@@ -115,14 +109,31 @@ impl EspI2c {
     const CMD_END: u32 = 4;
     const CMD_DONE: u32 = 1 << 31;
 
-    const SPIN_LIMIT: u32 = 1_000_000;
+    const POLL_LIMIT: u32 = 1_000_000;
 
     #[must_use]
-    const fn command(op: u32, bytes: usize, check_ack: bool) -> u32 {
+    const fn command(op: u32, bytes: u8, check_ack: bool) -> u32 {
         bytes as u32
             | ((check_ack as u32) << 8)
             // expected ACK = 0
             | (op << 11)
+    }
+    fn next_slice_byte(
+        slices: &[&[u8]],
+        slice_index: &mut usize,
+        byte_index: &mut usize,
+    ) -> Option<u8> {
+        while *slice_index < slices.len() {
+            let slice = slices[*slice_index];
+            if *byte_index < slice.len() {
+                let byte = slice[*byte_index];
+                *byte_index += 1;
+                return Some(byte);
+            }
+            *slice_index += 1;
+            *byte_index = 0;
+        }
+        None
     }
 }
 
@@ -155,7 +166,7 @@ impl EspI2c {
             self.update();
             let control = self.control_reg();
             control.write(control.read() | Self::CTRL_TRANS_START);
-            for _ in 0..Self::SPIN_LIMIT {
+            for _ in 0..Self::POLL_LIMIT {
                 let status = self.int_raw_reg().read();
                 let error = if status & Self::INT_NACK != 0 {
                     Some(I2cError::Nack)
@@ -253,7 +264,16 @@ impl EspI2c {
         }
     }
 
-    /// Performs a blocking write to a 7-bit I²C target.
+    /// Tests whether a 7-bit address acknowledges.
+    ///
+    /// # Safety
+    /// Has the same requirements as
+    /// [`write_slices_blocking`](Self::write_slices_blocking).
+    pub unsafe fn probe_blocking(self, address: I2cAddr7) -> Result<(), I2cError> {
+        unsafe { self.write_slices_blocking(address, &[]) }
+    }
+
+    /// Performs one blocking write transaction to a 7-bit I²C target.
     ///
     /// Transfers larger than the hardware FIFO are continued transparently
     /// without releasing the bus.
@@ -262,59 +282,77 @@ impl EspI2c {
     /// The controller and its routed pins must be configured for this bus
     /// and must not be concurrently accessed.
     pub unsafe fn write_blocking(self, address: I2cAddr7, bytes: &[u8]) -> Result<(), I2cError> {
+        unsafe { self.write_slices_blocking(address, &[bytes]) }
+    }
+
+    /// Performs one blocking write transaction from a sequence of byte slices.
+    ///
+    /// The slices are concatenated into a single I²C transfer without inserting
+    /// STOP or repeated-START conditions between them. Empty slices are ignored.
+    ///
+    /// Transfers larger than the hardware FIFO are continued transparently
+    /// without releasing the bus.
+    ///
+    /// Passing no data slices performs an address-only transaction, equivalent
+    /// to [`probe_blocking`](Self::probe_blocking).
+    ///
+    /// # Safety
+    /// The controller and its routed pins must be configured for this bus
+    /// and must not be concurrently accessed.
+    pub unsafe fn write_slices_blocking(
+        self,
+        address: I2cAddr7,
+        slices: &[&[u8]],
+    ) -> Result<(), I2cError> {
         unsafe {
             is! { self.status_reg().read() & Self::STATUS_BUS_BUSY != 0, self.reset_fsm() }
 
             self.reset_fifos();
-
-            // Begin the transaction and transmit the target address.
-            self.data_reg().write((address.get() as u32) << 1);
-
+            self.data_reg().write(address.write_address_byte() as u32);
             self.command_reg(0).write(Self::command(Self::CMD_RESTART, 0, false));
             self.command_reg(1).write(Self::command(Self::CMD_WRITE, 1, true));
 
-            if bytes.is_empty() {
+            let (mut slice_index, mut byte_index) = (0, 0);
+            let mut next = Self::next_slice_byte(slices, &mut slice_index, &mut byte_index);
+
+            // An empty payload is an address-only transaction.
+            if next.is_none() {
                 self.command_reg(2).write(Self::command(Self::CMD_STOP, 0, false));
                 return self.run_commands(2);
             }
-            let (mut offset, mut first) = (0, true);
 
-            while offset < bytes.len() {
+            let mut first = true;
+            while next.is_some() {
                 // The first FIFO load already contains the address byte.
                 let capacity = if first { Self::FIFO_LEN - 1 } else { Self::FIFO_LEN };
 
-                let count = (bytes.len() - offset).min(capacity);
-
-                for &byte in &bytes[offset..offset + count] {
+                let mut count = 0usize;
+                while count < capacity {
+                    let Some(byte) = next else { break };
                     self.data_reg().write(byte as u32);
+                    count += 1;
+                    next = Self::next_slice_byte(slices, &mut slice_index, &mut byte_index);
                 }
-                let write_command: u8 = if first { 2 } else { 0 };
-                self.command_reg(write_command).write(Self::command(Self::CMD_WRITE, count, true));
+                let write_command = if first { 2 } else { 0 };
 
-                offset += count;
-
+                self.command_reg(write_command).write(Self::command(
+                    Self::CMD_WRITE,
+                    count as u8,
+                    true,
+                ));
                 let last_command = write_command + 1;
 
-                if offset == bytes.len() {
+                if next.is_none() {
                     self.command_reg(last_command).write(Self::command(Self::CMD_STOP, 0, false));
                 } else {
                     // Pause the command engine without generating STOP.
-                    // The next FIFO load continues the same I²C transaction.
+                    // Refill the FIFO and continue the same bus transaction.
                     self.command_reg(last_command).write(Self::command(Self::CMD_END, 0, false));
                 }
-
                 self.run_commands(last_command)?;
                 first = false;
             }
             Ok(())
         }
-    }
-
-    /// Tests whether a 7-bit address acknowledges.
-    ///
-    /// # Safety
-    /// Has the same requirements as [`write_blocking`](#method.write_blocking).
-    pub unsafe fn probe_blocking(self, address: I2cAddr7) -> Result<(), I2cError> {
-        unsafe { self.write_blocking(address, &[]) }
     }
 }
