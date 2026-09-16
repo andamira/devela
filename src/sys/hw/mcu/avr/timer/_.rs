@@ -254,11 +254,13 @@
 //
 
 crate::mods_in! {
+    // mod _helper; // WIP
+
     mod zero;
     mod_ one;
     mod_ two;
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::{
             zero::AvrTimer0,
@@ -266,4 +268,7 @@ crate::mods_out! { // _mods
             two::_all::AvrTimer2,
         };
     }
+    // _crate_internals {
+    //     use super::_helper::_avr_timer_leaf;
+    // }
 }

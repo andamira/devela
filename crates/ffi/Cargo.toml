@@ -3,7 +3,7 @@
 [workspace]
 [package]
 name = "devela_ffi"
-description = "Experimental C ABI bridge and foreign-language examples for devela."
+description = "Foreign-language bindings and ABI bridges for devela"
 repository = "https://github.com/andamira/devela/tree/main/crates/ffi"
 # documentation = "https://docs.rs/devela_ffi"
 

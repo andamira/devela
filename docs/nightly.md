@@ -68,6 +68,7 @@ See also
 - 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 - 1.100: ` `[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
+- 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
 - 1.100: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 
 
@@ -203,6 +204,9 @@ See also
     - <https://jswrenn.github.io/safer-transmute-rustdoc/rfc/core/convert/transmute/index.html>
     - <https://jswrenn.github.io/transmutation-foundation/>
     - [Lang Item for Transmutability](https://github.com/rust-lang/compiler-team/issues/411)
+
+# Rfcs
+- [Procedural macros in same package as app](https://github.com/rust-lang/rfcs/pull/3826)
 
 # Pitfalls
 - [const_evaluatable_unchecked](https://github.com/rust-lang/rust/issues/76200)

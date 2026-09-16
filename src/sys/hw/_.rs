@@ -20,6 +20,7 @@
 crate::mods_in! {
     // pub mod_ block; // Block storage
     // pub mod_ capture; // Image/surface capture hardware
+    // pub mod_ display; // Physical display controllers and panel interfaces
     // pub mod_ hid; // Human interface devices WIP Evdev*
     // pub mod_ link; // Communication links
     #[cfg(feature = "mcu")]
@@ -34,6 +35,7 @@ crate::mods_out! { // _pub_mods
         // pub use super::{
         //     // block::_all::*,
         //     // capture::_all::*,
+        //     // display:::_all::*,
         //     // hid::_all::*,
         //     // link::_all::*,
         //     // sensor::_all::*,
