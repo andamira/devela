@@ -1,4 +1,3 @@
-// devela/src/num/fin/logic/_.rs
 //
 #![doc = crate::_DOC_NUM_FIN_LOGIC!()] // public
 #![doc = crate::_doc!(modules: crate::num::fin; logic)]

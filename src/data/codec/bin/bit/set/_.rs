@@ -1,5 +1,3 @@
-// devela/src/data/codec/bin/bit/set/_.rs
-
 crate::mods_in! {
     #[cfg(any(test, doctest))]
     mod _test;

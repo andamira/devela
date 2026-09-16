@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/xkb.rs
 //
 //! Defines [`KeyRepeatFilter`], [`XkbInfo`], [`XkbState`].
 //

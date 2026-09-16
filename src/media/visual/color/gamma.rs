@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/gamma.rs
 //
 //! Defines [`Gamma`].
 //

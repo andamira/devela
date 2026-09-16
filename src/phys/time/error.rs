@@ -1,5 +1,3 @@
-// devela/src/phys/time/error.rs
-
 use crate::{_tags, define_error};
 
 define_error! { individual: pub struct Timeout;

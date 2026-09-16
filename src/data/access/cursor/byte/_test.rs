@@ -1,5 +1,3 @@
-// devela/src/data/access/cursor/byte/_test.rs
-
 use crate::{ByteCursor, NotEnoughSpace, UnexpectedEof};
 
 /* read */

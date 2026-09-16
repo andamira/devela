@@ -1,4 +1,3 @@
-// devela/src/vita/_.rs
 //
 #![cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 //

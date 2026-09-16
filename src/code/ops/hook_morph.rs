@@ -1,4 +1,3 @@
-// devela/src/code/ops/hook_morph.rs
 //
 //! Defines [`Hook`], [`hook!`], [`Morph`], [`morph!`].
 //!

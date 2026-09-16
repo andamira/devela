@@ -1,5 +1,3 @@
-// devela/src/data/access/iter/strided/_test.rs
-
 #![allow(dead_code)]
 
 use crate::{StridedIter, StridedIterMut};

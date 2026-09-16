@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/_.rs
 //
 //! Defines [`Ansi`].
 //

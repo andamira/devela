@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/linear/impls/slice.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __buffer_linear_impl_slice· {

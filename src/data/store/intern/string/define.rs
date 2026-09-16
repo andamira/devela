@@ -1,4 +1,3 @@
-// devela/src/data/store/intern/string/define.rs
 //
 //! Defines [`intern_string!`].
 //

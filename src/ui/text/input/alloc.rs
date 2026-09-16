@@ -1,5 +1,3 @@
-// devela/src/ui/text/alloc.rs
-
 use crate::String;
 use crate::{
     TextInput, TextInputAction, TextInputConfig, TextInputOutcome, TextInputReject, TextInputView,

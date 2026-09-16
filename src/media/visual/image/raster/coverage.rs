@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/coverage.rs
 //
 //! Defines [`Coverage8`].
 //

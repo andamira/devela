@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/mod.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_SYNTH!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; synth)]

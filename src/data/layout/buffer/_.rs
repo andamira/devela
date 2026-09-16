@@ -1,4 +1,3 @@
-// devela/src/data/layout/buffer/_.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT_BUFFER!()] // public
 #![doc = crate::_doc!(modules: crate::data::layout; buffer)]

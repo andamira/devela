@@ -1,4 +1,3 @@
-// devela/src/data/topol/graph/adj/_.rs
 //
 //!
 //

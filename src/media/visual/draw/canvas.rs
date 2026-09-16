@@ -1,4 +1,3 @@
-// devela/src/media/visual/draw/canvas.rs
 //
 //! Defines [`Canvas`], [`CanvasRead`], [`CanvasTextel`].
 //

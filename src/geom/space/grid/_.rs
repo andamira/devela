@@ -1,4 +1,3 @@
-// devela/src/geom/space/grid/_.rs
 //
 #![doc = crate::_DOC_GEOM_SPACE_GRID!()] // public
 #![doc = crate::_doc!(modules: crate::geom::space; grid)]

@@ -1,4 +1,3 @@
-// devela/src/num/prob/markov/kernel.rs
 //
 //! Defines [`MarkovKernel`].
 //

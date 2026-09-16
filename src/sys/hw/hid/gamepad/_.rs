@@ -1,4 +1,3 @@
-// devela/sys/hw/hid/gamepad/_.rs
 //
 //!
 //

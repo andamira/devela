@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/layout.rs
 //
 //! Defines [`ArrayLayout`].
 //

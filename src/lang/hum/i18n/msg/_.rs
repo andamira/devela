@@ -1,4 +1,3 @@
-// devela/src/lang/hum/i18n/msg/_.rs
 //
 //! Message selection languages.
 //!

@@ -1,4 +1,3 @@
-// devela/src/num/signal/_.rs
 //
 #![doc = crate::_DOC_NUM_SIGNAL!()] // public
 #![doc = crate::_doc!(modules: crate::num; signal)] // …

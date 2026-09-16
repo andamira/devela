@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/split.rs
-
 use crate::{Cmp, Str};
 
 /// # `*split*` API methods for subslicing.

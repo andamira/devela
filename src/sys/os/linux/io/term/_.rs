@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/term/_.rs
 //
 //! Terminal I/O control ABI definitions.
 //!

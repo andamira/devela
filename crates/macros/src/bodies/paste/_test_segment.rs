@@ -1,4 +1,4 @@
-// devela_macros/src/bodies/paste/tests_segment.rs
+//
 
 #[test]
 fn test_is_quoted_string_or_char() {

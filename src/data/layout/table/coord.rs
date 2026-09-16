@@ -1,4 +1,3 @@
-// devela/src/data/layout/table/coord.rs
 //
 //! Defines [`TableCoord`] and [`TableCoordIter`].
 //

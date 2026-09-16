@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/events.js
 // In sync with ../bridge/events.rs
 
 import { strDecode, queryElement } from "./shared.js";

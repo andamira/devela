@@ -1,5 +1,3 @@
-// devela/src/sys/mem/_reexport_alloc.rs
-
 use crate::{_reexport, _tags};
 #[cfg(doc)]
 use crate::{Bare, BareBox, Boxed, Storage};

@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/char.rs
 //
 // TOC
 // - methods over char

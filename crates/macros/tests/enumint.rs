@@ -1,4 +1,3 @@
-// devela_macros/tests/enumint.rs
 //
 //!
 //

@@ -1,5 +1,4 @@
 #!/bin/sh
-# devela/examples/sys/env/minimal/run.sh
 
 set -eu
 

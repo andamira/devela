@@ -1,4 +1,3 @@
-// devela/src/sys/mem/alloc/storage/traits.rs
 //
 //! Defines [`Storage`].
 //

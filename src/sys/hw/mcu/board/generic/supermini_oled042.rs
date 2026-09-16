@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/board/generic/supermini_oled042.rs
 //
 //! Defines [`BoardSuperMiniOled042`].
 //

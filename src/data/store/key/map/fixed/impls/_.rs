@@ -1,5 +1,3 @@
-// devela/src/data/store/key/map/fixed/impls/_.rs
-
 crate::mods_in! {
     mod r#const;
     mod runtime;

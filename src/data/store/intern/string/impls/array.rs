@@ -1,5 +1,3 @@
-// devela/src/data/store/intern/string/impls/array.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __intern_string_impl_array· {

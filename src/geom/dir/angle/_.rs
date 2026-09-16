@@ -1,4 +1,3 @@
-// devela/src/geom/dir/angle/_.rs
 //
 //! Defines [`Angle`], [`AngleDirection`], [`AngleKind`].
 //!

@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/print.rs
 //
 //! Defines [`ansi_print`].
 //!

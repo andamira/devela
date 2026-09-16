@@ -1,5 +1,3 @@
-// devela/src/media/visual/image/format/netpbm/_test.rs
-
 use crate::{ImageError, ImageResult, Pnm};
 
 /* common mechanics*/

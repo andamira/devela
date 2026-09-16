@@ -1,5 +1,3 @@
-// devela/src/lang/prog/ffi/c/libc.rs
-
 #![allow(non_camel_case_types)]
 
 #[doc = crate::_tags!(primitive logic)]

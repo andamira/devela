@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/_.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL_COLOR!()] // public
 #![doc = crate::_doc!(modules: crate::media::visual; color)]

@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/font.rs
-
 use crate::{__ansi_consts, Ansi, AnsiColor8, Digits};
 
 /// # Font effects escape codes

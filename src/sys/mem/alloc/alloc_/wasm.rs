@@ -1,4 +1,3 @@
-// devela/src/sys/mem/alloc/alloc/wasm.rs
 //
 //! Defines [`WasmAlloc`].
 //

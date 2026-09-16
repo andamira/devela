@@ -1,4 +1,3 @@
-// devela/src/sys/fs/namespace.rs
 //
 //! `Fs` namespace.
 //

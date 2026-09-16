@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/pin.rs
 //
 //! Defines [`AvrPin`].
 //

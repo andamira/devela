@@ -1,4 +1,3 @@
-// devela/src/_.rs
 //
 //! *A development substrate of coherence.*
 //!

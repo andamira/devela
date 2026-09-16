@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/unroll.rs
 //
 //! Re-exports the code-generated [`unroll!`] macro.
 //

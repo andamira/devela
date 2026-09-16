@@ -1,4 +1,3 @@
-// devela/src/run/cycle/_.rs
 //
 #![doc = crate::_DOC_RUN_CYCLE!()] // public
 #![doc = crate::_doc!(modules: crate::run; cycle)]

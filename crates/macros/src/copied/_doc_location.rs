@@ -1,4 +1,3 @@
-// devela_macros/src/copied/_doc_location.rs
 //
 //! Recreates devela's `_doc_location!` macro without `#[macro_export]`.
 //

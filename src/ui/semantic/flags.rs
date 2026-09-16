@@ -1,4 +1,3 @@
-// devela/src/ui/flags.rs
 //
 //! Defines [`UiFlags`].
 //

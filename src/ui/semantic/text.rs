@@ -1,4 +1,3 @@
-// devela/src/ui/text.rs
 //
 //! Defines [`UiText`].
 //

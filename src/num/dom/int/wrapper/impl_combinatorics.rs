@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/wrapper/impl_combinatorics.rs
 //
 //! Implements combinatorics-related methods for [`Int`].
 //

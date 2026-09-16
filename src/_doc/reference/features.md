@@ -1,4 +1,3 @@
-<!-- devela/src/_doc/reference/features.md -->
 
 ## Features and flags
 

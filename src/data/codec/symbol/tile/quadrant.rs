@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/tile/quadrant.rs
 //
 //! Defines [`Quadrant`].
 //

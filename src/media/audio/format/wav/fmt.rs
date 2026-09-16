@@ -1,4 +1,3 @@
-// devela/src/media/audio/format/wav/fmt.rs
 //
 //! Defines [`PcmWavFmt`].
 //

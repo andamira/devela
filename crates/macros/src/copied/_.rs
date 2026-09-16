@@ -1,4 +1,3 @@
-// devela_macros/src/copied/_.rs
 //
 //! Copied helpers from `devela`.
 //

@@ -1,4 +1,3 @@
-// devela/src/ui/event/event.rs
 //
 //! Defines [`Event`].
 //

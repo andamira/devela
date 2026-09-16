@@ -1,4 +1,3 @@
-// devela/src/geom/metric/_.rs
 //
 #![doc = crate::_DOC_GEOM_METRIC!()] // public
 #![doc = crate::_doc!(modules: crate::geom; metric)]

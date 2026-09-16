@@ -1,4 +1,3 @@
-// devela/src/num/dom/frac/wrapper/impl_frac.rs
 //
 //! implements non-owning fraction-related methods
 //

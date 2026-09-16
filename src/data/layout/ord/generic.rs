@@ -1,4 +1,3 @@
-// devela/src/data/layout/ord/generic.rs
 //
 //! Implements sorting algorithms for exclusive generic arrays `[T: Ord; N]`.
 //

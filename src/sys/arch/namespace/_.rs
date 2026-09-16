@@ -1,4 +1,3 @@
-// devela/src/sys/arch/namespace/_.rs
 //
 //! Defines the [`Arch`] namespace.
 //

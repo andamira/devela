@@ -1,4 +1,3 @@
-// devela/src/data/access/cursor/_.rs
 //
 #![doc = crate::_DOC_DATA_ACCESS_CURSOR!()] // private
 #![doc = crate::_doc!(modules: crate::data::access; cursor)]

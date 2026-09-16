@@ -1,4 +1,3 @@
-// devela/src/phys/wave/_.rs
 //
 #![doc = crate::_DOC_PHYS_WAVE!()] // public
 #![doc = crate::_doc!(modules: crate::phys; wave)]

@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/yijing.rs
 //
 //! Defines [`YijingHexagram`].
 //

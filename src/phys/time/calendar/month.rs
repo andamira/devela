@@ -1,4 +1,3 @@
-// devela/src/phys/time/calendar/month.rs
 //
 //!
 //

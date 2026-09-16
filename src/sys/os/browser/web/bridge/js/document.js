@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/document.js
 
 import { strEncodeInto } from "./shared.js";
 

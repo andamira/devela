@@ -1,4 +1,3 @@
-# devela/examples/sys/os/browser/api/Cargo.toml
 [workspace]
 [package]
 name = "ui_web" # in sync with build.sh, public_html/index.html

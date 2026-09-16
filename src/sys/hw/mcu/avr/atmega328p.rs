@@ -1,4 +1,3 @@
-// devela/src/sys/hw/mcu/avr/atmega328p.rs
 //
 //! Defines [`McuAtmega328p`].
 //

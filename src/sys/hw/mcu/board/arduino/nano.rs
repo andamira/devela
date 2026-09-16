@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/board/arduino/nano.rs
 //
 //! Defines [`BoardArduinoNano`].
 //

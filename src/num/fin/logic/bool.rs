@@ -1,4 +1,3 @@
-// devela/src/num/fin/logic/bool.rs
 //
 //! Type-level booleans.
 //

@@ -1,4 +1,3 @@
-// devela/src/ui/route/_.rs
 //
 #![doc = crate::_DOC_UI_ROUTE!()] // public
 #![doc = crate::_doc!(modules: crate::ui; route)]

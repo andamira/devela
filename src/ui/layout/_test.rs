@@ -1,5 +1,3 @@
-// devela/ui/layout/_test.rs
-
 use super::*;
 
 #[test]

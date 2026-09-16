@@ -1,5 +1,3 @@
-// devela/src/data/codec/hash/fnv.rs
-
 use crate::{Cast, ConstInit, Hasher, HasherBuildDefault, concat as cc, stringify as fy};
 
 #[cfg(target_pointer_width = "16")]

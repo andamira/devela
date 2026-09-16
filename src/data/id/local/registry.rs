@@ -1,4 +1,3 @@
-// devela/src/data/id/local/registry.rs
 //
 //! Defines [`IdRegistry`]
 //!

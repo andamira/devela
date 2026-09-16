@@ -1,4 +1,3 @@
-// devela/src/num/quant/scale/_.rs
 //
 #![doc = crate::_DOC_NUM_QUANT_SCALE!()] // private
 #![doc = crate::_doc!(modules: crate::num::quant; scale)]

@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/typed/define.rs
 //
 //! Defines [`arena!`].
 //

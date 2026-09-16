@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/strided/_.rs
 //
 //!
 //

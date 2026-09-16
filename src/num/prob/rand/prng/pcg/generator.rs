@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/pcg/generator.rs
 //
 //! Defines [`rand_pcg!`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/_.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_SYMBOL!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; symbol)]

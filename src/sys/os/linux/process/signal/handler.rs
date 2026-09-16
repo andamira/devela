@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/signal/handler.rs
 //
 //! Defines `LinuxSigactionHandler`, and static tables.
 //

@@ -1,4 +1,3 @@
-// devela/src/media/audio/pcm/_.rs
 //
 #![doc = crate::_DOC_MEDIA_AUDIO_PCM!()] // public
 #![doc = crate::_doc!(modules: crate::media::audio; pcm)]

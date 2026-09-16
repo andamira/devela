@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/usart_chat.rs
 //
 //! Runs a small interactive command console over USART0.
 //

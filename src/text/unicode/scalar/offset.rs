@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/offset.rs
 //
 //! Defines the [`scalar_offset!`] generator macro.
 //

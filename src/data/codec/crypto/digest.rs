@@ -1,4 +1,3 @@
-// devela/src/data/codec/crypto/digest.rs
 //
 //! Defines [`Digest`] and [`digest!`].
 //

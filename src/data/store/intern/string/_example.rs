@@ -1,4 +1,3 @@
-// devela/src/data/store/intern/string/_example.rs
 //
 //! Defines string interner examples.
 //

@@ -1,4 +1,3 @@
-// devela/src/geom/metric/extent.rs
 //
 //! Defines [`Extent`][1|2|3].
 //!

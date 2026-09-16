@@ -1,4 +1,3 @@
-// devela/examples/data/id/seq.rs
 //
 //! Shows a sequential ID generator made with the [`id_seq!`] macro.
 //!

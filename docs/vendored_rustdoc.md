@@ -1,4 +1,3 @@
-<!-- devela/docs/vendored_rustdoc.md -->
 
 <!-- Updated intra-doc links, to be loaded from: _doc::reference::vendored -->
 

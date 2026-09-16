@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/fd/_.rs
 //
 //! File-descriptor identity and positioning.
 //

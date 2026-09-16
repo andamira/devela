@@ -1,4 +1,3 @@
-// devela/src/ui/event/window.rs
 //
 //! Defines [`EventWindow`].
 //

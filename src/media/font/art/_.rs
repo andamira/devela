@@ -1,4 +1,3 @@
-// devela/src/media/font/art/_.rs
 //
 //! Ascii-art fonts.
 //

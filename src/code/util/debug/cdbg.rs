@@ -1,4 +1,3 @@
-// devela/src/code/util/debug/cdbg.rs
 //
 //! Defines the custom debug macro [`cdbg!`].
 //

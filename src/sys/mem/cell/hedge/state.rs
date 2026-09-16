@@ -1,4 +1,3 @@
-// devela/src/sys/mem/cell/hedge/state.rs
 //
 //! Defines [`MemHedgeState`].
 //

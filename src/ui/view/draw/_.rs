@@ -1,4 +1,3 @@
-// devela/src/ui/view/draw/_.rs
 //
 #![doc = crate::_DOC_UI_VIEW_DRAW!()] // private
 #![doc = crate::_doc!(modules: crate::ui::view; draw)]

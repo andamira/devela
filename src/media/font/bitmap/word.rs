@@ -1,4 +1,3 @@
-// devela/src/media/font/bitmap/word.rs
 //
 //! Defines [`FontBitmapWord`].
 //

@@ -1,4 +1,3 @@
-<!-- devela/src/_doc/design/principles.md -->
 
 # Design principles
 

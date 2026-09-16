@@ -1,4 +1,3 @@
-// devela/src/geom/interop/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_INTEROP!()] // public

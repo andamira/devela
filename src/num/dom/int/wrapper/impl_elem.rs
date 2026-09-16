@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/wrapper/impl_elem.rs
 //
 //! Implements elementary integer methods for [`Int`].
 //

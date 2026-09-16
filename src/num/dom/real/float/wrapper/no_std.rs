@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/no_std.rs
 //
 //! Defines all the `no_std` public methods for `Float`.
 //

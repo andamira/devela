@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/machine/state.rs
-
 use crate::{GraphemePropCb, GraphemePropInCb, GraphemeProps, Mem, impl_trait};
 
 /// State for tracking grapheme cluster boundary detection progress.

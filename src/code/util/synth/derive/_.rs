@@ -1,5 +1,3 @@
-// devela/src/code/util/derive/_.rs
-
 crate::mods_in! {
     #[cfg(test)]
     mod _test;

@@ -1,4 +1,3 @@
-// devela/src/num/fin/ord/cmp/macros.rs
 //
 //! Defines [`cmp!`].
 //

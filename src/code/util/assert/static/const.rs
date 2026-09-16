@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/static/const.rs
 //
 //! Compile-time assertions.
 //

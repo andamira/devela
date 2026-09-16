@@ -1,5 +1,3 @@
-// devela/src/work/exec/thread/sleep/macro.rs
-
 crate::CONST! {
     _DOCS_SLEEP4 = r#"
 Sleeps for `$s` seconds, plus optional milliseconds, microseconds and nanoseconds.

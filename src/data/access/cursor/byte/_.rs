@@ -1,4 +1,3 @@
-// devela/src/data/access/cursor/byte/_.rs
 //
 //! Cursor-based access over ordered byte regions.
 //

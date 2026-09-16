@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/register.rs
 //
 //! Defines [`AvrReg8`].
 //

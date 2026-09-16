@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ui/_.rs
 //
 //! UI realizations for the terminal.
 //

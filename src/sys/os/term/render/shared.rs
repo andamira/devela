@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/render/shared.rs
-
 use crate::TermRenderer;
 
 /// # Shared byte-frame access

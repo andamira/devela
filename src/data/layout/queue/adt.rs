@@ -1,4 +1,3 @@
-// devela/src/data/layout/queue/adt.rs
 //
 //! Defines the [`DataQueue`] & [`DataDeque`] abstract data types.
 //

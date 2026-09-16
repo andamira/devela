@@ -1,4 +1,3 @@
-// devela/src/data/layout/buffer/ring/_.rs
 //
 //! Ring buffers.
 //

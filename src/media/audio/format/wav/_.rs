@@ -1,4 +1,3 @@
-// devela/src/media/audio/format/wav/_.rs
 //
 //! RIFF/WAVE support for PCM-family audio.
 //!

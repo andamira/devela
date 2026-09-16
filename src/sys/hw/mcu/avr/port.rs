@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/port.rs
 //
 //! Defines [`AvrPort`].
 //

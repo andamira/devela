@@ -1,4 +1,3 @@
-// devela/src/media/visual/draw/_.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL_DRAW!()] // public
 #![doc = crate::_doc!(modules: crate::media::visual; draw)]

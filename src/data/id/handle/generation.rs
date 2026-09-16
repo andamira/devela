@@ -1,4 +1,3 @@
-// devela/src/data/id/handle/generation.rs
 //
 //! Defines [`handle_gen!`] macro.
 //

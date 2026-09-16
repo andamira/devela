@@ -1,5 +1,3 @@
-// devela/src/media/visual/color/rgb/impls/u16alpha.rs
-
 use super::*;
 use crate::{Norm, Rgb16, RgbF32, RgbF64, Rgba16, RgbaF32, RgbaF64};
 

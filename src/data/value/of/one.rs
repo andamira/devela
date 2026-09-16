@@ -1,4 +1,3 @@
-// devela/src/data/value/of/one.rs
 //
 //! Defines the [`Oneof`] type.
 //

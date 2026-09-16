@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/_.rs
 //
 //! Linux-specific extensions to [`std::process`].
 //

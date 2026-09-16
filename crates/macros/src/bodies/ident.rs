@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/ident.rs
 //
 //! Bodies related to identifiers.
 //

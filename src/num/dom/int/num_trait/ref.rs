@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/num_trait/ref.rs
 //
 //! Defines the `NumRefInt` trait and auto-implements it.
 //

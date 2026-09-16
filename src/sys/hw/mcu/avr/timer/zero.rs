@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/zero.rs
 //
 //! Defines [`AvrTimer0`].
 //

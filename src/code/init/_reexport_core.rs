@@ -1,4 +1,3 @@
-// devela/src/init/_reexport_core.rs
 //
 //! General reexported items, except macros and overloadable operators.
 //

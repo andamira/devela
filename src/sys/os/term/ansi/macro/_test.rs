@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/macro/_test.rs
-
 use crate::{ansi, const_assert};
 
 #[test]

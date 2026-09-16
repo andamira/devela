@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/tile/sextant.rs
 //
 //! Defines [`Sextant`].
 //

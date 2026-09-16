@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/int.rs
 //
 //! Implements [`FmtNum`] for all integer primitives.
 //

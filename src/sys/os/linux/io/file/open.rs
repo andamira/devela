@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/open.rs
 //
 //! Linux file-opening options.
 //

@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/impls.rs
 //
 //! Implements `BitSized`, `ConstInit` and `MemPod` for `NonValue*`.
 //

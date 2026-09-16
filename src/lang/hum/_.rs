@@ -1,4 +1,3 @@
-// devela/src/lang/hum/_.rs
 //
 #![doc = crate::_DOC_LANG_HUM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; hum: art, i18n, nat)]

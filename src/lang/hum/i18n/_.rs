@@ -1,4 +1,3 @@
-// devela/src/lang/hum/i18n/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_I18N!()] // public

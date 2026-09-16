@@ -1,5 +1,3 @@
-// devela/src/text/parse/scanner/quote.rs
-
 #[cfg(doc)]
 use crate::TextParseErrorKind;
 use crate::{Slice, is, whilst};

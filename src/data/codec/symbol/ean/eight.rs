@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/ean/eight.rs
 //
 //! Implements EAN-8 for [`Ean<8>`][crate::Ean].
 //

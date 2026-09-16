@@ -1,5 +1,3 @@
-// devela/src/text/layout/_test.rs
-
 use super::*;
 use crate::{ConstInit, TextCursor, TextIndex, TextUnit};
 

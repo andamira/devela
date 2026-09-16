@@ -1,4 +1,3 @@
-// devela/src/lang/hum/nat/en/_.rs
 //
 //! English language.
 //

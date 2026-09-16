@@ -1,4 +1,3 @@
-// devela/src/lang/hum/syntax/_.rs
 //
 //! Sentence structure.
 //

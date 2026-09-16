@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/src/bin/i2c_probe.rs
 //
 //! Probes the board's built-in OLED over I²C.
 //

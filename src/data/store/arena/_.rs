@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/_.rs
 //
 #![doc = crate::_DOC_DATA_STORE_ARENA!()] // public
 #![doc = crate::_doc!(modules: crate::data::store; arena)]

@@ -1,5 +1,3 @@
-// devela/src/sys/fs/path/_reexport_std.rs
-
 use crate::{_reexport, _tags};
 
 /* structs */

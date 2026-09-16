@@ -1,4 +1,3 @@
-// devela/src/lang/sem/rel/_.rs
 //
 //! Semantic relations.
 //!

@@ -1,4 +1,3 @@
-// devela/src/num/alg/matrix/ops.rs
 //
 //! Overloadable matrix operators.
 //

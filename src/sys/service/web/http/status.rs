@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/status.rs
 //
 //! Defines [`HttpStatusClass`], [`HttpStatus`].
 //

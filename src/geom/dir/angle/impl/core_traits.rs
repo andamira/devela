@@ -1,5 +1,3 @@
-// devela/src/geom/dir/angle/impl/core_traits.rs
-
 use crate::{Angle, ConstInit, Debug, FmtResult, Formatter, Ordering};
 
 /* Clone, Copy */

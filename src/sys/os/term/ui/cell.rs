@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ui/cell.rs
 //
 //! Defines [`TermCellUi`].
 //

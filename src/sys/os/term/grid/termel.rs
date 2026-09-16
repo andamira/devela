@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/grid/termel.rs
 //
 //! Defines [`Termel`].
 //!

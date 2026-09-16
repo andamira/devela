@@ -1,4 +1,3 @@
-// devela/src/media/font/bitmap/termivela.rs
 //
 //! Defines the embedded Termivela bitmap-font faces.
 //

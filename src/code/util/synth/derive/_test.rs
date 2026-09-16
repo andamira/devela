@@ -1,5 +1,3 @@
-// devela/src/code/util/synth/derive/_test.rs
-
 use crate::format_buf;
 use crate::{macro_apply, macro_apply_alias, macro_derive, macro_derive_alias, macro_derive_with};
 

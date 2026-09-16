@@ -1,4 +1,3 @@
-// devela/src/text/ascii/char.rs
 //
 //! Defines [`CharAscii`].
 //

@@ -1,4 +1,3 @@
-// devela/sys/hw/pin/_.rs
 //
 #![doc = crate::_DOC_SYS_HW_PIN!()] // public
 #![doc = crate::_doc!(modules: crate::sys::hw; pin)]

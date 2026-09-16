@@ -1,4 +1,3 @@
-// devela/src/work/plan/_.rs
 //
 #![doc = crate::_DOC_WORK_PLAN!()] // public
 #![doc = crate::_doc!(modules: crate::work; plan)]

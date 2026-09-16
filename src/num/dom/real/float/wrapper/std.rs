@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/std.rs
 //
 //! Methods depending on std, or its absence
 //

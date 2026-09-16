@@ -1,5 +1,3 @@
-// devela/src/lang/prog/script/form/shell/word/_test.rs
-
 use crate::{ShellLex, ShellQuote, ShellWordError};
 
 fn assert_split(input: &[u8], expected: &[&[u8]]) {

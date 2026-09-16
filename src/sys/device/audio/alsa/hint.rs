@@ -1,5 +1,3 @@
-// devela/src/sys/device/audio/alsa/hint.rs
-
 use super::_raw;
 use crate::{CStr, Libc, c_char};
 

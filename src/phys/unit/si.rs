@@ -1,4 +1,3 @@
-// devela/src/phys/unit/si.rs
 //
 //! SI unit prefixes.
 //

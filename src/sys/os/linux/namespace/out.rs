@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/out.rs
-
 use crate::{LINUX_FILENO as FILENO, Linux, LinuxResult as Result, MaybeUninit, c_int};
 
 /// # Stdout/stderr-related methods.

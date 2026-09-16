@@ -1,5 +1,3 @@
-// devela/src/data/value/tuple/_test.rs
-
 use super::{Tuple, TupleElement, TupleElementMut, TupleElementRef};
 use crate::assert_matches;
 

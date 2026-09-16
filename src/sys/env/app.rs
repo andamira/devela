@@ -1,4 +1,3 @@
-// devela/src/sys/env/app.rs
 //
 //! Defines [`AppConfig`], [`AppEnv`], [`AppApple`], [`AppUnix`], [`AppWindows`] and [`AppXdg`].
 //

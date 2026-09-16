@@ -1,4 +1,3 @@
-// devela/src/lang/prog/script/embed/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_PROG_SCRIPT_EMBED!()] // public

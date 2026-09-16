@@ -1,4 +1,3 @@
-// devela/src/phys/time/delta/_test.rs
 //
 
 #[cfg(feature = "std")]

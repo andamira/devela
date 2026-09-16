@@ -1,4 +1,3 @@
-// devela/src/code/build/namespace.rs
 //
 //! Defines [`Build`].
 //

@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/impls/base16.rs
-
 use crate::{Ascii, ConstInit, Radix, is, unwrap, whilst};
 
 const HEX_UPPER: &[u8; 16] = b"0123456789ABCDEF";

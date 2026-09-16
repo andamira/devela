@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/adj/_example.rs
-
 use crate::{NonMaxU8, NonMaxU16, graph_adj};
 
 graph_adj! {

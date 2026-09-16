@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/_.rs
 //
 //! Formatting numbers.
 //

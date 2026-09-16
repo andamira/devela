@@ -1,4 +1,3 @@
-// devela/src/text/fmt/cat.rs
 //
 //! Defines [`fmtcat!`].
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/api/_.rs
 //
 //! Defines the [`Web`] namespace and its JavaScript ↔ Rust bridge implementations.
 //!

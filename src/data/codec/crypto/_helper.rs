@@ -1,4 +1,3 @@
-// devela/src/data/codec/crypto/_helper.rs
 //
 //! Defines `_hex`, `__crypto_impl_hmac!`, `__crypto_impl_otp`.
 //

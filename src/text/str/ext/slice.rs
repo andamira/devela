@@ -1,4 +1,3 @@
-// devela/src/text/str/ext/slice.rs
 //
 //! Defines the [`StrExt`] trait.
 //

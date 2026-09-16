@@ -1,5 +1,3 @@
-// devela/src/num/grain/lim/bound/signed.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __bound_int_impl_signed· {

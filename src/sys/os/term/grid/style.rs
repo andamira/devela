@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/grid/style.rs
 //
 //! Defines [`TermStyle`] and [`TermStyleExt`].
 //

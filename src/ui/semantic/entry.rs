@@ -1,4 +1,3 @@
-// devela/src/ui/entry.rs
 //
 //! Defines [`UiEntry`].
 //

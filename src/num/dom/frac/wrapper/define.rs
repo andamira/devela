@@ -1,4 +1,3 @@
-// devela/src/num/dom/frac/wrapper/define.rs
 //
 //! Fraction-related wrapper struct.
 //

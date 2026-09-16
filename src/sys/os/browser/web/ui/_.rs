@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/ui/_.rs
 //
 //! UI presenters implemented for the web.
 //

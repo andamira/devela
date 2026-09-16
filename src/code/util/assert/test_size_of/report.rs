@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/test_size_of/define.rs
 //
 //! Defines `__test_size_of_report`.
 //

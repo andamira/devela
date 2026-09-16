@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/string/_.rs
 //
 //!
 //

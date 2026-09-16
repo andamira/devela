@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/compress/_.rs
 //
 //! Size-reducing codecs.
 //

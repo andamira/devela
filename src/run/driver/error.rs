@@ -1,4 +1,3 @@
-// devela/src/run/driver/error.rs
 //
 //! Defines [`RunDriverError`], [`RunDriverFrameError`].
 //

@@ -1,5 +1,3 @@
-// devela/src/geom/space/topol/turn.rs
-
 #[doc = crate::_tags!(geom topol)]
 /// The planar turn determined by three ordered points.
 #[doc = crate::_doc_meta!{

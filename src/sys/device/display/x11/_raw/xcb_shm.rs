@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/_raw/xcb_shm.rs
 //
 //! from `shm.h`
 //

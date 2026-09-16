@@ -1,4 +1,3 @@
-// devela/src/ui/view/view.rs
 //
 //! Defines [`UiViewFlags`], [`UiView`].
 //

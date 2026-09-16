@@ -1,4 +1,3 @@
-// devela/src/num/grain/wide/lane.rs
 //
 //! Defines the [`lane!`] macro.
 //

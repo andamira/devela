@@ -1,5 +1,3 @@
-// devela/src/num/prob/rand/_test.rs
-
 use crate::Rand;
 
 type RandFake<const N: usize> = crate::RandFake<N, true>;

@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/lending/define.rs
 //
 //! Defines [`IteratorLending`],
 //! [`IteratorLendingDoubleEnded`],

@@ -1,5 +1,3 @@
-// devela/src/code/util/assert/test_size_of/_test.rs
-
 use crate::{NonZeroU8, test_size_of};
 
 struct TestSizeOfUnit;

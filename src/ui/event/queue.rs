@@ -1,4 +1,3 @@
-// devela/src/ui/event/queue.rs
 //
 //! Defines [`EventQueue`].
 //

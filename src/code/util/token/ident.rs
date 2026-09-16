@@ -1,4 +1,3 @@
-// devela/src/code/util/token/ident.rs
 //
 //! identifier related macro functionality
 //

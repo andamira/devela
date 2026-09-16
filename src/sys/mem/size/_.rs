@@ -1,4 +1,3 @@
-// devela/src/sys/mem/size/_.rs
 //
 //! Memory size functionality.
 //

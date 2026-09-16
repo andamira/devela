@@ -1,5 +1,3 @@
-// devela/src/media/visual/image/raster/_test.rs
-
 use crate::{Boundary1d, Extent2, ext, pos};
 use crate::{RasterBuf, RasterView, RasterViewBytes};
 use crate::{RasterByteSlice, RasterElement, RasterFormat, RasterLayout, RasterSlice};

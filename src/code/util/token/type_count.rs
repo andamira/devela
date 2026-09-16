@@ -1,4 +1,3 @@
-// devela/src/code/util/token/type_count.rs
 //
 //! Counting types.
 //

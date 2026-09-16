@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/rgb/_.rs
 //
 //! RGB color space
 //

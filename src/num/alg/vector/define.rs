@@ -1,4 +1,3 @@
-// devela/src/num/alg/vector/define.rs
 //
 //! Fixed coordinate vectors and their algebra.
 //

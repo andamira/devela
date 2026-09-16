@@ -1,4 +1,3 @@
-// devela/src/sys/os/_.rs
 //
 #![doc = crate::_DOC_SYS_OS!()] // public
 #![doc = crate::_doc!(modules: crate::sys; os: browser, fd, term, linux)] // windows

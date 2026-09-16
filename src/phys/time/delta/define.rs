@@ -1,4 +1,3 @@
-// devela/src/phys/time/delta/define.rs
 //
 //! Defines the [`TimeDelta`] struct.
 //

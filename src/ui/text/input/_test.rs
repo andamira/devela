@@ -1,4 +1,3 @@
-// devela/src/ui/text/_test.rs
 //
 // TOC
 // - misc

@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/_example_enumint.rs
 //
 //! Defines [`EnumintI8Example`].
 //

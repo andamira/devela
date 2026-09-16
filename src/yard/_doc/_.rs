@@ -1,4 +1,3 @@
-// devela/src/yard/_doc/_.rs
 //
 //! Defines private doc meta helpers.
 //

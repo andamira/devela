@@ -1,5 +1,3 @@
-// devela/src/num/alg/matrix/_test.rs
-
 use super::*;
 
 mod methods {

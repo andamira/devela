@@ -1,4 +1,3 @@
-// devela/src/ui/event/pointer/button.rs
 //
 //! Defines [`EventButton`], [`EventButtons`], [`EventButtonState`].
 //

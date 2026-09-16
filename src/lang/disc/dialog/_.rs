@@ -1,4 +1,3 @@
-// devela/src/lang/disc/dialog/_.rs
 //
 //! Dialogue turns, attribution, and exchanges.
 //

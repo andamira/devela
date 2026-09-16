@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/num.rs
 //
 //! Defines [`FmtNum`].
 //

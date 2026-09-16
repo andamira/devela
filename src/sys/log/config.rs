@@ -1,5 +1,3 @@
-// devela/src/sys/log/config.rs
-
 use super::{LogLevel, LogLevelFilter};
 
 #[doc = crate::_tags!(log)]

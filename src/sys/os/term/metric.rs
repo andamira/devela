@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/metric.rs
 //
 //! Defines [`TermSize`].
 //

@@ -1,4 +1,3 @@
-// devela/src/run/time/pacer.rs
 //
 //! Defines [`RunPacer`].
 //

@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/timer0_interrupt.rs
 //
 //! Blinks the built-in LED using a Timer0 compare interrupt.
 //

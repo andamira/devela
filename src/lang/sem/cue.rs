@@ -1,4 +1,3 @@
-// devela/src/lang/sem/cue.rs
 //
 //! Defines [`Cue`].
 //

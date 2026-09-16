@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/backing/_.rs
 //
 //! Backing-storage implementations for [`Array`][crate::Array].
 //!

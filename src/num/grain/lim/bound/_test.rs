@@ -1,5 +1,3 @@
-// devela/src/num/grain/lim/bound/_test.rs
-
 use crate::{
     BoundI8Example as I, BoundI8SymExample as Is,
     Boundary1d::{Lower, Upper},

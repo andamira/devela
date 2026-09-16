@@ -1,4 +1,3 @@
-// devela/src/sys/io/no_std_define/other.rs
 //
 //! Defines [`IoEmpty`], [`IoRepeat`], [`io_copy`], [`io_empty`], [`io_repeat`].
 //

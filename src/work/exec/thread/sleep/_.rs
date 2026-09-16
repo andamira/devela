@@ -1,4 +1,3 @@
-// devela/src/work/exec/thread/sleep/_.rs
 //
 //! Thread sleeping functionality.
 //

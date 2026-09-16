@@ -1,5 +1,3 @@
-// devela/src/sys/arch/wasm/_reexport_core.rs
-
 #[allow(unused_imports, reason = "wasm target-gate")]
 use crate::{_reexport, _tags};
 

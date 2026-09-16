@@ -1,4 +1,3 @@
-// devela/src/text/layout/engine.rs
 //
 //! Defines [`TextFit`], [`TextLayoutStep`].
 //

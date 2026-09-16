@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# devela/x
 #
 # devela workspace command wrapper
 #

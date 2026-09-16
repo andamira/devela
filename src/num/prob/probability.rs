@@ -1,4 +1,3 @@
-// devela/src/num/prob/probability.rs
 //
 //! Defines [`Probability`].
 //

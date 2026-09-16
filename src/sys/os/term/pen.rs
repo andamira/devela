@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/pen.rs
 //
 //! Defines [`TermPen`].
 //

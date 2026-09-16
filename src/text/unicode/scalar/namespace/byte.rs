@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/byte.rs
-
 use crate::{Char, is};
 
 /// # Methods over `u8`.

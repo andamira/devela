@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/scalar.rs
 //
 //! Primitive scalar classification traits.
 //

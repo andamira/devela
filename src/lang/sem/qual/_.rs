@@ -1,4 +1,3 @@
-// devela/src/lang/sem/qual/_.rs
 //
 //! Semantic qualification.
 //!

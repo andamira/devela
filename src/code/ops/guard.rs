@@ -11,7 +11,6 @@
 //! ```
 // WAIT:[cargo-script](https://github.com/rust-lang/cargo/issues/12207)
 //
-// devela/src/code/ops/guard.rs
 //
 //! Defines [`ScopeGuard`].
 //
@@ -173,17 +172,20 @@ impl<T, F: FnOnce(T, &S), S> Drop for ScopeGuard<T, F, S> {
     /// On drop, invokes the callback with the guarded value and a reference to the current state.
     fn drop(&mut self) {
         let (value, callback) = {
-            cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_code")) => {
-                // SAFETY: `value` is always `Some` until dropped
-                let value = unsafe { self.value.take().unwrap_unchecked() };
-                // SAFETY: `callback` is always `Some` until dropped
-                let callback = unsafe { self.callback.take().unwrap_unchecked() };
-                (value, callback)
-            } _ => {
-                let value = self.value.take().unwrap();
-                let callback = self.callback.take().unwrap();
-                (value, callback)
-            }}
+            cfg_select! {
+                all(feature = "unsafe_layout", not(feature = "safe_code")) => {
+                    // SAFETY: `value` is always `Some` until dropped
+                    let value = unsafe { self.value.take().unwrap_unchecked() };
+                    // SAFETY: `callback` is always `Some` until dropped
+                    let callback = unsafe { self.callback.take().unwrap_unchecked() };
+                    (value, callback)
+                }
+                _ => {
+                    let value = self.value.take().unwrap();
+                    let callback = self.callback.take().unwrap();
+                    (value, callback)
+                }
+            }
         };
         callback(value, &self.state);
     }

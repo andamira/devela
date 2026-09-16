@@ -1,4 +1,3 @@
-// devela_macros/src/_.rs
 //
 // NOTE: proc. macro crates can only export procedural macros.
 //

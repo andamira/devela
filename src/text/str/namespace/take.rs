@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/take.rs
-
 use crate::{Str, unwrap};
 
 /// # `take*` API methods for subslicing.

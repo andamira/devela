@@ -1,4 +1,3 @@
-// devela/src/code/panic/_.rs
 //
 #![doc = crate::_DOC_CODE_PANIC!()] // public
 #![doc = crate::_doc!(modules: crate::code; panic)]

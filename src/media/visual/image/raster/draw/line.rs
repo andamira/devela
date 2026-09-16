@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/draw/line.rs
 //
 //! Defines [`RasterLineIter`].
 //

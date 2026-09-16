@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/_.rs
 //
 #![doc = crate::_DOC_SYS_OS_BROWSER_WEB!()] // public
 #![doc = crate::_doc!(modules: crate::sys::os::browser; web)]

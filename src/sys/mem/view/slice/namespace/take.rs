@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/take.rs
-
 use crate::Slice;
 
 /// # `take*` API methods for subslicing.

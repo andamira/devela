@@ -1,4 +1,3 @@
-// devela/src/phys/time/_.rs
 //
 #![doc = crate::_DOC_PHYS_TIME!()] // public
 #![doc = crate::_doc!(modules: crate::phys; time: source)]

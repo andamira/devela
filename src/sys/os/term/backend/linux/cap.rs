@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/linux/cap.rs
 //
 //! Implements capability methods for  [`TermLinux`].
 //

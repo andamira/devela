@@ -1,4 +1,3 @@
-// devela/src/num/quant/value.rs
 //
 //! Defines [`ValueQuant`].
 //

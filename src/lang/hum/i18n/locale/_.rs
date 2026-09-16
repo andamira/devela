@@ -1,4 +1,3 @@
-// devela/src/lang/hum/i18n/locale/_.rs
 //
 //! Identifiers and properties that define a language–region context for localization.
 //!

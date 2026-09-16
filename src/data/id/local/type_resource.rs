@@ -1,4 +1,3 @@
-// devela/src/data/id/local/type_resource.rs
 //
 //! Type-safe resource IDs.
 //

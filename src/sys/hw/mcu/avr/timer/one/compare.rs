@@ -1,5 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/one/compare.rs
-
 /// # Output compare
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl crate::AvrTimer1 {

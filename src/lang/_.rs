@@ -1,4 +1,3 @@
-// devela/src/lang/_.rs
 //
 #![doc = crate::_DOC_LANG!()] // public, root
 #![doc = crate::_DOC_LANG_MODULES!()]

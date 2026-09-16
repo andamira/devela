@@ -1,5 +1,3 @@
-// devela/src/num/grain/prim/cast/namespace/define.rs
-
 #[doc = crate::_tags!(num primitive namespace)]
 /// Provides *const* casting, joining and splitting operations between primitives.
 #[doc = crate::_doc_meta!{

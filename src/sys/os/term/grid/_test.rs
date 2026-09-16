@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/grid/_test.rs
-
 use crate::{TermColor, TermColors, TermGrid, TermGridError, TermPen, TermStyle, Termel};
 use crate::{ext, pos, region};
 

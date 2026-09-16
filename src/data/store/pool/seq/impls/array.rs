@@ -1,5 +1,3 @@
-// devela/src/data/store/pool/seq/impls/array.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __pool_seq_impl_array· {

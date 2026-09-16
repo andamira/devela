@@ -1,4 +1,3 @@
-// devela/src/code/build/_.rs
 //
 #![doc = crate::_DOC_CODE_BUILD!()] // private
 #![doc = crate::_doc!(modules: crate::code; build)]

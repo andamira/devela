@@ -1,4 +1,3 @@
-// devela/src/text/fmt/debug.rs
 //
 //! Defines [`DebugExt`], [`DebugWith`].
 //

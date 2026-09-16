@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/board/_.rs
 //
 #![doc = crate::_DOC_SYS_HW_MCU_BOARD!()] // public
 #![doc = crate::_doc!(modules: crate::sys::hw::mcu; board)]

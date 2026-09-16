@@ -1,4 +1,3 @@
-// devela/src/sys/hw/_.rs
 //
 #![doc = crate::_DOC_SYS_HW!()] // public
 #![doc = crate::_doc!(modules: crate::sys; hw: mcu, pin)]

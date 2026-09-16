@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/_.rs
 //
 //! Floating-point wrapper struct.
 //

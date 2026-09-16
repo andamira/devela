@@ -1,4 +1,3 @@
-// devela/src/work/exec/process/process.rs
 //
 //! Defines the [`ProcessExt`] trait.
 //

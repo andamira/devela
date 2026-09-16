@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/term.rs
-
 use crate::{Linux, LinuxResult as Result};
 use crate::{LinuxTermios, ScopeGuard, TermSize};
 

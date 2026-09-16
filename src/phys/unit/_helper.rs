@@ -1,5 +1,3 @@
-// devela/src/phys/unit/_helper.rs
-
 // Implements TryFrom for `$to_prim` from the `$unit` type `$from_prim` value
 macro_rules! __phys_unit_impl_try_from {
     ($unit:ty, $from_prim:ty => $($to_prim:ty),+) => {

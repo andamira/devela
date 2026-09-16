@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/namespace/file.rs
 //
 //! File-descriptor-oriented Linux operations.
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/linux/trait_impl.rs
 //
 //! Implements [`TermBackend`] for [`TermLinux`].
 //

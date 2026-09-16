@@ -1,5 +1,3 @@
-// devela/src/sys/mem/alloc/alloc/_reexport_std.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: std::alloc,

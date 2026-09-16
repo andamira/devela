@@ -1,4 +1,3 @@
-// devela/src/vita/play/game/_.rs
 //
 #![doc = crate::_DOC_VITA_PLAY_GAME!()] // public
 #![doc = crate::_doc!(modules: crate::vita::play; game)]

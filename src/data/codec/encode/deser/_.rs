@@ -1,4 +1,3 @@
-// devela/src/data/codec/encode/deser/_.rs
 //
 //! Format-neutral value serialization.
 //

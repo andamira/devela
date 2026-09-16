@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/pin/pinned.rs
 //
 //! Defines [`Pinned`].
 //

@@ -1,4 +1,3 @@
-// devela/src/num/signal/emit.rs
 //
 //! Signal emitters, generators, and produced value streams.
 //

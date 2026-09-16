@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/strip.rs
 //
 //! Defines the [`Ansi::strip_codes`] method.
 //

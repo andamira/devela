@@ -1,4 +1,3 @@
-// devela/src/data/codec/radix/_.rs
 //
 //! Radix-based encodings.
 //

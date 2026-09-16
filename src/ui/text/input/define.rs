@@ -1,4 +1,3 @@
-// devela/src/ui/text/mod.rs
 //
 //! Defines `TextInput[Config|Action|Outcome|Reject|View]`.
 //

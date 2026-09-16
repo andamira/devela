@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/archive/_.rs
 //
 //! Multi-resource packages.
 //

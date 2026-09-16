@@ -1,4 +1,3 @@
-// devela/src/data/codec/hash/pengy.rs
 //
 //! Based on pengyhash v0.2 LICENSED as BSD-2.
 //

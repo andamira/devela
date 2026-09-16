@@ -1,4 +1,3 @@
-// devela/src/phys/time/delta/basic.rs
 //
 // TOC
 // - basic methods

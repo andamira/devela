@@ -1,4 +1,3 @@
-// devela/src/code/result/opt_res/ext_result.rs
 //
 //! Defines the [`ResultExt`] trait.
 //

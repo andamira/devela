@@ -1,4 +1,3 @@
-// devela/src/text/ascii/namespace.rs
 //
 //! Defines the [`Ascii`] namespace.
 //

@@ -1,4 +1,3 @@
-// devela/data/layout/array/backing/boxed.rs
 //
 //! Array implementations over boxed slices.
 //

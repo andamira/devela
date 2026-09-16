@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/shift/u16.rs
 //
 //! 16-bit version of XorShift.
 //

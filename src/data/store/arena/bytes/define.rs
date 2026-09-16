@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/bytes/define.rs
 //
 //! Defines [`arena_bytes!`].
 //

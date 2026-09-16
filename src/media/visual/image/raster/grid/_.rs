@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/grid/_.rs
 //
 //! Logical raster-cell geometry and traversal.
 //

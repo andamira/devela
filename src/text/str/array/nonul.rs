@@ -1,4 +1,3 @@
-// devela/src/text/str/array/nonul.rs
 //
 //! Non-nul `String` backed by an array.
 //

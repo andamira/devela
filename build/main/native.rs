@@ -1,4 +1,3 @@
-// devela/build/main/native.rs
 //
 //! Native library availability probing.
 //
@@ -10,8 +9,9 @@ use std::io::Error as IoError;
 pub(crate) fn main() -> Result<(), IoError> {
     #[cfg(feature = "__dbg")]
     cfg_select! {
-        feature = "__disable_native_libs" =>
-        Build::println_heading("Native libraries detection DISABLED:"),
+        feature = "__disable_native_libs" => {
+            Build::println_heading("Native libraries detection DISABLED:")
+        }
         _ => Build::println_heading("Native libraries detection requested:"),
     };
 

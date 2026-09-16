@@ -1,4 +1,3 @@
-// devela/src/lang/sem/derive/_.rs
 //
 //! Rules, inference, normalization, rewriting.
 //!

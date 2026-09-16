@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/format/netpbm/_helper.rs
 //
 //! Private PNM cursor, format and header helpers.
 //

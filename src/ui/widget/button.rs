@@ -1,4 +1,3 @@
-// devela/src/ui/widget/button.rs
 //
 //! Defines [`UiButton`].
 //

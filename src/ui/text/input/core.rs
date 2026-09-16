@@ -1,5 +1,3 @@
-// devela/src/ui/text/mod.rs
-
 use crate::{TextInput, TextInputAction, TextInputConfig, TextInputOutcome, TextInputView};
 
 /* generic storage */

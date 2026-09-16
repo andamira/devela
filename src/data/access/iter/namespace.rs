@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/namespace.rs
 //
 //! Defines the [`Iter`] namespace.
 //

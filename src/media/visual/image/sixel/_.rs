@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/sixel/_.rs
 //
 //! [Sixel] encoding functionality.
 //!

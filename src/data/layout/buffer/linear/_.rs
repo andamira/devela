@@ -1,4 +1,3 @@
-// devela/src/data/layout/buffer/linear/_.rs
 //
 //! Defines linear buffers.
 //!

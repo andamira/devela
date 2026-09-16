@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/num_trait/impls.rs
 //
 //! Implementations of `NumInt` for primitives.
 //

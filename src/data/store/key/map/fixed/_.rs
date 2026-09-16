@@ -1,4 +1,3 @@
-// devela/src/data/store/key/map/fixed/_.rs
 //
 //! Fixed-capacity open-addressed hash maps with mutable entries.
 //

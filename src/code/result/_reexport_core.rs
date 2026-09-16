@@ -1,5 +1,3 @@
-// devela/src/code/result/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 #[doc = crate::_tags!(result no error)]

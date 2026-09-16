@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/history.rs
 // In sync with history.js
 //
 //! Implements the web history & location API.

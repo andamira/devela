@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/replica/_test.rs
-
 use super::{MemReplicaError as E, MemReplicaSlice};
 
 #[test]

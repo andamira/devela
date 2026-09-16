@@ -1,4 +1,3 @@
-// devela/src/work/exec/process/error.rs
 //
 //! Defines [`ExitStatusError`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/id/uuid/non_nil.rs
 //
 //! Defines [`UuidNonNil`].
 //

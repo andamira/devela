@@ -1,4 +1,3 @@
-// devela/sys/hw/camera/_.rs
 //
 //! Camera device interfaces.
 //

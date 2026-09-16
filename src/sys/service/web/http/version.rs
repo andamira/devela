@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/version.rs
 //
 //! Defines [`HttpVersion`].
 //

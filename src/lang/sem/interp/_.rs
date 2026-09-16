@@ -1,4 +1,3 @@
-// devela/src/lang/sem/interp/_.rs
 //
 //! Situated readings and interpretation.
 //!

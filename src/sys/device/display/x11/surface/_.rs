@@ -1,5 +1,3 @@
-// devela/src/sys/device/display/x11/surface/_.rs
-
 crate::mods_in! {
     mod _base; // (XSurface), (XSurfaceStorage)
     mod frame; // XSurfaceFrame

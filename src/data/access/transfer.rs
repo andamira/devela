@@ -1,4 +1,3 @@
-// devela/src/data/access/transfer.rs
 //
 //! Defines caller-buffered data transfer operations.
 //

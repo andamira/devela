@@ -1,5 +1,3 @@
-// devela/src/vita/play/game/action.rs
-
 #[doc = crate::_tags!(game)]
 /// A declared move or operation recognized by the rules of play.
 #[doc = crate::_doc_meta!{location("vita/play/game", struct GameAction)}]

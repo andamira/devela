@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/pin/_.rs
 //
 #![doc = crate::_DOC_SYS_MEM_BOUND_PIN!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; pin)]

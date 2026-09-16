@@ -1,4 +1,3 @@
-// devela/src/data/word/_.rs
 //
 #![doc = crate::_DOC_DATA_WORD!()] // public
 #![doc = crate::_doc!(modules: crate::data; word)]

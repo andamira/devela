@@ -1,4 +1,3 @@
-// devela/src/data/topol/ord/seq/_.rs
 //
 //! Ordered sequence topology and succession.
 //

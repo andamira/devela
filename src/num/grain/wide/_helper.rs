@@ -1,4 +1,3 @@
-// devela/src/num/grain/wide/_helper.rs
 //
 //! Defines [__lane_dispatch!], [`_simd_use!`], [`_dep_wide_compile!`], [`_dep_wide_use!`].
 //

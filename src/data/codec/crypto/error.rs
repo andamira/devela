@@ -1,4 +1,3 @@
-// devela/src/data/codec/crypto/error.rs
 //
 //! Defines [`CryptoError`].
 //

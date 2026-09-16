@@ -1,5 +1,3 @@
-// devela/src/sys/arch/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: core::arch,

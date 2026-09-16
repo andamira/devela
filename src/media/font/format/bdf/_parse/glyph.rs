@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/_parse/glyph.rs
 //
 //! Private BDF glyph-record parsing.
 //

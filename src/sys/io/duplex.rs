@@ -1,4 +1,3 @@
-// devela/src/sys/io/duplex.rs
 //
 //! Defines [`IoDuplex`].
 //

@@ -1,4 +1,3 @@
-// devela/src/lang/disc/style/_.rs
 //
 //! Reusable dimensions and profiles of stylistic expression.
 //

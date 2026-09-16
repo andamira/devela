@@ -1,4 +1,3 @@
-// devela/src/num/grain/lim/bound/_example.rs
 //
 //! Defines [`BoundI8Example`].
 //

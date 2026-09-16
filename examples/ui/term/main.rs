@@ -1,4 +1,3 @@
-// devela/examples/ui/term/main.rs
 //
 //! Renders a backend-neutral UI output to a terminal cell grid.
 //

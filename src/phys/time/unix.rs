@@ -1,4 +1,3 @@
-// devela/src/phys/time/unix.rs
 //
 // # LINKS
 // - https://en.wikipedia.org/wiki/Unix_time

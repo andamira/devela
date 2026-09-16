@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/_.rs
 //
 #![doc = crate::_DOC_SYS_OS_TERM!()] // public
 #![doc = crate::_doc!(modules: crate::sys::os; term: ansi, grid)]

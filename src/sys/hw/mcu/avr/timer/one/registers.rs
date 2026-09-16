@@ -1,5 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/one/registers.rs
-
 use crate::{AvrReg8, AvrTimer1};
 
 /// # Semantic registers API

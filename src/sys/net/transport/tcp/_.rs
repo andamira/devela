@@ -1,4 +1,3 @@
-// devela/src/sys/net/transport/tcp/_.rs
 //
 #![doc = crate::_DOC_SYS_NET_TRANSPORT_TCP!()] // private
 #![doc = crate::_doc!(modules: crate::sys::net::transport; tcp)]

@@ -1,4 +1,3 @@
-// devela/src/media/visual/video/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_MEDIA_VISUAL_VIDEO!()] // public

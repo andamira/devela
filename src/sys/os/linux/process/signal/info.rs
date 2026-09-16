@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/signal/info.rs
 //
 //! Defines [`LinuxSiginfo`] and (`LinuxSigval`).
 //

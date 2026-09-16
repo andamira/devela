@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/linear/_test.rs
-
 use super::*;
 use crate::{ConstInit, const_assert, niche};
 

@@ -1,5 +1,3 @@
-// devela/src/data/access/iter/lending/_test.rs
-
 use super::*;
 
 struct SliceLend<'s, T> {

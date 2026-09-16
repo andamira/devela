@@ -1,5 +1,3 @@
-// devela/src/num/fin/ord/cmp/_test.rs
-
 use super::Cmp;
 
 #[test]

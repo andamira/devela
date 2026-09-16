@@ -1,4 +1,3 @@
-// devela/src/sys/os/c/raw.rs
 //
 //!
 //

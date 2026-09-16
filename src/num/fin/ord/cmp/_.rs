@@ -1,4 +1,3 @@
-// devela/src/num/fin/ord/cmp/_.rs
 //
 //! Items to help comparing.
 //

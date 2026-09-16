@@ -1,4 +1,3 @@
-// devela/src/geom/fig/curve/_.rs
 //
 #![doc = crate::_DOC_GEOM_FIG_CURVE!()] // public
 #![doc = crate::_doc!(modules: crate::geom::fig; curve)]

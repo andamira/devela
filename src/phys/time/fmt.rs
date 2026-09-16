@@ -1,4 +1,3 @@
-// devela/src/phys/time/fmt.rs
 //
 //! Defines [`Timecode`].
 //

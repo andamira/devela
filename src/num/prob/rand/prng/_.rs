@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/_.rs
 //
 #![doc = crate::_DOC_NUM_PROB_RAND_PRNG!()] // private
 #![doc = crate::_doc!(modules: crate::num::prob::rand; prng)]

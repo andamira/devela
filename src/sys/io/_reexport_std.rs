@@ -1,4 +1,3 @@
-// devela/src/sys/io/_reexport_std.rs
 //
 //! Reexported items from `std`.
 //

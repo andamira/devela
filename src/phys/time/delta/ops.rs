@@ -1,4 +1,3 @@
-// devela/src/phys/time/delta/ops.rs
 //
 // TOC
 // - operations

@@ -1,4 +1,3 @@
-// devela/src/code/util/token/dollar.rs
 //
 //! Defines [`macro_dollar!`].
 //

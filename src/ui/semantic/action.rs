@@ -1,4 +1,3 @@
-// devela/src/ui/action.rs
 //
 //! Defines [`UiAction`].
 //

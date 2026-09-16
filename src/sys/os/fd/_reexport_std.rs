@@ -1,5 +1,3 @@
-// devela/src/sys/os/fd/_reexport_std.rs
-
 #[cfg(all(not(miri), any(unix, target_os = "wasi")))]
 pub use fd_reexports::*;
 #[cfg(all(not(miri), any(unix, target_os = "wasi")))]

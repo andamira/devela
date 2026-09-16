@@ -1,4 +1,3 @@
-// devela/src/_doc/reference/_.rs
 //
 //! Configuration, inventories, and provenance.
 #![doc = crate::_doc!(modules: crate::_doc; reference: features, nightly, vendored)]

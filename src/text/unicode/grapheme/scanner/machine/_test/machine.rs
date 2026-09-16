@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/machine/_test/machine.rs
-
 use crate::{CharIter, GraphemeBoundary, GraphemeMachine, StringU8, init_array};
 
 // The tests in this file are only for the public-facing `GraphemeCluster` API.

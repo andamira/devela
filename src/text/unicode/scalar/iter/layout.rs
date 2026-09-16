@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/iter/layout.rs
-
 use crate::{
     CharIter,
     TextCohesion::{Atomic, Breakable},

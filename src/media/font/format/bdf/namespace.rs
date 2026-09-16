@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/namespace.rs
 //
 //! Defines [`Bdf`].
 //

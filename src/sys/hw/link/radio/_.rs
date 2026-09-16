@@ -1,4 +1,3 @@
-// devela/sys/hw/link/radio/_.rs
 //
 //!
 //

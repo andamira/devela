@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/_test/base16.rs
-
 use super::*;
 
 const fn hex<const N: usize>(s: &str) -> [u8; N] {

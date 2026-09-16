@@ -1,4 +1,3 @@
-// devela/src/data/codec/encode/_.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_ENCODE!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; encode)]

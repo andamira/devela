@@ -1,4 +1,3 @@
-// devela/src/ui/text/input/_.rs
 //
 //! Interactive text state for input surfaces.
 //

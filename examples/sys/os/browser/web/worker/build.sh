@@ -1,5 +1,4 @@
 #!/bin/sh
-# devela/examples/sys/os/browser/web/worker/build.sh
 #
 ## install required tools
 # $ apt install jq

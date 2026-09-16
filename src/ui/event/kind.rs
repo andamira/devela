@@ -1,4 +1,3 @@
-// devela/src/ui/event/kind.rs
 //
 //! Defines [`EventTag`], [`EventTagSet`], [`EventKindTimed`], [`EventKind`].
 //

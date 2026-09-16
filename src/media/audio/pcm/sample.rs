@@ -1,4 +1,3 @@
-// devela/src/media/audio/pcm/sample.rs
 //
 //! Defines [`PcmSample`], [`PcmSampleType`].
 //

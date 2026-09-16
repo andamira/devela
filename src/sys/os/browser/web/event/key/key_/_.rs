@@ -1,5 +1,3 @@
-// devela/src/sys/os/browser/web/event/key/key/mod.rs
-
 crate::mods_in! {
     mod define; // WebEventKey
 

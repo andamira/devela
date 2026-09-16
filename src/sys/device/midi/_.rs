@@ -1,4 +1,3 @@
-// devela/src/sys/device/midi/_.rs
 //
 //! Midi functionality.
 //

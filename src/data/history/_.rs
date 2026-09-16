@@ -1,4 +1,3 @@
-// devela/src/data/history/_.rs
 //
 #![doc = crate::_DOC_DATA_HISTORY!()] // public
 #![doc = crate::_doc!(modules: crate::data; history)]

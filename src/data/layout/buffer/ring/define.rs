@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/ring/define.rs
-
 buffer_ring!(
     #[doc = crate::_tags!(data_structure)]
     /// A fixed-capacity ring buffer using `u8` indices.

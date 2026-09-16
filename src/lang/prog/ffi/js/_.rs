@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/js/_.rs
 //
 //! <a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> interfacing.
 //!

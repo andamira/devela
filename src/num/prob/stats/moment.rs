@@ -1,4 +1,3 @@
-// devela/src/num/prob/stats/moment.rs
 //
 //! Defines [`StatsMoment`].
 //

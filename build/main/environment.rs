@@ -1,4 +1,3 @@
-// devela/build/main/environment.rs
 //
 //! Build-script environment variables.
 //!

@@ -1,4 +1,3 @@
-// devela/src/data/topol/ord/seq/prev_next.rs
 //
 //! Defines [`SeqNext`], [`SeqPrevNext`].
 //

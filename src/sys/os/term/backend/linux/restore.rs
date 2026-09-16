@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/linux/restore.rs
 //
 //! Defines (`TermLinuxRestore`, `TermLinuxRestoreFlags`).
 //

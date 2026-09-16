@@ -1,4 +1,3 @@
-// devela/src/sys/device/audio/alsa/pcm.rs
 //
 //! Defines [`AlsaPcmHandle`].
 //

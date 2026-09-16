@@ -1,4 +1,3 @@
-// devela/src/geom/fig/fold/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_FIG_FOLD!()] // public

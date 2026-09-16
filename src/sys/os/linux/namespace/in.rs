@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/in.rs
-
 #[cfg(feature = "alloc")]
 use crate::Vec;
 use crate::{LINUX_FILENO as FILENO, LINUX_IOCTL as IOCTL, Linux, LinuxError, LinuxResult};

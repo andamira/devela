@@ -1,4 +1,3 @@
-<!-- devela/docs/vendored.md -->
 
 This project includes code adapted from various permissively licensed sources.
 

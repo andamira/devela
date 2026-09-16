@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/string/impls/_.rs
-
 crate::mods_in! {
     mod array;
     mod vec;

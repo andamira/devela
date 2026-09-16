@@ -1,4 +1,3 @@
-// devela/src/num/dom/traits/_.rs
 //
 //!
 //

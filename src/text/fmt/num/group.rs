@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/group.rs
 //
 //! Defines [`FmtNumGroup`].
 //

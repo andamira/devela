@@ -1,4 +1,3 @@
-// devela/src/lang/disc/journal/_.rs
 //
 //! Journalistic inquiry, attribution, reporting, and presentation.
 //!

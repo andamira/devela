@@ -1,4 +1,3 @@
-// devela/src/_doc/practice/_.rs
 //
 //! Patterns, techniques, and project tooling.
 #![doc = crate::_doc!(modules: crate::_doc; practice: macros)] // tooling

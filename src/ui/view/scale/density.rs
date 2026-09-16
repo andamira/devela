@@ -1,4 +1,3 @@
-// devela/ui/view/scale/density.rs
 //
 //! Defines [`UiDensity`].
 //

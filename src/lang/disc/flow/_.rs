@@ -1,4 +1,3 @@
-// devela/src/lang/disc/flow/_.rs
 //
 //! Conditional discourse flow.
 //

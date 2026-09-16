@@ -1,4 +1,3 @@
-// devela/src/geom/affine/point/turn/int.rs
 //
 //! Implements methods related to `Turn` and `PointSegmentRelation`.
 //

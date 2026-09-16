@@ -1,4 +1,3 @@
-// devela/src/code/util/token/sf.rs
 //
 //! Defines skip formatting macro [`sf!`].
 //

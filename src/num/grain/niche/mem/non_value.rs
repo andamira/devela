@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/mem/non_value.rs
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //

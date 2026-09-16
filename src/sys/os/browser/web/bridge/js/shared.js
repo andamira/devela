@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/shared.js
 //
 // This should hold helpers that need wasm.memory, decoding, writing memory,
 // null checks, maybe selector helpers.

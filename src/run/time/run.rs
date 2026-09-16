@@ -1,4 +1,3 @@
-// devela/src/run/time/run.rs
 //
 //! Defines [`Runtime`].
 //

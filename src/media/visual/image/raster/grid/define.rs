@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/grid/define.rs
 //
 //! Defines [`RasterGrid`].
 //

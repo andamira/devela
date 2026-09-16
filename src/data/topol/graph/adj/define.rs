@@ -1,4 +1,3 @@
-// devela/src/data/topol/graph/adj/define.rs
 //
 //! Defines [`graph_adj!`].
 //

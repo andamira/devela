@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/_.rs
 //
 //! Linux syscalls.
 //

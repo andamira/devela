@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/repeat.rs
 //
 //! Body of [`repeat!`][crate::repeat] and required functions.
 //

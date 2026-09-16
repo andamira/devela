@@ -1,4 +1,3 @@
-// devela/src/phys/bio/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_BIO!()] // public

@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/timer1_ctc.rs
 //
 //! Blinks the built-in LED using 16-bit Timer1 CTC polling.
 //

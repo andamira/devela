@@ -1,4 +1,3 @@
-// devela/src/data/layout/table/backing.rs
 //
 //! Backing-storage implementations for [`Table`][crate::Table].
 //

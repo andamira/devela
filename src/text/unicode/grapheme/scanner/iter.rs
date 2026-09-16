@@ -1,4 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/iter.rs
 //
 //! Defines [`GraphemeIter`], an owned grapheme boundary iterator.
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/x86.rs
 //
 //! Implements linux syscalls for x86.
 //

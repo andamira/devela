@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/c3/uart.rs
 //
 //! Defines [`Esp32C3Uart`].
 //

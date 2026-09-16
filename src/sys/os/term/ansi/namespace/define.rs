@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/define.rs
 //
 //! Defines the [`Ansi`] namespace for emitting ANSI codes.
 //

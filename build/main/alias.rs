@@ -1,4 +1,3 @@
-// devela/build/main/alias.rs
 //
 //! Aliases of combinations of configuration features.
 //

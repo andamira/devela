@@ -1,13 +1,12 @@
-// devela_macros/src/bodies/paste/_.rs
 //
 //! Recursive expansion over token trees.
 //
 
 #[cfg(doctest)]
 crate::items! {
-    mod tests_attr;
-    mod tests_paste;
-    mod tests_segment;
+    mod _test_attr;
+    mod _test_paste;
+    mod _test_segment;
 }
 
 mod attr;

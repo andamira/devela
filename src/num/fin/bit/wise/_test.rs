@@ -1,5 +1,3 @@
-// devela/src/num/fin/bit/wise/_test.rs
-
 use crate::{Bitwise, Bitwise as Bg};
 
 #[test] #[rustfmt::skip]

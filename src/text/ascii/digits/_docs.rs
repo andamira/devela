@@ -1,5 +1,3 @@
-// devela/src/text/ascii/digits/_docs.rs
-
 use crate::CONST;
 
 CONST! { pub(super),

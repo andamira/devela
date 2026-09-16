@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/align/cache.rs
 //
 //! Defines the [`CacheAlign`] struct.
 //

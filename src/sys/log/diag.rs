@@ -1,4 +1,3 @@
-// devela/src/sys/log/diag.rs
 //
 //! Defines [`DiagLevel`], [`DiagOut`].
 //

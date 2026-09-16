@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/use_as.rs
 //
 //! Defines [`use_as!`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/wrap/riff/error.rs
 //
 //! Defines [`RiffError`].
 //

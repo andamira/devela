@@ -1,4 +1,3 @@
-// devela/src/run/time/tick.rs
 //
 //! Defines [`RuntimeTick`].
 //

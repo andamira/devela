@@ -1,4 +1,3 @@
-// devela/src/data/layout/buffer/ring/_example.rs
 //
 // TOC
 // - BufferRingStaticExample

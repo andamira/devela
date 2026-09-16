@@ -1,4 +1,3 @@
-// devela/src/data/value/absence.rs
 //
 //! Implements traits for the unit type [`()`] to represent the absence of data.
 //

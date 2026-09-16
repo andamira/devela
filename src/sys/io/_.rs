@@ -1,4 +1,3 @@
-// devela/src/sys/io/_.rs
 //
 #![doc = crate::_DOC_SYS_IO!()] // public
 #![doc = crate::_doc!(modules: crate::sys; io)]

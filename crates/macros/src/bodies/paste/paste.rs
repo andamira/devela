@@ -1,4 +1,6 @@
-// devela_macros/src/bodies/paste/paste.rs
+//
+//!
+//
 
 use super::{PasteError, PasteResult, PasteSegment};
 use core::{char, iter, str::FromStr};

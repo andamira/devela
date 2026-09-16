@@ -1,4 +1,3 @@
-// devela/src/work/exec/thread/ext.rs
 //
 //! Defines the [`ThreadExt`] trait.
 //

@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/io/term/flags.rs
-
 #[cfg(doc)]
 use crate::LinuxTermios;
 use crate::{

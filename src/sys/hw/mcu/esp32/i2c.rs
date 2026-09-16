@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/i2c.rs
 //
 //! Defines [`EspI2c`].
 //

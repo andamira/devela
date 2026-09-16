@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/adj/_test.rs
-
 use crate::{
     GraphAdjEdgeExample as Edge, GraphAdjExample as Graph, GraphAdjVertexExample as Vertex,
 };

@@ -1,5 +1,3 @@
-// devela/src/num/quant/ratio/_test.rs
-
 use super::*;
 use crate::{
     IntError,

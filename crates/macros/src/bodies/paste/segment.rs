@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/paste/segment.rs
 //
 //! Grammar and modifier evaluation.
 //

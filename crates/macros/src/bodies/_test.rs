@@ -1,5 +1,3 @@
-// devela_macros/src/bodies/_test.rs
-
 use super::shared::compile_eval;
 
 #[test]

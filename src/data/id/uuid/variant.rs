@@ -1,4 +1,3 @@
-// devela/src/data/id/uuid/variant.rs
 //
 //! Defines [`UuidVariant`], [`UuidVersion`].
 //

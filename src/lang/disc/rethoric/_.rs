@@ -1,4 +1,3 @@
-// devela/src/lang/disc/rhetoric/_.rs
 //
 //! Rhetorical figures and transformations across discourse forms.
 //!

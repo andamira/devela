@@ -1,4 +1,3 @@
-// devela/src/geom/affine/point/turn/_test.rs
 //
 // TOC
 // - mod float_turn

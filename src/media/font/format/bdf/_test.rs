@@ -1,5 +1,3 @@
-// devela/src/media/font/format/bdf/_test.rs
-
 use super::_parse::BdfParser;
 use crate::{Bdf, BdfError, Version};
 

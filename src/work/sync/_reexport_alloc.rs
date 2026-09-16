@@ -1,4 +1,3 @@
-// devela/src/work/sync/_reexport_alloc.rs
 //
 // WAIT: [unique_rc_arc](https://github.com/rust-lang/rust/issues/112566)
 

@@ -1,5 +1,3 @@
-// devela/src/sys/arch/_reexport_dep.rs
-
 #![allow(unused_imports)]
 
 use crate::{_reexport, _tags};

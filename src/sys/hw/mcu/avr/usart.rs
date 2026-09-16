@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/usart.rs
 //
 //! Defines [`AvrUsart`].
 //

@@ -1,4 +1,3 @@
-// devela/build/main/codegen/unroll.rs
 //
 //! Code generator for the [`unroll!`] macro.
 //

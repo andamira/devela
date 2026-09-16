@@ -1,5 +1,3 @@
-// devela/src/text/layout/wrap/_test.rs
-
 use super::*;
 use crate::{TextIndex, assert_eq};
 

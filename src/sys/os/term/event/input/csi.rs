@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/event/input/csi.rs
-
 use crate::{Char, TextScanner, is, pos, slice, unwrap, whilst};
 use crate::{
     EventButton, EventButtonState, EventButtons, EventKey, EventKind, EventMouse, EventWheel,

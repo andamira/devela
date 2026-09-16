@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/glsl/_.rs
 //
 //! <a href="https://es.wikipedia.org/wiki/GLSL"><abbr title="OpenGL Shading Language">
 //! GLSL</abbr></a> interfacing.

@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/_test/_.rs
-
 use crate::{ConstInit, Radix};
 
 mod base16;

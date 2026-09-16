@@ -1,4 +1,3 @@
-// devela/src/phys/heat/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_HEAT!()] // public

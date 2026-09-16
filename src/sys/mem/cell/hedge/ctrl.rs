@@ -1,4 +1,3 @@
-// devela/src/sys/mem/cell/hedge/ctrl.rs
 //
 //! Defines [`MemHedgeCtrl`].
 //

@@ -1,5 +1,3 @@
-// devela/src/lang/prog/ffi/c/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: core::ffi,

@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/wrap/riff/namespace.rs
 //
 //! Defines [`Riff`].
 //
@@ -157,9 +156,11 @@ impl Riff {
             bytes[offset + 6],
             bytes[offset + 7],
         ]);
-        let len = cfg_select! { any(target_pointer_width = "8", target_pointer_width = "16") => {
-            unwrap![ok_or? crate::cast![checked size => usize], RiffError::Overflow]
-            } _ => { size as usize }
+        let len = cfg_select! {
+            any(target_pointer_width = "8", target_pointer_width = "16") => {
+                unwrap![ok_or? crate::cast![checked size => usize], RiffError::Overflow]
+            }
+            _ => size as usize,
         };
         let data_end = unwrap![some_ok_or? header_end.checked_add(len), RiffError::Overflow];
         is! { data_end > bytes.len(), return Err(RiffError::TruncatedData) }

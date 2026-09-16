@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/event/input/parser.rs
 //
 //! Defines [`TermInputParser`].
 //

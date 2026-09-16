@@ -1,4 +1,3 @@
-// devela/ui/layout/metric.rs
 //
 //! Metric aliases: [`UiExt`], [`UiPos`], [`UiRect`], [`UiStride`].
 //

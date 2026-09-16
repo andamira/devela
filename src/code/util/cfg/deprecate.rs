@@ -1,4 +1,3 @@
-// devela/src/code/util/cfg/deprecate.rs
 //
 //! Defines [`deprecate_feature`].
 //

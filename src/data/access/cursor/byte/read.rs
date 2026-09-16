@@ -1,5 +1,3 @@
-// devela/src/data/access/cursor/byte/read.rs
-
 use crate::{ByteCursor, IndexOutOfBounds, UnexpectedEof};
 use crate::{is, read_at, slice, whilst};
 

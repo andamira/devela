@@ -1,4 +1,3 @@
-// devela/src/data/value/schema/_.rs
 //
 #![doc = crate::_DOC_DATA_VALUE_SCHEMA!()] // public
 #![doc = crate::_doc!(modules: crate::data::value; schema)]

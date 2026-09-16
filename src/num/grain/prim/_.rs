@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/_.rs
 //
 #![doc = crate::_DOC_NUM_GRAIN_PRIM!()]
 #![doc = crate::_doc!(modules: crate::num::grain; prim)]

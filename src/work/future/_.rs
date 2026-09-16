@@ -1,4 +1,3 @@
-// devela/src/work/future/_.rs
 //
 #![doc = crate::_DOC_WORK_FUTURE!()] // public
 #![doc = crate::_doc!(modules: crate::work; future)]

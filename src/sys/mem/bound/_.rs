@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/_.rs
 //
 #![doc = crate::_DOC_SYS_MEM_BOUND!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; bound)]

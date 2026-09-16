@@ -1,4 +1,3 @@
-// devela/src/num/fin/bit/span.rs
 //
 //! Defines [`BitSpan`].
 //

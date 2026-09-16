@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/csr/impls/array.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __graph_csr_impl_array· {

@@ -1,4 +1,3 @@
-// devela/src/geom/affine/transform/_.rs
 //
 #![doc = crate::_DOC_GEOM_AFFINE_TRANSFORM!()] //
 #![doc = crate::_doc!(modules: crate::geom::affine; transform)]

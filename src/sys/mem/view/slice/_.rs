@@ -1,4 +1,3 @@
-// devela/src/sys/mem/view/slice/_.rs
 //
 #![doc = crate::_DOC_SYS_MEM_VIEW_SLICE!()] // private
 #![doc = crate::_doc!(modules: crate::sys::mem; slice)]

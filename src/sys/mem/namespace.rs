@@ -1,4 +1,3 @@
-// devela/src/sys/mem/namespace.rs
 //
 //! Defines the [`Mem`] namespace.
 //

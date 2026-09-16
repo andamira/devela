@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/cap/_.rs
 //
 //! Terminal capabilities.
 //

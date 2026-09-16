@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/shared/common.rs
 //
 //! Shared functionality for procedural macros.
 //

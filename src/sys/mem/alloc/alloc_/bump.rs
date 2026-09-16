@@ -1,4 +1,3 @@
-// devela/src/sys/mem/alloc/alloc/bump.rs
 //
 //! Defines [`BumpAlloc`].
 //

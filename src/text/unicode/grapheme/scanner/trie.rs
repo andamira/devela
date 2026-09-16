@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/trie.rs
-
 use crate::charu;
 
 /// Traverses the trie represented by [`GRAPHEMES_INDEX`] and

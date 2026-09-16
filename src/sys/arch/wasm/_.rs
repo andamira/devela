@@ -1,4 +1,3 @@
-// devela/src/sys/arch/wasm/_.rs
 //
 //! WASM architecture functionality.
 //

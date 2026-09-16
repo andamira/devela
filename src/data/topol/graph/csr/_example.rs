@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/csr/_test.rs
-
 use crate::{NonMaxU8, NonMaxU16, graph_csr};
 
 graph_csr! {

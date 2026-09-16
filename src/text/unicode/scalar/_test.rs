@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/_test.rs
 //
 //! These fns tests all the character types
 //

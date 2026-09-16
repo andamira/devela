@@ -1,4 +1,3 @@
-// devela/src/text/parse/error.rs
 //
 //! Defines [`TextParseError`], [`TextParseErrorKind`].
 //

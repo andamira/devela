@@ -1,4 +1,3 @@
-// devela/src/error/data/other.rs
 //
 //! Data-related errors.
 //

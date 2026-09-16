@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/shape.rs
 //
 //! Defines [`ArrayShape`].
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/access/_.rs
 //
 //! Permissions, credentials, clipboard authority.
 //

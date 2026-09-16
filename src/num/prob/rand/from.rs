@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/from.rs
 //
 //! Defines [`FromRand`] and [`FromRandTry`].
 //

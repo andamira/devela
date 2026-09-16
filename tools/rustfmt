@@ -17,10 +17,11 @@
 #* CONFIGURATION *#
 
 # `rustfmt` command (minus --check)
-RUSTFMT=(rustfmt +stable --edition 2024)
+RUSTFMT_TOOLCHAIN="1.98.1"
+RUSTFMT=(rustfmt +"$RUSTFMT_TOOLCHAIN" --edition 2024)
 
 # directories to include in the search for "all" Rust files, relative to $CRATE_ROOT
-INCLUDE_DIRS=("build" "examples" "programs" "src")
+INCLUDE_DIRS=("build" "crates" "examples" "programs" "src")
 
 # initialize default argument values
 ARG_MODE="check" # Default rustfmt mode (check|format)
@@ -73,14 +74,12 @@ done
 # find the Rust files
 FILE_LIST=()
 if [[ "$ARG_FILES" == "all" ]]; then
-    for dir in "${INCLUDE_DIRS[@]}"; do
-        root="$CRATE_ROOT/$dir"
-        [[ -d "$root" ]] || continue
-
-        while IFS= read -r -d $'\0' file; do
-            FILE_LIST+=("$file")
-        done < <(find "$root" -type f -name "*.rs" -print0)
-    done
+    while IFS= read -r -d '' file; do
+        [[ $file == *.rs ]] || continue
+        FILE_LIST+=("$CRATE_ROOT/$file")
+    done < <(
+        git -C "$CRATE_ROOT" ls-files -z -- "${INCLUDE_DIRS[@]}"
+    )
 elif [[ "$ARG_FILES" == "changed" ]]; then
     mapfile -t TMP_FILE_LIST < <(git -C "$CRATE_ROOT" diff --name-only --diff-filter=ACMR)
     for file in "${TMP_FILE_LIST[@]}"; do

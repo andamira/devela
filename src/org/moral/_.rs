@@ -1,4 +1,3 @@
-// devela/src/org/moral/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_MORAL!()] // public

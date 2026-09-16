@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/cast/traits/split.rs
 //
 //! fns to split a primitive into an array of smaller primitives.
 //

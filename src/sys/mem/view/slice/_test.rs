@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/_test.rs
-
 use crate::{
     IteratorLending, IteratorLendingDoubleEnded, IteratorLendingExactSize, IteratorLendingPeek,
     SliceIter, SliceIterMut,

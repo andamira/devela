@@ -1,4 +1,3 @@
-// devela/src/media/audio/pcm/spec.rs
 //
 //! Defines [`PcmSpec`].
 //

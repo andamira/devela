@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/ean/thirteen.rs
 //
 //! Implements EAN-13 for [`Ean<13>`][crate::Ean].
 //

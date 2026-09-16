@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/seq/_example.rs
 //
 //! Defines example sequence-pool types.
 //

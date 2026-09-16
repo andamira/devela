@@ -1,4 +1,3 @@
-// devela/src/ui/frame/output.rs
 //
 //! Defines [`UiOutput`], [`UiOutputView`].
 //

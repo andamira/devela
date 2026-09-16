@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/usb_serial_jtag.rs
 //
 //! Defines [`EspUsbSerialJtag`].
 //

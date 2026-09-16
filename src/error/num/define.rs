@@ -1,4 +1,3 @@
-// devela/src/error/num/define.rs
 //
 //! Numeric-related error types.
 //

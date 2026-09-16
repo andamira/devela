@@ -1,4 +1,3 @@
-// devela/src/sys/hw/mcu/esp32/c3/namespace.rs
 //
 //! Defines [`McuEsp32C3`].
 //

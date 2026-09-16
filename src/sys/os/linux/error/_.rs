@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/error/_.rs
 //
 //! Linux error handling ABI and typed representations.
 //

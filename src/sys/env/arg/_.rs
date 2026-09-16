@@ -1,4 +1,3 @@
-// devela/src/sys/env/arg/_.rs
 //
 //! Parse arguments to the program.
 //

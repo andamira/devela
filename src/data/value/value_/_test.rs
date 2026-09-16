@@ -1,5 +1,3 @@
-// devela/src/data/value/value/_test.rs
-
 use super::*;
 use crate::ValueKind4;
 

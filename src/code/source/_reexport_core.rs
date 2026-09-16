@@ -1,4 +1,3 @@
-// devela/src/code/source/_reexport_core.rs
 //
 //! Reexported macros.
 //

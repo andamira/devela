@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/image.rs
 //
 //! Defines [`XImageMode`], (`XImageStore`), (`XImageFormat`), (`XVisualFormat`).
 //

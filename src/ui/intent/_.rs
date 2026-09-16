@@ -1,4 +1,3 @@
-// devela/src/ui/intent/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_UI_INTENT!()] // public

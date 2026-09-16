@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/ops/_.rs
 //
 //! Raster operations
 //

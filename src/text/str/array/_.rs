@@ -1,4 +1,3 @@
-// devela/src/text/str/array/_.rs
 //
 //!
 //

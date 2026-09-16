@@ -1,4 +1,3 @@
-// devela/src/lang/hum/rhetoric/_.rs
 //
 //! Human-language realization of rhetorical structures.
 //!

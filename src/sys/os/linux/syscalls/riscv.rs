@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/riscv.rs
 //
 //! Implements linux syscalls for both riscv32 and riscv64.
 //

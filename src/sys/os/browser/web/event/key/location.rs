@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/event/key/location.rs
 //
 //! Defines [`WebKeyLocation`].
 //

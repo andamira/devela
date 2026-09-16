@@ -1,4 +1,3 @@
-// devela/src/phys/geo/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_GEO!()] // public

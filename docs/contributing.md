@@ -1,4 +1,3 @@
-<!-- devela/docs/contributing.md -->
 
 ## Contributing
 

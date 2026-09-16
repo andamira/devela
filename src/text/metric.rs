@@ -1,4 +1,3 @@
-// devela/src/text/metric.rs
 //
 //! Defines [`TextUnit`], [`TextIndex`], [`TextCursor`], [`TextRange`].
 //!

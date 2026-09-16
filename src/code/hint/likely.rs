@@ -1,4 +1,3 @@
-// devela/src/code/hint/likely.rs
 //
 //! Defines [`likely`], [`unlikely`].
 //

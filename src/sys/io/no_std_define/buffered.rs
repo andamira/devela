@@ -1,4 +1,3 @@
-// devela/src/sys/io/no_std_define/buffered.rs
 //
 //! Buffering wrappers for I/O traits
 //

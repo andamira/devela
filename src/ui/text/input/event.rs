@@ -1,4 +1,3 @@
-// devela/src/ui/text/input/event.rs
 //
 //! Event mappings for text input.
 //

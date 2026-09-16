@@ -1,4 +1,3 @@
-// devela/src/num/signal/curve.rs
 //
 //! Defines [`CurveRamp`].
 //

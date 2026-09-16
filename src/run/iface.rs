@@ -1,4 +1,3 @@
-// devela/src/run/iface.rs
 //
 //! Defines [`RunApp`], [`RunRender`], [`RunPresent`].
 //!

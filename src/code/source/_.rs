@@ -1,4 +1,3 @@
-// devela/src/code/source/_.rs
 //
 #![doc = crate::_DOC_CODE_SOURCE!()] // public
 #![doc = crate::_doc!(modules: crate::code; source)]

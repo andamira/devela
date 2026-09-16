@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/_parse/syntax.rs
 //
 //! Defines `BdfReader`, `BdfLine`, `BdfFields`.
 //

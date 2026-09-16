@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/signal/_raw/_.rs
 //
 //!
 //

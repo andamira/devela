@@ -1,4 +1,3 @@
-// devela/src/data/codec/detect/_.rs
 //
 //! Format detection.
 //

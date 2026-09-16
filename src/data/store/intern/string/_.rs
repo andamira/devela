@@ -1,4 +1,3 @@
-// devela/src/data/store/intern/string/_.rs
 //
 //!
 //

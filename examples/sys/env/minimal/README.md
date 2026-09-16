@@ -1,4 +1,3 @@
-<!-- devela/examples/sys/env/minimal/README.md -->
 
 # Minimal environments
 

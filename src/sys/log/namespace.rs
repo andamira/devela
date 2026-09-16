@@ -1,5 +1,3 @@
-// devela/src/sys/log/namespace.rs
-
 use super::{LogLevelFilter, Logger, LoggerSetError};
 #[cfg(feature = "std")]
 use ::log::set_boxed_logger;

@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/properties.rs
-
 use super::trie::graphemes_lookup;
 use crate::{Mem, charu, impl_trait};
 

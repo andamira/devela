@@ -1,4 +1,3 @@
-// devela/src/ui/event/target.rs
 //
 //! Defines [`EventTarget`].
 //

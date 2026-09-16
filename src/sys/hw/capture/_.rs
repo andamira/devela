@@ -1,4 +1,3 @@
-// devela/sys/hw/capture/_.rs
 //
 //! Image/surface capture hardware
 //

@@ -1,4 +1,3 @@
-// devela/src/lang/hum/form/_.rs
 //
 //! Word formation (morphology)
 //

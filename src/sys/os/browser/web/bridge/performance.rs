@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/performance.rs
 // In sync with js/performance.js
 //
 //! Implements the web performance API.

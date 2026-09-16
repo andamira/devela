@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/conf.rs
 //
 //! Defines [`FmtNumConf`], [`FmtNumSign`].
 //

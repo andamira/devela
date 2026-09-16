@@ -1,4 +1,3 @@
-// devela/src/data/id/uuid/generator.rs
 //
 //! Defines [`UuidV7Generator`].
 //

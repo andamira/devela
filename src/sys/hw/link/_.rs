@@ -1,4 +1,3 @@
-// devela/sys/hw/link/_.rs
 //
 //! Communication links
 //

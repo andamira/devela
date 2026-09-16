@@ -1,4 +1,3 @@
-// devela/src/code/util/token/capture.rs
 //
 //! Defines [`capture_first!`], [`capture_last!`] and [`capture_tail_tuple!`].
 //

@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/format/netpbm/_impls.rs
 //
 //! `Pnm` private methods.
 //

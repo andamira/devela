@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/board/arduino/_.rs
 //
 //! Arduino boards.
 //

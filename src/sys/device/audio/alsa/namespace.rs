@@ -1,4 +1,3 @@
-// devela/src/sys/device/audio/alsa/namespace.rs
 //
 //! Defines [`Alsa`].
 //

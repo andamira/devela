@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/enumint.rs
 //
 //! The body of [`enumint!`][crate::enumint].
 //

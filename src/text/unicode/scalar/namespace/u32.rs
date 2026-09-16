@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/u32.rs
-
 use crate::{Ascii, Char, Pcg32};
 
 /// # Methods over `u32`.

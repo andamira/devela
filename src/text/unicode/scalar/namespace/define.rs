@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/define.rs
 //
 //! Defines the [`Char`] namespace.
 //

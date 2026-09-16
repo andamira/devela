@@ -1,4 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/machine/define.rs
 //
 //! Defines [`GraphemeMachine`], [`GraphemeBoundary`].
 //

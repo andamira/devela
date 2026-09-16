@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/test_size_of/_.rs
 //
 //!
 //

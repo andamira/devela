@@ -1,4 +1,3 @@
-// devela/src/data/store/key/set/sparse.rs
 //
 //! Dense/sparse integer sets.
 //

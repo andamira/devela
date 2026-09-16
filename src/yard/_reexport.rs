@@ -1,4 +1,3 @@
-// devela/src/yard/_reexport.rs
 //
 //! private reexport meta helper
 //

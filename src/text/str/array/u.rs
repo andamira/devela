@@ -1,4 +1,3 @@
-// devela/src/text/str/array/u.rs
 //
 //! `String` backed by an array.
 //

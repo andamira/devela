@@ -1,4 +1,3 @@
-// devela/src/text/str/small/_.rs
 //
 //! Inline-first UTF-8 string storage with spillover.
 //

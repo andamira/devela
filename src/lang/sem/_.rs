@@ -1,4 +1,3 @@
-// devela/src/lang/sem/_.rs
 //
 #![doc = crate::_DOC_LANG_SEM!()] // public
 #![doc = crate::_doc!(modules: crate::lang; sem)]

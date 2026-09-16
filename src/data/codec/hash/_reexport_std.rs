@@ -1,5 +1,3 @@
-// devela/src/data/codec/hash/_reexport_std.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: std::hash,

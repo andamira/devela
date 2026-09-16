@@ -1,4 +1,3 @@
-# devela/tools/x-shell.sh
 #
 # devela project launcher integration for sh/bash/zsh
 #

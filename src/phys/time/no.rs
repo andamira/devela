@@ -1,4 +1,3 @@
-// devela/src/phys/time/no.rs
 //
 //! Not a time.
 //

@@ -1,5 +1,3 @@
-// devela/src/sys/log/_reexport_dep.rs
-
 #[allow(unused_imports, reason = "dep_log feature-gate")]
 use crate::{_TAG_ERROR, _TAG_LOG, _reexport};
 

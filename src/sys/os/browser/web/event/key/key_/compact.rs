@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/event/key/key/compact.rs
 //
 //! implements methods for [`Key`].
 //

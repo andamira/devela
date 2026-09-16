@@ -1,4 +1,3 @@
-// devela/src/yard/_doc/test_size_of.rs
 //
 //! Defines [`_doc_test_size_of!`].
 //

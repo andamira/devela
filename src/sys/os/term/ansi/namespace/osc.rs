@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/osc.rs
 //
 //! Implements OSC sequences and defines [`AnsiLink`], [`AnsiOsc`].
 //

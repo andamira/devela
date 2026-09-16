@@ -1,4 +1,3 @@
-// devela/src/media/font/art/art.rs
 //
 //! Defines the [`FontArt`] struct.
 //

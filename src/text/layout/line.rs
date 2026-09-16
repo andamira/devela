@@ -1,4 +1,3 @@
-// devela/src/text/layout/line.rs
 //
 //! Defines [`TextLineIter`].
 //

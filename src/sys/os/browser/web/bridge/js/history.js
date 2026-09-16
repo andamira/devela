@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/history.js
 // In sync with ../bridge/history.rs
 
 import { strDecode } from "./shared.js";

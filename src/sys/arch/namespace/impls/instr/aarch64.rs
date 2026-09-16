@@ -1,4 +1,3 @@
-// devela/src/sys/arch/namespace/instructions/aarch64.rs
 //
 //! Implements processor instructions for AArch64.
 //

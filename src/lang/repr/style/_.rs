@@ -1,4 +1,3 @@
-// devela/src/lang/repr/style/_.rs
 //
 #![doc = crate::_DOC_LANG_REPR_STYLE!()]
 #![doc = crate::_doc!(modules: crate::lang::repr; style)]

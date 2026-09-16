@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/typed/_test.rs
-
 use crate::{ArenaExample as Arena, ArenaHandleExample as Handle};
 
 #[test]

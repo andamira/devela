@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/bytes/_internal.rs
 //
 //! Defines [`__ArenaBytesArray`], [`__arena_bytes!`].
 //!

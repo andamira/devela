@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/format/netpbm/define.rs
 //
 //! Defines [`Pnm`].
 //

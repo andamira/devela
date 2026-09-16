@@ -1,4 +1,3 @@
-// devela/examples/ui/x11/main.rs
 //
 //! Renders a backend-neutral UI output to an X11 pixel surface.
 //

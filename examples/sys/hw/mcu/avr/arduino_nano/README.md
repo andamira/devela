@@ -1,4 +1,3 @@
-<!-- devela/examples/sys/hw/mcu/avr/arduino_nano/README.md -->
 
 # Arduino Nano examples
 

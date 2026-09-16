@@ -1,4 +1,3 @@
-// devela/src/ui/view/form/message/_.rs
 //
 //!
 //

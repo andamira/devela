@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/define.rs
 //
 //! Array views over generic backing storage.
 //

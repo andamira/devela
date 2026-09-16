@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/io/term/_raw/cc.rs
-
 use crate::c_uchar;
 
 #[doc = crate::_tags!(linux term)]

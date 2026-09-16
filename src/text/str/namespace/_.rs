@@ -1,4 +1,3 @@
-// devela/src/text/str/namespace/_.rs
 //
 //! Defines the [`Str`] namespace.
 //

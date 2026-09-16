@@ -1,4 +1,3 @@
-// devela/src/media/font/bitmap/_.rs
 //
 //! Bitmap font data, glyph masks, views, storage and access.
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/device/audio/_.rs
 //
 #![doc = crate::_DOC_SYS_DEVICE_AUDIO!()] // public
 #![doc = crate::_doc!(modules: crate::sys::device; audio)]

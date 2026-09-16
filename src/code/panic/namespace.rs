@@ -1,4 +1,3 @@
-// devela/src/code/panic/namespace.rs
 //
 //! Defines the [`Panic`] namespace.
 //

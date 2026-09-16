@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/u16.rs
-
 use crate::Char;
 
 /// # Methods over `u16`.

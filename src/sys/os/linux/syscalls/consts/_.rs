@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/consts/_.rs
 //
 //! Defines the syscall numbers for each target.
 //

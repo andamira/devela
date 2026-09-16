@@ -1,5 +1,3 @@
-// devela/src/code/result/opt_res/_test_unwrap.rs
-
 use crate::{OptRes, serr, sok, unwrap};
 
 const OPTION_SOME: Option<bool> = Some(true);

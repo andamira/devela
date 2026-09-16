@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/series.rs
 //
 //! Shared methods implemented using Taylor Series.
 //

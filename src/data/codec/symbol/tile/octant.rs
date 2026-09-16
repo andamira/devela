@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/tile/octant.rs
 //
 //! Defines [`Octant`].
 //

@@ -1,5 +1,3 @@
-// devela/src/data/store/intern/string/_test.rs
-
 use crate::{HasherFx, InternStringExample as Symbols};
 // use crate::{InternStringSymbolExample as Symbol};
 

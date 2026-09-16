@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/_.rs
 //
 //! Espressif microcontrollers.
 //

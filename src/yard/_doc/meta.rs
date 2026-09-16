@@ -1,4 +1,3 @@
-// devela/src/yard/_doc/meta.rs
 //
 //! Defines [`_doc_meta!`].
 //

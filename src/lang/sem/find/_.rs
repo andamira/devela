@@ -1,4 +1,3 @@
-// devela/src/lang/sem/find/_.rs
 //
 //! Matching, selection, and traversal.
 //!

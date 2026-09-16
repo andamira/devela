@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/wrapper/impl_prime.rs
 //
 //! Implements prime-related methods for [`Int`].
 //

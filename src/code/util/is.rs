@@ -1,4 +1,3 @@
-// devela/src/code/util/is.rs
 //
 //! Defines inline if macro [`is!`].
 //

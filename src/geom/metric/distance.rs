@@ -1,4 +1,3 @@
-// devela/src/geom/metric/distance.rs
 //
 //! Defines [`Distance`][1|2|3].
 //

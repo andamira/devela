@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/core.rs
-
 use crate::{Slice, is};
 use ::core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]

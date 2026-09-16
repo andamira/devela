@@ -1,5 +1,3 @@
-// devela/src/ui/widget/_test.rs
-
 use super::*;
 use crate::{UiAction, UiFrame, UiKey, UiRole};
 

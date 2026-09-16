@@ -1,4 +1,3 @@
-// devela/build/main/linking/esp32_c3.rs
 //
 //! ESP32-C3 linker support.
 //

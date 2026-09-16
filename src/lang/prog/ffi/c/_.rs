@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/c/_.rs
 //
 #![doc = crate::_DOC_LANG_PROG_FFI_C!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog::ffi; c)]

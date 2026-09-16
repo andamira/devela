@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/request.rs
 //
 //! Defines [`HttpRequestLine`].
 //

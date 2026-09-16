@@ -1,4 +1,3 @@
-// devela/src/data/value/intro/_.rs
 //
 #![doc = crate::_tags!(wip)]
 //! Introspection.

@@ -1,4 +1,3 @@
-// devela/src/code/result/opt_res/_.rs
 //
 //! Optional values.
 //

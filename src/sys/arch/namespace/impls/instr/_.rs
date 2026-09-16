@@ -1,4 +1,3 @@
-// devela/src/sys/arch/namespace/instr/_.rs
 //
 //! Architecture specific instructions.
 //

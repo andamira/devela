@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/chunk.rs
-
 use crate::{Slice, is, lets};
 
 /// # `*chunk*` API methods for subslicing.

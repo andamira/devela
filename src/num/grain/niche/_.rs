@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/_.rs
 //
 #![doc = crate::_DOC_NUM_GRAIN_NICHE!()] // public
 #![doc = crate::_doc!(modules: crate::num::grain; niche)]

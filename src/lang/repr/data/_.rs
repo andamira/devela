@@ -1,4 +1,3 @@
-// devela/src/lang/repr/data/_.rs
 //
 #![doc = crate::_DOC_LANG_REPR_DATA!()]
 #![doc = crate::_doc!(modules: crate::lang::repr; data)]

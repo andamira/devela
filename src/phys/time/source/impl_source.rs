@@ -1,4 +1,3 @@
-// devela/src/phys/time/source/impl_source.rs
 //
 //!
 //

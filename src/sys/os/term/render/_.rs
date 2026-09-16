@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/render/_.rs
 //
 //! Terminal byte-frame rendering.
 //

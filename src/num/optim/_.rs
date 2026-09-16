@@ -1,4 +1,3 @@
-// devela/src/num/optim/_.rs
 //
 #![doc = crate::_DOC_NUM_OPTIM!()] // public
 #![doc = crate::_doc!(modules: crate::num; optim: rand)]

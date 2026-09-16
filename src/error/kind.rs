@@ -1,4 +1,3 @@
-// devela/src/error/kind.rs
 //
 #![doc = crate::_DOC_ERROR_KIND!()] // public
 #![doc = crate::_doc!(modules: crate::error; kind)]

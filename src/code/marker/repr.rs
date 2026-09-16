@@ -1,4 +1,3 @@
-// devela/src/code/marker/repr.rs
 //
 //! Defines [`Repr`].
 //

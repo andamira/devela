@@ -1,4 +1,3 @@
-// devela/src/code/util/token/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_TOKEN!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; token)]

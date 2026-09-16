@@ -1,4 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/_.rs
 //
 //! An scanner/segmentator of extended grapheme clusters.
 //

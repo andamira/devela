@@ -1,5 +1,4 @@
 #!/bin/sh
-# devela_ffi/build.sh
 
 set -e
 

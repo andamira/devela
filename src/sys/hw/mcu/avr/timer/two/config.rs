@@ -1,5 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/two/config.rs
-
 /// # Configuration
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl crate::AvrTimer2 {

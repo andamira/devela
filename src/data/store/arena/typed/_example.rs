@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/typed/_example.rs
 //
 //! Defines typed arena examples.
 //

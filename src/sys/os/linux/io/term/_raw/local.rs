@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/term/_raw/local.rs
 //
 
 use crate::c_uint;

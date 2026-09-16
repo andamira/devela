@@ -1,5 +1,3 @@
-// devela/src/data/codec/bin/bit/field/_test.rs
-
 #![allow(unused)]
 
 use super::*;

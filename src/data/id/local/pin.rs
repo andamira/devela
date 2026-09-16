@@ -1,4 +1,3 @@
-// devela/src/data/id/local/pin.rs
 //
 //! Defines [`IdPin`].
 //

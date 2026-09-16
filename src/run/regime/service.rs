@@ -1,4 +1,3 @@
-// devela/src/run/regime/service.rs
 //
 //! Runtime service capability traits.
 //!

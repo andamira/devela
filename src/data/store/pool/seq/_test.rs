@@ -1,5 +1,3 @@
-// devela/src/data/store/pool/seq/_test.rs
-
 use crate::PoolSeqExample as Pool;
 
 #[test]

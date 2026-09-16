@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# devela/tools/get_errno.sh
 #
 # Generates a rust file with consts for from errno.h on the current target.
 # It is called by the `.github/workflows/get_errno.yml` manual CI action.

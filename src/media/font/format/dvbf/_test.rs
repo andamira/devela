@@ -1,4 +1,3 @@
-// devela/src/media/font/format/dvbf/_test.rs
 //
 //! Tests the DVBF binary contract independently of external font assets.
 

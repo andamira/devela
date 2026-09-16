@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/dynamic.rs
 //
 //! Additional assertion macros
 //

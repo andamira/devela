@@ -1,4 +1,3 @@
-// devela/src/yard/tags.rs
 //
 //! Private tags definitions for visual type categorization in documentation.
 //

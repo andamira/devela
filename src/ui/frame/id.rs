@@ -1,4 +1,3 @@
-// devela/src/ui/frame/id.rs
 //
 //! Defines [`UiId`], [`UiKey`], [`UiScope`].
 //!

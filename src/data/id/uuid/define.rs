@@ -1,4 +1,3 @@
-// devela/src/data/id/uuid/define.rs
 //
 //! Defines [`Uuid`].
 //

@@ -1,4 +1,3 @@
-// devela/sys/hw/capture/scan/_.rs
 //
 //! Scanner device interfaces.
 //

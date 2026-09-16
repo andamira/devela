@@ -1,4 +1,3 @@
-// devela/src/sys/net/_.rs
 //
 #![doc = crate::_DOC_SYS_NET!()] // public
 #![doc = crate::_doc!(modules: crate::sys; net: inet, transport)]

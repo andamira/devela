@@ -1,4 +1,3 @@
-// devela/src/text/str/_.rs
 //
 #![doc = crate::_DOC_TEXT_STR!()] // public
 #![doc = crate::_doc!(modules: crate::text; str)]

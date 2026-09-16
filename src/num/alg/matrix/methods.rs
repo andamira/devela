@@ -1,4 +1,3 @@
-// devela/src/num/alg/matrix/methods.rs
 //
 //! Construction, shape queries, and element access for [`Matrix`].
 //

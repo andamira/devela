@@ -1,5 +1,3 @@
-// devela/src/text/ascii/digits/_test.rs
-
 use super::Digits;
 
 #[test]

@@ -1,5 +1,3 @@
-// devela/src/data/layout/dst/_test/value.rs
-
 use crate::data::{DstArray, DstValue};
 use core::{cell::Cell, fmt};
 

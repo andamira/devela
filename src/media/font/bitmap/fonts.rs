@@ -1,4 +1,3 @@
-// devela/src/media/font/bitmap/fonts.rs
 //
 //! Defines bitmap fonts.
 //

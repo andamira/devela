@@ -1,4 +1,3 @@
-// devela/src/text/unicode/_.rs
 //
 #![doc = crate::_DOC_TEXT_UNICODE!()] // public
 #![doc = crate::_doc!(modules: crate::text; unicode: grapheme, scalar)]

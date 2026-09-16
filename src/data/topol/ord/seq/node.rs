@@ -1,4 +1,3 @@
-// devela/src/data/topol/ord/seq.rs
 //
 //! Defines [`SeqNode`].
 //

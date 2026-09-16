@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/layout.rs
-
 use crate::{GraphemeMachine, GraphemeScanner, TextCohesion::Atomic, TextSymbol, charu, is};
 
 macro_rules! impl_text_layout {

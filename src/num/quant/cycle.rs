@@ -1,4 +1,3 @@
-// devela/src/num/quant/cycle.rs
 //
 //! Defines [`Cycle`], [`CycleCount`].
 //

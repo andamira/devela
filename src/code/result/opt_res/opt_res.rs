@@ -1,4 +1,3 @@
-// devela/src/code/result/opt_res/opt_res.rs
 //
 //! Defines [`OptResExt`], [`OptRes`], [`serr`], [`sok`].
 //

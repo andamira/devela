@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/line/_.rs
 //
 //! Terminal line modes, prompts, and interactive input.
 //

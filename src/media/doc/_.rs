@@ -1,4 +1,3 @@
-// devela/src/media/doc/_.rs
 //
 #![doc = crate::_DOC_MEDIA_DOC!()]
 #![doc = crate::_doc!(modules: crate::media; doc)]

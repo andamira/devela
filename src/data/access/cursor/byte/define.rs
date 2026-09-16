@@ -1,4 +1,3 @@
-// devela/src/data/access/cursor/byte/define.rs
 //
 //! Defines [`ByteCursor`].
 //

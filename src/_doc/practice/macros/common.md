@@ -1,4 +1,3 @@
-<!-- devela/src/_doc/practice/macros/common.md -->
 
 Macros sit at one of Rust's more interesting boundaries:
 code can help shape the code that the compiler will later understand.

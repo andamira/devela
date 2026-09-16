@@ -1,5 +1,3 @@
-// devela/src/sys/mem/size/expr/_.rs
-
 crate::mods_in! {
     #[cfg(all(test, nightly_coro))]
     mod _test_coro;

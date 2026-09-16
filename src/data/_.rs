@@ -1,4 +1,3 @@
-// devela/src/data/_.rs
 //
 #![doc = crate::_DOC_DATA!()] // public, root
 #![doc = crate::_DOC_DATA_MODULES!()]

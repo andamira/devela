@@ -1,5 +1,3 @@
-// devela/src/ui/route/_test.rs
-
 use super::*;
 use crate::UiId;
 

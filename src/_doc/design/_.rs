@@ -1,4 +1,3 @@
-// devela/src/_doc/design/_.rs
 //
 //! Principles, structure, and API conventions.
 #![doc = crate::_doc!(modules: crate::_doc; design: principles, structure)] // api

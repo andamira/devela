@@ -1,5 +1,3 @@
-// devela/src/geom/affine/point/turn/_.rs
-
 crate::mods_in! {
     #[cfg(test)]
     mod _test;

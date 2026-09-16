@@ -1,5 +1,3 @@
-// devela/src/data/codec/pack/wrap/riff/_test.rs
-
 use crate::{BinTag4, Riff, RiffError};
 
 const fn tag(bytes: [u8; 4]) -> BinTag4 {

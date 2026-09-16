@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/io/term/_raw/_.rs
-
 #![allow(
     dead_code,
     non_camel_case_types,

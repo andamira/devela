@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/_test.rs
-
 use crate::{Ansi, AnsiColor8, AnsiLink};
 
 #[test]

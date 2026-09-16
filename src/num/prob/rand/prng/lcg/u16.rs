@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/lcg/u16.rs
 //
 //! 16-bit Linear Congruential Generator
 //

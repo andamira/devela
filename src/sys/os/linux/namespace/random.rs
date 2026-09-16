@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/random.rs
-
 use crate::{LINUX_ERRNO, Linux, LinuxError, LinuxRandomMode, LinuxResult as Result};
 use crate::{RandQualities, RandTry, c_uint, is};
 

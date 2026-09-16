@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/range.rs
-
 use crate::{Slice, is};
 
 /// # `range*` API methods for subslicing.

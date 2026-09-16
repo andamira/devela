@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/session.rs
 //
 //! Defines [`TermSession`], [`TermPollPolicy`], [`TermMode`].
 //

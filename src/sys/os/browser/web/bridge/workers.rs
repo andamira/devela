@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/workers.rs
 // In sync with js/workers.js
 //
 //! Implements the web workers API.

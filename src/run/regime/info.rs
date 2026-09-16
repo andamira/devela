@@ -1,4 +1,3 @@
-// devela/src/run/regime/info.rs
 //
 //! Identity and profile data.
 //

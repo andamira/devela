@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/error.rs
 //
 //! Defines [`BdfError`].
 //

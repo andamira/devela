@@ -1,4 +1,3 @@
-// devela/src/sys/mem/layout/pod.rs
 //
 //! Defines [`MemPod`].
 //

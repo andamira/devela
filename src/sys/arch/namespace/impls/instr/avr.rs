@@ -1,4 +1,3 @@
-// devela/src/sys/arch/namespace/impls/instr/avr.rs
 //
 //! Implements processor instructions for AVR.
 //

@@ -1,4 +1,3 @@
-// devela/src/data/value/value/define.rs
 //
 //! Defines Value<8|16|32|64|128>.
 //

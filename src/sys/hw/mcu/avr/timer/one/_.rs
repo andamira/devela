@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/one/_.rs
 //
 //! Defines [`AvrTimer1`].
 //

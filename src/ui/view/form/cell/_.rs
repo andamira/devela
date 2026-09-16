@@ -1,4 +1,3 @@
-// devela/src/ui/view/form/cell/_.rs
 //
 //!
 //

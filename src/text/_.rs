@@ -1,4 +1,3 @@
-// devela/src/text/_.rs
 //
 #![doc = crate::_DOC_TEXT!()] // public, root
 #![doc = crate::_DOC_TEXT_MODULES!()]

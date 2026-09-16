@@ -1,4 +1,3 @@
-// devela/src/text/parse/_.rs
 //
 //! String parsing without structured semantics.
 //

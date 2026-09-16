@@ -1,4 +1,3 @@
-// devela/src/media/font/bitmap/view.rs
 //
 //! Defines [`FontBitmapView`] and [`GlyphBitmapView`].
 

@@ -1,4 +1,3 @@
-// devela/src/media/visual/draw/interop/_.rs
 //
 //!
 //

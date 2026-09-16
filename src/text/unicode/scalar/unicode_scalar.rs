@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/unicode_scalar.rs
 //
 //! Define the [`UnicodeScalar`] trait.
 //

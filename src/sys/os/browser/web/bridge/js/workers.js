@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/workers.js
 // In sync with ../bridge/workers.rs
 
 import { strDecode, strEncode } from "./shared.js";

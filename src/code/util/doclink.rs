@@ -1,4 +1,3 @@
-// devela/src/code/util/doclink.rs
 //
 //! Constructs links to local and published Rust documentation.
 //

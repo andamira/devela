@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/_.rs
 //
 #![doc = crate::_DOC_SYS_SERVICE_WEB_HTTP!()] // public
 #![doc = crate::_doc!(modules: crate::sys::service::web; http)]

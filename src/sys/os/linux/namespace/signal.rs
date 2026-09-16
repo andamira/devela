@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/signal.rs
-
 use crate::{AppControl, AppControlSet};
 use crate::{AtomicOrdering::SeqCst, AtomicPtr, Ptr, c_int, c_void, is, transmute};
 use crate::{

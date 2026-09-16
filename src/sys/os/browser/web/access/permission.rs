@@ -1,5 +1,3 @@
-// devela/src/sys/os/browser/web/access/permission.rs
-
 use crate::{_tags, PermissionQuery, Web, WebPermissionSnapshot};
 
 crate::enumset! {

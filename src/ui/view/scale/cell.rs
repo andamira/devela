@@ -1,4 +1,3 @@
-// devela/ui/view/scale/cell.rs
 //
 //! Defines [`UiCellMetric`].
 //

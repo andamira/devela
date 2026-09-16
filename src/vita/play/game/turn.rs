@@ -1,5 +1,3 @@
-// devela/src/vita/play/game/turn.rs
-
 #[doc = crate::_tags!(game)]
 /// A bounded opportunity for one role or control locus to act.
 #[doc = crate::_doc_meta!{

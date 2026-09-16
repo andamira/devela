@@ -1,5 +1,3 @@
-// devela/src/data/layout/array/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 /* fns */

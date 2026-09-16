@@ -1,5 +1,3 @@
-// devela/src/lang/prog/ffi/js/text.rs
-
 #[cfg(doc)]
 #[cfg(feature = "web")]
 use crate::Web;

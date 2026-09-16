@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/backing/fixed.rs
 //
 //! Array implementations over fixed native arrays.
 //

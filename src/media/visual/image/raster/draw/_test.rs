@@ -1,5 +1,3 @@
-// devela/src/media/visual/image/raster/draw/_test.rs
-
 use crate::{Coverage8, Extent2, IteratorFused, Position2, Slice, const_assert, ext, pos};
 use crate::{RasterElement, RasterGrid};
 

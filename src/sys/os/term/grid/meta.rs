@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/grid/meta.rs
 //
 //! Defines [`TermelMeta`] and [`TermelOccupancy`].
 //

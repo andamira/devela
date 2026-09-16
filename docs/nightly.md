@@ -1,4 +1,3 @@
-<!-- devela/docs/nightly.md -->
 
 This page tracks unstable Rust features relevant to devela and the `nightly_*`
 configuration flags used to enable them before stabilization.

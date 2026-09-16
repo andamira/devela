@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/bytes/_test.rs
-
 use crate::ArenaBytesExample as Arena;
 
 crate::arena_bytes! {

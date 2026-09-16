@@ -1,5 +1,3 @@
-// devela/src/vita/play/game/cycle.rs
-
 #[doc = crate::_tags!(game)]
 /// A repeated structural grouping of turns, phases, or recurrent play segments.
 #[doc = crate::_doc_meta!{

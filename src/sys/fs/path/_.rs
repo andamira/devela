@@ -1,4 +1,3 @@
-// devela/src/sys/fs/path/_.rs
 //
 #![doc = crate::_DOC_SYS_FS_PATH!()] // private
 #![doc = crate::_doc!(modules: crate::sys::fs; path)]

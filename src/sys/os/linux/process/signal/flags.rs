@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/signal/flags.rs
 //
 //! Defines [`LinuxSigactionFlags`].
 //

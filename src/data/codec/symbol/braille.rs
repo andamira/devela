@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/braille.rs
 //
 //! Defines [`BrailleByte`].
 //

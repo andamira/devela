@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/split.rs
-
 use crate::{Cmp, Slice};
 
 /// # `*split*` API methods for subslicing.

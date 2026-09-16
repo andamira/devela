@@ -1,4 +1,3 @@
-// devela/src/lang/prog/kernel/_.rs
 //
 #![doc = crate::_DOC_LANG_PROG_KERNEL!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog; kernel)]

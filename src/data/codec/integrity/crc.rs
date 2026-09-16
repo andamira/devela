@@ -1,4 +1,3 @@
-// devela/src/data/codec/integrity/crc/_.rs
 //
 //! Cyclic redundancy checks.
 //

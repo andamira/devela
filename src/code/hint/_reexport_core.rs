@@ -1,4 +1,3 @@
-// devela/src/code/hint/_reexport_core.rs
 //
 //! Reexported hints.
 //

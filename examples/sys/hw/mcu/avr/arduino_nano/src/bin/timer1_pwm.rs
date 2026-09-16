@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/timer1_pwm.rs
 //
 //! Fades an external LED using Timer1 fast PWM on OC1A.
 //

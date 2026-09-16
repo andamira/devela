@@ -1,4 +1,3 @@
-// devela/ui/layout/stack.rs
 //
 //! Defines [`UiStack`].
 //

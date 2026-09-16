@@ -1,4 +1,3 @@
-// devela/src/data/topol/ord/concat.rs
 //
 //! Defines [`Concat`].
 //

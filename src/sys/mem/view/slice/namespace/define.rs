@@ -1,4 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/define.rs
 //
 //! Defines [`Slice`].
 //

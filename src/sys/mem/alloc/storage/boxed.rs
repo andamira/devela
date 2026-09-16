@@ -1,4 +1,3 @@
-// devela/src/sys/mem/alloc/storage/boxed.rs
 //
 //! *Boxed* storage
 //

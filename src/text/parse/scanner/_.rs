@@ -1,4 +1,3 @@
-// devela/src/text/parse/scanner/_.rs
 //
 //! Defines [`TextScanner`]
 //

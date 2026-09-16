@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/scalar/c8.rs
-
 use super::*;
 use crate::{Char, CharAscii, MismatchedCapacity};
 

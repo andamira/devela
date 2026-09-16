@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/writing.rs
-
 #[cfg(feature = "translit")]
 use crate::Translit;
 #[allow(unused_imports, reason = "±unsafe")]

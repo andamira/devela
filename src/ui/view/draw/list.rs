@@ -1,4 +1,3 @@
-// devela/src/ui/view/draw/list.rs
 //
 //! Defines [`UiDrawList`], [`UiDrawListView`].
 //

@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/format/netpbm/_.rs
 //
 //! The Netpbm family of simple bitmap formats.
 //

@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/_test.rs
-
 use crate::Slice;
 
 #[test]

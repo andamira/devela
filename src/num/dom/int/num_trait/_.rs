@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/num_trait/_.rs
 //
 //! Defines the `NumInt` trait.
 //

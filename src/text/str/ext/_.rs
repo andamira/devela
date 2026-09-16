@@ -1,4 +1,3 @@
-// devela/src/text/str/ext/_.rs
 //
 //! Defines [`StrExt`], [`StringExt`].
 //

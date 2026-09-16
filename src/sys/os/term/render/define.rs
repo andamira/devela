@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/render/define.rs
 //
 //! Defines [`TermRenderer`].
 //

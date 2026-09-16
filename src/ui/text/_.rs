@@ -1,4 +1,3 @@
-// devela/src/ui/text/mod.rs
 //
 #![doc = crate::_DOC_UI_TEXT!()] // public
 #![doc = crate::_doc!(modules: crate::ui; text)]

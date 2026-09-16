@@ -1,4 +1,3 @@
-// devela/src/data/id/handle/define.rs
 //
 //! Defines [`handle!`] macro.
 //

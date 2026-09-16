@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/js/namespace.rs
 //
 //! Defines the [`Js`] namespace.
 //
@@ -118,7 +117,9 @@ impl Js {
                 all(feature = "unsafe_ffi", not(feature = "safe_lang")) => {
                     // SAFETY: `written <= capacity` && the JS writer contract
                     // guarantees that every byte in `0..written` was initialized.
-                    unsafe { bytes.set_len(written); }
+                    unsafe {
+                        bytes.set_len(written);
+                    }
                 }
                 _ => bytes.truncate(written),
             }

@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/ean/define.rs
 //
 //! Defines [`Ean`].
 //

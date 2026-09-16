@@ -1,4 +1,3 @@
-// devela/src/data/access/offset/read.rs
 //
 //! Defines the [`read_at!`] macro.
 //

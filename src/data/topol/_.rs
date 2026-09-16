@@ -1,4 +1,3 @@
-// devela/src/data/topol/_.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL!()] // public
 #![doc = crate::_doc!(modules: crate::data; topol: graph, link, ord)] // spatial

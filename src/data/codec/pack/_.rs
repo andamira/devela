@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/_.rs
 //
 #![doc = crate::_DOC_DATA_CODEC_PACK!()] // public
 #![doc = crate::_doc!(modules: crate::data::codec; pack)]

@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/linux/signal.rs
 //
 //! Implements signal handling methods for [`TermLinux`].
 //

@@ -1,4 +1,3 @@
-// devela/src/code/init/const.rs
 //
 //! Defines the [`ConstInit`] trait and implements it for many types.
 // NOTE: most implementations are scattered around the codebase.

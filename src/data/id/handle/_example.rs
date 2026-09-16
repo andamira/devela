@@ -1,4 +1,3 @@
-// devela/src/data/id/handle/_example.rs
 //
 //! Defines example handle types.
 //

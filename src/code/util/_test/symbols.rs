@@ -1,4 +1,3 @@
-// devela/src/code/util/_test/symbols.rs
 //
 // - https://doc.rust-lang.org/reference/macros-by-example.html
 

@@ -1,4 +1,3 @@
-// devela/sys/hw/block/_.rs
 //
 //! Block storage interfaces.
 //

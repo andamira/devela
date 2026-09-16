@@ -1,4 +1,3 @@
-// devela/sys/hw/usb/_.rs
 //
 //! USB device and endpoint interfaces.
 //

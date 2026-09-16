@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/seq/define.rs
 //
 //! Defines [`pool_seq!`].
 

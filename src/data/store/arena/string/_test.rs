@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/string/_test.rs
-
 use crate::{NonMaxU8, NonMaxU16, arena_string};
 
 arena_string! {

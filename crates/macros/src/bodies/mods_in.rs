@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/mods_in.rs
 //
 //! Body of `mods_in!`.
 //
@@ -28,7 +27,8 @@ pub(crate) fn body_mods_in(input: TS) -> TS {
         // Preserve visibility, including restricted forms.
         if matches!(input.peek(), Some(TT::Ident(i)) if i.to_string() == "pub") {
             vis.extend([input.next().unwrap()]);
-            if matches!(input.peek(), Some(TT::Group(g)) if g.delimiter() == Delimiter::Parenthesis) {
+            if matches!(input.peek(), Some(TT::Group(g)) if g.delimiter() == Delimiter::Parenthesis)
+            {
                 vis.extend([input.next().unwrap()]);
             }
         }

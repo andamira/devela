@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/init.rs
 //
 //! Defines the [`init_array!`] macro.
 //

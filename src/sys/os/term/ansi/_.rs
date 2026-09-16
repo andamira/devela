@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/_.rs
 //
 //! ANSI escape codes.
 //!

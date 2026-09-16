@@ -1,4 +1,3 @@
-// devela/src/lang/hum/vocal/_.rs
 //
 //! Sound systems (phonetics, phonology, prosody).
 //

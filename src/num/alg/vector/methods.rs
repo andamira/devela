@@ -1,4 +1,3 @@
-// devela/src/num/alg/vector/methods.rs
 //
 //! impl methods for Vector
 //

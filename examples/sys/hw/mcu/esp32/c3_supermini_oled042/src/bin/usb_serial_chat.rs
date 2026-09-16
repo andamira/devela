@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/esp/c3_supermini_oled042/src/bin/usb_serial_tx.rs
 //
 //!
 //

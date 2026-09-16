@@ -1,5 +1,3 @@
-// devela/src/sys/net/http/_test.rs
-
 use super::*;
 
 mod version {

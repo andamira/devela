@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/event/mod.rs
-
 crate::mods_in! {
     mod_ input;
 }

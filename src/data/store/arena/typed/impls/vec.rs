@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/typed/impls/vec.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __arena_impl_vec· {

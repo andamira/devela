@@ -1,5 +1,3 @@
-// devela/src/code/util/token/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 // concatenating

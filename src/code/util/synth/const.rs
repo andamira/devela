@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/const.rs
 //
 //! Defines the [CONST!] macro.
 //

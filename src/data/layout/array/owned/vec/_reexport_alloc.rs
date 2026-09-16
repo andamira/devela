@@ -1,5 +1,3 @@
-// devela/src/data/layout/array/owned/vec/_reexport_alloc.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: alloc::vec,

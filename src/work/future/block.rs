@@ -1,4 +1,3 @@
-// devela/src/work/future/block.rs
 //
 //! Defines the private [`future_block`] standalone function.
 //

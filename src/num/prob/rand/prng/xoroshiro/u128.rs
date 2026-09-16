@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/xoroshiro/u128.rs
 //
 //! 128-bit versions of Xoroshiro generators.
 //

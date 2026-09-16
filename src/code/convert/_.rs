@@ -1,4 +1,3 @@
-// devela/src/code/convert/_.rs
 //
 #![doc = crate::_DOC_CODE_CONVERT!()] // public
 #![doc = crate::_doc!(modules: crate::code; convert)]

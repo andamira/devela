@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/ring/impls/option.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __buffer_ring_impl_option· {

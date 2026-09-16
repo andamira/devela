@@ -1,4 +1,3 @@
-// devela/src/data/layout/dst/queue/impl_traits.rs
 //
 //!
 //

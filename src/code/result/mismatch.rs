@@ -1,4 +1,3 @@
-// devela/src/code/result/mismatch.rs
 //
 //! Define the [`Mismatch`] type.
 //

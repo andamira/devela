@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/boundary.rs
-
 use crate::{Char, Slice, Str, is, whilst};
 
 /// # Equality and boundary methods

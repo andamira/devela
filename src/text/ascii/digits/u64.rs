@@ -1,5 +1,3 @@
-// devela/src/text/ascii/digits/u64.rs
-
 use super::*;
 use crate::{Ascii, is, whilst};
 

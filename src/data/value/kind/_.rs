@@ -1,4 +1,3 @@
-// devela/src/data/value/kind/_.rs
 //
 //!
 //

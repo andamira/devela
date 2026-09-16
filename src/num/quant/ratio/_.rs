@@ -1,4 +1,3 @@
-// devela/src/num/quant/ratio/_.rs
 //
 //!
 //

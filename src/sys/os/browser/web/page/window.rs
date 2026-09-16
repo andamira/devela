@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/page/window.rs
 //
 //! Defines [`WebWindow`], [`WebWindowState`].
 //!

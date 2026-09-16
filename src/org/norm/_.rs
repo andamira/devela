@@ -1,4 +1,3 @@
-// devela/src/org/norm/mod.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_NORM!()] // public

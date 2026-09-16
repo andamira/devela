@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/board/generic/_.rs
 //
 //! Generic boards.
 //

@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/divisor.rs
 //
 //! Defines [`divisor!`].
 //

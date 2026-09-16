@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/iter/bytes.rs
-
 use crate::{Char, CharIter, char7, char8, char16, charu, is, slice, unwrap};
 
 /// Methods available when constructed from a byte slice.

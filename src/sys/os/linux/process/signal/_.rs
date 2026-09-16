@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/process/signal/_.rs
 //
 //! Signal handling ABI definitions.
 //!

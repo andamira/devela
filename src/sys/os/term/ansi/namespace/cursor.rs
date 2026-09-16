@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/cursor.rs
-
 use crate::{__ansi_consts, Ansi, Digits, StringNonNul, slice, write_at};
 
 /// # Cursor escape codes

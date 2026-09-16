@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/wrapper/impl_base.rs
 //
 /// Implements base-related methods for [`Int`].
 //

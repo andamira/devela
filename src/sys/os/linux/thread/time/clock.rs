@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/thread/time/clock.rs
 //
 //! Clock identifiers and clock selection.
 //!

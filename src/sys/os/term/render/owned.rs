@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/render/owned.rs
-
 use crate::{TermRenderer, Vec, is, vec_};
 
 /// # Owned byte storage

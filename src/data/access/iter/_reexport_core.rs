@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/_reexport_core.rs
 //
 // - WAIT: [iter_map_windows](https://github.com/rust-lang/rust/issues/87155)
 // - WAIT: [iter_array_chunks](https://github.com/rust-lang/rust/issues/100450)

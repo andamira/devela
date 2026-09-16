@@ -1,5 +1,3 @@
-// devela/src/data/topol/link/_test.rs
-
 use crate::LinkExample;
 
 const CONST_LINKS: LinkExample = {

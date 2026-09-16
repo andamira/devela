@@ -1,4 +1,3 @@
-<!-- devela/examples/sys/hw/mcu/esp32/c3_supermini_oled_042/README.md -->
 
 # ESP32-C3 SuperMini OLED 0.42 examples
 

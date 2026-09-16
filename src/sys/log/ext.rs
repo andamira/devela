@@ -1,4 +1,3 @@
-// devela/src/sys/log/ext.rs
 //
 //! Defines [`LoggerExt`].
 //

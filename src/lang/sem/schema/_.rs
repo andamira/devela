@@ -1,4 +1,3 @@
-// devela/src/lang/sem/schema/_.rs
 //
 //! Compile-time semantic vocabulary.
 //!

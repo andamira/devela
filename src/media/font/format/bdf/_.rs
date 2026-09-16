@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/_.rs
 //
 //! Glyph Bitmap Distribution Format.
 //

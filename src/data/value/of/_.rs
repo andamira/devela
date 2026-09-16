@@ -1,5 +1,3 @@
-// devela/src/data/value/of/_.rs
-
 crate::mods_in! {
     mod one; // Oneof
     // mod _wip_all; // Allof

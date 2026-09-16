@@ -1,4 +1,3 @@
-// devela/src/media/visual/draw/list/_.rs
 //
 //! Retained drawing operations.
 //

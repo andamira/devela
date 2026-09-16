@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/_docs.rs
 //
 //! Defines constants for shared documentation on [`Int`] and [`NumInt`][crate::NumInt].
 //

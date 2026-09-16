@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/cast/macros.rs
 //
 //! Defines [`cast!`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/layout/buffer/linear/define.rs
 //
 //! Defines [`buffer_linear!`].
 //

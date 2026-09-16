@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/rgb/define.rs
 //
 //! Defines the [`Rgb`] and [`Rgba`] types.
 //

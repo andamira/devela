@@ -1,4 +1,3 @@
-// devela/src/data/store/intern/_.rs
 //
 #![doc = crate::_DOC_DATA_STORE_INTERN!()] // public
 #![doc = crate::_doc!(modules: crate::data::store; intern)]

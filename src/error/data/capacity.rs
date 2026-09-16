@@ -1,4 +1,3 @@
-// devela/src/error/data/capacity.rs
 //
 //! Defines [`MismatchedCapacity`].
 //

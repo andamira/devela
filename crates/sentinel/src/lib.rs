@@ -6,7 +6,6 @@
 
 extern crate alloc;
 
-
 mod all_imports {
     use devela::all::*;
 

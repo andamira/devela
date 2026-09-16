@@ -1,4 +1,3 @@
-// devela/src/lang/hum/i18n/select/_.rs
 //
 //! All categorical dimensions used to choose message variants
 //

@@ -1,4 +1,3 @@
-// devela/sys/hw/hid/_.rs
 //
 //! Human interface devices.
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/canvas.js
 // In sync with ../bridge/canvas.rs
 
 import { strDecode, requireCtx } from "./shared.js";

@@ -1,4 +1,3 @@
-// devela/src/sys/mem/size/bit/define.rs
 //
 //! Defines [`BitSized`].
 //

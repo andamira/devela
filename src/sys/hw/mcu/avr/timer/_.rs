@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/_.rs
 //
 #![doc = crate::_DOC_SYS_HW_MCU_AVR_TIMER!()] // public
 #![doc = crate::_doc!(modules: crate::sys::hw::mcu::avr; timer)]

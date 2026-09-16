@@ -1,4 +1,3 @@
-// devela/src/error/_.rs
 //
 #![doc = crate::_DOC_ERROR!()] // public, root
 #![doc = crate::_DOC_ERROR_MODULES!()]

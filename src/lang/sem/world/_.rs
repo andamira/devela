@@ -1,4 +1,3 @@
-// devela/src/lang/sem/world/_.rs
 //
 //! Concrete semantic items and relations.
 //!

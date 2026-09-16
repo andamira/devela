@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/events.rs
 // In sync with js/events.js
 //
 //! Implements the web events API.

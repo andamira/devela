@@ -1,4 +1,3 @@
-// devela/src/data/value/value/_.rs
 //
 // WAIT:1.100:[circular-module][https://github.com/rust-lang/rust/issues/162080=
 //

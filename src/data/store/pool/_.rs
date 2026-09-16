@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/_.rs
 //
 #![doc = crate::_DOC_DATA_STORE_POOL!()] // public
 #![doc = crate::_doc!(modules: crate::data::store; pool)]

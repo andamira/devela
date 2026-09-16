@@ -1,4 +1,3 @@
-// devela/src/data/word/macros.rs
 //
 //! Defines [`word!`].
 //

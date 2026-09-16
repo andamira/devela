@@ -1,4 +1,3 @@
-// devela/src/ui/event/id.rs
 //
 //! Defines [`DeviceId`], [`WindowId`].
 //

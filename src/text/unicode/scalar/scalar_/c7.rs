@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/scalar/c7.rs
 //
 //!
 //

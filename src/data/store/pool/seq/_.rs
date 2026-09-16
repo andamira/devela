@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/seq/_.rs
 //
 //! Variable-length sequence pools.
 //!

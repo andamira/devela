@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/info.rs
 //
 //! Defines [`ImageInfo`], [`ImageFrameInfo`], [`ImageFrameSpan`].
 //

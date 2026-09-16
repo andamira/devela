@@ -1,4 +1,3 @@
-// devela/src/media/audio/format/raw/_.rs
 //
 //! Headerless raw PCM audio.
 //

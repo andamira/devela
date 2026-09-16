@@ -1,4 +1,3 @@
-// devela/src/data/layout/ord/_.rs
 //
 //! Sorting functionality.
 //

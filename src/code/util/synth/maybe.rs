@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/maybe.rs
 //
 //! Defines [`maybe!`], [`maybe_slot!`].
 //

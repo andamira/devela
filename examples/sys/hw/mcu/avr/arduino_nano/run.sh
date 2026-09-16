@@ -1,5 +1,4 @@
 #!/bin/sh
-# devela/examples/sys/hw/mcu/avr/arduino_nano/run.sh
 #
 # Builds and optionally flashes an Arduino Nano example.
 

@@ -1,4 +1,3 @@
-// devela/src/media/audio/format/_.rs
 //
 #![doc = crate::_DOC_MEDIA_AUDIO_FORMAT!()] // public
 #![doc = crate::_doc!(modules: crate::media::audio; format)]

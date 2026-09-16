@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/float_const.rs
 //
 //! Defines [`FloatConst`] and implements it for floating-point primitives.
 //

@@ -1,4 +1,3 @@
-// devela/src/phys/time/scale.rs
 //
 //! Defines [`TimeScale`].
 //

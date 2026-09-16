@@ -1,5 +1,3 @@
-// devela/src/sys/net/transport/_reexport_std.rs
-
 #[cfg(doc)]
 use crate::SocketAddr;
 #[allow(unused_imports)]

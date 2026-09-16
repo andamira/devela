@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/fd/fd.rs
 //
 //! Defines [`LinuxFd`].
 //

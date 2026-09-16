@@ -1,5 +1,3 @@
-// devela/src/data/store/key/set/_reexport_dep.rs
-
 #![allow(unused_imports, unused_macros, reason = "dep_hashbrown|std feature-gate")]
 
 /* from `hashbrown` or `std` */

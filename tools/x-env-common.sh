@@ -1,4 +1,3 @@
-# devela/tools/x-env-common.sh
 
 export RUSTFLAGS=""
 

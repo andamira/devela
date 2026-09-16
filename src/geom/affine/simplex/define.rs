@@ -1,4 +1,3 @@
-// devela/src/geom/affine/define.rs
 //
 //! Defines [`Simplex`].
 //

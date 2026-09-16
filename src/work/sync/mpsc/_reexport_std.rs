@@ -1,5 +1,3 @@
-// devela/src/work/sync/mpsc/_reexport_std.rs
-
 use crate::{_reexport, _tags};
 
 /* structs */

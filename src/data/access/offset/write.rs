@@ -1,4 +1,3 @@
-// devela/src/data/access/offset/write.rs
 //
 //! Defines the [write_at!] macro.
 //

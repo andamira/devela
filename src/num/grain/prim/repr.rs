@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/repr.rs
 //
 //! Primitive-backed integer representation traits.
 //

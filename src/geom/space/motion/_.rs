@@ -1,4 +1,3 @@
-// devela/src/geom/space/motion/_.rs
 //
 #![doc = crate::_DOC_GEOM_MOTION!()] // public
 #![doc = crate::_doc!(modules: crate::geom::space; motion)]

@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/macro/_docs.rs
-
 crate::CONST! {
     pub(super) _DOC_ANSI = r#"
 - the `b:` arm accepts only static command arguments and returns [`&[u8]`](slice).

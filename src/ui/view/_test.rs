@@ -1,5 +1,3 @@
-// devela/src/ui/view/_test.rs
-
 use super::*;
 use crate::{UiId, UiRect};
 

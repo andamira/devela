@@ -1,5 +1,3 @@
-// devela/src/text/parse/scanner/core.rs
-
 #[cfg(doc)]
 use crate::TextParseErrorKind;
 use crate::{ConstInit, Slice, Str, is, unwrap, whilst};

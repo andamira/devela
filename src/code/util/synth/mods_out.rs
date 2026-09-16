@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/mods_out.rs
 //
 //! Defines the [`mods_out!`] macro.
 //

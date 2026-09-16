@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/cswap.rs
 //
 //! Defines the [`cswap!`] macro.
 //

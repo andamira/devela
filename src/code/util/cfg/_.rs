@@ -1,4 +1,3 @@
-// devela/src/code/util/cfg/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_CFG!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; cfg)]

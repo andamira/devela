@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/term/cc.rs
 //
 //! Typed Linux termios special-character indices.
 //

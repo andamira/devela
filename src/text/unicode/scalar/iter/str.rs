@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/iter/str.rs
-
 #[allow(unused, reason = "±unsafe")]
 use crate::unwrap;
 use crate::{Char, CharIter, char7, char8, char16, charu, is, slice};

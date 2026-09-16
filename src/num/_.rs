@@ -1,4 +1,3 @@
-// devela/src/num/mod.rs
 //
 #![doc = crate::_DOC_NUM!()] // public, root
 #![doc = crate::_DOC_NUM_MODULES!()]

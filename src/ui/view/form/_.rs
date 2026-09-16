@@ -1,4 +1,3 @@
-// devela/src/ui/view/form/_.rs
 //
 #![doc = crate::_DOC_UI_VIEW_FORM!()] // private
 #![doc = crate::_doc!(modules: crate::ui::view; form)]

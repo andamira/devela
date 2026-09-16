@@ -1,4 +1,3 @@
-// devela/src/num/grain/lim/_.rs
 //
 //! Boundary-aware integer representations and arithmetic.
 //!

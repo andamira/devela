@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/event/wheel.rs
 //
 //! Defines [`WebEventWheel`].
 //

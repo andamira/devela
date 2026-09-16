@@ -1,5 +1,3 @@
-// devela/src/geom/affine/point/turn/float.rs
-
 use crate::{Point, PointSegmentRelation, Turn, is, lets, slice, whilst};
 
 impl Point<f32, 2> {

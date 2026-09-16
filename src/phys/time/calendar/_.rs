@@ -1,4 +1,3 @@
-// devela/src/phys/time/calendar/_.rs
 //
 //! Month and Weekday types.
 //

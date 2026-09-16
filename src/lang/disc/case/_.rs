@@ -1,4 +1,3 @@
-// devela/src/lang/disc/case/_.rs
 //
 //! Claims, evidence, inference, objections, and persuasive structure.
 //

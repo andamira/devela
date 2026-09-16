@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/_.rs
 //
 //! File-descriptor–centric ABI surface.
 //!

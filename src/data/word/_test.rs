@@ -1,5 +1,3 @@
-// devela/src/data/value/word/_test.rs
-
 use super::{Word, WordTry, word};
 
 /* tuple definition */

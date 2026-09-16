@@ -1,4 +1,3 @@
-// devela/src/data/id/handle/span.rs
 //
 //! Defines [`handle_span!`] macro.
 //

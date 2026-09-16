@@ -1,4 +1,3 @@
-// devela/src/vita/body/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_VITA_BODY!()] // public

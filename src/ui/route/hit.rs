@@ -1,4 +1,3 @@
-// devela/ui/route/hit.rs
 //
 //! Defines [`HitRegion`].
 //

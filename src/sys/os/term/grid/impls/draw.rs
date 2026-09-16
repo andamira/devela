@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/grid/impls/draw.rs
 //
 //! Grid-region drawing and transfer operations.
 //

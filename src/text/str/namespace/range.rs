@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/range.rs
-
 use crate::{Str, is, unwrap};
 
 /// # `range*` API methods for returning substrings.

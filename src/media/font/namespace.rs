@@ -1,4 +1,3 @@
-// devela/src/media/font/namespace.rs
 //
 //! Defines [`Fonts`].
 //

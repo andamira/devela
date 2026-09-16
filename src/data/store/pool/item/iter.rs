@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/item/iter.rs
 //
 //! Defines [`PoolIter`].
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/io/no_std_define/write.rs
 //
 //! Defines the [`IoWrite`] trait.
 //

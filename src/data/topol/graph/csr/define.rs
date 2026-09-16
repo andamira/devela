@@ -1,4 +1,3 @@
-// devela/src/data/topol/graph/csr/define.rs
 //
 //! Defines [`graph_csr!`].
 //

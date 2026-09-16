@@ -1,4 +1,3 @@
-// devela/src/data/access/route/define.rs
 //
 //! Defines [`Route`], [`RouteAnchor`], [`RouteName`], and [`RouteSeg`].
 //

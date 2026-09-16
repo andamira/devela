@@ -1,4 +1,3 @@
-// devela/src/run/regime/cap/_.rs
 //
 //! Runtime capabilities.
 //

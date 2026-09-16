@@ -1,4 +1,3 @@
-// devela/src/phys/time/timed.rs
 //
 //! Defines [`Timed`] and [`MaybeTimed`].
 //

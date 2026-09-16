@@ -1,5 +1,3 @@
-// devela/src/geom/affine/point/vector.rs
-
 use crate::{Add, AddAssign, NumConst, Point, Sub, SubAssign, Vector, array_from_fn, whilst};
 
 macro_rules! impl_point_const_ops {

@@ -1,5 +1,3 @@
-// devela/src/code/ops/range/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 /* enums */

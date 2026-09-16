@@ -1,4 +1,3 @@
-// devela/src/data/access/route/_.rs
 //
 #![doc = crate::_DOC_DATA_ACCESS_ROUTE!()] // public
 #![doc = crate::_doc!(modules: crate::data::access; route)]

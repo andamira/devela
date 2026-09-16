@@ -1,5 +1,3 @@
-// devela/src/media/visual/color/rgb/impls/f64.rs
-
 #![expect(unused)]
 
 use super::*;

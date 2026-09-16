@@ -1,4 +1,3 @@
-// devela/src/code/ops/punroll.rs
 //
 //! Defines the [`punroll!`] macro.
 //

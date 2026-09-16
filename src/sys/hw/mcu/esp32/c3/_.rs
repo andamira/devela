@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/c3/_.rs
 //
 //! ESP32-C3 microcontroller.
 //

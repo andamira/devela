@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/_parse/parser.rs
 //
 //! Stateful traversal of a complete BDF font.
 //

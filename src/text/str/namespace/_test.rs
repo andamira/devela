@@ -1,5 +1,3 @@
-// devela/src/text/str/namespace/_test.rs
-
 // IMPROVE: add tests for missing methods from: range, split, take.
 
 use crate::Str;

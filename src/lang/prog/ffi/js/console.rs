@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/js/console.rs
 //
 //! Defines [`JsConsole`].
 //

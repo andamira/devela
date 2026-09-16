@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/_tests.rs
-
 use super::*;
 use crate::Char;
 

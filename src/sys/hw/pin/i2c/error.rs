@@ -1,4 +1,3 @@
-// devela/sys/hw/pin/i2c/error.rs
 //
 //! Defines [`I2cError`].
 //

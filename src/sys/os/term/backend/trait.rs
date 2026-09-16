@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/trait.rs
 //
 //! Terminal backend traits.
 //

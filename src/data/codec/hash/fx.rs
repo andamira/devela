@@ -1,4 +1,3 @@
-// devela/src/data/codec/hash/fx.rs
 //
 //! Defines [`HasherBuildFx`], [`HasherFx`].
 //

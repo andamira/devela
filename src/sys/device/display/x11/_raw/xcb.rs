@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/_raw/xcb.rs
 //
 //! from `xcb.h`, `xcb_ext.h`, `xproto.h`.
 //

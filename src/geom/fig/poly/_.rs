@@ -1,4 +1,3 @@
-// devela/src/geom/fig/poly/_.rs
 //
 #![doc = crate::_DOC_GEOM_FIG_POLY!()] // public
 #![doc = crate::_doc!(modules: crate::geom::fig; poly)]

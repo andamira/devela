@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/permissions.js
 
 import { strDecode } from "./shared.js";
 

@@ -1,5 +1,3 @@
-// devela/src/text/ascii/digits/usize.rs
-
 use super::*;
 use crate::{Ascii, is};
 

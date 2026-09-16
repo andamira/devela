@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/items.rs
 //
 //! Defines [`items`].
 //

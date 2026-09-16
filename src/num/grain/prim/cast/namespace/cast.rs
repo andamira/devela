@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/cast/namespace/cast.rs
 //
 //! fns to cast between primitives in a checked manner.
 //

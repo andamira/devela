@@ -1,4 +1,3 @@
-// devela/src/ui/widget/_.rs
 //
 #![doc = crate::_DOC_UI_WIDGET!()] // public
 #![doc = crate::_doc!(modules: crate::ui; widget)]

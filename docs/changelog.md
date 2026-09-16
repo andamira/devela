@@ -17,6 +17,10 @@
 
 # Repository
 
+## tooling
+### rustfmt
+- make formatting checks reproducible across local and CI environments.
+- restrict formatting to tracked Rust files and pin the rustfmt toolchain version.
 
 ---
 
@@ -30,6 +34,7 @@
 
 ### structure
 - rename `src/index.rs` to `src/_.rs`.
+- remove file paths from all file headers.
 
 ### documentation
 - new tag: `_TAG_HW`.

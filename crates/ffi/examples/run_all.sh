@@ -1,5 +1,4 @@
 #!/bin/sh
-# devela_ffi/examples/run_all.sh
 
 set -e
 

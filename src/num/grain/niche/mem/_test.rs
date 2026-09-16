@@ -1,5 +1,3 @@
-// devela/src/num/grain/niche/mem/_test.rs
-
 #[allow(unused_imports)]
 use super::*;
 

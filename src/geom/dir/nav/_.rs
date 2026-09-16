@@ -1,4 +1,3 @@
-// devela/src/geom/dir/nav/_.rs
 //
 #![doc = crate::_DOC_GEOM_DIR_NAV!()] // private
 #![doc = crate::_doc!(modules: crate::geom::dir; nav)]

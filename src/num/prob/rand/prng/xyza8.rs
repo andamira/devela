@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/xyza8.rs
 //
 //!
 

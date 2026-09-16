@@ -1,4 +1,3 @@
-// devela/src/data/value/value/regrade.rs
 //
 //! Implements regrading conversions between compact value grades.
 //

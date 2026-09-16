@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/terminal.rs
-
 use crate::{__ansi_consts, Ansi, Digits, slice, write_at};
 
 /// # Terminal escape codes

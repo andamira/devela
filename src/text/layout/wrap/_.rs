@@ -1,4 +1,3 @@
-// devela/src/text/layout/wrap/_.rs
 //
 //! Defines text wrapping types.
 //

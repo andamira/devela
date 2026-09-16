@@ -1,4 +1,3 @@
-// devela/src/media/font/format/bdf/_parse/_.rs
 //
 //! Private BDF grammar and header parsing.
 //

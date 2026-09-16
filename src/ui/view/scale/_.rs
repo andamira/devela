@@ -1,4 +1,3 @@
-// devela/src/ui/view/scale/_.rs
 //
 #![doc = crate::_DOC_UI_VIEW_SCALE!()] // private
 #![doc = crate::_doc!(modules: crate::ui::view; scale)]

@@ -1,5 +1,3 @@
-// devela/src/media/audio/format/raw/_test.rs
-
 use crate::{AudioChannels, PcmRaw, PcmRawBuf, PcmRawError, PcmSample, PcmSpec};
 
 /* fixtures */

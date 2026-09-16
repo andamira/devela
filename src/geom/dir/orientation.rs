@@ -1,4 +1,3 @@
-// devela/src/geom/dir/orientation.rs
 //
 //! Defines [`Orientation`][1|2|3].
 //

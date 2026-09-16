@@ -1,4 +1,3 @@
-// devela/src/num/signal/transform.rs
 //
 //! Signal mapping, modulation, and signal-to-signal transformation.
 //

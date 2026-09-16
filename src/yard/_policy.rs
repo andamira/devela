@@ -1,4 +1,3 @@
-// devela/src/yard/_policy.rs
 //
 //! Defines shared helpers related to workspace policies.
 //

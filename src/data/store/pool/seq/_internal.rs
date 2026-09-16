@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/seq/_internal.rs
 //
 //! Defines [`__pool_seq!`].
 //

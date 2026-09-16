@@ -1,5 +1,3 @@
-// devela/sys/hw/mcu/avr/timer/one/pwm.rs
-
 /// # PWM
 #[crate::macro_apply(crate::__cfg_item_unsafe_show("safe_sys", "unsafe_mmio"))]
 impl crate::AvrTimer1 {

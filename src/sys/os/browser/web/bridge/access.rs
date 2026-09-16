@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/access.rs
 // In sync with js/permissions.js
 //
 //! Implements the web permissions API.

@@ -1,5 +1,3 @@
-// devela/src/num/prob/rand/prng/pcg/_test.rs
-
 #![allow(unused)]
 
 use crate::rand_pcg;

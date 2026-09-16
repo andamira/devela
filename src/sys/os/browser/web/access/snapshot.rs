@@ -1,5 +1,3 @@
-// devela/src/sys/os/browser/web/access/snapshot.rs
-
 use crate::{AsyncPoll, WebPermission, WebPermissionSet, is};
 use crate::{PermissionError, PermissionQuery, PermissionState};
 

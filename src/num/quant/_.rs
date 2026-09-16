@@ -1,4 +1,3 @@
-// devela/src/num/quant/_.rs
 //
 #![doc = crate::_DOC_NUM_QUANT!()] // public
 #![doc = crate::_doc!(modules: crate::num; quant)]

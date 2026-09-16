@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/static/_.rs
 //
 //! Static assertions.
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/backend/_.rs
 //
 //! Terminal backend adapters.
 //!

@@ -1,5 +1,3 @@
-// devela/src/lang/prog/ffi/c/_reexport_alloc.rs
-
 use crate::{_TAG_TEXT, _reexport};
 
 _reexport! { rust: alloc::ffi,

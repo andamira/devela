@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/ui/surface.rs
 //
 //! Defines [`XSurfaceUi`].
 //

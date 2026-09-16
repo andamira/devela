@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/namespace/_test.rs
-
 use crate::Char;
 
 #[test]

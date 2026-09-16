@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/scalar/utf8.rs
-
 use super::*;
 use crate::{Char, CharAscii, MismatchedCapacity, NonMaxU32, NonNiche, Str, is, slice, unwrap};
 

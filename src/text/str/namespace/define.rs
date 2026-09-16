@@ -1,4 +1,3 @@
-// devela/src/text/str/namespace/define.rs
 //
 //! Defines [`Str`].
 //

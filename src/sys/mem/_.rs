@@ -1,4 +1,3 @@
-// devela/src/sys/mem/_.rs
 //
 #![doc = crate::_DOC_SYS_MEM!()] // public
 #![doc = crate::_doc!(modules: crate::sys; mem: alloc, bound, cell, layout, size, view)]

@@ -1,4 +1,3 @@
-// devela/src/data/id/_.rs
 //
 #![doc = crate::_DOC_DATA_ID!()] // public
 #![doc = crate::_doc!(modules: crate::data; id: handle, local, uuid)]

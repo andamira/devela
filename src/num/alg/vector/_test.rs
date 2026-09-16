@@ -1,5 +1,3 @@
-// devela/src/num/alg/vector/mod.rs
-
 use crate::{Vector, assert_approx_eq_all};
 
 const INT_A: Vector<i32, 3> = Vector::new([2, -3, 4]);

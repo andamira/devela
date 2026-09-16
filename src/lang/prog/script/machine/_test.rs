@@ -1,5 +1,3 @@
-// devela/src/lang/prog/script/machine/_test.rs
-
 use super::*;
 use crate::{ValueKind, is, unwrap};
 

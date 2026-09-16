@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/namespace/thread.rs
-
 #[cfg(feature = "time")]
 use crate::{
     Duration, LINUX_ERRNO as ERRNO, LinuxClock, LinuxError, LinuxResult, LinuxTimespec, is,

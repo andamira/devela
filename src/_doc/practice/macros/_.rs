@@ -1,4 +1,3 @@
-// devela/src/_doc/macros/_.rs
 //
 //!
 //

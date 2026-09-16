@@ -1,4 +1,3 @@
-// devela/src/geom/affine/point/_.rs
 //
 //! Positions in affine space without metric or unit semantics
 //

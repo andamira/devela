@@ -1,4 +1,3 @@
-// devela/src/code/result/opt_res/ext_option.rs
 //
 //! Defines the [`OptionExt`] trait.
 //

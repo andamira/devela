@@ -1,5 +1,3 @@
-// devela/src/data/store/key/map/fixed/impls/runtime.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __map_impl_runtime· {

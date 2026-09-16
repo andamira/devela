@@ -1,4 +1,3 @@
-// devela/src/num/fin/ord/order/_.rs
 //
 //! Algorithms and structures that depend on relative position rather than magnitude alone.
 //

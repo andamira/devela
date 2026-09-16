@@ -1,4 +1,3 @@
-// devela/src/org/agent/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_ORG_AGENT!()] // public

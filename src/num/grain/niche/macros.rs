@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/macros.rs
 //
 //! Defines [`niche!`], (`NicheNew`) and [`niche_prim!`].
 //

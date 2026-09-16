@@ -1,4 +1,3 @@
-// devela/src/work/future/_reexport_core.rs
 //
 //!
 //

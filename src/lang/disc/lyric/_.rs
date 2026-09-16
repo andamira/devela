@@ -1,4 +1,3 @@
-// devela/src/lang/disc/lyric/_.rs
 //
 //! Lyric form, voice, cadence, imagery, and felt experience.
 //

@@ -1,4 +1,3 @@
-// devela/src/lang/sem/map/_.rs
 //
 //! Mappings between semantic regions.
 //!

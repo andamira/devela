@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/item/define.rs
 //
 //! Defines [`pool!`].
 //

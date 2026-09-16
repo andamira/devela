@@ -1,4 +1,3 @@
-// devela/crates/ffi/src/bin/ffi_bindgen.rs
 //
 //! Generates C and Odin bindings from `../../abi/devela_ffi.abi`.
 //

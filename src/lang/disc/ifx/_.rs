@@ -1,4 +1,3 @@
-// devela/src/lang/disc/ifx/_.rs
 //
 //! Interactive-fiction structure and execution.
 //!

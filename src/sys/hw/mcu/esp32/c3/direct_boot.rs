@@ -1,4 +1,3 @@
-// devela/src/sys/hw/mcu/esp32/c3/direct_boot.rs
 //
 //! ESP32-C3 direct-boot startup support.
 //

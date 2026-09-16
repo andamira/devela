@@ -1,4 +1,3 @@
-// devela/src/phys/unit/bi.rs
 //
 //! Binary unit prefixes.
 //

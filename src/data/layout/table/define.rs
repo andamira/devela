@@ -1,4 +1,3 @@
-// devela/src/data/layout/table/define.rs
 //
 //! Defines [`Table`].
 //

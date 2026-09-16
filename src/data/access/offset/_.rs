@@ -1,4 +1,3 @@
-// devela/src/data/access/offset/_.rs
 //
 //!
 //

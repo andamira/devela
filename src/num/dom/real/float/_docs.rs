@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/_docs.rs
 //
 //! Defines constants for shared documentation on [`Float`] and [`FloatExt`][crate::FloatExt].
 //

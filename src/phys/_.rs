@@ -1,4 +1,3 @@
-// devela/src/phys/_.rs
 //
 #![doc = crate::_DOC_PHYS!()] // public
 #![doc = crate::_DOC_PHYS_MODULES!()]

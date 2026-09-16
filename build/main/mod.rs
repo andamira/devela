@@ -1,4 +1,3 @@
-// devela/build/main/mod.rs
 //
 //! Build-time configuration, linking support, and code generation.
 //!

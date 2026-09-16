@@ -1,5 +1,3 @@
-// devela/src/text/parse/scanner/number.rs
-
 #[cfg(doc)]
 use crate::TextParseErrorKind;
 use crate::{Ascii, TextParseError, TextScanner, is, unwrap, whilst};

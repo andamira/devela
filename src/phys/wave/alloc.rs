@@ -1,4 +1,3 @@
-// devela/src/phys/wave/alloc.rs
 //
 //! Wavelet items that allocate.
 //

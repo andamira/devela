@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/define.rs
 //
 //! Defines [`Float`].
 //

@@ -1,4 +1,3 @@
-// devela/src/num/alg/matrix/_.rs
 //
 //! Static and borrowed matrix representations.
 //

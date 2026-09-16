@@ -1,4 +1,3 @@
-// devela/src/geom/dir/_.rs
 //
 #![doc = crate::_DOC_GEOM_DIR!()] // public
 #![doc = crate::_doc!(modules: crate::geom; dir)]

@@ -1,4 +1,3 @@
-// devela/src/data/layout/dst/_.rs
 #![doc = crate::_doc_warn_miri!(tag)]
 #![doc = crate::_DOC_DATA_LAYOUT_DST!()] // public
 #![doc = crate::_doc!(modules: crate::data::layout; dst)]

@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/term/termios.rs
 //
 //! Terminal I/O configuration structure.
 //!

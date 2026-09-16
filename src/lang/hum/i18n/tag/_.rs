@@ -1,4 +1,3 @@
-// devela/src/lang/hum/i18n/tag/_.rs
 //
 //! Language tags (BCP 47).
 //

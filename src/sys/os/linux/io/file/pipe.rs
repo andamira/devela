@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/pipe.rs
 //
 //! Defines [`LinuxPipe`], [`LinuxPipeFlags`].
 //

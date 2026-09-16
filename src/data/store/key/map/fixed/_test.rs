@@ -1,4 +1,3 @@
-// devela/src/data/store/key/map/fixed/_test.rs
 //
 //!
 //

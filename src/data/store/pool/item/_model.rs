@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/item/_model.rs
 //
 //! Model-based tests for pool state transitions.
 //!

@@ -1,4 +1,3 @@
-// devela/src/sys/device/display/x11/_raw/xkb_x11.rs
 //
 //! Everything from libxkbcommon-x11.so
 //

@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/palette/_.rs
 //
 //!
 //

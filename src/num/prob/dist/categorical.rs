@@ -1,4 +1,3 @@
-// devela/src/num/prob/dist/categorical.rs
 //
 //! Defines [`DistCategorical`].
 //

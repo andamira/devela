@@ -1,4 +1,3 @@
-// devela/src/text/fmt/num/float.rs
 //
 //! Implemnts [`FmtNum`] for all floating-point primitives.
 //

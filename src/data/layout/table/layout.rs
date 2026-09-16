@@ -1,4 +1,3 @@
-// devela/src/data/layout/table/layout.rs
 //
 //! Defines [`TableLayout`].
 //

@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/fd/_raw.rs
 //
 //! Raw Linux file-descriptor constants.
 //!

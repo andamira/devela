@@ -1,4 +1,3 @@
-// devela/src/lang/prog/script/form/shell/word/lex.rs
 //
 //! Defines [`ShellLex`].
 //

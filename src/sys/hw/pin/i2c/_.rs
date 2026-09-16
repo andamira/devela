@@ -1,4 +1,3 @@
-// devela/sys/hw/pin/i2c/_.rs
 //
 //! I²C two-wire bus primitives.
 //

@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/tile/_.rs
 //
 //! Unicode codecs for subdivided character-cell tiles.
 //

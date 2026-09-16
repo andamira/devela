@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/src/bin/uart_echo.rs
 //
 //! Tests ESP32-C3 UART0 transmission and reception.
 //

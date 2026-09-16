@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/string/_example.rs
 //
 //! Defines string arena examples.
 //

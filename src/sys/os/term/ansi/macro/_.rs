@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/macro/_.rs
 //
 //! Defines the [`ansi!`] macro.
 //

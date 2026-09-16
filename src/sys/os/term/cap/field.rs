@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/cap/field.rs
 //
 //! Defines [`TermCaps`].
 //

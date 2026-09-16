@@ -1,5 +1,3 @@
-// devela/src/data/layout/dst/buffer.rs
-
 use crate::{ConstInit, MaybeUninit, MemPod};
 
 #[doc = crate::_tags!(data_structure)]

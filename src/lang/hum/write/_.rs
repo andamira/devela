@@ -1,4 +1,3 @@
-// devela/src/lang/hum/write/_.rs
 //
 //! Writing systems, ortopgraphy.
 //!

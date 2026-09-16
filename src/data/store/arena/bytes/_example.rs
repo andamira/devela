@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/bytes/_example.rs
 //
 //! Defines [`ArenaBytesExample`], [`ArenaBytesHandleExample`], [`ArenaBytesMarkExample`],
 //! and the `Alloc` versions.

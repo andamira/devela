@@ -1,4 +1,3 @@
-// devela/src/work/sync/_reexport_std.rs
 //
 //!
 //

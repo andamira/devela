@@ -1,4 +1,3 @@
-// devela/ui/view/scale/_helper.rs
 //
 //! Integer helpers for UI layout and projection.
 //

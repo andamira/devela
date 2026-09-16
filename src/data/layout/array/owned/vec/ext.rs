@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/owned/vec/ext.rs
 //
 //!
 //

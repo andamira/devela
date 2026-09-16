@@ -1,4 +1,3 @@
-// devela/src/media/audio/layout.rs
 //
 //! Defines [`AudioChannel`], [`AudioChannels`].
 //

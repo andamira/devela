@@ -1,4 +1,3 @@
-// devela/src/num/dom/frac/_.rs
 //
 //! Fractional functionality.
 //

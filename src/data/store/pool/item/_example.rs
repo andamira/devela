@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/item/_example.rs
 //
 //! Defines [`PoolExample`, `PoolHandleExample`].
 //

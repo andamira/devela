@@ -1,4 +1,3 @@
-// devela/src/num/grain/prim/cast/namespace/join.rs
 //
 //! Construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //

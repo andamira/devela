@@ -1,5 +1,3 @@
-// devela/src/media/visual/image/raster/grid/_test.rs
-
 use super::*;
 use crate::{Array, ArrayLayout};
 use crate::{Extent2, Position2, RegionS2, Slice, const_assert, ext, lets, pos, unwrap};

@@ -1,4 +1,3 @@
-// devela/src/text/layout/wrap.rs
 //
 //! Defines [`TextSegmentKind`], [`TextSegment`].
 //

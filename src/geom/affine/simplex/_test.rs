@@ -1,4 +1,3 @@
-// devela/src/geom/affine/_test.rs
 //
 // TOC
 // - mod simplex

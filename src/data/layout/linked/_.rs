@@ -1,4 +1,3 @@
-// devela/src/data/layout/linked/_.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT_LINKED!()] // public
 #![doc = crate::_doc!(modules: crate::data::layout; linked)]

@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/methods.rs
 //
 //! Defines [`methods_as_fns`].
 //

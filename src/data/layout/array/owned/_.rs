@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/owned/_.rs
 //
 //! Owning array containers and storage-specific utilities.
 //

@@ -1,4 +1,3 @@
-// devela/src/num/quant/ratio/define.rs
 //
 //! Defines [`Ratio`].
 //

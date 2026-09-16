@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/grid/interlace.rs
 //
 //! Classifies bitmap raster interlacing methods.
 //

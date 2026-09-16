@@ -1,4 +1,3 @@
-// devela/src/code/util/debug/fn_name.rs
 //
 //! Defines [`fn_name`].
 //

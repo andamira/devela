@@ -1,4 +1,3 @@
-// devela/src/media/audio/format/wav/namespace.rs
 //
 //! Defines [`PcmWav`].
 //

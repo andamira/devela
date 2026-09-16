@@ -1,5 +1,3 @@
-// devela/src/data/id/uuid/_test.rs
-
 use super::*;
 use crate::{Pcg32, TextParseErrorKind, assert_matches, const_assert, format_buf};
 

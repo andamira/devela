@@ -1,5 +1,3 @@
-// devela/src/data/store/pool/item/_test.rs
-
 use crate::{PoolExample as Pool, PoolHandleExample as Handle};
 
 #[test]

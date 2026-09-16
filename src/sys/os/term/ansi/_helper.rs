@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/ansi/_helper.rs
 //
 //! Implements the internal [`__ansi_consts!`] macro.
 //

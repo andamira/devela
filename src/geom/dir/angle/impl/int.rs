@@ -1,4 +1,3 @@
-// devela/src/geom/dir/angle/impl/int.rs
 //
 //!
 //

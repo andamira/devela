@@ -1,4 +1,3 @@
-// devela/src/code/marker/_.rs
 //
 #![doc = crate::_DOC_CODE_MARKER!()] // public
 #![doc = crate::_doc!(modules: crate::code; marker)]

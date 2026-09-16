@@ -1,5 +1,3 @@
-// devela/src/sys/mem/size/bit/_test.rs
-
 #![allow(unused)]
 
 use crate::{BitSized, ByteSized, Mem};

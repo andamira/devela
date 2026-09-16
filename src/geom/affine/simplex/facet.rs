@@ -1,4 +1,3 @@
-// devela/src/geom/affine/facet.rs
 //
 //! Defines [`SimplexFacetView`], [`SimplexFacetIter`].
 //

@@ -1,5 +1,3 @@
-// devela/src/data/codec/bin/bit/set/_test.rs
-
 #![allow(unused)]
 
 crate::set! {

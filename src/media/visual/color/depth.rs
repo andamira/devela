@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/depth.rs
 //
 //! Defines [`ColorDepth`].
 //

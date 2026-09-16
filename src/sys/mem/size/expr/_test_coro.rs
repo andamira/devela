@@ -1,4 +1,3 @@
-// devela/src/sys/mem/size/expr/test_coro.rs
 // NOTE: has to be a separate file because of experimental syntax
 
 #[cfg(not(miri))]

@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/backing/vec.rs
 //
 //! Array implementations over vectors.
 //

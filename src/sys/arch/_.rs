@@ -1,4 +1,3 @@
-// devela/src/sys/arch/_.rs
 //
 #![doc = crate::_DOC_SYS_ARCH!()] // public
 #![doc = crate::_doc!(modules: crate::sys; arch)]

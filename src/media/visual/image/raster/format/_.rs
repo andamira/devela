@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/format/_.rs
 //
 //! Raster image formats.
 //

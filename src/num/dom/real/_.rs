@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/_.rs
 //
 #![doc = crate::_DOC_NUM_DOM_REAL!()] // public
 #![doc = crate::_doc!(modules: crate::num::dom; real)]

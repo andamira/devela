@@ -1,5 +1,3 @@
-// devela/src/num/quant/scale/_test.rs
-
 use crate::Scale;
 
 mod int {

@@ -1,4 +1,3 @@
-// devela/src/num/alg/vector/_.rs
 //
 //! Linear algebra vectors.
 //!

@@ -1,5 +1,3 @@
-// devela/src/code/util/assert/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 /* macros */

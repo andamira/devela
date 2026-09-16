@@ -1,4 +1,3 @@
-// devela/src/data/value/intro/define.rs
 //
 //! Defines the [`Introspect`] struct.
 //

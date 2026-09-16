@@ -1,4 +1,3 @@
-// devela/src/work/exec/thread/_reexport_std.rs
 //
 //!
 //

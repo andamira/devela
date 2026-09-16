@@ -1,4 +1,3 @@
-// devela/src/work/sync/spin_lock.rs
 //
 //! Defines the [`SpinLock`] and [`SpinLockGuard`] structs for simple mutual exclusion.
 //

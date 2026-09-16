@@ -1,4 +1,3 @@
-// devela/src/text/ascii/mod.rs
 //
 #![doc = crate::_DOC_TEXT_ASCII!()] // public
 #![doc = crate::_doc!(modules: crate::text; ascii)]

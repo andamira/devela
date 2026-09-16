@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/adj/impls/_.rs
-
 crate::mods_in! {
     mod array;
     mod vec;

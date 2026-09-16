@@ -1,4 +1,3 @@
-// devela/src/lang/hum/prag/_.rs
 //
 //! Pragmatics (meaning in use).
 //

@@ -1,4 +1,3 @@
-// devela/src/data/topol/link/define.rs
 //
 //! Defines [`link!`] macro.
 //

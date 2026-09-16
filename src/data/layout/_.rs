@@ -1,4 +1,3 @@
-// devela/src/data/layout/_.rs
 //
 #![doc = crate::_DOC_DATA_LAYOUT!()] // public
 #![doc = crate::_doc!(modules: crate::data; layout: array, buffer, dst, linked, table)]

@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/ring/impls/_.rs
-
 crate::mods_in! {
     mod array;
     // mod uninit;

@@ -1,4 +1,3 @@
-# devela/tools/x.fish
 #
 # devela project launcher integration for fish
 #

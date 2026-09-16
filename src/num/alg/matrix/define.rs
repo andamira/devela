@@ -1,4 +1,3 @@
-// devela/src/num/alg/matrix/define.rs
 //
 //! Defines [`Matrix`].
 //

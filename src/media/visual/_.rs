@@ -1,4 +1,3 @@
-// devela/src/media/visual/_.rs
 //
 #![doc = crate::_DOC_MEDIA_VISUAL!()] // public
 #![doc = crate::_doc!(modules: crate::media; visual: color, draw, image)] // pattern, video

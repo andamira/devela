@@ -1,4 +1,3 @@
-// devela/src/yard/_doc/availability.rs
 //
 //! Defines [`_doc_availability!`].
 //

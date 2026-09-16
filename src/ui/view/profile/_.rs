@@ -1,4 +1,3 @@
-// devela/src/ui/view/profile/_.rs
 //
 #![doc = crate::_DOC_UI_VIEW_PROFILE!()] // private
 #![doc = crate::_doc!(modules: crate::ui::view; profile)]

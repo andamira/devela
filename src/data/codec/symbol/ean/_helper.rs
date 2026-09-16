@@ -1,5 +1,3 @@
-// devela/src/data/codec/symbol/ean/_helper.rs
-
 use crate::{is, lets, whilst};
 
 /// Normal left/right guard pattern.

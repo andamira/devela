@@ -1,4 +1,3 @@
-// devela/src/num/grain/niche/mem/bitten.rs
 //
 //! Integers with a number of high capacity bits removed.
 //

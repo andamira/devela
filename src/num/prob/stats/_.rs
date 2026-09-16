@@ -1,4 +1,3 @@
-// devela/src/num/prob/stats/_.rs
 //
 #![doc = crate::_DOC_NUM_PROB_STATS!()] // public
 #![doc = crate::_doc!(modules: crate::num::prob; stats)]

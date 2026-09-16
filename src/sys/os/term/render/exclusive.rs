@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/render/exclusive.rs
-
 use crate::{Ansi, AnsiColor, NotEnoughSpace, TermRenderer, whilst};
 
 /// # Mutable byte-frame construction

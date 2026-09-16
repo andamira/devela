@@ -1,4 +1,3 @@
-// devela/src/text/layout/symbol.rs
 //
 //! Defines [`TextBreakMode`], [`TextElideMode`], [`TextCohesion`],
 //! [`TextLayoutSpan`], [`TextSymbol`], [`TextSymbolConfig`].

@@ -1,5 +1,3 @@
-// devela/src/media/font/bitmap/_test.rs
-
 mod view {
     use crate::{FontBitmapView, Region2};
 

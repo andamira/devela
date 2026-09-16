@@ -1,5 +1,3 @@
-// devela/src/data/layout/buffer/ring/_test.rs
-
 use super::*;
 use crate::{ConstInit, const_assert};
 

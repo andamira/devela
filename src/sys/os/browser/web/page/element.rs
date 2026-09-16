@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/page/element.rs
 //
 //! Defines [`WebElement`], [`WebElementIter`].
 //

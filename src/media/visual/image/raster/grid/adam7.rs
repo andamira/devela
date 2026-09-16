@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/grid/adam7.rs
 //
 //! Defines Adam7 interlaced raster traversal.
 //!

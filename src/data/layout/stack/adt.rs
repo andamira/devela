@@ -1,4 +1,3 @@
-// devela/src/data/layout/stack/adt.rs
 //
 //! Defines the [`DataStack`] abstract data type.
 //

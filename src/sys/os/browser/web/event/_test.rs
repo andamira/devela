@@ -1,5 +1,3 @@
-// devela/src/sys/os/browser/web/event/_test.rs
-
 use crate::{Key, KeyMods, KeyPad, KeyState};
 use crate::{WebEventKind, WebKeyLocation};
 

@@ -1,4 +1,3 @@
-// devela/sys/hw/link/serial/_.rs
 //
 //! Serial communication interfaces.
 //

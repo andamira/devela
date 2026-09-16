@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/ptr/fat.rs
 //
 //! Fat pointers.
 //

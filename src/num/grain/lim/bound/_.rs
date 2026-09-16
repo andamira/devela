@@ -1,4 +1,3 @@
-// devela/src/num/grain/lim/bound/_.rs
 //
 //! Bounded numeric carriers and range-preserving arithmetic.
 //

@@ -1,4 +1,3 @@
-// devela/src/lang/prog/ffi/js/value.rs
 //
 //! Defines [`JsValue`].
 //

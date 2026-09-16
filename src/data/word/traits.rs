@@ -1,4 +1,3 @@
-// devela/src/data/word/traits.rs
 //
 //! Defines [`Word`], [`WordTry`].
 //

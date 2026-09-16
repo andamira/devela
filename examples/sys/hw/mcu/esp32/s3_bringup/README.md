@@ -1,4 +1,3 @@
-<!-- devela/examples/sys/hw/mcu/esp32/s3_bringup/README.md -->
 
 # ESP32-S3 bring-up example
 

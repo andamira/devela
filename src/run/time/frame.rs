@@ -1,4 +1,3 @@
-// devela/src/run/time/frame.rs
 //
 //! Defines [`RunFrame`].
 //

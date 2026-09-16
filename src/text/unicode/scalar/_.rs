@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/_.rs
 //
 #![doc = crate::_DOC_TEXT_UNICODE_SCALAR!()] // public
 #![doc = crate::_doc!(modules: crate::text::unicode; scalar)]

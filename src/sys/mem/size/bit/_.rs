@@ -1,4 +1,3 @@
-// devela/src/sys/mem/size/bit/_.rs
 //
 //! Functionality related to memory bit size.
 //

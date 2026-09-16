@@ -1,4 +1,3 @@
-// devela/src/phys/time/source/point.rs
 //
 //! Defines [`TimePoint`].
 //

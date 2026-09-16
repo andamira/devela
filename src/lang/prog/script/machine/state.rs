@@ -1,4 +1,3 @@
-// devela/src/lang/prog/script/machine/state.rs
 //
 //! Defines [`ScriptMachine`].
 //

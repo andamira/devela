@@ -1,5 +1,3 @@
-// devela/src/text/parse/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 _reexport! { rust: core::num, location: "text/parse", tag: _tags!(text parser num error),

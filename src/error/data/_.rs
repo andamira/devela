@@ -1,4 +1,3 @@
-// devela/src/error/data/_.rs
 //
 #![doc = crate::_DOC_ERROR_DATA!()] // public
 #![doc = crate::_doc!(modules: crate::error; data)]

@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/api.js
 
 import { makeEnv } from "./shared.js";
 

@@ -1,4 +1,3 @@
-// devela/src/code/util/debug/warn.rs
 //
 //! Defines [`const_warn!`].
 //

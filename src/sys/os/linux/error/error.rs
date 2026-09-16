@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/error/error.rs
 //
 //! Typed Linux error model.
 //!

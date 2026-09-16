@@ -1,4 +1,3 @@
-// devela/src/media/visual/color/rgb/impls/mod.rs
 //
 //!
 //

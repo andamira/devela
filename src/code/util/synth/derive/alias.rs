@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/derive/alias.rs
 //
 //! Attribute adapters for declarative macros.
 //

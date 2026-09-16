@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/rand.rs
 //
 //! Defines [`LinuxRandomMode`].
 //

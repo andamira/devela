@@ -11,24 +11,28 @@ name: check
 jobs:
   # 1. format
   fmt:
-    name: "stable / fmt"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v6
-        with:
-            submodules: true
+  name: "fmt"
+  runs-on: ubuntu-latest
+  env:
+    RUSTFMT_TOOLCHAIN: "1.98.1" # In sync with ../../{README.md, Cargo.toml, tools/rustfmt}
 
-      - name: "Install stable"
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt
+  steps:
+    - name: "checkout"
+      uses: actions/checkout@v6
+      with:
+        submodules: true
 
-      - name: "rustfmt +stable --version"
-        run: rustfmt +stable --version
+    - name: "Install rustfmt"
+      uses: dtolnay/rust-toolchain@master
+      with:
+        toolchain: ${{ env.RUSTFMT_TOOLCHAIN }}
+        components: rustfmt
 
-      - name: "./tools/rustfmt check all exclude"
-        run: ./tools/rustfmt check all exclude
+    - name: "rustfmt --version"
+      run: rustfmt +"$RUSTFMT_TOOLCHAIN" --version
+
+    - name: "./tools/rustfmt check all exclude"
+      run: ./tools/rustfmt check all exclude
 
   # 2. clippy lints
   clippy:
@@ -90,7 +94,7 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     strategy:
       matrix:
-        msrv: [1.98.1] # sync with ../../{README.md, Cargo.toml}
+        msrv: [1.98.1] # sync with ../../{README.md, Cargo.toml, tools/rustfmt}
     steps:
       - name: "checkout"
         uses: actions/checkout@v6

@@ -1,5 +1,3 @@
-// devela/src/data/store/arena/bytes/impls/array.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __arena_bytes_impl_array· {

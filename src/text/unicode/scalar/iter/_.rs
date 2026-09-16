@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/iter/_.rs
 //
 //! Defines the [`CharIter`] iterator.
 //

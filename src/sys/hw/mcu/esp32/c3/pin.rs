@@ -1,4 +1,3 @@
-// devela/sys/hw/mcu/esp32/c3/pin.rs
 //
 //! Defines [`Esp32C3Pin`].
 //

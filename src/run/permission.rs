@@ -1,4 +1,3 @@
-// devela/src/run/permission.rs
 //
 //! Defines [`PermissionState`], [`PermissionError`].
 //

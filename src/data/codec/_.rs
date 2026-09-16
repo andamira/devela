@@ -1,4 +1,3 @@
-// devela/src/data/codec/_.rs
 //
 #![doc = crate::_DOC_DATA_CODEC!()] // public
 #![doc = crate::_doc!(modules: crate::data; codec: bin, crypto, hash, integrity, pack, symbol)]

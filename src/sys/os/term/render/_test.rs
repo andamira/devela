@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/render/_test.rs
-
 use super::*;
 use crate::{AnsiColor, AnsiColor3, NotEnoughSpace, assert_matches};
 

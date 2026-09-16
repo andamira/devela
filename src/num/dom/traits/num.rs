@@ -1,4 +1,3 @@
-// devela/src/num/dom/traits/num.rs
 //
 //! Defines the [`Num`] trait.
 //

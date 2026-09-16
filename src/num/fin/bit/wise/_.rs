@@ -1,4 +1,3 @@
-// devela/src/num/fin/bit/wise/_.rs
 //
 //! Defines the [`Bitwise`] namespace.
 //

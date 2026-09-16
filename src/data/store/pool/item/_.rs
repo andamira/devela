@@ -1,4 +1,3 @@
-// devela/src/data/store/pool/item/_.rs
 //
 //! Single-item generational pools.
 //!

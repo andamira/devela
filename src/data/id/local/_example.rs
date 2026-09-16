@@ -1,4 +1,3 @@
-// devela/src/data/id/local/_example.rs
 //
 //! Defines [`IdSeqU64Example`].
 //

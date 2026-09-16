@@ -1,4 +1,3 @@
-// devela/src/code/ops/_.rs
 //
 #![doc = crate::_DOC_CODE_OPS!()] // public
 #![doc = crate::_doc!(modules: crate::code; ops: call, overload, range)]

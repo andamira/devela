@@ -1,4 +1,3 @@
-// devela/src/_doc/_.rs
 //
 //! Extra documentation about the library.
 #![doc = crate::_doc!(modules: crate; _doc: design, practice, reference)]

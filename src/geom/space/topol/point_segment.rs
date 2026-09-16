@@ -1,5 +1,3 @@
-// devela/src/geom/space/topol/point_segment.rs
-
 use crate::{_impl_init, Turn};
 
 #[doc = crate::_tags!(geom topol)]

@@ -1,4 +1,3 @@
-// devela/src/ui/text/_helper.rs
 //
 //! Internal helper methods for `TextInput`.
 //

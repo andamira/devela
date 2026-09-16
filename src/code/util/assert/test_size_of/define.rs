@@ -1,4 +1,3 @@
-// devela/src/code/util/assert/test_size_of/define.rs
 //
 //! Defines [`test_size_of!`].
 //

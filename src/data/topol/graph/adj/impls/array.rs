@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/adj/impls/array.rs
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __graph_adj_impl_array· {

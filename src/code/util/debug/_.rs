@@ -1,4 +1,3 @@
-// devela/src/code/util/debug/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL_DEBUG!()] // public
 #![doc = crate::_doc!(modules: crate::code::util; debug)]

@@ -1,5 +1,3 @@
-// devela/src/sys/mem/cell/hedge/_test.rs
-
 use super::{MemHedgeCtrl, MemHedgeError as E, MemHedgeRead, MemHedgeState as S};
 use crate::MemReplicaSlice;
 #[test]

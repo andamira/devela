@@ -1,4 +1,3 @@
-// devela/src/ui/view/draw/draw.rs
 //
 //! Defines [`UiDraw`], [`UiDrawKind`].
 

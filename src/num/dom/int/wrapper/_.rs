@@ -1,4 +1,3 @@
-// devela/src/num/dom/int/wrapper/_.rs
 //
 //! Integer wrapper struct.
 //

@@ -1,4 +1,3 @@
-// devela/src/lang/prog/script/form/shell/_.rs
 //
 #![doc = crate::_DOC_LANG_PROG_SCRIPT_FORM_SHELL!()] // public
 #![doc = crate::_doc!(modules: crate::lang::prog::script::form; shell)]

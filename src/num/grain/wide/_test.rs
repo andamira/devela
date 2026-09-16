@@ -1,5 +1,3 @@
-// devela/src/num/grain/wide/_test.rs
-
 use super::lane;
 
 lane! {

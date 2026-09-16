@@ -1,4 +1,3 @@
-// devela/src/ui/semantic/_.rs
 //
 #![doc = crate::_DOC_UI_SEMANTIC!()] // public
 #![doc = crate::_doc!(modules: crate::ui; semantic)]

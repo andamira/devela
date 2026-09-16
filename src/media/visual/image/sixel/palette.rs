@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/sixel/palette.rs
 //
 //! Defines [`SixelPalette`], [`SixelPaletteIter`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/layout/dst/_helper.rs
 //
 //! Helper functions.
 //

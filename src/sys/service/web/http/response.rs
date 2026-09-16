@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/response.rs
 //
 //! Defines [`HttpResponseHead`].
 //

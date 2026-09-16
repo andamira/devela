@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/page/document.rs
 //
 //! Defines [`WebDocument`].
 //

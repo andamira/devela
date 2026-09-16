@@ -1,4 +1,3 @@
-// devela/src/code/hint/_.rs
 //
 #![doc = crate::_DOC_CODE_HINT!()] // public
 #![doc = crate::_doc!(modules: crate::code; hint)]

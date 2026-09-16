@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/format/channels.rs
 //
 //! Defines [`RasterChannels`].
 //

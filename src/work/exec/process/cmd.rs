@@ -1,4 +1,3 @@
-// devela/src/work/exec/process/cmd.rs
 //
 //! Defines [`cmd!`].
 //

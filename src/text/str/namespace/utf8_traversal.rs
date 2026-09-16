@@ -1,4 +1,3 @@
-// devela/src/text/str/namespace/utf8_traversal.rs
 //
 // IMPROVE:
 // - one default, (simd == api if possible)

@@ -1,4 +1,3 @@
-// devela/src/sys/io/no_std_define/cursor.rs
 //
 //! Defines [`IoCursor`], [`IoSeek`], [`IoSeekFrom`].
 //

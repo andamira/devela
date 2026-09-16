@@ -7,7 +7,6 @@
 //! # git = "https://github.com/andamira/devela"
 //! features = ["alsa", "std"]
 //! ```
-// devela/examples/sys/device/audio/alsa.rs
 
 use devela::{
     Alsa, AlsaError, AudioChannels, Error, FloatConst, PcmBuf, PcmDrain, PcmRaw, PcmSample,

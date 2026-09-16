@@ -1,5 +1,3 @@
-// devela/src/text/translit/ascii/impls.rs
-
 use crate::{Translit, UnicodeScalar, is, whilst};
 
 impl Translit {

@@ -1,4 +1,3 @@
-// devela/src/data/store/key/map/fixed/define.rs
 //
 //! Defines the [`map!`] macro.
 //

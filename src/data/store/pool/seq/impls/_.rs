@@ -1,5 +1,3 @@
-// devela/src/data/store/pool/seq/impls/_.rs
-
 crate::mods_in! {
     mod array;
     // mod vec; // TODO

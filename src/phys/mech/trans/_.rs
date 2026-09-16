@@ -1,4 +1,3 @@
-// devela/src/phys/mech/trans/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_PHYS_MECH_TRANS!()] // WIP

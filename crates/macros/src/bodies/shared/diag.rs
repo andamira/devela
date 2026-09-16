@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/shared/diag.rs
 //
 //! Token-level diagnostics for procedural macro bodies.
 //!
@@ -62,7 +61,7 @@ pub(crate) fn error_tokens(_span: Span, msg: &str) -> TokenStream2 {
         nightly_stable_later => {
             proc_macro::Span::call_site().error(msg).emit();
             TokenStream2::new()
-        },
+        }
         _ => {
             let msg = Literal::string(msg);
             quote_spanned! { _span =>
@@ -108,7 +107,7 @@ pub fn warn_tokens_raw(_span: Span, msg: &str) -> TokenStream2 {
         nightly_stable_later => {
             proc_macro::Span::call_site().warning(msg).emit();
             TokenStream2::new()
-        },
+        }
         _ => {
             let msg = Literal::string(&format!["\n{msg:?}"]);
             quote_spanned! { _span =>

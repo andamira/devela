@@ -1,4 +1,3 @@
-// devela/src/lang/repr/markup/_.rs
 //
 #![doc = crate::_DOC_LANG_REPR_MARKUP!()]
 #![doc = crate::_doc!(modules: crate::lang::repr; markup)]

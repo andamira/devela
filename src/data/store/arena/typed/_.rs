@@ -1,4 +1,3 @@
-// devela/src/data/store/arena/typed/mod.rs
 //
 //! Typed monotonic arenas.
 //

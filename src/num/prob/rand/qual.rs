@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/qual.rs
 //
 //! Defines [`RandQualities`].
 //

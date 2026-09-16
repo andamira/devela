@@ -1,4 +1,3 @@
-// devela/src/media/font/format/dvbf/define.rs
 //
 //! Defines [`Dvbf`].
 //

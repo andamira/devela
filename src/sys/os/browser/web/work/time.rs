@@ -1,5 +1,3 @@
-// devela/src/sys/os/browser/web/work/time.rs
-
 #[cfg(feature = "time")]
 use crate::TimeDelta;
 use crate::{_js_doc, JsInstant, JsTimeout, Web, WebWindow, js_uint32};

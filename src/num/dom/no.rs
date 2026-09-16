@@ -1,4 +1,3 @@
-// devela/src/num/dom/no.rs
 //
 //! Allows the unit type [`()`] to represent the absence of a number.
 //

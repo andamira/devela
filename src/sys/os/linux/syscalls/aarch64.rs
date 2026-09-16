@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/aarch64.rs
 //
 //! Implements linux syscalls for aarch64.
 //

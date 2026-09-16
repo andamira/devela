@@ -1,4 +1,3 @@
-// devela/src/text/unicode/scalar/scalar/define.rs
 //
 //! Define [`char7`], [`char8`], [`char16`], [`charu`].
 //

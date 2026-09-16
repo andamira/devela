@@ -1,5 +1,3 @@
-// devela/src/text/unicode/scalar/_reexport_core.rs
-
 #[doc = crate::_tags!(primitive text)]
 /// <span class="stab portability" title="re-exported from rust's `core`">`core`</span>
 /// A 32-bit [Unicode scalar][scalar].

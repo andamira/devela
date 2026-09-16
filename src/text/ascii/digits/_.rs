@@ -1,4 +1,3 @@
-// devela/src/text/ascii/digits/mod.rs
 //
 //! Defines [`Digits`].
 //

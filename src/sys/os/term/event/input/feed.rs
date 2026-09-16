@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/event/input/feed.rs
-
 use crate::{Char, CharIter, Key, TermInputParser, TermInputState, TermParsed, slice, unwrap};
 
 // internal feed_* methods

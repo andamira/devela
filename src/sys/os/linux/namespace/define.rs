@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/namespace/define.rs
 //
 //! Defines the [`Linux`] namespace.
 //

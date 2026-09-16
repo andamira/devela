@@ -1,4 +1,3 @@
-// devela/src/geom/affine/point/define.rs
 //
 //!
 //

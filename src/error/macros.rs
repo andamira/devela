@@ -1,4 +1,3 @@
-// devela/src/error/macros.rs
 //
 //! Defines [`define_error!`].
 //

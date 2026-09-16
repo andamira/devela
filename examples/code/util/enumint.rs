@@ -1,5 +1,3 @@
-// devela/examples/code/util/enumint.rs
-
 use devela::enumint;
 
 enumint![MyEnumint, i8, -126, 126];

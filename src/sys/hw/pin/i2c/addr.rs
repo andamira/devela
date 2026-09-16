@@ -1,4 +1,3 @@
-// devela/sys/hw/pin/i2c/addr.rs
 //
 //! Defines [`I2cAddr7`].
 //

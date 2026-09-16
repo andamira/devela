@@ -1,4 +1,3 @@
-// devela/src/data/store/_.rs
 //
 #![doc = crate::_DOC_DATA_STORE!()] // public
 #![doc = crate::_doc!(modules: crate::data; store: arena, key, pool)] // cache, db, intern

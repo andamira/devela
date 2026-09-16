@@ -1,5 +1,3 @@
-// devela/src/data/store/key/set/_reexport_alloc.rs
-
 use crate::{_reexport, _tags};
 
 /* from `alloc` */

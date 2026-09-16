@@ -1,4 +1,3 @@
-// devela/src/code/util/synth/impl_trait.rs
 //
 //! Defines [`impl_trait!`].
 //

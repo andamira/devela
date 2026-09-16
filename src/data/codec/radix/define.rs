@@ -1,4 +1,3 @@
-// devela/src/data/codec/radix/define.rs
 //
 //! Defines [`Radix`].
 //

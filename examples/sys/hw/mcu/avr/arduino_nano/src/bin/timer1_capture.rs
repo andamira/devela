@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/avr/arduino_nano/src/bin/timer1_capture.rs
 //
 //! Demonstrates Timer1 input capture using the ICP1 pin.
 //

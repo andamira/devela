@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/arm.rs
 //
 //! Implements linux syscalls for arm.
 //

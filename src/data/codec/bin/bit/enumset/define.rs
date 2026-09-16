@@ -1,4 +1,3 @@
-// devela/src/data/codec/bin/bit/enumset/define.rs
 //
 //! An enum with an associated bit set.
 //

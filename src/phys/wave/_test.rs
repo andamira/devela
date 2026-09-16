@@ -1,5 +1,3 @@
-// devela/src/phys/wave/_test.rs
-
 #[cfg(feature = "alloc")]
 mod alloc {
     use super::super::*;

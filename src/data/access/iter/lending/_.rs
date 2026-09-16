@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/lending/_.rs
 //
 //!
 //

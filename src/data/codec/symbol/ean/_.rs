@@ -1,4 +1,3 @@
-// devela/src/data/codec/symbol/ean/_.rs
 //
 //! European Article Number barcodes.
 //

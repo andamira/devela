@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/_test/base32.rs
-
 use super::*;
 
 const VECTORS_RFC4648: &[(&[u8], &[u8])] = &[

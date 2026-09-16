@@ -1,5 +1,3 @@
-// devela/src/sys/env/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 /* core macros */

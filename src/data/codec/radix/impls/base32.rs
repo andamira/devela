@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/impls/base32.rs
-
 use crate::{ConstInit, Radix, is, read_at, unwrap, whilst};
 
 const BASE32_STD: &[u8; 32] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";

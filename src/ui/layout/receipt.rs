@@ -1,4 +1,3 @@
-// devela/ui/layout/receipt.rs
 //
 //! Defines [`Layout1d`], [`LayoutReceipt`].
 //

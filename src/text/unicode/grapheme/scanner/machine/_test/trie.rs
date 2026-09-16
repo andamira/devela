@@ -1,5 +1,3 @@
-// devela/src/text/unicode/grapheme/scanner/machine/_test/trie.rs
-
 pub(super) struct SegmentationTest {
     pub desc: &'static str,
     pub input: &'static [u8],

@@ -1,4 +1,3 @@
-// devela/src/phys/time/source/source.rs
 //
 //! Defines [`TimeSource`] and [`TimeSourceCfg`].
 //

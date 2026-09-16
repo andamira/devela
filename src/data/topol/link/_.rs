@@ -1,4 +1,3 @@
-// devela/src/data/topol/link/_.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL_LINK!()] // public
 #![doc = crate::_doc!(modules: crate::data::topol; link)]

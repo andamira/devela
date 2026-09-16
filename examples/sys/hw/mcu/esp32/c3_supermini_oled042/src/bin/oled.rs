@@ -1,4 +1,3 @@
-// devela/examples/sys/hw/mcu/esp32/c3_supermini_oled042/src/bin/oled.rs
 //
 //! Initializes the onboard 72×40 OLED and draws a test pattern over I²C.
 //

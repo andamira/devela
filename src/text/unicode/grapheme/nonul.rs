@@ -1,4 +1,3 @@
-// devela/src/text/unicode/grapheme/nonul.rs
 //
 //!
 //

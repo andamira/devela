@@ -1,4 +1,3 @@
-// devela/src/sys/mem/size/byte.rs
 //
 //! Functionality related to byte sizes.
 //

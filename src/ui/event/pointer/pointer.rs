@@ -1,4 +1,3 @@
-// devela/src/ui/event/pointer/pointer.rs
 //
 //! Defines [`EventMouse`], [`EventPointer`], [`EventPointerKind`].
 //

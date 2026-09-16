@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/grid/definition.rs
 //
 //! Defines [`TermGrid`].
 //

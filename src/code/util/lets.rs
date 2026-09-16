@@ -1,4 +1,3 @@
-// devela/src/code/util/lets.rs
 //
 //! Defines the [`lets!`] macro.
 //

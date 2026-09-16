@@ -1,5 +1,3 @@
-// devela/src/text/fmt/num/_test.rs
-
 use super::{FmtNumConf as Conf, FmtNumGroup as Group, FmtNumSign as Sign, *};
 
 /* float */

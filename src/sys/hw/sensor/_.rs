@@ -1,4 +1,3 @@
-// devela/sys/hw/sensor/_.rs
 //
 //! Sensor and measurement interfaces.
 //

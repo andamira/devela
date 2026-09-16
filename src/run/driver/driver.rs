@@ -1,4 +1,3 @@
-// devela/src/run/driver/driver.rs
 //
 //! Defines [`RunDriver`].
 //

@@ -1,4 +1,3 @@
-// devela/src/media/font/format/_.rs
 //
 //! Font storage and interchange formats.
 //

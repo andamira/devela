@@ -1,4 +1,3 @@
-// devela/src/geom/rel/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_GEOM_REL!()] // public

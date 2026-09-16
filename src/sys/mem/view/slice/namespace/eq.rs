@@ -1,5 +1,3 @@
-// devela/src/sys/mem/view/slice/namespace/eq.rs
-
 use crate::{Slice, is, whilst};
 
 /// Helper for implementing slice operations for primitives.

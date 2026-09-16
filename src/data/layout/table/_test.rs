@@ -1,5 +1,3 @@
-// devela/src/data/layout/table/_test.rs
-
 use crate::{Array, ArrayShape, Table, TableCoord, TableLayout, TableShape};
 #[cfg(feature = "alloc")]
 use crate::{Vec, vec_};

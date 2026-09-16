@@ -1,4 +1,3 @@
-// devela/src/code/util/_.rs
 //
 #![doc = crate::_DOC_CODE_UTIL!()] // public
 #![doc = crate::_doc!(modules: crate::code; util: assert, cfg, debug, synth, token)]

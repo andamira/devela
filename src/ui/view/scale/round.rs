@@ -1,4 +1,3 @@
-// devela/ui/view/scale/round.rs
 //
 //! Defines [`UiRound`].
 //

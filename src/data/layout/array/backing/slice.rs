@@ -1,4 +1,3 @@
-// devela/src/data/layout/array/backing/slice.rs
 //
 //! Array implementations over shared and exclusive slices.
 //

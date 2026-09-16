@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/sixel/char.rs
 //
 //! Defines [`SixelChar`].
 //

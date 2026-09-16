@@ -1,4 +1,3 @@
-// devela/src/data/topol/ord/_.rs
 //
 #![doc = crate::_DOC_DATA_TOPOL_ORD!()] // public
 #![doc = crate::_doc!(modules: crate::data::topol; ord)]

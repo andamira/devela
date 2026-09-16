@@ -1,5 +1,3 @@
-// devela/src/data/topol/graph/csr/_test.rs
-
 #[cfg(feature = "alloc")]
 use crate::Vec;
 use crate::{

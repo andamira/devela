@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/wrap/_.rs
 //
 //! Structured wrappers and chunked containers.
 //

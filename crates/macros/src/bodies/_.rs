@@ -1,4 +1,3 @@
-// devela_macros/src/bodies/_.rs
 //
 //! The bodies of the proc_macro functions defined in `/src/_.rs`.
 //

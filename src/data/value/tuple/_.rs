@@ -1,4 +1,3 @@
-// devela/src/data/value/tuple/_.rs
 //
 //! Tuples are statically sized heterogeneous product values with positional access.
 //!

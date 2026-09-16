@@ -1,4 +1,3 @@
-// devela/src/lang/hum/code/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_HUM_CODE!()] // public

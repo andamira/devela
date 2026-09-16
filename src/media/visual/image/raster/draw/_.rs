@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/draw/_.rs
 //
 //! Rasterization of geometric primitives into covered raster cells.
 //!

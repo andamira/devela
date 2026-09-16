@@ -1,4 +1,3 @@
-// devela/src/sys/fs/path/ext.rs
 //
 //! An extension trait for [`Path`] and [`PathBuf`].
 //

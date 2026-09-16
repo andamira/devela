@@ -1,4 +1,3 @@
-// devela/src/num/prob/rand/prng/shift/u64.rs
 //
 //! 64-bit version of XorShift.
 //

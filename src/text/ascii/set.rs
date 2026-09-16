@@ -1,4 +1,3 @@
-// devela/src/text/ascii/set.rs
 //
 //! Defines [`AsciiSet`].
 //

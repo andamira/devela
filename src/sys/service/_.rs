@@ -1,4 +1,3 @@
-// devela/src/sys/service/_.rs
 //
 #![doc = crate::_DOC_SYS_SERVICE!()] // public
 #![doc = crate::_doc!(modules: crate::sys; service: web)]

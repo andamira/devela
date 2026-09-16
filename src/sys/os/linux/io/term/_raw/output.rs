@@ -1,5 +1,3 @@
-// devela/src/sys/os/linux/io/term/_raw/output.rs
-
 use crate::c_uint;
 
 #[doc = crate::_tags!(internal linux term)]

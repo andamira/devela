@@ -1,5 +1,3 @@
-// devela/src/num/grain/wide/_docs.rs
-
 // method's docs as consts
 crate::CONST! { hidden macro_export,
 

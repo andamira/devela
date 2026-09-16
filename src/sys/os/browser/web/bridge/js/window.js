@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/js/window.js
 // In sync with ../page/window.rs
 
 import { strDecode, strEncodeInto } from "./shared.js";

@@ -1,4 +1,3 @@
-// devela/src/data/codec/pack/wrap/riff/chunk.rs
 //
 //! Defines [`RiffChunk`], [`RiffChunkIter`].
 //

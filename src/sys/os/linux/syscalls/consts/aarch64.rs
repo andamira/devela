@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/syscalls/consts/aarch64.rs
 //
 //!
 //

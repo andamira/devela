@@ -1,5 +1,3 @@
-// devela/src/data/access/cursor/byte/write.rs
-
 use crate::{ByteCursor, IndexOutOfBounds, NotEnoughSpace};
 use crate::{is, unwrap, whilst, write_at};
 

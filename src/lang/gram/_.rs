@@ -1,4 +1,3 @@
-// devela/src/lang/gram/_.rs
 //
 #![doc = crate::_tags!(wip)]
 #![doc = crate::_DOC_LANG_GRAM!()] // public

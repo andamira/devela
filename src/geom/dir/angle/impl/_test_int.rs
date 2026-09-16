@@ -1,4 +1,3 @@
-// devela/src/geom/dir/angle/impl/_test_int.rs
 //
 // TOC
 // - mod angle_i16

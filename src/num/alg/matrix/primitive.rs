@@ -1,4 +1,3 @@
-// devela/src/num/alg/matrix/primitive.rs
 //
 //! Const arithmetic for matrices of primitive numeric elements.
 //

@@ -1,4 +1,3 @@
-// devela/src/code/source/version.rs
 //
 //! Defines [`Version`] and [`VersionFull`].
 //
@@ -138,10 +137,13 @@ impl Version {
     pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
         let len = unwrap![ok? self.write_to(buf)];
         let slice = Slice::range_to(buf, len);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: `write_to` only writes ASCII digits and dots.
-            unsafe { Ok(Str::from_utf8_unchecked(slice)) }
-        } _ => { Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]) }}
+        cfg_select! {
+            all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                // SAFETY: `write_to` only writes ASCII digits and dots.
+                unsafe { Ok(Str::from_utf8_unchecked(slice)) }
+            }
+            _ => Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]),
+        }
     }
 }
 
@@ -270,12 +272,13 @@ impl VersionFull<'_> {
     pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
         let len = unwrap![ok? self.write_to(buf)];
         let slice = Slice::range_to(buf, len);
-        cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
-            // SAFETY: `write_to` writes the numeric core plus caller-provided `str` slices.
-            unsafe { Ok(Str::from_utf8_unchecked(slice)) }
-        } _ => {
-            Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)])
-        }}
+        cfg_select! {
+            all(feature = "unsafe_str", not(feature = "safe_text")) => {
+                // SAFETY: `write_to` writes the numeric core plus caller-provided `str` slices.
+                unsafe { Ok(Str::from_utf8_unchecked(slice)) }
+            }
+            _ => Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]),
+        }
     }
 }
 

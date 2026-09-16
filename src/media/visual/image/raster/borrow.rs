@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/raster/borrow.rs
 //
 //! Defines [`RasterSlice`] and [`RasterByteSlice`].
 //

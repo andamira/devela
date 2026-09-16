@@ -1,4 +1,3 @@
-// devela/src/sys/net/transport/udp/_.rs
 //
 #![doc = crate::_DOC_SYS_NET_TRANSPORT_UDP!()] // private
 #![doc = crate::_doc!(modules: crate::sys::net::transport; udp)]

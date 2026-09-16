@@ -1,4 +1,3 @@
-// devela/src/ui/widget/response.rs
 //
 //! Defines [`UiResponseFlags`], [`UiResponse`].
 //

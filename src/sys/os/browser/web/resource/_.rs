@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/resource/_.rs
 //
 //!
 //

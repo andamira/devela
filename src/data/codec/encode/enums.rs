@@ -1,5 +1,3 @@
-// devela/src/data/codec/encode/enums.rs
-
 #[doc = crate::_tags!(codec)]
 /// The primary mode for data encoding.
 #[doc = crate::_doc_meta!{

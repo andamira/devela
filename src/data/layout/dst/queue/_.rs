@@ -1,4 +1,3 @@
-// devela/src/data/layout/dst/queue/_.rs
 //
 //! Implementation of the FIFO queue structure.
 //

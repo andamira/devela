@@ -1,4 +1,3 @@
-// devela/src/data/access/iter/strided/canonical.rs
 //
 //! Defines [`StridedIter`], [`StridedIterMut`].
 //

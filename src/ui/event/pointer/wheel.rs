@@ -1,4 +1,3 @@
-// devela/src/ui/event/pointer/wheel.rs
 //
 //! Defines [`EventWheel`] [`EventWheelUnit`].
 //

@@ -1,5 +1,3 @@
-// devela/src/data/layout/dst/_test/queue.rs
-
 use crate::data::{DstArray, DstQueue};
 
 type DstFifo<DST> = DstQueue<DST, DstArray<usize, 8>>;

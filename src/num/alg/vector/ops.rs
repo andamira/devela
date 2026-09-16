@@ -1,4 +1,3 @@
-// devela/src/num/alg/vector/ops.rs
 //
 //! implement overloadable operators
 //

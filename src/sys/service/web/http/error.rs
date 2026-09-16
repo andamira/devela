@@ -1,4 +1,3 @@
-// devela/src/sys/net/web/http/error.rs
 //
 //! Defines [`HttpError`].
 //

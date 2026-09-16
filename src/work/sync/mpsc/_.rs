@@ -1,4 +1,3 @@
-// devela/src/work/sync/mpsc/_.rs
 //
 #![doc = crate::_DOC_WORK_SYNC_MPSC!()] // public
 #![doc = crate::_doc!(modules: crate::work::sync; mpsc)]

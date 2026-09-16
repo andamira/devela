@@ -1,4 +1,3 @@
-// devela/src/data/layout/table/shape.rs
 //
 //! Defines [`TableShape`].
 //

@@ -1,4 +1,3 @@
-// devela/src/ui/frame/frame.rs
 //
 //! Defines [`UiFrame`].
 //

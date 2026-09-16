@@ -1,4 +1,3 @@
-// devela/src/run/_.rs
 //
 #![doc = crate::_DOC_RUN!()] // public, root
 #![doc = crate::_DOC_RUN_MODULES!()]

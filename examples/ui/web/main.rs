@@ -1,4 +1,3 @@
-// devela/examples/ui/web/main.rs
 //
 //! Renders a backend-neutral UI output to an HTML canvas.
 //

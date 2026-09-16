@@ -1,4 +1,3 @@
-// devela/src/num/fin/ord/cmp/define.rs
 //
 //! Defines [`Cmp`].
 //

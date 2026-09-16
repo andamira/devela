@@ -1,4 +1,3 @@
-// devela/src/media/visual/image/sixel/color.rs
 //
 //! Defines [`SixelColor`].
 //

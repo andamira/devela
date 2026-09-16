@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/bridge/namespace.rs
 // In sync with js/*.js
 //
 //! Defines the [`Web`] namespace.

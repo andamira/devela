@@ -1,4 +1,3 @@
-// devela/src/num/prob/dist/binomial.rs
 //
 //! Defines [`DistBernoulli`], [`DistBinomial`].
 //

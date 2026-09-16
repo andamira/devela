@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/_raw.rs
 //
 //! Defines [`LINUX_S_IFMT`].
 //

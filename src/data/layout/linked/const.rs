@@ -1,4 +1,3 @@
-// devela/src/data/layout/linked/const.rs
 //
 //! Defines [`ConstList`], [`ConstListIter`].
 //

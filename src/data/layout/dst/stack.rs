@@ -1,4 +1,3 @@
-// devela/src/data/layout/dst/stack.rs
 //
 //! Implementation of the LIFO stack structure.
 //

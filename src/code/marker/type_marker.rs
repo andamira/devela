@@ -1,4 +1,3 @@
-// devela/src/code/marker/type_marker.rs
 //
 //! Zero-cost generic marker IDs.
 //

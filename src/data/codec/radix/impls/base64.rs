@@ -1,5 +1,3 @@
-// devela/src/data/codec/radix/impls/base64.rs
-
 use crate::{ConstInit, Radix, is, unwrap, whilst};
 
 const BASE64_STD: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

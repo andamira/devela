@@ -1,5 +1,3 @@
-// devela/src/sys/os/term/ansi/namespace/color.rs
-
 use crate::{__ansi_consts, Ansi, AnsiColor3, AnsiColor8, AnsiOsc, Cmp, Digits};
 
 // the bare color escape codes

@@ -1,4 +1,3 @@
-// devela/src/data/codec/crypto/sha1.rs
 //
 //! Defines legacy SHA1 secure hash algorithm.
 //

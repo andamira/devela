@@ -1,4 +1,3 @@
-// devela/src/sys/env/namespace.rs
 //
 //! Defines the [`Env`] struct namespace.
 //

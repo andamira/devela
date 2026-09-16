@@ -1,4 +1,3 @@
-// devela/src/media/compo/scene/_.rs
 //
 //!
 // #![doc = crate::_DOC_MEDIA_COMPO_SCENE!()] //

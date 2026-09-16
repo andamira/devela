@@ -1,4 +1,3 @@
-// devela/src/ui/frame/_.rs
 //
 #![doc = crate::_DOC_UI_FRAME!()] // public
 #![doc = crate::_doc!(modules: crate::ui; frame)]

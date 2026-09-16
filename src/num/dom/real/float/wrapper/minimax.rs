@@ -1,4 +1,3 @@
-// devela/src/num/dom/real/float/wrapper/minimax.rs
 //
 //! Shared methods implemented using Horner minimax.
 //

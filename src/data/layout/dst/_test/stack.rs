@@ -1,5 +1,3 @@
-// devela/src/data/layout/dst/_test/stack.rs
-
 use crate::data::{DstArray, DstStack};
 use core::any::Any;
 

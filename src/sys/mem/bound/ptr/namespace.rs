@@ -1,4 +1,3 @@
-// devela/src/sys/mem/bound/ptr/namespace.rs
 //
 //! Defines the [`Ptr`] namespace.
 //

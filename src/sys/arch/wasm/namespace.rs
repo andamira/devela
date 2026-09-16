@@ -1,4 +1,3 @@
-// devela/src/sys/arch/wasm/namespace.rs
 //
 //! Defines the [`Wasm`] namespace.
 //!

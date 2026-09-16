@@ -1,4 +1,3 @@
-// devela/src/ui/role.rs
 //
 //! Defines [`UiRole`].
 //

@@ -1,4 +1,3 @@
-// devela/src/data/codec/bin/bit/enumset/_example.rs
 //
 //! Defines [`EnumExample`], [`EnumSetExample`].
 //

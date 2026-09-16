@@ -1,4 +1,3 @@
-// devela/src/geom/affine/_.rs
 //
 #![doc = crate::_DOC_GEOM_AFFINE!()] // public
 #![doc = crate::_doc!(modules: crate::geom; affine)]

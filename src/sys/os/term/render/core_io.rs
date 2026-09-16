@@ -1,4 +1,3 @@
-// devela/src/sys/os/term/render/core_io.rs
 //
 // TOC
 // - impl core state

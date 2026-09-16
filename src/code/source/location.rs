@@ -1,4 +1,3 @@
-// devela/src/code/source/location.rs
 //
 //! Defines [`CodeLocation`].
 //

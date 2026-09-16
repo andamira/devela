@@ -1,4 +1,3 @@
-// devela/src/_doc/reference/vendored/_.rs
 //
 //!
 // In sync with:

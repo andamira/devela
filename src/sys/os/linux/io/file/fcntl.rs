@@ -1,4 +1,3 @@
-// devela/src/sys/os/linux/io/file/fcntl.rs
 //
 //! File-descriptor control commands.
 //!

@@ -1,4 +1,3 @@
-// devela/src/data/topol/link/_example.rs
 //
 //! Defines [`LinkExample`].
 

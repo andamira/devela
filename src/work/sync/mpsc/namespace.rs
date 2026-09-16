@@ -1,4 +1,3 @@
-// devela/src/work/sync/mpsc/namespace.rs
 //
 //! Defines the [`Mpsc`] namespace.
 //

@@ -1,5 +1,3 @@
-// devela/src/code/marker/_reexport_core.rs
-
 use crate::{_reexport, _tags};
 
 // See: <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>

@@ -1,4 +1,3 @@
-// devela/src/sys/os/browser/web/event/key/key/impls.rs
 //
 //! implements methods for [`Key`].
 //

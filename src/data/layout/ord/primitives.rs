@@ -1,4 +1,3 @@
-// devela/src/data/layout/ord/primitives.rs
 //
 //! Implements compile-time sorting algorithms for arrays of primitives.
 //

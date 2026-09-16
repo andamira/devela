@@ -1,4 +1,3 @@
-// devela/src/data/store/key/set/_.rs
 //
 #![doc = crate::_DOC_DATA_STORE_KEY_SET!()] // public
 #![doc = crate::_doc!(modules: crate::data::store::key; set)]
