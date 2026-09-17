@@ -1,15 +1,14 @@
-# devela_sentinel manifest
+# devela_sentry manifest
 # ==============================================================================
-[workspace]
 [package]
-name = "devela_sentinel"
+name = "devela_sentry"
 description = "Downstream validation of devela's public API and behavior."
-repository = "https://github.com/andamira/devela/tree/main/crates/sentinel"
+repository = "https://github.com/andamira/devela/tree/main/crates/sentry"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies.devela]
-path = "../.."
+path = "../devela"
 features = ["dep_rand_core"]
 
 [features]

@@ -31,13 +31,15 @@ members = [ # In sync with crates/devela/build/environment.rs
     # "crates/bridge",       # FFI and ABI bridges
     # "crates/extend",       # ecosystem extensions and adapters
     # "crates/micros",       # MCU, board, and embedded hardware
-    # "crates/sentry",       # public-API and behavior validation
 
     # "build/post",          # post-build processing
 
     # incubators: opt-in individually
     # "progs/…",
     # "games/…",
+]
+exclude = [
+	"crates/sentry",         # public-API and behavior validation
 ]
 
 

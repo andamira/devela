@@ -1,4 +1,11 @@
-//! External sentinel crate used to exercise devela as a downstream dependency.
+//
+//! Downstream validation of devela's public API and behavior.
+//!
+//! Exercises devela as an external consumer to catch regressions and validate
+//! assumptions that cannot be tested faithfully from inside the main crate.
+//!
+//! This crate intentionally remains outside the devela workspace.
+//
 
 // #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 // #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
