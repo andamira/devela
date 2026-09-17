@@ -20,6 +20,7 @@
 ## workspace
 - relocate `devela` crate under `crates/devela`.
 - nest `devela_macros` under `crates/devela/macros`.
+- rename `devela_ffi` to `devela_bridge`.
 - restore conventional locations for `src/bin` and `tests`.
 - split crate-specific documentation from workspace-level documentation.
 - establish `progs` and `games` as separate workspace-level incubator trees.
