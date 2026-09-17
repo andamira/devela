@@ -1,0 +1,673 @@
+# devela manifest WIP
+# ==============================================================================
+#
+## Table of Contents
+#
+# * [lib]
+#
+# * [package]
+#   - [metadata.docs.rs]
+#
+# * [features]
+#   - Development       (__*)
+#   - Environment       (std,alloc,no_std)
+#   - Module            (all,code,data,error,geom,lang,media,num,org,phys,run,sys,text,ui,work,yard)
+#   - Safety            (safest,safe,unsafe,…)
+#   - Scope             (_*)
+#     - default         (_max,_maxest)
+#     - docs            (_docs, _docs_[examples|min|nodep|max])
+#     - code            (_unroll*)
+#     - data            (_data*,_tuple*,…)
+#   - Dependency        (dep_*)
+#   - Workspace         (devela_*)
+#
+# * [dependencies] (required|optional)
+# * [dev-dependencies]
+# * [build-dependencies]
+#
+# * [badges]
+#
+# * [[bench]]           metrics
+# * [[bin]]             programs
+# * [[example]]         examples
+
+[lib]
+path = "../../src/_.rs"
+bench = false
+
+[package]
+name = "devela"
+build = "../../build/main/mod.rs"
+description = "A development substrate of coherence."
+readme = "../../docs/readme_crate.md"
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+documentation.workspace = true
+authors.workspace = true
+license.workspace = true
+categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
+keywords = ["dev", "helper", "library", "std", "extension"]
+repository = "https://github.com/andamira/devela"
+autoexamples = false
+autobenches = false
+autobins = false
+publish = true
+# TEMP WIP
+# include = [
+# 	"/Cargo.toml",
+# 	## source code
+# 	"/build/main/**/*.rs", "/build/main/**/*.md", "/build/main/dep_all",
+# 	"/src/**/*.rs", "/src/**/*.md",
+# 	"/src/**/*.html", "/src/**/*.js", "/src/**/*.x",
+# 	## documentation
+# 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
+# 	## examples included from /src/_doc
+# 	# (omitted local examples are stripped from the packaged manifest)
+# 	"/examples/work/coro_manager.rs",
+# 	## programs
+# 	# "",
+# 	## assets
+# 	"/assets/font/termivela/*.md",
+# 	"/assets/font/termivela/*.txt",
+# 	"/assets/font/termivela/*.toml",
+# 	"/assets/font/termivela/termivela-8x16-bold.dvbf",
+# 	"/assets/font/termivela/termivela-8x16-regular.dvbf",
+# ]
+
+[package.metadata.docs.rs]
+# ==============================================================================
+# https://docs.rs/about/metadata
+# https://github.com/rust-lang/crates-build-env/blob/master/linux/packages.txt
+# [maximum build limits](https://docs.rs/crate/devela/latest/builds)
+no-default-features = true
+features = ["_docs", "__publish"]
+rustc-args = [
+	"--cfg", "nightly",
+	"-Ctarget-cpu=native",
+]
+rustdoc-args = [
+	"-Ctarget-cpu=native",
+	"--generate-link-to-definition",
+	"--html-in-header", "./src/_doc/header.html",
+	"--cfg", "nightly",
+]
+default-target = "x86_64-unknown-linux-gnu"
+targets = [ ## +std:
+	"aarch64-apple-darwin", "x86_64-pc-windows-msvc",
+	# "armv7-unknown-linux-gnueabihf", "aarch64-unknown-linux-gnu",
+	# "riscv32gc-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu",
+	# "wasm32-wasip1",
+	## no_std:
+	# "i686-unknown-uefi", "x86_64-unknown-none",
+	# "thumbv7m-none-eabi", "aarch64-unknown-unknown"
+	# "riscv32imac-unknown-none-elf", "riscv64imac-unknown-none-elf",
+	"wasm32-unknown-unknown",
+]
+
+
+[features] # 146/300 (154 remaining), 119 visible, 27 hidden
+# ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/features.html
+
+# Features are grouped in the following categories:
+# - Development      __*
+# - Environment      alloc, [no_]std
+# - Module           …
+# - Safety           [un]safe_*, …
+# - Scope             _*
+# - Dependency       dep_*
+#
+# Sintax:
+# - ["name"]: Visible public-facing features.
+# - ["_name"]: Hidden additional scope features.
+# - ["__name"]: Development & maintenance features.
+#
+# Notes:
+# - Features are in sync with build/main/features.rs & src/_doc/features.md.
+# - List and count features with `./tools/manifest.sh features`.
+
+
+#* Development features *#
+# ------------------------------------------------------------------------------
+
+__dbg = [] # shows extra debugging information
+__std = [ # disables `no_std` in base crates for testing
+	"std",
+]
+
+# enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
+__publish = [
+	"devela_macros/__publish",
+]
+
+__docs_internal = [ # enables documentation for internal items
+	"devela_macros/__docs_internal",
+]
+__disable_native_libs = [] # disables native libraries from being detected
+__exclude_test = [] # excludes specific examples from being tested
+__force_miri_dst = [] # inhibits disabling miri on several modules
+
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
+
+alloc = [ # enables `alloc` functionality
+	"jiff?/alloc",
+	"memchr?/alloc", "portable-atomic-util?/alloc",
+]
+std = [ # disables `no_std` compatibility and enables `std` functionality
+	"alloc",
+	"atomic?/std", "jiff?/std", "log?/std",
+	"memchr?/std", "portable-atomic-util?/std", "raw-cpuid?/std",
+	"simdutf8?/std", "wide?/std",
+]
+no_std = [] # enables functionality incompatible with or substitute of `std`
+
+
+#* Module features *#
+# ------------------------------------------------------------------------------
+# They set compile flags named `*··` (two interpuncts), for reflection.
+# For example, `num··` will be set if any num submodule feature is enabled.
+#
+# In sync with tools/check.rs::SUB_MODULES
+
+all = [ # enables all the 14 modules (and their submodules)
+    "code_all", "data_all", "geom_all", "lang_all",
+    "media_all", "num_all", "org_all", "phys_all",
+    "run_all", "sys_all", "text_all", "ui_all",
+    "vita_all", "work_all",
+]
+
+code = []
+code_all = ["code"]
+
+data = []
+data_all = ["data", "hash"]
+	# codec
+		hash = [] # HashFnv, HashPengy
+		# crypto = []
+		# pack = []
+			# riff = []
+	# list = []
+
+# error = []
+# error_all = []
+
+geom = []
+geom_all = ["fig"]
+	# dir = []
+	fig = []
+	# space
+
+lang = []
+lang_all = ["lang", "glsl", "js", "shell"]
+	# hum = []
+		# i18n = []
+	# repr = []
+	# prog = ["ffi", "script"]
+		ffi = ["glsl", "js"]
+			glsl = []
+			js = []
+		# script = ["shell"]
+			shell = []
+		# template = []
+
+media = []
+media_all = ["media", "audio", "font", "visual"]
+	audio = []
+	# doc = []
+	font = []
+	visual = ["color", "draw", "image"]
+		color = []
+		draw = []
+		image = []
+
+num = []
+num_all = ["alg", "num", "int", "rand"]
+	alg = [] # linear algebra
+	# dom
+		int = [] # Int TEMP
+		# real
+			# float
+	# prob
+		rand = []
+	# symb = []
+
+org = []
+org_all = ["org"]
+	#
+
+phys = []
+phys_all = ["phys", "time", "unit", "wave"]
+	time = []
+	unit = []
+	wave = [] # wavelets
+
+run = []
+run_all = ["run"]
+
+sys = []
+sys_all = [ # EXCLUDED: "device", "hw", "os"
+	"sys", "io", "net", "service",
+	]
+	# arch
+		# simd = ["fontdue?/simd"]
+		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
+	# device
+		# audio
+			alsa = ["audio", "unsafe_ffi"]
+		# display
+			# cocoa = []
+			# gdi = []
+			x11 = ["alloc", "event", "unsafe_ffi"]
+		# midi = []
+	# fs
+	# hw = ["mcu"]
+		mcu = []
+	io = []
+	net = []
+	# os
+		# browser
+			web = ["js", "unsafe_ffi"]
+		linux = ["_linux_abi", "unsafe_syscall"]
+		term = [] # media::image::sixel
+		windows = []
+	service = ["http"]
+		http = []
+
+text = []
+text_all = ["text", "grapheme", "translit"]
+	grapheme = []
+	translit = []
+
+vita = []
+vita_all = []
+
+ui = []
+ui_all = ["ui", "event", "widget"]
+	event = []
+	widget = ["ui"]
+
+work = []
+work_all = ["work", "process", "thread", "sync"]
+	# exec
+		process = []
+		thread = []
+	sync = []
+
+
+#* Safety features *#
+# ------------------------------------------------------------------------------
+# They are prefixed with either `safe` or `unsafe`.
+# Safe features are associated to *modules*, and unsafe features to *purposes*.
+#
+# Usage:
+# 1. enable the desired `unsafe` feature.
+# 2. don't enable the `safe` feature for that module.
+#
+# The `safest` feature forbids unsafe transitively in dependencies
+# (except for Rust's `core`, `alloc` and `std`).
+#
+# In sync with build/main/features.rs::[UN]SAFE & src/_.rs::safety)
+
+safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
+
+safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
+	"safe_macros",
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
+] # List of safe thematic modules (orthogonal to unsafe purposes):
+
+	# thematic [25]
+	safe_macros = ["devela_macros/safe"]
+	safe_build = []
+	safe_code = []
+	safe_data = []
+	# safe_error = []
+	safe_geom = []
+	safe_lang = []
+	safe_media = ["safe_audio", "safe_font", "safe_visual"]
+		safe_audio = []
+		safe_font = []
+		safe_visual = []
+	safe_num = []
+	safe_org = []
+	safe_phys = ["safe_time"]
+		safe_time = []
+	safe_run = []
+	safe_sys = ["safe_io", "safe_mem"]
+		safe_io = []
+		safe_mem = []
+	safe_text = []
+	safe_ui = []
+	safe_vita = []
+	safe_work = []
+	# safe_yard = []
+
+unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
+	"devela_macros/unsafe",
+	#
+	"unsafe_array", "unsafe_ffi", "unsafe_hint", "unsafe_layout",
+	"unsafe_mmio", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
+	"unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
+] # `unsafe··`	[12]
+
+	# List of unsafe purposes (orthogonal to safe modules):
+
+	unsafe_array   = [ # faster array initialization, UninitArray
+	]
+	# unsafe_async   = [] # MAYBE
+	unsafe_ffi     = [ # unsafe foreign function calls (WASM, OS, external C)
+	]
+	unsafe_hint    = [ # arch instructions, unreachable_unchecked, unchecked arithmetic
+	]
+	unsafe_layout  = [ # MemPod, DSTs in the stack, AnyExt::downcast*, Mem::*
+		"devela_macros/unsafe_layout"
+	]
+	unsafe_mmio   = [ # direct memory-mapped device I/O
+	]
+	unsafe_niche   = [ # unchecked niche constructors
+	]
+	unsafe_ptr     = [ # Pinned, pop methods without Clone, Ptr::*
+	]
+	unsafe_slice   = [ # extra slice methods, avoid bound checks
+	]
+	unsafe_str     = [ # unchecked utf-8 char and &str conversions
+	]
+	unsafe_sync    = [ # SpinLock, Send and Sync impls
+	]
+	unsafe_syscall = [ # os syscalls
+	]
+	unsafe_thread  = [ # Logging::set_logger_racy, Env::{remove_var, set_var}
+	]
+
+
+#* Scope features *#
+# ------------------------------------------------------------------------------
+# Most of these features are prefixed with an underscore (_) to be semi-hidden.
+# Enabling them enables extra implementations which increases compilation times.
+#
+# They set automatic compile flags named `_*··`, used for reflection.
+# For example, `_stack··` will be set if any _stack* feature is enabled.
+# Which is done in build/main/features.rs
+#
+# TOC
+# - default
+# - docs
+# - code
+# - data
+# - sys
+
+# default = []
+_max = ["_data_all"]
+_maxest = ["_max", "_tuple_72", "_unroll_2048"]
+
+#* _docs scope *#
+# ---------------
+# WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
+# WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
+# WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
+# WAIT [link to downstream crates](https://github.com/rust-lang/rust/issues/74481)
+# WAIT [typeless canonical url](https://github.com/rust-lang/rust/issues/55160)
+# WAIT [odd canonical path](https://github.com/rust-lang/rust/issues/124608)
+# WAIT [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
+# WAIT [doc(visible)](https://github.com/rust-lang/rust/issues/66528)
+
+_docs_examples = [] # documents examples, generates example items, feature-gate in example scripts
+_docs_min = [ # the minimum scope to document every item independent of alloc/std/unsafe
+	"_docs_examples",
+	# modules:
+	"all",
+		# device
+			# audio
+				"alsa",
+			# display
+				"x11",
+		# sys
+			# hw
+				"mcu",
+			"net",
+			# os
+				# browser
+					"web",
+				"linux",
+				"term",
+				# "windows"
+	# data:
+	"_tuple", "_unroll",
+]
+_docs_nodep = [ # +std +unsafe +__dbg
+	"_docs_min", "std", "unsafe", "__dbg",
+	"devela_macros/_docs_nodep",
+]
+_docs = [ # +dep_all
+	"_docs_nodep", "dep_all",
+	"devela_macros/_docs",
+]
+_docs_max = [ # +max +__docs_internal
+	"_docs", "_max", "__docs_internal"
+]
+
+#* code scope *#
+# --------------
+
+# `unroll!` macro and maximum recursion supported
+_unroll = [] # recursion 64
+_unroll_128 = ["_unroll"]
+_unroll_256 = ["_unroll_128"]
+_unroll_512 = ["_unroll_256"]
+_unroll_1024 = ["_unroll_512"]
+_unroll_2048 = ["_unroll_1024"]
+
+#* data scope *#
+# --------------
+
+_data_all = ["_tuple"]
+
+# `Tuple` trait and maximum arity supported (example relative compilation times)
+_tuple = [] # arity 12 # time:  3.3s, codegen: 96K (for >=2nd compil.)
+_tuple_24 = ["_tuple"]          # time:  4.0s, codegen: 279K
+_tuple_36 = ["_tuple_24"]       # time:  4.6s, codegen: 561K
+_tuple_48 = ["_tuple_36"]       # time:  6.3s, codegen: 942K
+_tuple_72 = ["_tuple_48"]       # time: 10.3s, codegen: 2.0M
+
+#* sys scope *#
+# -------------
+
+_linux_abi = [] # constants, repr structs, syscall vocabulary
+
+
+#* Dependency features (optional external dependencies) *#
+# ------------------------------------------------------------------------------
+# They are associated to optional dependencies and groups of modules.
+# Enabling any of these will set the `dep··` reflection flag.
+#
+# Names are prefixed with `dep_`, and use underscores in place of dashes.
+#
+##Links
+# - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
+
+# In sync with build/main/dep_all & src/yard/_dep.rs
+dep_all = [ # enables all 13 optional external dependencies:
+	"dep_atomic",
+	"dep_hashbrown", "dep_jiff",
+	"dep_memchr",
+	"dep_portable_atomic", "dep_portable_atomic_util",
+	"dep_rand_core", "dep_raw_cpuid",
+	"dep_safe_arch",
+	"dep_simdutf8",
+	"dep_wide",
+]
+
+# groups of dependencies, environment and modules
+work_deps  = ["work", "dep_atomic", "dep_portable_atomic"]
+
+# individual dependencies features
+dep_atomic = ["dep:atomic"]                                                     # work::sync
+dep_hashbrown = ["dep:hashbrown", "alloc"]  									# data::key
+dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
+dep_log = ["dep:log"]                                                           # sys::log
+dep_memchr = ["dep:memchr"]                                                     # text:str
+dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
+dep_portable_atomic_util = ["dep:portable-atomic-util"]                         # work::sync
+dep_rand_core = ["dep:rand_core"]                                               # num::rand
+dep_raw_cpuid = ["dep:raw-cpuid"]                                               # sys::arch
+dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
+dep_simdutf8 = ["dep:simdutf8"]                                                 # text::str
+dep_wide = ["dep:wide"]                                                         # num::grain::wide
+
+
+[dependencies] # 13 (1 required, 12 optional)
+# ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
+#
+## notes
+# - dependencies are sorted alfabetically, with links and comments.
+# - use `./tools/manifest.sh dependencies` to see the numbers.
+#
+## when adding a new optional dependency
+# 1. Update `dep_all` above and /build/main/dep_all.
+# 2. Add a new entry below and in src/yard/deps.rs.
+
+#* workspace internal libraries (1 req) *#
+
+devela_macros = { workspace = true }
+
+#* optional external dependencies (12 opt) *#
+
+atomic = { workspace = true, optional = true }
+hashbrown = { workspace = true, optional = true }
+jiff = { workspace = true, optional = true }
+log = { workspace = true, optional = true }
+memchr = { workspace = true, optional = true }
+portable-atomic = { workspace = true, optional = true }
+portable-atomic-util = { workspace = true, optional = true }
+rand_core = { workspace = true, optional = true }
+raw-cpuid = { workspace = true, optional = true }
+safe_arch = { workspace = true, optional = true }
+simdutf8 = { workspace = true, optional = true }
+wide = { workspace = true, optional = true }
+
+
+[dev-dependencies]
+# Used for examples, metrics and tests. They inherit from [dependencies].
+# ------------------------------------------------------------------------------
+# devela = { path = ".", features = ["all"] }
+
+# criterion = "*"
+
+
+[build-dependencies]
+# patches
+# ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/overriding-dependencies.html#the-patch-section
+
+# [patch.crates-io]
+# devela = { path = './' } # make devela also a dependency of itself
+
+
+[badges]
+# ==============================================================================
+maintenance = { status = "experimental" }
+
+[lints]
+workspace = true
+
+
+# metrics
+# ==============================================================================
+# cargo bench --profile bench --bench NAME
+
+# TEMP WIP
+# # [[bench]]
+# # name = "static_map"
+# # path = "metrics/static_map.rs"
+# # harness = false
+#
+# [[bench]]
+# name = "char_utf8"
+# path = "metrics/char_utf8.rs"
+# harness = false
+# [[bench]]
+# name = "char_utf8_custom"
+# path = "metrics/char_utf8_custom.rs"
+# harness = false
+
+
+# programs inside /programs/*
+# ==============================================================================
+# To install a binary:
+# cargo install --path . --bin NAME -F std
+
+# num
+# [[bin]]
+# name = "xoro"
+# path = "src/num/rand/xorshift/xoro.rs"
+# required-features = ["std", "rand"]
+
+
+# examples inside /examples/*
+# ==============================================================================
+# https://docs.rs/open-editor/latest/scrape-examples-help.html
+
+# TEMP WIP
+# # code
+# [[example]]
+# name = "cargo_script"
+# path = "examples/code/cargo_script.rs"
+# required-features = ["__exclude_test"]
+# doc-scrape-examples = false
+#
+# # data
+# [[example]]
+# name = "id_pin"
+# path = "examples/data/id/pin.rs"
+# required-features = [] # optional: "alloc"
+# doc-scrape-examples = false
+# [[example]]
+# name = "id_seq"
+# path = "examples/data/id/seq.rs"
+#
+# # sys
+# [[example]]
+# name = "alsa"
+# path = "examples/sys/device/audio/alsa.rs"
+# required-features = ["alsa", "std"]
+# # [[example]]
+# # name = "alsa_linux"
+# # path = "examples/sys/device/audio/alsa.rs"
+# # required-features = ["alsa", "linux"]
+# [[example]]
+# name = "term_linux"
+# path = "examples/sys/os/term/linux.rs"
+# required-features = ["linux", "term", "event"]
+# doc-scrape-examples = false
+#
+# # work
+# [[example]]
+# name = "coro_manager" # NOTE: in docs
+# path = "examples/work/coro_manager.rs"
+# required-features = ["alloc"]
+
+# example scripts inside /src/*
+# ==============================================================================
+
+# TEMP WIP
+# # code
+# [[example]]
+# name = "scope_guard"
+# path = "src/code/ops/guard.rs"
+# required-features = ["std"]
+#
+# # data
+# [[example]]
+# name = "otp"
+# path = "src/data/codec/crypto/otp.rs"
+# required-features = ["std", "time"]
+#
+# # sys
+# [[example]]
+# name = "current_guard"
+# path = "src/sys/mem/guard.rs"
+# required-features = ["std", "unsafe_layout"]
