@@ -1,0 +1,84 @@
+# devela_macros manifest
+# ==============================================================================
+[package]
+name = "devela_macros"
+description = "Procedural macros for devela."
+repository = "https://github.com/andamira/devela/tree/main/crates/macros"
+documentation = "https://docs.rs/devela_macros"
+version.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+include = [
+	"/Cargo.toml",
+	"/LICENSE*",
+	"/src/**/*.rs", "/src/**/*.md",
+	"/build/**/*",
+	"/examples/*.rs", # used in docs
+	# never publish WIP material
+    "!**/_wip/**",
+]
+categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
+keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
+build = "build/mod.rs"
+publish = true
+metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
+
+[lib]
+path = "src/_.rs"
+proc-macro = true
+bench = false
+
+[features]
+
+#* Development features *#
+__dbg = []
+__publish = []
+__docs_internal = [] # enables documentation for internal items
+
+#* Safety features *#
+safe = []
+unsafe = ["unsafe_layout"]
+	unsafe_layout = []
+
+#* Capability features *#
+_docs_nodep = [ # +unsafe
+	"unsafe"
+]
+_docs = [ # +dep_all
+	"_docs_nodep", "dep_all"
+]
+
+#* Dependency features (optional external dependencies) *#
+# ------------------------------------------------------------------------------
+# They are associated to optional dependencies and groups of modules.
+# Enabling any of these will set the `dep··` reflection flag.
+#
+# Names are prefixed with `dep_`, and use underscores in place of dashes.
+
+# In sync with ./config/dep_all & ./src/yard/_dep.rs
+dep_all = [ # enables all 0 external optional dependencies:
+]
+
+[dependencies]
+
+#* required external dependencies *#
+
+proc-macro2 = "1.0.106" # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
+quote = "1.0.45"
+
+[badges]
+maintenance.status = "experimental"
+
+[lints]
+workspace = true
+
+[[example]]
+name = "cif"
+[[example]]
+name = "coalesce"
+[[example]]
+name = "compile_attr"
+[[example]]
+name = "compile"

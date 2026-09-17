@@ -26,20 +26,21 @@
 # * [build-dependencies]
 #
 # * [badges]
+# * [lints]
 #
-# * [[bench]]           metrics
-# * [[bin]]             programs
-# * [[example]]         examples
+# * [[bench]]           perf/
+# * [[bin]]             src/bin/
+# * [[example]]         examples/
 
 [lib]
-path = "../../src/_.rs"
+path = "src/_.rs"
 bench = false
 
 [package]
 name = "devela"
-build = "../../build/main/mod.rs"
+build = "build/mod.rs"
 description = "A development substrate of coherence."
-readme = "../../docs/readme_crate.md"
+readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
@@ -51,29 +52,30 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 repository = "https://github.com/andamira/devela"
 autoexamples = false
 autobenches = false
-autobins = false
+# autobins = false
 publish = true
-# TEMP WIP
-# include = [
-# 	"/Cargo.toml",
-# 	## source code
-# 	"/build/main/**/*.rs", "/build/main/**/*.md", "/build/main/dep_all",
-# 	"/src/**/*.rs", "/src/**/*.md",
-# 	"/src/**/*.html", "/src/**/*.js", "/src/**/*.x",
-# 	## documentation
-# 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
-# 	## examples included from /src/_doc
-# 	# (omitted local examples are stripped from the packaged manifest)
-# 	"/examples/work/coro_manager.rs",
-# 	## programs
-# 	# "",
-# 	## assets
-# 	"/assets/font/termivela/*.md",
-# 	"/assets/font/termivela/*.txt",
-# 	"/assets/font/termivela/*.toml",
-# 	"/assets/font/termivela/termivela-8x16-bold.dvbf",
-# 	"/assets/font/termivela/termivela-8x16-regular.dvbf",
-# ]
+include = [
+	"/Cargo.toml",
+	## source code
+	"/build/**/*.rs", "/build/**/*.md", "/build/dep_all",
+	"/src/**/*.rs", "/src/**/*.md",
+	"/src/**/*.html", "/src/**/*.js", "/src/**/*.x",
+	## documentation
+	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
+	## examples included from /src/_doc
+	# (omitted local examples are stripped from the packaged manifest)
+	"/examples/work/coro_manager.rs",
+	## programs
+	# "",
+	## assets
+	"/assets/font/termivela/*.md",
+	"/assets/font/termivela/*.txt",
+	"/assets/font/termivela/*.toml",
+	"/assets/font/termivela/termivela-8x16-bold.dvbf",
+	"/assets/font/termivela/termivela-8x16-regular.dvbf",
+	# never publish WIP material
+	"!**/_wip/**",
+]
 
 [package.metadata.docs.rs]
 # ==============================================================================
@@ -551,7 +553,7 @@ wide = { workspace = true, optional = true }
 
 
 [dev-dependencies]
-# Used for examples, metrics and tests. They inherit from [dependencies].
+# Used for examples, perf and tests. They inherit from [dependencies].
 # ------------------------------------------------------------------------------
 # devela = { path = ".", features = ["all"] }
 
@@ -568,34 +570,23 @@ wide = { workspace = true, optional = true }
 
 
 [badges]
-# ==============================================================================
 maintenance = { status = "experimental" }
 
 [lints]
 workspace = true
 
 
-# metrics
+# performance benchmarks inside perf/*
 # ==============================================================================
 # cargo bench --profile bench --bench NAME
 
-# TEMP WIP
-# # [[bench]]
-# # name = "static_map"
-# # path = "metrics/static_map.rs"
-# # harness = false
-#
 # [[bench]]
-# name = "char_utf8"
-# path = "metrics/char_utf8.rs"
-# harness = false
-# [[bench]]
-# name = "char_utf8_custom"
-# path = "metrics/char_utf8_custom.rs"
+# name = "static_map"
+# path = "perf/static_map.rs"
 # harness = false
 
 
-# programs inside /programs/*
+# binaries inside src/bin/*
 # ==============================================================================
 # To install a binary:
 # cargo install --path . --bin NAME -F std
@@ -607,67 +598,65 @@ workspace = true
 # required-features = ["std", "rand"]
 
 
-# examples inside /examples/*
+# examples inside examples/*
 # ==============================================================================
 # https://docs.rs/open-editor/latest/scrape-examples-help.html
 
-# TEMP WIP
-# # code
-# [[example]]
-# name = "cargo_script"
-# path = "examples/code/cargo_script.rs"
-# required-features = ["__exclude_test"]
-# doc-scrape-examples = false
-#
-# # data
-# [[example]]
-# name = "id_pin"
-# path = "examples/data/id/pin.rs"
-# required-features = [] # optional: "alloc"
-# doc-scrape-examples = false
-# [[example]]
-# name = "id_seq"
-# path = "examples/data/id/seq.rs"
-#
-# # sys
-# [[example]]
-# name = "alsa"
-# path = "examples/sys/device/audio/alsa.rs"
-# required-features = ["alsa", "std"]
-# # [[example]]
-# # name = "alsa_linux"
-# # path = "examples/sys/device/audio/alsa.rs"
-# # required-features = ["alsa", "linux"]
-# [[example]]
-# name = "term_linux"
-# path = "examples/sys/os/term/linux.rs"
-# required-features = ["linux", "term", "event"]
-# doc-scrape-examples = false
-#
-# # work
-# [[example]]
-# name = "coro_manager" # NOTE: in docs
-# path = "examples/work/coro_manager.rs"
-# required-features = ["alloc"]
+# code
+[[example]]
+name = "cargo_script"
+path = "examples/code/cargo_script.rs"
+required-features = ["__exclude_test"]
+doc-scrape-examples = false
 
-# example scripts inside /src/*
+# data
+[[example]]
+name = "id_pin"
+path = "examples/data/id/pin.rs"
+required-features = [] # optional: "alloc"
+doc-scrape-examples = false
+[[example]]
+name = "id_seq"
+path = "examples/data/id/seq.rs"
+
+# sys
+[[example]]
+name = "alsa"
+path = "examples/sys/device/audio/alsa.rs"
+required-features = ["alsa", "std"]
+# [[example]]
+# name = "alsa_linux"
+# path = "examples/sys/device/audio/alsa.rs"
+# required-features = ["alsa", "linux"]
+[[example]]
+name = "term_linux"
+path = "examples/sys/os/term/linux.rs"
+required-features = ["linux", "term", "event"]
+doc-scrape-examples = false
+
+# work
+[[example]]
+name = "coro_manager" # NOTE: in docs
+path = "examples/work/coro_manager.rs"
+required-features = ["alloc"]
+
+# example scripts inside src/*
 # ==============================================================================
 
-# TEMP WIP
-# # code
-# [[example]]
-# name = "scope_guard"
-# path = "src/code/ops/guard.rs"
-# required-features = ["std"]
-#
-# # data
-# [[example]]
-# name = "otp"
-# path = "src/data/codec/crypto/otp.rs"
-# required-features = ["std", "time"]
-#
-# # sys
-# [[example]]
-# name = "current_guard"
-# path = "src/sys/mem/guard.rs"
-# required-features = ["std", "unsafe_layout"]
+# code
+[[example]]
+name = "scope_guard"
+path = "src/code/ops/guard.rs"
+required-features = ["std"]
+
+# data
+[[example]]
+name = "otp"
+path = "src/data/codec/crypto/otp.rs"
+required-features = ["std", "time"]
+
+# sys
+[[example]]
+name = "current_guard"
+path = "src/sys/mem/guard.rs"
+required-features = ["std", "unsafe_layout"]

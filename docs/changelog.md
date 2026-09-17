@@ -17,6 +17,13 @@
 
 # Repository
 
+## workspace
+- relocate `devela` crate under `crates/devela`.
+- nest `devela_macros` under `crates/devela/macros`.
+- restore conventional locations for `src/bin` and `tests`.
+- split crate-specific documentation from workspace-level documentation.
+- establish `progs` and `games` as separate workspace-level incubator trees.
+
 ## tooling
 ### rustfmt
 - make formatting checks reproducible across local and CI environments.

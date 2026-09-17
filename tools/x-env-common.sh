@@ -1,4 +1,4 @@
 
 export RUSTFLAGS=""
 
-export RUSTDOCFLAGS="--html-in-header ./src/_doc/header.html"
+export RUSTDOCFLAGS="--html-in-header ./docs/rustdoc/header.html"

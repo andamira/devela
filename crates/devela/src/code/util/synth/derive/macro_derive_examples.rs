@@ -1,0 +1,1 @@
+../../../../../macros/src/docs/macro_derive_examples.rs

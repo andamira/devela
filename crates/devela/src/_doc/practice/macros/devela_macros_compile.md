@@ -1,0 +1,1 @@
+../../../../macros/src/docs/compile.md

@@ -21,7 +21,7 @@ RUSTFMT_TOOLCHAIN="1.98.1"
 RUSTFMT=(rustfmt +"$RUSTFMT_TOOLCHAIN" --edition 2024)
 
 # directories to include in the search for "all" Rust files, relative to $CRATE_ROOT
-INCLUDE_DIRS=("build" "crates" "examples" "programs" "src")
+INCLUDE_DIRS=("crates" "games" "progs")
 
 # initialize default argument values
 ARG_MODE="check" # Default rustfmt mode (check|format)

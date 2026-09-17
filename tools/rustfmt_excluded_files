@@ -1,11 +1,11 @@
 # list of rustfmt excluded files for the script "/tools/rustfmt"
 
-examples/code/cargo_script.rs # uses cargo-script frontmatter
-tools/check.rs # uses cargo-script frontmatter
-# src/_doc/examples.rs # imports examples with custom path
-crates/macros/src/docs/macro_apply_examples.rs
-crates/macros/src/docs/macro_derive_examples.rs
-crates/macros/src/docs/macro_derive_with_examples.rs
-src/code/util/synth/derive/macro_apply_examples.rs
-src/code/util/synth/derive/macro_derive_examples.rs
-src/code/util/synth/derive/macro_derive_with_examples.rs
+# Intended to be included as rustdoc examples:
+crates/devela/macros/src/docs/macro_apply_examples.rs
+crates/devela/macros/src/docs/macro_derive_examples.rs
+crates/devela/macros/src/docs/macro_derive_with_examples.rs
+#
+crates/devela/src/code/util/synth/derive/macro_apply_examples.rs
+crates/devela/src/code/util/synth/derive/macro_derive_examples.rs
+crates/devela/src/code/util/synth/derive/macro_derive_with_examples.rs
+

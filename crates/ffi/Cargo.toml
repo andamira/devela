@@ -22,6 +22,8 @@ include = [
 	# "/build/**/*",
 	# "/include/*.*",
 	# "/odin/*.*",
+	# never publish WIP material
+	"!**/_wip/**",
 ]
 
 [lib]

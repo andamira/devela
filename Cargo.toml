@@ -13,36 +13,31 @@
 #
 # * [profile.*]
 # * [workspace.lints]
-#   * [lints.rust]
-#   * [lints.rustdoc]
-#   * [lints.clippy]
-#   * [lints.rust.unexpected_cfgs]
-#     - configuration                (nightly_*)
-#     - reflection                   (*··)
-
+#
 
 [workspace]
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/workspaces.html
 resolver = "3"
 
-# ·-----------------------------------------------------------------------------
-# ┌╼devela_macros          : procedural macros
-# ▼
-# devela                   : integrated library
-# ▲ ├╼build/main           : build, codegen, debug
-# │ └╼devela_postbuild     : post-build processing
-# │
-# ├╼devela_extend          : ecosystem extensions and adapters
-# ├╼devela_ffi             : foreign-language interface
-# └╼devela_sentinel        : downstream validation
-#   ╏
 default-members = ["crates/devela"]
-members = [ # In sync with build/main/environment.rs
-	"crates/devela",
-	"crates/macros",
-	# "build/post",
-	# "crates/extend", # WIP
+
+members = [ # In sync with crates/devela/build/environment.rs
+	# core
+    "crates/devela",         # main integrated library
+    "crates/devela/macros",  # required internal proc-macro support
+
+	# downstream ecosystem
+    # "crates/bridge",       # FFI and ABI bridges
+    # "crates/extend",       # ecosystem extensions and adapters
+    # "crates/micros",       # MCU, board, and embedded hardware
+    # "crates/sentry",       # public-API and behavior validation
+
+    # "build/post",          # post-build processing
+
+    # incubators: opt-in individually
+    # "progs/…",
+    # "games/…",
 ]
 
 
@@ -60,7 +55,7 @@ edition = "2024"
 [workspace.dependencies]
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
-devela_macros      = { version = "0.30.0-wip", path = "./crates/macros" }
+devela_macros      = { version = "0.30.0-wip", path = "./crates/devela/macros" }
 #devela_buildpost   = { version = "0.30.0-wip", path = "./build/post" }
 
 #* optional external dependencies *#
