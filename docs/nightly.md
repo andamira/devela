@@ -61,6 +61,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
 
 - 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
+- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543) WAIT
 - 1.100: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
 - 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
