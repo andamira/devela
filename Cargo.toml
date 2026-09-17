@@ -28,7 +28,7 @@ members = [ # In sync with crates/devela/build/environment.rs
     "crates/devela/macros",  # required internal proc-macro support
 
 	# downstream ecosystem
-    # "crates/bridge",       # FFI and ABI bridges
+    "crates/bridge",         # FFI and ABI bridges
     # "crates/extend",       # ecosystem extensions and adapters
     # "crates/micros",       # MCU, board, and embedded hardware
 
@@ -152,6 +152,10 @@ opt-level = 3
 debug = false
 lto = true
 codegen-units = 1
+
+[profile.bridge]
+inherits = "release"
+panic = "abort"
 
 [profile.wasm]
 inherits = "release"

@@ -98,8 +98,15 @@ fn get_target_dir(workspace_dir: &str) -> String {
 fn emit_member_env() {
     let crate_name = env::var("CARGO_PKG_NAME").expect("CARGO_PKG_NAME not set");
     // In sync with /Cargo.toml:workspace.members
-    let is_workspace_member =
-        matches!(crate_name.as_str(), "devela" | "devela_macros" | "devela_postbuild");
+    let is_workspace_member = matches!(
+        crate_name.as_str(),
+        "devela"
+            | "devela_macros"
+            | "devela_bridge"
+            | "devela_extend"
+            | "devela_micros"
+            | "devela_postbuild"
+    );
     if is_workspace_member {
         Build::emit_env_marker("__DEVELA_MEMBER");
         Build::emit_env("__DEVELA_MEMBER_NAME", crate_name);

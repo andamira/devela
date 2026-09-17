@@ -1,4 +1,3 @@
-// devela_macros::build
 //
 //! Build-time code generation and configuration.
 //

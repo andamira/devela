@@ -35,17 +35,15 @@ metadata.docs.rs.no-default-features = true
 [features]
 
 #* Development features *#
-__dbg = ["devela_base_std"] # shows extra debugging information
+__dbg = [] # shows extra debugging information
 
 #* Environment features *#
-std = ["devela_base_std?/std"] # to be disabled when testing workspace with no_std
+std = [] # to be disabled when testing workspace with no_std
 
 [dependencies]
 devela.path = "../.."
 
 [build-dependencies]
-devela_base_core = { workspace = true }
-devela_base_std  = { workspace = true, optional = true }
 
 [badges]
 maintenance.status = "experimental"

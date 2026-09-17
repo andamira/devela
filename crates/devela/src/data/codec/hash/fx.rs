@@ -319,7 +319,7 @@ impl HasherFx<usize> {
             cursor += 2;
         }
         if bytes.len() - cursor != 0 {
-            state = Self::add_to_hash(state, bytes[cursor] as usize)
+            state = Self::add_to_hash(state, bytes[cursor] as usize);
         }
         Self::finalize(state)
     }

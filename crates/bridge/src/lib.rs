@@ -1,8 +1,13 @@
 //
-//! C ABI layer for selected devela functionality.
+//! Foreign-language bindings and ABI bridges for devela.
+//!
+//! Provides an explicit C ABI and generated bindings
+//! for selected devela functionality.
 //
 
 #![allow(non_camel_case_types)]
+// environment
+#![cfg_attr(not(feature = "std"), no_std)]
 
 use devela::c_char;
 
@@ -13,9 +18,9 @@ use devela::c_char;
 /// ABI status values.
 //
 // In sync with:
-// - src/bin/devela_bridge_bindgen.rs: STATUS_CONSTANTS
-// - generated include/devela_bridge.h
-// - generated odin/common/gen_common.odin
+// - src/bin/bridge_bindgen.rs: STATUS_CONSTANTS
+// - generated: pkg/c/devela_bridge.h
+// - generated: pkg/odin/common/gen_common.odin
 //
 // Values are part of the public C ABI.
 pub type devela_status = i32;
@@ -42,8 +47,11 @@ pub extern "C" fn devela_add_i32(a: i32, b: i32) -> i32 {
 ///
 /// Returns a status instead of printing directly, so C/Odin argument passing
 /// can be tested before terminal state enters the picture.
+///
+/// # Safety
+/// `out_len` must point to valid writable memory for one `usize`.
 #[unsafe(no_mangle)]
-pub extern "C" fn devela_bytes_len(
+pub unsafe extern "C" fn devela_bytes_len(
     bytes: *const u8,
     len: usize,
     out_len: *mut usize,

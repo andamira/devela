@@ -2,10 +2,11 @@
 
 Experimental C ABI bridge for selected [`devela`](https://github.com/andamira/devela) functionality.
 
-This crate builds Rust code as system libraries that can be used from C, Odin,
-and other languages that can call a C ABI.
+This crate builds Rust code as system libraries that can be used from
+C, Odin, and other languages that can call a C ABI.
 
 It currently provides a small smoke-test ABI.
+
 
 ## Build
 
@@ -28,17 +29,19 @@ libdevela_bridge.a
 
 On macOS or Windows the dynamic/static library suffixes differ.
 
+
 ## Run examples
 
 ```sh
-./run_all.sh
+./examples/run_all.sh
 ```
 
 Or run individual examples from `examples/`.
 
+
 ## Features
 
-The FFI crate mirrors selected `devela` features.
+The bridge crate mirrors selected `devela` features.
 
 Example:
 
@@ -50,6 +53,19 @@ term = ["devela/term"]
 
 The ABI surface is intentionally explicit. Enabling a Rust feature does not
 automatically imply every possible foreign symbol.
+
+
+## Design
+
+`devela_bridge` keeps its ordinary Rust library portable and `no_std`-capable.
+
+Normal workspace builds produce an `rlib`. Native foreign-language artifacts such
+as `staticlib` and `cdylib` libraries are built explicitly by `build.sh`, together
+with the generated bindings they expose.
+
+Unsafe capabilities are enabled only by bridged functionality that actually
+requires them, rather than by the bridge crate as a whole.
+
 
 ## Status
 

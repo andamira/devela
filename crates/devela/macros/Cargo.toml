@@ -16,7 +16,7 @@ include = [
 	"/src/**/*.rs", "/src/**/*.md",
 	"/build/**/*",
 	"/examples/*.rs", # used in docs
-	# never publish WIP material
+	## exclusions
     "!**/_wip/**",
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]

@@ -2,32 +2,24 @@
 
 set -e
 
+cd "$(dirname "$0")"
+
 # CONFIG
 CRATE_NAME="devela_bridge"
-PROFILE="release"
+PROFILE="bridge"
 LIB_DIR="./libs"
-BUILD_CMD="cargo build --profile $PROFILE"
+
+BUILD_CMD="cargo rustc --lib --profile $PROFILE -F std --crate-type staticlib,cdylib"
+
 
 # GENERATE BINDINGS
-echo "$ cargo run --quiet --bin ffi_bindgen"
-cargo run --quiet --bin ffi_bindgen
+
+echo "$ cargo run --quiet --bin bridge_bindgen -F __bindgen"
+cargo run --quiet --bin bridge_bindgen -F __bindgen
 
 # BUILD
+
 echo "$ $BUILD_CMD"
-
-BUILD_JSON="$(mktemp)"
-trap 'rm -f "$BUILD_JSON"' EXIT
-
-if ! ${BUILD_CMD} --message-format=json-diagnostic-rendered-ansi > "$BUILD_JSON"; then
-    if command -v jq >/dev/null 2>&1; then
-        jq -r 'select(.reason == "compiler-message") | .message.rendered // empty' "$BUILD_JSON" >&2
-    else
-        cat "$BUILD_JSON" >&2
-    fi
-    exit 1
-fi
-
-mkdir -p "$LIB_DIR"
 
 if ! command -v jq >/dev/null 2>&1; then
     echo "error: jq is required to discover generated library paths" >&2
@@ -35,9 +27,25 @@ if ! command -v jq >/dev/null 2>&1; then
     exit 1
 fi
 
-# Cargo tells us the real paths, so this works with custom CARGO_TARGET_DIR.
+BUILD_JSON="$(mktemp)"
+trap 'rm -f "$BUILD_JSON"' EXIT
+
+if ! ${BUILD_CMD} --message-format=json-diagnostic-rendered-ansi > "$BUILD_JSON"; then
+    jq -r '
+        select(.reason == "compiler-message")
+        | .message.rendered // empty
+    ' "$BUILD_JSON" >&2
+    exit 1
+fi
+
+mkdir -p "$LIB_DIR"
+
+# Cargo tells us the actual artifact paths.
 LIB_PATHS="$(jq -r '
-    select(.reason == "compiler-artifact" and .target.name == "'"$CRATE_NAME"'")
+    select(
+        .reason == "compiler-artifact"
+        and .target.name == "'"$CRATE_NAME"'"
+    )
     | .filenames[]
     | select(
         endswith(".so")
@@ -72,7 +80,9 @@ echo "$LIB_PATHS" | while IFS= read -r path; do
     case "$name" in
         *.dylib)
             if command -v install_name_tool >/dev/null 2>&1; then
-                install_name_tool -id "@rpath/$name" "$LIB_DIR/$name" 2>/dev/null || true
+                install_name_tool \
+                    -id "@rpath/$name" \
+                    "$LIB_DIR/$name" 2>/dev/null || true
             fi
             ;;
     esac

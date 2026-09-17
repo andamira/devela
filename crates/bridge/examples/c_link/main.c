@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include "../../pkg/c/devela_bridge.h"
+#include <devela_bridge.h>
 
 int main(void) {
     uint32_t version = devela_abi_version();
