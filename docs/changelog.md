@@ -29,6 +29,9 @@
 - make formatting checks reproducible across local and CI environments.
 - restrict formatting to tracked Rust files and pin the rustfmt toolchain version.
 
+### CI
+- add `actionlint.yml` script.
+
 ---
 
 # devela
