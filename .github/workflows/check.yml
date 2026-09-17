@@ -11,28 +11,28 @@ name: check
 jobs:
   # 1. format
   fmt:
-  name: "fmt"
-  runs-on: ubuntu-latest
-  env:
-    RUSTFMT_TOOLCHAIN: "1.98.1" # In sync with ../../{README.md, Cargo.toml, tools/rustfmt}
+    name: "fmt"
+    runs-on: ubuntu-latest
+    env:
+      RUSTFMT_TOOLCHAIN: "1.98.1" # In sync with ../../{README.md, Cargo.toml, tools/rustfmt}
 
-  steps:
-    - name: "checkout"
-      uses: actions/checkout@v6
-      with:
-        submodules: true
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v6
+        with:
+          submodules: true
 
-    - name: "Install rustfmt"
-      uses: dtolnay/rust-toolchain@master
-      with:
-        toolchain: ${{ env.RUSTFMT_TOOLCHAIN }}
-        components: rustfmt
+      - name: "Install rustfmt"
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUSTFMT_TOOLCHAIN }}
+          components: rustfmt
 
-    - name: "rustfmt --version"
-      run: rustfmt +"$RUSTFMT_TOOLCHAIN" --version
+      - name: "rustfmt --version"
+        run: rustfmt +"$RUSTFMT_TOOLCHAIN" --version
 
-    - name: "./tools/rustfmt check all exclude"
-      run: ./tools/rustfmt check all exclude
+      - name: "./tools/rustfmt check all exclude"
+        run: ./tools/rustfmt check all exclude
 
   # 2. clippy lints
   clippy:
