@@ -1,0 +1,22 @@
+
+[workspace]
+
+[package]
+name = "esp32s3_bringup"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+xtensa-lx-rt = "=0.23.0"
+
+[dependencies.devela_micros]
+path = "../../../../.."
+default-features = false
+features = ["esp32s3", "unsafe_mmio"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"

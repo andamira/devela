@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_SYS_HW!()] // public
-#![doc = crate::_doc!(modules: crate::sys; hw: mcu, pin)]
+#![doc = crate::_doc!(modules: crate::sys; hw: pin)]
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -22,9 +22,7 @@ crate::mods_in! {
     // pub mod_ display; // Physical display controllers and panel interfaces
     // pub mod_ hid; // Human interface devices WIP Evdev*
     // pub mod_ link; // Communication links
-    #[cfg(feature = "mcu")]
-    pub mod_ mcu; // Microcontroller units
-    #[cfg(feature = "mcu")]
+    #[cfg(feature = "hw")]
     pub mod_ pin; // Pin-level hardware interfaces and signal buses.
     // pub mod_ sensor; // Measurement sensors
     // pub mod_ usb; // USB bus/devices
@@ -40,10 +38,9 @@ crate::mods_out! { // _pub_mods
         //     // sensor::_all::*,
         //     // usb::_all::*,
         // };
-        #[cfg(feature = "mcu")]
+        #[cfg(feature = "hw")]
         pub use super::{
             pin::_all::*,
-            mcu::_all::*,
         };
     }
 }

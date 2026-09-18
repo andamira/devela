@@ -331,8 +331,9 @@ mod _crate_internals {
 }
 
 #[doc(hidden)]
-pub use _hidden::*;
-mod _hidden {
+pub use __hidden::*;
+#[doc(hidden)]
+pub mod __hidden {
     //! Workspace-public, hidden items.
     #![allow(unused_imports)]
 

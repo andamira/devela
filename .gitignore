@@ -40,3 +40,4 @@ Cargo.lock
 
 /tools/x-env-local.sh
 /tools/x-env-local-nightly.sh
+/tools/_local/

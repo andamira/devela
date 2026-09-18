@@ -38,7 +38,7 @@ bench = false
 
 [package]
 name = "devela"
-build = "build/mod.rs"
+build = "build/_.rs"
 description = "A development substrate of coherence."
 readme = "docs/readme_crate.md"
 rust-version.workspace = true
@@ -265,8 +265,7 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 			x11 = ["alloc", "event", "unsafe_ffi"]
 		# midi = []
 	# fs
-	# hw = ["mcu"]
-		mcu = []
+	hw = []
 	io = []
 	net = []
 	# os
@@ -427,8 +426,7 @@ _docs_min = [ # the minimum scope to document every item independent of alloc/st
 			# display
 				"x11",
 		# sys
-			# hw
-				"mcu",
+			"hw",
 			"net",
 			# os
 				# browser

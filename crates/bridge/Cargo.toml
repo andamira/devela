@@ -35,8 +35,10 @@ include = [
 	"!**/_wip/**",
 ]
 
+
 [lib]
 crate-type = ["rlib"]
+
 
 [features]
 
@@ -49,9 +51,15 @@ linux = ["devela/linux"]
 term = ["devela/term"]
 event = ["devela/event"]
 
+
 [dependencies.devela]
 path = "../devela"
 # features = ["unsafe_ffi"] # IMPROVE
+
+
+[lints]
+workspace = true
+
 
 [[bin]]
 name = "bridge_bindgen"

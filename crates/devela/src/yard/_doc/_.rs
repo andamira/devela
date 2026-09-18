@@ -22,13 +22,13 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
     _crate_internals {
         pub use super::{
             availability::_doc_availability,
-            doc::_doc,
             warn::_doc_warn_miri,
         };
     }
     _hidden {
         #[doc(hidden)]
         pub use super::{
+            doc::_doc,
             location::_doc_location,
             // needed by _use_or_shim!:
             vendor::_doc_vendor,

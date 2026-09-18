@@ -24,11 +24,17 @@ use devela::c_char;
 //
 // Values are part of the public C ABI.
 pub type devela_status = i32;
+///
 pub const DEVELA_OK: devela_status = 0;
+///
 pub const DEVELA_NO_EVENT: devela_status = 1;
+///
 pub const DEVELA_ERR_NULL: devela_status = -1;
+///
 pub const DEVELA_ERR_INVALID: devela_status = -2;
+///
 pub const DEVELA_ERR_PANIC: devela_status = -3;
+///
 pub const DEVELA_ERR_UNSUPPORTED: devela_status = -4;
 
 /// ABI version: major.minor.patch packed as 0x00MM_mm_pp.
@@ -68,6 +74,7 @@ pub unsafe extern "C" fn devela_bytes_len(
     DEVELA_OK
 }
 
+///
 #[unsafe(no_mangle)]
 pub extern "C" fn devela_error_string(status: devela_status) -> *const c_char {
     match status {

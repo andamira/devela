@@ -330,7 +330,7 @@ mod reflection {
     pub const SYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["sys··"],
         features: &["sys", "io", "net", "http",
-            /* hw: */ "mcu",
+            /* hw: */
             /* os: */ "linux", "term", "windows"
         ]
     };

@@ -1,0 +1,168 @@
+# devela_micros manifest
+# ==============================================================================
+[package]
+name = "devela_micros"
+description = "Microcontroller, board, and embedded hardware support for devela"
+documentation = "https://docs.rs/devela_micros"
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository = "https://github.com/andamira/devela/tree/main/crates/micros"
+include = [
+	"/Cargo.toml",
+	"/LICENSE*",
+	"/build/**/*.rs", "/src/**/*.rs",
+	"/build/**/*.md", "/src/**/*.md",
+	## exclusions
+	"!**/_wip/**",
+]
+categories = ["development-tools", "embedded", "hardware-support", "no-std"]
+keywords = ["dev", "extension"]
+build = "build/_.rs"
+autoexamples = false
+publish = true
+
+
+[package.metadata.docs.rs]
+features = ["_docs", "__publish"]
+no-default-features = true
+
+
+[lib]
+path = "src/_.rs"
+bench = false
+
+
+[features]
+
+#* Development features *#
+# ------------------------------------------------------------------------------
+
+__dbg = ["devela/__dbg"]
+__publish = [] # enabled when publishing to crates.io or building online docs
+__docs_internal = [] # enables documentation for internal items
+__exclude_test = [] # excludes specific examples from being tested
+__disable_native_libs = [] # disables native libraries from being detected
+
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
+
+alloc = ["devela/alloc"]
+
+
+#* Module features *#
+# ------------------------------------------------------------------------------
+
+all = ["mcu_all", "board_all", "device_all"]
+
+# microcontrollers
+
+mcu = []
+mcu_all = ["avr_all", "esp32_all"]
+
+	avr = ["mcu"]
+	avr_all = ["atmega328p"]
+
+		atmega328p = ["avr"]
+
+	esp32 = ["mcu"]
+	esp32_all = ["esp32c3", "esp32s3"]
+
+		esp32c3 = ["esp32"]
+		esp32s3 = ["esp32"]
+
+# boards
+
+board = []
+board_all = [
+	"arduino_nano",
+	"supermini_oled042",
+]
+	arduino = ["board"]
+		arduino_nano = ["arduino", "atmega328p"]
+
+	supermini_oled042 = ["board", "esp32c3"]
+
+
+# devices
+
+device = []
+device_all = ["audio", "comm", "display", "input", "motion", "power", "sensor", "vision"]
+
+audio = ["device"]
+audio_all = ["audio"]
+	#
+
+comm = ["device"]
+comm_all = ["comm"]
+	# winc1500 = []
+
+display = ["device"]
+display_all = ["display"]
+	# ssd1306 = []
+
+input = ["device"]
+input_all = ["input"]
+	#
+
+motion = ["device"]
+motion_all = ["motion"]
+	# pca9685 = []
+	# tb6612 = []
+
+power = ["device"]
+power_all = ["power"]
+	#
+
+sensor = ["device"]
+sensor_all = ["sensor"]
+	# mhz19 = []
+
+vision = ["device"]
+vision_all = ["vision"]
+	# lepton35 = []
+
+
+#* Safety features *#
+# ------------------------------------------------------------------------------
+
+safest = ["safe", "devela/safest"]
+
+safe = []
+
+unsafe = [
+	"unsafe_hint", # permit architecture-specific CPU instructions
+	"unsafe_mmio" # permit direct hardware-register access
+	]
+	unsafe_hint = ["devela/unsafe_hint"]
+	unsafe_mmio = ["devela/unsafe_mmio"]
+
+
+#* Scope features *#
+# ------------------------------------------------------------------------------
+
+#* _docs scope *#
+# ---------------
+
+_docs = ["all", "unsafe"] # + alloc
+
+
+[dependencies]
+# ==============================================================================
+devela = { workspace = true, features = ["hw"] }
+
+
+[badges]
+# ==============================================================================
+maintenance.status = "experimental"
+
+[lints]
+workspace = true
+
+# examples inside /examples/*
+# ==============================================================================
+# [[example]]
+# name = ""

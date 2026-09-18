@@ -68,14 +68,14 @@ macro_rules! _doc_test_size_of· {
     ($(#[$meta:meta])* $ty:ty = $bytes:literal
      $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [! $wrap]
-            stringify!($ty), concat!("devela::", stringify!($ty)),
+            stringify!($ty), concat!(env!("CARGO_PKG_NAME"), "::", stringify!($ty)),
             stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
         )
     };
     ($(#[$meta:meta])* $ty:ty = $bytes:literal
      $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [$($wrap)?]
-            stringify!($ty), concat!("devela::", stringify!($ty)),
+            stringify!($ty), concat!(env!("CARGO_PKG_NAME"), "::", stringify!($ty)),
             stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
         )
     };
@@ -88,14 +88,14 @@ macro_rules! _doc_test_size_of· {
     ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal
      $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [! $wrap]
-            stringify!($name), concat!("devela::", stringify!($ty)),
+            stringify!($name), concat!(env!("CARGO_PKG_NAME"), "::", stringify!($ty)),
             stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
         )
     };
     ($(#[$meta:meta])* $name:ident : $ty:ty = $bytes:literal
      $(| $bits:literal)? $(; niche $wrap:ident)? $(,)?) => {
         $crate::_doc_test_size_of!(@doc [$(#[$meta])*] [$($wrap)?]
-            stringify!($name), concat!("devela::", stringify!($ty)),
+            stringify!($name), concat!(env!("CARGO_PKG_NAME"), "::", stringify!($ty)),
             stringify!($ty), stringify!($bytes) $(, stringify!($bits))?
         )
     };
