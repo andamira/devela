@@ -1,5 +1,8 @@
 //
-//! Microcontroller development boards.
+#![doc = crate::_DOC_BOARD!()] // public
+#![doc = crate::_doc!(modules: crate; board: avr, esp32)]
+#![doc = crate::_doc!(flat:"board")]
+#![doc = crate::_doc!(hr)]
 //!
 //! Board definitions compose a concrete MCU with board-level facts such as
 //! clocking, connector pin mappings, onboard devices, and fixed wiring.
@@ -20,20 +23,27 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "arduino")]
-    mod_ arduino;
-    #[cfg(feature = "supermini_oled042")]
-    mod_ generic;
-
-    // mod_ waveshare;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "board_avr"))]
+    pub mod_ avr;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "board_esp32"))]
+    pub mod_ esp32;
 }
-crate::mods_out! { // _mods
-    _mods {
+crate::mods_out! { // _pub_mods, _reexports
+    _pub_mods {
+        #[cfg_attr(not(nightly_doc), cfg(feature = "board_avr"))]
+        pub use super::avr::_all::*;
+        #[cfg_attr(not(nightly_doc), cfg(feature = "board_esp32"))]
+        pub use super::esp32::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
         #[cfg(feature = "arduino_nano")]
-        pub use super::arduino::_all::BoardArduinoNano;
+        pub use super::avr::_all::BoardArduinoNano;
+        #[doc(inline)]
         #[cfg(feature = "supermini_oled042")]
-        pub use super::generic::_all::BoardSuperMiniOled042;
-
-        // pub use super::waveshare::_all::BoardWaveshareC6TouchLcd147;
+        pub use super::esp32::_all::BoardSuperMiniOled042;
+        // #[doc(inline)]
+        // #[cfg(feature = "waveshare_c6_touch_lcd147")]
+        // pub use super::esp32::_all::BoardWaveshareC6TouchLcd147;
     }
 }

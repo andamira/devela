@@ -1,5 +1,8 @@
 //
-//!
+#![doc = crate::_DOC_DEVICE!()] // public
+#![doc = crate::_doc!(modules: crate; devic)] // …
+#![doc = crate::_doc!(flat:"device")]
+#![doc = crate::_doc!(hr)]
 //
 
 crate::mods_in! {

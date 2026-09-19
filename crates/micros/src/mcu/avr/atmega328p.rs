@@ -34,6 +34,7 @@ use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 /// [ATmega328P product page]: https://www.microchip.com/en-us/product/atmega328p
 /// [ATmega48A/PA/88A/PA/168A/PA/328/P datasheet]: https://www.microchip.com/DS40002061
 #[derive(Debug)]
+#[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("avr")))))]
 pub struct McuAtmega328p;
 
 /// # GPIO

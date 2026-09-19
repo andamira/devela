@@ -9,7 +9,7 @@ use crate::{Esp32C3Pin, Esp32C3Uart, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 SuperMini board with a 0.42-inch OLED.
 #[doc = crate::_doc_meta!{
-    location("board", struct BoardSuperMiniOled042),
+    location("board/esp32", struct BoardSuperMiniOled042),
     test_size_of(BoardSuperMiniOled042 = 0),
 }]
 /// A compact generic development board based on [`McuEsp32C3`],

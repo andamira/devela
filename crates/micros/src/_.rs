@@ -2,9 +2,13 @@
 //! Microcontroller, board, and embedded hardware support for devela.
 //
 
+// environment
 #![no_std]
-#![cfg_attr(nightly_doc, feature(doc_cfg))]
+// safety
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
+// nightly
+#![cfg_attr(nightly_doc, doc(test(attr(feature(doc_cfg)))))] // enable for all doctests
+#![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 
 /* imports */
 
@@ -20,18 +24,6 @@ pub(crate) use __crate_name;
 use ::devela::__hidden::*;
 use ::devela::all::*;
 
-crate::mods_in! {
-    #[cfg(feature = "board")]
-    pub mod_ board;
-    #[cfg(feature = "device")]
-    mod_ device;
-    #[cfg(feature = "mcu")]
-    pub mod_ mcu;
-
-    // internal
-    pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
-}
-
 /// All public devela_micros items in one flat namespace.
 pub mod all {
     #[allow(unused_imports)]
@@ -45,13 +37,24 @@ pub mod devela {
     pub use ::devela::all::*;
 }
 
+crate::mods_in! {
+    #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
+    pub mod_ board;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
+    mod_ device;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
+    pub mod_ mcu;
+
+    // internal
+    pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
+}
 crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
-        #[cfg(feature = "board")]
+        #[cfg_attr(not(nightly_doc), cfg(feature = "board"))]
         pub use super::board::_all::*;
-        #[cfg(feature = "device")]
+        #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
         pub use super::device::_all::*;
-        #[cfg(feature = "mcu")]
+        #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
         pub use super::mcu::_all::*;
     }
     _crate_internals {

@@ -255,12 +255,16 @@
 crate::mods_in! {
     // mod _helper; // WIP
 
+    #[cfg(feature = "avr")]
     mod zero;
+    #[cfg(feature = "avr")]
     mod_ one;
+    #[cfg(feature = "avr")]
     mod_ two;
 }
 crate::mods_out! { // _mods, _crate_internals
     _mods {
+        #[cfg(feature = "avr")]
         pub use super::{
             zero::AvrTimer0,
             one::_all::AvrTimer1,

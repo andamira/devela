@@ -1,7 +1,7 @@
 //
 #![doc = crate::_DOC_MCU!()] // public
 #![doc = crate::_doc!(modules: crate; mcu: avr, esp32)]
-#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //!
 //! This module contains chip-specific foundations
@@ -28,16 +28,16 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "avr")]
+    #[cfg_attr(not(nightly_doc), cfg(feature = "avr"))]
     pub mod_ avr;
-    #[cfg(feature = "esp32")]
+    #[cfg_attr(not(nightly_doc), cfg(feature = "esp32"))]
     pub mod_ esp32;
 }
 crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
-        #[cfg(feature = "avr")]
+        #[cfg_attr(not(nightly_doc), cfg(feature = "avr"))]
         pub use super::avr::_all::*;
-        #[cfg(feature = "esp32")]
+        #[cfg_attr(not(nightly_doc), cfg(feature = "esp32"))]
         pub use super::esp32::_all::*;
     }
     _reexports {

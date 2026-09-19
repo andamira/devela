@@ -69,22 +69,29 @@ mcu_all = ["avr_all", "esp32_all"]
 		atmega328p = ["avr"]
 
 	esp32 = ["mcu"]
-	esp32_all = ["esp32c3", "esp32s3"]
+	esp32_all = ["esp32c3", "esp32c6", "esp32s3"]
 
 		esp32c3 = ["esp32"]
+		esp32c6 = ["esp32"]
 		esp32s3 = ["esp32"]
 
 # boards
 
 board = []
 board_all = [
-	"arduino_nano",
-	"supermini_oled042",
+	"board_avr_all",
+	"board_esp32_all",
 ]
-	arduino = ["board"]
-		arduino_nano = ["arduino", "atmega328p"]
+	board_avr = ["board", "avr"]
+	board_avr_all = ["arduino_nano"]
 
-	supermini_oled042 = ["board", "esp32c3"]
+		arduino_nano = ["board_avr", "atmega328p"]
+
+	board_esp32 = ["board", "esp32"]
+	board_esp32_all = ["supermini_oled042"]
+
+		# c6_touch_lcd147 = ["board_esp32", "esp32c6"]
+		supermini_oled042 = ["board_esp32", "esp32c3"]
 
 
 # devices

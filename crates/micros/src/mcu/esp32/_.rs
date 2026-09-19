@@ -1,7 +1,7 @@
 //
 #![doc = crate::_DOC_MCU_ESP32!()] // public
 #![doc = crate::_doc!(modules: crate::mcu; esp32)]
-#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //
 
@@ -11,12 +11,16 @@ crate::mods_in! {
     #[cfg(feature = "esp32s3")]
     mod_ s3;
 
+    #[cfg(feature = "esp32")]
     mod i2c;
+    #[cfg(feature = "esp32")]
     mod register;
+    #[cfg(feature = "esp32")]
     mod usb_serial_jtag;
 }
 crate::mods_out! { // _mods
     _mods {
+        #[cfg(feature = "esp32")]
         pub use super::{
             i2c::EspI2c,
             register::EspReg32,

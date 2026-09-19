@@ -11,6 +11,8 @@ crate::CONST! { hidden macro_export,
     _DOC_MCU_ESP32     = "ESP32 microcontrollers and peripheral foundations.";
 
     _DOC_BOARD         = "Development boards and their fixed hardware configurations.";
+    _DOC_BOARD_AVR     = "AVR boards.";
+    _DOC_BOARD_ESP32   = "ESP32 boards.";
 
     _DOC_DEVICE         = "Reusable drivers for discrete hardware devices.";
     _DOC_DEVICE_DISPLAY = "Display controllers and display-device drivers.";

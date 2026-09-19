@@ -1,7 +1,7 @@
 //
 #![doc = crate::_DOC_MCU_AVR!()] // public
 #![doc = crate::_doc!(modules: crate::mcu; avr: timer)]
-#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //!
 //! AVR microcontrollers.
@@ -13,7 +13,9 @@
 //!
 //! This module models silicon-facing AVR concepts such as memory-mapped registers,
 //! GPIO ports and pins, serial peripherals, and concrete devices. Board-specific
-//! wiring and connector names belong under [`board`][crate::board].
+//! wiring and connector names belong under [`board`].
+//!
+//! [`board`]: crate::board
 //!
 //! # AVR model
 //!
@@ -42,6 +44,8 @@
 //!
 //! See the [`timer`] module for the timer model and its terminology.
 //!
+//! [`timer`]: timer
+//!
 //! # Interrupt vocabulary
 //!
 //! - **interrupt source** — a hardware condition capable of requesting service.
@@ -58,14 +62,20 @@
 crate::mods_in! {
         #[cfg(feature = "atmega328p")]
         mod atmega328p;
+        #[cfg(feature = "avr")]
         mod pin;
+        #[cfg(feature = "avr")]
         mod port;
+        #[cfg(feature = "avr")]
         mod register;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "avr"))]
     pub mod_ timer;
+        #[cfg(feature = "avr")]
         mod usart;
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
+        #[cfg(feature = "avr")]
         pub use super::{
             pin::AvrPin,
             port::AvrPort,
@@ -76,12 +86,14 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
         pub use super::atmega328p::McuAtmega328p;
     }
     _pub_mods {
+        #[cfg(feature = "avr")]
         pub use super::{
             timer::_all::{AvrTimer0, AvrTimer1, AvrTimer2},
         };
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "avr")]
         pub use super::{
             timer::_all::{AvrTimer0, AvrTimer1, AvrTimer2},
         };
