@@ -115,6 +115,7 @@
         offset_of_enum,
         offset_of_slice,
         optimize_attribute,
+        ptr_cast_slice,
         random, // random_source,
         refcell_try_map,
         str_as_str,

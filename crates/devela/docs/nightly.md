@@ -119,6 +119,7 @@ See also
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `c`[optimize](https://github.com/rust-lang/rust/pull/157273)
 - 1.??: `s`[path_is_empty](https://github.com/rust-lang/rust/pull/157065)
+- 1.??: `c`[ptr_cast_slice](https://github.com/rust-lang/rust/pull/162927)
 - 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
 - 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
 - 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
