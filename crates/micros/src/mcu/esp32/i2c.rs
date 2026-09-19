@@ -33,6 +33,7 @@ impl EspI2c {
     #[must_use]
     pub const fn base_addr(self) -> u32 { self.0 }
 
+    #[allow(clippy::identity_op)]
     #[must_use] /// Returns the SCL low-period register.
     pub const fn scl_low_reg(self) -> EspReg32 { EspReg32::new(self.0 + 0x00) }
     #[must_use] /// Returns the controller configuration register.
@@ -213,7 +214,7 @@ impl EspI2c {
         let clkm_div = (source_hz as u64 / (bus_hz as u64 * 1024) + 1) as u32;
         let sclk_hz = source_hz / clkm_div;
         let half_cycle = sclk_hz / bus_hz / 2;
-        assert!(half_cycle >= 4 && half_cycle <= 512, "I²C bus timing is not representable");
+        assert!((4..=512).contains(&half_cycle), "I²C bus timing is not representable");
         let wait_high = if bus_hz >= 80_000 { half_cycle / 2 - 2 } else { half_cycle / 4 };
         let scl_high = half_cycle - wait_high;
 

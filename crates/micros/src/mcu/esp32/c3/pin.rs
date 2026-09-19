@@ -44,14 +44,26 @@ impl Esp32C3Pin {
 #[cfg(feature = "unsafe_mmio")]
 impl Esp32C3Pin {
     /// Returns whether its output driver is enabled.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device.
     pub unsafe fn is_output_enabled(self) -> bool {
         unsafe { McuEsp32C3::GPIO_ENABLE.read() & self.mask() != 0 }
     }
     /// Enables its output driver, preserving the output latch.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device. The pin must not be
+    /// concurrently configured, and enabling its driver must be valid for
+    /// the current pin routing and connected circuit.
     pub unsafe fn enable_output(self) {
         unsafe { McuEsp32C3::GPIO_ENABLE_W1TS.write(self.mask()) };
     }
     /// Disables its output driver, leaving the pin undriven.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device,
+    /// and the pin must not be concurrently configured.
     pub unsafe fn disable_output(self) {
         unsafe { McuEsp32C3::GPIO_ENABLE_W1TC.write(self.mask()) };
     }
@@ -59,10 +71,18 @@ impl Esp32C3Pin {
     /// Returns whether its output latch is low.
     ///
     /// This reads the configured output level, not the physical pad input.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device.
     pub unsafe fn is_output_low(self) -> bool {
         unsafe { !self.is_output_high() }
     }
     /// Enables its output driver after setting its latch low.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device. The pin must not be
+    /// concurrently configured, and driving it low must be valid
+    /// for the current pin routing and connected circuit.
     pub unsafe fn set_output_low(self) {
         unsafe {
             self.set_low();
@@ -73,10 +93,18 @@ impl Esp32C3Pin {
     /// Returns whether its output latch is high.
     ///
     /// This reads the configured output level, not the physical pad input.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device.
     pub unsafe fn is_output_high(self) -> bool {
         unsafe { McuEsp32C3::GPIO_OUT.read() & self.mask() != 0 }
     }
     /// Enables its output driver after setting its latch high.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device. The pin must not be
+    /// concurrently configured, and driving it high must be valid
+    /// for the current pin routing and connected circuit.
     pub unsafe fn set_output_high(self) {
         unsafe {
             self.set_high();
@@ -87,12 +115,20 @@ impl Esp32C3Pin {
     /// Sets its output latch high.
     ///
     /// When its output driver is enabled, this drives the pin high.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device. If its output driver is enabled,
+    /// driving the pin high must be valid for the current pin routing and connected circuit.
     pub unsafe fn set_high(self) {
         unsafe { McuEsp32C3::GPIO_OUT_W1TS.write(self.mask()) };
     }
     /// Sets its output latch low.
     ///
     /// When its output driver is enabled, this drives the pin low.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device. If its output driver is enabled,
+    /// driving the pin low must be valid for the current pin routing and connected circuit.
     pub unsafe fn set_low(self) {
         unsafe { McuEsp32C3::GPIO_OUT_W1TC.write(self.mask()) };
     }

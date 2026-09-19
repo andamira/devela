@@ -114,7 +114,7 @@ impl Esp32C3Uart {
 
         // Keep the 12-bit UART divider representable.
         let denominator = 4095 * baud;
-        let source_div = (source + denominator - 1) / denominator;
+        let source_div = source.div_ceil(denominator);
 
         // SCLK_DIV_NUM stores divider - 1 in eight bits.
         is! { source_div == 0 || source_div > 256, return None }

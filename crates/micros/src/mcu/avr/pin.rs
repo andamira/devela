@@ -50,20 +50,35 @@ impl AvrPin {
 #[cfg(feature = "unsafe_mmio")]
 impl AvrPin {
     /// Returns whether this pin is configured as an output.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device.
     pub unsafe fn is_output(self) -> bool {
         unsafe { self.port.ddr_reg().read() & self.mask() != 0 }
     }
     /// Returns whether this pin is configured as an input.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device.
     pub unsafe fn is_input(self) -> bool {
         unsafe { !self.is_output() }
     }
 
     /// Configures this pin as an output, preserving its `PORTx` latch.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `DDRx` register must not be concurrently modified.
     pub unsafe fn set_output(self) {
         let reg = self.port.ddr_reg();
         unsafe { reg.write(reg.read() | self.mask()) };
     }
     /// Configures this pin as an output initially driven low.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `DDRx` and `PORTx` registers must not be concurrently modified.
+    /// Driving the pin low must be valid for the connected circuit.
     pub unsafe fn set_output_low(self) {
         unsafe {
             self.set_low(); // input becomes floating first if necessary
@@ -71,6 +86,11 @@ impl AvrPin {
         }
     }
     /// Configures this pin as an output initially driven high.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `DDRx` and `PORTx` registers must not be concurrently modified.
+    /// Driving the pin high must be valid for the connected circuit.
     pub unsafe fn set_output_high(self) {
         unsafe {
             self.set_high(); // input pull-up is the intermediate state
@@ -79,11 +99,19 @@ impl AvrPin {
     }
 
     /// Configures this pin as an input, preserving its `PORTx` latch.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers
+    /// on the active device, and its `DDRx` register must not be concurrently modified.
     pub unsafe fn set_input(self) {
         let reg = self.port.ddr_reg();
         unsafe { reg.write(reg.read() & !self.mask()) };
     }
     /// Configures this pin as a floating input.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `DDRx` and `PORTx` registers must not be concurrently modified.
     pub unsafe fn set_input_floating(self) {
         unsafe {
             self.set_input();
@@ -91,6 +119,10 @@ impl AvrPin {
         }
     }
     /// Configures this pin as an input with its pull-up enabled.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `DDRx` and `PORTx` registers must not be concurrently modified.
     pub unsafe fn set_input_pullup(self) {
         unsafe {
             self.set_input();
@@ -102,6 +134,11 @@ impl AvrPin {
     ///
     /// As an output this drives the pin high.
     /// As an input this enables its pull-up resistor.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `PORTx` register must not be concurrently modified.
+    /// If configured as an output, driving the pin high must be valid for the connected circuit.
     pub unsafe fn set_high(self) {
         let reg = self.port.port_reg();
         unsafe { reg.write(reg.read() | self.mask()) };
@@ -110,29 +147,54 @@ impl AvrPin {
     ///
     /// As an output this drives the pin low.
     /// As an input this disables its pull-up resistor.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device,
+    /// and its `PORTx` register must not be concurrently modified. If configured as an output,
+    /// driving the pin low must be valid for the connected circuit.
     pub unsafe fn set_low(self) {
         let reg = self.port.port_reg();
         unsafe { reg.write(reg.read() & !self.mask()) };
     }
     /// Toggles this pin's `PORTx` latch.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device.
+    /// Writing this bit to `PINx` must have the AVR GPIO write-one-to-toggle semantics.
     pub unsafe fn toggle(self) {
         unsafe { self.port.pin_reg().write(self.mask()) };
     }
 
     /// Reads the current input level of this pin.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device.
     pub unsafe fn is_high(self) -> bool {
         unsafe { self.port.pin_reg().read() & self.mask() != 0 }
     }
     /// Returns whether the current input level of this pin is low.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers on the active device.
     pub unsafe fn is_low(self) -> bool {
         unsafe { !self.is_high() }
     }
 
     /// Enables this pin's pull-up resistor when configured as an input.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers
+    /// on the active device, the pin must be configured as an input,
+    /// and its `PORTx` register must not be concurrently modified.
     pub unsafe fn enable_pullup(self) {
         unsafe { self.set_high() }
     }
     /// Disables this pin's pull-up resistor when configured as an input.
+    ///
+    /// # Safety
+    /// This pin's port must describe the corresponding GPIO registers
+    /// on the active device, the pin must be configured as an input,
+    /// and its `PORTx` register must not be concurrently modified.
     pub unsafe fn disable_pullup(self) {
         unsafe { self.set_low() }
     }

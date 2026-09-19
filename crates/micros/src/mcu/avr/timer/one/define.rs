@@ -67,6 +67,7 @@ pub struct AvrTimer1 {
 impl AvrTimer1 {
     /// Creates an AVR Timer/Counter1 from its register data-space addresses.
     #[must_use]
+    #[allow(clippy::too_many_arguments)]
     pub const fn new(
         tccr1a: u16,
         tccr1b: u16,
