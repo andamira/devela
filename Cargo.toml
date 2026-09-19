@@ -61,7 +61,7 @@ devela = { version = "=0.30.0-wip", path = "./crates/devela", default-features =
 devela_macros = { version = "=0.30.0-wip", path = "./crates/devela/macros" }
 #devela_buildpost = { version = "0.30.0-wip", path = "./build/post" }
 
-#* optional external dependencies *#
+#* devela optional external dependencies *#
 
 [workspace.dependencies.atomic] # https://crates.io/crates/atomic (unsafe)
 version = "0.6.1" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
@@ -116,7 +116,7 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 # WAIT: [const_methods](https://github.com/rusticstuff/simdutf8/pull/111) text::str::namespace
 
 [workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
-version = "1.6" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
+version = "1.7" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 
