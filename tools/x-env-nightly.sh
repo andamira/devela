@@ -4,8 +4,8 @@
 
 RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }-Zunstable-options --cfg nightly_doc"
 
-RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options --cfg nightly_doc --generate-link-to-definition"
-RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options --cfg nightly_doc"
+RUSTDOCFLAGS="${RUSTDOCFLAGS:+$RUSTDOCFLAGS }-Zunstable-options"
+RUSTDOCFLAGS+=" --cfg nightly_doc --generate-link-to-definition"
 
 export RUSTFLAGS
 export RUSTDOCFLAGS

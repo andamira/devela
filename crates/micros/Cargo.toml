@@ -28,6 +28,16 @@ publish = true
 [package.metadata.docs.rs]
 features = ["_docs", "__publish"]
 no-default-features = true
+rustc-args = [
+    "--cfg", "nightly_doc",
+    "--cfg", "nightly",
+]
+rustdoc-args = [
+    "--cfg", "nightly_doc",
+    "--cfg", "nightly",
+    "--generate-link-to-definition",
+    "--html-in-header", "./src/_doc/header.html",
+]
 
 
 [lib]

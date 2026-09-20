@@ -17,7 +17,7 @@
 #* CONFIGURATION *#
 
 # `rustfmt` command (minus --check)
-RUSTFMT_TOOLCHAIN="1.98.1"
+RUSTFMT_TOOLCHAIN="1.98.1" # In sync with /Cargo.toml, /.github/workflows/check.yml
 RUSTFMT=(rustfmt +"$RUSTFMT_TOOLCHAIN" --edition 2024)
 
 # directories to include in the search for "all" Rust files, relative to $CRATE_ROOT

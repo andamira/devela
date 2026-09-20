@@ -14,7 +14,7 @@ jobs:
     name: "fmt"
     runs-on: ubuntu-latest
     env:
-      RUSTFMT_TOOLCHAIN: "1.98.1" # In sync with ../../{README.md, Cargo.toml, tools/rustfmt}
+      RUSTFMT_TOOLCHAIN: "1.98.1" # In sync with ../../{Cargo.toml, tools/rustfmt}
 
     steps:
       - name: "checkout"

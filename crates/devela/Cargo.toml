@@ -40,7 +40,6 @@ bench = false
 name = "devela"
 build = "build/_.rs"
 description = "A development substrate of coherence."
-readme = "docs/readme_crate.md"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true

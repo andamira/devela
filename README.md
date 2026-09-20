@@ -1,50 +1,49 @@
 # devela
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
-[![MSRV 1.98.1](https://flat.badgen.net/badge/MSRV/1.98.1/purple)](https://releases.rs/docs/1.98.1/)
-[![Documentation](https://flat.badgen.net/badge/docs/260909/green)](https://docs.rs/devela/)
-&nbsp;<sup>←published</sup>
-<br/>
-[![Repository](https://flat.badgen.net/badge/github/v0.30.0/blue?icon=git)](https://github.com/andamira/devela)
-[![MSRV ahead 1.98.1](https://flat.badgen.net/badge/MSRV/1.98.1/blue)](https://releases.rs/docs/1.98.1/)
-[![Documentation ahead](https://flat.badgen.net/badge/docs/260909/blue)](https://andamira.github.io/devela/unpublished/devela/)
-&nbsp;<sup>←unpublished</sup>
+[![MSRV](https://img.shields.io/crates/msrv/devela?label=MSRV)](https://crates.io/crates/devela)
+[![docs.rs](https://img.shields.io/docsrs/devela?label=docs.rs)](https://docs.rs/devela/latest/devela/)
+[![WIP docs](https://img.shields.io/badge/docs-WIP-blue)](https://andamira.github.io/)
 
 ---
 
 > A development substrate of coherence.
 
-devela is a general-purpose Rust library built from small, composable parts.
-Its modules cover data, mathematics, text, media, and system interfaces.
+This is a family of Rust libraries centered on the foundational `devela` crate.
 
-The library supports stable Rust and `no_std`, with features for allocation,
-`std`, and platform support. Many APIs work with fixed or caller-provided storage.
+## Crates
 
-The library is pre-1.0 and still taking shape. APIs may change between releases.
+| crate                 | role                              | source       | docs                     |
+| --------------------- | --------------------------------- | ------------ | ------------------------ |
+| [`devela`][c1]        | foundational library              | [source][s1] | [latest][d1] · [wip][w1] |
+| [`devela_macros`][c2] | procedural macros                 | [source][s2] | [latest][d2] · [wip][w2] |
+| `devela_bridge`       | foreign-language and ABI bridges  | [source][s3] | [wip][w3] |
+| `devela_extend`       | ecosystem extensions and adapters | [source][s4] | — |
+| `devela_micros`       | embedded hardware support         | [source][s5] | [wip][w5] |
 
-## Getting started
+The project is pre-1.0 and still taking shape. APIs may change between releases.
 
-Add the library to your `Cargo.toml`:
+[c1]: https://crates.io/crates/devela
+[s1]: crates/devela
+[d1]: https://docs.rs/devela
+[w1]: https://andamira.github.io/devela/wip/devela/
 
-```toml
-[dependencies]
-devela = "0.29"
-```
+[c2]: https://crates.io/crates/devela_macros
+[s2]: crates/devela/macros
+[d2]: https://docs.rs/devela_macros
+[w2]: https://andamira.github.io/devela_macros/wip/devela_macros/
 
-No Cargo features are enabled by default. The baseline supports `no_std`
-and does not require allocation.
+[c3]: https://crates.io/crates/devela_bridge
+[s3]: crates/bridge
+[d3]: https://docs.rs/devela_bridge
+[w3]: https://andamira.github.io/devela_bridge/wip/devela_bridge/
 
-Enable `alloc` or `std` as needed; `std` includes `alloc`.
-Additional features select the functionality you want to use.
-See [Features and configuration][features] for the available choices.
+[c4]: https://crates.io/crates/devela_extend
+[s4]: crates/extend
+[d4]: https://docs.rs/devela_extend
+[w4]: https://andamira.github.io/devela_extend/wip/devela_extend/
 
-## Documentation
-
-* [API documentation][api]: browse the library by module.
-* [All items][items]: explore a flat view of the public API.
-* [Design notes][design]: understand the principles behind the library.
-
-[features]: https://docs.rs/devela/latest/devela/_doc/reference/features/index.html
-[api]: https://docs.rs/devela/latest/devela/
-[items]: https://docs.rs/devela/latest/devela/all/
-[design]: https://docs.rs/devela/latest/devela/_doc/design/
+[c5]: https://crates.io/crates/devela_micros
+[s5]: crates/micros
+[d5]: https://docs.rs/devela_micros
+[w5]: https://andamira.github.io/devela_micros/wip/devela_micros/

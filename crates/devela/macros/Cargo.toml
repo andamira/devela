@@ -3,7 +3,7 @@
 [package]
 name = "devela_macros"
 description = "Procedural macros for devela."
-repository = "https://github.com/andamira/devela/tree/main/crates/macros"
+repository = "https://github.com/andamira/devela/tree/main/crates/devela/macros"
 documentation = "https://docs.rs/devela_macros"
 version.workspace = true
 rust-version.workspace = true

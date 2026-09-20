@@ -47,7 +47,7 @@ exclude = [
 # Centralizes member-package metadata.
 # ------------------------------------------------------------------------------
 version = "0.30.0-wip" # In sync with docs/changelog.md
-rust-version = "1.98.1" # In sync with README.md, .github/workflows/check.yml, tools/rustfmt
+rust-version = "1.98.1" # In sync with .github/workflows/check.yml, tools/rustfmt
 documentation = "https://docs.rs/devela/"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 license = "MIT OR Apache-2.0"

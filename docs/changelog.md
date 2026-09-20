@@ -32,8 +32,11 @@
 - make formatting checks reproducible across local and CI environments.
 - restrict formatting to tracked Rust files and pin the rustfmt toolchain version.
 
-### CI
+## CI
 - add `actionlint.yml` script.
+
+## documentation
+- split repository-level and crate-specific READMEs, with stable latest and WIP documentation links.
 
 ---
 
