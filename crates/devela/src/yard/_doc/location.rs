@@ -22,7 +22,7 @@
 /// instead of the conceptual private source module of origin.
 ///
 /// The annotation renders a small location marker (`📍`) followed by the
-/// public API path under `devela`.
+/// public API path under the current Cargo package.
 ///
 /// An exact item may optionally be supplied as `kind Item`. In that form,
 /// the module path and item name are linked independently.
@@ -46,143 +46,182 @@
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 #[macro_export]
-#[allow(clippy::crate_in_macro_def, reason = "to invoke __crate_name from crate of invocation")]
 macro_rules! _doc_location· {
     /* direct forms --------------------------------------------------------- */
 
-    // for an item defined in devela.
+    // Ordinary item whose public location is in the current crate.
     ($path:literal) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta $path),
-            "\n\n---\n\n" // TEMP
+            "\n\n---\n\n"
         )
     };
-    // for a specific item defined in devela.
     ($path:literal, $kind:ident $item:ident) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta $path, $kind $item),
-            "\n\n---\n\n" // TEMP
+            "\n\n---\n\n"
         )
     };
-    // for an item defined in the proc-macro workspace crate
-    // and aggregated in devela.
+
+    // Procedural macro whose public location is in the current crate.
     (proc $path:literal) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta proc $path),
-            "\n\n---\n\n" // TEMP
+            "\n\n---\n\n"
         )
     };
-    // for a specific item defined in the proc-macro workspace crate
-    // and aggregated in devela.
     (proc $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta proc $path, $kind $item),
-            "\n\n---\n\n" // TEMP
+            "\n\n---\n\n"
         )
     };
-    // for items re-exported from another crate.
-    // Called from `_reexport!`; deliberately does not end with the closing separator.
+
+    // Procedural macro defined at the root of the current proc-macro crate,
+    // with its public location in another crate.
+    (proc in $target:ident $path:literal) => {
+        concat!(
+            "\n\n---\n\n",
+            $crate::_doc_location!(%from_meta proc in $target $path),
+            "\n\n---\n\n"
+        )
+    };
+    (proc in $target:ident $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "\n\n---\n\n",
+            $crate::_doc_location!(%from_meta proc in $target $path, $kind $item),
+            "\n\n---\n\n"
+        )
+    };
+
+    // Item re-exported from another crate.
+    // Called from `_reexport!`; deliberately leaves the closing separator
+    // to the surrounding metadata machinery.
     (re-exported $path:literal) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta re-exported $path)
         )
     };
-    // same, with an exact item.
     (re-exported $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "\n\n---\n\n", // TEMP
+            "\n\n---\n\n",
             $crate::_doc_location!(%from_meta re-exported $path, $kind $item)
-        )
-    };
-    // re-export location fragment.
-    (%from_meta re-exported $path:literal) => {
-        concat!(
-            "<sup title='re-exported from `", crate::__crate_name!(),
-            "`'>[`📍`](",
-            $crate::doclink·![custom_current_crate $path, @mod],
-            ")</sup>",
-            "<sup class='_doc_location' title='location in `devela`'><b>",
-            "[`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
-            ")</b></sup>",
-        )
-    };
-    // exact re-export location fragment.
-    (%from_meta re-exported $path:literal, $kind:ident $item:ident) => {
-        concat!(
-            "<sup title='re-exported from `", crate::__crate_name!(),
-            "`'>[`📍`](",
-            $crate::doclink·![custom_current_crate $path, @item $kind $item],
-            ")</sup>",
-            "<sup class='_doc_location' title='location in `devela`'><b>",
-            "[`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
-            ")::[`", ::core::stringify!($item), "`](",
-            $crate::doclink·![custom devela $path @item $kind $item],
-            ")</b></sup>",
         )
     };
 
     /* `_doc_meta!` fragments ---------------------------------------------- */
 
-    // module location in devela.
+    // Ordinary module location in the current crate.
     (%from_meta $path:literal) => {
         concat!(
-            "<sup class='_doc_location' title='location in `devela`'>",
-            "📍 [`", $path, "`](",
-            // NOTE: Use the exported definition directly here: resolving the `doclink!`
-            // re-export can get stuck during early `#[doc = ...]` expansion.
-            $crate::doclink·![custom devela $path @mod],
+            "<sup class='_doc_location' title='location in `",
+            env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>"
         )
     };
-    // exact item location in devela.
+
+    // Exact ordinary item location in the current crate.
     (%from_meta $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "<sup class='_doc_location' title='location in `devela`'>",
-            "📍 [`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
+            "<sup class='_doc_location' title='location in `",
+            env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
             ")::[`", ::core::stringify!($item), "`](",
-            $crate::doclink·![custom devela $path @item $kind $item],
+            $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</sup>"
         )
     };
-    // proc-macro module location in devela.
+
+    // Procedural macro whose public location is in the current crate.
     (%from_meta proc $path:literal) => {
         concat!(
-            "<sup class='_doc_location' title='procedural macro location in `devela`'>",
-            "📍 [`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
+            "<sup class='_doc_location' title='procedural macro location in `",
+            env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>"
         )
     };
-    // exact proc-macro item location in devela.
+
     (%from_meta proc $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "<sup class='_doc_location' title='procedural macro location in `devela`'>",
-            "📍 [`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
+            "<sup class='_doc_location' title='procedural macro location in `",
+            env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
             ")::[`", ::core::stringify!($item), "`](",
-            $crate::doclink·![custom devela $path @item $kind $item],
+            $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</sup>"
         )
     };
-    // re-export location fragment.
+
+    // Procedural macro defined at the root of the current proc-macro crate,
+    // with its public location in another crate.
+    (%from_meta proc in $target:ident $path:literal) => {
+        concat!(
+            "<sup title='defined in `", env!("CARGO_PKG_NAME"), "`'>",
+            "📍 [`", env!("CARGO_PKG_NAME"), "`](",
+            $crate::doclink·![custom_current_proc_crate @mod],
+            ")</sup>",
+
+            "<sup> → </sup>",
+
+            "<sup class='_doc_location' title='public location in `",
+            ::core::stringify!($target), "`'><b>", "[`", $path, "`](",
+            $crate::doclink·![custom $target $path @mod],
+            ")</b></sup>"
+        )
+    };
+    (%from_meta proc in $target:ident $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            // Definition in the current proc-macro crate.
+            "<sup title='defined in `", env!("CARGO_PKG_NAME"), "`'>",
+            "📍 [`", env!("CARGO_PKG_NAME"), "`](",
+            $crate::doclink·![custom_current_proc_crate @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink·![custom_current_proc_crate @item $kind $item],
+            ")</sup>",
+
+            "<sup> → </sup>",
+
+            // Public location in the target crate.
+            "<sup class='_doc_location' title='public location in `",
+            ::core::stringify!($target), "`'><b>", "[`", $path, "`](",
+            $crate::doclink·![custom $target $path @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink·![custom $target $path @item $kind $item],
+            ")</b></sup>"
+        )
+    };
+
+    // Re-export location in the current crate.
     (%from_meta re-exported $path:literal) => {
         concat!(
-            "<sup title='re-exported from `", crate::__crate_name!(),
-            "`'>[`📍`](",
+            "<sup title='re-exported in `", env!("CARGO_PKG_NAME"), "`'>[`📍`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>",
-            "<sup class='_doc_location' title='location in `devela`'><b>",
-            "[`", $path, "`](",
-            $crate::doclink·![custom devela $path @mod],
-            ")</b></sup>",
+            "<sup class='_doc_location' title='location in `", env!("CARGO_PKG_NAME"),
+            "`'><b>", "[`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
+            ")</b></sup>"
+        )
+    };
+
+    (%from_meta re-exported $path:literal, $kind:ident $item:ident) => {
+        concat!(
+            "<sup title='re-exported in `", env!("CARGO_PKG_NAME"), "`'>[`📍`](",
+            $crate::doclink·![custom_current_crate $path, @item $kind $item],
+            ")</sup>",
+            "<sup class='_doc_location' title='location in `", env!("CARGO_PKG_NAME"),
+            "`'><b>", "[`", $path, "`](",
+            $crate::doclink·![custom_current_crate $path, @mod],
+            ")::[`", ::core::stringify!($item), "`](",
+            $crate::doclink·![custom_current_crate $path, @item $kind $item],
+            ")</b></sup>"
         )
     };
 }

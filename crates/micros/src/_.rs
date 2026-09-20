@@ -13,13 +13,6 @@
 /* imports */
 
 extern crate self as devela_micros;
-macro_rules! __crate_name {
-    () => {
-        "devela_micros"
-    };
-}
-#[allow(unused_imports)]
-pub(crate) use __crate_name;
 
 use ::devela::__hidden::*;
 use ::devela::all::*;

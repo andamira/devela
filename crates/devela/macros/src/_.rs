@@ -43,12 +43,6 @@
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 
 extern crate self as devela_macros;
-macro_rules! __crate_name {
-    () => {
-        "devela_macros"
-    };
-}
-pub(crate) use __crate_name;
 
 use proc_macro::TokenStream as TS;
 use std::collections::HashSet;
@@ -71,7 +65,7 @@ items! { #[allow(unused_imports)] use items; }
 /* compile */
 
 /// Evaluates to either a `true` of `false` literal based on the [predicate].
-#[doc = crate::_doc_location!(proc "code/util/cfg", macro cif)]
+#[doc = crate::_doc_location!(proc in devela "code/util/cfg", macro cif)]
 ///
 #[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
 #[doc = concat!("# Example\n```\n", include_str!("../examples/cif.rs"), "\n```")]
@@ -79,7 +73,7 @@ items! { #[allow(unused_imports)] use items; }
 pub fn cif(input: TS) -> TS { body_cif(input) }
 
 /// Conditionally compiles the thing it is attached to based on the [predicate].
-#[doc = crate::_doc_location!(proc "code/util/cfg", attr compile)]
+#[doc = crate::_doc_location!(proc in devela "code/util/cfg", attr compile)]
 ///
 #[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
 #[doc = concat!("# Example\n```\n", include_str!("../examples/compile.rs"), "\n```")]
@@ -87,7 +81,7 @@ pub fn cif(input: TS) -> TS { body_cif(input) }
 pub fn compile(args: TS, input: TS) -> TS { body_compile(args, input) }
 
 /// Conditionally compiles the given attributes based on the [predicate].
-#[doc = crate::_doc_location!(proc "code/util/cfg", attr compile_attr)]
+#[doc = crate::_doc_location!(proc in devela "code/util/cfg", attr compile_attr)]
 ///
 #[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
 ///
@@ -97,7 +91,7 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 
 // #[doc(hidden)]
 // /// Conditionally compiles each doc comment based on the [predicate].
-// #[doc = crate::_doc_location!(proc "code/util/cfg", attr compile_docs)]
+// #[doc = crate::_doc_location!(proc in devela "code/util/cfg", attr compile_docs)]
 // ///
 // #[doc = doclink!(devela "[predicate]" "_doc/macros" @mod "#compilation-predicates")]
 // ///
@@ -108,7 +102,7 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 /* ident */
 
 /// Returns the total number of [identifiers] in its input.
-#[doc = crate::_doc_location!(proc "code/util/token", macro ident_total)]
+#[doc = crate::_doc_location!(proc in devela "code/util/token", macro ident_total)]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -128,7 +122,7 @@ pub fn compile_attr(args: TS, input: TS) -> TS { body_compile_attr(args, input) 
 pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 
 /// Returns the numbers of both *total* and *unique* [identifiers] in its input.
-#[doc = crate::_doc_location!(proc "code/util/token", macro ident_total_unique)]
+#[doc = crate::_doc_location!(proc in devela "code/util/token", macro ident_total_unique)]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -148,7 +142,7 @@ pub fn ident_total(input: TS) -> TS { body_ident_total(input) }
 pub fn ident_total_unique(input: TS) -> TS { body_ident_total_unique(input) }
 
 /// Returns the number of *unique* [identifiers] in its input.
-#[doc = crate::_doc_location!(proc "code/util/token", macro ident_unique)]
+#[doc = crate::_doc_location!(proc in devela "code/util/token", macro ident_unique)]
 ///
 /// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
 ///
@@ -170,7 +164,7 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 /* derive */
 
 /// Applies a declarative macro to the decorated item.
-#[doc = crate::_doc_location!(proc "code/util/synth", attr macro_apply)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", attr macro_apply)]
 ///
 /// Expands `#[macro_apply(m)] item` as `m! { item }`.
 ///
@@ -192,7 +186,7 @@ pub fn ident_unique(input: TS) -> TS { body_ident_unique(input) }
 pub fn macro_apply(args: TS, input: TS) -> TS { body_macro_apply(args, input) }
 
 /// Runs classic derives and declarative derives from one list.
-#[doc = crate::_doc_location!(proc "code/util/synth", attr macro_derive)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", attr macro_derive)]
 ///
 /// Entries ending in `!` are called as declarative macros.
 /// Other entries are forwarded to Rust's built-in `derive`.
@@ -212,7 +206,7 @@ pub fn macro_apply(args: TS, input: TS) -> TS { body_macro_apply(args, input) }
 pub fn macro_derive(args: TS, input: TS) -> TS { body_macro_derive(args, input) }
 
 /// Runs declarative derive-like macros over the decorated item.
-#[doc = crate::_doc_location!(proc "code/util/synth", attr macro_derive_with)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", attr macro_derive_with)]
 ///
 /// Each macro receives a copy of the item and may emit impls or side-items.
 /// The original item is preserved.
@@ -242,7 +236,7 @@ pub fn __macro_derive_helpers(_: TS) -> TS { TS::new() }
 /* misc. */
 
 /// Returns the first non-empty argument.
-#[doc = crate::_doc_location!(proc "code/util/token", macro coalesce)]
+#[doc = crate::_doc_location!(proc in devela "code/util/token", macro coalesce)]
 ///
 /// If all arguments are empty, the macro returns nothing.
 ///
@@ -255,7 +249,7 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 
 // #[doc = base::_tags!(construction niche procedural_macro)]
 /// Defines a compact enum over a contiguous integer interval.
-#[doc = crate::_doc_location!(proc "num/grain/niche", macro enumint)]
+#[doc = crate::_doc_location!(proc in devela "num/grain/niche", macro enumint)]
 ///
 #[doc = include_str!("docs/enumint.md")]
 // #[doc = concat!("# Example\n```\n", include_str!("../examples/enumint.rs"), "\n```")]
@@ -263,7 +257,7 @@ pub fn coalesce(input: TS) -> TS { body_coalesce(input) }
 pub fn enumint(input: TS) -> TS { body_enumint(input) }
 
 /// Generates an expression for accessing a field of a tuple or struct.
-#[doc = crate::_doc_location!(proc "code/util/synth", macro field_of)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", macro field_of)]
 ///
 /// Constructs an expression in the form `<value>.<field>`, where `<value>`
 /// is a tuple or struct, and `<field>` is the field to access, either
@@ -286,7 +280,7 @@ pub fn enumint(input: TS) -> TS { body_enumint(input) }
 pub fn field_of(input: TS) -> TS { body_field_of(input) }
 
 /// Allows to paste identifiers together.
-#[doc = crate::_doc_location!("code/util/token", macro paste)]
+#[doc = crate::_doc_location!(proc in devela "code/util/token", macro paste)]
 ///
 #[doc = include_str!("docs/paste.md")]
 #[doc = crate::_doc_vendor!("pastey")]
@@ -294,7 +288,7 @@ pub fn field_of(input: TS) -> TS { body_field_of(input) }
 pub fn paste(input: TS) -> TS { body_paste(input) }
 
 /// Repeats an expression the given number of times, as duplicated code with no loops.
-#[doc = crate::_doc_location!(proc "code/util/synth", macro repeat)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", macro repeat)]
 ///
 /// # Example
 /// ```
@@ -308,7 +302,7 @@ pub fn paste(input: TS) -> TS { body_paste(input) }
 pub fn repeat(input: TS) -> TS { body_repeat(input) }
 
 /// Declares source-file modules using devela's module layout convention.
-#[doc = crate::_doc_location!(proc "code/util/synth", macro mods_in)]
+#[doc = crate::_doc_location!(proc in devela "code/util/synth", macro mods_in)]
 ///
 /// - Ordinary `mod` declarations use Rust's conventional module-file lookup.
 /// - `mod_` declarations use `_.rs` as the root of a module directory.

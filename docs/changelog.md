@@ -92,7 +92,8 @@
 - make `Ptr` provenance-related methods const:
 
 ## yard
-- fix `_doc_test_size_of!` to not hardcode the crate name.
+- fix `_doc_location!` and `_doc_test_size_of!` to not hardcode the crate name.
+- replace uses of `__crate_name!` macro with `env!("CARGO_PKG_NAME")`.
 
 ---
 

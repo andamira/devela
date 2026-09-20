@@ -30,8 +30,6 @@ crate::_ABBR_PRNG!(), " type."]]
 ///
 /// # Examples
 /// ```
-// WAIT: [cfg(doctest)](https://github.com/rust-lang/rust/issues/67295)
-/// # #[macro_export]macro_rules!__crate_name{()=>{""};} // doctest stub for _doc_location
 /// use devela::rand_pcg;
 ///
 /// rand_pcg! {

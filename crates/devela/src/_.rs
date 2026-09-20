@@ -191,12 +191,6 @@ extern crate alloc;
 extern crate std;
 
 extern crate self as devela;
-macro_rules! __crate_name {
-    () => {
-        "devela"
-    };
-}
-pub(crate) use __crate_name;
 
 /* root modules */
 
