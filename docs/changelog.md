@@ -124,6 +124,9 @@
 ### board
 - new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.
 
+#### device::display
+- new types: `Ssd13xx`, `Ssd13xxI2c`, `Ssd13xxWrite`.
+
 #### mcu::avr
 - new types: `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.
 

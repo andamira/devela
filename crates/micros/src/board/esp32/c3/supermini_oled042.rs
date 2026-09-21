@@ -2,7 +2,7 @@
 //! Defines [`BoardSuperMiniOled042`].
 //
 
-use crate::{Esp32C3Pin, Esp32C3Uart, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
+use crate::{Esp32C3Pin, Esp32C3Uart, EspUsbSerialJtag, I2cAddr7, McuEsp32C3, Ssd13xx};
 #[cfg(feature = "unsafe_mmio")]
 use crate::{EspI2c, I2cController};
 
@@ -48,6 +48,9 @@ impl BoardSuperMiniOled042 {
 
 /// # OLED
 impl BoardSuperMiniOled042 {
+    /// Onboard monochrome OLED display.
+    pub const OLED: Ssd13xx = Ssd13xx::OLED_72X40;
+
     /// OLED I²C bus frequency in hertz.
     pub const OLED_I2C_HZ: u32 = 400_000;
 
@@ -59,27 +62,6 @@ impl BoardSuperMiniOled042 {
 
     /// OLED 7-bit I²C address.
     pub const OLED_ADDR: I2cAddr7 = I2cAddr7::new(0x3c);
-
-    /// OLED visible width in pixels.
-    pub const OLED_WIDTH: usize = 72;
-
-    /// OLED visible height in pixels.
-    pub const OLED_HEIGHT: usize = 40;
-
-    /// Number of 8-pixel pages in the OLED framebuffer.
-    pub const OLED_PAGE_COUNT: usize = Self::OLED_HEIGHT / 8;
-
-    /// Number of bytes in one native 1-bit OLED frame.
-    pub const OLED_FRAME_BYTES: usize = Self::OLED_WIDTH * Self::OLED_PAGE_COUNT;
-
-    /// SSD1306 GDDRAM column corresponding to visible column zero.
-    pub const OLED_RAM_COLUMN_OFFSET: u8 = 28;
-
-    /// Last SSD1306 GDDRAM column occupied by the visible OLED area.
-    pub const OLED_RAM_COLUMN_LAST: u8 = Self::OLED_RAM_COLUMN_OFFSET + Self::OLED_WIDTH as u8 - 1;
-
-    /// Last SSD1306 GDDRAM page occupied by the visible OLED area.
-    pub const OLED_RAM_PAGE_LAST: u8 = Self::OLED_PAGE_COUNT as u8 - 1;
 
     /// Prepares the I²C bus connected to the onboard OLED.
     ///
