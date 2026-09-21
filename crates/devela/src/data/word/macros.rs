@@ -1,5 +1,5 @@
 //
-//! Defines [`word!`].
+//! Defines [`word!`] and [`__word!`].
 //
 
 #[doc = crate::_tags!(data word construction)]
@@ -37,7 +37,7 @@
 /// }
 /// ```
 ///
-/// Existing types may also provide an explicit representation lens:
+/// Existing types may also provide an explicit representation mapping:
 /// ```
 /// use devela::word;
 ///
@@ -56,50 +56,26 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! word· {
-    /* definitions: tuple, fallible */
+    /* define: tuple */
     (
         $(#[$meta:meta])*
         $vis:vis struct $name:ident($repr:ty);
+        $($rest:tt)*
+    ) => {
+        $(#[$meta])*
+        #[repr(transparent)]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        $vis struct $name($repr);
 
-        type Error = $error:ty;
-        try_from_raw($raw:ident) $body:block
-    ) => {
-        $(#[$meta])*
-        #[repr(transparent)]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        $vis struct $name($repr);
-        $crate::word! {
-            %impl_fallible $name => $repr;
-            type Error = $error;
-            raw(this) { this.0 }
-            try_from_raw($raw) $body
-        }
+        $crate::__word! { %tuple $name => $repr; $($rest)* }
     };
-    /* definitions: tuple, infallible */
-    (
-        $(#[$meta:meta])*
-        $vis:vis struct $name:ident($repr:ty);
-    ) => {
-        $(#[$meta])*
-        #[repr(transparent)]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        $vis struct $name($repr);
-        $crate::word! {
-            %impl_infallible $name => $repr;
-            raw(this) { this.0 }
-            from_raw(raw) { Self(raw) }
-        }
-    };
-    /* definitions: named, fallible */
+    /* define: named */
     (
         $(#[$meta:meta])*
         $vis:vis struct $name:ident {
             $field:ident: $repr:ty $(,)?
         }
-        $(;)?
-
-        type Error = $error:ty;
-        try_from_raw($raw:ident) $body:block
+        $($rest:tt)*
     ) => {
         $(#[$meta])*
         #[repr(transparent)]
@@ -107,112 +83,138 @@ macro_rules! word· {
         $vis struct $name {
             $field: $repr,
         }
-        $crate::word! {
-            %impl_fallible $name => $repr;
-            type Error = $error;
-            raw(this) { this.$field }
-            try_from_raw($raw) $body
-        }
-    };
-    /* definitions: named, infallible */
-    (
-        $(#[$meta:meta])*
-        $vis:vis struct $name:ident {
-            $field:ident: $repr:ty $(,)?
-        }
-        $(;)?
-    ) => {
-        $(#[$meta])*
-        #[repr(transparent)]
-        #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-        $vis struct $name {
-            $field: $repr,
-        }
-        $crate::word! {
-            %impl_infallible $name => $repr;
-            raw(this) { this.$field }
-            from_raw(raw) { Self { $field: raw } }
-        }
-    };
-    /* existing tuple newtype: fallible */
-    (
-        impl $name:ident($repr:ty);
 
-        type Error = $error:ty;
-        try_from_raw($raw:ident) $body:block
-    ) => {
-        $crate::word! {
-            %impl_fallible $name => $repr;
-            type Error = $error;
-            raw(this) { this.0 }
-            try_from_raw($raw) $body
-        }
+        $crate::__word! { %named $name { $field: $repr } $($rest)* }
     };
-    /* existing tuple newtype: infallible */
+    /* existing: tuple */
     (
         impl $name:ident($repr:ty);
+        $($rest:tt)*
     ) => {
-        $crate::word! {
-            %impl_infallible $name => $repr;
-            raw(this) { this.0 }
-            from_raw(raw) { Self(raw) }
-        }
+        $crate::__word! { %tuple $name => $repr; $($rest)* }
     };
-    /* existing named newtype: fallible */
+    /* existing: named */
     (
         impl $name:ident {
             $field:ident: $repr:ty $(,)?
         }
-        $(;)?
-
-        type Error = $error:ty;
-        try_from_raw($raw:ident) $body:block
+        $($rest:tt)*
     ) => {
-        $crate::word! {
-            %impl_fallible $name => $repr;
-            type Error = $error;
-            raw(this) { this.$field }
-            try_from_raw($raw) $body
-        }
+        $crate::__word! { %named $name { $field: $repr } $($rest)* }
     };
-    /* existing named newtype: infallible */
-    (
-        impl $name:ident {
-            $field:ident: $repr:ty $(,)?
-        }
-        $(;)?
-    ) => {
-        $crate::word! {
-            %impl_infallible $name => $repr;
-            raw(this) { this.$field }
-            from_raw(raw) { Self { $field: raw } }
-        }
-    };
-    /* explicit representation lens: fallible */
+    /* explicit representation */
     (
         impl $name:ident => $repr:ty {
+            $($body:tt)*
+        }
+    ) => {
+        $crate::__word! { %repr $name => $repr { $($body)* } }
+    };
+}
+#[doc(inline)]
+pub use word· as word;
+
+/// Private API of [`word!`][crate::word].
+//
+// word! public arms recognize only the surface declaration shape.
+// Tuple and named forms are normalized into an explicit representation,
+// which captures how to extract and reconstruct the raw value.
+// The repr is then routed to the shared fallible or infallible implementation.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __word· {
+    /* normalize optional named semicolon */
+    (
+        %named $name:ident { $field:ident: $repr:ty }
+        ;
+        $($rest:tt)*
+    ) => {
+        $crate::__word! {
+            %named $name { $field: $repr }
+            $($rest)*
+        }
+    };
+    /* normalize tuple: fallible */
+    (
+        %tuple $name:ident => $repr:ty;
+
+        type Error = $error:ty;
+        try_from_raw($raw:ident) $body:block
+    ) => {
+        $crate::__word! {
+            %repr $name => $repr {
+                type Error = $error;
+
+                raw(this) { this.0 }
+                try_from_raw($raw) $body
+            }
+        }
+    };
+    /* normalize tuple: infallible */
+    (
+        %tuple $name:ident => $repr:ty;
+    ) => {
+        $crate::__word! {
+            %repr $name => $repr {
+                raw(this) { this.0 }
+                from_raw(raw) { Self(raw) }
+            }
+        }
+    };
+    /* normalize named: fallible */
+    (
+        %named $name:ident { $field:ident: $repr:ty }
+
+        type Error = $error:ty;
+        try_from_raw($raw:ident) $body:block
+    ) => {
+        $crate::__word! {
+            %repr $name => $repr {
+                type Error = $error;
+
+                raw(this) { this.$field }
+                try_from_raw($raw) $body
+            }
+        }
+    };
+    /* normalize named: infallible */
+    (
+        %named $name:ident { $field:ident: $repr:ty }
+    ) => {
+        $crate::__word! {
+            %repr $name => $repr {
+                raw(this) { this.$field }
+                from_raw(raw) { Self { $field: raw } }
+            }
+        }
+    };
+    /* normalize explicit repr: fallible */
+    (
+        %repr $name:ident => $repr:ty {
             type Error = $error:ty;
 
             raw($this:ident) $raw_body:block
             try_from_raw($raw:ident) $try_body:block
         }
     ) => {
-        $crate::word! {
+        $crate::__word! {
             %impl_fallible $name => $repr;
             type Error = $error;
+
             raw($this) $raw_body
             try_from_raw($raw) $try_body
         }
     };
-    /* explicit representation lens: infallible */
+    /* normalize explicit repr: infallible */
     (
-        impl $name:ident => $repr:ty {
+        %repr $name:ident => $repr:ty {
             raw($this:ident) $raw_body:block
             from_raw($raw:ident) $from_body:block
         }
     ) => {
-        $crate::word! {
+        $crate::__word! {
             %impl_infallible $name => $repr;
+
             raw($this) $raw_body
             from_raw($raw) $from_body
         }
@@ -220,6 +222,7 @@ macro_rules! word· {
     /* shared infallible implementation */
     (
         %impl_infallible $name:ident => $repr:ty;
+
         raw($this:ident) $raw_body:block
         from_raw($raw:ident) $from_body:block
     ) => {
@@ -231,7 +234,9 @@ macro_rules! word· {
                 $raw_body
             }
             /// Reconstructs the word exactly from any raw representation.
-            pub const fn from_raw($raw: $repr) -> Self $from_body
+            pub const fn from_raw($raw: $repr) -> Self
+                $from_body
+
             /// Attempts to reconstruct the word from its raw representation.
             pub const fn try_from_raw(raw: $repr) -> $crate::Result<Self, $crate::Infallible> {
                 Ok(Self::from_raw(raw))
@@ -240,7 +245,10 @@ macro_rules! word· {
         impl $crate::WordTry for $name {
             type Repr = $repr;
             type Error = $crate::Infallible;
-            fn raw(self) -> Self::Repr { $name::raw(self) }
+
+            fn raw(self) -> Self::Repr {
+                $name::raw(self)
+            }
             fn try_from_raw(raw: Self::Repr) -> $crate::Result<Self, Self::Error> {
                 $name::try_from_raw(raw)
             }
@@ -250,6 +258,7 @@ macro_rules! word· {
     (
         %impl_fallible $name:ident => $repr:ty;
         type Error = $error:ty;
+
         raw($this:ident) $raw_body:block
         try_from_raw($raw:ident) $try_body:block
     ) => {
@@ -257,22 +266,24 @@ macro_rules! word· {
             /// Returns the canonical raw representation.
             #[must_use]
             pub const fn raw(self) -> $repr {
-                let $this = self;
-                $raw_body
+                let $this = self; $raw_body
             }
             /// Attempts exact reconstruction from a raw representation.
-            pub const fn try_from_raw($raw: $repr,) -> $crate::Result<Self, $error> $try_body
+            pub const fn try_from_raw($raw: $repr) -> $crate::Result<Self, $error>
+                $try_body
         }
-
         impl $crate::WordTry for $name {
             type Repr = $repr;
             type Error = $error;
-            fn raw(self) -> Self::Repr { $name::raw(self) }
+
+            fn raw(self) -> Self::Repr {
+                $name::raw(self)
+            }
             fn try_from_raw(raw: Self::Repr) -> $crate::Result<Self, Self::Error> {
                 $name::try_from_raw(raw)
             }
         }
     };
 }
-#[doc(inline)]
-pub use word· as word;
+#[doc(hidden)]
+pub use __word· as __word;

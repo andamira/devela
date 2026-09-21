@@ -70,6 +70,7 @@ crate::mods_out! { // _pub_mods, _crate_internals, _reexports, _hidden
             layout::_hidden::*,
             store::_hidden::*,
             topol::_hidden::*,
+            word::_hidden::*,
         };
     }
 }

@@ -39,11 +39,14 @@ crate::mods_in! {
     mod macros; // word!
     mod traits; // Word, WordTry
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             macros::word,
             traits::{Word, WordTry},
         };
+    }
+    _hidden {
+        pub use super::macros::__word;
     }
 }

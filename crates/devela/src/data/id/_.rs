@@ -43,6 +43,9 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         };
     }
     _hidden {
-        pub use super::handle::_hidden::*;
+        pub use super::{
+            handle::_hidden::*,
+            local::_hidden::*,
+        };
     }
 }

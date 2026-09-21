@@ -15,36 +15,27 @@
 //
 
 crate::mods_in! {
-    #[cfg(all(
-        any(test, feature = "_docs_examples"),
-        any(feature = "dep_portable_atomic", target_has_atomic = "64"),
-    ))]
-    mod _example; // IdSeqU64Example
-
     mod pin; // IdPin
     #[cfg(feature = "alloc")]
     mod pin_box; // IdPinBox
 
     mod registry; // IdRegistry
-    mod seq; // id_seq!
+    mod_ seq; // id_seq!
     mod type_resource; // zero-cost type-safe resource markers
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
             pin::IdPin,
             registry::IdRegistry,
-            seq::id_seq,
+            seq::_all::*,
             type_resource::{TypeResource, TypeResourced, type_resource},
         };
         #[cfg(feature = "alloc")]
         pub use super::pin_box::IdPinBox;
-
-        #[cfg(all(
-            any(test, feature = "_docs_examples"),
-            any(feature = "dep_portable_atomic", target_has_atomic = "64"),
-        ))]
-        pub use super::_example::IdSeqU64Example;
+    }
+    _hidden {
+        pub use super::seq::_hidden::*;
     }
 }
