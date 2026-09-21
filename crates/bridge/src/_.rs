@@ -5,9 +5,16 @@
 //! for selected devela functionality.
 //
 
+/* crate configuration */
+//
+// lints
 #![allow(non_camel_case_types)]
+//
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
+//
+// safety
+// #![cfg_attr(feature = "safe", forbid(unsafe_code))] // RETHINK
 
 use devela::c_char;
 

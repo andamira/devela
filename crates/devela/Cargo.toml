@@ -40,15 +40,15 @@ bench = false
 name = "devela"
 build = "build/_.rs"
 description = "A development substrate of coherence."
+repository = "https://github.com/andamira/devela"
+documentation.workspace = true
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
-documentation.workspace = true
 authors.workspace = true
 license.workspace = true
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
-repository = "https://github.com/andamira/devela"
 autoexamples = false
 autobenches = false
 # autobins = false
@@ -64,8 +64,6 @@ include = [
 	## examples included from /src/_doc
 	# (omitted local examples are stripped from the packaged manifest)
 	"/examples/work/coro_manager.rs",
-	## programs
-	# "",
 	## assets
 	"/assets/font/termivela/*.md",
 	"/assets/font/termivela/*.txt",
@@ -138,13 +136,9 @@ __std = [ # disables `no_std` in base crates for testing
 ]
 
 # enabled when publishing to crates.io or building online docs (see /src/code/util/_doclink!)
-__publish = [
-	"devela_macros/__publish",
-]
+__publish = ["devela_macros/__publish"]
 
-__docs_internal = [ # enables documentation for internal items
-	"devela_macros/__docs_internal",
-]
+__docs_internal = ["devela_macros/__docs_internal"] # enables documentation for internal items
 __disable_native_libs = [] # disables native libraries from being detected
 __exclude_test = [] # excludes specific examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules

@@ -1,14 +1,19 @@
 # devela_bridge manifest
 # ==============================================================================
+
+[lib]
+crate-type = ["rlib"]
+path = "src/_.rs"
+bench = false
+
 [package]
 name = "devela_bridge"
 description = "Foreign-language bindings and ABI bridges for devela"
+documentation = "https://docs.rs/devela_bridge"
 repository = "https://github.com/andamira/devela/tree/main/crates/bridge"
-# documentation = "https://docs.rs/devela_bridge"
-
-version.workspace = true
 rust-version.workspace = true
 edition.workspace = true
+version.workspace = true
 authors.workspace = true
 license.workspace = true
 publish = false # TEMP
@@ -17,51 +22,110 @@ include = [
 	"/README.md",
 	"/LICENSE*",
 	"/build.sh",
-
+	#
 	"/abi/*.abi",
-
+	#
 	"/src/**/*.rs",
-
+	#
 	"/pkg/c/*.h",
 	"/pkg/odin/**/*.odin",
-
+	#
 	"/examples/README.md",
 	"/examples/run_all.sh",
 	"/examples/*/*.c",
 	"/examples/*/*.odin",
 	"/examples/*/run.sh",
-
 	## exclusions
 	"!**/_wip/**",
 ]
 
-
-[lib]
-crate-type = ["rlib"]
+[package.metadata.docs.rs]
+no-default-features = true
+features = ["_docs", "__publish"]
+rustc-args = [
+    "--cfg", "nightly_doc",
+    "--cfg", "nightly",
+]
+rustdoc-args = [
+    "--cfg", "nightly_doc",
+    "--cfg", "nightly",
+    "--generate-link-to-definition",
+    "--html-in-header", "./src/_doc/header.html",
+]
 
 
 [features]
 
-__bindgen = []
+#* Development features *#
+# ------------------------------------------------------------------------------
+
+__bindgen = [] # compile src/bin/bridge_bindgen.rs
+__dbg = ["devela/__dbg"] # shows extra debugging information
+__publish = ["devela/__publish"] # enabled when publishing to crates.io or docs.rs
+__docs_internal = ["devela/__docs_internal"] # enables documentation for internal items
+__exclude_test = [] # excludes specific examples from being tested
+
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
 
 alloc = ["devela/alloc"]
 std = ["devela/std"]
 
-linux = ["devela/linux"]
+#* Module features *#
+# ------------------------------------------------------------------------------
+
+all = ["term", "event"]
+
+linux = ["devela/linux"] # NOTE enables unsafe
 term = ["devela/term"]
 event = ["devela/event"]
 
 
-[dependencies.devela]
-path = "../devela"
+#* Safety features *#
+# ------------------------------------------------------------------------------
+
+# safest = ["safe", "devela/safest"]
+#
+# safe = ["devela/safe"] # RETHINK
+#
+# unsafe = []
+
+
+#* Scope features *#
+# ------------------------------------------------------------------------------
+
+
+#* _docs scope *#
+# ---------------
+
+_docs = ["all", "std", "linux"] # unsafe
+
+
+[dependencies]
+# ==============================================================================
+devela = { workspace = true }
 # features = ["unsafe_ffi"] # IMPROVE
 
+
+[badges]
+# ==============================================================================
+maintenance.status = "experimental"
 
 [lints]
 workspace = true
 
 
+# examples inside /examples/*
+# ==============================================================================
+# [[example]]
+# name = ""
+
+
+# binaries inside /src/bin/*
+# ==============================================================================
 [[bin]]
 name = "bridge_bindgen"
 path = "src/bin/bridge_bindgen.rs"
 required-features = ["__bindgen"]
+

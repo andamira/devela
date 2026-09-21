@@ -1,15 +1,25 @@
 # devela_micros manifest
 # ==============================================================================
+
+[lib]
+path = "src/_.rs"
+bench = false
+
 [package]
 name = "devela_micros"
+build = "build/_.rs"
 description = "Microcontroller, board, and embedded hardware support for devela"
+repository = "https://github.com/andamira/devela/tree/main/crates/micros"
 documentation = "https://docs.rs/devela_micros"
 rust-version.workspace = true
 edition.workspace = true
 version.workspace = true
 authors.workspace = true
 license.workspace = true
-repository = "https://github.com/andamira/devela/tree/main/crates/micros"
+categories = ["development-tools", "embedded", "hardware-support", "no-std"]
+keywords = ["dev", "extension"]
+autoexamples = false
+publish = false
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
@@ -18,16 +28,10 @@ include = [
 	## exclusions
 	"!**/_wip/**",
 ]
-categories = ["development-tools", "embedded", "hardware-support", "no-std"]
-keywords = ["dev", "extension"]
-build = "build/_.rs"
-autoexamples = false
-publish = true
-
 
 [package.metadata.docs.rs]
-features = ["_docs", "__publish"]
 no-default-features = true
+features = ["_docs", "__publish"]
 rustc-args = [
     "--cfg", "nightly_doc",
     "--cfg", "nightly",
@@ -40,19 +44,14 @@ rustdoc-args = [
 ]
 
 
-[lib]
-path = "src/_.rs"
-bench = false
-
-
 [features]
 
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__dbg = ["devela/__dbg"]
-__publish = [] # enabled when publishing to crates.io or building online docs
-__docs_internal = [] # enables documentation for internal items
+__dbg = ["devela/__dbg"] # shows extra debugging information
+__publish = ["devela/__publish"] # enabled when publishing to crates.io or docs.rs
+__docs_internal = ["devela/__docs_internal"] # enables documentation for internal items
 __exclude_test = [] # excludes specific examples from being tested
 __disable_native_libs = [] # disables native libraries from being detected
 
@@ -148,7 +147,7 @@ vision_all = ["vision"]
 
 safest = ["safe", "devela/safest"]
 
-safe = []
+safe = ["devela/safe"]
 
 unsafe = [
 	"unsafe_hint", # permit architecture-specific CPU instructions
@@ -178,6 +177,7 @@ maintenance.status = "experimental"
 
 [lints]
 workspace = true
+
 
 # examples inside /examples/*
 # ==============================================================================
