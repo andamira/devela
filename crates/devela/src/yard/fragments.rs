@@ -15,8 +15,6 @@ crate::CONST! { hidden macro_export,
     /// - <https://en.wikipedia.org/wiki/Domain-specific_language>
     _ABBR_DSL  = "<abbr title='Domain-specific Language'>DSL</abbr>";
     /// - <https://www.unicode.org/reports/tr29/#:~:text=An-,extended%20grapheme%20cluster,-is>
-    _ABBR_EGC  = "<abbr title='Extended Grapheme Cluster'>EGC</abbr>";
-    /// - <https://en.wikipedia.org/wiki/Foreign_function_interface>
     _ABBR_FFI  = "<abbr title='Foreign Function Interface'>FFI</abbr>";
     /// - <https://en.wikipedia.org/wiki/Queue_(abstract_data_type)>
     _ABBR_FIFO = "<abbr title='First-In, First-Out'>FIFO</abbr>."; // queue
@@ -369,7 +367,7 @@ and `◉` to switch back to flat view.
     _DOC_TEXT_TRANSLIT   = "Lossy script, alphabet, and symbol approximations.";
     _DOC_TEXT_UNICODE          = "Unicode text units, properties, and algorithms.";
     _DOC_TEXT_UNICODE_SCALAR   = "Unicode scalar values and operations.";
-    _DOC_TEXT_UNICODE_GRAPHEME = concat!["Unicode", $crate::_ABBR_EGC!(), "s."];
+    _DOC_TEXT_UNICODE_GRAPHEME = "Unicode extended grapheme clusters.";
 
     // 13. ui (contact between human and system)
     _DOC_UI = "Interactive surfaces, input semantics, and presentation state.";

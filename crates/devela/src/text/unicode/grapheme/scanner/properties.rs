@@ -2,7 +2,7 @@ use super::trie::graphemes_lookup;
 use crate::{Mem, charu, impl_trait};
 
 #[doc = crate::_tags!(text)]
-#[doc = concat![crate::_ABBR_EGC!(), " property values from Unicode Standard Annex #29."]]
+/// Extended grapheme cluster property values from Unicode Standard Annex #29.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", enum GraphemePropCb),
     test_size_of(GraphemePropCb = 1|8; niche Option),
@@ -124,7 +124,7 @@ impl GraphemePropInCb {
 }
 
 #[doc = crate::_tags!(text)]
-#[doc = concat!["Combined ", crate::_ABBR_EGC!(), " break properties for a single code point."]]
+/// Combined extended grapheme cluster break properties for a single code point.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeProps),
     test_size_of(GraphemeProps = 1|8; niche !Option),

@@ -6,8 +6,7 @@ use super::GraphemeMachineState;
 use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
 
 #[doc = crate::_tags!(text)]
-#[doc = concat!["Streaming ", crate::_ABBR_EGC!(), " boundary detector."]]
-/// Streaming grapheme cluster boundary detector.
+/// Streaming extended grapheme cluster boundary detector.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeMachine),
     test_size_of(GraphemeMachine = 3|24; niche Option),

@@ -55,6 +55,7 @@
 ### documentation
 - new tag: `hw`.
 - rename tag: `uid` to `id`.
+- rename "EGC" abbreviation to "extended grapheme cluster".
 
 ### examples
 - add minimal no_std `sys/env` examples.

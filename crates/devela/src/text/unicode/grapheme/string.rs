@@ -11,7 +11,7 @@ use crate::{CharIter, String};
 // use {crate::Char, ::core::str::from_utf8_unchecked};
 
 #[doc = crate::_tags!(text)]
-/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
+/// An extended grapheme cluster backed by a [`String`].
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeString),
     #[cfg(target_pointer_width = "32")]

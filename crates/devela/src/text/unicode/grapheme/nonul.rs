@@ -12,7 +12,7 @@ use crate::{GraphemeMachine, GraphemeScanner, MismatchedCapacity, StringNonNul};
 
 #[must_use]
 #[doc = crate::_tags!(text)]
-#[doc = concat!["An ", crate::_ABBR_EGC!(), " backed by a [`StringNonNul`]."]]
+/// An extended grapheme cluster backed by a [`StringNonNul`].
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeNonul),
 }]
