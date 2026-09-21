@@ -103,11 +103,13 @@ macro_rules! _devela_policy· {
 pub use _devela_policy· as _devela_policy;
 
 /// for devela safe
-#[crate::compile(env(__DEVELA_MEMBER))] #[cfg(not(unsafe··))]
+#[crate::compile(env(__DEVELA_MEMBER))]
+#[cfg(not(feature = "unsafe_hint"))]
 #[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! { crate::unreachable!() }
 /// for devela unsafe
-#[crate::compile(env(__DEVELA_MEMBER))] #[cfg(unsafe··)]
+#[crate::compile(env(__DEVELA_MEMBER))]
+#[cfg(feature = "unsafe_hint")]
 #[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! {
     if cfg!(debug_assertions) { crate::unreachable!(); }

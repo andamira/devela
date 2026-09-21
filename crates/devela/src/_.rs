@@ -171,18 +171,11 @@
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 // safety
-#[cfg(all(
-    feature = "safe",
-    // In sync with ../Cargo.toml::unsafe & ../build/main/features.rs::UNSAFE
-    any(feature = "unsafe", // includes all 11 specific purposes below:
-        feature = "unsafe_array", feature = "unsafe_ffi", feature = "unsafe_hint",
-        feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",
-        feature = "unsafe_slice", feature = "unsafe_str", feature = "unsafe_sync",
-        feature = "unsafe_syscall", feature = "unsafe_thread",
-    )
-))]
-compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
-// (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
+#[cfg(all(feature = "safe", unsafe··))]
+compile_error! {
+    concat!("`safe` cannot be combined with `unsafe` or any `unsafe_*` feature.\n",
+    "Use individual `safe_*` features to restrict unsafe code in selected modules.")
+}
 
 // https://doc.rust-lang.org/nightly/reference/names/preludes.html#extern-prelude
 #[cfg(feature = "alloc")]

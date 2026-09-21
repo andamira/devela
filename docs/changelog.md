@@ -47,6 +47,7 @@
 ### features & flags
 - new features: `hw`, `unsafe_mmio`.
 - new nightly feature: `asm_experimental_arch`.
+- use the reflected unsafe cfg to reject `safe` with any `unsafe_*` capability.
 
 ### structure
 - rename `src/index.rs` to `src/_.rs`.
@@ -100,6 +101,7 @@
 ## yard
 - fix `_doc_location!` and `_doc_test_size_of!` to not hardcode the crate name.
 - replace uses of `__crate_name!` macro with `env!("CARGO_PKG_NAME")`.
+- gate unchecked unreachable policy on `unsafe_hint` instead of any unsafe capability.
 
 ---
 
