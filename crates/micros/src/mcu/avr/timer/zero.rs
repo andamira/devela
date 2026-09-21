@@ -88,7 +88,7 @@ impl AvrTimer0 {
 
 /* private helpers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl AvrTimer0 {
     // TCCR0A
     const WGM01: u8 = 1 << 1; // waveform-generation mode bit 1

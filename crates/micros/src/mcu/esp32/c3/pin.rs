@@ -136,7 +136,7 @@ impl Esp32C3Pin {
 
 /* private pin-routing registers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl Esp32C3Pin {
     const IO_MUX_GPIO0: u32 = 0x6000_9004;
     const GPIO_PIN0: u32 = McuEsp32C3::GPIO_BASE + 0x74;

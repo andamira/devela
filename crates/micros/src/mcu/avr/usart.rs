@@ -76,7 +76,7 @@ impl AvrUsart {
 
 /* private helpers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl AvrUsart {
     // UCSRnA
     const RXC: u8 = 1 << 7; // Receive complete.

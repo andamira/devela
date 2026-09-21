@@ -82,7 +82,7 @@ impl EspI2c {
 
 /* private helpers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl EspI2c {
     const CTRL_CONF_UPDATE: u32 = 1 << 11;
     const CTRL_FSM_RESET: u32 = 1 << 10;

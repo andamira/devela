@@ -88,7 +88,7 @@ impl AvrTimer2 {
 
 /* private helpers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl AvrTimer2 {
     // TCCR2A
     pub(super) const COM2A1: u8 = 1 << 7; // compare-output A mode bit 1

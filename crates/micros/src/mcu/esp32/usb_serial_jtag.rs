@@ -43,7 +43,7 @@ impl EspUsbSerialJtag {
 
 /* private helpers */
 
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl EspUsbSerialJtag {
     const WR_DONE: u32 = 1 << 0;
     const TX_FREE: u32 = 1 << 1;

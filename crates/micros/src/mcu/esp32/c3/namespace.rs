@@ -105,7 +105,7 @@ impl McuEsp32C3 {
 }
 
 /* private registers */
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl McuEsp32C3 {
     const TIMG0_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6001_F048);
     const TIMG0_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6001_F064);

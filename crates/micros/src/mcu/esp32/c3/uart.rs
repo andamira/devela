@@ -74,7 +74,7 @@ impl Esp32C3Uart {
 }
 
 /* private helpers */
-#[allow(dead_code)]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl Esp32C3Uart {
     const FIFO_CAPACITY: u32 = 128;
 
