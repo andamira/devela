@@ -5,7 +5,7 @@
 #![no_std]
 #![no_main]
 
-use devela::{BoardSuperMiniOled042 as Board, EspI2c, I2cError, whilst};
+use devela::{BoardSuperMiniOled042 as Board, I2cWrite, whilst};
 use devela_micros::devela;
 
 devela::set_panic_handler! { loop }
@@ -17,37 +17,33 @@ fn main() -> ! {
     unsafe {
         while !serial.rx_ready() {} // Let the host reopen USB after flashing
 
-        let i2c = Board::prepare_oled_i2c();
+        let mut i2c = Board::prepare_oled_i2c();
 
         serial.write_bytes_blocking(b"initializing oled...\r\n");
-        oled_init(i2c).unwrap();
+        oled_init(&mut i2c).unwrap();
 
         serial.write_bytes_blocking(b"drawing 1px border...\r\n");
-        oled_data(i2c, &OLED_BORDER).unwrap();
+        oled_data(&mut i2c, &OLED_BORDER).unwrap();
 
         serial.write_bytes_blocking(b"done\r\n");
     }
     loop {}
 }
 
-unsafe fn oled_init(i2c: EspI2c) -> Result<(), I2cError> {
-    unsafe {
-        oled_commands(i2c, OLED_INIT)?;
-        oled_commands(i2c, OLED_WINDOW)?;
-    }
-    Ok(())
-}
-
 const OLED_COMMAND_CONTROL: &[u8] = &[0x00];
 const OLED_DATA_CONTROL: &[u8] = &[0x40];
 
+fn oled_init<I: I2cWrite>(i2c: &mut I) -> Result<(), I::Error> {
+    oled_commands(i2c, OLED_INIT)?;
+    oled_commands(i2c, OLED_WINDOW)
+}
 // SSD1306 I²C command framing
-unsafe fn oled_commands(i2c: EspI2c, commands: &[u8]) -> Result<(), I2cError> {
-    unsafe { i2c.write_slices_blocking(Board::OLED_ADDR, &[OLED_COMMAND_CONTROL, commands]) }
+fn oled_commands<I: I2cWrite>(i2c: &mut I, commands: &[u8]) -> Result<(), I::Error> {
+    i2c.write_slices(Board::OLED_ADDR, &[OLED_COMMAND_CONTROL, commands])
 }
 // SSD1306 I²C data framing
-unsafe fn oled_data(i2c: EspI2c, data: &[u8]) -> Result<(), I2cError> {
-    unsafe { i2c.write_slices_blocking(Board::OLED_ADDR, &[OLED_DATA_CONTROL, data]) }
+fn oled_data<I: I2cWrite>(i2c: &mut I, data: &[u8]) -> Result<(), I::Error> {
+    i2c.write_slices(Board::OLED_ADDR, &[OLED_DATA_CONTROL, data])
 }
 
 // SSD1306 commands

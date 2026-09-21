@@ -3,7 +3,7 @@
 //
 
 #[cfg(feature = "unsafe_mmio")]
-use crate::Esp32C3Pin;
+use crate::{Esp32C3Pin, I2cController};
 use crate::{Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
@@ -125,7 +125,14 @@ impl McuEsp32C3 {
     ///
     /// # Safety
     /// I²C0 and both GPIOs must not be concurrently configured or accessed.
-    pub unsafe fn prepare_i2c0(sda: Esp32C3Pin, scl: Esp32C3Pin, bus_hz: u32) -> EspI2c {
+    ///
+    /// While the returned controller is alive, I²C0 and its routed pins
+    /// must not be accessed through another raw hardware handle.
+    pub unsafe fn prepare_i2c0(
+        sda: Esp32C3Pin,
+        scl: Esp32C3Pin,
+        bus_hz: u32,
+    ) -> I2cController<EspI2c> {
         const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600C_0010);
         const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600C_0018);
         const I2C0_CLOCK: u32 = 1 << 7;
@@ -146,8 +153,8 @@ impl McuEsp32C3 {
             Self::prepare_i2c0_pin(scl, SCL_SIGNAL);
 
             Self::I2C0.configure_master_xtal(Self::XTAL_HZ, bus_hz);
+            I2cController::new_unchecked(Self::I2C0)
         }
-        Self::I2C0
     }
     unsafe fn prepare_i2c0_pin(pin: Esp32C3Pin, signal: u8) {
         unsafe {

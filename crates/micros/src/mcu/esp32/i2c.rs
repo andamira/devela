@@ -4,7 +4,7 @@
 
 use crate::EspReg32;
 #[cfg(feature = "unsafe_mmio")]
-use crate::{I2cAddr7, I2cError, is};
+use crate::{I2cAddr7, I2cControl, I2cError, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// An Espressif I²C controller.
@@ -19,6 +19,19 @@ use crate::{I2cAddr7, I2cError, is};
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EspI2c(u32);
+
+#[cfg(feature = "unsafe_mmio")]
+unsafe impl I2cControl for EspI2c {
+    type Error = I2cError;
+
+    unsafe fn write_slices_unchecked(
+        &mut self,
+        address: I2cAddr7,
+        slices: &[&[u8]],
+    ) -> Result<(), Self::Error> {
+        unsafe { (*self).write_slices_blocking(address, slices) }
+    }
+}
 
 #[rustfmt::skip]
 impl EspI2c {

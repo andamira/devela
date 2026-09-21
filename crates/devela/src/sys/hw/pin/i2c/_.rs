@@ -4,15 +4,17 @@
 
 crate::mods_in! {
     mod addr;
-    // mod bus;
+    mod control;
     mod error;
+    mod write;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
             addr::I2cAddr7,
-            // bus::I2cBus,
+            control::{I2cControl, I2cController},
             error::I2cError,
+            write::I2cWrite,
         };
     }
 }

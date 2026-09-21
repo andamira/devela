@@ -91,7 +91,8 @@
 - make module public.
 
 ###### sys::hw::pin::i2c
-- new types: `I2cAddr7`, `I2cError`.
+- new traits: `I2cControl`, `I2cWrite`.
+- new types: `I2cAddr7`, `I2cController`, `I2cError`.
 
 #### sys::mem
 - make `Ptr` provenance-related methods const:

@@ -2,9 +2,9 @@
 //! Defines [`BoardSuperMiniOled042`].
 //
 
-#[allow(unused, reason = "±unsafe")]
-use crate::EspI2c;
 use crate::{Esp32C3Pin, Esp32C3Uart, EspUsbSerialJtag, I2cAddr7, McuEsp32C3};
+#[cfg(feature = "unsafe_mmio")]
+use crate::{EspI2c, I2cController};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 SuperMini board with a 0.42-inch OLED.
@@ -86,7 +86,7 @@ impl BoardSuperMiniOled042 {
     /// # Safety
     /// I²C0 and GPIO5/6 must not be concurrently configured or accessed.
     #[cfg(feature = "unsafe_mmio")]
-    pub unsafe fn prepare_oled_i2c() -> EspI2c {
+    pub unsafe fn prepare_oled_i2c() -> I2cController<EspI2c> {
         unsafe { McuEsp32C3::prepare_i2c0(Self::OLED_SDA, Self::OLED_SCL, Self::OLED_I2C_HZ) }
     }
 }
