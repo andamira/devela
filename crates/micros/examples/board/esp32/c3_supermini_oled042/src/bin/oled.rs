@@ -1,11 +1,12 @@
 //
 //! Initializes the onboard 72×40 OLED and draws a test pattern over I²C.
 //
+// 2688 bytes
 
 #![no_std]
 #![no_main]
 
-use devela::{BoardSuperMiniOled042 as Board, Ssd13xxI2c, whilst};
+use devela::{BitmapPage8, BoardSuperMiniOled042 as Board, Pcg32, Ssd13xxI2c};
 use devela_micros::devela;
 
 devela::set_panic_handler! { loop }
@@ -23,32 +24,50 @@ fn main() -> ! {
         serial.write_bytes_blocking(b"initializing oled...\r\n");
         Board::OLED.init(&mut oled_io).unwrap();
 
-        serial.write_bytes_blocking(b"drawing 1px border...\r\n");
-        Board::OLED.write_data(&mut oled_io, &OLED_BORDER).unwrap();
+        serial.write_bytes_blocking(b"drawing...\r\n");
 
+        const WIDTH: usize = Board::OLED.width();
+        const HEIGHT: usize = Board::OLED.height();
+        const PIXELS: u32 = (WIDTH * HEIGHT) as u32;
+        type OledFrame = BitmapPage8<WIDTH, HEIGHT, { Board::OLED.frame_bytes() }>;
+
+        let mut rng = Pcg32::new(WIDTH as u64, HEIGHT as u64);
+        let mut frame = OledFrame::new();
+
+        // frame.clear(false);
+
+        /* outer frame */
+
+        frame.draw_rect(0, 0, WIDTH, HEIGHT, true);
+        frame.draw_rect(5, 5, WIDTH - 10, HEIGHT - 10, true);
+
+        /* random pixels */
+
+        for _ in 0..240 {
+            let pixel = rng.next_bounded(PIXELS) as usize;
+            frame.set_pixel(pixel % WIDTH, pixel / WIDTH, true);
+        }
+
+        /* random rectangles */
+
+        const LEFT: usize = 1;
+        const TOP: usize = 1;
+        const RIGHT: usize = WIDTH - 1;
+        const BOTTOM: usize = HEIGHT - 1;
+        for _ in 0..8 {
+            let x = LEFT + rng.next_bounded((RIGHT - LEFT) as u32) as usize;
+            let y = TOP + rng.next_bounded((BOTTOM - TOP) as u32) as usize;
+
+            let (available_width, available_height) = (RIGHT - x, BOTTOM - y);
+
+            let width = 1 + rng.next_bounded(available_width.min(18) as u32) as usize;
+            let height = 1 + rng.next_bounded(available_height.min(12) as u32) as usize;
+
+            frame.fill_rect(x, y, width, height, true);
+        }
+
+        Board::OLED.write_data(&mut oled_io, frame.bytes()).unwrap();
         serial.write_bytes_blocking(b"done\r\n");
     }
     loop {}
 }
-
-// native 72×40 framebuffer
-const OLED_BORDER: [u8; Board::OLED.frame_bytes()] = {
-    const WIDTH: usize = Board::OLED.width();
-    const PAGES: usize = Board::OLED.page_count();
-    let mut data = [0u8; Board::OLED.frame_bytes()];
-    whilst! { page in 0..PAGES; {
-        whilst! { x in 0..WIDTH; {
-            data[page * WIDTH + x] =
-                if x == 0 || x + 1 == WIDTH {
-                    0xff
-                } else if page == 0 {
-                    0x01
-                } else if page + 1 == PAGES {
-                    0x80
-                } else {
-                    0x00
-                };
-        }}
-    }}
-    data
-};

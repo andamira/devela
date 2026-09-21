@@ -34,7 +34,7 @@ crate::mods_in! {
     #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
     pub mod_ board;
     #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
-    mod_ device;
+    pub mod_ device;
     #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
     pub mod_ mcu;
 

@@ -11,8 +11,10 @@ const DATA_CONTROL: &[u8] = &[0x40];
 /// An SSD13xx interface over I²C.
 #[doc = crate::_doc_meta!{
     location("device/display", struct Ssd13xxI2c),
-    #[cfg(target_pointer_size = "32")]
-    test_size_of(Ssd13xxI2c = 8|64; niche Option),
+    #[cfg(target_pointer_width = "16")]
+    test_size_of(Ssd13xxI2c<()> = 4|32; niche Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(Ssd13xxI2c<()> = 8|64; niche Option),
 }]
 pub struct Ssd13xxI2c<'a, I> {
     i2c: &'a mut I,
