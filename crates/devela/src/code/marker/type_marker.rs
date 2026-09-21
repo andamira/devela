@@ -5,7 +5,7 @@
 // - macro type_marker!
 // - tests
 
-#[doc = crate::_tags!(code uid construction)]
+#[doc = crate::_tags!(code id construction)]
 /// Defines zero-cost, zero-sized, generic *marker* IDs.
 #[doc = crate::_doc_meta!{
     location("code/marker", macro type_marker),

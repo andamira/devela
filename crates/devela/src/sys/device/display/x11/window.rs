@@ -15,7 +15,7 @@ pub(crate) struct XWindowState {
     pub(crate) needs_redraw: bool,
 }
 
-#[doc = crate::_tags!(unix uid guard)]
+#[doc = crate::_tags!(unix id guard)]
 /// X11 top-level drawable host and presentation target.
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XWindow),

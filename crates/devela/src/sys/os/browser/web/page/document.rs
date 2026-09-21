@@ -9,7 +9,7 @@ use devela::_js_extern;
 #[allow(unused_imports, reason = "±unsafe")]
 use devela::{_js_doc, _js_method_str_alloc, js_bool, js_int32, js_uint32};
 
-#[doc = crate::_tags!(web uid)]
+#[doc = crate::_tags!(web id)]
 /// Handle to the brower's global [Document] associated APIs.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web", struct WebDocument),

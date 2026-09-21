@@ -6,7 +6,7 @@
 use crate::ScriptMachine;
 use crate::{ConstInit, InvalidValue, NonMaxU16, WordTry, unwrap};
 
-#[doc = crate::_tags!(lang uid)]
+#[doc = crate::_tags!(lang id)]
 /// A compact contextual identifier for a host operation.
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),

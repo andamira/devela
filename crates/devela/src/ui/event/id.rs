@@ -7,7 +7,7 @@ use crate::EventTarget;
 
 crate::_impl_init![Self(0) => WindowId, DeviceId];
 
-#[doc = crate::_tags!(ui uid)]
+#[doc = crate::_tags!(ui id)]
 /// A backend-agnostic identifier for a UI window.
 #[doc = crate::_doc_meta!{
     location("ui/event", struct WindowId),
@@ -32,7 +32,7 @@ impl From<u32> for WindowId {
     }
 }
 
-#[doc = crate::_tags!(interaction uid)]
+#[doc = crate::_tags!(interaction id)]
 /// A backend-agnostic identifier for an input device.
 #[doc = crate::_doc_meta!{
     location("ui/event", struct DeviceId),

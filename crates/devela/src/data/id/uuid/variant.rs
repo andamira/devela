@@ -5,7 +5,7 @@
 #[cfg(doc)]
 use crate::Uuid;
 
-#[doc = crate::_tags!(uid)]
+#[doc = crate::_tags!(id)]
 /// The layout variant of a [`Uuid`].
 #[doc = crate::_doc_meta!{
     location("data/id/uuid", enum UuidVariant),
@@ -27,7 +27,7 @@ pub enum UuidVariant {
     Future,
 }
 
-#[doc = crate::_tags!(uid)]
+#[doc = crate::_tags!(id)]
 /// A recognized IETF UUID version.
 #[doc = crate::_doc_meta!{
     location("data/id/uuid", enum UuidVersion),

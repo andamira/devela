@@ -55,7 +55,7 @@ handle! {
         revision: u16;
     ]
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An example general handle.
     #[doc = crate::_doc_meta!{
         location("data/id/handle", struct HandleExample),
@@ -93,7 +93,7 @@ handle_gen! {
         generation: u16 + crate::NonMaxU16;
     ]
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An example generational handle.
     #[doc = crate::_doc_meta!{
         location("data/id/handle", struct HandleGenExample),
@@ -109,7 +109,7 @@ handle_gen! {
 handle_span! {
     [ offset: u8 + crate::NonMaxU8; ]
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An example span handle.
     #[doc = crate::_doc_meta!{
         location("data/id/handle", struct HandleSpanExample),

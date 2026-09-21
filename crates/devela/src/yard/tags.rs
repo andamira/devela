@@ -206,7 +206,7 @@ _define_symbol_tags! {
     _TAG_UNIX, "Unix platform", "🐚";
     // UI-specific interaction, layout, semantic, and presentation abstractions.
     _TAG_UI, "User interface", "▦";
-    _TAG_UID, "Identification", "🫆"; // (fingerprint)
+    _TAG_ID, "Identification", "🫆"; // (fingerprint)
     // Abstractions whose primary concern is the semantic meaning or
     // transformation of values, independent of storage, borrowing, or encoding.
     _TAG_VALUE, "Value semantics", "💱";

@@ -6,7 +6,7 @@ use crate::{_impl_init, DeviceId, WindowId};
 
 _impl_init![Self::Global => EventTarget];
 
-#[doc = crate::_tags!(event uid)]
+#[doc = crate::_tags!(event id)]
 /// Identifies what an [`Event`][crate::Event] is conceptually directed to.
 #[doc = crate::_doc_meta!{
     location("ui/event", enum EventTarget),

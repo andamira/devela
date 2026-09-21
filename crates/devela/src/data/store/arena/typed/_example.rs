@@ -36,7 +36,7 @@ arena! {
     /// - Iteration: [`iter`](#method.iter) *([_mut](#method.iter_mut))*.
     pub ArenaExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An index handle into [`ArenaExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaHandleExample),
@@ -91,7 +91,7 @@ arena! {
     /// - Iteration: [`iter`](#method.iter) *([_mut](#method.iter_mut))*.
     pub ArenaAllocExample: alloc;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An index handle into [`ArenaAllocExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaAllocHandleExample),

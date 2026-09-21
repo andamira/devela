@@ -4,7 +4,7 @@
 
 use crate::{KeyState, is};
 
-#[doc = crate::_tags!(event web uid)]
+#[doc = crate::_tags!(event web id)]
 /// A typed selector for web event names used by the web API browser bridge.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web", enum WebEventKind),

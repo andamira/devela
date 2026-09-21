@@ -55,7 +55,7 @@ intern_string! {
     ///   [`entries`](#method.entries).
     pub InternStringExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// A canonical string symbol for [`InternStringExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/intern", struct InternStringSymbolExample),
@@ -121,7 +121,7 @@ intern_string! {
     ///   [`entries`](#method.entries).
     pub InternStringAllocExample: alloc;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// A canonical string symbol for [`InternStringAllocExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/intern", struct InternStringAllocSymbolExample),

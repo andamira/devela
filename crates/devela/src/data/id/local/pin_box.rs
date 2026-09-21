@@ -4,7 +4,7 @@
 
 use crate::{Box, Pin};
 
-#[doc = crate::_tags!(uid allocation)]
+#[doc = crate::_tags!(id allocation)]
 /// A unique identifier based on a pinned heap-allocated memory address.
 #[doc = crate::_doc_meta!{
     location("data/id/local", struct IdPinBox),

@@ -4,7 +4,7 @@
 
 use crate::{InvalidValue, NonZeroU128, Uuid, UuidVariant, UuidVersion, impl_trait, word};
 
-#[doc = crate::_tags!(uid niche)]
+#[doc = crate::_tags!(id niche)]
 /// A UUID excluding [`Uuid::NIL`] to provide a memory niche.
 #[doc = crate::_doc_meta!{
     location("data/id/uuid", struct UuidNonNil),

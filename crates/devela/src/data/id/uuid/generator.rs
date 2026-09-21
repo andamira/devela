@@ -7,7 +7,7 @@ use crate::{ConstInit, Pcg32, RandTry, is, read_at, unwrap, write_at};
 use crate::{TimePoint, TimeSource, TimeSourceCfg};
 use crate::{Uuid, UuidNonNil, UuidVersion};
 
-#[doc = crate::_tags!(uid state)]
+#[doc = crate::_tags!(id state)]
 /// A stateful monotonic UUID version 7 generator.
 #[doc = crate::_doc_meta!{
     location("data/id/uuid", struct UuidV7Generator),

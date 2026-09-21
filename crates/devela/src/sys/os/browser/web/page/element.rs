@@ -8,7 +8,7 @@
 #[allow(unused_imports, reason = "not(windows)")]
 use devela::{_js_extern, _js_method_str_alloc, Js, WebDocument, js_bool, js_int32, js_uint32};
 
-#[doc = crate::_tags!(web uid)]
+#[doc = crate::_tags!(web id)]
 /// Handle to a DOM [Element].
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web", struct WebElement),

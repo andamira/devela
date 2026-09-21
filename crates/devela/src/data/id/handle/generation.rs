@@ -2,7 +2,7 @@
 //! Defines [`handle_gen!`] macro.
 //
 
-#[doc = crate::_tags!(construction uid)]
+#[doc = crate::_tags!(construction id)]
 /// Defines a compact generational handle.
 #[doc = crate::_doc_meta!{
     location("data/id/handle", macro handle_gen),

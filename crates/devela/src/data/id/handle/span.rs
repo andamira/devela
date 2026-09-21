@@ -2,7 +2,7 @@
 //! Defines [`handle_span!`] macro.
 //
 
-#[doc = crate::_tags!(construction uid)]
+#[doc = crate::_tags!(construction id)]
 /// Defines a compact handle for a contiguous span.
 #[doc = crate::_doc_meta!{
     location("data/id/handle", macro handle_span),

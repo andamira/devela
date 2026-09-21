@@ -11,7 +11,7 @@ use crate::String;
 #[allow(unused_imports)]
 use crate::{AsyncPoll, Web, js_uint32};
 
-#[doc = crate::_tags!(web uid)]
+#[doc = crate::_tags!(web id)]
 /// A handle to a JavaScript Web Worker.
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web", struct WebWorker),
@@ -67,7 +67,7 @@ pub enum WebWorkerError {
     JobNotFound,
 }
 
-#[doc = crate::_tags!(web uid)]
+#[doc = crate::_tags!(web id)]
 /// Represents a job running inside a [`WebWorker`].
 #[doc = crate::_doc_meta!{
     location("sys/os/browser/web", struct WebWorkerJob),

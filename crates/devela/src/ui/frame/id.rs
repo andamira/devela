@@ -12,7 +12,7 @@
 
 use crate::{InvalidValue, NonMaxU64, SplitMix64, unwrap, word};
 
-#[doc = crate::_tags!(ui uid)]
+#[doc = crate::_tags!(ui id)]
 /// Stable author-provided UI identity seed.
 #[doc = crate::_doc_meta!{
     location("ui/frame", struct UiKey),
@@ -42,7 +42,7 @@ word! {
     }
 }
 
-#[doc = crate::_tags!(ui uid)]
+#[doc = crate::_tags!(ui id)]
 /// Resolved UI identity within a frame.
 #[doc = crate::_doc_meta!{
     location("ui/frame", struct UiId),
@@ -72,7 +72,7 @@ word! {
     }
 }
 
-#[doc = crate::_tags!(ui uid)]
+#[doc = crate::_tags!(ui id)]
 /// Scoped UI identity namespace.
 #[doc = crate::_doc_meta!{
     location("ui/frame", struct UiScope),

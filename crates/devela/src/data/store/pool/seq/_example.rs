@@ -60,7 +60,7 @@ pool_seq! {
     ///   [`pack`](#method.pack).
     pub PoolSeqExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// A generational handle into [`PoolSeqExample`].
     #[doc = crate::_doc_location!("data/store/pool")]
     ///

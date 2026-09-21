@@ -7,7 +7,7 @@
 
 use crate::c_int;
 
-#[doc = crate::_tags!(fs uid)]
+#[doc = crate::_tags!(fs id)]
 /// Raw file descriptors.
 #[doc = crate::_doc_meta!{
     location("sys/os/fd", type FdRaw),

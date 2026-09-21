@@ -53,7 +53,8 @@
 - remove file paths from all file headers.
 
 ### documentation
-- new tag: `_TAG_HW`.
+- new tag: `hw`.
+- rename tag: `uid` to `id`.
 
 ### examples
 - add minimal no_std `sys/env` examples.

@@ -38,13 +38,13 @@ _reexport! { rust: std::thread,
     @ScopedJoinHandle as ThreadScopedJoinHandle
 }
 _reexport! { rust: std::thread,
-    location: "work/exec/thread" => struct Thread, tag: _tags!(concurrency uid),
+    location: "work/exec/thread" => struct Thread, tag: _tags!(concurrency id),
     doc: "A handle to a thread.",
     +doc: "See also the [`ThreadExt`][crate::ThreadExt] trait.",
     Thread
 }
 _reexport! { rust: std::thread,
-    location: "work/exec/thread" => struct ThreadId, tag: _tags!(concurrency uid),
+    location: "work/exec/thread" => struct ThreadId, tag: _tags!(concurrency id),
     doc: "A unique identifier for a running thread.",
     ThreadId
 }

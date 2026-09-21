@@ -8,7 +8,7 @@ use crate::{TextCursor, TextParseError, UuidNonNil, UuidVariant, UuidVersion};
 use crate::{TimePoint, TimeSource, TimeSourceCfg};
 use crate::{impl_trait, is, slice, unwrap, whilst, word};
 
-#[doc = crate::_tags!(uid)]
+#[doc = crate::_tags!(id)]
 /// A standardized portable 128-bit identifier.
 #[doc = crate::_doc_meta!{
     location("data/id/uuid", struct Uuid),

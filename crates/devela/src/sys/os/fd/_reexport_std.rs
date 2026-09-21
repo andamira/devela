@@ -25,17 +25,17 @@ mod fd_reexports {
         AsFd
     }
     _reexport! { rust: std::os::fd,
-        location: "sys/os/fd" => trait AsFdRaw, tag: _tags!(fs uid),
+        location: "sys/os/fd" => trait AsFdRaw, tag: _tags!(fs id),
         doc: "A trait to extract the raw file descriptor from an underlying object.",
         @AsRawFd as AsFdRaw
     }
     _reexport! { rust: std::os::fd,
-        location: "sys/os/fd" => trait FromFdRaw, tag: _tags!(fs uid value),
+        location: "sys/os/fd" => trait FromFdRaw, tag: _tags!(fs id value),
         doc: "Expresses the ability to construct an object from a raw file descriptor.",
         @FromRawFd as FromFdRaw
     }
     _reexport! { rust: std::os::fd,
-        location: "sys/os/fd" => trait IntoFdRaw, tag: _tags!(fs uid value),
+        location: "sys/os/fd" => trait IntoFdRaw, tag: _tags!(fs id value),
         doc: "Expresses the ability to consume an object and own its raw file descriptor.",
         @IntoRawFd as IntoFdRaw
     }

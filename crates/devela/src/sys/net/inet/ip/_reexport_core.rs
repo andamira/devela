@@ -32,7 +32,7 @@ _reexport! { rust: core::net,
     IpAddr
 }
 _reexport! { rust: core::net,
-    location: "sys/net/inet" => enum SocketAddr, tag: _tags!(network uid),
+    location: "sys/net/inet" => enum SocketAddr, tag: _tags!(network id),
     doc: "An internet socket address, either IPv4 or IPv6.",
     SocketAddr
 }

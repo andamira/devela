@@ -50,7 +50,7 @@ arena_bytes! {
     ///   booleans, characters, integers and floating-point primitives.
     pub ArenaBytesExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An example handle into [`ArenaBytesExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaBytesHandleExample),
@@ -128,7 +128,7 @@ arena_bytes! {
     ///   booleans, characters, integers and floating-point primitives.
     pub ArenaBytesAllocExample: alloc;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An example span handle into [`ArenaBytesAllocExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaBytesAllocHandleExample),

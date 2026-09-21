@@ -5,7 +5,7 @@
 use super::_raw;
 use crate::{Libc, Ptr, is};
 
-#[doc = crate::_tags!(linux uid runtime)]
+#[doc = crate::_tags!(linux id runtime)]
 /// Cached atoms required for high–level event interpretation.
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XAtoms),

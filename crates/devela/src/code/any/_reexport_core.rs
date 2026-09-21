@@ -6,7 +6,7 @@ _reexport! { rust: core::any,
     Any
 }
 _reexport! { rust: core::any,
-    location: "code/any" => struct TypeId, tag: _tags!(code uid),
+    location: "code/any" => struct TypeId, tag: _tags!(code id),
     doc: "Represents a globally unique identifier for a type.",
     TypeId
 }

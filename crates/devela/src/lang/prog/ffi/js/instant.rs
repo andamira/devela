@@ -109,7 +109,7 @@ mod impl_web {
     }
 }
 
-#[doc = crate::_tags!(runtime time uid)]
+#[doc = crate::_tags!(runtime time id)]
 /// A handle to a JavaScript timeout.
 #[doc = crate::_doc_meta!{
     location("lang/prog/ffi/js", struct JsTimeout),

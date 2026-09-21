@@ -44,7 +44,7 @@ arena_string! {
     ///   [`entries`](#method.entries).
     pub ArenaStringExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An index handle into [`ArenaStringExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaStringHandleExample),
@@ -115,7 +115,7 @@ arena_string! {
     ///   [`entries`](#method.entries).
     pub ArenaStringAllocExample: alloc;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// An index handle into [`ArenaStringAllocExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/arena", struct ArenaStringAllocHandleExample),

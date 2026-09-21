@@ -54,7 +54,7 @@ pool! {
     ///   [`entries`](#method.entries) *([_mut](#method.entries_mut))*.
     pub PoolExample;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// A handle into [`PoolExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/pool", struct PoolHandleExample),
@@ -111,7 +111,7 @@ pool! {
     ///   [`entries`](#method.entries) *([_mut](#method.entries_mut))*.
     pub PoolAllocExample: alloc;
 
-    #[doc = crate::_tags!(example uid)]
+    #[doc = crate::_tags!(example id)]
     /// A handle into [`PoolAllocExample`].
     #[doc = crate::_doc_meta!{
         location("data/store/pool", struct PoolAllocHandleExample),
