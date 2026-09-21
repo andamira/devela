@@ -122,6 +122,7 @@ See also
 - 1.??: `c`[ptr_cast_slice](https://github.com/rust-lang/rust/pull/162927)
 - 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
 - 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
+- 1.??: `s`[process_chroot](https://github.com/rust-lang/rust/pull/163067)
 - 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)

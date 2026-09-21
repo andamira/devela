@@ -138,7 +138,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(once_wait, path_is_empty, exitcode_exit_method,)
+    feature(exitcode_exit_method, once_wait, path_is_empty,) // process_chroot(!miri)
 )]
 // #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
 //
