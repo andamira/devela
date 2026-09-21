@@ -11,8 +11,9 @@ crate::mods_in! {
     mod _example; // BoundI8Example, (BoundI8SymExample)
 
     mod define; // bound_int!
+    mod _internal; // __bound_int!
     mod signed;
-    // mod unsigned;
+    // mod unsigned; // TODO
 }
 crate::mods_out! { // _mods, _crate_internals, _hidden
     _mods {
@@ -29,6 +30,7 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
     }
     _hidden {
         pub use super::{
+            _internal::__bound_int,
             signed::__bound_int_impl_signed,
             // unsigned::__bound_int_impl_unsigned,
         };

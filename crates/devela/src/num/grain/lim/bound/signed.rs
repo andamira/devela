@@ -25,7 +25,7 @@ macro_rules! __bound_int_impl_signed· {
             }
         }
 
-        $crate::bound_int!(%emit_user_impls $Name; $($user_impls)*);
+        $crate::__bound_int!(%emit_user_impls $Name; $($user_impls)*);
         $crate::__bound_int_impl_signed!(%ops
             $vis $Name; $Carrier; $Unsigned; $Up; $Range; $($op),*);
     };

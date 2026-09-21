@@ -36,6 +36,9 @@ crate::mods_out! { // _pub_mods, _reexports, _hidden
         };
     }
     _hidden {
-        pub use super::graph::_hidden::*;
+        pub use super::{
+            graph::_hidden::*,
+            link::_hidden::*,
+        };
     }
 }

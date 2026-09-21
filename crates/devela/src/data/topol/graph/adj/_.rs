@@ -9,6 +9,7 @@ crate::mods_in! {
     mod _example;
 
     mod define; // graph_adj!
+    mod _internal; // __graph_adj!
     mod_ impls;
 }
 crate::mods_out! { // _mods, _hidden
@@ -18,6 +19,9 @@ crate::mods_out! { // _mods, _hidden
         pub use super::_example::*;
     }
     _hidden {
-        pub use super::impls::_hidden::*;
+        pub use super::{
+            _internal::__graph_adj,
+            impls::_hidden::*,
+        };
     }
 }
