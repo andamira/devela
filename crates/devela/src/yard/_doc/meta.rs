@@ -47,6 +47,27 @@ macro_rules! _doc_meta· {
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
+    /* exact renamed Rust item */
+    (@items origin(
+        rust $root:ident $(:: $path:ident)*
+        ; item($kind:ident $local:ident)
+        ; renamed($old:ident as $new:ident)
+    ) $(, $($rest:tt)*)?) => {
+        concat!(" ",
+            $crate::_doc_meta!(@emit_origin_rust_item_as $root $(:: $path)*; $kind $old as $new),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+    /* exact non-renamed Rust item */
+    (@items origin(
+        rust $root:ident $(:: $path:ident)*
+        ; item($kind:ident $item:ident)
+    ) $(, $($rest:tt)*)?) => {
+        concat!(" ",
+            $crate::_doc_meta!(@emit_origin_rust_item $root $(:: $path)*; $kind $item),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
     /* public section: origin from Rust core/alloc/std */
     (@items origin(rust $root:ident $(:: $path:ident)* $(;
         renamed($($old:ident as $new:ident),* $(,)?))?) $(, $($rest:tt)*)?) => {
@@ -74,6 +95,48 @@ macro_rules! _doc_meta· {
     };
 
     /* internal emitters */
+    (@emit_origin_rust_module_link $root:ident $(:: $path:ident)*) => {
+        concat!(
+            "<a title='location in `",
+            ::core::stringify!($root), "`' href=\"https://doc.rust-lang.org/",
+            ::core::stringify!($root), "/", $(::core::stringify!($path), "/",)* "\">",
+            ::core::stringify!($root), $("::", ::core::stringify!($path),)* "</a>"
+        )
+    };
+    (@emit_origin_rust_item_link
+        $root:ident $(:: $path:ident)*;
+        $kind:ident $item:ident
+    ) => {
+        concat!(
+            "<a title='location of `", ::core::stringify!($item), "` in `",
+            ::core::stringify!($root), "`' href=\"https://doc.rust-lang.org/",
+            ::core::stringify!($root), "/", $(::core::stringify!($path), "/",)*
+            $crate::doclink·![@item_file $kind $item], "\">",
+            $crate::_doc_location!(%item_label $kind $item), "</a>"
+        )
+    };
+    (@emit_origin_rust_item
+        $root:ident $(:: $path:ident)*;
+        $kind:ident $item:ident
+    ) => {
+        concat!(
+            "<sup>re-exported from ",
+            $crate::_doc_meta!(@emit_origin_rust_module_link $root $(:: $path)*), "::",
+            $crate::_doc_meta!(@emit_origin_rust_item_link $root $(:: $path)*; $kind $item),
+            "</sup>"
+        )
+    };
+    (@emit_origin_rust_item_as
+        $root:ident $(:: $path:ident)*;
+        $kind:ident $old:ident as $new:ident
+    ) => {
+        concat!(
+            "<sup>re-exported from ",
+            $crate::_doc_meta!(@emit_origin_rust_module_link $root $(:: $path)*), "::",
+            $crate::_doc_meta!(@emit_origin_rust_item_link $root $(:: $path)*; $kind $old),
+            " as `", $crate::_doc_location!(%item_label $kind $new), "`</sup>"
+        )
+    };
     (@emit_origin_rust $root:ident $(:: $path:ident)* ; $($renamed:tt)*) => {
         concat!(
             "<sup>re-exported from <a title='location in `", ::core::stringify!($root),

@@ -41,7 +41,7 @@
 /// The path must not begin with `/`.
 ///
 /// NOTE: It's important NOT to pass a leading slash in `$path` for the URL to work.
-// NOTE: duplicated (not symlinked) in /crates/devela_macros/src/core_bridge/_doc_location.rs)
+// NOTE: copied with modifications in /crates/devela/macros/src/copied/_doc_location.rs
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
@@ -132,7 +132,7 @@ macro_rules! _doc_location· {
             "<sup class='_doc_location' title='location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
-            ")::[`", ::core::stringify!($item), "`](",
+            ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
             $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</sup>"
         )
@@ -153,7 +153,7 @@ macro_rules! _doc_location· {
             "<sup class='_doc_location' title='procedural macro location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
-            ")::[`", ::core::stringify!($item), "`](",
+            ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
             $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</sup>"
         )
@@ -182,7 +182,7 @@ macro_rules! _doc_location· {
             "<sup title='defined in `", env!("CARGO_PKG_NAME"), "`'>",
             "📍 [`", env!("CARGO_PKG_NAME"), "`](",
             $crate::doclink·![custom_current_proc_crate @mod],
-            ")::[`", ::core::stringify!($item), "`](",
+            ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
             $crate::doclink·![custom_current_proc_crate @item $kind $item],
             ")</sup>",
 
@@ -192,7 +192,7 @@ macro_rules! _doc_location· {
             "<sup class='_doc_location' title='public location in `",
             ::core::stringify!($target), "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom $target $path @mod],
-            ")::[`", ::core::stringify!($item), "`](",
+            ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
             $crate::doclink·![custom $target $path @item $kind $item],
             ")</b></sup>"
         )
@@ -219,10 +219,22 @@ macro_rules! _doc_location· {
             "<sup class='_doc_location' title='location in `", env!("CARGO_PKG_NAME"),
             "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
-            ")::[`", ::core::stringify!($item), "`](",
+            ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
             $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</b></sup>"
         )
+    };
+
+    /* item labels ---------------------------------------------------------- */
+
+    (%item_label macro $item:ident) => {
+        ::core::concat!(::core::stringify!($item), "!")
+    };
+    (%item_label fn $item:ident) => {
+        ::core::concat!(::core::stringify!($item), "()")
+    };
+    (%item_label $kind:ident $item:ident) => {
+        ::core::stringify!($item)
     };
 }
 #[doc(inline)]

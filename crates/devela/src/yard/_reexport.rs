@@ -48,12 +48,11 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $doc_line] // first doc line
-        #[doc = $crate::_doc_meta! {
-            $( location(re-exported $location $(, $location_kind $location_item)?), )?
-            origin(rust core $(:: $( $core_path )::+)? $(
-                ; renamed($item_to_rename as $item_renamed)
-            )?),
-        }]
+        #[doc = $crate::_reexport!(@doc_meta_rust
+            core $(:: $( $core_path )::+)?
+            ; [$( $location $(=> $location_kind $location_item)? )?]
+            ; [$($item_to_rename as $item_renamed),*]
+        )]
         #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(nightly_doc, doc(cfg(all(
@@ -86,12 +85,11 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $doc_line] // first doc line
-        #[doc = $crate::_doc_meta! {
-            $( location(re-exported $location $(, $location_kind $location_item)?), )?
-            origin(rust alloc $(:: $( $alloc_path )::+)? $(
-                ; renamed($item_to_rename as $item_renamed)
-            )?),
-        }]
+        #[doc = $crate::_reexport!(@doc_meta_rust
+            alloc $(:: $( $alloc_path )::+)?
+            ; [$( $location $(=> $location_kind $location_item)? )?]
+            ; [$($item_to_rename as $item_renamed),*]
+        )]
         #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
@@ -123,12 +121,11 @@ macro_rules! _reexport· {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
         #[doc = $doc_line] // first doc line
-        #[doc = $crate::_doc_meta! {
-            $( location(re-exported $location $(, $location_kind $location_item)?), )?
-            origin(rust std $(:: $( $std_path )::+)? $(
-                ; renamed($item_to_rename as $item_renamed)
-            )?),
-        }]
+        #[doc = $crate::_reexport!(@doc_meta_rust
+            std $(:: $( $std_path )::+)?
+            ; [$( $location $(=> $location_kind $location_item)? )?]
+            ; [$($item_to_rename as $item_renamed),*]
+        )]
         #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
@@ -161,12 +158,11 @@ macro_rules! _reexport· {
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
         #[doc = $doc_line] // first doc line
-        #[doc = $crate::_doc_meta! {
-            $( location(re-exported $location $(, $location_kind $location_item)?), )?
-            origin(rust std $(:: $( $std_path )::+)? $(
-                ; renamed($item_to_rename as $item_renamed)
-            )?),
-        }]
+        #[doc = $crate::_reexport!(@doc_meta_rust
+            std $(:: $( $std_path )::+)?
+            ; [$( $location $(=> $location_kind $location_item)? )?]
+            ; [$($item_to_rename as $item_renamed),*]
+        )]
         #[doc = $crate::_reexport!(@doc_local_tail $($($doc_more)+)?)]
 
         #[cfg_attr(
@@ -328,6 +324,73 @@ macro_rules! _reexport· {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
+
+    /* documentation metadata for Rust re-exports */
+
+    // Exact item, renamed.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; [$location:literal => $kind:ident $local:ident]
+        ; [$old:ident as $new:ident]
+    ) => {
+        $crate::_doc_meta! {
+            location(re-exported $location, $kind $local),
+            origin(rust $root $(:: $path)*; item($kind $local); renamed($old as $new)),
+        }
+    };
+    // Exact item, original name.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; [$location:literal => $kind:ident $item:ident]
+        ; []
+    ) => {
+        $crate::_doc_meta! {
+            location(re-exported $location, $kind $item),
+            origin(rust $root $(:: $path)*; item($kind $item)),
+        }
+    };
+    // Module-only location, with renamed items.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; [$location:literal]
+        ; [$($old:ident as $new:ident),+ $(,)?]
+    ) => {
+        $crate::_doc_meta! {
+            location(re-exported $location),
+            origin(rust $root $(:: $path)*; renamed($($old as $new),+)),
+        }
+    };
+    // Module-only location.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; [$location:literal]
+        ; []
+    ) => {
+        $crate::_doc_meta! {
+            location(re-exported $location),
+            origin(rust $root $(:: $path)*),
+        }
+    };
+    // No local location, but renamed items.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; []
+        ; [$($old:ident as $new:ident),+ $(,)?]
+    ) => {
+        $crate::_doc_meta! {
+            origin(rust $root $(:: $path)*; renamed($($old as $new),+)),
+        }
+    };
+    // No local location.
+    (@doc_meta_rust
+        $root:ident $(:: $path:ident)*
+        ; []
+        ; []
+    ) => {
+        $crate::_doc_meta! {
+            origin(rust $root $(:: $path)*),
+        }
+    };
 
     /* local docs tail */
 
