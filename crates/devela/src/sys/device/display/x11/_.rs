@@ -46,6 +46,7 @@ crate::mods_out! { // _mods, _crate_internals
             atoms::*,
             image::{XImageFormat, XImageStore, XVisualFormat},
             xkb::*,
+            runtime::_crate_internals::*,
             surface::_crate_internals::*,
         };
     }

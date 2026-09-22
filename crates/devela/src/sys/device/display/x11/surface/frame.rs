@@ -2,27 +2,31 @@
 //! Defines [`XSurfaceFrame`].
 //
 
-use crate::{Boundary1d, Position2, RasterLayout, ext, is, unwrap};
-use crate::{XImageFormat, XImageMode, XImageStore, XSurface, XVisualFormat};
+#[cfg(feature = "image")]
+use crate::{Boundary1d, RasterLayout, ext, unwrap};
+use crate::{Position2, XImageFormat, XImageMode, XImageStore, XSurface, XVisualFormat, is};
 
 #[doc = crate::_tags!(unix runtime)]
-/// Borrowed mutable X11 surface for direct frame rendering.
+/// Borrowed mutable view of the retained X11 presentation surface.
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XSurfaceFrame),
     #[cfg(target_pointer_width = "64")]
     test_size_of(XSurfaceFrame<'_> = 32|256; niche Option),
 }]
-/// This exposes the retained X11 presentation surface for one frame.
+/// Provides direct access to the pixel storage used for one frame,
+/// backed by ordinary CPU memory or, when available, MIT-SHM.
 ///
-/// Drawing into this surface avoids the intermediate scene-to-surface copy
-/// used by [`XRasterRenderer`][crate::XRasterRenderer].
+/// Its geometry and storage accessors describe the native X11 image layout,
+/// while its pixel methods provide format-aware direct writes.
 ///
-/// `XSurfaceFrame` is the X11 direct-surface path.
+/// This is the X11 direct-surface path:
+/// rendering here avoids an intermediate scene-to-surface copy
+/// and is useful when backend-specific performance or surface control matters.
 ///
-/// It exposes the retained X11 surface for one frame, allowing callers to render
-/// directly into the CPU/SHM presentation buffer.
+/// # Features
 ///
-/// Use it when X11-specific performance or surface control matters.
+/// With the `image` feature, `raster_layout` additionally exposes
+/// the storage through devela's generic raster-layout vocabulary.
 pub struct XSurfaceFrame<'a> {
     surface: &'a mut XSurface,
     image_format: XImageFormat,
@@ -77,15 +81,15 @@ impl<'a> XSurfaceFrame<'a> {
         bits.div_ceil(8) == self.bytes_per_line()
     }
 
-    /// Returns this surface's byte-addressable raster layout.
+    /// Returns this surface's byte-addressable layout as a [`RasterLayout`].
     ///
-    ///
-    /// The layout describes its pixel extent, stored bytes per pixel,
+    /// The layout describes the pixel extent, stored bytes per pixel,
     /// row stride, and upper-first row orientation.
-    /// It does not describe the pixel color or channel encoding.
+    /// It does not describe the X11 visual or channel encoding.
     ///
     /// Returns `None` when the stored pixel width is not byte-aligned.
     #[must_use]
+    #[cfg(feature = "image")]
     pub const fn raster_layout(&self) -> Option<RasterLayout> {
         let bytes_per_pixel = unwrap![some? self.bytes_per_pixel()];
         Some(RasterLayout::interleaved(
@@ -100,8 +104,13 @@ impl<'a> XSurfaceFrame<'a> {
 
     /// Returns whether RGB8 colors can be encoded and written directly to this surface.
     pub const fn supports_rgb8(&self) -> bool {
-        self.supports_native_pixel() && self.visual_format.supports_rgb8()
+        self.supports_native_pixels() && self.visual_format.supports_rgb8()
     }
+    /// Returns whether native pixel values can be written directly to this surface.
+    pub const fn supports_native_pixels(&self) -> bool {
+        self.image_format.supports_native_pixels()
+    }
+
     /// Encodes an RGB8 color as this X11 surface's native pixel value.
     ///
     /// Returns `None` when this surface does not support direct RGB8 encoding.
@@ -115,20 +124,22 @@ impl<'a> XSurfaceFrame<'a> {
         let Some(pixel) = self.encode_rgb8(rgb) else { return false };
         self.write_native_pixel(coord, pixel)
     }
-
-    /// Returns whether native pixel values can be written directly to this surface.
-    pub const fn supports_native_pixel(&self) -> bool {
-        self.image_format.supports_native_pixel()
-    }
     /// Writes an already encoded native X11 pixel at `coord`.
     ///
-    /// Returns whether the pixel was written.
+    /// Returns `false` when the format does not support direct native pixel writes,
+    /// `coord` lies outside the surface, or the backing storage is too short.
     pub fn write_native_pixel(&mut self, coord: Position2<u32>, pixel: u32) -> bool {
         let image_format = self.image_format;
-        let Some(layout) = self.raster_layout() else { return false };
-        let Some(offset) = layout.pixel_offset_bytes(coord) else { return false };
+        let Some(offset) = self.pixel_offset_bytes(coord) else { return false };
         let Some(dst) = self.bytes_mut().get_mut(offset..) else { return false };
         image_format.write_native_pixel(dst, pixel)
+    }
+    fn pixel_offset_bytes(&self, coord: Position2<u32>) -> Option<usize> {
+        let [x, y] = coord.dim;
+        is! { x >= self.width() as u32 || y >= self.height() as u32, return None }
+        let bytes_per_pixel = self.bytes_per_pixel()? as u64;
+        let offset = y as u64 * self.bytes_per_line() as u64 + x as u64 * bytes_per_pixel;
+        usize::try_from(offset).ok()
     }
 
     /// Returns the mutable surface bytes for direct rendering.

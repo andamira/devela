@@ -91,7 +91,7 @@ impl XImageFormat {
         self.bytes_per_line(width) as usize * height as usize
     }
     /// Returns whether native pixel values can be written directly with this image format.
-    pub(crate) const fn supports_native_pixel(self) -> bool {
+    pub(crate) const fn supports_native_pixels(self) -> bool {
         let bpp = self.bits_per_pixel;
         is! { !bpp.is_multiple_of(8), return false }
         let bytes = bpp / 8;
@@ -102,7 +102,7 @@ impl XImageFormat {
     /// Returns `false` when the stored pixel width is unsupported,
     /// `dst` is too short, or the image byte order is invalid.
     pub(crate) const fn write_native_pixel(self, dst: &mut [u8], pixel: u32) -> bool {
-        is! { !self.supports_native_pixel(), return false }
+        is! { !self.supports_native_pixels(), return false }
         let bytes = (self.bits_per_pixel / 8) as usize;
         is! { dst.len() < bytes, return false }
         let (src, start) = match self.image_byte_order {

@@ -78,6 +78,12 @@
 ### error
 - make `kind` public.
 
+##### media::visual::draw
+- new trait `CanvasRaster`, `CanvasRasterExt`.
+
+##### media::visual::image
+- gate with the `image` feature.
+
 ##### num::grain::niche
 - new type `BittenU8`.
 
@@ -85,8 +91,11 @@
 - restrict Linux syscall-backed APIs to compatible Linux/freestanding targets.
 - avoid detecting host native libraries as available when cross-compiling.
 
-#### sys::Arch
-- add AVR instructions.
+#### sys::arch
+- add AVR instructions to `Arch`.
+
+###### sys::device::display::x11
+- gate `XRasterRenderer` and `XSurfaceFrame::raster_layout` with the `image` feature.
 
 #### sys::hw
 - make module public.

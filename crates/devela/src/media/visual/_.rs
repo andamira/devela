@@ -9,6 +9,7 @@ crate::mods_in! {
     pub mod_ color;
     #[cfg(feature = "draw")]
     pub mod_ draw;
+    #[cfg(feature = "image")]
     pub mod_ image;
     // pub mod_ lattice; // WIP
     // pub mod_ pattern; // WIP
@@ -18,18 +19,20 @@ crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         pub use super::{
             color::_all::*,
-            image::_all::*,
             // lattice::_all::*,
             // pattern::_all::*,
             // video::_all::*,
         };
         #[cfg(feature = "draw")]
         pub use super::draw::_all::*;
+        #[cfg(feature = "image")]
+        pub use super::image::_all::*;
     }
     _crate_internals {
         pub(crate) use super::{
             color::_crate_internals::*,
-            image::_crate_internals::*,
         };
+        #[cfg(feature = "image")]
+        pub(crate) use super::image::_crate_internals::*;
     }
 }

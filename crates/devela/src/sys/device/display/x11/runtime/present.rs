@@ -1,9 +1,9 @@
 //
-//! Defines [`XPresent`], (`XCopyLayout`, `XPresenter`) [`XRasterRenderer`].
+//! Defines [`XPresent`], (`XCopyLayout`, `XPresenter`).
 //
 
-use crate::{Boundary1d, RasterViewBytes, is};
-use crate::{Event, RunFrame, RunPresent, RunRender};
+use crate::{Boundary1d, is};
+use crate::{Event, RunFrame, RunPresent};
 use crate::{
     XDisplay, XError, XFrameCtx, XImageMode, XImageStore, XSurface, XSurfaceFrame, XWindow,
 };
@@ -43,8 +43,8 @@ pub struct XPresent<'a> {
 #[rustfmt::skip]
 impl<'a> XPresent<'a> {
     #[allow(clippy::too_many_arguments)]
-    const fn _new(width: u16, height: u16, depth: u8, bytes_per_pixel: usize, bytes_per_line: usize,
-        row_start: Boundary1d, bytes: &'a [u8], clear_redraw: bool) -> Self {
+    pub(super) const fn _new(width: u16, height: u16, depth: u8, bytes_per_pixel: usize,
+        bytes_per_line: usize, row_start: Boundary1d, bytes: &'a [u8], clear_redraw: bool) -> Self {
         Self {
             width, height, depth, bytes_per_pixel, bytes_per_line, row_start, bytes, clear_redraw
         }
@@ -275,58 +275,6 @@ impl<'ctx> RunPresent<Event, XFrameCtx<'ctx>> for XPresenter {
         Ok(())
     }
 }
-
-#[doc = crate::_tags!(unix runtime)]
-/// Projects a byte-backed X11 image scene into a borrowed presentation artifact.
-#[doc = crate::_doc_meta!{
-    location("sys/device/display/x11", struct XRasterRenderer),
-}]
-/// It borrows image bytes from the scene and packages them
-/// as an [`XPresent`] for an `XPresenter` to upload.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct XRasterRenderer {
-    /// Whether to clear the window redraw flag after presentation.
-    pub clear_redraw: bool,
-}
-impl XRasterRenderer {
-    /// Creates a new X11 byte-image renderer.
-    pub const fn new(clear_redraw: bool) -> Self {
-        Self { clear_redraw }
-    }
-}
-impl Default for XRasterRenderer {
-    fn default() -> Self {
-        Self::new(true)
-    }
-}
-#[rustfmt::skip]
-impl<S: RasterViewBytes + ?Sized, E, C> RunRender<S, E, C> for XRasterRenderer {
-    type Error = XError;
-    type Output<'a> = XPresent<'a> where Self: 'a, S: 'a, E: 'a;
-
-    fn run_render<'a>(
-        &'a mut self,
-        _frame: &mut RunFrame<'a, E, C>,
-        scene: &'a S,
-    ) -> Result<Self::Output<'a>, Self::Error> {
-        let [width, height] = scene.raster_extent_bytes().dim;
-        let width = u16::try_from(width)
-            .map_err(|_| XError::Other("raster width exceeds the X11 u16 range"))?;
-        let height = u16::try_from(height)
-            .map_err(|_| XError::Other("raster height exceeds the X11 u16 range"))?;
-        Ok(XPresent::_new(
-            width,
-            height,
-            scene.raster_depth(),
-            scene.raster_bytes_per_pixel_bytes(),
-            scene.raster_bytes_per_line(),
-            scene.raster_row_start_bytes(),
-            scene.raster_bytes(),
-            self.clear_redraw,
-        ))
-    }
-}
-
 #[cfg(test)]
 mod _test {
     use super::*;
