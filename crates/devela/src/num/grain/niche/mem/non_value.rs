@@ -16,8 +16,6 @@ impl_non_value![I 4|32, i32];
 impl_non_value![I 8|64, i64];
 impl_non_value![I 16|128, i128];
 
-#[cfg(target_pointer_width = "8")]
-items! { impl_non_value![U 1|8, usize]; impl_non_value![I 1|8, isize]; }
 #[cfg(target_pointer_width = "16")]
 items! { impl_non_value![U 2|16, usize]; impl_non_value![I 2|16, isize]; }
 #[cfg(target_pointer_width = "32")]

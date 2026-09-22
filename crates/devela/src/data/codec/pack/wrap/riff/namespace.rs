@@ -157,7 +157,7 @@ impl Riff {
             bytes[offset + 7],
         ]);
         let len = cfg_select! {
-            any(target_pointer_width = "8", target_pointer_width = "16") => {
+            target_pointer_width = "16" => {
                 unwrap![ok_or? crate::cast![checked size => usize], RiffError::Overflow]
             }
             _ => size as usize,

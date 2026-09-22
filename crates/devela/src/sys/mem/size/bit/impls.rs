@@ -27,8 +27,6 @@ use crate::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, String, Vec, VecDeque};
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::{AtomicBool, AtomicOrdering};
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
-use crate::{AtomicI8, AtomicU8};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
 use crate::{AtomicI16, AtomicU16};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
@@ -140,8 +138,6 @@ _impl_bit_sized![= 128; for NonZeroI128, NonZeroU128];
 _impl_bit_sized![= 1; for AtomicBool];
 #[cfg(feature = "work")]
 _impl_bit_sized![= 8; for AtomicOrdering];
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
-_impl_bit_sized![= 8; for AtomicI8, AtomicU8];
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
 _impl_bit_sized![= 16; for AtomicI16, AtomicU16];
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
@@ -164,8 +160,6 @@ _impl_bit_sized![<const LEN: usize> = LEN; for StringNonNul<LEN>];
 // _impl_bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
 // _impl_bit_sized![<const LEN: usize> = { LEN + 32 }; for StringU32<LEN>];
 
-#[cfg(target_pointer_width = "8")]
-_impl_bit_sized![pointer = 8];
 #[cfg(target_pointer_width = "16")]
 _impl_bit_sized![pointer = 16];
 #[cfg(target_pointer_width = "32")]
