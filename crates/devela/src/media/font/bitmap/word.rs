@@ -2,7 +2,10 @@
 //! Defines [`FontBitmapWord`].
 //
 
-use crate::{CharIter, Debug, FmtResult, Formatter, format_buf, unwrap, whilst};
+#[cfg(all(feature = "draw", feature = "image"))]
+use crate::{CanvasRaster, CanvasRasterExt};
+use crate::{CharIter, FontBitmapPixel, FontBitmapPixelIter, Position2};
+use crate::{Debug, FmtResult, Formatter, format_buf, is, unwrap, whilst};
 
 #[doc = crate::_tags!(font)]
 /// A fixed-size bitmap font packed into glyph words.
@@ -137,79 +140,74 @@ impl<'glyphs, T> FontBitmapWord<'glyphs, T> {
 
 #[rustfmt::skip]
 impl<T: Copy + Into<u64>> FontBitmapWord<'_, T> {
-    /// Draws text into a one-byte-per-pixel buffer.
-    pub fn draw_mono(&self, buffer: &mut [u8], width: usize, x: isize, y: isize, text: &str) {
-        if width == 0 { return; }
+    /// Draws text into a one-byte-per-pixel monochrome buffer.
+    pub fn draw_mono(&self, buffer: &mut [u8], width: usize, origin: Position2<i64>, text: &str) {
+        is! { width == 0, return; }
         let height = buffer.len() / width;
-        self.for_each_pixel_with_local(x, y, text, |pixel_x, pixel_y, _, _, _| {
-            if pixel_x >= 0 && pixel_y >= 0 {
-                let pixel_x = pixel_x as usize;
-                let pixel_y = pixel_y as usize;
-                if pixel_x < width && pixel_y < height {
-                    buffer[pixel_y * width + pixel_x] = 1;
+        for pixel in self.text_pixels(origin, text) {
+            let [x, y] = pixel.position().dim;
+            if x >= 0 && y >= 0 {
+                let (x, y) = (x as usize, y as usize);
+                if x < width && y < height {
+                    buffer[y * width + x] = 1;
                 }
             }
-        });
+        }
     }
-    /// Draws RGBA text into a four-byte-per-pixel buffer.
-    pub fn draw_rgba(&self, buffer: &mut [u8], width: usize, x: isize, y: isize,
+    /// Draws text into a four-byte-per-pixel RGBA buffer.
+    pub fn draw_rgba(&self, buffer: &mut [u8], width: usize, origin: Position2<i64>,
         text: &str, color: [u8; 4]) {
-        let Some(stride) = width.checked_mul(4) else { return; };
-        if stride == 0 { return; }
+        let stride = unwrap![some_or width.checked_mul(4), return];
+        is! { stride == 0, return }
         let height = buffer.len() / stride;
-        self.for_each_pixel_with_local(x, y, text, |pixel_x, pixel_y, _, _, _| {
-            if pixel_x >= 0 && pixel_y >= 0 {
-                let pixel_x = pixel_x as usize;
-                let pixel_y = pixel_y as usize;
-                if pixel_x < width && pixel_y < height {
-                    let offset = pixel_y * stride + pixel_x * 4;
+        for pixel in self.text_pixels(origin, text) {
+            let [x, y] = pixel.position().dim;
+            if x >= 0 && y >= 0 {
+                let (x, y) = (x as usize, y as usize);
+                if x < width && y < height {
+                    let offset = y * stride + x * 4;
                     buffer[offset..offset + 4].copy_from_slice(&color);
                 }
             }
-        });
+        }
     }
     /// Draws RGBA text using a per-pixel color function.
-    pub fn draw_rgba_with<F>(&self, buffer: &mut [u8], width: usize, x: isize, y: isize,
-        text: &str, mut color_fn: F) where F: FnMut(usize, usize, usize) -> [u8; 4] {
-        let Some(stride) = width.checked_mul(4) else { return; };
-        if stride == 0 { return; }
+    pub fn draw_rgba_with<F>(&self, buffer: &mut [u8], width: usize, origin: Position2<i64>,
+        text: &str, mut color_fn: F)
+    where
+        F: FnMut(FontBitmapPixel) -> [u8; 4],
+    {
+        let stride = unwrap![some_or width.checked_mul(4), return];
+        is! { stride == 0, return }
         let height = buffer.len() / stride;
-        self.for_each_pixel_with_local(x, y, text,
-            |pixel_x, pixel_y, local_x, local_y, char_index| {
-                if pixel_x >= 0 && pixel_y >= 0 {
-                    let pixel_x = pixel_x as usize;
-                    let pixel_y = pixel_y as usize;
-                    if pixel_x < width && pixel_y < height {
-                        let offset = pixel_y * stride + pixel_x * 4;
-                        let color = color_fn(local_x, local_y, char_index);
-                        buffer[offset..offset + 4].copy_from_slice(&color);
-                    }
-                }
-            },
-        );
-    }
-
-    fn for_each_pixel_with_local<F>(&self, x: isize, y: isize, text: &str, mut f: F)
-    where F: FnMut(isize, isize, usize, usize, usize) {
-        let (mut x_pos, mut char_index) = (x, 0);
-        for c in text.chars() {
-            if let Some(glyph) = self.glyph(c) {
-                let glyph: u64 = glyph.into();
-                for row in 0..self.height {
-                    let global_y = y.saturating_add(row as isize)
-                        .saturating_sub(self.baseline as isize);
-                    for col in 0..self.width {
-                        let bit = row * self.width + col;
-                        if glyph & (1 << bit) != 0 {
-                            let global_x = x_pos.saturating_add(col as isize);
-                            f(global_x, global_y, col as usize, row as usize, char_index);
-                        }
-                    }
+        for pixel in self.text_pixels(origin, text) {
+            let [x, y] = pixel.position().dim;
+            if x >= 0 && y >= 0 {
+                let (x, y) = (x as usize, y as usize);
+                if x < width && y < height {
+                    let offset = y * stride + x * 4;
+                    let color = color_fn(pixel);
+                    buffer[offset..offset + 4].copy_from_slice(&color);
                 }
             }
-            x_pos = x_pos.saturating_add(self.advance_x as isize);
-            char_index += 1;
         }
+    }
+
+    /// Draws text onto a raster canvas.
+    #[cfg(all(feature = "draw", feature = "image"))]
+    pub fn draw_canvas<C>(&self, canvas: &mut C, origin: Position2<i64>,
+        text: &str, color: C::Color) -> Result<(), C::Error>
+    where
+        C: CanvasRaster,
+        C::Color: Copy,
+    {
+        let grid = canvas.canvas_raster_grid();
+        for pixel in self.text_pixels(origin, text) {
+            if let Some(coord) = grid.checked_coord(pixel.position()) {
+                canvas.canvas_set_color(coord, color)?;
+            }
+        }
+        Ok(())
     }
 }
 impl<T: Copy> FontBitmapWord<'_, T> {
@@ -222,5 +220,26 @@ impl<T: Copy> FontBitmapWord<'_, T> {
     #[must_use]
     pub const fn glyph_or(&self, c: char, fallback: T) -> T {
         unwrap![some_or self.glyph(c), fallback]
+    }
+}
+
+impl<'glyphs, T: Copy> FontBitmapWord<'glyphs, T> {
+    /// Returns an iterator over the set pixels of single-line `text`.
+    ///
+    /// `origin.x` is the left edge of the first glyph
+    /// and `origin.y` is the baseline position.
+    ///
+    /// Characters without a mapped glyph emit no pixels but still consume
+    /// the normal horizontal advance. Line breaks, tabs, shaping,
+    /// and other text-layout behavior are not interpreted.
+    ///
+    /// Position arithmetic and character indices saturate
+    /// at their respective integer bounds.
+    pub const fn text_pixels<'a>(
+        &'a self,
+        origin: Position2<i64>,
+        text: &'a str,
+    ) -> FontBitmapPixelIter<'a, 'glyphs, T> {
+        FontBitmapPixelIter::new(self, origin, text)
     }
 }

@@ -78,6 +78,14 @@
 ### error
 - make `kind` public.
 
+#### media::font
+- new types: `FontBitmapPixel`, `FontBitmapPixelIter`.
+- update `FontBitmapWord`:
+  - new method `text_pixels` for bitmap text pixel iteration.
+  - new method `draw_canvas` for drawing directly onto a `CanvasRaster`.
+  - change `draw_rgba_with` to receive a `FontBitmapPixel` in its color callback.
+  - update drawing methods to share the pixel iterator and use signed raster positions.
+
 ##### media::visual::draw
 - new trait `CanvasRaster`, `CanvasRasterExt`.
 

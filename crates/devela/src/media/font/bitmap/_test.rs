@@ -148,7 +148,7 @@ mod view {
 }
 
 mod word {
-    use crate::{FontBitmapWord, Fonts};
+    use crate::{FontBitmapWord, Fonts, pos};
 
     const GLYPHS: [u8; 2] = [
         0b_0001, // A
@@ -189,7 +189,7 @@ mod word {
     #[rustfmt::skip]
     fn draw_mono_fonts() {
         let mut buffer = [0u8; 15 * 4]; // Empty 1-bit buffer
-        Fonts::BIT_3_3.draw_mono(&mut buffer, 15, 2, 2, "LB");
+        Fonts::BIT_3_3.draw_mono(&mut buffer, 15, pos!(2, 2), "LB");
         let expected = [
             0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, // row 1
             0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, // row 2
@@ -198,7 +198,7 @@ mod word {
         ];
         assert_eq!(buffer, expected);
         let mut buffer = [0u8; 15 * 5]; // Empty 1-bit buffer
-        Fonts::BIT_3_5.draw_mono(&mut buffer, 15, 2, 4, "LIT");
+        Fonts::BIT_3_5.draw_mono(&mut buffer, 15, pos!(2, 4), "LIT");
         let expected = [
             0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, // row 1
             0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, // row 2
@@ -208,7 +208,7 @@ mod word {
         ];
         assert_eq!(buffer, expected);
         let mut buffer = [0u8; 20 * 7]; // Empty 1-bit buffer
-        Fonts::BIT_5_6.draw_mono(&mut buffer, 20, 2, 5, "LIT");
+        Fonts::BIT_5_6.draw_mono(&mut buffer, 20, pos!(2, 5), "LIT");
         let expected = [
             0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, // row 0
             0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, // row 2
@@ -226,9 +226,9 @@ mod word {
         const WIDTH: usize = 3;
         const HEIGHT: usize = 3;
         // IMPROVE: make a macro to pass the const literals for width and height
-        fn assert_draw(font: &FontBitmapWord<u16>, x: isize, y: isize, expected: &[u8]) {
+        fn assert_draw(font: &FontBitmapWord<u16>, x: i64, y: i64, expected: &[u8]) {
             let mut buffer = [0u8; WIDTH * HEIGHT];
-            font.draw_mono(&mut buffer, WIDTH, x, y, "0");
+            font.draw_mono(&mut buffer, WIDTH, pos!(x, y), "0");
             assert_eq!(buffer, expected);
         }
         assert_draw(&Fonts::BIT_3_3, 0, 2, &[ 1,1,1, 1,0,1, 1,1,1 ]); // centered
@@ -254,7 +254,7 @@ mod word {
         //   glyph row 0 -> buffer row (2 + 0 - 2) = 0,
         //   glyph row 1 -> buffer row 1,
         //   glyph row 2 -> buffer row 2.
-        Fonts::BIT_3_3.draw_rgba(&mut buffer, WIDTH, 0, 2, "0", color);
+        Fonts::BIT_3_3.draw_rgba(&mut buffer, WIDTH, pos!(0, 2), "0", color);
         // Expected pattern for the "0" glyph:
         let expected: [u8; WIDTH * HEIGHT * 4] = [
             255, 0, 0, 255,  255, 0, 0, 255,  255, 0, 0, 255,
