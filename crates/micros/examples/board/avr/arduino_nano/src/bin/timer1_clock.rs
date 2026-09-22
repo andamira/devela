@@ -31,6 +31,7 @@ pub extern "C" fn main() -> ! {
 
     unsafe { Arch::enable_interrupts() };
 
+    // 696 bytes
     let mut previous = clock.now();
     loop {
         let now = clock.now();
@@ -39,4 +40,14 @@ pub extern "C" fn main() -> ! {
             previous = now;
         }
     }
+
+    // WIP 14,204 (u128 arith) → 5826 bytes (u64 arith) → …
+    // let mut previous = clock.now_millis();
+    // loop {
+    //     let now = clock.now_millis();
+    //     if now - previous >= 500 {
+    //         unsafe { Board::LED.toggle() };
+    //         previous = now;
+    //     }
+    // }
 }

@@ -11,7 +11,7 @@ use crate::{Arch, McuAtmega328p, TimeScale, TimeSourceCfg};
 ///
 /// Timer1 runs continuously in normal mode. Its 16-bit hardware counter is
 /// extended in software by the overflow interrupt and exposed as a `u64`
-/// timeline through [`TimeSourceCfg`].
+/// timeline through [`TimeSourceCfg`][devela::TimeSourceCfg].
 ///
 /// This source is relative, not civil/absolute time. It also stops when the
 /// synchronous Timer1 clock stops, so it does not by itself preserve elapsed
@@ -22,9 +22,9 @@ pub struct Atmega328pTimer1Clock;
 #[doc = crate::_tags!(hw time)]
 /// Configuration token for [`Atmega328pTimer1Clock`].
 ///
-/// Values are created by [`Atmega328pTimer1Clock::start`]. Holding this token
-/// means the caller has initialized Timer1 for this timeline; subsequent unsafe
-/// reconfiguration of Timer1 invalidates that assumption.
+/// Values are created by [`Atmega328pTimer1Clock::start`](#method.start).
+/// Holding this token means the caller has initialized Timer1 for this timeline;
+/// subsequent unsafe reconfiguration of Timer1 invalidates that assumption.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Atmega328pTimer1ClockCfg {
     source_hz: u32,
@@ -42,6 +42,25 @@ impl Atmega328pTimer1ClockCfg {
     #[must_use]
     pub const fn prescaler(self) -> u16 {
         self.prescaler
+    }
+
+    /// Converts native Timer1 ticks to units-per-second without wide arithmetic.
+    ///
+    /// `source_hz` is a `u32`, so the remainder products below fit in `u64`.
+    /// The decomposition is exactly equivalent to:
+    ///
+    /// `ticks * prescaler * units_per_second / source_hz`
+    ///
+    /// but avoids the `u128` arithmetic used by the general `TimeScale` path.
+    #[must_use]
+    fn ticks_to_units(self, ticks: u64, units_per_second: u32) -> u64 {
+        let den = u64::from(self.source_hz);
+        let mul = u64::from(self.prescaler) * u64::from(units_per_second);
+        let (q, r) = (ticks / den, ticks % den);
+        let (mq, mr) = (mul / den, mul % den);
+        q.wrapping_mul(mul)
+            .wrapping_add(r.wrapping_mul(mq))
+            .wrapping_add(r.wrapping_mul(mr) / den)
     }
 
     /// Returns the current extended Timer1 tick count.
@@ -151,4 +170,17 @@ impl TimeSourceCfg<u64> for Atmega328pTimer1Clock {
     fn time_now(_: Self::Config) -> u64 { Self::ticks_now() }
     fn time_point_value(_: Self::Config, point: u64) -> u64 { point }
     fn time_elapsed_value(_: Self::Config, elapsed: u64) -> u64 { elapsed }
+
+    fn time_value_seconds(cfg: Self::Config, value: u64) -> u64 {
+        cfg.ticks_to_units(value, 1)
+    }
+    fn time_value_millis(cfg: Self::Config, value: u64) -> u64 {
+        cfg.ticks_to_units(value, 1_000)
+    }
+    fn time_value_micros(cfg: Self::Config, value: u64) -> u64 {
+        cfg.ticks_to_units(value, 1_000_000)
+    }
+    fn time_value_nanos(cfg: Self::Config, value: u64) -> u64 {
+        cfg.ticks_to_units(value, 1_000_000_000)
+    }
 }

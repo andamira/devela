@@ -31,6 +31,11 @@ where
     fn time_point_value((): (), point: P) -> u64 { T::time_point_value(point) }
     fn time_elapsed_value((): (), elapsed: P::Elapsed) -> u64 { T::time_elapsed_value(elapsed) }
 
+    fn time_value_seconds((): (), value: u64) -> u64 { T::time_value_seconds(value) }
+    fn time_value_millis((): (), value: u64) -> u64 { T::time_value_millis(value) }
+    fn time_value_micros((): (), value: u64) -> u64 { T::time_value_micros(value) }
+    fn time_value_nanos((): (), value: u64) -> u64 { T::time_value_nanos(value) }
+
     fn time_now_millis((): ()) -> u64 { T::time_now_millis() }
     fn time_now_micros((): ()) -> u64 { T::time_now_micros() }
     fn time_now_nanos((): ()) -> u64 { T::time_now_nanos() }

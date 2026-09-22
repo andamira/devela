@@ -74,6 +74,37 @@ pub trait TimeSource<P: TimePoint> {
 
     /* # provided # */
 
+    /* numeric scale conversion */
+
+    /// Converts a canonical numeric value to seconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_seconds(value: u64) -> u64 {
+        Self::time_scale().convert_simulated(value, TimeScale::Seconds)
+    }
+    /// Converts a canonical numeric value to milliseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_millis(value: u64) -> u64 {
+        Self::time_scale().convert_simulated(value, TimeScale::Millis)
+    }
+    /// Converts a canonical numeric value to microseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_micros(value: u64) -> u64 {
+        Self::time_scale().convert_simulated(value, TimeScale::Micros)
+    }
+    /// Converts a canonical numeric value to nanoseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_nanos(value: u64) -> u64 {
+        Self::time_scale().convert_simulated(value, TimeScale::Nanos)
+    }
+
     /// Returns the current time as a `u64` value in [`time_scale`][Self::time_scale] units.
     fn time_now_value() -> u64 { Self::time_point_value(Self::time_now()) }
 
@@ -93,19 +124,19 @@ pub trait TimeSource<P: TimePoint> {
 
     /// Converts `point` to seconds.
     fn time_point_seconds(point: P) -> u64 {
-        Self::time_scale().convert_simulated(Self::time_point_value(point), TimeScale::Seconds)
+        Self::time_value_seconds(Self::time_point_value(point))
     }
     /// Converts `point` to milliseconds.
     fn time_point_millis(point: P) -> u64 {
-        Self::time_scale().convert_simulated(Self::time_point_value(point), TimeScale::Millis)
+        Self::time_value_millis(Self::time_point_value(point))
     }
     /// Converts `point` to microseconds.
     fn time_point_micros(point: P) -> u64 {
-        Self::time_scale().convert_simulated(Self::time_point_value(point), TimeScale::Micros)
+        Self::time_value_micros(Self::time_point_value(point))
     }
     /// Converts `point` to nanoseconds.
     fn time_point_nanos(point: P) -> u64 {
-        Self::time_scale().convert_simulated(Self::time_point_value(point), TimeScale::Nanos)
+        Self::time_value_nanos(Self::time_point_value(point))
     }
 
     /// Converts `elapsed` to seconds.
@@ -187,6 +218,37 @@ pub trait TimeSourceCfg<P: TimePoint> {
 
     /* # provided # */
 
+    /* numeric scale conversion */
+
+    /// Converts a canonical numeric value to seconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_seconds(cfg: Self::Config, value: u64) -> u64 {
+        Self::time_scale(cfg).convert_simulated(value, TimeScale::Seconds)
+    }
+    /// Converts a canonical numeric value to milliseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_millis(cfg: Self::Config, value: u64) -> u64 {
+        Self::time_scale(cfg).convert_simulated(value, TimeScale::Millis)
+    }
+    /// Converts a canonical numeric value to microseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_micros(cfg: Self::Config, value: u64) -> u64 {
+        Self::time_scale(cfg).convert_simulated(value, TimeScale::Micros)
+    }
+    /// Converts a canonical numeric value to nanoseconds.
+    ///
+    /// Sources may override this when they can convert their native scale
+    /// more cheaply than the general [`TimeScale`] conversion.
+    fn time_value_nanos(cfg: Self::Config, value: u64) -> u64 {
+        Self::time_scale(cfg).convert_simulated(value, TimeScale::Nanos)
+    }
+
     /// Returns the current time as a `u64` value in [`time_scale`][Self::time_scale] units.
     fn time_now_value(cfg: Self::Config) -> u64 {
         Self::time_point_value(cfg, Self::time_now(cfg))
@@ -209,23 +271,19 @@ pub trait TimeSourceCfg<P: TimePoint> {
 
     /// Converts `point` to seconds.
     fn time_point_seconds(cfg: Self::Config, point: P) -> u64 {
-        Self::time_scale(cfg)
-            .convert_simulated(Self::time_point_value(cfg, point), TimeScale::Seconds)
+        Self::time_value_seconds(cfg, Self::time_point_value(cfg, point))
     }
     /// Converts `point` to milliseconds.
     fn time_point_millis(cfg: Self::Config, point: P) -> u64 {
-        Self::time_scale(cfg)
-            .convert_simulated(Self::time_point_value(cfg, point), TimeScale::Millis)
+        Self::time_value_millis(cfg, Self::time_point_value(cfg, point))
     }
     /// Converts `point` to microseconds.
     fn time_point_micros(cfg: Self::Config, point: P) -> u64 {
-        Self::time_scale(cfg)
-            .convert_simulated(Self::time_point_value(cfg, point), TimeScale::Micros)
+        Self::time_value_micros(cfg, Self::time_point_value(cfg, point))
     }
     /// Converts `point` to nanoseconds.
     fn time_point_nanos(cfg: Self::Config, point: P) -> u64 {
-        Self::time_scale(cfg)
-            .convert_simulated(Self::time_point_value(cfg, point), TimeScale::Nanos)
+        Self::time_value_nanos(cfg, Self::time_point_value(cfg, point))
     }
 
     /// Converts `elapsed` to seconds.

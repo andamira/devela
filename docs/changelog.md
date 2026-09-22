@@ -95,6 +95,9 @@
 ##### num::grain::niche
 - new type `BittenU8`.
 
+### phys::time::source
+- new `TimeSource` and `TimeSourceCfg` methods: `time_value_<seconds|millis|micros|nanos>`.
+
 ### sys
 - restrict Linux syscall-backed APIs to compatible Linux/freestanding targets.
 - avoid detecting host native libraries as available when cross-compiling.
