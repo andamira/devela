@@ -10,7 +10,11 @@ publish = false
 [dependencies.devela_micros]
 path = "../../../.."
 default-features = false
-features = ["supermini_oled042", "unsafe_mmio", "draw"]
+features = [
+	"supermini_oled042",
+	"unsafe_mmio",
+	"draw", "image", "font",
+]
 
 [profile.release]
 opt-level = "s"

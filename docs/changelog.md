@@ -130,8 +130,8 @@
 ## Crate
 
 ### features & flags
-- add feature groups for microcontrollers, boards, devices, and unsafe hardware capabilities.
-- expose devela features: `time`, `unsafe_hint`, `unsafe_mmio`.
+- add feature groups for microcontrollers, boards, devices, media, and unsafe hardware capabilities.
+- expose devela features: `draw`, `font`, `image`, `time`, `unsafe_hint`, `unsafe_mmio`.
 
 ### structure
 - add root modules: `mcu`, `board`, `device`.

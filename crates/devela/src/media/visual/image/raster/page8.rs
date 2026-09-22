@@ -2,6 +2,8 @@
 //! Defines [`BitmapPage8`].
 //
 
+#[cfg(all(feature = "draw", feature = "image"))]
+use crate::CanvasRaster;
 #[cfg(feature = "draw")]
 use crate::{Canvas, Infallible, Position2, RegionS2};
 use crate::{Cmp, Extent2, is, unwrap, whilst};
@@ -9,8 +11,8 @@ use crate::{Cmp, Extent2, is, unwrap, whilst};
 #[doc = crate::_tags!(hw image)]
 /// A 1-bit bitmap packed into horizontal 8-pixel pages.
 #[doc = crate::_doc_meta!{
-    location("device/display", struct Ssd13xxI2c),
-    test_size_of(BitmapPage8<40, 40, 1600> = 1600; niche !Option),
+    location("media/visual/image/raster", struct BitmapPage8),
+    test_size_of(BitmapPage8<40, 40, 200> = 200; niche !Option),
 }]
 /// Storage proceeds left-to-right within each page, then top-to-bottom
 /// across pages. Each byte represents eight vertically adjacent pixels,
@@ -136,25 +138,6 @@ impl<const W: usize, const H: usize, const N: usize> BitmapPage8<W, H, N> {
             self.set_pixel(px, y, value);
         }}
     }
-    /// Draws a clipped vertical line.
-    pub const fn draw_vline(&mut self, x: u32, y: u32, len: u32, value: bool) {
-        is! { x >= self.width() || y >= self.height(), return }
-        let end = Cmp(y.saturating_add(len)).min(self.height());
-        whilst! { py in y,..end; {
-            self.set_pixel(x, py, value);
-        }}
-    }
-
-    /// Draws the outline of a clipped rectangle.
-    pub const fn draw_rect(&mut self, x: u32, y: u32, width: u32, height: u32, value: bool) {
-        is! { x >= self.width() || y >= self.height() || width == 0 || height == 0, return }
-        let right = Cmp(x.saturating_add(width)).min(self.width());
-        let bottom = Cmp(y.saturating_add(height)).min(self.height());
-        self.draw_hline(x, y, right - x + 1, value);
-        is! { bottom != y, self.draw_hline(x, bottom, right - x + 1, value) }
-        self.draw_vline(x, y, bottom - y + 1, value);
-        is! { right != x, self.draw_vline(right, y, bottom - y + 1, value) }
-    }
     /// Fills a clipped rectangle.
     pub const fn fill_rect(&mut self, x: u32, y: u32, width: u32, height: u32, value: bool) {
         is! { x >= self.width() || y >= self.height() || width == 0 || height == 0, return }
@@ -188,3 +171,5 @@ impl<const W: usize, const H: usize, const N: usize> Canvas for BitmapPage8<W, H
         Ok(())
     }
 }
+#[cfg(all(feature = "draw", feature = "image"))]
+impl<const W: usize, const H: usize, const N: usize> CanvasRaster for BitmapPage8<W, H, N> {}

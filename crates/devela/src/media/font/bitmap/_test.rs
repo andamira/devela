@@ -263,4 +263,14 @@ mod word {
         ];
         assert_eq!(buffer, expected);
     }
+
+    #[test]
+    fn pixel_character_indices_include_empty_characters() {
+        let mut pixels = FONT.text_pixels(pos![0, 1], "A B");
+        let a = pixels.next().unwrap();
+        assert_eq!((a.character(), a.char_index()), ('A', 0));
+        let b = pixels.next().unwrap();
+        assert_eq!((b.character(), b.char_index()), ('B', 2));
+        assert_eq!(pixels.next(), None);
+    }
 }

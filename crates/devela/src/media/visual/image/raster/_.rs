@@ -18,6 +18,7 @@ crate::mods_in! {
         mod layout; // Physical raster byte-storage layout
         // mod macros; // TODO Raster type generators
         // mod_ ops; // WIP Raster storage and image operations
+        mod page8; // BitmapPage8
         mod traits; // Typed and byte raster access contracts
 }
 crate::mods_out! { // _mods, _pub_mods, _crate_internals
@@ -31,6 +32,7 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             layout::RasterLayout,
             // macros::raster,
             // ops::_all::*,
+            page8::BitmapPage8,
             traits::{
                 RasterView, RasterBuf, Raster,
                 RasterViewBytes, RasterBufBytes,

@@ -7,9 +7,13 @@ use crate::Ssd13xxWrite;
 #[doc = crate::_tags!(hw io)]
 /// An SSD13xx monochrome OLED display configuration.
 #[doc = crate::_doc_meta!{
-    location("device/display", struct Ssd13xxI2c),
-    #[cfg(target_pointer_size = "32")]
-    test_size_of(Ssd13xx= 8|64; niche Option),
+    location("device/display", struct Ssd13xx),
+    #[cfg(target_pointer_width = "16")]
+    test_size_of(Ssd13xx = 8|64; niche Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(Ssd13xx = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(Ssd13xx = 24|192; niche Option),
 }]
 /// Describes the panel geometry, GDDRAM placement, and initialization
 /// sequence independently of its physical communication interface.
@@ -60,14 +64,15 @@ impl Ssd13xx {
 impl Ssd13xx {
     /// Returns the visible panel width in pixels.
     #[must_use]
-    pub const fn width(self) -> usize {
-        self.width as usize
+    pub const fn width(self) -> u32 {
+        self.width as u32
     }
     /// Returns the visible panel height in pixels.
     #[must_use]
-    pub const fn height(self) -> usize {
-        self.height as usize
+    pub const fn height(self) -> u32 {
+        self.height as u32
     }
+
     /// Returns the number of 8-pixel pages spanning the visible panel height.
     #[must_use]
     pub const fn page_count(self) -> usize {
@@ -76,8 +81,9 @@ impl Ssd13xx {
     /// Returns the number of bytes in one native page-packed frame.
     #[must_use]
     pub const fn frame_bytes(self) -> usize {
-        self.width() * self.page_count()
+        self.width() as usize * self.page_count()
     }
+
     /// Returns the GDDRAM column corresponding to visible column zero.
     #[must_use]
     pub const fn column_offset(self) -> u8 {

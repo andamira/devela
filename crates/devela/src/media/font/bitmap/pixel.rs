@@ -30,7 +30,7 @@ pub struct FontBitmapPixelIter<'a, 'glyphs, T> {
     next_x: i64,
     glyph_x: i64,
     glyph: u64,
-    character: char,
+    character: Option<char>,
     char_index: u32,
 }
 #[rustfmt::skip]
@@ -47,7 +47,7 @@ impl<'a, 'glyphs, T> FontBitmapPixelIter<'a, 'glyphs, T> {
             next_x: origin.dim[0],
             glyph_x: origin.dim[0],
             glyph: 0,
-            character: '\0',
+            character: None,
             char_index: 0,
         }
     }
@@ -58,6 +58,7 @@ impl<'a, 'glyphs, T> FontBitmapPixelIter<'a, 'glyphs, T> {
         let bit = self.glyph.trailing_zeros() as u8;
         self.glyph &= self.glyph - 1;
         let (row, col) = (bit / self.font.width(), bit % self.font.width());
+        let character = unwrap![some? self.character];
         let pixel = FontBitmapPixel::new(
             Position2::new([
                 self.glyph_x.saturating_add(col as i64),
@@ -66,25 +67,25 @@ impl<'a, 'glyphs, T> FontBitmapPixelIter<'a, 'glyphs, T> {
                     .saturating_sub(self.font.baseline() as i64),
             ]),
             Position2::new([col as u16, row as u16]),
-            self.character,
+            character,
             self.char_index,
         );
-        is! { self.glyph == 0, self.char_index = self.char_index.saturating_add(1) }
         Some(pixel)
     }
     /// Advances to the next input character and returns its glyph origin.
     const fn next_character(&mut self) -> Option<(char, i64)> {
+        is! { self.character.is_some(), self.char_index = self.char_index.saturating_add(1) }
         let character = unwrap![some? self.chars.next_char()];
         let glyph_x = self.next_x;
         self.next_x = self.next_x.saturating_add(self.font.advance_x() as i64);
-        self.char_index = self.char_index.saturating_add(1);
+        self.character = Some(character);
         Some((character, glyph_x))
     }
     const fn load_glyph(&mut self, character: char, glyph_x: i64, glyph: u64) {
         let bits = self.font.glyph_bits();
         self.glyph = is![bits == 64, glyph, glyph & ((1_u64 << bits) - 1)];
         self.glyph_x = glyph_x;
-        self.character = character;
+        self.character = Some(character);
     }
 }
 macro_rules! impl_font_bitmap_word_pixel_iter {

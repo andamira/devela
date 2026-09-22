@@ -6,16 +6,11 @@
 //
 
 crate::mods_in! {
-    mod bitmap8;
-
     #[cfg(feature = "ssd13xx")]
     mod_ ssd13xx;
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            bitmap8::BitmapPage8,
-        };
         #[cfg(feature = "ssd13xx")]
         pub use super::ssd13xx::*;
     }

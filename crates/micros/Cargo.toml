@@ -163,12 +163,17 @@ unsafe = [
 #* Scope features *#
 # ------------------------------------------------------------------------------
 
+media = ["draw", "font", "image"]
+	draw = ["devela/draw"]
+	font = ["devela/font"]
+	image = ["devela/image"]
+
 time = ["devela/time"]
 
 #* _docs scope *#
 # ---------------
 
-_docs_nodep = ["all", "unsafe", "time"] # + alloc
+_docs_nodep = ["all", "unsafe", "media", "time"] # + alloc
 _docs = ["_docs_nodep"]
 
 
