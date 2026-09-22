@@ -14,6 +14,7 @@ and devela_micros dependency. Each program lives under `src/bin/`.
 - `timer0_ctc` — Timer0 CTC polling at 1 ms; toggles the LED every 500 ms.
 - `timer0_interrupt` — Timer0 compare interrupt; toggles the LED every 250 ms.
 - `timer1_capture` — Timer1 input capture; timestamps a rising edge on PB0 / ICP1.
+- `timer1_clock`` — overflow-extended Timer1 monotonic clock; blinks from `TimeSourceCfg`.
 - `timer1_ctc` — 16-bit Timer1 CTC polling; toggles the LED directly every 500 ms.
 - `timer1_pwm` — Timer1 fast PWM on PB1 / OC1A (D9); fades an external LED.
 - `timer2_ctc` — 8-bit Timer2 CTC polling; toggles the LED directly every 500 ms.

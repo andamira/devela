@@ -163,12 +163,12 @@ unsafe = [
 #* Scope features *#
 # ------------------------------------------------------------------------------
 
-draw = ["devela/draw"]
+time = ["devela/time"]
 
 #* _docs scope *#
 # ---------------
 
-_docs_nodep = ["all", "unsafe", "draw"] # + alloc
+_docs_nodep = ["all", "unsafe", "time"] # + alloc
 _docs = ["_docs_nodep"]
 
 

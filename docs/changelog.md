@@ -120,13 +120,14 @@
 
 ### features & flags
 - add feature groups for microcontrollers, boards, devices, and unsafe hardware capabilities.
+- expose devela features: `time`, `unsafe_hint`, `unsafe_mmio`.
 
 ### structure
 - add root modules: `mcu`, `board`, `device`.
 - add embedded target linker support and a hidden integrated `devela` namespace.
 
 ### examples
-- add Arduino Nano examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_ctc`, `timer1_capture`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
+- add Arduino Nano examples: `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
 - add ESP32-C3 SuperMini OLED examples: `i2c_probe`, `led_on`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add minimal ESP32-S3 bring-up example.
 
@@ -139,7 +140,7 @@
 - new types: `BitmapPage8`, `Ssd13xx`, `Ssd13xxI2c`, `Ssd13xxWrite`.
 
 #### mcu::avr
-- new types: `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.
+- new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.
 
 ##### mcu::avr::timer
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.

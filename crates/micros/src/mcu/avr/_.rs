@@ -61,7 +61,7 @@
 
 crate::mods_in! {
         #[cfg(feature = "atmega328p")]
-        mod atmega328p;
+        mod_ atmega328p;
         #[cfg(feature = "avr")]
         mod pin;
         #[cfg(feature = "avr")]
@@ -83,7 +83,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
             usart::AvrUsart,
         };
         #[cfg(feature = "atmega328p")]
-        pub use super::atmega328p::McuAtmega328p;
+        pub use super::atmega328p::_all::*;
     }
     _pub_mods {
         #[cfg(feature = "avr")]

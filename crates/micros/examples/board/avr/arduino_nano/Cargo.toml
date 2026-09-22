@@ -10,7 +10,11 @@ publish = false
 [dependencies.devela_micros]
 path = "../../../../"
 default-features = false
-features = ["arduino_nano", "unsafe_hint", "unsafe_mmio"]
+features = [
+	"arduino_nano",
+	"time",
+	"unsafe_hint", "unsafe_mmio",
+]
 
 [profile.release]
 opt-level = "s"

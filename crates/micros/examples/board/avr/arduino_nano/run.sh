@@ -19,7 +19,8 @@ ELF="$TARGET_DIR/$TARGET/release/$BIN.elf"
 build() {
     cd "$DIR"
 
-    cargo +nightly build \
+    # cargo +nightly build \ # WAIT:ISSUE: https://github.com/rust-lang/rust/issues/163158
+    cargo +nightly-2026-09-19 build \
         --release \
         --bin "$BIN" \
         --target-dir "$TARGET_DIR"
