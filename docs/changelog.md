@@ -26,6 +26,8 @@
 - restore conventional locations for `src/bin` and `tests`.
 - split crate-specific documentation from workspace-level documentation.
 - establish `progs` and `games` as separate workspace-level incubator trees.
+- use ATmega328P as the representative 16-bit-pointer target.
+- new cargo alias `c16`.
 
 ## tooling
 ### rustfmt
