@@ -7,7 +7,7 @@ crate::mods_in! {
     mod _test;
 
     mod define; // test_size_of!
-    mod report; // (__test_size_of_report)
+    mod _internal; // __test_size_of!, __test_size_of_report
 }
 crate::mods_out! { // _mods
     _mods {
@@ -18,7 +18,7 @@ crate::mods_out! { // _mods
     }
     _hidden {
         pub use super::{
-            report::__test_size_of_report,
+            _internal::{__test_size_of, __test_size_of_report},
         };
     }
 }
