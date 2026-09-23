@@ -47,6 +47,7 @@
 ### features & flags
 - new features: `hw`, `unsafe_mmio`.
 - new nightly feature: `asm_experimental_arch`.
+- update nightly feature: `nightly_allocator`.
 - use the reflected unsafe cfg to reject `safe` with any `unsafe_*` capability.
 
 ### structure

@@ -59,8 +59,11 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
 
+- 1.100: `aF`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
+        = `nightly_allocator` flag
 - 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
-- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543) WAIT
+- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
+- 1.100: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
 - 1.100: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
 - 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
@@ -79,14 +82,12 @@ See also
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
-- 1.??: `F`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
-        = `nightly_allocator` flag
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
         = `nightly_doc` flag
 
+- 1.??: `a`[allocator_ext](https://github.com/rust-lang/rust/issues/163177) from:allocator_api
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
-- 1.??: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)

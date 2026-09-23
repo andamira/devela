@@ -47,7 +47,6 @@
 #![cfg_attr(all(nightly_doc, miri), allow(unused_attributes))]
 #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 //
-#![cfg_attr(nightly_allocator, feature(allocator_api))]
 // #![cfg_attr(nightly_autodiff, feature(autodiff))] // FLAG_DISABLED:nightly_autodiff
 // #![cfg_attr(nightly_become, feature(explicit_tail_calls))] // WARN:incomplete_features
 #![cfg_attr(all(target_arch = "avr", feature = "unsafe_hint"), feature(asm_experimental_arch))]
@@ -70,7 +69,10 @@
 //
 // `nightly_stable_1_100`: core, alloc, std:
 #![cfg_attr(nightly_stable_1_100, feature(bool_toggle, drop_guard, never_type, unsafe_cell_access))]
-#![cfg_attr(all(nightly_stable_1_100, feature = "alloc"), feature(smart_pointer_try_map,))]
+#![cfg_attr(
+    all(nightly_stable_1_100, feature = "alloc"),
+    feature(allocator_api, box_take, smart_pointer_try_map,)
+)]
 #![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 //
 // `nightly_stable_1_101`: core, alloc, std:
@@ -128,7 +130,6 @@
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
     feature(
-        box_take,
         btree_extract_if,
         new_zeroed_alloc,
         smart_pointer_map,

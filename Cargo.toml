@@ -312,11 +312,6 @@ check-cfg = [ # Allowed configuration flags:
 		#
 		# Unstable nightly features without clear stabilization timeline
 		"cfg(nightly_unstable)",
-			# WAIT: [allocator_api](https://github.com/rust-lang/rust/issues/32838)
-			# - https://reloaded-project.github.io/Reloaded-III/Research/Demystifying-Rust-Allocators.html
-			# NOTE:dep features: "hashbrown?/nightly"]
-			"cfg(nightly_allocator)", # allocator_api
-			#
 			# WAIT: [explicit_tail_calls](https://github.com/rust-lang/rust/issues/112788)
 			"cfg(nightly_become)", # explicit_tail_calls WARN:incomplete_features (commented out in src/_.rs)
 			#
