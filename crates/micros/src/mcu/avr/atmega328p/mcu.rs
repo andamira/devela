@@ -2,7 +2,7 @@
 //! Defines [`McuAtmega328p`].
 //
 
-use crate::{AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
+use crate::{AvrAdc, AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
@@ -67,6 +67,18 @@ impl McuAtmega328p {
 
     /// Timer/Counter2 peripheral.
     pub const TIMER_2: AvrTimer2 = AvrTimer2::new(0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB6, 0x70, 0x37);
+}
+
+/// # Analog
+impl McuAtmega328p {
+    /// 10-bit successive-approximation ADC.
+    pub const ADC: AvrAdc = AvrAdc::new(0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7E);
+
+    /// Returns the 10-bit successive-approximation ADC.
+    #[must_use]
+    pub const fn adc(self) -> AvrAdc {
+        Self::ADC
+    }
 }
 
 /// # Serial

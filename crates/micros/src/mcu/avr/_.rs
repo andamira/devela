@@ -62,6 +62,9 @@
 crate::mods_in! {
         #[cfg(feature = "atmega328p")]
         mod_ atmega328p;
+
+        #[cfg(feature = "avr")]
+        mod adc;
         #[cfg(feature = "avr")]
         mod pin;
         #[cfg(feature = "avr")]
@@ -77,6 +80,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
         #[cfg(feature = "avr")]
         pub use super::{
+            adc::{AvrAdc, AvrAdcNoise},
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,

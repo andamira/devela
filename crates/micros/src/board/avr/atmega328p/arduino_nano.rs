@@ -12,6 +12,9 @@ use crate::{AvrPin, AvrUsart, McuAtmega328p};
 }]
 /// The board is based on [`McuAtmega328p`].
 ///
+/// The analog header labels `A0..=A7` correspond to ADC channels `0..=7`.
+/// ADC access itself is provided by the associated [`McuAtmega328p`].
+///
 /// See also:
 ///
 /// - [Arduino Nano documentation]
@@ -23,6 +26,11 @@ use crate::{AvrPin, AvrUsart, McuAtmega328p};
 /// [datasheet]: https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf
 #[derive(Debug)]
 pub struct BoardArduinoNano;
+
+impl BoardArduinoNano {
+    /// The associated Atmega328p microcontroller.
+    pub const MCU: McuAtmega328p = McuAtmega328p;
+}
 
 /// # Clock
 impl BoardArduinoNano {

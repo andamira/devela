@@ -6,7 +6,8 @@
 //
 // TOC
 // - individual error types:
-//   - InvalidErrorConversion
+//   - AttemptLimitReached
+//   - FailedErrorConversion
 //   - NotImplemented
 //   - NotSupported
 //   - InvalidValue
@@ -16,6 +17,22 @@
 use crate::{_tags, define_error};
 
 /* individual errors */
+
+define_error! { individual: pub struct AttemptLimitReached(pub Option<usize>);
+    /// Optionally contains the attempt limit that was reached.
+    #[derive(Default)],
+    +location: "error",
+    +test_size_of(#[cfg(target_pointer_width = "16")] 4|32; niche Option),
+    +test_size_of(#[cfg(target_pointer_width = "32")] 8|64; niche Option),
+    +test_size_of(#[cfg(target_pointer_width = "64")] 16|128; niche Option),
+    +tag: _tags!(error),
+
+    DOC_ATTEMPT_LIMIT_REACHED =
+        "The operation reached its allowed number of attempts before completing.",
+    self+f => if let Some(limit) = self.0 {
+        write!(f, "Attempt limit of `{limit}` reached before the operation completed.")
+    } else { f.write_str("Attempt limit reached before the operation completed.") }
+}
 
 define_error![individual: pub struct FailedErrorConversion;
     #[derive(Default)],
