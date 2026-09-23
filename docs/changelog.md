@@ -70,6 +70,7 @@
 - add `Build` methods: `emit_link_search`, `rerun_if_changed`.
 
 ##### code::util::assert
+- update `test_size_of!` with compile-time assertion.
 - move `compile_error!` from `error`.
 
 ##### code::util::debug

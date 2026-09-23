@@ -4,11 +4,14 @@
 
 use crate::Ssd13xxWrite;
 
+#[cfg(target_pointer_width = "16")]
+crate::test_size_of!(const Ssd13xx = 8|64; niche Option);
+
 #[doc = crate::_tags!(hw io)]
 /// An SSD13xx monochrome OLED display configuration.
 #[doc = crate::_doc_meta!{
     location("device/display", struct Ssd13xx),
-    #[cfg(target_pointer_width = "16")]
+    #[cfg(target_pointer_width = "16")] // real TEST above
     test_size_of(Ssd13xx = 8|64; niche Option),
     #[cfg(target_pointer_width = "32")]
     test_size_of(Ssd13xx = 12|96; niche Option),

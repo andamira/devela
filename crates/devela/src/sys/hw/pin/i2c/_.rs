@@ -4,7 +4,7 @@
 
 crate::mods_in! {
     mod addr;
-    #[cfg(all(feature = "unsafe_mmio", not(feature = "safe_sys")))]
+    #[cfg(all(feature = "unsafe_mmio", not(feature = "safe_sys")))] // FUTURE IMPROVE feat gate
     mod control;
     mod error;
     mod write;

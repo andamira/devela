@@ -123,6 +123,21 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! test_size_of· {
+    // Compile-time size assertion with an explicit negative niche-size check.
+    (const $ty:ty = $bytes:literal $(| $bits:literal)?
+        ; niche ! $wrap:ident $(,)?) => {
+        $crate::test_size_of![%const_size $ty = $bytes $(| $bits)?];
+        $crate::test_size_of![%const_niche_not $ty, $wrap];
+    };
+    // Compile-time size assertion, optionally checking a niche wrapper.
+    (const $ty:ty = $bytes:literal $(| $bits:literal)?
+        $(; niche $wrap:ident)? $(,)?) => {
+        $crate::test_size_of![%const_size $ty = $bytes $(| $bits)?];
+        $(
+            $crate::test_size_of![%const_niche $ty, $wrap];
+        )?
+    };
+
     // Assertion-only mode with an explicit negative niche-size check.
     (assert $ty:ty = $bytes:literal $(| $bits:literal)? ; niche ! $wrap:ident $(,)?) => {{
         $crate::test_size_of![assert $ty = $bytes $(| $bits)?];
@@ -211,7 +226,45 @@ macro_rules! test_size_of· {
     (probe $ty:ident $(,)?) => { $crate::paste! {
         $crate::test_size_of!([<test_size_of_ $ty>] : probe $ty);
     }};
+
     /* private arms*/
+
+    // Checks the byte size, and optionally the bit size.
+    //
+    // Array-length equality is intentional: on failure rustc reports both
+    // the expected and actual values.
+    (%const_size $ty:ty = $bytes:literal $(| $bits:literal)?) => {
+        const _: [(); $bytes] = [(); ::core::mem::size_of::<$ty>()];
+        $(
+            const _: [(); $bits] = [(); ::core::mem::size_of::<$ty>() * 8];
+        )?
+    };
+    // Checks that Option<T> preserves T's size.
+    (%const_niche $ty:ty, Option) => {
+        const _: [(); ::core::mem::size_of::<$ty>()] =
+            [(); ::core::mem::size_of::<::core::option::Option<$ty>>()];
+    };
+    // Checks that Option<T> does NOT preserve T's size.
+    (%const_niche_not $ty:ty, Option) => {
+        const _: () = {
+            if ::core::mem::size_of::<::core::option::Option<$ty>>()
+                == ::core::mem::size_of::<$ty>()
+            {
+                ::core::panic!(concat!("test_size_of!: Option<", stringify!($ty),
+                    "> unexpectedly has the same size as ", stringify!($ty)));
+            }
+        };
+    };
+    // Reject unsupported positive niche wrappers.
+    (%const_niche $ty:ty, $wrap:ident) => {
+        ::core::compile_error!(concat!("unsupported `test_size_of!` const niche wrapper `",
+            stringify!($wrap), "`; currently supported: `Option`"));
+    };
+    // Reject unsupported negative niche wrappers.
+    (%const_niche_not $ty:ty, $wrap:ident) => {
+        ::core::compile_error!(concat!("unsupported `test_size_of!` const niche wrapper `",
+            stringify!($wrap), "`; currently supported: `Option`"));
+    };
     // Ends batch parsing.
     (%assert_batch) => {};
     // Parses one batch entry with a negative niche-size check.
