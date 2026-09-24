@@ -97,6 +97,9 @@
 ##### media::visual::image
 - gate with the `image` feature.
 
+###### media::visual::image::raster
+- new struct: `BitmapPage8`.
+
 ##### num::grain::niche
 - new type `BittenU8`.
 
@@ -115,10 +118,11 @@
 
 #### sys::hw
 - make module public.
+- new trait: `CmdDataWrite`.
 
 ###### sys::hw::pin::i2c
-- new traits: `I2cControl`, `I2cWrite`.
-- new types: `I2cAddr7`, `I2cController`, `I2cError`.
+- new traits: `I2cBusWrite`, `I2cControl`.
+- new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`.
 
 #### sys::mem
 - make `Ptr` provenance-related methods const:
@@ -153,7 +157,7 @@
 - new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.
 
 #### device::display
-- new types: `BitmapPage8`, `Ssd13xx`, `Ssd13xxI2c`, `Ssd13xxWrite`.
+- new types: `Ssd13xx`.
 
 #### mcu::avr
 - new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.

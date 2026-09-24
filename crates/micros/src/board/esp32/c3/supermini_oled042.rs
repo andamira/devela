@@ -40,6 +40,11 @@ use crate::{EspI2c, I2cController};
 #[derive(Debug)]
 pub struct BoardSuperMiniOled042;
 
+impl BoardSuperMiniOled042 {
+    /// The associated ESP32-C3 microcontroller.
+    pub const MCU: McuEsp32C3 = McuEsp32C3;
+}
+
 /// # Board I/O
 impl BoardSuperMiniOled042 {
     /// Built-in active-low blue LED on GPIO8.

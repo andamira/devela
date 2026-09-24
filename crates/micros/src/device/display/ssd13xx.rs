@@ -2,7 +2,7 @@
 //! Defines [`Ssd13xx`].
 //
 
-use crate::Ssd13xxWrite;
+use crate::CmdDataWrite;
 
 #[cfg(target_pointer_width = "16")]
 crate::test_size_of!(const Ssd13xx = 8|64; niche Option);
@@ -100,30 +100,36 @@ impl Ssd13xx {
 }
 
 impl Ssd13xx {
+    /// I²C control byte selecting a command stream.
+    pub const I2C_CMD: u8 = 0x00;
+
+    /// I²C control byte selecting display data.
+    pub const I2C_DATA: u8 = 0x40;
+}
+impl Ssd13xx {
     /// Initializes the display and selects its full visible RAM window.
-    pub fn init<W: Ssd13xxWrite>(self, io: &mut W) -> Result<(), W::Error> {
-        io.write_commands(self.init)?;
+    pub fn init<W: CmdDataWrite>(self, io: &mut W) -> Result<(), W::Error> {
+        io.write_cmd(self.init)?;
         self.select_full_window(io)
     }
     /// Selects the full visible panel area as the GDDRAM write window.
-    pub fn select_full_window<W: Ssd13xxWrite>(self, io: &mut W) -> Result<(), W::Error> {
+    pub fn select_full_window<W: CmdDataWrite>(self, io: &mut W) -> Result<(), W::Error> {
         let column_last = self.column_offset + self.width - 1;
         let page_last = self.page_offset + self.page_count() as u8 - 1;
-        let commands = [
+        io.write_cmd(&[
             0x21, // set column range
             self.column_offset,
             column_last,
             0x22, // set page range
             self.page_offset,
             page_last,
-        ];
-        io.write_commands(&commands)
+        ])
     }
     /// Writes bytes to display RAM.
     ///
     /// The currently selected GDDRAM addressing window determines where
     /// the bytes are stored.
-    pub fn write_data<W: Ssd13xxWrite>(self, io: &mut W, data: &[u8]) -> Result<(), W::Error> {
+    pub fn write_data<W: CmdDataWrite>(self, io: &mut W, data: &[u8]) -> Result<(), W::Error> {
         io.write_data(data)
     }
 }

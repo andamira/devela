@@ -19,6 +19,8 @@
 crate::mods_in! {
     // pub mod_ block; // Block storage
     // pub mod_ capture; // Image/surface capture hardware
+        #[cfg(feature = "hw")]
+        mod cmd_data;
     // pub mod_ hid; // Human interface devices WIP Evdev*
     // pub mod_ link; // Communication links
     #[cfg(feature = "hw")]
@@ -26,7 +28,13 @@ crate::mods_in! {
     // pub mod_ sensor; // Measurement sensors
     // pub mod_ usb; // USB bus/devices
 }
-crate::mods_out! { // _pub_mods
+crate::mods_out! { // _mods, _pub_mods
+    _mods {
+        #[cfg(feature = "hw")]
+        pub use super::{
+            cmd_data::CmdDataWrite,
+        };
+    }
     _pub_mods {
         // pub use super::{
         //     // block::_all::*,

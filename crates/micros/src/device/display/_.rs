@@ -7,11 +7,11 @@
 
 crate::mods_in! {
     #[cfg(feature = "ssd13xx")]
-    mod_ ssd13xx;
+    mod ssd13xx;
 }
 crate::mods_out! { // _mods
     _mods {
         #[cfg(feature = "ssd13xx")]
-        pub use super::ssd13xx::*;
+        pub use super::ssd13xx::Ssd13xx;
     }
 }

@@ -1,31 +1,25 @@
 //
 //! Initializes the onboard 72×40 OLED and draws a test pattern over I²C.
 //
-// 7824 bytes
+// 7616 bytes
 //
 
 #![no_std]
 #![no_main]
 
-use devela::{BitmapPage8, Canvas, CanvasRasterExt, Fonts, Pcg32, pos, region};
-use devela_micros::{BoardSuperMiniOled042 as Board, Ssd13xxI2c, devela};
+use devela::{BitmapPage8, Canvas, CanvasRasterExt, Fonts, I2cTarget, Pcg32, pos, region};
+use devela_micros::{BoardSuperMiniOled042 as Board, Ssd13xx, devela};
 
 devela::set_panic_handler! { loop }
 devela::esp32_c3_direct_boot! { main }
 
 fn main() -> ! {
-    let serial = Board::USB_SERIAL;
-
     unsafe {
-        while !serial.rx_ready() {} // Let the host reopen USB after flashing
-
         let mut i2c = Board::prepare_oled_i2c();
-        let mut oled_io = Ssd13xxI2c::new(&mut i2c, Board::OLED_ADDR);
 
-        serial.write_bytes_blocking(b"initializing oled...\r\n");
+        let target = I2cTarget::new(&mut i2c, Board::OLED_ADDR);
+        let mut oled_io = target.cmd_data(Ssd13xx::I2C_CMD, Ssd13xx::I2C_DATA);
         Board::OLED.init(&mut oled_io).unwrap();
-
-        serial.write_bytes_blocking(b"drawing...\r\n");
 
         const WIDTH: u32 = Board::OLED.width();
         const HEIGHT: u32 = Board::OLED.height();
@@ -33,8 +27,8 @@ fn main() -> ! {
         type OledFrame =
             BitmapPage8<{ WIDTH as usize }, { HEIGHT as usize }, { Board::OLED.frame_bytes() }>;
 
-        let mut rng = Pcg32::new(WIDTH as u64 * 2, HEIGHT as u64 * 3);
         let mut frame = OledFrame::new();
+        let mut rng = Pcg32::new(WIDTH as u64 * 2, HEIGHT as u64 * 3);
 
         /* frame */
 
@@ -107,7 +101,6 @@ fn main() -> ! {
         .unwrap();
 
         Board::OLED.write_data(&mut oled_io, frame.bytes()).unwrap();
-        serial.write_bytes_blocking(b"done\r\n");
     }
     loop {}
 }

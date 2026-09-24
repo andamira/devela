@@ -1,5 +1,5 @@
 //
-//! Defines [`I2cWrite`].
+//! Defines [`I2cBusWrite`].
 //
 
 use crate::I2cAddr7;
@@ -7,14 +7,14 @@ use crate::I2cAddr7;
 #[doc = crate::_tags!(hw io protocol)]
 /// Blocking write access to an I²C bus.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", trait I2cWrite),
+    location("sys/hw/pin/i2c", trait I2cBusWrite),
 }]
 /// A call to [`write_slices`](#method.write_slices) represents one uninterrupted
 /// I²C write transaction. The supplied slices are concatenated without
 /// inserting STOP or repeated-START conditions between them.
 ///
 /// An empty payload performs an address-only write transaction.
-pub trait I2cWrite {
+pub trait I2cBusWrite {
     /// Error returned by the bus implementation.
     type Error;
 

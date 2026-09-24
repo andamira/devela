@@ -2,7 +2,7 @@
 //! Defines [`I2cControl`], [`I2cController`].
 //
 
-use crate::{I2cAddr7, I2cWrite};
+use crate::{I2cAddr7, I2cBusWrite};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// Low-level control of an I²C controller.
@@ -11,7 +11,7 @@ use crate::{I2cAddr7, I2cWrite};
 }]
 /// This is an extension interface for MCU-specific and custom I²C
 /// implementations. Application and device-driver code should
-/// normally use higher-level capabilities such as [`I2cWrite`].
+/// normally use higher-level capabilities such as [`I2cBusWrite`].
 ///
 /// Implementors can be wrapped in [`I2cController`] to expose safe I²C
 /// capabilities after the underlying hardware has been
@@ -75,7 +75,7 @@ impl<C: I2cControl> I2cController<C> {
     }
 }
 
-impl<C: I2cControl> I2cWrite for I2cController<C> {
+impl<C: I2cControl> I2cBusWrite for I2cController<C> {
     type Error = C::Error;
 
     fn write_slices(&mut self, address: I2cAddr7, slices: &[&[u8]]) -> Result<(), Self::Error> {

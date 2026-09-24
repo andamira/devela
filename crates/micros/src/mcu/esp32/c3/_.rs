@@ -4,14 +4,14 @@
 
 crate::mods_in! {
     mod direct_boot;
-    mod namespace;
+    mod mcu;
     mod pin;
     mod uart;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            namespace::McuEsp32C3,
+            mcu::McuEsp32C3,
             pin::Esp32C3Pin,
             uart::Esp32C3Uart,
         };
