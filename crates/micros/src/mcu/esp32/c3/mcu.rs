@@ -105,6 +105,7 @@ impl McuEsp32C3 {
 }
 
 /* private registers */
+
 #[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
 impl McuEsp32C3 {
     const TIMG0_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6001_F048);
@@ -112,6 +113,9 @@ impl McuEsp32C3 {
 
     const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
     const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
+
+    const RTC_SWD_CONF: EspReg32 = EspReg32::new(0x6000_80AC);
+    const RTC_SWD_WPROTECT: EspReg32 = EspReg32::new(0x6000_80B0);
 }
 
 /// # Randomness
@@ -234,19 +238,20 @@ impl McuEsp32C3 {
 /// # Boot watchdogs
 #[cfg(feature = "unsafe_mmio")]
 impl McuEsp32C3 {
-    /// Disables the watchdog states left active by ROM flash boot.
+    /// Completes the watchdog handoff from ROM flash boot to direct-boot code.
     ///
-    /// Direct boot bypasses the usual SDK startup that handles these
-    /// boot-time watchdogs. Unless they are fed, reconfigured, or disabled,
-    /// they can reset a long-running application shortly after startup.
+    /// Direct boot bypasses the usual SDK startup that takes ownership of
+    /// watchdog state established during boot. Leaving that state active can
+    /// reset a long-running application shortly after a cold power-on.
     ///
-    /// This disables the Timer Group 0 MWDT and the RTC watchdog,
-    /// including their flash-boot modes.
+    /// This disables the Timer Group 0 MWDT and RTC WDT, including their
+    /// flash-boot modes, and enables automatic feeding of the Super WDT.
     ///
     /// # Safety
     /// No other code may concurrently configure these watchdogs.
-    pub unsafe fn disable_boot_watchdogs() {
+    pub unsafe fn handoff_boot_watchdogs() {
         const WDT_WRITE_KEY: u32 = 0x50D8_3AA1;
+        const SWD_WRITE_KEY: u32 = 0x8F1D_312A;
 
         const WDT_ENABLE: u32 = 1 << 31;
 
@@ -255,22 +260,36 @@ impl McuEsp32C3 {
 
         const RWDT_FLASHBOOT_ENABLE: u32 = 1 << 12;
 
+        const SWD_AUTO_FEED_ENABLE: u32 = 1 << 31;
+
         unsafe {
-            // TG0 MWDT: unlock its protected configuration,
-            // disable normal and flash-boot operation, commit, and relock.
+            // Timer Group 0 MWDT.
             Self::TIMG0_WDT_WPROTECT.write(WDT_WRITE_KEY);
 
             let config = Self::TIMG0_WDT_CONFIG0.read();
             Self::TIMG0_WDT_CONFIG0
                 .write((config & !(WDT_ENABLE | MWDT_FLASHBOOT_ENABLE)) | MWDT_CONFIG_UPDATE);
+
             Self::TIMG0_WDT_WPROTECT.write(0);
 
-            // RTC WDT: a separate watchdog with its own protected control block.
+            // RTC WDT.
             Self::RTC_WDT_WPROTECT.write(WDT_WRITE_KEY);
 
             let config = Self::RTC_WDT_CONFIG0.read();
             Self::RTC_WDT_CONFIG0.write(config & !(WDT_ENABLE | RWDT_FLASHBOOT_ENABLE));
+
             Self::RTC_WDT_WPROTECT.write(0);
+
+            // Super WDT.
+            //
+            // Unlike the digital watchdogs above, keep the SWD operational but
+            // neutralize its boot-time reset behavior through automatic feeding.
+            Self::RTC_SWD_WPROTECT.write(SWD_WRITE_KEY);
+
+            let config = Self::RTC_SWD_CONF.read();
+            Self::RTC_SWD_CONF.write(config | SWD_AUTO_FEED_ENABLE);
+
+            Self::RTC_SWD_WPROTECT.write(0);
         }
     }
 }

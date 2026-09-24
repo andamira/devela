@@ -19,7 +19,7 @@
 /// - establishes the global and stack pointers,
 /// - copies initialized `.data` into RAM,
 /// - clears `.bss`,
-/// - disables the watchdog states left active by ROM flash boot.
+/// - hands off the ROM boot watchdog state for long-running direct-boot code,
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[cfg(feature = "unsafe_mmio")]
@@ -31,7 +31,7 @@ macro_rules! esp32_c3_direct_boot· {
         #[cfg(target_arch = "riscv32")]
         extern "C" fn __devela_esp32_c3_direct_boot_entry() -> ! {
             unsafe {
-                $crate::McuEsp32C3::disable_boot_watchdogs();
+                $crate::McuEsp32C3::handoff_boot_watchdogs();
             }
             $main()
         }

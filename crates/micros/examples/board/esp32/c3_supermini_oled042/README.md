@@ -140,8 +140,8 @@ The examples use devela's `esp32_c3_direct_boot!` macro for the minimal
 ESP32-C3 startup sequence.
 
 Before entering the supplied Rust function, it establishes the RISC-V stack
-and global pointer, initializes `.data` and `.bss`, and disables the watchdog
-states left active by ROM flash boot.
+and global pointer, initializes `.data` and `.bss`, and hands off the ROM
+boot watchdog state for long-running direct-boot code.
 
 devela also provides the matching `esp32_c3_direct_boot.x` linker script.
 Its build script makes the linker resource available for the
