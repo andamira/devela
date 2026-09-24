@@ -3,7 +3,7 @@
 //
 
 #[cfg(feature = "unsafe_mmio")]
-use crate::{Esp32C3Pin, I2cController};
+use crate::{Esp32C3Pin, Esp32C3Rng, I2cController};
 use crate::{Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
@@ -112,6 +112,19 @@ impl McuEsp32C3 {
 
     const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
     const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
+}
+
+/// # Randomness
+#[cfg(feature = "unsafe_mmio")]
+impl McuEsp32C3 {
+    /// Returns access to the hardware random-number generator.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device.
+    #[must_use]
+    pub unsafe fn rng(self) -> Esp32C3Rng {
+        unsafe { Esp32C3Rng::new_unchecked() }
+    }
 }
 
 /// # I²C
