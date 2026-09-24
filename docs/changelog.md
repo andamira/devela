@@ -29,7 +29,12 @@
 - use ATmega328P as the representative 16-bit-pointer target.
 - new cargo alias `c16`.
 
+## build
+- extend `__dbg` diagnostics with configured and effective compiler flags.
+
 ## tooling
+- document Cargo rustflag precedence and configuration guidelines.
+
 ### rustfmt
 - make formatting checks reproducible across local and CI environments.
 - restrict formatting to tracked Rust files and pin the rustfmt toolchain version.

@@ -95,6 +95,29 @@ done
 #------------------------------------------------------------------------------
 # Load environment configuration
 #------------------------------------------------------------------------------
+# Rust/Cargo flag configuration
+#
+# Cargo's rustflag sources are alternatives, not cumulative layers:
+#
+#   CARGO_ENCODED_RUSTFLAGS
+#   RUSTFLAGS
+#   [target.<triple/cfg>].rustflags
+#   [build].rustflags
+#
+# The first applicable source wins. In particular, exporting RUSTFLAGS masks
+# target-specific rustflags such as `target.avr-none.target-cpu`.
+#
+# Guidelines:
+# - Avoid RUSTFLAGS in this wrapper for generic/default configuration.
+# - Keep target-specific requirements in `.cargo/config.toml` under [target.*].
+# - Use CARGO_BUILD_RUSTFLAGS for local fallback preferences that may yield to
+#   target-specific configuration.
+# - If flags must compose with target-specific flags, add them through matching
+#   [target.'cfg(...)'].rustflags / `cargo --config`; Cargo joins those.
+# - RUSTDOCFLAGS follows the analogous precedence rules.
+#
+# Example: AVR requires `-C target-cpu=atmega328p`;
+# setting any RUSTFLAGS in x would otherwise hide that requirement.
 
 x_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 crate_cargo_toml=$(cargo locate-project --message-format plain 2>/dev/null)

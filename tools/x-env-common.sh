@@ -1,5 +1,6 @@
+# NOTE: Avoid generic RUSTFLAGS here: they mask [target.*].rustflags.
+# See tools/docs/rustflags.md.
 
-RUSTFLAGS=""
 RUSTDOCFLAGS=""
 
 DOC_HEADER="$crate_dir/src/_doc/header.html"
@@ -14,5 +15,4 @@ if [[ -f "$DOC_HEADER" ]]; then
     RUSTDOCFLAGS+=" --html-in-header $DOC_HEADER"
 fi
 
-export RUSTFLAGS
 export RUSTDOCFLAGS

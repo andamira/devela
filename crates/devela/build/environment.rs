@@ -266,6 +266,13 @@ fn print_debug_environment() {
             Build::println_var(var);
         }
     }
-    Build::println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");
+
+    Build::println_heading("Compiler flags:");
+    // Configured fallback input.
+    Build::println_var("CARGO_BUILD_RUSTFLAGS");
+    // Effective rustc flags selected by Cargo.
+    Build::println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "effective RUSTFLAGS");
+    // Rustdoc inputs used by the x environment.
+    Build::println_var("CARGO_BUILD_RUSTDOCFLAGS");
     Build::println_var("RUSTDOCFLAGS");
 }
