@@ -1,10 +1,20 @@
 //
 //! Defines [`McuEsp32C3`].
 //
+// TOC
+// - struct McuEsp32C3
+// - impl GPIO
+// - impl Peripherals
+// - impl Randomness
+// - impl Clock and timing
+// - impl I²C
+// - impl UART
+// - impl Boot watchdogs
+// - impl Private registers
 
 #[cfg(feature = "unsafe_mmio")]
 use crate::{Esp32C3Pin, Esp32C3Rng, I2cController};
-use crate::{Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
+use crate::{Esp32C3SystemTimer, Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
@@ -48,12 +58,6 @@ use crate::{Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag};
 /// [ESP32-C3 hardware reference]: https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/hw-reference/index.html
 #[derive(Debug)]
 pub struct McuEsp32C3;
-
-/// # Clock
-impl McuEsp32C3 {
-    /// External crystal frequency.
-    pub const XTAL_HZ: u32 = 40_000_000;
-}
 
 /// # GPIO
 impl McuEsp32C3 {
@@ -104,20 +108,6 @@ impl McuEsp32C3 {
     pub const USB_SERIAL_JTAG: EspUsbSerialJtag = EspUsbSerialJtag::new(Self::USB_SERIAL_JTAG_BASE);
 }
 
-/* private registers */
-
-#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
-impl McuEsp32C3 {
-    const TIMG0_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6001_F048);
-    const TIMG0_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6001_F064);
-
-    const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
-    const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
-
-    const RTC_SWD_CONF: EspReg32 = EspReg32::new(0x6000_80AC);
-    const RTC_SWD_WPROTECT: EspReg32 = EspReg32::new(0x6000_80B0);
-}
-
 /// # Randomness
 #[cfg(feature = "unsafe_mmio")]
 impl McuEsp32C3 {
@@ -128,6 +118,53 @@ impl McuEsp32C3 {
     #[must_use]
     pub unsafe fn rng(self) -> Esp32C3Rng {
         unsafe { Esp32C3Rng::new_unchecked() }
+    }
+}
+
+/// # Clock and timing
+impl McuEsp32C3 {
+    /// External main-crystal (`XTAL_CLK`) frequency, in hertz.
+    pub const XTAL_HZ: u32 = 40_000_000;
+
+    /// System Timer (`SYSTIMER`) peripheral base address.
+    pub const SYSTIMER_BASE: u32 = 0x6002_3000;
+
+    /// System Timer (`SYSTIMER`) peripheral.
+    pub const SYSTIMER: Esp32C3SystemTimer = Esp32C3SystemTimer::new(Self::SYSTIMER_BASE);
+
+    /// Enables System Timer counter `UNIT0`.
+    ///
+    /// Enables the SYSTIMER APB clock, releases the peripheral from reset,
+    /// and enables `UNIT0` counting.
+    ///
+    /// This preserves the existing SYSTIMER configuration
+    /// and does not explicitly reload or clear the counter.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-C3 device.
+    ///
+    /// SYSTIMER and its system clock/reset state must not be concurrently configured.
+    #[must_use]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn prepare_systimer_unit0() -> Esp32C3SystemTimer {
+        const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600c_0010);
+        const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600c_0018);
+        const SYSTIMER_CLOCK_ENABLE: u32 = 1 << 29;
+        const SYSTIMER_RESET: u32 = 1 << 29;
+        const UNIT0_WORK_ENABLE: u32 = 1 << 30;
+        unsafe {
+            let clock = SYSTEM_PERIP_CLK_EN0;
+            clock.write(clock.read() | SYSTIMER_CLOCK_ENABLE);
+
+            let reset = SYSTEM_PERIP_RST_EN0;
+            reset.write(reset.read() & !SYSTIMER_RESET);
+
+            let timer = Self::SYSTIMER;
+            let config = timer.config_reg();
+            config.write(config.read() | UNIT0_WORK_ENABLE);
+
+            timer
+        }
     }
 }
 
@@ -292,4 +329,17 @@ impl McuEsp32C3 {
             Self::RTC_SWD_WPROTECT.write(0);
         }
     }
+}
+
+// # Private registers
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
+impl McuEsp32C3 {
+    const TIMG0_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6001_F048);
+    const TIMG0_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6001_F064);
+
+    const RTC_WDT_CONFIG0: EspReg32 = EspReg32::new(0x6000_8090);
+    const RTC_WDT_WPROTECT: EspReg32 = EspReg32::new(0x6000_80A8);
+
+    const RTC_SWD_CONF: EspReg32 = EspReg32::new(0x6000_80AC);
+    const RTC_SWD_WPROTECT: EspReg32 = EspReg32::new(0x6000_80B0);
 }

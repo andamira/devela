@@ -172,7 +172,7 @@
 
 #### mcu::esp32
 - new macro: `esp32_c3_direct_boot!`.
-- new types: `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3Uart`, `EspI2c`, `EspReg32`, `EspUsbSerialJtag`, `McuEsp32C3`.
+- new types: `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3Uart`, `EspI2c`, `EspReg32`, `Esp32C3SystemTimer`, `EspUsbSerialJtag`, `McuEsp32C3`.
 - add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
 
 [0.30.0]: https://github.com/andamira/devela/releases/tag/v0.30.0

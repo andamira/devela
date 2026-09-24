@@ -7,6 +7,7 @@ crate::mods_in! {
     mod mcu;
     mod pin;
     mod random;
+    mod systimer;
     mod uart;
 }
 crate::mods_out! { // _mods
@@ -14,7 +15,8 @@ crate::mods_out! { // _mods
         pub use super::{
             mcu::McuEsp32C3,
             pin::Esp32C3Pin,
-            random::Esp32C3Rng,
+            random::Esp32C3Rng, // Esp32C3Entropy
+            systimer::Esp32C3SystemTimer,
             uart::Esp32C3Uart,
         };
         #[cfg(feature = "unsafe_mmio")]
