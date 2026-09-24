@@ -34,6 +34,40 @@ impl Esp32C3SystemTimer {
     pub const COUNTER_MASK: u64 = (1_u64 << Self::COUNTER_BITS) - 1;
 }
 
+/// # Counter
+impl Esp32C3SystemTimer {
+    /// Returns the wrapping elapsed counter ticks from `start` to `end`.
+    ///
+    /// The interval must span at most one complete counter wrap.
+    #[must_use]
+    pub const fn elapsed_ticks(start: u64, end: u64) -> u64 {
+        end.wrapping_sub(start) & Self::COUNTER_MASK
+    }
+
+    /// Returns the current `UNIT0` counter value.
+    ///
+    /// Requests an update, waits until the snapshot is valid, then combines
+    /// the latched high 20 and low 32 bits.
+    ///
+    /// # Safety
+    /// This must describe the active ESP32-C3 System Timer.
+    #[must_use]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn unit0_count(self) -> u64 {
+        const UPDATE: u32 = 1 << 30;
+        const VALUE_VALID: u32 = 1 << 29;
+
+        unsafe {
+            let op = self.unit0_op_reg();
+            op.write(UPDATE);
+            while op.read() & VALUE_VALID == 0 {}
+            let lo = self.unit0_value_lo_reg().read() as u64;
+            let hi = (self.unit0_value_hi_reg().read() & 0x000f_ffff) as u64;
+            hi << 32 | lo
+        }
+    }
+}
+
 /// # Registers
 #[rustfmt::skip]
 impl Esp32C3SystemTimer {
@@ -60,30 +94,4 @@ impl Esp32C3SystemTimer {
     /// Returns the low 32 bits of the latched UNIT0 value.
     #[must_use]
     pub const fn unit0_value_lo_reg(self) -> EspReg32 { EspReg32::new(self.0 + 0x44) }
-}
-
-/// # Counter
-#[cfg(feature = "unsafe_mmio")]
-impl Esp32C3SystemTimer {
-    /// Returns the current `UNIT0` counter value.
-    ///
-    /// Requests an update, waits until the snapshot is valid, then combines
-    /// the latched high 20 and low 32 bits.
-    ///
-    /// # Safety
-    /// This must describe the active ESP32-C3 System Timer.
-    #[must_use]
-    pub unsafe fn unit0_count(self) -> u64 {
-        const UPDATE: u32 = 1 << 30;
-        const VALUE_VALID: u32 = 1 << 29;
-
-        unsafe {
-            let op = self.unit0_op_reg();
-            op.write(UPDATE);
-            while op.read() & VALUE_VALID == 0 {}
-            let lo = self.unit0_value_lo_reg().read() as u64;
-            let hi = (self.unit0_value_hi_reg().read() & 0x000f_ffff) as u64;
-            hi << 32 | lo
-        }
-    }
 }
