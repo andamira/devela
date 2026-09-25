@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_BOARD!()] // public
-#![doc = crate::_doc!(modules: crate; board: avr, esp32)]
+#![doc = crate::_doc!(modules: crate; board: avr, esp32, sam)]
 #![doc = crate::_doc!(flat:"board")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -27,6 +27,8 @@ crate::mods_in! {
     pub mod_ avr;
     #[cfg_attr(not(nightly_doc), cfg(feature = "board_esp32"))]
     pub mod_ esp32;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "board_sam"))]
+    pub mod_ sam;
 }
 crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
@@ -34,9 +36,13 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::avr::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "board_esp32"))]
         pub use super::esp32::_all::*;
+        #[cfg_attr(not(nightly_doc), cfg(feature = "board_sam"))]
+        pub use super::sam::_all::*;
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "arduino_due")]
+        pub use super::sam::_all::BoardArduinoDue;
         #[cfg(feature = "arduino_nano")]
         pub use super::avr::_all::BoardArduinoNano;
         #[doc(inline)]

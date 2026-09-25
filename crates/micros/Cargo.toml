@@ -70,20 +70,25 @@ all = ["mcu_all", "board_all", "device_all"]
 # microcontrollers
 
 mcu = []
-mcu_all = ["avr_all", "esp32_all"]
-
+mcu_all = [
+	"avr_all",
+	"esp32_all",
+	"sam_all",
+]
 	avr = ["mcu"]
 	avr_all = ["atmega328p", "atmega2560"]
-
 		atmega328p = ["avr"]
 		atmega2560 = ["avr"]
 
 	esp32 = ["mcu"]
 	esp32_all = ["esp32c3", "esp32c6", "esp32s3"]
-
 		esp32c3 = ["esp32"]
 		esp32c6 = ["esp32"]
 		esp32s3 = ["esp32"]
+
+	sam = ["mcu"]
+	sam_all = ["sam3x8e"]
+		sam3x8e = ["sam"]
 
 # boards
 
@@ -91,26 +96,28 @@ board = []
 board_all = [
 	"board_avr_all",
 	"board_esp32_all",
+	"board_sam_all",
 ]
 	board_avr = ["board", "avr"]
 	board_avr_all = ["arduino_nano", "arduino_mega2560"]
-
 		arduino_nano = ["board_avr", "atmega328p"]
 		arduino_mega2560 = ["board_avr", "atmega2560"]
 
 	board_esp32 = ["board", "esp32"]
 	board_esp32_all = ["supermini_oled042"]
-
 		# c6_touch_lcd147 = ["board_esp32", "esp32c6"]
 		supermini_oled042 = ["board_esp32", "esp32c3", "ssd13xx"]
 
+	board_sam = ["board", "sam"]
+	board_sam_all = ["arduino_due"]
+		arduino_due = ["board_sam", "sam3x8e"]
 
 # devices
 
 device = []
 device_all = [
 	"audio_all", "comm_all", "display_all", "input_all",
-	"motion_all", "power_all", "sensor_all", "vision_all"
+	"motion_all", "power_all", "sensor_all", "vision_all",
 ]
 
 audio = ["device"]

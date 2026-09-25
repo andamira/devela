@@ -1,22 +1,22 @@
 //
-//! Defines [`EspReg32`].
+//! Defines [`SamReg32`].
 //
 
 use crate::Ptr;
 
 #[doc = crate::_tags!(hw)]
-/// A 32-bit ESP memory-mapped hardware register.
+/// A 32-bit SAM memory-mapped hardware register.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct EspReg32),
-    test_size_of(EspReg32 = 4|32; niche !Option),
+    location("mcu/sam", struct SamReg32),
+    test_size_of(SamReg32 = 4|32; niche !Option),
 }]
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct EspReg32(u32);
+pub struct SamReg32(u32);
 
 #[rustfmt::skip]
-impl EspReg32 {
-    /// Creates a 32-bit ESP register at a memory-mapped address.
+impl SamReg32 {
+    /// Creates a 32-bit SAM register at a memory-mapped address.
     #[must_use]
     pub const fn new(addr: u32) -> Self { Self(addr) }
 
@@ -38,7 +38,7 @@ impl EspReg32 {
 }
 
 #[cfg(feature = "unsafe_mmio")]
-impl EspReg32 {
+impl SamReg32 {
     /// Performs a volatile read from this register.
     ///
     /// # Safety

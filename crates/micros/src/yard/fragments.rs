@@ -17,10 +17,12 @@ Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch ba
     _DOC_MCU_AVR       = "AVR microcontrollers and peripheral foundations.";
     _DOC_MCU_AVR_TIMER = "AVR timer/counter peripherals and timing concepts.";
     _DOC_MCU_ESP32     = "ESP32 microcontrollers and peripheral foundations.";
+    _DOC_MCU_SAM       = "Microchip SAM microcontrollers and peripheral foundations.";
 
     _DOC_BOARD         = "Development boards and their fixed hardware configurations.";
-    _DOC_BOARD_AVR     = "AVR boards.";
-    _DOC_BOARD_ESP32   = "ESP32 boards.";
+    _DOC_BOARD_AVR     = "Boards based on AVR microcontrollers.";
+    _DOC_BOARD_ESP32   = "Boards based on ESP32 microcontrollers.";
+    _DOC_BOARD_SAM     = "Boards based on Microchip SAM microcontrollers.";
 
     _DOC_DEVICE         = "Reusable drivers for discrete hardware devices.";
     _DOC_DEVICE_AUDIO   = "Audio converters, amplifiers and interface devices.";
