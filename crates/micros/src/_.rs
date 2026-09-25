@@ -61,9 +61,15 @@ pub mod all {
     #[allow(unused_imports)]
     pub use crate::_all::*;
 }
+
+#[doc(inline)]
+pub use _devela as devela;
 #[doc(hidden)]
 /// Integrated devela vocabulary available through this crate.
-pub mod devela {
+///
+/// Combines this crate's public items
+/// with the corresponding `devela` vocabulary in one namespace.
+pub mod _devela {
     #[allow(unused_imports)]
     pub use crate::all::*;
     pub use ::devela::all::*;
