@@ -152,6 +152,7 @@
 - add embedded target linker support and a hidden integrated `devela` namespace.
 
 ### examples
+- add Arduino Mega2560 examples: `led_on`, `usart_chat`.
 - add Arduino Nano examples: `adc_noise`, `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
 - add ESP32-C3 SuperMini OLED examples: `i2c_probe`, `led_on`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add minimal ESP32-S3 bring-up example.
@@ -159,13 +160,13 @@
 ## Modules
 
 ### board
-- new types: `BoardArduinoNano`, `BoardSuperMiniOled042`.
+- new types: `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSuperMiniOled042`.
 
 #### device::display
 - new types: `Ssd13xx`.
 
 #### mcu::avr
-- new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega328p`.
+- new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega2560`, `McuAtmega328p`.
 
 ##### mcu::avr::timer
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.

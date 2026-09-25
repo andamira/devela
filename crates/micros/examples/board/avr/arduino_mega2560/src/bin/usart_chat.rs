@@ -1,13 +1,13 @@
 //
 //! Runs a small interactive command console over USART0.
 //
-// 1372 bytes
+// 1506 bytes
 
 #![no_std]
 #![no_main]
 
 use devela::is;
-use devela_micros::{AvrUsart, BoardArduinoNano as Board, devela};
+use devela_micros::{AvrUsart, BoardArduinoMega2560 as Board, devela};
 
 devela::set_panic_handler! { loop }
 
@@ -22,7 +22,7 @@ pub extern "C" fn main() -> ! {
 
         uart.configure_rx_tx_8n1(Board::CPU_HZ, 9_600);
         uart.write_bytes_blocking(
-            b"devela nano ready\r\n\
+            b"devela mega2560 ready\r\n\
               commands: ping, led on, led off, status, help\r\n\
               > ",
         );

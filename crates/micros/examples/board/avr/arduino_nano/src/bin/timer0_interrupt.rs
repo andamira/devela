@@ -6,8 +6,8 @@
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
-use devela::{Arch, BoardArduinoNano as Board, McuAtmega328p as Mcu};
-use devela_micros::devela;
+use devela::Arch;
+use devela_micros::{BoardArduinoNano as Board, McuAtmega328p as Mcu, devela};
 
 devela::set_panic_handler! { loop }
 

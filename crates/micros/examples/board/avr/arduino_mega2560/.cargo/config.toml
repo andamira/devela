@@ -3,7 +3,7 @@ target = "avr-none"
 
 [target.avr-none]
 rustflags = [
-    "-C", "target-cpu=atmega328p",
+    "-C", "target-cpu=atmega2560",
 ]
 
 [unstable]

@@ -5,8 +5,8 @@
 #![no_std]
 #![no_main]
 
-use devela::{AvrPin, McuAtmega328p as Mcu, is};
-use devela_micros::devela;
+use devela::is;
+use devela_micros::{AvrPin, McuAtmega328p as Mcu, devela};
 
 devela::set_panic_handler! { loop }
 

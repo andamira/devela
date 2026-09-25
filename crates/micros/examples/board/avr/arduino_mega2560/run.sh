@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Builds and optionally flashes an Arduino Nano example.
+# Builds and optionally flashes an Arduino Mega 2560 example.
 
 set -eu
 
@@ -11,8 +11,8 @@ TARGET="avr-none"
 ACTION="${1:-run}"
 BIN="${2:-led_on}"
 
-PORT="${PORT:-/dev/ttyUSB0}"
-UPLOAD_BAUD="${UPLOAD_BAUD:-115200}" # use 57600 for older nanos
+PORT="${PORT:-/dev/ttyACM0}"
+UPLOAD_BAUD="${UPLOAD_BAUD:-115200}"
 
 ELF="$TARGET_DIR/$TARGET/release/$BIN.elf"
 
@@ -43,8 +43,8 @@ flash() {
     echo "flashing: $PORT @ $UPLOAD_BAUD baud"
 
     avrdude \
-        -p atmega328p \
-        -c arduino \
+        -p atmega2560 \
+        -c wiring \
         -P "$PORT" \
         -b "$UPLOAD_BAUD" \
         -D \

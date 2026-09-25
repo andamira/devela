@@ -1,13 +1,12 @@
 //
-//! Turns on the Arduino Nano built-in LED using direct ATmega328P MMIO.
+//! Turns on the Arduino Mega 2560 built-in LED using direct ATmega2560 MMIO.
 //
 // 138 bytes
 
 #![no_std]
 #![no_main]
 
-use devela::BoardArduinoNano as Board;
-use devela_micros::devela;
+use devela_micros::{BoardArduinoMega2560 as Board, devela};
 
 devela::set_panic_handler! { loop }
 

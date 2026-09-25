@@ -73,9 +73,10 @@ mcu = []
 mcu_all = ["avr_all", "esp32_all"]
 
 	avr = ["mcu"]
-	avr_all = ["atmega328p"]
+	avr_all = ["atmega328p", "atmega2560"]
 
 		atmega328p = ["avr"]
+		atmega2560 = ["avr"]
 
 	esp32 = ["mcu"]
 	esp32_all = ["esp32c3", "esp32c6", "esp32s3"]
@@ -92,9 +93,10 @@ board_all = [
 	"board_esp32_all",
 ]
 	board_avr = ["board", "avr"]
-	board_avr_all = ["arduino_nano"]
+	board_avr_all = ["arduino_nano", "arduino_mega2560"]
 
 		arduino_nano = ["board_avr", "atmega328p"]
+		arduino_mega2560 = ["board_avr", "atmega2560"]
 
 	board_esp32 = ["board", "esp32"]
 	board_esp32_all = ["supermini_oled042"]
