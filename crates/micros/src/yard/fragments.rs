@@ -5,6 +5,14 @@
 #![allow(missing_docs, reason = "hidden internals for the workspace")]
 
 crate::CONST! { hidden macro_export,
+    _DOC_ALL  = "All public crate items re-exported in a single flat namespace.";
+    _DOC_ALL_ = "All public crate items re-exported, grouped by their root modules.";
+    _DOC_ALL_PLUS_ = "\n\nEach root module appears here and provides
+its own flat view of all its public children.
+
+Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch back to flat view.
+";
+
     _DOC_MCU           = "Microcontrollers and their integrated hardware foundations.";
     _DOC_MCU_AVR       = "AVR microcontrollers and peripheral foundations.";
     _DOC_MCU_AVR_TIMER = "AVR timer/counter peripherals and timing concepts.";

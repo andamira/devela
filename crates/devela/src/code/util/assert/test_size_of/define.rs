@@ -41,8 +41,8 @@
 /// Any size-checking mode accepting a single type can additionally check the
 /// `Option<T>` size relation:
 ///
-/// - `; niche Option`: requires Option<T>() to have the same representation size.
-/// - `; niche !Option`: requires Option<T>() to have a different representation size.
+/// - `; niche Option`: requires `Option<T>` to have the same representation size.
+/// - `; niche !Option`: requires `Option<T>` to have a different representation size.
 ///
 /// Without a niche suffix, the `Option<T>` size relation is left unchecked.
 ///

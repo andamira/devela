@@ -1,7 +1,7 @@
 //
 #![doc = crate::_DOC_MCU_AVR_TIMER!()] // public
 #![doc = crate::_doc!(modules: crate::mcu::avr; timer)]
-#![doc = crate::_doc!(flat:"sys")]
+#![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //!
 //! # Clocking

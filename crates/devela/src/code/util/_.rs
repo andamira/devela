@@ -56,7 +56,7 @@ synth::mods_in! {
     mod lets; // lets!
     mod whilst; // whilst!
 }
-synth::mods_out! { // _mods, _reexports, _crate_internals
+synth::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -83,16 +83,12 @@ synth::mods_out! { // _mods, _reexports, _crate_internals
             token::paste,
         };
     }
-    _crate_internals {
-        pub(crate) use super::{
-            doclink::_DOCLINK_CUSTOM_DOMAIN,
-        };
-    }
     _hidden {
         #[doc(hidden)]
         pub use {
             super::{
                 assert::_hidden::*,
+                doclink::__DOCLINK_CUSTOM_DOMAIN,
                 synth::_hidden::*,
             },
             devela_macros::__macro_derive_helpers,
