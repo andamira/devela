@@ -26,6 +26,10 @@ The examples use Rust's `avr-none` target with `atmega2560` as the target CPU.
 
 `nightly + rust-src` are selected locally because `-Z build-std` is still required.
 
+The local Cargo configuration selects `atmega2560` explicitly for `avr-none`.
+This device selection also reaches AVR GCC at link time, selecting the
+ATmega2560 startup code, interrupt-vector layout, and SRAM mapping.
+
 
 ## Build and flash
 
@@ -55,6 +59,35 @@ PORT=/dev/ttyACM1 ./run.sh run led_on
 
 The upload baud rate must match the bootloader; it is independent of any
 serial baud rate configured by the firmware itself.
+
+
+## USART
+
+Flash the USART example:
+
+```sh
+./run.sh run usart_chat
+```
+Then open the USB serial port at the 9600 baud rate configured by the firmware:
+
+```sh
+picocom -b 9600 /dev/ttyACM0
+```
+
+The program sends:
+
+```txt
+devela mega2560 ready
+commands: ping, led on, led off, status, help
+>
+```
+
+The upload and application serial rates are separate:
+
+```sh
+115200   host ↔ bootloader, while flashing
+9600     firmware ↔ host, while the program is running
+```
 
 
 ## Size

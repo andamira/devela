@@ -11,10 +11,12 @@
 //!
 //! # Boards
 //!
-//! | Board                   | MCU           |       Clock | Onboard I/O | Display    | Host / serial          |
-//! | ----------------------- | ------------- | ----------: | ----------- | ---------- | ---------------------- |
-//! | `BoardArduinoNano`      | McuAtmega328p |      16 MHz | D13 LED     | —          | USB–UART               |
-//! | `BoardSuperMiniOled042` | McuEsp32C3    | 40 MHz XTAL | GPIO8 LED   | 72×40 OLED | USB Serial/JTAG, UART0 |
+//! | Board                   | MCU              |       Clock | Onboard I/O | Display    | Host / serial          |
+//! | ----------------------- | ---------------- | ----------: | ----------- | ---------- | ---------------------- |
+//! | `BoardArduinoDue`       | McuSam3x8e       |      84 MHz | D13/L LED   | —          | USB–UART, native USB   |
+//! | `BoardArduinoMega2560`  | McuAtmega2560    |      16 MHz | D13 LED     | —          | USB–UART, USART1–3     |
+//! | `BoardArduinoNano`      | McuAtmega328p    |      16 MHz | D13 LED     | —          | USB–UART               |
+//! | `BoardSuperMiniOled042` | McuEsp32C3       | 40 MHz XTAL | GPIO8 LED   | 72×40 OLED | USB Serial/JTAG, UART0 |
 //!
 // ◇  hardware capability not yet exposed by devela
 //! ```txt
@@ -43,6 +45,8 @@ crate::mods_out! { // _pub_mods, _reexports
         #[doc(inline)]
         #[cfg(feature = "arduino_due")]
         pub use super::sam::_all::BoardArduinoDue;
+        #[cfg(feature = "arduino_mega2560")]
+        pub use super::avr::_all::BoardArduinoMega2560;
         #[cfg(feature = "arduino_nano")]
         pub use super::avr::_all::BoardArduinoNano;
         #[doc(inline)]
