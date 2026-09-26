@@ -60,12 +60,6 @@ Build without flashing:
 ./flash.sh build usb_serial_chat
 ```
 
-Inspect the direct-boot entry point and its disassembly:
-
-```sh
-./flash.sh inspect blink
-```
-
 The serial port can be overridden:
 
 ```sh
@@ -77,6 +71,31 @@ ESP32-C3 direct-boot header, and writes it directly at flash address `0x0`.
 
 Flashing replaces the firmware stored at the beginning of flash.
 Back up any factory firmware first if it needs to be preserved.
+
+
+## Inspect and dump
+
+For a concise ELF overview:
+
+```sh
+./flash.sh inspect blink
+```
+
+This reports section sizes and the largest symbols.
+
+For file and section headers, the complete symbol table, and disassembly:
+
+```sh
+./flash.sh dump blink
+```
+
+When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
+ELF and opened in the editor. Otherwise it is written to stdout:
+
+```sh
+./flash.sh dump blink | less
+./flash.sh dump blink > /tmp/blink.dump
+```
 
 
 ## UART0

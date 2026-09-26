@@ -65,6 +65,31 @@ The Python snippet uses only the standard library and exists solely to produce
 the final reset-only DTR pulse.
 
 
+## Inspect and dump
+
+For a concise ELF overview:
+
+```sh
+./flash.sh inspect blink
+```
+
+This reports section sizes and the largest symbols.
+
+For file and section headers, the complete symbol table, and disassembly:
+
+```sh
+./flash.sh dump blink
+```
+
+When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
+ELF and opened in the editor. Otherwise it is written to stdout:
+
+```sh
+./flash.sh dump blink | less
+./flash.sh dump blink > /tmp/blink.dump
+```
+
+
 ## USB ports and recovery
 
 The Due has two different USB paths:

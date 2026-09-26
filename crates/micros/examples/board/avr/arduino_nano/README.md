@@ -74,6 +74,31 @@ The upload baud rate must match the bootloader; it is independent of any
 serial baud rate configured by the firmware itself.
 
 
+## Inspect and dump
+
+For a concise ELF overview:
+
+```sh
+./flash.sh inspect blink
+```
+
+This reports section sizes and the largest symbols.
+
+For file and section headers, the complete symbol table, and disassembly:
+
+```sh
+./flash.sh dump blink
+```
+
+When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
+ELF and opened in the editor. Otherwise it is written to stdout:
+
+```sh
+./flash.sh dump blink | less
+./flash.sh dump blink > /tmp/blink.dump
+```
+
+
 ## USART
 
 Flash the USART example:

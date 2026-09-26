@@ -1,4 +1,5 @@
 [toolchain]
+targets = ["avr-none"]
 channel = "nightly"
 profile = "minimal"
 components = ["rust-src"]
