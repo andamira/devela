@@ -4,7 +4,7 @@
 //! The busy-wait delay is intentionally uncalibrated and depends on the
 //! active CPU clock.
 //
-// 1460 bytes
+// 416 bytes
 
 #![no_std]
 #![no_main]

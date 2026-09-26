@@ -25,10 +25,12 @@ SECTIONS
         . = ALIGN(4);
     } > FLASH
 
-    .ARM.exidx :
+    /* Bare-metal firmware does not unwind; discard Arm unwind metadata. */
+    /DISCARD/ :
     {
         *(.ARM.exidx .ARM.exidx.*)
-    } > FLASH
+        *(.ARM.extab .ARM.extab.*)
+    }
 
     .data :
     {

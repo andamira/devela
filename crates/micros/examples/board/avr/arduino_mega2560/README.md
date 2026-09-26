@@ -117,7 +117,7 @@ The upload and application serial rates are separate:
 
 ## Size
 
-An initial release build of `blink` produced:
+A minimal release build of `blink` currently produces:
 
 ```text
    text    data     bss     dec     hex

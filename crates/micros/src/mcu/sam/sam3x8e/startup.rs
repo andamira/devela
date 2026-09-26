@@ -49,8 +49,10 @@ unsafe extern "C" fn __devela_sam3x8e_reset() -> ! {
         let mut dst = ptr::addr_of_mut!(__sdata);
         let end = ptr::addr_of_mut!(__edata);
 
+        // Use volatile accesses to keep these startup loops explicit.
+        // Ordinary reads/writes may be lowered to memcpy/memset compiler builtins.
         while (dst as usize) < (end as usize) {
-            ptr::write(dst, ptr::read(src));
+            ptr::write_volatile(dst, ptr::read_volatile(src));
             src = src.add(1);
             dst = dst.add(1);
         }
@@ -62,7 +64,7 @@ unsafe extern "C" fn __devela_sam3x8e_reset() -> ! {
         let end = ptr::addr_of_mut!(__ebss);
 
         while (dst as usize) < (end as usize) {
-            ptr::write(dst, 0);
+            ptr::write_volatile(dst, 0);
             dst = dst.add(1);
         }
     }

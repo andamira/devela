@@ -178,7 +178,7 @@ Its build script makes the linker resource available for the
 
 The script reports the raw image size after each build.
 
-An initial release bild of `blink` produced:
+A minimal release of `blink` currently produces:
 
 ```text
 image size:         272 bytes
