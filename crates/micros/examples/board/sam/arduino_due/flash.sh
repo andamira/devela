@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Builds and optionally flashes an Arduino Due example.
+# Builds or flashes an Arduino Due example.
 
 set -eu
 
@@ -8,7 +8,7 @@ DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 TARGET_DIR="$DIR/target"
 TARGET="thumbv7m-none-eabi"
 
-ACTION="${1:-run}"
+ACTION="${1:-flash}"
 NAME="${2:-blink}"
 
 PORT="${PORT:-/dev/ttyACM0}"
@@ -110,7 +110,7 @@ case "$ACTION" in
     build)
         build
         ;;
-    run|flash)
+    flash)
         build
         require bossac
         require python3
@@ -123,7 +123,7 @@ case "$ACTION" in
         reset
         ;;
     *)
-        echo "usage: $0 [build|run|flash] [binary]" >&2
+        echo "usage: $0 [build|flash] [binary]" >&2
         exit 2
         ;;
 esac

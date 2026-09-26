@@ -9,10 +9,10 @@ and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 ## Programs
 
-- `led_on` — Turns on the board's active-low blue LED on GPIO8.
-- `oled` — Initializes the onboard 72×40 OLED and draws a test pattern over I²C.
-- `uart_echo` — Tests UART0 TX/RX through GPIO20 and GPIO21.
-- `usb_serial_chat` — Runs a small interactive command console over native USB serial.
+- `led_on` — turns on the board's active-low blue LED on GPIO8.
+- `oled` — initializes the onboard 72×40 OLED and draws a test pattern over I²C.
+- `uart_echo` — tests UART0 TX/RX through GPIO20 and GPIO21.
+- `usb_serial_chat` — runs a small interactive command console over native USB serial.
 
 
 ## Requirements
@@ -42,31 +42,37 @@ The user needs permission to access it, commonly through the `dialout` group.
 
 ## Build and flash
 
-The runner defaults to the `led_on` binary:
+The script defaults to flashing the `led_on` binary:
 
 ```sh
-./run.sh
+./flash.sh
 ```
 
-Select another example with the second argument:
+Select another binary with the second argument:
 
 ```sh
-./run.sh run usb_serial_chat
+./flash.sh flash usb_serial_chat
 ```
 
 Build without flashing:
 
 ```sh
-./run.sh build usb_serial_chat
+./flash.sh build usb_serial_chat
+```
+
+Inspect the direct-boot entry point and its disassembly:
+
+```sh
+./flash.sh inspect led_on
 ```
 
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyACM1 ./run.sh run usb_serial_chat
+PORT=/dev/ttyACM1 ./flash.sh flash usb_serial_chat
 ```
 
-The runner builds a release ELF, converts it to a raw binary, verifies the
+The script builds a release ELF, converts it to a raw binary, verifies the
 ESP32-C3 direct-boot header, and writes it directly at flash address `0x0`.
 
 Flashing replaces the firmware stored at the beginning of flash.
@@ -151,6 +157,6 @@ Its build script makes the linker resource available for the
 
 ## Size
 
-The runner reports the raw image size after each build.
+The script reports the raw image size after each build.
 
 Exact sizes may vary with the example, compiler, and toolchain version.

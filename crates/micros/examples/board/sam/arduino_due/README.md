@@ -4,7 +4,7 @@
 Small bare-metal `no_std` programs for the Arduino Due,
 using devela's SAM3X8E and direct MMIO support.
 
-The examples share one SAM3X8E target configuration, build/flash runner,
+The examples share one SAM3X8E target configuration, build/flash script,
 and `devela_micros` dependency. Each program lives under `src/bin/`.
 
 
@@ -25,7 +25,7 @@ sudo apt install binutils-arm-none-eabi bossa-cli python3
 The examples use Rust's `thumbv7m-none-eabi` target
 for the SAM3X8E's Arm Cortex-M3 (Armv7-M) core.
 
-The runner has been tested with BOSSA 1.9.1.
+The script has been tested with BOSSA 1.9.1.
 BOSSA command-line behavior varies between versions;
 the numeric `--usb-port=0` / `--usb-port=1` forms used here are intentional.
 
@@ -35,13 +35,13 @@ the numeric `--usb-port=0` / `--usb-port=1` forms used here are intentional.
 Use the **Programming Port**, the USB connector nearest the DC power jack.
 ```sh
 ./flash.sh build blink
-./flash.sh run blink
+./flash.sh flash blink
 ```
 
-Replace `blink` with any binary listed above. `run` and `blink` are the defaults,
-so `./flash.sh` builds, flashes, and resets `blink`.
+Replace `blink` with any binary listed above. `flash` and `blink`
+are the defaults, so `./flash.sh` builds, flashes, and resets `blink`.
 
-By default the runner uses:
+By default the script uses:
 
 ```text
 serial port: /dev/ttyACM0
@@ -50,10 +50,10 @@ serial port: /dev/ttyACM0
 Override it when needed:
 
 ```sh
-PORT=/dev/ttyACM1 ./flash.sh run blink
+PORT=/dev/ttyACM1 ./flash.sh flash blink
 ```
 
-The runner performs three board-specific steps:
+The script performs three board-specific steps:
 
 1. asks BOSSA `--arduino-erase` to trigger the Programming Port's 1200-baud
    ERASE + RESET sequence, then waits for ROM SAM-BA;
@@ -72,7 +72,7 @@ The Due has two different USB paths:
 
 - **Programming Port**, nearest the DC jack: normally appears as USB
   `2341:003d`, goes through the ATmega16U2, and uses `--usb-port=0`.
-  This is the normal runner path.
+  This is the normal script path.
 - **Native USB**, nearest RESET: connects directly to the SAM3X8E.
   ROM SAM-BA appears as USB `03eb:6124` and uses `--usb-port=1`.
   The current bare-metal examples do not initialize native USB, so this port
@@ -95,7 +95,7 @@ check `bossac --help` before changing the board-side code.
 
 ## Size
 
-The runner reports the current ELF size after each build. Exact sizes vary
+The script reports the current ELF size after each build. Exact sizes vary
 with compiler, optimization, and example changes.
 
 Rust `core`, devela, and `devela_micros` provide the firmware-side startup,

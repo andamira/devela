@@ -1,18 +1,27 @@
 #!/bin/sh
 #
-# Builds and optionally flashes an ESP32-C3 direct-boot example.
+# Builds, flashes, or inspects an ESP32-C3 direct-boot example.
 
 set -eu
 
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 TARGET_DIR="$DIR/target"
 TARGET="riscv32imc-unknown-none-elf"
-BIN="${2:-led}"
 
-ELF="$TARGET_DIR/$TARGET/release/$BIN"
-IMAGE="$TARGET_DIR/$TARGET/release/$BIN.bin"
+ACTION="${1:-flash}"
+NAME="${2:-led_on}"
 
 PORT="${PORT:-/dev/ttyACM0}"
+
+ELF="$TARGET_DIR/$TARGET/release/$NAME"
+IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
+
+require() {
+    command -v "$1" >/dev/null 2>&1 || {
+        echo "error: $1 not found" >&2
+        exit 1
+    }
+}
 
 find_objcopy() {
     for tool in rust-objcopy llvm-objcopy; do
@@ -29,7 +38,10 @@ find_objcopy() {
 build() {
     cd "$DIR"
 
-    cargo build --release --bin "$BIN" --target-dir "$TARGET_DIR"
+    cargo build \
+        --release \
+        --bin "$NAME" \
+        --target-dir "$TARGET_DIR"
 
     OBJCOPY="$(find_objcopy)"
     "$OBJCOPY" -O binary "$ELF" "$IMAGE"
@@ -46,7 +58,7 @@ build() {
 
     echo
     echo "direct-boot header: $HEADER"
-    echo "binary:             $ELF"
+    echo "elf:                $ELF"
     echo "image:              $IMAGE"
     echo "image size:         $(wc -c < "$IMAGE") bytes"
 
@@ -55,11 +67,9 @@ build() {
         llvm-size "$ELF"
     fi
 }
+
 flash() {
-    command -v espflash >/dev/null 2>&1 || {
-        echo "error: espflash not found" >&2
-        exit 1
-    }
+    require espflash
 
     echo
     echo "flashing direct-boot image: $PORT"
@@ -67,16 +77,20 @@ flash() {
     ESPFLASH_PORT="$PORT" \
         espflash write-bin 0x0 "$IMAGE"
 }
+
 inspect() {
+    require rust-nm
+    require rust-objdump
+
     rust-nm -n "$ELF" | grep ' _start$'
     rust-objdump -d --disassemble-symbols=_start "$ELF"
 }
 
-case "${1:-run}" in
+case "$ACTION" in
     build)
         build
         ;;
-    run|flash)
+    flash)
         build
         flash
         ;;
@@ -85,7 +99,7 @@ case "${1:-run}" in
         inspect
         ;;
     *)
-        echo "usage: $0 [build|run|flash|inspect] [binary]" >&2
+        echo "usage: $0 [build|flash|inspect] [binary]" >&2
         exit 2
         ;;
 esac

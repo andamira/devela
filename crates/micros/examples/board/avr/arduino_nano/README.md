@@ -4,7 +4,7 @@
 Small bare-metal `no_std` programs for the classic Arduino Nano with an
 ATmega328P, using devela's AVR and direct MMIO support.
 
-The examples share one AVR target configuration, build/flash runner,
+The examples share one AVR target configuration, build/flash script,
 and devela_micros dependency. Each program lives under `src/bin/`.
 
 
@@ -38,14 +38,14 @@ The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
 ## Build and flash
 
 ```sh
-./run.sh build led_on
-./run.sh run led_on
+./flash.sh build led_on
+./flash.sh flash led_on
 ```
 
 Replace `led_on` with any binary listed above.
-`run` and `led_on` are the defaults, so `./run.sh` builds and flashes `led_on`.
+`flash` and `led_on` are the defaults, so `./flash.sh` builds and flashes `led_on`.
 
-The runner builds a release binary, reports its AVR memory usage,
+The script builds a release ELF, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.
 
 By default it uses:
@@ -58,7 +58,7 @@ upload baud:  115200
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyUSB1 ./run.sh run led_on
+PORT=/dev/ttyUSB1 ./flash.sh flash led_on
 ```
 
 Arduino Nano bootloaders use different upload baud rates. The current ATmega328P
@@ -67,7 +67,7 @@ bootloader uses 115200 baud, while the older bootloader uses 57600 baud.
 For a Nano with the old bootloader:
 
 ```sh
-UPLOAD_BAUD=57600 ./run.sh run led_on
+UPLOAD_BAUD=57600 ./flash.sh flash led_on
 ```
 
 The upload baud rate must match the bootloader; it is independent of any
@@ -79,7 +79,7 @@ serial baud rate configured by the firmware itself.
 Flash the USART example:
 
 ```sh
-./run.sh run usart_chat
+./flash.sh flash usart_chat
 ```
 
 Then open the serial port at the 9600 baud rate configured by the firmware:
