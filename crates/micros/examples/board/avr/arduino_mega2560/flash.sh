@@ -9,7 +9,7 @@ TARGET_DIR="$DIR/target"
 TARGET="avr-none"
 
 ACTION="${1:-flash}"
-NAME="${2:-led_on}"
+NAME="${2:-blink}"
 
 PORT="${PORT:-/dev/ttyACM0}"
 UPLOAD_BAUD="${UPLOAD_BAUD:-115200}"

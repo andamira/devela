@@ -10,8 +10,7 @@ and `devela_micros` dependency. Each program lives under `src/bin/`.
 
 ## Programs
 
-- `blink` — repeatedly drives the built-in D13 / `L` LED through PIOB / PB27
-  using an uncalibrated software delay.
+- `blink` — repeatedly drives the built-in D13 LED through PB27.
 
 
 ## Requirements
@@ -97,6 +96,13 @@ check `bossac --help` before changing the board-side code.
 
 The script reports the current ELF size after each build. Exact sizes vary
 with compiler, optimization, and example changes.
+
+An initial release build of `blink` produced:
+
+```text
+   text    data     bss     dec     hex
+   1460       0       0    1460     5b4
+```
 
 Rust `core`, devela, and `devela_micros` provide the firmware-side startup,
 linking, and MMIO foundations. GNU Arm binutils provide `objcopy` / `size`,

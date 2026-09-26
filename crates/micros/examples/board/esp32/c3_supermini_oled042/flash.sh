@@ -9,7 +9,7 @@ TARGET_DIR="$DIR/target"
 TARGET="riscv32imc-unknown-none-elf"
 
 ACTION="${1:-flash}"
-NAME="${2:-led_on}"
+NAME="${2:-blink}"
 
 PORT="${PORT:-/dev/ttyACM0}"
 

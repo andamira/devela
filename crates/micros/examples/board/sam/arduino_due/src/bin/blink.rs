@@ -16,7 +16,7 @@ devela::set_panic_handler! { loop }
 
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    unsafe { Board::LED.set_output_low() }
+    unsafe { Board::LED.set_output_low() } // Active-high LED
 
     loop {
         for _ in 0..500_000 {

@@ -11,7 +11,7 @@ and devela_micros dependency. Each program lives under `src/bin/`.
 ## Programs
 
 - `adc_noise` — weak ADC0/A0 noise harvesting with extraction timing over USART0.
-- `led_on` — GPIO output through PORTB / PB5; turns on the built-in D13 LED.
+- `blink` — repeatedly drives the board's built-in active-high D13 LED on PB5.
 - `timer0_ctc` — Timer0 CTC polling at 1 ms; toggles the LED every 500 ms.
 - `timer0_interrupt` — Timer0 compare interrupt; toggles the LED every 250 ms.
 - `timer1_capture` — Timer1 input capture; timestamps a rising edge on PB0 / ICP1.
@@ -38,12 +38,12 @@ The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
 ## Build and flash
 
 ```sh
-./flash.sh build led_on
-./flash.sh flash led_on
+./flash.sh build blink
+./flash.sh flash blink
 ```
 
-Replace `led_on` with any binary listed above.
-`flash` and `led_on` are the defaults, so `./flash.sh` builds and flashes `led_on`.
+Replace `blink` with any binary listed above.
+`flash` and `blink` are the defaults, so `./flash.sh` builds and flashes `blink`.
 
 The script builds a release ELF, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.
@@ -58,7 +58,7 @@ upload baud:  115200
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyUSB1 ./flash.sh flash led_on
+PORT=/dev/ttyUSB1 ./flash.sh flash blink
 ```
 
 Arduino Nano bootloaders use different upload baud rates. The current ATmega328P
@@ -67,7 +67,7 @@ bootloader uses 115200 baud, while the older bootloader uses 57600 baud.
 For a Nano with the old bootloader:
 
 ```sh
-UPLOAD_BAUD=57600 ./flash.sh flash led_on
+UPLOAD_BAUD=57600 ./flash.sh flash blink
 ```
 
 The upload baud rate must match the bootloader; it is independent of any
@@ -116,11 +116,11 @@ Connect D9 through a current-limiting resistor and LED to GND.
 
 ## Size
 
-An initial release build of `led_on` produced:
+An initial release build of `blink` produced:
 
 ```text
    text    data     bss     dec     hex
-    138       0       0     138      8a
+    168       0       0     168      a8
 ```
 
 Exact sizes may vary with compiler and toolchain versions.

@@ -10,7 +10,7 @@ and devela_micros dependency. Each program lives under `src/bin/`.
 
 ## Programs
 
-- `led_on` — GPIO output through PORTB / PB7; turns on the built-in D13 LED.
+- `blink` — repeatedly drives the board's built-in active-high D13 LED through PB7.
 - `usart_chat` — interactive USART0 command/response console at 9600 baud, 8N1.
 
 
@@ -34,12 +34,12 @@ ATmega2560 startup code, interrupt-vector layout, and SRAM mapping.
 ## Build and flash
 
 ```sh
-./flash.sh build led_on
-./flash.sh flash led_on
+./flash.sh build blink
+./flash.sh flash blink
 ```
 
-Replace `led_on` with any binary listed above.
-`flash` and `led_on` are the defaults, so `./flash.sh` builds and flashes `led_on`.
+Replace `blink` with any binary listed above.
+`flash` and `blink` are the defaults, so `./flash.sh` builds and flashes `blink`.
 
 The script builds a release ELF, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.
@@ -54,7 +54,7 @@ upload baud:  115200
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyACM1 ./flash.sh flash led_on
+PORT=/dev/ttyACM1 ./flash.sh flash blink
 ```
 
 The upload baud rate must match the bootloader; it is independent of any
@@ -92,11 +92,11 @@ The upload and application serial rates are separate:
 
 ## Size
 
-An initial release build of `led_on` produced:
+An initial release build of `blink` produced:
 
 ```text
    text    data     bss     dec     hex
-    138       0       0     138      8a
+    296       0       0     296     128
 ```
 
 Exact sizes may vary with compiler and toolchain versions.

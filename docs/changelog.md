@@ -152,10 +152,10 @@
 - add embedded target linker support and a hidden integrated `devela` namespace.
 
 ### examples
-- add Arduino Due example: `blink`.
-- add Arduino Mega2560 examples: `led_on`, `usart_chat`.
-- add Arduino Nano examples: `adc_noise`, `led_on`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
-- add ESP32-C3 SuperMini OLED examples: `i2c_probe`, `led_on`, `oled`, `uart_echo`, `usb_serial_chat`.
+- add Arduino Due examples: `blink`.
+- add Arduino Mega2560 examples: `blink`, `usart_chat`.
+- add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
+- add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add minimal ESP32-S3 bring-up example.
 
 ## Modules

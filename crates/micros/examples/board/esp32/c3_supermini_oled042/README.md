@@ -9,7 +9,7 @@ and use devela's low-level MCU support, without an ESP HAL or runtime crate.
 
 ## Programs
 
-- `led_on` — turns on the board's active-low blue LED on GPIO8.
+- `blink` — repeatedly drives the board's built-in active-low blue LED on GPIO8.
 - `oled` — initializes the onboard 72×40 OLED and draws a test pattern over I²C.
 - `uart_echo` — tests UART0 TX/RX through GPIO20 and GPIO21.
 - `usb_serial_chat` — runs a small interactive command console over native USB serial.
@@ -42,7 +42,7 @@ The user needs permission to access it, commonly through the `dialout` group.
 
 ## Build and flash
 
-The script defaults to flashing the `led_on` binary:
+The script defaults to flashing the `blink` binary:
 
 ```sh
 ./flash.sh
@@ -63,7 +63,7 @@ Build without flashing:
 Inspect the direct-boot entry point and its disassembly:
 
 ```sh
-./flash.sh inspect led_on
+./flash.sh inspect blink
 ```
 
 The serial port can be overridden:
@@ -158,5 +158,11 @@ Its build script makes the linker resource available for the
 ## Size
 
 The script reports the raw image size after each build.
+
+An initial release bild of `blink` produced:
+
+```text
+image size:         272 bytes
+```
 
 Exact sizes may vary with the example, compiler, and toolchain version.
