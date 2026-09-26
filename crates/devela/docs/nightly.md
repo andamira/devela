@@ -65,12 +65,13 @@ See also
 - 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
 - 1.100: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
 - 1.100: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
+- 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
 - 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
+- 1.100: `c`[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
 - 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 - 1.100: ` `[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
-- 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
 - 1.100: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 
 
@@ -106,13 +107,13 @@ See also
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
+- 1.??: `c`[iter_advance_by](https://github.com/rust-lang/rust/pull/163328)
 - 1.??: `c`[likely_unlikely](https://github.com/rust-lang/rust/issues/151619)
 - 1.??: `c`[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808) closed
   - [decide about macro_metavar_expr](https://github.com/rust-lang/rust/issues/137581)
   - [RFC Named macro capture groups](https://github.com/rust-lang/rfcs/pull/3649) <
 - 1.??: `c`[macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
-- 1.??: `c`[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
 - 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 - 1.??: `c`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)

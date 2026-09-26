@@ -68,7 +68,10 @@
 )]
 //
 // `nightly_stable_1_100`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_100, feature(bool_toggle, drop_guard, never_type, unsafe_cell_access))]
+#![cfg_attr(
+    nightly_stable_1_100,
+    feature(bool_toggle, drop_guard, mem_conjure_zst, never_type, unsafe_cell_access,)
+)]
 #![cfg_attr(
     all(nightly_stable_1_100, feature = "alloc"),
     feature(allocator_api, box_take, smart_pointer_try_map,)
@@ -108,10 +111,10 @@
         funnel_shifts,
         impl_trait_in_assoc_type,
         isqrt,
+        iter_advance_by,
         likely_unlikely,
         macro_metavar_expr,
         macro_metavar_expr_concat,
-        mem_conjure_zst,
         more_qualified_paths,
         new_range_api,
         offset_of_enum,
