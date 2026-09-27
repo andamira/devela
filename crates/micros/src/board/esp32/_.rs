@@ -25,7 +25,7 @@ crate::mods_out! { // _mods, _reexports
     _reexports {
         #[cfg(feature = "supermini_oled042")]
         pub use super::c3::_all::BoardSuperMiniOled042;
-        // #[cfg(feature = "c6_touch_lcd147")]
-        // pub use super::c6::_all::BoardWaveshareC6TouchLcd147;
+        #[cfg(feature = "waveshare_c6_touch_lcd147")]
+        pub use super::c6::_all::BoardWaveshareC6TouchLcd147;
     }
 }

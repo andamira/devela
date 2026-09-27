@@ -15,11 +15,12 @@
 //!
 //! # Microcontrollers
 //!
-//! | MCU             | Core              | Memory                                 | GPIO | Timers              | Serial                       | Analog          | Radio        |
-//! | --------------- | ----------------- | -------------------------------------- | ---: | ------------------- | ---------------------------- | --------------- | ------------ |
-//! | `McuAtmega328p` | AVR 8-bit, 20 MHz | 32 KiB Flash, 2 KiB SRAM, 1 KiB EEPROM |   23 | T0/T1/T2            | USART0, ◇SPI, ◇TWI           | ◇10-bit ADC     | —            |
-//! | `McuEsp32C3`    | RV32IMC, 160 MHz  | 384 KiB ROM, 400 KiB SRAM, ext. Flash  | ≤ 22 | ◇GPTimer, ◇SYSTIMER | UART0, I²C0, ◇UART1, ◇SPI    | ◇2x12-bit ADC   | ◇Wi-Fi, ◇BLE |
-//! | `McuSam3x8e`    | Cortex-M3, 84 MHz | 512 KiB Flash, 96 KiB SRAM             |  103 | ◇TC0/TC1/TC2        | ◇UART, ◇USART0–3, ◇SPI, ◇TWI | ◇12-bit ADC/DAC | —            |
+//! | MCU             | Core              | Memory                                   | GPIO | Timers              | Serial                       | Analog          | Radio        |
+//! | --------------- | ----------------- | ---------------------------------------- | ---: | ------------------- | ---------------------------- | --------------- | ------------ |
+//! | `McuAtmega328p` | AVR 8-bit, 20 MHz | 32 KiB Flash, 2 KiB SRAM, 1 KiB EEPROM   |   23 | T0/T1/T2            | USART0, ◇SPI, ◇TWI           | ◇10-bit ADC     | —            |
+//! | `McuEsp32C3`    | RV32IMC, 160 MHz  | 384 KiB ROM, 400 KiB SRAM, ext. Flash    | ≤ 22 | ◇GPTimer, ◇SYSTIMER | UART0, I²C0, ◇UART1, ◇SPI    | ◇2x12-bit ADC   | ◇Wi-Fi, ◇BLE |
+//! | `McuEsp32C6`    | RV32IMAC, 160 MHz | 320 KiB ROM, 512 KiB HP + 16 KiB LP SRAM | ≤ 31 | ◇GPTimer, ◇SYSTIMER | ◇UART0/1, ◇I²C0, ◇SPI2, ◇USB | ◇7x12-bit ADC   | ◇Wi-Fi, ◇BLE |
+//! | `McuSam3x8e`    | Cortex-M3, 84 MHz | 512 KiB Flash, 96 KiB SRAM               |  103 | ◇TC0/TC1/TC2        | ◇UART, ◇USART0–3, ◇SPI, ◇TWI | ◇12-bit ADC/DAC | —            |
 //!
 //! ```txt
 //! ◇  hardware capability not yet exposed by this crate
@@ -52,6 +53,9 @@ crate::mods_out! { // _pub_mods, _reexports
         #[doc(inline)]
         #[cfg(feature = "esp32c3")]
         pub use super::esp32::McuEsp32C3;
+        #[doc(inline)]
+        #[cfg(feature = "esp32c6")]
+        pub use super::esp32::McuEsp32C6;
         #[doc(inline)]
         #[cfg(feature = "sam3x8e")]
         pub use super::sam::McuSam3x8e;

@@ -4,6 +4,7 @@
 //
 
 mod esp32_c3;
+mod esp32_c6;
 mod sam3x8e;
 
 pub(crate) fn main() -> Result<(), Box<dyn core::error::Error>> {
@@ -11,6 +12,7 @@ pub(crate) fn main() -> Result<(), Box<dyn core::error::Error>> {
     super::Build::println_heading("Linking support:");
 
     esp32_c3::main()?;
+    esp32_c6::main()?;
     sam3x8e::main()?;
 
     Ok(())

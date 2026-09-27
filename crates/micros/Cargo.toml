@@ -104,9 +104,12 @@ board_all = [
 		arduino_mega2560 = ["board_avr", "atmega2560"]
 
 	board_esp32 = ["board", "esp32"]
-	board_esp32_all = ["supermini_oled042"]
-		# c6_touch_lcd147 = ["board_esp32", "esp32c6"]
+	board_esp32_all = [
+		"supermini_oled042",
+		"waveshare_c6_touch_lcd147",
+	]
 		supermini_oled042 = ["board_esp32", "esp32c3", "ssd13xx"]
+		waveshare_c6_touch_lcd147 = ["board_esp32", "esp32c6"]
 
 	board_sam = ["board", "sam"]
 	board_sam_all = ["arduino_due"]

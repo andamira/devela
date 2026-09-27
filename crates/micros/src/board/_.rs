@@ -11,15 +11,16 @@
 //!
 //! # Boards
 //!
-//! | Board                   | MCU              |       Clock | Onboard I/O | Display    | Host / serial          |
-//! | ----------------------- | ---------------- | ----------: | ----------- | ---------- | ---------------------- |
-//! | `BoardArduinoDue`       | McuSam3x8e       |      84 MHz | D13/L LED   | —          | USB–UART, native USB   |
-//! | `BoardArduinoMega2560`  | McuAtmega2560    |      16 MHz | D13 LED     | —          | USB–UART, USART1–3     |
-//! | `BoardArduinoNano`      | McuAtmega328p    |      16 MHz | D13 LED     | —          | USB–UART               |
-//! | `BoardSuperMiniOled042` | McuEsp32C3       | 40 MHz XTAL | GPIO8 LED   | 72×40 OLED | USB Serial/JTAG, UART0 |
+//! | Board                              | MCU           |       Clock | Onboard I/O       | Display      | Host / serial          |
+//! | ---------------------------------- | ------------- | ----------: | ----------------- | ------------ | ---------------------- |
+//! | `BoardArduinoDue`                  | McuSam3x8e    |      84 MHz | D13/L LED         | —            | USB–UART, native USB   |
+//! | `BoardArduinoMega2560`             | McuAtmega2560 |      16 MHz | D13 LED           | —            | USB–UART, USART1–3     |
+//! | `BoardArduinoNano`                 | McuAtmega328p |      16 MHz | D13 LED           | —            | USB–UART               |
+//! | `BoardSuperMiniOled042`            | McuEsp32C3    | 40 MHz XTAL | GPIO8 LED         | 72×40 OLED   | USB Serial/JTAG, UART0 |
+//! | `BoardWaveshareC6TouchLcd147`      | McuEsp32C6    | 40 MHz XTAL | ◇Touch, ◇IMU, ◇TF | ◇172×320 LCD | ◇USB, ◇UART0           |
 //!
-// ◇  hardware capability not yet exposed by devela
 //! ```txt
+//! ◇  hardware capability not yet exposed by devela
 //! —  not present / not applicable
 //! ```
 //
@@ -52,8 +53,8 @@ crate::mods_out! { // _pub_mods, _reexports
         #[doc(inline)]
         #[cfg(feature = "supermini_oled042")]
         pub use super::esp32::_all::BoardSuperMiniOled042;
-        // #[doc(inline)]
-        // #[cfg(feature = "waveshare_c6_touch_lcd147")]
-        // pub use super::esp32::_all::BoardWaveshareC6TouchLcd147;
+        #[doc(inline)]
+        #[cfg(feature = "waveshare_c6_touch_lcd147")]
+        pub use super::esp32::_all::BoardWaveshareC6TouchLcd147;
     }
 }
