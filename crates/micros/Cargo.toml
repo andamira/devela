@@ -132,9 +132,10 @@ comm_all = ["comm"]
 	# winc1500 = ["comm"]
 
 display = ["device"]
-display_all = ["jd9853", "ssd13xx"]
+display_all = ["jd9853", "ssd13xx", "tm1638"]
 	jd9853 = ["display"]
 	ssd13xx = ["display"] # ssd1306, ssd1315
+	tm1638 = ["display"]
 
 input = ["device"]
 input_all = []

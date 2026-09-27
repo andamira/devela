@@ -19,6 +19,7 @@ and devela_micros dependency. Each program lives under `src/bin/`.
 - `timer1_ctc` — 16-bit Timer1 CTC polling; toggles the LED directly every 500 ms.
 - `timer1_pwm` — Timer1 fast PWM on PB1 / OC1A (D9); fades an external LED.
 - `timer2_ctc` — 8-bit Timer2 CTC polling; toggles the LED directly every 500 ms.
+- `tm1638` — Drives a TM1638 "LED & KEY" module.
 - `usart_chat` — interactive USART0 command/response console at 9600 baud, 8N1.
 
 

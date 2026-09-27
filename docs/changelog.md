@@ -154,7 +154,7 @@
 ### examples
 - add Arduino Due examples: `blink`.
 - add Arduino Mega2560 examples: `blink`, `usart_chat`.
-- add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
+- add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `tm1638`, `usart_chat`.
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.
@@ -165,7 +165,8 @@
 - new types: `BoardArduinoDue`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 #### device::display
-- new types: `Jd9853`, `Ssd13xx`.
+- new trait: `Tm1638Bus`.
+- new types: `Jd9853`, `Tm1638`, `Tm1638Frame`, `Tm1638Brightness`, `Tm1638LedKey8`, `Tm1638AvrBus`, `Ssd13xx`.
 
 #### mcu::avr
 - new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega2560`, `McuAtmega328p`.

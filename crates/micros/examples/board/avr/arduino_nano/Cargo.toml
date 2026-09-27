@@ -13,6 +13,7 @@ default-features = false
 features = [
 	"arduino_nano",
 	"time",
+	"tm1638",
 	"unsafe_hint", "unsafe_mmio",
 ]
 

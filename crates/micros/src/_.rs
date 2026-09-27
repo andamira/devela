@@ -9,6 +9,8 @@
 // nightly
 #![cfg_attr(nightly_doc, doc(test(attr(feature(doc_cfg)))))] // enable for all doctests
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(all(target_arch = "avr", feature = "unsafe_hint"), feature(asm_experimental_arch))]
+//
 
 /* imports */
 
