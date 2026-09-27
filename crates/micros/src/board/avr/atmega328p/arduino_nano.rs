@@ -2,7 +2,7 @@
 //! Defines [`BoardArduinoNano`].
 //
 
-use crate::{AvrPin, AvrUsart, McuAtmega328p};
+use crate::{AvrAdcInput, AvrPin, AvrUsart, McuAtmega328p};
 
 #[doc = crate::_tags!(hw namespace)]
 /// Classic Arduino Nano board namespace.
@@ -62,8 +62,8 @@ impl BoardArduinoNano {
 /// # I²C
 #[allow(missing_docs)]
 impl BoardArduinoNano {
-    pub const SDA: AvrPin = Self::A4;
-    pub const SCL: AvrPin = Self::A5;
+    pub const SDA: AvrPin = Self::D18;
+    pub const SCL: AvrPin = Self::D19;
 }
 
 /// # Digital I/O
@@ -85,17 +85,26 @@ impl BoardArduinoNano {
     pub const D12: AvrPin = AvrPin::new(McuAtmega328p::PORT_B, 4);
     pub const D13: AvrPin = AvrPin::new(McuAtmega328p::PORT_B, 5);
 
+    pub const D14: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 0);
+    pub const D15: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 1);
+    pub const D16: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 2);
+    pub const D17: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 3);
+    pub const D18: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 4);
+    pub const D19: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 5);
+
     /// Built-in LED on digital pin D13 (`PB5` on the ATmega328P).
-    pub const LED: AvrPin = AvrPin::new(McuAtmega328p::PORT_B, 5);
+    pub const LED: AvrPin = Self::D13;
 }
 
-/// # Analog-header GPIO
+/// # Analog inputs
 #[allow(missing_docs)]
 impl BoardArduinoNano {
-    pub const A0: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 0);
-    pub const A1: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 1);
-    pub const A2: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 2);
-    pub const A3: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 3);
-    pub const A4: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 4);
-    pub const A5: AvrPin = AvrPin::new(McuAtmega328p::PORT_C, 5);
+    pub const A0: AvrAdcInput = McuAtmega328p::ADC0;
+    pub const A1: AvrAdcInput = McuAtmega328p::ADC1;
+    pub const A2: AvrAdcInput = McuAtmega328p::ADC2;
+    pub const A3: AvrAdcInput = McuAtmega328p::ADC3;
+    pub const A4: AvrAdcInput = McuAtmega328p::ADC4;
+    pub const A5: AvrAdcInput = McuAtmega328p::ADC5;
+    pub const A6: AvrAdcInput = McuAtmega328p::ADC6;
+    pub const A7: AvrAdcInput = McuAtmega328p::ADC7;
 }

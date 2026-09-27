@@ -2,7 +2,7 @@
 //! Defines [`McuAtmega328p`].
 //
 
-use crate::{AvrAdc, AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
+use crate::{AvrAdc, AvrAdcInput, AvrPort, AvrTimer0, AvrTimer1, AvrTimer2, AvrUsart};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ATmega328P microcontroller namespace.
@@ -71,11 +71,28 @@ impl McuAtmega328p {
 
 /// # Analog
 impl McuAtmega328p {
+    /// ADC input 0.
+    pub const ADC0: AvrAdcInput = AvrAdcInput::_new(0);
+    /// ADC input 1.
+    pub const ADC1: AvrAdcInput = AvrAdcInput::_new(1);
+    /// ADC input 2.
+    pub const ADC2: AvrAdcInput = AvrAdcInput::_new(2);
+    /// ADC input 3.
+    pub const ADC3: AvrAdcInput = AvrAdcInput::_new(3);
+    /// ADC input 4.
+    pub const ADC4: AvrAdcInput = AvrAdcInput::_new(4);
+    /// ADC input 5.
+    pub const ADC5: AvrAdcInput = AvrAdcInput::_new(5);
+    /// ADC input 6.
+    pub const ADC6: AvrAdcInput = AvrAdcInput::_new(6);
+    /// ADC input 7.
+    pub const ADC7: AvrAdcInput = AvrAdcInput::_new(7);
+
     /// 10-bit successive-approximation ADC.
     pub const ADC: AvrAdc = AvrAdc::new(0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7E);
 
-    /// Returns the 10-bit successive-approximation ADC.
     #[must_use]
+    /// Returns the 10-bit successive-approximation ADC.
     pub const fn adc(self) -> AvrAdc {
         Self::ADC
     }

@@ -167,7 +167,7 @@
 - new types: `Ssd13xx`.
 
 #### mcu::avr
-- new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega2560`, `McuAtmega328p`.
+- new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega2560`, `McuAtmega328p`.
 
 ##### mcu::avr::timer
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.

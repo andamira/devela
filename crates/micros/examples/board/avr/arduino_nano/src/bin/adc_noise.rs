@@ -34,7 +34,7 @@ pub extern "C" fn main() -> ! {
         timer.configure_normal(64);
     }
 
-    let mut noise = unsafe { Board::MCU.adc().prepare_noise(0, 128) };
+    let mut noise = unsafe { Board::MCU.adc().prepare_noise(Board::A0, 128) };
 
     unsafe {
         uart.write_bytes_blocking(b"ADC0 weak noise; byte / Timer1 ticks (4 us)\r\n");
