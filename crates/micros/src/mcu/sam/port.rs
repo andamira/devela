@@ -37,6 +37,9 @@ impl SamPort {
     /// Returns the Clear Output Data Register (`PIO_CODR`).
     pub(super) const fn codr(self) -> SamReg32 { SamReg32::new(self.base + 0x34) }
 
+    /// Returns the Output Data Status Register (`PIO_ODSR`).
+    pub(super) const fn odsr(self) -> SamReg32 { SamReg32::new(self.base + 0x38) }
+
     /// Returns the Pull-Up Disable Register (`PIO_PUDR`).
     pub(super) const fn pudr(self) -> SamReg32 { SamReg32::new(self.base + 0x60) }
 }
