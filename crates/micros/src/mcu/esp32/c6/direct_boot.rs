@@ -19,6 +19,7 @@
 /// - establishes the global and stack pointers,
 /// - copies initialized `.data` into RAM,
 /// - clears `.bss`,
+/// - normalizes CPU and AHB clocks to the 40 MHz main crystal,
 /// - hands off ROM boot watchdog state for long-running direct-boot code.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
@@ -31,6 +32,7 @@ macro_rules! esp32_c6_direct_boot· {
         #[cfg(target_arch = "riscv32")]
         extern "C" fn __devela_esp32_c6_direct_boot_entry() -> ! {
             unsafe {
+                $crate::McuEsp32C6::set_cpu_clock_xtal();
                 $crate::McuEsp32C6::handoff_boot_watchdogs();
             }
             $main()

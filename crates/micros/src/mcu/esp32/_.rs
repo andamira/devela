@@ -18,6 +18,8 @@ crate::mods_in! {
     #[cfg(feature = "esp32")]
     mod register;
     #[cfg(feature = "esp32")]
+    mod spi;
+    #[cfg(feature = "esp32")]
     mod usb_serial_jtag;
 }
 crate::mods_out! { // _mods
@@ -26,6 +28,7 @@ crate::mods_out! { // _mods
         pub use super::{
             i2c::EspI2c,
             register::EspReg32,
+            spi::EspSpi,
             usb_serial_jtag::EspUsbSerialJtag,
         };
         #[cfg(feature = "esp32c3")]

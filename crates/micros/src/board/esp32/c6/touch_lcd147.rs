@@ -2,7 +2,9 @@
 //! Defines [`BoardWaveshareC6TouchLcd147`].
 //
 
-use crate::{Esp32C6Pin, McuEsp32C6};
+use crate::{Esp32C6Pin, Jd9853, McuEsp32C6};
+#[cfg(feature = "unsafe_mmio")]
+use crate::{Esp32C6SpiCmdData, Timeout};
 
 #[doc = crate::_tags!(hw namespace)]
 /// Waveshare ESP32-C6-Touch-LCD-1.47 board.
@@ -21,19 +23,18 @@ use crate::{Esp32C6Pin, McuEsp32C6};
 /// - a microSD/TF slot sharing the LCD SPI clock and MOSI lines,
 /// - USB, UART0, battery charging, and battery-voltage sensing.
 ///
-/// This type records the board's fixed wiring. Device-specific drivers are
-/// separate from the board definition and can be added independently.
+/// This type records the board's fixed wiring. Device-specific drivers
+/// are separate from the board definition and can be added independently.
 ///
 /// The shared buses require coordination:
 ///
 /// - LCD and TF share GPIO1 SCK and GPIO2 MOSI; their chip-selects are distinct.
 /// - Touch and IMU share GPIO18 SDA and GPIO19 SCL.
 ///
-/// GPIO8 and GPIO9 are boot strapping pins. The published schematic connects
-/// `IO8` to GPIO8 and the `BOOT` net to GPIO9; Waveshare's current prose pinout
-/// instead labels the BOOT button as GPIO8, so either pin should be treated
-/// cautiously until the board revision is verified. GPIO12/13 are USB D-/D+
-/// when USB is in use.
+/// GPIO8 and GPIO9 are boot strapping pins. The published schematic connects `IO8`
+/// to GPIO8 and the `BOOT` net to GPIO9; Waveshare's current prose pinout instead
+/// labels the BOOT button as GPIO8, so either pin should be treated cautiously
+/// until the board revision is verified. GPIO12/13 are USB D-/D+ when USB is in use.
 ///
 /// See also:
 ///
@@ -66,11 +67,20 @@ impl BoardWaveshareC6TouchLcd147 {
 
 /// # LCD
 impl BoardWaveshareC6TouchLcd147 {
+    /// JD9853 panel profile.
+    pub const LCD: Jd9853 = Jd9853::WAVESHARE_C6_TOUCH_LCD147;
+
+    /// Initial LCD SPI bus frequency in hertz.
+    ///
+    /// This conservative bring-up frequency divides the known 40 MHz XTAL
+    /// directly and does not depend on PLL clock setup.
+    pub const LCD_SPI_HZ: u32 = 20_000_000;
+
     /// LCD width in pixels.
-    pub const LCD_WIDTH: u16 = 172;
+    pub const LCD_WIDTH: u16 = Self::LCD.width();
 
     /// LCD height in pixels.
-    pub const LCD_HEIGHT: u16 = 320;
+    pub const LCD_HEIGHT: u16 = Self::LCD.height();
 
     /// LCD SPI clock line, shared with TF.
     pub const LCD_SCK: Esp32C6Pin = Self::SPI_SCK;
@@ -180,4 +190,27 @@ impl BoardWaveshareC6TouchLcd147 {
     ///
     /// GPIO8 is also a boot strapping pin on the ESP32-C6.
     pub const IO8: Esp32C6Pin = Esp32C6Pin::new(8);
+}
+
+/// # LCD preparation
+#[cfg(feature = "unsafe_mmio")]
+impl BoardWaveshareC6TouchLcd147 {
+    /// Prepares SPI2 and the command/data control lines for the onboard LCD.
+    ///
+    /// The TF card is deselected before the shared SCK/MOSI lines are used.
+    /// The LCD reset and backlight pins remain under caller control.
+    ///
+    /// # Safety
+    /// SPI2 and the LCD/TF SPI pins must not be concurrently configured
+    /// or accessed. While the returned transport is alive, its SPI2, CS,
+    /// and D/C resources must not be accessed through another raw handle.
+    #[must_use]
+    pub unsafe fn prepare_lcd_spi() -> Result<Esp32C6SpiCmdData, Timeout> {
+        unsafe {
+            Self::TF_CS.set_output_high();
+            let (spi, _actual_hz) =
+                McuEsp32C6::prepare_spi2(Self::LCD_SCK, Self::LCD_MOSI, Self::LCD_SPI_HZ)?;
+            Ok(Esp32C6SpiCmdData::new_unchecked(spi, Self::LCD_CS, Self::LCD_DC))
+        }
+    }
 }

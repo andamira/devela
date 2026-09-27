@@ -12,6 +12,8 @@ MCU support without ESP-IDF, an ESP HAL, or a runtime crate.
 
 - `blink` — blinks the LCD backlight to verify direct boot, IO-MUX/GPIO
   routing, and digital output without depending on the display controller.
+- `solid_color` — initializes SPI2 and the JD9853 controller, writes a full
+  RGB565 frame, and then enables the backlight.
 
 
 ## Requirements

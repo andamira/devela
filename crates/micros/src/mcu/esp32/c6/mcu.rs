@@ -6,10 +6,13 @@
 // - impl GPIO
 // - impl Peripherals
 // - impl Clock
+// - impl SPI
 // - impl Boot watchdogs
 // - impl Private registers
 
-use crate::EspReg32;
+#[cfg(feature = "unsafe_mmio")]
+use crate::Esp32C6Pin;
+use crate::{EspReg32, EspSpi, Timeout};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C6 microcontroller namespace.
@@ -95,12 +98,99 @@ impl McuEsp32C6 {
 
     /// General-purpose SPI2 peripheral base address.
     pub const SPI2_BASE: u32 = 0x6008_1000;
+    /// General-purpose SPI2 controller.
+    pub const SPI2: EspSpi = EspSpi::new(Self::SPI2_BASE);
 }
 
 /// # Clock
 impl McuEsp32C6 {
     /// External main-crystal (`XTAL_CLK`) frequency, in hertz.
     pub const XTAL_HZ: u32 = 40_000_000;
+
+    /// Selects the 40 MHz XTAL as the CPU clock with CPU and AHB dividers at 1.
+    ///
+    /// This establishes a deterministic clock baseline for ROM direct boot,
+    /// independent of clock state left by a flashing stub or prior reset path.
+    /// It does not disable the PLL or update ROM delay calibration state.
+    ///
+    /// # Safety
+    /// This changes global CPU and bus clock configuration. No code may
+    /// concurrently reconfigure clocks or rely on the previous CPU/AHB timing.
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn set_cpu_clock_xtal() {
+        const PCR_BASE: u32 = 0x6009_6000;
+        const SYSCLK_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0x110);
+        const CPU_FREQ_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0x118);
+        const AHB_FREQ_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0x11c);
+
+        const SOC_CLK_SEL_MASK: u32 = 0b11 << 16;
+        const CPU_LS_DIV_MASK: u32 = 0xff;
+        const AHB_LS_DIV_MASK: u32 = 0xff;
+        unsafe {
+            // Mirror Espressif's XTAL transition order: prepare the inactive
+            // low-speed dividers first, then switch the root clock source.
+            let ahb = AHB_FREQ_CONF;
+            ahb.write(ahb.read() & !AHB_LS_DIV_MASK); // /1
+
+            let cpu = CPU_FREQ_CONF;
+            cpu.write(cpu.read() & !CPU_LS_DIV_MASK); // /1
+
+            let sys = SYSCLK_CONF;
+            sys.write(sys.read() & !SOC_CLK_SEL_MASK); // XTAL
+        }
+    }
+}
+
+/// # SPI
+#[cfg(feature = "unsafe_mmio")]
+impl McuEsp32C6 {
+    /// Enables SPI2, routes SCK/MOSI through the GPIO matrix, and configures
+    /// mode-0 single-line master writes at up to `bus_hz` from the 40 MHz XTAL.
+    ///
+    /// The actual configured frequency is returned together with the controller.
+    ///
+    /// # Safety
+    /// SPI2 and both GPIOs must not be concurrently configured or accessed.
+    /// While the returned controller is in use, these hardware resources must
+    /// not be accessed through another raw handle.
+    pub unsafe fn prepare_spi2(
+        sck: Esp32C6Pin,
+        mosi: Esp32C6Pin,
+        bus_hz: u32,
+    ) -> Result<(EspSpi, u32), Timeout> {
+        const PCR_BASE: u32 = 0x6009_6000;
+        const SPI2_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0xc0);
+        const SPI2_CLKM_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0xc4);
+
+        const SPI2_CLK_EN: u32 = 1 << 0;
+        const SPI2_RST_EN: u32 = 1 << 1;
+        const SPI2_CLKM_SEL_MASK: u32 = 0b11 << 20;
+        const SPI2_CLKM_EN: u32 = 1 << 22;
+
+        const FSPICLK_OUT: u8 = 63;
+        const FSPID_OUT: u8 = 65;
+
+        unsafe {
+            // Use the 40 MHz crystal directly as the SPI2 function clock.
+            // On ESP32-C6 this PCR register has source-select + enable only;
+            // the bus divider itself lives in SPI2's SPI_CLOCK register.
+            let clkm = SPI2_CLKM_CONF;
+            clkm.write((clkm.read() & !SPI2_CLKM_SEL_MASK) | SPI2_CLKM_EN);
+
+            // Clock the APB-facing peripheral, assert reset, then release it.
+            // Espressif's HAL models SPI2_RST_EN as active-high reset.
+            let conf = SPI2_CONF;
+            conf.write(conf.read() | SPI2_CLK_EN | SPI2_RST_EN);
+            conf.write((conf.read() | SPI2_CLK_EN) & !SPI2_RST_EN);
+
+            sck.configure_peripheral_output(FSPICLK_OUT);
+            mosi.configure_peripheral_output(FSPID_OUT);
+
+            let spi = Self::SPI2;
+            let actual_hz = spi.configure_master_mode0(Self::XTAL_HZ, bus_hz)?;
+            Ok((spi, actual_hz))
+        }
+    }
 }
 
 /// # Boot watchdogs

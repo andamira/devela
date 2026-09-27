@@ -156,7 +156,7 @@
 - add Arduino Mega2560 examples: `blink`, `usart_chat`.
 - add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `usart_chat`.
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
-- add ESP32-C6 Waveshare LED examples: `blink`.
+- add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.
 
 ## Modules
@@ -165,7 +165,7 @@
 - new types: `BoardArduinoDue`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 #### device::display
-- new types: `Ssd13xx`.
+- new types: `Jd9853`, `Ssd13xx`.
 
 #### mcu::avr
 - new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`, `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `McuAtmega2560`, `McuAtmega328p`.
@@ -175,7 +175,11 @@
 
 #### mcu::esp32
 - new macros: `esp32_c3_direct_boot!`, `esp32_c6_direct_boot!`.
-- new types: `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3Uart`, `Esp32C6Pin`, `EspI2c`, `EspReg32`, `Esp32C3SystemTimer`, `EspUsbSerialJtag`, `McuEsp32C3`, `McuEsp32C6`.
+- new types:
+  - `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3SystemTimer`, `Esp32C3Uart`.
+  - `Esp32C6Pin`, `Esp32C6SpiCmdData`.
+  - `EspI2c`, `EspReg32`, `EspSpi`, `EspUsbSerialJtag`.
+  - `McuEsp32C3`, `McuEsp32C6`.
 - add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
 - add ESP32-C6 direct-boot startup and linker support, including boot-watchdog handoff and GPIO pad routing.
 

@@ -19,7 +19,7 @@ fn main() -> ! {
         backlight.set_output_low();
 
         loop {
-            for _ in 0..40_000_000 {
+            for _ in 0..8_000_000 {
                 spin_loop();
             }
             backlight.toggle();

@@ -109,7 +109,7 @@ board_all = [
 		"waveshare_c6_touch_lcd147",
 	]
 		supermini_oled042 = ["board_esp32", "esp32c3", "ssd13xx"]
-		waveshare_c6_touch_lcd147 = ["board_esp32", "esp32c6"]
+		waveshare_c6_touch_lcd147 = ["board_esp32", "esp32c6", "jd9853"]
 
 	board_sam = ["board", "sam"]
 	board_sam_all = ["arduino_due"]
@@ -132,7 +132,8 @@ comm_all = ["comm"]
 	# winc1500 = ["comm"]
 
 display = ["device"]
-display_all = ["ssd13xx"]
+display_all = ["jd9853", "ssd13xx"]
+	jd9853 = ["display"]
 	ssd13xx = ["display"] # ssd1306, ssd1315
 
 input = ["device"]

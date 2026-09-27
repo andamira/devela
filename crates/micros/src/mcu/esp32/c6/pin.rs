@@ -110,6 +110,40 @@ impl Esp32C6Pin {
         }
     }
 
+    /// Configures this pad as a push-pull GPIO-matrix peripheral output.
+    ///
+    /// The peripheral signal drives the output value while `GPIO_ENABLE` keeps
+    /// the pad output driver enabled continuously.
+    ///
+    /// # Safety
+    /// This pin and matrix output route must not be concurrently configured,
+    /// and `signal` must be a valid output signal for the active ESP32-C6.
+    pub(crate) unsafe fn configure_peripheral_output(self, signal: u8) {
+        const PAD_DRIVER: u32 = 1 << 2;
+        const FUN_SELECT_MASK: u32 = 0b111 << 12;
+        const FUN_GPIO: u32 = 1 << 12;
+        const OUT_SELECT_MASK: u32 = 0xff;
+        const OUT_INVERT: u32 = 1 << 8;
+        const OEN_SELECT: u32 = 1 << 9;
+        const OEN_INVERT: u32 = 1 << 10;
+
+        unsafe {
+            let pin = self.pin_config_reg();
+            pin.write(pin.read() & !PAD_DRIVER);
+
+            let output = self.matrix_output_reg();
+            output.write(
+                (output.read() & !(OUT_SELECT_MASK | OUT_INVERT | OEN_SELECT | OEN_INVERT))
+                    | signal as u32
+                    | OEN_SELECT,
+            );
+
+            let mux = self.io_mux_reg();
+            mux.write((mux.read() & !FUN_SELECT_MASK) | FUN_GPIO);
+            self.enable_output();
+        }
+    }
+
     /// Returns whether its output driver is enabled.
     ///
     /// # Safety

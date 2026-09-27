@@ -16,11 +16,11 @@ crate::mods_in! {
     #[cfg(feature = "std")]
     mod error_std; // TEMP, RETHINK
 
+    mod error; // Timeout
     mod timed; // [Maybe]Timed
 
     #[cfg(feature = "time")] mod_ calendar; // Month, Weekday
     #[cfg(feature = "time")] mod_ delta; // TimeDelta
-    #[cfg(feature = "time")] mod error; // Timeout
     // #[cfg(feature = "time")] mod drop; // TimeDrop
     // #[cfg(feature = "time")] mod frame; // TimeFramePacer
     // #[cfg(feature = "time")] mod freq; // TimeFreq
@@ -35,14 +35,15 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods, _pub_mods
     _mods {
-        pub use super::timed::*;
-
+        pub use super::{
+            error::*,
+            timed::*
+        };
         #[cfg(feature = "time")]
         #[cfg_attr(nightly_doc, doc(cfg(feature = "time")))]
         pub use super::{
             calendar::_all::*,
             delta::_all::*,
-            error::*,
             // drop::*,
             // frame::*,
             // freq::*;
