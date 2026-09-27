@@ -79,7 +79,7 @@
 #![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 //
 // `nightly_stable_1_101`: core, alloc, std:
-// #![cfg_attr(nightly_stable_1_101, feature(,))]
+#![cfg_attr(nightly_stable_1_101, feature(exclusive_wrapper,))]
 // #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
@@ -104,7 +104,6 @@
         // core_io_fundamentals,
         debug_closure_helpers,
         derive_coerce_pointee,
-        exclusive_wrapper,
         float_bits_const,
         fn_align,
         frontmatter,

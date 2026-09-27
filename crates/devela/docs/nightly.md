@@ -76,10 +76,12 @@ See also
 
 
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
-<!-- > - <https://github.com/rust-lang/rust/milestone/148> -->
+> - <https://github.com/rust-lang/rust/milestone/151>
 <!-- > - <https://blog.rust-lang.org/2026/12/24/Rust-1.101.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
 
+- 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
+- 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -97,7 +99,6 @@ See also
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
-- 1.??: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
 - 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
