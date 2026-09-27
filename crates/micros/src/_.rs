@@ -62,9 +62,8 @@ pub mod all {
     pub use crate::_all::*;
 }
 
-#[doc(inline)]
-pub use _devela as devela;
 #[doc(hidden)]
+pub use _devela as devela;
 /// Integrated devela vocabulary available through this crate.
 ///
 /// Combines this crate's public items

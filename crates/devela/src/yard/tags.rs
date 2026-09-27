@@ -34,6 +34,9 @@ _define_symbol_tags! {
 
     // Representation shaped by a foreign, platform, or kernel ABI boundary.
     _TAG_ABI, "ABI-shaped representation", "🔻";
+    // Physical actuation: motors, servos, solenoids, haptics, and their controllers.
+    // Not abstract state changes, execution, or general output.
+    _TAG_ACTUATION, "Actuation", "🦾";
     // Abstract algebraic structures and laws.
     // Covers groups, rings, modules, algebras, and related operations,
     // independent of representation or numeric evaluation.
@@ -52,6 +55,10 @@ _define_symbol_tags! {
     _TAG_CODE, "Code structure and compilation", "⌗";
     _TAG_CODEC, "Encoding and decoding", "🥡"; // (takeout-box)
     _TAG_COLOR, "Color", "🎨";
+    // Communication channels, transceivers, and transport interfaces.
+    // Covers the affordance for exchanging information between endpoints,
+    // independently of the particular protocol or network semantics.
+    _TAG_COMM, "Communication", "📻";
     _TAG_CONCURRENCY, "Concurrency", "🧵"; // (thread)
     // Construction patterns and builders.
     // Emphasizes how values or structures come into existence,
@@ -70,6 +77,9 @@ _define_symbol_tags! {
     // Diagnostics, introspection, debugging intent.
     _TAG_DEBUG, "Debugging", "🐛";
     _TAG_DIR, "Direction and orientation", "🧭";
+    // Physical display devices, controllers, and display-facing surfaces.
+    // Not generic images, visual layout, or UI semantics.
+    _TAG_DISPLAY, "Display", "🖵";
     // Actual error types representing failure states.
     // Not for fallible abstractions or result carriers.
     _TAG_ERROR, "Error", "🚩";
@@ -95,10 +105,16 @@ _define_symbol_tags! {
     // RAII abstractions whose semantics are driven by scope exit (`Drop`).
     _TAG_GUARD, "Scoped guard", "🔒";
     _TAG_HASH, "Hashing", "🔀";
+    // Physical controls intended for direct human operation:
+    // buttons, keys, keypads, knobs, encoders, pointers, touch, game controls, etc.
+    // Not generic data input, GPIO direction, sensors, or parsing.
+    _TAG_HUMAN_INPUT, "Human input", "🕹️";
     _TAG_HW, "Hardware", "🔩";
     _TAG_IMAGE, "Image", "🖼️";
     _TAG_INIT, "Initialization", "🌱";
-    // Human intent vocabulary
+    // Human control and intent: controls, actions, gestures, and commands.
+    // Covers physical controls and semantic interaction vocabularies.
+    // Not generic data input/output or passive presentation.
     _TAG_INTERACTION, "Human interaction", "🎮";
     _TAG_INTROSPECT, "Structural introspection", "🔎";
     _TAG_IO, "Input and output", "🔌";
@@ -163,6 +179,8 @@ _define_symbol_tags! {
     // Platform-dependent behavior or guarantees.
     // It is exclusive to specific platforms.
     _TAG_PLATFORM, "Platform-dependent", "🖥️";
+    // Electrical power generation, conversion, regulation, storage, and control.
+    _TAG_POWER, "Power", "⚡";
     // Items whose main surface is about Rust primitive carriers.
     _TAG_PRIMITIVE, "Related to Rust primitives and their carriers", "⚙️";
     // Rules, messages, and state transitions of an interoperable communication contract.
@@ -182,6 +200,9 @@ _define_symbol_tags! {
     // Covers schedulers, tasks, async runtimes, and progression of active systems.
     // Excludes structural invocation semantics.
     _TAG_RUNTIME, "Runtime", "⬡";
+    // Devices that sense or measure properties of the physical world.
+    // Not generic data input or low-level acquisition peripherals such as ADCs.
+    _TAG_SENSOR, "Sensing", "💚";
     // Membership-based set semantics.
     // Covers finite sets, bit sets, enum sets, flag sets, and set-like collections.
     // Use with `bit` when the representation is a bit mask.
@@ -192,6 +213,9 @@ _define_symbol_tags! {
     // Covers state enums, state holders, and explicit current-state snapshots.
     // Excludes one-shot outcomes, commands, configuration, and static policy.
     _TAG_STATE, "State", "◎"; // ◉
+    // Persistent or removable data-storage hardware and media.
+    // Not memory representation or filesystem semantics.
+    _TAG_STORAGE, "Storage", "💾";
     _TAG_STRING, "String storage and views", "🧶"; // (yarn)
     // Symbolic representations and manipulation of expressions.
     // Focuses on form and rewriting, not truth evaluation or inference.

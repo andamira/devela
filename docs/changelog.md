@@ -62,7 +62,7 @@
 - remove file paths from all file headers.
 
 ### documentation
-- new tag: `hw`.
+- add tags: `actuation`, `comm`, `display`, `hw`, `power`, `sensor`, `storage`.
 - rename tag: `uid` to `id`.
 - rename "EGC" abbreviation to "extended grapheme cluster".
 
