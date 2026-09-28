@@ -1,0 +1,10 @@
+[build]
+target = "avr-none"
+
+[target.avr-none]
+rustflags = [
+    "-C", "target-cpu=atmega168",
+]
+
+[unstable]
+build-std = ["core"]

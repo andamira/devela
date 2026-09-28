@@ -4,7 +4,7 @@
 
 use crate::AvrPin;
 #[cfg(all(feature = "unsafe_mmio", feature = "unsafe_hint"))]
-use crate::{Infallible, Tm1638Bus, asm};
+use crate::{Infallible, Tm1638Bus, asm, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// Bit-banged TM1638 serial interface over AVR GPIO.

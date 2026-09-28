@@ -60,6 +60,8 @@
 //
 
 crate::mods_in! {
+        #[cfg(feature = "atmega168")]
+        mod_ atmega168;
         #[cfg(feature = "atmega2560")]
         mod_ atmega2560;
         #[cfg(feature = "atmega328p")]
@@ -88,6 +90,8 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
             register::AvrReg8,
             usart::AvrUsart,
         };
+        #[cfg(feature = "atmega168")]
+        pub use super::atmega168::_all::*;
         #[cfg(feature = "atmega2560")]
         pub use super::atmega2560::_all::*;
         #[cfg(feature = "atmega328p")]

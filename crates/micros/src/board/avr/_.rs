@@ -6,6 +6,8 @@
 //
 
 crate::mods_in! {
+    #[cfg_attr(not(nightly_doc), cfg(feature = "atmega168"))]
+    mod_ atmega168;
     #[cfg_attr(not(nightly_doc), cfg(feature = "atmega2560"))]
     mod_ atmega2560;
     #[cfg_attr(not(nightly_doc), cfg(feature = "atmega328p"))]
@@ -13,12 +15,17 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
+        #[cfg_attr(not(nightly_doc), cfg(feature = "atmega168"))]
+        pub use super::atmega168::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "atmega2560"))]
         pub use super::atmega2560::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "atmega328p"))]
         pub use super::atmega328p::_all::*;
     }
     _reexports {
+        #[doc(inline)]
+        #[cfg(feature = "arduino_diecimila")]
+        pub use super::atmega168::BoardArduinoDiecimila;
         #[doc(inline)]
         #[cfg(feature = "arduino_mega2560")]
         pub use super::atmega2560::BoardArduinoMega2560;

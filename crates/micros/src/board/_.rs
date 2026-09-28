@@ -13,6 +13,7 @@
 //!
 //! | Board                              | MCU           |       Clock | Onboard I/O       | Display      | Host / serial          |
 //! | ---------------------------------- | ------------- | ----------: | ----------------- | ------------ | ---------------------- |
+//! | `BoardArduinoDiecimila`            | McuAtmega168  |      16 MHz | D13 LED           | —            | USB–UART               |
 //! | `BoardArduinoDue`                  | McuSam3x8e    |      84 MHz | D13/L LED         | —            | USB–UART, native USB   |
 //! | `BoardArduinoMega2560`             | McuAtmega2560 |      16 MHz | D13 LED           | —            | USB–UART, USART1–3     |
 //! | `BoardArduinoNano`                 | McuAtmega328p |      16 MHz | D13 LED           | —            | USB–UART               |

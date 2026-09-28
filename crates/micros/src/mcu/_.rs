@@ -17,6 +17,7 @@
 //!
 //! | MCU             | Core              | Memory                                   | GPIO | Timers              | Serial                       | Analog          | Radio        |
 //! | --------------- | ----------------- | ---------------------------------------- | ---: | ------------------- | ---------------------------- | --------------- | ------------ |
+//! | `McuAtmega168`  | AVR 8-bit, 20 MHz | 16 KiB Flash, 1 KiB SRAM, 512 B EEPROM   |   23 | T0/T1/T2            | USART0, ◇SPI, ◇TWI           | ◇10-bit ADC     | —            |
 //! | `McuAtmega328p` | AVR 8-bit, 20 MHz | 32 KiB Flash, 2 KiB SRAM, 1 KiB EEPROM   |   23 | T0/T1/T2            | USART0, ◇SPI, ◇TWI           | ◇10-bit ADC     | —            |
 //! | `McuEsp32C3`    | RV32IMC, 160 MHz  | 384 KiB ROM, 400 KiB SRAM, ext. Flash    | ≤ 22 | ◇GPTimer, ◇SYSTIMER | UART0, I²C0, ◇UART1, ◇SPI    | ◇2x12-bit ADC   | ◇Wi-Fi, ◇BLE |
 //! | `McuEsp32C6`    | RV32IMAC, 160 MHz | 320 KiB ROM, 512 KiB HP + 16 KiB LP SRAM | ≤ 31 | ◇GPTimer, ◇SYSTIMER | ◇UART0/1, ◇I²C0, ◇SPI2, ◇USB | ◇7x12-bit ADC   | ◇Wi-Fi, ◇BLE |
