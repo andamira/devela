@@ -5,7 +5,9 @@
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::_DOC_ATOMIC_CORE_PORTABLE;
-use crate::{__doc_auto_hide, _reexport, _tags, macro_apply};
+use crate::_reexport;
+#[allow(unused_imports, reason = "varied feature-gates")]
+use crate::{__doc_auto_hide, _tags, macro_apply};
 
 /* from the `atomic` crate */
 
@@ -126,7 +128,7 @@ pub use crate::_dep::portable_atomic::AtomicBool;
     location("work/sync/atomic", struct AtomicBool),
 }]
 // #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic_load_store = "8"))] // WAIT
-#[cfg(not(feature = "dep_portable_atomic"))]
+#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "8"))]
 #[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use core::sync::atomic::AtomicBool;
 

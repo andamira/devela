@@ -7,9 +7,11 @@ portable abstractions and low-level mechanisms.
 
 ## Structure
 
-- `mcu`: microcontrollers, registers, and integrated peripherals.
-- `board`: fixed board wiring, clocks, and onboard hardware.
+- `board`: fixed board configurations and onboard hardware.
+- `computer`: microcomputer systems and machine-specific hardware.
 - `device`: independently addressable components and reusable drivers.
+- `mcu`: microcontrollers and their integrated hardware foundations.
+- `processor`: processor families and instruction-level facilities.
 
 ## Documentation
 

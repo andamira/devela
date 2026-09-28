@@ -297,6 +297,10 @@ check-cfg = [ # Allowed configuration flags:
 	# devela_macros_errors="deny"     -> emit macro policy errors, default
 	'cfg(devela_macros_errors, values("warn", "deny"))',
 	#
+	# devela_micros custom target toolchains
+	# --------------------------------------------------------------------------
+	'cfg(target_arch, values("z80"))',
+	#
 	# Nightly flags hierarchy (gating unstable functionality):
 	# --------------------------------------------------------------------------
 	# They are prefixed with `nightly_`.

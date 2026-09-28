@@ -1,0 +1,25 @@
+cargo-features = ["panic-immediate-abort"]
+
+[workspace]
+
+[package]
+name = "computer_zx_spectrum48"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+devela_micros = {
+    path = "../../../../",
+	features = ["spectrum48", "unsafe_hint", "unsafe_mmio"],
+    default-features = false,
+}
+
+[profile.dev]
+panic = "immediate-abort"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "immediate-abort"

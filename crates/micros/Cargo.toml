@@ -8,7 +8,7 @@ bench = false
 [package]
 name = "devela_micros"
 build = "build/_.rs"
-description = "Microcontroller, board, and embedded hardware support for devela"
+description = "Microcontroller, microcomputer, board, and embedded hardware support for devela."
 repository = "https://github.com/andamira/devela/tree/main/crates/micros"
 documentation = "https://docs.rs/devela_micros"
 rust-version.workspace = true
@@ -65,31 +65,7 @@ alloc = ["devela/alloc"]
 #* Module features *#
 # ------------------------------------------------------------------------------
 
-all = ["mcu_all", "board_all", "device_all"]
-
-# microcontrollers
-
-mcu = []
-mcu_all = [
-	"avr_all",
-	"esp32_all",
-	"sam_all",
-]
-	avr = ["mcu"]
-	avr_all = ["atmega168", "atmega328p", "atmega2560"]
-		atmega168 = ["avr"]
-		atmega328p = ["avr"]
-		atmega2560 = ["avr"]
-
-	esp32 = ["mcu"]
-	esp32_all = ["esp32c3", "esp32c6", "esp32s3"]
-		esp32c3 = ["esp32"]
-		esp32c6 = ["esp32"]
-		esp32s3 = ["esp32"]
-
-	sam = ["mcu"]
-	sam_all = ["sam3x8e"]
-		sam3x8e = ["sam"]
+all = ["board_all", "computer_all", "device_all", "mcu_all", "processor_all"]
 
 # boards
 
@@ -117,6 +93,27 @@ board_all = [
 	board_sam_all = ["arduino_due"]
 		arduino_due = ["board_sam", "sam3x8e"]
 
+
+# microcomputers
+
+computer = []
+computer_all = [
+	"zx_all",
+]
+	# nintendo = []
+
+    zx = ["computer", "z80"]
+    zx_all = [
+        "spectrum_all",
+        # "zx80",
+        # "zx81",
+    ]
+        spectrum = ["zx"]
+        spectrum_all = [
+            "spectrum48",
+        ]
+            spectrum48 = ["spectrum"]
+
 # devices
 
 device = []
@@ -130,7 +127,7 @@ audio_all = []
 	#
 
 comm = ["device"]
-comm_all = ["comm"]
+comm_all = []
 	# winc1500 = ["comm"]
 
 display = ["device"]
@@ -159,6 +156,40 @@ sensor_all = []
 vision = ["device"]
 vision_all = []
 	# lepton35 = ["vision"]
+
+# microcontrollers
+
+mcu = []
+mcu_all = [
+	"avr_all",
+	"esp32_all",
+	"sam_all",
+]
+	avr = ["mcu"]
+	avr_all = ["atmega168", "atmega328p", "atmega2560"]
+		atmega168 = ["avr"]
+		atmega328p = ["avr"]
+		atmega2560 = ["avr"]
+
+	esp32 = ["mcu"]
+	esp32_all = ["esp32c3", "esp32c6", "esp32s3"]
+		esp32c3 = ["esp32"]
+		esp32c6 = ["esp32"]
+		esp32s3 = ["esp32"]
+
+	sam = ["mcu"]
+	sam_all = ["sam3x8e"]
+		sam3x8e = ["sam"]
+
+# processors
+
+processor = []
+processor_all = [
+    "z80",
+]
+    z80 = ["processor"]
+    # sm83 = ["processor"]
+    # m68k = ["processor"]
 
 
 #* Safety features *#

@@ -1,0 +1,5 @@
+[toolchain]
+targets = ["z80-unknown-none-elf"]
+channel = "rust-z80" # experimental toolchain: https://github.com/llvm-z80/rust-z80
+profile = "minimal"
+components = ["rust-src"]

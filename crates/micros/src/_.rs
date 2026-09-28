@@ -10,6 +10,7 @@
 #![cfg_attr(nightly_doc, doc(test(attr(feature(doc_cfg)))))] // enable for all doctests
 #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(target_arch = "avr", feature = "unsafe_hint"), feature(asm_experimental_arch))]
+#![cfg_attr(all(target_arch = "z80", feature = "unsafe_hint"), feature(asm_experimental_arch))]
 //
 
 /* imports */
@@ -22,10 +23,14 @@ use ::devela::all::*;
 crate::mods_in! {
     #[cfg_attr(not(nightly_doc), cfg(feature = "board"))]
     pub mod_ board;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "computer"))]
+    pub mod_ computer;
     #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
     pub mod_ device;
     #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
     pub mod_ mcu;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "processor"))]
+    pub mod_ processor;
 
     // internal
     pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
@@ -45,6 +50,12 @@ pub mod all_ {
         #[allow(unused_imports)]
         pub use crate::board::_all::*;
     }
+    #[cfg_attr(not(nightly_doc), cfg(feature = "computer"))]
+    #[doc = concat![crate::_DOC_COMPUTER!(), _COMMON_DOC!("computer")]]
+    pub mod _computer {
+        #[allow(unused_imports)]
+        pub use crate::computer::_all::*;
+    }
     #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
     #[doc = concat![crate::_DOC_DEVICE!(), _COMMON_DOC!("device")]]
     pub mod _device {
@@ -56,6 +67,12 @@ pub mod all_ {
     pub mod _mcu {
         #[allow(unused_imports)]
         pub use crate::mcu::_all::*;
+    }
+    #[cfg_attr(not(nightly_doc), cfg(feature = "processor"))]
+    #[doc = concat![crate::_DOC_PROCESSOR!(), _COMMON_DOC!("processor")]]
+    pub mod _processor {
+        #[allow(unused_imports)]
+        pub use crate::processor::_all::*;
     }
 }
 #[doc = crate::_DOC_ALL!()]
@@ -80,10 +97,14 @@ crate::mods_out! { // _pub_mods, _crate_internals
     _pub_mods {
         #[cfg_attr(not(nightly_doc), cfg(feature = "board"))]
         pub use super::board::_all::*;
+        #[cfg_attr(not(nightly_doc), cfg(feature = "computer"))]
+        pub use super::computer::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "device"))]
         pub use super::device::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "mcu"))]
         pub use super::mcu::_all::*;
+        #[cfg_attr(not(nightly_doc), cfg(feature = "processor"))]
+        pub use super::processor::_all::*;
     }
     _crate_internals {
         pub use super::{

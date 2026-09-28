@@ -1,0 +1,8 @@
+[build]
+target = "z80-unknown-none-elf"
+
+[target.z80-unknown-none-elf]
+rustflags = [
+    "-C", "link-arg=-Tlink.x",
+    "-C", "llvm-args=-z80-warn-stack-align-padding=0",
+]

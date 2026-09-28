@@ -26,6 +26,7 @@
 - restore conventional locations for `src/bin` and `tests`.
 - split crate-specific documentation from workspace-level documentation.
 - establish `progs` and `games` as separate workspace-level incubator trees.
+- recognize the experimental `z80` target architecture in cfg checking.
 - use ATmega328P as the representative 16-bit-pointer target.
 - new cargo alias `c16`.
 
@@ -134,6 +135,9 @@
 #### sys::mem
 - make `Ptr` provenance-related methods const:
 
+##### work::sync::atomic
+- gate the core `AtomicBool` re-export on 8-bit atomic support.
+
 ## yard
 - fix `_doc_location!` and `_doc_test_size_of!` to not hardcode the crate name.
 - replace uses of `__crate_name!` macro with `env!("CARGO_PKG_NAME")`.
@@ -146,11 +150,11 @@
 ## Crate
 
 ### features & flags
-- add feature groups for microcontrollers, boards, devices, media, and unsafe hardware capabilities.
+- add feature groups for microcontrollers, processors, microcomputers, boards, devices, media, and unsafe hardware capabilities.
 - expose devela features: `draw`, `font`, `image`, `time`, `unsafe_hint`, `unsafe_mmio`.
 
 ### structure
-- add root modules: `mcu`, `board`, `device`.
+- add root modules: `board`, `computer`, `device`, `mcu`, `processor`.
 - add embedded target linker support and a hidden integrated `devela` namespace.
 
 ### examples
@@ -161,12 +165,16 @@
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.
+- add ZX Spectrum 48K example: `screen`.
 
 ## Modules
 
 ### board
 - new types: `BoardArduinoDiecimila`, `BoardArduinoDue`, `BoardArduinoMega2560`, `BoardArduinoNano`.
 - new types: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
+
+### computer::zx::spectrum
+- new types: `ComputerSpectrum48`, `SpectrumColor`.
 
 #### device::display
 - new trait: `Tm1638Bus`.
@@ -193,5 +201,8 @@
 #### mcu::sam
 - new types: `McuSam3x8e`, `SamPin`, `SamPort`, `SamReg32`.
 - add SAM3X8E startup and linker support.
+
+### processor::z80
+- new type: `ProcessorZ80`.
 
 [0.30.0]: https://github.com/andamira/devela/releases/tag/v0.30.0
