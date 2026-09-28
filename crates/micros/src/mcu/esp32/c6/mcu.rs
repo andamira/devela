@@ -11,8 +11,8 @@
 // - impl Private registers
 
 #[cfg(feature = "unsafe_mmio")]
-use crate::Esp32C6Pin;
-use crate::{EspReg32, EspSpi, Timeout};
+use crate::{Esp32C6Pin, Timeout};
+use crate::{EspReg32, EspSpi};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C6 microcontroller namespace.

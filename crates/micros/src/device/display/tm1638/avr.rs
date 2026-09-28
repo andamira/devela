@@ -51,48 +51,30 @@ impl Tm1638AvrBus {
             }
         }
     }
-
     fn write_byte(&mut self, mut byte: u8) {
         for _ in 0..8 {
             unsafe {
                 self.clk.set_low();
-
-                if byte & 1 != 0 {
-                    self.dio.set_high();
-                } else {
-                    self.dio.set_low();
-                }
+                is! { byte & 1 != 0, self.dio.set_high(), self.dio.set_low() }
             }
-
             Self::wait_1us();
-
             unsafe { self.clk.set_high() };
             Self::wait_1us();
-
             byte >>= 1;
         }
-
         unsafe { self.clk.set_low() };
     }
-
     fn read_byte(&mut self) -> u8 {
         let mut byte = 0;
-
         for bit in 0..8 {
             unsafe { self.clk.set_high() };
             Self::wait_1us();
-
-            if unsafe { self.dio.is_high() } {
-                byte |= 1 << bit;
-            }
-
+            is! { unsafe { self.dio.is_high() }, byte |= 1 << bit }
             unsafe { self.clk.set_low() };
             Self::wait_1us();
         }
-
         byte
     }
-
     fn begin_write(&mut self) {
         unsafe {
             self.clk.set_low();
@@ -101,7 +83,6 @@ impl Tm1638AvrBus {
         }
         Self::wait_1us();
     }
-
     fn end(&mut self) {
         Self::wait_1us();
         unsafe { self.stb.set_high() };
@@ -115,38 +96,31 @@ impl Tm1638Bus for Tm1638AvrBus {
 
     fn write_slices(&mut self, slices: &[&[u8]]) -> Result<(), Self::Error> {
         self.begin_write();
-
         for slice in slices {
             for &byte in *slice {
                 self.write_byte(byte);
             }
         }
-
         self.end();
         Ok(())
     }
 
     fn write_read(&mut self, write: &[u8], read: &mut [u8]) -> Result<(), Self::Error> {
         self.begin_write();
-
         for &byte in write {
             self.write_byte(byte);
         }
-
         // The command's final high pulse has already lasted >= 1 µs.
         // Release the open-drain DIO line before receiving.
         unsafe { self.dio.set_input_floating() };
         Self::wait_1us();
-
         for byte in read {
             *byte = self.read_byte();
         }
-
         // End the transaction before taking ownership of DIO again,
         // avoiding contention with the TM1638's open-drain output.
         self.end();
         unsafe { self.dio.set_output_low() };
-
         Ok(())
     }
 }

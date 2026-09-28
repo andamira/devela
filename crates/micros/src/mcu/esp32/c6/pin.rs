@@ -2,7 +2,9 @@
 //! Defines [`Esp32C6Pin`].
 //
 
-use crate::{EspReg32, McuEsp32C6, is};
+#[cfg(feature = "unsafe_mmio")]
+use crate::is;
+use crate::{EspReg32, McuEsp32C6};
 
 #[doc = crate::_tags!(hw io)]
 /// An ESP32-C6 GPIO pin identified by its GPIO number.

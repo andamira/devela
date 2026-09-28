@@ -2,7 +2,9 @@
 //! Defines [`EspSpi`].
 //
 
-use crate::{EspReg32, Timeout, is};
+use crate::EspReg32;
+#[cfg(feature = "unsafe_mmio")]
+use crate::{Timeout, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// An Espressif general-purpose SPI controller.

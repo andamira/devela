@@ -204,7 +204,6 @@ impl BoardWaveshareC6TouchLcd147 {
     /// SPI2 and the LCD/TF SPI pins must not be concurrently configured
     /// or accessed. While the returned transport is alive, its SPI2, CS,
     /// and D/C resources must not be accessed through another raw handle.
-    #[must_use]
     pub unsafe fn prepare_lcd_spi() -> Result<Esp32C6SpiCmdData, Timeout> {
         unsafe {
             Self::TF_CS.set_output_high();

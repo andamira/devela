@@ -23,6 +23,11 @@ use crate::{Cmp, Extent2, is, unwrap, whilst};
 pub struct BitmapPage8<const W: usize, const H: usize, const N: usize> {
     bytes: [u8; N],
 }
+impl<const W: usize, const H: usize, const N: usize> Default for BitmapPage8<W, H, N> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl<const W: usize, const H: usize, const N: usize> BitmapPage8<W, H, N> {
     /// Number of vertical pixels stored in one page byte.
@@ -60,7 +65,6 @@ impl<const W: usize, const H: usize, const N: usize> BitmapPage8<W, H, N> {
         H as u32
     }
     /// Returns the logical pixel extent.
-    #[must_use]
     pub const fn extent(&self) -> Extent2<u32> {
         Extent2::new([W as u32, H as u32])
     }

@@ -9,7 +9,7 @@ crate::mods_in! {
     mod bus; // IMPROVE: generalize transaction I/O
     mod device;
     mod frame;
-    #[cfg(feature = "avr")]
+    #[cfg(all(feature = "avr", target_arch = "avr"))]
     mod avr;
 }
 crate::mods_out! { // _mods
@@ -19,7 +19,7 @@ crate::mods_out! { // _mods
             device::{Tm1638, Tm1638Brightness},
             frame::{Tm1638Frame, Tm1638LedKey8},
         };
-        #[cfg(feature = "avr")]
+        #[cfg(all(feature = "avr", target_arch = "avr"))]
         pub use super::avr::Tm1638AvrBus;
     }
 }

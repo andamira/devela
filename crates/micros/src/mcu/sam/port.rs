@@ -24,7 +24,11 @@ impl SamPort {
     /// Returns its PIO base address.
     #[must_use]
     pub const fn base(self) -> u32 { self.base }
+}
 
+#[rustfmt::skip]
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
+impl SamPort {
     /// Returns the PIO Enable Register (`PIO_PER`).
     pub(super) const fn per(self) -> SamReg32 { SamReg32::new(self.base) }
 
