@@ -6,7 +6,7 @@
 #![no_std]
 #![no_main]
 
-use devela::asm;
+use devela::Arch;
 use devela_micros::{BoardSuperMiniOled042 as Board, devela};
 
 devela::set_panic_handler! { loop }
@@ -17,12 +17,12 @@ fn main() -> ! {
 
     loop {
         for _ in 0..500_000 {
-            unsafe { asm!("nop") };
+            Arch::nop();
         }
         unsafe { Board::LED.set_output_low() }
 
         for _ in 0..500_000 {
-            unsafe { asm!("nop") };
+            Arch::nop();
         }
         unsafe { Board::LED.set_output_high() }
     }

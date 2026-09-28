@@ -25,7 +25,16 @@ _reexport! { rust: core::hint,
 }
 _reexport! { rust: core::hint,
     location: "code/hint" => fn spin_loop, tag: _tags!(code),
-    doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop
+    doc: "Signals the processor that it is running in a busy-wait spin-loop.\n\n
+This is a best-effort hint and may do nothing. In current Rust implementations
+it emits an architecture-specific instruction on x86/x86_64, RISC-V, AArch64,
+LoongArch, and supported ARM configurations. On AVR, MSP430, wasm32, Xtensa,
+and other unsupported architectures, the fallback is empty and may emit no
+instruction at all.\n\n
+It must not be used as a timing or delay primitive.\n\n
+See also [`Arch::relax`] for a busy-wait step with an instruction-emitting
+fallback, and [`Arch::nop`] for executing an actual no-operation instruction.",
+    spin_loop
 }
 _reexport! { rust: core::hint,
     location: "code/hint" => fn unreachable_unchecked, tag: _tags!(assert),

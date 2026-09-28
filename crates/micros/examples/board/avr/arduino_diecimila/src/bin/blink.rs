@@ -5,9 +5,8 @@
 
 #![no_std]
 #![no_main]
-#![feature(asm_experimental_arch)]
 
-use devela::asm;
+use devela::Arch;
 use devela_micros::{BoardArduinoDiecimila as Board, devela};
 
 devela::set_panic_handler! { loop }
@@ -20,7 +19,7 @@ pub extern "C" fn main() -> ! {
         // Explicit 8/16-bit counters keep the busy-wait compact on 8-bit AVR.
         for _ in 0..8u8 {
             for _ in 0..62_500u16 {
-                unsafe { asm!("nop") };
+                Arch::nop();
             }
         }
         unsafe { Board::LED.toggle() }

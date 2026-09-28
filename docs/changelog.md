@@ -116,7 +116,9 @@
 - avoid detecting host native libraries as available when cross-compiling.
 
 #### sys::arch
-- add AVR instructions to `Arch`.
+- update `Arch`:
+  - add AVR instructions.
+  - add portable methods: `nop` and `relax`.
 
 ###### sys::device::display::x11
 - gate `XRasterRenderer` and `XSurfaceFrame::raster_layout` with the `image` feature.

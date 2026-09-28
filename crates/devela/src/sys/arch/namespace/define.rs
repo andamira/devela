@@ -17,6 +17,7 @@
 ///   - [arm instructions](#arm-instructions)
 ///   - [AArch64 instructions](#aarch64-instructions)
 ///   - [riscv instructions](#riscv-instructions)
+///   - [AVR instructions](#avr-instructions)
 /// - Implementations that depend on: `dep_safe_arch`, (`x86` or `x86_64`)
 /// and some target feature:
 ///   - [none](#functions-not-requiring-any-target-feature).
