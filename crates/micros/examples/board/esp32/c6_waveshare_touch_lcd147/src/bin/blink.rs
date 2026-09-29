@@ -6,7 +6,7 @@
 #![no_std]
 #![no_main]
 
-use core::hint::spin_loop;
+use devela::Arch;
 use devela_micros::{BoardWaveshareC6TouchLcd147 as Board, devela};
 
 devela::set_panic_handler! { loop }
@@ -20,7 +20,7 @@ fn main() -> ! {
 
         loop {
             for _ in 0..8_000_000 {
-                spin_loop();
+                Arch::relax();
             }
             backlight.toggle();
         }

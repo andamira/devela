@@ -1,15 +1,12 @@
 //
 //! Blinks the Arduino Due built-in LED using direct SAM3X8E MMIO.
-//!
-//! The busy-wait delay is intentionally uncalibrated and depends on the
-//! active CPU clock.
 //
 // 416 bytes
 
 #![no_std]
 #![no_main]
 
-use devela::spin_loop;
+use devela::Arch;
 use devela_micros::{BoardArduinoDue as Board, devela};
 
 devela::set_panic_handler! { loop }
@@ -20,12 +17,12 @@ pub extern "C" fn main() -> ! {
 
     loop {
         for _ in 0..500_000 {
-            spin_loop();
+            Arch::relax();
         }
         unsafe { Board::LED.set_high() }
 
         for _ in 0..500_000 {
-            spin_loop();
+            Arch::relax();
         }
         unsafe { Board::LED.set_low() }
     }

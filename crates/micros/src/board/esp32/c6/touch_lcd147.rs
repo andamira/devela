@@ -101,6 +101,25 @@ impl BoardWaveshareC6TouchLcd147 {
     ///
     /// GPIO23 drives the base of the board's NPN low-side switch for `LEDK`.
     pub const LCD_BL: Esp32C6Pin = Esp32C6Pin::new(23);
+
+    /// Prepares SPI2 and the command/data control lines for the onboard LCD.
+    ///
+    /// The TF card is deselected before the shared SCK/MOSI lines are used.
+    /// The LCD reset and backlight pins remain under caller control.
+    ///
+    /// # Safety
+    /// SPI2 and the LCD/TF SPI pins must not be concurrently configured
+    /// or accessed. While the returned transport is alive, its SPI2, CS,
+    /// and D/C resources must not be accessed through another raw handle.
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn prepare_lcd_spi() -> Result<Esp32C6SpiCmdData, Timeout> {
+        unsafe {
+            Self::TF_CS.set_output_high();
+            let (spi, _actual_hz) =
+                McuEsp32C6::prepare_spi2(Self::LCD_SCK, Self::LCD_MOSI, Self::LCD_SPI_HZ)?;
+            Ok(Esp32C6SpiCmdData::new_unchecked(spi, Self::LCD_CS, Self::LCD_DC))
+        }
+    }
 }
 
 /// # Shared I²C bus
@@ -190,26 +209,4 @@ impl BoardWaveshareC6TouchLcd147 {
     ///
     /// GPIO8 is also a boot strapping pin on the ESP32-C6.
     pub const IO8: Esp32C6Pin = Esp32C6Pin::new(8);
-}
-
-/// # LCD preparation
-#[cfg(feature = "unsafe_mmio")]
-impl BoardWaveshareC6TouchLcd147 {
-    /// Prepares SPI2 and the command/data control lines for the onboard LCD.
-    ///
-    /// The TF card is deselected before the shared SCK/MOSI lines are used.
-    /// The LCD reset and backlight pins remain under caller control.
-    ///
-    /// # Safety
-    /// SPI2 and the LCD/TF SPI pins must not be concurrently configured
-    /// or accessed. While the returned transport is alive, its SPI2, CS,
-    /// and D/C resources must not be accessed through another raw handle.
-    pub unsafe fn prepare_lcd_spi() -> Result<Esp32C6SpiCmdData, Timeout> {
-        unsafe {
-            Self::TF_CS.set_output_high();
-            let (spi, _actual_hz) =
-                McuEsp32C6::prepare_spi2(Self::LCD_SCK, Self::LCD_MOSI, Self::LCD_SPI_HZ)?;
-            Ok(Esp32C6SpiCmdData::new_unchecked(spi, Self::LCD_CS, Self::LCD_DC))
-        }
-    }
 }

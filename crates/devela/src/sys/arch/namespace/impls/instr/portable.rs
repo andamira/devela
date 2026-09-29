@@ -53,8 +53,8 @@ impl Arch {
     /// Uses [`spin_loop`] where Rust currently provides an architecture-specific
     /// spin-loop hint, and falls back to [`Arch::nop`] otherwise.
     ///
-    /// This does not yield to an operating-system scheduler and does not provide
-    /// a timing guarantee.
+    /// This does not yield to an operating-system scheduler
+    /// and does not provide a timing guarantee.
     #[inline(always)]
     pub fn relax() {
         cfg_select! {
@@ -64,8 +64,9 @@ impl Arch {
                 target_arch = "aarch64",
                 target_arch = "riscv32",
                 target_arch = "riscv64",
-            ) => spin_loop(),
-
+            ) => {
+                spin_loop();
+            }
             all(
                 target_arch = "arm",
                 any(
@@ -73,8 +74,9 @@ impl Arch {
                     target_feature = "v6t2",
                     all(target_feature = "v6", target_feature = "mclass"),
                 )
-            ) => spin_loop(),
-
+            ) => {
+                spin_loop();
+            }
             _ => Arch::nop(),
         }
     }

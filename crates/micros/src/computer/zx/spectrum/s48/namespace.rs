@@ -158,6 +158,9 @@ impl ComputerSpectrum48 {
         }}
     }
     /// Clears all bitmap pixels.
+    ///
+    /// # Safety
+    /// The program must be executing with the ZX Spectrum display memory map.
     #[cfg(feature = "unsafe_mmio")]
     pub unsafe fn clear_bitmap() {
         unsafe { Self::fill_bitmap(0) };
