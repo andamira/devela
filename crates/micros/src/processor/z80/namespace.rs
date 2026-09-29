@@ -16,6 +16,17 @@ pub struct ProcessorZ80;
 
 #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
 impl ProcessorZ80 {
+    /// Halts execution until an accepted interrupt or NMI resumes the processor.
+    ///
+    /// If maskable interrupts are disabled and no NMI occurs, execution may remain
+    /// halted indefinitely.
+    #[inline(always)]
+    pub fn halt() {
+        unsafe {
+            asm!("halt", options(nostack));
+        }
+    }
+
     /// Writes one byte to a Z80 I/O port.
     ///
     /// # Safety

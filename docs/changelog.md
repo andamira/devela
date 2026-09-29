@@ -127,6 +127,7 @@
 - update `Arch`:
   - add AVR instructions.
   - add portable methods: `nop` and `relax`.
+  - support Z80.
 
 ###### sys::device::display::x11
 - gate `XRasterRenderer` and `XSurfaceFrame::raster_layout` with the `image` feature.
@@ -173,7 +174,7 @@
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.
-- add ZX Spectrum 48K example: `screen`.
+- add ZX Spectrum 48K examples: `pixel`, `screen`.
 
 ## Modules
 
@@ -183,7 +184,7 @@
 - new ESP32 boards: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 ### computer::zx::spectrum
-- new types: `ComputerSpectrum48`, `SpectrumColor`.
+- new types: `ComputerSpectrum48`, `SpectrumAttribute`, `SpectrumColor`, `SpectrumKey`, `SpectrumKeys`.
 
 #### device::display
 - new trait: `Tm1638Bus`.

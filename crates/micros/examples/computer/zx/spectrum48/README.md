@@ -11,6 +11,10 @@ Each program lives under `src/bin/`.
 ## Programs
 
 - `screen` — draws a Spectrum display test pattern and changes the ULA border color.
+- `pixel` — interactive pixel painter:
+  - `Q` / `A` — move up / down.
+  - `O` / `P` — move left / right.
+  - `SPACE` — draw the current pixel.
 
 
 ## Requirements

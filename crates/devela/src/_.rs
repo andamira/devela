@@ -56,6 +56,7 @@
             target_arch = "avr",
             target_arch = "msp430",
             target_arch = "xtensa",
+            target_arch = "z80",
             all(target_arch = "wasm32", nightly),
         )
     ),

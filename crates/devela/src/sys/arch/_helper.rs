@@ -21,3 +21,5 @@ items! { macro_rules! _ARCH {()=>{"aarch64"}} pub(crate) use _ARCH; }
 items! { macro_rules! _ARCH {()=>{"riscv32"}} pub(crate) use _ARCH; }
 #[cfg(target_arch = "riscv64")]
 items! { macro_rules! _ARCH {()=>{"riscv64"}} pub(crate) use _ARCH; }
+#[cfg(target_arch = "z80")]
+items! { macro_rules! _ARCH {()=>{"z80"}} pub(crate) use _ARCH; }

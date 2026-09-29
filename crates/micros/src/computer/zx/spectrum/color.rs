@@ -23,3 +23,22 @@ pub enum SpectrumColor {
     Yellow = 6,
     White = 7,
 }
+
+impl SpectrumColor {
+    /// Returns the Spectrum color encoded by the low 3 bits of `value`.
+    ///
+    /// Defaults to `White` for any `value` >=7.
+    #[must_use]
+    pub const fn from_u8(value: u8) -> Self {
+        match value & 0x07 {
+            0 => Self::Black,
+            1 => Self::Blue,
+            2 => Self::Red,
+            3 => Self::Magenta,
+            4 => Self::Green,
+            5 => Self::Cyan,
+            6 => Self::Yellow,
+            _ => Self::White,
+        }
+    }
+}

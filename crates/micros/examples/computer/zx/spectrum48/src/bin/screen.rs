@@ -1,6 +1,7 @@
 //
-//!
+//! Static ZX Spectrum display test pattern.
 //
+// 126 bytes tap
 
 #![no_std]
 #![no_main]
