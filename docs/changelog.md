@@ -53,8 +53,8 @@
 ## Crate
 
 ### features & flags
-- new features: `hw`, `unsafe_mmio`.
-- new nightly feature: `asm_experimental_arch`.
+- new features: `hw`, `oneof`, `unsafe_mmio`.
+- use nightly feature: `asm_experimental_arch`.
 - update nightly feature: `nightly_allocator`.
 - use the reflected unsafe cfg to reject `safe` with any `unsafe_*` capability.
 
@@ -84,6 +84,11 @@
 
 ##### data::codec::hash
 - use 32-bit state for default Fx and FNV hashing on 16-bit targets.
+
+#### data::value
+- update `OneOf`:
+  - feature-gate with `oneof`.
+  - replace `()` sentinel values with `Infallible`.
 
 #### error::kind
 - make module public.

@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 146/300 (154 remaining), 119 visible, 27 hidden
+[features] # 147/300 (153 remaining), 120 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -178,13 +178,16 @@ code = []
 code_all = ["code"]
 
 data = []
-data_all = ["data", "hash"]
+data_all = ["data", "hash", "oneof"]
 	# codec
 		hash = [] # HashFnv, HashPengy
 		# crypto = []
 		# pack = []
 			# riff = []
 	# list = []
+
+	# value = [oneof]
+		oneof = []
 
 # error = []
 # error_all = []

@@ -1,4 +1,11 @@
+//
+//!
+//
+
 crate::mods_in! {
+    #[cfg(test)]
+    mod _test;
+
     mod one; // Oneof
     // mod _wip_all; // Allof
     // mod _wip_macro_one; // oneof!

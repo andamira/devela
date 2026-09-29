@@ -18,6 +18,7 @@
 crate::mods_in! {
     mod absence; // NoData
     mod_ intro; // Introspect
+    #[cfg(feature = "oneof")]
     mod_ of; // Oneof
 
     mod_ kind; // ValueKind, ValueKind4, WIP ValueKindSet
@@ -32,13 +33,14 @@ crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::{
             absence::NoData,
-            of::_all::*,
             kind::_all::*,
             intro::_all::*,
             // profile::*,
             // schema::_all::*,
             value_::_all::*,
         };
+        #[cfg(feature = "oneof")]
+        pub use super::of::_all::*;
     }
     _pub_mods {
         #[cfg(feature = "_tuple")]

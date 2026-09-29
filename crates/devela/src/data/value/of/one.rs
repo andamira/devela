@@ -63,15 +63,14 @@ macro_rules! _data_value_impl_oneof {
         #[doc = crate::_doc_meta!{
             location("data/value", enum Oneof),
         }]
+        /// Omitted trailing variant types default to [`Infallible`][crate::Infallible],
+        /// making those variants uninhabited.
         ///
-        /// Variants are expected to be **contiguous**, meaning `()` (unit types)
-        /// should only appear at the **end**.
-        ///
-        /// The **first variant** (`A`) is considered the default,
-        /// implementing [`Default`] when `A: Default`.
+        /// The first `LEN` variants are expected to be active,
+        /// with all remaining variants set to `Infallible`.
         #[non_exhaustive]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum Oneof<const LEN: usize, $($variant = ()),+> {
+        pub enum Oneof<const LEN: usize, $($variant = $crate::Infallible),+> {
             $(
                 #[doc = "The " $nth $suf " variant."]
                 $variant($variant)
@@ -98,7 +97,7 @@ macro_rules! _data_value_impl_oneof {
     methods_general: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Structural methods.
         impl<const LEN:usize,  $($T),+ > Oneof<LEN, $($T),+> {
-            /// The number of active (non-`()` type) variants.
+            /// The number of active leading variants.
             pub const LEN: usize = {
                 assert![LEN <= Self::MAX_ARITY, "LEN must be <= MAX_ARITY"];
                 LEN
@@ -116,23 +115,23 @@ macro_rules! _data_value_impl_oneof {
                 self.variant_index() == index
             }
         }
-        impl<const LEN: usize, $($T: 'static),+ > Oneof<LEN, $($T),+> {
-            /// Validates that inactive `()` variants only appear at the end,
-            /// and that `LEN` equals the number of active variants.
+        impl<const LEN: usize, $($T: 'static),+> Oneof<LEN, $($T),+> {
+            /// Validates that the first `LEN` variants are active
+            /// and that all remaining variants are `Infallible`.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
             // WAIT const PartialEq for TypeId
             pub fn validate() -> bool {
-                let mut non_unit_count = 0;
-                let mut unit_found = false;
+                let mut active_count = 0;
+                let mut inactive_found = false;
                 $(
-                    if $crate::TypeId::of::<$T>() == $crate::TypeId::of::<()>() {
-                        unit_found = true;
+                    if $crate::TypeId::of::<$T>() == $crate::TypeId::of::<$crate::Infallible>() {
+                        inactive_found = true;
                     } else {
-                        if unit_found { return false; }
-                        non_unit_count += 1;
+                        if inactive_found { return false; }
+                        active_count += 1;
                     }
                 )+
-                LEN == non_unit_count
+                LEN == active_count
             }
         }
         /// # Conversion methods.
@@ -274,78 +273,3 @@ macro_rules! _data_value_impl_oneof {
     };
 }
 use _data_value_impl_oneof;
-
-#[cfg(test)]
-mod _test {
-    use super::Oneof;
-
-    type Bytes = Oneof<2, u8, i8>;
-    type Unums = Oneof<4, u8, u16, u32, u64>;
-
-    #[test]
-    fn validate() {
-        assert![Bytes::validate()];
-        assert![Unums::validate()];
-        assert![Oneof::<0, (), (), ()>::validate()];
-        assert![Oneof::<1, i8, (), ()>::validate()];
-        assert![!Oneof::<0, i8, (), ()>::validate()];
-        assert![!Oneof::<2, i8, (), ()>::validate()];
-        //
-        assert![!Oneof::<1, (), i8, ()>::validate()];
-        assert![!Oneof::<2, i32, (), i8>::validate()];
-        assert![!Oneof::<1, (), (), i8, ()>::validate()];
-    }
-    #[test]
-    fn map() {
-        let a: Oneof<2, i32, f64> = Oneof::_0(10);
-        assert_eq![Oneof::_0(20), a.map_0(|v| v * 2)];
-        assert_eq![Oneof::_0(10), a.map_1(|v| v * 2.0)];
-        let b: Oneof<2, i32, f64> = Oneof::_1(3.14);
-        assert_eq![Oneof::_1(3.14), b.map_0(|v| v * 2)];
-        assert_eq![Oneof::_1(6.28), b.map_1(|v| v * 2.0)];
-    }
-    #[test]
-    fn field_access() {
-        let mut u = Unums::_2(32);
-        assert_eq![u.is_2(), true];
-        assert_eq![u.into_2(), Some(32)];
-        assert_eq![u.as_ref_2(), Some(&32)];
-        assert_eq![u.as_mut_2(), Some(&mut 32)];
-        //
-        assert_eq![u.is_0(), false];
-        assert_eq![u.into_0(), None];
-        assert_eq![u.as_ref_0(), None];
-        assert_eq![u.as_mut_0(), None];
-    }
-    #[test]
-    fn positioning() {
-        let u = Unums::_2(32);
-        assert_eq![u.variant_index(), 2];
-        assert_eq![u.is_variant_index(2), true];
-        assert_eq![u.is_variant_index(3), false];
-        // assert_eq![u.variant_name(), "_2"];
-        // assert_eq![u.is_variant_name("_2"), true];
-        // assert_eq![u.is_variant_name("_1"), false];
-
-        let u = Unums::_0(32);
-        assert_eq![u.variant_index(), 0];
-        assert_eq![u.is_variant_index(0), true];
-        assert_eq![u.is_variant_index(1), false];
-        // assert_eq![u.variant_name(), "_0"];
-        // assert_eq![u.is_variant_name("_0"), true];
-        // assert_eq![u.is_variant_name("_1"), false];
-    }
-    #[test]
-    fn tuple() {
-        let u = Unums::_2(32);
-        assert_eq![
-            u.into_tuple_options(),
-            (None, None, Some(32), None, None, None, None, None, None, None, None, None)
-        ];
-        assert_eq![
-            u.as_tuple_ref_options(),
-            (None, None, Some(&32), None, None, None, None, None, None, None, None, None)
-        ];
-        assert_eq![u.into_tuple_defaults(), (0, 0, 32, 0, (), (), (), (), (), (), (), ())];
-    }
-}
