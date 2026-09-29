@@ -168,6 +168,7 @@
 - add Arduino Diecimila examples: `blink`, `usart_chat`.
 - add Arduino Mega2560 examples: `blink`, `usart_chat`.
 - add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `tm1638`, `usart_chat`.
+- add Solinius Sparrow examples: `blink`.
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.

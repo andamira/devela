@@ -66,6 +66,7 @@ impl McuAtmega1284 {
 }
 
 /// # Analog
+#[allow(missing_docs)]
 impl McuAtmega1284 {
     pub const ADC0: AvrAdcInput = AvrAdcInput::_new(0);
     pub const ADC1: AvrAdcInput = AvrAdcInput::_new(1);
