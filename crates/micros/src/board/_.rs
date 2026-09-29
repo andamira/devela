@@ -44,18 +44,15 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::sam::_all::*;
     }
     _reexports {
-        #[doc(inline)]
-        #[cfg(feature = "arduino_due")]
+        #[doc(inline)] #[cfg(feature = "arduino_due")]
         pub use super::sam::_all::BoardArduinoDue;
-        #[cfg(feature = "arduino_mega2560")]
+        #[doc(inline)] #[cfg(feature = "arduino_mega2560")]
         pub use super::avr::_all::BoardArduinoMega2560;
-        #[cfg(feature = "arduino_nano")]
+        #[doc(inline)] #[cfg(feature = "arduino_nano")]
         pub use super::avr::_all::BoardArduinoNano;
-        #[doc(inline)]
-        #[cfg(feature = "supermini_oled042")]
+        #[doc(inline)] #[cfg(feature = "supermini_oled042")]
         pub use super::esp32::_all::BoardSuperMiniOled042;
-        #[doc(inline)]
-        #[cfg(feature = "waveshare_c6_touch_lcd147")]
+        #[doc(inline)] #[cfg(feature = "waveshare_c6_touch_lcd147")]
         pub use super::esp32::_all::BoardWaveshareC6TouchLcd147;
     }
 }

@@ -176,8 +176,9 @@
 ## Modules
 
 ### board
-- new types: `BoardArduinoDiecimila`, `BoardArduinoDue`, `BoardArduinoMega2560`, `BoardArduinoNano`.
-- new types: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
+- new AVR boards: `BoardArduinoDiecimila`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSoliniusSparrow`.
+- new SAM boards: `BoardArduinoDue`.
+- new ESP32 boards: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 ### computer::zx::spectrum
 - new types: `ComputerSpectrum48`, `SpectrumColor`.
@@ -189,7 +190,7 @@
 #### mcu::avr
 - new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`.
 - new types: `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`.
-- new types: `McuAtmega168`, `McuAtmega2560`, `McuAtmega328p`.
+- new types: `McuAtmega1284`, `McuAtmega168`, `McuAtmega2560`, `McuAtmega328p`.
 
 ##### mcu::avr::timer
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.

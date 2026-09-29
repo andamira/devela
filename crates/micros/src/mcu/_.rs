@@ -48,17 +48,13 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::sam::_all::*;
     }
     _reexports {
-        #[doc(inline)]
-        #[cfg(feature = "atmega328p")]
+        #[doc(inline)] #[cfg(feature = "atmega328p")]
         pub use super::avr::McuAtmega328p;
-        #[doc(inline)]
-        #[cfg(feature = "esp32c3")]
+        #[doc(inline)] #[cfg(feature = "esp32c3")]
         pub use super::esp32::McuEsp32C3;
-        #[doc(inline)]
-        #[cfg(feature = "esp32c6")]
+        #[doc(inline)] #[cfg(feature = "esp32c6")]
         pub use super::esp32::McuEsp32C6;
-        #[doc(inline)]
-        #[cfg(feature = "sam3x8e")]
+        #[doc(inline)] #[cfg(feature = "sam3x8e")]
         pub use super::sam::McuSam3x8e;
     }
 }

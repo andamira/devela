@@ -60,6 +60,8 @@
 //
 
 crate::mods_in! {
+        #[cfg(feature = "atmega1284")]
+        mod_ atmega1284;
         #[cfg(feature = "atmega168")]
         mod_ atmega168;
         #[cfg(feature = "atmega2560")]
@@ -90,6 +92,8 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
             register::AvrReg8,
             usart::AvrUsart,
         };
+        #[cfg(feature = "atmega1284")]
+        pub use super::atmega1284::_all::*;
         #[cfg(feature = "atmega168")]
         pub use super::atmega168::_all::*;
         #[cfg(feature = "atmega2560")]
