@@ -89,6 +89,7 @@
 - update `OneOf`:
   - feature-gate with `oneof`.
   - replace `()` sentinel values with `Infallible`.
+  - update init impls to exclude the empty case.
 
 #### error::kind
 - make module public.

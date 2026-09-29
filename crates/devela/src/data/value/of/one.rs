@@ -19,23 +19,76 @@ macro_rules! _data_value_impl_oneof {
     // var_name : var_idx(0-based) + var_nth(1-based) : nth_suffix
     ($($T:ident : $idx:literal + $nth:literal : $suf:literal),* $(,)?) => {
         _data_value_impl_oneof!(define_enum: $($T:$nth:$suf),+);
-        _data_value_impl_oneof!(impl_default: $($T),+);
-        _data_value_impl_oneof!(impl_const_init: $($T),+);
+        _data_value_impl_oneof!(impl_prefixes: $($T:$idx+$nth:$suf),+);
         _data_value_impl_oneof!(methods_general: $($T:$idx+$nth:$suf),+);
         _data_value_impl_oneof!(methods_individ: $($T:$idx+$nth:$suf),+);
     };
 
-    // point of entry for implementing ConstInit
-    (impl_const_init) => {
-        _data_value_impl_oneof!(%canonical %map_ident impl_const_init:);
+    // Implements prefix-dependent functionality for every non-empty arity.
+    (impl_prefixes: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
+        _data_value_impl_oneof!(%impl_prefixes: (); $($T:$idx+$nth:$suf),+);
     };
-    // real ConstInit implementation
-    (impl_const_init: $_0:ident $(, $rest:ident)*) => {
-        impl<const LEN: usize, $_0: crate::ConstInit, $($rest),*> crate::ConstInit
-            for Oneof<LEN, $_0, $($rest),*> {
-            const INIT: Self = Oneof::$_0($_0::INIT);
+    // Adds the next variant to the active prefix and implements that arity.
+    (%impl_prefixes:
+        ($($active:ident : $active_idx:literal),*);
+        $next:ident : $idx:literal + $nth:literal : $suf:literal
+        $(, $rest:ident : $rest_idx:literal + $rest_nth:literal : $rest_suf:literal)*
+    ) => {
+        _data_value_impl_oneof!(%impl_prefix: $nth;
+            ($($active:$active_idx,)* $next:$idx);
+            ($($rest),*)
+        );
+        _data_value_impl_oneof!(%impl_prefixes:
+            ($($active:$active_idx,)* $next:$idx);
+            $($rest:$rest_idx+$rest_nth:$rest_suf),*
+        );
+    };
+    // Stops after the complete prefix.
+    (%impl_prefixes: ($($active:ident : $active_idx:literal),*);) => {};
+
+    // Implements functionality that depends on the active prefix length.
+    (%impl_prefix: $len:literal;
+        ($first:ident : $first_idx:literal $(, $T:ident : $idx:literal)*);
+        ($($inactive:ident),*)
+    ) => {
+        impl<$first: Default $(, $T)*> Default for Oneof<$len, $first $(, $T)*> {
+            fn default() -> Self { Self::_0($first::default()) }
+        }
+        impl<$first: crate::ConstInit $(, $T)*> crate::ConstInit for Oneof<$len, $first $(, $T)*> {
+            const INIT: Self = Self::_0($first::INIT);
+        }
+
+        impl<$first: Clone + Default $(, $T: Clone + Default)*> Oneof<$len, $first $(, $T)*> {
+            /// Returns a tuple with the active variant's inner value in its
+            /// corresponding position, `Default::default()` for the other
+            /// active positions, and `()` for inactive trailing positions.
+            pub fn into_tuple_defaults(self) -> (
+                $first,
+                $($T,)*
+                $(_data_value_impl_oneof!(%unit $inactive),)*
+            ) { $crate::paste! {
+                let index = self.variant_index();
+
+                (
+                    if $first_idx == index {
+                        self.clone().[<into $first>]().unwrap()
+                    } else {
+                        Default::default()
+                    },
+                    $(
+                        if $idx == index {
+                            self.clone().[<into $T>]().unwrap()
+                        } else {
+                            Default::default()
+                        },
+                    )*
+                    $(_data_value_impl_oneof!(%unit $inactive),)*
+                )
+            }}
         }
     };
+    // Expands to unit in either type or expression position.
+    (%unit $_T:ident) => { () };
 
     /* helpers */
 
@@ -77,11 +130,6 @@ macro_rules! _data_value_impl_oneof {
             ),+
         }
     }};
-    (impl_default: $_0:ident $(, $rest:ident)*) => {
-        impl<const LEN: usize, $_0: Default, $($rest),*> Default for Oneof<LEN, $_0, $($rest),*> {
-            fn default() -> Self { Oneof::$_0($_0::default()) }
-        }
-    };
     (
     // Implements:
     // - LEN
@@ -92,7 +140,6 @@ macro_rules! _data_value_impl_oneof {
     // - validate
     //
     // - into_tuple_options
-    // - into_tuple_defaults
     // - as_tuple_ref_options
     methods_general: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
         /// # Structural methods.
@@ -148,19 +195,6 @@ macro_rules! _data_value_impl_oneof {
                     }
                 ),+ )
             }}
-
-            /// Returns a tuple with the active variant's inner value in its corresponding position
-            /// and `Default::default()` for all others.
-            pub fn into_tuple_defaults(self) -> ($($T),+) where $($T: Default),+ { $crate::paste! {
-                let index = self.variant_index();
-                ( $(
-                    if $idx == index {
-                        self.clone().[<into $T>]().unwrap()
-                    } else {
-                        Default::default()
-                    }
-                ),+ )
-            }}
         }
         impl<const LEN: usize, $($T),+ > Oneof<LEN, $($T),+> {
             /// Returns a tuple with `Some(&value)` for the active variant and `None` elsewhere.
@@ -194,9 +228,9 @@ macro_rules! _data_value_impl_oneof {
     // - as_ref_*
     // - as_mut_*
     methods_field_access: $($T:ident : $idx:literal + $nth:literal : $suf:literal),+) => {
-        $( _data_value_impl_oneof! { @methods_field_access: $T : $idx + $nth : $suf} )+
+        $( _data_value_impl_oneof! { %methods_field_access: $T : $idx + $nth : $suf} )+
     };
-    (@methods_field_access: $T:ident : $idx:literal + $nth:literal : $suf:literal
+    (%methods_field_access: $T:ident : $idx:literal + $nth:literal : $suf:literal
     ) => { $crate::paste! {
         #[doc = "Returns `true` if there's a value in variant [`"
             $T "`](#variant." $T ") (The " $nth $suf ")."]
@@ -225,9 +259,9 @@ macro_rules! _data_value_impl_oneof {
     // - map_*
     methods_map: $first:ident $(, $rest:ident)*) => {
         // For the first variant, the `$before` list is empty.
-        _data_value_impl_oneof!(@methods_map: $first, (), ($($rest),*));
+        _data_value_impl_oneof!(%methods_map: $first, (), ($($rest),*));
         // Then, delegate to the helper macro with the first element as the accumulator.
-        _data_value_impl_oneof!(@methods_map_helper: ($first), ($($rest),*));
+        _data_value_impl_oneof!(%methods_map_helper: ($first), ($($rest),*));
 
         // NOTE: generates something like the following (e.g. for 6 variants):
         //
@@ -239,7 +273,7 @@ macro_rules! _data_value_impl_oneof {
         // impl_map_method!(_5, (_0, _1, _2, _3, _4), (/*$after*/));
     };
     (
-    @methods_map: $T:ident, ( $($before:ident),* ), ( $($after:ident),* )) => { $crate::paste! {
+    %methods_map: $T:ident, ( $($before:ident),* ), ( $($after:ident),* )) => { $crate::paste! {
         #[doc = "Transforms the inner value in variant`" $T
         "` using `f`, leaving other variants unchanged."]
         pub fn [<map $T>]<NEW>(self, f: impl FnOnce($T) -> NEW)
@@ -264,12 +298,12 @@ macro_rules! _data_value_impl_oneof {
         // }
     }};
     // Stop when there are no types left in the `$after` list.
-    (@methods_map_helper: ($($before:ident),*), ()) => {};
+    (%methods_map_helper: ($($before:ident),*), ()) => {};
     // Recursively take the next type as the current one.
-    (@methods_map_helper: ($($before:ident),*), ($first:ident $(, $rest:ident)*)) => {
-        _data_value_impl_oneof!(@methods_map: $first, ($($before),*), ($($rest),*));
+    (%methods_map_helper: ($($before:ident),*), ($first:ident $(, $rest:ident)*)) => {
+        _data_value_impl_oneof!(%methods_map: $first, ($($before),*), ($($rest),*));
         // Append the current type to the "before" list and continue.
-        _data_value_impl_oneof!(@methods_map_helper: ($($before,)* $first), ($($rest),*));
+        _data_value_impl_oneof!(%methods_map_helper: ($($before,)* $first), ($($rest),*));
     };
 }
 use _data_value_impl_oneof;

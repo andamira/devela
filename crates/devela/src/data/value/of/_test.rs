@@ -7,6 +7,13 @@ mod one {
     type Unums = Oneof<4, u8, u16, u32, u64>;
 
     #[test]
+    fn init() {
+        use crate::ConstInit;
+        assert_eq![Unums::default(), Unums::_0(0)];
+        const INIT: Unums = Unums::INIT;
+        assert_eq![INIT, Unums::_0(0)];
+    }
+    #[test]
     fn validate() {
         assert![Bytes::validate()];
         assert![Unums::validate()];
