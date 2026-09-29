@@ -2,6 +2,8 @@
 //! Reexported hints.
 //
 
+#[cfg(doc)]
+use crate::Arch;
 use crate::{_reexport, _tags};
 
 /* `core::hint` functions */

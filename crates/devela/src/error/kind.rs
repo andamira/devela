@@ -11,6 +11,7 @@
 //   - NotImplemented
 //   - NotSupported
 //   - InvalidValue
+//   - Timeout
 // - composite error types:
 //   - NotAvailable: NotImplemented + NotSupported
 
@@ -67,6 +68,13 @@ define_error![individual: pub struct InvalidValue;
     DOC_INVALID_VALUE = "An invalid value was received for the given type or operation.",
     self+f => write!(f, "An invalid value was received for the given type or operation."),
 ];
+
+define_error! { individual: pub struct Timeout;
+    #[derive(Default)],
+    +location: "error/kind", +test_size_of(0), +tag: _tags!(time error),
+    DOC_TIMEOUT = "The operation has exceeded the allowed execution time.",
+    self+f => write!(f, "The operation has exceeded the allowed execution time.")
+}
 
 /* composite errors */
 

@@ -94,6 +94,7 @@
 #### error::kind
 - make module public.
 - new struct: `AttemptLimitReached`.
+- move `Timeout` from `phys::time`.
 
 #### media::font
 - new types: `FontBitmapPixel`, `FontBitmapPixelIter`.

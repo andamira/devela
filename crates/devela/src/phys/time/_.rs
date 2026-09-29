@@ -16,7 +16,6 @@ crate::mods_in! {
     #[cfg(feature = "std")]
     mod error_std; // TEMP, RETHINK
 
-    mod error; // Timeout
     mod timed; // [Maybe]Timed
 
     #[cfg(feature = "time")] mod_ calendar; // Month, Weekday
@@ -36,7 +35,6 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            error::*,
             timed::*
         };
         #[cfg(feature = "time")]
