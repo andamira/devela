@@ -14,8 +14,71 @@ use crate::{is, unwrap, whilst};
 #[doc = crate::_doc_meta!{
     location("computer/zx", struct ComputerSpectrum48),
 }]
+/// # References
+///
+/// See the [Sinclair Wiki]'s *ZX Spectrum 16K/48K* overview and
+/// the [World of Spectrum] 16K/48K technical reference.
+///
+/// [Sinclair Wiki]: https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Spectrum_16K/48K
+/// [World of Spectrum]: https://worldofspectrum.org/faq/reference/48kreference.htm
 #[derive(Debug)]
 pub struct ComputerSpectrum48;
+
+/// # Timing
+///
+/// The 48K Spectrum runs its Z80A nominally at 3.5 MHz.
+///
+/// A video frame contains 312 scanlines of 224 T-states each,
+/// for 69,888 T-states per frame and an actual frame interrupt
+/// frequency of approximately 50.08 Hz.
+///
+/// The ULA generates the frame-synchronous interrupt used by many
+/// Spectrum programs for game and display timing.
+impl ComputerSpectrum48 {
+    /// Nominal Z80 clock frequency.
+    pub const CPU_HZ: u32 = 3_500_000;
+
+    /// Number of Z80 T-states in one video frame.
+    pub const FRAME_TSTATES: u32 = 69_888;
+
+    /// Number of T-states in one scanline.
+    pub const SCANLINE_TSTATES: u16 = 224;
+
+    /// Number of scanlines in one frame.
+    pub const FRAME_SCANLINES: u16 = 312;
+}
+
+/// # Memory
+///
+/// The 48K Spectrum maps 16 KiB of ROM at `0x0000..=0x3FFF`
+/// followed by 48 KiB of RAM at `0x4000..=0xFFFF`.
+///
+/// RAM at `0x4000..=0x7FFF` is *contended*: while the display is
+/// being generated, the ULA has priority for shared RAM accesses
+/// and can temporarily pause the Z80.
+///
+/// See [*Contended memory*](https://sinclair.wiki.zxnet.co.uk/wiki/Contended_memory).
+impl ComputerSpectrum48 {
+    /// Beginning of the 16 KiB ROM.
+    pub const ROM_ADDR: u16 = 0x0000;
+    /// ROM size in bytes.
+    pub const ROM_LEN: u16 = 0x4000;
+
+    /// Beginning of the 48 KiB RAM.
+    pub const RAM_ADDR: u16 = 0x4000;
+    /// RAM size in bytes.
+    pub const RAM_LEN: u16 = 0xC000;
+
+    /// Beginning of contended RAM.
+    pub const CONTENDED_RAM_ADDR: u16 = 0x4000;
+    /// Size of contended RAM.
+    pub const CONTENDED_RAM_LEN: u16 = 0x4000;
+
+    /// Beginning of uncontended RAM.
+    pub const UNCONTENDED_RAM_ADDR: u16 = 0x8000;
+    /// Size of uncontended RAM.
+    pub const UNCONTENDED_RAM_LEN: u16 = 0x8000;
+}
 
 /// # Screen
 impl ComputerSpectrum48 {
@@ -28,6 +91,9 @@ impl ComputerSpectrum48 {
     pub const SCREEN_ATTR_ADDR: u16 = 0x5800;
     /// Number of attribute bytes.
     pub const SCREEN_ATTR_LEN: u16 = 768;
+
+    /// Complete Spectrum display-memory size.
+    pub const SCREEN_LEN: u16 = Self::SCREEN_BITMAP_LEN + Self::SCREEN_ATTR_LEN;
 
     /// Screen width in pixels.
     pub const SCREEN_WIDTH: u16 = 256;
@@ -119,21 +185,6 @@ impl ComputerSpectrum48 {
         unsafe { Ptr::write_volatile(ptr, old ^ mask) };
     }
 
-    /// Changes the border color.
-    ///
-    /// This also writes zero to the MIC and EAR output bits of the ULA port.
-    ///
-    /// # Safety
-    /// The program must be executing on a ZX Spectrum-compatible machine
-    /// whose ULA responds to the conventional port.
-    #[inline(always)]
-    #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
-    pub unsafe fn set_border(color: SpectrumColor) {
-        unsafe {
-            ProcessorZ80::io_write(u16::from(Self::ULA_PORT), color as u8);
-        }
-    }
-
     /// Writes one raw byte into the Spectrum bitmap.
     ///
     /// # Safety
@@ -190,10 +241,35 @@ impl ComputerSpectrum48 {
     }
 }
 
-/// # I/O
+/// # ULA
+///
+/// The *Uncommitted Logic Array* (ULA) handles much of the machine's
+/// custom hardware: display generation, keyboard input,tape/audio I/O,
+/// border output, and the frame interrupt.
+///
+/// Its conventional I/O address has low byte `0xFE`.
+/// Reads use the high address byte to select keyboard half-rows;
+/// writes control border colour, MIC, and the beeper.
+///
+/// See [*ZX Spectrum ULA*](https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Spectrum_ULA).
 impl ComputerSpectrum48 {
     /// Low byte of the conventional ULA I/O address.
     pub const ULA_PORT: u8 = 0xFE;
+
+    /// Changes the border color.
+    ///
+    /// This also writes zero to the MIC and EAR output bits of the ULA port.
+    ///
+    /// # Safety
+    /// The program must be executing on a ZX Spectrum-compatible machine
+    /// whose ULA responds to the conventional port.
+    #[inline(always)]
+    #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+    pub unsafe fn set_border(color: SpectrumColor) {
+        unsafe {
+            ProcessorZ80::io_write(u16::from(Self::ULA_PORT), color as u8);
+        }
+    }
 }
 
 /// # Keyboard
@@ -228,3 +304,9 @@ impl ComputerSpectrum48 {
         SpectrumKeys::new(rows)
     }
 }
+
+/// # Audio
+impl ComputerSpectrum48 {}
+
+/// # Tape
+impl ComputerSpectrum48 {}
