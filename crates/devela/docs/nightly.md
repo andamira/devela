@@ -39,6 +39,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
 
 - 1.99: ` `[abi_custom](https://github.com/rust-lang/rust/pull/158504)
+- 1.99: ` `[add profile debug](https://github.com/rust-lang/cargo/pull/17214)
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.99: `a`[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
@@ -81,7 +82,9 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
 
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
+- 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
+- 1.101: `a`[vec_try_remove](https://github.com/rust-lang/rust/pull/163459)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -91,6 +94,7 @@ See also
 - 1.??: `a`[allocator_ext](https://github.com/rust-lang/rust/issues/163177) from:allocator_api
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
+- 1.??: `c`[arc_is_unique](https://github.com/rust-lang/rust/pull/163458)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
@@ -104,7 +108,6 @@ See also
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
-- 1.??: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
@@ -141,6 +144,7 @@ See also
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
+- 1.??: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
 
 # … may be stable even later
 
