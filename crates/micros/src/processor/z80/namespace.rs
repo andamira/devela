@@ -59,8 +59,7 @@ impl ProcessorZ80 {
     }
     /// Enables maskable interrupts.
     ///
-    /// The Z80 accepts maskable interrupts only after the instruction
-    /// following `EI` has executed.
+    /// The Z80 accepts maskable interrupts only after the instruction following `EI` has executed.
     ///
     /// # Safety
     /// The active machine must have a valid interrupt configuration and handler.

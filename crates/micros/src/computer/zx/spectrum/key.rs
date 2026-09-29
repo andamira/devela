@@ -114,17 +114,22 @@ impl SpectrumKeys {
 
     /// Returns whether `key` is pressed.
     #[must_use]
-    pub const fn is_pressed(self, key: SpectrumKey) -> bool {
+    #[inline(always)]
+    pub const fn is_pressed(&self, key: SpectrumKey) -> bool {
         self.0[key.half_row() as usize] & key.mask() != 0
     }
     /// Returns whether `key` became pressed since `previous`.
     #[must_use]
-    pub const fn just_pressed(self, previous: Self, key: SpectrumKey) -> bool {
-        self.is_pressed(key) && !previous.is_pressed(key)
+    #[inline(always)]
+    pub const fn just_pressed(&self, previous: &Self, key: SpectrumKey) -> bool {
+        let (row, mask) = (key.half_row() as usize, key.mask());
+        self.0[row] & !previous.0[row] & mask != 0
     }
     /// Returns whether `key` became released since `previous`.
     #[must_use]
-    pub const fn just_released(self, previous: Self, key: SpectrumKey) -> bool {
-        !self.is_pressed(key) && previous.is_pressed(key)
+    #[inline(always)]
+    pub const fn just_released(&self, previous: &Self, key: SpectrumKey) -> bool {
+        let (row, mask) = (key.half_row() as usize, key.mask());
+        previous.0[row] & !self.0[row] & mask != 0
     }
 }

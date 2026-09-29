@@ -19,7 +19,7 @@ devela_micros = {
 panic = "immediate-abort"
 
 [profile.release]
-opt-level = "s"
+opt-level = "z" # s, z
 lto = true
 codegen-units = 1
 panic = "immediate-abort"

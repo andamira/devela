@@ -3,7 +3,7 @@
 //
 
 #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
-use crate::{ProcessorZ80, SpectrumColor, SpectrumKey, SpectrumKeys};
+use crate::{ProcessorZ80, SpectrumColor, SpectrumKey, SpectrumKeys, SpectrumUlaOut};
 #[cfg(feature = "unsafe_mmio")]
 use crate::{Ptr, SpectrumAttribute};
 #[allow(unused_imports)]
@@ -243,22 +243,34 @@ impl ComputerSpectrum48 {
 
 /// # ULA
 ///
-/// The *Uncommitted Logic Array* (ULA) handles much of the machine's
-/// custom hardware: display generation, keyboard input,tape/audio I/O,
-/// border output, and the frame interrupt.
+/// The [Uncommitted Logic Array][ula] handles display generation,
+/// keyboard and tape I/O, border colour, beeper output
+/// and the frame-synchronous interrupt.
 ///
 /// Its conventional I/O address has low byte `0xFE`.
 /// Reads use the high address byte to select keyboard half-rows;
 /// writes control border colour, MIC, and the beeper.
 ///
-/// See [*ZX Spectrum ULA*](https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Spectrum_ULA).
+/// [ula]: https://sinclair.wiki.zxnet.co.uk/wiki/ZX_Spectrum_ULA
 impl ComputerSpectrum48 {
     /// Low byte of the conventional ULA I/O address.
     pub const ULA_PORT: u8 = 0xFE;
 
-    /// Changes the border color.
+    /// Writes the output state of the ULA.
     ///
-    /// This also writes zero to the MIC and EAR output bits of the ULA port.
+    /// # Safety
+    /// The program must be executing on a compatible ZX Spectrum machine.
+    #[inline(always)]
+    #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+    pub unsafe fn write_ula(output: SpectrumUlaOut) {
+        unsafe {
+            ProcessorZ80::io_write(u16::from(Self::ULA_PORT), output.to_u8());
+        }
+    }
+
+    /// Changes the border colour, clearing MIC and EAR output.
+    ///
+    /// For persistent audio state, prefer [`Self::write_ula`] with [`SpectrumUlaOut`].
     ///
     /// # Safety
     /// The program must be executing on a ZX Spectrum-compatible machine

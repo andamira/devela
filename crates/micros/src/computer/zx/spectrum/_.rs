@@ -6,6 +6,7 @@ crate::mods_in! {
     mod attribute;
     mod color;
     mod key;
+    mod ula;
 
     // #[cfg_attr(not(nightly_doc), cfg(feature = "spectrum16"))]
     // mod_ s16;
@@ -22,6 +23,7 @@ crate::mods_out! { // _mods
             attribute::SpectrumAttribute,
             color::SpectrumColor,
             key::{SpectrumKey, SpectrumKeys},
+            ula::SpectrumUlaOut,
         };
         // #[cfg_attr(not(nightly_doc), cfg(feature = "spectrum16"))]
         // pub use super::s16::_all::*;
