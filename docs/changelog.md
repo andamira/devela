@@ -174,7 +174,7 @@
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
 - add minimal ESP32-S3 bring-up example.
-- add ZX Spectrum 48K examples: `pixel`, `screen`.
+- add ZX Spectrum 48K examples: `paint`, `screen`.
 
 ## Modules
 

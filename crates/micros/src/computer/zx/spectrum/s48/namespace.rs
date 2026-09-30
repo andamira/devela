@@ -217,6 +217,17 @@ impl ComputerSpectrum48 {
         unsafe { Self::fill_bitmap(0) };
     }
 
+    /// Reads one raw display attribute.
+    ///
+    /// # Safety
+    /// `offset` must be smaller than [`Self::SCREEN_ATTR_LEN`], and the
+    /// program must be executing with the ZX Spectrum display memory map.
+    #[inline(always)]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn read_attribute(offset: u16) -> u8 {
+        let addr = (Self::SCREEN_ATTR_ADDR + offset) as usize;
+        unsafe { Ptr::read_volatile(Ptr::without_provenance(addr)) }
+    }
     /// Writes one raw display attribute.
     ///
     /// # Safety
