@@ -14,6 +14,7 @@
 /// - installs a looping panic handler;
 /// - exports the program entry point without name mangling;
 /// - places it in the `.text._start` linker section.
+/// - initializes zeroed static storage (`.bss`);
 ///
 /// The program body may return.
 /// With the current Spectrum loader arrangement,
@@ -39,6 +40,24 @@ macro_rules! spectrum_main· {
         #[unsafe(no_mangle)]
         #[unsafe(link_section = ".text._start")]
         pub extern "C" fn start() {
+            // LLVM-Z80 prefixes external symbols with `_`,
+            // so these bind to linker symbols `__bss_start` and `__bss_end`.
+            unsafe extern "C" {
+                static mut _bss_start: u8;
+                static mut _bss_end: u8;
+            }
+
+            let mut addr = unsafe { (&raw mut _bss_start) as usize };
+            let end = unsafe { (&raw mut _bss_end) as usize };
+
+            while addr < end {
+                unsafe {
+                    $crate::devela::Ptr::write_volatile(
+                        $crate::devela::Ptr::without_provenance_mut::<u8>(addr), 0);
+                }
+                addr += 1;
+            }
+
             $($body)*
         }
     };
