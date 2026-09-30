@@ -184,6 +184,7 @@
 - new ESP32 boards: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 ### computer::zx::spectrum
+- new macro: `spectrum_main!`.
 - new types: `ComputerSpectrum48`, `SpectrumAttribute`, `SpectrumColor`, `SpectrumKey`, `SpectrumKeys`, `SpectrumUlaOut`.
 
 #### device::display

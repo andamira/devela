@@ -6,13 +6,9 @@
 #![no_std]
 #![no_main]
 
-use devela_micros::{ComputerSpectrum48 as Spectrum, SpectrumColor, devela};
+use devela_micros::{ComputerSpectrum48 as Spectrum, SpectrumColor, devela, spectrum_main};
 
-devela::set_panic_handler! { loop }
-
-#[unsafe(no_mangle)]
-#[unsafe(link_section = ".text._start")]
-pub extern "C" fn start() {
+spectrum_main! {
     unsafe { Spectrum::set_border(SpectrumColor::Blue) };
 
     // Fine vertical stripes.

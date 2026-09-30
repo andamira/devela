@@ -185,6 +185,30 @@ impl ComputerSpectrum48 {
         unsafe { Ptr::write_volatile(ptr, old ^ mask) };
     }
 
+    /// Reads one raw byte from the Spectrum bitmap.
+    ///
+    /// # Safety
+    /// `offset` must be smaller than [`Self::SCREEN_BITMAP_LEN`], and the
+    /// program must be executing with the ZX Spectrum display memory map.
+    #[inline(always)]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn read_bitmap(offset: u16) -> u8 {
+        let addr = (Self::SCREEN_BITMAP_ADDR + offset) as usize;
+        unsafe { Ptr::read_volatile(Ptr::without_provenance(addr)) }
+    }
+    /// Reads one bitmap byte at byte-column `x_byte` and pixel row `y`.
+    ///
+    /// Returns `None` outside the bitmap.
+    ///
+    /// # Safety
+    /// The program must be executing with the ZX Spectrum display memory map.
+    #[inline(always)]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn read_bitmap_byte(x_byte: u8, y: u8) -> Option<u8> {
+        let offset = unwrap![some? Self::bitmap_offset(x_byte, y)];
+        Some(unsafe { Self::read_bitmap(offset) })
+    }
+
     /// Writes one raw byte into the Spectrum bitmap.
     ///
     /// # Safety
@@ -196,6 +220,19 @@ impl ComputerSpectrum48 {
         let addr = (Self::SCREEN_BITMAP_ADDR + offset) as usize;
         unsafe {
             Ptr::write_volatile(Ptr::without_provenance_mut(addr), value);
+        }
+    }
+    /// Writes one bitmap byte at byte-column `x_byte` and pixel row `y`.
+    ///
+    /// Coordinates outside the bitmap are ignored.
+    ///
+    /// # Safety
+    /// The program must be executing with the ZX Spectrum display memory map.
+    #[inline(always)]
+    #[cfg(feature = "unsafe_mmio")]
+    pub unsafe fn write_bitmap_byte(x_byte: u8, y: u8, value: u8) {
+        if let Some(offset) = Self::bitmap_offset(x_byte, y) {
+            unsafe { Self::write_bitmap(offset, value) };
         }
     }
     /// Fills the complete bitmap area with `value`.
