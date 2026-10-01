@@ -30,11 +30,9 @@ use crate::{Esp32S3Pin, EspUsbSerialJtag, McuEsp32S3};
 ///
 /// See also:
 ///
-/// - [LILYGO T-Display-S3 documentation]
-/// - [LILYGO T-Display-S3 repository]
-///
-/// [LILYGO T-Display-S3 documentation]: https://wiki.lilygo.cc/products/t-display-series/t-display-s3/
-/// [LILYGO T-Display-S3 repository]: https://github.com/Xinyuan-LilyGO/T-Display-S3
+/// - [LILYGO T-Display-S3 product](https://lilygo.cc/products/t-display-s3)
+/// - [LILYGO T-Display-S3 documentation](https://wiki.lilygo.cc/products/t-display-series/t-display-s3/)
+/// - [LILYGO T-Display-S3 repository](https://github.com/Xinyuan-LilyGO/T-Display-S3)
 #[derive(Debug)]
 pub struct BoardLilygoTDisplayS3;
 

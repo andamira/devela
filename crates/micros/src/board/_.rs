@@ -11,19 +11,40 @@
 //!
 //! # Boards
 //!
-//! | Board                              | MCU           |       Clock | Onboard I/O       | Display      | Host / serial          |
-//! | ---------------------------------- | ------------- | ----------: | ----------------- | ------------ | ---------------------- |
-//! | `BoardArduinoDiecimila`            | McuAtmega168  |      16 MHz | D13 LED           | —            | USB–UART               |
-//! | `BoardArduinoDue`                  | McuSam3x8e    |      84 MHz | D13/L LED         | —            | USB–UART, native USB   |
-//! | `BoardArduinoMega2560`             | McuAtmega2560 |      16 MHz | D13 LED           | —            | USB–UART, USART1–3     |
-//! | `BoardArduinoNano`                 | McuAtmega328p |      16 MHz | D13 LED           | —            | USB–UART               |
-//! | `BoardSuperMiniOled042`            | McuEsp32C3    | 40 MHz XTAL | GPIO8 LED         | 72×40 OLED   | USB Serial/JTAG, UART0 |
-//! | `BoardWaveshareC6TouchLcd147`      | McuEsp32C6    | 40 MHz XTAL | ◇Touch, ◇IMU, ◇TF | ◇172×320 LCD | ◇USB, ◇UART0           |
+//! | Board                       | MCU            | MHz | Display      | Host / serial          | Onboard I/O       |
+//! | --------------------------- | -------------- | --: | ------------ | ---------------------- | ----------------- |
+//! | [`Arduino Diecimila`]       | [`ATmega168`]  |  16 | —            | USB–UART               | D13 LED           |
+//! | [`Arduino Due`]             | [`SAM3X8E`]    |  84 | —            | USB–UART, native USB   | D13/L LED         |
+//! | [`Arduino Mega 2560`]       | [`ATmega2560`] |  16 | —            | USB–UART, USART1–3     | D13 LED           |
+//! | [`Arduino Nano`]            | [`ATmega328p`] |  16 | —            | USB–UART               | D13 LED           |
+//! | [`Lilygo T-Deck`]           | [`ESP32-S3`]   | 240 | 320×240 LCD  | ◇USB Serial/JTAG       | ◇keyboard, ◇trackball, ◇touch, ◇TF |
+//! | [`Lilygo T-Display-S3`]     | [`ESP32-S3`]   | 240 | 170×320 LCD  | USB Serial/JTAG        | buttons           |
+//! | [`ESP32-C3-OLED-0.42`]      | [`ESP32-C3`]   | 160 | [72×40 OLED] | USB Serial/JTAG, UART0 | GPIO8 LED         |
+//! | [`ESP32-C6-Touch-LCD-1.47`] | [`ESP32-C6`]   | 160 | 172×320 LCD  | ◇USB, ◇UART0           | ◇Touch, ◇IMU, ◇TF |
 //!
 //! ```txt
 //! ◇  hardware capability not yet exposed by devela
 //! —  not present / not applicable
 //! ```
+//!
+//! [`Arduino Diecimila`]: crate::BoardArduinoDiecimila
+//! [`Arduino Due`]: crate::BoardArduinoDue
+//! [`Arduino Mega 2560`]: crate::BoardArduinoMega2560
+//! [`Arduino Nano`]: crate::BoardArduinoNano
+//! [`Lilygo T-Deck`]: crate::BoardLilygoTDeckS3
+//! [`Lilygo T-Display-S3`]: crate::BoardLilygoTDisplayS3
+//! [`ESP32-C3-OLED-0.42`]: crate::BoardSuperMiniOled042
+//! [`ESP32-C6-Touch-LCD-1.47`]: crate::BoardWaveshareC6TouchLcd147
+//!
+//! [`ATmega168`]: crate::McuAtmega168
+//! [`ATmega2560`]: crate::McuAtmega2560
+//! [`ATmega328p`]: crate::McuAtmega328p
+//! [`ESP32-C3`]: crate::McuEsp32C3
+//! [`ESP32-C6`]: crate::McuEsp32C6
+//! [`ESP32-S3`]: crate::McuEsp32S3
+//! [`SAM3X8E`]: crate::McuSam3x8e
+//!
+//! [72×40 OLED]: crate::Ssd13xx#associatedconstant.OLED_72X40
 //
 
 crate::mods_in! {
@@ -50,6 +71,10 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::avr::_all::BoardArduinoMega2560;
         #[doc(inline)] #[cfg(feature = "arduino_nano")]
         pub use super::avr::_all::BoardArduinoNano;
+        #[doc(inline)] #[cfg(feature = "lilygo_t_deck_s3")]
+        pub use super::esp32::_all::BoardLilygoTDeckS3;
+        #[doc(inline)] #[cfg(feature = "lilygo_t_display_s3")]
+        pub use super::esp32::_all::BoardLilygoTDisplayS3;
         #[doc(inline)] #[cfg(feature = "supermini_oled042")]
         pub use super::esp32::_all::BoardSuperMiniOled042;
         #[doc(inline)] #[cfg(feature = "waveshare_c6_touch_lcd147")]

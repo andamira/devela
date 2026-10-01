@@ -23,6 +23,8 @@ crate::mods_out! { // _mods, _reexports
         pub use super::s3::_all::*;
     }
     _reexports {
+        #[cfg(feature = "lilygo_t_deck_s3")]
+        pub use super::s3::_all::BoardLilygoTDeckS3;
         #[cfg(feature = "lilygo_t_display_s3")]
         pub use super::s3::_all::BoardLilygoTDisplayS3;
         #[cfg(feature = "supermini_oled042")]

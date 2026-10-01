@@ -1,0 +1,29 @@
+[workspace]
+
+[package]
+name = "board_lilygo_t_deck_s3"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+xtensa-lx-rt = "=0.23.0"
+
+[dependencies.devela_micros]
+path = "../../../.."
+default-features = false
+features = [
+	"lilygo_t_deck_s3",
+	"unsafe_mmio",
+	"unsafe_hint",
+]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+panic = "abort"
+
