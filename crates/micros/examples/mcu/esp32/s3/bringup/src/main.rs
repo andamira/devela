@@ -1,11 +1,9 @@
 #![no_std]
 #![no_main]
 
-use devela::{EspUsbSerialJtag, set_panic_handler};
-use devela_micros::devela;
+use devela::{Arch, set_panic_handler};
+use devela_micros::{McuEsp32S3 as Mcu, devela};
 use xtensa_lx_rt::entry;
-
-const USB_SERIAL: EspUsbSerialJtag = EspUsbSerialJtag::new(0x6003_8000);
 
 set_panic_handler! { loop }
 
@@ -14,12 +12,12 @@ fn main() -> ! {
     unsafe {
         // Flashing and console access use the same USB connection.
         // Wait until we know the host has re-opened the endpoint.
-        while !USB_SERIAL.rx_ready() {}
-
-        USB_SERIAL.write_bytes_blocking(b"hello from devela on esp32-s3\r\n");
+        while !Mcu::USB_SERIAL_JTAG.rx_ready() {}
+        Mcu::USB_SERIAL_JTAG.write_bytes_blocking(b"hello from devela on esp32-s3\r\n");
     }
-
-    loop {}
+    loop {
+        Arch::relax();
+    }
 }
 
 #[unsafe(no_mangle)]

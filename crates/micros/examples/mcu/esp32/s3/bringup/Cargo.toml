@@ -12,7 +12,11 @@ xtensa-lx-rt = "=0.23.0"
 [dependencies.devela_micros]
 path = "../../../../.."
 default-features = false
-features = ["esp32s3", "unsafe_mmio"]
+features = [
+	"esp32s3",
+	"unsafe_mmio",
+	"unsafe_hint",
+]
 
 [profile.release]
 opt-level = "s"

@@ -204,10 +204,12 @@
 - new types:
   - `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3SystemTimer`, `Esp32C3Uart`.
   - `Esp32C6Pin`, `Esp32C6SpiCmdData`.
+  - `Esp32S3Pin`.
   - `EspI2c`, `EspReg32`, `EspSpi`, `EspUsbSerialJtag`.
-  - `McuEsp32C3`, `McuEsp32C6`.
+  - `McuEsp32C3`, `McuEsp32C6`, `McuEsp32S3`.
 - add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
 - add ESP32-C6 direct-boot startup and linker support, including boot-watchdog handoff and GPIO pad routing.
+- add ESP32-S3 linker support and low-level GPIO and USB Serial/JTAG access.
 
 #### mcu::sam
 - new types: `McuSam3x8e`, `SamPin`, `SamPort`, `SamReg32`.
