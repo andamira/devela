@@ -24,19 +24,19 @@ default-members = ["crates/devela"]
 
 members = [ # In sync with crates/devela/build/environment.rs
 	# core
-    "crates/devela",         # main integrated library
-    "crates/devela/macros",  # required internal proc-macro support
+	"crates/devela",         # main integrated library
+	"crates/devela/macros",  # required internal proc-macro support
 
 	# downstream ecosystem
-    "crates/bridge",         # FFI and ABI bridges
-    # "crates/extend",       # ecosystem extensions and adapters TODO
-    "crates/micros",         # MCU, board, and embedded hardware
+	"crates/bridge",         # FFI and ABI bridges
+	# "crates/extend",       # ecosystem extensions and adapters TODO
+	"crates/micros",         # MCU, board, and embedded hardware
 
-    # "build/post",          # post-build processing
+	# "build/post",          # post-build processing
 
-    # incubators: opt-in individually
-    # "progs/…",
-    # "games/…",
+	# incubators: opt-in individually
+	# "progs/…",
+	# "games/…",
 ]
 exclude = [
 	"crates/sentry",         # public-API and behavior validation
@@ -368,8 +368,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(run··)',
 	# sys: (2)
 	'cfg(sys··, mem··)',
-    # text: (1)
-    'cfg(text··)',
+	# text: (1)
+	'cfg(text··)',
 	# ui: (1)
 	'cfg(ui··)',
 	# vita: (1)

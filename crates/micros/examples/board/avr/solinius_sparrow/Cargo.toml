@@ -10,8 +10,8 @@ publish = false
 path = "../../../../"
 default-features = false
 features = [
-    "solinius_sparrow",
-    "unsafe_hint", "unsafe_mmio",
+	"solinius_sparrow",
+	"unsafe_hint", "unsafe_mmio",
 ]
 
 [profile.release]

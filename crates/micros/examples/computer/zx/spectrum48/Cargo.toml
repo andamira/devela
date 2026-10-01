@@ -10,9 +10,9 @@ publish = false
 
 [dependencies]
 devela_micros = {
-    path = "../../../../",
+	path = "../../../../",
 	features = ["spectrum48", "unsafe_hint", "unsafe_mmio"],
-    default-features = false,
+	default-features = false,
 }
 
 [profile.dev]

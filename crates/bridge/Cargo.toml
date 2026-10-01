@@ -43,14 +43,14 @@ include = [
 no-default-features = true
 features = ["_docs", "__publish"]
 rustc-args = [
-    "--cfg", "nightly_doc",
-    "--cfg", "nightly",
+	"--cfg", "nightly_doc",
+	"--cfg", "nightly",
 ]
 rustdoc-args = [
-    "--cfg", "nightly_doc",
-    "--cfg", "nightly",
-    "--generate-link-to-definition",
-    "--html-in-header", "./src/_doc/header.html",
+	"--cfg", "nightly_doc",
+	"--cfg", "nightly",
+	"--generate-link-to-definition",
+	"--html-in-header", "./src/_doc/header.html",
 ]
 
 
