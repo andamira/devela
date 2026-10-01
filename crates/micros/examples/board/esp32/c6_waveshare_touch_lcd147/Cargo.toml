@@ -10,8 +10,9 @@ publish = false
 path = "../../../.."
 default-features = false
 features = [
-    "waveshare_c6_touch_lcd147",
-    "unsafe_mmio",
+	"waveshare_c6_touch_lcd147",
+	"unsafe_mmio",
+	"unsafe_hint", # Arch::relax()
 ]
 
 [profile.release]

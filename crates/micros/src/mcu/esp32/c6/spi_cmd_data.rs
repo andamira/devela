@@ -2,7 +2,7 @@
 //! Defines [`Esp32C6SpiCmdData`].
 //
 
-use crate::{CmdDataWrite, Esp32C6Pin, EspSpi, Timeout, is};
+use crate::{CmdDataWrite, Esp32C6Pin, EspSpi, SpiBusWrite, SpiController, Timeout, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// ESP32-C6 SPI command/data transport with GPIO-controlled CS and D/C.
@@ -17,7 +17,7 @@ use crate::{CmdDataWrite, Esp32C6Pin, EspSpi, Timeout, is};
 /// when it is constructed.
 #[derive(Debug)]
 pub struct Esp32C6SpiCmdData {
-    spi: EspSpi,
+    spi: SpiController<EspSpi>,
     cs: Esp32C6Pin,
     dc: Esp32C6Pin,
 }
@@ -33,7 +33,11 @@ impl Esp32C6SpiCmdData {
     /// pins. The same hardware resources must not be accessed through another
     /// handle while this value is alive.
     #[must_use]
-    pub unsafe fn new_unchecked(spi: EspSpi, cs: Esp32C6Pin, dc: Esp32C6Pin) -> Self {
+    pub unsafe fn new_unchecked(
+        spi: SpiController<EspSpi>,
+        cs: Esp32C6Pin,
+        dc: Esp32C6Pin,
+    ) -> Self {
         unsafe {
             cs.set_output_high();
             dc.set_output_low();
@@ -61,7 +65,7 @@ impl Esp32C6SpiCmdData {
             let mut remaining = count;
             while remaining != 0 {
                 let pixels = remaining.min(buffer.len() / 2);
-                if let Err(error) = self.spi.write_blocking(&buffer[..pixels * 2]) {
+                if let Err(error) = self.spi.write(&buffer[..pixels * 2]) {
                     self.cs.set_high();
                     return Err(error);
                 }
@@ -76,7 +80,7 @@ impl Esp32C6SpiCmdData {
         unsafe {
             is! { data, self.dc.set_high(), self.dc.set_low() }
             self.cs.set_low();
-            let result = self.spi.write_blocking(bytes);
+            let result = self.spi.write(bytes);
             self.cs.set_high();
             result
         }

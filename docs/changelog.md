@@ -136,9 +136,9 @@
 - make module public.
 - new trait: `CmdDataWrite`.
 
-###### sys::hw::pin::i2c
-- new traits: `I2cBusWrite`, `I2cControl`.
-- new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`.
+###### sys::hw::pin
+- new traits: `I2cBusWrite`, `I2cControl`, `SpiBusWrite`, `SpiControl`.
+- new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`, `SpiController`.
 
 #### sys::mem
 - make `Ptr` provenance-related methods const:

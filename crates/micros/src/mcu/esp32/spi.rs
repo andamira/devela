@@ -4,7 +4,7 @@
 
 use crate::EspReg32;
 #[cfg(feature = "unsafe_mmio")]
-use crate::{Timeout, is};
+use crate::{SpiControl, Timeout, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// An Espressif general-purpose SPI controller.
@@ -19,6 +19,15 @@ use crate::{Timeout, is};
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct EspSpi(u32);
+
+#[cfg(feature = "unsafe_mmio")]
+unsafe impl SpiControl for EspSpi {
+    type Error = Timeout;
+
+    unsafe fn write_unchecked(&mut self, bytes: &[u8]) -> Result<(), Self::Error> {
+        unsafe { (*self).write_blocking(bytes) }
+    }
+}
 
 #[rustfmt::skip]
 impl EspSpi {

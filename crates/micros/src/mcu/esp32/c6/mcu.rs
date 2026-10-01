@@ -11,7 +11,8 @@
 // - impl Private registers
 
 #[cfg(feature = "unsafe_mmio")]
-use crate::{Esp32C6Pin, Timeout};
+use crate::{Esp32C6Pin, SpiController, Timeout};
+
 use crate::{EspReg32, EspSpi};
 
 #[doc = crate::_tags!(hw namespace)]
@@ -157,7 +158,7 @@ impl McuEsp32C6 {
         sck: Esp32C6Pin,
         mosi: Esp32C6Pin,
         bus_hz: u32,
-    ) -> Result<(EspSpi, u32), Timeout> {
+    ) -> Result<(SpiController<EspSpi>, u32), Timeout> {
         const PCR_BASE: u32 = 0x6009_6000;
         const SPI2_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0xc0);
         const SPI2_CLKM_CONF: EspReg32 = EspReg32::new(PCR_BASE + 0xc4);
@@ -188,7 +189,7 @@ impl McuEsp32C6 {
 
             let spi = Self::SPI2;
             let actual_hz = spi.configure_master_mode0(Self::XTAL_HZ, bus_hz)?;
-            Ok((spi, actual_hz))
+            Ok((SpiController::new_unchecked(spi), actual_hz))
         }
     }
 }
