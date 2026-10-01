@@ -1,5 +1,5 @@
 
-# Lilygo T-DecDeck examples
+# Lilygo T-Deck examples
 
 Minimal bare-metal examples for the ESP32-S3 using the Espressif Rust toolchain and `xtensa-lx-rt`.
 

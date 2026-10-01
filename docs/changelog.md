@@ -173,15 +173,15 @@
 - add Solinius Sparrow examples: `blink`.
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
-- add LILYGO T-Display-S3 examples: `blink`.
 - add LILYGO T-Deck examples: `blink`.
+- add LILYGO T-Display-S3 examples: `blink`.
 - add ZX Spectrum 48K examples: `paint`, `screen`.
 
 ## Modules
 
 ### board
 - new AVR boards: `BoardArduinoDiecimila`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSoliniusSparrow`.
-- new ESP32 boards: `BoardLilygoTDeckS3`, `BoardLilygoTDisplayS3`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
+- new ESP32 boards: `BoardLilygoTDeckS3`, `BoardLilygoTDisplayS3`, `BoardLilygoTWatchS3`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 - new SAM boards: `BoardArduinoDue`.
 
 ### computer::zx::spectrum

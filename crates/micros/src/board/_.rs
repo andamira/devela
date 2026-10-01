@@ -19,6 +19,7 @@
 //! | [`Arduino Nano`]            | [`ATmega328p`] |  16 | —            | USB–UART               | D13 LED           |
 //! | [`Lilygo T-Deck`]           | [`ESP32-S3`]   | 240 | 320×240 LCD  | ◇USB Serial/JTAG       | ◇keyboard, ◇trackball, ◇touch, ◇TF |
 //! | [`Lilygo T-Display-S3`]     | [`ESP32-S3`]   | 240 | 170×320 LCD  | USB Serial/JTAG        | buttons           |
+//! | [`Lilygo T-Watch-S3`]       | [`ESP32-S3`]   | 240 | 240×240 LCD  | USB Serial/JTAG        | ◇touch, ◇accel, ◇audio, ◇LoRa |
 //! | [`ESP32-C3-OLED-0.42`]      | [`ESP32-C3`]   | 160 | [72×40 OLED] | USB Serial/JTAG, UART0 | GPIO8 LED         |
 //! | [`ESP32-C6-Touch-LCD-1.47`] | [`ESP32-C6`]   | 160 | 172×320 LCD  | ◇USB, ◇UART0           | ◇Touch, ◇IMU, ◇TF |
 //!
@@ -33,6 +34,7 @@
 //! [`Arduino Nano`]: crate::BoardArduinoNano
 //! [`Lilygo T-Deck`]: crate::BoardLilygoTDeckS3
 //! [`Lilygo T-Display-S3`]: crate::BoardLilygoTDisplayS3
+//! [`Lilygo T-Watch-S3`]: crate::BoardLilygoTWatchS3
 //! [`ESP32-C3-OLED-0.42`]: crate::BoardSuperMiniOled042
 //! [`ESP32-C6-Touch-LCD-1.47`]: crate::BoardWaveshareC6TouchLcd147
 //!
@@ -75,6 +77,8 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::esp32::_all::BoardLilygoTDeckS3;
         #[doc(inline)] #[cfg(feature = "lilygo_t_display_s3")]
         pub use super::esp32::_all::BoardLilygoTDisplayS3;
+        #[doc(inline)] #[cfg(feature = "lilygo_t_watch_s3")]
+        pub use super::esp32::_all::BoardLilygoTWatchS3;
         #[doc(inline)] #[cfg(feature = "supermini_oled042")]
         pub use super::esp32::_all::BoardSuperMiniOled042;
         #[doc(inline)] #[cfg(feature = "waveshare_c6_touch_lcd147")]

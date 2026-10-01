@@ -27,6 +27,8 @@ crate::mods_out! { // _mods, _reexports
         pub use super::s3::_all::BoardLilygoTDeckS3;
         #[cfg(feature = "lilygo_t_display_s3")]
         pub use super::s3::_all::BoardLilygoTDisplayS3;
+        #[cfg(feature = "lilygo_t_watch_s3")]
+        pub use super::s3::_all::BoardLilygoTWatchS3;
         #[cfg(feature = "supermini_oled042")]
         pub use super::c3::_all::BoardSuperMiniOled042;
         #[cfg(feature = "waveshare_c6_touch_lcd147")]
