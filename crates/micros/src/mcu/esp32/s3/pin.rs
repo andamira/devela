@@ -50,6 +50,28 @@ impl Esp32S3Pin {
     pub const fn mask(self) -> u32 { 1u32 << (self.0 & 31) }
 }
 
+/* private pin-routing registers */
+
+#[allow(dead_code, reason = "safe helpers used by unsafe-gated code")]
+impl Esp32S3Pin {
+    const IO_MUX_GPIO0: u32 = 0x6000_9004;
+    const GPIO_PIN0: u32 = McuEsp32S3::GPIO_BASE + 0x74;
+    const GPIO_FUNC0_OUT: u32 = McuEsp32S3::GPIO_BASE + 0x554;
+
+    #[must_use]
+    const fn io_mux_reg(self) -> EspReg32 {
+        EspReg32::new(Self::IO_MUX_GPIO0 + self.0 as u32 * 4)
+    }
+    #[must_use]
+    const fn pin_config_reg(self) -> EspReg32 {
+        EspReg32::new(Self::GPIO_PIN0 + self.0 as u32 * 4)
+    }
+    #[must_use]
+    const fn matrix_output_reg(self) -> EspReg32 {
+        EspReg32::new(Self::GPIO_FUNC0_OUT + self.0 as u32 * 4)
+    }
+}
+
 /* private register selection */
 
 #[cfg(feature = "unsafe_mmio")]
@@ -86,6 +108,47 @@ impl Esp32S3Pin {
 
 #[cfg(feature = "unsafe_mmio")]
 impl Esp32S3Pin {
+    /// Configures this pad as a simple push-pull GPIO output.
+    ///
+    /// Selects the GPIO IO-MUX function and routes this pin's output latch
+    /// through the GPIO matrix, with output enable controlled by the GPIO
+    /// output-enable register.
+    ///
+    /// This does not change the output latch or enable the output driver.
+    ///
+    /// # Safety
+    /// This must execute on the active ESP32-S3 device. The pin and its GPIO
+    /// matrix output route must not be concurrently configured, and selecting
+    /// simple GPIO output must be valid for the connected circuit.
+    pub unsafe fn configure_output(self) {
+        const PAD_DRIVER: u32 = 1 << 2;
+        const FUN_SELECT_MASK: u32 = 0b111 << 12;
+        const FUN_GPIO: u32 = 1 << 12;
+        const OUT_SELECT_MASK: u32 = 0x1ff;
+        const OUT_INVERT: u32 = 1 << 9;
+        const OEN_SELECT: u32 = 1 << 10;
+        const OEN_INVERT: u32 = 1 << 11;
+        const GPIO_OUT_SIGNAL: u32 = 256;
+
+        unsafe {
+            // Simple digital output is push-pull rather than open-drain.
+            let pin = self.pin_config_reg();
+            pin.write(pin.read() & !PAD_DRIVER);
+
+            // Select GPIO_OUT[n] and GPIO_ENABLE[n].
+            let output = self.matrix_output_reg();
+            output.write(
+                (output.read() & !(OUT_SELECT_MASK | OUT_INVERT | OEN_SELECT | OEN_INVERT))
+                    | GPIO_OUT_SIGNAL
+                    | OEN_SELECT,
+            );
+
+            // ESP32-S3 uses IO-MUX function 1 for ordinary GPIO.
+            let mux = self.io_mux_reg();
+            mux.write((mux.read() & !FUN_SELECT_MASK) | FUN_GPIO);
+        }
+    }
+
     /// Returns whether its output driver is enabled.
     ///
     /// # Safety
@@ -134,6 +197,7 @@ impl Esp32S3Pin {
     pub unsafe fn set_output_low(self) {
         unsafe {
             self.set_low();
+            self.configure_output();
             self.enable_output();
         }
     }
@@ -158,6 +222,7 @@ impl Esp32S3Pin {
     pub unsafe fn set_output_high(self) {
         unsafe {
             self.set_high();
+            self.configure_output();
             self.enable_output();
         }
     }

@@ -3,12 +3,12 @@
 //
 
 crate::mods_in! {
-    // #[cfg(feature = "s3_lilygo_tdisplay")]
-    // mod lilygo_tdisplay;
+    #[cfg(feature = "lilygo_t_display_s3")]
+    mod t_display_s3;
 }
 crate::mods_out! { // _mods
     _mods {
-        // #[cfg(feature = "s3_lilygo_tdisplay")]
-        // pub use super::lilygo_tdisplay::BoardLilygoS3Tdisplay;
+        #[cfg(feature = "lilygo_t_display_s3")]
+        pub use super::t_display_s3::BoardLilygoTDisplayS3;
     }
 }

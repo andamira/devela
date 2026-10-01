@@ -89,9 +89,13 @@ board_all = [
 
 	board_esp32 = ["board", "esp32"]
 	board_esp32_all = [
+		"lilygo_t_display_s3",
 		"supermini_oled042",
 		"waveshare_c6_touch_lcd147",
 	]
+		# lilygo_t_deck_s3 = ["board_esp32", "esp32s3"]
+		lilygo_t_display_s3 = ["board_esp32", "esp32s3"]
+		# lilygo_t_watch_s3 = ["board_esp32", "esp32s3"]
 		supermini_oled042 = ["board_esp32", "esp32c3", "ssd13xx"]
 		waveshare_c6_touch_lcd147 = ["board_esp32", "esp32c6", "jd9853"]
 

@@ -173,7 +173,7 @@
 - add Solinius Sparrow examples: `blink`.
 - add ESP32-C3 SuperMini OLED examples: `blink`, `oled`, `uart_echo`, `usb_serial_chat`.
 - add ESP32-C6 Waveshare LED examples: `blink`, `touch_lcd147`.
-- add minimal ESP32-S3 bring-up example.
+- add LILYGO T-Display-S3 examples: `blink`.
 - add ZX Spectrum 48K examples: `paint`, `screen`.
 
 ## Modules
@@ -181,7 +181,7 @@
 ### board
 - new AVR boards: `BoardArduinoDiecimila`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSoliniusSparrow`.
 - new SAM boards: `BoardArduinoDue`.
-- new ESP32 boards: `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
+- new ESP32 boards: `BoardLilygoTDisplayS3`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
 
 ### computer::zx::spectrum
 - new macro: `spectrum_main!`.
@@ -200,7 +200,7 @@
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.
 
 #### mcu::esp32
-- new macros: `esp32_c3_direct_boot!`, `esp32_c6_direct_boot!`.
+- new macros: `esp32_c3_direct_boot!`, `esp32_c6_direct_boot!`, `esp32_s3_startup!`.
 - new types:
   - `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3SystemTimer`, `Esp32C3Uart`.
   - `Esp32C6Pin`, `Esp32C6SpiCmdData`.
