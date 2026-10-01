@@ -9,8 +9,6 @@
 
 > A development substrate of coherence.
 
-This is a family of Rust libraries centered on the foundational `devela` crate.
-
 ## Crates
 
 | crate                 | role                              | source       | docs                     |
@@ -21,7 +19,7 @@ This is a family of Rust libraries centered on the foundational `devela` crate.
 | `devela_extend`       | ecosystem extensions and adapters | [source][s4] | — |
 | `devela_micros`       | embedded hardware support         | [source][s5] | [wip][w5] |
 
-The project is pre-1.0 and still taking shape. APIs may change between releases.
+Before 1.0, APIs remain free to evolve.
 
 [c1]: https://crates.io/crates/devela
 [s1]: crates/devela

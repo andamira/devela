@@ -4,13 +4,6 @@
 //! devela is a general-purpose Rust library
 //! built from small, reusable abstractions.
 //!
-//! It provides foundations without assuming more than a problem needs.
-//!
-//! Allocation, runtime choice, platform support, and other capabilities
-//! are added explicitly, while simpler forms remain useful on their own.
-//! Common abstractions are shared across domains
-//! rather than repeated for each particular use.
-//!
 //! The modules below organize the library
 //! by the kinds of problems they address.
 //
