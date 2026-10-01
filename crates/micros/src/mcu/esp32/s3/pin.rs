@@ -56,6 +56,7 @@ impl Esp32S3Pin {
 impl Esp32S3Pin {
     const IO_MUX_GPIO0: u32 = 0x6000_9004;
     const GPIO_PIN0: u32 = McuEsp32S3::GPIO_BASE + 0x74;
+    const GPIO_FUNC0_IN: u32 = McuEsp32S3::GPIO_BASE + 0x154;
     const GPIO_FUNC0_OUT: u32 = McuEsp32S3::GPIO_BASE + 0x554;
 
     #[must_use]
@@ -65,6 +66,10 @@ impl Esp32S3Pin {
     #[must_use]
     const fn pin_config_reg(self) -> EspReg32 {
         EspReg32::new(Self::GPIO_PIN0 + self.0 as u32 * 4)
+    }
+    #[must_use]
+    const fn matrix_input_reg(signal: u8) -> EspReg32 {
+        EspReg32::new(Self::GPIO_FUNC0_IN + signal as u32 * 4)
     }
     #[must_use]
     const fn matrix_output_reg(self) -> EspReg32 {
@@ -103,6 +108,78 @@ impl Esp32S3Pin {
     #[must_use]
     const fn input_reg(self) -> EspReg32 {
         is! { self.0 < 32, McuEsp32S3::GPIO_IN, McuEsp32S3::GPIO_IN1 }
+    }
+}
+
+/* private peripheral-routing helpers */
+
+#[cfg(feature = "unsafe_mmio")]
+impl Esp32S3Pin {
+    /// Selects the GPIO function and configures this pad for an input-enabled,
+    /// open-drain signal with a weak internal pull-up.
+    ///
+    /// This is intended for peripheral signals such as I²C
+    /// that use the GPIO matrix.
+    ///
+    /// # Safety
+    /// This pin must not be concurrently configured or accessed.
+    pub(crate) unsafe fn configure_open_drain_pullup(self) {
+        const PAD_DRIVER: u32 = 1 << 2;
+        const FUN_PULL_DOWN: u32 = 1 << 7;
+        const FUN_PULL_UP: u32 = 1 << 8;
+        const FUN_INPUT_ENABLE: u32 = 1 << 9;
+        const FUN_SELECT_MASK: u32 = 0b111 << 12;
+        const FUN_GPIO: u32 = 1 << 12;
+        unsafe {
+            self.set_high(); // Open-drain buses idle high.
+            let pin = self.pin_config_reg();
+            pin.write(pin.read() | PAD_DRIVER);
+            let mux = self.io_mux_reg();
+            mux.write(
+                (mux.read() & !(FUN_SELECT_MASK | FUN_PULL_DOWN))
+                    | FUN_GPIO
+                    | FUN_INPUT_ENABLE
+                    | FUN_PULL_UP,
+            );
+        }
+    }
+
+    /// Routes a peripheral output signal through the GPIO matrix to this pin.
+    ///
+    /// Peripheral control of output-enable is preserved.
+    ///
+    /// # Safety
+    /// This pin and matrix output route must not be concurrently configured.
+    pub(crate) unsafe fn matrix_route_output(self, signal: u8) {
+        const OUT_SELECT_MASK: u32 = 0x1ff;
+        const OUT_INVERT: u32 = 1 << 9;
+        const OEN_SELECT: u32 = 1 << 10;
+        const OEN_INVERT: u32 = 1 << 11;
+        unsafe {
+            let output = self.matrix_output_reg();
+            output.write(
+                (output.read() & !(OUT_SELECT_MASK | OUT_INVERT | OEN_SELECT | OEN_INVERT))
+                    | signal as u32,
+            );
+        }
+    }
+
+    /// Routes this pin through the GPIO matrix to a peripheral input signal.
+    ///
+    /// # Safety
+    /// This pin and matrix input route must not be concurrently configured.
+    pub(crate) unsafe fn matrix_route_input(self, signal: u8) {
+        const INPUT_MATRIX_ENABLE: u32 = 1 << 7;
+        const INPUT_INVERT: u32 = 1 << 6;
+        const INPUT_SELECT_MASK: u32 = 0x3f;
+        unsafe {
+            let input = Self::matrix_input_reg(signal);
+            input.write(
+                (input.read() & !(INPUT_MATRIX_ENABLE | INPUT_INVERT | INPUT_SELECT_MASK))
+                    | INPUT_MATRIX_ENABLE
+                    | self.gpio() as u32,
+            );
+        }
     }
 }
 

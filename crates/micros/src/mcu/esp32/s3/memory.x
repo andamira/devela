@@ -1,5 +1,3 @@
-/* devela/examples/hw/mcu/esp32/s3_bringup/memory.x */
-
 /* Minimal ESP32-S3 memory map for initial devela bring-up.
  *
  * This is intentionally conservative rather than a final linker layout.

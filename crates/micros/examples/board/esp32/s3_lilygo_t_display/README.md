@@ -6,7 +6,7 @@ Minimal bare-metal examples for the ESP32-S3 using the Espressif Rust toolchain 
 
 ## Programs
 
-- `blink` — blinks the LCD backlight to verify direct boot, IO-MUX/GPIO
+- `blink` — blinks the LCD backlight to verify ESP32-S3 startup, IO-MUX/GPIO
   routing, and digital output without depending on the display controller.
 
 

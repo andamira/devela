@@ -1,5 +1,3 @@
-/* devela/examples/hw/mcu/esp32/s3_bringup/rom.x */
-
 /* ESP32-S3 ROM functions used during minimal startup. */
 
 PROVIDE(rom_Cache_Suspend_DCache = 0x400018b4);

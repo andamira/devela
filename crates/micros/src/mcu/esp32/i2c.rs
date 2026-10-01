@@ -212,7 +212,7 @@ impl EspI2c {
 impl EspI2c {
     /// Configures master mode using an XTAL source clock.
     ///
-    /// The timing calculation follows Espressif's ESP32-C3 low-level HAL.
+    /// The timing calculation follows Espressif's low-level I²C timing model.
     ///
     /// # Panics
     /// Panics if either frequency is zero

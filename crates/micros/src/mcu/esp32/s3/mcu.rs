@@ -2,7 +2,9 @@
 //! Defines [`McuEsp32S3`].
 //
 
-use crate::{EspReg32, EspUsbSerialJtag};
+#[cfg(feature = "unsafe_mmio")]
+use crate::{Esp32S3Pin, I2cController};
+use crate::{EspI2c, EspReg32, EspUsbSerialJtag};
 
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-S3 microcontroller namespace.
@@ -22,7 +24,7 @@ use crate::{EspReg32, EspUsbSerialJtag};
 /// strapping, and board-level constraints.
 ///
 /// devela currently provides the linker foundations, USB Serial/JTAG access,
-/// and low-level digital GPIO register access for the ESP32-S3.
+/// and low-level digital GPIO and I²C0 access for the ESP32-S3.
 /// Startup remains provided by `xtensa-lx-rt` for now.
 ///
 /// See also:
@@ -105,11 +107,67 @@ impl McuEsp32S3 {
 
 /// # Peripherals
 impl McuEsp32S3 {
+    /// I²C0 peripheral base address.
+    pub const I2C0_BASE: u32 = 0x6001_3000;
+
+    /// I²C0 controller.
+    pub const I2C0: EspI2c = EspI2c::new(Self::I2C0_BASE);
+
     /// USB Serial/JTAG peripheral base address.
     pub const USB_SERIAL_JTAG_BASE: u32 = 0x6003_8000;
 
     /// Native USB Serial/JTAG controller.
     pub const USB_SERIAL_JTAG: EspUsbSerialJtag = EspUsbSerialJtag::new(Self::USB_SERIAL_JTAG_BASE);
+}
+
+/// # I²C
+#[cfg(feature = "unsafe_mmio")]
+impl McuEsp32S3 {
+    /// Enables I²C0, routes it through `sda` and `scl`,
+    /// and configures it as a master at `bus_hz` from the 40 MHz XTAL.
+    ///
+    /// The routed pins are configured for open-drain operation with input
+    /// enabled and their weak internal pull-ups enabled.
+    ///
+    /// # Safety
+    /// I²C0 and both GPIOs must not be concurrently configured or accessed.
+    ///
+    /// While the returned controller is alive, I²C0 and its routed pins
+    /// must not be accessed through another raw hardware handle.
+    pub unsafe fn prepare_i2c0(
+        sda: Esp32S3Pin,
+        scl: Esp32S3Pin,
+        bus_hz: u32,
+    ) -> I2cController<EspI2c> {
+        const SYSTEM_PERIP_CLK_EN0: EspReg32 = EspReg32::new(0x600C_0018);
+        const SYSTEM_PERIP_RST_EN0: EspReg32 = EspReg32::new(0x600C_0020);
+        const I2C0_CLOCK: u32 = 1 << 7;
+        const I2C0_RESET: u32 = 1 << 7;
+        const SCL_SIGNAL: u8 = 89;
+        const SDA_SIGNAL: u8 = 90;
+
+        unsafe {
+            let clock = SYSTEM_PERIP_CLK_EN0;
+            clock.write(clock.read() | I2C0_CLOCK);
+
+            let reset = SYSTEM_PERIP_RST_EN0;
+            reset.write(reset.read() | I2C0_RESET);
+            reset.write(reset.read() & !I2C0_RESET);
+
+            Self::prepare_i2c0_pin(sda, SDA_SIGNAL);
+            Self::prepare_i2c0_pin(scl, SCL_SIGNAL);
+
+            Self::I2C0.configure_master_xtal(Self::XTAL_HZ, bus_hz);
+            I2cController::new_unchecked(Self::I2C0)
+        }
+    }
+    unsafe fn prepare_i2c0_pin(pin: Esp32S3Pin, signal: u8) {
+        unsafe {
+            pin.configure_open_drain_pullup();
+            pin.matrix_route_output(signal);
+            pin.matrix_route_input(signal);
+        }
+    }
 }
 
 /// # Clock
