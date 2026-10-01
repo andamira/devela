@@ -8,6 +8,7 @@ crate::mods_in! {
     mod control;
     mod cmd_data;
     mod error;
+    mod read;
     mod target;
     mod write;
 }
@@ -17,6 +18,7 @@ crate::mods_out! { // _mods
             addr::I2cAddr7,
             cmd_data::I2cCmdData,
             error::I2cError,
+            read::I2cBusRead,
             target::I2cTarget,
             write::I2cBusWrite,
         };

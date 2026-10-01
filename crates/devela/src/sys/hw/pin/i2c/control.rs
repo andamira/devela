@@ -2,7 +2,7 @@
 //! Defines [`I2cControl`], [`I2cController`].
 //
 
-use crate::{I2cAddr7, I2cBusWrite};
+use crate::{I2cAddr7, I2cBusRead, I2cBusWrite};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// Low-level control of an I²C controller.
@@ -10,8 +10,8 @@ use crate::{I2cAddr7, I2cBusWrite};
     location("sys/hw/pin/i2c", trait I2cControl),
 }]
 /// This is an extension interface for MCU-specific and custom I²C
-/// implementations. Application and device-driver code should
-/// normally use higher-level capabilities such as [`I2cBusWrite`].
+/// implementations. Application and device-driver code should normally
+/// use higher-level capabilities such as [`I2cBusWrite`] and [`I2cBusRead`].
 ///
 /// Implementors can be wrapped in [`I2cController`] to expose safe I²C
 /// capabilities after the underlying hardware has been
@@ -37,6 +37,31 @@ pub unsafe trait I2cControl {
         &mut self,
         address: I2cAddr7,
         slices: &[&[u8]],
+    ) -> Result<(), Self::Error>;
+
+    /// Reads bytes from one target.
+    ///
+    /// # Safety
+    /// `self` must represent exclusive access to a correctly configured
+    /// I²C controller.
+    unsafe fn read_unchecked(
+        &mut self,
+        address: I2cAddr7,
+        buffer: &mut [u8],
+    ) -> Result<(), Self::Error>;
+
+    /// Writes bytes, issues a repeated START, then reads from the same target.
+    ///
+    /// No STOP condition is inserted between the write and read phases.
+    ///
+    /// # Safety
+    /// `self` must represent exclusive access to a correctly configured
+    /// I²C controller.
+    unsafe fn write_read_unchecked(
+        &mut self,
+        address: I2cAddr7,
+        write: &[u8],
+        read: &mut [u8],
     ) -> Result<(), Self::Error>;
 }
 
@@ -80,5 +105,19 @@ impl<C: I2cControl> I2cBusWrite for I2cController<C> {
 
     fn write_slices(&mut self, address: I2cAddr7, slices: &[&[u8]]) -> Result<(), Self::Error> {
         unsafe { self.control.write_slices_unchecked(address, slices) }
+    }
+}
+
+impl<C: I2cControl> I2cBusRead for I2cController<C> {
+    fn read(&mut self, address: I2cAddr7, buffer: &mut [u8]) -> Result<(), Self::Error> {
+        unsafe { self.control.read_unchecked(address, buffer) }
+    }
+    fn write_read(
+        &mut self,
+        address: I2cAddr7,
+        write: &[u8],
+        read: &mut [u8],
+    ) -> Result<(), Self::Error> {
+        unsafe { self.control.write_read_unchecked(address, write, read) }
     }
 }

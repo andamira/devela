@@ -2,7 +2,7 @@
 //! Defines [`I2cTarget`].
 //
 
-use crate::{I2cAddr7, I2cBusWrite, I2cCmdData};
+use crate::{I2cAddr7, I2cBusRead, I2cBusWrite, I2cCmdData};
 
 #[cfg(target_pointer_width = "16")]
 crate::test_size_of!(const I2cTarget<()> = 3|24; niche Option);
@@ -24,7 +24,7 @@ pub struct I2cTarget<'a, B: ?Sized> {
 }
 
 impl<'a, B: ?Sized> I2cTarget<'a, B> {
-    /// Binds `address` to the given I²C bus writer.
+    /// Binds `address` to the given I²C bus.
     #[must_use]
     pub const fn new(bus: &'a mut B, address: I2cAddr7) -> Self {
         Self { bus, address }
@@ -38,6 +38,17 @@ impl<'a, B: ?Sized> I2cTarget<'a, B> {
     #[must_use]
     pub const fn cmd_data(self, cmd: u8, data: u8) -> I2cCmdData<'a, B> {
         I2cCmdData::new(self, cmd, data)
+    }
+}
+
+impl<B: I2cBusRead + ?Sized> I2cTarget<'_, B> {
+    /// Reads bytes from this target.
+    pub fn read(&mut self, buffer: &mut [u8]) -> Result<(), B::Error> {
+        self.bus.read(self.address, buffer)
+    }
+    /// Writes bytes, issues a repeated START, then reads from this target.
+    pub fn write_read(&mut self, write: &[u8], read: &mut [u8]) -> Result<(), B::Error> {
+        self.bus.write_read(self.address, write, read)
     }
 }
 

@@ -137,7 +137,7 @@
 - new trait: `CmdDataWrite`.
 
 ###### sys::hw::pin
-- new traits: `I2cBusWrite`, `I2cControl`, `SpiBusWrite`, `SpiControl`.
+- new traits: `I2cBusRead`, `I2cBusWrite`, `I2cControl`, `SpiBusWrite`, `SpiControl`.
 - new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`, `SpiController`.
 
 #### sys::mem
@@ -211,6 +211,7 @@
 - add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
 - add ESP32-C6 direct-boot startup and linker support, including boot-watchdog handoff and GPIO pad routing.
 - add ESP32-S3 linker support and low-level GPIO, I²C0, and USB Serial/JTAG access.
+- add blocking I²C reads and repeated-start write→read transfers.
 
 #### mcu::sam
 - new types: `McuSam3x8e`, `SamPin`, `SamPort`, `SamReg32`.
