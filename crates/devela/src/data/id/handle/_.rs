@@ -25,7 +25,7 @@
 //
 
 crate::mods_in! {
-    #[cfg(any(test, doctest, feature = "_docs_examples"))]
+    #[cfg(any(test, feature = "_docs_examples"))]
     mod _example; // HandleSpanExample
 
     mod define; // handle!
@@ -40,11 +40,11 @@ crate::mods_out! { // _mods, _hidden
             generation::handle_gen,
             span::handle_span,
         };
-        #[cfg(any(test, doctest, feature = "_docs_examples"))]
+        #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::{HandleExample, HandleGenExample, HandleSpanExample};
     }
     _hidden {
-        #[cfg(any(test, doctest, feature = "_docs_examples"))]
+        #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::{
             _DOC_HANDLE_METHODS,
             _DOC_HANDLE_INDEX_METHODS,

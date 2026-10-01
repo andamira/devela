@@ -3,9 +3,9 @@
 //
 
 crate::mods_in! {
-    #[cfg(any(test, doctest))]
+    #[cfg(test)]
     mod _test;
-    #[cfg(any(test, doctest, feature = "_docs_examples"))]
+    #[cfg(any(test, feature = "_docs_examples"))]
     mod _example;
 
     mod define; // intern_string!
@@ -15,7 +15,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::define::intern_string;
-        #[cfg(any(test, doctest, feature = "_docs_examples"))]
+        #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::*;
     }
     _hidden {

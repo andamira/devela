@@ -45,6 +45,7 @@ See also
 - 1.99: `a`[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
 - 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
 - 1.99: `c`[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
+- 1.99: ` `[do not take `doc(cfg())` into account when filtering doctests](https://github.com/rust-lang/rust/pull/159014)
 - 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
 - 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
