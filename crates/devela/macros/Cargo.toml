@@ -21,7 +21,7 @@ include = [
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
-build = "build/mod.rs"
+build = "build/_.rs"
 publish = true
 metadata.docs.rs = { features = ["_docs", "__publish"], no-default-features = true }
 

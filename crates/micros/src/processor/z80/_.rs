@@ -4,10 +4,6 @@
 #![doc = crate::_doc!(flat:"processor")]
 #![doc = crate::_doc!(hr)]
 //!
-//! This module describes the processor independently of the machine around it.
-//! Memory maps, display hardware, keyboard scanning, contention, and other
-//! system effects belong to the corresponding computer.
-//!
 //! # Architecture
 //!
 //! The Z80 is an 8-bit processor with a 16-bit address space. Its main

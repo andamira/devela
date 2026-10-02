@@ -33,6 +33,8 @@ items! {
 /* build modules */
 
 mod environment; // SYMLINK to ../../devela/build/environment.rs
+
+#[path = "linking/_.rs"]
 mod linking; // target linker support
 
 fn main() {

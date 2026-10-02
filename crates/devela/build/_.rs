@@ -50,6 +50,7 @@ mod environment;
 mod features;
 mod native;
 
+#[path = "codegen/_.rs"]
 mod codegen; // tuple, unroll
 
 fn main() {
