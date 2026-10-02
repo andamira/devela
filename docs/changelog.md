@@ -75,6 +75,9 @@
 ### code
 - add `Build` methods: `emit_link_search`, `rerun_if_changed`.
 
+#### code::util
+- update `doclink!` to require a local `__DOCLINK_CUSTOM_DOMAIN!` for custom form.
+
 ##### code::util::assert
 - update `test_size_of!` with compile-time assertion.
 - move `compile_error!` from `error`.

@@ -274,6 +274,9 @@ check-cfg = [ # Allowed configuration flags:
 	# Allows excluding tests from being run, more concisely:
 	'cfg(__exclude_test)',
 	#
+	# Targets documentation links to the GitHub Pages WIP build.
+	'cfg(devela_docs_wip)',
+	#
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
 	# Expect more target vendors. In sync with src/sys/env/namespace.rs:

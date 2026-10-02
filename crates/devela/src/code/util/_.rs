@@ -88,7 +88,7 @@ synth::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         pub use {
             super::{
                 assert::_hidden::*,
-                doclink::__DOCLINK_CUSTOM_DOMAIN,
+                doclink::{__DOCLINK_CUSTOM_DOMAIN, __DOCLINK_CUSTOM_CHANNEL},
                 synth::_hidden::*,
             },
             devela_macros::__macro_derive_helpers,

@@ -8,15 +8,42 @@
 // NOTE: duplicated (not symlinked) in /crates/macros/src/core_bridge/doclink.rs)
 // WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 
-/// Custom domain used for the [`doclink!`] macro.
 #[doc(hidden)]
 #[macro_export]
+#[cfg(not(devela_docs_wip))]
 macro_rules! __DOCLINK_CUSTOM_DOMAIN {
     () => {
         "https://docs.rs/"
-        // "https://andamira.github.io/"
     };
 }
+#[doc(hidden)]
+#[macro_export]
+#[cfg(not(devela_docs_wip))]
+macro_rules! __DOCLINK_CUSTOM_CHANNEL {
+    () => {
+        "/latest/"
+    };
+}
+
+#[doc(hidden)]
+#[macro_export]
+#[cfg(devela_docs_wip)]
+macro_rules! __DOCLINK_CUSTOM_DOMAIN {
+    () => {
+        "https://andamira.github.io/"
+    };
+}
+#[doc(hidden)]
+#[macro_export]
+#[cfg(devela_docs_wip)]
+macro_rules! __DOCLINK_CUSTOM_CHANNEL {
+    () => {
+        "/wip/"
+    };
+}
+
+#[doc(hidden)]
+pub use __DOCLINK_CUSTOM_CHANNEL;
 #[doc(hidden)]
 pub use __DOCLINK_CUSTOM_DOMAIN;
 
@@ -32,12 +59,32 @@ Supported item kinds are:
 `struct`, `enum`, `union`, `trait`, `type`, `fn`, `const`, `static`,
 `macro`, `attr`, and `derive`.
 
-The `custom` forms use `__DOCLINK_CUSTOM_DOMAIN!` as their documentation root.
-That macro must expand to a string literal ending in `/`, for example:
+The `custom` forms use two crate-root macros to construct published
+documentation URLs:
+
+- `__DOCLINK_CUSTOM_DOMAIN!` defines the documentation root and must expand
+  to a string literal ending in `/`.
+- `__DOCLINK_CUSTOM_CHANNEL!` defines the publication channel or version and
+  must expand to a string literal surrounded by `/`, such as `\"/latest/\"` or `\"/wip/\"`.
+
+For example:
 ```
 #[macro_export] #[doc(hidden)]
-macro_rules! __DOCLINK_CUSTOM_DOMAIN { () => { \"https://docs.rs/\" } } // it must end in `/`
+macro_rules! __DOCLINK_CUSTOM_DOMAIN {
+    () => { \"https://docs.rs/\" };
+}
+
+#[macro_export] #[doc(hidden)]
+macro_rules! __DOCLINK_CUSTOM_CHANNEL {
+    () => { \"latest\" };
+}
 ```
+
+Together these produce URLs shaped like:
+`{domain}{crate}{channel}{crate}/…`.
+
+Because these helpers are resolved from the current crate, crates
+using the custom forms must provide both macros at their crate root.
 
 # Features
 With the `__publish` feature enabled, links target published documentation.
@@ -150,8 +197,8 @@ macro_rules! doclink· {
      // https://…/{env!("CARGO_PKG_NAME")}/struct.Item.html
      custom_current_proc_crate
      @item $kind:ident $item:ident $($jump_link:literal)?) => {
-        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(),
-            env!("CARGO_PKG_NAME"), "/latest/", env!("CARGO_PKG_NAME"), "/",
+        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(), env!("CARGO_PKG_NAME"),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(), env!("CARGO_PKG_NAME"), "/",
             $crate::doclink![@item_file $kind $item] $(, $jump_link)? ]
     };
     /* existing module/path links */
@@ -168,8 +215,9 @@ macro_rules! doclink· {
      // file://…/current_crate/item_path/index.html
      custom crate $item_path:literal
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(), env!("CARGO_PKG_NAME"),
-            env!("CARGO_CRATE_NAME"), "/latest/", env!("CARGO_CRATE_NAME"), "/",
+        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(),
+            env!("CARGO_PKG_NAME"), env!("CARGO_CRATE_NAME"),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(), env!("CARGO_CRATE_NAME"), "/",
             $item_path $(, $jump_link)? ]
     };
     (
@@ -185,24 +233,27 @@ macro_rules! doclink· {
      // file://…/crate_name/item_path/index.html
      custom $crate_name:ident $item_path:literal
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(), ::core::stringify!($crate_name),
-            "/latest/", ::core::stringify!($crate_name), "/", $item_path $(, $jump_link)? ]
+        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(),
+            ::core::stringify!($crate_name), crate::__DOCLINK_CUSTOM_CHANNEL!(),
+            ::core::stringify!($crate_name), "/", $item_path $(, $jump_link)? ]
     };
     (
      // https://…/{env!("CARGO_PKG_NAME")}/item_path
      // file://…/{env!("CARGO_PKG_NAME")}/item_path/index.html
      custom_current_crate $item_path:expr,
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(), env!("CARGO_PKG_NAME"),
-            "/latest/", env!("CARGO_PKG_NAME"), "/", $item_path $(, $jump_link)? ]
+        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(),
+            env!("CARGO_PKG_NAME"), crate::__DOCLINK_CUSTOM_CHANNEL!(),
+            env!("CARGO_PKG_NAME"), "/", $item_path $(, $jump_link)? ]
     };
     (
      // https://…/{env!("CARGO_PKG_NAME")}/
      // file://…/{env!("CARGO_PKG_NAME")}/index.html
      custom_current_proc_crate
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(), env!("CARGO_PKG_NAME"),
-            "/latest/", env!("CARGO_PKG_NAME"), "/" $(, $jump_link)? ]
+        ::core::concat![ crate::__DOCLINK_CUSTOM_DOMAIN!(),
+            env!("CARGO_PKG_NAME"), crate::__DOCLINK_CUSTOM_CHANNEL!(),
+            env!("CARGO_PKG_NAME"), "/" $(, $jump_link)? ]
     };
     /* item links */
     (
@@ -246,8 +297,9 @@ macro_rules! doclink· {
      // https://docs.rs/…/{env!("CARGO_PKG_NAME")}/struct.Item.html
      current_proc_crate
      @item $kind:ident $item:ident $($jump_link:literal)?) => {
-        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"), "/latest/",
-            env!("CARGO_PKG_NAME"), "/", $crate::doclink![@item_file $kind $item] $(, $jump_link)? ]
+        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(), env!("CARGO_PKG_NAME"), "/",
+            $crate::doclink![@item_file $kind $item] $(, $jump_link)? ]
     };
     /* existing module/path links */
     (
@@ -263,8 +315,9 @@ macro_rules! doclink· {
      // file://…/current_crate/item_path/index.html
      crate $item_path:literal
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"), env!("CARGO_CRATE_NAME"),
-            "/latest/", env!("CARGO_CRATE_NAME"), "/", $item_path $(, $jump_link)? ]
+        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"),
+            env!("CARGO_CRATE_NAME"), crate::__DOCLINK_CUSTOM_CHANNEL!(),
+            env!("CARGO_CRATE_NAME"), "/", $item_path $(, $jump_link)? ]
     };
     (
      // [anchor]: https://…/crate_name/item_path
@@ -279,7 +332,8 @@ macro_rules! doclink· {
      // file://…/crate_name/item_path/index.html
      $crate_name:ident $item_path:literal
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ "https://docs.rs/", ::core::stringify!($crate_name), "/latest/",
+        ::core::concat![ "https://docs.rs/", ::core::stringify!($crate_name),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(),
             ::core::stringify!($crate_name), "/", $item_path $(, $jump_link)? ]
     };
     (
@@ -287,7 +341,8 @@ macro_rules! doclink· {
      // file://…/{env!("CARGO_PKG_NAME")}/item_path/index.html
      current_crate $item_path:literal
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"), "/latest/",
+        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(),
             env!("CARGO_PKG_NAME"), "/", $item_path $(, $jump_link)? ]
     };
     (
@@ -295,7 +350,8 @@ macro_rules! doclink· {
      // file://…/{env!("CARGO_PKG_NAME")}/index.html
      current_proc_crate
      $(@mod$($_m:lifetime)?)? $($jump_link:literal)?) => {
-        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"), "/latest/",
+        ::core::concat![ "https://docs.rs/", env!("CARGO_PKG_NAME"),
+            crate::__DOCLINK_CUSTOM_CHANNEL!(),
             env!("CARGO_PKG_NAME"), "/" $(, $jump_link)? ]
     };
 }
