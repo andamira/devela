@@ -3,6 +3,12 @@
 #![doc = crate::_doc!(modules: crate; computer: zx)] // amstrad, msx, nintendo, sega
 #![doc = crate::_doc!(flat:"computer")]
 #![doc = crate::_doc!(hr)]
+//!
+//! A computer module describes the complete machine built around a processor:
+//! its memory map, system I/O, built-in hardware, and machine-level timing.
+//!
+//! Processor architecture remains under `processor`. Development-board
+//! wiring and onboard components around microcontrollers remain under `board`.
 //
 
 crate::mods_in! {

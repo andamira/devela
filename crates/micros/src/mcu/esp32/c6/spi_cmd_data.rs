@@ -7,7 +7,7 @@ use crate::{CmdDataWrite, Esp32C6Pin, EspSpi, SpiBusWrite, SpiController, Timeou
 #[doc = crate::_tags!(hw io protocol)]
 /// ESP32-C6 SPI command/data transport with GPIO-controlled CS and D/C.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32C6SpiCmdData),
+    location("mcu/esp32/c6", struct Esp32C6SpiCmdData),
 }]
 /// Owns the logical use of one configured SPI controller together with its
 /// chip-select and data/command pins.

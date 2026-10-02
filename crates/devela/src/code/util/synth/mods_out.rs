@@ -35,6 +35,7 @@
 /// An `_all` module is always generated. It aggregates exports from `_mods`, `_pub_mods`,
 /// and `_reexports`, when present.
 ///
+///
 /// # Usage Patterns
 /// ```ignore
 /// use devela::mods_out;
@@ -60,11 +61,24 @@
 ///     }
 /// }
 /// ```
+///
 /// # Notes
+///
 /// - Generated modules use `#[allow(unused_imports)]` to avoid warnings
 ///   caused by intra-crate visibility boundaries.
 /// - Each module in the hierarchy must forward its structural exports upward
 ///   to preserve the intended public API surface.
+///
+///
+/// # Re-export policy
+///
+/// `_mods` and `_pub_mods` preserve the structural public API as it propagates
+/// through the module hierarchy.
+///
+/// - `_reexports`: Explicit public re-exports shown in the current module.
+///   They may come from other modules, workspace crates, dependencies, or
+///   Rust's libraries. When used to promote items through the module hierarchy,
+///   the selection may become progressively more selective at higher levels.
 //
 // We use the pattern `$(_mods$($has_mods:lifetime)?)?` where the optional lifetime parameter
 // serves as a marker to conditionally include the module in `_all`. The lifetime is never
@@ -82,6 +96,8 @@ macro_rules! mods_out· {
         $( $(_pub_mods$($has_pub_mods:lifetime)?)? { $($block_pub_mods:tt)* } )?
 
         // Items inside should be pub.
+        // Explicit visible re-exports from elsewhere.
+        // Also used for selected upward promotion through the module hierarchy.
         $( $(_reexports$($has_reexports:lifetime)?)? { $($block_reexports:tt)* } )?
 
         // Items inside should be pub(crate).

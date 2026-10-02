@@ -93,7 +93,7 @@ pub mod _devela {
     pub use ::devela::all::*;
 }
 
-crate::mods_out! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         #[cfg_attr(not(nightly_doc), cfg(feature = "board"))]
         pub use super::board::_all::*;
@@ -105,6 +105,20 @@ crate::mods_out! { // _pub_mods, _crate_internals
         pub use super::mcu::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "processor"))]
         pub use super::processor::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "arduino_nano")]
+        pub use super::board::BoardArduinoNano;
+        #[doc(inline)] #[cfg(feature = "spectrum48")]
+        pub use super::computer::ComputerSpectrum48;
+        #[doc(inline)] #[cfg(feature = "ssd13xx")]
+        pub use super::device::Ssd13xx;
+        #[doc(inline)] #[cfg(feature = "atmega328p")]
+        pub use super::mcu::McuAtmega328p;
+        #[doc(inline)] #[cfg(feature = "esp32c3")]
+        pub use super::mcu::McuEsp32C3;
+        #[doc(inline)] #[cfg(feature = "z80")]
+        pub use super::processor::ProcessorZ80;
     }
     _crate_internals {
         pub use super::{

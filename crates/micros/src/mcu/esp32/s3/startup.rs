@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(hw code)]
 /// Defines the ESP32-S3 startup hooks used with `xtensa-lx-rt`.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", macro esp32_s3_startup),
+    location("mcu/esp32/s3", macro esp32_s3_startup),
 }]
 /// This packages the startup support required by devela's current ESP32-S3
 /// linker layout while leaving reset-vector and exception handling to `xtensa-lx-rt`.

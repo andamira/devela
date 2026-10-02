@@ -19,7 +19,7 @@ use crate::{Esp32C3SystemTimer, Esp32C3Uart, EspI2c, EspReg32, EspUsbSerialJtag}
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C3 microcontroller namespace.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct McuEsp32C3),
+    location("mcu/esp32/c3", struct McuEsp32C3),
     test_size_of(McuEsp32C3 = 0),
 }]
 /// The ESP32-C3 is a single-core 32-bit RISC-V microcontroller with a

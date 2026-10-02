@@ -9,7 +9,7 @@ use crate::{Infallible, RandQualities, RandTry};
 #[doc = crate::_tags!(hw rand)]
 /// Access to the ESP32-C3 hardware random-number generator.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32C3Rng),
+    location("mcu/esp32/c3", struct Esp32C3Rng),
     test_size_of(Esp32C3Rng = 0),
 }]
 /// The hardware state may receive entropy from physical sources, but true-random
@@ -73,7 +73,7 @@ impl RandTry for Esp32C3Rng {
 // #[doc = crate::_tags!(hw rand)]
 // /// Entropy-qualified access to the ESP32-C3 hardware RNG.
 // #[doc = crate::_doc_meta!{
-//     location("mcu/esp32", struct Esp32C3Entropy),
+//     location("mcu/esp32/c3", struct Esp32C3Entropy),
 //     test_size_of(Esp32C3Entropy = 0),
 // }]
 // /// This type carries the semantic guarantee that a physical entropy source is

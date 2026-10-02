@@ -3,6 +3,13 @@
 #![doc = crate::_doc!(modules: crate; device: display)] // …
 #![doc = crate::_doc!(flat:"device")]
 #![doc = crate::_doc!(hr)]
+//!
+//! A device may be built into a board or connected externally; its driver
+//! belongs here when its protocol and behavior are independent of a particular
+//! microcontroller.
+//!
+//! Physical transport is kept separate where practical, so the same device
+//! driver can operate through different MCU- or board-specific interfaces.
 //
 
 crate::mods_in! {
@@ -23,7 +30,7 @@ crate::mods_in! {
     // #[cfg_attr(not(nightly_doc), cfg(feature = "vision"))]
     // pub mod_ vision;  // Cameras, imagers, and vision-oriented devices
 }
-crate::mods_out! { // _pub_mods
+crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
         // #[cfg_attr(not(nightly_doc), cfg(feature = "audio"))]
         // pub use super::audio::_all::*;
@@ -41,5 +48,9 @@ crate::mods_out! { // _pub_mods
         // pub use super::sensor::_all::*;
         // #[cfg_attr(not(nightly_doc), cfg(feature = "vision"))]
         // pub use super::vision::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "ssd13xx")]
+        pub use super::display::Ssd13xx;
     }
 }

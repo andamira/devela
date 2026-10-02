@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(hw code)]
 /// Defines the minimal ESP32-C6 ROM direct-boot entry point.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", macro esp32_c6_direct_boot),
+    location("mcu/esp32/c6", macro esp32_c6_direct_boot),
 }]
 /// Use this together with devela's `esp32_c6_direct_boot.x` linker script.
 /// The script is made available to the linker when targeting

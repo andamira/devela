@@ -7,7 +7,7 @@ use crate::EspReg32;
 #[doc = crate::_tags!(hw time)]
 /// ESP32-C3 52-bit system timer.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32C3SystemTimer),
+    location("mcu/esp32/c3", struct Esp32C3SystemTimer),
     test_size_of(Esp32C3SystemTimer = 4|32; niche !Option),
 }]
 /// SYSTIMER provides two 52-bit counters (`UNIT0` and `UNIT1`)

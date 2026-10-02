@@ -9,7 +9,7 @@ use crate::{EspReg32, is};
 #[doc = crate::_tags!(hw io)]
 /// An ESP32-C3 UART controller.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32C3Uart),
+    location("mcu/esp32/c3", struct Esp32C3Uart),
     test_size_of(Esp32C3Uart = 4|32; niche !Option),
 }]
 /// The ESP32-C3 provides two UART controllers with 128-byte transmit

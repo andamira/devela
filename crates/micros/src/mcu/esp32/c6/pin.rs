@@ -15,7 +15,7 @@ use crate::{EspReg32, McuEsp32C6};
 /// Peripheral routing, pull resistors, drive strength, and input configuration
 /// remain independent parts of ESP32-C6 pin configuration.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32C6Pin),
+    location("mcu/esp32/c6", struct Esp32C6Pin),
     test_size_of(Esp32C6Pin = 1|8; niche !Option),
 }]
 #[repr(transparent)]

@@ -18,7 +18,7 @@ use crate::{EspReg32, EspSpi};
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-C6 microcontroller namespace.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct McuEsp32C6),
+    location("mcu/esp32/c6", struct McuEsp32C6),
     test_size_of(McuEsp32C6 = 0),
 }]
 /// The ESP32-C6 combines a high-performance RV32IMAC core running at up to

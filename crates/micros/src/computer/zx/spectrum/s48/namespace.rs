@@ -2,7 +2,11 @@
 //! Defines [`ComputerSpectrum48`].
 //
 
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(
+    feature = "unsafe_hint",
+    any(target_arch = "z80", all(doc, target_arch = "x86_64")),
+))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 use crate::{ProcessorZ80, SpectrumColor, SpectrumKey, SpectrumKeys, SpectrumUlaOut};
 #[cfg(feature = "unsafe_mmio")]
 use crate::{Ptr, SpectrumAttribute};
@@ -12,8 +16,40 @@ use crate::{is, unwrap, whilst};
 #[doc = crate::_tags!(hw namespace)]
 /// Sinclair ZX Spectrum 48K computer namespace.
 #[doc = crate::_doc_meta!{
-    location("computer/zx", struct ComputerSpectrum48),
+    location("computer/zx/spectrum", struct ComputerSpectrum48),
+    test_size_of(ComputerSpectrum48 = 0),
 }]
+/// The machine uses a [`ProcessorZ80`][crate::ProcessorZ80] running nominally
+/// at 3.5 MHz. Processor-level operations and instruction timing live there;
+/// Spectrum memory, display, ULA, keyboard, and machine timing live here.
+///
+/// # Operations
+///
+/// Display:
+/// - [`set_pixel`](#method.set_pixel) and [`toggle_pixel`](#method.toggle_pixel)
+///   modify individual bitmap pixels.
+/// - [`write_bitmap`](#method.write_bitmap) and
+///   [`write_bitmap_byte`](#method.write_bitmap_byte) provide raw bitmap access.
+/// - [`fill_bitmap`](#method.fill_bitmap) and [`clear_bitmap`](#method.clear_bitmap)
+///   operate on the complete 6144-byte bitmap.
+/// - [`write_cell_attribute`](#method.write_cell_attribute) and
+///   [`fill_attributes`](#method.fill_attributes) modify the 32×24 attribute area.
+///
+/// ULA and input:
+/// - [`set_border`](#method.set_border) changes the border colour.
+/// - [`write_ula`](#method.write_ula) writes the complete border/MIC/EAR state.
+/// - [`key_pressed`](#method.key_pressed) reads one key.
+/// - [`read_keys`](#method.read_keys) reads the complete keyboard matrix.
+///
+/// Raw display-memory access requires `unsafe_mmio`. Z80 I/O operations
+/// require a Z80 target with `unsafe_hint`.
+///
+/// # Addressing
+///
+/// [`bitmap_offset`](#method.bitmap_offset) translates the Spectrum's non-linear
+/// bitmap layout, while [`attribute_offset`](#method.attribute_offset) addresses
+/// the linear 32×24 attribute grid.
+///
 /// # References
 ///
 /// See the [Sinclair Wiki]'s *ZX Spectrum 16K/48K* overview and
@@ -309,7 +345,11 @@ impl ComputerSpectrum48 {
     /// # Safety
     /// The program must be executing on a compatible ZX Spectrum machine.
     #[inline(always)]
-    #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+    #[cfg(all(
+        feature = "unsafe_hint",
+        any(target_arch = "z80", all(doc, target_arch = "x86_64")),
+    ))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
     pub unsafe fn write_ula(output: SpectrumUlaOut) {
         unsafe {
             ProcessorZ80::io_write(u16::from(Self::ULA_PORT), output.to_u8());
@@ -324,7 +364,11 @@ impl ComputerSpectrum48 {
     /// The program must be executing on a ZX Spectrum-compatible machine
     /// whose ULA responds to the conventional port.
     #[inline(always)]
-    #[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+    #[cfg(all(
+        feature = "unsafe_hint",
+        any(target_arch = "z80", all(doc, target_arch = "x86_64")),
+    ))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
     pub unsafe fn set_border(color: SpectrumColor) {
         unsafe {
             ProcessorZ80::io_write(u16::from(Self::ULA_PORT), color as u8);
@@ -333,7 +377,8 @@ impl ComputerSpectrum48 {
 }
 
 /// # Keyboard
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(feature = "unsafe_hint", any(target_arch = "z80", all(doc, target_arch = "x86_64"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 impl ComputerSpectrum48 {
     /// Returns whether `key` is currently pressed.
     ///
@@ -365,8 +410,8 @@ impl ComputerSpectrum48 {
     }
 }
 
-/// # Audio
-impl ComputerSpectrum48 {}
-
-/// # Tape
-impl ComputerSpectrum48 {}
+// /// # Audio
+// impl ComputerSpectrum48 {}
+//
+// /// # Tape
+// impl ComputerSpectrum48 {}

@@ -1,17 +1,17 @@
 //
 #![doc = crate::_DOC_MCU_ESP32!()] // public
-#![doc = crate::_doc!(modules: crate::mcu; esp32)]
+#![doc = crate::_doc!(modules: crate::mcu; esp32: c3, c6, s3)]
 #![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //
 
 crate::mods_in! {
     #[cfg(feature = "esp32c3")]
-    mod_ c3;
+    pub mod_ c3;
     #[cfg(feature = "esp32c6")]
-    mod_ c6;
+    pub mod_ c6;
     #[cfg(feature = "esp32s3")]
-    mod_ s3;
+    pub mod_ s3;
 
     #[cfg(feature = "esp32")]
     mod i2c;
@@ -22,7 +22,7 @@ crate::mods_in! {
     #[cfg(feature = "esp32")]
     mod usb_serial_jtag;
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
         #[cfg(feature = "esp32")]
         pub use super::{
@@ -31,11 +31,21 @@ crate::mods_out! { // _mods
             spi::EspSpi,
             usb_serial_jtag::EspUsbSerialJtag,
         };
+    }
+    _pub_mods {
         #[cfg(feature = "esp32c3")]
         pub use super::c3::_all::*;
         #[cfg(feature = "esp32c6")]
         pub use super::c6::_all::*;
         #[cfg(feature = "esp32s3")]
         pub use super::s3::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "esp32c3")]
+        pub use super::c3::McuEsp32C3;
+        #[doc(inline)] #[cfg(feature = "esp32c6")]
+        pub use super::c6::McuEsp32C6;
+        #[doc(inline)] #[cfg(feature = "esp32s3")]
+        pub use super::s3::McuEsp32S3;
     }
 }

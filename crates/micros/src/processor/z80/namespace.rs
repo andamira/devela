@@ -2,7 +2,11 @@
 //! Defines [`ProcessorZ80`].
 //
 
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(
+    feature = "unsafe_hint",
+    any(target_arch = "z80", all(doc, target_arch = "x86_64"))
+))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 use crate::asm;
 
 #[doc = crate::_tags!(hw namespace)]
@@ -11,6 +15,11 @@ use crate::asm;
     location("processor/z80", struct ProcessorZ80),
     test_size_of(ProcessorZ80 = 0),
 }]
+#[cfg_attr(
+    feature = "spectrum48",
+    doc = "Current computer support includes [`ComputerSpectrum48`][crate::ComputerSpectrum48]."
+)]
+///
 /// # References
 ///
 /// See the [Zilog Z80 CPU User Manual pdf] and the [Z80 Sinclair Wiki].
@@ -21,7 +30,8 @@ use crate::asm;
 pub struct ProcessorZ80;
 
 /// # Execution
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(feature = "unsafe_hint", any(target_arch = "z80", all(doc, target_arch = "x86_64"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 impl ProcessorZ80 {
     /// Halts execution until an accepted interrupt or NMI resumes the processor.
     ///
@@ -48,7 +58,8 @@ impl ProcessorZ80 {
 ///   and a byte supplied during interrupt acknowledgement.
 ///
 /// See the Zilog *Z80 CPU User Manual*.
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(feature = "unsafe_hint", any(target_arch = "z80", all(doc, target_arch = "x86_64"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 impl ProcessorZ80 {
     /// Disables maskable interrupts.
     #[inline(always)]
@@ -89,7 +100,7 @@ impl ProcessorZ80 {
             asm!("im 1", options(nostack));
         }
     }
-    /// Selects Z80 interrupt mode 1.
+    /// Selects Z80 interrupt mode 2.
     ///
     /// # Safety
     /// The active machine must provide a valid mode-2 interrupt handler.
@@ -102,7 +113,8 @@ impl ProcessorZ80 {
 }
 
 /// # I/O
-#[cfg(all(target_arch = "z80", feature = "unsafe_hint"))]
+#[cfg(all(feature = "unsafe_hint", any(target_arch = "z80", all(doc, target_arch = "x86_64"))))]
+#[cfg_attr(nightly_doc, doc(cfg(all(target_arch = "z80", feature = "unsafe_hint"))))]
 impl ProcessorZ80 {
     /// Writes one byte to a Z80 I/O port.
     ///

@@ -201,17 +201,23 @@
 - new types: `AvrTimer0`, `AvrTimer1`, `AvrTimer2`.
 
 #### mcu::esp32
-- new macros: `esp32_c3_direct_boot!`, `esp32_c6_direct_boot!`, `esp32_s3_startup!`.
-- new types:
-  - `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3SystemTimer`, `Esp32C3Uart`.
-  - `Esp32C6Pin`, `Esp32C6SpiCmdData`.
-  - `Esp32S3Pin`.
-  - `EspI2c`, `EspReg32`, `EspSpi`, `EspUsbSerialJtag`.
-  - `McuEsp32C3`, `McuEsp32C6`, `McuEsp32S3`.
-- add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
-- add ESP32-C6 direct-boot startup and linker support, including boot-watchdog handoff and GPIO pad routing.
-- add ESP32-S3 linker support and low-level GPIO, I²C0, and USB Serial/JTAG access.
+- new types: `EspI2c`, `EspReg32`, `EspSpi`, `EspUsbSerialJtag`.
 - add blocking I²C reads and repeated-start write→read transfers.
+
+##### mcu::esp32::c3
+- new macro: `esp32_c3_direct_boot!`.
+- new types: `Esp32C3Pin`, `Esp32C3Rng`, `Esp32C3SystemTimer`, `Esp32C3Uart`, `McuEsp32C3`.
+- add ESP32-C3 direct-boot startup and linker support, including boot-watchdog handoff.
+
+##### mcu::esp32::c6
+- new macro:  `esp32_c6_direct_boot!`.
+- new types: `Esp32C6Pin`, `Esp32C6SpiCmdData`, `McuEsp32C6`.
+- add ESP32-C6 direct-boot startup and linker support, including boot-watchdog handoff and GPIO pad routing.
+
+##### mcu::esp32::s3
+- new macro: `esp32_s3_startup!`.
+- new types: `Esp32S3Pin`, `McuEsp32S3`.
+- add ESP32-S3 linker support and low-level GPIO, I²C0, and USB Serial/JTAG access.
 
 #### mcu::sam
 - new types: `McuSam3x8e`, `SamPin`, `SamPort`, `SamReg32`.

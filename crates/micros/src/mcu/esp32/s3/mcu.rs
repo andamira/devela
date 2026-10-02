@@ -9,7 +9,7 @@ use crate::{EspI2c, EspReg32, EspUsbSerialJtag};
 #[doc = crate::_tags!(hw namespace)]
 /// ESP32-S3 microcontroller namespace.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct McuEsp32S3),
+    location("mcu/esp32/s3", struct McuEsp32S3),
     test_size_of(McuEsp32S3 = 0),
 }]
 /// The ESP32-S3 is a dual-core 32-bit Xtensa LX7 microcontroller running

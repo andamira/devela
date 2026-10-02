@@ -9,7 +9,7 @@ use crate::{EspReg32, McuEsp32S3};
 #[doc = crate::_tags!(hw io)]
 /// An ESP32-S3 GPIO pin identified by its GPIO number.
 #[doc = crate::_doc_meta!{
-    location("mcu/esp32", struct Esp32S3Pin),
+    location("mcu/esp32/s3", struct Esp32S3Pin),
     test_size_of(Esp32S3Pin = 1|8; niche !Option),
 }]
 /// This provides low-level access to the GPIO output latch, output-enable
