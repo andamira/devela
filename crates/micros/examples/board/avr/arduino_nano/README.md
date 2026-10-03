@@ -38,13 +38,20 @@ The examples use Rust's `avr-none` target with `atmega328p` as the target CPU.
 
 ## Build and flash
 
+The example defaults to the `blink` binary when an action is given.
+Running the script without an action prints its usage.
+
 ```sh
-./flash.sh build blink
-./flash.sh flash blink
+./flash.sh
+./flash.sh build
+./flash.sh flash
 ```
 
-Replace `blink` with any binary listed above.
-`flash` and `blink` are the defaults, so `./flash.sh` builds and flashes `blink`.
+Select another binary explicitly when needed:
+
+```sh
+./flash.sh flash usb_serial_chat
+```
 
 The script builds a release ELF, reports its AVR memory usage,
 then flashes and verifies it with `avrdude`.

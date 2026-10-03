@@ -37,12 +37,13 @@ No external RISC-V compiler or linker is required.
 
 ## Build and inspect
 
-```sh
-./flash.sh build minimal
-./flash.sh inspect minimal
-./flash.sh dump minimal
+The example defaults to the `minimal` binary:
 
-./flash.sh dump abi
+```sh
+./flash.sh build
+./flash.sh inspect
+./flash.sh dump
+./flash.sh flash
 ```
 
 The dump includes the ELF RISC-V attributes and a no-alias disassembly

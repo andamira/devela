@@ -6,30 +6,22 @@ set -e
 
 #* Config *#
 
-# Invoking directory; remains the example directory through a local symlink.
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-
-# Resolve the actual tool directory to find shared helpers.
-SELF="$0"
-while [ -L "$SELF" ]; do
-    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
-    LINK="$(readlink "$SELF")"
-
-    case "$LINK" in
-        /*) SELF="$LINK" ;;
-        *)  SELF="$BASE/$LINK" ;;
-    esac
-done
-TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$TOOLS_DIR/_flash-common.sh"
 
+DIR="${EXAMPLE_DIR:-}"
+[ -n "$DIR" ] || {
+    echo "error: EXAMPLE_DIR not configured" >&2
+    exit 1
+}
+
 # Target
-TARGET="xtensa-esp32s3-none-elf"
+TARGET="${TARGET:-xtensa-esp32s3-none-elf}"
 TARGET_DIR="$DIR/target"
 
 # Invocation
 ACTION="${1:-}"
-NAME="${2:-blink}"
+NAME="${2:-${DEFAULT_NAME:-}}"
 IGNORE_RUST_VERSION=
 if [ "${3:-}" = "--ignore-rust-version" ]; then
     IGNORE_RUST_VERSION=--ignore-rust-version
@@ -80,12 +72,10 @@ build() {
         --bin "$NAME" \
         --target-dir "$TARGET_DIR"
 
-    echo
-    echo "elf: $ELF"
+    echo "elf:   $(display_path "$ELF")"
 
     if command -v "$SIZE" >/dev/null 2>&1; then
-        echo
-        "$SIZE" "$ELF"
+        size
     fi
 }
 

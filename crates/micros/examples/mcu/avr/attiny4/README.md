@@ -20,10 +20,13 @@ Nightly and `rust-src` are used because `core` is built locally.
 
 ## Build and inspect
 
+The example defaults to the `minimal` binary:
+
 ```sh
-./flash.sh build minimal
-./flash.sh inspect minimal
-./flash.sh dump minimal
+./flash.sh build
+./flash.sh inspect
+./flash.sh dump
+./flash.sh flash
 ```
 
 ## Flashing

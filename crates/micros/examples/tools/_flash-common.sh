@@ -5,23 +5,43 @@ require() {
     }
 }
 
+display_path() {
+    case "$1" in
+        "$DIR"/*)
+            printf '%s\n' "${1#"$DIR"/}"
+            ;;
+        *)
+            printf '%s\n' "$1"
+            ;;
+    esac
+}
+
+size() {
+    echo "memory:"
+    "$SIZE" "$ELF" |
+        awk '{ sub(/[[:space:]]+[^[:space:]]+$/, ""); print }'
+}
+
+sections() {
+    "$SIZE" -A "$ELF" |
+        awk 'NR > 1'
+}
+
 flash_action() {
     build
     flash
 }
 
 inspect() {
-    require "$SIZE"
     require "$NM"
 
-    echo
-    echo "elf: $ELF"
+    cd "$DIR"
+    ELF="$(display_path "$ELF")"
 
     echo
     echo "sections:"
-    "$SIZE" -A "$ELF"
+    sections
 
-    echo
     echo "largest symbols:"
     "$NM" -S --size-sort "$ELF" | tail -n "${INSPECT_SYMBOLS:-12}"
 }
@@ -39,11 +59,14 @@ dump_text() {
     require "$NM"
     require "$OBJDUMP"
 
+    cd "$DIR"
+    ELF="$(display_path "$ELF")"
+
     echo "ELF: $ELF"
 
     echo
     echo "===== SIZE ====="
-    "$SIZE" -A "$ELF"
+    size
 
     echo
     echo "===== FILE ====="
@@ -79,7 +102,7 @@ dump() {
 }
 
 usage() {
-    echo "usage: $0 {build|flash|inspect|dump} [binary]"
+    echo "usage: ${SCRIPT_NAME:-${0##*/}} {build|flash|inspect|dump} [binary]"
 }
 
 dispatch() {

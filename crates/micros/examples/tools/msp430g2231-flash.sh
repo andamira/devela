@@ -6,40 +6,28 @@ set -eu
 
 #* Config *#
 
-# Invoking directory; remains the example directory through a local symlink.
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-
-# Resolve the actual tool directory to find shared helpers.
-SELF="$0"
-while [ -L "$SELF" ]; do
-    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
-    LINK="$(readlink "$SELF")"
-
-    case "$LINK" in
-        /*) SELF="$LINK" ;;
-        *)  SELF="$BASE/$LINK" ;;
-    esac
-done
-TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$TOOLS_DIR/_flash-common.sh"
 
+DIR="${EXAMPLE_DIR:-}"
+[ -n "$DIR" ] || {
+    echo "error: EXAMPLE_DIR not configured" >&2
+    exit 1
+}
+
 # Target
-TARGET="msp430-none-elf"
+TARGET="${TARGET:-msp430-none-elf}"
 TARGET_DIR="$DIR/target"
 
 # Invocation
 ACTION="${1:-}"
-NAME="${2:-minimal}"
+NAME="${2:-${DEFAULT_NAME:-}}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
 
 # Inspection
 INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
-
-# Flashing
-PORT="${PORT:-/dev/ttyACM0}"
-UPLOAD_BAUD="${UPLOAD_BAUD:-115200}"
 
 # Host tools
 CC="${CC:-msp430-elf-gcc}"
@@ -62,13 +50,11 @@ build() {
         --bin "$NAME" \
         --target-dir "$TARGET_DIR"
 
-    if command -v "$SIZE" >/dev/null 2>&1; then
-        echo
-        "$SIZE" "$ELF"
-    fi
+    echo "elf:   $(display_path "$ELF")"
 
-    echo
-    echo "elf: $ELF"
+    if command -v "$SIZE" >/dev/null 2>&1; then
+        size
+    fi
 }
 
 flash() {

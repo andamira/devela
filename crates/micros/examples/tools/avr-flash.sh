@@ -7,32 +7,22 @@ set -eu
 
 #* Config *#
 
-# Invoking directory; remains the example directory through a local symlink,
-# or may be provided explicitly by a wrapper.
-INVOKING_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-DIR="${EXAMPLE_DIR:-$INVOKING_DIR}"
-
-# Resolve the actual tool directory to find shared helpers.
-SELF="$0"
-while [ -L "$SELF" ]; do
-    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
-    LINK="$(readlink "$SELF")"
-
-    case "$LINK" in
-        /*) SELF="$LINK" ;;
-        *)  SELF="$BASE/$LINK" ;;
-    esac
-done
-TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$TOOLS_DIR/_flash-common.sh"
 
+DIR="${EXAMPLE_DIR:-}"
+[ -n "$DIR" ] || {
+    echo "error: EXAMPLE_DIR not configured" >&2
+    exit 1
+}
+
 # Target
-TARGET="avr-none"
+TARGET="${TARGET:-avr-none}"
 TARGET_DIR="$DIR/target"
 
 # Invocation
 ACTION="${1:-}"
-NAME="${2:-${DEFAULT_NAME:-blink}}"
+NAME="${2:-${DEFAULT_NAME:-}}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME.elf"
@@ -64,13 +54,11 @@ build() {
         --bin "$NAME" \
         --target-dir "$TARGET_DIR"
 
-    if command -v "$SIZE" >/dev/null 2>&1; then
-        echo
-        "$SIZE" "$ELF"
-    fi
+    echo "elf:   $(display_path "$ELF")"
 
-    echo
-    echo "elf: $ELF"
+    if command -v "$SIZE" >/dev/null 2>&1; then
+        size
+    fi
 }
 
 flash() {

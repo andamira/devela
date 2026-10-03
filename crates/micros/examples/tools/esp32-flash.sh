@@ -1,35 +1,32 @@
 #!/bin/sh
 #
-# Builds, flashes, inspects or dumps an ESP32-C3 example binary.
+# Shared ESP32 direct build, flash, inspect, and dump tool.
+# Example-local wrappers provide target-specific defaults.
 
 set -eu
 
 #* Config *#
 
-# Invoking directory; remains the example directory through a local symlink.
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-
-# Resolve the actual tool directory to find shared helpers.
-SELF="$0"
-while [ -L "$SELF" ]; do
-    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
-    LINK="$(readlink "$SELF")"
-
-    case "$LINK" in
-        /*) SELF="$LINK" ;;
-        *)  SELF="$BASE/$LINK" ;;
-    esac
-done
-TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$TOOLS_DIR/_flash-common.sh"
 
-# Target
-TARGET="riscv32imc-unknown-none-elf"
+DIR="${EXAMPLE_DIR:-}"
+TARGET="${TARGET:-}"
 TARGET_DIR="$DIR/target"
+CHIP="${CHIP:-ESP32}"
+
+[ -n "$DIR" ] || {
+    echo "error: EXAMPLE_DIR not configured" >&2
+    exit 1
+}
+[ -n "$TARGET" ] || {
+    echo "error: TARGET not configured" >&2
+    exit 1
+}
 
 # Invocation
 ACTION="${1:-}"
-NAME="${2:-blink}"
+NAME="${2:-${DEFAULT_NAME:-}}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
@@ -79,19 +76,17 @@ build() {
     )"
 
     if [ "$HEADER" != "1d04dbae1d04dbae" ]; then
-        echo "error: invalid ESP32-C3 direct-boot header: $HEADER" >&2
+        echo "error: invalid $CHIP direct-boot header: $HEADER" >&2
         exit 1
     fi
 
-    echo
     echo "direct-boot header: $HEADER"
-    echo "elf:                $ELF"
-    echo "image:              $IMAGE"
+    echo "elf:                $(display_path "$ELF")"
+    echo "image:              $(display_path "$IMAGE")"
     echo "image size:         $(wc -c < "$IMAGE") bytes"
 
     if command -v "$SIZE" >/dev/null 2>&1; then
-        echo
-        "$SIZE" "$ELF"
+        size
     fi
 }
 

@@ -1,45 +1,27 @@
 #!/bin/sh
 #
 # Builds, flashes, inspects or dumps a CH32V003 example binary.
-#
-# TOC
-# - configuration
-# - require()
-# - build()
-# - flash()
-# - inspect()
-# - dump_text()
-# - dump()
-# - action dispatch
 
 set -eu
 
 #* Config *#
 
-# Invoking directory; remains the example directory through a local symlink.
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-
-# Resolve the actual tool directory to find shared helpers.
-SELF="$0"
-while [ -L "$SELF" ]; do
-    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
-    LINK="$(readlink "$SELF")"
-
-    case "$LINK" in
-        /*) SELF="$LINK" ;;
-        *)  SELF="$BASE/$LINK" ;;
-    esac
-done
-TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$TOOLS_DIR/_flash-common.sh"
 
+DIR="${EXAMPLE_DIR:-}"
+[ -n "$DIR" ] || {
+    echo "error: EXAMPLE_DIR not configured" >&2
+    exit 1
+}
+
 # Target
-TARGET="riscv32e-unknown-none-elf"
+TARGET="${TARGET:-riscv32e-unknown-none-elf}"
 TARGET_DIR="$DIR/target"
 
 # Invocation
 ACTION="${1:-}"
-NAME="${2:-minimal}"
+NAME="${2:-${DEFAULT_NAME:-}}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
@@ -47,10 +29,6 @@ IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
 # Inspection
 INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
-
-# Flashing
-PART="${PART:-t4}"
-PROGRAMMER="${PROGRAMMER:-usbasp}"
 
 # Host tools
 OBJCOPY="${OBJCOPY:-rust-objcopy}"
@@ -74,14 +52,12 @@ build() {
     require "$OBJCOPY"
     "$OBJCOPY" -O binary "$ELF" "$IMAGE"
 
-    echo
-    echo "elf:    $ELF"
-    echo "binary: $IMAGE"
-    echo "size:   $(wc -c < "$IMAGE") bytes"
+    echo "elf:                $(display_path "$ELF")"
+    echo "image:              $(display_path "$IMAGE")"
+    echo "image size:         $(wc -c < "$IMAGE") bytes"
 
     if command -v "$SIZE" >/dev/null 2>&1; then
-        echo
-        "$SIZE" "$ELF"
+        size
     fi
 }
 
