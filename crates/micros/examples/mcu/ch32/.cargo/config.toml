@@ -1,0 +1,11 @@
+[build]
+target = "riscv32e-unknown-none-elf"
+
+[target.riscv32e-unknown-none-elf]
+rustflags = [
+    "-C", "target-feature=+c",
+    "-C", "link-arg=-Tlink.x",
+]
+
+[unstable]
+build-std = ["core"]

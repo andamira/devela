@@ -7,7 +7,7 @@ edition = "2024"
 publish = false
 
 [dependencies.devela_micros]
-path = "../../../../"
+path = "../../../.."
 default-features = false
 features = [
 	"arduino_diecimila",

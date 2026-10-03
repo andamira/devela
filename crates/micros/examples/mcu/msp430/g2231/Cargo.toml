@@ -1,19 +1,17 @@
 [workspace]
 
 [package]
-name = "board_arduino_mega2560"
-# version = "0.0.0"
+name = "mcu_msp430_g2231"
+version = "0.0.0"
 edition = "2024"
 publish = false
+
+[dependencies]
+msp430-rt = "0.4.1" # TEMP
 
 [dependencies.devela_micros]
 path = "../../../.."
 default-features = false
-features = [
-	"arduino_mega2560",
-	# "time",
-	"unsafe_hint", "unsafe_mmio",
-]
 
 [profile.release]
 opt-level = "s"
@@ -23,6 +21,3 @@ panic = "abort"
 
 [profile.dev]
 panic = "abort"
-
-[lints.cargo]
-non_kebab_case_bins = "allow"

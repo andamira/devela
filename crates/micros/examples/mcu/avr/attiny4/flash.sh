@@ -1,0 +1,1 @@
+../../../tools/attiny4-flash.sh

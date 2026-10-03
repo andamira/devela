@@ -1,0 +1,11 @@
+[build]
+target = "avr-none"
+
+[target.avr-none]
+rustflags = [
+	"-C", "target-cpu=attiny4",
+	# "-C", "target-cpu=attiny10",
+]
+
+[unstable]
+build-std = ["core"]

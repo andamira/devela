@@ -1,0 +1,1 @@
+../../../tools/msp430g2231-flash.sh

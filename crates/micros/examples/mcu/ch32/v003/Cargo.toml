@@ -1,7 +1,7 @@
 [workspace]
 
 [package]
-name = "board_arduino_mega2560"
+name = "mcu_ch32v003"
 # version = "0.0.0"
 edition = "2024"
 publish = false
@@ -9,11 +9,6 @@ publish = false
 [dependencies.devela_micros]
 path = "../../../.."
 default-features = false
-features = [
-	"arduino_mega2560",
-	# "time",
-	"unsafe_hint", "unsafe_mmio",
-]
 
 [profile.release]
 opt-level = "s"

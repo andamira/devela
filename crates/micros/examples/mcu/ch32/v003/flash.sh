@@ -1,0 +1,1 @@
+../../../tools/ch32v003-flash.sh
