@@ -45,7 +45,7 @@ See also
 - 1.99: `a`[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
 - 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
 - 1.99: `c`[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
-- 1.99: ` `[do not take `doc(cfg())` into account when filtering doctests](https://github.com/rust-lang/rust/pull/159014)
+- 1.99: ` `[do not take `doc(cfg)` into account when filtering doctests](https://github.com/rust-lang/rust/pull/159014)
 - 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
 - 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
@@ -104,6 +104,7 @@ See also
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: ` `[diagnostic::on_unknown](https://github.com/rust-lang/rust/pull/163636)
 - 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
