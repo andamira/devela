@@ -1,1 +1,1 @@
-../../../tools/esp32-c3-flash.sh
+../../../tools/esp32-c6-flash.sh

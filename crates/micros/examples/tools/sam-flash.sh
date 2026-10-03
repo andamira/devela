@@ -1,50 +1,57 @@
 #!/bin/sh
 #
 # Builds, flashes, inspects or dumps a SAM example binary.
-#
-# TOC
-# - configuration
-# - require()
-# - build()
-# - enter_samba()
-# - flash()
-# - reset()
-# - inspect()
-# - dump_text()
-# - dump()
-# - action dispatch
 
 set -eu
 
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-TARGET_DIR="$DIR/target"
-TARGET="thumbv7m-none-eabi"
+#* Config *#
 
+# Invoking directory; remains the example directory through a local symlink.
+DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# Resolve the actual tool directory to find shared helpers.
+SELF="$0"
+while [ -L "$SELF" ]; do
+    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+    LINK="$(readlink "$SELF")"
+
+    case "$LINK" in
+        /*) SELF="$LINK" ;;
+        *)  SELF="$BASE/$LINK" ;;
+    esac
+done
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+. "$TOOLS_DIR/_flash-common.sh"
+
+# Target
+TARGET="thumbv7m-none-eabi"
+TARGET_DIR="$DIR/target"
+
+# Invocation
 ACTION="${1:-flash}"
 NAME="${2:-blink}"
 
-PORT="${PORT:-/dev/ttyACM0}"
-BOSSAC_PORT="${PORT#/dev/}"
-
+# Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
 BIN="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
-# Host tools:
-# - arm-none-eabi-{objcopy,size,nm,objdump}: GNU Arm binutils
-# - bossac: SAM-BA entry and flashing
-# - python3: final Programming-Port reset
+# Inspection
+INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+
+# Flashing
+PORT="${PORT:-/dev/ttyACM0}"
+BOSSAC_PORT="${PORT#/dev/}"
+
+# Host tools
 OBJCOPY="${OBJCOPY:-arm-none-eabi-objcopy}"
 SIZE="${SIZE:-arm-none-eabi-size}"
 NM="${NM:-arm-none-eabi-nm}"
 OBJDUMP="${OBJDUMP:-arm-none-eabi-objdump}"
-INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+FLASHER="${FLASHER:-bossac}"
+PYTHON="${PYTHON:-python3}"
 
-require() {
-    command -v "$1" >/dev/null 2>&1 || {
-        echo "error: $1 not found" >&2
-        exit 1
-    }
-}
+
+#* Functions *#
 
 build() {
     cd "$DIR"
@@ -74,7 +81,7 @@ enter_samba() {
     # Use BOSSA only to trigger the Due Programming Port's 1200-baud
     # ERASE + RESET sequence. Some BOSSA versions reconnect before ROM
     # SAM-BA is ready, so ignore that first connection result and wait.
-    bossac \
+    "$FLASHER" \
         --port="$BOSSAC_PORT" \
         --usb-port=0 \
         --arduino-erase \
@@ -87,7 +94,7 @@ flash() {
     echo
     echo "flashing: $PORT"
 
-    bossac \
+    "$FLASHER" \
         --port="$BOSSAC_PORT" \
         --usb-port=0 \
         -e -w -v -b \
@@ -101,7 +108,7 @@ reset() {
     # At a non-1200 baud rate, the Due's ATmega16U2 treats a DTR rising
     # edge as RESET-only. This avoids BOSSA -R, which did not reliably
     # leave the tested board running after upload.
-    python3 - "$PORT" <<'PY'
+    "$PYTHON" - "$PORT" <<'PY'
 import fcntl
 import os
 import struct
@@ -128,88 +135,19 @@ PY
     sleep 0.5
 }
 
-inspect() {
-    require "$SIZE"
-    require "$NM"
+flash_action() {
+    require "$FLASHER"
+    require "$PYTHON"
 
-    echo
-    echo "elf: $ELF"
+    [ -e "$PORT" ] || {
+        echo "error: serial port not found: $PORT" >&2
+        exit 1
+    }
 
-    echo
-    echo "sections:"
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "largest symbols:"
-    "$NM" -S --size-sort "$ELF" | tail -n "$INSPECT_SYMBOLS"
+    build
+    enter_samba
+    flash
+    reset
 }
 
-dump_text() {
-    require "$SIZE"
-    require "$NM"
-    require "$OBJDUMP"
-
-    echo "ELF: $ELF"
-
-    echo
-    echo "===== SIZE ====="
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "===== FILE ====="
-    "$OBJDUMP" -f "$ELF"
-
-    echo
-    echo "===== SECTIONS ====="
-    "$OBJDUMP" -h "$ELF"
-
-    echo
-    echo "===== SYMBOLS ====="
-    "$NM" -n -S "$ELF"
-
-    echo
-    echo "===== DISASSEMBLY ====="
-    "$OBJDUMP" -d "$ELF"
-}
-
-dump() {
-    if [ -t 1 ] && [ -n "${EDITOR:-}" ]; then
-        DUMP="$TARGET_DIR/$TARGET/release/$NAME.dump.txt"
-        dump_text > "$DUMP"
-
-        echo "dump: $DUMP"
-        "$EDITOR" "$DUMP"
-    else
-        dump_text
-    fi
-}
-
-case "$ACTION" in
-    build)
-        build
-        ;;
-    flash)
-        require bossac
-        require python3
-        [ -e "$PORT" ] || {
-            echo "error: serial port not found: $PORT" >&2
-            exit 1
-        }
-        build
-        enter_samba
-        flash
-        reset
-        ;;
-    inspect)
-        build
-        inspect
-        ;;
-    dump)
-        build
-        dump
-        ;;
-    *)
-        echo "usage: $0 [build|flash|inspect|dump] [binary]" >&2
-        exit 2
-        ;;
-esac
+dispatch

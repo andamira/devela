@@ -1,47 +1,54 @@
 #!/bin/sh
 #
 # Builds, flashes, inspects or dumps an ESP32-C6 example binary.
-#
-# TOC
-# - configuration
-# - require()
-# - find_objcopy()
-# - build()
-# - flash()
-# - inspect()
-# - dump_text()
-# - dump()
-# - action dispatch
 
 set -eu
 
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-TARGET_DIR="$DIR/target"
-TARGET="riscv32imac-unknown-none-elf"
+#* Config *#
 
+# Invoking directory; remains the example directory through a local symlink.
+DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# Resolve the actual tool directory to find shared helpers.
+SELF="$0"
+while [ -L "$SELF" ]; do
+    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+    LINK="$(readlink "$SELF")"
+
+    case "$LINK" in
+        /*) SELF="$LINK" ;;
+        *)  SELF="$BASE/$LINK" ;;
+    esac
+done
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+. "$TOOLS_DIR/_flash-common.sh"
+
+# Target
+TARGET="riscv32imac-unknown-none-elf"
+TARGET_DIR="$DIR/target"
+
+# Invocation
 ACTION="${1:-flash}"
 NAME="${2:-blink}"
 
-PORT="${PORT:-/dev/ttyACM0}"
-
+# Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
 IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
-# Host tools:
-# - rust-{objcopy,size,nm,objdump}: cargo-binutils / Rust LLVM tools
-# - llvm-objcopy: optional objcopy fallback
-# - espflash: flashing
+# Inspection
+INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+
+# Flashing
+PORT="${PORT:-/dev/ttyACM0}"
+
+# Host tools
 SIZE="${SIZE:-rust-size}"
 NM="${NM:-rust-nm}"
 OBJDUMP="${OBJDUMP:-rust-objdump}"
-INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+FLASHER="${FLASHER:-espflash}"
 
-require() {
-    command -v "$1" >/dev/null 2>&1 || {
-        echo "error: $1 not found" >&2
-        exit 1
-    }
-}
+
+#* Functions *#
 
 find_objcopy() {
     for tool in rust-objcopy llvm-objcopy; do
@@ -89,89 +96,13 @@ build() {
 }
 
 flash() {
-    require espflash
+    require "$FLASHER"
 
     echo
     echo "flashing direct-boot image: $PORT"
 
     ESPFLASH_PORT="$PORT" \
-        espflash write-bin 0x0 "$IMAGE"
+        "$FLASHER" write-bin 0x0 "$IMAGE"
 }
 
-inspect() {
-    require "$SIZE"
-    require "$NM"
-
-    echo
-    echo "elf: $ELF"
-
-    echo
-    echo "sections:"
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "largest symbols:"
-    "$NM" -S --size-sort "$ELF" | tail -n "$INSPECT_SYMBOLS"
-}
-
-dump_text() {
-    require "$SIZE"
-    require "$NM"
-    require "$OBJDUMP"
-
-    echo "ELF: $ELF"
-
-    echo
-    echo "===== SIZE ====="
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "===== FILE ====="
-    "$OBJDUMP" -f "$ELF"
-
-    echo
-    echo "===== SECTIONS ====="
-    "$OBJDUMP" -h "$ELF"
-
-    echo
-    echo "===== SYMBOLS ====="
-    "$NM" -n -S "$ELF"
-
-    echo
-    echo "===== DISASSEMBLY ====="
-    "$OBJDUMP" -d "$ELF"
-}
-
-dump() {
-    if [ -t 1 ] && [ -n "${EDITOR:-}" ]; then
-        DUMP="$TARGET_DIR/$TARGET/release/$NAME.dump.txt"
-        dump_text > "$DUMP"
-
-        echo "dump: $DUMP"
-        "$EDITOR" "$DUMP"
-    else
-        dump_text
-    fi
-}
-
-case "$ACTION" in
-    build)
-        build
-        ;;
-    flash)
-        build
-        flash
-        ;;
-    inspect)
-        build
-        inspect
-        ;;
-    dump)
-        build
-        dump
-        ;;
-    *)
-        echo "usage: $0 [build|flash|inspect|dump] [binary]" >&2
-        exit 2
-        ;;
-esac
+dispatch

@@ -1,24 +1,33 @@
 #!/bin/sh
 #
 # Builds, flashes, inspects or dumps an ESP-S3 example binary.
-#
-# TOC
-# - configuration
-# - ESP environment
-# - require()
-# - build()
-# - flash()
-# - inspect()
-# - dump_text()
-# - dump()
-# - action dispatch
 
 set -e
 
-DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-TARGET_DIR="$DIR/target"
-TARGET="xtensa-esp32s3-none-elf"
+#* Config *#
 
+# Invoking directory; remains the example directory through a local symlink.
+DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# Resolve the actual tool directory to find shared helpers.
+SELF="$0"
+while [ -L "$SELF" ]; do
+    BASE="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+    LINK="$(readlink "$SELF")"
+
+    case "$LINK" in
+        /*) SELF="$LINK" ;;
+        *)  SELF="$BASE/$LINK" ;;
+    esac
+done
+TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)"
+. "$TOOLS_DIR/_flash-common.sh"
+
+# Target
+TARGET="xtensa-esp32s3-none-elf"
+TARGET_DIR="$DIR/target"
+
+# Invocation
 ACTION="${1:-flash}"
 NAME="${2:-blink}"
 IGNORE_RUST_VERSION=
@@ -26,22 +35,27 @@ if [ "${3:-}" = "--ignore-rust-version" ]; then
     IGNORE_RUST_VERSION=--ignore-rust-version
 fi
 
-PORT="${PORT:-/dev/ttyACM0}"
-
+# Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
+# IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
-# espup generates this file after installing the Xtensa Rust environment.
-ESP_ENV="${ESPUP_EXPORT_FILE:-$HOME/export-esp.sh}"
+# Inspection
+INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+
+# Flashing
+PORT="${PORT:-/dev/ttyACM0}"
 
 # Host tools supplied by the Espressif toolchain.
 SIZE="${SIZE:-xtensa-esp-elf-size}"
 NM="${NM:-xtensa-esp-elf-nm}"
 OBJDUMP="${OBJDUMP:-xtensa-esp-elf-objdump}"
-INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
+FLASHER="${FLASHER:-espflash}"
 
 
-# ESP environment
-# ------------------------------------------------------------------------------
+#* ESP environment *#
+
+# espup generates this file after installing the Xtensa Rust environment.
+ESP_ENV="${ESPUP_EXPORT_FILE:-$HOME/export-esp.sh}"
 
 if [ ! -r "$ESP_ENV" ]; then
     echo "error: ESP environment file not found: $ESP_ENV" >&2
@@ -56,13 +70,7 @@ fi
 set -u
 
 
-require() {
-    command -v "$1" >/dev/null 2>&1 || {
-        echo "error: $1 not found" >&2
-        exit 1
-    }
-}
-
+#* Functions *#
 
 build() {
     cd "$DIR"
@@ -84,93 +92,13 @@ build() {
 
 
 flash() {
-    require espflash
+    require "$FLASHER"
 
     echo
     echo "flashing: $PORT"
 
     ESPFLASH_PORT="$PORT" \
-        espflash flash "$ELF"
+        "$FLASHER" flash "$ELF"
 }
 
-
-inspect() {
-    require "$SIZE"
-    require "$NM"
-
-    echo
-    echo "elf: $ELF"
-
-    echo
-    echo "sections:"
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "largest symbols:"
-    "$NM" -S --size-sort "$ELF" | tail -n "$INSPECT_SYMBOLS"
-}
-
-
-dump_text() {
-    require "$SIZE"
-    require "$NM"
-    require "$OBJDUMP"
-
-    echo "ELF: $ELF"
-
-    echo
-    echo "===== SIZE ====="
-    "$SIZE" -A "$ELF"
-
-    echo
-    echo "===== FILE ====="
-    "$OBJDUMP" -f "$ELF"
-
-    echo
-    echo "===== SECTIONS ====="
-    "$OBJDUMP" -h "$ELF"
-
-    echo
-    echo "===== SYMBOLS ====="
-    "$NM" -n -S "$ELF"
-
-    echo
-    echo "===== DISASSEMBLY ====="
-    "$OBJDUMP" -d "$ELF"
-}
-
-
-dump() {
-    if [ -t 1 ] && [ -n "${EDITOR:-}" ]; then
-        DUMP="$TARGET_DIR/$TARGET/release/$NAME.dump.txt"
-        dump_text > "$DUMP"
-
-        echo "dump: $DUMP"
-        "$EDITOR" "$DUMP"
-    else
-        dump_text
-    fi
-}
-
-
-case "$ACTION" in
-    build)
-        build
-        ;;
-    flash)
-        build
-        flash
-        ;;
-    inspect)
-        build
-        inspect
-        ;;
-    dump)
-        build
-        dump
-        ;;
-    *)
-        echo "usage: $0 [build|flash|inspect|dump] [binary] [--ignore-rust-version]" >&2
-        exit 2
-        ;;
-esac
+dispatch
