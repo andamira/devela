@@ -33,29 +33,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.99 will be stable on [2026-10-01](https://releases.rs/docs/1.99.0/) `nightly_stable_1_99`
-> - <https://github.com/rust-lang/rust/milestone/147>
-<!-- > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.99.0> -->
-
-- 1.99: ` `[abi_custom](https://github.com/rust-lang/rust/pull/158504)
-- 1.99: ` `[add profile debug](https://github.com/rust-lang/cargo/pull/17214)
-- 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
-- 1.99: `a`[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
-- 1.99: `a`[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
-- 1.99: `c`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
-- 1.99: `c`[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
-- 1.99: ` `[do not take `doc(cfg)` into account when filtering doctests](https://github.com/rust-lang/rust/pull/159014)
-- 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
-- 1.99: `s`[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
-- 1.99: `c`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
-- 1.99: `s`[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
-- 1.99: ` `[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
-- 1.99: ` `[PinSafePointer trait](https://github.com/rust-lang/rust/pull/156935)
-- 1.99: ` `[rustfmt: Format cfg_select!](https://github.com/rust-lang/rust/pull/154202)
-- 1.99: `a`[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
-
-
 # 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
 > - <https://github.com/rust-lang/rust/milestone/149>
 <!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
@@ -85,6 +62,7 @@ See also
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
+- 1.101: ` `[update LLVM to 22](https://github.com/rust-lang/rust/pull/163572)
 - 1.101: `a`[vec_try_remove](https://github.com/rust-lang/rust/pull/163459)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))

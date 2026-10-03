@@ -18,6 +18,7 @@
 # Repository
 
 ## workspace
+- bump MSRV to 1.99.0.
 - add new member crate `devela_micros`.
 - relocate `devela` crate under `crates/devela`.
 - nest `devela_macros` under `crates/devela/macros`.

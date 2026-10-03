@@ -61,17 +61,6 @@
 //
 // `nightly_stable` includes:
 //
-// `nightly_stable_1_99`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_99, feature(c_variadic, c_variadic_naked_functions, layout_for_ptr))]
-#![cfg_attr(
-    all(nightly_stable_1_99, feature = "alloc"),
-    feature(box_vec_non_null, vec_deque_truncate_front,)
-)]
-#![cfg_attr(
-    all(nightly_stable_1_99, feature = "std"),
-    feature(fs_set_times, local_key_cell_update,)
-)]
-//
 // `nightly_stable_1_100`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_100,
