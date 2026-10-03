@@ -28,7 +28,7 @@ TARGET="xtensa-esp32s3-none-elf"
 TARGET_DIR="$DIR/target"
 
 # Invocation
-ACTION="${1:-flash}"
+ACTION="${1:-}"
 NAME="${2:-blink}"
 IGNORE_RUST_VERSION=
 if [ "${3:-}" = "--ignore-rust-version" ]; then
@@ -37,7 +37,6 @@ fi
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
-# IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
 # Inspection
 INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"

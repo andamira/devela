@@ -38,12 +38,12 @@ TARGET="riscv32e-unknown-none-elf"
 TARGET_DIR="$DIR/target"
 
 # Invocation
-ACTION="${1:-flash}"
+ACTION="${1:-}"
 NAME="${2:-minimal}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
-BIN="$TARGET_DIR/$TARGET/release/$NAME.bin"
+IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
 # Inspection
 INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
@@ -72,12 +72,12 @@ build() {
         --target-dir "$TARGET_DIR"
 
     require "$OBJCOPY"
-    "$OBJCOPY" -O binary "$ELF" "$BIN"
+    "$OBJCOPY" -O binary "$ELF" "$IMAGE"
 
     echo
     echo "elf:    $ELF"
-    echo "binary: $BIN"
-    echo "size:   $(wc -c < "$BIN") bytes"
+    echo "binary: $IMAGE"
+    echo "size:   $(wc -c < "$IMAGE") bytes"
 
     if command -v "$SIZE" >/dev/null 2>&1; then
         echo
@@ -91,7 +91,7 @@ flash() {
     echo
     echo "flashing CH32V003"
 
-    "$FLASHER" flash "$BIN"
+    "$FLASHER" flash "$IMAGE"
 }
 
 dump_extra_before() {

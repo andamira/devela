@@ -28,12 +28,12 @@ TARGET="thumbv7m-none-eabi"
 TARGET_DIR="$DIR/target"
 
 # Invocation
-ACTION="${1:-flash}"
+ACTION="${1:-}"
 NAME="${2:-blink}"
 
 # Artifacts
 ELF="$TARGET_DIR/$TARGET/release/$NAME"
-BIN="$TARGET_DIR/$TARGET/release/$NAME.bin"
+IMAGE="$TARGET_DIR/$TARGET/release/$NAME.bin"
 
 # Inspection
 INSPECT_SYMBOLS="${INSPECT_SYMBOLS:-12}"
@@ -62,7 +62,7 @@ build() {
         --target-dir "$TARGET_DIR"
 
     require "$OBJCOPY"
-    "$OBJCOPY" -O binary "$ELF" "$BIN"
+    "$OBJCOPY" -O binary "$ELF" "$IMAGE"
 
     if command -v "$SIZE" >/dev/null 2>&1; then
         echo
@@ -71,7 +71,7 @@ build() {
 
     echo
     echo "elf:    $ELF"
-    echo "binary: $BIN"
+    echo "binary: $IMAGE"
 }
 
 enter_samba() {
@@ -98,7 +98,7 @@ flash() {
         --port="$BOSSAC_PORT" \
         --usb-port=0 \
         -e -w -v -b \
-        "$BIN"
+        "$IMAGE"
 }
 
 reset() {

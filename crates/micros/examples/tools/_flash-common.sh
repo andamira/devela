@@ -78,6 +78,10 @@ dump() {
     fi
 }
 
+usage() {
+    echo "usage: $0 {build|flash|inspect|dump} [binary]"
+}
+
 dispatch() {
     case "$ACTION" in
         build)
@@ -94,8 +98,12 @@ dispatch() {
             build
             dump
             ;;
+        ""|-h|--help|help)
+            usage
+            ;;
         *)
-            echo "usage: $0 [build|flash|inspect|dump] [binary]" >&2
+            echo "error: unknown action: $ACTION" >&2
+            usage >&2
             exit 2
             ;;
     esac

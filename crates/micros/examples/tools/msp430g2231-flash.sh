@@ -28,7 +28,7 @@ TARGET="msp430-none-elf"
 TARGET_DIR="$DIR/target"
 
 # Invocation
-ACTION="${1:-flash}"
+ACTION="${1:-}"
 NAME="${2:-minimal}"
 
 # Artifacts
