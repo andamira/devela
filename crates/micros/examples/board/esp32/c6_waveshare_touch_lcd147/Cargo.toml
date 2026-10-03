@@ -11,8 +11,7 @@ path = "../../../.."
 default-features = false
 features = [
 	"waveshare_c6_touch_lcd147",
-	"unsafe_mmio",
-	"unsafe_hint", # Arch::relax()
+	"unsafe_mmio", "unsafe_hint",
 ]
 
 [profile.release]

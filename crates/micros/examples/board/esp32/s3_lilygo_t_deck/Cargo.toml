@@ -14,8 +14,7 @@ path = "../../../.."
 default-features = false
 features = [
 	"lilygo_t_deck_s3",
-	"unsafe_mmio",
-	"unsafe_hint",
+	"unsafe_mmio", "unsafe_hint",
 ]
 
 [profile.release]
