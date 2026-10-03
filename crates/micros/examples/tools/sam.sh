@@ -7,7 +7,7 @@ set -eu
 #* Config *#
 
 TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-. "$TOOLS_DIR/_flash-common.sh"
+. "$TOOLS_DIR/_common.sh"
 
 DIR="${EXAMPLE_DIR:-}"
 [ -n "$DIR" ] || {
@@ -24,6 +24,7 @@ TARGET_DIR="$DIR/target"
 }
 
 # Invocation
+ACTIONS="build|inspect|dump|flash"
 ACTION="${1:-}"
 NAME="${2:-${DEFAULT_NAME:-}}"
 
@@ -85,7 +86,7 @@ enter_samba() {
     sleep 1.5
 }
 
-flash() {
+flash_action() {
     echo
     echo "flashing: $PORT"
 
@@ -94,6 +95,21 @@ flash() {
         --usb-port=0 \
         -e -w -v -b \
         "$IMAGE"
+}
+
+flash_action() {
+    require "$FLASHER"
+    require "$PYTHON"
+
+    [ -e "$PORT" ] || {
+        echo "error: serial port not found: $PORT" >&2
+        exit 1
+    }
+
+    build
+    enter_samba
+    flash
+    reset
 }
 
 reset() {
@@ -128,21 +144,6 @@ os.close(fd)
 PY
 
     sleep 0.5
-}
-
-flash_action() {
-    require "$FLASHER"
-    require "$PYTHON"
-
-    [ -e "$PORT" ] || {
-        echo "error: serial port not found: $PORT" >&2
-        exit 1
-    }
-
-    build
-    enter_samba
-    flash
-    reset
 }
 
 dispatch

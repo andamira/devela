@@ -13,4 +13,4 @@ PROGRAMMER="${PROGRAMMER:-usbasp}"
 
 export EXAMPLE_DIR DEFAULT_NAME SCRIPT_NAME PART PROGRAMMER
 
-exec "$DIR/../../../tools/avr-flash.sh" "$@"
+exec "$DIR/../../../tools/avr.sh" "$@"

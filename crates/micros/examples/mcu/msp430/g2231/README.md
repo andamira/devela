@@ -41,10 +41,10 @@ sudo apt install mspdebug
 The example defaults to the `minimal` binary:
 
 ```sh
-./flash.sh build
-./flash.sh inspect
-./flash.sh dump
-./flash.sh flash
+./example.sh build
+./example.sh inspect
+./example.sh dump
+./example.sh flash
 ```
 
 ## Flashing
@@ -52,7 +52,7 @@ The example defaults to the `minimal` binary:
 The shared script uses MSPDebug and defaults to its `rf2500` driver:
 
 ```sh
-./flash.sh flash minimal
+./example.sh flash minimal
 ```
 
 An MSP-EXP430G2 can provide the Spy-Bi-Wire programming/debug connection

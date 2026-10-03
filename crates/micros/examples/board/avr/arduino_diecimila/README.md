@@ -32,15 +32,15 @@ The example defaults to the `blink` binary when an action is given.
 Running the script without an action prints its usage.
 
 ```sh
-./flash.sh
-./flash.sh build
-./flash.sh flash
+./example.sh
+./example.sh build
+./example.sh flash
 ```
 
 Select another binary explicitly when needed:
 
 ```sh
-./flash.sh flash usb_serial_chat
+./example.sh flash usb_serial_chat
 ```
 
 The script builds a release ELF, reports its AVR memory usage,
@@ -56,7 +56,7 @@ upload baud:  19200
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyUSB1 ./flash.sh flash blink
+PORT=/dev/ttyUSB1 ./example.sh flash blink
 ```
 
 The 19200 baud default matches Arduino's maintained ATmega168 Diecimila
@@ -72,7 +72,7 @@ the firmware itself.
 Flash the USART example:
 
 ```sh
-./flash.sh flash usart_chat
+./example.sh flash usart_chat
 ```
 
 Then open the serial port at the 9600 baud rate configured by the firmware:

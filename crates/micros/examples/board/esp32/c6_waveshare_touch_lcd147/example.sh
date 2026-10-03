@@ -13,4 +13,4 @@ TARGET="${TARGET:-riscv32imac-unknown-none-elf}"
 
 export EXAMPLE_DIR DEFAULT_NAME SCRIPT_NAME CHIP TARGET
 
-exec "$DIR/../../../tools/esp32-flash.sh" "$@"
+exec "$DIR/../../../tools/esp32.sh" "$@"

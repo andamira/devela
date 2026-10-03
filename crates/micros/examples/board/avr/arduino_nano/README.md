@@ -42,15 +42,15 @@ The example defaults to the `blink` binary when an action is given.
 Running the script without an action prints its usage.
 
 ```sh
-./flash.sh
-./flash.sh build
-./flash.sh flash
+./example.sh
+./example.sh build
+./example.sh flash
 ```
 
 Select another binary explicitly when needed:
 
 ```sh
-./flash.sh flash usb_serial_chat
+./example.sh flash usb_serial_chat
 ```
 
 The script builds a release ELF, reports its AVR memory usage,
@@ -66,7 +66,7 @@ upload baud:  115200
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyUSB1 ./flash.sh flash blink
+PORT=/dev/ttyUSB1 ./example.sh flash blink
 ```
 
 Arduino Nano bootloaders use different upload baud rates. The current ATmega328P
@@ -75,7 +75,7 @@ bootloader uses 115200 baud, while the older bootloader uses 57600 baud.
 For a Nano with the old bootloader:
 
 ```sh
-UPLOAD_BAUD=57600 ./flash.sh flash blink
+UPLOAD_BAUD=57600 ./example.sh flash blink
 ```
 
 The upload baud rate must match the bootloader; it is independent of any
@@ -87,7 +87,7 @@ serial baud rate configured by the firmware itself.
 For a concise ELF overview:
 
 ```sh
-./flash.sh inspect blink
+./example.sh inspect blink
 ```
 
 This reports section sizes and the largest symbols.
@@ -95,15 +95,15 @@ This reports section sizes and the largest symbols.
 For file and section headers, the complete symbol table, and disassembly:
 
 ```sh
-./flash.sh dump blink
+./example.sh dump blink
 ```
 
 When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
 ELF and opened in the editor. Otherwise it is written to stdout:
 
 ```sh
-./flash.sh dump blink | less
-./flash.sh dump blink > /tmp/blink.dump
+./example.sh dump blink | less
+./example.sh dump blink > /tmp/blink.dump
 ```
 
 
@@ -112,7 +112,7 @@ ELF and opened in the editor. Otherwise it is written to stdout:
 Flash the USART example:
 
 ```sh
-./flash.sh flash usart_chat
+./example.sh flash usart_chat
 ```
 
 Then open the serial port at the 9600 baud rate configured by the firmware:

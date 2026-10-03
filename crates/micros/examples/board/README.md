@@ -15,7 +15,7 @@ See each directory's README for its programs, requirements, and usage.
 
 ## Host support
 
-Board helper scripts (`flash.sh`) are developed and tested on Linux.
+Board helper scripts (`example.sh`) are developed and tested on Linux.
 They use POSIX shell and standard Unix command-line tools. macOS should
 generally work with the corresponding host tools and an appropriate PORT.
 On Windows, the underlying Rust and flashing tools are available natively,

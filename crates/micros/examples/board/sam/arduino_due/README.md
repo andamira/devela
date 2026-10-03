@@ -33,12 +33,12 @@ the numeric `--usb-port=0` / `--usb-port=1` forms used here are intentional.
 
 Use the **Programming Port**, the USB connector nearest the DC power jack.
 ```sh
-./flash.sh build blink
-./flash.sh flash blink
+./example.sh build blink
+./example.sh flash blink
 ```
 
 Replace `blink` with any binary listed above. `flash` and `blink`
-are the defaults, so `./flash.sh` builds, flashes, and resets `blink`.
+are the defaults, so `./example.sh` builds, flashes, and resets `blink`.
 
 By default the script uses:
 
@@ -49,7 +49,7 @@ serial port: /dev/ttyACM0
 Override it when needed:
 
 ```sh
-PORT=/dev/ttyACM1 ./flash.sh flash blink
+PORT=/dev/ttyACM1 ./example.sh flash blink
 ```
 
 The script performs three board-specific steps:
@@ -70,7 +70,7 @@ the final reset-only DTR pulse.
 For a concise ELF overview:
 
 ```sh
-./flash.sh inspect blink
+./example.sh inspect blink
 ```
 
 This reports section sizes and the largest symbols.
@@ -78,15 +78,15 @@ This reports section sizes and the largest symbols.
 For file and section headers, the complete symbol table, and disassembly:
 
 ```sh
-./flash.sh dump blink
+./example.sh dump blink
 ```
 
 When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
 ELF and opened in the editor. Otherwise it is written to stdout:
 
 ```sh
-./flash.sh dump blink | less
-./flash.sh dump blink > /tmp/blink.dump
+./example.sh dump blink | less
+./example.sh dump blink > /tmp/blink.dump
 ```
 
 

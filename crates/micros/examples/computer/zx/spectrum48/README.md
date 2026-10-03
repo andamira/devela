@@ -61,12 +61,20 @@ substantial build time and disk space.
 
 ## Build and run
 
+The example defaults to the `screen` binary when an action is given.
+Running the script without an action prints its usage.
+
 ```sh
-./build.sh build screen
-./build.sh run screen
+./example.sh
+./example.sh build
+./example.sh run
 ```
 
-`build` and `screen` are the defaults.
+Select another binary explicitly when needed:
+
+```sh
+./example.sh run paint
+```
 
 The script:
 
@@ -112,21 +120,21 @@ screen.tap
 For the ELF layout and generated artifact sizes:
 
 ```sh
-./build.sh inspect screen
+./example.sh inspect screen
 ```
 
 For the complete symbol table and Z80 disassembly:
 
 ```sh
-./build.sh dump screen
+./example.sh dump screen
 ```
 
 When stdout is interactive and `$EDITOR` is set, the dump is saved beside
 the ELF and opened in the editor. Otherwise it is written to stdout:
 
 ```sh
-./build.sh dump screen | less
-./build.sh dump screen > /tmp/screen.dump
+./example.sh dump screen | less
+./example.sh dump screen > /tmp/screen.dump
 ```
 
 Host `file` and `readelf` may report the experimental Z80 ELF machine value

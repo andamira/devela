@@ -40,10 +40,10 @@ No external RISC-V compiler or linker is required.
 The example defaults to the `minimal` binary:
 
 ```sh
-./flash.sh build
-./flash.sh inspect
-./flash.sh dump
-./flash.sh flash
+./example.sh build
+./example.sh inspect
+./example.sh dump
+./example.sh flash
 ```
 
 The dump includes the ELF RISC-V attributes and a no-alias disassembly
@@ -55,5 +55,5 @@ Hardware flashing requires a WCH-LinkE or another programmer
 supporting the CH32V003 one-wire debug interface.
 
 ```sh
-./flash.sh flash minimal
+./example.sh flash minimal
 ```

@@ -23,10 +23,10 @@ Nightly and `rust-src` are used because `core` is built locally.
 The example defaults to the `minimal` binary:
 
 ```sh
-./flash.sh build
-./flash.sh inspect
-./flash.sh dump
-./flash.sh flash
+./example.sh build
+./example.sh inspect
+./example.sh dump
+./example.sh flash
 ```
 
 ## Flashing
@@ -34,7 +34,7 @@ The example defaults to the `minimal` binary:
 Flashing requires a TPI-capable programmer. The shared script defaults to USBasp:
 
 ```sh
-./flash.sh flash minimal
+./example.sh flash minimal
 ```
 
 The programmer firmware must support TPI for the ATtiny4/5/9/10 family.

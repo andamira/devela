@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ESP32-S3 flashing configuration for the LilyGO T-Display-S3.
+# ESP32-S3 flashing configuration for the LilyGO T-Deck.
 
 SCRIPT_NAME="${0##*/}"
 DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
@@ -12,4 +12,4 @@ TARGET="${TARGET:-xtensa-esp32s3-none-elf}"
 
 export EXAMPLE_DIR DEFAULT_NAME SCRIPT_NAME TARGET
 
-exec "$DIR/../../../tools/esp32-s3-flash.sh" "$@"
+exec "$DIR/../../../tools/esp32-s3.sh" "$@"

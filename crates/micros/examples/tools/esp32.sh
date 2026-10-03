@@ -8,7 +8,7 @@ set -eu
 #* Config *#
 
 TOOLS_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-. "$TOOLS_DIR/_flash-common.sh"
+. "$TOOLS_DIR/_common.sh"
 
 DIR="${EXAMPLE_DIR:-}"
 TARGET="${TARGET:-}"
@@ -25,6 +25,7 @@ CHIP="${CHIP:-ESP32}"
 }
 
 # Invocation
+ACTIONS="build|inspect|dump|flash"
 ACTION="${1:-}"
 NAME="${2:-${DEFAULT_NAME:-}}"
 
@@ -90,7 +91,7 @@ build() {
     fi
 }
 
-flash() {
+flash_action() {
     require "$FLASHER"
 
     echo

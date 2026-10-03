@@ -13,4 +13,4 @@ PORT="${PORT:-/dev/ttyACM0}"
 
 export EXAMPLE_DIR DEFAULT_NAME SCRIPT_NAME TARGET PORT
 
-exec "$DIR/../../../tools/sam-flash.sh" "$@"
+exec "$DIR/../../../tools/sam.sh" "$@"

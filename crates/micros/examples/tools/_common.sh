@@ -27,11 +27,6 @@ sections() {
         awk 'NR > 1'
 }
 
-flash_action() {
-    build
-    flash
-}
-
 inspect() {
     require "$NM"
 
@@ -52,6 +47,10 @@ dump_extra_before() {
 
 dump_extra_after() {
     :
+}
+
+dump_disassembly() {
+    "$OBJDUMP" -d "$ELF"
 }
 
 dump_text() {
@@ -84,7 +83,7 @@ dump_text() {
 
     echo
     echo "===== DISASSEMBLY ====="
-    "$OBJDUMP" -d "$ELF"
+    dump_disassembly
 
     dump_extra_after
 }
@@ -94,7 +93,8 @@ dump() {
         DUMP="$TARGET_DIR/$TARGET/release/$NAME.dump.txt"
         dump_text > "$DUMP"
 
-        echo "dump: $DUMP"
+        echo "dump: $(display_path "$DUMP")"
+
         "$EDITOR" "$DUMP"
     else
         dump_text
@@ -102,16 +102,19 @@ dump() {
 }
 
 usage() {
-    echo "usage: ${SCRIPT_NAME:-${0##*/}} {build|flash|inspect|dump} [binary]"
+    echo "usage: ${SCRIPT_NAME:-${0##*/}} {$ACTIONS} [binary]"
+}
+
+unsupported_action() {
+    echo "error: unknown action: $ACTION" >&2
+    usage >&2
+    exit 2
 }
 
 dispatch() {
     case "$ACTION" in
         build)
             build
-            ;;
-        flash)
-            flash_action
             ;;
         inspect)
             build
@@ -121,13 +124,19 @@ dispatch() {
             build
             dump
             ;;
+        flash)
+            build
+            flash_action
+            ;;
+        run)
+            build
+            run_action
+            ;;
         ""|-h|--help|help)
             usage
             ;;
         *)
-            echo "error: unknown action: $ACTION" >&2
-            usage >&2
-            exit 2
+            unsupported_action
             ;;
     esac
 }

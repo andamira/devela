@@ -45,25 +45,25 @@ The user needs permission to access it, commonly through the `dialout` group.
 The script defaults to flashing the `blink` binary:
 
 ```sh
-./flash.sh
+./example.sh
 ```
 
 Select another binary with the second argument:
 
 ```sh
-./flash.sh flash usb_serial_chat
+./example.sh flash usb_serial_chat
 ```
 
 Build without flashing:
 
 ```sh
-./flash.sh build usb_serial_chat
+./example.sh build usb_serial_chat
 ```
 
 The serial port can be overridden:
 
 ```sh
-PORT=/dev/ttyACM1 ./flash.sh flash usb_serial_chat
+PORT=/dev/ttyACM1 ./example.sh flash usb_serial_chat
 ```
 
 The script builds a release ELF, converts it to a raw binary, verifies the
@@ -78,7 +78,7 @@ Back up any factory firmware first if it needs to be preserved.
 For a concise ELF overview:
 
 ```sh
-./flash.sh inspect blink
+./example.sh inspect blink
 ```
 
 This reports section sizes and the largest symbols.
@@ -86,15 +86,15 @@ This reports section sizes and the largest symbols.
 For file and section headers, the complete symbol table, and disassembly:
 
 ```sh
-./flash.sh dump blink
+./example.sh dump blink
 ```
 
 When stdout is interactive and `$EDITOR` is set, the dump is saved beside the
 ELF and opened in the editor. Otherwise it is written to stdout:
 
 ```sh
-./flash.sh dump blink | less
-./flash.sh dump blink > /tmp/blink.dump
+./example.sh dump blink | less
+./example.sh dump blink > /tmp/blink.dump
 ```
 
 

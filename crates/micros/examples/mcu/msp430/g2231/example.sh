@@ -13,4 +13,4 @@ FLASHER_DRIVER="${FLASHER_DRIVER:-rf2500}"
 
 export EXAMPLE_DIR DEFAULT_NAME SCRIPT_NAME TARGET FLASHER_DRIVER
 
-exec "$DIR/../../../tools/msp430g2231-flash.sh" "$@"
+exec "$DIR/../../../tools/msp430g2231.sh" "$@"
