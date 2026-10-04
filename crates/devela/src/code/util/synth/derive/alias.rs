@@ -9,6 +9,7 @@
 /// Defines attribute aliases usable from [`macro_apply`][crate::macro_apply].
 #[doc = crate::_doc_meta!{
     location("code/util/synth", macro macro_apply_alias),
+    vendor("macro_rules_attribute"),
 }]
 /// These aliases expand to attributes,
 /// so they only apply where attributes are accepted.
@@ -57,7 +58,6 @@
 /// assert_eq!(size_of::<Small>(), 1);
 /// assert_eq!(Small::A as u8, 1);
 /// ```
-#[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! macro_apply_alias· {
@@ -130,6 +130,7 @@ pub use macro_apply_alias· as macro_apply_alias;
 /// Defines derive aliases usable from [`macro_derive`][crate::macro_derive].
 #[doc = crate::_doc_meta!{
     location("code/util/synth", macro macro_derive_alias),
+    vendor("macro_rules_attribute"),
 }]
 /// These aliases expand through declarative derive macros,
 /// so they apply to items inspected by `macro_derive`.
@@ -187,7 +188,6 @@ pub use macro_apply_alias· as macro_apply_alias;
 /// assert_eq!(Id::LABEL, "id");
 /// assert_eq!(format!("{a:?}"), "Id(7)");
 /// ```
-#[doc = crate::_doc_vendor!("macro_rules_attribute")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! macro_derive_alias· {

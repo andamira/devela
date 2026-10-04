@@ -12,10 +12,11 @@ pub(crate) fn args_os_ref_iter() -> IterArgsOsRef {
 #[doc = crate::_tags!(iterator lifetime)]
 #[doc = crate::_doc_warn_miri!(tag)]
 /// Iterator over references of command line arguments.
-#[doc = crate::_doc_meta!{location("sys/env")}]
-///
+#[doc = crate::_doc_meta!{
+    location("sys/env"),
+    vendor("argv"),
+}]
 /// See [`Env::args_os_ref()`][crate::Env#method.args_os_ref].
-#[doc = crate::_doc_vendor!("argv")]
 #[derive(Debug)]
 pub struct IterArgsOsRef {
     platform_specific: r#impl::IterArgsOsRef,

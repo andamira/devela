@@ -161,6 +161,9 @@
 - fix `_doc_location!` and `_doc_test_size_of!` to not hardcode the crate name.
 - replace uses of `__crate_name!` macro with `env!("CARGO_PKG_NAME")`.
 - gate unchecked unreachable policy on `unsafe_hint` instead of any unsafe capability.
+- update `_doc_meta!`:
+  - update style, remove horizontal bars, adjust background, margins and padding.
+  - add support for vendor information.
 
 ---
 

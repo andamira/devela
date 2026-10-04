@@ -5,6 +5,7 @@ use crate::{Mem, charu, impl_trait};
 /// Extended grapheme cluster property values from Unicode Standard Annex #29.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", enum GraphemePropCb),
+    vendor("grapheme_machine"),
     test_size_of(GraphemePropCb = 1|8; niche Option),
 }]
 /// Used by the grapheme boundary detection algorithm to determine where
@@ -16,8 +17,6 @@ use crate::{Mem, charu, impl_trait};
 /// but treated as mutually exclusive with other break properties.
 ///
 /// [0]: https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Break_Property_Values
-///
-#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[repr(u8)]
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, Eq)]
@@ -85,14 +84,13 @@ impl GraphemePropCb {
 /// Break property for Indic scripts that prevents splitting within orthographic syllables.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", enum GraphemePropInCb),
+    vendor("grapheme_machine"),
     test_size_of(GraphemePropInCb = 1|8; niche Option),
 }]
 /// Used by grapheme boundary rule [GB9c](https://www.unicode.org/reports/tr29/#GB9c)
 /// to avoid inappropriate breaks in conjunct sequences.
 ///
 /// Based on the **Indic_Conjunct_Break** property from Unicode.
-///
-#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[repr(u8)]
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, Eq)]
@@ -127,12 +125,11 @@ impl GraphemePropInCb {
 /// Combined extended grapheme cluster break properties for a single code point.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeProps),
+    vendor("grapheme_machine"),
     test_size_of(GraphemeProps = 1|8; niche !Option),
 }]
 /// Packed representation of both [`GraphemePropCb`] and [`GraphemePropInCb`]
 /// properties used by Unicode grapheme cluster [boundary rules].
-///
-#[doc = crate::_doc_vendor!("grapheme_machine")]
 ///
 /// [boundary rules]: https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
 #[repr(transparent)]

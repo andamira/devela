@@ -18,7 +18,7 @@ use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name, map,
     transmute,
 };
-::devela::_use_or_shim![_doc_meta, _doc_vendor, _tags];
+::devela::_use_or_shim![_doc_meta, _tags];
 
 // Stores the current pointers for concrete types.
 map![typeid KeyCurrentMap];
@@ -31,6 +31,7 @@ thread_local! {
 /// A guard that temporarily sets a global current ptr for `T`, restoring the old one on drop.
 #[doc = _doc_meta!{
     location("sys/mem", struct CurrentGuard),
+    vendor("current"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(CurrentGuard<u64> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -39,7 +40,6 @@ thread_local! {
 /// When dropped, it restores the previous pointer or sets a placeholder if none existed."
 ///
 /// This is useful for tracking the current instance of a type within a thread.
-#[doc = _doc_vendor!("current")]
 #[derive(Debug)]
 pub struct CurrentGuard<'a, T: Any> {
     /// The active instance of `T` for the duration of this guard.
@@ -95,6 +95,7 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 /// A marker object representing the current instance of a type `T`.
 #[doc = _doc_meta!{
     location("sys/mem", struct Current),
+    vendor("current"),
     test_size_of(Current<u64> = 0),
 }]
 /// This struct does not hold any actual value but instead allows access to
@@ -105,7 +106,6 @@ impl<T: Any> Drop for CurrentGuard<'_, T> {
 /// - Prevent direct global mutable access in safe code.
 ///
 /// Not a smart pointer; instead, it acts as a reference handle for thread-local state.
-#[doc = _doc_vendor!("current")]
 #[derive(Debug)]
 pub struct Current<T>(PhantomData<T>);
 

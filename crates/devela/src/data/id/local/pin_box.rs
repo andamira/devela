@@ -8,6 +8,7 @@ use crate::{Box, Pin};
 /// A unique identifier based on a pinned heap-allocated memory address.
 #[doc = crate::_doc_meta!{
     location("data/id/local", struct IdPinBox),
+    vendor("object-id"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(IdPinBox = 4|32; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -17,7 +18,6 @@ use crate::{Box, Pin};
 /// ensuring that the ID remains stable and unique based on the memory address.
 ///
 /// See also [`IdPin`][crate::IdPin].
-#[doc = crate::_doc_vendor!("object-id")]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 #[derive(Clone)]
 pub struct IdPinBox {

@@ -28,7 +28,9 @@ pub struct Mem;
 impl Mem {
     #[must_use]
     /// Aligns `value` downward to the nearest multiple of `align`.
-    ///
+    #[doc = crate::_doc_meta!{
+        vendor("mini-alloc"),
+    }]
     /// This is equivalent to `value & !(align - 1)` but uses `wrapping_neg()`
     /// which may generate better code on some architectures.
     ///
@@ -42,7 +44,6 @@ impl Mem {
     /// assert_eq!(Mem::align_down(13, 8), 8);
     /// assert_eq!(Mem::align_down(16, 8), 16);
     /// ```
-    #[doc = crate::_doc_vendor!("mini-alloc")]
     pub const fn align_down(value: usize, align: usize) -> usize {
         value & align.wrapping_neg()
     }
@@ -242,7 +243,9 @@ impl Mem {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_slice")))]
 impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
-    ///
+    #[doc = crate::_doc_meta!{
+        vendor("rawbytes"),
+    }]
     /// This is a safer interface to `core::slice::`[`from_raw_parts`].
     /// # Examples
     /// ```
@@ -260,7 +263,6 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 4, 210]);
     /// }
     /// ```
-    #[doc = crate::_doc_vendor!("rawbytes")]
     #[must_use]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
         // SAFETY: `v` is valid; u8 has alignment 1, size_of_val(v) gives the exact byte length.
@@ -268,7 +270,9 @@ impl Mem {
     }
 
     /// View any `T: Sync + Unpin + ?Sized` as `&mut [u8]`.
-    ///
+    #[doc = crate::_doc_meta!{
+        vendor("rawbytes"),
+    }]
     /// This is a safer interface to `core::slice::`[`from_raw_parts_mut`].
     /// # Examples
     /// ```
@@ -288,7 +292,6 @@ impl Mem {
     ///     assert!(bytes == &[0, 0, 0, 210] && data.0 == 210);
     /// }
     /// ```
-    #[doc = crate::_doc_vendor!("rawbytes")]
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
         // SAFETY: `v` is a valid, exclusive reference;

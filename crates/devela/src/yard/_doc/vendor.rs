@@ -57,6 +57,21 @@ macro_rules! _doc_vendor· {
     //     "# ", $crate_id, "\n\n[*(↑)*][crate::_doc::reference::vendored#", $crate_id, "] ",
     //     include_str!($text_path),
     // )};
+
+    /* `_doc_meta!` fragments ---------------------------------------------- */
+
+    //
+    (%from_meta $crate_id:literal) => {
+        concat!(
+            "\n\n",
+            "<sup class='_doc_meta _doc_vendor' ",
+            "title='vendored provenance: adapted from external work'>",
+            "🏪 vendored work adapted from [", $crate_id, "](",
+            $crate::doclink![custom devela "_doc/reference/vendored" @mod],
+            "#", $crate_id,
+            ")</sup>"
+        )
+    };
 }
 #[doc(inline)]
 pub use _doc_vendor· as _doc_vendor;

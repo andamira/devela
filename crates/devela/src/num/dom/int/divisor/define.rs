@@ -6,6 +6,7 @@
 /// Defines a divisor struct for faster division and modulo operations.
 #[doc = crate::_doc_meta!{
     location("num/dom/int", macro divisor),
+    vendor("quickdiv"),
 }]
 /// This macro generates a *divisor helper type* that precomputes information
 /// about a divisor to speed up repeated division and remainder operations.
@@ -61,7 +62,6 @@
 /// - Only supported integer primitives are accepted as targets.
 /// - Passing an unsupported type results in a compile-time error.
 /// - Division by zero is checked when constructing a divisor.
-#[doc = crate::_doc_vendor!("quickdiv")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! divisor· {

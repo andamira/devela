@@ -125,7 +125,7 @@ macro_rules! _doc_test_size_of· {
     ) => {
         concat!(
             "\n\n",
-            "<sup class='_doc_test_size_of' title='stack size, checked by hidden doctest'>",
+            "<sup class='_doc_meta _doc_test_size_of' title='stack size, checked by hidden doctest'>",
             "📦 `size_of::<", $shown_ty, ">() == ", $bytes, "` bytes",
             $(" / ", $bits, " bits",)?
             $crate::_doc_test_size_of!(@meta $(#[$meta])*),
@@ -145,13 +145,13 @@ macro_rules! _doc_test_size_of· {
     // Niche-size documentation badge.
     (@niche_doc []) => { "" };
     (@niche_doc [Option]) => {
-        concat!("\n", "<sup class='_doc_niche' ",
+        concat!("\n", "<sup class='_doc_meta _doc_niche' ",
             "title='checked by hidden doctest: Option<T> has the same stack size as T'>",
             "⚗️`Option<T>` &#x1F7F0; `T`", "</sup>" // = emoji
         )
     };
     (@niche_doc [! Option]) => {
-        concat!("\n", "<sup class='_doc_niche' ",
+        concat!("\n", "<sup class='_doc_meta _doc_niche' ",
             "title='checked by hidden doctest: Option<T> does not have the same stack size as T'>",
             "⚗️`Option<T>` &#x2757;&#x1F7F0; `T`", "</sup>" // != emoji
         )

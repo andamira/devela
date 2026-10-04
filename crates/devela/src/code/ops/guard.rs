@@ -18,12 +18,13 @@
 #![cfg_attr(feature = "_docs_examples", allow(unexpected_cfgs, reason = "example script"))]
 
 use ::devela::{Deref, DerefMut};
-::devela::_use_or_shim![_doc_meta, _doc_vendor, _tags];
+::devela::_use_or_shim![_doc_meta, _tags];
 
 #[doc = _tags!(guard)]
 /// A general-purpose RAII guard that executes a callback on drop.
 #[doc = _doc_meta!{
     location("sys/mem", struct ScopeGuard),
+    vendor("stated-scope-guard"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(ScopeGuard<(), fn((), &()), ()> = 8|64),
     #[cfg(target_pointer_width = "64")]
@@ -35,7 +36,6 @@ use ::devela::{Deref, DerefMut};
 ///
 /// # Features
 /// Uses `unsafe_layout` to avoid redundant unwrapping checks.
-#[doc = _doc_vendor!("stated-scope-guard")]
 #[derive(Debug)]
 pub struct ScopeGuard<T, F: FnOnce(T, &S), S> {
     /// The guarded value,

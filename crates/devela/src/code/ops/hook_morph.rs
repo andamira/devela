@@ -16,6 +16,7 @@
 /// Hooks operations into a value without breaking its flow.
 #[doc = crate::_doc_meta!{
     location("code/ops", trait Hook),
+    vendor("apply"),
 }]
 /// `Hook` provides a way to intercept a value,
 /// allowing mutation (`hook`) or observation (`tap`) while preserving identity.
@@ -42,7 +43,6 @@
 /// `Hook` preserves value identity.
 /// For transformations that replace the value, see [`Morph`].
 #[rustfmt::skip]
-#[doc = crate::_doc_vendor!("apply")]
 pub trait Hook: Sized {
     /// Hooks a mutation step into the value and returns it.
     ///
@@ -128,6 +128,7 @@ pub use hook· as hook;
 /// Morphs a value by threading it through a function.
 #[doc = crate::_doc_meta!{
     location("code/ops", trait Morph),
+    vendor("apply"),
 }]
 /// `Morph` provides a fluent way to pass a value (by value, shared reference,
 /// or exclusive reference) into a transformation and return the result.
@@ -154,7 +155,6 @@ pub use hook· as hook;
 /// let v: Vec<i32> = vec![3, 2, 1, 5].morph_mut(|it| it.sort());
 /// ```
 #[rustfmt::skip]
-#[doc = crate::_doc_vendor!("apply")]
 pub trait Morph<R> {
     /// Morphs the value into a new one and returns it.
     ///

@@ -12,6 +12,7 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 /// Returns the size of an expression in bytes.
 #[doc = crate::_doc_meta!{
     location("sys/mem/size", macro size_of_expr),
+    vendor("size_of_trait"),
 }]
 /// - The expression will not be evaluated.
 /// - This can be used in `const` contexts.
@@ -29,7 +30,6 @@ pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0];
 /// ```
 /// # Features
 /// `unsafe_hint` enables leveraging [`unreachable_unchecked`][core::hint::unreachable_unchecked].
-#[doc = crate::_doc_vendor!("size_of_trait")]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! size_of_expr· {

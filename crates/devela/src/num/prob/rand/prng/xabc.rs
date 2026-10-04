@@ -9,6 +9,7 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
 #[doc = crate::_doc_meta!{
     location("num/prob/rand", struct Xabc),
+    vendor("Xabc"),
     test_size_of(Xabc = 4|32; niche !Option)
 }]
 /// It has a 32-bit state and generates 8-bit numbers.
@@ -38,8 +39,6 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 /// ultra low power devices.
 ///
 /// It has a period of 487,780,609 from a zeroed state.
-///
-#[doc = crate::_doc_vendor!("Xabc")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xabc {

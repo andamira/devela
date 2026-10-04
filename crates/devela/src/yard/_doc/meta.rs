@@ -4,8 +4,9 @@
 
 #[doc = crate::_tags!(internal)]
 /// Composes a small rustdoc metadata section for an item.
-#[doc = crate::_doc_meta!{location("yard", macro _doc_meta)}]
-///
+#[doc = crate::_doc_meta!{
+    location("yard", macro _doc_meta),
+}]
 /// This macro centralizes the ad-hoc metadata band used near the top of item
 /// documentation. It wraps supported metadata fragments between horizontal
 /// rules and dispatches each section to the corresponding helper.
@@ -14,6 +15,7 @@
 /// - `location(...)`: emits a module or exact-item location through [`_doc_location!`].
 /// - `test_size_of(...)`: emits checked type-size metadata through [`_doc_test_size_of!`].
 /// - `origin(...)`: emits re-export origin metadata for Rust or dependency items.
+/// - `vendor(...)`: emits provenance for work adapted from an external source.
 ///
 /// # Examples
 /// ```ignore
@@ -37,6 +39,13 @@ macro_rules! _doc_meta· {
     (@items location($($args:tt)*) $(, $($rest:tt)*)?) => {
         concat!(
             $crate::_doc_location!(%from_meta $($args)*),
+            $crate::_doc_meta!(@items $($($rest)*)?)
+        )
+    };
+    /* public section: vendor */
+    (@items vendor($crate_id:literal) $(, $($rest:tt)*)?) => {
+        concat!(
+            $crate::_doc_vendor!(%from_meta $crate_id),
             $crate::_doc_meta!(@items $($($rest)*)?)
         )
     };
@@ -120,7 +129,7 @@ macro_rules! _doc_meta· {
         $kind:ident $item:ident
     ) => {
         concat!(
-            "<sup>re-exported from ",
+            "<sup class='_doc_meta _doc_origin'>re-exported from ",
             $crate::_doc_meta!(@emit_origin_rust_module_link $root $(:: $path)*), "::",
             $crate::_doc_meta!(@emit_origin_rust_item_link $root $(:: $path)*; $kind $item),
             "</sup>"
@@ -131,7 +140,7 @@ macro_rules! _doc_meta· {
         $kind:ident $old:ident as $new:ident
     ) => {
         concat!(
-            "<sup>re-exported from ",
+            "<sup class='_doc_meta _doc_origin'>re-exported from ",
             $crate::_doc_meta!(@emit_origin_rust_module_link $root $(:: $path)*), "::",
             $crate::_doc_meta!(@emit_origin_rust_item_link $root $(:: $path)*; $kind $old),
             " as `", $crate::_doc_location!(%item_label $kind $new), "`</sup>"
@@ -139,16 +148,16 @@ macro_rules! _doc_meta· {
     };
     (@emit_origin_rust $root:ident $(:: $path:ident)* ; $($renamed:tt)*) => {
         concat!(
-            "<sup>re-exported from <a title='location in `", ::core::stringify!($root),
-            "`' href=\"https://doc.rust-lang.org/", ::core::stringify!($root), "/",
-            $( ::core::stringify!($path), "/", )* "\">", ::core::stringify!($root),
-            $("::", ::core::stringify!($path),)* "</a>",
+            "<sup class='_doc_meta _doc_origin'>re-exported from <a title='location in `",
+            ::core::stringify!($root), "`' href=\"https://doc.rust-lang.org/",
+            ::core::stringify!($root), "/", $( ::core::stringify!($path), "/", )* "\">",
+            ::core::stringify!($root), $("::", ::core::stringify!($path),)* "</a>",
             $crate::_doc_meta!(@emit_renamed $($renamed)*), "</sup>"
         )
     };
     (@emit_origin_crate $dep:literal; $($renamed:tt)*) => {
         concat!(
-            "<sup>re-exported from the <a title='docs for `", $dep,
+            "<sup class='_doc_meta _doc_origin'>re-exported from the <a title='docs for `", $dep,
             "`' href=\"https://docs.rs/", $dep, "\">", $dep, "</a> crate",
             $crate::_doc_meta!(@emit_renamed $($renamed)*), ".</sup>"
         )
@@ -156,7 +165,7 @@ macro_rules! _doc_meta· {
 
     (@emit_origin_crate_as $shown:literal => $docs:literal; $($renamed:tt)*) => {
         concat!(
-            "<sup>re-exported from the <a title='docs for `", $shown,
+            "<sup class='_doc_meta _doc_origin'>re-exported from the <a title='docs for `", $shown,
             "`' href=\"https://docs.rs/", $docs, "\">", $shown, "</a> crate",
             $crate::_doc_meta!(@emit_renamed $($renamed)*), ".</sup>"
         )
@@ -179,9 +188,9 @@ macro_rules! _doc_meta· {
     () => { "" };
     ($($rest:tt)+) => {
         concat!(
-            "\n\n---\n\n",
+            "\n\n",
             $crate::_doc_meta!(@items $($rest)+),
-            "\n\n---\n\n",
+            "\n\n", "\n\n",
         )
     };
 }

@@ -119,7 +119,7 @@ macro_rules! _doc_location· {
     // Ordinary module location in the current crate.
     (%from_meta $path:literal) => {
         concat!(
-            "<sup class='_doc_location' title='location in `",
+            "<sup class='_doc_meta _doc_location' title='location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>"
@@ -129,7 +129,7 @@ macro_rules! _doc_location· {
     // Exact ordinary item location in the current crate.
     (%from_meta $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "<sup class='_doc_location' title='location in `",
+            "<sup class='_doc_meta _doc_location' title='location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
@@ -141,7 +141,7 @@ macro_rules! _doc_location· {
     // Procedural macro whose public location is in the current crate.
     (%from_meta proc $path:literal) => {
         concat!(
-            "<sup class='_doc_location' title='procedural macro location in `",
+            "<sup class='_doc_meta _doc_location' title='procedural macro location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>"
@@ -150,7 +150,7 @@ macro_rules! _doc_location· {
 
     (%from_meta proc $path:literal, $kind:ident $item:ident) => {
         concat!(
-            "<sup class='_doc_location' title='procedural macro location in `",
+            "<sup class='_doc_meta _doc_location' title='procedural macro location in `",
             env!("CARGO_PKG_NAME"), "`'>", "📍 [`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
@@ -170,7 +170,7 @@ macro_rules! _doc_location· {
 
             "<sup> → </sup>",
 
-            "<sup class='_doc_location' title='public location in `",
+            "<sup class='_doc_meta _doc_location' title='public location in `",
             ::core::stringify!($target), "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom $target $path @mod],
             ")</b></sup>"
@@ -189,7 +189,7 @@ macro_rules! _doc_location· {
             "<sup> → </sup>",
 
             // Public location in the target crate.
-            "<sup class='_doc_location' title='public location in `",
+            "<sup class='_doc_meta _doc_location' title='public location in `",
             ::core::stringify!($target), "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom $target $path @mod],
             ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",
@@ -204,7 +204,7 @@ macro_rules! _doc_location· {
             "<sup title='re-exported in `", env!("CARGO_PKG_NAME"), "`'>[`📍`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")</sup>",
-            "<sup class='_doc_location' title='location in `", env!("CARGO_PKG_NAME"),
+            "<sup class='_doc_meta _doc_location' title='location in `", env!("CARGO_PKG_NAME"),
             "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")</b></sup>"
@@ -216,7 +216,7 @@ macro_rules! _doc_location· {
             "<sup title='re-exported in `", env!("CARGO_PKG_NAME"), "`'>[`📍`](",
             $crate::doclink·![custom_current_crate $path, @item $kind $item],
             ")</sup>",
-            "<sup class='_doc_location' title='location in `", env!("CARGO_PKG_NAME"),
+            "<sup class='_doc_meta _doc_location' title='location in `", env!("CARGO_PKG_NAME"),
             "`'><b>", "[`", $path, "`](",
             $crate::doclink·![custom_current_crate $path, @mod],
             ")::[`", $crate::_doc_location!(%item_label $kind $item), "`](",

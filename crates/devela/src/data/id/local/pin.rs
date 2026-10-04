@@ -9,6 +9,7 @@ use crate::Pin;
 /// A unique identifier based on a pinned stack-allocated reference.
 #[doc = crate::_doc_meta!{
     location("data/id/local", struct IdPin),
+    vendor("object-id"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(IdPin = 4|32; niche Option),
     #[cfg(target_pointer_width = "64")]
@@ -29,8 +30,6 @@ use crate::Pin;
 /// let mut data1: u8 = 0;
 /// let id1 = IdPin::new(&mut data1);
 /// ```
-///
-#[doc = crate::_doc_vendor!("object-id")]
 pub struct IdPin<'a> {
     inner: Pin<&'a mut u8>,
 }

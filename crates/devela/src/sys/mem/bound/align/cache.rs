@@ -6,6 +6,8 @@
 /// Aligns and pads a value to the length of a cache line.
 #[doc = crate::_doc_meta!{
     location("sys/mem/bound", struct CacheAlign),
+    // test_size_of(CacheAlign), // TODO
+    vendor("crossbeam-utils"),
 }]
 /// In concurrent programming, sometimes it is desirable to make sure commonly accessed pieces of
 /// data are not placed into the same cache line. Updating an atomic value invalidates the whole
@@ -57,7 +59,6 @@
 ///     buffer: *mut T,
 /// }
 /// ```
-#[doc = crate::_doc_vendor!("crossbeam-utils")]
 //
 // Starting from Intel's Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache
 // lines at a time, so we have to align to 128 bytes rather than 64.

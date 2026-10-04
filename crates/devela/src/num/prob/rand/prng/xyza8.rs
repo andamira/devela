@@ -9,6 +9,7 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 /// with 32-bit of state, based on the *XorShift* algorithm.
 #[doc = crate::_doc_meta!{
     location("num/prob/rand", struct Xyza8a),
+    vendor("8bit_rng"),
     test_size_of(Xyza8a = 4|32; niche !Option),
 }]
 /// It has a 0.8% chance of falling into a poor quality short chain,
@@ -18,7 +19,6 @@ use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
 ///
 /// Its longest cycle is 4_261_412_736.
 // (== u32::MAX + u16::MAX * 512 + 639).
-#[doc = crate::_doc_vendor!("8bit_rng")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8a {
@@ -142,6 +142,7 @@ impl Xyza8a {
 /// with 32-bit of state, based on the *XorShift* algorithm.
 #[doc = crate::_doc_meta!{
     location("num/prob/rand", struct Xyza8b),
+    vendor("8bit_rng"),
     test_size_of(Xyza8b = 4|32; niche !Option),
 }]
 /// It has an almost optimal cycle so no real care is required
@@ -149,7 +150,6 @@ impl Xyza8a {
 /// random number tests.
 ///
 /// Its longest cycle is 4,294,967,294.
-#[doc = crate::_doc_vendor!("8bit_rng")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8b {
     x: u8,

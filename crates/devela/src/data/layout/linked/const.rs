@@ -27,6 +27,7 @@ struct ConstListItem<'a, T: 'a> {
 /// An immutable, append-only, linear, functional, non-contiguous, list.
 #[doc = crate::_doc_meta!{
     location("data/layout/linked", struct ConstList),
+    vendor("const_list"),
     #[cfg(target_pointer_width = "32")]
     test_size_of(ConstList<i32> = 8|64; niche !Option),
     #[cfg(target_pointer_width = "64")]
@@ -46,7 +47,6 @@ struct ConstListItem<'a, T: 'a> {
 ///
 /// assert_eq!(8, *MY_LIST.pop().0.unwrap());
 /// ```
-#[doc = crate::_doc_vendor!("const_list")]
 #[must_use]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ConstList<'a, T: 'a>(Option<ConstListItem<'a, T>>);

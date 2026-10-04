@@ -10,6 +10,7 @@ use crate::{Mem, NonZeroUsize, Wasm};
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
 #[doc = crate::_doc_meta!{
     location("sys/mem/alloc", struct WasmAlloc),
+    vendor("mini-alloc"),
 }]
 /// This allocator manages memory starting from `__heap_base` (the WASM heap start)
 /// and grows memory as needed using `memory.grow`. It's designed for single-threaded
@@ -26,7 +27,6 @@ use crate::{Mem, NonZeroUsize, Wasm};
 /// #[global_allocator]
 /// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
 /// ```
-#[doc = crate::_doc_vendor!("mini-alloc")]
 #[derive(Debug)]
 pub struct WasmAlloc;
 impl WasmAlloc {

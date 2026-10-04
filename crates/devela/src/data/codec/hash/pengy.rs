@@ -8,9 +8,9 @@ use crate::{ConstInit, Hasher};
 /// A fast 64-bit non-cryptographic hash algorithm.
 #[doc = crate::_doc_meta!{
     location("data/codec/hash", struct HasherPengy),
+    vendor("pengyhash"),
     test_size_of(HasherPengy = 40|320; niche !Option),
 }]
-#[doc = crate::_doc_vendor!("pengyhash")]
 #[derive(Debug)]
 pub struct HasherPengy {
     state: [u64; 4],

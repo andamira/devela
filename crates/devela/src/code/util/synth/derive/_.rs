@@ -14,6 +14,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         /// Applies a declarative macro to the decorated item.
         #[doc = crate::_doc_meta!{
             location(proc "code/util/synth", attr macro_apply),
+            vendor("macro_rules_attribute"),
         }]
         /// Expands `#[macro_apply(m)] item` as `m! { item }`.
         ///
@@ -23,13 +24,13 @@ crate::mods_out! { // _mods, _reexports, _hidden
         /// ```
         #[doc = include_str!("./macro_apply_examples.rs")]
         /// ```
-        #[doc = crate::_doc_vendor!("macro_rules_attribute")]
         #[allow(rustdoc::invalid_html_tags)] #[doc = "<!--"] // comment-out original docs
         pub use devela_macros::macro_apply;
 
         /// Runs classic derives and declarative derives from one list.
         #[doc = crate::_doc_meta!{
             location(proc "code/util/synth", attr macro_derive),
+            vendor("macro_rules_attribute"),
         }]
         /// Entries ending in `!` are called as declarative macros.
         /// Other entries are forwarded to Rust's built-in `derive`.
@@ -41,13 +42,13 @@ crate::mods_out! { // _mods, _reexports, _hidden
         /// ```
         #[doc = include_str!("./macro_derive_examples.rs")]
         /// ```
-        #[doc = crate::_doc_vendor!("macro_rules_attribute")]
         #[allow(rustdoc::invalid_html_tags)] #[doc = "<!--"] // comment-out original docs
         pub use devela_macros::macro_derive;
 
         /// Runs declarative derive-like macros over the decorated item.
         #[doc = crate::_doc_meta!{
             location(proc "code/util/synth", attr macro_derive_with),
+            vendor("macro_rules_attribute"),
         }]
         /// Each macro receives a copy of the item and may emit impls or side-items.
         /// The original item is preserved.
@@ -59,7 +60,6 @@ crate::mods_out! { // _mods, _reexports, _hidden
         /// ```
         #[doc = include_str!("./macro_derive_with_examples.rs")]
         /// ```
-        #[doc = crate::_doc_vendor!("macro_rules_attribute")]
         #[allow(rustdoc::invalid_html_tags)] #[doc = "<!--"] // comment-out original docs
         pub use devela_macros::macro_derive_with;
     }

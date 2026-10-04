@@ -122,12 +122,29 @@
     }
   });
 </script>
+
 <style>
 /* hidden doctest helpers */
 .docblock .devela-hide-next,
 .docblock .devela-hide-next + * { display: none !important; }
 .docblock .example-wrap:has(> pre.rust-example-rendered > code:empty) { display: none; }
+
 /* doc metadata */
-.docblock p:has(> sup._doc_location) { margin-bottom: 0; }
-.docblock p:has(> sup._doc_test_size_of:only-child) { margin-bottom: 0; }
+.docblock > p:has(> sup._doc_meta) {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  padding: 0.4rem 0.3rem 0 0.3rem;
+  background-color: var(--code-block-background-color);
+  background-color: color-mix(in srgb,
+    var(--code-block-background-color) 50%, var(--main-background-color));
+}
+/* A metadata row with another metadata row later is not the last row. */
+.docblock > p:has(> sup._doc_meta):has(~ p > sup._doc_meta) {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+/* A metadata row with another metadata row before it is not the first row. */
+.docblock > p:has(> sup._doc_meta) ~ p:has(> sup._doc_meta) {
+  padding-top: 0;
+}
 </style>

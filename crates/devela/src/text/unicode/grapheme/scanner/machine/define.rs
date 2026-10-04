@@ -9,6 +9,7 @@ use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
 /// Streaming extended grapheme cluster boundary detector.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeMachine),
+    vendor("grapheme_machine"),
     test_size_of(GraphemeMachine = 3|24; niche Option),
 }]
 /// Sequentially processes Unicode code points,
@@ -16,8 +17,6 @@ use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
 ///
 /// Internally tracks only previous code point properties
 /// and a small state machine for efficient segmentation.
-///
-#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[derive(Clone, Copy, Debug, Default, Eq)]
 pub struct GraphemeMachine {
     state: GraphemeMachineState,
@@ -107,12 +106,11 @@ impl GraphemeMachine {
 /// Indicates how to handle a code point when detecting grapheme cluster boundaries.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", enum GraphemeBoundary),
+    vendor("grapheme_machine"),
     test_size_of(GraphemeBoundary = 1|8; niche Option),
 }]
 /// Returned by [`GraphemeMachine`] for each code point processed, indicating
 /// whether the code point continues the current grapheme cluster or starts a new one.
-///
-#[doc = crate::_doc_vendor!("grapheme_machine")]
 #[derive(Debug, Clone, Copy, Eq)]
 pub enum GraphemeBoundary {
     /// Add this code point to the current grapheme cluster and continue.

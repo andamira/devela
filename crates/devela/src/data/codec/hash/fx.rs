@@ -21,6 +21,7 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<DefaultSize>>;
 /// A fast non-cryptographic Fx hasher based on the algorithm used by rustc.
 #[doc = crate::_doc_meta!{
     location("data/codec/hash", struct HasherFx),
+    vendor("rustc-hash"),
     test_size_of(HasherFx<u64> = 8|64; niche !Option),
 }]
 /// `usize` provides the native state on 32- and 64-bit targets.
@@ -31,7 +32,6 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<DefaultSize>>;
 ///
 /// Hash outputs are not stable
 /// and are unsuitable for cryptographic or adversarial use.
-#[doc = crate::_doc_vendor!("rustc-hash")]
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct HasherFx<T> {
