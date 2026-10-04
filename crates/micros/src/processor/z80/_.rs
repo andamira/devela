@@ -48,8 +48,11 @@
 //!
 //! # Computers
 //!
-//! Current Z80 computer support includes
-//! `computer::zx::spectrum::ComputerSpectrum48`, the Sinclair ZX Spectrum 48K.
+//! This CPU is used in the ZX80, ZX81 and all ZX Spectrum models,
+//! as well as most Spectrum clones and several other 8-bit micros.
+//! Current Z80 computer support includes the [Sinclair ZX Spectrum 48K].
+//!
+//! [Sinclair ZX Spectrum 48K] crate::ComputerSpectrum48
 //!
 //! # Rust target and code generation
 //!

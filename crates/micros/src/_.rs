@@ -1,5 +1,5 @@
 //
-//! Microcontroller, board, and embedded hardware support for devela.
+//! Microcontroller, microcomputer, board, and embedded hardware support.
 //
 
 // environment

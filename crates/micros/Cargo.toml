@@ -8,7 +8,7 @@ bench = false
 [package]
 name = "devela_micros"
 build = "build/_.rs"
-description = "Microcontroller, microcomputer, board, and embedded hardware support for devela."
+description = "Microcontroller, microcomputer, board, and embedded hardware support."
 repository = "https://github.com/andamira/devela/tree/main/crates/micros"
 documentation = "https://docs.rs/devela_micros"
 rust-version.workspace = true
