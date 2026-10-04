@@ -7,8 +7,7 @@ crate::mods_in! {
     mod _test;
 
     #[cfg(any(test, feature = "_docs_examples"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values ("_docs_examples")))))]
-    // WAIT 1.99: #[crate::macro_apply(crate::__doc_auto_hide_features((("_docs_examples"))))]
+    #[crate::macro_apply(crate::__doc_auto_hide_features(("_docs_examples")))]
     mod _example; // EnumExample, EnumSetExample
 
     mod define; // enumset!

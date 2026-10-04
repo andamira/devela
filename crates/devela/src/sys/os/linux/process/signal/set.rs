@@ -122,8 +122,8 @@ crate::enumset! {
 
             assert!(LinuxSignal::MAX_NUMBER == 31);
 
-            // #[crate::macro_apply(crate::_linux_syscall)]
-            #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+            // #[crate::macro_apply(crate::_linux_syscall)] // WAIT: stmt_expr_attributes
+            #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))]
             { assert!(LinuxSignal::TABLE_LEN == 32); }
         };
     }

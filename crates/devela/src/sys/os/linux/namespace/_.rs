@@ -6,20 +6,20 @@ crate::mods_in! {
     mod define; // Linux
 
     /* impls (syscalls are implemented in ../syscalls) */
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod r#in;
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod out;
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod file;
     #[cfg(feature = "term")]
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod term; // (LinuxTermModeGuard)
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod thread; // thread, time
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod signal;
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod random;
 }
 crate::mods_out! { // _mods, _crate_internals

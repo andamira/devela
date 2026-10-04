@@ -15,7 +15,7 @@ crate::mods_in! {
     mod info; // LinuxSiginfo, (LinuxSigval)
     mod set; // LinuxSignal, LinuxSignalSet, LinuxSigset
 
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod restorer;
 }
 crate::mods_out! { // _mods, _crate_internals

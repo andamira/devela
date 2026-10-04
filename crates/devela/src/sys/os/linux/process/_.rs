@@ -3,7 +3,7 @@
 //
 
 crate::mods_in! {
-    #[cfg(all(feature = "unsafe_syscall", not(miri), linux_syscall_target))] // WAIT:1.99:apply
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod entry; // linux_entry!
     mod_ signal; // LinuxSigaction, LinuxSiginfo, LinuxSigset, (LINUX_[SIGACTION|SIGNAL])
 }

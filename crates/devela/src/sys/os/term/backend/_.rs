@@ -5,9 +5,7 @@
 //
 
 crate::mods_in! {
-    #[cfg(all( // WAIT:1.99:apply
-        feature = "_linux_abi", feature = "unsafe_syscall", not(miri), linux_syscall_target,
-    ))]
+    #[crate::macro_apply(crate::_linux_syscall)]
     mod_ linux;
     // mod macos; // TermMacos
     // mod std; // TermStd
