@@ -5,8 +5,10 @@
 use crate::{_tags, Boundary1d, define_error};
 
 define_error! { individual:
-    /// Represents an absolute mismatch: the operation cannot succeed
-    /// for the given value, regardless of the current state or any retry.
+    /// Represents an absolute capacity mismatch.
+    ///
+    /// The operation cannot succeed for the given value,
+    /// regardless of the current state or any retry.
     ///
     /// # Examples
     /// ```

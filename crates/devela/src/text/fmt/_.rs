@@ -21,6 +21,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
         pub use super::namespace::*;
+        #[doc(inline)]
         pub use super::{
             buf::{FmtWriter, format_buf},
             cat::fmtcat,

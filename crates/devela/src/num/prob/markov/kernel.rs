@@ -4,7 +4,7 @@
 
 use crate::{DistCategorical, Probability, is, unwrap, whilst};
 
-#[doc = crate::_tags!(num)]
+#[doc = crate::_tags!(num state)]
 /// A finite-state Markov transition kernel.
 #[doc = crate::_doc_meta!{
     location("num/prob/markov", struct MarkovKernel),

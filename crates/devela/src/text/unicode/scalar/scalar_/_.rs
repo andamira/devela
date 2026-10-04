@@ -16,6 +16,7 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods, _crate_internals
     _mods {
+        #[doc(inline)]
         pub use super::{
             define::{char7, char8, char16, charu, charu_niche, ch},
         };
