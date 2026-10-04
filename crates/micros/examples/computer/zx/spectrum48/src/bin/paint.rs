@@ -8,7 +8,7 @@
 
 use devela::{Arch, Ptr, is, lets, use_as, whilst};
 use devela_micros::{ComputerSpectrum48 as Spectrum, ProcessorZ80 as Z80, devela, spectrum_main};
-use_as! {+Spectrum: devela_micros::{Attribute as Attr, Color, Key, Keys, UlaOut }}
+use_as! {Spectrum+: devela_micros::{Attribute as Attr, Color, Key, Keys, UlaOut }}
 
 /* misc. settings */
 

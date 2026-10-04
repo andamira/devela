@@ -86,6 +86,13 @@
 ##### code::util::debug
 - move `Backtrace` and `BacktraceStatus` from `error`.
 
+##### code::util::synth
+- update `use_as!`:
+  - replace the source-prefix form `+Prefix` with `Prefix+`.
+  - add local-suffix form `+Suffix` and combined form `Prefix+Suffix`.
+  - support absolute source paths.
+  - prettify the public api.
+
 ##### data::codec::hash
 - use 32-bit state for default Fx and FNV hashing on 16-bit targets.
 
