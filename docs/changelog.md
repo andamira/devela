@@ -191,6 +191,8 @@
 - add LILYGO T-Display-S3 examples: `blink`.
 - add ZX Spectrum 48K examples: `paint`, `screen`.
 - add bare-MCU compile/inspection examples for ATtiny4, CH32V003 and MSP430G2231.
+- add centralized example tooling under examples/tools/.
+- add `examples/tools/build-xtensa-rust.sh` helper for building Espressif Xtensa Rust toolchains.
 
 ## Modules
 

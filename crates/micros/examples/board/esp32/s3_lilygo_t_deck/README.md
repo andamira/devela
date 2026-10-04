@@ -12,21 +12,10 @@ Minimal bare-metal examples for the ESP32-S3 using the Espressif Rust toolchain 
 
 ## Requirements
 
-On Debian, Ubuntu, or Linux Mint:
-```sh
-sudo apt-get install -y gcc build-essential curl pkg-config libudev-dev
-```
+This board uses the ESP32-S3 Xtensa toolchain.
+See the [ESP32 example setup](../README.md#esp32-s3)
+for installation and toolchain requirements.
 
-Install the Espressif Rust tooling and flashing utility:
-```sh
-cargo install espup --locked
-cargo install espflash --locked
-```
-
-Install the ESP32-S3 Rust toolchain:
-```sh
-espup install --name esp --targets esp32s3 --toolchain-version 1.98.1.0
-```
 
 ## Build and flash
 

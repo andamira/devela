@@ -17,6 +17,7 @@ DIR="${EXAMPLE_DIR:-}"
 
 # Target
 TARGET="${TARGET:-xtensa-esp32s3-none-elf}"
+TOOLCHAIN="${TOOLCHAIN:-esp}"
 TARGET_DIR="$DIR/target"
 
 # Invocation
@@ -67,7 +68,7 @@ set -u
 build() {
     cd "$DIR"
 
-    cargo +esp build \
+    cargo "+$TOOLCHAIN" build \
         ${IGNORE_RUST_VERSION:-} \
         --release \
         --bin "$NAME" \
