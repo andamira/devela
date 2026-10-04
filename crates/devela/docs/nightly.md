@@ -80,6 +80,7 @@ See also
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
+- 1.??: `c`[cstr_display](https://github.com/rust-lang/rust/pull/163711)
 - 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[diagnostic::on_unknown](https://github.com/rust-lang/rust/pull/163636)
@@ -89,6 +90,7 @@ See also
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
+- 1.??: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `c`[iter_advance_by](https://github.com/rust-lang/rust/pull/163328)
