@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 147/300 (153 remaining), 120 visible, 27 hidden
+[features] # 148/300 (152 remaining), 121 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -265,6 +265,7 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 	io = []
 	net = []
 	# os
+		android = ["unsafe_ffi"]
 		# browser
 			web = ["js", "unsafe_ffi"]
 		linux = ["_linux_abi", "unsafe_syscall"]
@@ -425,6 +426,7 @@ _docs_min = [ # the minimum scope to document every item independent of alloc/st
 			"hw",
 			"net",
 			# os
+				"android",
 				# browser
 					"web",
 				"linux",

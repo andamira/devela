@@ -133,7 +133,9 @@ c_a64l = "c --target aarch64-unknown-linux-gnu"
 c_r32l = "c --target riscv32imac-unknown-none-elf" # ~ temp replacement
 # c_r64l = "c --target riscv64gc-unknown-linux-gnu" # tier-3, not available
 c_r64l = "c --target riscv64imac-unknown-none-elf" # ~ temp replacement
-
+# Android targets:
+c_a64a = "c --target aarch64-linux-android"
+c_x64a = "c --target x86_64-linux-android"
 
 # CLIPPY
 cl = "clippy" #+w
@@ -159,6 +161,9 @@ cl_r64l = "cl --target riscv64imac-unknown-none-elf" # ~ temp replacement
 # Non-linux (no-std or bare-metal):
 cl_a32n = "cl --target thumbv7em-none-eabihf"
 cl_r64n = "cl --target riscv64gc-unknown-none-elf"
+# Android targets:
+cl_a64a = "cl --target aarch64-linux-android"
+cl_x64a = "cl --target x86_64-linux-android"
 
 # BUILD
 b = "build" #+w

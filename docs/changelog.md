@@ -36,6 +36,7 @@
 
 ## tooling
 - document Cargo rustflag precedence and configuration guidelines.
+- add Android cross-target Cargo aliases for AArch64 and x86-64.
 
 ### rustfmt
 - make formatting checks reproducible across local and CI environments.
@@ -54,7 +55,7 @@
 ## Crate
 
 ### features & flags
-- new features: `hw`, `oneof`, `unsafe_mmio`.
+- new features: `android`, `hw`, `oneof`, `unsafe_mmio`.
 - use nightly feature: `asm_experimental_arch`.
 - update nightly feature: `nightly_allocator`.
 - use the reflected unsafe cfg to reject `safe` with any `unsafe_*` capability.
@@ -70,6 +71,7 @@
 
 ### examples
 - add minimal no_std `sys/env` examples.
+- add native Android setup documentation and a raw executable example runnable through adb.
 
 ## Modules
 
@@ -153,6 +155,9 @@
 
 #### sys::mem
 - make `Ptr` provenance-related methods const:
+
+##### sys::os::android
+- new namespace: `Android`.
 
 ##### work::sync::atomic
 - gate the core `AtomicBool` re-export on 8-bit atomic support.
@@ -242,8 +247,6 @@
 
 ### processor::z80
 - new type: `ProcessorZ80`.
-
----
 
 ---
 

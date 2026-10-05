@@ -1,0 +1,10 @@
+[workspace]
+
+[package]
+name = "android_raw"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies.devela]
+path = "../../../../.."
+features = ["std", "android"]

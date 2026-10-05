@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_SYS_OS!()] // public
-#![doc = crate::_doc!(modules: crate::sys; os: browser, fd, term, linux)] // windows
+#![doc = crate::_doc!(modules: crate::sys; os: android, browser, fd, term, linux)] // windows
 #![doc = crate::_doc!(flat:"sys")]
 #![doc = crate::_doc!(extends: os)]
 //!
@@ -16,8 +16,8 @@
 // - https://wasi.dev/ | https://github.com/WebAssembly/WASI
 
 crate::mods_in! {
-    // #[cfg(feature = "android")]
-    // pub mod_ android;
+    #[cfg(feature = "android")]
+    pub mod_ android;
 
     #[doc = crate::_tags!(web)]
     pub mod_ browser; // Web*
@@ -55,8 +55,8 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             browser::_all::*,
             fd::_all::*,
         };
-        // #[cfg(feature = "android")]
-        // pub use super::android::_all::*;
+        #[cfg(feature = "android")]
+        pub use super::android::_all::*;
         #[cfg(feature = "_linux_abi")]
         pub use super::linux::_all::*;
         #[cfg(feature = "term")]
