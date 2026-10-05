@@ -59,9 +59,11 @@ See also
 <!-- > - <https://blog.rust-lang.org/2026/12/24/Rust-1.101.0> -->
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
 
+- 1.101: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
+- 1.101: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 - 1.101: ` `[update LLVM to 22](https://github.com/rust-lang/rust/pull/163572)
 - 1.101: `a`[vec_try_remove](https://github.com/rust-lang/rust/pull/163459)
 
@@ -81,7 +83,6 @@ See also
         `c` `const_sockaddr_setters`
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
 - 1.??: `c`[cstr_display](https://github.com/rust-lang/rust/pull/163711)
-- 1.??: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[diagnostic::on_unknown](https://github.com/rust-lang/rust/pull/163636)
 - 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
@@ -124,7 +125,6 @@ See also
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
-- 1.??: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
 - 1.??: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
 

@@ -73,7 +73,10 @@
 #![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
 //
 // `nightly_stable_1_101`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_101, feature(exclusive_wrapper, funnel_shifts,))]
+#![cfg_attr(
+    nightly_stable_1_101,
+    feature(debug_closure_helpers, exclusive_wrapper, funnel_shifts, unwrap_infallible,)
+)]
 #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(vec_try_remove,))]
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
@@ -97,7 +100,6 @@
         const_str_split_at,
         // core_io_fundamentals,
         cstr_display,
-        debug_closure_helpers,
         derive_coerce_pointee,
         float_bits_const,
         fn_align,
@@ -120,7 +122,6 @@
         str_as_str,
         supertrait_item_shadowing,
         trim_prefix_suffix,
-        unwrap_infallible,
         unsafe_cell_from_mut,
     )
 )]
