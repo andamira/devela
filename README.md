@@ -18,6 +18,7 @@
 | `devela_bridge`       | foreign-language and ABI bridges  | [source][s3] | [wip][w3] |
 | `devela_extend`       | ecosystem extensions and adapters | [source][s4] | — |
 | `devela_micros`       | embedded hardware support         | [source][s5] | [wip][w5] |
+| `devela_sentry`       | downstream validation and probes  | [source][s6] | — |
 
 Before 1.0, APIs remain free to evolve.
 
@@ -45,3 +46,5 @@ Before 1.0, APIs remain free to evolve.
 [s5]: crates/micros
 [d5]: https://docs.rs/devela_micros
 [w5]: https://andamira.github.io/devela_micros/wip/devela_micros/
+
+[s6]: crates/sentry

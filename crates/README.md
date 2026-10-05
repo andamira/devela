@@ -9,5 +9,5 @@ crates/
 ├── bridge/          foreign-language ABI connections
 ├── extend/          ecosystem extensions and adapters
 ├── micros/          microcontrollers and microcomputers
-├── sentry/          downstream validation of public behavior
+├── sentry/          downstream validation and compiler probes
 ```

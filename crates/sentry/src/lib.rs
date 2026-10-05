@@ -1,10 +1,8 @@
 //
-//! Downstream validation of devela's public API and behavior.
+//! Downstream validation and probing of devela.
 //!
-//! Exercises devela as an external consumer to catch regressions and validate
-//! assumptions that cannot be tested faithfully from inside the main crate.
-//!
-//! This crate intentionally remains outside the devela workspace.
+//! This crate intentionally remains outside devela's main Cargo workspace.
+//! It owns a small independent workspace for downstream probe packages.
 //
 
 // #![cfg_attr(nightly_doc, feature(doc_cfg, doc_notable_trait))]
@@ -12,6 +10,7 @@
 // #![cfg_attr(all(nightly_doc, not(doc)), allow(unused_attributes))]
 
 extern crate alloc;
+extern crate devela;
 
 mod all_imports {
     use devela::all::*;

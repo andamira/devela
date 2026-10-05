@@ -1,18 +1,36 @@
 # devela_sentry manifest
 # ==============================================================================
+[workspace]
+resolver = "3"
+members = [
+    "probes/num",
+    "probes/arch",
+]
+default-members = ["."]
+
+[workspace.package]
+edition = "2024"
+publish = false
+
+[workspace.dependencies]
+devela = { path = "../devela", default-features = false }
+
 [package]
 name = "devela_sentry"
-description = "Downstream validation of devela's public API and behavior."
+description = "Downstream validation and probes for devela"
 repository = "https://github.com/andamira/devela/tree/main/crates/sentry"
-version = "0.1.0"
-edition = "2024"
+edition.workspace = true
+publish.workspace = true
 
-[dependencies.devela]
-path = "../devela"
-features = ["dep_rand_core"]
+[dependencies]
+devela = { workspace = true, features = ["dep_rand_core"] }
 
-[features]
-test_feature = []
+[profile.inspect]
+inherits = "release"
+opt-level = "s"
+codegen-units = 1
+panic = "abort"
+lto = false
 
 # [lints.rust.unexpected_cfgs]
 # level = "warn"

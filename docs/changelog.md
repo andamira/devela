@@ -243,4 +243,24 @@
 ### processor::z80
 - new type: `ProcessorZ80`.
 
+---
+
+---
+
+# devela_sentry
+
+## Crate
+
+### structure
+- establish `devela_sentry` as an independent workspace for downstream validation.
+- add shared cross-target assembly inspection tooling with target aliases and groups.
+- add probe packages: `num`, `arch`.
+
+### probes
+- add numeric and architecture code-generation probes.
+- add architecture-specific assembly inspection built on the shared tooling.
+
+### examples
+- add a `const_warn!` diagnostic example.
+
 [0.30.0]: https://github.com/andamira/devela/releases/tag/v0.30.0
