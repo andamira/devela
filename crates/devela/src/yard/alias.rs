@@ -72,6 +72,12 @@ crate::macro_apply_alias! {
 
     /* arches */
 
+    /// Compiles Android-specific items on Android,
+    /// for aggregated x86_64 docs, or for explicit host checking.
+    pub(crate) _android =
+        #[cfg(any(target_os = "android", devela_check_android, all(doc, target_arch = "x86_64")))]
+        #[$crate::macro_apply($crate::__doc_show(target_os = "android"))];
+
     /// Compiles an architecture-specific item on its target and in aggregated x86_64 docs.
     pub(crate) _arch_doc($target:meta) = #[cfg(any($target, all(doc, target_arch = "x86_64")))];
 

@@ -6,6 +6,7 @@
 //
 // TOC
 // - individual text-related error types:
+//   - InteriorNul
 //   - InvalidChar
 //   - InvalidUtf8
 // - full composite errors:
@@ -16,6 +17,15 @@ use crate::{_tags, Boundary1d, DOC_MISMATCHED_CAPACITY, MismatchedCapacity, defi
 use ::core::str::Utf8Error; // replaced with InvalidUtf8
 
 /* individual errors */
+
+define_error! { individual: pub struct InteriorNul(pub usize);
+    +location: "error/text",
+    +tag: _tags!(text error),
+
+    DOC_INTERIOR_NUL =
+        "An interior NUL byte was found where NUL-terminated text was required.",
+    self+f => write!(f, "Interior NUL byte at index {}.", self.0)
+}
 
 define_error! { individual: pub struct InvalidChar(char);
     +location: "error/text",
@@ -59,7 +69,8 @@ impl InvalidUtf8 {
 
 define_error! { composite: fmt(f)
     #[doc = crate::_tags!(text error_composite)]
-    /// An error composite of [`InvalidChar`] + [`InvalidUtf8`] + [`MismatchedCapacity`].
+    /// An error composite of [`InteriorNul`] + [`InvalidChar`] + [`InvalidUtf8`]
+    /// + [`MismatchedCapacity`].
     #[doc = crate::_doc_meta!{
         location("error/text", enum InvalidText),
         #[cfg(target_pointer_width = "32")]
@@ -70,6 +81,9 @@ define_error! { composite: fmt(f)
     /// Used in methods of:
     /// [`StringNonNul`][crate::StringNonNul], and `StringU*`.
     pub enum InvalidText {
+        +tag: _tags!(text),
+        DOC_INTERIOR_NUL: +const InteriorNul(i|0: usize) => InteriorNul(*i),
+
         +tag: _tags!(text),
         DOC_INVALID_CHAR: +const
             Char(c|0: char) => InvalidChar(*c),
@@ -125,6 +139,9 @@ mod full_composite {
             DOC_ELEMENT_NOT_FOUND: +const
                 ElementNotFound => ElementNotFound,
 
+            DOC_INTERIOR_NUL: +const
+                InteriorNul(i|0: usize) => InteriorNul(*i),
+
             DOC_INVALID_CHAR: +const
                 InvalidChar(c|0: char) => InvalidChar(*c),
 
@@ -148,6 +165,7 @@ mod full_composite {
         }
     }
     define_error! { composite: from(f): InvalidText, for: TextError {
+        InteriorNul(i) => InteriorNul(i),
         Char(c) => InvalidChar(c),
         Utf8 { valid_up_to, error_len } => InvalidUtf8 { valid_up_to, error_len },
         MismatchedCapacity { bound,  value, limit } => MismatchedCapacity { bound, value, limit },

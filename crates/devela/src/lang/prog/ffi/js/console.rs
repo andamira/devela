@@ -122,9 +122,7 @@ _js_extern! {
 
 /// Emits leveled diagnostics to the JavaScript console.
 ///
-/// This implementation maps [`DiagOut`] directly onto the browser's native
-/// console levels, preserving the semantic distinction between trace, debug,
-/// info, warning, and error output.
+/// This implementation maps each severity to the closest browser's native console level.
 ///
 /// See also [`TextOut`] for plain text emission.
 #[cfg(not(feature = "safe_lang"))]
@@ -139,6 +137,7 @@ impl DiagOut for JsConsole {
             DiagLevel::Info => Self::info(text),
             DiagLevel::Warn => Self::warn(text),
             DiagLevel::Error => Self::error(text),
+            DiagLevel::Critical => Self::error(text),
         }
         Ok(())
     }

@@ -109,6 +109,10 @@
 - new struct: `AttemptLimitReached`.
 - move `Timeout` from `phys::time`.
 
+#### error::text
+- new error type: `InteriorNul`.
+- update `InvalidText:` add `InteriorNul` variant.
+
 #### media::font
 - new types: `FontBitmapPixel`, `FontBitmapPixelIter`.
 - update `FontBitmapWord`:
@@ -153,11 +157,16 @@
 - new traits: `I2cBusRead`, `I2cBusWrite`, `I2cControl`, `SpiBusWrite`, `SpiControl`.
 - new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`, `SpiController`.
 
+#### sys::log
+- update `DiagLevel`: add `Critical` variant.
+- update `DiagOut`: add `critical` method.
+- impl `DiagOut` for `AndroidLog`, `Stderr`, `StderrLock`.
+
 #### sys::mem
 - make `Ptr` provenance-related methods const:
 
 ##### sys::os::android
-- new types: `Android`, `AndroidLog`, `AndroidLogPriority`.
+- new types: `Android`, `AndroidLog`.
 
 ##### work::sync::atomic
 - gate the core `AtomicBool` re-export on 8-bit atomic support.
@@ -260,8 +269,9 @@
 - add probe packages: `num`, `arch`.
 
 ### probes
-- add numeric and architecture code-generation probes.
 - add architecture-specific assembly inspection built on the shared tooling.
+- add cross-platform logging probe with portable `DiagOut` exercise.
+- add numeric and architecture code-generation probes.
 
 ### examples
 - add a `const_warn!` diagnostic example.

@@ -2,7 +2,7 @@
 //!
 //
 
-use devela::{Android, AndroidLog, AndroidLogPriority};
+use devela::{Android, AndroidLog, DiagLevel};
 
 fn main() {
     let _android = Android;
@@ -13,7 +13,7 @@ fn main() {
     println!("ptr:  {} bits", usize::BITS);
 
     let log = AndroidLog::new(c"devela");
-    let written = log.write(AndroidLogPriority::Info, c"hello from native devela");
+    let written = log.write(DiagLevel::Info, c"hello from native devela");
 
     println!("android log: {}", if written { "written" } else { "filtered" },);
 }

@@ -3,13 +3,13 @@
 //
 
 crate::mods_in! {
-    #[cfg(target_os = "android")]
+    #[crate::macro_apply(crate::_android)]
     mod _raw;
 
     mod define; // AndroidLog*
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::define::{AndroidLog, AndroidLogPriority};
+        pub use super::define::AndroidLog;
     }
 }

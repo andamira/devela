@@ -21,8 +21,9 @@ modules or binaries with the same dependency and feature requirements.
 
 Current probe environments:
 
-- `probes/num` — numeric code-generation experiments.
 - `probes/arch` — architecture-specific instruction experiments.
+- `probes/log` — cross-platform diagnostic-output portability.
+- `probes/num` — numeric code-generation experiments.
 
 
 ## Inspecting probes

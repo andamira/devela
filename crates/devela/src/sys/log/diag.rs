@@ -19,6 +19,7 @@ pub enum DiagLevel {
     Info,
     Warn,
     Error,
+    Critical,
 }
 
 #[doc = crate::_tags!(log)]
@@ -57,5 +58,46 @@ pub trait DiagOut {
     /// Emits an error diagnostic.
     fn error(&mut self, text: &str) -> Result<(), Self::Error> {
         self.diag(DiagLevel::Error, text)
+    }
+    /// Emits a critical diagnostic.
+    fn critical(&mut self, text: &str) -> Result<(), Self::Error> {
+        self.diag(DiagLevel::Critical, text)
+    }
+}
+
+#[cfg(feature = "std")]
+mod impl_std {
+    use super::{DiagLevel, DiagOut};
+    use crate::{IoError, IoWrite, Stderr};
+    use std::io::StderrLock;
+
+    fn emit(out: &mut impl IoWrite, level: DiagLevel, text: &str) -> Result<(), IoError> {
+        let prefix: &[u8] = match level {
+            DiagLevel::Trace => b"[trace] ",
+            DiagLevel::Debug => b"[debug] ",
+            DiagLevel::Info => b"[info] ",
+            DiagLevel::Warn => b"[warn] ",
+            DiagLevel::Error => b"[error] ",
+            DiagLevel::Critical => b"[critical] ",
+        };
+
+        out.write_all(prefix)?;
+        out.write_all(text.as_bytes())?;
+        out.write_all(b"\n")
+    }
+
+    impl DiagOut for Stderr {
+        type Error = IoError;
+
+        fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
+            emit(self, level, text)
+        }
+    }
+    impl DiagOut for StderrLock<'_> {
+        type Error = IoError;
+
+        fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
+            emit(self, level, text)
+        }
     }
 }

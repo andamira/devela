@@ -1,39 +1,22 @@
 //
-//! Defines [`AndroidLog`] and [`AndroidLogPriority`].
+//! Defines [`AndroidLog`].
 //
 
-use crate::CStr;
-
-#[cfg(target_os = "android")]
-use super::_raw;
-
-#[doc = crate::_tags!(platform log)]
-/// Android native log priority.
-#[doc = crate::_doc_meta!{
-    location("sys/os/android/", enum AndroidLogPriority),
-}]
-#[must_use]
-#[repr(i32)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum AndroidLogPriority {
-    /// Verbose diagnostic logging.
-    Verbose = 2,
-    /// Debug diagnostic logging.
-    Debug = 3,
-    /// Informational logging.
-    Info = 4,
-    /// Warning logging.
-    Warn = 5,
-    /// Error logging.
-    Error = 6,
-    /// Fatal-condition logging.
-    Fatal = 7,
-}
+use crate::{CStr, macro_apply};
+#[macro_apply(crate::_android)]
+use {
+    super::_raw,
+    crate::{DiagLevel, DiagOut, InvalidText, MismatchedCapacity, c_char, c_int, is},
+};
 
 #[doc = crate::_tags!(platform log)]
 /// Android native logger with a fixed log tag.
 #[doc = crate::_doc_meta!{
     location("sys/os/android", struct AndroidLog),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(AndroidLog = 4|32; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AndroidLog = 8|64; niche Option),
 }]
 #[derive(Clone, Copy, Debug)]
 pub struct AndroidLog<'a> {
@@ -53,12 +36,70 @@ impl<'a> AndroidLog<'a> {
         self.tag
     }
 
+    #[macro_apply(crate::_android)]
+    const fn priority(level: DiagLevel) -> c_int {
+        match level {
+            DiagLevel::Trace => _raw::ANDROID_LOG_VERBOSE,
+            DiagLevel::Debug => _raw::ANDROID_LOG_DEBUG,
+            DiagLevel::Info => _raw::ANDROID_LOG_INFO,
+            DiagLevel::Warn => _raw::ANDROID_LOG_WARN,
+            DiagLevel::Error => _raw::ANDROID_LOG_ERROR,
+            DiagLevel::Critical => _raw::ANDROID_LOG_FATAL,
+        }
+    }
+
     /// Writes `text` to Android's main log buffer.
     ///
     /// Returns `true` when the message was written and `false` when it was
     /// filtered by the Android logging configuration.
-    #[cfg(target_os = "android")]
-    pub fn write(&self, priority: AndroidLogPriority, text: &CStr) -> bool {
-        unsafe { _raw::__android_log_write(priority as _, self.tag.as_ptr(), text.as_ptr()) == 1 }
+    #[macro_apply(crate::_android)]
+    pub fn write(&self, level: DiagLevel, text: &CStr) -> bool {
+        unsafe {
+            _raw::__android_log_write(Self::priority(level), self.tag.as_ptr(), text.as_ptr()) == 1
+        }
+    }
+    /// Writes UTF-8 `text` to Android's main log buffer.
+    ///
+    /// The diagnostic level is mapped to Android's closest native log priority.
+    ///
+    /// Returns `true` when the message was written
+    /// and `false` when Android's logging configuration filtered it.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`InvalidText::InteriorNul`] if `text` contains an interior NUL byte,
+    /// or [`InvalidText::MismatchedCapacity`] if its length cannot be represented
+    /// by Android's native logging interface.
+    #[macro_apply(crate::_android)]
+    pub fn write_str(&self, level: DiagLevel, text: &str) -> Result<bool, InvalidText> {
+        if let Some(index) = text.as_bytes().iter().position(|&b| b == 0) {
+            return Err(InvalidText::InteriorNul(index));
+        }
+        let len = match c_int::try_from(text.len()) {
+            Ok(len) => len,
+            Err(_) => {
+                return Err(MismatchedCapacity::too_large(text.len(), c_int::MAX as usize).into());
+            }
+        };
+        is! { text.is_empty(), return Ok(self.write(level, c"")) }
+        let written = unsafe {
+            _raw::__android_log_print(
+                Self::priority(level),
+                self.tag.as_ptr(),
+                c"%.*s".as_ptr(),
+                len,
+                text.as_ptr().cast::<c_char>(),
+            ) == 1
+        };
+        Ok(written)
+    }
+}
+
+#[macro_apply(crate::_android)]
+impl DiagOut for AndroidLog<'_> {
+    type Error = InvalidText;
+
+    fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
+        self.write_str(level, text).map(|_| ())
     }
 }

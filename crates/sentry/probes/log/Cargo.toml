@@ -1,0 +1,19 @@
+[package]
+name = "sentry-log"
+edition.workspace = true
+publish.workspace = true
+
+[features]
+std = ["devela/std"]
+android = ["std", "devela/android"]
+
+[dependencies]
+devela.workspace = true
+
+[[bin]]
+name = "stderr"
+required-features = ["std"]
+
+[[bin]]
+name = "android"
+required-features = ["android"]
