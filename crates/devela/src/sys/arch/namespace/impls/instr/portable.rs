@@ -109,7 +109,8 @@ impl Arch {
                  any(target_arch = "x86", target_arch = "x86_64") => Arch::rdtsc(),
                                               target_arch = "arm" => Arch::cntvct(),
                                           target_arch = "aarch64" => Arch::cntvct(),
-            any(target_arch = "riscv32", target_arch = "riscv64") => Arch::rdcycle().into(),
+                                          target_arch = "riscv32" => Arch::rdcycle().into(),
+                                          target_arch = "riscv64" => Arch::rdcycle(),
             _ => compile_error!("Cycle counter not implemented for this architecture"),
         }
     }

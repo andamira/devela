@@ -18,14 +18,14 @@ Legend:
 - 1.99: ` `[asm! pass 128-bit integers](https://github.com/rust-lang/rust/pull/159525)
 - 1.99: ` `[box_vec_non_null](https://github.com/rust-lang/rust/pull/157226)
 - 1.99: ` `[boxed_array_value_iter](https://github.com/rust-lang/rust/pull/134021)
-- 1.99: `…`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
+- 1.99: `✓`[c_variadic](https://github.com/rust-lang/rust/pull/155697)
 - 1.99: ` `[c_variadic_naked_functions](https://github.com/rust-lang/rust/pull/159746)
 - 1.99: ` `[do not take `doc(cfg)` into account when filtering doctests](https://github.com/rust-lang/rust/pull/159014)
 - 1.99: ` `[fully deprecate the legacy integral modules](https://github.com/rust-lang/rust/pull/146882)
 - 1.99: ` `[fs_set_times](https://github.com/rust-lang/rust/pull/160820)
 - 1.99: `→`[layout_for_ptr](https://github.com/rust-lang/rust/pull/157572)
 - 1.99: ` `[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
-- 1.99: `→`[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
+- 1.99: `✓`[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
 - 1.99: ` `[PinSafePointer trait](https://github.com/rust-lang/rust/pull/156935)
 - 1.99: ` `[string_from_utf8_lossy_owned](https://github.com/rust-lang/rust/pull/159099)
 - 1.99: ` `[rustfmt: Format cfg_select!](https://github.com/rust-lang/rust/pull/154202)
