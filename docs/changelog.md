@@ -158,7 +158,10 @@
 - new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`, `SpiController`.
 
 #### sys::log
-- update `DiagLevel`: add `Critical` variant.
+- update `DiagLevel`:
+  - add `Critical` variant.
+  - add `as_str` method.
+  - derive `ConstInit`.
 - update `DiagOut`: add `critical` method.
 - impl `DiagOut` for `AndroidLog`, `Stderr`, `StderrLock`.
 
@@ -225,7 +228,7 @@
 
 #### mcu::avr
 - new types: `Atmega328pTimer1Clock`, `Atmega328pTimer1ClockCfg`.
-- new types: `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`.
+- new types: `AvrAdc`, `AvrAdcInput`, `AvrAdcNoise`, `AvrPin`, `AvrPort`, `AvrReg8`, `AvrUsart`, `AvrUsartTx`.
 - new types: `McuAtmega1284`, `McuAtmega168`, `McuAtmega2560`, `McuAtmega328p`.
 
 ##### mcu::avr::timer

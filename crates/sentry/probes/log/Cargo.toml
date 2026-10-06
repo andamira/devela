@@ -3,12 +3,21 @@ name = "sentry-log"
 edition.workspace = true
 publish.workspace = true
 
+
 [features]
 std = ["devela/std"]
 android = ["std", "devela/android"]
+avr = [
+    "dep:devela_micros",
+    "devela_micros/arduino_nano",
+    "devela_micros/unsafe_mmio",
+]
+
 
 [dependencies]
 devela.workspace = true
+devela_micros = { workspace = true, optional = true }
+
 
 [[bin]]
 name = "stderr"
@@ -17,3 +26,7 @@ required-features = ["std"]
 [[bin]]
 name = "android"
 required-features = ["android"]
+
+[[bin]]
+name = "avr"
+required-features = ["avr"]

@@ -3,6 +3,8 @@
 //
 // FUTURE: DiagRecord
 
+use crate::ConstInit;
+
 #[doc = crate::_tags!(log)]
 /// The severity of a diagnostic emission.
 #[doc = crate::_doc_meta!{
@@ -20,6 +22,22 @@ pub enum DiagLevel {
     Warn,
     Error,
     Critical,
+}
+impl ConstInit for DiagLevel {
+    const INIT: Self = Self::Info;
+}
+impl DiagLevel {
+    /// Returns the current diagnostic level as a string slice.
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::Trace => "trace",
+            Self::Debug => "debug",
+            Self::Info => "info",
+            Self::Warn => "warn",
+            Self::Error => "error",
+            Self::Critical => "critical",
+        }
+    }
 }
 
 #[doc = crate::_tags!(log)]

@@ -80,7 +80,7 @@ crate::mods_in! {
     #[cfg_attr(not(nightly_doc), cfg(feature = "avr"))]
     pub mod_ timer;
         #[cfg(feature = "avr")]
-        mod usart;
+        mod_ usart;
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
@@ -90,7 +90,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
             pin::AvrPin,
             port::AvrPort,
             register::AvrReg8,
-            usart::AvrUsart,
+            usart::_all::*, // AvrUsart, AvrUsartTx
         };
         #[cfg(feature = "atmega1284")]
         pub use super::atmega1284::_all::*;

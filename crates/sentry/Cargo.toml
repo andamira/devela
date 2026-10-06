@@ -15,6 +15,7 @@ publish = false
 
 [workspace.dependencies]
 devela = { path = "../devela", default-features = false }
+devela_micros = { path = "../micros", default-features = false }
 
 [package]
 name = "devela_sentry"
@@ -26,11 +27,14 @@ publish.workspace = true
 [dependencies]
 devela = { workspace = true, features = ["dep_rand_core"] }
 
-[profile.inspect]
-inherits = "release"
+[profile.release]
 opt-level = "s"
 codegen-units = 1
 panic = "abort"
+lto = true
+
+[profile.inspect]
+inherits = "release"
 lto = false
 
 # [lints.rust.unexpected_cfgs]
