@@ -119,7 +119,7 @@ See also
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
 - 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
-- 1.??: `a`[String::from_utf8_lossy_owned](https://github.com/rust-lang/rust/pull/159099)
+- 1.??: `c`[string_into_chars](https://github.com/rust-lang/rust/pull/163816)
 - 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)

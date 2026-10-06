@@ -27,6 +27,7 @@ Legend:
 - 1.99: ` `[local_key_cell_update](https://github.com/rust-lang/rust/pull/157734)
 - 1.99: `→`[my_macro mod foo](https://github.com/rust-lang/rust/pull/157857) from:proc_macro_hygiene
 - 1.99: ` `[PinSafePointer trait](https://github.com/rust-lang/rust/pull/156935)
+- 1.99: ` `[string_from_utf8_lossy_owned](https://github.com/rust-lang/rust/pull/159099)
 - 1.99: ` `[rustfmt: Format cfg_select!](https://github.com/rust-lang/rust/pull/154202)
 - 1.99: ` `[vec_deque_truncate_front](https://github.com/rust-lang/rust/pull/151379)
 

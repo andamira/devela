@@ -132,7 +132,7 @@
         btree_extract_if,
         new_zeroed_alloc,
         smart_pointer_map,
-        string_from_utf8_lossy_owned,
+        string_into_chars,
         vec_from_fn,
     )
 )]
