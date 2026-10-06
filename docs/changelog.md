@@ -34,6 +34,9 @@
 ## build
 - extend `__dbg` diagnostics with configured and effective compiler flags.
 
+## dependencies
+- remove dependency: `log`.
+
 ## tooling
 - document Cargo rustflag precedence and configuration guidelines.
 - add Android cross-target Cargo aliases for AArch64 and x86-64.
@@ -158,6 +161,7 @@
 - new types: `I2cAddr7`, `I2cController`, `I2cError`, `I2cTarget`, `SpiController`.
 
 #### sys::log
+- remove items: `LogConfig`, `LoggerExt`, `Log`.
 - update `DiagLevel`:
   - add `Critical` variant.
   - add `as_str` method.

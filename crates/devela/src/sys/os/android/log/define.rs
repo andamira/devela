@@ -14,9 +14,9 @@ use {
 #[doc = crate::_doc_meta!{
     location("sys/os/android", struct AndroidLog),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(AndroidLog = 4|32; niche Option),
-    #[cfg(target_pointer_width = "64")]
     test_size_of(AndroidLog = 8|64; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(AndroidLog = 16|128; niche Option),
 }]
 #[derive(Clone, Copy, Debug)]
 pub struct AndroidLog<'a> {

@@ -12,9 +12,7 @@ devela::set_panic_handler! { loop }
 #[cfg(target_arch = "avr")]
 #[unsafe(no_mangle)]
 pub extern "C" fn main() -> ! {
-    let mut out = unsafe {
-        AvrUsartTx::configure_8n1(Board::USART, Board::CPU_HZ, 9_600)
-    };
+    let mut out = unsafe { AvrUsartTx::configure_8n1(Board::USART, Board::CPU_HZ, 9_600) };
 
     let _ = exercise_diag(&mut out);
 

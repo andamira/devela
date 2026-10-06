@@ -51,9 +51,6 @@ _reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
     doc: "A high level datetime library that is secure and performant.",
     features: "alloc"
 }
-_reexport! { optional_crate (safe) "dep_log", "log", log,
-    doc: "A lightweight logging facade."
-}
 _reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
 }

@@ -6,36 +6,18 @@
 //
 
 crate::mods_in! {
-    mod _reexport_dep; // ::log::*
-
     // mod bench; //
     mod diag; // DiagLevel, DiagOut
     // mod logger; // LogLevel, Logger, log_with WIP
     mod slog; // LoggerStatic, slog!
     // mod trace; //
-
-    #[cfg(feature = "dep_log")]
-    mod config; // LogConfig
-    #[cfg(feature = "dep_log")]
-    mod ext; // LoggerExt
-    #[cfg(feature = "dep_log")]
-    mod namespace; // Log
 }
-crate::mods_out! { // _mods, _reexports
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             diag::*,
             // logger::*, // WIP
             slog::{LoggerStatic, slog},
         };
-        #[cfg(feature = "dep_log")]
-        pub use super::{
-            config::*,
-            ext::*,
-            namespace::*,
-        };
-    }
-    _reexports {
-        pub use super::_reexport_dep::*;
     }
 }

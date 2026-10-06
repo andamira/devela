@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 148/300 (152 remaining), 121 visible, 27 hidden
+[features] # 147/300 (153 remaining), 120 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -153,7 +153,7 @@ alloc = [ # enables `alloc` functionality
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic?/std", "jiff?/std", "log?/std",
+	"atomic?/std", "jiff?/std",
 	"memchr?/std", "portable-atomic-util?/std", "raw-cpuid?/std",
 	"simdutf8?/std", "wide?/std",
 ]
@@ -505,7 +505,6 @@ work_deps  = ["work", "dep_atomic", "dep_portable_atomic"]
 dep_atomic = ["dep:atomic"]                                                     # work::sync
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									# data::key
 dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
-dep_log = ["dep:log"]                                                           # sys::log
 dep_memchr = ["dep:memchr"]                                                     # text:str
 dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                         # work::sync
@@ -537,7 +536,6 @@ devela_macros = { workspace = true }
 atomic = { workspace = true, optional = true }
 hashbrown = { workspace = true, optional = true }
 jiff = { workspace = true, optional = true }
-log = { workspace = true, optional = true }
 memchr = { workspace = true, optional = true }
 portable-atomic = { workspace = true, optional = true }
 portable-atomic-util = { workspace = true, optional = true }
