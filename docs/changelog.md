@@ -157,7 +157,7 @@
 - make `Ptr` provenance-related methods const:
 
 ##### sys::os::android
-- new namespace: `Android`.
+- new types: `Android`, `AndroidLog`, `AndroidLogPriority`.
 
 ##### work::sync::atomic
 - gate the core `AtomicBool` re-export on 8-bit atomic support.

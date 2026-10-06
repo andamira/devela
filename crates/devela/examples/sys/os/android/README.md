@@ -6,6 +6,7 @@ The goal is to keep Android as a thin host substrate: application state,
 rendering models, events, and runtime abstractions should remain portable
 where possible, while Android-specific code stays at the platform boundary.
 
+
 ## Progression
 
 The examples are intended to grow in small vertical slices:
@@ -18,7 +19,6 @@ The examples are intended to grow in small vertical slices:
 6. lifecycle — suspend, resume, destroy, and reconstruct application state cleanly.
 7. packaging — make APK assembly/install/run reproducible from repository tooling.
 
-The first slice deliberately does not require Android Studio, Gradle, Java, or Kotlin.
 
 ## Code boundaries
 
@@ -33,6 +33,7 @@ src/ui/event/                       normalized input/event vocabulary
 
 Raw Android activity/input/window handles may originate in `sys`, but portable
 application lifecycle and normalized UI events should not become Android-shaped.
+
 
 ## Host requirements
 
@@ -97,6 +98,7 @@ No complete Android SDK installation is required for the first raw-binary step.
 Later APK-building examples will document any additional SDK/build-tool packages
 they actually require.
 
+
 ## Prepare a phone
 
 On the phone:
@@ -120,6 +122,7 @@ adb shell uname -m
 ```
 
 A typical current ARM64 phone reports `arm64-v8a` / `aarch64`.
+
 
 ## First example
 
@@ -160,6 +163,22 @@ The helper script provides the same first operations:
 
 `run` is the default.
 
+### Native logging
+
+The raw example also writes directly to Android's native `liblog` facility.
+
+Clear the current log, run the example, and inspect its `devela` tag:
+
+```sh
+adb logcat -c
+./run.sh run
+adb logcat -d -s devela
+```
+
+This exercises devela's first direct Android NDK binding
+without requiring an APK, Activity, Java, Kotlin, or Gradle.
+
+
 ## Environment checks
 
 Useful diagnostics:
@@ -171,6 +190,7 @@ adb devices -l
 adb shell getprop ro.build.version.sdk
 adb shell getprop ro.product.cpu.abilist
 ```
+
 
 ## Later SDK tooling
 

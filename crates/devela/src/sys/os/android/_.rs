@@ -10,8 +10,7 @@ crate::mods_in! {
     mod define;
     // mod_ ffi;
     // mod_ input;
-    // mod_ log;
-
+    mod_ log; // AndroidLog*
 }
 crate::mods_out! { // _mods
     _mods {
@@ -21,7 +20,7 @@ crate::mods_out! { // _mods
             define::Android,
             // ffi::_all::*,
             // input::_all::*,
-            // log::_all::*,
+            log::_all::*,
         };
     }
 }
