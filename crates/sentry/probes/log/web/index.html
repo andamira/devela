@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>devela sentry — logging</title>
+
+<p>Open the browser developer console.</p>
+
+<script type="module">
+import { makeEnv } from "./devela/shared.js";
+import { makeJsApi } from "./devela/js.js";
+
+const env = makeEnv();
+
+const response = await fetch("./web.wasm");
+const { instance } =
+    await WebAssembly.instantiateStreaming(response, makeJsApi(env));
+
+env.wasm = instance;
+instance.exports.main();
+</script>

@@ -12,6 +12,7 @@ avr = [
     "devela_micros/arduino_nano",
     "devela_micros/unsafe_mmio",
 ]
+web = ["devela/web"]
 
 
 [dependencies]
@@ -30,3 +31,7 @@ required-features = ["android"]
 [[bin]]
 name = "avr"
 required-features = ["avr"]
+
+[[bin]]
+name = "web"
+required-features = ["web"]

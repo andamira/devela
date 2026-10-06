@@ -1,6 +1,10 @@
 #!/bin/sh
 set -eu
 
+usage() {
+    echo "usage: $0 {host|android|avr|web}"
+}
+
 PROBE_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 PROBES_DIR="$(CDPATH= cd -- "$PROBE_DIR/.." && pwd)"
 TARGET_DIR="$PROBES_DIR/target"
@@ -10,9 +14,7 @@ TARGET_DIR="$PROBES_DIR/target"
 export CARGO_TARGET_DIR="$TARGET_DIR"
 cd "$PROBE_DIR"
 
-usage() {
-    echo "usage: $0 {host|android|avr}"
-}
+DEVELA_JS_DIR="$PROBE_DIR/../../../devela/src/sys/os/browser/web/bridge/js"
 
 case "${1:-}" in
     host)
@@ -64,6 +66,33 @@ case "${1:-}" in
 
         echo
         echo "serial: picocom -b 9600 $PORT"
+        ;;
+
+    web)
+        PROFILE="release"
+        WEB_DIR="$PROBE_DIR/web"
+        PORT="${PORT:-8000}"
+
+        cargo build \
+            --profile "$PROFILE" \
+            --target wasm32-unknown-unknown \
+            --bin web \
+            -F web
+
+        WASM="$TARGET_DIR/wasm32-unknown-unknown/$PROFILE/web.wasm"
+
+        mkdir -p "$WEB_DIR/devela"
+        cp "$WASM" "$WEB_DIR/web.wasm"
+        cp "$DEVELA_JS_DIR/shared.js" "$WEB_DIR/devela/"
+        cp "$DEVELA_JS_DIR/js.js" "$WEB_DIR/devela/"
+
+        echo "wasm:   $(display_path "$WASM")"
+        echo "url:    http://127.0.0.1:$PORT"
+        echo
+
+        python3 -m http.server "$PORT" \
+            --bind 127.0.0.1 \
+            --directory "$WEB_DIR"
         ;;
 
     ""|-h|--help)
