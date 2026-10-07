@@ -115,6 +115,8 @@ See also
 - 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
+- 1.??: ` `[riscv-relax](https://github.com/rust-lang/rust/pull/163890)
+- 1.??: ` `[rustdoc:remap-path-scope](https://github.com/rust-lang/rust/pull/163895)
 - 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
