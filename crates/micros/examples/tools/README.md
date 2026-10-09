@@ -9,6 +9,8 @@ For example:
 
     board/esp32/c3_supermini_oled042/example.sh
         → tools/esp32.sh
+    board/nrf/nice_nano/example.sh
+        → tools/nrf.sh
 
 Shared inspection, dump, and dispatch helpers live in `_common.sh`.
 

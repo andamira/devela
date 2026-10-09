@@ -16,6 +16,7 @@ Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch ba
     _DOC_BOARD       = "Development boards and their hardware configurations.";
     _DOC_BOARD_AVR   = "AVR-based development boards.";
     _DOC_BOARD_ESP32 = "ESP32-based development boards.";
+    _DOC_BOARD_NRF   = "Nordic nRF-based development boards.";
     _DOC_BOARD_SAM   = "Microchip SAM-based development boards.";
 
     _DOC_COMPUTER             = "Microcomputer systems, and machine-specific hardware.";
@@ -36,6 +37,7 @@ Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch ba
     _DOC_MCU_AVR       = "AVR-family microcontrollers.";
     _DOC_MCU_AVR_TIMER = "AVR timer/counter peripherals.";
     _DOC_MCU_ESP32     = "Espressif ESP32-family microcontrollers.";
+    _DOC_MCU_NRF       = "Nordic nRF-family microcontrollers.";
     _DOC_MCU_SAM       = "Microchip SAM-family microcontrollers.";
 
     _DOC_PROCESSOR     = "Processors and instruction-level facilities.";

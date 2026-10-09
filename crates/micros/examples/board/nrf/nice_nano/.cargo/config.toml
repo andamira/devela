@@ -1,0 +1,6 @@
+[build]
+target = "thumbv7em-none-eabihf"
+
+[target.thumbv7em-none-eabihf]
+rustflags = ["-C", "link-arg=-Tnrf52840_uf2_s140_v6.x"]
+# UF2 is copied onto the bootloader's virtual drive, not run by probe-rs.

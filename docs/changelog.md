@@ -202,6 +202,7 @@
 
 ### examples
 - add Arduino Due examples: `blink`.
+- add nice!nano nRF52840 example: `blink`, with UF2 packing and S140 v6 application layout.
 - add Arduino Diecimila examples: `blink`, `usart_chat`.
 - add Arduino Mega2560 examples: `blink`, `usart_chat`.
 - add Arduino Nano examples: `adc_noise`, `blink`, `timer0_ctc`, `timer0_interrupt`, `timer1_capture`, `timer1_clock`, `timer1_ctc`, `timer2_ctc`, `timer1_pwm`, `tm1638`, `usart_chat`.
@@ -220,6 +221,7 @@
 ### board
 - new AVR boards: `BoardArduinoDiecimila`, `BoardArduinoMega2560`, `BoardArduinoNano`, `BoardSoliniusSparrow`.
 - new ESP32 boards: `BoardLilygoTDeckS3`, `BoardLilygoTDisplayS3`, `BoardLilygoTWatchS3`, `BoardSuperMiniOled042`, `BoardWaveshareC6TouchLcd147`.
+- new Nordic boards: `BoardNiceNano`.
 - new SAM boards: `BoardArduinoDue`.
 
 ### computer::zx::spectrum
@@ -256,6 +258,10 @@
 - new macro: `esp32_s3_startup!`.
 - new types: `Esp32S3Pin`, `McuEsp32S3`.
 - add ESP32-S3 linker support and low-level GPIO, I²C0, and USB Serial/JTAG access.
+
+#### mcu::nrf
+- new types: `McuNrf52840`, `NrfPin`, `NrfPort`, `NrfReg32`.
+- add standalone and Adafruit UF2/S140 v6 startup and linker support.
 
 #### mcu::sam
 - new types: `McuSam3x8e`, `SamPin`, `SamPort`, `SamReg32`.

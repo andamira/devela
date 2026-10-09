@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_MCU!()] // public
-#![doc = crate::_doc!(modules: crate; mcu: avr, esp32, sam)]
+#![doc = crate::_doc!(modules: crate; mcu: avr, esp32, nrf, sam)]
 #![doc = crate::_doc!(flat:"mcu")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -22,6 +22,7 @@
 //! | `McuEsp32C3`    | RV32IMC, 160 MHz  | 384 KiB ROM, 400 KiB SRAM, ext. Flash    | ≤ 22 | ◇GPTimer, ◇SYSTIMER | UART0, I²C0, ◇UART1, ◇SPI    | ◇2x12-bit ADC   | ◇Wi-Fi, ◇BLE |
 //! | `McuEsp32C6`    | RV32IMAC, 160 MHz | 320 KiB ROM, 512 KiB HP + 16 KiB LP SRAM | ≤ 31 | ◇GPTimer, ◇SYSTIMER | ◇UART0/1, ◇I²C0, ◇SPI2, ◇USB | ◇7x12-bit ADC   | ◇Wi-Fi, ◇BLE |
 //! | `McuEsp32S3`    | 2× Xtensa LX7, 240 MHz | 384 KiB ROM, 512 KiB SRAM, ext. Flash/PSRAM | ≤ 45 | ◇GPTimer, ◇SYSTIMER | I²C0, USB Serial/JTAG, ◇UART0–2, ◇SPI2/3 | ◇12-bit ADC | ◇Wi-Fi, ◇BLE |
+//! | `McuNrf52840`  | Cortex-M4F, 64 MHz | 1 MiB Flash, 256 KiB SRAM               |   48 | ◇TIMER0–4, ◇RTC0–2 | ◇UARTE, ◇SPI, ◇TWI, ◇USB   | ◇12-bit SAADC   | ◇BLE, ◇802.15.4 |
 //! | `McuSam3x8e`    | Cortex-M3, 84 MHz | 512 KiB Flash, 96 KiB SRAM               |  103 | ◇TC0/TC1/TC2        | ◇UART, ◇USART0–3, ◇SPI, ◇TWI | ◇12-bit ADC/DAC | —            |
 //!
 //! ```txt
@@ -36,6 +37,8 @@ crate::mods_in! {
     pub mod_ avr;
     #[cfg_attr(not(nightly_doc), cfg(feature = "esp32"))]
     pub mod_ esp32;
+    #[cfg_attr(not(nightly_doc), cfg(feature = "nrf"))]
+    pub mod_ nrf;
     #[cfg_attr(not(nightly_doc), cfg(feature = "sam"))]
     pub mod_ sam;
 }
@@ -45,6 +48,8 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::avr::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "esp32"))]
         pub use super::esp32::_all::*;
+        #[cfg_attr(not(nightly_doc), cfg(feature = "nrf"))]
+        pub use super::nrf::_all::*;
         #[cfg_attr(not(nightly_doc), cfg(feature = "sam"))]
         pub use super::sam::_all::*;
     }

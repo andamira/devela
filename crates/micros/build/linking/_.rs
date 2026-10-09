@@ -6,6 +6,7 @@
 mod esp32_c3;
 mod esp32_c6;
 mod esp32_s3;
+mod nrf52840;
 mod sam3x8e;
 #[cfg(feature = "spectrum48")]
 mod spectrum48;
@@ -17,6 +18,7 @@ pub(crate) fn main() -> Result<(), Box<dyn core::error::Error>> {
     esp32_c3::main()?;
     esp32_c6::main()?;
     esp32_s3::main()?;
+    nrf52840::main()?;
     sam3x8e::main()?;
     #[cfg(feature = "spectrum48")]
     spectrum48::main()?;

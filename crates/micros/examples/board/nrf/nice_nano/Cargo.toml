@@ -1,0 +1,20 @@
+[workspace]
+
+[package]
+name = "board_nice_nano"
+edition = "2024"
+publish = false
+
+[dependencies.devela_micros]
+path = "../../../.."
+default-features = false
+features = ["nice_nano", "unsafe_hint", "unsafe_mmio"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"

@@ -25,6 +25,7 @@ include = [
 	"/LICENSE*",
 	"/build/**/*.rs", "/src/**/*.rs",
 	"/build/**/*.md", "/src/**/*.md",
+	"/src/**/*.x", # embeded linker scripts
 	## exclusions
 	"!**/_wip/**",
 ]
@@ -73,6 +74,7 @@ board = []
 board_all = [
 	"board_avr_all",
 	"board_esp32_all",
+	"board_nrf_all",
 	"board_sam_all",
 ]
 	board_avr = ["board", "avr"]
@@ -100,6 +102,10 @@ board_all = [
 		lilygo_t_watch_s3 = ["board_esp32", "esp32s3"]
 		supermini_oled042 = ["board_esp32", "esp32c3", "ssd13xx"]
 		waveshare_c6_touch_lcd147 = ["board_esp32", "esp32c6", "jd9853"]
+
+	board_nrf = ["board", "nrf"]
+	board_nrf_all = ["nice_nano"]
+		nice_nano = ["board_nrf", "nrf52840"]
 
 	board_sam = ["board", "sam"]
 	board_sam_all = ["arduino_due"]
@@ -175,6 +181,7 @@ mcu = []
 mcu_all = [
 	"avr_all",
 	"esp32_all",
+	"nrf_all",
 	"sam_all",
 ]
 	avr = ["mcu"]
@@ -189,6 +196,10 @@ mcu_all = [
 		esp32c3 = ["esp32"]
 		esp32c6 = ["esp32"]
 		esp32s3 = ["esp32"]
+
+	nrf = ["mcu"]
+	nrf_all = ["nrf52840"]
+		nrf52840 = ["nrf"]
 
 	sam = ["mcu"]
 	sam_all = ["sam3x8e"]
