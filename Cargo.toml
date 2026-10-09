@@ -29,7 +29,7 @@ members = [ # In sync with crates/devela/build/environment.rs
 
 	# downstream ecosystem
 	"crates/bridge",         # FFI and ABI bridges
-	# "crates/extend",       # ecosystem extensions and adapters TODO
+	"crates/extend",         # ecosystem extensions and adapters
 	"crates/micros",         # MCU, board, and embedded hardware
 
 	# "build/post",          # post-build processing
@@ -57,9 +57,11 @@ edition = "2024"
 [workspace.dependencies]
 # Centralizes dependency declarations used by workspace members.
 # ------------------------------------------------------------------------------
+
 devela = { version = "=0.30.0-wip", path = "./crates/devela", default-features = false }
 devela_macros = { version = "=0.30.0-wip", path = "./crates/devela/macros" }
 #devela_buildpost = { version = "0.30.0-wip", path = "./build/post" }
+
 
 #* devela optional external dependencies *#
 
@@ -113,6 +115,13 @@ default-features = false # 6 https://docs.rs/crate/simdutf8/latest/features
 [workspace.dependencies.wide] # https://crates.io/crates/wide (unsafe)
 version = "1.7" # ✓ https://github.com/Lokathor/wide/blob/main/changelog.md
 default-features = false # 2 https://docs.rs/crate/wide/latest/features
+
+
+#* devela_extend optional external dependencies *#
+
+[workspace.dependencies.image]
+version = "0.25.10" # ✓ https://github.com/image-rs/image/blob/main/CHANGES.md 
+default-features = false # 22 https://docs.rs/crate/image/latest/features
 
 
 # profiles

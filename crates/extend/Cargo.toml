@@ -1,0 +1,121 @@
+# devela_extend manifest
+# ==============================================================================
+
+[lib]
+path = "src/_.rs"
+bench = false
+
+[package]
+name = "devela_extend"
+description = "Ecosystem extensions and adapters for devela."
+documentation = "https://docs.rs/devela_extend"
+repository = "https://github.com/andamira/devela/tree/main/crates/extend"
+rust-version.workspace = true
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+# build = "build/_.rs"
+publish = false
+include = [
+	"/Cargo.toml",
+	"/LICENSE*",
+# 	"/build/**/*.rs", "/src/**/*.rs",
+# 	"/build/**/*.md", "/src/**/*.md",
+	## excluded
+	"!**/_wip/**",
+]
+categories = ["development-tools", "rust-patterns"]
+keywords = ["dev", "extension"]
+autoexamples = false
+
+[package.metadata.docs.rs]
+no-default-features = true
+features = ["_docs", "__publish"]
+rustc-args = [
+	"--cfg", "nightly_doc",
+	"--cfg", "nightly",
+]
+rustdoc-args = [
+	"--cfg", "nightly_doc",
+	"--cfg", "nightly",
+	"--generate-link-to-definition",
+	"--html-in-header", "./src/_doc/header.html",
+]
+
+
+[features]
+
+#* Development features *#
+# ------------------------------------------------------------------------------
+
+__dbg = ["devela/__dbg"] # shows extra debugging information
+__publish = ["devela/__publish"] # enabled when publishing to crates.io or docs.rs
+__docs_internal = ["devela/__docs_internal"] # enables documentation for internal items
+__exclude_test = [] # excludes specific examples from being tested
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
+
+alloc = ["devela/alloc"]
+std = ["alloc", "devela/std"]
+
+
+#* Safety features *#
+# ------------------------------------------------------------------------------
+
+safest = ["safe", "devela/safest"]
+
+safe = []
+
+unsafe = []
+
+
+#* Scope features *#
+# ------------------------------------------------------------------------------
+
+#* _docs scope *#
+# ---------------
+
+_docs = [
+	"unsafe", "std",
+	"image_jpeg", "image_png",
+]
+
+
+#* Dependency features *#
+# ------------------------------------------------------------------------------
+
+image = ["std", "dep:image", "devela/image"]
+# image_all = ["image_jpeg", "image_png"] # "image_gif", "image_webp"
+# image_gif  = ["image", "image/gif"]
+image_jpeg = ["image", "image/jpeg"]
+image_png  = ["image", "image/png"]
+# image_webp = ["image", "image/webp"]
+
+
+[dependencies]
+# ==============================================================================
+devela = { workspace = true }
+
+#* optional external dependencies *#
+
+image = { workspace = true, optional = true }
+
+
+[badges]
+# ==============================================================================
+maintenance.status = "experimental"
+
+[lints]
+workspace = true
+
+# examples inside /examples/*
+# ==============================================================================
+# [[example]]
+# name = ""
+
+# binaries inside /src/bin/*
+# ==============================================================================
+# [[example]]
+# name = ""
