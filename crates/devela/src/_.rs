@@ -75,7 +75,13 @@
 // `nightly_stable_1_101`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_101,
-    feature(debug_closure_helpers, exclusive_wrapper, funnel_shifts, unwrap_infallible,)
+    feature(
+        debug_closure_helpers,
+        exclusive_wrapper,
+        funnel_shifts,
+        optimize_attribute,
+        unwrap_infallible,
+    )
 )]
 #![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(vec_try_remove,))]
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
@@ -115,7 +121,6 @@
         new_range_api,
         offset_of_enum,
         offset_of_slice,
-        optimize_attribute,
         ptr_cast_slice,
         random, // random_source,
         refcell_try_map,
