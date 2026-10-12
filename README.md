@@ -16,8 +16,8 @@
 | [`devela`][c1]        | foundational library              | [source][s1] | [latest][d1] · [wip][w1] |
 | [`devela_macros`][c2] | procedural macros                 | [source][s2] | [latest][d2] · [wip][w2] |
 | `devela_bridge`       | foreign-language and ABI bridges  | [source][s3] | [wip][w3] |
-| `devela_extend`       | ecosystem extensions and adapters | [source][s4] | — |
-| `devela_micros`       | embedded hardware support         | [source][s5] | [wip][w5] |
+| `devela_extend`       | ecosystem extensions and adapters | [source][s4] | [wip][w4] |
+| [`devela_micros`][c5] | embedded hardware support         | [source][s5] | [latest][d5] · [wip][w5] |
 | `devela_sentry`       | downstream validation and probes  | [source][s6] | — |
 
 Before 1.0, APIs remain free to evolve.

@@ -16,7 +16,9 @@ edition.workspace = true
 version.workspace = true
 authors.workspace = true
 license.workspace = true
-publish = false # TEMP
+categories = ["development-tools", "rust-patterns"]
+keywords = ["ffi", "abi", "bindings", "c", "odin"]
+publish = true
 include = [
 	"/Cargo.toml",
 	"/README.md",
@@ -25,7 +27,7 @@ include = [
 	#
 	"/abi/*.abi",
 	#
-	"/src/**/*.rs",
+	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html",
 	#
 	"/pkg/c/*.h",
 	"/pkg/odin/**/*.odin",

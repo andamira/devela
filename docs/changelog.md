@@ -1,17 +1,30 @@
 # devela changelog
 
-[0.30.0] unreleased
+[0.30.0] 2026-10-12
 ===================
 
-> …
-> …
+> The machine does not isolate man
+> from the great problems of nature
+> but plunges him more deeply into them.
+> — Antoine de Saint-Exupéry: Wind, Sand and Stars (1939)
 
 ```
+This release expands devela into a family of crates, bringing its
+portable foundations to embedded hardware and foreign-language interfaces,
+while refining platform support, graphics, and the workspace architecture.
 ```
 
 ## Highlights
 
-- …
+- msrv bump: minimum supported Rust version increased to 1.99.0.
+- crate family: introduce `devela_micros`, `devela_extend`, `devela_bridge`.
+- embedded hardware: add support for AVR, ESP32-C3/C6/S3, nRF52840, and SAM3X8E.
+- microcomputers: introduce Z80 and ZX Spectrum 48K support, with basic I/O access.
+- boards and devices: add board definitions, peripherals, startup and linker support.
+- foreign interfaces: prototype C and Odin bindings from a minimal test ABI in `devela_bridge`.
+- graphics and fonts: add raster canvas traits, bitmap pixel iteration, and compact bitmap storage.
+- platform support: add native Android support and improve freestanding Linux and cross-target compatibility.
+- structure and tooling: reorganize the workspace, refine safety features, and expand validation infrastructure.
 
 ------------------------------------------------------------------------------
 
@@ -185,6 +198,33 @@
 - update `_doc_meta!`:
   - update style, remove horizontal bars, adjust background, margins and padding.
   - add support for vendor information.
+
+---
+
+# devela_bridge
+
+## Crate
+
+### structure
+- establish the foreign-language interoperability crate, renamed from `devela_ffi`.
+- keep the Rust library `no_std`-capable, with explicit native-library builds.
+
+### bindings
+- add a small experimental C ABI with versioning and status codes.
+- generate C headers and Odin bindings from a shared ABI specification.
+- support static linking and runtime symbol loading.
+- add C and Odin examples and native-library build tooling.
+
+---
+
+# devela_extend
+
+## Crate
+
+### structure
+- establish the experimental ecosystem extension crate.
+- provide an initial integration point for future external adapters.
+- add optional `image` dependency features for future image integrations.
 
 ---
 

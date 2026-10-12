@@ -15,18 +15,16 @@ edition.workspace = true
 version.workspace = true
 authors.workspace = true
 license.workspace = true
-# build = "build/_.rs"
-publish = false
+publish = true
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
-# 	"/build/**/*.rs", "/src/**/*.rs",
-# 	"/build/**/*.md", "/src/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html",
 	## excluded
 	"!**/_wip/**",
 ]
-categories = ["development-tools", "rust-patterns"]
-keywords = ["dev", "extension"]
+categories = ["development-tools"]
+keywords = ["dev", "extensions", "adapters"]
 autoexamples = false
 
 [package.metadata.docs.rs]

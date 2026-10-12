@@ -58,7 +58,7 @@ include = [
 	## source code
 	"/build/**/*.rs", "/build/**/*.md", "/build/dep_all",
 	"/src/**/*.rs", "/src/**/*.md",
-	"/src/**/*.html", "/src/**/*.js", "/src/**/*.x",
+	"/src/**/*.html", "/src/**/*.js",
 	## documentation
 	"/docs/nightly.md", "/docs/vendored*.md", "/LICENSE*",
 	## examples included from /src/_doc

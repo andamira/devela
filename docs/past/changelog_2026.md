@@ -1,7 +1,7 @@
 # Changelogs from 2026
 
-[0.29.0] 20260909
-=================
+[0.29.0] 2026-09-09
+===================
 
 > What I cannot create, I do not understand.
 > — Richard Feynman
@@ -11,7 +11,7 @@ This release expands storage, computation, and UI foundations,
 while refining the module structure, feature boundaries, and documentation.
 ```
 
-## Key changes:
+## Highlights
 
 - msrv bump: minimum supported Rust version increased to 1.98.1.
 - storage and identity: add arenas, pools, string interning, handles, and UUIDs.
@@ -549,7 +549,7 @@ terminal, web, X11, audio, raster, event, runtime, and system foundations,
 while pruning older surfaces and tightening the crate toward a clearer 0.29.
 ```
 
-## Key changes:
+## Highlights
 
 - msrv bump: minimum supported rust version increased to 1.96.0.
 - platform foundations: expand Linux, terminal, X11, web, and FFI support.
@@ -1134,7 +1134,8 @@ This release reunifies devela's split base layers back into the main crate,
 simplifying the workspace while preserving what was learned from the split.
 ```
 
-# Key changes:
+## Highlights
+
 - workspace reunification: merge the split base library crates back into devela.
 - structural simplification: remove duplicated scaffolding, and workspace indirection.
 - maintenance reduction: simplify build, feature, and module organization across the project.
@@ -1202,7 +1203,8 @@ parsing, storage, and drawing abstractions, while refining geometry, text,
 and system interfaces toward clearer typed contracts and deeper coherence.
 ```
 
-## Key changes:
+## Highlights
+
 - runtime foundations: new runtime, cycle, pacing, and presentation abstractions.
 - typed time overhaul: reworked time sources around clearer point and elapsed models.
 - geometry refinement: clearer metric organization and a more expressive region model.
@@ -1381,7 +1383,8 @@ in order to try to improve compile times while maintaining most of the cohesiven
 Many feature gates have been removed in order to make the features always available.
 ```
 
-## Key changes:
+## Highlights
+
 - core extraction: separate foundational types, traits, and macros into base crates.
 - feature consolidation: removed feature gates, make functionality always available.
 - text system overhaul: major improvements to scalar, string, and grapheme handling.

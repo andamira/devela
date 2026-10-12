@@ -17,14 +17,14 @@ version.workspace = true
 authors.workspace = true
 license.workspace = true
 categories = ["development-tools", "embedded", "hardware-support", "no-std"]
-keywords = ["dev", "extension"]
+keywords = ["embedded", "microcontroller", "avr", "esp32", "bare-metal"]
 autoexamples = false
-publish = false
+publish = true
 include = [
 	"/Cargo.toml",
 	"/LICENSE*",
-	"/build/**/*.rs", "/src/**/*.rs",
-	"/build/**/*.md", "/src/**/*.md",
+	"/build/**/*.rs", "/build/**/*.md",
+	"/src/**/*.rs", "/src/**/*.md", "/src/**/*.html",
 	"/src/**/*.x", # embeded linker scripts
 	## exclusions
 	"!**/_wip/**",

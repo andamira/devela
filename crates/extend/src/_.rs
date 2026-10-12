@@ -10,5 +10,5 @@
 
 extern crate self as devela_extend;
 
-pub use devela;
-pub use devela::all::*;
+use ::devela::__hidden::*;
+use ::devela::all::*;
