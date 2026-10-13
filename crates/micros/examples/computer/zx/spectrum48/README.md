@@ -10,9 +10,13 @@ Each program lives under `src/bin/`.
 
 ## Programs
 
-- `screen` — draws a Spectrum display test pattern and changes the ULA border color.
-- `paint` — interactive paint application. Press `?` for instructions.
+- [`screen`][s1] ([run][r1]) — draws a Spectrum display test pattern.
+- [`paint`][s2] ([run][r2])  — interactive paint application.
 
+[s1]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/zx/spectrum48/src/bin/screen.rs
+[r1]: https://torinak.com/qaop/#48#l=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/zx/spectrum48/demo/screen.tap
+[s2]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/zx/spectrum48/src/bin/paint.rs
+[r2]: https://torinak.com/qaop/#48#l=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/zx/spectrum48/demo/paint.tap
 
 ## Requirements
 
