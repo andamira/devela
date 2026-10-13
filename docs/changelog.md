@@ -58,6 +58,10 @@ This release…
 
 ## Crate
 
+### examples
+- Add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
+- Move the Spectrum TAP packager to the shared example tools and document its purpose.
+
 ## Modules
 
 ---

@@ -37,6 +37,7 @@ Before 1.0, APIs remain free to evolve.
   microcontrollers, boards, and microcomputers.
 - [`devela_bridge` examples](crates/bridge/examples/) show interfaces
   with C and Odin.
+
 [c1]: https://crates.io/crates/devela
 [s1]: crates/devela
 [d1]: https://docs.rs/devela

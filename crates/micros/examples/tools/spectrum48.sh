@@ -47,7 +47,7 @@ OBJDUMP="${OBJDUMP:-}"
 OBJCOPY="${OBJCOPY:-}"
 LD_LLD="${LD_LLD:-}"
 
-TAP_TOOL="$DIR/mk-tap.py"
+TAP_TOOL="$TOOLS_DIR/mk-spectrum-tap.py"
 
 
 #* Functions *#

@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+"""Package a flat binary into an auto-starting ZX Spectrum TAP file.
 
+Generates a BASIC loader that reserves memory, loads the binary at the
+specified address (default 0x8000), and transfers execution to it.
+Uses only the Python standard library.
+"""
 from pathlib import Path
 import struct
 import sys
