@@ -32,8 +32,23 @@ See [Features and configuration][features] for the available choices.
 - [Design notes][design]: understand the principles behind the library.
 - [WIP documentation][wip]: current development API.
 
+## Crate family
+
+`devela` is the foundational crate of the wider devela family.
+
+See also [`devela_micros`] for microcontrollers and microcomputers,
+[`devela_bridge`] for foreign-language interfaces, and
+[`devela_extend`] for ecosystem extensions and adapters.
+[`devela_macros`] is its procedural-macro companion.
+
 [features]: https://docs.rs/devela/latest/devela/_doc/reference/features/index.html
+
 [api]: https://docs.rs/devela/latest/devela/
 [items]: https://docs.rs/devela/latest/devela/all/
 [design]: https://docs.rs/devela/latest/devela/_doc/design/
 [wip]: https://andamira.github.io/devela/wip/devela/
+
+[`devela_micros`]: https://crates.io/crates/devela_micros
+[`devela_bridge`]: https://crates.io/crates/devela_bridge
+[`devela_extend`]: https://crates.io/crates/devela_extend
+[`devela_macros`]: https://crates.io/crates/devela_macros

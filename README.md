@@ -9,19 +9,34 @@
 
 > A development substrate of coherence.
 
+This is a place where I am slowly building the foundations for all I want to make.
+
+devela matures from what I learn along the way and is gradually finding its shape.
+
+It is still becoming, and growing from small parts. You're welcome to look around.
+
+
 ## Crates
 
 | crate                 | role                              | source       | docs                     |
 | --------------------- | --------------------------------- | ------------ | ------------------------ |
-| [`devela`][c1]        | foundational library              | [source][s1] | [latest][d1] · [wip][w1] |
+| [`devela`][c1]        | foundation                        | [source][s1] | [latest][d1] · [wip][w1] |
 | [`devela_macros`][c2] | procedural macros                 | [source][s2] | [latest][d2] · [wip][w2] |
-| `devela_bridge`       | foreign-language and ABI bridges  | [source][s3] | [wip][w3] |
-| `devela_extend`       | ecosystem extensions and adapters | [source][s4] | [wip][w4] |
+| [`devela_bridge`][c3] | foreign-language and ABI bridges  | [source][s3] | [latest][d3] · [wip][w3] |
+| [`devela_extend`][c4] | ecosystem extensions and adapters | [source][s4] | [latest][d4] · [wip][w4] |
 | [`devela_micros`][c5] | embedded hardware support         | [source][s5] | [latest][d5] · [wip][w5] |
-| `devela_sentry`       | downstream validation and probes  | [source][s6] | — |
+|  `devela_sentry`      | downstream validation and probes  | [source][s6] | — |
 
 Before 1.0, APIs remain free to evolve.
 
+## Examples
+
+- [`devela` examples](crates/devela/examples/) explore the library,
+  platforms, and user interfaces.
+- [`devela_micros` examples](crates/micros/examples/) run directly on
+  microcontrollers, boards, and microcomputers.
+- [`devela_bridge` examples](crates/bridge/examples/) show interfaces
+  with C and Odin.
 [c1]: https://crates.io/crates/devela
 [s1]: crates/devela
 [d1]: https://docs.rs/devela
