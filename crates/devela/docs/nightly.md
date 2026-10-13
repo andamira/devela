@@ -126,9 +126,10 @@ See also
 - 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
-- 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
+- 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
+- 1.??: ` `[-Znext-solver=globally](https://github.com/rust-lang/rust/pull/164209)
 
 # … may be stable even later
 
