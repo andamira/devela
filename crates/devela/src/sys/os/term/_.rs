@@ -21,7 +21,7 @@ crate::mods_in! {
         mod_ ui; // UI realizations for the terminal
         // mod_ vterm; // TODO
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             backend::_all::*,
@@ -41,6 +41,13 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             ansi::_all::*,
             grid::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            ansi::Ansi,
+            grid::TermGrid,
         };
     }
     _crate_internals {

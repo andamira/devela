@@ -41,6 +41,9 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         pub(crate) use super::_docs::*;
     }
     _hidden {
-        pub use super::divisor::_hidden::*;
+        #[doc(hidden)]
+        pub use super::{
+            divisor::_hidden::*,
+        };
     }
 }

@@ -18,7 +18,7 @@ crate::mods_in! {
     // pub mod_ gpu; //
     // pub mod_ midi; //
 }
-crate::mods_out! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         pub use super::{
             audio::_all::*,
@@ -26,6 +26,12 @@ crate::mods_out! { // _pub_mods, _crate_internals
             // gpu::_all::*,
             // midi::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::audio::AudioDevice;
+        #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
+        pub use super::display::XFrontend;
     }
     _crate_internals {
         pub(crate) use super::{

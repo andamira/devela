@@ -15,7 +15,6 @@ use crate::{
     #[cfg(target_pointer_width = "64")]
     test_size_of(SliceIter<'_, char> = 32|256; niche Option),
 }]
-///
 /// Yields elements by reference in index order. Produces `&T` without copying.
 #[derive(Debug)]
 pub struct SliceIter<'s, T> {
@@ -72,13 +71,12 @@ impl<'s, T> IteratorLendingPeek for SliceIter<'s, T> {
 #[doc = crate::_tags!(iterator lifetime)]
 /// A lending iterator over an exclusive slice.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/view", struct SliceIter),
+    location("sys/mem/view", struct SliceIterMut),
     #[cfg(target_pointer_width = "32")]
     test_size_of(SliceIterMut<'_, char> = 16|128),
     #[cfg(target_pointer_width = "64")]
     test_size_of(SliceIterMut<'_, char> = 32|256),
 }]
-///
 /// Yields `&mut T` references in index order.
 ///
 /// The returned reference is tied to the temporary mutable borrow of the iterator

@@ -1,7 +1,15 @@
 //
-//! Defines [`TextUnit`], [`TextIndex`], [`TextCursor`], [`TextRange`].
+#![doc = crate::_DOC_TEXT_METRIC!()] // public
+#![doc = crate::_doc!(modules: crate::text; metric)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(hr)]
 //!
-//! > Low-level scalar and addressing types.
+//! Defines the primitive quantities, indices, cursors, and ranges
+//! used to address text-oriented sequences and measure inline space.
+//!
+//! These types do not prescribe whether a sequence is indexed by
+//! bytes, Unicode scalars, graphemes, or layout symbols.
+//! That interpretation belongs to the consuming abstraction.
 //
 
 use crate::_impl_init;
@@ -9,7 +17,7 @@ use crate::_impl_init;
 #[doc = crate::_tags!(text)]
 /// Basic text-domain unit.
 #[doc = crate::_doc_meta!{
-    location("text", type TextUnit),
+    location("text/metric", type TextUnit),
     test_size_of(TextUnit = 4|32; niche !Option),
 }]
 /// `TextUnit` is the base primitive quantity used by text-related abstractions.
@@ -29,7 +37,7 @@ pub type TextUnit = u32;
 #[doc = crate::_tags!(text layout)]
 /// Position within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_meta!{
-    location("text", struct TextIndex),
+    location("text/metric", struct TextIndex),
     test_size_of(TextIndex = 4|32; niche !Option),
 }]
 /// The sequence may represent bytes, Unicode scalars, graphemes, layout symbols,
@@ -64,7 +72,7 @@ impl TextIndex {
 #[doc = crate::_tags!(text)]
 /// Continuation point within a caller-defined text traversal.
 #[doc = crate::_doc_meta!{
-    location("text", struct TextCursor),
+    location("text/metric", struct TextCursor),
     test_size_of(TextCursor = 4|32; niche !Option),
 }]
 /// A `TextCursor` marks where a text-oriented process should resume.
@@ -93,7 +101,7 @@ impl TextCursor {
 #[doc = crate::_tags!(text quant)]
 /// A half-open range within a caller-defined text-oriented sequence.
 #[doc = crate::_doc_meta!{
-    location("text", struct TextRange),
+    location("text/metric", struct TextRange),
     test_size_of(TextRange = 8|64; niche !Option),
 }]
 /// `TextRange` covers the interval `[start, end)`,

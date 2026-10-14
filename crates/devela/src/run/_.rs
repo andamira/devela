@@ -38,6 +38,14 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             time::_all::*,
         };
     }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            cycle::RunCycle,
+            regime::RunService,
+            time::{Runtime, RunStep},
+        };
+    }
     _crate_internals {
         pub(crate) use super::{
             _DOC_RUN_MODULES,

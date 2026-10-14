@@ -11,7 +11,7 @@ impl Sealed for Output {}
 #[doc = crate::_tags!(platform concurrency namespace)]
 /// Extension trait providing convenience methods interpreting process [`Output`].
 #[doc = crate::_doc_meta!{
-    location("work/process", trait OutputExt),
+    location("work/exec/process", trait OutputExt),
 }]
 /// This trait provides ergonomic helpers for common patterns such as
 /// decoding stdout as text or asserting successful termination.

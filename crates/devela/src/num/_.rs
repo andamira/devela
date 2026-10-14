@@ -26,7 +26,7 @@ crate::mods_in! {
     pub mod_ quant; // Quantification, measurement, and numerical relationships
     pub mod_ signal; // Numerical signals and value evolution over domains
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         // pub use super::{
         //     intro::_all::*,
@@ -46,6 +46,16 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
         };
         #[cfg(feature = "alg")]
         pub use super::alg::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            fin::{Bitwise, Cmp},
+            grain::{Cast, niche},
+            prob::{Pcg32, RandTry},
+            quant::{Interval, Ratio},
+            signal::Phase,
+        };
     }
     _crate_internals {
         pub(crate) use super::{

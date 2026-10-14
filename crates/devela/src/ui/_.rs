@@ -79,7 +79,7 @@ crate::mods_in! {
     #[cfg(feature = "widget")]
     pub mod_ widget; // Semantic controls expressed through frame-local authorship
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         #[cfg(feature = "ui")]
         pub use super::{
@@ -101,6 +101,15 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         pub use super::event::_all::*;
         #[cfg(feature = "widget")]
         pub use super::widget::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "event")]
+        pub use super::event::Event;
+        #[doc(inline)] #[cfg(feature = "ui")]
+        pub use super::{
+            text::TextInput,
+            view::UiDrawList,
+        };
     }
     _crate_internals {
         pub(crate) use super::_DOC_UI_MODULES;

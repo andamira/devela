@@ -22,7 +22,7 @@ crate::mods_in! {
         mod_ repr; // Representation languages WIP
     pub mod_ sem; // semantic relations
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             disc::_all::*,
@@ -35,6 +35,13 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             prog::_all::*,
             sem::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            prog::ScriptMachine,
+            sem::Relation,
         };
     }
     _crate_internals {

@@ -37,7 +37,7 @@ pub type Point2<T> = Point<T, 2>;
 #[doc = crate::_tags!(geom)]
 /// A 3-dimensional affine point.
 #[doc = crate::_doc_meta!{
-    location("geom/affine", type Point32),
+    location("geom/affine", type Point3),
     test_size_of(Point3<f32> = 12|96; niche !Option),
 }]
 pub type Point3<T> = Point<T, 3>;

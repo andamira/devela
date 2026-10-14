@@ -20,7 +20,7 @@ crate::mods_in! {
     mod io; // Io
     mod text; // TextOut // WIP
 
-    #[cfg(not(feature = "std"))]
+    #[cfg_attr(feature = "std", cfg(any()))] // == #[cfg(not(feature = "std"))]
     mod_ no_std_define;
 
     // mod _reexport_core; // WAIT:io_error
@@ -35,7 +35,7 @@ crate::mods_out! { // _mods
         };
         #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
         pub use super::io::*;
-        #[cfg(not(feature = "std"))]
+        #[cfg_attr(feature = "std", cfg(any()))] // == #[cfg(not(feature = "std"))]
         pub use super::no_std_define::_all::*;
     }
     _reexports {

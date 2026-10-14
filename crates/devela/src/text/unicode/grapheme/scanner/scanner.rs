@@ -1,17 +1,17 @@
 //
-//!
+//! Defines [`GraphemeScanner`].
 //
 // TOC
 // - impl over charu
 // - impl over char
 
-use crate::{
-    GraphemeBoundary, GraphemeMachine, GraphemeNonNul, GraphemeU8, IteratorFused, PhantomData,
-    StringNonNul, StringU8, charu, is, slice, unwrap,
-};
+#[cfg(doc)]
+use crate::{CharIter, GraphemeIter};
+use crate::{GraphemeBoundary, GraphemeMachine, GraphemeNonNul, GraphemeU8, charu};
+use crate::{IteratorFused, PhantomData, StringNonNul, StringU8, is, slice, unwrap};
 
 #[doc = crate::_tags!(text iterator)]
-/// Borrows grapheme segmentation state while scanning a string slice.
+/// Borrows grapheme segmentation state while traversing a string.
 #[doc = crate::_doc_meta!{
     location("text/unicode/grapheme", struct GraphemeScanner),
     #[cfg(target_pointer_width = "32")]
@@ -19,10 +19,15 @@ use crate::{
     #[cfg(target_pointer_width = "64")]
     test_size_of(GraphemeScanner<'_, char> = 24|192; niche Option),
 }]
-/// Can process different text representations (`&str`, `&[u8]`) while
-/// tracking grapheme cluster boundaries through a `GraphemeMachine`.
+/// A scanner can be constructed directly, or obtained through
+/// [`GraphemeMachine::next_char_from_str`] and
+/// [`GraphemeMachine::next_charu_from_str`].
 ///
-/// This is the borrowing counterpart to [`GraphemeIter`][crate::GraphemeIter].
+/// The caller retains the `GraphemeMachine`, allowing segmentation
+/// to continue across successive input chunks.
+///
+/// For a self-contained single-input iterator, see [`GraphemeIter`].
+/// For scalar traversal without boundary detection, see [`CharIter`].
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct GraphemeScanner<'a, C> {
     machine: &'a mut GraphemeMachine,

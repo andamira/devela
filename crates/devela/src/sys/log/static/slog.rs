@@ -15,6 +15,8 @@
 ///
 /// See `LoggerStatic` for details on storage, safety, and const behavior.
 ///
+/// [`LoggerStatic`]: crate::LoggerStatic
+///
 /// # Overview
 /// - `slog!([vis] new [id:]CAP+LEN)` — define a static logger.
 /// - `slog!([id:]CAP+LEN "...")` — log a formatted message.

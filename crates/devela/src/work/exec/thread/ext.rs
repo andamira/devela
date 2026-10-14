@@ -14,7 +14,7 @@ impl Sealed for Thread {}
 #[doc = crate::_tags!(concurrency namespace)]
 /// Extension trait providing additional methods for [`Thread`]s.
 #[doc = crate::_doc_meta!{
-    location("work/thread", trait ThreadExt),
+    location("work/exec/thread", trait ThreadExt),
 }]
 /// It offers the standalone functions in `std::thread` as associated methods.
 #[rustfmt::skip]

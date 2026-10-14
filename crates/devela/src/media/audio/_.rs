@@ -18,7 +18,7 @@ crate::mods_in! {
     // mod_ synth; // Oscillators, envelopes, voices, modulation
     // mod time; // Audio time scales, modes, perceptual anchors
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
         pub use super::{
             // acoustic::_all::*,
@@ -34,5 +34,9 @@ crate::mods_out! { // _mods
             format::_all::*,
             pcm::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::pcm::{PcmBuf, PcmSpec};
     }
 }

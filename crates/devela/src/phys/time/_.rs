@@ -69,5 +69,9 @@ crate::mods_out! { // _mods, _pub_mods
         pub use super::_reexport_core::*;
         #[cfg(feature = "std")]
         pub use super::_reexport_std::*;
+
+        #[doc(inline)]
+        #[cfg(feature = "time")]
+        pub use super::source::{TimePoint, TimeSource};
     }
 }

@@ -45,7 +45,7 @@ crate::mods_in! {
     // #[cfg(feature = "windows")]
     // pub mod_ windows;
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
         pub use super::c::*;
@@ -65,6 +65,14 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         // pub use super::macos::_all::*;
         // #[cfg(feature = "windows")]
         // pub use super::windows::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
+        pub use super::browser::Web;
+        #[doc(inline)] #[cfg(feature = "_linux_abi")]
+        pub use super::linux::Linux;
+        #[doc(inline)] #[cfg(feature = "term")]
+        pub use super::term::TermGrid;
     }
     _crate_internals {
         #[cfg(feature = "_linux_abi")]

@@ -2,7 +2,7 @@
 #![doc = crate::_DOC_TEXT!()] // public, root
 #![doc = crate::_DOC_TEXT_MODULES!()]
 #![doc = crate::_doc!(flat:"text")]
-#![doc = crate::_doc!(extends: ascii, char, fmt, str, string)]
+#![doc = crate::_doc!(extends: ascii, char, fmt, metric, str, string)]
 //
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
@@ -17,18 +17,17 @@ crate::mods_in! {
     pub mod_ fmt; // DebugWith, FmtNum*, FmtWriter, fmtcat!, format_buf!
         // mod generate; // WIP Procedures that produce text.
     pub mod_ layout; // TextLayout*, …
-        mod metric; // TextCursor, TextIndex, TextRange, TextUnit
+    pub mod metric; // TextCursor, TextIndex, TextRange, TextUnit
     pub mod_ parse; // ByteSearch, TextScanner, …
     pub mod_ str; // Str, StringNonNul, StringU*
         mod_ translit; // scalar_as_ascii_translit()
     pub mod_ unicode; // Unicode-defined text units and algorithms
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             // draw::_all::*,
             // generate::_all::*,
-            metric::*,
             translit::_all::*,
         };
     }
@@ -38,10 +37,24 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             ascii::_all::*,
             fmt::_all::*,
             layout::_all::*,
+            metric::*,
             parse::_all::*,
             str::_all::*,
             unicode::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            ascii::Digits,
+            fmt::{FmtWriter, format_buf},
+            layout::{TextLayout, Textel},
+            parse::TextScanner,
+            str::{Str, StringU8},
+            unicode::CharIter,
+        };
+        #[doc(inline)] #[cfg(feature = "grapheme")]
+        pub use super::unicode::GraphemeMachine;
     }
     _crate_internals {
         pub(crate) use super::{

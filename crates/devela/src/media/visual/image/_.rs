@@ -14,7 +14,7 @@ crate::mods_in! {
     #[cfg(feature = "term")]
     pub mod_ sixel; // SixelChar, SixelColor, SixelEncoder, SixelPalette
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports,  _crate_internals, _hidden
     _mods {
         pub use super::{
             error::*,
@@ -29,6 +29,12 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
         #[doc(inline)]
         #[cfg(feature = "term")]
         pub use super::sixel::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            raster::RasterGrid,
+        };
     }
     _crate_internals {
         pub use super::{

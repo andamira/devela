@@ -5,7 +5,9 @@
 //! built from small, reusable abstractions.
 //!
 //! The modules below organize the library
-//! by the kinds of problems they address.
+//! by the kinds of problems they address. <br/>
+//! Starting at the crate root, each module
+//! highlights a selection from those below.
 //
 
 /* crate configuration */
@@ -346,28 +348,80 @@ pub mod __hidden {
     };
 }
 
+// Highlights
 #[doc(inline)]
 #[allow(unused_imports)]
 pub use _reexports::*;
-mod _reexports {
+#[rustfmt::skip]
+mod _reexports { // 39
+    #![allow(unused_imports)]
+
+    // code: 3
     #[doc(inline)]
-    #[rustfmt::skip]
-    #[allow(unused_imports)]
-    pub use super::{
-        code::{ConstInit, const_assert, unwrap}, // 3
-        data::{ByteCursor, WordTry, arena, handle, pool}, // 5
-        // error::{}; // 0
-        // geom::{}; //
-        // lang::{}; //
-        // media::{}; //
-        // num::{}; //
-        // org::{}; //
-        // phys::{}; //
-        // run::{}; //
-        // sys::{}; //
-        // text::{}; //
-        // ui::{}; //
-        // vita::{}; //
-        // work::{}; //
-    };
+    pub use super::code::{ConstInit, const_assert, unwrap};
+
+    // data: 5
+    #[doc(inline)]
+    pub use super::data::{ByteCursor, WordTry, arena, handle, pool};
+
+    // error: 0
+    // pub use super::error::{};
+
+    // geom: 4
+    #[doc(inline)]
+    pub use super::geom::{Angle, Extent, Point, Region};
+
+    // lang: 1
+    #[doc(inline)]
+    pub use super::lang::ScriptMachine;
+
+    // media: 2
+    #[doc(inline)] #[cfg(feature = "draw")]
+    pub use super::media::Canvas;
+    #[doc(inline)] #[cfg(feature = "audio")]
+    pub use super::media::PcmBuf;
+
+    // num: 5
+    #[doc(inline)]
+    pub use super::num::{Cast, Cmp, Interval, RandTry, Ratio};
+
+    // org: 0
+    // pub use super::org::{};
+
+    // phys: 2
+    #[doc(inline)] #[cfg(feature = "time")]
+    pub use super::phys::{TimeDelta, TimeSource};
+
+    // run: 2
+    #[doc(inline)]
+    pub use super::run::{RunApp, RunDriver};
+
+    // sys: 5
+    #[doc(inline)]
+    pub use super::sys::{Slice, TextOut};
+    #[doc(inline)] #[cfg(feature = "_linux_abi")]
+    pub use super::sys::Linux;
+    #[doc(inline)] #[cfg(feature = "term")]
+    pub use super::sys::TermGrid;
+    #[doc(inline)] #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
+    pub use super::sys::Web;
+
+    // text: 6
+    #[doc(inline)]
+    pub use super::text::{CharIter, Str, StringU8, TextScanner, format_buf};
+    #[doc(inline)] #[cfg(feature = "grapheme")]
+    pub use super::text::GraphemeMachine;
+
+    // ui: 2
+    #[doc(inline)] #[cfg(feature = "event")]
+    pub use super::ui::Event;
+    #[doc(inline)] #[cfg(feature = "ui")]
+    pub use super::ui::TextInput;
+
+    // vita: 0
+    // pub use super::vita::{};
+
+    // work: 2
+    #[doc(inline)] #[cfg(feature = "std")]
+    pub use super::work::{CommandFlow, cmd};
 }

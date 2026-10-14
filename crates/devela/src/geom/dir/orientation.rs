@@ -43,7 +43,7 @@ pub type Orientation1<T> = Orientation<T, 1>;
 #[doc = crate::_tags!(geom dir)]
 /// A 2-dimensional [`Orientation`].
 #[doc = crate::_doc_meta!{
-    location("geom/dir", type Orientation3),
+    location("geom/dir", type Orientation2),
     test_size_of(Orientation2<f32> = 8|64; niche !Option),
 }]
 pub type Orientation2<T> = Orientation<T, 2>;

@@ -16,6 +16,7 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         pub use super::_test_example::DivisorExample;
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::_internal::{__Divisor, __divisor};
     }
 }

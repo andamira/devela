@@ -2,12 +2,9 @@
 //! Defines [`TextScanner`].
 //
 
-#![allow(unused, missing_docs)]
-
+use crate::{_impl_init, TextCursor};
 #[cfg(doc)]
-use crate::TextParseErrorKind;
-use crate::{_impl_init, Slice, Str, is, unwrap, whilst};
-use crate::{InvalidUtf8, TextCursor, TextIndex, TextParseError, TextRange, TextUnit};
+use crate::{Slice, Str, TextParseErrorKind};
 
 #[must_use]
 #[doc = crate::_tags!(text parser)]

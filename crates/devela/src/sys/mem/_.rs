@@ -50,6 +50,13 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
+
+        #[doc(inline)]
+        pub use super::{
+            alloc::Storage,
+            bound::Ptr,
+            view::Slice,
+        };
     }
     _hidden {
         pub use super::{

@@ -13,7 +13,7 @@ crate::mods_in! {
     pub mod_ thread;
     // pub mod_ worker;
 }
-crate::mods_out! { // _pub_mods, _hidden
+crate::mods_out! { // _pub_mods, _reexports, _hidden
     _pub_mods {
         pub use super::{
             // container::_all::*,
@@ -23,6 +23,10 @@ crate::mods_out! { // _pub_mods, _hidden
             thread::_all::*,
             // worker::_all::*,
         };
+    }
+    _reexports {
+        #[cfg(feature = "std")]
+        pub use super::process::{CommandFlow, cmd};
     }
     _hidden {
         pub use super::{

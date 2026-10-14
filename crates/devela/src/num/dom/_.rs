@@ -42,6 +42,7 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             _helper::{_num_dom_impl_arith, _num_dom_upcast_arith, _num_dom_upcasted_mul_add},
             int::_hidden::*,

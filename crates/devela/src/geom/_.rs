@@ -45,7 +45,7 @@ crate::mods_in! {
     mod_ rel; // Spatial predicates and semantic relations between geometric entities WIP
     pub mod_ space; // Global organization, decomposition, and structure of space
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         pub use super::{
             rel::_all::*,
@@ -60,6 +60,15 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
         };
         #[cfg(feature = "fig")]
         pub use super::fig::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            affine::Point,
+            dir::{Angle, Orientation},
+            metric::{Position, Extent, Region},
+            space::Turn,
+        };
     }
     _crate_internals {
         pub(crate) use super::_DOC_GEOM_MODULES;

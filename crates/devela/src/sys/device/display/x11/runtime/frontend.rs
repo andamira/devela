@@ -66,6 +66,10 @@ impl RunBackend for XBackend {
 /// An X11 frontend for frame-driven runtimes.
 #[doc = crate::_doc_meta!{
     location("sys/device/display/x11", struct XFrontend),
+    #[cfg(all(target_pointer_width = "64", ffi_xcb_shm··))]
+    test_size_of(XDisplay = 272|2176; niche Option),
+    #[cfg(all(target_pointer_width = "64", not(ffi_xcb_shm··)))]
+    test_size_of(XDisplay = 264|2112; niche Option),
 }]
 /// Owns the current X11 runtime backend and its presentation finalizer,
 /// while leaving runtime control, app logic, and rendering policy external.

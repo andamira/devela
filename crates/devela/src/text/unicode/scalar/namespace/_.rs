@@ -24,6 +24,7 @@ crate::mods_out! { // _mods, _hidden
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::u32::__unicode_scalar_write_utf8_at;
     }
 }

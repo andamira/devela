@@ -15,7 +15,7 @@ crate::mods_in! {
     // pub mod_ pattern; // WIP
     // pub mod_ video; //
 }
-crate::mods_out! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         pub use super::{
             color::_all::*,
@@ -27,6 +27,18 @@ crate::mods_out! { // _pub_mods, _crate_internals
         pub use super::draw::_all::*;
         #[cfg(feature = "image")]
         pub use super::image::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::color::Color;
+
+        #[cfg(feature = "draw")]
+        #[doc(inline)]
+        pub use super::draw::Canvas;
+
+        #[cfg(feature = "image")]
+        #[doc(inline)]
+        pub use super::image::RasterGrid;
     }
     _crate_internals {
         pub(crate) use super::{

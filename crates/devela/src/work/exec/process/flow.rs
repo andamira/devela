@@ -10,7 +10,7 @@ use crate::{Process, ProcessExt, ShellWordError};
 #[doc = crate::_tags!(platform runtime)]
 /// An executable flow of OS process invocations.
 #[doc = crate::_doc_meta!{
-    location("work/process", struct CommandFlow),
+    location("work/exec/process", struct CommandFlow),
     #[cfg(target_pointer_width = "32")]
     test_size_of(CommandFlow = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

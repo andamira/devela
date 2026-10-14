@@ -21,7 +21,7 @@ crate::mods_in! {
     pub mod_ script; // Scripting machinery and language forms
         // mod_ template; // Template and substitution language machinery
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             // calc::_all::*,
@@ -36,6 +36,10 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             ffi::_all::*,
             script::_all::*,
         };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::script::ScriptMachine;
     }
     _crate_internals {
         pub(crate) use super::{

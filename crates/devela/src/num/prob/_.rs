@@ -16,7 +16,7 @@ crate::mods_in! {
     pub mod_ rand; // Random number generation
     pub mod_ stats; // Descriptive statistics
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports _crate_internals, _hidden
     _mods {
         pub use super::{
             // estim::_all::*,
@@ -30,6 +30,12 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
             markov::_all::*,
             rand::_all::*,
             stats::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            rand::{Pcg32, RandTry},
         };
     }
     _crate_internals {

@@ -16,7 +16,7 @@ crate::mods_in! {
     #[allow(hidden_glob_reexports, reason = "re-exported `char`")]
     pub mod_ scalar; // Char[Ascii|Iter], Digits, UnicodeScalar, char[7|8|16|utf8]
 }
-crate::mods_out! { // _mods, _pub_mods, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         // pub use super::{
         //     // case::*,
@@ -35,7 +35,12 @@ crate::mods_out! { // _mods, _pub_mods, _hidden
         };
 
     }
-
+    _reexports {
+        #[doc(inline)]
+        pub use super::scalar::{CharIter, UnicodeScalar};
+        #[doc(inline)] #[cfg(feature = "grapheme")]
+        pub use super::grapheme::GraphemeMachine;
+    }
     _hidden {
         pub use super::scalar::_hidden::*;
     }

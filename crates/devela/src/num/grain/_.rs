@@ -13,7 +13,7 @@ crate::mods_in! {
     pub mod_ prim; // Primitive numeric types, families, and representations
     pub mod_ wide; // Wide numeric types and parallel arithmetic
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -27,6 +27,13 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals, _hidden
             niche::_all::*,
             prim::_all::*,
             wide::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            niche::niche,
+            prim::Cast,
         };
     }
     _crate_internals {

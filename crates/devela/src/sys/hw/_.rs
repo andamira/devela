@@ -28,7 +28,7 @@ crate::mods_in! {
     // pub mod_ sensor; // Measurement sensors
     // pub mod_ usb; // USB bus/devices
 }
-crate::mods_out! { // _mods, _pub_mods
+crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
         #[cfg(feature = "hw")]
         pub use super::{
@@ -47,6 +47,12 @@ crate::mods_out! { // _mods, _pub_mods
         #[cfg(feature = "hw")]
         pub use super::{
             pin::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "hw")]
+        pub use super::pin::{
+            I2cBusRead, I2cBusWrite, SpiBusWrite,
         };
     }
 }

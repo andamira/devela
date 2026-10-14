@@ -28,7 +28,7 @@ crate::mods_in! {
     pub mod_ service; // Application-level protocols for networked services
 }
 
-crate::mods_out! { // _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals, _hidden
     _pub_mods {
         pub use super::{
             arch::_all::*,
@@ -45,6 +45,32 @@ crate::mods_out! { // _pub_mods, _crate_internals, _hidden
         };
         // #[cfg(feature = "std")]
         // pub use super::bench::_all::*; // WIP
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            arch::Arch,
+            io::TextOut,
+            log::DiagOut,
+            mem::Slice,
+        };
+        #[doc(inline)] #[cfg(feature = "std")]
+        pub use super::fs::Fs;
+
+        #[doc(inline)] #[cfg(feature = "term")]
+        pub use super::os::TermGrid;
+
+        #[doc(inline)] #[cfg(feature = "_linux_abi")]
+        pub use super::os::Linux;
+
+        #[doc(inline)] #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
+        pub use super::os::Web;
+
+        #[doc(inline)] #[cfg(feature = "hw")]
+        pub use super::hw::{I2cBusRead, SpiBusWrite};
+
+        #[doc(inline)] #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
+        pub use super::device::XFrontend;
     }
     _crate_internals {
         pub(crate) use super::_DOC_SYS_MODULES;

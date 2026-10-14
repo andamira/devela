@@ -21,7 +21,7 @@ crate::mods_in! {
         mod page8; // BitmapPage8
         mod traits; // Typed and byte raster access contracts
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -45,6 +45,12 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             draw::_all::*,
             grid::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            grid::RasterGrid,
         };
     }
     _crate_internals {

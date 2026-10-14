@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(code platform runtime)]
 /// Builds a [`CommandFlow`][crate::CommandFlow] from one or more command invocations.
 #[doc = crate::_doc_meta!{
-    location("work/process", macro cmd),
+    location("work/exec/process", macro cmd),
 }]
 /// Grammar (informal):
 /// - The `=>` operator constructs a linear flow,

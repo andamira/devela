@@ -361,7 +361,7 @@ and `◉` to switch back to flat view.
     _DOC_TEXT_FMT        = "Text and string formatting.";
     _DOC_TEXT_GENERATE   = "Procedures that produce text.";
     _DOC_TEXT_LAYOUT     = "Spatial arrangement of text within available extent.";
-    _DOC_TEXT_METRIC     = "Text measures, positions, cursors, and ranges.";
+    _DOC_TEXT_METRIC     = "Text coordinates and measures for traversal and layout.";
     _DOC_TEXT_PARSE      = "Lightweight parsing over string slices.";
     _DOC_TEXT_STR        = "String types, views, and storage invariants.";
     _DOC_TEXT_TRANSLIT   = "Lossy script, alphabet, and symbol approximations.";
@@ -396,7 +396,7 @@ and `◉` to switch back to flat view.
     _DOC_VITA_PLAY_GAME = "Games across cultures.";
 
     // 15. work (effort given executable form)
-    _DOC_WORK              = "Computational work, its coordination, and its execution.";
+    _DOC_WORK              = "Facilities for performing and coordinating computational work.";
     _DOC_WORK_EXEC         = "Execution loci that host and run work.";
     _DOC_WORK_EXEC_FIBER   = "User-space suspended execution carriers.";
     _DOC_WORK_EXEC_PROCESS = "Process-based execution of work.";

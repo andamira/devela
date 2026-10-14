@@ -21,7 +21,7 @@ crate::mods_in! {
     // pub mod motion; // WIP
     pub mod_ visual;
 }
-crate::mods_out! { // _pub_mods, _crate_internals, _hidden
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals, _hidden
     _pub_mods {
         #[cfg(feature = "audio")]
         pub use super::audio::_all::*;
@@ -31,6 +31,16 @@ crate::mods_out! { // _pub_mods, _crate_internals, _hidden
         pub use super::font::_all::*;
         // pub use super::motion::_all::*;
         pub use super::visual::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "audio")]
+        pub use super::audio::PcmBuf;
+        #[doc(inline)] #[cfg(feature = "font")]
+        pub use super::font::FontBitmapView;
+        #[doc(inline)] #[cfg(feature = "draw")]
+        pub use super::visual::Canvas;
+        #[doc(inline)] #[cfg(feature = "image")]
+        pub use super::visual::RasterGrid;
     }
     _crate_internals {
         pub(crate) use super::_DOC_MEDIA_MODULES;

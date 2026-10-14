@@ -21,7 +21,7 @@ crate::mods_in! {
     #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
     pub mod_ x11;
 }
-crate::mods_out! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         // #[cfg(feature = "cocoa")]
         // pub use super::cocoa::*;
@@ -30,6 +30,11 @@ crate::mods_out! { // _pub_mods, _crate_internals
 
         #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
         pub use super::x11::_all::*;
+    }
+    _reexports {
+        #[doc(inline)]
+        #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
+        pub use super::x11::{XDisplay, XFrontend, XWindow};
     }
     _crate_internals {
         #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]

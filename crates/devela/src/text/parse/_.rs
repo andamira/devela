@@ -1,5 +1,8 @@
 //
-//! String parsing without structured semantics.
+#![doc = crate::_DOC_TEXT_PARSE!()] // public
+#![doc = crate::_doc!(modules: crate::text; parse)]
+#![doc = crate::_doc!(flat:"text")]
+#![doc = crate::_doc!(hr)]
 //
 
 crate::mods_in! {

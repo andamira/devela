@@ -11,14 +11,14 @@ use crate::{BufferRingU8, ConstInit, Event, MismatchedCapacity};
 /// A fixed-capacity FIFO queue for [`Event`].
 #[doc = crate::_doc_meta!{
     location("ui/event", struct EventQueue),
-    #[cfg(taret_pointer_width = "32")]
-    test_size_of(EventQueue<1> = 64|512),
-    #[cfg(taret_pointer_width = "32")]
-    test_size_of(EventQueue<4> = 244|2112),
-    #[cfg(taret_pointer_width = "64")]
-    test_size_of(EventQueue<1> = 72|576),
-    #[cfg(taret_pointer_width = "64")]
-    test_size_of(EventQueue<4> = 264|2112),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(EventQueue<1> = 64|512; niche Option),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(EventQueue<4> = 244|1952; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(EventQueue<1> = 72|576; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(EventQueue<4> = 264|2112; niche Option),
 }]
 /// Stores normalized events produced by a backend before they are consumed
 /// by an application, UI, terminal, or runtime loop.

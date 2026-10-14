@@ -3,6 +3,8 @@
 //
 
 use super::GraphemeMachineState;
+#[cfg(doc)]
+use crate::{CharIter, GraphemeIter};
 use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
 
 #[doc = crate::_tags!(text)]
@@ -12,11 +14,29 @@ use crate::{GraphemeProps, GraphemeScanner, Mem, charu, impl_trait};
     vendor("grapheme_machine"),
     test_size_of(GraphemeMachine = 3|24; niche Option),
 }]
-/// Sequentially processes Unicode code points,
-/// returning whether each starts a new cluster or continues the current one.
+/// Processes Unicode scalars incrementally, retaining the state
+/// needed to decide whether each scalar starts a new grapheme cluster.
 ///
-/// Internally tracks only previous code point properties
-/// and a small state machine for efficient segmentation.
+/// For traversing a string while preserving this machine's state,
+/// use [`next_char_from_str`][Self::next_char_from_str] or
+/// [`next_charu_from_str`][Self::next_charu_from_str].
+/// Both return a borrowing [`GraphemeScanner`].
+///
+/// For one input with independently owned segmentation state, see [`GraphemeIter`].
+/// For scalar traversal without segmentation, see [`CharIter`].
+///
+/// # Examples
+/// ```
+/// use devela::{GraphemeBoundary as B, GraphemeMachine};
+///
+/// let mut machine = GraphemeMachine::new();
+///
+/// let mut scan = machine.next_char_from_str("a\u{0301}b");
+///
+/// assert_eq!(scan.next(), Some((B::Split, 'a')));
+/// assert_eq!(scan.next(), Some((B::Continue, '\u{0301}')));
+/// assert_eq!(scan.next(), Some((B::Split, 'b')));
+/// ```
 #[derive(Clone, Copy, Debug, Default, Eq)]
 pub struct GraphemeMachine {
     state: GraphemeMachineState,
@@ -66,17 +86,17 @@ impl GraphemeMachine {
         self.next_char_properties(props)
     }
 
-    /// Returns an iterator over [`charu`] scalars in `s` with their cluster actions.
+    /// Creates a borrowing grapheme scanner over `s`, yielding
+    /// [`charu`] scalars and their [`GraphemeBoundary`] decisions.
     ///
-    /// The iterator processes code points from `s` using [`Self::next_charu`].
-    /// For consistent state tracking, consume the entire iterator.
-    ///
-    /// Does not call [`Self::end_of_input`] automatically, supporting streaming across buffers.
+    /// The returned [`GraphemeScanner`] updates this machine as it
+    /// advances, so the same machine can continue with another chunk.
+    /// Consume the scanner fully before continuing with the next chunk.
     pub const fn next_charu_from_str<'a>(&'a mut self, s: &'a str) -> GraphemeScanner<'a, charu> {
         GraphemeScanner::<charu>::new(self, s)
     }
 
-    /// Like [`Self::next_charu_from_str`] but converts to [`char`] for convenience.
+    /// Like [`Self::next_charu_from_str`], but yields [`char`] instead of [`charu`].
     pub const fn next_char_from_str<'a>(&'a mut self, s: &'a str) -> GraphemeScanner<'a, char> {
         GraphemeScanner::<char>::new(self, s)
     }

@@ -2,10 +2,12 @@
 //! Defines the [`CharIter`] iterator.
 //
 
+#[cfg(all(doc, feature = "grapheme"))]
+use crate::{GraphemeIter, GraphemeMachine};
 use crate::{IteratorFused, PhantomData, slice};
 
 #[doc = crate::_tags!(text iterator)]
-/// An iterator over Unicode scalars.
+/// Iterates Unicode scalars from UTF-8 text or byte input.
 #[doc = crate::_doc_meta!{
     location("text/unicode/scalar", struct CharIter),
     #[cfg(target_pointer_width = "32")]
@@ -13,12 +15,11 @@ use crate::{IteratorFused, PhantomData, slice};
     #[cfg(target_pointer_width = "64")]
     test_size_of(CharIter<&[u8]> = 24|192; niche Option),
 }]
-/// Implements `Iterator<Item = char>` by default, but provides specialized methods
-/// for other scalar types.
-///
-/// For grapheme-level iteration see [`GraphemeIter`].
-///
-/// [`GraphemeIter`]: crate::GraphemeIter
+/// This iterator does not detect grapheme cluster boundaries.
+/// For boundary-aware iteration over one string, see [`GraphemeIter`].
+/// To preserve segmentation state across input chunks, use
+/// `GraphemeMachine::`[`next_char_from_str`][GraphemeMachine::next_char_from_str]
+/// or [`next_charu_from_str`][GraphemeMachine::next_charu_from_str].
 #[must_use]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CharIter<'a, Source> {

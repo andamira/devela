@@ -15,7 +15,7 @@ crate::mods_in! {
     // mod rank;
     // mod_ seq;
 }
-crate::mods_out! { // _mods, _pub_mods, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -32,6 +32,12 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
         pub use super::{
             logic::_all::*,
             ord::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            ord::Cmp,
         };
     }
     _crate_internals {

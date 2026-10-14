@@ -32,7 +32,7 @@ sleep4![1.5]; // sleeps for 1.5 seconds
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact thread sleep.
 #[doc = crate::_doc_meta!{
-    location("work/thread", macro sleep4),
+    location("work/exec/thread", macro sleep4),
 }]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
@@ -63,7 +63,7 @@ macro_rules! sleep4· {
 #[doc = crate::_tags!(concurrency time)]
 /// A more compact thread sleep.
 #[doc = crate::_doc_meta!{
-    location("work/thread", macro sleep4),
+    location("work/exec/thread", macro sleep4),
 }]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]

@@ -7,7 +7,7 @@ use crate::{ExitStatus, impl_trait};
 #[doc = crate::_tags!(platform runtime error)]
 /// Indicates that a process terminated unsuccessfully.
 #[doc = crate::_doc_meta!{
-    location("work/process", struct ExitStatusError),
+    location("work/exec/process", struct ExitStatusError),
     test_size_of(ExitStatusError = 4|32; niche !Option)
 }]
 /// This type is a stable placeholder for the unstable standard library's

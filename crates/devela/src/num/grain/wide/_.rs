@@ -30,6 +30,7 @@ crate::mods_out! { // _reexports, _hidden
         pub use super::_reexport_core::*;
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             _docs::*,
             _helper::{__lane_dispatch, _dep_wide_compile, _dep_wide_use, _simd_use},

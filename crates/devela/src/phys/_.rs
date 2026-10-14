@@ -30,7 +30,7 @@ crate::mods_in! {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "wave")))]
     pub mod_ wave; // Wave primitives, wavelets
 }
-crate::mods_out! { // _pub_mods, _crate_internals
+crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     _pub_mods {
         pub use super::{
             // astro::_all::*,
@@ -48,6 +48,12 @@ crate::mods_out! { // _pub_mods, _crate_internals
         pub use super::unit::_all::*;
         #[cfg(feature = "wave")]
         pub use super::wave::_all::*;
+    }
+    _reexports {
+        #[doc(inline)] #[cfg(feature = "time")]
+        pub use super::time::{TimeDelta, TimeSource};
+        #[doc(inline)] #[cfg(feature = "unit")]
+        pub use super::unit::UnitSi;
     }
     _crate_internals {
         pub(crate) use super::_DOC_PHYS_MODULES;
