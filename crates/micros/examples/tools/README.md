@@ -11,7 +11,14 @@ For example:
         → tools/esp32.sh
     board/nrf/nice_nano/example.sh
         → tools/nrf.sh
+    computer/zx/spectrum48/example.sh
+        → tools/spectrum48.sh
+    computer/atari/atari800xl/example.sh
+        → tools/atari8.sh
 
 Shared inspection, dump, and dispatch helpers live in `_common.sh`.
 
 The shell tools target POSIX `sh` and are primarily developed on Linux.
+
+Toolchains are selected through `rustup` or from `PATH` and documented in each
+example. Generated artifacts stay in the example's own `target/` directory.

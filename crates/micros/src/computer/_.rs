@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_COMPUTER!()] // public
-#![doc = crate::_doc!(modules: crate; computer: zx)] // amstrad, msx, nintendo, sega
+#![doc = crate::_doc!(modules: crate; computer: atari, zx)] // amstrad, msx, nintendo, sega
 #![doc = crate::_doc!(flat:"computer")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -12,6 +12,8 @@
 //
 
 crate::mods_in! {
+    #[cfg_attr(not(nightly_doc), cfg(feature = "atari"))]
+    pub mod_ atari;
     // #[cfg_attr(not(nightly_doc), cfg(feature = "amstrad"))]
     // pub mod_ amstrad;
     // #[cfg_attr(not(nightly_doc), cfg(feature = "msx"))]
@@ -25,6 +27,8 @@ crate::mods_in! {
 }
 crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
+        #[cfg_attr(not(nightly_doc), cfg(feature = "atari"))]
+        pub use super::atari::_all::*;
         // #[cfg_attr(not(nightly_doc), cfg(feature = "amstrad"))]
         // pub use super::amstrad::_all::*;
         // #[cfg_attr(not(nightly_doc), cfg(feature = "msx"))]
@@ -37,6 +41,9 @@ crate::mods_out! { // _pub_mods, _reexports
         pub use super::zx::_all::*;
     }
     _reexports {
+        #[doc(inline)]
+        #[cfg(feature = "atari800xl")]
+        pub use super::atari::ComputerAtari800XL;
         #[doc(inline)]
         #[cfg(feature = "spectrum48")]
         pub use super::zx::ComputerSpectrum48;

@@ -190,7 +190,7 @@ mod impl_core {
         // time
         Duration,
     };
-    use ::core::range::legacy::{
+    use ::core::ops::{ // TEMP use ::core::range::legacy::{ // WAIT: target_arch = "mos"
         Range as RangeLegacy, RangeFrom as RangeFromLegacy,
         RangeInclusive as RangeInclusiveLegacy, RangeToInclusive as RangeToInclusiveLegacy,
     };

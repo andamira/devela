@@ -20,6 +20,8 @@ Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch ba
     _DOC_BOARD_SAM   = "Microchip SAM-based development boards.";
 
     _DOC_COMPUTER             = "Microcomputer systems, and machine-specific hardware.";
+    _DOC_COMPUTER_ATARI       = "Atari 8-bit family microcomputers.";
+    _DOC_COMPUTER_ATARI_800XL = "Atari 800XL computer hardware.";
     _DOC_COMPUTER_ZX          = "Sinclair ZX-family microcomputers.";
     _DOC_COMPUTER_ZX_SPECTRUM = "Sinclair ZX Spectrum computers.";
 
@@ -40,8 +42,9 @@ Click on the `▽` symbol to switch to hierarchical view, and `◉` to switch ba
     _DOC_MCU_NRF       = "Nordic nRF-family microcontrollers.";
     _DOC_MCU_SAM       = "Microchip SAM-family microcontrollers.";
 
-    _DOC_PROCESSOR     = "Processors and instruction-level facilities.";
-    _DOC_PROCESSOR_Z80 = "Z80 processor architecture.";
+    _DOC_PROCESSOR         = "Processors and instruction-level facilities.";
+    _DOC_PROCESSOR_MOS6502 = "MOS Technology 6502 processor architecture.";
+    _DOC_PROCESSOR_Z80     = "Z80 processor architecture.";
 
     _DOC_YARD          = "Scaffolding, taxonomy, and documentation support.";
 }

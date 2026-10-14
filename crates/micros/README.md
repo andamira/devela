@@ -13,6 +13,13 @@ portable abstractions and low-level mechanisms.
 - `mcu`: microcontrollers and their integrated hardware foundations.
 - `processor`: processor families and instruction-level facilities.
 
+## Computer examples
+
+- `ProcessorMos6502` + `ComputerAtari800XL`: Atari DOS `.xex` example
+  with Rust-MOS and LLVM-MOS SDK at
+  [`examples/computer/atari/atari800xl`](examples/computer/atari/atari800xl/).
+- `ProcessorZ80` + `ComputerSpectrum48`: bare-metal Spectrum examples.
+
 ## Documentation
 
 - [API documentation][api]: browse the library by module.

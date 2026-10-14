@@ -1,0 +1,23 @@
+[workspace]
+
+[package]
+name = "computer_atari800xl"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+devela_micros = {
+	path = "../../../../",
+	features = ["atari800xl", "unsafe_mmio"],
+	default-features = false,
+}
+
+[profile.release]
+panic = "abort"
+opt-level = "z"
+lto = true
+codegen-units = 1

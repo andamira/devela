@@ -116,9 +116,14 @@ board_all = [
 
 computer = []
 computer_all = [
+	"atari_all",
 	"zx_all",
 ]
 	# nintendo = []
+
+    atari = ["computer", "mos6502"]
+    atari_all = ["atari800xl"]
+        atari800xl = ["atari"]
 
     zx = ["computer", "z80"]
     zx_all = [
@@ -209,8 +214,9 @@ mcu_all = [
 
 processor = []
 processor_all = [
-    "z80",
+    "mos6502", "z80",
 ]
+    mos6502 = ["processor"]
     z80 = ["processor"]
     # sm83 = ["processor"]
     # m68k = ["processor"]

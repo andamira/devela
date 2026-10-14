@@ -1,6 +1,6 @@
 //
 #![doc = crate::_DOC_PROCESSOR!()] // public
-#![doc = crate::_doc!(modules: crate; processor: z80)]
+#![doc = crate::_doc!(modules: crate; processor: mos6502, z80)]
 #![doc = crate::_doc!(flat:"processor")]
 #![doc = crate::_doc!(hr)]
 //!
@@ -13,15 +13,22 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "mos6502")]
+    pub mod_ mos6502;
     #[cfg(feature = "z80")]
     pub mod_ z80;
 }
 crate::mods_out! { // _pub_mods, _reexports
     _pub_mods {
+        #[cfg(feature = "mos6502")]
+        pub use super::mos6502::_all::*;
         #[cfg(feature = "z80")]
         pub use super::z80::_all::*;
     }
     _reexports {
+        #[doc(inline)]
+        #[cfg(feature = "mos6502")]
+        pub use super::mos6502::ProcessorMos6502;
         #[doc(inline)]
         #[cfg(feature = "z80")]
         pub use super::z80::ProcessorZ80;

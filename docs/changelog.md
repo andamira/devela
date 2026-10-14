@@ -59,10 +59,18 @@ This release…
 ## Crate
 
 ### examples
-- Add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
-- Move the Spectrum TAP packager to the shared example tools and document its purpose.
+- add an Atari 800XL DOS `.xex` example built with Rust-MOS and LLVM-MOS.
+- add a shared Atari runner and document rustup-linked MOS and Z80 toolchains.
+- add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
+- move the Spectrum TAP packager to the shared example tools and document its purpose.
 
 ## Modules
+
+### computer
+- add `ComputerAtari800XL`.
+
+### processor
+- add `ProcessorMos6502`.
 
 ---
 

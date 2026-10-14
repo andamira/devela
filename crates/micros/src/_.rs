@@ -110,6 +110,8 @@ crate::mods_out! { // _pub_mods, _reexports, _crate_internals
         #[doc(inline)] #[cfg(feature = "arduino_nano")]
         pub use super::board::BoardArduinoNano;
         //
+        #[doc(inline)] #[cfg(feature = "atari800xl")]
+        pub use super::computer::ComputerAtari800XL;
         #[doc(inline)] #[cfg(feature = "spectrum48")]
         pub use super::computer::ComputerSpectrum48;
         //
@@ -123,6 +125,8 @@ crate::mods_out! { // _pub_mods, _reexports, _crate_internals
         #[doc(inline)] #[cfg(feature = "nrf52840")]
         pub use super::mcu::McuNrf52840;
         //
+        #[doc(inline)] #[cfg(feature = "mos6502")]
+        pub use super::processor::ProcessorMos6502;
         #[doc(inline)] #[cfg(feature = "z80")]
         pub use super::processor::ProcessorZ80;
     }
