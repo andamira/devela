@@ -58,6 +58,7 @@ crate::mods_out! { // _pub_mods, _crate_internals, _hidden
     }
     _hidden {
         pub use super::{
+            log::_hidden::*,
             mem::_hidden::*,
         };
     }

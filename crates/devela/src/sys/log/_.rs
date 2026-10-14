@@ -8,16 +8,17 @@
 crate::mods_in! {
     // mod bench; //
     mod diag; // DiagLevel, DiagOut
-    // mod logger; // LogLevel, Logger, log_with WIP
-    mod slog; // LoggerStatic, slog!
+    mod_ r#static; // LoggerStatic, slog!
     // mod trace; //
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             diag::*,
-            // logger::*, // WIP
-            slog::{LoggerStatic, slog},
+            r#static::_all::{LoggerStatic, slog},
         };
+    }
+    _hidden {
+        pub use super::r#static::_hidden::*;
     }
 }
