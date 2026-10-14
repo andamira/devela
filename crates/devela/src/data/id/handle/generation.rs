@@ -112,17 +112,25 @@ macro_rules! handle_gen· {
 
         #[allow(dead_code)]
         impl $Handle {
-            $crate::handle_gen!(%guard_index_repr $iprim, $Index);
-            $crate::handle_gen!(%guard_generation_prim $gprim);
+            $crate::__handle_gen!(%guard_index_repr $iprim, $Index);
+            $crate::__handle_gen!(%guard_generation_prim $gprim);
         }
     };
+}
+#[doc(inline)]
+pub use handle_gen· as handle_gen;
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __handle_gen· {
     (%guard_index_repr $P:ty, $I:ty) => {
         const __GUARD_INDEX_REPR: () = {
             const fn __allowed<P, I>()
             where
                 P: $crate::PrimIndex,
                 I: $crate::ReprIndex<Prim = P>,
-            {}
+            {
+            }
             __allowed::<$P, $I>();
         };
     };
@@ -133,8 +141,7 @@ macro_rules! handle_gen· {
         };
     };
 }
-#[doc(inline)]
-pub use handle_gen· as handle_gen;
+pub use __handle_gen· as __handle_gen;
 
 #[cfg(test)]
 crate::items! {

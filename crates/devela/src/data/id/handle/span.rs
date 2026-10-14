@@ -72,7 +72,7 @@ macro_rules! handle_span· {
 
         #[allow(dead_code)]
         impl $Handle {
-            $crate::handle_span!(%guard_offset_repr $oprim, $Offset);
+            $crate::__handle_span!(%guard_offset_repr $oprim, $Offset);
 
             /// Returns whether this span has zero length.
             #[must_use]
@@ -81,16 +81,23 @@ macro_rules! handle_span· {
             }
         }
     };
+}
+#[doc(inline)]
+pub use handle_span· as handle_span;
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __handle_span· {
     (%guard_offset_repr $P:ty, $I:ty) => {
         const __GUARD_OFFSET_REPR: () = {
             const fn __allowed<P, I>()
             where
                 P: $crate::PrimIndex,
                 I: $crate::ReprIndex<Prim = P>,
-            {}
+            {
+            }
             __allowed::<$P, $I>();
         };
     };
 }
-#[doc(inline)]
-pub use handle_span· as handle_span;
+pub use __handle_span· as __handle_span;

@@ -29,6 +29,7 @@ crate::mods_in! {
     mod _example; // HandleSpanExample
 
     mod define; // handle!
+    mod _internal;
     mod generation; // handle_gen!
     mod span; // handle_span!
 }
@@ -44,6 +45,11 @@ crate::mods_out! { // _mods, _hidden
         pub use super::_example::{HandleExample, HandleGenExample, HandleSpanExample};
     }
     _hidden {
+        pub use super::{
+            _internal::__handle,
+            generation::__handle_gen,
+            span::__handle_span,
+        };
         #[cfg(any(test, feature = "_docs_examples"))]
         pub use super::_example::{
             _DOC_HANDLE_METHODS,
