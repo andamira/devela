@@ -5,6 +5,13 @@
 // - icons used by _doc_location: 📍,
 // - icons used by _doc_test_size_of: 📦,⚗️,
 
+#[cfg(not(doc))]
+#[macro_export(local_inner_macros)]
+macro_rules! _tags· {
+    ($($tokens:tt)*) => { "" };
+}
+
+#[cfg(doc)]
 /// Aggregates multiple documentation tags into a single `#[doc = ...]` string.
 #[doc(hidden)]
 #[macro_export(local_inner_macros)] // local modifier needed to enable resolution

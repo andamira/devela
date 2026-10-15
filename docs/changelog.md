@@ -31,6 +31,7 @@ This release…
 ## Crate
 
 ### features & flags
+- reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
 
 ### structure
 

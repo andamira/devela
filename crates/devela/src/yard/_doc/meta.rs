@@ -2,6 +2,13 @@
 //! Defines [`_doc_meta!`].
 //
 
+#[cfg(not(doc))]
+#[macro_export]
+macro_rules! _doc_meta· {
+    ($($tokens:tt)*) => { "" };
+}
+
+#[cfg(doc)]
 #[doc = crate::_tags!(internal)]
 /// Composes a small rustdoc metadata section for an item.
 #[doc = crate::_doc_meta!{
