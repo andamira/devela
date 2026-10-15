@@ -28,38 +28,34 @@ It is not necessary merely to compile devela without the standard library.
 
 ### Module and capability features
 
-Public module-family features provide two possible breadth grades.
+The Rust module tree organizes related abstractions; Cargo features control
+which capabilities and implementations are compiled. The two structures need
+not form the same hierarchy.
 
-A bare family feature, such as `data`, `media`, `num`, or `ui`, enables a
-lightweight coherent base for that domain. It is intended to remain useful on
-its own and to avoid compiling unrelated capabilities merely because they share
-the same thematic namespace.
+**Capability features** such as `ratio`, `prob`, `prng`, `audio`, or `event`
+are independently selectable, even when their implementations belong to nested
+modules. They imply other features only when those capabilities are genuinely
+required, not simply because of module ancestry.
 
-Where a broader distinction is useful, the corresponding `*_all` feature
-selects the full ordinary public family. It always includes the bare feature
-and adds the public capabilities associated with that domain. For example,
-`ui_all` currently enables `ui`, `event`, and `widget`.
+**Module-family features** such as `data`, `media`, `num`, and `ui` are curated
+entry points for their domains. Their base selections may be intentionally
+small, initially empty, or expanded as useful low-cost bundles emerge.
 
-Specific capability features remain independently selectable. They should imply
-only the minimum other features required for their meaningful operation, and
-cross-family dependencies should prefer the narrowest sufficient feature grade.
+**Aggregate features** ending in `_all` collect the ordinary public
+capabilities of a thematic family, including its base feature where defined.
 
-The module taxonomy and Cargo feature graph therefore need not coincide exactly.
-A capability may belong to a module structurally while remaining outside that
-module family's lightweight base.
+An implementation family may also keep a **local generation registry**:
+its canonical variants are generated once under `#[cfg]` conditions matching
+the needs of consuming modules, while a public feature (such as `ratio`)
+enables its complete predefined set. The registry and its consumers keep
+those conditions synchronized; no separate Cargo feature is needed
+for every primitive width or generated variant.
 
-The `*_all` suffix describes thematic breadth, not every feature that can affect
-that module. Environment, safety, scope, optional dependencies, nightly
-configuration, and platform- or backend-specific selections remain orthogonal,
-except where a selected capability intrinsically requires them.
-
-This distinction is especially visible in `sys_all`, which selects the ordinary
-portable `sys` family while leaving target-, operating-system-, and
-backend-specific capabilities independently selectable.
-
-The root `all` feature enables the `*_all` grade of each feature-gated root
-module. It is a broad thematic library selection, not a synonym for enabling
-every Cargo feature.
+Environment (`alloc`, `std`), safety (`unsafe_*`), scope, dependencies, and
+platform/backend capabilities remain independently selectable, except where a
+particular capability requires them. In particular, `sys_all` collects ordinary
+portable system facilities without automatically enabling all operating-system,
+device, or backend implementations.
 
 
 ### Safety features
