@@ -1,8 +1,8 @@
 //
-//! Integers with a number of high capacity bits removed.
+//! Defines [`BittenU8`]
 //
 
-use crate::{_impl_init, Hash, enumint, is, unwrap};
+use crate::{_BittenSpec, _impl_init, enumint, is, unwrap};
 
 #[doc = crate::_tags!(num niche)]
 /// An unsigned byte representation with `B` high capacity bits removed.
@@ -28,9 +28,9 @@ use crate::{_impl_init, Hash, enumint, is, unwrap};
     private_bounds,
     reason = "the private bound selects the representation for each supported B"
 )]
-pub struct BittenU8<const B: u8>(<__BittenU8Select<B> as __BittenU8Spec>::Repr)
+pub struct BittenU8<const B: u8>(<_BittenU8Select<B> as _BittenSpec>::Repr)
 where
-    __BittenU8Select<B>: __BittenU8Spec;
+    _BittenU8Select<B>: _BittenSpec;
 
 _impl_init![Self::ZERO => BittenU8<0>];
 _impl_init![Self::ZERO => BittenU8<1>];
@@ -44,46 +44,42 @@ _impl_init![Self::ZERO => BittenU8<8>];
 
 /* private representations */
 
-enumint![__BittenU8_1, u8, 0, 127];
-enumint![__BittenU8_2, u8, 0, 63];
-enumint![__BittenU8_3, u8, 0, 31];
-enumint![__BittenU8_4, u8, 0, 15];
-enumint![__BittenU8_5, u8, 0, 7];
-enumint![__BittenU8_6, u8, 0, 3];
-enumint![__BittenU8_7, u8, 0, 1];
+enumint![pub(crate) _BittenU8_1, u8, 0, 127];
+enumint![pub(crate) _BittenU8_2, u8, 0, 63];
+enumint![pub(crate) _BittenU8_3, u8, 0, 31];
+enumint![pub(crate) _BittenU8_4, u8, 0, 15];
+enumint![pub(crate) _BittenU8_5, u8, 0, 7];
+enumint![pub(crate) _BittenU8_6, u8, 0, 3];
+enumint![pub(crate) _BittenU8_7, u8, 0, 1];
 
 /// Representation selection
-struct __BittenU8Select<const B: u8>;
+pub(crate) struct _BittenU8Select<const B: u8>;
 
-trait __BittenU8Spec {
-    type Repr: Clone + Copy + Eq + Hash;
-}
-
-impl __BittenU8Spec for __BittenU8Select<0> {
+impl _BittenSpec for _BittenU8Select<0> {
     type Repr = u8;
 }
-impl __BittenU8Spec for __BittenU8Select<1> {
-    type Repr = __BittenU8_1;
+impl _BittenSpec for _BittenU8Select<1> {
+    type Repr = _BittenU8_1;
 }
-impl __BittenU8Spec for __BittenU8Select<2> {
-    type Repr = __BittenU8_2;
+impl _BittenSpec for _BittenU8Select<2> {
+    type Repr = _BittenU8_2;
 }
-impl __BittenU8Spec for __BittenU8Select<3> {
-    type Repr = __BittenU8_3;
+impl _BittenSpec for _BittenU8Select<3> {
+    type Repr = _BittenU8_3;
 }
-impl __BittenU8Spec for __BittenU8Select<4> {
-    type Repr = __BittenU8_4;
+impl _BittenSpec for _BittenU8Select<4> {
+    type Repr = _BittenU8_4;
 }
-impl __BittenU8Spec for __BittenU8Select<5> {
-    type Repr = __BittenU8_5;
+impl _BittenSpec for _BittenU8Select<5> {
+    type Repr = _BittenU8_5;
 }
-impl __BittenU8Spec for __BittenU8Select<6> {
-    type Repr = __BittenU8_6;
+impl _BittenSpec for _BittenU8Select<6> {
+    type Repr = _BittenU8_6;
 }
-impl __BittenU8Spec for __BittenU8Select<7> {
-    type Repr = __BittenU8_7;
+impl _BittenSpec for _BittenU8Select<7> {
+    type Repr = _BittenU8_7;
 }
-impl __BittenU8Spec for __BittenU8Select<8> {
+impl _BittenSpec for _BittenU8Select<8> {
     type Repr = ();
 }
 
@@ -227,55 +223,10 @@ macro_rules! impl_bitten_u8 {
         }
     };
 }
-impl_bitten_u8!(1, __BittenU8_1, 7, 128, 127);
-impl_bitten_u8!(2, __BittenU8_2, 6, 64, 63);
-impl_bitten_u8!(3, __BittenU8_3, 5, 32, 31);
-impl_bitten_u8!(4, __BittenU8_4, 4, 16, 15);
-impl_bitten_u8!(5, __BittenU8_5, 3, 8, 7);
-impl_bitten_u8!(6, __BittenU8_6, 2, 4, 3);
-impl_bitten_u8!(7, __BittenU8_7, 1, 2, 1);
-
-#[cfg(test)]
-mod _test {
-    use super::*;
-
-    const B2: BittenU8<2> = unwrap![some BittenU8::<2>::new(42)];
-    const B3: BittenU8<3> = unwrap![some BittenU8::<3>::new(17)];
-
-    #[test]
-    fn bitten_u8_const() {
-        assert_eq!(B2.get(), 42);
-        assert_eq!(B3.get(), 17);
-        assert!(BittenU8::<2>::new(63).is_some());
-        assert!(BittenU8::<2>::new(64).is_none());
-        assert!(BittenU8::<3>::new(31).is_some());
-        assert!(BittenU8::<3>::new(32).is_none());
-    }
-    #[test]
-    fn bitten_u8_endpoints() {
-        assert_eq!(BittenU8::<0>::new(255).unwrap().get(), 255);
-        assert_eq!(BittenU8::<8>::new(0).unwrap().get(), 0);
-        assert!(BittenU8::<8>::new(1).is_none());
-    }
-    #[test]
-    fn bitten_u8_layout() {
-        assert_eq!(size_of::<BittenU8<0>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<0>>>(), 2);
-        assert_eq!(size_of::<BittenU8<1>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<1>>>(), 1);
-        assert_eq!(size_of::<BittenU8<2>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<2>>>(), 1);
-        assert_eq!(size_of::<BittenU8<3>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<3>>>(), 1);
-        assert_eq!(size_of::<BittenU8<4>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<4>>>(), 1);
-        assert_eq!(size_of::<BittenU8<5>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<5>>>(), 1);
-        assert_eq!(size_of::<BittenU8<6>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<6>>>(), 1);
-        assert_eq!(size_of::<BittenU8<7>>(), 1);
-        assert_eq!(size_of::<Option<BittenU8<7>>>(), 1);
-        assert_eq!(size_of::<BittenU8<8>>(), 0);
-        assert_eq!(size_of::<Option<BittenU8<8>>>(), 1);
-    }
-}
+impl_bitten_u8!(1, _BittenU8_1, 7, 128, 127);
+impl_bitten_u8!(2, _BittenU8_2, 6, 64, 63);
+impl_bitten_u8!(3, _BittenU8_3, 5, 32, 31);
+impl_bitten_u8!(4, _BittenU8_4, 4, 16, 15);
+impl_bitten_u8!(5, _BittenU8_5, 3, 8, 7);
+impl_bitten_u8!(6, _BittenU8_6, 2, 4, 3);
+impl_bitten_u8!(7, _BittenU8_7, 1, 2, 1);

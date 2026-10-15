@@ -94,7 +94,7 @@ crate::mods_in! {
     mod macros; // niche!, (NicheNew), niche_prim!
     mod_ mem; // NonMax*, NonMin*, NonValue*
 }
-crate::mods_out! { // _mods, _reexports, _hidden
+crate::mods_out! { // _mods, _reexports, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -109,6 +109,9 @@ crate::mods_out! { // _mods, _reexports, _hidden
         pub use super::_reexport_core::*;
         #[doc = crate::_tags!(construction num niche procedural_macro)]
         pub use devela_macros::enumint;
+    }
+    _crate_internals {
+        pub(crate) use super::mem::_crate_internals::*;
     }
     _hidden {
         pub use super::macros::NicheNew;

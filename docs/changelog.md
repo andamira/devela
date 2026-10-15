@@ -4,7 +4,7 @@
 =======================
 
 > …
-> — 
+> —
 
 ```
 This release…
@@ -35,6 +35,10 @@ This release…
 ### structure
 
 ## Modules
+
+### num
+- add `BittenU16<B>` for all 17 capacities, using compact byte-composed representations that preserve niches across byte boundaries.
+- refactor shared `BittenU*` representation selection and integrate `BittenU16` with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
 
 ---
 

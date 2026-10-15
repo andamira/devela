@@ -39,6 +39,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _crate_internals {
         pub(crate) use super::{
             lim::_crate_internals::*,
+            niche::_crate_internals::*,
         };
     }
     _hidden {

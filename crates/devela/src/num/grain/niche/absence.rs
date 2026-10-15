@@ -22,7 +22,8 @@
 // - struct NonNiche
 // - mod _test
 
-use crate::{BittenU8, Cast, ConstInit, InvalidValue, NicheValueError, NonZero, Overflow, unwrap};
+use crate::{BittenU8, BittenU16};
+use crate::{Cast, ConstInit, InvalidValue, NicheValueError, NonZero, Overflow, unwrap};
 use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
 use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
 
@@ -91,16 +92,13 @@ macro_rules! impl_maybe {
     () => {
         impl_maybe!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
 
-        impl_maybe![% false, u8, BittenU8<0>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<1>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<2>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<3>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<4>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<5>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<6>, *get, ^new];
-        impl_maybe![% true, u8, BittenU8<7>, *get, ^new];
-        impl_maybe![% false, u8, BittenU8<8>, *get, ^new];
-
+        impl_maybe![bitten BittenU8, u8;
+            0, 1, 2, 3, 4, 5, 6, 7, 8
+        ];
+        impl_maybe![bitten BittenU16, u16;
+            0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16
+        ];
     };
     ($($T:ty),+) => {
         // % $is_niche, $prim, $T
@@ -114,8 +112,11 @@ macro_rules! impl_maybe {
             *get, ^new];
         )+ }
     };
+    (bitten $T:ident, $P:ty; $($B:literal),+ $(,)?) => {
+        $( impl_maybe![% ($B % 8 != 0), $P, $T<$B>, *get, ^new]; )+
+    };
     (%
-     $is_niche:literal, // IS_NICHE
+     $is_niche:expr, // IS_NICHE
      $prim:ty,
      $T:ty $(, <const $V:ident : $v:ty>)?
      $(, *$get:ident)?  // for: get_prim, prim
