@@ -2,11 +2,13 @@
 //! Defines [`Ratio`].
 //
 
+#[allow(unused_imports, reason = "feature-gate")]
 use crate::IntError::{
     self, MismatchedSizes, NoInverse, NonNegativeRequired, NonZeroRequired, Overflow,
 };
 use crate::Ordering::{self, Equal, Greater, Less};
 use crate::Sign::{Negative, Positive};
+#[allow(unused_imports, reason = "feature-gate")]
 use crate::{
     _impl_init, Char, Digits, FmtError, Str, cif, cold_path, compile, cswap, impl_trait, is,
     isize_up, slice, unlikely, unwrap, usize_up,
@@ -59,12 +61,36 @@ impl<N, D> Ratio<N, D> {
 
 macro_rules! _impl_ratio_prim {
     () => {
+        // Primitive implementations required by other modules.
+        // Keep these conditions synchronized with their consumers.
+        //
+        // Syntax:
         // primitive : unsigned : upcasted : is_signed
+
+        // In sync with:
+        // - /ui/scale/density.rs
+        // - /media/audio/pcm/spec.rs
+        #[cfg(any(feature = "ratio", feature = "ui", feature = "audio"))]
+        _impl_ratio_prim!(u32:u32:u64:false);
+
+        // In sync with:
+        // - /num/prob/probability.rs
+        // #[cfg(any(feature = "ratio", feature = "prob"))] // FUTURE
+        _impl_ratio_prim!(u64:u64:u128:false);
+
+        // Complete predefined family, excluding the implementations above.
+        #[cfg(feature = "ratio")]
         _impl_ratio_prim!(
-            i8:u8:i16:true, i16:u16:i32:true, i32:u32:i64:true, i64:u64:i128:true,
-            i128:u128:i128:true, isize:usize:isize_up:true,
-            u8:u8:u16:false, u16:u16:u32:false, u32:u32:u64:false, u64:u64:u128:false,
-            u128:u128:u128:false, usize:usize:usize_up:false,
+            i8:u8:i16:true,
+            i16:u16:i32:true,
+            i32:u32:i64:true,
+            i64:u64:i128:true,
+            i128:u128:i128:true,
+            isize:usize:isize_up:true,
+            u8:u8:u16:false,
+            u16:u16:u32:false,
+            u128:u128:u128:false,
+            usize:usize:usize_up:false,
         );
     };
     ($($Prim:ty : $Unsigned:ty : $Upcasted:ty : $is_signed:tt),+ $(,)?) => { $crate::paste! { $(

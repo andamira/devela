@@ -2,8 +2,10 @@
 //! Defines [`UiDensity`].
 //
 
+use crate::RatioU32; // in sync with /num/quant/ratio/define.rs
+
 use crate::UiRound::{self, Ceil, Floor, Inward, Nearest, Outward};
-use crate::{Cmp, Lunit, RatioU32, RegionS2, UiNum, UiRect, unwrap};
+use crate::{Cmp, Lunit, RegionS2, UiNum, UiRect, unwrap};
 
 #[doc = crate::_tags!(ui quant)]
 /// Physical output pixels per logical UI pixel.

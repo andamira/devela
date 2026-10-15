@@ -2,7 +2,9 @@
 //! Defines [`PcmSpec`].
 //
 
-use crate::{_impl_init, AudioChannels, PcmSample, RatioU32, impl_trait, is, unwrap};
+use crate::RatioU32; // in sync with /num/quant/ratio/define.rs
+
+use crate::{_impl_init, AudioChannels, PcmSample, impl_trait, is, unwrap};
 
 #[doc = crate::_tags!(audio)]
 /// Essential metadata describing a PCM audio stream.

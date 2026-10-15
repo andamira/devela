@@ -31,7 +31,7 @@ This release…
 ## Crate
 
 ### features & flags
-- reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
+- new feature: `ratio`.
 
 ### structure
 
@@ -40,6 +40,12 @@ This release…
 ### num
 - add `BittenU16<B>` for all 17 capacities, using compact byte-composed representations that preserve niches across byte boundaries.
 - refactor shared `BittenU*` representation selection and integrate `BittenU16` with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
+
+#### num::quant
+- feature gate `Ratio*` implementations.
+
+### yard
+- reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
 
 ---
 
