@@ -8,7 +8,9 @@
 #[cfg(not(doc))]
 #[macro_export(local_inner_macros)]
 macro_rules! _tags· {
-    ($($tokens:tt)*) => { "" };
+    ($($tokens:tt)*) => {
+        ""
+    };
 }
 
 #[cfg(doc)]

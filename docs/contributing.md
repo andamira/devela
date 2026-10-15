@@ -1,13 +1,24 @@
+# Contributing
 
-## Contributing
+devela is a personal, evolving project, built with curiosity and care.
 
-Contributions are welcomed to help refine and improve this library over time.
-If you notice a bug, have an idea for a new feature, or simply want to suggest
-improvements to the existing codebase, please get in touch.
+Contributions are welcome, whether they involve code, documentation,
+bug reports, testing, or simply sharing an observation.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work shall be dual licensed as above,
-without any additional terms or conditions.
+I value clarity, coherence, and thoughtful improvements.
+The project follows its own direction and pace, so not
+every contribution will necessarily find a place in it.
 
-Contributions to separately licensed assets are governed by the license
-included in the corresponding asset directory.
+## AI assistance
+
+AI tools are welcome as aids to exploration and development,
+but they don't replace understanding or responsibility.
+
+Please review, understand, and stand behind what you submit.
+
+## Licensing
+
+Unless explicitly stated otherwise, contributions intentionally submitted
+for inclusion are licensed under the project's dual **MIT OR Apache-2.0** terms.
+
+Separately licensed assets retain their own licensing conditions.

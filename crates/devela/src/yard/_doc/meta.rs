@@ -5,7 +5,9 @@
 #[cfg(not(doc))]
 #[macro_export]
 macro_rules! _doc_meta· {
-    ($($tokens:tt)*) => { "" };
+    ($($tokens:tt)*) => {
+        ""
+    };
 }
 
 #[cfg(doc)]
