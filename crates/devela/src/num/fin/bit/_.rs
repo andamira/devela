@@ -6,16 +6,13 @@
 //
 
 crate::mods_in! {
-    #[cfg(test)]
-    mod _test;
-
     // mod _benches;
     mod _docs;
 
     #[cfg(feature = "bitwise")]
     mod ops; // BitOps
     mod span; // BitSpan
-    mod_ wise; // Bitwise
+    mod_ wise; // Bitwise, bitwise!
 }
 crate::mods_out! { // _mods
     _mods {

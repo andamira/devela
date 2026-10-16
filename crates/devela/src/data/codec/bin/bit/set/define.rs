@@ -392,11 +392,11 @@ macro_rules! set· {
     }};
     // single bit.
     (%item $T:ty; $bit:tt) => {
-        $crate::Bitwise::<$T>::mask_range(($bit) as u32, ($bit) as u32).0
+        $crate::bitwise![mask $T; ($bit)..=($bit)]
     };
     // inclusive bit range.
     (%item $T:ty; $start:tt ..= $end:tt) => {
-        $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
+        $crate::bitwise![mask $T; ($start)..=($end)]
     };
     // only allow implementions over unsigned integers
     (%guard_allowed_type $Set:ident, $T:ty) => { $crate::paste! {

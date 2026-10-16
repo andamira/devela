@@ -11,6 +11,8 @@
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
+/// See also: [`slice!`][crate::slice] and [`SliceExt`][crate::SliceExt].
+///
 /// # Methods
 ///
 /// - [core slice operations](#core-slice-operations)
@@ -99,7 +101,5 @@
 ///
 /// - [specific methods for byte slices](#methods-for-byte-slices)
 /// - [`eq` methods for slices of (slices of) primitives](#method.eq)
-///
-/// See also: [`slice!`][crate::slice] and [`SliceExt`][crate::SliceExt].
 #[derive(Debug)]
 pub struct Slice<T>(crate::PhantomData<T>);

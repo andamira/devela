@@ -39,7 +39,10 @@ This release…
 ## Modules
 
 #### num::fin
-- feature gate `BitOps`.
+- add `bitwise!` macro.
+- feature gate `Bitwise` and `BitOps` behind `bitwise`.
+- migrate `set!`, `bitfield!`, `BitSpan`, and X11 bit-mask checks to `bitwise!`.
+
 
 #### num::grain
 - feature gate `Cast` implementations.

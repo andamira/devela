@@ -17,7 +17,8 @@
 /// Checked variants never panic and return an error instead.
 ///
 /// # Related items
-/// See also [`BitOps`][crate::BitOps] for the related trait.
+/// See also [`bitwise!`][crate::bitwise] for a feature-independent vocabulary
+/// of direct bitwise expressions, and [`BitOps`][crate::BitOps] for the related trait.
 ///
 /// # Methods
 ///

@@ -353,38 +353,29 @@ macro_rules! bitfield· {
             /// Returns the field value.
             #[must_use] #[allow(dead_code)]
             $vis const fn [<get_ $f:lower>](self) -> $T {
-                $crate::Bitwise::<$T>(self.bits).get_value_range(($start) as u32, ($end) as u32).0
+                $crate::bitwise![extract self.bits; ($start)..=($end)]
             }
             /// Returns `self` with the field value replaced, masking it to fit the field width.
             #[must_use] #[allow(clippy::double_must_use)] #[allow(dead_code)]
             $vis const fn [<with_ $f:lower>](self, value: $T) -> Self {
-                Self { bits: $crate::Bitwise::<$T>(self.bits)
-                    .set_value_range(value, ($start) as u32, ($end) as u32).0 }
+                Self { bits: $crate::bitwise![insert self.bits, value; ($start)..=($end)] }
             }
             /// Returns `self` with the checked field value replaced, if it fits.
             #[allow(dead_code)]
             $vis const fn [<try_with_ $f:lower>](self, value: $T)
                 -> $crate::Result<Self, $crate::MismatchedCapacity> {
-                match $crate::Bitwise::<$T>(self.bits)
-                    .set_value_range_checked_strict(value, ($start) as u32, ($end) as u32)
-                {
-                    Ok(bits) => Ok(Self { bits: bits.0 }),
-                    // This should be the only reachable error after macro guards.
-                    Err($crate::MismatchedBounds::MismatchedCapacity {
-                        bound: _, value: _, limit: _ }) => {
-                        Err($crate::MismatchedCapacity::too_large(value as usize,
-                            Self::[<_ $f _MAX>] as usize))
-                    },
-                    // Guarded by generated compile-time assertions.
-                    Err(_) => unreachable!(),
+                if value > Self::[<_ $f _MAX>] {
+                    Err($crate::MismatchedCapacity::too_large(
+                        value as usize, Self::[<_ $f _MAX>] as usize))
+                } else {
+                    Ok(self.[<with_ $f:lower>](value))
                 }
             }
 
             /// Replaces the field value, masking it to fit the field width.
             #[allow(dead_code)]
             $vis const fn [<set_ $f:lower>](&mut self, value: $T) {
-                self.bits = $crate::Bitwise::<$T>(self.bits)
-                    .set_value_range(value, ($start) as u32, ($end) as u32).0;
+                self.bits = $crate::bitwise![insert self.bits, value; ($start)..=($end)];
             }
             /// Replaces the field value, if it fits.
             #[allow(dead_code)]
@@ -448,7 +439,7 @@ macro_rules! bitfield· {
             #[allow(non_upper_case_globals)]
             pub(crate) const [<_ $f _MASK>]: $T = {
                 let _ = Self::[<_ $f _GUARD_FIELD_RANGE>];
-                $crate::Bitwise::<$T>::mask_range(($start) as u32, ($end) as u32).0
+                $crate::bitwise![mask $T; ($start)..=($end)]
             };
             /// The maximum value of this field.
             #[allow(non_upper_case_globals)]

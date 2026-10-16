@@ -7,7 +7,7 @@
 // - struct XkbState
 
 use super::{_raw, XError};
-use crate::{Bitwise, Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, is};
+use crate::{Key, KeyDead, KeyMod, KeyMods, KeyPad, KeyState, bitwise, is};
 
 /// Tracks the minimal state needed to classify `Press` vs `Repeat`.
 #[doc = crate::_doc_meta!{
@@ -263,16 +263,16 @@ impl XkbState {
     /// Prefer the XKB effective-modifier path
     /// once the minimum supported libxkbcommon version is high enough.
     pub fn key_mods(&self, xcb_modifiers: u16) -> KeyMods {
-        let (x, mut m) = (Bitwise(xcb_modifiers), KeyMods::new());
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_SHIFT), m.set_shift()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_CONTROL), m.set_control()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_LOCK), m.set_caps_lock()];
+        let mut m = KeyMods::new();
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_SHIFT], m.set_shift()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_CONTROL], m.set_control()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_LOCK], m.set_caps_lock()];
         // X11 conventional modifier slots:
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_1), m.set_alt()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_2), m.set_num_lock()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_3), m.set_scroll_lock()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_4), m.set_super()];
-        is![x.is_set_mask(_raw::XCB_MOD_MASK_5), m.set_alt_gr()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_1], m.set_alt()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_2], m.set_num_lock()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_3], m.set_scroll_lock()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_4], m.set_super()];
+        is![bitwise![any xcb_modifiers; mask _raw::XCB_MOD_MASK_5], m.set_alt_gr()];
         m
     }
 

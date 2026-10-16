@@ -233,7 +233,7 @@ num_all = [ "num",
 	# dom
 		int = []     # Integer extensions. TEMP
 	# fin
-		bitwise = [] # Bitwise namespace and BitOps trait.
+		bitwise = [] # Extended Bitwise namespace and BitOps trait.
 	# grain
 		bitten = []  # Additional predefined Bitten representations beyond BittenU8.
 		cast = []    # Complete primitive Cast operations and conversion traits.

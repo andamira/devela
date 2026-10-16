@@ -12,8 +12,6 @@ fn bit_mask_range() {
     debug_assert![Bitwise::<u8>::mask_range_checked(8, 8).is_err()];
     debug_assert![Bitwise::<u8>::mask_range_checked(0, 8).is_err()];
     debug_assert![Bitwise::<u8>::mask_range_checked(4, 1).is_err()];
-
-    // NOTE: panics are tested in devela::num::fin::bit::tests
 }
 #[test] #[rustfmt::skip]
 fn bit_ops() {
@@ -85,3 +83,15 @@ fn bit_ops() {
 //     let b = Bitwise(0b1111_0000u8);
 //     assert_eq![0b0011_0000, b.scroll_range_checked(4, 7, -2, false).unwrap().0];
 // }
+
+#[cfg(feature = "std")]
+mod std {
+    use crate::{Bitwise, Panic};
+
+    #[test] #[rustfmt::skip]
+    fn bit_mask_range() {
+        debug_assert![Panic::catch(|| { let _ = Bitwise::<u8>::mask_range(8, 8); }) .is_err()];
+        debug_assert![Panic::catch(|| { let _ = Bitwise::<u8>::mask_range(0, 8); }) .is_err()];
+        debug_assert![Panic::catch(|| { let _ = Bitwise::<u8>::mask_range(4, 1); }) .is_err()];
+    }
+}

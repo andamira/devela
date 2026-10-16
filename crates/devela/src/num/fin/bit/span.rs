@@ -2,12 +2,12 @@
 //! Defines [`BitSpan`].
 //
 
-use crate::{Bitwise, MismatchedBounds};
+use crate::{MismatchedBounds, MismatchedCapacity, bitwise, is};
 
 #[doc = crate::_tags!(bit data_structure)]
 /// A contiguous span of bits in an integer carrier.
 #[doc = crate::_doc_meta!{
-    location("num/fin/bit", struct BitSpan),
+    location("num/fin", struct BitSpan),
     test_size_of(BitSpan<u8> = 16|128; niche !Option),
     test_size_of(BitSpan<u32> = 20|160; niche !Option),
 }]
@@ -82,12 +82,8 @@ macro_rules! impl_bit_span {
                 assert!(start <= end, "BitSpan: start must be <= end");
                 assert!(end < <$T>::BITS, "BitSpan: end exceeds carrier width");
                 let width = end - start + 1;
-                let mask = Bitwise::<$T>::mask_range(start, end).0;
-                let max = if width >= <$T>::BITS {
-                    !0 as $T
-                } else {
-                    ((1 as $T) << width) - 1
-                };
+                let mask = bitwise![mask $T; (start)..=(end)];
+                let max = is![width >= <$T>::BITS, !0 as $T, ((1 as $T) << width) - 1];
                 Self { start, end, width, mask, max }
             }
             /// Returns a new checked bit span.
@@ -96,17 +92,14 @@ macro_rules! impl_bit_span {
             /// Returns an error if `start > end` or if `end` exceeds the carrier width.
             pub const fn try_new(start: u32, end: u32)
                 -> Result<Self, MismatchedBounds> {
-                match Bitwise::<$T>::mask_range_checked(start, end) {
-                    Ok(mask) => {
-                        let width = end - start + 1;
-                        let max = if width >= <$T>::BITS {
-                            !0 as $T
-                        } else {
-                            ((1 as $T) << width) - 1
-                        };
-                        Ok(Self { start, end, width, mask: mask.0, max })
-                    }
-                    Err(e) => Err(e),
+                if start >= <$T>::BITS {
+                    Err(MismatchedBounds::IndexOutOfBounds(Some(start as usize)))
+                } else if end >= <$T>::BITS {
+                    Err(MismatchedBounds::IndexOutOfBounds(Some(end as usize)))
+                } else if start > end {
+                    Err(MismatchedBounds::MismatchedIndices)
+                } else {
+                    Ok(Self::new(start, end))
                 }
             }
 
@@ -117,7 +110,7 @@ macro_rules! impl_bit_span {
             /// Extracts the span value from `bits`.
             #[must_use]
             pub const fn get_value(self, bits: $T) -> $T {
-                Bitwise::<$T>(bits).get_value_range(self.start, self.end).0
+                bitwise![extract bits; (self.start)..=(self.end)]
             }
 
             /// Returns `bits` with the span value replaced.
@@ -125,7 +118,7 @@ macro_rules! impl_bit_span {
             /// The value is masked to fit the span width.
             #[must_use]
             pub const fn set_value(self, bits: $T, value: $T) -> $T {
-                Bitwise::<$T>(bits).set_value_range(value, self.start, self.end).0
+                bitwise![insert bits, value; (self.start)..=(self.end)]
             }
             /// Returns `bits` with the checked span value replaced.
             ///
@@ -134,12 +127,16 @@ macro_rules! impl_bit_span {
             /// or if `value` does not fit within the span width.
             pub const fn try_set_value(self, bits: $T, value: $T)
                 -> Result<$T, MismatchedBounds> {
-                match Bitwise::<$T>(bits)
-                    .set_value_range_checked_strict(value, self.start, self.end)
-                {
-                    Ok(bits) => Ok(bits.0),
-                    Err(e) => Err(e),
+                is! { let Err(err) = Self::try_new(self.start, self.end), return Err(err) }
+                let width = self.end - self.start + 1;
+                if width < <$T>::BITS {
+                    let limit = (1 as $T) << width;
+                    if value >= limit {
+                        let err = MismatchedCapacity::too_large(value as usize, limit as usize);
+                        return Err(MismatchedBounds::from_mismatched_capacity(err));
+                    }
                 }
+                Ok(bitwise![insert bits, value; (self.start)..=(self.end)])
             }
             /// Clears the span bits in `bits`.
             #[must_use]
