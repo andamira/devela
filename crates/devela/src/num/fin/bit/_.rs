@@ -12,6 +12,7 @@ crate::mods_in! {
     // mod _benches;
     mod _docs;
 
+    #[cfg(feature = "bitwise")]
     mod ops; // BitOps
     mod span; // BitSpan
     mod_ wise; // Bitwise
@@ -19,9 +20,10 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            ops::*,
             span::*,
             wise::_all::*,
         };
+        #[cfg(feature = "bitwise")]
+        pub use super::ops::BitOps;
     }
 }

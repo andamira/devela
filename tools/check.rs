@@ -88,7 +88,7 @@ const SUB_MODULES: &[&str] = &[
     // media
         "audio", "font", "color", "draw", "image",
     // num
-        "alg", "bitten", "cast", "int", "niche", "prng", "prob", "ratio", "scale",
+        "alg", "bitten", "bitwise", "cast", "int", "niche", "prng", "prob", "ratio", "scale",
     // org
 
     // phys

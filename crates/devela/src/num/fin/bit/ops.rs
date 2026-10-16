@@ -10,7 +10,7 @@ use super::_docs::*;
 use crate::MismatchedBounds::{IndexOutOfBounds, MismatchedCapacity, MismatchedIndices};
 use crate::{Bitwise, MismatchedBounds};
 
-#[doc = crate::_tags!(num namespace)]
+#[doc = crate::_tags!(num bit namespace)]
 /// Provides bitwise operations on `T`.
 #[doc = crate::_doc_meta!{
     location("num/fin", trait BitOps),

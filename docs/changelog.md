@@ -31,12 +31,15 @@ This release…
 ## Crate
 
 ### features & flags
-- new features: `bitten`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- new features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - rename `rand` to `prng`.
 
 ### structure
 
 ## Modules
+
+#### num::fin
+- feature gate `BitOps`.
 
 #### num::grain
 - feature gate `Cast` implementations.

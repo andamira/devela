@@ -2,7 +2,7 @@
 //! Defines the [`Bitwise`] namespace.
 //
 
-#[doc = crate::_tags!(num namespace)]
+#[doc = crate::_tags!(num bit namespace)]
 /// Provides constant bitwise operations on `T`.
 #[doc = crate::_doc_meta!{
     location("num/fin", struct Bitwise),

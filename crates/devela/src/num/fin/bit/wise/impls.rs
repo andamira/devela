@@ -36,13 +36,11 @@ macro_rules! _example {
 }
 
 macro_rules! _num_fin_bit_ops_wise_impl_prims {
-    () => { _num_fin_bit_ops_wise_impl_prims![
-        u8, u16, u32, u64, u128, usize
-    ]; };
-    ( $( $t:ty),+ ) => { $( _num_fin_bit_ops_wise_impl_prims![@$t]; )+ };
-
-    // `$t`: the primitive type
-    (@$t:ty) => {
+    () => {
+        _num_fin_bit_ops_wise_impl_prims![u8, u16, u32, u64, u128, usize];
+    };
+    ( $( $t:ty),+ ) => { $( _num_fin_bit_ops_wise_impl_prims![% $t]; )+ };
+    (% $t:ty) => {
         /* impl traits */
 
         #[doc = concat!["# Implementations for `", stringify!($t), "`."]]
