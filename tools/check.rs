@@ -70,6 +70,7 @@ const NIGHTLY: &str = "nightly"; // NOTE: specific version can be set like: nigh
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 12 + 3] = [
     "code", "data", "geom", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
+    // "org", "vita"
 
     // sys::os submodules (platforms)
     "linux", "term", "web", // "windows",
@@ -79,15 +80,15 @@ const SUB_MODULES: &[&str] = &[
     // code
 
     // data
-        "hash",
+        "hash", "oneof",
     // geom
         "fig",
     // lang
-        "glsl", "js",
+        "glsl", "js", "shell",
     // media
-        "audio", "color", "draw", "font", "image", "video",
+        "audio", "font", "color", "draw", "image",
     // num
-        "int", "lin", "rand",
+        "alg", "int", "prng", "prob", "ratio",
     // org
 
     // phys
@@ -95,15 +96,19 @@ const SUB_MODULES: &[&str] = &[
     // run
 
     // sys
-        "io", "mem", // "x11", "os"
+        "io", "net", "service",
+            "hw",
+            // "device": "alsa", "x11",
+            // "os": "android", "linux", "web",
+            "term",
     // text
         "grapheme", "translit",
     // ui
-        "event", "layout", "term",
+        "event", "ui",
     // vita
 
     // work
-        "process", "sync", "thread",
+        "process", "thread", "sync",
 ];
 
 //* dependencies *//

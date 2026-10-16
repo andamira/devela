@@ -8,29 +8,35 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "prob")]
     pub mod_ dist; // Probability distributions
         // mod_ estim; // Estimation & inference
         // mod_ fit; // Model fitting
+    #[cfg(feature = "prob")]
     pub mod_ markov; // Stochastic matrices, chains, traces
+        #[cfg(feature = "prob")]
         mod probability; // Probability
     pub mod_ rand; // Random number generation
+    #[cfg(feature = "prob")]
     pub mod_ stats; // Descriptive statistics
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports _crate_internals, _hidden
     _mods {
-        pub use super::{
-            // estim::_all::*,
-            // fit::_all::*,
-            probability::Probability,
-        };
+        #[cfg(feature = "prob")]
+        pub use super::probability::Probability;
+        // pub use super::{
+        //     estim::_all::*,
+        //     fit::_all::*,
+        // };
     }
     _pub_mods {
+        #[cfg(feature = "prob")]
         pub use super::{
             dist::_all::*,
             markov::_all::*,
-            rand::_all::*,
             stats::_all::*,
         };
+        pub use super::rand::_all::*;
     }
     _reexports {
         #[doc(inline)]

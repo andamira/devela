@@ -36,7 +36,7 @@ use crate::{XorShift16, XorShift32, XorShift64};
 #[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-#[cfg_attr(nightly_doc, doc(cfg(feature = "rand")))]
+#[cfg_attr(nightly_doc, doc(cfg(feature = "prng")))]
 macro_rules! rand_xorshift· {
     (bits:$bits:literal, basis:$basis:expr, triplet:$triplet:expr, seed:$seed:expr) => {{
         $crate::paste! {

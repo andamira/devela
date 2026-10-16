@@ -31,7 +31,8 @@ This release…
 ## Crate
 
 ### features & flags
-- new feature: `ratio`.
+- new features: `prob`, `ratio`.
+- rename `rand` to `prng`.
 
 ### structure
 

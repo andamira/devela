@@ -61,7 +61,7 @@ crate::mods_in! {
 
     #[cfg(feature = "std")]
     mod std; // StdRand
-    #[cfg(any(test, feature = "rand"))]
+    #[cfg(any(test, feature = "prng"))]
     mod fake; // RandFake
 }
 crate::mods_out! { // _mods, _crate_internals, _hidden
@@ -75,7 +75,7 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         };
         #[cfg(feature = "std")]
         pub use super::std::StdRand;
-        #[cfg(any(test, feature = "rand"))]
+        #[cfg(any(test, feature = "prng"))]
         pub use super::fake::RandFake;
     }
     _crate_internals {

@@ -2,7 +2,9 @@
 //! Defines [`Probability`].
 //
 
-use crate::{_impl_init, RatioU64, is, unwrap};
+use crate::{_impl_init, is, unwrap};
+
+use crate::RatioU64; // in sync with /num/quant/ratio/define.rs
 
 #[doc = crate::_tags!(num)]
 /// An exact probability represented by a canonical rational value.

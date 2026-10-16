@@ -222,11 +222,11 @@ media_all = ["media", "audio", "font", "visual"]
 		image = []
 
 num = []
-num_all = ["num", "alg", "int", "rand", "ratio"]
+num_all = ["num", "alg", "int", "prng", "prob", "ratio"]
 	alg = []   # Linear algebra.
 	int = []   # Integer extensions. TEMP
-	# prob = [] # Probability and statistical facilities.
-	rand = []  # Additional pseudorandom generators.
+	prng = []  # Additional pseudorandom generators.
+	prob = []  # Probability and statistical facilities.
 	ratio = [] # Additional predefined primitive ratios.
 
 org = []
@@ -276,13 +276,13 @@ text_all = ["text", "grapheme", "translit"]
 	grapheme = []
 	translit = []
 
-vita = []
-vita_all = []
-
 ui = []
 ui_all = ["ui", "event", "widget"]
 	event = []
 	widget = ["ui"]
+
+vita = []
+vita_all = []
 
 work = []
 work_all = ["work", "process", "thread", "sync"]
@@ -586,7 +586,7 @@ workspace = true
 # [[bin]]
 # name = "xoro"
 # path = "src/num/rand/xorshift/xoro.rs"
-# required-features = ["std", "rand"]
+# required-features = ["std", "prng"]
 
 
 # examples inside examples/*

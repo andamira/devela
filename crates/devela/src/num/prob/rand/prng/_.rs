@@ -6,20 +6,20 @@
 //
 
 crate::mods_in! {
-    // #[cfg(feature = "rand")]
+    // #[cfg(feature = "prng")]
     // mod_ chacha; // TODO
-    #[cfg(feature = "rand")]
+    #[cfg(feature = "prng")]
     mod_ lcg; // Lcg16
     mod_ pcg; // Pcg[8|16|32|64|128], rand_pcg!
-    #[cfg(feature = "rand")]
+    #[cfg(feature = "prng")]
     mod_ shift; // XorShift[8|16|32|64|128], XorShift128p, (rand_xorshift!)
     mod splitmix; // SplitMix64
 
-    #[cfg(feature = "rand")]
+    #[cfg(feature = "prng")]
     mod_ xoroshiro; // Xoroshiro128pp
-    #[cfg(feature = "rand")]
+    #[cfg(feature = "prng")]
     mod xyza8; // Xyza8a, Xyza8b
-    #[cfg(feature = "rand")]
+    #[cfg(feature = "prng")]
     mod xabc; // Xabc
 }
 crate::mods_out! { // _mods, _crate_internals, _hidden
@@ -29,7 +29,7 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
             pcg::_all::*,
             splitmix::*,
         };
-        #[cfg(feature = "rand")]
+        #[cfg(feature = "prng")]
         pub use super::{
             // chacha::_all::*,
             lcg::_all::Lcg16,
@@ -40,11 +40,11 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         };
     }
     _crate_internals {
-        #[cfg(feature = "rand")]
+        #[cfg(feature = "prng")]
         pub(crate) use super::shift::_crate_internals::*;
     }
     _hidden {
-        #[cfg(feature = "rand")]
+        #[cfg(feature = "prng")]
         pub(crate) use super::shift::_hidden::*;
     }
 }

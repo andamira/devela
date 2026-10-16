@@ -2,18 +2,17 @@
 //! Defines [`Ratio`].
 //
 
-#[allow(unused_imports, reason = "feature-gate")]
-use crate::IntError::{
-    self, MismatchedSizes, NoInverse, NonNegativeRequired, NonZeroRequired, Overflow,
-};
-use crate::Ordering::{self, Equal, Greater, Less};
-use crate::Sign::{Negative, Positive};
-#[allow(unused_imports, reason = "feature-gate")]
+#[allow(unused_imports, reason = "primitive ratio implementations are feature-gated")]
 use crate::{
-    _impl_init, Char, Digits, FmtError, Str, cif, cold_path, compile, cswap, impl_trait, is,
-    isize_up, slice, unlikely, unwrap, usize_up,
+    _impl_init, Char, Digits, FmtError,
+    IntError::{self, MismatchedSizes, NoInverse, NonNegativeRequired, NonZeroRequired, Overflow},
+    Ordering::{self, Equal, Greater, Less},
+    Sign::{Negative, Positive},
+    Str, cif, cold_path, compile, cswap, impl_trait, is, isize_up, slice, unlikely, unwrap,
+    usize_up,
 };
 
+#[allow(dead_code, reason = "used by feature-gated ratio implementations")]
 type RatioResult<T> = Result<T, IntError>;
 
 crate::CONST! {
@@ -25,6 +24,8 @@ It stores the numerator and denominator as separate terms.";
 /// A proportional relation `n / d`.
 #[doc = crate::_doc_meta!{
     location("num/quant", struct Ratio),
+    test_size_of(Ratio<i32, devela::NonZeroI32> = 8; niche Option),
+    #[cfg(feature = "ratio")]
     test_size_of(RatioI32 = 8; niche Option),
 }]
 #[doc = _DOC_RATIO!()]
@@ -35,9 +36,18 @@ It stores the numerator and denominator as separate terms.";
 ///
 /// # Examples
 /// ```
-/// use devela::RatioU8;
+/// use devela::{NonZeroU8, Ratio};
 ///
-/// let aspect_ratio = RatioU8::new(16, 9).unwrap();
+/// let den = NonZeroU8::new(9).unwrap();
+/// let aspect_ratio = Ratio::from_parts(16u8, den);
+///
+/// #[cfg(feature = "ratio")]
+/// {
+///     use devela::RatioI32;
+///
+///     let aspect_ratio = RatioI32::new(16, 9).unwrap();
+///     assert![aspect_ratio.is_reduced().unwrap()];
+/// }
 /// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Ratio<N, D> {
@@ -50,6 +60,9 @@ pub struct Ratio<N, D> {
 #[rustfmt::skip]
 impl<N, D> Ratio<N, D> {
     /// Constructs a ratio from its stored parts.
+    ///
+    /// Stores both values unchanged, without checking the denominator.
+    /// A zero denominator is possible if `D` permits it.
     pub const fn from_parts(n: N, d: D) -> Self { Self { n, d } }
     /// Returns a reference to the stored numerator.
     pub const fn num_ref(&self) -> &N { &self.n }
@@ -68,14 +81,14 @@ macro_rules! _impl_ratio_prim {
         // primitive : unsigned : upcasted : is_signed
 
         // In sync with:
-        // - /ui/scale/density.rs
+        // - /ui/view/scale/density.rs
         // - /media/audio/pcm/spec.rs
         #[cfg(any(feature = "ratio", feature = "ui", feature = "audio"))]
         _impl_ratio_prim!(u32:u32:u64:false);
 
         // In sync with:
         // - /num/prob/probability.rs
-        // #[cfg(any(feature = "ratio", feature = "prob"))] // FUTURE
+        #[cfg(any(feature = "ratio", feature = "prob"))]
         _impl_ratio_prim!(u64:u64:u128:false);
 
         // Complete predefined family, excluding the implementations above.
