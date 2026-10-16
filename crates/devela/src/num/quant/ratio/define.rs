@@ -81,19 +81,22 @@ macro_rules! _impl_ratio_prim {
         // primitive : unsigned : upcasted : is_signed
 
         // In sync with:
-        // - /ui/view/scale/density.rs
-        // - /media/audio/pcm/spec.rs
-        #[cfg(any(feature = "ratio", feature = "ui", feature = "audio"))]
-        _impl_ratio_prim!(u32:u32:u64:false);
+        // - ui/view/scale/density.rs
+        // - media/audio/pcm/spec.rs
+        _impl_ratio_prim! {
+            #[cfg(any(feature = "ratio", feature = "ui", feature = "audio"))]
+            u32:u32:u64:false
+        }
 
         // In sync with:
-        // - /num/prob/probability.rs
-        #[cfg(any(feature = "ratio", feature = "prob"))]
-        _impl_ratio_prim!(u64:u64:u128:false);
+        // - num/prob/probability.rs
+        _impl_ratio_prim! {
+            #[cfg(any(feature = "ratio", feature = "prob"))]
+            u64:u64:u128:false
+        }
 
-        // Complete predefined family, excluding the implementations above.
-        #[cfg(feature = "ratio")]
-        _impl_ratio_prim!(
+        _impl_ratio_prim! {
+            #[cfg(feature = "ratio")]
             i8:u8:i16:true,
             i16:u16:i32:true,
             i32:u32:i64:true,
@@ -103,20 +106,34 @@ macro_rules! _impl_ratio_prim {
             u8:u8:u16:false,
             u16:u16:u32:false,
             u128:u128:u128:false,
-            usize:usize:usize_up:false,
-        );
+            usize:usize:usize_up:false
+        }
     };
-    ($($Prim:ty : $Unsigned:ty : $Upcasted:ty : $is_signed:tt),+ $(,)?) => { $crate::paste! { $(
-        _impl_ratio_prim!(% [<Ratio $Prim:camel>], $Prim, $crate::[<NonZero $Prim:camel>],
-            $Unsigned, $Upcasted, $is_signed);
+
+    // Gate before expanding the implementation matrix.
+    (
+        #[cfg($gate:meta)]
+        $($Prim:ty : $Unsigned:ty : $Upcasted:ty : $is_signed:tt),+ $(,)?) => {
+        #[cfg($gate)]
+        _impl_ratio_prim! { % selected: [$gate] $($Prim:$Unsigned:$Upcasted:$is_signed),+ }
+    };
+
+    // All implementations share their originating predicate.
+    (% selected: [$gate:meta]
+     $($Prim:ty : $Unsigned:ty : $Upcasted:ty : $is_signed:tt),+ $(,)?) => { $crate::paste! { $(
+        _impl_ratio_prim!( % [$gate]
+            [<Ratio $Prim:camel>], $Prim, $crate::[<NonZero $Prim:camel>],
+            $Unsigned, $Upcasted, $is_signed
+        );
     )+ }};
-    (% $Name:ident, $N:ty, $D:ty, $Unsigned:ty, $Upcasted:ty, $is_signed:tt) => {
+    (% [$gate:meta] $Name:ident, $N:ty, $D:ty, $Unsigned:ty, $Upcasted:ty, $is_signed:tt) => {
         #[doc = crate::_tags!(quant)]
         #[doc = concat!("An `", stringify!($N), "` [`Ratio`] with a nonzero denominator.")]
         #[doc = crate::_doc_meta!{
             location("num/quant", type $Name),
         }]
         #[doc = _DOC_RATIO!()]
+        #[cfg($gate)]
         pub type $Name = Ratio<$N, $D>;
 
         _impl_init! { Self::ZERO => $Name }
@@ -128,6 +145,7 @@ macro_rules! _impl_ratio_prim {
             f.write_str(s)
         }}
 
+        #[cfg($gate)]
         impl $Name {
             /* constants */
 
