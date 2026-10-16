@@ -8,6 +8,7 @@
 
 crate::mods_in! {
     #[cfg(test)]
+    #[cfg(feature = "scale")]
     mod _test;
 
     mod namespace; // Scale

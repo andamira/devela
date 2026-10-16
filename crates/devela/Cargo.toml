@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 148/300 (152 remaining), 121 visible, 27 hidden
+[features] # 150/300 (150 remaining), 123 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -222,12 +222,13 @@ media_all = ["media", "audio", "font", "visual"]
 		image = []
 
 num = []
-num_all = ["num", "alg", "int", "prng", "prob", "ratio"]
+num_all = ["num", "alg", "int", "prng", "prob", "ratio", "scale"]
 	alg = []   # Linear algebra.
 	int = []   # Integer extensions. TEMP
 	prng = []  # Additional pseudorandom generators.
 	prob = []  # Probability and statistical facilities.
 	ratio = [] # Additional predefined primitive ratios.
+	scale = [] # Primitive proportional scaling implementations.
 
 org = []
 org_all = ["org"]

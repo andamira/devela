@@ -3,6 +3,7 @@
 //! Defines [`Scale`]
 //
 
+#[allow(unused_imports, reason = "primitive scale implementations are feature-gated")]
 use crate::{
     IntError::{NonZeroRequired, Overflow},
     IntResult as Result,
@@ -23,22 +24,28 @@ pub struct Scale<T>(pub T);
 // $UP:  the upscaled type
 macro_rules! _scale_impl_prims {
     () => {
-        _scale_impl_prims![sint: i8:i16, i16:i32, i32:i64, i64:i128, isize:isize_up, i128:i128];
-        _scale_impl_prims![uint: u8:u16, u16:u32, u32:u64, u64:u128, usize:usize_up, u128:u128];
-        _scale_impl_prims![float: f32, f64];
+        _scale_impl_prims![sint: { #[cfg(feature = "scale")] }
+            i8:i16, i16:i32, i32:i64, i64:i128, isize:isize_up, i128:i128];
+        _scale_impl_prims![uint: { #[cfg(feature = "scale")] }
+            u8:u16, u16:u32, u32:u64, u64:u128, usize:usize_up, u128:u128];
+
+        // _scale_impl_prims![float: { #[cfg(feature = "scale")] } f32, f64 ];
     };
 
     /* floating point FUTURE API */
 
-    (float: $($T:ty),+ $(,)?) => { $( _scale_impl_prims!(@float: $T); )+ };
-    (@float: $T:ty) => {
+    (float: $attrs:tt $( $T:ty ),+ $(,)?) => {
+        $( _scale_impl_prims!(% float: $attrs $T); )+
+    };
+    (% float: { $(#[$attr:meta])* } $T:ty) => {
+        // $(#[$attr])*
         // impl Scale<$T> { }
     };
 
     /* shared integer API */
 
-    (int: $( $T:ty : $UP:ty ),+ $(,)?) => { $( _scale_impl_prims!(@int: $T : $UP); )+ };
-    (@int: $T:ty : $UP:ty) => {
+    (int: $( $T:ty : $UP:ty ),+ $(,)?) => { $( _scale_impl_prims!(% int: $T : $UP); )+ };
+    (% int: $T:ty : $UP:ty) => {
 
         /// Computes `self × num / den`, rounding toward zero.
         ///
@@ -100,8 +107,11 @@ macro_rules! _scale_impl_prims {
 
     /* signed integers */
 
-    (sint: $( $T:ty : $UP:ty ),+ $(,)?) => { $( _scale_impl_prims!(@sint: $T:$UP); )+ };
-    (@sint: $T:ty : $UP:ty ) => {
+    (sint: $attrs:tt $( $T:ty : $UP:ty ),+ $(,)?) => {
+        $( _scale_impl_prims!(% sint: $attrs $T:$UP); )+
+    };
+    (% sint: { $(#[$attr:meta])* } $T:ty : $UP:ty ) => {
+        $(#[$attr])*
         impl Scale<$T> {
             /// Multiplies two carrier values in the upscaled type.
             const fn _mul_up(a: $T, b: $T) -> Result<$UP> {
@@ -178,14 +188,17 @@ macro_rules! _scale_impl_prims {
                 }
             }
 
-            _scale_impl_prims! {@int: $T:$UP }
+            _scale_impl_prims! {% int: $T:$UP }
         }
     };
 
     /* unsigned integers */
 
-    (uint: $( $T:ty : $UP:ty ),+ $(,)?) => { $( _scale_impl_prims!(@uint: $T : $UP); )+ };
-    (@uint: $T:ty : $UP:ty) => {
+    (uint: $attrs:tt $( $T:ty : $UP:ty ),+ $(,)?) => {
+        $( _scale_impl_prims!(% uint: $attrs $T:$UP); )+
+    };
+    (% uint: { $(#[$attr:meta])* } $T:ty : $UP:ty ) => {
+        $(#[$attr])*
         impl Scale<$T> {
             /// Multiplies two carrier values in the upscaled type.
             const fn _mul_up(a: $T, b: $T) -> Result<$UP> {
@@ -237,7 +250,7 @@ macro_rules! _scale_impl_prims {
                 Ok(q)
             }
 
-            _scale_impl_prims! {@int: $T:$UP }
+            _scale_impl_prims! {% int: $T:$UP }
         }
     };
 }

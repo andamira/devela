@@ -31,7 +31,7 @@ This release…
 ## Crate
 
 ### features & flags
-- new features: `prob`, `ratio`.
+- new features: `prob`, `ratio`, `scale`.
 - rename `rand` to `prng`.
 
 ### structure
@@ -43,7 +43,7 @@ This release…
 - refactor shared `BittenU*` representation selection and integrate `BittenU16` with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
 
 #### num::quant
-- feature gate `Ratio*` implementations.
+- feature gate `Ratio*` and `Scale` implementations.
 
 ### yard
 - reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
