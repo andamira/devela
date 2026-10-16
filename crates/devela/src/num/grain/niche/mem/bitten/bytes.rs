@@ -20,6 +20,7 @@ pub(crate) struct _BittenBytes<const N: usize, Tail> {
     pub(crate) high: Tail,
 }
 
+#[cfg(feature = "bitten")]
 impl<const N: usize, Tail> _BittenBytes<N, Tail> {
     pub(crate) const fn new(low: [u8; N], high: Tail) -> Self {
         Self { low, high }

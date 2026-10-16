@@ -22,8 +22,12 @@
 // - struct NonNiche
 // - mod _test
 
-use crate::{BittenU8, BittenU16};
-use crate::{Cast, ConstInit, InvalidValue, NicheValueError, NonZero, Overflow, unwrap};
+use crate::BittenU8;
+#[cfg(feature = "bitten")]
+use crate::BittenU16;
+#[cfg(feature = "niche")]
+use crate::NonZero;
+use crate::{Cast, ConstInit, InvalidValue, NicheValueError, Overflow, unwrap};
 use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
 use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
 
@@ -43,13 +47,19 @@ use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, Non
 ///
 /// # Implementations
 ///
-/// Implemented for:
+/// Implemented by default for:
 /// - [Primitive integers](#impl-MaybeNiche<u8>):
 ///   `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
 ///   `i8`, `i16`, `i32`, `i64`, `i128`, `isize`.
+/// - [`NonValue*<V>`](#impl-MaybeNiche<NonValueU8<V>>) for all supported primitives.
+/// - [`BittenU8`](#impl-BittenU8).
+///
+/// With the `niche` feature:
 /// - [`NonNiche<T>`](#impl-MaybeNiche<NonNiche<u8>>) for all supported primitives.
 /// - [`NonZero<T>`](#impl-MaybeNiche<NonZero<u8>>) for all supported primitives.
-/// - [`NonValue*<V>`](#impl-MaybeNiche<NonValueU8<V>>) for all supported primitives.
+///
+/// With the `bitten` feature:
+/// - [`BittenU16`](#impl-BittenU16).
 ///
 /// # Methods and constants
 ///
@@ -87,33 +97,70 @@ use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, Non
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MaybeNiche<T: Copy>(pub T);
 
+impl<T: Copy> MaybeNiche<T> {
+    /// Creates a new wrapper containing `value`.
+    #[must_use]
+    pub const fn new(value: T) -> Self {
+        Self(value)
+    }
+
+    /// Returns the stored representation.
+    #[must_use]
+    pub const fn get(self) -> T {
+        self.0
+    }
+
+    /// Returns the stored representation.
+    #[must_use]
+    pub const fn repr(self) -> T {
+        self.get()
+    }
+}
+
+impl<T: Copy + ConstInit> ConstInit for MaybeNiche<T> {
+    const INIT: Self = Self::new(T::INIT);
+}
+
 /// impl helper for [`MaybeNiche`].
 macro_rules! impl_maybe {
     () => {
+        // Existing primitive and standard niche families.
         impl_maybe!(u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize);
 
+        // In sync with ./mem/bitten/_.rs.
         impl_maybe![bitten BittenU8, u8;
             0, 1, 2, 3, 4, 5, 6, 7, 8
         ];
+        #[cfg(feature = "bitten")]
         impl_maybe![bitten BittenU16, u16;
             0, 1, 2, 3, 4, 5, 6, 7, 8,
             9, 10, 11, 12, 13, 14, 15, 16
         ];
     };
+    // Foundational implementations.
     ($($T:ty),+) => {
         // % $is_niche, $prim, $T
         //   $(,<const V: $V>) $(,*$get)? $(,^$new)? $(,@$non0)?
         // ------------------------------------------------------
+
         $( impl_maybe![% false, $T, $T]; )+
-        $( impl_maybe![% false, $T, NonNiche<$T>, *get, ^new]; )+
-        $( impl_maybe![% true,  $T, NonZero<$T>, *get, ^new, @non0]; )+
+
         $crate::paste!{ $(
-            impl_maybe![% true, $T, [<NonValue $T:camel>] <V>, <const V: $T>,
-            *get, ^new];
+            impl_maybe![% true, $T, [<NonValue $T:camel>] <V>, <const V: $T>, *get, ^new];
         )+ }
+
+        // Additional NonZero and NonNiche adapters.
+        #[cfg(feature = "niche")]
+        impl_maybe![niche: $($T),+];
     };
     (bitten $T:ident, $P:ty; $($B:literal),+ $(,)?) => {
         $( impl_maybe![% ($B % 8 != 0), $P, $T<$B>, *get, ^new]; )+
+    };
+    (niche: $($T:ty),+ $(,)?) => {
+        $(
+            impl_maybe![% false, $T, NonNiche<$T>, *get, ^new];
+            impl_maybe![% true, $T, NonZero<$T>, *get, ^new, @non0];
+        )+
     };
     (%
      $is_niche:expr, // IS_NICHE
@@ -123,10 +170,6 @@ macro_rules! impl_maybe {
      $(, ^$new:ident)?  // for: from_prim, *_unchecked
      $(, @$non0:ident)? // identifies nonzero types, for: from_prim_lossy
     ) => {
-        impl $(<const $V: $v>)? ConstInit for MaybeNiche<$T> where $T: ConstInit {
-            const INIT: Self = Self::new(<$T>::INIT);
-        }
-
         impl $(<const $V: $v>)? MaybeNiche<$T> {
             /* constants */
 
@@ -162,10 +205,6 @@ macro_rules! impl_maybe {
             pub const ZERO: Option<Self> = unwrap![ok_some Self::try_from_prim(0)];
 
             /* constructors */
-
-            /// Creates a new `MaybeNiche` containing `value`.
-            #[must_use]
-            pub const fn new(value: $T) -> Self { Self(value) }
 
             /// Creates a new `MaybeNiche` from a primitive value.
             /// # Errors
@@ -320,16 +359,6 @@ macro_rules! impl_maybe {
             #[must_use]
             pub const fn ge(self, other: Self) -> bool { self.prim() >= other.prim() }
 
-            /* representation access */
-
-            /// Returns the validated (niche-aware) representation.
-            #[must_use]
-            pub const fn get(self) -> $T { self.0 }
-
-            /// Alias of [`get`][Self::get], emphasizing representational access.
-            #[must_use]
-            pub const fn repr(self) -> $T { self.get() }
-
             /* primitive access */
 
             /// Returns the primitive carrier value.
@@ -442,13 +471,11 @@ impl_non![];
 
 #[cfg(test)]
 mod _test {
-    use super::{BittenU8, MaybeNiche, NonNiche, NonValueU8, NonZero};
+    use super::{BittenU8, MaybeNiche, NonNiche, NonValueU8};
 
     #[test]
     fn maybe_niche() {
         let u = MaybeNiche(3_u8);
-        let nn = MaybeNiche(NonNiche::<u8>::new(3).unwrap());
-        let n0 = MaybeNiche(NonZero::<u8>::new(3).unwrap());
         let nv0 = MaybeNiche(NonValueU8::<0>::new(3).unwrap());
         let nv1 = MaybeNiche(NonValueU8::<1>::new(3).unwrap());
 
@@ -456,14 +483,6 @@ mod _test {
         assert_eq![u.is_contiguous(), true];
         assert_eq![u.is_niche(), false];
         assert_eq![u.has_zero(), true];
-        // NonNiche
-        assert_eq![nn.is_contiguous(), true];
-        assert_eq![nn.is_niche(), false];
-        assert_eq![nn.has_zero(), true];
-        // NonZero
-        assert_eq![n0.is_contiguous(), true];
-        assert_eq![n0.is_niche(), true];
-        assert_eq![n0.has_zero(), false];
         // NonValue::<0>
         assert_eq![nv0.is_contiguous(), true];
         assert_eq![nv0.is_niche(), true];
@@ -472,6 +491,23 @@ mod _test {
         assert_eq![nv1.is_contiguous(), false];
         assert_eq![nv1.is_niche(), true];
         assert_eq![nv1.has_zero(), true];
+    }
+    #[test]
+    #[cfg(feature = "niche")]
+    fn gate_niche() {
+        use super::NonZero;
+
+        let nn = MaybeNiche(NonNiche::<u8>::new(3).unwrap());
+        let n0 = MaybeNiche(NonZero::<u8>::new(3).unwrap());
+
+        // NonNiche
+        assert_eq![nn.is_contiguous(), true];
+        assert_eq![nn.is_niche(), false];
+        assert_eq![nn.has_zero(), true];
+        // NonZero
+        assert_eq![n0.is_contiguous(), true];
+        assert_eq![n0.is_niche(), true];
+        assert_eq![n0.has_zero(), false];
     }
     #[test]
     fn maybe_niche_bitten_u8() {
@@ -485,5 +521,12 @@ mod _test {
         assert!(MaybeNiche::<B>::IS_NICHE);
         assert!(MaybeNiche::<B>::IS_CONTIGUOUS);
         assert!(!MaybeNiche::<B>::HAS_NEGATIVE);
+    }
+    #[test]
+    fn non_niche() {
+        let nn = NonNiche::<u8>::new(3).unwrap();
+        let wrapped = MaybeNiche::new(nn);
+
+        assert_eq!(wrapped.get().get(), 3);
     }
 }

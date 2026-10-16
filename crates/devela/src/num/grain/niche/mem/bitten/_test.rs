@@ -45,6 +45,7 @@ mod u8 {
     }
 }
 
+#[cfg(feature = "bitten")]
 mod u16 {
     use super::*;
     use crate::handle;

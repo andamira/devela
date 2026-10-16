@@ -8,10 +8,10 @@
 
 #![expect(private_bounds, reason = "Sealed traits")]
 
+#[cfg(all(doc, feature = "cast"))]
+use crate::{PrimCast, PrimJoin, PrimSplit};
 #[cfg(doc)]
-use crate::{
-    PrimCast, PrimFloat, PrimIndex, PrimInt, PrimJoin, PrimScalar, PrimSint, PrimSplit, PrimUint,
-};
+use crate::{PrimFloat, PrimIndex, PrimInt, PrimScalar, PrimSint, PrimUint};
 
 macro_rules! _impl_prim {
     ($trait:ident for $($P:ty),+ $(,)?) => { $( _impl_prim![% $trait for $P]; )+ };

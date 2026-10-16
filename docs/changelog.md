@@ -31,7 +31,7 @@ This release…
 ## Crate
 
 ### features & flags
-- new features: `cast`, `prob`, `ratio`, `scale`.
+- new features: `bitten`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - rename `rand` to `prng`.
 
 ### structure
@@ -43,6 +43,7 @@ This release…
 - feature gate `PrimCast`, `PrimJoin` and `PrimSplit` traits.
 - add `BittenU16<B>` for all 17 capacities, using compact byte-composed representations that preserve niches across byte boundaries.
 - refactor shared `BittenU*` representation selection and integrate `BittenU16` with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
+- gate `NonNiche` and `NonZero` impls from `MaybeNiche`.
 
 #### num::quant
 - feature gate `Ratio*` and `Scale` implementations.

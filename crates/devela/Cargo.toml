@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 150/300 (150 remaining), 123 visible, 27 hidden
+[features] # 153/300 (147 remaining), 126 visible, 27 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -225,20 +225,24 @@ num = []
 num_all = [ "num",
 	"alg",
 	"int",
-	"cast",
+	"bitten", "cast", "niche",
 	"prob", "prng",
 	"ratio", "scale"
 ]
-	alg = []       # Linear algebra.
+	alg = []         # Linear algebra.
 	# dom
-		int = []   # Integer extensions. TEMP
+		int = []     # Integer extensions. TEMP
+	# fin
+		# bitwise = [] # TODO
 	# grain
-		cast = []  # Complete primitive Cast operations and conversion traits.
-	prob = []      # Probability and statistical facilities.
-		prng = []  # Additional pseudorandom generators.
+		bitten = []  # Additional predefined Bitten representations beyond BittenU8.
+		cast = []    # Complete primitive Cast operations and conversion traits.
+		niche = []   # Additional MaybeNiche representation adapters.
+	prob = []        # Probability and statistical facilities.
+		prng = []    # Additional pseudorandom generators.
 	# quant
-		ratio = [] # Additional predefined primitive ratios.
-		scale = [] # Primitive proportional scaling implementations.
+		ratio = []   # Additional predefined primitive ratios.
+		scale = []   # Primitive proportional scaling implementations.
 
 org = []
 org_all = ["org"]
