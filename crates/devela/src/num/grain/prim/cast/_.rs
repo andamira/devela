@@ -4,10 +4,12 @@
 
 crate::mods_in! {
     #[cfg(test)]
+    #[cfg(feature = "cast")]
     mod _test;
 
     mod macros; // cast!
     mod_ namespace; // Cast
+    #[cfg(feature = "cast")]
     mod_ traits; // PrimCast, PrimJoin, PrimSplit
 }
 crate::mods_out! { // _mods
@@ -16,7 +18,9 @@ crate::mods_out! { // _mods
         pub use super::{
             macros::cast,
             namespace::_all::Cast,
-            traits::_all::*,
         };
+        #[cfg(feature = "cast")]
+        #[doc(inline)]
+        pub use super::traits::_all::*;
     }
 }

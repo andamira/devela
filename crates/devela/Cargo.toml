@@ -222,13 +222,23 @@ media_all = ["media", "audio", "font", "visual"]
 		image = []
 
 num = []
-num_all = ["num", "alg", "int", "prng", "prob", "ratio", "scale"]
-	alg = []   # Linear algebra.
-	int = []   # Integer extensions. TEMP
-	prng = []  # Additional pseudorandom generators.
-	prob = []  # Probability and statistical facilities.
-	ratio = [] # Additional predefined primitive ratios.
-	scale = [] # Primitive proportional scaling implementations.
+num_all = [ "num",
+	"alg",
+	"int",
+	"cast",
+	"prob", "prng",
+	"ratio", "scale"
+]
+	alg = []       # Linear algebra.
+	# dom
+		int = []   # Integer extensions. TEMP
+	# grain
+		cast = []  # Complete primitive Cast operations and conversion traits.
+	prob = []      # Probability and statistical facilities.
+		prng = []  # Additional pseudorandom generators.
+	# quant
+		ratio = [] # Additional predefined primitive ratios.
+		scale = [] # Primitive proportional scaling implementations.
 
 org = []
 org_all = ["org"]
