@@ -4,8 +4,9 @@
 
 #![no_std]
 
-use devela::{PanicInfo, spin_loop};
 use devela_micros::{ComputerAtari800XL as Atari, devela};
+
+devela::set_panic_handler! { loop }
 
 // LLVM-MOS SDK's Atari DOS runtime provides `putchar`, mapping newline
 // to ATASCII 0x9B and routing output to the OS screen editor (`E:`).
@@ -25,12 +26,5 @@ pub extern "C" fn rust_atari_main() {
     // The OS copies COLOR4 to GTIA COLBK during vertical blank.
     unsafe {
         Atari::set_background_color(0x34);
-    }
-}
-
-#[panic_handler]
-fn panic(_: &PanicInfo<'_>) -> ! {
-    loop {
-        spin_loop();
     }
 }

@@ -38,6 +38,16 @@ rustc +rust-mos -V
 shell sessions, make the LLVM-MOS SDK available through `PATH` or `SDKBIN`.
 The runner selects Rust-MOS through `rustup`.
 
+# Programs
+
+- [`atari800xl`][s1] ([run][r1]) — writes "Hello from devela".
+
+[s1]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/atari/atari800xl/src/lib.rs
+[r1]: https://andamira.github.io/play/atari800xl/?demo=atari800xl.xex
+
+The online demo uses freely redistributable Altirra replacement firmware.
+See [LICENSE-Altirra.txt](https://github.com/andamira/andamira.github.io/blob/main/play/atari800xl/LICENSE-Altirra.txt).
+
 
 ## Build and run
 
