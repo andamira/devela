@@ -1,13 +1,13 @@
 [workspace]
 
 [package]
-name = "mcu_msp430_g2553"
+name = "board_msp_exp430g2"
 version = "0.0.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-msp430-rt = "0.4.1" # TEMP
+msp430-rt = "0.4.1"
 
 [dependencies.devela_micros]
 path = "../../../.."

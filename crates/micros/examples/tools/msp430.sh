@@ -17,7 +17,7 @@ DIR="${EXAMPLE_DIR:-}"
 
 # Target
 TARGET="${TARGET:-msp430-none-elf}"
-TARGET_DIR="$DIR/target"
+TARGET_DIR="${TARGET_DIR:-$DIR/target}"
 
 # Invocation
 ACTIONS="build|inspect|dump|flash"
@@ -61,10 +61,38 @@ build() {
 flash_action() {
     require "$FLASHER"
 
-    echo
-    echo "flashing via MSPDebug/$FLASHER_DRIVER"
+    case "${MSP430_CHIP:-}" in
+        g2231) expected=2231 ;;
+        g2452) expected=2452 ;;
+        g2553) expected=2553 ;;
+        *) echo "error: MSP430_CHIP required for safe flashing" >&2; exit 2 ;;
+    esac
 
-    "$FLASHER" "$FLASHER_DRIVER" "prog $ELF"
+	# Check the MCU unless fast flashing was explicitly requested.
+	if [ "${MSP430_FAST_FLASH:-0}" != 1 ]; then
+
+		# Probe before erasing Flash; avoid loading an image for another MCU.
+		if ! probe=$("$FLASHER" -n "$FLASHER_DRIVER" regs 2>&1); then
+			printf '%s\n' "$probe" >&2
+			echo "error: unable to probe target chip" >&2
+			exit 1
+		fi
+		actual=$(printf '%s\n' "$probe" |
+			sed -n 's/.*Device ID: 0x\([[:xdigit:]]*\).*/\1/p' |
+			head -n 1 | tr '[:upper:]' '[:lower:]')
+		if [ "$actual" != "$expected" ]; then
+			echo "error: expected MSP430G$expected but detected device ID 0x${actual:-unknown}" >&2
+			echo "check the socketed MCU and MSP430_CHIP before flashing" >&2
+			exit 1
+		fi
+
+	else
+		echo "warning: skipping MCU identity check" >&2
+	fi
+
+	echo
+	echo "flashing MSP430G$expected via MSPDebug/$FLASHER_DRIVER"
+	"$FLASHER" -n "$FLASHER_DRIVER" "prog $ELF"
 }
 
 dispatch

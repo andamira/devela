@@ -87,8 +87,10 @@ This release…
 - add a shared Atari runner and document rustup-linked MOS and Z80 toolchains.
 - add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
 - move the Spectrum TAP packager to the shared example tools and document its purpose.
-- add MSP430G2553 bare-metal blink example, verified on the MSP-EXP430G2 LaunchPad.
-- share MSP430 build, inspection and flashing tooling across MCU examples.
+- consolidate MSP-EXP430G2 LaunchPad examples into one board project
+  with selectable MSP430G2231, G2452 and G2553 memory layouts.
+- verify target MCU identity before flashing and isolate build artifacts by chip.
+- add MSP430G2553 bare-metal blink example
 
 ## Modules
 

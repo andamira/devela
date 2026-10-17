@@ -1,4 +1,3 @@
-
 //
 //! Blinks the MSP-EXP430G2 LaunchPad red LED (P1.0).
 //

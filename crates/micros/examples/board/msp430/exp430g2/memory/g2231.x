@@ -1,3 +1,5 @@
+/* MSP430G2231: 2 KiB Flash, 128 B RAM */
+
 MEMORY
 {
     RAM     : ORIGIN = 0x0200, LENGTH = 0x0080

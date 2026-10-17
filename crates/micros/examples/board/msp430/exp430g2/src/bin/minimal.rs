@@ -1,5 +1,5 @@
 //
-//! Minimal compilation example for the MSP430G2231.
+//! Minimal MSP430 runtime compilation probe.
 //
 
 #![no_std]
