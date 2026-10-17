@@ -8,7 +8,7 @@
 /// Stores the unshifted address value in `0..=0x7f`;
 /// the transfer-direction bit is not part of the address.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", struct I2cAddr7),
+    location("sys/hw/pin", struct I2cAddr7),
     test_size_of(I2cAddr7 = 1|8; niche !Option),
 }]
 #[repr(transparent)]

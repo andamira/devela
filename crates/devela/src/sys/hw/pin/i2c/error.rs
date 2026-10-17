@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(hw io protocol error)]
 /// An I²C bus transaction error.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", enum I2cError),
+    location("sys/hw/pin", enum I2cError),
     test_size_of(I2cError = 1|8; niche Option),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

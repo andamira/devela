@@ -4,15 +4,26 @@
 
 use crate::{I2cAddr7, I2cBusRead, I2cBusWrite, I2cCmdData};
 
-#[cfg(target_pointer_width = "16")]
+#[cfg(all(target_pointer_width = "16", target_arch = "avr"))]
+const _: [(); 1] = [(); align_of::<I2cTarget<()>>()];
+#[cfg(all(target_pointer_width = "16", target_arch = "msp430"))]
+const _: [(); 2] = [(); align_of::<I2cTarget<()>>()];
+
+#[cfg(all(target_pointer_width = "16", target_arch = "avr"))]
 crate::test_size_of!(const I2cTarget<()> = 3|24; niche Option);
+#[cfg(all(target_pointer_width = "16", target_arch = "msp430"))]
+crate::test_size_of!(const I2cTarget<()> = 4|32; niche Option);
 
 #[doc = crate::_tags!(hw io protocol)]
 /// An I²C bus target with a bound address.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", enum I2cTarget),
-    #[cfg(target_pointer_width = "16")]
+    location("sys/hw/pin", struct I2cTarget),
+
+    #[cfg(all(target_pointer_width = "16", target_arch = "avr"))]
     test_size_of(I2cTarget<()> = 3|24; niche Option),
+    #[cfg(all(target_pointer_width = "16", target_arch = "msp430"))]
+    test_size_of(I2cTarget<()> = 4|32; niche Option),
+
     #[cfg(target_pointer_width = "32")]
     test_size_of(I2cTarget<()> = 8|64; niche Option),
     #[cfg(target_pointer_width = "64")]

@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(hw io protocol)]
 /// Blocking byte-write access to an SPI bus.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/spi", trait SpiBusWrite),
+    location("sys/hw/pin", trait SpiBusWrite),
 }]
 /// This models the bus operation itself. It intentionally
 /// does not define SPI mode, bus frequency, or device selection;

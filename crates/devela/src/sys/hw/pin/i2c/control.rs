@@ -7,7 +7,7 @@ use crate::{I2cAddr7, I2cBusRead, I2cBusWrite};
 #[doc = crate::_tags!(hw io protocol)]
 /// Low-level control of an I²C controller.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", trait I2cControl),
+    location("sys/hw/pin", trait I2cControl),
 }]
 /// This is an extension interface for MCU-specific and custom I²C
 /// implementations. Application and device-driver code should normally
@@ -68,7 +68,7 @@ pub unsafe trait I2cControl {
 #[doc = crate::_tags!(hw io protocol)]
 /// An exclusively owned, configured I²C controller.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", struct I2cController),
+    location("sys/hw/pin", struct I2cController),
 }]
 /// Wraps a low-level [`I2cControl`] implementation after its hardware,
 /// pins, and bus timing have been configured.

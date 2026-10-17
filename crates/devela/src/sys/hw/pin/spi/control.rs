@@ -7,7 +7,7 @@ use crate::SpiBusWrite;
 #[doc = crate::_tags!(hw io protocol)]
 /// Low-level control of an SPI controller.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/spi", trait SpiControl),
+    location("sys/hw/pin", trait SpiControl),
 }]
 /// This is an extension interface for MCU-specific and custom SPI implementations.
 /// Application and device-driver code should normally use
@@ -34,7 +34,7 @@ pub unsafe trait SpiControl {
 #[doc = crate::_tags!(hw io protocol)]
 /// An exclusively owned, configured SPI controller.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/spi", struct SpiController),
+    location("sys/hw/pin", struct SpiController),
 }]
 /// Wraps a low-level [`SpiControl`] implementation after its hardware,
 /// pins, bus mode, and timing have been configured.

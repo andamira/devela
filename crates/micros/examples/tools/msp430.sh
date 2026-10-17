@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Builds, flashes, inspects or dumps an MSP430G2231 example binary.
+# Builds, flashes, inspects or dumps an MSP430 example binary.
 
 set -eu
 

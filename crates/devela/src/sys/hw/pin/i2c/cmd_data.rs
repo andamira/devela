@@ -4,15 +4,21 @@
 
 use crate::{CmdDataWrite, I2cBusWrite, I2cTarget};
 
-#[cfg(target_pointer_width = "16")]
+#[cfg(all(target_pointer_width = "16", target_arch = "avr"))]
 crate::test_size_of!(const I2cCmdData<()> = 5|40; niche Option);
+#[cfg(all(target_pointer_width = "16", target_arch = "msp430"))]
+crate::test_size_of!(const I2cCmdData<()> = 6|48; niche Option);
 
 #[doc = crate::_tags!(hw io protocol)]
 /// Command/data framing over an addressed I²C target.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", enum I2cCmdData),
-    #[cfg(target_pointer_width = "16")]
+    location("sys/hw/pin", struct I2cCmdData),
+
+    #[cfg(all(target_pointer_width = "16", target_arch = "avr"))]
     test_size_of(I2cCmdData<()> = 5|40; niche Option),
+    #[cfg(all(target_pointer_width = "16", target_arch = "msp430"))]
+    test_size_of(I2cCmdData<()> = 6|48; niche Option),
+
     #[cfg(target_pointer_width = "32")]
     test_size_of(I2cCmdData<()> = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]

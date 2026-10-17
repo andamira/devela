@@ -7,7 +7,7 @@ use crate::{I2cAddr7, I2cBusWrite};
 #[doc = crate::_tags!(hw io protocol)]
 /// Blocking read access to an I²C bus.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", trait I2cBusRead),
+    location("sys/hw/pin", trait I2cBusRead),
 }]
 /// Extends [`I2cBusWrite`] with read transactions and the common
 /// repeated-START write→read transaction used by register-oriented devices.

@@ -54,6 +54,9 @@ This release…
 #### num::quant
 - feature gate `Ratio*` and `Scale` implementations.
 
+### sys::hw
+- correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.
+
 ### yard
 - reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
 
@@ -84,6 +87,8 @@ This release…
 - add a shared Atari runner and document rustup-linked MOS and Z80 toolchains.
 - add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
 - move the Spectrum TAP packager to the shared example tools and document its purpose.
+- add MSP430G2553 bare-metal blink example, verified on the MSP-EXP430G2 LaunchPad.
+- share MSP430 build, inspection and flashing tooling across MCU examples.
 
 ## Modules
 

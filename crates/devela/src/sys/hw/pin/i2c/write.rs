@@ -7,7 +7,7 @@ use crate::I2cAddr7;
 #[doc = crate::_tags!(hw io protocol)]
 /// Blocking write access to an I²C bus.
 #[doc = crate::_doc_meta!{
-    location("sys/hw/pin/i2c", trait I2cBusWrite),
+    location("sys/hw/pin", trait I2cBusWrite),
 }]
 /// A call to [`write_slices`](#method.write_slices) represents one uninterrupted
 /// I²C write transaction. The supplied slices are concatenated without
