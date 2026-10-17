@@ -38,6 +38,12 @@ rustc +rust-mos -V
 shell sessions, make the LLVM-MOS SDK available through `PATH` or `SDKBIN`.
 The runner selects Rust-MOS through `rustup`.
 
+# Programs
+
+- [`atari800xl`][s1] ([run][r1]) — hello world.
+
+[s1]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/atari/atari800xl/src/bin//atari800xl.xex
+[r1]: https://mrk.sed.pl/bevy-atari/#xex=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/atari/atari800xl/demo/atari800xl.xex||osrom=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/atari/atari800xl/demo/atari800-altirraos_xl.rom||basic=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/atari/atari800xl/demo/atari800-altirra_basic.rom||no-cache
 
 ## Build and run
 

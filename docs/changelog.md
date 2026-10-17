@@ -85,7 +85,8 @@ This release…
 ### examples
 - add an Atari 800XL DOS `.xex` example built with Rust-MOS and LLVM-MOS.
 - add a shared Atari runner and document rustup-linked MOS and Z80 toolchains.
-- add precompiled ZX Spectrum 48K TAP demos, with README links to run them online and view their Rust sources.
+- add precompiled demos for the ZX Spectrum 48K and the Atari 800 XL,
+  with README links to run them online and view their Rust sources.
 - move the Spectrum TAP packager to the shared example tools and document its purpose.
 - consolidate MSP-EXP430G2 LaunchPad examples into one board project
   with selectable MSP430G2231, G2452 and G2553 memory layouts.
