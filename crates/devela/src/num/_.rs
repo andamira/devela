@@ -69,6 +69,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _hidden {
         pub use super::{
             dom::_hidden::*,
+            fin::_hidden::*,
             grain::_hidden::*,
             prob::_hidden::*,
         };

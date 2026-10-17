@@ -14,7 +14,7 @@ crate::mods_in! {
     mod span; // BitSpan
     mod_ wise; // Bitwise, bitwise!
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
             span::*,
@@ -22,5 +22,8 @@ crate::mods_out! { // _mods
         };
         #[cfg(feature = "bitwise")]
         pub use super::ops::BitOps;
+    }
+    _hidden {
+        pub use super::wise::_hidden::*;
     }
 }

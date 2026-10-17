@@ -15,7 +15,7 @@ crate::mods_in! {
     // mod rank;
     // mod_ seq;
 }
-crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
+crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{
@@ -44,5 +44,8 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
         pub(crate) use super::{
             ord::_crate_internals::*,
         };
+    }
+    _hidden {
+        pub use super::bit::_hidden::*;
     }
 }

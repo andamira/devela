@@ -31,7 +31,7 @@ This release…
 ## Crate
 
 ### features & flags
-- new features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- add features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - rename `rand` to `prng`.
 
 ### structure
