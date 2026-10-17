@@ -35,9 +35,9 @@ of its location. Building Rust-Z80 also builds the LLVM-Z80 backend.
 - [`paint`][s2] ([run][r2]) — interactive paint application.
 
 [s1]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/zx/spectrum48/src/bin/screen.rs
-[r1]: https://torinak.com/qaop/#48#l=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/zx/spectrum48/demo/screen.tap
+[r1]: https://andamira.github.io/play/spectrum48/?demo=screen.tap
 [s2]: https://github.com/andamira/devela/blob/main/crates/micros/examples/computer/zx/spectrum48/src/bin/paint.rs
-[r2]: https://torinak.com/qaop/#48#l=https://raw.githubusercontent.com/andamira/devela/main/crates/micros/examples/computer/zx/spectrum48/demo/paint.tap
+[r2]: https://andamira.github.io/play/spectrum48/?demo=paint.tap
 
 
 ## Build and run
