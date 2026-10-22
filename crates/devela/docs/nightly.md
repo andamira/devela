@@ -64,9 +64,11 @@ See also
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: `c`[optimize_attribute](https://github.com/rust-lang/rust/pull/157273)
+- 1.101: `c`[slice_split_once](https://github.com/rust-lang/rust/pull/164641)
 - 1.101: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 - 1.101: ` `[update LLVM to 22](https://github.com/rust-lang/rust/pull/163572)
 - 1.101: `a`[vec_try_remove](https://github.com/rust-lang/rust/pull/163459)
+- 1.101: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
 
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
@@ -104,6 +106,7 @@ See also
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
 - 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
+- 1.??: `c`[nonzero_ops](https://github.com/rust-lang/rust/issues/164485)
 - 1.??: `c`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `c`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
@@ -128,7 +131,6 @@ See also
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
-- 1.??: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
 - 1.??: ` `[-Znext-solver=globally](https://github.com/rust-lang/rust/pull/164209)
 
 # … may be stable even later

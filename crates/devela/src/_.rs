@@ -82,6 +82,7 @@
         exclusive_wrapper,
         funnel_shifts,
         optimize_attribute,
+        slice_split_once,
         unwrap_infallible,
     )
 )]
@@ -120,7 +121,7 @@
         macro_metavar_expr,
         macro_metavar_expr_concat,
         more_qualified_paths,
-        new_range_api,
+        nonzero_ops,
         offset_of_enum,
         offset_of_slice,
         ptr_cast_slice,
