@@ -1,4 +1,29 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+use ::core::ops::{
+    // TEMP use ::core::range::legacy::{ // WAIT: target_arch = "mos"
+    Range as RangeLegacy,
+    RangeFrom as RangeFromLegacy,
+    RangeInclusive as RangeInclusiveLegacy,
+    RangeToInclusive as RangeToInclusiveLegacy,
+};
+
+/* impls */
+
+_impl_init![<T> Self::Unbounded => Bound<T> ];
+
+// new range api
+_impl_init![<T: ConstInit> Self { start: T::INIT, last: T::INIT } => RangeInclusive<T>];
+_impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => Range<T>];
+_impl_init![<T: ConstInit> Self { last: T::INIT } => RangeToInclusive<T>];
+_impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFrom<T>];
+_impl_init![<T: ConstInit> Self { end: T::INIT } => RangeTo<T>]; //
+_impl_init![Self => RangeFull]; //
+
+// legacy range api
+_impl_init![<T: ConstInit> Self::new(T::INIT, T::INIT) => RangeInclusiveLegacy<T>];
+_impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => RangeLegacy<T>];
+_impl_init![<T: ConstInit> Self { end: T::INIT } => RangeToInclusiveLegacy<T>];
+_impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFromLegacy<T>];
 
 /* enums */
 

@@ -105,9 +105,9 @@ macro_rules! impl_trait· {
      | $self:ident, $f:ident | $expr:expr) => {
         $(
             $(#[$impl_meta])*
-            impl< $($($decl)*)? > $crate::$trait for $type $(<$($args)*>)?
+            impl< $($($decl)*)? > ::core::fmt::$trait for $type $(<$($args)*>)?
             $(where $($bounded: $crate::$trait,)+ )? {
-                fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
+                fn fmt(&$self, $f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result { $expr }
             }
         )+
     };

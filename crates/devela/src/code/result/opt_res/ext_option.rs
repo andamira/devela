@@ -3,7 +3,7 @@
 //
 
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
-use crate::Display;
+use ::core::fmt::Display;
 
 /// Marker trait to prevent downstream implementations of the [`OptionExt`] trait.
 trait Sealed {}

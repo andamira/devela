@@ -51,7 +51,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
         #[doc(inline)]
         pub use super::{
             fin::{Cmp, bitwise},
-            grain::{Cast, niche},
+            grain::{Cast, niche::niche},
             prob::{Pcg32, RandTry},
             quant::{Interval, Ratio},
             signal::Phase,

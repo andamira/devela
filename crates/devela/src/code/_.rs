@@ -62,9 +62,11 @@ util::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
         pub use super::{
             init::ConstInit,
             result::unwrap,
-            source::CodeLocation,
             util::const_assert,
         };
+        #[doc(inline)]
+        #[cfg(feature = "code")]
+        pub use super::source::CodeLocation;
     }
     _crate_internals {
         pub(crate) use super::_DOC_CODE_MODULES;

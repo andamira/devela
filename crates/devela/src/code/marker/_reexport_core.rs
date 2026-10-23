@@ -1,4 +1,9 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![<T> Self => PhantomData<T>]; // no need for trait bound here
+_impl_init![Self => PhantomPinned];
 
 // See: <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
 _reexport! { rust: core::marker,

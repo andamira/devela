@@ -1,4 +1,10 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![ParseIntErrorKind::Empty => ParseIntErrorKind];
+
+/* items */
 
 _reexport! { rust: core::num, location: "text/parse", tag: _tags!(text parser num error),
     doc: "An error which can be returned when parsing an integer.",

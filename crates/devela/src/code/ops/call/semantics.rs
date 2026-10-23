@@ -9,7 +9,8 @@
 // - enum CallOpenness
 // - enum CallStorage
 
-use crate::Ordering;
+use crate::is;
+use ::core::cmp::Ordering;
 
 #[doc = crate::_tags!(exec)]
 /// Structural semantics of a call edge.
@@ -60,23 +61,26 @@ pub struct CallSemantics {
 impl PartialOrd for CallSemantics {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         use Ordering::{Equal, Greater, Less};
-        let axes = [
-            self.bind.cmp(&other.bind),
-            self.dispatch.cmp(&other.dispatch),
-            self.context.cmp(&other.context),
-            self.storage.cmp(&other.storage),
-        ];
-        let mut less = false;
-        let mut greater = false;
-        for ord in axes {
-            match ord {
-                Less => less = true,
-                Greater => greater = true,
-                Equal => {}
-            }
+
+        // Openness is not an ordered axis.
+        is! { self.open != other.open, return None }
+        let (mut less, mut greater) = (false, false);
+
+        macro_rules! axis {
+            ($field:ident) => {
+                match self.$field.cmp(&other.$field) {
+                    Less => less = true,
+                    Greater => greater = true,
+                    Equal => {}
+                }
+            };
         }
+        axis!(bind);
+        axis!(dispatch);
+        axis!(context);
+        axis!(storage);
         match (less, greater) {
-            (true, true) => None, // incomparable
+            (true, true) => None,
             (true, false) => Some(Less),
             (false, true) => Some(Greater),
             (false, false) => Some(Equal),

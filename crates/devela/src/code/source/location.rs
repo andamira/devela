@@ -2,7 +2,8 @@
 //! Defines [`CodeLocation`].
 //
 
-use crate::{Display, FmtResult, Formatter, Slice};
+use crate::{is, whilst};
+use ::core::fmt::{Display, Formatter, Result};
 
 #[doc = crate::_tags!(code)]
 /// A precise location in the source code.
@@ -32,7 +33,7 @@ pub struct CodeLocation {
 }
 
 impl Display for CodeLocation {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "{} ({}:{}:{})", self.module, self.file, self.line, self.column)
     }
 }
@@ -67,11 +68,25 @@ impl CodeLocation {
     pub const fn eq(&self, other: &Self) -> bool {
         self.line == other.line
             && self.column == other.column
-            && Slice::<&str>::eq(self.file, other.file)
-            && Slice::<&str>::eq(self.module, other.module)
+            && _str_eq(self.file, other.file)
+            && _str_eq(self.module, other.module)
+        // self.line == other.line
+        //     && self.column == other.column
+        //     && Slice::<&str>::eq(self.file, other.file)
+        //     && Slice::<&str>::eq(self.module, other.module)
     }
     /// Short display helper.
-    pub fn fmt_short(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    pub fn fmt_short(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "{}:{}:{}", self.file, self.line, self.column)
     }
+}
+
+/// Private const equality helper.
+const fn _str_eq(a: &str, b: &str) -> bool {
+    let (a, b) = (a.as_bytes(), b.as_bytes());
+    is! { a.len() != b.len(), return false }
+    whilst! { i in 0..a.len(); {
+        is! { a[i] != b[i], return false }
+    }}
+    true
 }

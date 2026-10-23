@@ -13,7 +13,7 @@ use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 use crate::{
     BareBox, BitSized, CharAscii, Duration, Infallible, NonZeroI8, NonZeroI16, NonZeroI32,
     NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
-    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, StringNonNul,
+    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, ReprMode, StringNonNul,
 };
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
@@ -109,8 +109,6 @@ macro_rules! _impl_bit_sized {
 
 /* impl BitSized */
 
-impl<T: BitSized<LEN>, const LEN: usize> BitSized<LEN> for BareBox<T> {}
-
 _impl_bit_sized![<T> = 0; for PhantomData<T>];
 _impl_bit_sized![= 0; for (), Infallible, PhantomPinned];
 _impl_bit_sized![= 1; for bool];
@@ -119,55 +117,12 @@ _impl_bit_sized![= 16; for i16, u16];
 _impl_bit_sized![= 32; for i32, u32, f32, char];
 _impl_bit_sized![= 64; for i64, u64, f64];
 _impl_bit_sized![= 128; for i128, u128, Duration];
-#[cfg(feature = "std")]
-_impl_bit_sized![= 128; for SystemInstant, SystemTime];
 
-_impl_bit_sized![= 7; for crate::char7];
-_impl_bit_sized![= 8; for crate::char8];
-_impl_bit_sized![= 16; for crate::char16];
+/* code */
 
-_impl_bit_sized![= 8; for NonZeroI8, NonZeroU8];
-_impl_bit_sized![= 16; for NonZeroI16, NonZeroU16];
-_impl_bit_sized![= 32; for NonZeroI32, NonZeroU32];
-_impl_bit_sized![= 64; for NonZeroI64, NonZeroU64];
-_impl_bit_sized![= 128; for NonZeroI128, NonZeroU128];
+impl crate::BitSized<3> for ReprMode {}
 
-// NOTE: NonValue* types have their implementation in /src/num/grain/niche/impls.rs
-
-#[cfg(feature = "work")]
-_impl_bit_sized![= 1; for AtomicBool];
-#[cfg(feature = "work")]
-_impl_bit_sized![= 8; for AtomicOrdering];
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
-_impl_bit_sized![= 16; for AtomicI16, AtomicU16];
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
-_impl_bit_sized![= 32; for AtomicI32, AtomicU32];
-#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "64")))]
-_impl_bit_sized![= 64; for AtomicI64, AtomicU64];
-#[cfg(feature = "dep_portable_atomic")]
-_impl_bit_sized![= 32; for AtomicF32];
-#[cfg(feature = "dep_portable_atomic")]
-_impl_bit_sized![= 64; for AtomicF64];
-#[cfg(feature = "dep_portable_atomic")]
-_impl_bit_sized![= 128; for AtomicI128, AtomicU128];
-
-_impl_bit_sized![= 7; for CharAscii];
-#[cfg(feature = "grapheme")]
-_impl_bit_sized![<const LEN: usize> = LEN; for GraphemeNonNul<LEN>];
-_impl_bit_sized![<const LEN: usize> = LEN; for StringNonNul<LEN>];
-// WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
-// _impl_bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];
-// _impl_bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
-// _impl_bit_sized![<const LEN: usize> = { LEN + 32 }; for StringU32<LEN>];
-
-#[cfg(target_pointer_width = "16")]
-_impl_bit_sized![pointer = 16];
-#[cfg(target_pointer_width = "32")]
-_impl_bit_sized![pointer = 32];
-#[cfg(target_pointer_width = "64")]
-_impl_bit_sized![pointer = 64];
-#[cfg(target_pointer_width = "128")]
-_impl_bit_sized![pointer = 128];
+/* data */
 
 // THINK: IMPROVE use const generics?
 _impl_bit_sized![array = 8 * len for T: 8 * len: 1, 2, 4, 8, 16];
@@ -187,6 +142,25 @@ _impl_bit_sized![array = 112 * len for T: 112 * len: 1, 2, 4, 8, 16]; // *
 _impl_bit_sized![array = 120 * len for T: 120 * len: 1, 2, 4, 8, 16]; // *
 _impl_bit_sized![array = 128 * len for T: 128 * len: 1, 2, 4, 8, 16];
 
+/* num */
+
+_impl_bit_sized![= 8; for NonZeroI8, NonZeroU8];
+_impl_bit_sized![= 16; for NonZeroI16, NonZeroU16];
+_impl_bit_sized![= 32; for NonZeroI32, NonZeroU32];
+_impl_bit_sized![= 64; for NonZeroI64, NonZeroU64];
+_impl_bit_sized![= 128; for NonZeroI128, NonZeroU128];
+
+// NOTE: NonValue* types have their implementation in /src/num/grain/niche/impls.rs
+
+/* phys */
+
+#[cfg(feature = "std")]
+_impl_bit_sized![= 128; for SystemInstant, SystemTime];
+
+/* sys */
+
+impl<T: BitSized<LEN>, const LEN: usize> BitSized<LEN> for BareBox<T> {}
+
 #[cfg(feature = "term")]
 crate::items! {
     _impl_bit_sized![= 0; for Ansi];
@@ -194,3 +168,46 @@ crate::items! {
     _impl_bit_sized![= 8; for AnsiColor8];
     _impl_bit_sized![= 24; for AnsiColor]; // NOTE: 24 as union, 32 with discriminant
 }
+
+/* text */
+
+_impl_bit_sized![= 7; for crate::char7];
+_impl_bit_sized![= 8; for crate::char8];
+_impl_bit_sized![= 16; for crate::char16];
+
+_impl_bit_sized![= 7; for CharAscii];
+#[cfg(feature = "grapheme")]
+_impl_bit_sized![<const LEN: usize> = LEN; for GraphemeNonNul<LEN>];
+_impl_bit_sized![<const LEN: usize> = LEN; for StringNonNul<LEN>];
+// WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
+// _impl_bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];
+// _impl_bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
+// _impl_bit_sized![<const LEN: usize> = { LEN + 32 }; for StringU32<LEN>];
+
+/* work */
+
+#[cfg(feature = "work")]
+_impl_bit_sized![= 1; for AtomicBool];
+#[cfg(feature = "work")]
+_impl_bit_sized![= 8; for AtomicOrdering];
+#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
+_impl_bit_sized![= 16; for AtomicI16, AtomicU16];
+#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
+_impl_bit_sized![= 32; for AtomicI32, AtomicU32];
+#[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "64")))]
+_impl_bit_sized![= 64; for AtomicI64, AtomicU64];
+#[cfg(feature = "dep_portable_atomic")]
+_impl_bit_sized![= 32; for AtomicF32];
+#[cfg(feature = "dep_portable_atomic")]
+_impl_bit_sized![= 64; for AtomicF64];
+#[cfg(feature = "dep_portable_atomic")]
+_impl_bit_sized![= 128; for AtomicI128, AtomicU128];
+
+#[cfg(target_pointer_width = "16")]
+_impl_bit_sized![pointer = 16];
+#[cfg(target_pointer_width = "32")]
+_impl_bit_sized![pointer = 32];
+#[cfg(target_pointer_width = "64")]
+_impl_bit_sized![pointer = 64];
+#[cfg(target_pointer_width = "128")]
+_impl_bit_sized![pointer = 128];

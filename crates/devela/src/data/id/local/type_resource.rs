@@ -202,7 +202,7 @@ mod impls {
 
 #[cfg(test)]
 mod _test {
-    use crate::AnyExt;
+    use crate::{AnyExt, HasherFx};
 
     type_resource![ClosureId: u64];
 
@@ -211,8 +211,8 @@ mod _test {
         let closure1 = || {};
         let closure2 = || {};
 
-        let closure_id1 = ClosureId::new(closure1.type_hash());
-        let closure_id2 = ClosureId::new(closure2.type_hash());
+        let closure_id1 = ClosureId::new(closure1.type_hash_with(HasherFx::<u64>::default()));
+        let closure_id2 = ClosureId::new(closure2.type_hash_with(HasherFx::<u64>::default()));
 
         assert_ne!(closure_id1, closure_id2);
     }

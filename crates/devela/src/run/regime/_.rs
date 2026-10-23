@@ -7,6 +7,7 @@
 crate::mods_in! {
     mod_ cap; // RunCap*
     mod info; // RunSystemInfo
+    #[cfg(feature = "code")]
     mod service; // RunService[Probe]
 }
 crate::mods_out! { // _mods
@@ -14,6 +15,9 @@ crate::mods_out! { // _mods
         pub use super::{
             cap::_all::*,
             info::*,
+        };
+        #[cfg(feature = "code")]
+        pub use super::{
             service::*,
         };
     }

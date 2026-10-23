@@ -4,7 +4,8 @@
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
 // - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
 
-use crate::{Any, Hash, Hasher, HasherFx, TypeId};
+use crate::{Any, TypeId};
+use ::core::hash::{Hash, Hasher};
 use core::any::type_name_of_val;
 
 #[cfg(feature = "alloc")]
@@ -83,12 +84,6 @@ pub trait AnyExt: Any + Sealed {
     /// ```
     #[must_use]
     fn type_is<T: 'static>(&self) -> bool { self.type_id() == TypeId::of::<T>() }
-
-    /// Returns a deterministic hash of the `TypeId` of `Self`.
-    fn type_hash(&self) -> u64 {
-        let hasher = HasherFx::<u64>::default();
-        self.type_hash_with(hasher)
-    }
 
     /// Returns a deterministic hash of the `TypeId` of `Self` using a custom hasher.
     fn type_hash_with<H: Hasher>(&self, mut hasher: H) -> u64 {

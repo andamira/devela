@@ -1,4 +1,8 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags, ConstInit};
+
+/* impls */
+
+_impl_init![<B: ConstInit, C: ConstInit> Self::Continue(C::INIT) => ControlFlow<B, C> ];
 
 /* enums */
 

@@ -6,9 +6,19 @@
 //
 
 crate::mods_in! {
+    /* re-exports */
+
     mod _reexport_core;
     #[cfg(feature = "alloc")]
     mod _reexport_alloc;
+
+    /* integrations */
+
+    mod _test_size_of_report; // __test_size_of_report!
+    #[cfg(feature = "code")]
+    mod version; // Version/VersionFull buffered encoding
+
+    /* definitions */
 
     mod buf; // FmtWriter, format_buf!
     mod cat; // fmtcat!
@@ -38,5 +48,6 @@ crate::mods_out! { // _mods, _reexports, _hidden
     }
     _hidden {
         pub use super::num::_hidden::*;
+        pub use super::_test_size_of_report::__test_size_of_report;
     }
 }

@@ -35,20 +35,31 @@ This release…
 - rename `rand` to `prng`.
 
 ### structure
+- untangle foundational `code` from higher-level modules by localizing `ConstInit`
+  and `BitSized` implementations and separating buffered size diagnostics.
+- move `Version` and `VersionFull` buffered text encoding into `text::fmt`;
+  keep the types and their core operations in `code::source`.
 
 ## Modules
+
+#### code::any
+- remove `AnyExt::type_hash` while preserving the hasher-parametric `type_hash_with`.
+
+#### code::result
+- remove unused `Mismatch<Interval<…>, H>` convenience constructors.
 
 #### num::fin
 - add `bitwise!` macro.
 - feature gate `Bitwise` and `BitOps` behind `bitwise`.
 - migrate `set!`, `bitfield!`, `BitSpan`, and X11 bit-mask checks to `bitwise!`.
 
-
 #### num::grain
 - feature gate `Cast` implementations.
 - feature gate `PrimCast`, `PrimJoin` and `PrimSplit` traits.
-- add `BittenU16<B>` for all 17 capacities, using compact byte-composed representations that preserve niches across byte boundaries.
-- refactor shared `BittenU*` representation selection and integrate `BittenU16` with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
+- add `BittenU16<B>` for all 17 capacities, using compact byte-composed representations
+  that preserve niches across byte boundaries.
+- refactor shared `BittenU*` representation selection and integrate `BittenU16`
+  with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
 - gate `NonNiche` and `NonZero` impls from `MaybeNiche`.
 
 #### num::quant
@@ -58,7 +69,8 @@ This release…
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.
 
 ### yard
-- reduce compilation overhead by skipping documentation-only `_tags!` and `_doc_meta!` expansions outside rustdoc.
+- reduce compilation overhead by skipping documentation-only
+  `_tags!` and `_doc_meta!` expansions outside rustdoc.
 
 ---
 

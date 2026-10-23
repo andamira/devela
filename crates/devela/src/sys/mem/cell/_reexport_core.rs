@@ -1,4 +1,9 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![<T: ConstInit> Self::new() => OnceCell<T>];
+_impl_init![<T: ConstInit> Self::new(T::INIT) => Cell<T>, RefCell<T>, UnsafeCell<T>];
 
 /* structs */
 

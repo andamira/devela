@@ -2,8 +2,8 @@
 //! Defines [`Version`] and [`VersionFull`].
 //
 
-use crate::{ConstInit, Display, FmtResult, Formatter, impl_trait};
-use crate::{Digits, Slice, Str, is, unwrap, whilst, write_at};
+use crate::{ConstInit, impl_trait, is};
+use ::core::fmt::{Display, Formatter, Result as FmtResult};
 
 #[doc = crate::_tags!(code)]
 /// A compact three-part semantic version core.
@@ -38,12 +38,6 @@ impl_trait! { fmt::Display for Version |self, f| {
 }}
 
 impl Version {
-    /// The maximum byte length of `major.minor.patch`.
-    ///
-    /// This is enough for the largest possible `u16` triplet:
-    /// `65535.65535.65535`.
-    pub const MAX_LEN: usize = 17;
-
     /// The zero version: `0.0.0`.º
     pub const ZERO: Self = Self::new(0, 0, 0);
 
@@ -97,54 +91,6 @@ impl Version {
     pub const fn next_patch(self) -> Self {
         Self::new(self.major, self.minor, self.patch.saturating_add(1))
     }
-
-    /// Returns the byte length needed to write this version.
-    #[must_use]
-    #[allow(clippy::len_without_is_empty)]
-    pub const fn len(self) -> usize {
-        Digits(self.major).count_digits10() as usize
-            + 1
-            + Digits(self.minor).count_digits10() as usize
-            + 1
-            + Digits(self.patch).count_digits10() as usize
-    }
-
-    /// Writes this version as `major.minor.patch`.
-    ///
-    /// Returns the number of bytes written.
-    ///
-    /// # Errors
-    /// Returns the required length if `buf` is too small.
-    pub const fn write_to(self, buf: &mut [u8]) -> Result<usize, usize> {
-        let needed = self.len();
-        is! { buf.len() < needed, return Err(needed) }
-        let mut pos = 0;
-        // Safe after `len` check: the full version is always at least 5 bytes.
-        pos += Digits(self.major).write_digits10_fast(buf, pos);
-        write_at![buf, +=pos, b'.'];
-        pos += Digits(self.minor).write_digits10(buf, pos);
-        write_at![buf, +=pos, b'.'];
-        pos += Digits(self.patch).write_digits10(buf, pos);
-        Ok(pos)
-    }
-
-    /// Writes this version as `major.minor.patch`.
-    ///
-    /// Returns the written string slice.
-    ///
-    /// # Errors
-    /// Returns the required length if `buf` is too small.
-    pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
-        let len = unwrap![ok? self.write_to(buf)];
-        let slice = Slice::range_to(buf, len);
-        cfg_select! {
-            all(feature = "unsafe_str", not(feature = "safe_text")) => {
-                // SAFETY: `write_to` only writes ASCII digits and dots.
-                unsafe { Ok(Str::from_utf8_unchecked(slice)) }
-            }
-            _ => Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]),
-        }
-    }
 }
 
 #[doc = crate::_tags!(code)]
@@ -177,7 +123,7 @@ impl<'a> ConstInit for VersionFull<'a> {
     const INIT: Self = Self::ZERO;
 }
 impl Display for VersionFull<'_> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         Display::fmt(&self.version, f)?;
         is! { let Some(pre) = self.pre, write!(f, "-{pre}")?; }
         is! { let Some(build) = self.build, write!(f, "+{build}")?; }
@@ -230,55 +176,6 @@ impl<'a> VersionFull<'a> {
     #[must_use]
     pub const fn is_core(self) -> bool {
         self.pre.is_none() && self.build.is_none()
-    }
-}
-// Length and writing
-impl VersionFull<'_> {
-    /// Returns the byte length needed to write this version.
-    #[must_use]
-    #[allow(clippy::len_without_is_empty)]
-    pub const fn len(self) -> usize {
-        let mut len = self.version.len();
-        is! { let Some(pre) = self.pre, len += 1 + pre.len(); } // '-'
-        is! { let Some(build) = self.build, len += 1 + build.len(); } // '+'
-        len
-    }
-    /// Writes this version as `major.minor.patch[-pre][+build]`.
-    ///
-    /// Returns the number of bytes written.
-    ///
-    /// # Errors
-    /// Returns the required length if `buf` is too small.
-    pub const fn write_to(self, buf: &mut [u8]) -> Result<usize, usize> {
-        let needed = self.len();
-        is! { buf.len() < needed, return Err(needed) }
-        let mut pos = unwrap![ok_guaranteed_or_ub self.version.write_to(buf)];
-        if let Some(pre) = self.pre {
-            write_at![buf, +=pos, b'-'];
-            let bytes = pre.as_bytes();
-            whilst! { i in 0..bytes.len(); { write_at![buf, +=pos, bytes[i]]; }}
-        }
-        if let Some(build) = self.build {
-            write_at![buf, +=pos, b'+'];
-            let bytes = build.as_bytes();
-            whilst! { i in 0..bytes.len(); { write_at![buf, +=pos, bytes[i]]; }}
-        }
-        Ok(pos)
-    }
-    /// Writes this version and returns the written string slice.
-    ///
-    /// # Errors
-    /// Returns the required length if `buf` is too small.
-    pub const fn to_str(self, buf: &mut [u8]) -> Result<&str, usize> {
-        let len = unwrap![ok? self.write_to(buf)];
-        let slice = Slice::range_to(buf, len);
-        cfg_select! {
-            all(feature = "unsafe_str", not(feature = "safe_text")) => {
-                // SAFETY: `write_to` writes the numeric core plus caller-provided `str` slices.
-                unsafe { Ok(Str::from_utf8_unchecked(slice)) }
-            }
-            _ => Ok(unwrap![ok_guaranteed_or_ub Str::from_utf8(slice)]),
-        }
     }
 }
 

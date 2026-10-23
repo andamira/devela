@@ -164,37 +164,6 @@ pub(crate) use _impl_init;
 #[rustfmt::skip]
 mod impl_core {
     use super::ConstInit;
-    use crate::{
-        // cell
-        Cell, OnceCell, RefCell, UnsafeCell,
-        // cmp
-        Reverse, Ordering,
-        // ffi
-        CStr,
-        // marker
-        PhantomData, PhantomPinned,
-        // mem
-        ManuallyDrop,
-        // num
-        FloatCategory, Saturating, Wrapping,
-        NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
-        NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
-        // ops
-        ControlFlow, Bound,
-        // range
-        Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
-        // panic
-        PanicAssertUnwindSafe,
-        // text
-        ParseIntErrorKind,
-        // time
-        Duration,
-    };
-    use ::core::ops::{ // TEMP use ::core::range::legacy::{ // WAIT: target_arch = "mos"
-        Range as RangeLegacy, RangeFrom as RangeFromLegacy,
-        RangeInclusive as RangeInclusiveLegacy, RangeToInclusive as RangeToInclusiveLegacy,
-    };
-    // NOTE: atomic types are implemented in devela::work::sync::atomic
 
     /* tuples, arrays */
 
@@ -220,54 +189,6 @@ mod impl_core {
         // SAFETY: The empty string is valid UTF-8.
         const INIT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) }; }
 
-    // cell
-    _impl_init![<T: ConstInit> Self::new() => OnceCell<T>];
-    _impl_init![<T: ConstInit> Self::new(T::INIT) =>
-        Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>];
-
-    // cmp
-    _impl_init![Ordering::Equal => Ordering];
-    _impl_init![<T: ConstInit> Self(T::INIT) => Reverse<T>];
-
-    // ffi
-    impl ConstInit for &CStr { const INIT: Self = {
-        if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; } };
-    }
-
-    // marker
-    _impl_init![<T> Self => PhantomData<T>]; // no need for trait bound here
-    _impl_init![Self => PhantomPinned];
-
-    // num
-    crate::CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
-    _impl_init![Self::MIN =>
-        #[doc=_NZ!()]NonZeroU8,  #[doc=_NZ!()]NonZeroU16,  #[doc=_NZ!()]NonZeroU32,
-        #[doc=_NZ!()]NonZeroU64, #[doc=_NZ!()]NonZeroU128, #[doc=_NZ!()]NonZeroUsize,
-        #[doc=_NZ!()]NonZeroI8,  #[doc=_NZ!()]NonZeroI16,  #[doc=_NZ!()]NonZeroI32,
-        #[doc=_NZ!()]NonZeroI64, #[doc=_NZ!()]NonZeroI128, #[doc=_NZ!()]NonZeroIsize
-    ];
-    _impl_init![<T: ConstInit> Self(T::INIT) => Saturating<T>, Wrapping<T>];
-    _impl_init![FloatCategory::Nan => FloatCategory];
-
-    // ops
-    _impl_init![<T> Self::Unbounded => Bound<T> ];
-    _impl_init![<B: ConstInit, C: ConstInit> Self::Continue(C::INIT) => ControlFlow<B, C> ];
-
-    // new range api
-    _impl_init![<T: ConstInit> Self { start: T::INIT, last: T::INIT } => RangeInclusive<T>];
-    _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => Range<T>];
-    _impl_init![<T: ConstInit> Self { last: T::INIT } => RangeToInclusive<T>];
-    _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFrom<T>];
-    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeTo<T>]; //
-    _impl_init![Self => RangeFull]; //
-
-    // legacy range api
-    _impl_init![<T: ConstInit> Self::new(T::INIT, T::INIT) => RangeInclusiveLegacy<T>];
-    _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => RangeLegacy<T>];
-    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeToInclusiveLegacy<T>];
-    _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFromLegacy<T>];
-
-
     #[cfg(nightly_coro)]
     _impl_init![<Y: ConstInit, R: ConstInit>
         Self::Yielded(Y::INIT) => crate::CoroutineState<Y, R> ];
@@ -275,17 +196,8 @@ mod impl_core {
     // option
     _impl_init![<T: ConstInit> Some(T::INIT) => Option<T>];
 
-    // panic
-    _impl_init![<T: ConstInit> Self(T::INIT) => PanicAssertUnwindSafe<T>];
-
     // result
     impl<T: ConstInit, E> ConstInit for Result<T, E> { const INIT: Self = { Ok(T::INIT) }; }
-
-    // text
-    _impl_init![ParseIntErrorKind::Empty => ParseIntErrorKind];
-
-    // time
-    _impl_init![Duration::new(0, 0) => Duration];
 
     // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
     // _impl_init![<T: ConstInit> Self::new(T::INIT) => Exclusive<T>];

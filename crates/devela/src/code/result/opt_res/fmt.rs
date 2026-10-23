@@ -2,9 +2,10 @@
 //!
 //
 
-use crate::{
-    Binary, Debug, Display, FmtResult, Formatter, LowerExp, LowerHex, Octal, OptionExt, Pointer,
-    UpperExp, UpperHex,
+use crate::OptionExt;
+use ::core::fmt::{
+    Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, Pointer, Result, UpperExp,
+    UpperHex,
 };
 
 #[doc = crate::_tags!(fmt)]
@@ -51,17 +52,17 @@ impl<T, F: Clone> Clone for OptionFmtOrElse<'_, T, F> {
 macro_rules! _option_fmt_impl_traits {
     ($($trait:ident),*$(,)?) => { $(
         impl<T: $trait> $trait for OptionFmt<'_, T> {
-            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 $trait::fmt(&self.0.fmt_or(""), out)
             }
         }
         impl<'t, T: $trait, U: Display> $trait for OptionFmtOr<'t, T, U> {
-            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 $trait::fmt(&self.0.fmt_or_else(||&self.1), out)
             }
         }
         impl<'t, T: $trait, U: Display, F: Fn() -> U> $trait for OptionFmtOrElse<'t, T, F> {
-            fn fmt(&self, out: &mut Formatter<'_>) -> FmtResult<()> {
+            fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 if let Some(t) = self.0 {
                     <T as $trait>::fmt(t, out)
                 } else {

@@ -1,4 +1,18 @@
-use crate::{_reexport, _tags};
+use crate::{_reexport, _tags, ConstInit};
+
+/* impls */
+
+impl ConstInit for &CStr {
+    const INIT: Self = {
+        if let Ok(s) = CStr::from_bytes_until_nul(&[0]) {
+            s
+        } else {
+            unreachable![];
+        }
+    };
+}
+
+/* items */
 
 _reexport! { rust: core::ffi,
     location: "lang/prog/ffi/c", tag: _tags!(primitive text),

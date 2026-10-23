@@ -8,10 +8,12 @@
 crate::mods_in! {
     mod _reexport_core;
 
+    #[cfg(feature = "code")]
     mod semantics; // Call[Semantics|BindTime|Context|Dispatch|Openness|Storage]
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
+        #[cfg(feature = "code")]
         pub use super::{
             semantics::*,
         };

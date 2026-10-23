@@ -2,7 +2,7 @@
 //! Define the [`Mismatch`] type.
 //
 
-use crate::{ConstInit, Interval};
+use crate::ConstInit;
 
 impl<N: ConstInit, H: ConstInit> ConstInit for Mismatch<N, H> {
     /// Returns a *const* default `Mismatch`.
@@ -41,62 +41,11 @@ impl<N, H> Mismatch<N, H> {
     }
 }
 
-impl<N, H> Mismatch<Interval<N>, H> {
-    /// Creates a mismatch where `need` is an [`Interval::point`],
-    /// and `have` does not match.
-    #[must_use] #[rustfmt::skip]
-    pub fn in_point_interval(need_point: N, have: H, info: &'static str) -> Self where N: Clone {
-        Self { need: Interval::point(need_point), have, info }
-    }
-
-    /// Creates a mismatch where `need` is an [`Interval::empty`],
-    /// but `have` was provided.
-    #[must_use] #[rustfmt::skip]
-    pub fn in_empty_interval(have: H, info: &'static str) -> Self where N: Default {
-        Self { need: Interval::empty(), have, info }
-    }
-    /// Creates a mismatch where `need` is an [`Interval::empty_const`],
-    /// but `have` was provided.
-    #[must_use] #[rustfmt::skip]
-    pub const fn in_empty_const_interval(have: H, info: &'static str) -> Self
-    where N: ConstInit {
-        Self { need: Interval::empty_const(), have, info }
-    }
-    /// Creates a mismatch where `need` is an [`Interval::empty_with`],
-    /// but `have` was provided.
-    #[must_use] #[rustfmt::skip]
-    pub fn in_empty_interval_with(value: N, have: H, info: &'static str) -> Self where N: Clone {
-        Self { need: Interval::empty_with(value), have, info }
-    }
-
-    /// Creates a mismatch where `need` is an [`Interval::closed`],
-    /// and `have` is outside it.
-    #[must_use]
-    pub const fn in_closed_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
-        Self { need: Interval::closed(lower, upper), have, info }
-    }
-
-    /// Creates a mismatch where `need` is an [`Interval::closed_open`],
-    /// and `have` is outside it.
-    #[must_use]
-    pub const fn in_closed_open_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
-        Self {
-            need: Interval::closed_open(lower, upper),
-            have,
-            info,
-        }
-    }
-
-    /// Creates a mismatch where `need` is an [`Interval::open`],
-    /// and `have` is outside it.
-    #[must_use]
-    pub const fn in_open_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
-        Self { need: Interval::open(lower, upper), have, info }
-    }
-}
-
 mod core_impls {
-    use crate::{Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering};
+    use super::Mismatch;
+    use ::core::cmp::Ordering;
+    use ::core::fmt::{Debug, Display, Formatter, Result};
+    use ::core::hash::{Hash, Hasher};
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
         fn clone(&self) -> Self {
@@ -121,7 +70,7 @@ mod core_impls {
     }
 
     impl<N: Debug, H: Debug> Debug for Mismatch<N, H> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result {
             let mut debug = f.debug_struct("Mismatch");
             debug.field("need", &self.need);
             debug.field("have", &self.have);
@@ -131,7 +80,7 @@ mod core_impls {
     }
 
     impl<N: Display, H: Display> Display for Mismatch<N, H> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result {
             write!(
                 f,
                 "Mismatch {{ need: {}, have: {}, info: {} }}",

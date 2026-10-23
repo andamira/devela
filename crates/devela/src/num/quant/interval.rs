@@ -6,6 +6,7 @@
 // - struct Interval
 //   - impls
 //   - impl traits
+//   - // impl Mismatch<Interval<N>, H>
 // - tests
 
 use crate::{Bound, Range, RangeFrom, RangeInclusive, RangeToInclusive};
@@ -739,6 +740,60 @@ mod impl_traits {
         }
     }
 }
+
+// impl<N, H> crate::Mismatch<Interval<N>, H> {
+//     /// Creates a mismatch where `need` is an [`Interval::point`],
+//     /// and `have` does not match.
+//     #[must_use] #[rustfmt::skip]
+//     pub fn in_point_interval(need_point: N, have: H, info: &'static str) -> Self where N: Clone {
+//         Self { need: Interval::point(need_point), have, info }
+//     }
+//
+//     /// Creates a mismatch where `need` is an [`Interval::empty`],
+//     /// but `have` was provided.
+//     #[must_use] #[rustfmt::skip]
+//     pub fn in_empty_interval(have: H, info: &'static str) -> Self where N: Default {
+//         Self { need: Interval::empty(), have, info }
+//     }
+//     /// Creates a mismatch where `need` is an [`Interval::empty_const`],
+//     /// but `have` was provided.
+//     #[must_use] #[rustfmt::skip]
+//     pub const fn in_empty_const_interval(have: H, info: &'static str) -> Self
+//     where N: ConstInit {
+//         Self { need: Interval::empty_const(), have, info }
+//     }
+//     /// Creates a mismatch where `need` is an [`Interval::empty_with`],
+//     /// but `have` was provided.
+//     #[must_use] #[rustfmt::skip]
+//     pub fn in_empty_interval_with(value: N, have: H, info: &'static str) -> Self where N: Clone {
+//         Self { need: Interval::empty_with(value), have, info }
+//     }
+//
+//     /// Creates a mismatch where `need` is an [`Interval::closed`],
+//     /// and `have` is outside it.
+//     #[must_use]
+//     pub const fn in_closed_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
+//         Self { need: Interval::closed(lower, upper), have, info }
+//     }
+//
+//     /// Creates a mismatch where `need` is an [`Interval::closed_open`],
+//     /// and `have` is outside it.
+//     #[must_use]
+//     pub const fn in_closed_open_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
+//         Self {
+//             need: Interval::closed_open(lower, upper),
+//             have,
+//             info,
+//         }
+//     }
+//
+//     /// Creates a mismatch where `need` is an [`Interval::open`],
+//     /// and `have` is outside it.
+//     #[must_use]
+//     pub const fn in_open_interval(lower: N, upper: N, have: H, info: &'static str) -> Self {
+//         Self { need: Interval::open(lower, upper), have, info }
+//     }
+// }
 
 #[cfg(test)]
 #[rustfmt::skip]

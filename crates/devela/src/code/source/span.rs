@@ -2,7 +2,8 @@
 //! Defines [`CodeSpan`].
 //
 
-use crate::{CodeLocation, Display, FmtResult, Formatter};
+use crate::CodeLocation;
+use ::core::fmt::{Display, Formatter, Result};
 
 #[doc = crate::_tags!(code)]
 /// A contiguous span between two code locations.
@@ -43,7 +44,7 @@ impl CodeSpan {
 }
 
 impl Display for CodeSpan {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         if self.is_point() {
             write!(f, "{}", self.start)
         } else {

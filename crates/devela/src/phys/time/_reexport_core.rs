@@ -1,4 +1,10 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![Duration::new(0, 0) => Duration];
+
+/* items */
 
 _reexport! { rust: core::time,
     location: "phys/time" => struct Duration, tag: _tags!(time),

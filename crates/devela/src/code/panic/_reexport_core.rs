@@ -1,4 +1,8 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![<T: ConstInit> Self(T::INIT) => PanicAssertUnwindSafe<T>];
 
 /* structs */
 

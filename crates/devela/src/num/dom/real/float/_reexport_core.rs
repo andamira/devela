@@ -1,4 +1,10 @@
-use crate::{_reexport, _tags};
+use crate::{_impl_init, _reexport, _tags};
+
+/* impls */
+
+_impl_init![FloatCategory::Nan => FloatCategory];
+
+/* items */
 
 _reexport! { rust: core::num,
     location: "num/dom/real" => enum FloatCategory,
