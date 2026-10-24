@@ -18,16 +18,19 @@ It is still becoming, and growing from small parts. You're welcome to look aroun
 
 ## Crates
 
-| crate                 | role                              | source       | docs                     |
-| --------------------- | --------------------------------- | ------------ | ------------------------ |
-| [`devela`][c1]        | foundation                        | [source][s1] | [latest][d1] · [wip][w1] |
-| [`devela_macros`][c2] | procedural macros                 | [source][s2] | [latest][d2] · [wip][w2] |
-| [`devela_bridge`][c3] | foreign-language and ABI bridges  | [source][s3] | [latest][d3] · [wip][w3] |
-| [`devela_extend`][c4] | ecosystem extensions and adapters | [source][s4] | [latest][d4] · [wip][w4] |
-| [`devela_micros`][c5] | embedded hardware support         | [source][s5] | [latest][d5] · [wip][w5] |
-|  `devela_sentry`      | downstream validation and probes  | [source][s6] | — |
+ | crate                 | role                              | source       | docs       | [Maturity] | [Coverage] |
+ | --------------------- | --------------------------------- | ------------ | ------------------------ | :-: | :-: |
+ | [`devela`][c1]        | foundation                        | [source][s1] | [latest][d1] · [wip][w1] | 5/5 | 3/5 |
+ | [`devela_macros`][c2] | procedural macros                 | [source][s2] | [latest][d2] · [wip][w2] | 4/5 | 5/5 |
+ | [`devela_bridge`][c3] | foreign-language and ABI bridges  | [source][s3] | [latest][d3] · [wip][w3] | 2/5 | 1/5 |
+ | [`devela_extend`][c4] | ecosystem extensions and adapters | [source][s4] | [latest][d4] · [wip][w4] | 1/5 | 1/5 |
+ | [`devela_micros`][c5] | embedded hardware support         | [source][s5] | [latest][d5] · [wip][w5] | 3/5 | 2/5 |
+ | `devela_sentry`       | downstream validation and probes  | [source][s6] | —                        | 3/5 | 2/5 |
 
 Before 1.0, APIs remain free to evolve.
+
+[Maturity]: docs/assessment.md
+[Coverage]: docs/assessment.md
 
 ## Examples
 

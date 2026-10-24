@@ -19,6 +19,7 @@ This release…
 # Repository
 
 ## workspace
+- add crate maturity and coverage ratings, with rationale in `docs/assessment.md`.
 
 ## dependencies
 
