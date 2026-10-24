@@ -64,6 +64,7 @@ See also
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: `c`[optimize_attribute](https://github.com/rust-lang/rust/pull/157273)
+- 1.101: `c`[ptr_cast_slice](https://github.com/rust-lang/rust/pull/162927)
 - 1.101: `c`[slice_split_once](https://github.com/rust-lang/rust/pull/164641)
 - 1.101: `c`[unwrap_infallible](https://github.com/rust-lang/rust/pull/161712)
 - 1.101: ` `[update LLVM to 22](https://github.com/rust-lang/rust/pull/163572)
@@ -111,7 +112,6 @@ See also
 - 1.??: `c`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
 - 1.??: `s`[path_is_empty](https://github.com/rust-lang/rust/pull/157065)
-- 1.??: `c`[ptr_cast_slice](https://github.com/rust-lang/rust/pull/162927)
 - 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
 - 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
 - 1.??: `s`[process_chroot](https://github.com/rust-lang/rust/pull/163067)

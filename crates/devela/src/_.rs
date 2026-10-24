@@ -82,6 +82,7 @@
         exclusive_wrapper,
         funnel_shifts,
         optimize_attribute,
+        ptr_cast_slice,
         slice_split_once,
         unwrap_infallible,
     )
@@ -124,7 +125,6 @@
         nonzero_ops,
         offset_of_enum,
         offset_of_slice,
-        ptr_cast_slice,
         random, // random_source,
         refcell_try_map,
         str_as_str,
