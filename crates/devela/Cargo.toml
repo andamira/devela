@@ -142,6 +142,7 @@ __docs_internal = ["devela_macros/__docs_internal"] # enables documentation for 
 __disable_native_libs = [] # disables native libraries from being detected
 __exclude_test = [] # excludes specific examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
+__select_modules = ["code"] # include only selected root modules (code + yard baseline)
 
 
 #* Environment features *#
@@ -168,10 +169,10 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # In sync with tools/check.rs::SUB_MODULES
 
 all = [ # enables all the 14 modules (and their submodules)
-	"code_all", "data_all", "geom_all", "lang_all",
-	"media_all", "num_all", "org_all", "phys_all",
-	"run_all", "sys_all", "text_all", "ui_all",
-	"vita_all", "work_all",
+	"code_all", "data_all", "error_all", "geom_all",
+	"lang_all", "media_all", "num_all", "org_all",
+	"phys_all", "run_all", "sys_all", "text_all",
+	"ui_all", "work_all",
 ]
 
 code = []
@@ -189,8 +190,8 @@ data_all = ["data", "hash", "oneof"]
 	# value = [oneof]
 		oneof = []
 
-# error = []
-# error_all = []
+error = []
+error_all = ["error"]
 
 geom = []
 geom_all = ["fig"]

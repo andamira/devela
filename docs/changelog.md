@@ -32,6 +32,8 @@ This release…
 
 ### features & flags
 - add features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- add `__select_modules` for opt-in root-module selection during development,
+  retaining `code` and `yard` as the bootstrap foundation.
 - rename `rand` to `prng`.
 
 ### structure

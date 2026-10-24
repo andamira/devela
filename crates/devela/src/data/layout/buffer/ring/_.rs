@@ -20,6 +20,7 @@ crate::mods_out! { // _mods, _hidden
         pub use super::_example::*;
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             impls::_hidden::*,
         };

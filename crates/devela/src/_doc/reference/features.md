@@ -126,6 +126,20 @@ publishing, and documentation machinery rather than normal library capability.
 Current examples include `__dbg`, `__std`, `__publish`, `__docs_internal`,
 `__disable_native_libs`, `__exclude_test`, and `__force_miri_dst`.
 
+
+`__select_modules` enables root-module selection during development. Normally
+all root modules are present, regardless of their corresponding module-family
+features. With `__select_modules`, only `code` and `yard` are always included;
+other roots are compiled when their root feature is explicitly enabled.
+The development feature enables `code` automatically because its macros
+bootstrap the root module declarations.
+
+`-F __select_modules,num` selects the `code`, `yard`, and `num` roots. Some root families
+still have dependencies on others; this mode is intended to expose and refine
+those dependencies, not to guarantee that every selection already compiles.
+The WIP `error` and `vita` roots can be selected separately but are not members
+of the public `all` capability aggregate.
+
 Their exact set may change with project tooling
 and should not be treated as a stable public capability surface.
 
