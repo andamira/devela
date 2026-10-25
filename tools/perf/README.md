@@ -29,6 +29,21 @@ Requires Bash, Hyperfine and the workspace `./x` launcher.
 
 See `./tools/perf/compile.sh --help` for more options.
 
+## Profile rustc
+
+`profile.sh` records nightly rustc phase and query timings, and compares runs.
+Profiling adds overhead; use `compile.sh` to measure ordinary compilation time.
+
+````sh
+./tools/perf/profile.sh --label baseline
+./tools/perf/profile.sh --label num-all --features num_all
+./tools/perf/profile.sh compare BASELINE_DIR EXPERIMENT_DIR
+````
+
+Requires Bash, Python 3.9+, nightly Rust, `./x` and Measureme `summarize`.
+The script repairs a known invalid escape in affected profile data if needed.
+See `./tools/perf/profile.sh --help` for options and output details.
+
 ## Inspect LLVM IR
 
 `llvm-tree.py` groups generated LLVM IR by module

@@ -26,6 +26,8 @@ This release…
 ## tooling
 - add compilation benchmarking and LLVM IR analysis tools under `tools/perf/`,
   with feature-matrix measurements, module-level attribution, and report comparison.
+- add nightly rustc self-profiling with phase and query timings, multi-run summaries,
+  saved-report comparison, automatic profile-data repair, and optional verbose diagnostics.
 
 ---
 
