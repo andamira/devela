@@ -23,17 +23,18 @@ crate::mods_in! {
     mod location; // CodeLocation
     #[cfg(feature = "code")]
     mod span; // CodeSpan
-    #[cfg(feature = "code")]
     mod version; // Version, VersionFull
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
+        pub use super::{
+            version::{Version, VersionFull},
+        };
         #[cfg(feature = "code")]
         pub use super::{
             include::{include_from, mod_from, mod_path},
             location::CodeLocation,
             span::CodeSpan,
-            version::{Version, VersionFull},
         };
     }
     _reexports {
