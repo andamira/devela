@@ -162,7 +162,7 @@
         "safe_color", "safe_draw", "safe_font", "safe_image",
         "safe_num", "safe_org", "safe_phys", "safe_time",
         "safe_run", "safe_sys", "safe_io", "safe_mem",
-        "safe_text", "safe_ui", "safe_vita", "safe_work",
+        "safe_text", "safe_ui", "safe_work",
     )),
 )))]
 
@@ -221,10 +221,6 @@ crate::mods_in! {
     #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
     pub mod_ num; // Numeric abstractions and formal computation
 
-    #[macro_apply(__doc_auto_hide_features(("org")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "org"))]
-    pub mod_ org; // Coordination and structure of collective action
-
     #[macro_apply(__doc_auto_hide_features(("phys")))]
     #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
     pub mod_ phys; // Physical quantities, units, and models of the natural world
@@ -236,10 +232,6 @@ crate::mods_in! {
     #[macro_apply(__doc_auto_hide_features(("ui")))]
     #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
     pub mod_ ui; // Interactive surfaces, input semantics, and presentation state
-
-    #[macro_apply(__doc_auto_hide_features(("vita")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "vita"))]
-    pub mod_ vita; // Lived practices of embodied beings
 
     #[macro_apply(__doc_auto_hide_features(("sys")))]
     #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
@@ -301,14 +293,6 @@ pub mod all_ {
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("num")))))]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
 
-    #[doc = crate::_tags!(wip)]
-    #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
-    #[doc = concat![crate::_DOC_ORG!(), crate::_DOC_ORG_MODULES!(), _COMMON_DOC!("org")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "org"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("org")))))]
-    pub mod _org { #[allow(unused)] pub use super::super::org::_all::*; }
-
     #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), _COMMON_DOC!("phys")]]
     #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("phys")))))]
@@ -333,14 +317,6 @@ pub mod all_ {
     #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("ui")))))]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
-
-    #[doc = crate::_tags!(wip)]
-    #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
-    #[doc = concat![crate::_DOC_VITA!(), crate::_DOC_VITA_MODULES!(), _COMMON_DOC!("vita")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "vita"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("vita")))))]
-    pub mod _vita { #[allow(unused)] pub use super::super::vita::_all::*; }
 
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), _COMMON_DOC!("work")]]
     /// <br/><hr>
@@ -391,11 +367,6 @@ pub mod all {
     pub use super::num::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "org"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("org")))))]
-    pub use super::org::_all::*;
-
-    #[doc(inline)]
     #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("phys")))))]
     pub use super::phys::_all::*;
@@ -419,11 +390,6 @@ pub mod all {
     #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
     #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("ui")))))]
     pub use super::ui::_all::*;
-
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "vita"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("vita")))))]
-    pub use super::vita::_all::*;
 
     #[doc(inline)]
     #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
@@ -458,9 +424,6 @@ mod _crate_internals {
     #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
     pub(crate) use super::num::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "org"))]
-    pub(crate) use super::org::_crate_internals::*;
-
     #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
     pub(crate) use super::phys::_crate_internals::*;
 
@@ -475,9 +438,6 @@ mod _crate_internals {
 
     #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
     pub(crate) use super::ui::_crate_internals::*;
-
-    #[cfg(any(not(feature = "__select_modules"), feature = "vita"))]
-    pub(crate) use super::vita::_crate_internals::*;
 
     #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
     pub(crate) use super::work::_crate_internals::*;

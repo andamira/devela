@@ -49,6 +49,8 @@ This release…
 
 ## Modules
 
+- move `org` and `vita` modules to the `revela` crate.
+
 #### code::any
 - remove `AnyExt::type_hash` while preserving the hasher-parametric `type_hash_with`.
 

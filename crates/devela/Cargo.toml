@@ -11,7 +11,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,error,geom,lang,media,num,org,phys,run,sys,text,ui,work,yard)
+#   - Module            (all,code,data,error,geom,lang,media,num,phys,run,sys,text,ui,work,yard)
 #   - Safety            (safest,safe,unsafe,…)
 #   - Scope             (_*)
 #     - default         (_max,_maxest)
@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 154/300 (146 remaining), 127 visible, 27 hidden
+[features] # 151/300 (149 remaining), 123 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -131,7 +131,7 @@ targets = [ ## +std:
 # ------------------------------------------------------------------------------
 
 __dbg = [] # shows extra debugging information
-__std = [ # disables `no_std` in base crates for testing
+__std = [ # forces `std` mode for internal testing
 	"std",
 ]
 
@@ -168,11 +168,11 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 #
 # In sync with tools/check.rs::SUB_MODULES
 
-all = [ # enables all the 14 modules (and their submodules)
-	"code_all", "data_all", "error_all", "geom_all",
-	"lang_all", "media_all", "num_all", "org_all",
-	"phys_all", "run_all", "sys_all", "text_all",
-	"ui_all", "work_all",
+all = [ # enables all the 13 modules (and their submodules)
+	"code_all",
+	"data_all", "error_all", "geom_all", "lang_all",
+	"media_all", "num_all", "phys_all", "run_all",
+	"sys_all", "text_all", "ui_all", "work_all",
 ]
 
 code = []
@@ -194,7 +194,7 @@ error = []
 error_all = ["error"]
 
 geom = []
-geom_all = ["fig"]
+geom_all = ["geom", "fig"]
 	# dir = []
 	fig = []
 	# space
@@ -226,6 +226,7 @@ num = []
 num_all = [ "num",
 	"alg",
 	"int",
+	"bitwise",
 	"bitten", "cast", "niche",
 	"prob", "prng",
 	"ratio", "scale"
@@ -245,12 +246,12 @@ num_all = [ "num",
 		ratio = []   # Additional predefined primitive ratios.
 		scale = []   # Primitive proportional scaling implementations.
 
-org = []
-org_all = ["org"]
-	#
-
 phys = []
-phys_all = ["phys", "time", "unit", "wave"]
+phys_all = [ "phys",
+	"time",
+	"unit",
+	"wave",
+]
 	time = []
 	unit = []
 	wave = [] # wavelets
@@ -293,15 +294,18 @@ text_all = ["text", "grapheme", "translit"]
 	translit = []
 
 ui = []
-ui_all = ["ui", "event", "widget"]
+ui_all = ["ui",
+	"event",
+	"widget",
+]
 	event = []
 	widget = ["ui"]
 
-vita = []
-vita_all = []
-
 work = []
-work_all = ["work", "process", "thread", "sync"]
+work_all = ["work",
+	"process", "thread",
+	"sync",
+]
 	# exec
 		process = []
 		thread = []
@@ -324,10 +328,10 @@ work_all = ["work", "process", "thread", "sync"]
 
 safest = ["safe"] # forbids all `unsafe` in the workspace and all unsafe dependencies.
 
-safe = [ # forbids `unsafe` in specific modules (by default only in non-base crates).
+safe = [ # forbids `unsafe` in specific modules
 	"safe_macros",
-	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num", "safe_org",
-	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_vita", "safe_work",
+	"safe_code", "safe_data", "safe_geom", "safe_lang", "safe_media", "safe_num",
+	"safe_phys", "safe_run", "safe_sys", "safe_text", "safe_ui", "safe_work",
 ] # List of safe thematic modules (orthogonal to unsafe purposes):
 
 	# thematic [25]
@@ -343,7 +347,6 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 		safe_font = []
 		safe_visual = []
 	safe_num = []
-	safe_org = []
 	safe_phys = ["safe_time"]
 		safe_time = []
 	safe_run = []
@@ -352,7 +355,6 @@ safe = [ # forbids `unsafe` in specific modules (by default only in non-base cra
 		safe_mem = []
 	safe_text = []
 	safe_ui = []
-	safe_vita = []
 	safe_work = []
 	# safe_yard = []
 

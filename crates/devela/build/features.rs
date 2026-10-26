@@ -242,7 +242,6 @@ mod reflection {
                 "safe_font",
                 "safe_visual",
             "safe_num",
-            "safe_org",
             "safe_phys",
                 "safe_time",
             "safe_run",
@@ -312,10 +311,6 @@ mod reflection {
         ref_flags: &["num··"],
         features: &["num", "alg", "int", "rand"]
     };
-    pub const ORG: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["org··"],
-        features: &["org"]
-    };
     pub const PHYS: FlagsFeatures = FlagsFeatures {
         ref_flags: &["phys··"],
         features: &["phys", "time", "unit", "wave"]
@@ -344,10 +339,6 @@ mod reflection {
         features: &[
             "ui", "ui_core", "event", "widget",
         ]
-    };
-    pub const VITA: FlagsFeatures = FlagsFeatures {
-        ref_flags: &["vita··"],
-        features: &["vita"]
     };
     pub const WORK: FlagsFeatures = FlagsFeatures {
         ref_flags: &["work··"],
@@ -409,13 +400,11 @@ mod reflection {
             LANG, FFI,
             MEDIA, VISUAL,
             NUM,
-            ORG,
             PHYS,
             RUN,
             SYS, // MEM,
             TEXT,
             UI,
-            VITA,
             WORK,
 
             /* capabilities */
