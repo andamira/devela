@@ -87,7 +87,7 @@
         unwrap_infallible,
     )
 )]
-#![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(vec_try_remove,))]
+#![cfg_attr(all(nightly_stable_1_101, feature = "alloc"), feature(vec_try_remove, arc_is_unique,))]
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
 // `nightly_stable_1_102`: core, alloc, std:
@@ -135,14 +135,7 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(
-        arc_is_unique,
-        btree_extract_if,
-        new_zeroed_alloc,
-        smart_pointer_map,
-        string_into_chars,
-        vec_from_fn,
-    )
+    feature(btree_extract_if, new_zeroed_alloc, smart_pointer_map, string_into_chars, vec_from_fn,)
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

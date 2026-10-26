@@ -60,6 +60,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.101.0> -->
 
 - 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
+- 1.101: `c`[arc_is_unique](https://github.com/rust-lang/rust/pull/163458)
 - 1.101: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
@@ -79,7 +80,6 @@ See also
 - 1.??: `a`[allocator_ext](https://github.com/rust-lang/rust/issues/163177) from:allocator_api
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
-- 1.??: `c`[arc_is_unique](https://github.com/rust-lang/rust/pull/163458)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
