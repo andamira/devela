@@ -111,6 +111,7 @@
         // core_io_fundamentals,
         cstr_display,
         derive_coerce_pointee,
+        disjoint_bitor,
         float_bits_const,
         fn_align,
         frontmatter,
