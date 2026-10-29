@@ -25,6 +25,7 @@ crate::mods_out! { // _pub_mods, _reexports, _hidden
         };
     }
     _reexports {
+        #[doc(inline)]
         #[cfg(feature = "std")]
         pub use super::process::{CommandFlow, cmd};
     }

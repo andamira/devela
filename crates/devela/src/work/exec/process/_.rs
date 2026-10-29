@@ -33,6 +33,6 @@ crate::mods_out! { // _mods, _reexports, _hidden
     _hidden {
         #[doc(hidden)]
         #[cfg(feature = "std")]
-        pub use super::cmd::__cmd_shell;
+        pub use super::cmd::{__cmd, __cmd_shell};
     }
 }

@@ -123,4 +123,3 @@ use_try_shorthand = false # *false
 # - https://rust-lang.github.io/rustfmt/#control_brace_style
 # - WAIT: [control_brace_style](https://github.com/rust-lang/rustfmt/issues/3377)
 # control_brace_style = "AlwaysSameLine" # *AlwaysSameLine,AlwaysNextLine,ClosingNextLine
-
