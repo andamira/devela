@@ -120,28 +120,22 @@ may also select a small related set together.
 
 ### Development features
 
-Features beginning with `__` are reserved for development, maintenance, testing,
-publishing, and documentation machinery rather than normal library capability.
+Features prefixed with `__` are reserved for internal development, testing,
+documentation, and publishing machinery. They are not stable public capabilities.
+Examples include `__dbg`, `__publish`, and `__select_modules`.
 
-Current examples include `__dbg`, `__std`, `__publish`, `__docs_internal`,
-`__disable_native_libs`, `__exclude_test`, and `__force_miri_dst`.
+`__select_modules` enables selective compilation of root modules.
+Normally all roots are included; when enabled, only explicitly selected
+roots are compiled, alongside the always-present `code` and `yard`.
 
+For example, `-F __select_modules,num` selects `code`, `yard`, and `num`.
 
-`__select_modules` enables root-module selection during development. Normally
-all root modules are present, regardless of their corresponding module-family
-features. With `__select_modules`, only `code` and `yard` are always included;
-other roots are compiled when their root feature is explicitly enabled.
-The development feature enables `code` automatically because its macros
-bootstrap the root module declarations.
+The build script generates `root_*` cfg aliases (e.g. `root_num`, `root_sys`)
+to simplify these conditions. Both the aliases and root-selection features
+are hidden from public rustdoc annotations.
 
-`-F __select_modules,num` selects the `code`, `yard`, and `num` roots. Some root families
-still have dependencies on others; this mode is intended to expose and refine
-those dependencies, not to guarantee that every selection already compiles.
-The WIP `error` and `vita` roots can be selected separately but are not members
-of the public `all` capability aggregate.
-
-Their exact set may change with project tooling
-and should not be treated as a stable public capability surface.
+This mode helps measure compilation costs and expose module dependencies;
+not every selection is guaranteed to compile.
 
 ### Nightly flags
 

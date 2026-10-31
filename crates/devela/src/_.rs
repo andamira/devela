@@ -150,7 +150,12 @@
 // NOTE: that doc attribute hiding only works in nightly
 #![cfg_attr(nightly_doc, doc(auto_cfg(
     // rustc flags:
-    hide(miri, ffi··, ffi_alsa··, ffi_xcb_shm··),
+    hide(
+        miri, ffi··, ffi_alsa··, ffi_xcb_shm··,
+        root_data, root_error, root_geom, root_lang,
+        root_media, root_num, root_phys, root_run,
+        root_sys, root_text, root_ui, root_work,
+    ),
     // features:
     hide(feature, values(
         // development
@@ -198,52 +203,40 @@ pub mod code; // Code structure, semantics, and foundational utilities
 crate::mods_in! {
     pub mod_ _doc; // Extra documentation about the library
 
-    #[macro_apply(__doc_auto_hide_features(("data")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
+    #[cfg(root_data)]
     pub mod_ data; // Structural abstractions for organizing and manipulating data
 
-    #[macro_apply(__doc_auto_hide_features(("error")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "error"))]
+    #[cfg(root_error)]
     pub mod_ error; // Failure types, result aliases, and recovery semantics
 
-    #[macro_apply(__doc_auto_hide_features(("geom")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
+    #[cfg(root_geom)]
     pub mod_ geom; // Geometric types, operations, and spatial constructs
 
-    #[macro_apply(__doc_auto_hide_features(("lang")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "lang"))]
+    #[cfg(root_lang)]
     pub mod_ lang; // Language structure and meaning across domains
 
-    #[macro_apply(__doc_auto_hide_features(("media")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
+    #[cfg(root_media)]
     pub mod_ media; // Media formats, representation, and synthesis
 
-    #[macro_apply(__doc_auto_hide_features(("num")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
+    #[cfg(root_num)]
     pub mod_ num; // Numeric abstractions and formal computation
 
-    #[macro_apply(__doc_auto_hide_features(("phys")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
+    #[cfg(root_phys)]
     pub mod_ phys; // Physical quantities, units, and models of the natural world
 
-    #[macro_apply(__doc_auto_hide_features(("run")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "run"))]
+    #[cfg(root_run)]
     pub mod_ run; // Temporal coordination and staging of a running system
 
-    #[macro_apply(__doc_auto_hide_features(("ui")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
+    #[cfg(root_ui)]
     pub mod_ ui; // Interactive surfaces, input semantics, and presentation state
 
-    #[macro_apply(__doc_auto_hide_features(("sys")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[cfg(root_sys)]
     pub mod_ sys; // System interfaces and hardware abstractions
 
-    #[macro_apply(__doc_auto_hide_features(("text")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
+    #[cfg(root_text)]
     pub mod_ text; // Symbolic sequences, encodings, and text processing
 
-    #[macro_apply(__doc_auto_hide_features(("work")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
+    #[cfg(root_work)]
     pub mod_ work; // Computational work, its coordination, and its execution
 
     // internal
@@ -264,65 +257,53 @@ pub mod all_ {
     #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), _COMMON_DOC!("code")]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
 
+    #[cfg(root_data)]
     #[doc = concat![crate::_DOC_DATA!(), crate::_DOC_DATA_MODULES!(), _COMMON_DOC!("data")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("data")))))]
     pub mod _data { #[allow(unused)] pub use super::super::data::_all::*; }
 
+    #[cfg(root_error)]
     #[doc = concat![crate::_DOC_ERROR!(), crate::_DOC_ERROR_MODULES!(), _COMMON_DOC!("error")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "error"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("error")))))]
     pub mod _error { #[allow(unused)] pub use super::super::error::_all::*; }
 
+    #[cfg(root_geom)]
     #[doc = concat![crate::_DOC_GEOM!(), crate::_DOC_GEOM_MODULES!(), _COMMON_DOC!("geom")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("geom")))))]
     pub mod _geom { #[allow(unused)] pub use super::super::geom::_all::*; }
 
+    #[cfg(root_lang)]
     #[doc = concat![crate::_DOC_LANG!(), crate::_DOC_LANG_MODULES!(), _COMMON_DOC!("lang")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "lang"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("lang")))))]
     pub mod _lang { #[allow(unused)] pub use super::super::lang::_all::*; }
 
+    #[cfg(root_media)]
     #[doc = concat![crate::_DOC_MEDIA!(), crate::_DOC_MEDIA_MODULES!(), _COMMON_DOC!("media")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("media")))))]
     pub mod _media { #[allow(unused)] pub use super::super::media::_all::*; }
 
+    #[cfg(root_num)]
     #[doc = concat![crate::_DOC_NUM!(), crate::_DOC_NUM_MODULES!(), _COMMON_DOC!("num")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("num")))))]
     pub mod _num { #[allow(unused)] pub use super::super::num::_all::*; }
 
+    #[cfg(root_phys)]
     #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), _COMMON_DOC!("phys")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("phys")))))]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
 
+    #[cfg(root_run)]
     #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), _COMMON_DOC!("run")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "run"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("run")))))]
     pub mod _run { #[allow(unused)] pub use super::super::run::_all::*; }
 
+    #[cfg(root_sys)]
     #[doc = concat![crate::_DOC_SYS!(), crate::_DOC_SYS_MODULES!(), _COMMON_DOC!("sys")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("sys")))))]
     pub mod _sys { #[allow(unused)] pub use super::super::sys::_all::*; }
 
+    #[cfg(root_text)]
     #[doc = concat![crate::_DOC_TEXT!(), crate::_DOC_TEXT_MODULES!(), _COMMON_DOC!("text")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("text")))))]
     pub mod _text { #[allow(unused)] pub use super::super::text::_all::*; }
 
+    #[cfg(root_ui)]
     #[doc = concat![crate::_DOC_UI!(), crate::_DOC_UI_MODULES!(), _COMMON_DOC!("ui")]]
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("ui")))))]
     pub mod _ui { #[allow(unused)] pub use super::super::ui::_all::*; }
 
+    #[cfg(root_work)]
     #[doc = concat![crate::_DOC_WORK!(), crate::_DOC_WORK_MODULES!(), _COMMON_DOC!("work")]]
     /// <br/><hr>
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("work")))))]
     pub mod _work { #[allow(unused)] pub use super::super::work::_all::*; }
 }
 
@@ -338,63 +319,51 @@ pub mod all {
     pub use super::code::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("data")))))]
+    #[cfg(root_data)]
     pub use super::data::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "error"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("error")))))]
+    #[cfg(root_error)]
     pub use super::error::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("geom")))))]
+    #[cfg(root_geom)]
     pub use super::geom::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "lang"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("lang")))))]
+    #[cfg(root_lang)]
     pub use super::lang::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("media")))))]
+    #[cfg(root_media)]
     pub use super::media::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("num")))))]
+    #[cfg(root_num)]
     pub use super::num::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("phys")))))]
+    #[cfg(root_phys)]
     pub use super::phys::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "run"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("run")))))]
+    #[cfg(root_run)]
     pub use super::run::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("sys")))))]
+    #[cfg(root_sys)]
     pub use super::sys::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("text")))))]
+    #[cfg(root_text)]
     pub use super::text::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("ui")))))]
+    #[cfg(root_ui)]
     pub use super::ui::_all::*;
 
     #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
-    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("work")))))]
+    #[cfg(root_work)]
     pub use super::work::_all::*;
 }
 
@@ -407,40 +376,40 @@ mod _crate_internals {
 
     pub(crate) use super::code::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
+    #[cfg(root_data)]
     pub(crate) use super::data::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "error"))]
+    #[cfg(root_error)]
     pub(crate) use super::error::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
+    #[cfg(root_geom)]
     pub(crate) use super::geom::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "lang"))]
+    #[cfg(root_lang)]
     pub(crate) use super::lang::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
+    #[cfg(root_media)]
     pub(crate) use super::media::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
+    #[cfg(root_num)]
     pub(crate) use super::num::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
+    #[cfg(root_phys)]
     pub(crate) use super::phys::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "run"))]
+    #[cfg(root_run)]
     pub(crate) use super::run::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[cfg(root_sys)]
     pub(crate) use super::sys::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
+    #[cfg(root_text)]
     pub(crate) use super::text::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
+    #[cfg(root_ui)]
     pub(crate) use super::ui::_crate_internals::*;
 
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
+    #[cfg(root_work)]
     pub(crate) use super::work::_crate_internals::*;
 
     pub(crate) use super::yard::_crate_internals::*;
@@ -457,31 +426,31 @@ pub mod __hidden {
     pub use super::code::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
+    #[cfg(root_data)]
     pub use super::data::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
+    #[cfg(root_geom)]
     pub use super::geom::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
+    #[cfg(root_media)]
     pub use super::media::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
+    #[cfg(root_num)]
     pub use super::num::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[cfg(root_sys)]
     pub use super::sys::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
+    #[cfg(root_text)]
     pub use super::text::_hidden::*;
 
     #[doc(hidden)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
+    #[cfg(root_work)]
     pub use super::work::_hidden::*;
 
     #[doc(hidden)]
@@ -501,84 +470,62 @@ mod _reexports { // 39
     pub use super::code::{ConstInit, const_assert, unwrap};
 
     // data: 5
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "data"))]
+    #[doc(inline)] #[cfg(root_data)]
     pub use super::data::{ByteCursor, WordTry, arena, handle, pool};
 
     // error: 0
     // pub use super::error::{};
 
     // geom: 4
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "geom"))]
+    #[doc(inline)] #[cfg(root_geom)]
     pub use super::geom::{Angle, Extent, Point, Region};
 
     // lang: 1
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "lang"))]
+    #[doc(inline)] #[cfg(root_lang)]
     pub use super::lang::ScriptMachine;
 
     // media: 2
-    #[doc(inline)] #[cfg(feature = "draw")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
+    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "draw")]
     pub use super::media::Canvas;
-    #[doc(inline)] #[cfg(feature = "audio")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "media"))]
+    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "audio")]
     pub use super::media::PcmBuf;
 
     // num: 5
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "num"))]
+    #[doc(inline)] #[cfg(root_num)]
     pub use super::num::{Cast, Cmp, Interval, RandTry, Ratio};
 
-    // org: 0
-    // pub use super::org::{};
-
     // phys: 2
-    #[doc(inline)] #[cfg(feature = "time")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "phys"))]
+    #[doc(inline)] #[cfg(root_phys)] #[cfg(feature = "time")]
     pub use super::phys::{TimeDelta, TimeSource};
 
     // run: 2
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "run"))]
+    #[doc(inline)] #[cfg(root_run)]
     pub use super::run::{RunApp, RunDriver};
 
     // sys: 5
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[doc(inline)] #[cfg(root_sys)]
     pub use super::sys::{Slice, TextOut};
-    #[doc(inline)] #[cfg(feature = "_linux_abi")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[doc(inline)] #[cfg(root_sys)] #[cfg(feature = "_linux_abi")]
     pub use super::sys::Linux;
-    #[doc(inline)] #[cfg(feature = "term")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[doc(inline)] #[cfg(root_sys)] #[cfg(feature = "term")]
     pub use super::sys::TermGrid;
-    #[doc(inline)] #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
-    #[cfg(any(not(feature = "__select_modules"), feature = "sys"))]
+    #[doc(inline)] #[cfg(root_sys)]
+    #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
     pub use super::sys::Web;
 
     // text: 6
-    #[doc(inline)]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
+    #[doc(inline)] #[cfg(root_text)]
     pub use super::text::{CharIter, Str, StringU8, TextScanner, format_buf};
-    #[doc(inline)] #[cfg(feature = "grapheme")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "text"))]
+    #[doc(inline)] #[cfg(root_text)] #[cfg(feature = "grapheme")]
     pub use super::text::GraphemeMachine;
 
     // ui: 2
-    #[doc(inline)] #[cfg(feature = "event")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
+    #[doc(inline)] #[cfg(root_ui)] #[cfg(feature = "event")]
     pub use super::ui::Event;
-    #[doc(inline)] #[cfg(feature = "ui")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "ui"))]
+    #[doc(inline)] #[cfg(root_ui)] #[cfg(feature = "ui")]
     pub use super::ui::TextInput;
 
-    // vita: 0
-    // pub use super::vita::{};
-
     // work: 2
-    #[doc(inline)] #[cfg(feature = "std")]
-    #[cfg(any(not(feature = "__select_modules"), feature = "work"))]
+    #[doc(inline)] #[cfg(root_work)] #[cfg(feature = "std")]
     pub use super::work::{CommandFlow, cmd};
 }

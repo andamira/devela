@@ -4,7 +4,8 @@
 
 #[cfg(feature = "__dbg")]
 use super::Build;
-use ::std::{env::var, io::Error as IoError};
+use ::std::env::{var, var_os};
+use ::std::io::Error as IoError;
 
 /// Defines a cfg flag `alias` and saves its name in a `list`.
 fn new_alias(list: &mut Vec<&'static str>, alias: &'static str) {
@@ -17,12 +18,38 @@ pub(crate) fn main() -> Result<(), IoError> {
     Build::println_heading("Aliases:");
 
     let mut aliases = Vec::with_capacity(20);
-    target_aliases(&mut aliases);
+    module_aliases(&mut aliases); // 12
+    target_aliases(&mut aliases); // 13
 
     #[cfg(feature = "__dbg")]
     Build::println(format!("Active compiler cfg flag aliases ({}): {:?}", aliases.len(), aliases));
 
     Ok(())
+}
+
+// 12
+// root_[data|error|geom|lang|media|num|phys|run|sys|text|ui|work]
+fn module_aliases(aliases: &mut Vec<&'static str>) {
+    let selective = var_os("CARGO_FEATURE___SELECT_MODULES").is_some();
+
+    for (feature, alias) in [
+        ("CARGO_FEATURE_DATA", "root_data"),
+        ("CARGO_FEATURE_ERROR", "root_error"),
+        ("CARGO_FEATURE_GEOM", "root_geom"),
+        ("CARGO_FEATURE_LANG", "root_lang"),
+        ("CARGO_FEATURE_MEDIA", "root_media"),
+        ("CARGO_FEATURE_NUM", "root_num"),
+        ("CARGO_FEATURE_PHYS", "root_phys"),
+        ("CARGO_FEATURE_RUN", "root_run"),
+        ("CARGO_FEATURE_SYS", "root_sys"),
+        ("CARGO_FEATURE_TEXT", "root_text"),
+        ("CARGO_FEATURE_UI", "root_ui"),
+        ("CARGO_FEATURE_WORK", "root_work"),
+    ] {
+        if !selective || var_os(feature).is_some() {
+            new_alias(aliases, alias);
+        }
+    }
 }
 
 // 3
@@ -39,11 +66,9 @@ fn target_aliases(aliases: &mut Vec<&'static str>) {
     if linux_arch {
         new_alias(aliases, "any_target_arch_linux");
     }
-
     if matches!(arch.as_str(), "riscv32" | "riscv64") {
         new_alias(aliases, "any_target_arch_riscv");
     }
-
     if linux_arch && matches!(os.as_str(), "linux" | "none") {
         new_alias(aliases, "linux_syscall_target");
     }

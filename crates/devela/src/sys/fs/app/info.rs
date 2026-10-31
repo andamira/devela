@@ -7,7 +7,7 @@ use crate::{String, vec_ as vec};
 #[doc = crate::_tags!(platform)]
 /// Application specific metadata.
 #[doc = crate::_doc_meta!{
-    location("run/app", struct AppInfo),
+    location("sys/fs/app", struct AppInfo),
 }]
 /// It is used together with [`AppPaths`].
 #[derive(Clone, Debug, PartialEq)]

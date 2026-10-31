@@ -39,7 +39,9 @@ This release…
 - add features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - add `__select_modules` for opt-in root-module selection during development,
   retaining `code` and `yard` as the bootstrap foundation.
-- rename `rand` to `prng`.
+- generate `root_*` cfg aliases for selective root-module compilation.
+- hide internal root-selection conditions from public rustdoc availability annotations.
+- rename feature `rand` to `prng`.
 
 ### structure
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`

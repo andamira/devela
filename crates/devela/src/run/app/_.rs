@@ -14,7 +14,8 @@ crate::mods_out! { // _mods, _reexports
         pub use super::control::*;
     }
     _reexports {
-        #[cfg(all(feature = "alloc", any(not(feature = "__select_modules"), feature = "sys")))]
+        #[doc(inline)]
+        #[cfg(all(feature = "alloc", root_sys))]
         pub use crate::sys::fs::app::AppInfo;
     }
 }
