@@ -9,10 +9,12 @@
 crate::mods_in! {
     mod control;
 }
-crate::mods_out! { // _mods
+crate::mods_out! { // _mods, _reexports
     _mods {
-        pub use super::{
-            control::*,
-        };
+        pub use super::control::*;
+    }
+    _reexports {
+        #[cfg(all(feature = "alloc", any(not(feature = "__select_modules"), feature = "sys")))]
+        pub use crate::sys::fs::app::AppInfo;
     }
 }

@@ -74,6 +74,15 @@ This release…
 #### num::quant
 - feature gate `Ratio*` and `Scale` implementations.
 
+#### run::app
+- rename `AppConfig` to `AppInfo` and expose it as application identity metadata.
+
+#### sys::fs
+- move application-specific directory resolution from `sys::env` into `sys::fs::app`.
+- rename `AppEnv` to `AppPaths` and the platform implementations to `AppPathsXdg`,
+  `AppPathsUnix`, `AppPathsApple`, and `AppPathsWindows`.
+- fix inverted validation in `AppInfo::new` and add regression tests.
+
 ### sys::hw
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.
 

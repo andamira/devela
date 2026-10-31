@@ -1522,8 +1522,8 @@ simplifying the workspace while preserving what was learned from the split.
 
 [0.27.0]: https://github.com/andamira/devela/releases/tag/v0.27.0
 
-[0.26.0-wip] 2026-04-06
-=======================
+[0.26.0] 2026-04-06
+====================
 
 > Everything must ripen before it is ready.
 > — Rainer Maria Rilke

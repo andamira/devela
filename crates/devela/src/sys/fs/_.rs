@@ -9,7 +9,7 @@ crate::mods_in! {
         #[cfg(feature = "std")]
         mod _reexport_std;
 
-    // pub mod_ app; // WIP
+    pub mod_ app; // AppPaths and platform-specific resolvers
     pub mod_ path; // PathExt, Path*, sys::path::*
 
         #[cfg(feature = "std")]
@@ -27,7 +27,7 @@ crate::mods_out! { // _mods, _pub_mods
     }
     _pub_mods {
         pub use super::{
-            // app::all_::*,
+            app::_all::*,
             path::_all::*,
         };
     }

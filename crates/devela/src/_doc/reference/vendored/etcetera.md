@@ -3,10 +3,10 @@ This is derived work from the
 including the following modifications:
 
 - make the trait `dyn` compatible.
-- rename `AppStrategyArgs` to `AppConfig`.
-- unify all `Xdg` structs into `AppXdg`.
-- unify all `Apple` structs into `AppApple`.
-- unify all `Windows` structs into `AppWindows`.
+- rename `AppStrategyArgs` to `AppInfo`.
+- unify all `Xdg` structs into `AppPathsXdg`.
+- unify all `Apple` structs into `AppPathsApple`.
+- unify all `Windows` structs into `AppPathsWindows`.
 - unify `BaseStrategy` and `AppStrategy` into `AppEnv`.
 - replace `Result` with `Option`, remove `HomeDirError`.
 - validate `AppData` construction, made fields private.

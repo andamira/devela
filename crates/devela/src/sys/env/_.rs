@@ -13,9 +13,6 @@ crate::mods_in! {
     mod_ arg;
     mod namespace;
 
-    #[cfg(feature = "std")]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
-    mod app;
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
@@ -24,8 +21,6 @@ crate::mods_out! { // _mods, _reexports
             namespace::*,
         };
 
-        #[cfg(feature = "std")]
-        pub use super::app::*;
     }
     _reexports {
         pub use super::_reexport_core::*;
