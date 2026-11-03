@@ -16,8 +16,6 @@ crate::mods_in! {
     // mod_ primes; // TODO
     // mod recip; // DivRecip WIP
 
-    #[cfg(all(feature = "int", feature = "num"))]
-    mod_ num_trait; // NumInt, NumRefInt TEMP
     #[cfg(feature = "int")]
     mod_ wrapper; // Int, TODO: int!
 }
@@ -31,8 +29,6 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
             // prim::*,
             // recip::*,
         };
-        #[cfg(all(feature = "int", feature = "num"))]
-        pub use super::num_trait::*;
         #[cfg(feature = "int")]
         pub use super::wrapper::_all::Int;
     }

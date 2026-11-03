@@ -324,7 +324,7 @@ macro_rules! impl_ext_num_const {
 impl_ext_num_const![];
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::{FloatConst, NonZeroI8, NonZeroU8, NumConst};
 
     #[test]

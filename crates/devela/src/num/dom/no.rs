@@ -8,17 +8,3 @@
     location("num", type NoNum),
 }]
 pub type NoNum = ();
-
-#[cfg(feature = "num")]
-impl super::Num for NoNum {
-    type Inner = ();
-    type Out = ();
-    type Rhs = ();
-
-    fn num_into(self) -> Self::Inner {}
-}
-
-#[cfg(all(feature = "num", feature = "int"))]
-impl super::NumInt for NoNum {
-    type OutI = ();
-}

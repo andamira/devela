@@ -1,5 +1,5 @@
 //
-//! Defines constants for shared documentation on [`Int`] and [`NumInt`][crate::NumInt].
+//! Defines constants for shared documentation on [`Int`].
 //
 // notation: _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*
 #![allow(unused, reason = "if only compiling either unsigned or signed…")]

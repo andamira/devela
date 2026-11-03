@@ -59,6 +59,9 @@ This release…
 #### code::result
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
 
+#### num::dom
+- remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
+
 #### num::fin
 - add `bitwise!` macro.
 - feature gate `Bitwise` and `BitOps` behind `bitwise`.
