@@ -108,6 +108,11 @@ This release…
 ### sys::hw
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.
 
+### text::fmt
+- update `fmtcat!`:
+  - Use `Digits` for const decimal formatting of primitive integers.
+  - Support explicit custom number formatters via `with Formatter`.
+
 ### yard
 - reduce compilation overhead by skipping documentation-only
   `_tags!` and `_doc_meta!` expansions outside rustdoc.
