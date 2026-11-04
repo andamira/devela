@@ -1,5 +1,5 @@
 use super::*;
-use crate::{Norm, Rgb8, RgbF32, RgbF64, Rgba8, Rgba16, RgbaF32, RgbaF64};
+use crate::{Norm, Rgb8, RgbF32, RgbF64, Rgba8, Rgba16, RgbaBytes, RgbaF32, RgbaF64};
 // use crate::Rgb16;
 #[cfg(doc)]
 use crate::{Rgb, Rgba};
@@ -25,13 +25,25 @@ impl Rgba8 {
 
 /// # General conversions
 impl Rgba8 {
-    /// Create from an array.
-    pub const fn from_array(c: [u8; 4]) -> Rgba8 {
+    /// Creates a color from RGBA bytes.
+    pub const fn from_array(c: RgbaBytes) -> Rgba8 {
         Rgba8 { c }
     }
-    /// Convert to an array.
-    pub const fn as_array(self) -> [u8; 4] {
+    /// Returns a copy of the RGBA bytes (retained for compatibility).
+    pub const fn as_array(self) -> RgbaBytes {
         self.c
+    }
+    /// Returns the RGBA bytes, consuming the color.
+    pub const fn into_array(self) -> RgbaBytes {
+        self.c
+    }
+    /// Borrows the RGBA bytes without copying.
+    pub const fn as_array_ref(&self) -> &RgbaBytes {
+        &self.c
+    }
+    /// Mutably borrows the RGBA bytes without copying.
+    pub const fn as_array_mut(&mut self) -> &mut RgbaBytes {
+        &mut self.c
     }
 
     /// Create from a tuple.
@@ -114,6 +126,27 @@ impl Rgba8 {
         )
     }
 }
+impl From<RgbaBytes> for Rgba8 {
+    fn from(bytes: RgbaBytes) -> Self {
+        Self::from_array(bytes)
+    }
+}
+impl From<Rgba8> for RgbaBytes {
+    fn from(color: Rgba8) -> Self {
+        color.into_array()
+    }
+}
+impl AsRef<RgbaBytes> for Rgba8 {
+    fn as_ref(&self) -> &RgbaBytes {
+        self.as_array_ref()
+    }
+}
+impl AsMut<RgbaBytes> for Rgba8 {
+    fn as_mut(&mut self) -> &mut RgbaBytes {
+        self.as_array_mut()
+    }
+}
+
 #[rustfmt::skip]
 impl From<Rgb8> for Rgba8 { fn from(from: Rgb8) -> Rgba8 { Rgba8::from_rgb8(from, u8::MAX) } }
 #[rustfmt::skip]
@@ -200,7 +233,7 @@ impl Rgba8 {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     const C8: Rgb8 = Rgb8::new(10, 20, 30);
@@ -214,6 +247,13 @@ mod tests {
         // array/tuple
         assert_eq![Rgba8::from_array([10, 20, 30, 40]), CA8];
         assert_eq![CA8.as_array(), [10, 20, 30, 40]];
+        assert_eq![CA8.into_array(), [10, 20, 30, 40]];
+        assert_eq![*CA8.as_array_ref(), [10, 20, 30, 40]];
+        let mut c = CA8;
+        c.as_array_mut()[3] = 255;
+        assert_eq![c.a(), 255];
+        assert_eq![Rgba8::from(RgbaBytes::from([10, 20, 30, 40])), CA8];
+        assert_eq![RgbaBytes::from(CA8), [10, 20, 30, 40]];
         assert_eq![Rgba8::from_tuple((10, 20, 30, 40)), CA8];
         assert_eq![CA8.to_tuple(), (10, 20, 30, 40)];
         // rgb

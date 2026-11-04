@@ -8,6 +8,7 @@ use crate::_media_visual_color_impl;
 // methods: (IMPROVE:mods_in!)
 mod u8;
 mod u8alpha;
+mod hex; // const sRGB hex parsing and encoding
 mod u16;
 mod u16alpha;
 crate::items! { mod f32; mod f32alpha; }

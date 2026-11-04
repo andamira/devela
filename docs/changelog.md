@@ -59,6 +59,11 @@ This release…
 #### code::result
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
 
+##### media::visual::color
+- new aliases: `RgbBytes`, `RgbaBytes`.
+- add conversion methods to `Rgb8` and `Rgba8`.
+- add sRGB hex parsing and decoding,
+
 #### num::dom
 - remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
 - replace `dom::real::float` with public `dom::float` and expose `dom::frac`.

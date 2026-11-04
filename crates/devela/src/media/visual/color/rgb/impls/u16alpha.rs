@@ -186,7 +186,7 @@ impl Rgba16 {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     const C16: Rgb16 = Rgb16::new(2570, 5140, 7710);

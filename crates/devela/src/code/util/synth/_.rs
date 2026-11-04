@@ -52,6 +52,7 @@ mods_out::mods_out! { // _mods, _reexports, _hidden
         };
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             derive::_hidden::*,
             use_as::__use_as,

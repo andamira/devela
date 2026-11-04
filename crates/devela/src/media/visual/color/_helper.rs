@@ -50,7 +50,7 @@ impl Norm {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::Norm;
     use crate::assert_approx_eq_all;
 

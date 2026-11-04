@@ -1,4 +1,4 @@
-use crate::{Norm, Rgb8, Rgb16, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
+use crate::{Norm, Rgb8, Rgb16, RgbBytes, RgbF32, RgbF64, Rgba8, RgbaF32, RgbaF64};
 #[cfg(doc)]
 use crate::{Rgb, Rgba};
 // use crate::{Rgba16};
@@ -21,13 +21,25 @@ impl Rgb8 {
 
 /// # General conversions
 impl Rgb8 {
-    /// Create from an array.
-    pub const fn from_array(c: [u8; 3]) -> Rgb8 {
+    /// Creates a color from RGB bytes.
+    pub const fn from_array(c: RgbBytes) -> Rgb8 {
         Rgb8 { c }
     }
-    /// Convert to an array.
-    pub const fn as_array(self) -> [u8; 3] {
+    /// Returns a copy of the RGB bytes (retained for compatibility).
+    pub const fn as_array(self) -> RgbBytes {
         self.c
+    }
+    /// Returns the RGB bytes, consuming the color.
+    pub const fn into_array(self) -> RgbBytes {
+        self.c
+    }
+    /// Borrows the RGB bytes without copying.
+    pub const fn as_array_ref(&self) -> &RgbBytes {
+        &self.c
+    }
+    /// Mutably borrows the RGB bytes without copying.
+    pub const fn as_array_mut(&mut self) -> &mut RgbBytes {
+        &mut self.c
     }
     /// Create from a tuple.
     pub const fn from_tuple(c: (u8, u8, u8)) -> Rgb8 {
@@ -105,6 +117,27 @@ impl Rgb8 {
         )
     }
 }
+impl From<RgbBytes> for Rgb8 {
+    fn from(bytes: RgbBytes) -> Self {
+        Self::from_array(bytes)
+    }
+}
+impl From<Rgb8> for RgbBytes {
+    fn from(color: Rgb8) -> Self {
+        color.into_array()
+    }
+}
+impl AsRef<RgbBytes> for Rgb8 {
+    fn as_ref(&self) -> &RgbBytes {
+        self.as_array_ref()
+    }
+}
+impl AsMut<RgbBytes> for Rgb8 {
+    fn as_mut(&mut self) -> &mut RgbBytes {
+        self.as_array_mut()
+    }
+}
+
 #[rustfmt::skip]
 impl From<Rgba8> for Rgb8 { fn from(from: Rgba8) -> Rgb8 { Rgb8::from_rgba8(from) } }
 #[rustfmt::skip]
@@ -171,7 +204,7 @@ impl Rgb8 {
 }
 
 #[cfg(test)]
-mod tests {
+mod _test {
     use super::*;
 
     const C8: Rgb8 = Rgb8::new(10, 20, 30);
@@ -185,6 +218,13 @@ mod tests {
         // array/tuple
         assert_eq![Rgb8::from_array([10, 20, 30]), C8];
         assert_eq![C8.as_array(), [10, 20, 30]];
+        assert_eq![C8.into_array(), [10, 20, 30]];
+        assert_eq![*C8.as_array_ref(), [10, 20, 30]];
+        let mut c = C8;
+        c.as_array_mut()[0] = 42;
+        assert_eq![c.r(), 42];
+        assert_eq![Rgb8::from(RgbBytes::from([10, 20, 30])), C8];
+        assert_eq![RgbBytes::from(C8), [10, 20, 30]];
         assert_eq![Rgb8::from_tuple((10, 20, 30)), C8];
         assert_eq![C8.to_tuple(), (10, 20, 30)];
         // rgba

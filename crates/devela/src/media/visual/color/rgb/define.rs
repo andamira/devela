@@ -7,7 +7,7 @@
 #[doc = crate::_doc_meta!{
     location("media/visual/color", struct Rgb),
 }]
-#[repr(C)]
+#[repr(transparent)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Rgb<T, const LINEAR: bool = false> {
@@ -20,7 +20,7 @@ pub struct Rgb<T, const LINEAR: bool = false> {
 #[doc = crate::_doc_meta!{
     location("media/visual/color", struct Rgba),
 }]
-#[repr(C)]
+#[repr(transparent)]
 #[must_use]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Rgba<T, const LINEAR: bool = false, const PREMUL: bool = false> {
@@ -28,7 +28,28 @@ pub struct Rgba<T, const LINEAR: bool = false, const PREMUL: bool = false> {
     pub c: [T; 4],
 }
 
-/* aliases */
+/* byte-array representations */
+
+#[doc = crate::_tags!(color)]
+/// RGB channels as three consecutive bytes, conventionally sRGB.
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", struct RgbBytes),
+}]
+/// This is a plain alias: it does not enforce color-space semantics.
+/// Arrays of these values can be flattened into byte slices safely.
+#[doc = crate::_doc_meta!{location("media/visual/color", type RgbBytes)}]
+pub type RgbBytes = [u8; 3];
+
+#[doc = crate::_tags!(color)]
+/// RGBA channels as four consecutive bytes, conventionally sRGB with straight alpha.
+#[doc = crate::_doc_meta!{
+    location("media/visual/color", struct RgbaBytes),
+}]
+/// This is a plain alias: it does not enforce color-space or alpha semantics.
+#[doc = crate::_doc_meta!{location("media/visual/color", type RgbaBytes)}]
+pub type RgbaBytes = [u8; 4];
+
+/* semantic type aliases */
 
 #[doc = crate::_tags!(color)]
 /// RGB color with 8-bit integer channels (sRGB gamma space).
