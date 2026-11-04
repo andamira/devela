@@ -65,12 +65,15 @@ This release…
 - add sRGB hex parsing and decoding,
 
 #### num::dom
-- correct digit counts and digital roots for signed minima; define radices below 2 as zero.
-- extract carrier-level digit and digital-root algorithms from `Int` for reuse by generated integer types.
-- introduce `int!` with primitive carriers and selectively generated `base` methods.
 - remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
 - replace `dom::real::float` with public `dom::float` and expose `dom::frac`.
 - introduce public `dom::fixed` and `dom::complex` modules as placeholders.
+
+##### num::dom::int
+- add macro `int!`.
+- add example type `IntExample`.
+- correct digit counts and digital roots for signed minima; define radices below 2 as zero.
+- extract carrier-level digit and digital-root algorithms from `Int` for reuse by generated integer types.
 
 #### num::fin
 - add `bitwise!` macro.
