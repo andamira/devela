@@ -3,6 +3,7 @@
 //
 
 crate::mods_in! {
+    mod define; // Palette
     // mod ase;
     // mod gpl; // TODO WIP
     // mod hex;
@@ -11,6 +12,7 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods
     _mods {
+        pub use super::define::Palette;
         // pub use super::{
         //     // ase::*,
         //     gpl::*,

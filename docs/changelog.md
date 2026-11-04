@@ -60,6 +60,7 @@ This release…
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
 
 ##### media::visual::color
+- new type: `Palette`.
 - new aliases: `RgbBytes`, `RgbaBytes`.
 - add conversion methods to `Rgb8` and `Rgba8`.
 - add sRGB hex parsing and decoding,
