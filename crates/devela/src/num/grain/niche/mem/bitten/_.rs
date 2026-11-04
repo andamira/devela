@@ -9,13 +9,18 @@ crate::mods_in! {
     mod u8;
     #[cfg(feature = "bitten")]
     mod u16;
+    #[cfg(feature = "bitten")]
+    mod u32;
     mod bytes;
 }
 crate::mods_out! { // _mods, _crate_internals
     _mods {
         pub use super::u8::BittenU8;
         #[cfg(feature = "bitten")]
-        pub use super::u16::BittenU16;
+        pub use super::{
+            u16::BittenU16,
+            u32::BittenU32,
+        };
     }
     _crate_internals {
         pub(crate) use super::{
@@ -25,6 +30,8 @@ crate::mods_out! { // _mods, _crate_internals
         #[cfg(feature = "bitten")]
         pub(crate) use super::{
             u16::_BittenU16Select,
+            u32::_BittenU32Select,
         };
+
     }
 }

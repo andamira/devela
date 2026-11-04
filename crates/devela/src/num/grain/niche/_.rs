@@ -22,10 +22,12 @@
 //!   - **Implementation**: Stores transformed value in `NonZero*`.
 //!   - **Optimizations**: Automatic instruction selection per case.
 //!
-//! - [`BittenU8`], generic over `<const B>`.
-//!   - Retains the zero-based range `0..=2^(8 - B) - 1`.
-//!   - Reserves the upper byte range as niches for `B = 1..=7`.
-//!   - Useful for compact power-of-two-bounded indices and identifiers.
+//! - [`BittenU8`], [`BittenU16`], [`BittenU32`], generic over `<const B>`.
+//!   - Retain the low `W - B` bits of an unsigned `W`-bit primitive carrier.
+//!   - Represent precisely `0..=2^(W - B) - 1` (or only zero when `B = W`).
+//!   - Remove unused whole bytes from storage; a partial upper byte can retain
+//!     invalid bit patterns for niche optimization.
+//!   - Useful for power-of-two-bounded indices, identifiers and compact values.
 //!
 //! - [`enumint!`]
 //!   - Generates an enum over an arbitrary contiguous integer interval.
@@ -60,26 +62,36 @@
 //!
 //! ## Optimization Characteristics
 //!
-//! | Type            |  Prohibits  | Storage           | Optimization | vs `NonZero*`         |
-//! |-----------------|-------------|-------------------|--------------|-----------------------|
-//! | `NonMaxU*`      | MAX         | `!value`          | `NOT`        | Keeps zero, drops MAX |
-//! | `NonMinI*`      | MIN         | `value ^ MIN`     | `LEA`        | Keeps zero, drops MIN |
-//! | `NonValue*`     | Custom V    | `value ^ V`       | `XOR`        | Fully general         |
-//! | `NonZero*`      | 0           | raw value         | -            | Classic case          |
-//! | `BittenU8<B>`   | upper range | enum discriminant | direct       | multiple niches       |
+//! | Type          | Excluded values | Representation                 | Effect                    |
+//! |---------------|-----------------|--------------------------------|---------------------------|
+//! | `NonMaxU*`    | MAX             | Transformed `NonZero*`         | Preserves zero            |
+//! | `NonMinI*`    | MIN             | Transformed `NonZero*`         | Preserves zero            |
+//! | `NonValue*`   | Custom V        | Transformed `NonZero*`         | Flexible single sentinel  |
+//! | `NonZero*`    | 0               | Primitive-width nonzero value  | Classic niche             |
+//! | `BittenU*<B>` | Upper interval  | Full low bytes + boundary byte | Shrinks storage / niches  |
+//!
+//! For the fixed-width `BittenU*` types, `W` is the carrier width
+//! and `B` is the number of high capacity bits removed. The value
+//! occupies `ceil((W - B) / 8)` bytes. If `B` is a multiple of eight,
+//! there is no partially occupied byte; otherwise the most significant
+//! stored byte may supply niches for enclosing types such as `Option`.
+//!
+//! For example, `BittenU32<11>` has 21 value bits, occupies three bytes
+//! and has a partial upper byte. `BittenU32<16>` has 16 value bits
+//! and occupies two bytes without a spare bit pattern.
 //!
 //! ## Usage Guide
 //!
-//! | Use Case                       | Recommended Type       | Advantage                         |
-//! |--------------------------------|------------------------|-----------------------------------|
-//! | Must prohibit zero             | `NonZero*`             | Standard solution                 |
-//! | Custom sentinel value          | `NonValue*<SENTINEL>`  | Flexible prohibited value         |
-//! | Reserve one terminal sentinel  | `NonMaxU*`             | Keeps zero, excludes `MAX`        |
-//! | Power-of-two bounded byte ID   | `BittenU8<B>`          | Multiple upper niches             |
-//! | Arbitrary contiguous interval  | `enumint!`             | Exact finite domain               |
-//! | Mathematical signed range      | `NonMinI*`             | Avoids `MIN`                      |
-//! | API-only abstraction           | `MaybeNiche`           | Representation-agnostic           |
-//! | No constraints needed          | Primitive / `NonNiche` | Maximum simplicity                |
+//! | Use Case                      | Recommended Type       | Advantage                        |
+//! |-------------------------------|------------------------|----------------------------------|
+//! | Must prohibit zero            | `NonZero*`             | Standard solution                |
+//! | Custom sentinel value         | `NonValue*<SENTINEL>`  | Flexible prohibited value        |
+//! | Reserve one terminal sentinel | `NonMaxU*`             | Keeps zero, excludes `MAX`       |
+//! | Power-of-two bounded value    | `BittenU*<B>`          | Compact storage and upper niches |
+//! | Arbitrary contiguous interval | `enumint!`             | Exact finite domain              |
+//! | Mathematical signed range     | `NonMinI*`             | Avoids `MIN`                     |
+//! | API-only abstraction          | `MaybeNiche`           | Representation-agnostic          |
+//! | No constraints needed         | Primitive / `NonNiche` | Maximum simplicity               |
 //
 
 crate::mods_in! {

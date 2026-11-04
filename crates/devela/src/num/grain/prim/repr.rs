@@ -11,7 +11,7 @@
 
 use crate::{_BittenSpec, _BittenU8Select, BittenU8};
 #[cfg(feature = "bitten")]
-use crate::{_BittenU16Select, BittenU16};
+use crate::{_BittenU16Select, _BittenU32Select, BittenU16, BittenU32};
 use crate::{NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU128, NonMaxUsize};
 use crate::{NonMinI8, NonMinI16, NonMinI32, NonMinI64, NonMinI128, NonMinIsize};
 use crate::{PrimIndex, PrimInt, PrimSint, PrimUint, items};
@@ -89,12 +89,18 @@ macro_rules! _impl_bitten_index {
     };
 }
 _impl_bitten_repr!(BittenU8, _BittenU8Select, u8);
-_impl_bitten_index!(BittenU8, _BittenU8Select);
 #[cfg(feature = "bitten")]
 _impl_bitten_repr!(BittenU16, _BittenU16Select, u16);
 #[cfg(feature = "bitten")]
+_impl_bitten_repr!(BittenU32, _BittenU32Select, u32);
+
+_impl_bitten_index!(BittenU8, _BittenU8Select);
+#[cfg(feature = "bitten")]
 #[cfg(any(target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64"))]
 _impl_bitten_index!(BittenU16, _BittenU16Select);
+#[cfg(feature = "bitten")]
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+_impl_bitten_index!(BittenU32, _BittenU32Select);
 
 #[doc = crate::_tags!(num primitive niche)]
 /// Integer representations with a signed primitive integer carrier.
@@ -135,7 +141,8 @@ where
 /// while its primitive carrier is suitable for machine-addressable indexing.
 ///
 /// Implementations include primitive index integers and selected
-/// niche-backed representations such as `NonMaxU*` and [`BittenU8`].
+/// niche-backed representations such as `NonMaxU*` and the
+/// [`BittenU8`], [`BittenU16`], [`BittenU32`] family.
 ///
 /// See also [`PrimIndex`], which classifies the primitive carriers themselves.
 #[doc(alias = "IndexRepresentation")]

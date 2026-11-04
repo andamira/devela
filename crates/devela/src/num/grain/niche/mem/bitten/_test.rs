@@ -101,3 +101,74 @@ mod u16 {
         assert_eq!(size_of::<Option<Bitten16Handle>>(), 1);
     }
 }
+
+#[cfg(feature = "bitten")]
+mod u32 {
+    use super::*;
+    use crate::{MaybeNiche, handle};
+
+    const MAX_11: BittenU32<11> = unwrap![some BittenU32::<11>::new((1 << 21) - 1)];
+    const MAX_25: BittenU32<25> = unwrap![some BittenU32::<25>::new(127)];
+    const CONST_EQ: bool = MAX_25.eq(MAX_25);
+
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+    handle! {
+        [index: u32 + BittenU32<25>;]
+        Bitten32Handle;
+    }
+
+    #[test]
+    fn r#const() {
+        assert_eq!(MAX_11.get(), (1 << 21) - 1);
+        assert_eq!(MAX_25.get(), 127);
+        assert!(CONST_EQ);
+        assert!(!MAX_25.eq(BittenU32::<25>::ZERO));
+        assert_eq!(BittenU32::<0>::MAX.get(), u32::MAX);
+        assert_eq!(BittenU32::<8>::MAX.get(), (1 << 24) - 1);
+        assert_eq!(BittenU32::<16>::MAX.get(), u16::MAX as u32);
+        assert_eq!(BittenU32::<24>::MAX.get(), u8::MAX as u32);
+        assert_eq!(BittenU32::<32>::MAX.get(), 0);
+        assert!(BittenU32::<11>::new(1 << 21).is_none());
+        assert!(BittenU32::<25>::new(128).is_none());
+        assert!(BittenU32::<32>::new(1).is_none());
+    }
+
+    #[test]
+    fn layout_and_niches() {
+        // Every whole-byte crossing trades one storage byte for capacity.
+        macro_rules! check {
+            ($B:literal, $size:literal, $niche:literal) => {{
+                assert_eq!(size_of::<BittenU32<$B>>(), $size);
+                assert_eq!(MaybeNiche::<BittenU32<$B>>::IS_NICHE, $niche);
+                if $niche {
+                    assert_eq!(size_of::<Option<BittenU32<$B>>>(), $size);
+                } else {
+                    assert!(size_of::<Option<BittenU32<$B>>>() > $size);
+                }
+            }};
+        }
+        check!(0, 4, false);
+        check!(1, 4, true);
+        check!(7, 4, true);
+        check!(8, 3, false);
+        check!(9, 3, true);
+        check!(15, 3, true);
+        check!(16, 2, false);
+        check!(17, 2, true);
+        check!(23, 2, true);
+        check!(24, 1, false);
+        check!(25, 1, true);
+        check!(31, 1, true);
+        check!(32, 0, false);
+    }
+
+    #[test]
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+    fn handle() {
+        let max = Bitten32Handle::from_prim(127).unwrap();
+        assert_eq!(max.get_index_prim(), 127);
+        assert!(Bitten32Handle::from_prim(128).is_err());
+        assert_eq!(size_of::<Bitten32Handle>(), 1);
+        assert_eq!(size_of::<Option<Bitten32Handle>>(), 1);
+    }
+}

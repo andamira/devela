@@ -23,10 +23,10 @@
 // - mod _test
 
 use crate::BittenU8;
-#[cfg(feature = "bitten")]
-use crate::BittenU16;
 #[cfg(feature = "niche")]
 use crate::NonZero;
+#[cfg(feature = "bitten")]
+use crate::{BittenU16, BittenU32};
 use crate::{Cast, ConstInit, InvalidValue, NicheValueError, Overflow, unwrap};
 use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
 use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
@@ -52,7 +52,7 @@ use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, Non
 ///   `u8`, `u16`, `u32`, `u64`, `u128`, `usize`,
 ///   `i8`, `i16`, `i32`, `i64`, `i128`, `isize`.
 /// - [`NonValue*<V>`](#impl-MaybeNiche<NonValueU8<V>>) for all supported primitives.
-/// - [`BittenU8`](#impl-BittenU8).
+/// - [`BittenU8`], [`BittenU16`] and [`BittenU32`] for their supported bite counts.
 ///
 /// With the `niche` feature:
 /// - [`NonNiche<T>`](#impl-MaybeNiche<NonNiche<u8>>) for all supported primitives.
@@ -135,6 +135,13 @@ macro_rules! impl_maybe {
         impl_maybe![bitten BittenU16, u16;
             0, 1, 2, 3, 4, 5, 6, 7, 8,
             9, 10, 11, 12, 13, 14, 15, 16
+        ];
+        #[cfg(feature = "bitten")]
+        impl_maybe![bitten BittenU32, u32;
+            0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32
         ];
     };
     // Foundational implementations.
