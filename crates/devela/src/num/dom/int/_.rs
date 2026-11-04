@@ -8,19 +8,14 @@
 crate::mods_in! {
     pub(crate) mod _docs; // _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 
-    #[cfg(all(feature = "int", any(test, feature = "_docs_examples")))]
-    mod _test_example; // IntExample
-
     mod alias; // [i|u]size_[down|up]
-
-    #[cfg(feature = "int")]
-    mod base_alg; // __int_base_alg!
-    #[cfg(feature = "int")]
-    mod define; // int!, __int_impl_base!
 
     mod_ divisor; // divisor!, DivisorExample
     mod fns; // prime_number_teorem() TEMP
     mod gcd; // GcdReturn
+    #[cfg(feature = "int")]
+    mod_ r#macro; // int!, IntExample
+
     // mod_ prim; // i256, u256 WIP RENAME
     // mod_ primes; // TODO
     // mod recip; // DivRecip WIP
@@ -40,11 +35,11 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         };
         #[cfg(feature = "int")]
         pub use super::{
-            define::int,
+            r#macro::int,
             wrapper::_all::Int,
         };
         #[cfg(all(feature = "int", feature = "_docs_examples"))]
-        pub use super::_test_example::IntExample;
+        pub use super::r#macro::IntExample;
     }
     _crate_internals {
         #[cfg(feature = "int")]
@@ -57,9 +52,6 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         };
         #[doc(hidden)]
         #[cfg(feature = "int")]
-        pub use super::{
-            base_alg::__int_base_alg,
-            define::{__int, __int_impl_base},
-        };
+        pub use super::r#macro::_hidden::*;
     }
 }
