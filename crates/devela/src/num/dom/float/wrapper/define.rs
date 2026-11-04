@@ -6,7 +6,7 @@
 #[doc = crate::_tags!(num namespace optional_std)]
 /// Provides comprehensive floating-point operations for `T`, most of them *const*.
 #[doc = crate::_doc_meta!{
-    location("num/dom/real", struct Float),
+    location("num/dom/float", struct Float),
 }]
 /// See also the [`FloatConst`][crate::FloatConst] and [`FloatExt`][crate::FloatExt] traits.
 ///

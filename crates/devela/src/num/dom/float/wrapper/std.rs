@@ -2,7 +2,7 @@
 //! Methods depending on std, or its absence
 //
 // TOC
-// - macro _num_dom_real_float_impl_std!
+// - macro _num_dom_float_impl_std!
 // - impls for std
 
 use crate::Float;
@@ -14,14 +14,14 @@ use crate::Float;
 /// $doc: an optional documentation string.
 /// $opfn: the original operation function name.
 /// $op: the new operation function name in Float.
-macro_rules! _num_dom_real_float_impl_std {
+macro_rules! _num_dom_float_impl_std {
     (
         // Matches a wildcard floating-point type (f*).
         // Expands to specific floating-point types (f32, f64).
         $lib:ident : f* : $($rest:tt)*
     ) => {
-        _num_dom_real_float_impl_std![$lib : f32 : $($rest)*];
-        _num_dom_real_float_impl_std![$lib : f64 : $($rest)*];
+        _num_dom_float_impl_std![$lib : f32 : $($rest)*];
+        _num_dom_float_impl_std![$lib : f64 : $($rest)*];
     };
     (
         // Matches a specific floating-point type and any number of operations.
@@ -29,7 +29,7 @@ macro_rules! _num_dom_real_float_impl_std {
         $lib:ident : $f:ty : $($rest:tt)*
     ) => { $crate::paste! {
         impl Float<$f> {
-            _num_dom_real_float_impl_std![@$lib : $f : $($rest)*];
+            _num_dom_float_impl_std![@$lib : $f : $($rest)*];
         }
     }};
     (
@@ -38,9 +38,9 @@ macro_rules! _num_dom_real_float_impl_std {
         $opfn:ident = $op:ident : $($arg:ident),*
         ; $($rest:tt)*
     ) => {
-        _num_dom_real_float_impl_std![@$lib : $f :
+        _num_dom_float_impl_std![@$lib : $f :
             $($doc)? $(+const$($_c)?)? $opfn = $op : $($arg),*];
-        _num_dom_real_float_impl_std![@$lib : $f : $($rest)*];
+        _num_dom_float_impl_std![@$lib : $f : $($rest)*];
     };
     (
         // Matches a single operation and implements it using the `std` library.
@@ -58,7 +58,7 @@ mod _std {
     use super::Float;
 
     // custom implementations are commented out:
-    _num_dom_real_float_impl_std![std:f*:
+    _num_dom_float_impl_std![std:f*:
         r"The largest integer less than or equal to `x`.
         $$ \lfloor x \rfloor = \max \{ n \in ℤ \,|\, n \leq x \} $$ "
         +const floor = floor: ;

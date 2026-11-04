@@ -3,7 +3,7 @@
 //
 // TOC
 // - trait FloatConst
-// - macro _num_dom_real_float_const_impl!
+// - macro _num_dom_float_const_impl!
 //
 // NOTE: In sync with float:wrapper::consts
 
@@ -17,7 +17,7 @@ use ::core::{f16, f128};
 #[doc = crate::_tags!(num namespace)] // by association with Float
 /// Extension trait for floating-point types. Associated constants.
 #[doc = crate::_doc_meta!{
-    location("num/dom/real", trait FloatConst),
+    location("num/dom/float", trait FloatConst),
 }]
 /// # Constants
 ///
@@ -251,9 +251,9 @@ pub trait FloatConst: Sized {
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.
-macro_rules! _num_dom_real_float_const_impl {
+macro_rules! _num_dom_float_const_impl {
     ($( $(#[$attrs:meta])* $f:ty ),+) => {
-        $( _num_dom_real_float_const_impl![@$(#[$attrs])* $f]; )+
+        $( _num_dom_float_const_impl![@$(#[$attrs])* $f]; )+
     };
     (@$(#[$attrs:meta])* $f:ty) => {
         /// # *Mathematical constants*.
@@ -367,10 +367,10 @@ macro_rules! _num_dom_real_float_const_impl {
         }
     };
 }
-_num_dom_real_float_const_impl![f32, f64];
+_num_dom_float_const_impl![f32, f64];
 
 #[cfg(nightly_float)]
-_num_dom_real_float_const_impl![
+_num_dom_float_const_impl![
     #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]
     f16,
     #[cfg_attr(nightly_doc, doc(cfg(nightly_float)))]

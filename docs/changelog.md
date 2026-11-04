@@ -61,6 +61,8 @@ This release…
 
 #### num::dom
 - remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
+- replace `dom::real::float` with public `dom::float` and expose `dom::frac`.
+- introduce public `dom::fixed` and `dom::complex` modules as placeholders.
 
 #### num::fin
 - add `bitwise!` macro.

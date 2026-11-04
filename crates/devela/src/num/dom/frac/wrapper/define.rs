@@ -8,7 +8,7 @@ use crate::Int;
 #[doc = crate::_tags!(num namespace rework)]
 /// Provides comprehensive fractional operations on `T`, most of them *const*.
 #[doc = crate::_doc_meta!{
-    location("num/dom", struct Frac),
+    location("num/dom/frac", struct Frac),
 }]
 /// It's implemented for:
 /// - arrays: `[i8; 2]`… `[u128; 2]`; `[Int<i8>; 2]`… `[Int<u128>; 2]`.

@@ -7,7 +7,7 @@ _impl_init![FloatCategory::Nan => FloatCategory];
 /* items */
 
 _reexport! { rust: core::num,
-    location: "num/dom/real" => enum FloatCategory,
+    location: "num/dom/float" => enum FloatCategory,
     tag: _tags!(NUM),
     doc: "A classification of floating point numbers.",
     @FpCategory as FloatCategory

@@ -4,19 +4,19 @@
 
 #![allow(non_camel_case_types)]
 
-macro_rules! _num_dom_real_float_define_fsize {
+macro_rules! _num_dom_float_define_fsize {
     () => {
-        _num_dom_real_float_define_fsize![f32, "32"];
-        _num_dom_real_float_define_fsize![f64, "64"];
+        _num_dom_float_define_fsize![f32, "32"];
+        _num_dom_float_define_fsize![f64, "64"];
         #[cfg(nightly_float)]
-        _num_dom_real_float_define_fsize![::core::f16, "16"];
+        _num_dom_float_define_fsize![::core::f16, "16"];
         #[cfg(nightly_float)]
-        _num_dom_real_float_define_fsize![::core::f128, "128"];
+        _num_dom_float_define_fsize![::core::f128, "128"];
     };
     ($float:ty , $pointer_width:literal) => {
         #[doc = crate::_tags!(primitive num)]
         /// A pointer-sized floating-point primitive.
-        #[doc = crate::_doc_meta!{location("num/dom/real", type fsize)}]
+        #[doc = crate::_doc_meta!{location("num/dom/float", type fsize)}]
         /// # Features
         /// `nightly_float` enables 16-bit architectures.
         #[cfg_attr(
@@ -31,4 +31,4 @@ macro_rules! _num_dom_real_float_define_fsize {
         pub type fsize = $float;
     };
 }
-_num_dom_real_float_define_fsize![];
+_num_dom_float_define_fsize![];

@@ -7,12 +7,12 @@
 use crate::{ConstInit, NonMaxU32, NonMaxU64, niche};
 
 // Macro helper to implement the types f32bits, f32bits_niche, ...
-macro_rules! _num_dom_real_float_define_fbits {
+macro_rules! _num_dom_float_define_fbits {
     () => {
-        _num_dom_real_float_define_fbits![f32+u32, f64+u64];
+        _num_dom_float_define_fbits![f32+u32, f64+u64];
     };
     ($($float:ident + $bits:ident),+ $(,)?) => { $crate::paste! { $(
-        _num_dom_real_float_define_fbits![
+        _num_dom_float_define_fbits![
             @[<$float bits>], [<$float bits_niche>], $float, $bits, [<NonMax $bits:upper>]
         ];
     )+ }};
@@ -22,7 +22,7 @@ macro_rules! _num_dom_real_float_define_fbits {
         #[doc = crate::_tags!(num ffi)]
         #[doc = "Bitwise wrapper for `" $float "` providing `Eq`, `Ord`, and `Hash`."]
         #[doc = crate::_doc_meta!{
-            location("num/dom/real", struct $non_niche),
+            location("num/dom/float", struct $non_niche),
         }]
         #[doc = "This stores the raw IEEE-754 bits of a `" $float "` in a `" $bits "`."]
         /// Ordering and hashing operate on the raw bit pattern, not the numeric value.
@@ -70,7 +70,7 @@ macro_rules! _num_dom_real_float_define_fbits {
         #[doc = crate::_tags!(num niche)]
         #[doc = "Bitwise wrapper for `" $float "` stored through a masked [`" $NM "`]."]
         #[doc = crate::_doc_meta!{
-            location("num/dom/real", struct $niche),
+            location("num/dom/float", struct $niche),
         }]
         /// This preserves all IEEE-754 bit patterns except the prohibited value.
         /// Ordering and hashing operate on the masked bit pattern.
@@ -135,4 +135,4 @@ macro_rules! _num_dom_real_float_define_fbits {
         }
     }};
 }
-_num_dom_real_float_define_fbits!();
+_num_dom_float_define_fbits!();

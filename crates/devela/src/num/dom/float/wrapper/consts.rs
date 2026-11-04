@@ -3,7 +3,7 @@
 //!
 //! - <https://en.wikipedia.org/wiki/List_of_mathematical_constants>
 //
-// Note: In sync with num::dom::real::float::{float_const, _consts}
+// Note: In sync with num::dom::float::{float_const, _consts}
 
 #![allow(clippy::excessive_precision, reason = "constants defined with 81 decimals")]
 
@@ -14,13 +14,13 @@ use crate::{Float, FloatConst};
 /// Impl mathematical constants for the Float wrapper.
 ///
 /// $f: the floating-point type.
-macro_rules! _num_dom_real_float_impl_const {
+macro_rules! _num_dom_float_impl_const {
     () => {
-        _num_dom_real_float_impl_const![f32, f64];
+        _num_dom_float_impl_const![f32, f64];
         // #[cfg(nightly_float)]
-        // _num_dom_real_float_impl_const![f16, f128];
+        // _num_dom_float_impl_const![f16, f128];
     };
-    ($( $f:ty),+) => { $( _num_dom_real_float_impl_const![@$f]; )+ };
+    ($( $f:ty),+) => { $( _num_dom_float_impl_const![@$f]; )+ };
     (@$f:ty) => {
         /// # *Mathematical constants.*
         ///
@@ -222,4 +222,4 @@ macro_rules! _num_dom_real_float_impl_const {
         }
     };
 }
-_num_dom_real_float_impl_const!();
+_num_dom_float_impl_const!();

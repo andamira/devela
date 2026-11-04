@@ -223,8 +223,10 @@ and `◉` to switch back to flat view.
     _DOC_NUM             = "Numeric abstractions and formal computation.";
     _DOC_NUM_ALG         = "Algebraic numeric structures and operations.";
     _DOC_NUM_DOM         = "Numeric domains and value representations.";
-    _DOC_NUM_DOM_REAL    = "Real-valued numeric domains and representations.";
-    _DOC_NUM_DOM_REAL_FLOAT = "Floating point types and operations.";
+    _DOC_NUM_DOM_COMPLEX = "Complex number representations and operations.";
+    _DOC_NUM_DOM_FIXED   = "Fixed-point number representations and operations.";
+    _DOC_NUM_DOM_FLOAT   = "Floating-point types and operations.";
+    _DOC_NUM_DOM_FRAC    = "Fractional number representations and operations.";
     _DOC_NUM_DOM_INT     = "Integer types and operations.";
     _DOC_NUM_EXPR        = "Symbolic numeric forms and manipulation.";
     _DOC_NUM_FIN         = "Finite and discrete numeric structures.";

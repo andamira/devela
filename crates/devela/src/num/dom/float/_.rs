@@ -1,6 +1,6 @@
 //
-#![doc = crate::_DOC_NUM_DOM_REAL_FLOAT!()] // private
-#![doc = crate::_doc!(modules: crate::num::dom::real; float)]
+#![doc = crate::_DOC_NUM_DOM_FLOAT!()] // public
+#![doc = crate::_doc!(modules: crate::num::dom; float)]
 #![doc = crate::_doc!(flat:"num")]
 #![doc = crate::_doc!(hr)]
 //

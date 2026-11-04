@@ -8,7 +8,7 @@ use crate::{Float, FloatConst, Sign};
 #[doc = crate::_tags!(num namespace)] // by association with Float
 /// Extension trait for floating-point types. Associated methods.
 #[doc = crate::_doc_meta!{
-    location("num/dom/real", trait FloatExt),
+    location("num/dom/float", trait FloatExt),
 }]
 /// This trait can be more convenient to use than the [`Float`] struct,
 /// for non-const operations over primitive floating-point types.
@@ -426,9 +426,9 @@ pub trait FloatExt: FloatConst + Sized {
 }
 
 // Implements ExtFloat for floating-point primitives
-macro_rules! _num_dom_real_float_ext_impl_prims {
+macro_rules! _num_dom_float_ext_impl_prims {
     () => {
-        _num_dom_real_float_ext_impl_prims![
+        _num_dom_float_ext_impl_prims![
             (f32, u32 | i32),
             (f64, u32 | i32),
         ];
@@ -438,7 +438,7 @@ macro_rules! _num_dom_real_float_ext_impl_prims {
     // $ue:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
     ($( ($f:ty, $ue:ty|$ie:ty)),+ $(,)?) => {
-        $( _num_dom_real_float_ext_impl_prims![@$f, $ue|$ie]; )+
+        $( _num_dom_float_ext_impl_prims![@$f, $ue|$ie]; )+
     };
     (@$f:ty, $ue:ty|$ie:ty) => {
         impl FloatExt for $f {
@@ -705,4 +705,4 @@ macro_rules! _num_dom_real_float_ext_impl_prims {
         }
     }
 }
-_num_dom_real_float_ext_impl_prims!();
+_num_dom_float_ext_impl_prims!();
