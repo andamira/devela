@@ -13,6 +13,10 @@ crate::mods_in! {
         mod coverage; // Quantized raster-sample coverage
     pub mod_ draw; // Rasterization of geometric primitives into covered cells
         mod element; // Coordinate-and-coverage rasterization output
+
+        #[cfg(feature = "color")]
+        mod indexed; // Borrowed INDEXED8 raster and palette resolution
+
         mod_ format; // Raster sample and color-format semantics
     pub mod_ grid; // Logical raster-cell geometry and traversal
         mod layout; // Physical raster byte-storage layout
@@ -39,6 +43,8 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
                 RasterSamplePacked, RasterViewPacked,
             },
         };
+        #[cfg(feature = "color")]
+        pub use super::indexed::{RasterIndexed8, RasterIndexed8Error};
     }
     _pub_mods {
         #[doc(inline)]

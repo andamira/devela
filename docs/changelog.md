@@ -65,6 +65,9 @@ This release…
 - add conversion methods to `Rgb8` and `Rgba8`.
 - add sRGB hex parsing and decoding,
 
+###### media::visual::image::raster
+- new types: `RasterIndexed8`, `RasterIndexed8Error`.
+
 #### num::dom
 - remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
 - replace `dom::real::float` with public `dom::float` and expose `dom::frac`.
