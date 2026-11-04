@@ -10,17 +10,13 @@ macro_rules! _iusize_alias {
             #[doc = $casted " pointer-sized " $sign " integer primitive."]
             #[doc = crate::_doc_meta!{location("num/dom/int", type $ty)}]
             #[cfg(target_pointer_width = $width)]
-            #[cfg_attr(nightly_doc, doc(cfg(any(
-                target_pointer_width = "16",
-                target_pointer_width = "32",
-                target_pointer_width = "64"
-            ))))]
+            #[cfg_attr(nightly_doc, doc(cfg(all())))]
             pub type $ty = $cast;
         )+
     }}
 }
-_iusize_alias!["A downcasted", "signed", isize_down, "16":i8, "32":i16, "64":i32, "128":i64];
-_iusize_alias!["A downcasted", "unsigned", usize_down, "16":u8, "32":u16, "64":u32, "128":u64];
+_iusize_alias!["A downcasted", "signed", isize_down, "16":i8, "32":i16, "64":i32];
+_iusize_alias!["A downcasted", "unsigned", usize_down, "16":u8, "32":u16, "64":u32];
 
-_iusize_alias!["An upcasted", "signed", isize_up, "8":i16, "16":i32, "32":i64, "64":i128];
-_iusize_alias!["An upcasted", "unsigned", usize_up, "8":u16, "16":u32, "32":u64, "64":u128];
+_iusize_alias!["An upcasted", "signed", isize_up, "16":i32, "32":i64, "64":i128];
+_iusize_alias!["An upcasted", "unsigned", usize_up, "16":u32, "32":u64, "64":u128];
