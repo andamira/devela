@@ -9,7 +9,7 @@
 //   - digits_base_sign
 //   - digital_root
 //   - digital_root_base
-use crate::{Int, is, paste};
+use crate::{Int, paste};
 
 /// Implements base-related methods for [`Int`].
 ///
@@ -66,8 +66,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(3), Int(-128_" $t ").digits()];"]
             /// ```
             pub const fn digits(self) -> Int<$t> {
-                let a = self.0; let n = is![a == $t::MIN, $t::MAX, a.abs()];
-                is![let Some(c) = n.checked_ilog10(), Int(c as $t + 1), Int(1)]
+                Int(crate::__int_base_alg!(signed digits $t; self.0))
             }
 
             /// Returns the number of digits in base 10, including the negative sign.
@@ -81,10 +80,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(4), Int(-128_" $t ").digits_sign()];"]
             /// ```
             pub const fn digits_sign(self) -> Int<$t> {
-                let a = self.0; let mut res = (a < 0) as $t;
-                let n = is![a == $t::MIN, $t::MAX, a.abs()];
-                res += is![let Some(c) = n.checked_ilog10(), c as $t + 1, 1];
-                Int(res)
+                Int(crate::__int_base_alg!(signed digits_sign $t; self.0))
             }
 
             /// Returns the number of digits in the given absolute `base`.
@@ -101,12 +97,8 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base(0)];"]
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
-            pub const fn digits_base(self, mut base: $t) -> Int<$t> {
-                let mut a = self.0;
-                is![base == 0, return Int(0)];
-                base = base.abs();
-                a = is![a == $t::MIN, $t::MAX, a.abs()];
-                is![let Some(c) = a.checked_ilog(base), Int(c as $t + 1), Int(1)]
+            pub const fn digits_base(self, base: $t) -> Int<$t> {
+                Int(crate::__int_base_alg!(signed digits_base $t; self.0, base))
             }
 
             /// Returns the number of digits in the given absolute `base`,
@@ -124,14 +116,8 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(0), Int(100_" $t ").digits_base_sign(0)];"]
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base_sign(100)];"]
             /// ```
-            pub const fn digits_base_sign(self, mut base: $t) -> Int<$t> {
-                let mut a = self.0;
-                is![base == 0, return Int(0)];
-                base = base.abs();
-                let mut res = (a < 0) as $t;
-                a = is![a == $t::MIN, $t::MAX, a.abs()];
-                res += is![let Some(c) = a.checked_ilog(base), c as $t + 1, 1];
-                Int(res)
+            pub const fn digits_base_sign(self, base: $t) -> Int<$t> {
+                Int(crate::__int_base_alg!(signed digits_base_sign $t; self.0, base))
             }
 
             /* signed digital_root */
@@ -146,14 +132,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
             pub const fn digital_root(self) -> Int<$t> {
-                let mut n = self.0.abs();
-                let mut sum = 0;
-                while n > 0 {
-                    sum += n % 10;
-                    n /= 10;
-                    is![n == 0 && sum >= 10, { n = sum; sum = 0; }];
-                }
-                Int(sum)
+                Int(crate::__int_base_alg!(signed digital_root $t; self.0))
             }
 
             /// Returns the digital root in in the given absolute `base`.
@@ -168,14 +147,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(3), Int(-33_" $t ").digital_root_base(16)];"]
             /// ```
             pub const fn digital_root_base(self, base: $t) -> Int<$t> {
-                let (mut n, base) = (self.0.abs(), base.abs());
-                let mut sum = 0;
-                while n > 0 {
-                    sum += n % base;
-                    n /= base;
-                    is![n == 0 && sum >= base, { n = sum; sum = 0; }];
-                }
-                Int(sum)
+                Int(crate::__int_base_alg!(signed digital_root_base $t; self.0, base))
             }
         }
     }};
@@ -203,7 +175,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             /// ```
             pub const fn digits(self) -> Int<$t> {
-                is![let Some(c) = self.0.checked_ilog10(), Int(c as $t + 1), Int(1)]
+                Int(crate::__int_base_alg!(unsigned digits $t; self.0))
             }
 
             /// An alias of [`digits`][Self#digits].
@@ -222,8 +194,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
             pub const fn digits_base(self, base: $t) -> Int<$t> {
-                let a = self.0; is![base == 0, return Int(0)];
-                is![let Some(c) = a.checked_ilog(base), Int(c as $t + 1), Int(1)]
+                Int(crate::__int_base_alg!(unsigned digits_base $t; self.0, base))
             }
 
             /// An alias of [`digits_base`][Self#digits_base].
@@ -240,13 +211,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
             pub const fn digital_root(self) -> Int<$t> {
-                let [mut a, mut sum] = [self.0, 0];
-                while a > 0 {
-                    sum += a % 10;
-                    a /= 10;
-                    is![a == 0 && sum >= 10, { a = sum; sum = 0; }];
-                }
-                Int(sum)
+                Int(crate::__int_base_alg!(unsigned digital_root $t; self.0))
             }
 
             /// Returns the digital root in in the given absolute `base`.
@@ -258,13 +223,7 @@ macro_rules! __impl_int_base {
             #[doc = "assert_eq![Int(3), Int(33_" $t ").digital_root_base(16)];"]
             /// ```
             pub const fn digital_root_base(self, base: $t) -> Int<$t> {
-                let [mut a, mut sum] = [self.0, 0];
-                while a > 0 {
-                    sum += a % base;
-                    a /= base;
-                    is![a == 0 && sum >= base, { a = sum; sum = 0; }];
-                }
-                Int(sum)
+                Int(crate::__int_base_alg!(unsigned digital_root_base $t; self.0, base))
             }
         }
     }};

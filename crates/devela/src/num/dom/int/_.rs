@@ -9,6 +9,8 @@ crate::mods_in! {
     pub(crate) mod _docs; // _DOC_INT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
 
     mod alias; // [i|u]size_[down|up]
+    #[cfg(feature = "int")]
+    mod base_alg; // __int_base_alg!
     mod_ divisor; // divisor!, DivisorExample
     mod fns; // prime_number_teorem() TEMP
     mod gcd; // GcdReturn
@@ -41,5 +43,8 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         pub use super::{
             divisor::_hidden::*,
         };
+        #[doc(hidden)]
+        #[cfg(feature = "int")]
+        pub use super::base_alg::__int_base_alg;
     }
 }
