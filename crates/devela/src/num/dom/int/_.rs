@@ -59,7 +59,7 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         #[cfg(feature = "int")]
         pub use super::{
             base_alg::__int_base_alg,
-            define::__int_impl_base,
+            define::{__int, __int_impl_base},
         };
     }
 }

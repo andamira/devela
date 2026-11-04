@@ -86,25 +86,10 @@ macro_rules! int· {
         impl $Name:ident : <> ($($Carrier:ident),+ $(,)?);
         ops($($op:ident),* $(,)?);
     ) => {
-        $crate::int!(%impl_generic
+        $crate::__int!(%impl_generic
             name[$Name] carriers[$($Carrier),+] ops[$($op),*]
         );
     };
-    (%impl_generic name[$Name:ident] carriers[$($Carrier:ident),+] ops $ops:tt) => {
-        $(
-            impl $Name<$Carrier> {
-                /// Creates an integer with the selected primitive carrier.
-                pub const fn new(value: $Carrier) -> Self { Self(value) }
-                /// Returns the primitive carrier value.
-                pub const fn get(self) -> $Carrier { self.0 }
-            }
-            $crate::int!(%dispatch_carrier
-                vis[pub] name[$Name] target[$Name<$Carrier>]
-                carrier[$Carrier] ops $ops
-            );
-        )+
-    };
-
     (
         $(#[$attr:meta])*
         $vis:vis struct $Name:ident : $Carrier:tt;
@@ -123,71 +108,92 @@ macro_rules! int· {
             $vis const fn get(self) -> $Carrier { self.0 }
         }
 
-        $crate::int!(%dispatch_carrier
+        $crate::__int!(%dispatch_carrier
             vis[$vis] name[$Name] target[$Name] carrier[$Carrier] ops[$($op),*]
         );
+    };
+}
+#[doc(inline)]
+pub use int· as int;
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __int· {
+    (%impl_generic name[$Name:ident] carriers[$($Carrier:ident),+] ops $ops:tt) => {
+        $(
+            impl $Name<$Carrier> {
+                /// Creates an integer with the selected primitive carrier.
+                pub const fn new(value: $Carrier) -> Self { Self(value) }
+                /// Returns the primitive carrier value.
+                pub const fn get(self) -> $Carrier { self.0 }
+            }
+            $crate::__int!(%dispatch_carrier
+                vis[pub] name[$Name] target[$Name<$Carrier>]
+                carrier[$Carrier] ops $ops
+            );
+        )+
     };
 
     /* carrier normalization */
 
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[i8] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[i8] signed[i8] unsigned[u8]
             up[i16] iup[i16] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[i16] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[i16] signed[i16] unsigned[u16]
             up[i32] iup[i32] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[i32] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[i32] signed[i32] unsigned[u32]
             up[i64] iup[i64] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[i64] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[i64] signed[i64] unsigned[u64]
             up[i128] iup[i128] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[i128] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[i128] signed[i128] unsigned[u128]
             up[i128] iup[i128] up_wide[false] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[isize] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[signed] carrier[isize] signed[isize] unsigned[usize]
             up[$crate::isize_up] iup[$crate::isize_up] up_wide[true] ops[$($op),*]);
     };
 
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[u8] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[u8] signed[i8] unsigned[u8]
             up[u16] iup[i16] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[u16] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[u16] signed[i16] unsigned[u16]
             up[u32] iup[i32] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[u32] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[u32] signed[i32] unsigned[u32]
             up[u64] iup[i64] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[u64] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[u64] signed[i64] unsigned[u64]
             up[u128] iup[i128] up_wide[true] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[u128] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[u128] signed[i128] unsigned[u128]
             up[u128] iup[i128] up_wide[false] ops[$($op),*]);
     };
     (%dispatch_carrier vis[$vis:vis] name[$Name:ident] target[$Target:ty] carrier[usize] ops[$($op:ident),*]) => {
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[unsigned] carrier[usize] signed[isize] unsigned[usize]
             up[$crate::usize_up] iup[$crate::isize_up] up_wide[true] ops[$($op),*]);
     };
@@ -212,7 +218,7 @@ macro_rules! int· {
             kind[$kind] carrier[$Carrier] signed[$Signed] unsigned[$Unsigned]
             up[$Up] iup[$IUp] up_wide[$up_wide]
         );
-        $crate::int!(%ops vis[$vis] name[$Name] target[$Target]
+        $crate::__int!(%ops vis[$vis] name[$Name] target[$Target]
             kind[$kind] carrier[$Carrier] signed[$Signed] unsigned[$Unsigned]
             up[$Up] iup[$IUp] up_wide[$up_wide] ops[$($rest),*]);
     };
@@ -223,8 +229,8 @@ macro_rules! int· {
         compile_error!(concat!("int!: unknown operation family `", stringify!($bad), "`"));
     };
 }
-#[doc(inline)]
-pub use int· as int;
+#[doc(hidden)]
+pub use __int· as __int;
 
 /// Emits the `base` family for an `int!`-generated value type.
 #[doc(hidden)]
@@ -297,13 +303,13 @@ pub use __int_impl_base· as __int_impl_base;
 
 #[cfg(test)]
 mod _test {
-    use crate::Int;
+    use crate::{Int, int};
 
-    crate::int! {
+    int! {
         struct TestI32: i32;
         ops(base);
     }
-    crate::int! {
+    int! {
         struct TestU32: u32;
         ops(base);
     }
@@ -313,12 +319,13 @@ mod _test {
     const _: () = assert!(SIGNED_CONST.get() == 3);
     const _: () = assert!(UNSIGNED_CONST.get() == 9);
 
-    crate::int! { struct TestFamily : <> impl (i8, i32, u8, u32); ops(base); }
-    crate::int! { struct TestLateFamily : <>; }
-    crate::int! { impl TestLateFamily : <> (i16, u16); ops(base); }
-    crate::int! { struct TestGrouped: (i64) impl; ops(base); }
+    int! { struct TestFamily : <> impl (i8, i32, u8, u32); ops(base); }
+    int! { struct TestLateFamily : <>; }
+    int! { impl TestLateFamily : <> (i16, u16); ops(base); }
+    int! { struct TestGrouped: (i64) impl; ops(base); }
 
-    const FAMILY_CONST: TestFamily<i8> = TestFamily::<i8>::new(i8::MIN).digits_base(TestFamily::<i8>::new(2));
+    const FAMILY_CONST: TestFamily<i8> =
+        TestFamily::<i8>::new(i8::MIN).digits_base(TestFamily::<i8>::new(2));
     const _: () = assert!(FAMILY_CONST.get() == 8);
     const _: () = assert!(TestLateFamily::<u16>::new(255).digital_root().get() == 3);
     const _: () = assert!(TestGrouped::new(i64::MIN).digital_root().get() == 8);
@@ -327,7 +334,10 @@ mod _test {
     fn generic_and_concrete_forms() {
         assert_eq!(TestFamily::<i8>::new(i8::MIN).digital_root().get(), 2);
         assert_eq!(TestFamily::<u8>::new(u8::MAX).digits_base(TestFamily::<u8>::new(2)).get(), 8);
-        assert_eq!(TestLateFamily::<i16>::new(i16::MIN).digits_base(TestLateFamily::<i16>::new(2)).get(), 16);
+        assert_eq!(
+            TestLateFamily::<i16>::new(i16::MIN).digits_base(TestLateFamily::<i16>::new(2)).get(),
+            16
+        );
         assert_eq!(TestGrouped::new(i64::MIN).digital_root().get(), 8);
     }
 
