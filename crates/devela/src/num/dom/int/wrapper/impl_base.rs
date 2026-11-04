@@ -85,7 +85,7 @@ macro_rules! __impl_int_base {
 
             /// Returns the number of digits in the given absolute `base`.
             ///
-            /// If the base is 0, it returns 0.
+            /// Returns 0 for an invalid radix (magnitude below 2).
             /// # Examples
             /// ```
             /// use devela::Int;
@@ -104,7 +104,7 @@ macro_rules! __impl_int_base {
             /// Returns the number of digits in the given absolute `base`,
             /// including the negative sign.
             ///
-            /// If the base is 0, it returns 0.
+            /// Returns 0 for an invalid radix (magnitude below 2).
             /// # Examples
             /// ```
             /// use devela::Int;
@@ -135,7 +135,9 @@ macro_rules! __impl_int_base {
                 Int(crate::__int_base_alg!(signed digital_root $t; self.0))
             }
 
-            /// Returns the digital root in in the given absolute `base`.
+            /// Returns the digital root in the absolute `base`.
+            ///
+            /// Returns 0 if the magnitude of the base is below 2.
             /// # Examples
             /// ```
             /// use devela::Int;
@@ -183,7 +185,7 @@ macro_rules! __impl_int_base {
 
             /// Returns the number of digits in the given `base`.
             ///
-            /// If the base is 0, it returns 0.
+            /// Returns 0 for an invalid radix (magnitude below 2).
             /// # Examples
             /// ```
             /// use devela::Int;
@@ -214,7 +216,9 @@ macro_rules! __impl_int_base {
                 Int(crate::__int_base_alg!(unsigned digital_root $t; self.0))
             }
 
-            /// Returns the digital root in in the given absolute `base`.
+            /// Returns the digital root in the absolute `base`.
+            ///
+            /// Returns 0 if the magnitude of the base is below 2.
             /// # Examples
             /// ```
             /// use devela::Int;

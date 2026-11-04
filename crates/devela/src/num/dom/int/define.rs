@@ -176,11 +176,11 @@ macro_rules! __int_impl_base· {
             $vis const fn digits_sign(self) -> Self {
                 Self($crate::__int_base_alg!(signed digits_sign $Carrier; self.0))
             }
-            /// Returns the number of digits in the given absolute `base`.
+            /// Returns the number of digits in the absolute `base` (0 if its magnitude is below 2).
             $vis const fn digits_base(self, base: Self) -> Self {
                 Self($crate::__int_base_alg!(signed digits_base $Carrier; self.0, base.0))
             }
-            /// Returns the number of digits in the given absolute `base`, including the sign.
+            /// Returns the digits in the absolute `base`, including the sign (0 if invalid).
             $vis const fn digits_base_sign(self, base: Self) -> Self {
                 Self($crate::__int_base_alg!(signed digits_base_sign $Carrier; self.0, base.0))
             }
@@ -188,7 +188,7 @@ macro_rules! __int_impl_base· {
             $vis const fn digital_root(self) -> Self {
                 Self($crate::__int_base_alg!(signed digital_root $Carrier; self.0))
             }
-            /// Returns the digital root in the given absolute `base`.
+            /// Returns the digital root in the absolute `base` (0 if its magnitude is below 2).
             $vis const fn digital_root_base(self, base: Self) -> Self {
                 Self($crate::__int_base_alg!(signed digital_root_base $Carrier; self.0, base.0))
             }
@@ -207,7 +207,7 @@ macro_rules! __int_impl_base· {
             }
             /// An alias of [`digits`][Self::digits].
             $vis const fn digits_sign(self) -> Self { self.digits() }
-            /// Returns the number of digits in the given `base`.
+            /// Returns the number of digits in `base` (0 if below 2).
             $vis const fn digits_base(self, base: Self) -> Self {
                 Self($crate::__int_base_alg!(unsigned digits_base $Carrier; self.0, base.0))
             }
@@ -217,7 +217,7 @@ macro_rules! __int_impl_base· {
             $vis const fn digital_root(self) -> Self {
                 Self($crate::__int_base_alg!(unsigned digital_root $Carrier; self.0))
             }
-            /// Returns the digital root in the given `base`.
+            /// Returns the digital root in `base` (0 if below 2).
             $vis const fn digital_root_base(self, base: Self) -> Self {
                 Self($crate::__int_base_alg!(unsigned digital_root_base $Carrier; self.0, base.0))
             }
