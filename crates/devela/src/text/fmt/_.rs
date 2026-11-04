@@ -47,7 +47,10 @@ crate::mods_out! { // _mods, _reexports, _hidden
         pub use super::_reexport_alloc::*;
     }
     _hidden {
-        pub use super::num::_hidden::*;
-        pub use super::_test_size_of_report::__test_size_of_report;
+        pub use super::{
+            cat::__fmtcat,
+            num::_hidden::*,
+            _test_size_of_report::__test_size_of_report,
+        };
     }
 }

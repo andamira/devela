@@ -46,6 +46,7 @@ use crate::{Digits, Slice};
 /// A custom formatter can supply its own representation:
 /// ```
 /// use devela::fmtcat;
+///
 /// struct Hex(u8);
 /// impl Hex {
 ///     const fn write(self, buf: &mut [u8], pos: usize) -> usize {
@@ -78,50 +79,54 @@ macro_rules! fmtcat· {
     // Entry point: select a custom formatter for each %expression.
     (with $formatter:path; $buf:ident, $offset:ident, $($elem:tt)*) => {{
         let mut pos = $offset;
-        $crate::fmtcat!(@proc [with $formatter] $buf, pos, $($elem)*);
+        $crate::__fmtcat!(%proc [with $formatter] $buf, pos, $($elem)*);
         $offset = pos;
     }};
     (with $formatter:path; $buf:ident, $offset:literal, $($elem:tt)*) => {{
         let mut pos = $offset;
-        $crate::fmtcat!(@proc [with $formatter] $buf, pos, $($elem)*);
+        $crate::__fmtcat!(%proc [with $formatter] $buf, pos, $($elem)*);
     }};
 
     // Entry point: default unsigned-magnitude decimal formatting via Digits.
     ($buf:ident, $offset:ident, $($elem:tt)*) => {{
         let mut pos = $offset;
-        $crate::fmtcat!(@proc [digits] $buf, pos, $($elem)*);
+        $crate::__fmtcat!(%proc [digits] $buf, pos, $($elem)*);
         $offset = pos;
     }};
     ($buf:ident, $offset:literal, $($elem:tt)*) => {{
         let mut pos = $offset;
-        $crate::fmtcat!(@proc [digits] $buf, pos, $($elem)*);
+        $crate::__fmtcat!(%proc [digits] $buf, pos, $($elem)*);
         let _final_pos = pos;
     }};
+}
+pub use fmtcat· as fmtcat;
 
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __fmtcat· {
     // Recursion terminator.
-    (@proc $mode:tt $buf:ident, $pos:ident $(,)?) => {};
+    (%proc $mode:tt $buf:ident, $pos:ident $(,)?) => {};
 
     // Literal string.
-    (@proc $mode:tt $buf:ident, $pos:ident, $lit:literal , $($rest:tt)*) => {{
+    (%proc $mode:tt $buf:ident, $pos:ident, $lit:literal , $($rest:tt)*) => {{
         $pos += $crate::Slice::copy_str_into(&mut $buf, $pos, $lit);
-        $crate::fmtcat!(@proc $mode $buf, $pos, $($rest)*);
+        $crate::__fmtcat!(%proc $mode $buf, $pos, $($rest)*);
     }};
-    (@proc $mode:tt $buf:ident, $pos:ident, $lit:literal) => {{
+    (%proc $mode:tt $buf:ident, $pos:ident, $lit:literal) => {{
         $pos += $crate::Slice::copy_str_into(&mut $buf, $pos, $lit);
     }};
 
     // Number expression.
-    (@proc $mode:tt $buf:ident, $pos:ident, %$num:expr , $($rest:tt)*) => {{
-        $crate::fmtcat!(@number $mode $buf, $pos, $num);
-        $crate::fmtcat!(@proc $mode $buf, $pos, $($rest)*);
+    (%proc $mode:tt $buf:ident, $pos:ident, %$num:expr , $($rest:tt)*) => {{
+        $crate::__fmtcat!(%number $mode $buf, $pos, $num);
+        $crate::__fmtcat!(%proc $mode $buf, $pos, $($rest)*);
     }};
-    (@proc $mode:tt $buf:ident, $pos:ident, %$num:expr) => {{
-        $crate::fmtcat!(@number $mode $buf, $pos, $num);
+    (%proc $mode:tt $buf:ident, $pos:ident, %$num:expr) => {{
+        $crate::__fmtcat!(%number $mode $buf, $pos, $num);
     }};
-
     // Default number writer. abs_diff(0) preserves each integer's width and
     // handles signed minima without overflowing. Preflight makes the write atomic.
-    (@number [digits] $buf:ident, $pos:ident, $num:expr) => {{
+    (%number [digits] $buf:ident, $pos:ident, $num:expr) => {{
         let number = $num;
         #[allow(unused_comparisons)] // unsigned types can never be negative
         let negative = number < 0;
@@ -137,20 +142,20 @@ macro_rules! fmtcat· {
     }};
 
     // Explicit formatter with the conventional const write(buf, pos) contract.
-    (@number [with $formatter:path] $buf:ident, $pos:ident, $num:expr) => {{
+    (%number [with $formatter:path] $buf:ident, $pos:ident, $num:expr) => {{
         $pos += $formatter($num).write(&mut $buf, $pos);
     }};
 
     // String expression.
-    (@proc $mode:tt $buf:ident, $pos:ident, @$s:expr, $($rest:tt)*) => {{
+    (%proc $mode:tt $buf:ident, $pos:ident, @$s:expr, $($rest:tt)*) => {{
         $pos += $crate::Slice::copy_utf8_into(&mut $buf, $pos, $s.as_bytes());
-        $crate::fmtcat!(@proc $mode $buf, $pos, $($rest)*);
+        $crate::__fmtcat!(%proc $mode $buf, $pos, $($rest)*);
     }};
-    (@proc $mode:tt $buf:ident, $pos:ident, @$s:expr) => {{
+    (%proc $mode:tt $buf:ident, $pos:ident, @$s:expr) => {{
         $pos += $crate::Slice::copy_utf8_into(&mut $buf, $pos, $s.as_bytes());
     }};
 }
-pub use fmtcat· as fmtcat;
+pub use __fmtcat· as __fmtcat;
 
 #[cfg(test)]
 mod _test {
