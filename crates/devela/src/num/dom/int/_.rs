@@ -11,6 +11,8 @@ crate::mods_in! {
     mod alias; // [i|u]size_[down|up]
     #[cfg(feature = "int")]
     mod base_alg; // __int_base_alg!
+    #[cfg(feature = "int")]
+    mod define; // int!, __int_impl_base!
     mod_ divisor; // divisor!, DivisorExample
     mod fns; // prime_number_teorem() TEMP
     mod gcd; // GcdReturn
@@ -32,7 +34,10 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
             // recip::*,
         };
         #[cfg(feature = "int")]
-        pub use super::wrapper::_all::Int;
+        pub use super::{
+            define::int,
+            wrapper::_all::Int,
+        };
     }
     _crate_internals {
         #[cfg(feature = "int")]
@@ -45,6 +50,9 @@ crate::mods_out! { // _mods, _crate_internals, _hidden
         };
         #[doc(hidden)]
         #[cfg(feature = "int")]
-        pub use super::base_alg::__int_base_alg;
+        pub use super::{
+            base_alg::__int_base_alg,
+            define::__int_impl_base,
+        };
     }
 }

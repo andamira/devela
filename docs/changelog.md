@@ -66,6 +66,7 @@ This release…
 
 #### num::dom
 - extract carrier-level digit and digital-root algorithms from `Int` for reuse by generated integer types.
+- introduce `int!` with primitive carriers and selectively generated `base` methods.
 - remove traits: `Num`, `NumRef`, `NumInt`, and `NumRefInt`.
 - replace `dom::real::float` with public `dom::float` and expose `dom::frac`.
 - introduce public `dom::fixed` and `dom::complex` modules as placeholders.
