@@ -77,9 +77,9 @@ pub use handle· as handle;
 
 #[cfg(test)]
 mod _test {
-    use crate::{BittenU8, HandleExample, PoolHandleExample};
+    use crate::{BittenU8, HandleExample};
     #[cfg(feature = "value")]
-    use crate::{Value32, ValueKind4};
+    use crate::{PoolHandleExample, Value32, ValueKind4};
     use crate::{const_assert, handle, unwrap};
 
     #[test]

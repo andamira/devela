@@ -7,7 +7,13 @@ use crate::{Debug, Display, Error, FmtResult, Formatter, Version};
 
 #[doc = crate::_tags!(font error_composite)]
 /// An error encountered while validating or reading DVBF data.
-#[doc = crate::_doc_meta!{location("media/font")}]
+#[doc = crate::_doc_meta!{
+    location("media/font", enum DvbfError),
+    #[cfg(target_pointer_width = "32")]
+    test_size_of(DvbfError = 12|96; niche Option),
+    #[cfg(target_pointer_width = "64")]
+    test_size_of(DvbfError = 16|128; niche Option),
+}]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum DvbfError {
     /// The input ends before the complete DVBF header.

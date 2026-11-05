@@ -7,7 +7,9 @@ use crate::{PcmBuf, PcmLayout, PcmSampleType, PcmSpec};
 
 #[doc = crate::_tags!(audio)]
 /// A configured PCM stream.
-#[doc = crate::_doc_meta!{location("media/audio/pcm")}]
+#[doc = crate::_doc_meta!{
+    location("media/audio/pcm", trait PcmStream),
+}]
 /// This is the shared base for PCM input and output streams. It exposes the
 /// active sample specification and memory layout negotiated with the backend.
 pub trait PcmStream {
@@ -35,8 +37,9 @@ pub trait PcmDrain: PcmStream {
 
 #[doc = crate::_tags!(audio)]
 /// A stream that writes interleaved PCM frames.
-#[doc = crate::_doc_meta!{location("media/audio/pcm")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio/pcm", trait PcmSink),
+}]
 /// A sink consumes audio. In practice, this is the trait used for playback,
 /// output, speakers, audio devices, files, or mixers that receive PCM frames.
 pub trait PcmSink<T: PcmSampleType>: PcmStream {
@@ -56,8 +59,9 @@ pub trait PcmSink<T: PcmSampleType>: PcmStream {
 }
 #[doc = crate::_tags!(audio)]
 /// A stream that writes planar PCM frames.
-#[doc = crate::_doc_meta!{location("media/audio/pcm")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio/pcm", trait PcmSinkPlanar),
+}]
 /// This is the planar counterpart to [`PcmSink`].
 /// It consumes one sample plane per channel instead of one interleaved sample slice.
 pub trait PcmSinkPlanar<T: PcmSampleType>: PcmStream {
@@ -78,8 +82,9 @@ pub trait PcmSinkPlanar<T: PcmSampleType>: PcmStream {
 
 #[doc = crate::_tags!(audio)]
 /// A stream that reads interleaved PCM frames.
-#[doc = crate::_doc_meta!{location("media/audio/pcm")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio/pcm", trait PcmSource),
+}]
 /// A source produces audio. In practice, this is the trait used for recording,
 /// input, microphones, audio devices, files, or generators that provide PCM frames.
 pub trait PcmSource<T: PcmSampleType>: PcmStream {
@@ -90,8 +95,9 @@ pub trait PcmSource<T: PcmSampleType>: PcmStream {
 }
 #[doc = crate::_tags!(audio)]
 /// A stream that reads planar PCM frames.
-#[doc = crate::_doc_meta!{location("media/audio/pcm")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/audio/pcm", trait PcmSourcePlanar),
+}]
 /// This is the planar counterpart to [`PcmSource`].
 /// It fills one sample plane per channel instead of one interleaved sample slice.
 pub trait PcmSourcePlanar<T: PcmSampleType>: PcmStream {

@@ -19,7 +19,7 @@ crate::test_size_of!(const PcmBuf<i32, &[i32]> = 10|80; niche Option);
 #[doc = crate::_tags!(audio data)]
 /// Typed PCM sample buffer over caller-chosen storage.
 #[doc = crate::_doc_meta!{
-    location("media/audio"),
+    location("media/audio", struct PcmBuf),
     #[cfg(target_pointer_width = "16")]
     test_size_of(PcmBuf_i32: PcmBuf<i32, &[i32]> = 10|80; niche Option),
     #[cfg(target_pointer_width = "32")]

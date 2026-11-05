@@ -6,7 +6,10 @@ use crate::{Debug, Display, Error, FmtResult, Formatter, Version, write};
 
 #[doc = crate::_tags!(font error_composite)]
 /// An error encountered while parsing BDF data.
-#[doc = crate::_doc_meta!{location("media/font")}]
+#[doc = crate::_doc_meta!{
+    location("media/font", enum BdfError),
+    test_size_of(BdfError = 8|64; niche Option),
+}]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum BdfError {

@@ -9,7 +9,7 @@ use crate::{_impl_init, AudioChannels, PcmSample, impl_trait, is, unwrap};
 #[doc = crate::_tags!(audio)]
 /// Essential metadata describing a PCM audio stream.
 #[doc = crate::_doc_meta!{
-    location("media/audio"),
+    location("media/audio", struct PcmSpec),
     test_size_of(PcmSpec = 8|64),
 }]
 /// # Example

@@ -39,6 +39,8 @@ This release…
 - refactor module features for selective capabilities and recursive `_all` aggregations.
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`, `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`, `uuid`, `value`, `yijing`.
 - add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `dvbf`, `pnm`, `pcm`, `bitfont`, `wav`.
+- rename features: `visual` to `visual_all`.
 - add `__select_modules` for opt-in root-module selection during development,
   retaining `code` and `yard` as the bootstrap foundation.
 - generate `root_*` cfg aliases for selective root-module compilation.

@@ -12,7 +12,7 @@ type DvbfResult<T> = crate::Result<T, DvbfError>;
 #[doc = crate::_tags!(font codec)]
 /// devela Bitmap Font format operations and constants.
 #[doc = crate::_doc_meta!{
-    location("media/font"),
+    location("media/font", struct Dvbf),
     test_size_of(Dvbf = 0),
 }]
 /// DVBF stores one fixed-metric monochrome bitmap-font strike in a compact,

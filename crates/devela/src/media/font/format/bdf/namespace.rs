@@ -7,8 +7,10 @@ use crate::{BdfError, Debug, Region2, Version, unwrap};
 
 #[doc = crate::_tags!(font codec)]
 /// Glyph Bitmap Distribution Format operations.
-#[doc = crate::_doc_meta!{location("media/font")}]
-///
+#[doc = crate::_doc_meta!{
+    location("media/font", struct Bdf),
+    test_size_of(Bdf = 0),
+}]
 /// BDF is a line-oriented textual format for one bitmap-font strike.
 ///
 /// The initial implementation exposes allocation-free header inspection.

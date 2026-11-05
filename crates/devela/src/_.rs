@@ -489,7 +489,7 @@ mod _reexports { // 39
     // media: 2
     #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "draw")]
     pub use super::media::Canvas;
-    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "audio")]
+    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "pcm")]
     pub use super::media::PcmBuf;
 
     // num: 5

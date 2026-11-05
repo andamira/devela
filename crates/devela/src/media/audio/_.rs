@@ -11,15 +11,20 @@ crate::mods_in! {
         // mod_acoustic; // Acoustic spaces, sources, listeners, propagation, effects
         // mod_effect; // Signal filters, dynamics, delays, and transformations
     pub mod_ format; // Encoded audio representations and containers
+
         // mod_ instrument; // Instruments, sample maps, presets, and sound banks
+        #[cfg(feature = "audio")]
         mod layout; // Channel roles, arrangements, and sample layouts
-    // mod_ music; // Theory, tuning, notation, harmony, performance data
+        // mod_ music; // Theory, tuning, notation, harmony, performance data
+
+    #[cfg(feature = "pcm")]
     pub mod_ pcm; // PCM samples, buffers, specs, and stream metadata
     // mod_ synth; // Oscillators, envelopes, voices, modulation
     // mod time; // Audio time scales, modes, perceptual anchors
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports
     _mods {
+        #[cfg(feature = "audio")]
         pub use super::{
             // acoustic::_all::*,
             // effect::_all::*,
@@ -30,13 +35,13 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
         };
     }
     _pub_mods {
-        pub use super::{
-            format::_all::*,
-            pcm::_all::*,
-        };
+        pub use super::format::_all::*;
+        #[cfg(feature = "pcm")]
+        pub use super::pcm::_all::*;
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "pcm")]
         pub use super::pcm::{PcmBuf, PcmSpec};
     }
 }

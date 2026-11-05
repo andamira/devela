@@ -7,6 +7,7 @@
 
 crate::mods_in! {
     // mod_ jpeg; // FUTURE
+    #[cfg(feature = "pnm")]
     mod_ netpbm; // Pnm
     // #[cfg(feature = "alloc"] // TEMP
     // mod_ png; // WIP
@@ -14,11 +15,10 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            // jpg::_all::*,
-            netpbm::_all::*,
-            // png::_all::*,
-            // qoi::_all::*,
-        };
+        // pub use super::jpg::_all::*;
+        #[cfg(feature = "pnm")]
+        pub use super::netpbm::_all::*;
+        // pub use super::png::_all::*;
+        // pub use super::qoi::_all::*;
     }
 }

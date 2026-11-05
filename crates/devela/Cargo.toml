@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 171/300 (129 remaining), 143 visible, 28 hidden
+[features] # 180/300 (120 remaining), 152 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -180,6 +180,7 @@ code_all = ["code"]
 
 data = []
 data_all = ["byte", "codec_all", "uuid", "value_all"]
+
 	# access_all = ["byte"]
 		byte = ["data"]
 
@@ -238,14 +239,33 @@ lang_all = ["lang", "glsl", "js", "shell"]
 		# template = []
 
 media = []
-media_all = ["media", "audio", "font", "visual"]
-	audio = ["riff"]
+media_all = ["audio_all", "font", "visual_all"]
+
+	audio = ["media"]
+	audio_all = ["audio", "pcm", "wav"]
+		# aiff = ["media"]
+		# mp3 = ["media"]
+		# mulaw = ["media"]
+		pcm = ["audio"]
+		wav = ["pcm", "riff"]
+
 	# doc = []
-	font = []
-	visual = ["color", "draw", "image"]
-		color = []
-		draw = []
-		image = ["byte"]
+	font = ["media"]
+	font_all = ["font", "bdf", "bitfont", "dvbf"]
+		bdf = ["font"]
+		bitfont = ["font"]
+		dvbf = ["bitfont"]
+		# otf = ["font"]
+
+	visual_all = ["color", "draw", "image"]
+		color = ["media"]
+		draw = ["media"]
+		image = ["media"]
+		image_all = ["image", "pnm"]
+			# jpg = []
+			pnm = ["byte"]
+			# png = []
+			# qoi = []
 
 num = []
 num_all = [ "num",
@@ -293,7 +313,7 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
 	# device
 		# audio
-			alsa = ["audio", "unsafe_ffi"]
+			alsa = ["pcm", "unsafe_ffi"]
 		# display
 			# cocoa = []
 			# gdi = []

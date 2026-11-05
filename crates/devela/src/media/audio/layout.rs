@@ -75,7 +75,7 @@ impl AudioChannel {
 #[doc = crate::_tags!(audio)]
 /// Fixed, discrete multichannel audio layouts (1.0, 2.0, 5.1, 7.1, …).
 #[doc = crate::_doc_meta!{
-    location("media/audio"),
+    location("media/audio", enum AudioChannels),
     test_size_of(AudioChannels = 1|8; niche Option),
 }]
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
