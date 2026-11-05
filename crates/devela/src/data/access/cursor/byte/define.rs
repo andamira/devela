@@ -5,7 +5,7 @@
 #[doc = crate::_tags!(data parser)]
 /// A byte-position cursor over storage `S`.
 #[doc = crate::_doc_meta!{
-    location("data/access/cursor", struct ByteCursor),
+    location("data/access", struct ByteCursor),
 }]
 /// The storage determines the available operations:
 /// - `ByteCursor<&[u8]>` provides read methods.

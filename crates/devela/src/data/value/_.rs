@@ -26,6 +26,7 @@ crate::mods_in! {
     // mod_ schema; // WIP Schemas for encoded data structures.
     #[cfg(feature = "_tuple")]
     pub mod_ tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
+    #[cfg(feature = "value")]
     mod_ value_; // Value*
 }
 
@@ -37,8 +38,9 @@ crate::mods_out! { // _mods, _pub_mods
             intro::_all::*,
             // profile::*,
             // schema::_all::*,
-            value_::_all::*,
         };
+        #[cfg(feature = "value")]
+        pub use super::value_::_all::*;
         #[cfg(feature = "oneof")]
         pub use super::of::_all::*;
     }

@@ -6,14 +6,14 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "byte")]
     mod_ byte; // ByteCursor, ByteCursorError
     // mod traits;
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            byte::_all::*,
-            // traits::*,
-        };
+        #[cfg(feature = "byte")]
+        pub use super::byte::_all::*;
+        // pub use super::traits::*;
     }
 }

@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 157/300 (143 remaining), 129 visible, 28 hidden
+[features] # 171/300 (129 remaining), 143 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -179,23 +179,40 @@ code = []
 code_all = ["code"]
 
 data = []
-data_all = ["data", "codec_all", "symbol_all", "oneof"]
-	codec_all = ["hash", "radix_all"]
-		hash = ["data"] # HashFnv, HashPengy
+data_all = ["byte", "codec_all", "uuid", "value_all"]
+	# access_all = ["byte"]
+		byte = ["data"]
+
+	codec_all = ["hash", "integrity_all", "pack_all", "radix_all", "symbol_all"]
 		# crypto = ["data"]
-		# pack_all = ["data", "riff"]
-			# riff = ["data"]
+		hash = ["data"] # HashFnv, HashPengy
+
+		integrity_all = ["adler", "crc"]
+			adler = ["data"]
+			crc = ["data"]
+
+		pack_all = ["riff"]
+			# lzw = ["data"]
+			riff = ["data"]
+			# zlib = ["data"]
+
 		radix_all = ["base32", "base64"]
 			base32 = ["data"]
 			base64 = ["data"]
+
 		symbol_all = ["braille", "ean", "unitile", "yijing"]
 			braille = ["data"]
 			ean = ["data"]
+			# qr = ["data"]
 			unitile = ["data"]
 			yijing = ["data"]
-	# id = ["data"]
-	# value = ["data"]
+
+	# id_all = ["uuid"]
+		uuid = ["data"]
+
+	value_all = ["oneof", "value"]
 		oneof = ["data"]
+		value = ["data"]
 
 error = []
 error_all = ["error"]
@@ -215,19 +232,20 @@ lang_all = ["lang", "glsl", "js", "shell"]
 		ffi = ["glsl", "js"]
 			glsl = []
 			js = []
-		# script = ["shell"]
+		# script_all = ["shell"]
+			# script = ["lang"]
 			shell = []
 		# template = []
 
 media = []
 media_all = ["media", "audio", "font", "visual"]
-	audio = []
+	audio = ["riff"]
 	# doc = []
 	font = []
 	visual = ["color", "draw", "image"]
 		color = []
 		draw = []
-		image = []
+		image = ["byte"]
 
 num = []
 num_all = [ "num",
@@ -297,8 +315,8 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 
 text = []
 text_all = ["text", "grapheme", "translit"]
-	grapheme = []
-	translit = []
+	grapheme = ["text"]
+	translit = ["text"]
 
 ui = []
 ui_all = ["ui",

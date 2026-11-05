@@ -77,7 +77,9 @@ pub use handle· as handle;
 
 #[cfg(test)]
 mod _test {
-    use crate::{BittenU8, HandleExample, PoolHandleExample, Value32, ValueKind4};
+    use crate::{BittenU8, HandleExample, PoolHandleExample};
+    #[cfg(feature = "value")]
+    use crate::{Value32, ValueKind4};
     use crate::{const_assert, handle, unwrap};
 
     #[test]
@@ -118,6 +120,7 @@ mod _test {
         assert_eq!(HandleExample::try_unpack_u16(packed), Ok(handle));
     }
     #[test]
+    #[cfg(feature = "value")]
     fn packed_bridges_to_value_payload() {
         let handle = PoolHandleExample::from_prim(7, 3).unwrap();
         // u8 index + u16 generation.

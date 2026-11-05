@@ -471,7 +471,9 @@ mod _reexports { // 39
 
     // data: 5
     #[doc(inline)] #[cfg(root_data)]
-    pub use super::data::{ByteCursor, WordTry, arena, handle, pool};
+    pub use super::data::{WordTry, arena, handle, pool};
+    #[doc(inline)] #[cfg(root_data)] #[cfg(feature = "byte")]
+    pub use super::data::ByteCursor;
 
     // error: 0
     // pub use super::error::{};

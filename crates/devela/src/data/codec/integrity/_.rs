@@ -11,14 +11,16 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "adler")]
     mod adler; // Adler-32 checksum
+    #[cfg(feature = "crc")]
     mod crc; // Cyclic redundancy checks
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            adler::Adler32,
-            crc::Crc,
-        };
+        #[cfg(feature = "adler")]
+        pub use super::adler::Adler32;
+        #[cfg(feature = "crc")]
+        pub use super::crc::Crc;
     }
 }

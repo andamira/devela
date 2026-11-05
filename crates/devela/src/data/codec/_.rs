@@ -48,8 +48,10 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
         pub use super::{
             bin::{bitfield, set},
             hash::HasherFx,
-            integrity::Crc,
         };
+        #[doc(inline)]
+        #[cfg(feature = "crc")]
+        pub use super::integrity::Crc;
     }
     _crate_internals {
         pub(crate) use super::crypto::_crate_internals::*;

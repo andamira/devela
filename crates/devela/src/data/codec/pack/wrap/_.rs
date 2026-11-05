@@ -3,14 +3,14 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "riff")]
     mod_ riff; // Resource Interchange File Format
     // mod png_chunk; // MAYBE
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            riff::_all::*,
-            // png_chunk::*,
-        };
+        #[cfg(feature = "riff")]
+        pub use super::riff::_all::*;
+        // pub use super::png_chunk::*;
     }
 }

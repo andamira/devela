@@ -47,7 +47,7 @@ crate::mods_out! { // _pub_mods, _crate_internals, _reexports, _hidden
     _reexports {
         #[doc(inline)]
         pub use super::{
-            access::{ByteCursor, IteratorLending},
+            access::IteratorLending,
             codec::{HasherFx, bitfield, set},
             id::handle::handle,
             layout::array::Array,
@@ -55,6 +55,9 @@ crate::mods_out! { // _pub_mods, _crate_internals, _reexports, _hidden
             value::ValueKind,
             word::WordTry,
         };
+        #[doc(inline)]
+        #[cfg(feature = "byte")]
+        pub use super::access::ByteCursor;
     }
     _crate_internals {
         pub(crate) use super::_DOC_DATA_MODULES;

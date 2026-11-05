@@ -20,6 +20,7 @@ crate::mods_in! {
     pub mod_ handle; // Compact contextual references interpreted and validated by a resolver
     pub mod_ local; // Locally scoped identities and allocation mechanisms
     // mod snowflake; // FUTURE Time-ordered identifiers for distributed generation
+    #[cfg(feature = "uuid")]
     pub mod_ uuid; // Standardized portable 128-bit identifiers
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
@@ -31,16 +32,20 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         pub use super::{
             handle::_all::*,
             local::_all::*,
-            uuid::_all::*,
         };
+        #[doc(inline)]
+        #[cfg(feature = "uuid")]
+        pub use super::uuid::_all::*;
     }
     _reexports {
         #[doc(inline)]
         pub use super::{
             handle::{handle, handle_gen},
             local::id_seq,
-            uuid::{Uuid, UuidV7Generator}
         };
+        #[doc(inline)]
+        #[cfg(feature = "uuid")]
+        pub use super::uuid::{Uuid, UuidV7Generator};
     }
     _hidden {
         pub use super::{
