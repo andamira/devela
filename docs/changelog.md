@@ -112,6 +112,8 @@ This release…
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.
 
 ### text::fmt
+- new macro: `fmt_num!`.
+- remove `FmtNum`.
 - update `fmtcat!`:
   - Use `Digits` for const decimal formatting of primitive integers.
   - Support explicit custom number formatters via `with Formatter`.

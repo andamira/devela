@@ -1,29 +1,19 @@
-//
-//! Implemnts [`FmtNum`] for all floating-point primitives.
-//
-
-__impl_fmt_num_float!(impl float f32|u64, f64|u128); // TEMP
-
-///
+// Generated from the current FmtNum method implementations.
+// Only requested families expand into methods.
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __impl_fmt_num_float· {
-    () => {};
-    // $t: floating-point primitive
-    // $u: unsigned primitive to cast the integral part as
-    (impl float $($t:ty | $u:ty),+) => {$(
-        impl $crate::FmtNum<$t> {
-            /* write */
-
+macro_rules! __fmt_num_impl_float· {
+    (core $Type:ty, $t:ty | $u:ty) => {
+        impl $Type {
             /// Writes the floating-point number in fixed-point decimal form into `buf`
             /// starting at `pos`, using exactly `fract_len` fractional digits.
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Behavioral guarantees
-            /// - The operation is atomic: on failure, nothing is written.
-            /// - Negative values are preceded by the `'-'` sign.
-            /// - Fractional digits are truncated and zero-padded as needed.
+            /// The operation is atomic: on failure, nothing is written.
+            /// Negative values are preceded by the `'-'` sign.
+            ///
+            /// Fractional digits are truncated and zero-padded as needed.
             #[rustfmt::skip]
             pub const fn write(self, buf: &mut [u8], mut pos: usize, fract_len: u16) -> usize {
                 use $crate::{Digits, Float, is, whilst, write_at};
@@ -56,10 +46,10 @@ macro_rules! __impl_fmt_num_float· {
             ///
             /// Returns the number of bytes written, or `0` if the buffer is too small.
             ///
-            /// # Behavioral guarantees
-            /// - The operation is atomic: on failure, nothing is written.
-            /// - The emitted sign, any leading zero-padding, and the number of fractional digits
-            ///   are controlled by `conf`.
+            /// The operation is atomic: on failure, nothing is written.
+            ///
+            /// The emitted sign, any leading zero-padding and the number of fractional digits
+            /// are controlled by `conf`.
             pub const fn write_fmt(self, buf: &mut [u8], mut pos: usize, conf: $crate::FmtNumConf)
                 -> usize {
                 use $crate::{Cmp, Digits, Float, is, whilst, write_at};
@@ -77,6 +67,7 @@ macro_rules! __impl_fmt_num_float· {
                 // compute required space
                 let (sign_len, dot_len) = (emit_sign as usize, (conf.fract > 0) as usize);
                 let needed = sign_len + (left_digits as usize) + dot_len + (conf.fract as usize);
+                if needed > buf.len().saturating_sub(pos) { return 0; }
                 // emit sign, zero padding, int digits, dot and fract digits
                 if emit_sign { write_at![buf, +=pos, is![neg, b'-', b'+']]; } // ←sign ↓zero-padding
                 whilst! { _i in 0..(left_digits - digit_count); { write_at![buf, +=pos, b'0']; }}
@@ -93,12 +84,37 @@ macro_rules! __impl_fmt_num_float· {
                 needed
             }
 
+            /// Returns the measured shape of the floating-point to be formatted.
+            pub const fn measure(self, fract_len: u16) -> $crate::FmtNumShape {
+                use $crate::{Digits, Float, is};
+                let f = Float(self.0);
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
+                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
+                $crate::FmtNumShape::new(neg as u16, int_digits, fract_len)
+            }
+
+            /// Returns the measured shape of the floating-point to be formatted,
+            /// using the given formatting configuration.
+            pub const fn measure_fmt(self, conf: $crate::FmtNumConf) -> $crate::FmtNumShape {
+                use $crate::{Cmp, Digits, Float, is};
+                let f = Float(self.0);
+                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
+                let prefix = conf.sign.emit_sign(neg) as u16;
+                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
+                let left = if conf.pad_sign && prefix > 0 { Cmp(int_digits + 1).max(conf.int) - 1 }
+                else { Cmp(int_digits).max(conf.int) };
+                $crate::FmtNumShape::new(prefix, left, conf.fract)
+            }
+        }
+    };
+    (group $Type:ty, $t:ty | $u:ty) => {
+        impl $Type {
             /// Writes the formatted floating-point number with optional digit grouping.
             ///
             /// Grouping is applied to the *rendered* digit sequences on both sides of the radix,
             /// after sign emission, zero-padding, and precision handling have been accounted for.
             ///
-            /// # Behavioral guarantees
+            /// # Invariants
             /// - Grouping assumes 1-byte separators and ASCII digits.
             /// - `conf.int` specifies the minimum width of the *entire* left block
             ///   (integral digits + zero padding + grouping separators), excluding the sign.
@@ -206,29 +222,6 @@ macro_rules! __impl_fmt_num_float· {
                 final_len
             }
 
-            /* measure */
-
-            /// Returns the measured shape of the floating-point to be formatted.
-            pub const fn measure(self, fract_len: u16) -> $crate::FmtNumShape {
-                use $crate::{Digits, Float, is};
-                let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
-                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
-                $crate::FmtNumShape::new(neg as u16, int_digits, fract_len)
-            }
-            /// Returns the measured shape of the floating-point to be formatted,
-            /// using the given formatting configuration.
-            pub const fn measure_fmt(self, conf: $crate::FmtNumConf) -> $crate::FmtNumShape {
-                use $crate::{Cmp, Digits, Float, is};
-                let f = Float(self.0);
-                let (neg, fabs) = is![f.is_sign_negative(), (true, f.abs()), (false, f)];
-                let prefix = conf.sign.emit_sign(neg) as u16;
-                let int_digits = Digits(fabs.trunc().0 as $u).count_digits10() as u16;
-                let left = if conf.pad_sign && prefix > 0 { Cmp(int_digits + 1).max(conf.int) - 1 }
-                else { Cmp(int_digits).max(conf.int) };
-                $crate::FmtNumShape::new(prefix, left, conf.fract)
-            }
-
             /// Returns the measured shape of the number after applying digit grouping.
             ///
             /// This first measures the formatted number using `measure_fmt`, then
@@ -248,23 +241,21 @@ macro_rules! __impl_fmt_num_float· {
                 }
                 shape
             }
-
-            // TODO
-            // pub const fn write16(self, buf: &mut [u8], pos: usize) -> usize {}
-            // pub const fn measure16(self) -> $crate::FmtNumShape {}
-
-            /* as_bytes */
-
+        }
+    };
+    (bytes $Type:ty, $t:ty | $u:ty) => {
+        impl $Type {
             /// Formats the number into a provided buffer and returns it as a byte slice.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is writte.
+            /// This operation is atomic: if the buffer is too small, nothing is written.
             pub const fn as_bytes_into<'b>(&self, buf: &'b mut [u8], fract_len: u16) -> &'b [u8] {
                 let len = self.write(buf, 0, fract_len); $crate::Slice::range_to(buf, len)
             }
+
             /// Formats the number into a provided buffer and returns it as a byte slice,
             /// using the given formatting configuration.
             ///
-            /// This operation is atomic: if the buffer is too small, nothing is writte.
+            /// This operation is atomic: if the buffer is too small, nothing is written.
             pub const fn as_bytes_into_fmt<'b>(&self, buf: &'b mut [u8], conf: $crate::FmtNumConf)
                 -> &'b [u8] {
                 let len = self.write_fmt(buf, 0, conf); $crate::Slice::range_to(buf, len)
@@ -279,6 +270,7 @@ macro_rules! __impl_fmt_num_float· {
                 let len = self.write(buf, 0, fract_len);
                 if len == 0 { None } else { Some($crate::Slice::range_to(buf, len)) }
             }
+
             /// Formats the number into a provided buffer and returns it as a byte slice,
             /// using the given formatting configuration.
             ///
@@ -289,15 +281,15 @@ macro_rules! __impl_fmt_num_float· {
                 let len = self.write_fmt(buf, 0, conf);
                 if len == 0 { None } else { Some($crate::Slice::range_to(buf, len)) }
             }
-
-            /* as_str */
-
+        }
+    };
+    (str $Type:ty, $t:ty | $u:ty) => {
+        impl $Type {
             const fn _as_str(slice: &[u8]) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))] // safe
-                return $crate::unwrap![ok_guaranteed_or_ub $crate::Str::from_utf8(slice)];
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))] // unsafe
-                // SAFETY: the ASCII bytes are always valid utf-8
-                unsafe { $crate::Str::from_utf8_unchecked(slice) }
+                match $crate::Str::from_utf8(slice) {
+                    Ok(s) => s,
+                    Err(_) => panic!("numeric formatter produced invalid UTF-8"),
+                }
             }
 
             /// Formats the number into a provided buffer and returns it as a string slice.
@@ -309,6 +301,7 @@ macro_rules! __impl_fmt_num_float· {
                 let len = self.write(buf, 0, fract_len);
                 Self::_as_str($crate::Slice::range_to(buf, len))
             }
+
             /// Formats the number into a provided buffer and returns it as a string slice,
             /// using the given formatting configuration.
             ///
@@ -332,6 +325,7 @@ macro_rules! __impl_fmt_num_float· {
                 let len = self.write(buf, 0, fract_len);
                 $crate::is![len == 0, None, Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
             }
+
             /// Formats the number into a provided buffer and returns it as a string slice,
             /// using the given formatting configuration.
             ///
@@ -344,16 +338,21 @@ macro_rules! __impl_fmt_num_float· {
                 let len = self.write_fmt(buf, 0, conf);
                 $crate::is![len == 0, None, Some(Self::_as_str($crate::Slice::range_to(buf, len)))]
             }
-
-            /* as_string */
-
+        }
+    };
+    (string $Type:ty, $t:ty | $u:ty) => {
+        impl $Type {
             /// Converts the number into an owned fixed-size string.
             ///
             /// This operation is atomic: if the buffer is too small, it returns an empty string.
             pub const fn as_string<const N: usize>(&self, fract_len: u16) -> $crate::StringU8<N> {
                 let mut buf = [0u8; N]; let len = self.write(&mut buf, 0, fract_len);
-                $crate::StringU8::<N>::_from_array_len_trusted(buf, len as u8)
+                match $crate::StringU8::<N>::from_array_nleft(buf, len as u8) {
+                    Ok(s) => s,
+                    Err(_) => panic!("invalid numeric string or capacity"),
+                }
             }
+
             /// Converts the number into an owned fixed-size string,
             /// using the given formatting configuration.
             ///
@@ -361,7 +360,10 @@ macro_rules! __impl_fmt_num_float· {
             pub const fn as_string_fmt<const N: usize>(&self, conf: $crate::FmtNumConf)
                 -> $crate::StringU8<N> {
                 let mut buf = [0u8; N]; let len = self.write_fmt(&mut buf, 0, conf);
-                $crate::StringU8::<N>::_from_array_len_trusted(buf, len as u8)
+                match $crate::StringU8::<N>::from_array_nleft(buf, len as u8) {
+                    Ok(s) => s,
+                    Err(_) => panic!("invalid numeric string or capacity"),
+                }
             }
 
             /// Converts the number into an owned fixed-size string.
@@ -371,8 +373,12 @@ macro_rules! __impl_fmt_num_float· {
                 -> Option<$crate::StringU8<N>> {
                 let mut buf = [0u8; N]; let len = self.write(&mut buf, 0, fract_len);
                 if len == 0 { None }
-                else { Some($crate::StringU8::<N>::_from_array_len_trusted(buf, len as u8)) }
+                else { Some(match $crate::StringU8::<N>::from_array_nleft(buf, len as u8) {
+                    Ok(s) => s,
+                    Err(_) => panic!("invalid numeric string or capacity"),
+                }) }
             }
+
             /// Converts the number into an owned fixed-size string,
             /// using the given formatting configuration.
             ///
@@ -381,9 +387,14 @@ macro_rules! __impl_fmt_num_float· {
                 -> Option<$crate::StringU8<N>> {
                 let mut buf = [0u8; N]; let len = self.write_fmt(&mut buf, 0, conf);
                 if len == 0 { None }
-                else { Some($crate::StringU8::<N>::_from_array_len_trusted(buf, len as u8)) }
+                else { Some(match $crate::StringU8::<N>::from_array_nleft(buf, len as u8) {
+                    Ok(s) => s,
+                    Err(_) => panic!("invalid numeric string or capacity"),
+                }) }
             }
         }
-    )+ };
+    };
 }
-pub use __impl_fmt_num_float· as __impl_fmt_num_float;
+
+#[doc(inline)]
+pub use __fmt_num_impl_float· as __fmt_num_impl_float;

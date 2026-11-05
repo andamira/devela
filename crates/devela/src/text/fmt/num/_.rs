@@ -6,33 +6,33 @@ crate::mods_in! {
     #[cfg(test)]
     mod _test;
 
-    // hidden implementation helpers
-    // mod impls; // __fmt_num_impl_float, __fmt_num_impl_int WIP
-    mod float; // __impl_fmt_num_float! TEMP
-    mod int; // _impl_fmt_num_int! TEMP
+    #[cfg(feature = "_docs_examples")]
+    mod _example;
 
     // definitions
-    mod conf; // FmtNumConf, FmtNumSign
-    // mod define; // fmt_num! WIP
-    mod group; // FmtNumGroup,
-    mod num; // FmtNum TEMP
-    mod shape; // FmtNumShape
+    mod define;
+    mod_ impls;
+
+    mod conf;
+    mod group;
+    mod shape;
 }
 crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
-            conf::*,
-            // define::*,
-            group::*,
-            num::*,
-            shape::*,
+            conf::{FmtNumConf, FmtNumSign},
+            define::fmt_num,
+            group::FmtNumGroup,
+            shape::FmtNumShape,
         };
+        #[cfg(feature = "_docs_examples")]
+        pub use super::_example::FmtNumExample;
     }
     _hidden {
-        // TEMP
+        #[doc(hidden)]
         pub use super::{
-            float::__impl_fmt_num_float,
-            int::__impl_fmt_num_int,
+            define::__fmt_num,
+            impls::_hidden::*,
         };
     }
 }

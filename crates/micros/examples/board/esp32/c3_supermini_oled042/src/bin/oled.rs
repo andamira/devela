@@ -7,7 +7,7 @@
 #![no_main]
 
 use devela::{
-    BitmapPage8, Canvas, CanvasRasterExt, FmtNum, Fonts, I2cTarget, Pcg32, RandTry, lets, pos,
+    BitmapPage8, Canvas, CanvasRasterExt, Digits, Fonts, I2cTarget, Pcg32, RandTry, lets, pos,
     region,
 };
 use devela_micros::{
@@ -189,7 +189,7 @@ fn avg_ms_100(ticks: u64, frames: u32) -> u64 {
 }
 unsafe fn write_num(uart: Esp32C3Uart, value: u64) {
     let mut buf = [0_u8; 20];
-    let len = FmtNum(value).write(&mut buf, 0);
+    let len = Digits(value).write_digits10(&mut buf, 0);
     unsafe { uart.write_bytes_blocking(&buf[..len]) };
 }
 unsafe fn write_fixed2(uart: Esp32C3Uart, value_100: u64) {

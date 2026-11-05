@@ -47,6 +47,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         pub use super::_reexport_alloc::*;
     }
     _hidden {
+        #[doc(hidden)]
         pub use super::{
             cat::__fmtcat,
             num::_hidden::*,

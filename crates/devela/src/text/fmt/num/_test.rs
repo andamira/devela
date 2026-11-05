@@ -1,4 +1,14 @@
+#![allow(dead_code, reason = "test-only formatter exercises a subset of generated methods")]
+
 use super::{FmtNumConf as Conf, FmtNumGroup as Group, FmtNumSign as Sign, *};
+
+// Preserve the old behavior tests against an explicitly generated test-only wrapper.
+// This does not create any eager implementations in normal library builds.
+fmt_num!(struct FmtNum: <> impl (
+    i8, i16, i32, i64, i128, isize,
+    u8, u16, u32, u64, u128, usize,
+    f32, f64,
+); core, group, bytes, str, string);
 
 /* float */
 
