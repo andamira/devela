@@ -154,7 +154,7 @@ impl Otp {
 }
 
 #[allow(unused, reason = "example script")]
-#[cfg(all(feature = "std", feature = "time"))]
+#[cfg(all(feature = "std", feature = "time", feature = "base32"))]
 fn main() {
     use ::devela::{Otp, Radix, TimeUnixU32, digest};
 

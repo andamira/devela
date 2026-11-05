@@ -16,14 +16,14 @@
 ///
 /// # Supported codecs
 ///
-/// - `Radix<16>`
+/// - [`Radix<16>`](#impl-Radix<16>) (always available)
 ///   - `HEX`: RFC 4648 Base16, uppercase output.
 ///   - `HEX_LOWER`: RFC 4648 Base16, lowercase output.
-/// - `Radix<32>`
+/// - [`Radix<32>`](#impl-Radix<32>) (requires `base32`)
 ///   - `STD`, `STD_UNPADDED`: RFC 4648 Base32.
 ///   - `HEX`, `HEX_UNPADDED`: RFC 4648 Base32hex.
 ///   - `CROCKFORD`: Crockford Base32 / Base32 for Humans.
-/// - `Radix<64>`
+/// - [`Radix<64>`](#impl-Radix<64>) (requires `base64`)
 ///   - `STD`, `STD_UNPADDED`: RFC 4648 Base64.
 ///   - `URL`, `URL_UNPADDED`: RFC 4648 Base64url.
 ///
@@ -43,6 +43,8 @@
 /// # Example
 ///
 /// ```
+/// # #[cfg(feature = "base64")]
+/// # {
 /// use devela::Radix;
 ///
 /// let mut encoded = [0; 4];
@@ -57,6 +59,7 @@
 ///     .unwrap();
 ///
 /// assert_eq!(decoded, [0xfb, 0xff]);
+/// # }
 /// ```
 ///
 /// # References

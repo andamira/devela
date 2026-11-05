@@ -13,29 +13,38 @@
 
 crate::mods_in! {
     // mod aztec;
+
+    #[cfg(feature = "braille")]
     mod braille; // BrailleByte
     // mod code128;
     // mod datamatrix;
+    #[cfg(feature = "ean")]
     mod_ ean; // European Article Number barcodes
     // mod pdf417;
     // mod qr;
+    #[cfg(feature = "unitile")]
     mod_ tile; // Unicode codecs for subdivided character-cell tiles
     // mod upc;
+    #[cfg(feature = "yijing")]
     mod yijing; // YijingHexagram
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::{
-            // aztec::_all::*,
-            braille::BrailleByte,
-            // code128::_all::G*
-            // datamatrix::_all::*,
-            ean::_all::Ean,
-            // pdf417::_all::*,
-            // qr::_all::*,
-            tile::_all::{Octant, Quadrant, Sextant},
-            // upc::_all::*,
-            yijing::YijingHexagram,
-        };
+        // pub use super::{
+        //     // aztec::_all::*,
+        //     // code128::_all::G*
+        //     // datamatrix::_all::*,
+        //     // pdf417::_all::*,
+        //     // qr::_all::*,
+        //     // upc::_all::*,
+        // };
+        #[cfg(feature = "braille")]
+        pub use super::braille::BrailleByte;
+        #[cfg(feature = "ean")]
+        pub use super::ean::_all::Ean;
+        #[cfg(feature = "unitile")]
+        pub use super::tile::_all::{Octant, Quadrant, Sextant};
+        #[cfg(feature = "yijing")]
+        pub use super::yijing::YijingHexagram;
     }
 }

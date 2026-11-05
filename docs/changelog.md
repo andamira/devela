@@ -36,7 +36,9 @@ This release…
 ## Crate
 
 ### features & flags
-- add features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- refactor module features for selective capabilities and recursive `_all` aggregations.
+- add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
+- add data-related features: `codec_all`, `radix_all`, `symbol_all`, `base32`, `base64`, `braille`, `ean`, `tile`, `yijing`.
 - add `__select_modules` for opt-in root-module selection during development,
   retaining `code` and `yard` as the bootstrap foundation.
 - generate `root_*` cfg aliases for selective root-module compilation.
@@ -58,6 +60,9 @@ This release…
 
 #### code::result
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
+
+#### data::codec
+- update `Radix`: gate Base32 and Base64 codecs.
 
 ##### media::visual::color
 - new type: `Palette`.

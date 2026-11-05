@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 151/300 (149 remaining), 123 visible, 28 hidden
+[features] # 157/300 (143 remaining), 129 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -179,16 +179,23 @@ code = []
 code_all = ["code"]
 
 data = []
-data_all = ["data", "hash", "oneof"]
-	# codec
-		hash = [] # HashFnv, HashPengy
-		# crypto = []
-		# pack = []
-			# riff = []
-	# list = []
-
-	# value = [oneof]
-		oneof = []
+data_all = ["data", "codec_all", "symbol_all", "oneof"]
+	codec_all = ["hash", "radix_all"]
+		hash = ["data"] # HashFnv, HashPengy
+		# crypto = ["data"]
+		# pack_all = ["data", "riff"]
+			# riff = ["data"]
+		radix_all = ["base32", "base64"]
+			base32 = ["data"]
+			base64 = ["data"]
+		symbol_all = ["braille", "ean", "unitile", "yijing"]
+			braille = ["data"]
+			ean = ["data"]
+			unitile = ["data"]
+			yijing = ["data"]
+	# id = ["data"]
+	# value = ["data"]
+		oneof = ["data"]
 
 error = []
 error_all = ["error"]
@@ -662,7 +669,7 @@ required-features = ["std"]
 [[example]]
 name = "otp"
 path = "src/data/codec/crypto/otp.rs"
-required-features = ["std", "time"]
+required-features = ["std", "time", "base32"]
 
 # sys
 [[example]]

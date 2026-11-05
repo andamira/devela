@@ -2,8 +2,9 @@
 //! Defines [`SixelChar`].
 //
 
-use crate::{Display, FmtResult, FmtWriter, Formatter, format_buf, is, unwrap};
-use crate::{StringU8, YijingHexagram};
+#[cfg(feature = "yijing")]
+use crate::YijingHexagram;
+use crate::{Display, FmtResult, FmtWriter, Formatter, StringU8, format_buf, is, unwrap};
 
 #[doc = crate::_tags!(image term)]
 /// A sixel character.
@@ -148,12 +149,14 @@ impl SixelChar {
     ///
     /// - Returns `None` if the character is not in the hexagram range (U+4DC0..=U+4DFF).
     /// - Standard mapping: filled pixels represent broken lines.
+    #[cfg(feature = "yijing")]
     pub const fn from_hexagram(hexagram: char) -> Option<Self> {
         unwrap![some_map YijingHexagram::decode(hexagram), |pat| Self::from_bitmask(pat)]
     }
     /// Converts to an I Ching hexagram character using standard mapping.
     ///
     /// - Standard mapping: filled pixels represent broken lines.
+    #[cfg(feature = "yijing")]
     pub const fn to_hexagram(self) -> char {
         unwrap![some YijingHexagram::encode(self.as_bitmask())]
     }
@@ -162,12 +165,14 @@ impl SixelChar {
     ///
     /// - Returns `None` if the character is not in the hexagram range (U+4DC0..=U+4DFF).
     /// - Inverted mapping: filled pixels represent unbroken lines.
+    #[cfg(feature = "yijing")]
     pub const fn from_hexagram_inverted(hexagram: char) -> Option<Self> {
         unwrap![some_map YijingHexagram::decode(hexagram), |pat| Self::from_bitmask(!pat)]
     }
     /// Converts to an I Ching hexagram character using inverted mapping.
     ///
     /// - Inverted mapping: filled pixels represent unbroken lines.
+    #[cfg(feature = "yijing")]
     pub const fn to_hexagram_inverted(self) -> char {
         unwrap![some YijingHexagram::encode(!self.as_bitmask() & Self::MASK)]
     }
