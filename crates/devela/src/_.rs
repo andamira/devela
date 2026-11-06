@@ -472,7 +472,8 @@ mod _reexports { // 39
     // data: 5
     #[doc(inline)] #[cfg(root_data)]
     pub use super::data::{WordTry, arena, handle, pool};
-    #[doc(inline)] #[cfg(root_data)] #[cfg(feature = "byte")]
+    #[doc(inline)] #[cfg(root_data)]
+    #[cfg(feature = "byte")]
     pub use super::data::ByteCursor;
 
     // error: 0
@@ -487,9 +488,11 @@ mod _reexports { // 39
     pub use super::lang::ScriptMachine;
 
     // media: 2
-    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "draw")]
+    #[doc(inline)] #[cfg(root_media)]
+    #[cfg(feature = "draw")]
     pub use super::media::Canvas;
-    #[doc(inline)] #[cfg(root_media)] #[cfg(feature = "pcm")]
+    #[doc(inline)] #[cfg(root_media)]
+    #[cfg(feature = "pcm")]
     pub use super::media::PcmBuf;
 
     // num: 5
@@ -497,19 +500,23 @@ mod _reexports { // 39
     pub use super::num::{Cast, Cmp, Interval, RandTry, Ratio};
 
     // phys: 2
-    #[doc(inline)] #[cfg(root_phys)] #[cfg(feature = "time")]
+    #[doc(inline)] #[cfg(root_phys)]
+    #[cfg(feature = "time")]
     pub use super::phys::{TimeDelta, TimeSource};
 
     // run: 2
-    #[doc(inline)] #[cfg(feature = "run")]
+    #[doc(inline)]
+    #[cfg(feature = "run")]
     pub use super::run::{RunApp, RunDriver};
 
     // sys: 5
     #[doc(inline)] #[cfg(root_sys)]
     pub use super::sys::{Slice, TextOut};
-    #[doc(inline)] #[cfg(root_sys)] #[cfg(feature = "_linux_abi")]
+    #[doc(inline)] #[cfg(root_sys)]
+    #[cfg(feature = "_linux_abi")]
     pub use super::sys::Linux;
-    #[doc(inline)] #[cfg(root_sys)] #[cfg(feature = "term")]
+    #[doc(inline)] #[cfg(root_sys)]
+    #[cfg(feature = "term")]
     pub use super::sys::TermGrid;
     #[doc(inline)] #[cfg(root_sys)]
     #[cfg(all(feature = "web", not(windows), not(feature = "safe_sys")))]
@@ -518,16 +525,20 @@ mod _reexports { // 39
     // text: 6
     #[doc(inline)] #[cfg(root_text)]
     pub use super::text::{CharIter, Str, StringU8, TextScanner, format_buf};
-    #[doc(inline)] #[cfg(root_text)] #[cfg(feature = "grapheme")]
+    #[doc(inline)] #[cfg(root_text)]
+    #[cfg(feature = "grapheme")]
     pub use super::text::GraphemeMachine;
 
     // ui: 2
-    #[doc(inline)] #[cfg(root_ui)] #[cfg(feature = "event")]
+    #[doc(inline)] #[cfg(root_ui)]
+    #[cfg(feature = "event")]
     pub use super::ui::Event;
-    #[doc(inline)] #[cfg(root_ui)] #[cfg(feature = "ui")]
+    #[doc(inline)] #[cfg(root_ui)]
+    #[cfg(feature = "ui")]
     pub use super::ui::TextInput;
 
     // work: 2
-    #[doc(inline)] #[cfg(root_work)] #[cfg(feature = "std")]
+    #[doc(inline)] #[cfg(root_work)]
+    #[cfg(all(feature = "process", feature = "std"))]
     pub use super::work::{CommandFlow, cmd};
 }

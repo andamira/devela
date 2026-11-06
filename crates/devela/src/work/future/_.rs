@@ -14,14 +14,16 @@
 crate::mods_in! {
     mod _reexport_core;
 
+    #[cfg(feature = "future")]
     mod ext; // FutureExt
 
-    #[cfg(feature = "std")]
+    #[cfg(all(feature = "future", feature = "std"))]
     #[cfg(not(feature = "dep_portable_atomic_util"))]
     mod block;
 }
 crate::mods_out! { // _mods, _reexports, _crate_internals
     _mods {
+        #[cfg(feature = "future")]
         pub use super::{
             ext::FutureExt,
         };
@@ -51,7 +53,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         pub use crate::_dep::_alloc::task::Wake as AsyncWake;
     }
     _crate_internals {
-        #[cfg(feature = "std")]
+        #[cfg(all(feature = "future", feature = "std"))]
         #[cfg(not(feature = "dep_portable_atomic_util"))]
         pub(crate) use super::block::future_block;
     }

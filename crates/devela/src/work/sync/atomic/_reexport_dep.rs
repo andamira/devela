@@ -54,6 +54,7 @@ _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 }]
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
+#[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use crate::_dep::portable_atomic::{AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize};
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
@@ -63,6 +64,7 @@ pub use crate::_dep::portable_atomic::{AtomicI8, AtomicI16, AtomicI32, AtomicI64
 }]
 #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
+#[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use crate::_dep::portable_atomic::{AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicUsize};
 
 #[doc = _tags!(concurrency atomic atomic_core_portable)]
@@ -102,6 +104,7 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
     location("work/sync/atomic", struct AtomicPtr),
 }]
 #[cfg(feature = "dep_portable_atomic")]
+#[macro_apply(__doc_auto_hide((feature, values("dep_portable_atomic"))))]
 pub use crate::_dep::portable_atomic::AtomicPtr;
 //
 #[doc = _tags!(concurrency atomic atomic_core_portable)]

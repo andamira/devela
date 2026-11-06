@@ -8,8 +8,9 @@
 
 crate::mods_in! {
     // pub mod actor;
+    #[cfg(feature = "coro")]
     pub mod_ coro;
-    // mod kernel;
+        // mod kernel;
     // pub mod state;
 }
 crate::mods_out! { // _mods, _pub_mods
@@ -17,10 +18,9 @@ crate::mods_out! { // _mods, _pub_mods
         // pub use super::kernel::*;
     }
     _pub_mods {
-        pub use super::{
-            // actor::_all::*,
-            coro::_all::*,
-            // state::_all::*,
-        };
+        // pub use super::actor::_all::*;
+        #[cfg(feature = "coro")]
+        pub use super::coro::_all::*;
+        // pub use super::state::_all::*;
     }
 }

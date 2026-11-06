@@ -41,6 +41,7 @@ This release…
 - add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `dvbf`, `pnm`, `pcm`, `bitfont`, `wav`.
 - add run-related features: `cap`, `control`.
+- add work-related features: `coro`, `future`.
 - rename features: `visual` to `visual_all`.
 - add `__select_modules` for opt-in root-module selection during development,
   retaining `code` and `yard` as the bootstrap foundation.

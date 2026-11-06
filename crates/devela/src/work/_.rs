@@ -38,14 +38,12 @@ crate::mods_out! { // _pub_mods, _reexports, _crate_internals, _hidden
     }
     _reexports {
         #[doc(inline)]
-        #[cfg(feature = "std")]
+        #[cfg(all(feature = "process", feature = "std"))]
         pub use super::exec::{CommandFlow, cmd};
     }
     _crate_internals {
         pub(crate) use super::_DOC_WORK_MODULES;
-        pub(crate) use super::{
-            future::_crate_internals::*,
-        };
+        pub(crate) use super::future::_crate_internals::*;
     }
     _hidden {
         pub use super::exec::_hidden::*;

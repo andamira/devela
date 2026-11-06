@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 180/300 (120 remaining), 152 visible, 28 hidden
+[features] # 184/296 (116 remaining), 156 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -350,14 +350,17 @@ ui_all = ["ui",
 	widget = ["ui"]
 
 work = []
-work_all = ["work",
-	"process", "thread",
-	"sync",
-]
+work_all = ["work", "process", "thread", "future", "sync", "coro"]
+
 	# exec
-		process = []
-		thread = []
-	sync = []
+		process = ["work"]
+		thread = ["work"]
+
+	future = ["work"]
+	sync = ["work"]
+
+	# task
+		coro = ["work", "future"]
 
 
 #* Safety features *#

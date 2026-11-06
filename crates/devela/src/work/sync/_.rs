@@ -12,14 +12,16 @@ crate::mods_in! {
     mod _reexport_std;
 
     #[cfg(all(
+        feature = "sync",
         feature = "unsafe_sync",
         not(feature = "safe_work"),
         any(feature = "dep_portable_atomic", target_has_atomic = "8"),
     ))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_sync")))]
+    #[cfg_attr(nightly_doc, doc(cfg(all(feature = "sync", feature = "unsafe_sync"))))]
     mod spin_lock; // SpinLock, SpinLockGuard
 
     pub mod_ atomic; // core::sync::atomic::*
+    #[cfg(feature = "sync")]
     pub mod_ mpsc; // Mpsc, std::sync::mpsc::*
     // mod counter; // WIP
     // mod queue; // WIP
@@ -27,6 +29,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _pub_mods
     _mods {
         #[cfg(all(
+            feature = "sync",
             feature = "unsafe_sync",
             not(feature = "safe_work"),
             any(feature = "dep_portable_atomic", target_has_atomic = "8"),
@@ -36,10 +39,9 @@ crate::mods_out! { // _mods, _pub_mods
         // pub use super::queue::*;
     }
     _pub_mods {
-        pub use super::{
-            atomic::_all::*,
-            mpsc::_all::*,
-        };
+        pub use super::atomic::_all::*;
+        #[cfg(feature = "sync")]
+        pub use super::mpsc::_all::*;
     }
     _reexports {
         #[cfg(feature = "alloc")]

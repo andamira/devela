@@ -4,7 +4,6 @@
 #![doc = crate::_doc!(flat:"work")]
 #![doc = crate::_doc!(extends: sync)]
 //
-// IMPROVE: move _reexport_dep to base_core
 
 crate::mods_in! {
     mod _reexport_core;

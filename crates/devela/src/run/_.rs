@@ -45,7 +45,7 @@ crate::mods_out! { // _mods, _pub_mods, _crate_internals
             time::{Runtime, RunStep},
         };
         #[doc(inline)]
-        #[cfg(feature = "code")]
+        #[cfg(all(feature = "cap", feature = "code"))]
         pub use super::{
             regime::RunService,
         };

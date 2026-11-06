@@ -37,7 +37,7 @@ sleep4![1.5]; // sleeps for 1.5 seconds
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
 #[cfg(feature = "std")]
-#[cfg_attr(nightly_doc, doc(cfg(any(feature = "linux", feature = "std"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(all(feature = "linux", feature = "time"), feature = "std"))))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! sleep4· {
     ($s:literal) => {

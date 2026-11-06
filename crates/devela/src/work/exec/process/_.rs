@@ -9,21 +9,30 @@
 crate::mods_in! {
     mod _reexport_std;
 
-    mod cmd; // cmd!
-    mod error; // ExitStatusError
-    mod flow; // CommandFlow
-    mod output; // OutputExt
-    mod process; // ProcessExt
+    #[cfg(feature = "process")]
+    mod cmd;
+
+    #[cfg(feature = "process")]
+    mod error;
+
+    #[cfg(feature = "process")]
+    mod flow;
+
+    #[cfg(feature = "process")]
+    mod output;
+
+    #[cfg(feature = "process")]
+    mod process;
 }
 crate::mods_out! { // _mods, _reexports, _hidden
     _mods {
-        #[cfg(feature = "std")]
+        #[cfg(all(feature = "process", feature = "std"))]
         pub use super::{
             cmd::cmd,
-            error::*,
-            flow::*,
-            output::*,
-            process::*,
+            error::ExitStatusError,
+            flow::CommandFlow,
+            output::OutputExt,
+            process::ProcessExt,
         };
     }
     _reexports {
@@ -32,7 +41,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
     }
     _hidden {
         #[doc(hidden)]
-        #[cfg(feature = "std")]
+        #[cfg(all(feature = "process", feature = "std"))]
         pub use super::cmd::{__cmd, __cmd_shell};
     }
 }
