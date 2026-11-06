@@ -62,6 +62,7 @@ crate::mods_in! {
     #[cfg(feature = "std")]
     mod std; // StdRand
     #[cfg(any(test, feature = "prng"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "prng")))]
     mod fake; // RandFake
 }
 crate::mods_out! { // _mods, _crate_internals, _hidden

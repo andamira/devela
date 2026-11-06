@@ -8,6 +8,7 @@
 
 crate::mods_in! {
     #[cfg(feature = "control")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "control")))]
     mod control;
 }
 crate::mods_out! { // _mods, _reexports

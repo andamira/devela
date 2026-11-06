@@ -8,8 +8,10 @@ crate::mods_in! {
     mod info; // RunSystemInfo
 
     #[cfg(feature = "cap")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "cap")))]
     mod_ cap; // RunCap*
     #[cfg(feature = "cap")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "cap")))]
     mod service;
 }
 crate::mods_out! { // _mods

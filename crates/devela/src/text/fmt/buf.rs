@@ -65,7 +65,6 @@ pub struct FmtWriter<'a> {
 }
 
 CONST! {
-    #[allow(unused_import)]
     _DOC_AS_INTO_STR = "Returns the written content as a valid UTF‑8 string.\n\n
 If the final write ended in the middle of a multi‑byte codepoint only the valid prefix is returned.
 # Features
