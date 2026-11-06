@@ -2,10 +2,16 @@
 //! Implements capability methods for  [`TermLinux`].
 //
 
+#[allow(unused_imports, reason = "cap || (event && time)")]
+use crate::LinuxResult;
 #[cfg(all(feature = "event", feature = "time"))]
 use crate::{Ansi, Linux, TermCap, TermDecModeStatus, TermParsed, TermReply, is};
-use crate::{ColorDepth, LinuxResult, NonMaxU16, TermCaps, TermLinux, TermSize};
-use crate::{RunCap, RunCapColor, RunCapImage, RunCapInput, RunCapText, RunCapWindow};
+#[cfg(feature = "cap")]
+use crate::{
+    ColorDepth, NonMaxU16, RunCap, RunCapColor, RunCapImage, RunCapInput, RunCapText, RunCapWindow,
+    TermSize,
+};
+use crate::{TermCaps, TermLinux};
 
 /// # Capabilities
 impl TermLinux {
@@ -14,6 +20,7 @@ impl TermLinux {
         self.term_caps
     }
     /// Returns the last known runtime capabilities.
+    #[cfg(feature = "cap")]
     pub const fn run_capabilities(&self) -> RunCap {
         self.run_cap
     }
@@ -65,13 +72,14 @@ impl TermLinux {
     ///
     /// # Features
     /// Available with the `time` feature, because terminal probing uses bounded waits.
-    #[cfg(all(feature = "event", feature = "time"))]
+    #[cfg(all(feature = "cap", feature = "event", feature = "time"))]
     pub fn probe_run_capabilities(&mut self) -> LinuxResult<RunCap> {
         let _ = self.probe_term_capabilities()?;
         self.refresh_run_capabilities()
     }
 
     /// Refreshes runtime capabilities from cached terminal capabilities and current size.
+    #[cfg(feature = "cap")]
     pub fn refresh_run_capabilities(&mut self) -> LinuxResult<RunCap> {
         self.refresh_size()?;
         self.run_cap = Self::derive_run_capabilities(self.term_caps, self.size);
@@ -135,6 +143,7 @@ impl TermLinux {
     }
 
     /// Projects terminal capabilities into runtime capabilities.
+    #[cfg(feature = "cap")]
     pub(super) const fn derive_run_capabilities(caps: TermCaps, _size: Option<TermSize>) -> RunCap {
         let depth = caps.color_depth();
         RunCap {
@@ -177,6 +186,7 @@ impl TermLinux {
             window: if caps.get_resize() != 0 { Some(RunCapWindow { multi: false }) } else { None },
         }
     }
+    #[cfg(feature = "cap")]
     const fn palette_size(depth: ColorDepth) -> Option<NonMaxU16> {
         match depth {
             ColorDepth::Palette2 => NonMaxU16::new(2),

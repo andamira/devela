@@ -2,63 +2,78 @@
 //! Defines [`EventTag`], [`EventTagSet`], [`EventKindTimed`], [`EventKind`].
 //
 
-use crate::{AppControl, ConstInit, MaybeTimed};
+#[cfg(feature = "control")]
+use crate::AppControl;
+use crate::{ConstInit, MaybeTimed};
 use crate::{EventKey, EventMouse, EventPointer, EventTimestamp, EventWheel, EventWindow};
 
-crate::enumset! {
-    #[doc = crate::_tags!(event id member)]
-    /// A lightweight, data-less identifier for [`EventKind`].
-    #[doc = crate::_doc_meta!{
-        location("ui/event", enum EventTag),
-        test_size_of(EventTag = 1|8; niche Option),
-    }]
-    /// Used when only the *category* of the event is relevant and the
-    /// payload of the variant is not needed.
-    ///
-    /// This avoids carrying the full `EventKind` and is suitable for
-    /// quick routing, filtering, or statistics.
-    #[repr(u8)]
-    #[non_exhaustive]
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-    pub enum EventTag(
-        #[doc = crate::_tags!(event set)]
-        /// A compact set of [`EventTag`]s.
-        #[doc = crate::_doc_meta!{
-            location("ui/event", struct EventTagSet),
-            test_size_of(EventTagSet = 1|8; niche !Option),
-        }]
-        ///
-        /// Used to declare, filter, and query coarse event categories.
-        pub EventTagSet: u8
-    ) {
-        #[doc = crate::_tags!(init)]
-        /// No event or an empty placeholder.
-        None,
-        /// A keyboard event.
-        Key,
-        /// A mouse button or motion event.
-        Mouse,
-        /// A pointing-device event (mouse, pen, stylus, touch).
-        Pointer,
-        /// A wheel event.
-        Wheel,
-        /// An event related to a window, viewport, or presentation surface.
-        Window,
-        /// Application-level control notice.
-        Control,
-    }
-    impl set #[doc = "Common event category groups."] {
-        /// Events caused by direct user input.
-        pub const INPUT: Self = Self::Key
-            .with(Self::Mouse)
-            .with(Self::Pointer)
-            .with(Self::Wheel);
-        /// Events related to pointing devices.
-        pub const POINTING: Self = Self::Mouse
-            .with(Self::Pointer)
-            .with(Self::Wheel);
-    }
+/// Defines `EventTag` with optional variants selected before `enumset!` expands.
+/// Preserves its original counting and indexing without adding cfg-aware machinery.
+macro_rules! define_event_tag {
+    ($($extra:tt)*) => {
+        crate::enumset! {
+            #[doc = crate::_tags!(event id member)]
+            /// A lightweight, data-less identifier for [`EventKind`].
+            #[doc = crate::_doc_meta!{
+                location("ui/event", enum EventTag),
+                test_size_of(EventTag = 1|8; niche Option),
+            }]
+            /// Used when only the *category* of the event is relevant and the
+            /// payload of the variant is not needed.
+            ///
+            /// This avoids carrying the full `EventKind` and is suitable for
+            /// quick routing, filtering, or statistics.
+            #[repr(u8)]
+            #[non_exhaustive]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+            pub enum EventTag(
+                #[doc = crate::_tags!(event set)]
+                /// A compact set of [`EventTag`]s.
+                #[doc = crate::_doc_meta!{
+                    location("ui/event", struct EventTagSet),
+                    test_size_of(EventTagSet = 1|8; niche !Option),
+                }]
+                ///
+                /// Used to declare, filter, and query coarse event categories.
+                pub EventTagSet: u8
+            ) {
+                #[doc = crate::_tags!(init)]
+                /// No event or an empty placeholder.
+                None,
+                /// A keyboard event.
+                Key,
+                /// A mouse button or motion event.
+                Mouse,
+                /// A pointing-device event (mouse, pen, stylus, touch).
+                Pointer,
+                /// A wheel event.
+                Wheel,
+                /// An event related to a window, viewport, or presentation surface.
+                Window,
+                $($extra)*
+            }
+            impl set #[doc = "Common event category groups."] {
+                /// Events caused by direct user input.
+                pub const INPUT: Self = Self::Key
+                    .with(Self::Mouse)
+                    .with(Self::Pointer)
+                    .with(Self::Wheel);
+                /// Events related to pointing devices.
+                pub const POINTING: Self = Self::Mouse
+                    .with(Self::Pointer)
+                    .with(Self::Wheel);
+            }
+        }
+    };
 }
+#[cfg(feature = "control")]
+define_event_tag! {
+    /// Application-level control notice.
+    Control,
+}
+#[cfg(not(feature = "control"))]
+define_event_tag! {}
+
 impl Default for EventTag {
     /// Returns [`EventTag::None`].
     fn default() -> Self {
@@ -122,6 +137,7 @@ pub enum EventKind {
     Window(EventWindow),
 
     /// External control notice directed at the application.
+    #[cfg(feature = "control")]
     Control(AppControl),
     /* */
     // /// A gamepad event.
@@ -156,6 +172,7 @@ impl EventKind {
             Self::Pointer(_) => EventTag::Pointer,
             Self::Wheel(_) => EventTag::Wheel,
             Self::Window(_) => EventTag::Window,
+            #[cfg(feature = "control")]
             Self::Control(_) => EventTag::Control,
         }
     }
@@ -192,6 +209,7 @@ impl EventKind {
     pub const fn is_window(&self) -> bool { matches![self, EventKind::Window(_)] }
 
     #[must_use]
+    #[cfg(feature = "control")]
     /// Whether it's a control event.
     pub const fn is_control(&self) -> bool { matches![self, EventKind::Control(_)] }
 
@@ -227,6 +245,7 @@ impl EventKind {
         if let EventKind::Window(e) = &self { Some(e) } else { None }
     }
     #[must_use]
+    #[cfg(feature = "control")]
     /// Returns some control event, if that's the kind.
     pub const fn some_control(&self) -> Option<&AppControl> {
         if let EventKind::Control(e) = &self { Some(e) } else { None }

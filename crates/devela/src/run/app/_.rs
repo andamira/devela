@@ -7,10 +7,12 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "control")]
     mod control;
 }
 crate::mods_out! { // _mods, _reexports
     _mods {
+        #[cfg(feature = "control")]
         pub use super::control::*;
     }
     _reexports {

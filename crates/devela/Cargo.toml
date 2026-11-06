@@ -302,7 +302,10 @@ phys_all = [ "phys",
 	wave = [] # wavelets
 
 run = []
-run_all = ["run"]
+run_all = ["cap", "control"]
+
+	cap = ["run"]     # RunCap*, RunService*
+	control = ["run"] # AppControl, AppControlSet
 
 sys = []
 sys_all = [ # EXCLUDED: "device", "hw", "os"
@@ -317,7 +320,7 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 		# display
 			# cocoa = []
 			# gdi = []
-			x11 = ["alloc", "event", "unsafe_ffi"]
+			x11 = ["alloc", "event", "run", "unsafe_ffi"]
 		# midi = []
 	# fs
 	hw = []
@@ -685,7 +688,7 @@ required-features = ["alsa", "std"]
 [[example]]
 name = "term_linux"
 path = "examples/sys/os/term/linux.rs"
-required-features = ["linux", "term", "event"]
+required-features = ["linux", "term", "event", "cap", "control"]
 doc-scrape-examples = false
 
 # work

@@ -67,8 +67,9 @@ macro_rules! sleep4· {
 }]
 #[doc = _DOCS_SLEEP4!()]
 #[macro_export]
+#[cfg(feature = "time")]
 #[crate::macro_apply(crate::_linux_syscall_not_std)]
-#[cfg_attr(nightly_doc, doc(cfg(any(feature = "linux", feature = "std"))))]
+#[cfg_attr(nightly_doc, doc(cfg(any(all(feature = "linux", feature = "time"), feature = "std"))))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! sleep4· {
     ($s:literal) => {
@@ -94,6 +95,9 @@ macro_rules! sleep4· {
     };
 }
 
-#[cfg(any(feature = "std", all(feature = "linux", not(feature = "std"), not(miri))))]
+#[cfg(any(
+    feature = "std",
+    all(feature = "linux", feature = "time", not(feature = "std"), not(miri))
+))]
 #[doc(inline)]
 pub use sleep4· as sleep4;

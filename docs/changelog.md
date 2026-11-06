@@ -40,6 +40,7 @@ This release…
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`, `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`, `uuid`, `value`, `yijing`.
 - add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `dvbf`, `pnm`, `pcm`, `bitfont`, `wav`.
+- add run-related features: `cap`, `control`.
 - rename features: `visual` to `visual_all`.
 - add `__select_modules` for opt-in root-module selection during development,
   retaining `code` and `yard` as the bootstrap foundation.
@@ -105,6 +106,9 @@ This release…
 
 #### num::quant
 - feature gate `Ratio*` and `Scale` implementations.
+
+### run
+- feature-gate the `run` module.
 
 #### run::app
 - rename `AppConfig` to `AppInfo` and expose it as application identity metadata.

@@ -5,16 +5,22 @@
 #![doc = crate::_doc!(hr)]
 
 crate::mods_in! {
-    mod_ cap; // RunCap*
     mod info; // RunSystemInfo
-    mod service; // RunService[Probe]
+
+    #[cfg(feature = "cap")]
+    mod_ cap; // RunCap*
+    #[cfg(feature = "cap")]
+    mod service;
 }
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            cap::_all::*,
             info::*,
-            service::*,
+        };
+        #[cfg(feature = "cap")]
+        pub use super::{
+            cap::_all::*,
+            service::{RunService, RunServiceProbe},
         };
     }
 }

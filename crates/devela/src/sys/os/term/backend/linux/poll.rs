@@ -133,6 +133,7 @@ impl TermLinux {
             debug_assert!(!queued || !self.events.is_empty());
         }
     }
+    #[cfg(feature = "control")]
     fn fill_event_queue_from_app_controls(&mut self) {
         let controls = Self::take_app_controls();
         controls.for_each_while(|control| {
@@ -156,8 +157,11 @@ impl TermLinux {
     fn poll_buffered_event(&mut self) -> Option<EventKind> {
         // events already queued have top priority
         is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
+
+        #[cfg(feature = "control")]
         // control notices have priority over newly parsed input
         self.fill_event_queue_from_app_controls();
+
         is! { let Some(ev) = self.pop_event_kind(), return Some(ev) }
         // resize notices are also external semantic events
         self.fill_event_queue_from_resize();

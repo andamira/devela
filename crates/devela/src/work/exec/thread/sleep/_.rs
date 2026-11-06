@@ -10,7 +10,10 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods
     _mods {
-        #[crate::macro_apply(crate::_std_or_linux_syscall)]
+        #[cfg(feature = "std")]
+        pub use super::r#macro::sleep4;
+        #[cfg(all(not(feature = "std"), feature = "time"))]
+        #[crate::macro_apply(crate::_linux_syscall)]
         pub use super::r#macro::sleep4;
 
         // pub use super::{

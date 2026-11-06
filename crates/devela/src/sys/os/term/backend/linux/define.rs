@@ -2,11 +2,13 @@
 //! Defines [`TermLinux`].
 //
 
-use crate::{Debug, Linux, LinuxResult, RunCap, RunService, TermCaps, TermSize, VersionFull};
+use crate::{Debug, Linux, LinuxResult, TermCaps, TermSize};
 #[cfg(feature = "event")]
 use crate::{EventQueue, TermInputParser, TermLinuxInputBuf};
-#[cfg(all(feature = "event", feature = "time"))]
+#[cfg(all(feature = "cap", feature = "event", feature = "time"))]
 use crate::{LinuxError, RunServiceProbe};
+#[cfg(feature = "cap")]
+use crate::{RunCap, RunService, VersionFull};
 use crate::{TermLinuxRestore, TermMode, TermSession};
 
 /// Default semantic event queue capacity for Linux terminal events.
@@ -21,15 +23,19 @@ const TERM_INPUT_BUF_CAP: usize = 64;
 /// Linux terminal frontend.
 #[doc = crate::_doc_meta!{
     location("sys/os/term", struct TermLinux),
-    #[cfg(not(feature = "event"))]
+
+    #[cfg(all(not(feature = "event"), not(feature = "cap")))]
+    test_size_of(TermLinux = 16|128),
+    #[cfg(all(not(feature = "event"), feature = "cap"))]
     test_size_of(TermLinux = 44|352),
 
-    #[cfg(feature = "event")]
-    #[cfg(target_pointer_width = "32")]
-    test_size_of(TermLinux = 372|2976),
-    #[cfg(feature = "event")]
-    #[cfg(target_pointer_width = "64")]
+    #[cfg(all(feature = "event", not(feature = "cap"), target_pointer_width = "64"))]
+    test_size_of(TermLinux = 368|2944),
+    #[cfg(all(feature = "event", feature = "cap", target_pointer_width = "64"))]
     test_size_of(TermLinux = 392|3136),
+
+    #[cfg(all(feature = "event", feature = "cap", target_pointer_width = "32"))]
+    test_size_of(TermLinux = 372|2976),
 }]
 /// Owns terminal input parsing, scoped session control, cached terminal and
 /// runtime capabilities, and the last known terminal size over the lower-level
@@ -44,6 +50,7 @@ pub struct TermLinux {
     pub(super) events: EventQueue<TERM_EVENT_QUEUE_CAP>,
 
     pub(super) term_caps: TermCaps,
+    #[cfg(feature = "cap")]
     pub(super) run_cap: RunCap,
     pub(super) size: Option<TermSize>,
 }
@@ -56,6 +63,7 @@ impl TermLinux {
     /// Session discipline belongs to the future terminal session layer.
     pub fn open() -> LinuxResult<Self> {
         let size = Linux::terminal_size().ok();
+        #[allow(unused_mut, reason = "±cap")]
         let mut term = Self {
             #[cfg(feature = "event")]
             parser: TermInputParser::new(),
@@ -65,10 +73,14 @@ impl TermLinux {
             events: EventQueue::new(),
 
             term_caps: TermCaps::ANSI_BASE,
+            #[cfg(feature = "cap")]
             run_cap: RunCap::default(),
             size,
         };
-        term.run_cap = Self::derive_run_capabilities(term.term_caps, term.size);
+        #[cfg(feature = "cap")]
+        {
+            term.run_cap = Self::derive_run_capabilities(term.term_caps, term.size);
+        }
         Ok(term)
     }
 
@@ -114,6 +126,7 @@ impl TermLinux {
 
 /* impl traits */
 
+#[cfg(feature = "cap")]
 impl RunService for TermLinux {
     fn run_capabilities(&self) -> RunCap {
         self.run_cap
@@ -122,7 +135,7 @@ impl RunService for TermLinux {
         VersionFull::new(0, 0, 1)
     }
 }
-#[cfg(all(feature = "event", feature = "time"))]
+#[cfg(all(feature = "cap", feature = "event", feature = "time"))]
 impl RunServiceProbe for TermLinux {
     type Error = LinuxError;
     fn run_capabilities_refresh(&mut self) -> Result<RunCap, Self::Error> {

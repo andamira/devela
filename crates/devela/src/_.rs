@@ -224,7 +224,7 @@ crate::mods_in! {
     #[cfg(root_phys)]
     pub mod_ phys; // Physical quantities, units, and models of the natural world
 
-    #[cfg(root_run)]
+    #[cfg(feature = "run")]
     pub mod_ run; // Temporal coordination and staging of a running system
 
     #[cfg(root_ui)]
@@ -285,7 +285,7 @@ pub mod all_ {
     #[doc = concat![crate::_DOC_PHYS!(), crate::_DOC_PHYS_MODULES!(), _COMMON_DOC!("phys")]]
     pub mod _phys { #[allow(unused)] pub use super::super::phys::_all::*; }
 
-    #[cfg(root_run)]
+    #[cfg(feature = "run")]
     #[doc = concat![crate::_DOC_RUN!(), crate::_DOC_RUN_MODULES!(), _COMMON_DOC!("run")]]
     pub mod _run { #[allow(unused)] pub use super::super::run::_all::*; }
 
@@ -347,7 +347,7 @@ pub mod all {
     pub use super::phys::_all::*;
 
     #[doc(inline)]
-    #[cfg(root_run)]
+    #[cfg(feature = "run")]
     pub use super::run::_all::*;
 
     #[doc(inline)]
@@ -397,7 +397,7 @@ mod _crate_internals {
     #[cfg(root_phys)]
     pub(crate) use super::phys::_crate_internals::*;
 
-    #[cfg(root_run)]
+    #[cfg(feature = "run")]
     pub(crate) use super::run::_crate_internals::*;
 
     #[cfg(root_sys)]
@@ -501,7 +501,7 @@ mod _reexports { // 39
     pub use super::phys::{TimeDelta, TimeSource};
 
     // run: 2
-    #[doc(inline)] #[cfg(root_run)]
+    #[doc(inline)] #[cfg(feature = "run")]
     pub use super::run::{RunApp, RunDriver};
 
     // sys: 5

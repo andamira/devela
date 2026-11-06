@@ -2,11 +2,16 @@
 //! Implements signal handling methods for [`TermLinux`].
 //
 
-use crate::{AppControl, AppControlSet, Linux, LinuxSignalSet, TermLinux};
-use crate::{AtomicBool, AtomicOrdering, AtomicU16, c_int};
+#[cfg(all(doc, feature = "control"))]
+use crate::EventKind::Control;
 #[cfg(doc)]
-use crate::{EventKind::Control, EventWindow::Resized};
+use crate::EventWindow::Resized;
+#[cfg(feature = "control")]
+use crate::{AppControl, AppControlSet, AtomicU16};
+use crate::{AtomicBool, AtomicOrdering, c_int};
+use crate::{Linux, LinuxSignalSet, TermLinux};
 
+#[cfg(feature = "control")]
 static PENDING_APP_CONTROLS: AtomicU16 = AtomicU16::new(0);
 static PENDING_RESIZE: AtomicBool = AtomicBool::new(false);
 
@@ -20,6 +25,7 @@ impl TermLinux {
     ///
     /// This installs process-wide signal handlers. Registering another handler for
     /// the same Linux signals may replace this path.
+    #[cfg(feature = "control")]
     pub fn listen_signals(&mut self, controls: AppControlSet) {
         self.listen_app_controls(controls);
         self.listen_resize();
@@ -32,6 +38,7 @@ impl TermLinux {
     /// `EventKind::`[`Control`].
     ///
     /// Registering another handler for the same Linux signals may replace this path.
+    #[cfg(feature = "control")]
     pub fn listen_app_controls(&mut self, controls: AppControlSet) {
         Self::install_app_controls(controls);
     }
@@ -51,13 +58,16 @@ impl TermLinux {
 impl TermLinux {
     /* app controls */
 
+    #[cfg(feature = "control")]
     fn install_app_controls(controls: AppControlSet) {
         Linux::app_control_handler(Self::app_control_handler, controls, None);
     }
+    #[cfg(feature = "control")]
     fn app_control_handler(control: AppControl) {
         let bit = control.to_set().bits();
         PENDING_APP_CONTROLS.fetch_or(bit, AtomicOrdering::SeqCst);
     }
+    #[cfg(feature = "control")]
     pub(super) fn take_app_controls() -> AppControlSet {
         AppControlSet::from_bits(PENDING_APP_CONTROLS.swap(0, AtomicOrdering::SeqCst))
     }

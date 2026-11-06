@@ -1,5 +1,6 @@
-use crate::{AppControl, AppControlSet};
-use crate::{AtomicOrdering::SeqCst, AtomicPtr, Ptr, c_int, c_void, is, transmute};
+#[cfg(feature = "control")]
+use crate::{AppControl, AppControlSet, AtomicPtr};
+use crate::{AtomicOrdering::SeqCst, Ptr, c_int, c_void, is, transmute};
 use crate::{
     LINUX_SIG_HANDLERS, LINUX_SIGINFO_HANDLERS, Linux, LinuxSigaction, LinuxSigactionFlags,
 };
@@ -32,6 +33,7 @@ impl Linux {
     /// - Only controls with a Linux signal mapping are registered.
     /// - `SIGKILL` and `SIGSTOP` cannot be caught.
     /// - The callback runs from a signal handler; keep it small and prefer atomics.
+    #[cfg(feature = "control")]
     pub fn app_control_handler(
         handler: fn(AppControl),
         controls: AppControlSet,
