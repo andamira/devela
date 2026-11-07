@@ -18,6 +18,7 @@
 crate::mods_in! {
         // mod_ embed; // WIP Host-embedded scripting notation and generators
     pub mod_ form; // Scripting and programming language forms
+    #[cfg(feature = "script")]
     pub mod_ machine; // Resumable scripting execution machinery
         // mod_ source;   // MAYBE: Script source loading and lowering
 }
@@ -30,11 +31,13 @@ crate::mods_out! { // _mods, _pub_mods
     _pub_mods {
         pub use super::{
             form::_all::*,
-            machine::_all::*,
         };
+        #[cfg(feature = "script")]
+        pub use super::machine::_all::*;
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "script")]
         pub use super::ScriptMachine;
     }
 }

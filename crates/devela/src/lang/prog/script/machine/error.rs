@@ -41,7 +41,7 @@ pub enum ScriptError<E = Infallible> {
         /// The unsupported value category.
         found: ValueKind,
     },
-    /// Signed integer arithmetic overflowed.
+    /// Signed arithmetic overflowed or its result does not fit a compact machine integer.
     IntegerOverflow,
     /// A pending host call no longer matches the machine state.
     InvalidCall,
@@ -86,7 +86,7 @@ impl<E: Display> Display for ScriptError<E> {
                 write!(f, "Unsupported script value kind: found {found:?}.")
             }
             Self::InvalidCall => f.write_str("Script call no longer matches the machine state."),
-            Self::IntegerOverflow => f.write_str("Script integer arithmetic overflow."),
+            Self::IntegerOverflow => f.write_str("Script integer overflow or out-of-range result."),
             Self::InvalidIp { ip, len } => {
                 write!(f, "Invalid script instruction position {ip} for program length {len}.")
             }

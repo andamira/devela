@@ -24,7 +24,7 @@
 //! same interaction through a [`ScriptHost`] instead.
 //!
 //! ```txt
-//! program: &[ScriptOp<R>]
+//! program: &[ScriptOp]
 //!          │
 //!          ▼
 //!    ScriptMachine
@@ -51,14 +51,15 @@
 //!
 //! ## Reference payloads
 //!
-//! `R` is the machine's opaque reference payload type. It is carried by
-//! [`ScriptValue::Ref`] but is never interpreted or validated by the machine.
-//! Typical payloads are compact IDs or generational handles into caller-owned state.
+//! Machine values are compact [`Value64`] words. Their [`ValueKind4::Ref`]
+//! payloads can carry scalar-packed IDs or generational handles, but
+//! the machine never resolves or validates external references.
 //!
-//! `R` can remain stored after its external target becomes invalid.
+//! The host owns packing, decoding, and validation. A token may remain
+//! stored even after its referenced object has been removed.
 //!
-//! Direct execution can resolve these references explicitly. Hosted execution
-//! passes the same values through [`ScriptHost`].
+//! [`Value64`]: crate::Value64
+//! [`ValueKind4::Ref`]: crate::ValueKind4::Ref
 //!
 //! # Errors
 //!
@@ -77,7 +78,6 @@ crate::mods_in! {
     mod outcome; // Non-error execution outcomes
     // mod program; // Loaded immutable programs
     mod state; // Machine state and execution
-    mod value; // Machine-level values
 }
 crate::mods_out! { // _mods
     _mods {
@@ -88,7 +88,6 @@ crate::mods_out! { // _mods
             instr::ScriptOp,
             outcome::ScriptOutcome,
             state::ScriptMachine,
-            value::ScriptValue,
         };
     }
 }

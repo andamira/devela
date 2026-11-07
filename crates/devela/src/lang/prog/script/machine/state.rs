@@ -2,8 +2,8 @@
 //! Defines [`ScriptMachine`].
 //
 
-use crate::{ConstInit, Infallible, ValueKind, is, unwrap, whilst};
-use crate::{ScriptCall, ScriptError, ScriptHost, ScriptOp, ScriptOutcome, ScriptValue};
+use crate::{ConstInit, Infallible, Value64, ValueKind, is, unwrap, whilst};
+use crate::{ScriptCall, ScriptError, ScriptHost, ScriptOp, ScriptOutcome};
 use ScriptError as Error;
 
 #[doc = crate::_tags!(lang runtime state)]
@@ -11,17 +11,16 @@ use ScriptError as Error;
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(ScriptMachine<u32, 4> = 56|448; niche Option),
+    test_size_of(ScriptMachine<4> = 40|320; niche !Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(ScriptMachine<u32, 4> = 80|640; niche Option),
+    test_size_of(ScriptMachine<4> = 48|384; niche !Option),
 }]
 /// The machine stores suspended execution state independently of the
 /// program being executed. A host may therefore retain a machine between
 /// calls and resume it against the same loaded program.
 ///
-/// `R` is the opaque reference payload stored by [`ScriptValue::Ref`].
-/// The machine only requires it to be [`Copy`]; its meaning and validity
-/// belong to the caller.
+/// Machine values are compact [`Value64`] words. The machine does not
+/// interpret or validate external reference payloads.
 ///
 /// `STACK` is the maximum number of live stack values.
 ///
@@ -47,44 +46,43 @@ use ScriptError as Error;
 ///
 /// # Example
 /// ```
-/// use devela::{ScriptMachine, ScriptOp, ScriptOutcome, ScriptValue};
+/// use devela::{ScriptMachine, ScriptOp, ScriptOutcome, Value64};
 ///
-/// type V = ScriptValue<()>;
 /// let program = [
-///     ScriptOp::Push(V::Int(20)),
-///     ScriptOp::Push(V::Int(22)),
+///     ScriptOp::Push(Value64::try_from_int(20).unwrap()),
+///     ScriptOp::Push(Value64::try_from_int(22).unwrap()),
 ///     ScriptOp::Add,
 /// ];
-/// let mut machine = ScriptMachine::<(), 2>::new();
+/// let mut machine = ScriptMachine::<2>::new();
 ///
 /// assert_eq!(
 ///     machine.run(&program, 3),
-///     Ok(ScriptOutcome::Returned(Some(V::Int(42)))),
+///     Ok(ScriptOutcome::Returned(Value64::try_from_int(42))),
 /// );
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct ScriptMachine<R: Copy, const STACK: usize> {
+pub struct ScriptMachine<const STACK: usize> {
     ip: usize,
     len: usize,
-    stack: [ScriptValue<R>; STACK],
+    stack: [Value64; STACK],
 }
 
-impl<R: Copy, const STACK: usize> Default for ScriptMachine<R, STACK> {
+impl<const STACK: usize> Default for ScriptMachine<STACK> {
     fn default() -> Self {
         Self::new()
     }
 }
-impl<R: Copy, const STACK: usize> ConstInit for ScriptMachine<R, STACK> {
+impl<const STACK: usize> ConstInit for ScriptMachine<STACK> {
     const INIT: Self = Self::new();
 }
 
 /* state and stack */
-impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
+impl<const STACK: usize> ScriptMachine<STACK> {
     /* construction */
 
     /// Creates an empty machine positioned at the first operation.
     pub const fn new() -> Self {
-        Self { ip: 0, len: 0, stack: [ScriptValue::Nil; STACK] }
+        Self { ip: 0, len: 0, stack: [Value64::NIL; STACK] }
     }
 
     /* queries */
@@ -123,7 +121,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     /// Attempts to push a value onto the stack.
     ///
     /// Returns `false` when the stack is full.
-    pub const fn push(&mut self, value: ScriptValue<R>) -> bool {
+    pub const fn push(&mut self, value: Value64) -> bool {
         if self.len == STACK {
             false
         } else {
@@ -133,7 +131,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         }
     }
     /// Removes and returns the top stack value.
-    pub const fn pop(&mut self) -> Option<ScriptValue<R>> {
+    pub const fn pop(&mut self) -> Option<Value64> {
         if self.len == 0 {
             None
         } else {
@@ -142,23 +140,23 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
         }
     }
     /// Returns the top stack value.
-    pub const fn peek(&self) -> Option<&ScriptValue<R>> {
+    pub const fn peek(&self) -> Option<&Value64> {
         if self.len == 0 { None } else { Some(&self.stack[self.len - 1]) }
     }
     /// Returns the live portion of the stack.
-    pub fn stack(&self) -> &[ScriptValue<R>] {
+    pub fn stack(&self) -> &[Value64] {
         &self.stack[..self.len]
     }
 }
 
 /* direct execution */
-impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
+impl<const STACK: usize> ScriptMachine<STACK> {
     /* helpers */
 
-    const fn return_value(&self) -> Option<ScriptValue<R>> {
+    const fn return_value(&self) -> Option<Value64> {
         is! { self.len == 0, None, Some(self.stack[self.len - 1]) }
     }
-    const fn after_advance(&self, program_len: usize) -> Option<ScriptOutcome<R>> {
+    const fn after_advance(&self, program_len: usize) -> Option<ScriptOutcome> {
         is! { self.ip == program_len, Some(ScriptOutcome::Returned(self.return_value())), None }
     }
     const fn jump_target(ip: usize, offset: isize, program_len: usize) -> Option<usize> {
@@ -180,17 +178,14 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     ///
     /// A failing operation is atomic with respect to machine state:
     /// its instruction position and logical stack remain unchanged.
-    pub const fn step(
-        &mut self,
-        program: &[ScriptOp<R>],
-    ) -> Result<Option<ScriptOutcome<R>>, Error> {
+    pub const fn step(&mut self, program: &[ScriptOp]) -> Result<Option<ScriptOutcome>, Error> {
         self.step_inner::<Infallible>(program)
     }
 
     const fn step_inner<E>(
         &mut self,
-        program: &[ScriptOp<R>],
-    ) -> Result<Option<ScriptOutcome<R>>, Error<E>> {
+        program: &[ScriptOp],
+    ) -> Result<Option<ScriptOutcome>, Error<E>> {
         let program_len = program.len();
         is![self.ip > program_len, return Err(Error::invalid_ip(self.ip, program_len))];
         is![self.ip == program_len, return Ok(Some(ScriptOutcome::Returned(self.return_value())))];
@@ -221,16 +216,18 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
                 is! {self.len < 2, return Err(Error::stack_underflow(2, self.len)) }
                 let lhs = self.stack[self.len - 2];
                 let rhs = self.stack[self.len - 1];
-                let lhs = match lhs {
-                    ScriptValue::Int(value) => value,
-                    other => return Err(Error::expected_kind(ValueKind::Int, other.kind())),
+                let lhs = match lhs.as_int() {
+                    Some(value) => value,
+                    None => return Err(Error::expected_kind(ValueKind::Int, lhs.kind().to_kind())),
                 };
-                let rhs = match rhs {
-                    ScriptValue::Int(value) => value,
-                    other => return Err(Error::expected_kind(ValueKind::Int, other.kind())),
+                let rhs = match rhs.as_int() {
+                    Some(value) => value,
+                    None => return Err(Error::expected_kind(ValueKind::Int, rhs.kind().to_kind())),
                 };
                 let value = unwrap![some_ok_or? lhs.checked_add(rhs), Error::IntegerOverflow];
-                self.stack[self.len - 2] = ScriptValue::Int(value);
+                let value =
+                    unwrap![some_ok_or? Value64::try_from_int(value), Error::IntegerOverflow];
+                self.stack[self.len - 2] = value;
                 self.len -= 1;
                 self.ip += 1;
                 Ok(self.after_advance(program_len))
@@ -239,16 +236,10 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
                 is! { self.len < 2, return Err(Error::stack_underflow(2, self.len)); }
                 let lhs = self.stack[self.len - 2];
                 let rhs = self.stack[self.len - 1];
-                let equal = match (lhs, rhs) {
-                    (ScriptValue::Nil, ScriptValue::Nil) => true,
-                    (ScriptValue::Bool(a), ScriptValue::Bool(b)) => a == b,
-                    (ScriptValue::Int(a), ScriptValue::Int(b)) => a == b,
-                    (ScriptValue::Ref(_), _) | (_, ScriptValue::Ref(_)) => {
-                        return Err(Error::unsupported_kind(ValueKind::Ref));
-                    }
-                    _ => false,
-                };
-                self.stack[self.len - 2] = ScriptValue::Bool(equal);
+                // Compare canonical representations; derived `PartialEq` is not const.
+                let equal =
+                    lhs.kind().code() == rhs.kind().code() && lhs.payload() == rhs.payload();
+                self.stack[self.len - 2] = Value64::from_bool(equal);
                 self.len -= 1;
                 self.ip += 1;
                 Ok(self.after_advance(program_len))
@@ -261,9 +252,12 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
             }
             ScriptOp::JumpIf(offset) => {
                 is! { self.len == 0, return Err(Error::stack_underflow(1, 0)) }
-                let condition = match self.stack[self.len - 1] {
-                    ScriptValue::Bool(value) => value,
-                    other => return Err(Error::expected_kind(ValueKind::Bool, other.kind())),
+                let value = self.stack[self.len - 1];
+                let condition = match value.as_bool() {
+                    Some(value) => value,
+                    None => {
+                        return Err(Error::expected_kind(ValueKind::Bool, value.kind().to_kind()));
+                    }
                 };
                 let target = if condition {
                     unwrap![some_ok_or? Self::jump_target(self.ip, offset, program_len),
@@ -299,9 +293,9 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     /// exhausts `budget`, or fails.
     pub const fn run(
         &mut self,
-        program: &[ScriptOp<R>],
+        program: &[ScriptOp],
         budget: usize,
-    ) -> Result<ScriptOutcome<R>, Error> {
+    ) -> Result<ScriptOutcome, Error> {
         is! { self.ip > program.len(), return Err(Error::invalid_ip(self.ip, program.len())) }
         is! { self.ip == program.len(), return Ok(ScriptOutcome::Returned(self.return_value())) }
         whilst! { executed in 0..budget; {
@@ -312,16 +306,16 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
 }
 
 /* hosted execution */
-impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
+impl<const STACK: usize> ScriptMachine<STACK> {
     /// Executes one operation, resolving host calls through `host`.
     ///
     /// A failing operation is atomic with respect to machine state.
     /// Host-side effects are not rolled back.
-    pub fn step_with<H: ScriptHost<R>>(
+    pub fn step_with<H: ScriptHost>(
         &mut self,
-        program: &[ScriptOp<R>],
+        program: &[ScriptOp],
         host: &mut H,
-    ) -> Result<Option<ScriptOutcome<R>>, ScriptError<H::Error>> {
+    ) -> Result<Option<ScriptOutcome>, ScriptError<H::Error>> {
         let outcome = self.step_inner::<H::Error>(program)?;
         let call = unwrap![some_or? outcome, ScriptOutcome::HostCall(call) => call, Ok(outcome)];
         // `step_inner` just produced this token, so the machine still matches it.
@@ -334,12 +328,12 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     }
     /// Runs using `host` until execution yields, returns,
     /// exhausts `budget`, or fails.
-    pub fn run_with<H: ScriptHost<R>>(
+    pub fn run_with<H: ScriptHost>(
         &mut self,
-        program: &[ScriptOp<R>],
+        program: &[ScriptOp],
         host: &mut H,
         budget: usize,
-    ) -> Result<ScriptOutcome<R>, ScriptError<H::Error>> {
+    ) -> Result<ScriptOutcome, ScriptError<H::Error>> {
         is![self.ip > program.len(), return Err(ScriptError::invalid_ip(self.ip, program.len()))];
         is![self.ip == program.len(), return Ok(ScriptOutcome::Returned(self.return_value()))];
         whilst! { executed in 0..budget; {
@@ -350,18 +344,18 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
 }
 
 /* host calls */
-impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
+impl<const STACK: usize> ScriptMachine<STACK> {
     /// Returns one argument of a pending host call.
     ///
     /// Arguments are indexed in call order, starting at zero.
     #[must_use]
-    pub const fn call_arg(&self, call: ScriptCall, index: u8) -> Option<ScriptValue<R>> {
+    pub const fn call_arg(&self, call: ScriptCall, index: u8) -> Option<Value64> {
         is! { !self.call_matches(call) || index >= call.arity(), return None }
         let base = self.len - call.arity() as usize;
         Some(self.stack[base + index as usize])
     }
     /// Returns the arguments of a pending host call.
-    pub fn call_args(&self, call: ScriptCall) -> Result<&[ScriptValue<R>], ScriptError> {
+    pub fn call_args(&self, call: ScriptCall) -> Result<&[Value64], ScriptError> {
         is! { !self.call_matches(call), return Err(ScriptError::InvalidCall) }
         let arity = call.arity() as usize;
         is! { arity > self.len, return Err(ScriptError::InvalidCall) }
@@ -380,7 +374,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     pub const fn complete_call(
         &mut self,
         call: ScriptCall,
-        result: ScriptValue<R>,
+        result: Value64,
     ) -> Result<(), ScriptError> {
         self.complete_call_inner::<Infallible>(call, result)
     }
@@ -393,7 +387,7 @@ impl<R: Copy, const STACK: usize> ScriptMachine<R, STACK> {
     const fn complete_call_inner<E>(
         &mut self,
         call: ScriptCall,
-        result: ScriptValue<R>,
+        result: Value64,
     ) -> Result<(), ScriptError<E>> {
         is! { !self.call_matches(call), return Err(ScriptError::InvalidCall) }
         let arity = call.arity() as usize;

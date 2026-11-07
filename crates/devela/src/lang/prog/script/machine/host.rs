@@ -2,7 +2,7 @@
 //!
 //
 
-use crate::{ScriptCallId, ScriptValue};
+use crate::{ScriptCallId, Value64};
 #[cfg(doc)]
 use crate::{ScriptMachine, ScriptOutcome};
 
@@ -15,12 +15,13 @@ use crate::{ScriptMachine, ScriptOutcome};
 /// host calls through this trait. Direct execution may instead return
 /// [`ScriptOutcome::HostCall`] for explicit resolution by the caller.
 ///
-/// `R` is the opaque reference payload carried by machine values.
+/// Opaque reference tokens are passed as [`Value64`] values; the host
+/// determines their meaning and validity.
 ///
 /// Arguments are supplied in stack order, with the earliest argument first.
-/// Every successful call returns exactly one machine value; [`ScriptValue::Nil`]
+/// Every successful call returns exactly one machine value; [`Value64::NIL`]
 /// represents a call with no meaningful result.
-pub trait ScriptHost<R> {
+pub trait ScriptHost {
     /// An error produced while performing a host operation.
     type Error;
 
@@ -28,20 +29,16 @@ pub trait ScriptHost<R> {
     ///
     /// Host effects performed before returning an error
     /// are not rolled back by the scripting machine.
-    fn call(
-        &mut self,
-        id: ScriptCallId,
-        args: &[ScriptValue<R>],
-    ) -> Result<ScriptValue<R>, Self::Error>;
+    fn call(&mut self, id: ScriptCallId, args: &[Value64]) -> Result<Value64, Self::Error>;
 }
 
-impl<R, E, F> ScriptHost<R> for F
+impl<E, F> ScriptHost for F
 where
-    F: FnMut(ScriptCallId, &[ScriptValue<R>]) -> Result<ScriptValue<R>, E>,
+    F: FnMut(ScriptCallId, &[Value64]) -> Result<Value64, E>,
 {
     type Error = E;
 
-    fn call(&mut self, id: ScriptCallId, args: &[ScriptValue<R>]) -> Result<ScriptValue<R>, E> {
+    fn call(&mut self, id: ScriptCallId, args: &[Value64]) -> Result<Value64, E> {
         self(id, args)
     }
 }

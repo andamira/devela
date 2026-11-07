@@ -39,10 +39,9 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     }
     _reexports {
         #[doc(inline)]
-        pub use super::{
-            prog::ScriptMachine,
-            sem::Relation,
-        };
+        pub use super::sem::Relation;
+        #[cfg(feature = "script")]
+        pub use super::prog::ScriptMachine;
     }
     _crate_internals {
         pub(crate) use super::_DOC_LANG_MODULES;

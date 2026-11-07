@@ -74,6 +74,13 @@ This release…
 #### data::codec
 - update `Radix`: gate Base32 and Base64 codecs.
 
+##### lang::prog::script
+- replace the generic `ScriptValue<R>` enum with `Value64` as the canonical scripting word.
+- remove `R` from `ScriptOp`, `ScriptOutcome`, `ScriptMachine` and `ScriptHost`.
+- add the `script` and `script_all` capability features, gating scripting and its value dependency.
+- check arithmetic against the compact signed integer range and support opaque reference-token equality.
+- reduce `ScriptMachine<4>` from 80 to 48 bytes on 64-bit targets.
+
 ##### media::visual::color
 - new type: `Palette`.
 - new aliases: `RgbBytes`, `RgbaBytes`.

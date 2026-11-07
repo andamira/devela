@@ -2,26 +2,26 @@
 //!
 //
 
-use crate::{ConstInit, ScriptCallId, ScriptValue};
+use crate::{ConstInit, ScriptCallId, Value64};
 
 #[doc = crate::_tags!(lang)]
 /// An operation executed by a [`ScriptMachine`][crate::ScriptMachine].
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(ScriptOp<u32> = 12|96; niche Option),
+    test_size_of(ScriptOp = 12|96; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(ScriptOp<u32> = 16|128; niche Option),
+    test_size_of(ScriptOp = 16|128; niche Option),
 }]
 /// Operations form the machine-level executable representation.
 /// They are intentionally independent of any
 /// particular scripting language syntax.
 ///
-/// `R` is the opaque reference payload carried by machine values.
+/// Values use the canonical compact [`Value64`] representation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum ScriptOp<R> {
+pub enum ScriptOp {
     /// Pushes a value onto the stack.
-    Push(ScriptValue<R>),
+    Push(Value64),
 
     /// Removes the top stack value.
     Drop,
@@ -59,6 +59,6 @@ pub enum ScriptOp<R> {
     Return,
 }
 
-impl<R> ConstInit for ScriptOp<R> {
+impl ConstInit for ScriptOp {
     const INIT: Self = Self::Return;
 }

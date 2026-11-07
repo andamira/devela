@@ -39,6 +39,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "script")]
         pub use super::script::ScriptMachine;
     }
     _crate_internals {

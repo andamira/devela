@@ -2,7 +2,7 @@
 //!
 //
 
-use crate::{ConstInit, ScriptCall, ScriptValue};
+use crate::{ConstInit, ScriptCall, Value64};
 #[cfg(doc)]
 use crate::{ScriptMachine, ScriptOp};
 
@@ -11,13 +11,13 @@ use crate::{ScriptMachine, ScriptOp};
 #[doc = crate::_doc_meta!{
     location("lang/prog/script/machine"),
     #[cfg(target_pointer_width = "32")]
-    test_size_of(ScriptOutcome<u32> = 16|128; niche Option),
+    test_size_of(ScriptOutcome = 16|128; niche Option),
     #[cfg(target_pointer_width = "64")]
-    test_size_of(ScriptOutcome<u32> = 32|256; niche Option),
+    test_size_of(ScriptOutcome = 32|256; niche Option),
 }]
 /// An outcome explains why control returned to the caller.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum ScriptOutcome<R> {
+pub enum ScriptOutcome {
     /// Execution reached a host operation awaiting resolution.
     HostCall(ScriptCall),
 
@@ -25,12 +25,12 @@ pub enum ScriptOutcome<R> {
     Yielded,
 
     /// Execution finished with an optional returned value.
-    Returned(Option<ScriptValue<R>>),
+    Returned(Option<Value64>),
 
     /// Execution reached the caller-provided operation budget.
     BudgetExhausted,
 }
 
-impl<R> ConstInit for ScriptOutcome<R> {
+impl ConstInit for ScriptOutcome {
     const INIT: Self = Self::Returned(None);
 }
