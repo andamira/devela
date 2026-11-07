@@ -204,8 +204,11 @@ extern crate self as devela;
 
 #[path = "boot/_.rs"]
 mod boot; // Bootstrapping abstractions
+
+#[doc(hidden)]
 #[cfg(not(root_code))]
-pub(crate) use boot::{mods_in, mods_out};
+#[allow(unused_imports)]
+pub use boot::{CONST, compile, compile_attr, mods_in, mods_out, paste, unreachable};
 
 #[cfg(root_code)]
 #[path = "code/_.rs"]

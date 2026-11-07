@@ -3,7 +3,7 @@
 #![cfg_attr(nightly_doc, doc(cfg(feature = "__docs_internal")))]
 //
 #![doc = crate::_tags!(internal)]
-#![doc = crate::_DOC_YARD!()] // internal
+#![doc = "Scaffolding, taxonomy, and documentation support."] // internal
 #![doc = crate::_doc!(modules: crate; yard: dep)]
 #![doc = crate::_doc!(hr)]
 //!
@@ -17,6 +17,7 @@ crate::mods_in! {
         mod _reexport; // _reexport!
         mod _use; // _use!
 
+        #[cfg(root_code)]
         mod alias; // aliases for attributes and derives
     pub mod dep; // dependencies; reexported hidden from /src/_.rs
         mod fragments; // doclines for root modules: _DOC_*!
@@ -54,9 +55,11 @@ crate::mods_out! { // _reexports, _crate_internals, _hidden
             _policy::{_devela_policy, __devela_unreachable_unchecked},
             _use::_use_or_shim,
             //
-            alias::*,
             fragments::{_ABBR_PCG, _ABBR_PRNG},
             tags::*, // needed by _tags!
         };
+        #[doc(hidden)]
+        #[cfg(root_code)]
+        pub use super::alias::*;
     }
 }

@@ -1,6 +1,6 @@
 //
 #![doc = crate::_tags!(internal)]
-#![doc = crate::_DOC_YARD_DEPS!()] // internal
+#![doc = "Re-exported dependencies."] // internal
 #![doc = crate::_doc!(modules: crate::yard; dep)]
 #![doc = crate::_doc!(hr)]
 //

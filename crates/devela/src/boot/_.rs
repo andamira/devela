@@ -4,11 +4,16 @@
 //! Provides the construction macros needed before the other modules are available.
 //
 
-mod doc;
+#![allow(unused_imports)]
+
+mod _doc;
+mod r#const;
 mod mods_out;
 
-pub use doc::{_DOC_ALL, _DOC_ALL_, _DOC_ALL_PLUS_};
-
-pub use devela_macros::mods_in;
-#[allow(unused)]
-pub use mods_out::mods_out;
+pub use _doc::{_DOC_ALL, _DOC_ALL_, _DOC_ALL_PLUS_};
+pub use {
+    ::core::unreachable,
+    r#const::CONST,
+    devela_macros::{compile, compile_attr, mods_in, paste},
+    mods_out::mods_out,
+};

@@ -37,9 +37,12 @@ This release…
 
 ### features & flags
 - refactor module features for selective capabilities and recursive `_all` aggregations.
-- add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`, `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`, `uuid`, `value`, `yijing`.
+- add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`,
+  `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`,
+  `uuid`, `value`, `yijing`.
 - add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
-- add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `dvbf`, `pnm`, `pcm`, `bitfont`, `wav`.
+- add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
+  `pnm`, `pcm`, `wav`.
 - add run-related features: `cap`, `control`.
 - add work-related features: `coro`, `future`.
 - rename features: `visual` to `visual_all`.

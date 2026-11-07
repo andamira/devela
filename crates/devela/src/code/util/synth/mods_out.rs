@@ -18,9 +18,7 @@ pub use crate::boot::mods_out;
 #[doc = include_str!("../../../boot/mods_out.md")]
 #[macro_export]
 macro_rules! __devela_mods_out_docs {
-    ($($tokens:tt)*) => {
-        $crate::mods_out·! { $($tokens)* }
-    };
+    ($($tokens:tt)*) => { $crate::mods_out·! { $($tokens)* } };
 }
 #[cfg(doc)]
 #[doc(inline)]

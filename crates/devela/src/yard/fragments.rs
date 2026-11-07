@@ -31,6 +31,9 @@ crate::CONST! { hidden macro_export,
 
     /* thematic modules tree */
 
+    // 0. boot (the first bootstrapping)
+    _DOC_BOOT = "Minimal, documentation-independent crate bootstrap.";
+
     // 1. code (the grammar beneath the crate)
     _DOC_CODE            = "Code structure, semantics, and foundational utilities.";
     _DOC_CODE_ANY        = "Dynamic typing, type identity, and type inspection.";
