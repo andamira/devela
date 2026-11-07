@@ -61,7 +61,9 @@ See also
 
 - 1.101: ` `[align(8) for RawWakerVTable](https://github.com/rust-lang/rust/pull/158186)
 - 1.101: `c`[arc_is_unique](https://github.com/rust-lang/rust/pull/163458)
-- 1.101: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/issues/117729)
+- 1.101: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/pull/146099)
+- 1.101: ` `[Drop array elements in order after a partial move](https://github.com/rust-lang/rust/pull/165037)
+- 1.101: ` `[Lower #[no_mangle] to #[symbol_name]/#[link_name]](https://github.com/rust-lang/rust/pull/159374)
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: `c`[optimize_attribute](https://github.com/rust-lang/rust/pull/157273)
@@ -90,6 +92,7 @@ See also
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[diagnostic::on_unknown](https://github.com/rust-lang/rust/pull/163636)
 - 1.??: `c`[disjoint_bitor](https://github.com/rust-lang/rust/pull/165009)
+- 1.??: `c`[duration_millis_float](https://github.com/rust-lang/rust/pull/165566)
 - 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
 - 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)

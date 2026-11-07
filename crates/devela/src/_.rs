@@ -112,6 +112,7 @@
         cstr_display,
         derive_coerce_pointee,
         disjoint_bitor,
+        duration_millis_float,
         float_bits_const,
         fn_align,
         frontmatter,
