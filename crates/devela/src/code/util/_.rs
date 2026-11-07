@@ -56,7 +56,7 @@ synth::mods_in! {
     mod lets; // lets!
     mod whilst; // whilst!
 }
-synth::mods_out! { // _mods, _pub_mods, _reexports, _hidden
+crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

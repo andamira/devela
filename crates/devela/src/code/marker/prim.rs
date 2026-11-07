@@ -10,7 +10,7 @@
 
 #[cfg(all(doc, feature = "cast"))]
 use crate::{PrimCast, PrimJoin, PrimSplit};
-#[cfg(doc)]
+#[cfg(all(doc, root_num))]
 use crate::{PrimFloat, PrimIndex, PrimInt, PrimScalar, PrimSint, PrimUint};
 
 macro_rules! _impl_prim {

@@ -37,7 +37,7 @@ util::mods_in! {
     pub mod_ result; // Generic outcome and resolution types
     pub mod_ source; // Source-code location, provenance, and inclusion
 }
-util::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
+crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
         pub use super::{
             build::_all::*,

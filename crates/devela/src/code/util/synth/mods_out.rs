@@ -1,166 +1,36 @@
 //
-//! Defines the [`mods_out!`] macro.
+//! Public facade for the bootstrapped `mods_out!` macro.
+//!
+//! Normal builds re-export the implementation directly. Rustdoc uses a
+//! forwarding macro to avoid duplicating documentation across re-exports.
 //
 
+#[cfg(not(doc))]
+pub use crate::boot::mods_out;
+
+#[cfg(doc)]
+#[doc(hidden)]
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
 #[doc = crate::_doc_meta!{
     location("code/util/synth", macro mods_out),
 }]
-/// This macro generates a set of structural helper modules that centralize export logic
-/// according to intended visibility and usage. It reduces boilerplate and enforces a
-/// consistent module layout across workspace crates.
-///
-/// <div class="warning">
-///
-/// **Usage Constraints:**
-/// - Module blocks must be specified in the exact order shown below (all are optional).
-/// - This macro defines internal modules with reserved names
-///   (`_mods`, `_pub_mods`, `_reexports`, `_crate_internals`, `_hidden`, and `_all`).
-///   Do not define modules with these names in the same scope.
-///
-/// Violating either rule will result in compilation errors or incorrect aggregation.
-/// </div>
-///
-/// # Generated Modules
-///
-/// The macro can generate these optional modules:
-///
-/// - `_mods`: Public items from non-public modules. Items should be `pub`.
-/// - `_pub_mods`: Public items from public modules. Items should be `pub` and use `doc(inline)`.
-/// - `_reexports`: Public items from other modules, crates, or the std. Items should be `pub`.
-/// - `_crate_internals`: Crate-private items (`pub(crate)`) re-exported within the crate.
-/// - `_hidden`: Public but hidden items (`pub`, `doc(hidden)`).
-///
-/// An `_all` module is always generated. It aggregates exports from `_mods`, `_pub_mods`,
-/// and `_reexports`, when present.
-///
-///
-/// # Usage Patterns
-/// ```ignore
-/// use devela::mods_out;
-///
-/// # mod some_module {}
-/// # mod other_module {}
-/// # pub mod public_module { pub(super) mod _all {} }
-/// # mod _reexport {}
-/// # mod internal_utils {}
-/// mods_out! {
-///     _mods {
-///         pub use super::{some_module::*, other_module::*};
-///     }
-///     _pub_mods {
-///         #[doc(inline)]
-///         pub use super::public_module::_all::*;
-///     }
-///     _reexports {
-///         pub use super::_reexport::*;
-///     }
-///     _crate_internals {
-///         pub(crate) use super::internal_utils::*;
-///     }
-/// }
-/// ```
-///
-/// # Notes
-///
-/// - Generated modules use `#[allow(unused_imports)]` to avoid warnings
-///   caused by intra-crate visibility boundaries.
-/// - Each module in the hierarchy must forward its structural exports upward
-///   to preserve the intended public API surface.
-///
-///
-/// # Re-export policy
-///
-/// `_mods` and `_pub_mods` preserve the structural public API as it propagates
-/// through the module hierarchy.
-///
-/// - `_reexports`: Explicit public re-exports shown in the current module.
-///   They may come from other modules, workspace crates, dependencies, or
-///   Rust's libraries. When used to promote items through the module hierarchy,
-///   the selection may become progressively more selective at higher levels.
-//
-// We use the pattern `$(_mods$($has_mods:lifetime)?)?` where the optional lifetime parameter
-// serves as a marker to conditionally include the module in `_all`. The lifetime is never
-// actually used, simply allowing us to detect the presence of the module during expansion.
+#[doc = include_str!("../../../boot/mods_out.md")]
 #[macro_export]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! mods_out· {
-    (
-        // Items inside should be pub.
-        // Public items from non-public modules. They bubble up and show up in the current module.
-        $( $(_mods$($has_mods:lifetime)?)? { $($block_mods:tt)* } )?
-
-        // Items inside should be pub & doc(inline).
-        // Public items from public modules. They bubble up but are hidden in the current module.
-        $( $(_pub_mods$($has_pub_mods:lifetime)?)? { $($block_pub_mods:tt)* } )?
-
-        // Items inside should be pub.
-        // Explicit visible re-exports from elsewhere.
-        // Also used for selected upward promotion through the module hierarchy.
-        $( $(_reexports$($has_reexports:lifetime)?)? { $($block_reexports:tt)* } )?
-
-        // Items inside should be pub(crate).
-        // They are re-exported from the root of the current crate.
-        $( _crate_internals { $($block_crate_internals:tt)* } )?
-
-        // Items inside should be pub & doc(hidden).
-        // They are publicly re-exported from the root of the crate.
-        $( _hidden { $($block_hidden:tt)* } )?
-    ) => {
-        $(
-            #[allow(unused_imports)]
-            pub use _mods::*;
-            mod _mods { #![allow(unused_imports)]
-                $($block_mods)*
-            }
-        )?
-        $(
-            #[allow(unused_imports)]
-            #[doc(hidden, no_inline)]
-            pub use _pub_mods::*;
-            mod _pub_mods { #![allow(unused_imports)]
-                $($block_pub_mods)*
-            }
-        )?
-        $(
-            #[allow(unused_imports)]
-            #[doc(inline)]
-            pub use _reexports::*;
-            mod _reexports { #![allow(unused_imports)]
-                $($block_reexports)*
-            }
-        )?
-        $(
-            #[allow(unused_imports)]
-            pub(crate) use _crate_internals::*;
-            pub(crate) mod _crate_internals { #![allow(unused_imports)]
-                $($block_crate_internals)*
-            }
-        )?
-        pub(crate) mod _all { #![allow(unused_imports)]
-            $($($($has_mods)?
-                #[doc(inline)]
-                pub use super::_mods::*;
-            )?)?
-            $($($($has_pub_mods)?
-                #[doc(inline)]
-                pub use super::_pub_mods::*;
-            )?)?
-            $($($($has_reexports)?
-                #[doc(inline)]
-                pub use super::_reexports::*;
-            )?)?
-        }
-        $(
-            #[allow(unused_imports)]
-            pub use _hidden::*;
-            pub(crate) mod _hidden { #![allow(unused_imports)]
-                $($block_hidden)*
-            }
-        )?
+macro_rules! __devela_mods_out_docs {
+    ($($tokens:tt)*) => {
+        $crate::mods_out·! { $($tokens)* }
     };
 }
+#[cfg(doc)]
 #[doc(inline)]
-#[deprecated]
-pub use mods_out· as mods_out;
+pub use __devela_mods_out_docs as mods_out;
+
+// NOTE: this duplicates the added docs, multiple times.
+//
+// #[doc = crate::_tags!(code)]
+// /// Defines a standardized module structure for organizing visibility and re-exports.
+// #[doc = crate::_doc_meta!{
+//     location("code/util/synth", macro mods_out),
+// }]
+// pub use crate::boot::mods_out;

@@ -142,7 +142,7 @@ __docs_internal = ["devela_macros/__docs_internal"] # enables documentation for 
 __disable_native_libs = [] # disables native libraries from being detected
 __exclude_test = [] # excludes specific examples from being tested
 __force_miri_dst = [] # inhibits disabling miri on several modules
-__select_modules = ["code"] # include only selected root modules (code + yard baseline)
+__select_modules = [] # include only explicitly selected roots
 
 
 #* Environment features *#

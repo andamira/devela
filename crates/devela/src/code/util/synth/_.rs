@@ -23,7 +23,7 @@ mods_in! {
     mod unroll; // unroll!
     mod use_as; // use_as!
 }
-mods_out::mods_out! { // _mods, _reexports, _hidden
+crate::boot::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
         pub use super::{

@@ -50,6 +50,9 @@ This release…
 - rename feature `rand` to `prng`.
 
 ### structure
+- introduce a private `boot` module for essential crate-construction macros and doc fragments.
+- move `mods_out!` into boot, retaining its public documentation through a rustdoc-only facade.
+- move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`
   and `BitSized` implementations and separating buffered size diagnostics.
 - move `Version` and `VersionFull` buffered text encoding into `text::fmt`;

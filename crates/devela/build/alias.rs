@@ -27,12 +27,14 @@ pub(crate) fn main() -> Result<(), IoError> {
     Ok(())
 }
 
-// 12
-// root_[data|error|geom|lang|media|num|phys|run|sys|text|ui|work]
+// 14
+// root_[code|data|error|geom|lang|media|num|phys|run|sys|text|ui|work|yard]
 fn module_aliases(aliases: &mut Vec<&'static str>) {
     let selective = var_os("CARGO_FEATURE___SELECT_MODULES").is_some();
+    let mut any_root = false;
 
     for (feature, alias) in [
+        ("CARGO_FEATURE_CODE", "root_code"),
         ("CARGO_FEATURE_DATA", "root_data"),
         ("CARGO_FEATURE_ERROR", "root_error"),
         ("CARGO_FEATURE_GEOM", "root_geom"),
@@ -48,7 +50,14 @@ fn module_aliases(aliases: &mut Vec<&'static str>) {
     ] {
         if !selective || var_os(feature).is_some() {
             new_alias(aliases, alias);
+            any_root = true;
         }
+    }
+
+    // Internal scaffolding, not a user-facing feature.
+    println!("cargo:rerun-if-env-changed=DEVELA_BENCH_YARD");
+    if any_root || var_os("DEVELA_BENCH_YARD").is_some() {
+        new_alias(aliases, "root_yard");
     }
 }
 

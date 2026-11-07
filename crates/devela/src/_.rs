@@ -152,9 +152,11 @@
     // rustc flags:
     hide(
         miri, ffi··, ffi_alsa··, ffi_xcb_shm··,
+        root_code,
         root_data, root_error, root_geom, root_lang,
         root_media, root_num, root_phys, root_run,
         root_sys, root_text, root_ui, root_work,
+        root_yard,
     ),
     // features:
     hide(feature, values(
@@ -194,13 +196,23 @@ extern crate self as devela;
 
 /* root modules */
 
-// `code` bootstraps the module macros; `yard` supplies the shared scaffolding.
-// In `__select_modules` mode, other root modules require their own root feature.
+// - `boot` contains the machinery that must exist before ordinary modules can be constructed.
+// - `__select_modules` makes other root modules require their own root feature.
+// - `code` contains semantic code utilities, including public macro facades.
+// - `yard` provides shared internal infrastructure and documentation support.
 
-#[path = "code/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`
+#[path = "boot/_.rs"]
+mod boot; // Bootstrapping abstractions
+#[cfg(not(root_code))]
+pub(crate) use boot::{mods_in, mods_out};
+
+#[cfg(root_code)]
+#[path = "code/_.rs"]
 pub mod code; // Code structure, semantics, and foundational utilities
 
-crate::mods_in! {
+boot::mods_in! {
+    #[cfg(all(doc, not(doctest), root_yard))]
+    #[cfg_attr(nightly_doc, doc(cfg(doc)))]
     pub mod_ _doc; // Extra documentation about the library
 
     #[cfg(root_data)]
@@ -240,20 +252,24 @@ crate::mods_in! {
     pub mod_ work; // Computational work, its coordination, and its execution
 
     // internal
+    #[cfg(root_yard)]
     pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
 }
 #[doc(hidden)]
+#[cfg(root_yard)]
 pub use yard::dep as _dep;
 
 /* manual mods_out!: */
 
 #[rustfmt::skip]
-#[doc = crate::_DOC_ALL_!()]
-#[doc = crate::_doc!(br+hr)] // gives way to the first root module
-#[doc = crate::_DOC_ALL_PLUS_!()]
+#[doc = crate::boot::_DOC_ALL_!()]
+#[doc = "<br/><hr/>"] // gives way to the first root module
+#[doc = crate::boot::_DOC_ALL_PLUS_!()]
 pub mod all_ {
     macro_rules! _COMMON_DOC { ($mod:literal) => { concat!(" ",
         crate::_doc!(root:$mod), "\n\nAll `", $mod,"` module's items flat re-exported.") }; }
+
+    #[cfg(root_code)]
     #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), _COMMON_DOC!("code")]]
     pub mod _code { #[allow(unused)] pub use super::super::code::_all::*; }
 
@@ -310,12 +326,14 @@ pub mod all_ {
 // public items, feature-gated, visible at their origin and in `all`:
 // WAIT: [doc(canonica)](https://github.com/rust-lang/rfcs/issues/3011)
 #[doc(hidden)]
+#[allow(unused_imports)]
 pub use all::*;
-#[doc = crate::_DOC_ALL!()]
+#[doc = crate::boot::_DOC_ALL!()]
 pub mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
+    #[cfg(root_code)]
     pub use super::code::_all::*;
 
     #[doc(inline)]
@@ -374,6 +392,7 @@ mod _crate_internals {
     //! Crate-internal, hidden items.
     #![allow(unused_imports)]
 
+    #[cfg(root_code)]
     pub(crate) use super::code::_crate_internals::*;
 
     #[cfg(root_data)]
@@ -412,10 +431,12 @@ mod _crate_internals {
     #[cfg(root_work)]
     pub(crate) use super::work::_crate_internals::*;
 
+    #[cfg(root_yard)]
     pub(crate) use super::yard::_crate_internals::*;
 }
 
 #[doc(hidden)]
+#[allow(unused_imports)]
 pub use __hidden::*;
 #[doc(hidden)]
 pub mod __hidden {
@@ -423,6 +444,7 @@ pub mod __hidden {
     #![allow(unused_imports)]
 
     #[doc(hidden)]
+    #[cfg(root_code)]
     pub use super::code::_hidden::*;
 
     #[doc(hidden)]
@@ -454,10 +476,11 @@ pub mod __hidden {
     pub use super::work::_hidden::*;
 
     #[doc(hidden)]
+    #[cfg(root_yard)]
     pub use super::yard::_hidden::*;
 }
 
-// Highlights
+// highlights
 #[doc(inline)]
 #[allow(unused_imports)]
 pub use _reexports::*;
@@ -467,6 +490,7 @@ mod _reexports { // 39
 
     // code: 3
     #[doc(inline)]
+    #[cfg(root_code)]
     pub use super::code::{ConstInit, const_assert, unwrap};
 
     // data: 5

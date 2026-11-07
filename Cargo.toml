@@ -290,8 +290,8 @@ check-cfg = [ # Allowed configuration flags:
 	'cfg(target_vendor, values("vex"))', # WAIT
 	#
 	# Target cfg aliases. In sync with build/main/alias.rs
-	'cfg(root_data, root_error, root_geom, root_lang, root_media, root_num)',
-	'cfg(root_phys, root_run, root_sys, root_text, root_ui, root_work)',
+	'cfg(root_code, root_data, root_error, root_geom, root_lang, root_media, root_num)',
+	'cfg(root_phys, root_run, root_sys, root_text, root_ui, root_work, root_yard)',
 	"cfg(any_target_arch_linux)", # target_arch = x86_64 | x86 | arm | aarch64 | riscv32 | riscv64
 	"cfg(any_target_arch_riscv)", # target_arch = riscv32 | riscv64
 	"cfg(linux_syscall_target)", # supported Linux arch + target_os = linux | none

@@ -29,19 +29,6 @@ crate::CONST! { hidden macro_export,
         /// - <https://en.wikipedia.org/wiki/Permuted_congruential_generator>
         _ABBR_PCG  = "<abbr title='Permuted congruential generator'>PCG</abbr>";
 
-    /* misc. root modules */
-
-    _DOC_ALL  = "All crate items re-exported in a single flat namespace.\n\n
-<br/>Every item in this namespace is forwarded upward, as every other public module does.";
-
-    _DOC_ALL_ = "All crate items re-exported, grouped by their root modules.";
-    _DOC_ALL_PLUS_ = "\n\nEach root module appears here and provides
-its own flat view of all its public children.
-
-Click on the `▽` symbol after the list of submodules to switch to hierarchical view,
-and `◉` to switch back to flat view.
-";
-
     /* thematic modules tree */
 
     // 1. code (the grammar beneath the crate)

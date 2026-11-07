@@ -9,9 +9,6 @@
 //! It gives space to ideas, conventions, and accumulated knowledge
 //! that concern the library as a whole, evolving with the code.
 //
-#![cfg(doc)]
-#![cfg(not(doctest))]
-#![cfg_attr(nightly_doc, doc(cfg(doc)))]
 
 crate::mods_in! {
     pub mod_ design; // Principles, structure, and API conventions.
