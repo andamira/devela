@@ -61,10 +61,10 @@ _impl_prim![Prim for
 #[doc(alias = "PrimitiveFitPtr")]
 pub trait PrimFitPtr: Prim {}
 
-_impl_prim![PrimFitPtr for (), bool, u8, i8, usize, isize];
-#[cfg(target_pointer_width = "16")]
-_impl_prim![PrimFitPtr for u16, i16];
-#[cfg(target_pointer_width = "32")]
-_impl_prim![PrimFitPtr for u16, u32, i16, i32, f32, char];
+_impl_prim![PrimFitPtr for (), bool, u8, u16, i8, i16, usize, isize];
+
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+_impl_prim![PrimFitPtr for u32, i32, f32, char];
+
 #[cfg(target_pointer_width = "64")]
-_impl_prim![PrimFitPtr for u16, u32, u64, i16, i32, i64, f32, f64, char];
+_impl_prim![PrimFitPtr for u64, i64, f64];

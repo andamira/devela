@@ -109,6 +109,8 @@ This release…
 #### num::grain
 - feature gate `Cast` implementations.
 - feature gate `PrimCast`, `PrimJoin` and `PrimSplit` traits.
+- add `ReprInt::VALUE_BITS` to expose numeric value-bit capacity across integer representations.
+- impl `ReprInt` for `NonValue*` and `NonZero*`.
 
 ##### num::grain::niche
 - add `BittenU16<B>` for all 17 capacities and `BittenU32<B>` for all 33 capacities, 
@@ -116,6 +118,7 @@ This release…
 - expand niche module documentation from the byte-specific type to the supported `BittenU*` family.
 - refactor shared `BittenU*` representation selection and integrate `BittenU16` and `BittenU32`
   with `MaybeNiche`, `ReprInt`, `ReprIndex`, and `handle!`.
+- make `BittenU*::BITTEN` and `BittenU*::BITS` available generically for every supported capacity.
 - gate `NonNiche` and `NonZero` impls from `MaybeNiche`.
 
 #### num::quant

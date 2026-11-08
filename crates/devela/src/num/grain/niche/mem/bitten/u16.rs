@@ -34,14 +34,23 @@ where
 
 pub(crate) struct _BittenU16Select<const B: u8>;
 
+/// Value-capacity metadata shared by every supported `B`.
+#[expect(
+    private_bounds,
+    reason = "the private _BittenSpec bound restricts B to supported capacities"
+)]
+impl<const B: u8> BittenU16<B>
+where
+    _BittenU16Select<B>: _BittenSpec,
+{
+    /// The number of high capacity bits removed from the `u16` domain.
+    pub const BITTEN: u8 = B;
+    /// The number of remaining value-capacity bits.
+    pub const BITS: u8 = 16 - B;
+}
+
 macro_rules! _impl_bitten_u16_common {
     ($B:literal) => {
-        /// The number of high capacity bits removed from the `u16` domain.
-        pub const BITTEN: u8 = $B;
-
-        /// The number of remaining value-capacity bits.
-        pub const BITS: u8 = 16 - $B;
-
         const MAX_PRIM: u16 = ((1_u32 << (16_u32 - $B as u32)) - 1) as u16;
 
         /// The minimum representable value.

@@ -33,14 +33,23 @@ where
 
 pub(crate) struct _BittenU32Select<const B: u8>;
 
+/// Value-capacity metadata shared by every supported `B`.
+#[expect(
+    private_bounds,
+    reason = "the private _BittenSpec bound restricts B to supported capacities"
+)]
+impl<const B: u8> BittenU32<B>
+where
+    _BittenU32Select<B>: _BittenSpec,
+{
+    /// The number of high capacity bits removed from the `u8` domain.
+    pub const BITTEN: u8 = B;
+    /// The number of remaining value-capacity bits.
+    pub const BITS: u8 = 32 - B;
+}
+
 macro_rules! _impl_bitten_u32_common {
     ($B:literal) => {
-        /// The number of high capacity bits removed from the `u32` domain.
-        pub const BITTEN: u8 = $B;
-
-        /// The number of remaining value-capacity bits.
-        pub const BITS: u8 = 32 - $B;
-
         // checked_shr also handles the zero-capacity endpoint (B = 32).
         const MAX_PRIM: u32 = unwrap![some_or u32::MAX.checked_shr($B as u32), 0];
 

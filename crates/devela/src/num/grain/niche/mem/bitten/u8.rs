@@ -85,12 +85,23 @@ impl _BittenSpec for _BittenU8Select<8> {
 
 /* endpoints */
 
+/// Value-capacity metadata shared by every supported `B`.
+#[expect(
+    private_bounds,
+    reason = "the private _BittenSpec bound restricts B to supported capacities"
+)]
+impl<const B: u8> BittenU8<B>
+where
+    _BittenU8Select<B>: _BittenSpec,
+{
+    /// The number of high capacity bits removed from the `u8` domain.
+    pub const BITTEN: u8 = B;
+    /// The number of remaining value-capacity bits.
+    pub const BITS: u8 = 8 - B;
+}
+
 #[rustfmt::skip]
 impl BittenU8<0> {
-    /// The number of high capacity bits removed from the `u8` domain.
-    pub const BITTEN: u8 = 0;
-    /// The number of remaining value-capacity bits.
-    pub const BITS: u8 = 8;
     /// The number of distinct representable values.
     pub const VALUES: u16 = 256;
 
@@ -129,10 +140,6 @@ impl BittenU8<0> {
 
 #[rustfmt::skip]
 impl BittenU8<8> {
-    /// The number of high capacity bits removed from the `u8` domain.
-    pub const BITTEN: u8 = 8;
-    /// The number of remaining value-capacity bits.
-    pub const BITS: u8 = 0;
     /// The number of distinct representable values.
     pub const VALUES: u16 = 1;
 
@@ -174,12 +181,6 @@ impl BittenU8<8> {
 macro_rules! impl_bitten_u8 {
     ($B:literal, $Repr:ident, $bits:literal, $values:literal, $max:literal) => {
         impl BittenU8<$B> {
-            /// The number of high capacity bits removed from the `u8` domain.
-            pub const BITTEN: u8 = $B;
-
-            /// The number of remaining value-capacity bits.
-            pub const BITS: u8 = $bits;
-
             /// The number of distinct representable values.
             pub const VALUES: u16 = $values;
 

@@ -100,10 +100,10 @@ _impl_prim![PrimFloat for f32, f64];
 #[doc(alias = "PrimitiveIndex")]
 pub trait PrimIndex: PrimUint + PrimFitPtr {}
 
-_impl_prim![PrimIndex for u8, usize];
-#[cfg(target_pointer_width = "16")]
-_impl_prim![PrimIndex for u16];
-#[cfg(target_pointer_width = "32")]
-_impl_prim![PrimIndex for u16, u32];
+_impl_prim![PrimIndex for u8, u16, usize];
+
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+_impl_prim![PrimIndex for u32];
+
 #[cfg(target_pointer_width = "64")]
-_impl_prim![PrimIndex for u16, u32, u64];
+_impl_prim![PrimIndex for u64];

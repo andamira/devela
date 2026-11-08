@@ -7,18 +7,28 @@
 // - trait ReprUint
 // - trait ReprIndex
 
-#![expect(private_bounds, reason = "Sealed traits")]
+#![expect(
+    private_bounds,
+    reason = "private traits seal Repr* implementations and constrain supported BittenU* capacities"
+)]
 
 use crate::{_BittenSpec, _BittenU8Select, BittenU8};
 #[cfg(feature = "bitten")]
 use crate::{_BittenU16Select, _BittenU32Select, BittenU16, BittenU32};
-use crate::{NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU128, NonMaxUsize};
-use crate::{NonMinI8, NonMinI16, NonMinI32, NonMinI64, NonMinI128, NonMinIsize};
-use crate::{PrimIndex, PrimInt, PrimSint, PrimUint, items};
+use crate::{NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxUsize};
+use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
+use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
+use crate::{NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize};
+use crate::{NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize};
+use crate::{PrimIndex, PrimInt, PrimSint, PrimUint};
 
 macro_rules! _impl_prim {
     ($trait:ident for $($P:ty),+ $(,)?) => { $( _impl_prim![% $trait for $P]; )+ };
     (%$trait:ident for $P:ty) => { impl $trait for $P {} };
+}
+macro_rules! _impl_nv {
+    ($trait:ident for $($P:ident<$V:ident>),+ $(,)?) => { $( _impl_nv![% $trait for $P<$V>]; )+ };
+    (%$trait:ident for $P:ident<$V:ident>) => { impl<const V: $V> $trait for $P<V> {} };
 }
 
 /// Marker trait to prevent downstream implementations of the `Repr*` traits.
@@ -27,8 +37,14 @@ trait Sealed {}
 _impl_prim![Sealed for
     i8, i16, i32, i64, i128, isize,
     u8, u16, u32, u64, u128, usize,
-    NonMinI8, NonMinI16, NonMinI32, NonMinI64, NonMinI128, NonMinIsize,
-    NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU128, NonMaxUsize,
+    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
+    NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+];
+_impl_nv![Sealed for
+    NonValueI8<i8>, NonValueI16<i16>, NonValueI32<i32>, NonValueI64<i64>,
+    NonValueI128<i128>, NonValueIsize<isize>,
+    NonValueU8<u8>, NonValueU16<u16>, NonValueU32<u32>, NonValueU64<u64>,
+    NonValueU128<u128>, NonValueUsize<usize>,
 ];
 
 #[doc = crate::_tags!(num primitive niche)]
@@ -40,36 +56,85 @@ _impl_prim![Sealed for
 /// and exposes their primitive carrier through [`Prim`][Self::Prim].
 ///
 /// Implementations include primitive integers and selected niche-backed types.
+///
+/// `VALUE_BITS` describes numeric value width,
+/// not storage size or the number of valid representations.
+///
+/// Excluding isolated values does not reduce this width: for example,
+/// `NonZeroU32` and `NonMaxU32` retain 32 value bits. Representations
+/// such as `BittenU32<4>` instead reduce the numeric capacity itself
+/// and therefore report 28 value bits.
 #[doc(alias = "IntegerRepresentation")]
 pub trait ReprInt: Sealed + Copy + 'static {
     /// The primitive integer carrier of this representation.
     type Prim: PrimInt;
+
+    /// Bits of numeric value capacity represented by this type.
+    const VALUE_BITS: u32;
 }
-items! {
-    impl ReprInt for i8 { type Prim = i8; }
-    impl ReprInt for i16 { type Prim = i16; }
-    impl ReprInt for i32 { type Prim = i32; }
-    impl ReprInt for i64 { type Prim = i64; }
-    impl ReprInt for i128 { type Prim = i128; }
-    impl ReprInt for isize { type Prim = isize; }
-    impl ReprInt for u8 { type Prim = u8; }
-    impl ReprInt for u16 { type Prim = u16; }
-    impl ReprInt for u32 { type Prim = u32; }
-    impl ReprInt for u64 { type Prim = u64; }
-    impl ReprInt for u128 { type Prim = u128; }
-    impl ReprInt for usize { type Prim = usize; }
-    impl ReprInt for NonMaxU8 { type Prim = u8; }
-    impl ReprInt for NonMaxU16 { type Prim = u16; }
-    impl ReprInt for NonMaxU32 { type Prim = u32; }
-    impl ReprInt for NonMaxU64 { type Prim = u64; }
-    impl ReprInt for NonMaxU128 { type Prim = u128; }
-    impl ReprInt for NonMaxUsize { type Prim = usize; }
-    impl ReprInt for NonMinI8 { type Prim = i8; }
-    impl ReprInt for NonMinI16 { type Prim = i16; }
-    impl ReprInt for NonMinI32 { type Prim = i32; }
-    impl ReprInt for NonMinI64 { type Prim = i64; }
-    impl ReprInt for NonMinI128 { type Prim = i128; }
-    impl ReprInt for NonMinIsize { type Prim = isize; }
+
+macro_rules! impl_repr_int_prim {
+    ($($for:ty, $prim:ty, $bits:expr);+ $(;)?) => {
+        $( impl_repr_int_prim! { % $for, $prim, $bits } )+
+    };
+    (% $for:ty, $prim:ty, $bits:expr) => {
+        impl ReprInt for $for {
+            type Prim = $prim;
+            const VALUE_BITS: u32 = $bits;
+        }
+    };
+}
+impl_repr_int_prim! {
+    i8, i8, 8;
+    i16, i16, 16;
+    i32, i32, 32;
+    i64, i64, 64;
+    i128, i128, 128;
+    isize, isize, isize::BITS;
+    u8, u8, 8;
+    u16, u16, 16;
+    u32, u32, 32;
+    u64, u64, 64;
+    u128, u128, 128;
+    usize, usize, usize::BITS;
+    NonZeroI8, i8, 8;
+    NonZeroI16, i16, 16;
+    NonZeroI32, i32, 32;
+    NonZeroI64, i64, 64;
+    NonZeroI128, i128, 128;
+    NonZeroIsize, isize, isize::BITS;
+    NonZeroU8, u8, 8;
+    NonZeroU16, u16, 16;
+    NonZeroU32, u32, 32;
+    NonZeroU64, u64, 64;
+    NonZeroU128, u128, 128;
+    NonZeroUsize, usize, usize::BITS;
+}
+
+macro_rules! impl_repr_int_nv {
+    ($($for:ident, $prim:ty, $bits:expr);+ $(;)?) => {
+        $( impl_repr_int_nv! { % $for, $prim, $bits } )+
+    };
+    (% $for:ident, $prim:ty, $bits:expr) => {
+        impl<const V: $prim> ReprInt for $for<V> {
+            type Prim = $prim;
+            const VALUE_BITS: u32 = $bits;
+        }
+    };
+}
+impl_repr_int_nv! {
+    NonValueI8, i8, 8;
+    NonValueI16, i16, 16;
+    NonValueI32, i32, 32;
+    NonValueI64, i64, 64;
+    NonValueI128, i128, 128;
+    NonValueIsize, isize, isize::BITS;
+    NonValueU8, u8, 8;
+    NonValueU16, u16, 16;
+    NonValueU32, u32, 32;
+    NonValueU64, u64, 64;
+    NonValueU128, u128, 128;
+    NonValueUsize, usize, usize::BITS;
 }
 
 macro_rules! _impl_bitten_repr {
@@ -80,6 +145,7 @@ macro_rules! _impl_bitten_repr {
             $Select<B>: _BittenSpec,
         {
             type Prim = $Prim;
+            const VALUE_BITS: u32 = <$Prim>::BITS - B as u32;
         }
     };
 }
@@ -149,10 +215,10 @@ where
 #[doc(alias = "PrimitiveIndexRepresentation")]
 pub trait ReprIndex: ReprUint + ReprInt<Prim: PrimIndex> {}
 
-_impl_prim![ReprIndex for u8, usize, NonMaxU8, NonMaxUsize];
-#[cfg(target_pointer_width = "16")]
-_impl_prim![ReprIndex for u16, NonMaxU16];
-#[cfg(target_pointer_width = "32")]
-_impl_prim![ReprIndex for u16, u32, NonMaxU16, NonMaxU32];
+_impl_prim![ReprIndex for u8, usize, NonMaxU8, NonMaxU16, NonMaxUsize];
+
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+_impl_prim![ReprIndex for u32, NonMaxU32];
+
 #[cfg(target_pointer_width = "64")]
-_impl_prim![ReprIndex for u16, u32, u64, NonMaxU16, NonMaxU32, NonMaxU64];
+_impl_prim![ReprIndex for u64, NonMaxU64];
