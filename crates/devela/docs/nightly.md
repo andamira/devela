@@ -74,6 +74,15 @@ See also
 - 1.101: `a`[vec_try_remove](https://github.com/rust-lang/rust/pull/163459)
 - 1.101: ` `[-Zembed-metadata](https://github.com/rust-lang/rust/pull/163436)
 
+
+# 1.102 will be stable on [2027-02-04](https://releases.rs/docs/1.102.0/) `nightly_stable_1_102`
+> - <https://github.com/rust-lang/rust/milestone/153>
+<!-- > - <https://blog.rust-lang.org/2027/02/04/Rust-1.102.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.102.0> -->
+
+- 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
+
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
@@ -127,6 +136,7 @@ See also
 - 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
+- 1.??: ` `[stabilize stack-protector](https://github.com/rust-lang/rust/pull/165704)
 - 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `c`[string_into_chars](https://github.com/rust-lang/rust/pull/163816)
 - 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)

@@ -91,7 +91,7 @@
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
 // `nightly_stable_1_102`: core, alloc, std:
-// #![cfg_attr(nightly_stable_1_102, feature(,))]
+#![cfg_attr(nightly_stable_1_102, feature(alignment_type))]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "std"), feature())]
 //
