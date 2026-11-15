@@ -15,7 +15,7 @@ crate::mods_in! {
 
     #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
     #[cfg_attr(nightly_doc, doc(cfg(all(feature = "alloc", feature = "unsafe_layout"))))]
-    mod bump; // BumpAlloc
+    mod bump; // AllocBump
 
     #[cfg(all(
         target_os = "linux",
@@ -31,7 +31,7 @@ crate::mods_in! {
         nightly_doc,
         doc(cfg(all(feature = "alloc", feature = "unsafe_layout", target_arch = "wasm32")))
     )]
-    mod wasm; // WasmAlloc
+    mod wasm; // AllocWasm
 }
 crate::mods_out! { // _mods, _reexports
     _mods {

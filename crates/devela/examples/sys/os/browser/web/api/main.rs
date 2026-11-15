@@ -6,7 +6,7 @@
 #![allow(clippy::deref_addrof, reason = "safe references to static mut")]
 // https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-references.html#safe-references
 
-use devela::{Event, JsConsole as console, JsInstant, Wasm, WasmAlloc};
+use devela::{AllocWasm, Event, JsConsole as console, JsInstant, Wasm};
 use devela::{Web, WebDocument as document, WebWindow as window};
 use devela::{WebEventIngress, WebEventKind};
 use devela::{WebEventKey, WebEventMouse, WebEventPointer, WebEventWheel};
@@ -16,7 +16,7 @@ use devela::{format_buf as fmt, items};
 devela::set_panic_handler![web];
 
 #[global_allocator]
-static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
+static ALLOCATOR: AllocWasm = AllocWasm::INIT;
 
 /// Global formatting buffer shared by browser callbacks and frame processing.
 static mut BUF: [u8; 1024] = [0; 1024];

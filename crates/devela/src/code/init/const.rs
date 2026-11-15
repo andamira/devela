@@ -189,7 +189,7 @@ mod impl_core {
         // SAFETY: The empty string is valid UTF-8.
         const INIT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) }; }
 
-    #[cfg(nightly_coro)]
+    #[cfg(all(nightly_coro, feature = "coro"))]
     _impl_init![<Y: ConstInit, R: ConstInit>
         Self::Yielded(Y::INIT) => crate::CoroutineState<Y, R> ];
 

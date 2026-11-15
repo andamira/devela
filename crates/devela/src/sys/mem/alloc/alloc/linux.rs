@@ -1,12 +1,12 @@
 //
-//! Defines [`LinuxMmapAlloc`].
+//! Defines [`AllocLinuxMmap`].
 
 use crate::{GlobalAlloc, Libc, Mem, MemLayout, Ptr, c_void, is};
 
 #[doc = crate::_tags!(linux allocation)]
 /// A Linux global memory allocator backed directly by anonymous `mmap`.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/alloc", struct LinuxMmapAlloc),
+    location("sys/mem/alloc", struct AllocLinuxMmap),
 }]
 /// This allocator maps one anonymous private memory region per allocation
 /// and unmaps it on deallocation.
@@ -23,29 +23,29 @@ use crate::{GlobalAlloc, Libc, Mem, MemLayout, Ptr, c_void, is};
 ///
 /// # Examples
 /// ```ignore
-/// use devela::LinuxMmapAlloc;
+/// use devela::AllocLinuxMmap;
 ///
 /// #[global_allocator]
-/// static ALLOCATOR: LinuxMmapAlloc = LinuxMmapAlloc::INIT;
+/// static ALLOCATOR: AllocLinuxMmap = AllocLinuxMmap::INIT;
 /// ```
 #[derive(Debug)]
-pub struct LinuxMmapAlloc;
+pub struct AllocLinuxMmap;
 
-impl LinuxMmapAlloc {
-    /// Initial value for `LinuxMmapAlloc`.
-    pub const INIT: Self = LinuxMmapAlloc;
+impl AllocLinuxMmap {
+    /// Initial value for `AllocLinuxMmap`.
+    pub const INIT: Self = AllocLinuxMmap;
 }
 
-unsafe impl Sync for LinuxMmapAlloc {}
+unsafe impl Sync for AllocLinuxMmap {}
 
 #[derive(Clone, Copy)]
 #[repr(C)]
-struct LinuxMmapAllocHeader {
+struct AllocLinuxMmapHeader {
     base: *mut u8,
     len: usize,
 }
 
-unsafe impl GlobalAlloc for LinuxMmapAlloc {
+unsafe impl GlobalAlloc for AllocLinuxMmap {
     /// Allocates memory with the given layout.
     #[allow(unused_variables, reason = "cross-platform")]
     unsafe fn alloc(&self, layout: MemLayout) -> *mut u8 {
@@ -70,7 +70,7 @@ unsafe impl GlobalAlloc for LinuxMmapAlloc {
 unsafe fn linux_mmap_alloc_impl(layout: MemLayout) -> Option<*mut u8> {
     let size = layout.size().max(1);
     let align = layout.align();
-    let header_len = size_of::<LinuxMmapAllocHeader>();
+    let header_len = size_of::<AllocLinuxMmapHeader>();
     // Extra `align` bytes leave enough room to align the user pointer after
     // the header while still storing metadata immediately before it.
     let map_len = size.checked_add(align)?.checked_add(header_len)?;
@@ -84,12 +84,12 @@ unsafe fn linux_mmap_alloc_impl(layout: MemLayout) -> Option<*mut u8> {
     let base = base.cast::<u8>();
     let start = unsafe { base.add(header_len) } as usize;
     let user = Mem::align_up(start, align) as *mut u8;
-    let header = unsafe { user.cast::<LinuxMmapAllocHeader>().sub(1) };
-    unsafe { header.write(LinuxMmapAllocHeader { base, len: map_len }); }
+    let header = unsafe { user.cast::<AllocLinuxMmapHeader>().sub(1) };
+    unsafe { header.write(AllocLinuxMmapHeader { base, len: map_len }); }
     Some(user)
 }
 
 unsafe fn linux_mmap_dealloc_impl(ptr: *mut u8) {
-    let header = unsafe { ptr.cast::<LinuxMmapAllocHeader>().sub(1).read() };
+    let header = unsafe { ptr.cast::<AllocLinuxMmapHeader>().sub(1).read() };
     let _ = unsafe { Libc::munmap(header.base.cast::<c_void>(), header.len) };
 }

@@ -24,7 +24,7 @@
   [`macro_apply_alias!`]: crate::code::util::synth::macro_apply_alias
   [`macro_derive_alias!`]: crate::code::util::synth::macro_derive_alias
   [M_mini-alloc]: crate::_doc::reference::vendored::mini_alloc
-  [`WasmAlloc`]: crate::sys::mem::alloc::WasmAlloc
+  [`AllocWasm`]: crate::sys::mem::alloc::AllocWasm
   [M_no_std_io]: crate::_doc::reference::vendored::no_std_io
   [`io`]: crate::sys::io
   [M_pastey]: crate::_doc::reference::vendored::pastey

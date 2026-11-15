@@ -24,7 +24,7 @@ See the linked modifications for detailed changes.
   and the [`macro_apply_alias!`] and [`macro_derive_alias!`] decl-macros
   ([*modifications*][M_macro_rules_attribute]).
 - <i id="mini-alloc"></i>[mini-alloc] by Offchain Labs Inc.,
-  as the [`WasmAlloc`] struct ([*modifications*][M_mini-alloc]).
+  as the [`AllocWasm`] struct ([*modifications*][M_mini-alloc]).
 - <i id="no_std_io"></i>[no_std_io]|[core2] by Brendan Molloy,
   as part of the [`sys::io`] module ([*modifications*][M_no_std_io]).
 - <i id="pastey"></i>[pastey] by Aditya Kumar,
@@ -73,7 +73,7 @@ See the linked modifications for detailed changes.
   [`macro_derive_alias!`]: https://docs.rs/devela/latest/devela/code/util/synth/macro.macro_derive-alias.html
 [mini-alloc]: https://crates.io/crates/mini-alloc/0.9.0
   [M_mini-alloc]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/mini-alloc.md
-  [`WasmAlloc`]: https://docs.rs/devela/latest/devela/sys/mem/alloc/struct.WasmAlloc.html
+  [`AllocWasm`]: https://docs.rs/devela/latest/devela/sys/mem/alloc/struct.AllocWasm.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
   [M_no_std_io]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/no_std_io.md

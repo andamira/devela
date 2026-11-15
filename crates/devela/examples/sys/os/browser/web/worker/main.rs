@@ -13,7 +13,7 @@ use devela::{JsConsole as console, Web, WebWorker, format_buf as fmt, set_panic_
 set_panic_handler! { web }
 
 // #[global_allocator]
-// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
+// static ALLOCATOR: AllocWasm = AllocWasm::INIT;
 
 /// Buffer for strings.
 static mut BUF: [u8; 1024] = [0; 1024];

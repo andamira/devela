@@ -1,5 +1,5 @@
 //
-//! Defines [`BumpAlloc`].
+//! Defines [`AllocBump`].
 //
 
 use crate::{
@@ -10,11 +10,11 @@ use crate::{
 #[doc = crate::_tags!(allocation)]
 /// A simple, single-threaded bump allocator.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/alloc", struct BumpAlloc),
+    location("sys/mem/alloc", struct AllocBump),
     #[cfg(target_pointer_size = "32")]
-    test_size_of(BumpAlloc = 8|64),
+    test_size_of(AllocBump = 8|64),
     #[cfg(target_pointer_size = "64")]
-    test_size_of(BumpAlloc = 16|128),
+    test_size_of(AllocBump = 16|128),
 }]
 /// - Allocates memory linearly from a fixed memory region.
 /// - Does not support deallocation.
@@ -26,29 +26,29 @@ use crate::{
 ///
 /// # Examples
 /// ```ignore
-/// use devela::BumpAlloc;
+/// use devela::AllocBump;
 ///
 /// #[global_allocator]
-/// static ALLOCATOR: BumpAlloc = BumpAlloc::new(0x10000, 0x20000);
+/// static ALLOCATOR: AllocBump = AllocBump::new(0x10000, 0x20000);
 /// ```
 #[derive(Debug)]
-pub struct BumpAlloc {
+pub struct AllocBump {
     current: AtomicUsize,
     end: usize,
 }
 
-impl BumpAlloc {
-    /// Creates a new `BumpAlloc` from `start..end` addresses.
+impl AllocBump {
+    /// Creates a new `AllocBump` from `start..end` addresses.
     ///
     /// # Panics
     /// Panics if `start >= end`.
     pub const fn new(start: usize, end: usize) -> Self {
         debug_assert![start < end];
-        BumpAlloc { current: AtomicUsize::new(start), end }
+        AllocBump { current: AtomicUsize::new(start), end }
     }
 }
 
-unsafe impl GlobalAlloc for BumpAlloc {
+unsafe impl GlobalAlloc for AllocBump {
     unsafe fn alloc(&self, layout: MemLayout) -> *mut u8 {
         let (align, size) = (layout.align(), layout.size());
         // Load the current allocation pointer atomically (no ordering dependency)

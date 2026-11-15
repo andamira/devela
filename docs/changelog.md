@@ -146,6 +146,8 @@ This release…
 - re-export `Allocator`, `AllocError`, `GlobalAlloc`, `MemLayout`, and
   `MemLayoutError` from `core::alloc`, without requiring `alloc`.
 - re-export `Global` as `AllocGlobal` and rename `SystemAlloc` to `AllocSystem`.
+- rename `BumpAlloc` to AllocBump, `LinuxMmapAlloc` to `AllocLinuxMmap` and
+  `WasmAlloc` to `AllocWasm`.
 
 ### sys::hw
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.

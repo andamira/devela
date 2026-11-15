@@ -1,5 +1,5 @@
 //
-//! Defines [`WasmAlloc`].
+//! Defines [`AllocWasm`].
 //
 
 use crate::{GlobalAlloc, MemLayout, Ptr};
@@ -9,7 +9,7 @@ use crate::{Mem, NonZeroUsize, Wasm};
 #[doc = crate::_tags!(runtime allocation)]
 /// A WebAssembly global memory allocator that uses a bump allocation strategy.
 #[doc = crate::_doc_meta!{
-    location("sys/mem/alloc", struct WasmAlloc),
+    location("sys/mem/alloc", struct AllocWasm),
     vendor("mini-alloc"),
 }]
 /// This allocator manages memory starting from `__heap_base` (the WASM heap start)
@@ -22,23 +22,23 @@ use crate::{Mem, NonZeroUsize, Wasm};
 ///
 /// # Examples
 /// ```ignore
-/// use devela::WasmAlloc;
+/// use devela::AllocWasm;
 ///
 /// #[global_allocator]
-/// static ALLOCATOR: WasmAlloc = WasmAlloc::INIT;
+/// static ALLOCATOR: AllocWasm = AllocWasm::INIT;
 /// ```
 #[derive(Debug)]
-pub struct WasmAlloc;
-impl WasmAlloc {
-    /// Initial value for `WasmAlloc`.
-    pub const INIT: Self = WasmAlloc;
+pub struct AllocWasm;
+impl AllocWasm {
+    /// Initial value for `AllocWasm`.
+    pub const INIT: Self = AllocWasm;
 }
 /// This is safe in single-threaded WASM environments,
 /// but invalid in multi-threaded contexts.
-unsafe impl Sync for WasmAlloc {}
+unsafe impl Sync for AllocWasm {}
 
 #[rustfmt::skip]
-unsafe impl GlobalAlloc for WasmAlloc {
+unsafe impl GlobalAlloc for AllocWasm {
     /// Allocates memory with the given layout.
     #[allow(unused_variables, reason = "cross-platform")]
     unsafe fn alloc(&self, l: MemLayout) -> *mut u8 {
