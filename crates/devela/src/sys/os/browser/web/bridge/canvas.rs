@@ -60,7 +60,6 @@ impl Web {
     /* drawing text */
 
     /// Selects top-relative canvas text positioning for UI projection.
-    #[expect(unused)] // IMPROVE
     pub(crate) fn set_text_baseline_top() { set_text_baseline_top(); }
     #[doc = _js_doc!(canvas "fillText")]
     /// Draws filled text at the specified position.

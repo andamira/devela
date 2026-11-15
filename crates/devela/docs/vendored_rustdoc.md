@@ -35,8 +35,6 @@
   [`divisor`]: crate::num::divisor
   [M_stack_dst]: crate::_doc::reference::vendored::stack_dst
   [`data::layout::dst`]: crate::data::layout::dst
-  [M_stated-scope-guard]: crate::_doc::reference::vendored::stated_scope_guard
-  [`ScopeGuard`]: crate::code::ScopeGuard
   [M_static_assertions]: crate::_doc::reference::vendored::static_assertions
   [`const_assert!`]: crate::code::util::assert::const_assert
   [`ConstBool`]: crate::num::fin::logic::ConstBool

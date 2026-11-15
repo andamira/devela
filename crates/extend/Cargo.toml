@@ -77,18 +77,18 @@ unsafe = []
 
 _docs = [
 	"unsafe", "std",
-	"image_jpeg", "image_png",
+	# "image_jpeg", "image_png",
 ]
 
 
 #* Dependency features *#
 # ------------------------------------------------------------------------------
 
-image = ["std", "dep:image", "devela/image"]
+# image = ["std", "dep:image", "devela/image"]
 # image_all = ["image_jpeg", "image_png"] # "image_gif", "image_webp"
 # image_gif  = ["image", "image/gif"]
-image_jpeg = ["image", "image/jpeg"]
-image_png  = ["image", "image/png"]
+# image_jpeg = ["image", "image/jpeg"]
+# image_png  = ["image", "image/png"]
 # image_webp = ["image", "image/webp"]
 
 
@@ -98,7 +98,7 @@ devela = { workspace = true }
 
 #* optional external dependencies *#
 
-image = { workspace = true, optional = true }
+# image = { workspace = true, optional = true }
 
 
 [badges]

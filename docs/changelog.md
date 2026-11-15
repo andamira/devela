@@ -12,6 +12,7 @@ This release…
 
 ## Highlights
 
+- msrv bump: minimum supported Rust version increased to 1.100.0.
 - …
 
 ------------------------------------------------------------------------------
@@ -67,6 +68,9 @@ This release…
 
 #### code::any
 - remove `AnyExt::type_hash` while preserving the hasher-parametric `type_hash_with`.
+
+#### code::ops
+- remove vendored `ScopeGuard`.
 
 #### code::result
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
@@ -135,6 +139,9 @@ This release…
 - rename `AppEnv` to `AppPaths` and the platform implementations to `AppPathsXdg`,
   `AppPathsUnix`, `AppPathsApple`, and `AppPathsWindows`.
 - fix inverted validation in `AppInfo::new` and add regression tests.
+
+### sys::mem
+- re-export `DropGuard`.
 
 ### sys::hw
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.

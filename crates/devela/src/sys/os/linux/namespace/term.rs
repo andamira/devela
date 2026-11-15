@@ -1,7 +1,7 @@
+use crate::{DropGuard, LinuxTermios, TermSize};
 use crate::{Linux, LinuxResult as Result};
-use crate::{LinuxTermios, ScopeGuard, TermSize};
 
-pub(crate) type LinuxTermModeGuard = ScopeGuard<LinuxTermios, fn(LinuxTermios, &()), ()>;
+pub(crate) type LinuxTermModeGuard = DropGuard<LinuxTermios, fn(LinuxTermios)>;
 
 /// # Terminal-related methods.
 #[cfg(feature = "term")]
@@ -34,7 +34,7 @@ impl Linux {
         let mut active_state = initial_state;
         f(&mut active_state);
         active_state.write_state()?;
-        Ok(ScopeGuard::with(initial_state, (), Self::restore_linux_termios))
+        Ok(DropGuard::new(initial_state, Self::restore_linux_termios))
     }
 
     /// Enables raw mode.
@@ -49,11 +49,7 @@ impl Linux {
         LinuxTermios::reset_cooked_mode()
     }
 
-    #[allow(
-        clippy::trivially_copy_pass_by_ref,
-        reason = "matches ScopeGuard's FnOnce(T, &S) callback signature"
-    )]
-    fn restore_linux_termios(state: LinuxTermios, (): &()) {
+    fn restore_linux_termios(state: LinuxTermios) {
         let _ = state.write_state();
     }
 }

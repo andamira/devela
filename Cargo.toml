@@ -118,9 +118,9 @@ default-features = false # 2 https://docs.rs/crate/wide/latest/features
 
 #* devela_extend optional external dependencies *#
 
-[workspace.dependencies.image]
-version = "0.25.10" # ✓ https://github.com/image-rs/image/blob/main/CHANGES.md 
-default-features = false # 22 https://docs.rs/crate/image/latest/features
+# [workspace.dependencies.image]
+# version = "0.25.10" # ✓ https://github.com/image-rs/image/blob/main/CHANGES.md
+# default-features = false # 22 https://docs.rs/crate/image/latest/features
 
 
 # profiles
@@ -206,7 +206,7 @@ redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit
 # https://doc.rust-lang.org/cargo/reference/lints.html
 # ------------------------------------------------------------------------------
 non_kebab_case_bins = "warn"
-unused_dependencies = "deny"
+unused_dependencies = "warn"
 
 [workspace.lints.clippy]
 # https://doc.rust-lang.org/clippy/lints.html

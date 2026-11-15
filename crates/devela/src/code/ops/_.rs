@@ -16,7 +16,6 @@ crate::mods_in! {
     mod _reexport_core;
 
     pub mod_ call; // Callability and invocation semantics
-    mod guard; // ScopeGuard
     mod hook_morph; // Hook, Morph, hook!, morph!
     pub mod_ overload; // Overloadable operator traits
     mod punroll; // punroll!
@@ -29,7 +28,6 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::{
-            guard::ScopeGuard,
             hook_morph::{Hook, Morph, hook, morph},
             punroll::punroll,
         };

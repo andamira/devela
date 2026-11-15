@@ -709,12 +709,6 @@ required-features = ["alloc", "coro"]
 # example scripts inside src/*
 # ==============================================================================
 
-# code
-[[example]]
-name = "scope_guard"
-path = "src/code/ops/guard.rs"
-required-features = ["std"]
-
 # data
 [[example]]
 name = "otp"

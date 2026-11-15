@@ -35,8 +35,6 @@ See the linked modifications for detailed changes.
   as the [`divisor!`] macro ([*modifications*][M_quickdiv]).
 - <i id="stack_dst"></i>[stack_dst] by John Hodge,
   as the [`data::layout::dst`] module ([*modifications*][M_stack_dst]).
-- <i id="stated-scope-guard"></i>[stated-scope-guard] by EvianZhang,
-  as part the [`ScopeGuard`] struct ([*modifications*][M_stated-scope-guard]).
 - <i id="static_assertions"></i>[static_assertions] by Nikolai Vazquez,
   as part of the [`const_assert!`] macro and the [`ConstBool`] trait
   ([*modifications*][M_static_assertions]).
@@ -92,9 +90,6 @@ See the linked modifications for detailed changes.
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
   [M_stack_dst]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stack_dst.md
   [`data::layout::dst`]: https://docs.rs/devela/latest/devela/data/layout/dst/index.html
-[stated-scope-guard]: https://crates.io/crates/stated-scope-guard/0.1.0
-  [M_stated-scope-guard]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/stated-scope-guard.md
-  [`ScopeGuard`]: https://docs.rs/devela/latest/devela/code/struct.ScopeGuard.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [M_static_assertions]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/static_assertions.md
   [`const_assert!`]: https://docs.rs/devela/latest/devela/code/util/assert/macro.const_assert.html

@@ -16,6 +16,11 @@ _reexport! { rust: core::mem,
     doc: "Opaque type representing the discriminant of an enum.",
     Discriminant
 }
+_reexport! { rust: core::mem,
+    location: "sys/mem" => struct DropGuad, tag: _tags!(mem),
+    doc: "Wrap a value and run a closure when dropped.",
+    DropGuard
+}
 
 /* unions */
 
