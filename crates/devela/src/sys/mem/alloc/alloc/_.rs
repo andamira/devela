@@ -5,6 +5,7 @@
 #![doc = crate::_doc!(extends: alloc)]
 
 crate::mods_in! {
+    mod _reexport_core;
     #[cfg(feature = "alloc")]
     mod _reexport_alloc;
     #[cfg(feature = "std")]
@@ -48,6 +49,7 @@ crate::mods_out! { // _mods, _reexports
         pub use super::linux::*;
     }
     _reexports {
+        pub use super::_reexport_core::*;
         #[cfg(feature = "alloc")]
         pub use super::_reexport_alloc::*;
         #[cfg(feature = "std")]

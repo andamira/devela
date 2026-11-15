@@ -15,17 +15,17 @@ Legend:
 
 - 1.100: `…`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
 - 1.100: `…`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
-- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
+- 1.100: `…`[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
 - 1.100: ` `[box_take](https://github.com/rust-lang/rust/pull/160436)
-- 1.100: `→`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
+- 1.100: `✓`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
 - 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
-- 1.100: `→`[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
+- 1.100: `✓`[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
 - 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
 - 1.100: ` `[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
 - 1.100: ` `[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
-- 1.100: `→`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
+- 1.100: `✓`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
 - 1.100: `✓`[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
-- 1.100: `…`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
+- 1.100: ` `[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
 
 # 1.99 became stable on [2026-10-01](https://releases.rs/docs/1.99.0/)
 > - <https://github.com/rust-lang/rust/milestone/147>
@@ -60,7 +60,7 @@ Legend:
 - 1.98: `✓`[core::range::legacy](https://github.com/rust-lang/rust/issues/156629) from:new_range_api
 - 1.98: ` `[float_algebraic](https://github.com/rust-lang/rust/pull/157029)
 - 1.98: ` `[int_format_into](https://github.com/rust-lang/rust/pull/152544)
-- 1.98: `→`[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
+- 1.98: `✓`[Move std::io::Error into core](https://github.com/rust-lang/rust/pull/155625)
 - 1.98: ` `[nonzero_from_str_radix](https://github.com/rust-lang/rust/pull/157877)
 - 1.98: ` `[result_option_map_or_default](https://github.com/rust-lang/rust/pull/156222)
 - 1.98: ` `[str_from_utf16_endian](https://github.com/rust-lang/rust/pull/157912)
@@ -85,7 +85,7 @@ Legend:
 > - <https://blog.rust-lang.org/2026/05/28/Rust-1.96.0>
 > - <https://github.com/rust-lang/rust/releases/tag/1.96.0>
 
-- 1.96: `→`[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
+- 1.96: `✓`[Allow passing expr metavariable as cfg predicate](https://github.com/rust-lang/rust/pull/146961)
 - 1.96: `✓`[assert_matches](https://github.com/rust-lang/rust/pull/137487) (de-stabilized in 1.95)
 - 1.96: ` `[control_flow_ok](https://github.com/rust-lang/rust/pull/152911)
 - 1.96: ` `[Lint unused_features](https://github.com/rust-lang/rust/pull/152164)
@@ -157,7 +157,7 @@ Legend:
 - 1.92: `→`[const_slice_rotate](https://github.com/rust-lang/rust/pull/146841)
 - 1.92: ` `[file_with_nul](https://github.com/rust-lang/rust/pull/145664)
 - 1.92: `…`[rwlock_downgrade](https://github.com/rust-lang/rust/pull/143191)
-- 1.92: `…`[unsigned_nonzero_div_ceil](https://github.com/rust-lang/rust/pull/147562)
+- 1.92: `✓`[unsigned_nonzero_div_ceil](https://github.com/rust-lang/rust/pull/147562)
 
 # 1.91 became stable on [2025-10-30](https://releases.rs/docs/1.91.0/))
 > - <https://github.com/rust-lang/rust/milestone/135>
@@ -271,7 +271,7 @@ Legend:
 
 - 1.86: `✓`[const_black_box](https://github.com/rust-lang/rust/pull/135414)
 - 1.86: `✓`[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
-        `→` `const_str_split_at`
+        `✓` `const_str_split_at`
 - 1.86: `→`[const_mut_cursor](https://github.com/rust-lang/rust/pull/136634)
 - 1.86: ` `[float_next_up_down](https://github.com/rust-lang/rust/pull/135661)
 - 1.86: ` `[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)

@@ -142,7 +142,10 @@ This release…
 - fix inverted validation in `AppInfo::new` and add regression tests.
 
 ### sys::mem
-- re-export `DropGuard`.
+- re-export `DropGuard`, use it to replace the old `ScopeGuard`.
+- re-export `Allocator`, `AllocError`, `GlobalAlloc`, `MemLayout`, and
+  `MemLayoutError` from `core::alloc`, without requiring `alloc`.
+- re-export `Global` as `AllocGlobal` and rename `SystemAlloc` to `AllocSystem`.
 
 ### sys::hw
 - correct 16-bit I²C size assertions to account for AVR and MSP430 alignment differences.

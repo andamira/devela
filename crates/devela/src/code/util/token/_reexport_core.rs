@@ -5,7 +5,7 @@ _reexport! { rust: core,
     location: "code/util/token" => macro concat, tag: _tags!(code text),
     doc: "Concatenates literals into a static string slice.", concat
 }
-// WAIT: [concat_idents](https://github.com/rust-lang/rust/issues/29599)
+// WAIT: [macro_metavar_expr_concat](https://github.com/rust-lang/rust/issues/124225)
 // _reexport! { rust: core,
 //     location: "code/util/token" => macro concat_idents, tag: _tags!(code text),
 //     doc: "Concatenates identifiers into one identifier.", concat_idents
