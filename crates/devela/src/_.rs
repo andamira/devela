@@ -63,17 +63,6 @@
 //
 // `nightly_stable` includes:
 //
-// `nightly_stable_1_100`: core, alloc, std:
-#![cfg_attr(
-    nightly_stable_1_100,
-    feature(bool_toggle, drop_guard, mem_conjure_zst, never_type, unsafe_cell_access,)
-)]
-#![cfg_attr(
-    all(nightly_stable_1_100, feature = "alloc"),
-    feature(allocator_api, box_take, smart_pointer_try_map,)
-)]
-#![cfg_attr(all(nightly_stable_1_100, feature = "std"), feature())]
-//
 // `nightly_stable_1_101`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_101,
@@ -94,6 +83,11 @@
 #![cfg_attr(nightly_stable_1_102, feature(alignment_type))]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "std"), feature())]
+//
+// `nightly_stable_1_103`: core, alloc, std:
+// #![cfg_attr(nightly_stable_1_103, feature())]
+// #![cfg_attr(all(nightly_stable_1_103, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_103, feature = "std"), feature())]
 //
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri):
 #![cfg_attr(

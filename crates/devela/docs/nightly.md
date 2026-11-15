@@ -33,27 +33,6 @@ See also
 - <https://github.com/rust-lang/rust/blob/master/library/std/src/lib.rs>
 
 
-# 1.100 will be stable on [2026-11-12](https://releases.rs/docs/1.100.0/) `nightly_stable_1_100`
-> - <https://github.com/rust-lang/rust/milestone/149>
-<!-- > - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0> -->
-<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.100.0> -->
-
-- 1.100: `aF`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
-        = `nightly_allocator` flag
-- 1.100: `c`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
-- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
-- 1.100: `a`[box_take](https://github.com/rust-lang/rust/pull/160436)
-- 1.100: `c`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
-- 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
-- 1.100: ` `[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
-- 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
-- 1.100: `c`[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
-- 1.100: `a`[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
-- 1.100: `c`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
-- 1.100: ` `[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
-- 1.100: `c`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
-
-
 # 1.101 will be stable on [2026-12-24](https://releases.rs/docs/1.101.0/) `nightly_stable_1_101`
 > - <https://github.com/rust-lang/rust/milestone/151>
 <!-- > - <https://blog.rust-lang.org/2026/12/24/Rust-1.101.0> -->
@@ -83,11 +62,16 @@ See also
 - 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
 
 
+# 1.103 will be stable on [2027-02-04](https://releases.rs/docs/1.103.0/) `nightly_stable_1_103`
+> - <https://github.com/rust-lang/rust/milestone/???>
+<!-- > - <https://blog.rust-lang.org/2027/03/18/Rust-1.103.0> -->
+<!-- > - <https://github.com/rust-lang/rust/releases/tag/1.103.0> -->
+
+
 # … will be stable later ([`nightly_stable_later`](https://releases.rs/#ongoing-stabilization-prs))
 
 - 1.??: `F`[doc_cfg](https://github.com/rust-lang/rust/pull/150055)
         = `nightly_doc` flag
-
 - 1.??: `a`[allocator_ext](https://github.com/rust-lang/rust/issues/163177) from:allocator_api
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)

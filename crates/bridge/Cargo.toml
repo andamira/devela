@@ -61,7 +61,7 @@ rustdoc-args = [
 #* Development features *#
 # ------------------------------------------------------------------------------
 
-__bindgen = [] # compile src/bin/bridge_bindgen.rs
+__bindgen = [] # compile src/bin/bridge-bindgen.rs
 __dbg = ["devela/__dbg"] # shows extra debugging information
 __publish = ["devela/__publish"] # enabled when publishing to crates.io or docs.rs
 __docs_internal = ["devela/__docs_internal"] # enables documentation for internal items
@@ -127,7 +127,7 @@ workspace = true
 # binaries inside /src/bin/*
 # ==============================================================================
 [[bin]]
-name = "bridge_bindgen"
-path = "src/bin/bridge_bindgen.rs"
+name = "bridge-bindgen"
+path = "src/bin/bridge-bindgen.rs"
 required-features = ["__bindgen"]
 

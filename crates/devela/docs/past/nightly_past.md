@@ -8,6 +8,25 @@ Legend:
 - `…` = considered for later
 - `u` = unstable feature
 
+# 1.100 became be stable on [2026-11-12](https://releases.rs/docs/1.100.0/)
+> - <https://github.com/rust-lang/rust/milestone/149>
+> - <https://blog.rust-lang.org/2026/11/12/Rust-1.100.0>
+> - <https://github.com/rust-lang/rust/releases/tag/1.100.0>
+
+- 1.100: `…`[allocator_api](https://github.com/rust-lang/rust/pull/156882)
+- 1.100: `…`[bool_toggle](https://github.com/rust-lang/rust/pull/160299)
+- 1.100: ` `[Documentation of a re-export doesn't appear](https://github.com/rust-lang/rust/pull/162543)
+- 1.100: ` `[box_take](https://github.com/rust-lang/rust/pull/160436)
+- 1.100: `→`[drop_guard](https://github.com/rust-lang/rust/pull/161520)
+- 1.100: ` `['d' and 'f' target features](https://github.com/rust-lang/rust/pull/161385)
+- 1.100: `→`[fix circular module error](https://github.com/rust-lang/rust/pull/162363)
+- 1.100: ` `[fix the capture behavior of if let in closures](https://github.com/rust-lang/rust/pull/154210)
+- 1.100: ` `[mem_conjure_zst](https://github.com/rust-lang/rust/pull/161710)
+- 1.100: ` `[smart_pointer_try_map](https://github.com/rust-lang/rust/pull/160534)
+- 1.100: `→`[stabilize never type](https://github.com/rust-lang/rust/pull/155499)
+- 1.100: `✓`[stabilize cargo-lints](https://github.com/rust-lang/cargo/pull/17298)
+- 1.100: `…`[unsafe_cell_access](https://github.com/rust-lang/rust/pull/162504)
+
 # 1.99 became stable on [2026-10-01](https://releases.rs/docs/1.99.0/)
 > - <https://github.com/rust-lang/rust/milestone/147>
 > - <https://blog.rust-lang.org/2026/10/01/Rust-1.99.0>

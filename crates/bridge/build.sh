@@ -14,8 +14,8 @@ BUILD_CMD="cargo rustc --lib --profile $PROFILE -F std --crate-type staticlib,cd
 
 # GENERATE BINDINGS
 
-echo "$ cargo run --quiet --bin bridge_bindgen -F __bindgen"
-cargo run --quiet --bin bridge_bindgen -F __bindgen
+echo "$ cargo run --quiet --bin bridge-bindgen -F __bindgen"
+cargo run --quiet --bin bridge-bindgen -F __bindgen
 
 # BUILD
 

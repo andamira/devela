@@ -25,7 +25,7 @@ use devela::c_char;
 /// ABI status values.
 //
 // In sync with:
-// - src/bin/bridge_bindgen.rs: STATUS_CONSTANTS
+// - src/bin/bridge-bindgen.rs: STATUS_CONSTANTS
 // - generated: pkg/c/devela_bridge.h
 // - generated: pkg/odin/common/gen_common.odin
 //
