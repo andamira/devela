@@ -4,7 +4,7 @@
 
 #[cfg(doc)]
 use crate::ScriptMachine;
-use crate::{ConstInit, Debug, Display, Error, FmtResult, Formatter, Infallible, ValueKind};
+use crate::{ConstInit, Debug, Display, Error, FmtResult, Formatter, ValueKind};
 
 #[doc = crate::_tags!(lang error)]
 /// An error encountered while executing a [`ScriptMachine`].
@@ -16,7 +16,7 @@ use crate::{ConstInit, Debug, Display, Error, FmtResult, Formatter, Infallible, 
     test_size_of(ScriptError = 32|256),
 }]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum ScriptError<E = Infallible> {
+pub enum ScriptError<E = !> {
     /// The stack contained fewer values than an operation required.
     StackUnderflow {
         /// Number of values required.

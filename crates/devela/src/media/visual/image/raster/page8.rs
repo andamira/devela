@@ -5,7 +5,7 @@
 #[cfg(all(feature = "draw", feature = "image"))]
 use crate::CanvasRaster;
 #[cfg(feature = "draw")]
-use crate::{Canvas, Infallible, Position2, RegionS2};
+use crate::{Canvas, Position2, RegionS2};
 use crate::{Cmp, Extent2, is, unwrap, whilst};
 
 #[doc = crate::_tags!(hw image)]
@@ -156,21 +156,21 @@ impl<const W: usize, const H: usize, const N: usize> BitmapPage8<W, H, N> {
 impl<const W: usize, const H: usize, const N: usize> Canvas for BitmapPage8<W, H, N> {
     type Unit = u32;
     type Color = bool;
-    type Error = Infallible;
+    type Error = !;
 
     fn canvas_extent(&self) -> Extent2<u32> {
         self.extent()
     }
-    fn canvas_clear(&mut self, color: bool) -> Result<(), Infallible> {
+    fn canvas_clear(&mut self, color: bool) -> Result<(), !> {
         self.clear(color);
         Ok(())
     }
-    fn canvas_set_color(&mut self, pos: Position2<u32>, color: bool) -> Result<(), Infallible> {
+    fn canvas_set_color(&mut self, pos: Position2<u32>, color: bool) -> Result<(), !> {
         let [x, y] = pos.dim;
         self.set_pixel(x, y, color);
         Ok(())
     }
-    fn canvas_fill_region(&mut self, region: RegionS2<u32>, color: bool) -> Result<(), Infallible> {
+    fn canvas_fill_region(&mut self, region: RegionS2<u32>, color: bool) -> Result<(), !> {
         self.fill_rect(region.x(), region.y(), region.w(), region.h(), color);
         Ok(())
     }

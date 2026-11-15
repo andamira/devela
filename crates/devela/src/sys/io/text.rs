@@ -120,7 +120,7 @@ impl TextOut for crate::IoEmpty {
 /// deferred presentation, and text-backed diagnostic sinks.
 #[cfg(feature = "alloc")]
 impl TextOut for crate::String {
-    type Error = crate::Infallible;
+    type Error = !;
     fn write_text(&mut self, text: &str) -> Result<(), Self::Error> {
         self.push_str(text);
         Ok(())

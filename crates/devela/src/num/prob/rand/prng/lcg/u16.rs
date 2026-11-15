@@ -3,7 +3,7 @@
 //
 
 use crate::{Cast, ConstInit};
-use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 #[doc = concat!["A 16-bit ", crate::_ABBR_LCG!(), " ", crate::_ABBR_PRNG!(), "."]]
@@ -126,7 +126,7 @@ impl Lcg16 {
 
 crate::items! {
     impl RandTry for Lcg16 {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 64;
         const RAND_STATE_BITS: u32 = 64;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;

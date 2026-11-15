@@ -41,7 +41,7 @@ impl DistBernoulli {
     /// Samples a boolean outcome using an infallible random source.
     #[must_use]
     pub fn sample<R: Rand + ?Sized>(&self, rng: &mut R) -> bool {
-        // SAFETY: `Rand` requires `RandTry<Error = Infallible>`,
+        // SAFETY: `Rand` requires `RandTry<Error = !>`,
         // so `sample_try` cannot return `Err`.
         unwrap![ok_guaranteed_or_ub self.sample_try(rng)]
     }
@@ -86,7 +86,7 @@ impl DistBinomial {
     /// Samples the number of successes using an infallible random source.
     #[must_use]
     pub fn sample<R: Rand + ?Sized>(&self, rng: &mut R) -> u64 {
-        // SAFETY: `Rand` requires `RandTry<Error = Infallible>`,
+        // SAFETY: `Rand` requires `RandTry<Error = !>`,
         // so `sample_try` cannot return `Err`.
         unwrap![ok_guaranteed_or_ub self.sample_try(rng)]
     }

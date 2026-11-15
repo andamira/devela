@@ -9,7 +9,7 @@ use crate::{
     MemLayout,
 };
 #[cfg(feature = "alloc")]
-use crate::{Box, Infallible, RandQualities, RandTry, SplitMix64};
+use crate::{Box, RandQualities, RandTry, SplitMix64};
 
 #[doc = crate::_tags!(allocation namespace)]
 /// Memory-allocation-related operations.
@@ -114,7 +114,7 @@ impl Alloc {
 
 #[cfg(feature = "alloc")]
 impl RandTry for Alloc {
-    type Error = Infallible;
+    type Error = !;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;
     const RAND_QUALITIES: RandQualities = RandQualities::EXTERNAL.with_entropy_weak();

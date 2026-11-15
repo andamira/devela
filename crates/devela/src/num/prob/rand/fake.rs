@@ -2,7 +2,7 @@
 //! Defines [`RandFake`].
 //
 
-use crate::{Infallible, InfallibleResult, NotEnoughElements, RandQualities, RandTry};
+use crate::{InfallibleResult, NotEnoughElements, RandQualities, RandTry};
 
 #[doc = crate::_tags!(rand fake)]
 /// A test-friendly random source backed by a fixed sequence.
@@ -94,7 +94,7 @@ impl<const N: usize> RandTry for RandFake<N, false> {
 
 /// # Panicking implementation
 impl<const N: usize> RandTry for RandFake<N, true> {
-    type Error = Infallible;
+    type Error = !;
 
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = usize::BITS;

@@ -58,7 +58,7 @@ expression is used once per command.
 - only commands that return an array are supported, not `*_N` versions.
 - the static arms make use of the [`const_join!`] macro for concatenation.
 - the real print backends call the appropriate [`ansi_print`] function variant.
-- the fallback print backend returns `Ok(())` with an [`Infallible`] error type.
+- the fallback print backend returns `Ok(())` with a [`!`] error type.
 - the renderer arms call the renderer's `try_push_bytes` method.
 
 # Examples
@@ -111,7 +111,6 @@ fn draw(r: &mut GameRenderer, row: u16, col: u16) -> DrawResult {
 
 [`const_join!`]: crate::const_join
 [`ansi_print`]: crate::ansi_print
-[`Infallible`]: crate::Infallible
 
 "#;
 }

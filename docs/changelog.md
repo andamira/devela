@@ -74,6 +74,7 @@ This release…
 
 #### code::result
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
+- remove `Infallible`, replace with `!`.
 
 #### data::codec
 - update `Radix`: gate Base32 and Base64 codecs.

@@ -116,14 +116,14 @@ macro_rules! _data_value_impl_oneof {
         #[doc = crate::_doc_meta!{
             location("data/value", enum Oneof),
         }]
-        /// Omitted trailing variant types default to [`Infallible`][crate::Infallible],
+        /// Omitted trailing variant types default to [`!`].
         /// making those variants uninhabited.
         ///
         /// The first `LEN` variants are expected to be active,
-        /// with all remaining variants set to `Infallible`.
+        /// with all remaining variants set to `!`.
         #[non_exhaustive]
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        pub enum Oneof<const LEN: usize, $($variant = $crate::Infallible),+> {
+        pub enum Oneof<const LEN: usize, $($variant = !),+> {
             $(
                 #[doc = "The " $nth $suf " variant."]
                 $variant($variant)
@@ -164,14 +164,14 @@ macro_rules! _data_value_impl_oneof {
         }
         impl<const LEN: usize, $($T: 'static),+> Oneof<LEN, $($T),+> {
             /// Validates that the first `LEN` variants are active
-            /// and that all remaining variants are `Infallible`.
+            /// and that all remaining variants are `!`.
             #[allow(unused_assignments, reason = "wont be read in all cases")]
             // WAIT const PartialEq for TypeId
             pub fn validate() -> bool {
                 let mut active_count = 0;
                 let mut inactive_found = false;
                 $(
-                    if $crate::TypeId::of::<$T>() == $crate::TypeId::of::<$crate::Infallible>() {
+                    if $crate::TypeId::of::<$T>() == $crate::TypeId::of::<!>() {
                         inactive_found = true;
                     } else {
                         if inactive_found { return false; }

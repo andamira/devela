@@ -8,7 +8,7 @@
 //   - private items and helpers
 
 use crate::{Cast, ConstInit, Slice, slice, whilst};
-use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 /* public definitions */
 
@@ -245,7 +245,7 @@ impl ConstInit for Xoroshiro128pp {
 
 crate::items! {
     impl RandTry for Xoroshiro128pp {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 32;
         const RAND_STATE_BITS: u32 = 128;
         const RAND_QUALITIES: RandQualities = RandQualities::PRNG;

@@ -2,7 +2,7 @@
 //! Defines [`ScriptMachine`].
 //
 
-use crate::{ConstInit, Infallible, Value64, ValueKind, is, unwrap, whilst};
+use crate::{ConstInit, Value64, ValueKind, is, unwrap, whilst};
 use crate::{ScriptCall, ScriptError, ScriptHost, ScriptOp, ScriptOutcome};
 use ScriptError as Error;
 
@@ -179,7 +179,7 @@ impl<const STACK: usize> ScriptMachine<STACK> {
     /// A failing operation is atomic with respect to machine state:
     /// its instruction position and logical stack remain unchanged.
     pub const fn step(&mut self, program: &[ScriptOp]) -> Result<Option<ScriptOutcome>, Error> {
-        self.step_inner::<Infallible>(program)
+        self.step_inner::<!>(program)
     }
 
     const fn step_inner<E>(
@@ -376,7 +376,7 @@ impl<const STACK: usize> ScriptMachine<STACK> {
         call: ScriptCall,
         result: Value64,
     ) -> Result<(), ScriptError> {
-        self.complete_call_inner::<Infallible>(call, result)
+        self.complete_call_inner::<!>(call, result)
     }
 
     /* helpers */

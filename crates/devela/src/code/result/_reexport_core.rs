@@ -5,14 +5,7 @@ use crate::{_reexport, _tags};
 #[doc = crate::_doc_meta!{
     location("code/result", type InfallibleResult),
 }]
-pub type InfallibleResult<T> = Result<T, Infallible>;
-
-/* `core::convert` */
-
-_reexport! { rust: core::convert,
-    location: "code/result" => enum Infallible, tag: _tags!(no error),
-    doc: "The error type for errors that can never occur.", Infallible
-}
+pub type InfallibleResult<T> = Result<T, !>;
 
 /* `core::option` */
 

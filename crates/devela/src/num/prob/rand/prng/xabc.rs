@@ -3,7 +3,7 @@
 //
 
 use crate::{ConstInit, whilst};
-use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// X ABC <abbr title="Pseudo-Random Number Generator">PRNG</abbr> for 8-bit devices.
@@ -172,7 +172,7 @@ impl Xabc {
 
 crate::items! {
     impl RandTry for Xabc {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 8;
         const RAND_STATE_BITS: u32 = 32;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;

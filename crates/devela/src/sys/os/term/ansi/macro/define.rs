@@ -132,7 +132,7 @@ macro_rules! _ansi_define {
 
             (p: $d($arg:tt)*) => {{
                 let _ = $d crate::ansi![b: $d ($arg)*];
-                Ok::<(), core::convert::Infallible>(())
+                Ok::<(), !>(())
             }};
             (p! $d($arg:tt)*) => {{
                 $d crate::ansi![p: $d ($arg)*].unwrap()
@@ -145,7 +145,7 @@ macro_rules! _ansi_define {
                         };
                     )+
                 }
-                Ok::<(), core::convert::Infallible>(())
+                Ok::<(), !>(())
             }};
             (@p! $d($arg:tt)*) => {{
                 $d crate::ansi![@p: $d($arg)*].unwrap()

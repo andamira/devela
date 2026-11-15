@@ -9,7 +9,7 @@
 
 use crate::macro_apply;
 #[allow(unused_imports, reason = "±unsafe")]
-use devela::{_js_doc, _js_extern, _js_unsafe_ffi_doc, DiagLevel, DiagOut, Infallible, TextOut};
+use devela::{_js_doc, _js_extern, _js_unsafe_ffi_doc, DiagLevel, DiagOut, TextOut};
 
 #[doc = crate::_tags!(runtime namespace)]
 /// Javascript Console.
@@ -128,7 +128,7 @@ _js_extern! {
 #[cfg(not(feature = "safe_lang"))]
 #[macro_apply(_js_unsafe_ffi_doc)]
 impl DiagOut for JsConsole {
-    type Error = Infallible;
+    type Error = !;
 
     fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
         match level {
@@ -152,7 +152,7 @@ impl DiagOut for JsConsole {
 #[cfg(not(feature = "safe_lang"))]
 #[macro_apply(_js_unsafe_ffi_doc)]
 impl TextOut for JsConsole {
-    type Error = Infallible;
+    type Error = !;
 
     fn write_text(&mut self, text: &str) -> Result<(), Self::Error> {
         Self::log(text);

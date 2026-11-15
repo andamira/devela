@@ -10,10 +10,10 @@ use crate::GraphemeNonNul;
 use crate::{Ansi, AnsiColor, AnsiColor3, AnsiColor8};
 #[cfg(feature = "std")]
 use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
+use crate::{BareBox, BitSized, CharAscii, Duration, PhantomData, PhantomPinned, StringNonNul};
 use crate::{
-    BareBox, BitSized, CharAscii, Duration, Infallible, NonZeroI8, NonZeroI16, NonZeroI32,
-    NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64,
-    NonZeroU128, NonZeroUsize, Ordering, PhantomData, PhantomPinned, ReprMode, StringNonNul,
+    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize, NonZeroU8,
+    NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize, Ordering, ReprMode,
 };
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
@@ -110,7 +110,7 @@ macro_rules! _impl_bit_sized {
 /* impl BitSized */
 
 _impl_bit_sized![<T> = 0; for PhantomData<T>];
-_impl_bit_sized![= 0; for (), Infallible, PhantomPinned];
+_impl_bit_sized![= 0; for (), !, PhantomPinned];
 _impl_bit_sized![= 1; for bool];
 _impl_bit_sized![= 8; for i8, u8, Ordering];
 _impl_bit_sized![= 16; for i16, u16];

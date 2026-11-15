@@ -2,7 +2,7 @@
 //! 64-bit version of XorShift.
 //
 
-use crate::{_xorshift_basis, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{_xorshift_basis, InfallibleResult, RandQualities, RandSeedable, RandTry};
 use crate::{Cast, ConstInit, Slice, slice};
 
 #[doc = crate::_tags!(rand rework)]
@@ -146,7 +146,7 @@ impl<const BASIS: usize, const A: usize, const B: usize, const C: usize>
 crate::items! {
     impl<const BASIS: usize, const A: usize, const B: usize, const C: usize> RandTry
     for XorShift64<BASIS, A, B, C> {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 32;
         const RAND_STATE_BITS: u32 = 32;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;

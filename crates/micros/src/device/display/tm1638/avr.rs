@@ -4,7 +4,7 @@
 
 use crate::AvrPin;
 #[cfg(all(feature = "unsafe_mmio", feature = "unsafe_hint"))]
-use crate::{Infallible, Tm1638Bus, asm, is};
+use crate::{Tm1638Bus, asm, is};
 
 #[doc = crate::_tags!(hw io protocol)]
 /// Bit-banged TM1638 serial interface over AVR GPIO.
@@ -92,7 +92,7 @@ impl Tm1638AvrBus {
 
 #[cfg(all(feature = "unsafe_mmio", feature = "unsafe_hint"))]
 impl Tm1638Bus for Tm1638AvrBus {
-    type Error = Infallible;
+    type Error = !;
 
     fn write_slices(&mut self, slices: &[&[u8]]) -> Result<(), Self::Error> {
         self.begin_write();

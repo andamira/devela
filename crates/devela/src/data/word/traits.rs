@@ -4,8 +4,6 @@
 // - WordTry identifies Self exactly with an admitted subset of Repr.
 // - Word identifies Self exactly with the complete domain of Repr.
 
-use crate::Infallible;
-
 #[doc = crate::_tags!(data word)]
 /// A copyable word with an exact canonical raw representation.
 #[doc = crate::_doc_meta!{
@@ -37,7 +35,7 @@ use crate::Infallible;
 /// Therefore `WordTry` identifies `Self` exactly with
 /// an admitted subset of [`Repr`](#associatedtype.Repr).
 ///
-/// Use [`Infallible`] as [`Error`](#associatedtype.Error)
+/// Use [`!`] as [`Error`](#associatedtype.Error)
 /// when every raw representation is admitted;
 /// such implementations automatically implement [`Word`].
 ///
@@ -63,7 +61,7 @@ pub trait WordTry: Copy + Eq {
     location("data/word", trait Word),
 }]
 /// `Word` is implemented automatically for every
-/// `WordTry<Error = Infallible>`.
+/// `WordTry<Error = !>`.
 ///
 /// Consequently, `Self` and [`Repr`][WordTry::Repr] correspond exactly:
 /// every raw representation reconstructs one word
@@ -76,7 +74,7 @@ pub trait WordTry: Copy + Eq {
 /// - `from_raw(raw).raw() == raw` for every `raw`.
 ///
 /// See also: [`WordTry`], [`word!`][crate::word].
-pub trait Word: WordTry<Error = Infallible> {
+pub trait Word: WordTry<Error = !> {
     /// Reconstructs the word exactly from any raw representation.
     #[must_use]
     fn from_raw(raw: Self::Repr) -> Self {
@@ -87,4 +85,4 @@ pub trait Word: WordTry<Error = Infallible> {
     }
 }
 
-impl<T> Word for T where T: WordTry<Error = Infallible> {}
+impl<T> Word for T where T: WordTry<Error = !> {}

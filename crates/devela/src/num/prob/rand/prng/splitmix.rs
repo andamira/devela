@@ -2,9 +2,7 @@
 //! Defines [`SplitMix64`].
 //
 
-use crate::{
-    ConstInit, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry, Slice, slice,
-};
+use crate::{ConstInit, InfallibleResult, RandQualities, RandSeedable, RandTry, Slice, slice};
 
 #[doc = crate::_tags!(rand)]
 /// SplitMix64 pseudo-random number generator.
@@ -86,7 +84,7 @@ impl SplitMix64 {
 
 #[rustfmt::skip]
 impl RandTry for SplitMix64 {
-    type Error = Infallible;
+    type Error = !;
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 64;
     const RAND_QUALITIES: RandQualities = RandQualities::PRNG;

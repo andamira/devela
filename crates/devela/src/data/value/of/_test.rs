@@ -1,7 +1,7 @@
 //
 
 mod one {
-    use crate::{Infallible, Oneof};
+    use crate::Oneof;
 
     type Bytes = Oneof<2, u8, i8>;
     type Unums = Oneof<4, u8, u16, u32, u64>;
@@ -24,8 +24,8 @@ mod one {
 
         assert![!Oneof::<0, i8>::validate()];
         assert![!Oneof::<2, i8>::validate()];
-        assert![!Oneof::<1, Infallible, i8>::validate()];
-        assert![!Oneof::<2, i32, Infallible, i8>::validate()];
+        assert![!Oneof::<1, !, i8>::validate()];
+        assert![!Oneof::<2, i32, !, i8>::validate()];
     }
     #[test]
     fn map() {

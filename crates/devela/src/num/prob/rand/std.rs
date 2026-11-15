@@ -2,7 +2,7 @@
 //! Defines [`RandStd`].
 //
 
-use crate::{Hasher, HasherBuild, Infallible, RandQualities, RandTry, RandomState};
+use crate::{Hasher, HasherBuild, RandQualities, RandTry, RandomState};
 
 #[cfg(feature = "std")]
 #[doc = crate::_tags!(rand)]
@@ -50,7 +50,7 @@ impl StdRand {
 
 #[cfg(feature = "std")]
 impl RandTry for StdRand {
-    type Error = Infallible;
+    type Error = !;
 
     const RAND_OUTPUT_BITS: u32 = 64;
     const RAND_STATE_BITS: u32 = 0;

@@ -2,7 +2,7 @@
 //! Defines [`AvrUsartTx`].
 //
 
-use crate::{AvrUsart, DiagLevel, DiagOut, Infallible, TextOut};
+use crate::{AvrUsart, DiagLevel, DiagOut, TextOut};
 
 #[doc = crate::_tags!(hw io)]
 /// An exclusively used blocking AVR USART transmitter.
@@ -56,7 +56,7 @@ impl AvrUsartTx {
 }
 
 impl TextOut for AvrUsartTx {
-    type Error = Infallible;
+    type Error = !;
 
     fn write_text(&mut self, text: &str) -> Result<(), Self::Error> {
         self.write_bytes_blocking(text.as_bytes());
@@ -65,7 +65,7 @@ impl TextOut for AvrUsartTx {
 }
 
 impl DiagOut for AvrUsartTx {
-    type Error = Infallible;
+    type Error = !;
 
     fn diag(&mut self, level: DiagLevel, text: &str) -> Result<(), Self::Error> {
         self.write_bytes_blocking(b"[");

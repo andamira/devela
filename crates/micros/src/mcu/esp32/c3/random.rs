@@ -4,7 +4,7 @@
 
 use crate::EspReg32;
 #[cfg(feature = "unsafe_mmio")]
-use crate::{Infallible, RandQualities, RandTry};
+use crate::{RandQualities, RandTry};
 
 #[doc = crate::_tags!(hw rand)]
 /// Access to the ESP32-C3 hardware random-number generator.
@@ -53,7 +53,7 @@ impl Esp32C3Rng {
 
 #[cfg(feature = "unsafe_mmio")]
 impl RandTry for Esp32C3Rng {
-    type Error = Infallible;
+    type Error = !;
 
     const RAND_OUTPUT_BITS: u32 = 32;
     const RAND_STATE_BITS: u32 = 0;
@@ -103,7 +103,7 @@ impl RandTry for Esp32C3Rng {
 //
 // #[cfg(feature = "unsafe_mmio")]
 // impl RandTry for Esp32C3Entropy {
-//     type Error = Infallible;
+//     type Error = !;
 //
 //     const RAND_OUTPUT_BITS: u32 = 32;
 //     const RAND_STATE_BITS: u32 = 0;

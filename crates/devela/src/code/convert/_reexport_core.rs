@@ -6,8 +6,6 @@ use crate::{_reexport, _tags};
 
 /* `core::convert` */
 
-// NOTE: Infallible is re-exported from code::result
-
 // traits
 _reexport! { rust: core::convert,
     location: "code/convert" => trait AsMut, tag: _tags!(lifetime),

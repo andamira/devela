@@ -2,7 +2,7 @@
 //!
 
 use crate::{ConstInit, whilst};
-use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand)]
 /// A simple 8-bit <abbr title="Pseudo-Random Number Generator">PRNG</abbr>
@@ -265,7 +265,7 @@ impl Xyza8b {
 
 crate::items! {
     impl RandTry for Xyza8a {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 8;
         const RAND_STATE_BITS: u32 = 32;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
@@ -279,7 +279,7 @@ crate::items! {
         }
     }
     impl RandTry for Xyza8b {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 8;
         const RAND_STATE_BITS: u32 = 32;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;

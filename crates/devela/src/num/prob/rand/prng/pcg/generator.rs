@@ -342,7 +342,7 @@ macro_rules! rand_pcg· {
             }
         }
         impl $crate::RandTry for $name {
-            type Error = $crate::Infallible;
+            type Error = !;
             const RAND_OUTPUT_BITS: u32 = 8;
             const RAND_STATE_BITS: u32 = 32;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
@@ -395,7 +395,7 @@ macro_rules! rand_pcg· {
             }
         }
         impl $crate::RandTry for $name {
-            type Error = $crate::Infallible;
+            type Error = !;
             const RAND_OUTPUT_BITS: u32 = 16;
             const RAND_STATE_BITS: u32 = 64;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::WEAK_PRNG;
@@ -449,7 +449,7 @@ macro_rules! rand_pcg· {
             }
         }
         impl $crate::RandTry for $name {
-            type Error = $crate::Infallible;
+            type Error = !;
             const RAND_OUTPUT_BITS: u32 = 32;
             const RAND_STATE_BITS: u32 = 128;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::PRNG;
@@ -495,7 +495,7 @@ macro_rules! rand_pcg· {
             }
         }
         impl $crate::RandTry for $name {
-            type Error = $crate::Infallible;
+            type Error = !;
             const RAND_OUTPUT_BITS: u32 = 64;
             const RAND_STATE_BITS: u32 = 256;
             const RAND_QUALITIES: $crate::RandQualities = $crate::RandQualities::PRNG;

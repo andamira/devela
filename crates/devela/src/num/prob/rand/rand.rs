@@ -2,7 +2,7 @@
 //! Defines [`RandSeedable`], [`RandTry`], [`Rand`].
 //
 
-use crate::{Cast, Infallible, RandQualities, is, whilst};
+use crate::{Cast, RandQualities, is, whilst};
 
 #[doc = crate::_tags!(rand)]
 /// Construction from explicit seed material or another random source.
@@ -55,8 +55,7 @@ pub trait RandSeedable: Sized {
 ///
 /// Source behavior and suitability are described by [`RandQualities`].
 ///
-/// Infallible sources use [`Infallible`][crate::Infallible] as their error type.
-/// and automatically implement [`Rand`].
+/// Infallible sources use [`!`] as their error type, and automatically implement [`Rand`].
 pub trait RandTry {
     /* required */
 
@@ -237,21 +236,20 @@ pub trait RandTry {
     }
 }
 
-impl<R> Rand for R where R: RandTry<Error = Infallible> + ?Sized {}
+impl<R> Rand for R where R: RandTry<Error = !> + ?Sized {}
 
 #[doc = crate::_tags!(rand)]
 /// Infallible source of raw random data.
 #[doc = crate::_doc_meta!{
     location("num/prob/rand", trait Rand),
 }]
-/// `Rand` is implemented automatically for every [`RandTry`] source
-/// whose error type is [`Infallible`].
+/// `Rand` is implemented automatically for every [`RandTry`] source whose error type is [`!`].
 ///
 /// Determinism, reproducibility, cryptographic suitability, weakness,
 /// external state, and blocking behavior are described by the source
 /// characteristics inherited from [`RandTry`].
 #[rustfmt::skip]
-pub trait Rand: RandTry<Error = Infallible> {
+pub trait Rand: RandTry<Error = !> {
     /*** provided ***/
 
     /* derived primitives and byte access */

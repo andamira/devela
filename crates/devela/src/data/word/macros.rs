@@ -238,13 +238,13 @@ macro_rules! __word· {
                 $from_body
 
             /// Attempts to reconstruct the word from its raw representation.
-            pub const fn try_from_raw(raw: $repr) -> $crate::Result<Self, $crate::Infallible> {
+            pub const fn try_from_raw(raw: $repr) -> $crate::Result<Self, !> {
                 Ok(Self::from_raw(raw))
             }
         }
         impl $crate::WordTry for $name {
             type Repr = $repr;
-            type Error = $crate::Infallible;
+            type Error = !;
 
             fn raw(self) -> Self::Repr {
                 $name::raw(self)

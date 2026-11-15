@@ -2,7 +2,7 @@
 //! 8-bit versions of XorShift.
 //
 
-use crate::{_xorshift_basis, Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{_xorshift_basis, InfallibleResult, RandQualities, RandSeedable, RandTry};
 use crate::{ConstInit, whilst};
 
 #[doc = crate::_tags!(rand rework)]
@@ -134,7 +134,7 @@ impl<const A: usize, const B: usize, const C: usize> XorShift8<A, B, C> {
 
 crate::items! {
     impl<const A: usize, const B: usize, const C: usize> RandTry for XorShift8<A, B, C> {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 8;
         const RAND_STATE_BITS: u32 = 8;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;

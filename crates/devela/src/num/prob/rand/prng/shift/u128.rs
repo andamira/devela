@@ -3,7 +3,7 @@
 //
 
 use crate::{Cast, ConstInit, Slice, slice};
-use crate::{Infallible, InfallibleResult, RandQualities, RandSeedable, RandTry};
+use crate::{InfallibleResult, RandQualities, RandSeedable, RandTry};
 
 #[doc = crate::_tags!(rand rework)]
 /// The `XorShift128` <abbr title="Pseudo-Random Number Generator">PRNG</abbr>.
@@ -175,7 +175,7 @@ impl XorShift128 {
 
 crate::items! {
     impl RandTry for XorShift128 {
-        type Error = Infallible;
+        type Error = !;
         const RAND_OUTPUT_BITS: u32 = 64;
         const RAND_STATE_BITS: u32 = 128;
         const RAND_QUALITIES: RandQualities = RandQualities::WEAK_PRNG;
