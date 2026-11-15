@@ -3,7 +3,7 @@
 //
 
 crate::mods_in! {
-    mod_ key_; // WebEventKey WAIT:1.100:circular-module
+    mod_ key; // WebEventKey
     mod location; // WebKeyLocation, impl:KeyMod,KeyMods
 
     mod media; // impl:KeyMedia
@@ -12,7 +12,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods
     _mods {
         pub use super::{
-            key_::_all::*,
+            key::_all::*,
             location::*,
         };
     }

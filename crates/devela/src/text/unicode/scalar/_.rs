@@ -13,7 +13,7 @@ crate::mods_in! {
     mod_ iter; // CharIter
     mod_ namespace; // Char
     mod offset; // scalar_offset!
-    mod_ scalar_; // ch!, char7, char8, char16, charu, charu_niche (WAIT:1.100:circular-module)
+    mod_ scalar; // ch!, char7, char8, char16, charu, charu_niche
     mod unicode_scalar; // UnicodeScalar
 }
 crate::mods_out! { // _mods, _reexports, _hidden
@@ -22,7 +22,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
             iter::_all::CharIter,
             namespace::_all::Char,
             offset::scalar_offset,
-            scalar_::_all::*,
+            scalar::_all::*,
             unicode_scalar::UnicodeScalar,
         };
     }
@@ -36,4 +36,4 @@ crate::mods_out! { // _mods, _reexports, _hidden
     }
     // _self_internals {} // TODO
 }
-use scalar_::_crate_internals::NonSurrogateU16; // IMPROVE
+use scalar::_crate_internals::NonSurrogateU16; // IMPROVE

@@ -27,7 +27,7 @@ crate::mods_in! {
     #[cfg(feature = "_tuple")]
     pub mod_ tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
     #[cfg(feature = "value")]
-    mod_ value_; // Value*
+    mod_ value; // Value*
 }
 
 crate::mods_out! { // _mods, _pub_mods
@@ -40,7 +40,7 @@ crate::mods_out! { // _mods, _pub_mods
             // schema::_all::*,
         };
         #[cfg(feature = "value")]
-        pub use super::value_::_all::*;
+        pub use super::value::_all::*;
         #[cfg(feature = "oneof")]
         pub use super::of::_all::*;
     }

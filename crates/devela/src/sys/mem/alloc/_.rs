@@ -6,13 +6,13 @@
 //
 
 crate::mods_in! {
-    mod_ alloc_; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc… WAIT:1.100:circular-module
+    mod_ alloc; // Alloc, BumpAlloc, LinuxMmapAlloc, WasmAlloc…
     mod_ storage; // Bare, BareBox, Boxed, Storage
 }
 crate::mods_out! { // _mods, _hidden
     _mods {
         pub use super::{
-            alloc_::_all::*,
+            alloc::_all::*,
             storage::_all::*,
         };
     }
