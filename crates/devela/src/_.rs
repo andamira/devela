@@ -513,6 +513,7 @@ mod _reexports { // 39
 
     // lang: 1
     #[doc(inline)] #[cfg(root_lang)]
+    #[cfg(feature = "script")]
     pub use super::lang::ScriptMachine;
 
     // media: 2

@@ -118,6 +118,6 @@ mod tests {
     #[test]
     #[should_panic]
     fn rejects_invalid_p1_bit() {
-        NrfPin::new(NrfPort::P1, 16);
+        let _ = NrfPin::new(NrfPort::P1, 16);
     }
 }

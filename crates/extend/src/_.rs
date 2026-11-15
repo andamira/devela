@@ -10,5 +10,7 @@
 
 extern crate self as devela_extend;
 
+#[allow(unused_imports)]
 use ::devela::__hidden::*;
+#[allow(unused_imports)]
 use ::devela::all::*;

@@ -53,6 +53,7 @@ impl Atmega328pTimer1ClockCfg {
     ///
     /// but avoids the `u128` arithmetic used by the general `TimeScale` path.
     #[must_use]
+    #[allow(dead_code, reason = "safe helper used by arch and unsafe-gated code")]
     fn ticks_to_units(self, ticks: u64, units_per_second: u32) -> u64 {
         let den = u64::from(self.source_hz);
         let mul = u64::from(self.prescaler) * u64::from(units_per_second);
@@ -155,8 +156,8 @@ impl Atmega328pTimer1Clock {
     }
 }
 
-#[cfg(all(target_arch = "avr", feature = "unsafe_hint", feature = "unsafe_mmio"))]
 #[rustfmt::skip]
+#[cfg(all(target_arch = "avr", feature = "unsafe_hint", feature = "unsafe_mmio"))]
 impl TimeSourceCfg<u64> for Atmega328pTimer1Clock {
     type Config = Atmega328pTimer1ClockCfg;
 

@@ -8,6 +8,7 @@
 // serves as a marker to conditionally include the module in `_all`. The lifetime is never
 // actually used, simply allowing us to detect the presence of the module during expansion.
 #[macro_export]
+#[allow(missing_docs)]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! mods_out· {
     (

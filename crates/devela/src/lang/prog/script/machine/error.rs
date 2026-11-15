@@ -99,6 +99,7 @@ impl<E: Display> Display for ScriptError<E> {
         }
     }
 }
+#[allow(dead_code)]
 impl<E> ScriptError<E> {
     pub(crate) const fn expected_kind(expected: ValueKind, found: ValueKind) -> Self {
         Self::ExpectedKind { expected, found }

@@ -18,6 +18,7 @@ pub enum NrfPort {
 }
 
 #[rustfmt::skip]
+#[allow(dead_code)]
 impl NrfPort {
     /// Number of implemented pins in this port.
     #[must_use]

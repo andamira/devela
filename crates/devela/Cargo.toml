@@ -704,7 +704,7 @@ doc-scrape-examples = false
 [[example]]
 name = "coro_manager" # NOTE: in docs
 path = "examples/work/coro_manager.rs"
-required-features = ["alloc"]
+required-features = ["alloc", "coro"]
 
 # example scripts inside src/*
 # ==============================================================================

@@ -9,6 +9,7 @@
 // Related links
 // - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
 #[macro_export]
+#[allow(missing_docs)]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! CONST· {
     (
