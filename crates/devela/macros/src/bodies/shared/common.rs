@@ -50,7 +50,7 @@ pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
 
     for (i, ch) in tuple.chars().enumerate().skip(1) {
         match ch {
-            '"' => in_quotes = !in_quotes,
+            '"' => in_quotes.toggle(),
             '(' if !in_quotes => level += 1,
             ')' if !in_quotes => level -= 1,
             ',' if level == 0 && !in_quotes => {

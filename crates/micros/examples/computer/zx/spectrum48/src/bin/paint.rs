@@ -103,7 +103,7 @@ spectrum_main! {
         }
         // E: toggle eraser
         if keys.just_pressed(&prev, Key::E) {
-            erase = !erase;
+            erase.toggle();
         }
         // Enter: fill paper
         if keys.just_pressed(&prev, Key::Enter) {

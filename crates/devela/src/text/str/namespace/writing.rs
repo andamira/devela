@@ -116,7 +116,7 @@ impl Str {
                     digits = Digits(num).count_digits10() as usize;
                 }
                 is![index == 0, break, index -= 1];
-                separator_turn = !separator_turn;
+                separator_turn.toggle();
             }
             cfg_select! { all(feature = "unsafe_str", not(feature = "safe_text")) => {
                 // SAFETY: only ASCII bytes are written

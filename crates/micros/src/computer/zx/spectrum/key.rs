@@ -108,7 +108,7 @@ impl SpectrumKeys {
     /// No keys pressed.
     pub const NONE: Self = Self([0; 8]);
 
-    #[expect(dead_code, reason = "TEMP")]
+    #[allow(dead_code, reason = "TEMP")]
     pub(crate) const fn new(rows: [u8; 8]) -> Self {
         Self(rows)
     }

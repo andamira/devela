@@ -124,7 +124,6 @@
         refcell_try_map,
         str_as_str,
         supertrait_item_shadowing,
-        trim_prefix_suffix,
         unsafe_cell_from_mut,
     )
 )]
