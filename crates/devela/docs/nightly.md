@@ -42,7 +42,7 @@ See also
 - 1.101: `c`[arc_is_unique](https://github.com/rust-lang/rust/pull/163458)
 - 1.101: `c`[debug_closure_helpers](https://github.com/rust-lang/rust/pull/146099)
 - 1.101: ` `[Drop array elements in order after a partial move](https://github.com/rust-lang/rust/pull/165037)
-- 1.101: ` `[Lower #[no_mangle] to #[symbol_name]/#[link_name]](https://github.com/rust-lang/rust/pull/159374)
+- 1.101: ` `[Lower `#[no_mangle]` to `#[symbol_name]`/`#[link_name]`](https://github.com/rust-lang/rust/pull/159374)
 - 1.101: `c`[exclusive_wrapper](https://github.com/rust-lang/rust/pull/163366)
 - 1.101: `c`[funnel_shifts](https://github.com/rust-lang/rust/pull/161015)
 - 1.101: `c`[optimize_attribute](https://github.com/rust-lang/rust/pull/157273)

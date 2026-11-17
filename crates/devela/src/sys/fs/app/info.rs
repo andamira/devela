@@ -4,6 +4,9 @@
 
 use crate::{String, vec_ as vec};
 
+#[cfg(all(doc, feature = "std"))]
+use crate::{AppPaths, AppPathsApple, AppPathsUnix, AppPathsXdg};
+
 #[doc = crate::_tags!(platform)]
 /// Application specific metadata.
 #[doc = crate::_doc_meta!{

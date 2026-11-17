@@ -11,7 +11,7 @@
   [M_crossbeam-utils]: crate::_doc::reference::vendored::crossbeam_utils
   [`CacheAlign`]: crate::sys::mem::CacheAlign
   [M_etcetera]: crate::_doc::reference::vendored::etcetera
-  [`AppEnv`]: crate::sys::env::AppEnv
+  [`AppPaths`]: crate::sys::fs::app::AppPaths
   [`fmt_or`]: crate::code::result::OptionExt::fmt_or
   [`fmt_or_else`]: crate::code::result::OptionExt::fmt_or_else
   [`fmt_or_empty`]: crate::code::result::OptionExt::fmt_or_empty

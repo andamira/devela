@@ -245,7 +245,7 @@ lang_all = ["lang", "glsl", "js", "script_all"]
 		# template = []
 
 media = []
-media_all = ["audio_all", "font", "visual_all"]
+media_all = ["audio_all", "font_all", "visual_all"]
 
 	audio = ["media"]
 	audio_all = ["audio", "pcm", "wav"]

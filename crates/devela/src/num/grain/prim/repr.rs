@@ -15,7 +15,9 @@
 use crate::{_BittenSpec, _BittenU8Select, BittenU8};
 #[cfg(feature = "bitten")]
 use crate::{_BittenU16Select, _BittenU32Select, BittenU16, BittenU32};
-use crate::{NonMaxU8, NonMaxU16, NonMaxU32, NonMaxU64, NonMaxUsize};
+use crate::{NonMaxU8, NonMaxU16, NonMaxUsize};
+#[allow(unused_imports, reason = "depends on target_pointer_width")]
+use crate::{NonMaxU32, NonMaxU64};
 use crate::{NonValueI8, NonValueI16, NonValueI32, NonValueI64, NonValueI128, NonValueIsize};
 use crate::{NonValueU8, NonValueU16, NonValueU32, NonValueU64, NonValueU128, NonValueUsize};
 use crate::{NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize};

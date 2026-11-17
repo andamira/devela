@@ -9,19 +9,24 @@
 //! [`ScriptMachine`] owns suspended execution state but neither the program
 //! being executed nor the world affected by it. This keeps program storage,
 //! execution state, and external authority independent.
-
+//!
 //! ## Execution
 //!
-//! Direct and hosted execution share the same machine state and transition
-//! protocol. They differ only in who resolves external calls.
+//! Direct and hosted execution share the same machine state and transition protocol.
+//! They differ only in who resolves external calls.
 //!
-//! [`ScriptMachine::step`] and [`ScriptMachine::run`] return external
-//! interaction as [`ScriptOutcome::HostCall`]. The caller may inspect the
-//! contained [`ScriptCall`], perform the requested effect, and resume the
-//! machine with [`ScriptMachine::complete_call`].
+//! [`step`] and [`run`] return external interaction as [`ScriptOutcome::HostCall`].
+//! The caller may inspect the contained [`ScriptCall`], perform the requested effect,
+//! and resume the machine with [`complete_call`].
 //!
-//! [`ScriptMachine::step_with`] and [`ScriptMachine::run_with`] resolve the
-//! same interaction through a [`ScriptHost`] instead.
+//! [`step_with`] and [`run_with`] resolve the same interaction
+//! through a [`ScriptHost`] instead.
+//!
+//! [`step`]: ScriptMachine::step
+//! [`run`]: ScriptMachine::run
+//! [`complete_call`]: ScriptMachine::complete_call
+//! [`step_with`]: ScriptMachine::step_with
+//! [`run_with`]: ScriptMachine::run_with
 //!
 //! ```txt
 //! program: &[ScriptOp]

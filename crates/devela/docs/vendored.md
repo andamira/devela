@@ -14,7 +14,7 @@ See the linked modifications for detailed changes.
 - <i id="crossbeam-utils"></i>[crossbeam-utils] by The Crossbeam Project Developers,
   as the [`CacheAlign`] struct ([*modifications*][M_crossbeam-utils]).
 - <i id="etcetera"></i>[etcetera] by Luna Razzaghipour,
-  as the [`AppEnv`] trait and related structs ([*modifications*][M_etcetera]).
+  as the [`AppPaths`] trait and related structs ([*modifications*][M_etcetera]).
 - <i id="fmtor"></i>[fmtor] by Tyler Ruckinger,
   as `OptionExt`'s [`fmt_or`], [`fmt_or_else`] and [`fmt_or_empty`] methods.
 - <i id="rustc-hash"></i>[rustc_hash] by Christopher Breeden,
@@ -56,7 +56,7 @@ See the linked modifications for detailed changes.
   [`CacheAlign`]: https://docs.rs/devela/latest/devela/sys/mem/struct.CacheAlign.html
 [etcetera]: https://crates.io/crates/etcetera/0.8.0
   [M_etcetera]: https://github.com/andamira/devela/blob/main/src/_doc/vendored/etcetera.md
-  [`AppEnv`]: https://docs.rs/devela/latest/devela/sys/env/trait.AppEnv.html
+  [`AppPaths`]: https://docs.rs/devela/latest/devela/sys/fs/app/trait.AppPaths.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`fmt_or`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or
   [`fmt_or_else`]: https://docs.rs/devela/latest/devela/code/result/trait.OptionExt.html#tymethod.fmt_or_else

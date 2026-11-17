@@ -2,6 +2,8 @@
 //! Defines [`AppPaths`].
 //
 
+#[cfg(doc)]
+use crate::{AppPathsUnix, AppPathsXdg};
 use crate::{Env, Path, PathBuf};
 
 #[doc = crate::_tags!(platform)]
