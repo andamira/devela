@@ -80,7 +80,7 @@
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
 // `nightly_stable_1_102`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_102, feature(alignment_type))]
+#![cfg_attr(nightly_stable_1_102, feature(alignment_type, int_from_ascii,))]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "std"), feature())]
 //
@@ -111,7 +111,6 @@
         fn_align,
         frontmatter,
         impl_trait_in_assoc_type,
-        int_from_ascii,
         isqrt,
         iter_advance_by,
         likely_unlikely,

@@ -60,6 +60,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.102.0> -->
 
 - 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
+- 1.102: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 
 
 # 1.103 will be stable on [2027-02-04](https://releases.rs/docs/1.103.0/) `nightly_stable_1_103`
@@ -92,7 +93,6 @@ See also
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
-- 1.??: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 - 1.??: `c`[integer_sign_cast](https://github.com/rust-lang/rust/pull/137026)
 - 1.??: `c`[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: `c`[iter_advance_by](https://github.com/rust-lang/rust/pull/163328)
