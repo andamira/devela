@@ -18,6 +18,9 @@
 #
 # espup is still required separately: its Xtensa GCC/binutils environment
 # is reused for linking binaries produced by this Rust toolchain.
+#
+# LINKS
+# - https://github.com/esp-rs/rust
 
 set -eu
 

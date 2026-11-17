@@ -51,9 +51,8 @@ build() {
     setup_toolchain
     cd "$DIR"
 
-    RUSTC_BOOTSTRAP=1 \
-        rustup run "$TOOLCHAIN" cargo build \
-            --release --ignore-rust-version --target-dir "$TARGET_DIR"
+	rustup run "$TOOLCHAIN" cargo build \
+		--release --target-dir "$TARGET_DIR"
 
     require_file "$RUSTLIB"
     "$SDKBIN/mos-atari8-dos-clang" -mcpu=mos6502 -Os \

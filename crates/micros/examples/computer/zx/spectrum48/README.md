@@ -1,7 +1,7 @@
 # ZX Spectrum 48K examples
 
-Rust `no_std` programs for the ZX Spectrum 48K using `devela_micros` and
-[Rust-Z80](https://github.com/llvm-z80/rust-z80).
+Rust `no_std` programs for the ZX Spectrum 48K using `devela_micros`
+and [Rust-Z80](https://github.com/llvm-z80/rust-z80).
 
 
 ## Toolchain
@@ -11,22 +11,30 @@ On Debian-based Linux, install `rustup` and the build dependencies:
 ```sh
 sudo apt install build-essential git curl python3 \
   cmake ninja-build pkg-config libssl-dev fuse-emulator-gtk
-
-PLATFORMS_DIR="${PLATFORMS_DIR:-$HOME/tmp}"
-mkdir -p "$PLATFORMS_DIR/z80"
-cd "$PLATFORMS_DIR/z80"
-
-git clone https://github.com/llvm-z80/rust-z80.git
-cd rust-z80
-git submodule update --init --depth 1 src/llvm-project
-./x install
-rustup toolchain link rust-z80 "$PWD/install"
-
-rustc +rust-z80 -V
 ```
 
-The path is only an example: `rustup` registers the toolchain independently
-of its location. Building Rust-Z80 also builds the LLVM-Z80 backend.
+The helper clones or updates [Rust-Z80](https://github.com/llvm-z80/rust-z80),
+checks out its pinned LLVM-Z80 submodule, compiles incrementally and links the
+compiler with `rustup`:
+
+```sh
+../../../tools/build-z80-rust.sh "$HOME/tmp/z80"
+rustc +rust-z80 -vV
+```
+
+Existing source and build artifacts are reused. Use `Z80_UPDATE=0` to rebuild
+the current checkout without fetching upstream changes, or pass a second
+argument to select a different registered name (e.g. `rust-z80-next`).
+The corresponding manual commands are at the top of the helper script.
+
+This is an independent Rust compiler fork; its version does **not**
+automatically advance when upstream stable Rust does. Inspect `rustc -vV`
+and build an example before treating it as compatible with devela's MSRV.
+A custom toolchain can be selected as follows:
+
+```sh
+TOOLCHAIN=rust-z80-next ./example.sh build
+```
 
 
 # Programs

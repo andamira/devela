@@ -26,7 +26,8 @@ See each board README for the target and any additional tooling it requires.
 
 ## ESP32-S3
 
-ESP32-S3 uses Xtensa and requires the Espressif Rust toolchain.
+ESP32-S3 uses Xtensa and requires the
+[Espressif Rust toolchain](https://github.com/esp-rs/rust).
 
 Install `espup`:
 
@@ -44,8 +45,8 @@ MSRV. If necessary, install a matching prebuilt toolchain explicitly:
 espup install --name esp --targets esp32s3 --toolchain-version 1.99.0.0
 ```
 
-Replace `1.99.0.0` with the Espressif Rust release corresponding to devela's
-current MSRV.
+Use the newest available Espressif release. The example above is a known
+prebuilt version; a matching release may not yet exist when stable Rust advances.
 
 If the `esp` toolchain is already installed, update it instead:
 
@@ -68,14 +69,29 @@ Choose a build directory with substantial free space;
 building Rust and LLVM may temporarily consume tens of gigabytes:
 
 ```sh
-../../tools/build-xtensa-rust.sh 1.99.0.0 /path/to/build-dir
+../../tools/build-xtensa-rust.sh 1.100.0.0 /path/to/build-dir
 ```
 
 On one x86_64 Linux system the build downloaded about 5 GB
 and grew to about 43 GB, taking roughly one hour.
 
-A custom named toolchain can be selected when running an S3 example:
+The builder defaults to a versioned name (`esp-1.100.0.0` here). The S3
+example runner accepts `TOOLCHAIN` for building, flashing, and inspection:
 
 ```sh
-TOOLCHAIN=esp-1.99.0.0 ./example.sh build
+TOOLCHAIN=esp-1.100.0.0 ./example.sh build
+TOOLCHAIN=esp-1.100.0.0 ./example.sh flash blink
 ```
+
+ After validating the new compiler, you may point the stable name `esp` at its
+existing installation, without rebuilding. This removes only the previous
+`esp` toolchain; it preserves the `esp-1.100.0.0` directory:
+
+```sh
+rustup toolchain uninstall esp
+rustup toolchain link esp "$HOME/.rustup/toolchains/esp-1.100.0.0"
+rustc +esp --version
+```
+
+The custom Rust toolchain still uses the Xtensa GCC/binutils environment
+from `espup` (normally `~/export-esp.sh`).

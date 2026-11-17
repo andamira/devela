@@ -194,7 +194,11 @@ This release…
 - consolidate MSP-EXP430G2 LaunchPad examples into one board project
   with selectable MSP430G2231, G2452 and G2553 memory layouts.
 - verify target MCU identity before flashing and isolate build artifacts by chip.
-- add MSP430G2553 bare-metal blink example
+- add MSP430G2553 bare-metal blink example.
+- add incremental Rust-MOS and Rust-Z80 toolchain build helpers.
+- update Atari 800XL setup for Rust-MOS-Sync and
+  remove the compiler version bypass from its runner.
+- refresh ESP32-S3 Xtensa toolchain installation and upgrade instructions.
 
 ## Modules
 
