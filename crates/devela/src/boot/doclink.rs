@@ -6,7 +6,6 @@
 // - doclink! (*local*)
 //
 // NOTE: duplicated (not symlinked) in /crates/macros/src/copied/doclink.rs)
-// WAIT [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
 
 #[doc(hidden)]
 #[macro_export]

@@ -103,32 +103,20 @@ pub use mod_from· as mod_from;
 #[doc = crate::_doc_meta!{
     location("code/source", macro mod_path),
 }]
-/// This is used to include files re-exported by lower-level workspace crates,
-/// which add documentation on top of the original one. But there's an [issue][0]
-/// where cross-crate import chains mises docs from middle crates.
+/// Declares a module from a source file at an explicit path, optionally
+/// re-exporting its public items.
 ///
-// WAIT: missing cross-crate docs:
-/// [0]: https://github.com/rust-lang/rust/issues/120927
+/// Prefer ordinary `pub use` when forwarding items from another crate.
 ///
-/// There's another [issue][1] with the `include!` macro not supporting module-level attributes.
-///
-// WAIT: include! fails with top-level attributes:
-/// [1]: https://github.com/rust-lang/rfcs/issues/752
-///
-/// so we have to resort to hardcoding the `path` attribute for the module.
-/// (hardcoding is necessary since it only supports a whole literal. See [issue][2].
-///
-// WAIT: Module path attribute override with nested macros doesn't work:
-/// [2]: https://github.com/rust-lang/rust/issues/87681
-//
-// Once the main issue (120927) is fixed, then this:
-// mod_path!(alloc "../base/alloc/src/reexports.rs", _ia);
-//
-// Could be replaced with this:
-// #[cfg(feature = "alloc")] #[doc(inline)] #[rustfmt::skip]
-// pub use devela_base_alloc::{String, ToString};
+/// This macro can be useful when the source file itself must be compiled
+/// as a module. Unlike `include!`, `#[path]` can load files with
+/// module-level inner attributes ([rust-lang/rust#66920]).
+/// Its path must be a literal; see [rust-lang/rust#87681].
 ///
 /// See also [`mod_from!`].
+///
+/// [rust-lang/rust#66920]: https://github.com/rust-lang/rust/issues/66920
+/// [rust-lang/rust#87681]: https://github.com/rust-lang/rust/issues/87681
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! mod_path· {

@@ -9,8 +9,6 @@
 // Exact `location` forms are intended for single-item reexports.
 // Grouped reexports should use the module-only form.
 //
-// WAIT: [missing cross-crate docs](https://github.com/rust-lang/rust/issues/120927)
-//       the solution is to re-export from core/alloc/std items on each crate.
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
