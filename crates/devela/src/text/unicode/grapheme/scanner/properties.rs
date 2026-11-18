@@ -173,7 +173,7 @@ impl GraphemeProps {
         cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_text")) => {
             let raw = self.raw & 0xf;
             // SAFETY: The low nibble of raw repr matches the GraphemePropCb repr.
-            unsafe { core::mem::transmute(raw) }
+            unsafe { Mem::transmute(raw) }
         } _ => {
             match self.raw & 0xf {
                 0x00 => GraphemePropCb::None,
@@ -204,7 +204,7 @@ impl GraphemeProps {
         cfg_select! { all(feature = "unsafe_layout", not(feature = "safe_text")) => {
             let raw = self.raw & 0x30;
             // SAFETY: The selected bits of raw repr matches ththe GraphemePropInCb repr.
-            unsafe { core::mem::transmute(raw) }
+            unsafe { Mem::transmute(raw) }
         } _ => {
             match self.raw & 0x30 {
                 0x00 => GraphemePropInCb::None,

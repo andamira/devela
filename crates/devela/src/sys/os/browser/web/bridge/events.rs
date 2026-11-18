@@ -3,7 +3,7 @@
 //! Implements the web events API.
 //
 
-use crate::{_js_doc, _js_extern, JsInstant, js_int32, js_number, js_uint32, transmute};
+use crate::{_js_doc, _js_extern, JsInstant, Mem, js_int32, js_number, js_uint32};
 use crate::{EventPointerKind, EventWheelUnit, Key, KeyMods};
 use crate::{
     Web, WebEventKey, WebEventKind, WebEventMouse, WebEventPointer, WebEventWheel, WebKeyLocation,
@@ -122,7 +122,7 @@ impl Web {
     #[unsafe(no_mangle)]
     pub unsafe extern "C" fn wasm_callback(callback_ptr: usize) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn() = unsafe { transmute(callback) };
+        let callback: extern "C" fn() = unsafe { Mem::transmute(callback) };
         callback();
     }
 
@@ -134,7 +134,7 @@ impl Web {
     pub unsafe extern "C" fn wasm_callback_animation_frame(callback_ptr: usize,
         timestamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(JsInstant) = unsafe { transmute(callback) };
+        let callback: extern "C" fn(JsInstant) = unsafe { Mem::transmute(callback) };
         callback(JsInstant::from_millis_f64(timestamp));
     }
 
@@ -151,7 +151,7 @@ impl Web {
         semantic: js_uint32, physical: js_uint32, location: js_int32, repeat: js_int32,
         mods: js_int32, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(WebEventKey) = unsafe { transmute(callback) };
+        let callback: extern "C" fn(WebEventKey) = unsafe { Mem::transmute(callback) };
         let repeat = repeat != 0;
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
@@ -176,7 +176,7 @@ impl Web {
         x: js_number, y: js_number, button: js_int32, buttons: js_int32, mods: js_int32,
         etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(WebEventMouse) = unsafe { transmute(callback) };
+        let callback: extern "C" fn(WebEventMouse) = unsafe { Mem::transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let etype = WebEventKind::from_repr(etype as u8);
         let timestamp = JsInstant::from_millis_f64(timestamp);
@@ -200,7 +200,7 @@ impl Web {
         tilt_x: js_int32, tilt_y: js_int32, twist: js_int32, button: js_int32, buttons: js_int32,
         mods: js_int32, etype: js_int32, timestamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(WebEventPointer) = unsafe { transmute(callback) };
+        let callback: extern "C" fn(WebEventPointer) = unsafe { Mem::transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let kind = EventPointerKind::from_web(kind as u8);
         let etype = WebEventKind::from_repr(etype as u8);
@@ -221,7 +221,7 @@ impl Web {
         delta_x: js_number, delta_y: js_number, buttons: js_int32, mods: js_int32, unit: js_int32,
         timestamp: js_number) {
         let callback = callback_ptr as *const ();
-        let callback: extern "C" fn(WebEventWheel) = unsafe { transmute(callback) };
+        let callback: extern "C" fn(WebEventWheel) = unsafe { Mem::transmute(callback) };
         let mods = KeyMods::from_web(mods as u8);
         let unit = EventWheelUnit::from_web(unit as u8);
         let timestamp = JsInstant::from_millis_f64(timestamp);

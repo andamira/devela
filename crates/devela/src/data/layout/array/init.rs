@@ -107,7 +107,6 @@ macro_rules! init_array· {
     /* unsafe initializations */
 
     // unsafe array initialization in the stack
-    // TODO:CHECK:AGAIN
     unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
         let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
             // SAFETY: array will be fully initialized in the subsequent loop
@@ -117,11 +116,10 @@ macro_rules! init_array· {
             let _ = e.write($init(i)); // NOTE: const since 1.85
         }
         // Can't use transmute for now, have to use transmute_copy:
-        // - WAIT:CLOSED:[const generics transmute](https://github.com/rust-lang/rust/issues/61956)
-        //   - https://github.com/rust-lang/rust/issues/62875 (duplicate)
-        // unsafe { $crate::transmute::<_, [T; LEN]>(&arr) }
+        // - WAIT:[Add const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
+        // unsafe { $crate::Mem::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
-        unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
     // unsafe array initialization in the stack, compile-time friendly.
@@ -136,7 +134,7 @@ macro_rules! init_array· {
             i += 1;
         }
         // SAFETY: we've initialized all the elements
-        unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
     // unsafe array initialization in the heap
@@ -264,7 +262,7 @@ macro_rules! init_array· {
                 unsafe { $crate::MaybeUninit::uninit().assume_init() };
             for (i, data) in $op.enumerate() { arr[i].write(data?); }
             // SAFETY: we've initialized all the elements
-            unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+            unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
         } _ => {
             let init_value = $pre?; // error prone initial value
             let mut arr: [$T; $LEN] = ::core::array::from_fn(|_| init_value.clone());

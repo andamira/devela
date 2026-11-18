@@ -168,7 +168,7 @@ pub struct SpinLockGuard<'a, T, const SPIN: usize, const YIELD: usize, const SLE
 //     /// - The caller must guarantee that `T` is not aliased elsewhere.
 //     /// - `transmute` is used to reinterpret the pointer type, which can cause UB if misused.
 //     pub const unsafe fn as_ref(self) -> SpinLockGuard<'a, &'a T, SPIN, YIELD, SLEEP> {
-//         unsafe { transmute(self) }
+//         unsafe { Mem::transmute(self) }
 //     }
 // }
 

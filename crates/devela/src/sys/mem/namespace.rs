@@ -9,7 +9,7 @@ use ::core::mem::{
 };
 #[allow(unused_imports, reason = "±unsafe")]
 use ::core::{
-    mem::{transmute_copy, zeroed},
+    mem::{conjure_zst, transmute_copy, zeroed},
     slice::{from_raw_parts, from_raw_parts_mut},
 };
 
@@ -204,17 +204,43 @@ impl Mem {
 /// Available unless `safe_mem` is enabled.
 #[cfg(not(feature = "safe_mem"))]
 impl Mem {
-    // NOTE: can't compile, errors with: error[E0512]:
-    // cannot transmute between types of different sizes, or dependently-sized types
-    //
-    // /// Reinterprets the bits of a value of one type as another type.
-    // ///
-    // /// See `core::mem::`[`transmute`].
-    // pub const unsafe fn transmute<Src: Sized, Dst: Sized>(_src: Src) -> Dst {
-    //     unsafe { transmute::<Src, Dst>(_src) }
-    // }
+    /// Creates a value of an inhabited zero-sized type.
+    ///
+    /// # Safety
+    /// `T` must be inhabited and zero-sized, and constructing it
+    /// must not violate any safety invariant of the type.
+    ///
+    /// See `core::mem::`[`conjure_zst`].
+    #[must_use]
+    pub const unsafe fn conjure_zst<T>() -> T {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { conjure_zst::<T>() }
+    }
 
-    /// Reads `src` as having type `&Dst` without moving the contained value.
+    /// Reinterprets a value as another type, transferring ownership.
+    ///
+    /// The source and destination types must have equal sizes.
+    ///
+    /// # Safety
+    /// See `core::mem::`[`transmute`][core::mem::transmute].
+    pub const unsafe fn transmute<Src, Dst>(src: Src) -> Dst {
+        const {
+            assert!(
+                size_of::<Src>() == size_of::<Dst>(),
+                "Mem::transmute requires equal-sized types"
+            );
+        }
+        // Generic types cannot use `transmute` directly (E0512).
+        // `ManuallyDrop` prevents dropping the source, turning the
+        // bitwise copy into an ownership transfer rather than a duplication.
+        let src = core::mem::ManuallyDrop::new(src);
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { transmute_copy::<_, Dst>(&src) }
+    }
+
+    /// Copies a value's representation into another type without consuming it.
+    ///
+    /// The destination must not be larger than the source.
     ///
     /// # Safety
     /// See `core::mem::`[`transmute_copy`].

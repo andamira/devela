@@ -37,13 +37,3 @@ _reexport! { rust: core::mem,
     doc: "Expands to the offset in bytes of a field from the beginning of the given type.",
     offset_of
 }
-
-/* mem functions */
-
-// NOTE: can't namespace this in `Mem`.
-// NOTE: it shows a wrong deprecation message when re-exported. Ignore it.
-_reexport! { rust: core::mem,
-    location: "sys/mem" => fn transmute, tag: _tags!(mem),
-    doc: "Reinterprets the bits of a value of one type as another type.",
-    transmute
-}

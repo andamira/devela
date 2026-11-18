@@ -1,6 +1,6 @@
 #[cfg(feature = "control")]
 use crate::{AppControl, AppControlSet, AtomicPtr};
-use crate::{AtomicOrdering::SeqCst, Ptr, c_int, c_void, is, transmute};
+use crate::{AtomicOrdering::SeqCst, Mem, Ptr, c_int, c_void, is};
 use crate::{
     LINUX_SIG_HANDLERS, LINUX_SIGINFO_HANDLERS, Linux, LinuxSigaction, LinuxSigactionFlags,
 };
@@ -48,7 +48,7 @@ impl Linux {
             let handler = HANDLER.load(SeqCst);
             if !handler.is_null() {
                 // SAFETY: stored from a `fn(AppControl)` and checked for null.
-                let handler: fn(AppControl) = unsafe { transmute(handler) };
+                let handler: fn(AppControl) = unsafe { Mem::transmute(handler) };
                 handler(control);
             }
         }
@@ -114,7 +114,7 @@ impl Linux {
             let handler = LINUX_SIG_HANDLERS[sig as usize].load(SeqCst);
             if !handler.is_null() {
                 // SAFETY: we control both storage and retrieval and check for null.
-                let handler: fn(c_int) = unsafe { transmute(handler) };
+                let handler: fn(c_int) = unsafe { Mem::transmute(handler) };
                 handler(sig);
             }
         }
@@ -187,7 +187,8 @@ impl Linux {
             let handler = LINUX_SIGINFO_HANDLERS[sig as usize].load(SeqCst);
             if !handler.is_null() {
                 // SAFETY: we control both storage and retrieval and check for null.
-                let handler: fn(c_int, &LinuxSiginfo, *mut c_void) = unsafe { transmute(handler) };
+                let handler: fn(c_int, &LinuxSiginfo, *mut c_void) =
+                    unsafe { Mem::transmute(handler) };
 
                 // SAFETY: kernel-provided for this SA_SIGINFO handler call.
                 let info = unsafe { &*info };

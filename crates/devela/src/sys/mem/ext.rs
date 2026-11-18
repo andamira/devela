@@ -93,7 +93,23 @@ pub trait MemExt {
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     unsafe fn mem_zeroed<T>() -> T { unsafe { Mem::zeroed::<T>() } }
 
-    /// Returns the value of type `T` represented by the all-zero byte-pattern.
+
+    /// Reinterprets a value as another type, transferring ownership.
+    ///
+    /// The source and destination types must have equal sizes.
+    ///
+    /// # Safety
+    /// See [`Mem::transmute`].
+    #[must_use]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_layout")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+    unsafe fn mem_transmute<Src, Dst>(src: Src) -> Dst {
+        unsafe { Mem::transmute::<Src, Dst>(src) }
+    }
+
+    /// Copies a value's representation into another type without consuming it.
+    ///
+    /// The destination must not be larger than the source.
     ///
     /// # Safety
     /// See [`Mem::transmute_copy`].

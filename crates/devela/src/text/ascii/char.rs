@@ -6,7 +6,7 @@
 // - WAIT: [ascii::Char](https://github.com/rust-lang/rust/issues/110998)
 
 #[cfg(feature = "unsafe_str")]
-use crate::transmute;
+use crate::Mem;
 use ::core::fmt;
 
 #[doc = crate::_tags!(text)]
@@ -469,7 +469,7 @@ impl CharAscii {
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
-        unsafe { transmute(b) }
+        unsafe { Mem::transmute(b) }
     }
 
     /// When passed the *number* `0`, `1`, …, `9`, returns the *character*

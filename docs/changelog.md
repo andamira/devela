@@ -142,6 +142,9 @@ This release…
 - fix inverted validation in `AppInfo::new` and add regression tests.
 
 ### sys::mem
+- add `Mem` methods: `conjure_zst`, `transmute`.
+- add `MemExt` method: `transmute`.
+- remove standalone fn `transmute` re-export.
 - re-export `DropGuard`, use it to replace the old `ScopeGuard`.
 - re-export `Allocator`, `AllocError`, `GlobalAlloc`, `MemLayout`, and
   `MemLayoutError` from `core::alloc`, without requiring `alloc`.

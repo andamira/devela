@@ -16,7 +16,6 @@
 
 use ::devela::{
     Any, Deref, DerefMut, Hash, Mem, PhantomData, PtrNonNull, RefCell, any_type_name, map,
-    transmute,
 };
 ::devela::_use_or_shim![_doc_meta, _tags];
 
@@ -178,7 +177,7 @@ impl<T: Any> Deref for Current<T> {
         // - Transmuting `&Current<T>` to `&mut Current<T>` is safe since it's never directly used.
         // - Caller must ensure `CurrentGuard<T>` is active; otherwise, `current_unwrap` panics.
         #[allow(mutable_transmutes, reason = "`Current` only acts as a reference handle")]
-        unsafe { transmute::<&Current<T>, &'a mut Current<T>>(self).current_unwrap() }
+        unsafe { Mem::transmute::<&Current<T>, &'a mut Current<T>>(self).current_unwrap() }
     }
 }
 impl<T: Any> DerefMut for Current<T> {
