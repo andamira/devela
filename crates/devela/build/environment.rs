@@ -48,7 +48,7 @@ fn emit_primary_package_flag() {
 
 /// Emits normalized workspace and target directory variables.
 fn emit_workspace_env() {
-    // Used in: doclink! (/src/code/util/doclink.rs)
+    // Used in: doclink! (/src/boot/doclink.rs)
     // In sync with: /.cargo/config.toml#[env]
     let workspace_dir = get_workspace_dir();
     let target_dir = get_target_dir(&workspace_dir);

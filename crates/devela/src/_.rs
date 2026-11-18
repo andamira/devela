@@ -200,7 +200,7 @@ mod boot; // Bootstrapping abstractions
 #[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
-pub use boot::{CONST, compile, compile_attr, mods_in, mods_out, paste, unreachable};
+pub use boot::{CONST, compile, compile_attr, doclink, mods_in, mods_out, paste, unreachable};
 
 #[cfg(root_code)]
 #[path = "code/_.rs"]

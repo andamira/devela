@@ -7,7 +7,7 @@
 #[doc = crate::_doc_meta!{location("yard", macro _doc_vendor)}]
 ///
 /// See the documentation for [vendored work].
-#[cfg_attr(all(doc, root_code),
+#[cfg_attr(doc,
     doc = crate::doclink!(custom devela "[vendored work]" "_doc/reference/vendored" @mod)
 )]
 ///

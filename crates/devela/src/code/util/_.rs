@@ -38,7 +38,7 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-// BOOTSTRAP: needed by doc attributes before `mods_in!`/`mods_out!` expansion.
+// Public facade for the bootstrapped documentation-link macro.
 mod doclink; // doclink!
 #[path = "synth/_.rs"] // BOOTSTRAP: provides `mods_in!` and `mods_out!`.
 pub mod synth; // Code synthesis and macro composition
