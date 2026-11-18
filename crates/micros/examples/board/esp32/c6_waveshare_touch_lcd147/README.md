@@ -43,7 +43,7 @@ The user needs permission to access it, commonly through the `dialout` group.
 
 ## Build and flash
 
-The script defaults to flashing the `blink` binary:
+The script defaults to flashing the `blink` binary (`run` also flashes):
 
 ```sh
 ./example.sh

@@ -6,6 +6,8 @@
 #   scripts/fetch.sh llvm && scripts/apply.sh llvm base-stable
 #   scripts/fetch.sh rust && scripts/apply.sh rust base-stable
 #   STAGE=1 scripts/build-rust.sh stable
+#   # If needed: (cd "$WORK/rust" && ./x build --stage 1 library \
+#   #                 --target x86_64-unknown-linux-gnu)
 #   # link the printed stage directory with rustup toolchain link
 #
 # Usage:
@@ -22,6 +24,8 @@
 #
 # A versioned sysroot copy avoids later incremental builds overwriting the
 # installed toolchain. A new rustup name leaves any existing 'rust-mos' intact.
+# MOS_INSTALL_SUFFIX=<tag> allows another immutable snapshot for the same
+# upstream revision (for example, after changing the build configuration).
 # Register 'rust-mos' as an alias after verifying the new toolchain.
 
 set -eu
@@ -123,16 +127,80 @@ esac
     exit 1
 }
 
-# Install an immutable snapshot: the stage directory is mutable and will be
-# reused by the next build, so it must never serve as a versioned rustup path.
+# A target-only bootstrap run can leave host std but omit proc_macro.
+# This matters for host-side proc-macro crates even when the final binary is
+# no_std. Repair it incrementally, preserving the completed MOS target sysroot.
+HOST="$("$STAGE_DIR/bin/rustc" -vV | sed -n 's/^host: //p')"
+[ -n "$HOST" ] || { echo 'error: cannot determine Rust-MOS host triple' >&2; exit 1; }
+HOST_LIBS="$STAGE_DIR/lib/rustlib/$HOST/lib"
+READY_STAGE="$STAGE_DIR"
+TEMP_STAGE=
+cleanup() { [ -z "$TEMP_STAGE" ] || rm -rf "$TEMP_STAGE"; }
+trap cleanup EXIT
+
+if ! ls "$HOST_LIBS"/libproc_macro-*.rlib >/dev/null 2>&1; then
+    echo 'host proc_macro missing; rebuilding complete host libraries' >&2
+    TEMP_STAGE="$BUILD_DIR/.rust-mos-stage-hostfix.$$"
+    [ ! -e "$TEMP_STAGE" ] || {
+        echo "error: temporary stage exists: $TEMP_STAGE" >&2
+        exit 1
+    }
+    # Preserve target libraries: bootstrap may reset the stage sysroot.
+    cp -a --reflink=auto "$STAGE_DIR" "$TEMP_STAGE"
+    (cd "$WORK/rust" && ./x build --stage "$STAGE" library --target "$HOST")
+    ls "$HOST_LIBS"/libproc_macro-*.rlib >/dev/null 2>&1 || {
+        echo 'error: host proc_macro still missing after the rebuild' >&2
+        exit 1
+    }
+    rm -rf "$TEMP_STAGE/lib/rustlib/$HOST/lib"
+    cp -a "$HOST_LIBS" "$TEMP_STAGE/lib/rustlib/$HOST/lib"
+    READY_STAGE="$TEMP_STAGE"
+fi
+
+require_rlib() {
+    LIB_DIR="$1"
+    LIB_NAME="$2"
+    ls "$LIB_DIR/lib$LIB_NAME-"*.rlib >/dev/null 2>&1 || {
+        echo "error: missing $LIB_NAME in $LIB_DIR" >&2
+        exit 1
+    }
+}
+
+require_rlib "$READY_STAGE/lib/rustlib/$HOST/lib" std
+require_rlib "$READY_STAGE/lib/rustlib/$HOST/lib" proc_macro
+for MOS_TARGET in $MOS_TARGETS; do
+    for LIB in core alloc compiler_builtins; do
+        require_rlib "$READY_STAGE/lib/rustlib/$MOS_TARGET/lib" "$LIB"
+    done
+done
+
+# Register immutable snapshots only. Never silently overwrite or reuse a
+# previously installed but incomplete compiler.
 REV="$(git -C "$SRC" rev-parse --short HEAD)"
 INSTALL_BASE="$BUILD_DIR/rust-mos-installs"
-INSTALL="$INSTALL_BASE/$VERSION-$REV"
+SUFFIX="${MOS_INSTALL_SUFFIX:-}"
+case "$SUFFIX" in
+    *[!a-zA-Z0-9._-]*) echo 'error: invalid MOS_INSTALL_SUFFIX' >&2; exit 2 ;;
+esac
+INSTALL="$INSTALL_BASE/$VERSION-$REV${SUFFIX:+-$SUFFIX}"
 mkdir -p "$INSTALL_BASE"
-if [ ! -e "$INSTALL" ]; then
+if [ -e "$INSTALL" ]; then
+    require_rlib "$INSTALL/lib/rustlib/$HOST/lib" std
+    if ! ls "$INSTALL/lib/rustlib/$HOST/lib"/libproc_macro-*.rlib >/dev/null 2>&1; then
+        echo "error: existing snapshot lacks host proc_macro: $INSTALL" >&2
+        echo 'set MOS_INSTALL_SUFFIX=hostfix (and select a new rustup toolchain name)' >&2
+        exit 1
+    fi
+    for MOS_TARGET in $MOS_TARGETS; do
+        for LIB in core alloc compiler_builtins; do
+            require_rlib "$INSTALL/lib/rustlib/$MOS_TARGET/lib" "$LIB"
+        done
+    done
+    echo "using existing validated snapshot: $INSTALL"
+else
     TMP="$INSTALL.tmp.$$"
     [ ! -e "$TMP" ] || { echo "error: temporary installation exists: $TMP" >&2; exit 1; }
-    cp -a --reflink=auto "$STAGE_DIR" "$TMP"
+    cp -a --reflink=auto "$READY_STAGE" "$TMP"
     mv "$TMP" "$INSTALL"
 fi
 

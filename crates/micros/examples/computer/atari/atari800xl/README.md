@@ -55,6 +55,19 @@ After verifying the versioned compiler, a permanent `rust-mos` alias can be
 linked with `rustup toolchain link` after unregistering any prior `rust-mos`.
 The relevant manual source-build commands are at the top of the helper.
 
+The LLVM-MOS SDK must be available for linking.
+Either add its `bin/` directory to `PATH`, or set `SDKBIN` explicitly:
+
+````sh
+# Bash / POSIX shell
+SDKBIN=/path/to/llvm-mos/bin ./example.sh build
+
+# Fish (also works in Bash)
+env SDKBIN=/path/to/llvm-mos/bin ./example.sh build
+````
+
+The SDK and Rust-MOS compiler are installed and updated independently.
+
 
 # Programs
 

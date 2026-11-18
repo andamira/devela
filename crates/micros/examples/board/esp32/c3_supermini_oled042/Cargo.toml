@@ -12,7 +12,7 @@ default-features = false
 features = [
 	"supermini_oled042",
 	"unsafe_mmio", "unsafe_hint",
-	"draw", "image", "font",
+	"draw", "image", "bitfont",
 ]
 
 [profile.release]

@@ -240,9 +240,9 @@ unsafe = [
 #* Scope features *#
 # ------------------------------------------------------------------------------
 
-media = ["draw", "font", "image"]
+media = ["draw", "bitfont", "image"]
 	draw = ["devela/draw"]
-	font = ["devela/font"]
+	bitfont = ["devela/bitfont"]
 	image = ["devela/image"]
 
 time = ["devela/time"]

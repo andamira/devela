@@ -22,3 +22,11 @@ The shell tools target POSIX `sh` and are primarily developed on Linux.
 
 Toolchains are selected through `rustup` or from `PATH` and documented in each
 example. Generated artifacts stay in the example's own `target/` directory.
+
+For custom toolchains, separate the compiler from external tools: register
+versioned compiler installations with `rustup`, optionally point a short alias
+(e.g. `rust-mos` or `rust-z80`) to the validated version, and configure
+external SDK/binutils paths separately. The Atari example documents `SDKBIN`
+and Fish configuration; ESP32-S3 uses `espup`'s exported linker environment.
+A custom compiler need not bundle Cargo: `cargo +<toolchain>`
+can use rustup's Cargo fallback.

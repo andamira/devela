@@ -25,8 +25,8 @@ CHIP="${CHIP:-ESP32}"
 }
 
 # Invocation
-ACTIONS="build|inspect|dump|flash"
-ACTION="${1:-}"
+ACTIONS="build|inspect|dump|flash|run"
+ACTION="${1:-flash}"
 NAME="${2:-${DEFAULT_NAME:-}}"
 
 # Artifacts
@@ -89,6 +89,12 @@ build() {
     if command -v "$SIZE" >/dev/null 2>&1; then
         size
     fi
+}
+
+# On hardware, 'run' means flash the firmware and let the MCU boot.
+# It does not start an emulator or automatically open a serial monitor.
+run_action() {
+    flash_action
 }
 
 flash_action() {

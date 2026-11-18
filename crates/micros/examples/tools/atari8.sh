@@ -33,7 +33,6 @@ require_file() {
 setup_toolchain() {
     require rustup
     rustup which --toolchain "$TOOLCHAIN" rustc >/dev/null
-    rustup which --toolchain "$TOOLCHAIN" cargo >/dev/null
 
     if [ -z "${SDKBIN:-}" ]; then
         require mos-atari8-dos-clang
@@ -51,7 +50,7 @@ build() {
     setup_toolchain
     cd "$DIR"
 
-	rustup run "$TOOLCHAIN" cargo build \
+	cargo "+$TOOLCHAIN" build \
 		--release --target-dir "$TARGET_DIR"
 
     require_file "$RUSTLIB"

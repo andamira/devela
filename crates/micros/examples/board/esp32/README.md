@@ -1,97 +1,53 @@
 # ESP32 board examples
 
-Bare-metal `no_std` examples for ESP32-family boards supported by devela.
-
+Bare-metal `no_std` examples for ESP32-C3/C6 (RISC-V) and ESP32-S3 (Xtensa).
 
 ## Requirements
 
 On Debian, Ubuntu, or Linux Mint:
 
-```sh
+````sh
 sudo apt-get install -y gcc build-essential curl pkg-config libudev-dev
-```
-
-Install the flashing utility:
-
-```sh
 cargo install espflash --locked
-```
+````
 
+**C3/C6** use upstream Rust RISC-V targets. See each board README
+for its specific target and the binary utilities needed to create flash images.
 
-## ESP32-C3 and ESP32-C6
+**S3** requires Espressif's Xtensa Rust toolchain and GCC/binutils.
+Install both with [`espup`](https://github.com/esp-rs/espup):
 
-The RISC-V ESP32 targets use upstream Rust targets.
-See each board README for the target and any additional tooling it requires.
-
-
-## ESP32-S3
-
-ESP32-S3 uses Xtensa and requires the
-[Espressif Rust toolchain](https://github.com/esp-rs/rust).
-
-Install `espup`:
-
-```sh
+````sh
 cargo install espup --locked
-```
+espup install --name esp --targets esp32s3 --toolchain-version 1.100.0.0
+````
 
-`espup` installs the Xtensa Rust toolchain together
-with the GCC/binutils environment used during linking.
+Choose a version compatible with devela's MSRV (currently Rust 1.100.0).
+The S3 runner loads `~/export-esp.sh` itself;
+no manual sourcing is needed when using `example.sh`.
 
-The default Xtensa Rust version selected by `espup` may lag behind devela's
-MSRV. If necessary, install a matching prebuilt toolchain explicitly:
+## Build and flash
 
-```sh
-espup install --name esp --targets esp32s3 --toolchain-version 1.99.0.0
-```
+From any board's example directory:
 
-Use the newest available Espressif release. The example above is a known
-prebuilt version; a matching release may not yet exist when stable Rust advances.
+````sh
+./example.sh build  # Compile only
+./example.sh run    # Build and flash
+````
 
-If the `esp` toolchain is already installed, update it instead:
+See each board README for available programs, device ports, and inspection commands.
 
-```sh
-espup update --name esp --targets esp32s3 --toolchain-version 1.99.0.0
-```
+## Source-build fallback (S3)
 
-If replacing an existing installation fails, a clean reinstall can be used:
+If a matching prebuilt Xtensa Rust release is unavailable, from this directory:
 
-```sh
-espup uninstall --name esp
-espup install --name esp --targets esp32s3 --toolchain-version 1.99.0.0
-```
-
-devela tracks stable Rust closely, and occasionally its MSRV may advance before
-a matching prebuilt Espressif Xtensa toolchain is available. In that case, the
-matching Rust toolchain can be built locally with the provided helper.
-
-Choose a build directory with substantial free space;
-building Rust and LLVM may temporarily consume tens of gigabytes:
-
-```sh
+````sh
+mkdir -p /path/to/build-dir
 ../../tools/build-xtensa-rust.sh 1.100.0.0 /path/to/build-dir
-```
+````
 
-On one x86_64 Linux system the build downloaded about 5 GB
-and grew to about 43 GB, taking roughly one hour.
+The builder installs Rust under the versioned name `esp-1.100.0.0` by default;
+select it from an S3 example with `TOOLCHAIN=esp-1.100.0.0 ./example.sh build`.
 
-The builder defaults to a versioned name (`esp-1.100.0.0` here). The S3
-example runner accepts `TOOLCHAIN` for building, flashing, and inspection:
-
-```sh
-TOOLCHAIN=esp-1.100.0.0 ./example.sh build
-TOOLCHAIN=esp-1.100.0.0 ./example.sh flash blink
-```
-
- After validating the new compiler, you may point the stable name `esp` at its
-existing installation, without rebuilding. This removes only the previous
-`esp` toolchain; it preserves the `esp-1.100.0.0` directory:
-
-```sh
-rustup toolchain uninstall esp
-rustup toolchain link esp "$HOME/.rustup/toolchains/esp-1.100.0.0"
-rustc +esp --version
-```
-
-The custom Rust toolchain still uses the Xtensa GCC/binutils environment
-from `espup` (normally `~/export-esp.sh`).
+It does **not** install GCC/binutils: provide them via `espup`
+or a separate Xtensa GCC installation.
