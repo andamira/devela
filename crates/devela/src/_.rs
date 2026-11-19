@@ -129,7 +129,15 @@
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "alloc"),
-    feature(btree_extract_if, new_zeroed_alloc, smart_pointer_map, string_into_chars, vec_from_fn,)
+    feature(
+        allocator_ext, // box_new_uninit_zeroed_in,
+        btree_extract_if,
+        new_zeroed_alloc,
+        smart_pointer_map,
+        string_into_chars,
+        vec_from_fn,
+        vec_repeat,
+    )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),

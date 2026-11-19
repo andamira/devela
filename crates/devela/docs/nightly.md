@@ -77,6 +77,7 @@ See also
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
+- 1.??: `a`[box_new_uninit_zeroed_in](https://github.com/rust-lang/rust/pull/166148)
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
@@ -128,6 +129,7 @@ See also
 - 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
+- 1.??: `a`[vec_repeat](https://github.com/rust-lang/rust/pull/166120)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: ` `[-Znext-solver=globally](https://github.com/rust-lang/rust/pull/164209)
 
