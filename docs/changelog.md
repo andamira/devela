@@ -41,6 +41,7 @@ This release…
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`,
   `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`,
   `uuid`, `value`, `yijing`.
+- add lang-related features: `ffi_all`.
 - add num-related features: `bitten`, `bitwise`, `cast`, `niche`, `prob`, `ratio`, `scale`.
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
   `pnm`, `pcm`, `wav`.

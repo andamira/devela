@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 186/300 (114 remaining), 158 visible, 28 hidden
+[features] # 187/300 (113 remaining), 159 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -233,10 +233,11 @@ lang_all = ["lang", "glsl", "js", "script_all"]
 
 	# repr = []
 
-	# prog = ["ffi", "script"]
-		ffi = ["glsl", "js"]
-			glsl = []
-			js = []
+	# prog_all = ["ffi", "script"]
+		ffi = ["lang"]
+		ffi_all = ["ffi", "glsl", "js"]
+			glsl = ["ffi"]
+			js = ["ffi"]
 
 		script_all = ["script", "shell"]   # All scripting capabilities
 			script = ["lang", "value"]     # ScriptMachine and related types
@@ -263,13 +264,13 @@ media_all = ["audio_all", "font_all", "visual_all"]
 		dvbf = ["bitfont"]
 		# otf = ["font"]
 
-	visual_all = ["color", "draw", "image"]
+	visual_all = ["color", "draw", "image_all"]
 		color = ["media"]
 		draw = ["media"]
 		image = ["media"]
 		image_all = ["image", "pnm"]
 			# jpg = []
-			pnm = ["byte"]
+			pnm = ["image", "byte"]
 			# png = []
 			# qoi = []
 

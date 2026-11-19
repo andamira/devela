@@ -1,8 +1,9 @@
-use crate::{_reexport, _tags, ConstInit};
+use crate::{_reexport, _tags};
 
 /* impls */
 
-impl ConstInit for &CStr {
+#[cfg(feature = "code")]
+impl crate::ConstInit for &CStr {
     const INIT: Self = {
         if let Ok(s) = CStr::from_bytes_until_nul(&[0]) {
             s

@@ -18,6 +18,7 @@ crate::mods_in! {
         // mod_ ir; // Lowered program representations
         // mod_ kernel; // Reusable computational language kernels
         // mod_ phrase;   // Source-level program phrases/forms.
+    #[cfg(any(feature = "script", feature = "shell"))]
     pub mod_ script; // Scripting machinery and language forms
         // mod_ template; // Template and substitution language machinery
 }
@@ -32,10 +33,9 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
         };
     }
     _pub_mods {
-        pub use super::{
-            ffi::_all::*,
-            script::_all::*,
-        };
+        pub use super::ffi::_all::*;
+        #[cfg(any(feature = "script", feature = "shell"))]
+        pub use super::script::_all::*;
     }
     _reexports {
         #[doc(inline)]
