@@ -48,11 +48,18 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
         pub use super::{
             ascii::Digits,
             fmt::{FmtWriter, format_buf},
-            layout::{TextLayout, Textel},
-            parse::TextScanner,
+            layout::Textel,
             str::{Str, StringU8},
             unicode::CharIter,
         };
+        #[doc(inline)]
+        #[cfg(feature = "parse")]
+        pub use super::parse::TextScanner;
+
+        #[doc(inline)]
+        #[cfg(feature = "text_layout")]
+        pub use super::layout::TextLayout;
+
         #[doc(inline)] #[cfg(feature = "grapheme")]
         pub use super::unicode::GraphemeMachine;
     }

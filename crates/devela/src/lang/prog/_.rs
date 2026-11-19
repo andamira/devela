@@ -19,6 +19,7 @@ crate::mods_in! {
         // mod_ kernel; // Reusable computational language kernels
         // mod_ phrase;   // Source-level program phrases/forms.
     #[cfg(any(feature = "script", feature = "shell"))]
+    #[cfg_attr(nightly_doc, doc(cfg(all())))]
     pub mod_ script; // Scripting machinery and language forms
         // mod_ template; // Template and substitution language machinery
 }

@@ -553,10 +553,13 @@ mod _reexports { // 39
 
     // text: 6
     #[doc(inline)] #[cfg(root_text)]
-    pub use super::text::{CharIter, Str, StringU8, TextScanner, format_buf};
+    pub use super::text::{CharIter, Str, StringU8, format_buf};
     #[doc(inline)] #[cfg(root_text)]
     #[cfg(feature = "grapheme")]
     pub use super::text::GraphemeMachine;
+    #[doc(inline)] #[cfg(root_text)]
+    #[cfg(feature = "parse")]
+    pub use super::text::TextScanner;
 
     // ui: 2
     #[doc(inline)] #[cfg(root_ui)]

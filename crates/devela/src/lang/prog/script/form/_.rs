@@ -15,6 +15,7 @@ crate::mods_in! {
     // pub mod_ lisp;
     // pub mod_ php;
     #[cfg(feature = "shell")]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "shell")))]
     pub mod_ shell; // Shell command words and quoting
 }
 crate::mods_out! { // _pub_mods

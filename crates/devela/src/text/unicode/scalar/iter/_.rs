@@ -8,6 +8,7 @@ crate::mods_in! {
     mod bytes; // methods over &[u8]
     mod str; // methods over &str
 
+    #[cfg(feature = "text_layout")]
     mod layout; // common methods related to text-layout
 }
 crate::mods_out! { // _mods

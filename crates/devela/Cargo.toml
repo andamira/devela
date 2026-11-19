@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 187/300 (113 remaining), 159 visible, 28 hidden
+[features] # 189/300 (111 remaining), 161 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -241,7 +241,7 @@ lang_all = ["lang", "glsl", "js", "script_all"]
 
 		script_all = ["script", "shell"]   # All scripting capabilities
 			script = ["lang", "value"]     # ScriptMachine and related types
-			shell = ["lang"]               # Shell syntax and quoting
+			shell = ["lang", "parse"]      # Shell syntax and quoting
 
 		# template = []
 
@@ -259,7 +259,7 @@ media_all = ["audio_all", "font_all", "visual_all"]
 	# doc = []
 	font = ["media"]
 	font_all = ["font", "bdf", "bitfont", "dvbf"]
-		bdf = ["font"]
+		bdf = ["font", "parse"]
 		bitfont = ["font"]
 		dvbf = ["bitfont"]
 		# otf = ["font"]
@@ -270,7 +270,7 @@ media_all = ["audio_all", "font_all", "visual_all"]
 		image = ["media"]
 		image_all = ["image", "pnm"]
 			# jpg = []
-			pnm = ["image", "byte"]
+			pnm = ["image", "byte", "parse"]
 			# png = []
 			# qoi = []
 
@@ -336,16 +336,19 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 	# os
 		android = ["unsafe_ffi"]
 		# browser
-			web = ["js", "unsafe_ffi"]
+			web = ["js", "unsafe_ffi", "parse"] # TEMP
 		linux = ["_linux_abi", "unsafe_syscall"]
-		term = [] # media::image::sixel
+		term = ["parse"] # TEMP
 		windows = []
 	service = ["http"]
-		http = []
+		http = ["parse"]
 
 text = []
-text_all = ["text", "grapheme", "translit"]
+text_all = ["text", "grapheme", "parse", "text_layout", "translit"]
+
 	grapheme = ["text"]
+	parse = ["text"]
+	text_layout = ["text"]
 	translit = ["text"]
 
 ui = []

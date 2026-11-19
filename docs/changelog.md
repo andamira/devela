@@ -46,6 +46,7 @@ This release…
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
   `pnm`, `pcm`, `wav`.
 - add run-related features: `cap`, `control`.
+- add text-related features: `arse`, `text_layout`.
 - add work-related features: `coro`, `future`.
 - rename features: `visual` to `visual_all`.
 - add `__select_modules` for opt-in root-module selection during development,

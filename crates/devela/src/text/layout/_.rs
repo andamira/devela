@@ -6,24 +6,32 @@
 //
 
 crate::mods_in! {
-    #[cfg(test)]
+    #[cfg(all(test, feature = "text_layout"))]
     mod _test;
 
+    #[cfg(feature = "text_layout")]
     mod engine; // TextLayout
+    #[cfg(feature = "text_layout")]
     mod line; // TextLineIter
+    #[cfg(feature = "text_layout")]
     mod result; // TextFit, TextLayoutStep
+    #[cfg(feature = "text_layout")]
     mod symbol; // Text<Break|Elide>Mode, TextCohesion, TextLayoutSpan, TextSymbol[Config]
+
     mod textel; // Textel, TextelWidth, TextelWidthMode
+
+    #[cfg(feature = "text_layout")]
     mod_ wrap; // TextBreakKind, TextLine, TextSegment[Kind], TextWrapIter
 }
 crate::mods_out! { // _mods
     _mods {
+        pub use super::textel::*;
+        #[cfg(feature = "text_layout")]
         pub use super::{
             engine::*,
             line::*,
             result::*,
             symbol::*,
-            textel::*,
             wrap::_all::*,
         };
     }
