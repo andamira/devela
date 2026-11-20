@@ -137,13 +137,13 @@ pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstInit */
 
-#[cfg(feature = "dep_atomic")]
+#[cfg(all(feature = "init", feature = "dep_atomic"))]
 mod impl_const_init_for_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::{_impl_init, ConstInit};
     _impl_init![<T: ConstInit> Self::new(T::INIT) => super::Atomic<T>];
 }
-#[cfg(feature = "dep_portable_atomic")]
+#[cfg(all(feature = "init", feature = "dep_portable_atomic"))]
 mod impl_const_init_for_portable_atomic {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::{_impl_init, ConstInit};
@@ -167,7 +167,7 @@ mod impl_const_init_for_portable_atomic {
     _impl_init![Self::new(usize::INIT) => super::AtomicUsize];
     _impl_init![<T> Self::new(<*mut T>::INIT) => super::AtomicPtr<T>];
 }
-#[cfg(not(feature = "dep_portable_atomic"))]
+#[cfg(all(feature = "init", not(feature = "dep_portable_atomic")))]
 mod impl_const_init_for_core {
     #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::{_impl_init, ConstInit};

@@ -2,7 +2,7 @@ use crate::{_reexport, _tags};
 
 /* impls */
 
-#[cfg(feature = "code")]
+#[cfg(feature = "init")]
 impl crate::ConstInit for &CStr {
     const INIT: Self = {
         if let Ok(s) = CStr::from_bytes_until_nul(&[0]) {

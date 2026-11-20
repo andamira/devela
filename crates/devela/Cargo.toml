@@ -11,7 +11,7 @@
 # * [features]
 #   - Development       (__*)
 #   - Environment       (std,alloc,no_std)
-#   - Module            (all,code,data,error,geom,lang,media,num,phys,run,sys,text,ui,work,yard)
+#   - Module            (all,code,data,error,geom,lang,media,num,phys,run,sys,text,ui,work)
 #   - Safety            (safest,safe,unsafe,…)
 #   - Scope             (_*)
 #     - default         (_max,_maxest)
@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 189/300 (111 remaining), 161 visible, 28 hidden
+[features] # 191/300 (109 remaining), 163 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -175,12 +175,17 @@ all = [ # enables all the 13 modules (and their submodules)
 	"sys_all", "text_all", "ui_all", "work_all",
 ]
 
-code = []
-code_all = ["code"]
+code = [] # ----------------------------
+code_all = [
+	"build", "init",
+]
+	build = ["code"]
+	init = ["code"]
 
-data = []
-data_all = ["byte", "codec_all", "uuid", "value_all"]
-
+data = [] # ----------------------------
+data_all = [
+	"byte", "codec_all", "uuid", "value_all",
+]
 	# access_all = ["byte"]
 		byte = ["data"]
 
@@ -215,19 +220,23 @@ data_all = ["byte", "codec_all", "uuid", "value_all"]
 		oneof = ["data"]
 		value = ["data"]
 
-error = []
-error_all = ["error"]
+error = [] # ---------------------------
+error_all = [
+	"error",
+]
 
-geom = []
-geom_all = ["geom", "fig"]
-
+geom = [] # ----------------------------
+geom_all = [
+	"fig",
+]
 	# dir = []
-	fig = []
+	fig = ["geom"]
 	# space
 
-lang = []
-lang_all = ["lang", "glsl", "js", "script_all"]
-
+lang = [] # ----------------------------
+lang_all = [
+	"ffi_all", "script_all",
+]
 	# hum = []
 		# i18n = []
 
@@ -245,9 +254,10 @@ lang_all = ["lang", "glsl", "js", "script_all"]
 
 		# template = []
 
-media = []
-media_all = ["audio_all", "font_all", "visual_all"]
-
+media = [] # ---------------------------
+media_all = [
+	"audio_all", "font_all", "visual_all",
+]
 	audio = ["media"]
 	audio_all = ["audio", "pcm", "wav"]
 		# aiff = ["media"]
@@ -274,47 +284,42 @@ media_all = ["audio_all", "font_all", "visual_all"]
 			# png = []
 			# qoi = []
 
-num = []
-num_all = [ "num",
-	"alg",
-	"int",
-	"bitwise",
-	"bitten", "cast", "niche",
-	"prob", "prng",
-	"ratio", "scale"
+num = [] # -----------------------------
+num_all = [
+	"alg", "int", "bitwise", "bitten", "cast", "niche",
+	"prob", "prng", "ratio", "scale"
 ]
-	alg = []         # Linear algebra.
+	alg = ["num"]         # Linear algebra
 	# dom
-		int = []     # Integer extensions. TEMP
+		int = ["num"]     # Integer extensions TEMP
 	# fin
-		bitwise = [] # Extended Bitwise namespace and BitOps trait.
+		bitwise = ["num"] # Extended Bitwise namespace and BitOps trait
 	# grain
-		bitten = []  # Additional predefined Bitten representations beyond BittenU8.
-		cast = []    # Complete primitive Cast operations and conversion traits.
-		niche = []   # Additional MaybeNiche representation adapters.
-	prob = []        # Probability and statistical facilities.
-		prng = []    # Additional pseudorandom generators.
+		bitten = ["num"]  # Additional predefined Bitten representations beyond BittenU8
+		cast = ["num"]    # Complete primitive Cast operations and conversion traits
+		niche = ["num"]   # Additional MaybeNiche representation adapters
+	prob = ["num"]        # Probability and statistical facilities
+		prng = ["num"]    # Additional pseudorandom generators
 	# quant
-		ratio = []   # Additional predefined primitive ratios.
-		scale = []   # Primitive proportional scaling implementations.
+		ratio = ["num"]   # Additional predefined primitive ratios
+		scale = ["num"]   # Primitive proportional scaling implementations
 
-phys = []
-phys_all = [ "phys",
-	"time",
-	"unit",
-	"wave",
+phys = [] # ----------------------------
+phys_all = [
+	"time", "unit", "wave",
 ]
-	time = []
-	unit = []
-	wave = [] # wavelets
+	time = ["phys"]
+	unit = ["phys"]
+	wave = ["phys"] # wavelets
 
-run = []
-run_all = ["cap", "control"]
-
+run = [] # -----------------------------
+run_all = [
+	"cap", "control",
+]
 	cap = ["run"]     # RunCap*, RunService*
 	control = ["run"] # AppControl, AppControlSet
 
-sys = []
+sys = [] # -----------------------------
 sys_all = [ # EXCLUDED: "device", "hw", "os"
 	"sys", "io", "net", "service",
 	]
@@ -343,25 +348,26 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 	service = ["http"]
 		http = ["parse"]
 
-text = []
-text_all = ["text", "grapheme", "parse", "text_layout", "translit"]
-
+text = [] # ----------------------------
+text_all = [
+	"grapheme", "parse", "text_layout", "translit",
+]
 	grapheme = ["text"]
 	parse = ["text"]
 	text_layout = ["text"]
 	translit = ["text"]
 
-ui = []
-ui_all = ["ui",
-	"event",
-	"widget",
+ui = [] # ------------------------------
+ui_all = [
+	"event", "widget",
 ]
 	event = []
 	widget = ["ui"]
 
-work = []
-work_all = ["work", "process", "thread", "future", "sync", "coro"]
-
+work = [] # ----------------------------
+work_all = [
+	"process", "thread", "future", "sync", "coro",
+]
 	# exec
 		process = ["work"]
 		thread = ["work"]
@@ -417,7 +423,6 @@ safe = [ # forbids `unsafe` in specific modules
 	safe_text = []
 	safe_ui = []
 	safe_work = []
-	# safe_yard = []
 
 unsafe = [ # enables all `unsafe` (as long as it isn't forbidden in that module)
 	"devela_macros/unsafe",

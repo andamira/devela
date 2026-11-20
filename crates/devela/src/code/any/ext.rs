@@ -9,7 +9,7 @@ use ::core::hash::{Hash, Hasher};
 use core::any::type_name_of_val;
 
 #[cfg(feature = "alloc")]
-use crate::Box;
+use ::alloc::boxed::Box;
 
 /// Marker trait to prevent downstream implementations of the [`AnyExt`] trait.
 trait Sealed {}

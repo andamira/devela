@@ -27,7 +27,10 @@ pub mod util; // Cross-cutting code and macro utilities
 
 util::mods_in! {
     pub mod_ any; // Dynamic typing, type identity, and type inspection
+
+        #[cfg(feature = "build")]
         mod_ build; // Build-process support and integration
+
     pub mod_ convert; // Type conversion and adaptation
     pub mod_ hint; // Compiler and execution hints
     pub mod_ init; // Default and const-friendly initialization
@@ -39,9 +42,8 @@ util::mods_in! {
 }
 crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _mods {
-        pub use super::{
-            build::_all::*,
-        };
+        #[cfg(feature = "build")]
+        pub use super::build::_all::*;
     }
     _pub_mods {
         pub use super::{

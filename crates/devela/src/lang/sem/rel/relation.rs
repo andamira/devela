@@ -2,7 +2,7 @@
 //! Defines [`Relation`].
 //
 
-#[cfg(feature = "code")]
+#[cfg(feature = "init")]
 use crate::ConstInit;
 
 #[doc = crate::_tags!(lang)]
@@ -45,7 +45,7 @@ impl<S, P, O> Relation<S, P, O> {
     }
 }
 
-#[cfg(feature = "code")]
+#[cfg(feature = "init")]
 impl<S: ConstInit, P: ConstInit, O: ConstInit> ConstInit for Relation<S, P, O> {
     const INIT: Self = Relation::new(S::INIT, P::INIT, O::INIT);
 }

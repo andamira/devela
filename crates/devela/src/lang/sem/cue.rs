@@ -2,7 +2,7 @@
 //! Defines [`Cue`].
 //
 
-#[cfg(feature = "code")]
+#[cfg(feature = "init")]
 use crate::ConstInit;
 
 #[doc = crate::_tags!(lang)]
@@ -38,7 +38,7 @@ impl<K, P> Cue<K, P> {
     }
 }
 
-#[cfg(feature = "code")]
+#[cfg(feature = "init")]
 impl<K: ConstInit, P: ConstInit> ConstInit for Cue<K, P> {
     const INIT: Self = Self::with_payload(K::INIT, P::INIT);
 }

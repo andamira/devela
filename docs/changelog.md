@@ -38,6 +38,7 @@ This release…
 
 ### features & flags
 - refactor module features for selective capabilities and recursive `_all` aggregations.
+- add code-related features: `build`, `init`.
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`,
   `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`,
   `uuid`, `value`, `yijing`.

@@ -162,6 +162,7 @@ pub(crate) use _impl_init;
 /* implementations */
 
 #[rustfmt::skip]
+#[cfg(feature = "init")]
 mod impl_core {
     use super::ConstInit;
 
@@ -208,20 +209,22 @@ mod impl_core {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "init", feature = "alloc"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_alloc {
     use super::ConstInit;
-    use crate::{
+    use ::alloc::{
         // data
-        BTreeSet, BTreeMap,
-        LinkedList,
-        Vec,
-        BinaryHeap, VecDeque,
+        collections::{
+            BTreeSet, BTreeMap,
+            LinkedList,
+            BinaryHeap, VecDeque,
+        },
+        vec::Vec,
         // sys
-        RcWeak,
+        rc::{Weak as RcWeak},
         // text
-        String,
+        string::String,
     };
     // data
     _impl_init![<T> Self::new() => BTreeSet<T>, LinkedList<T>, Vec<T>, VecDeque<T>];
@@ -242,7 +245,7 @@ mod impl_alloc {
     // _impl_init![<K> Self::with_hasher(TODO) => HashSet<K>];
 }
 
-#[cfg(feature = "std")]
+#[cfg(all(feature = "init", feature = "std"))]
 #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
 mod impl_std {
     use std::{

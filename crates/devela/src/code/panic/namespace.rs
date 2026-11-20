@@ -3,9 +3,9 @@
 //
 // - https://doc.rust-lang.org/stable/std/panic/index.html
 
-#[cfg(feature = "std")]
-use crate::{Any, Box, PanicHookInfo, PanicUnwindSafe, ThreadResult};
+use crate::{Any, PanicHookInfo, PanicUnwindSafe};
 use ::std::panic::{catch_unwind, panic_any, resume_unwind, set_hook, take_hook};
+use ::std::{boxed::Box, thread::Result as ThreadResult};
 
 #[doc = crate::_tags!(namespace)]
 /// Panic-related operations.
