@@ -60,6 +60,7 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.102.0> -->
 
 - 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
+- 1.102: ` `[const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
 - 1.102: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 
 
@@ -77,7 +78,8 @@ See also
 - 1.??: ` `[attributes on closure & method call expr](https://github.com/rust-lang/rust/pull/159581)
 - 1.??: `c`[abort_immediate](https://github.com/rust-lang/rust/pull/160766)
 - 1.??: `c`[bool_to_result](https://github.com/rust-lang/rust/issues/142748)
-- 1.??: `a`[box_new_uninit_zeroed_in](https://github.com/rust-lang/rust/pull/166148)
+- 1.??: `a`[box_new_uninit_zeroed_in](https://github.com/rust-lang/rust/pull/166148) allocator_ext
+- 1.??: `a`[box_pin_in](https://github.com/rust-lang/rust/pull/166218) allocator_ext
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)

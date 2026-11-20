@@ -116,7 +116,7 @@ macro_rules! init_array· {
             let _ = e.write($init(i)); // NOTE: const since 1.85
         }
         // Can't use transmute for now, have to use transmute_copy:
-        // - WAIT:[Add const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
+        // - WAIT:1.102:[const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
         // unsafe { $crate::Mem::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
         unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
