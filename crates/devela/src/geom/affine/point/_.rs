@@ -7,6 +7,7 @@ crate::mods_in! {
 
     #[cfg(feature = "alg")]
     mod vector; // impl vector ops
+    #[cfg(feature = "turn")]
     mod_ turn; // Turn-related impls
 }
 crate::mods_out! { // _mods

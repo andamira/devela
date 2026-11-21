@@ -10,6 +10,7 @@
 //
 // IMPROVE: use TBD NumConst::ONE and unify methods for int and floats.
 
+#[cfg(feature = "measure")]
 use crate::{is, whilst};
 
 #[doc = crate::_tags!(geom)]
@@ -63,6 +64,7 @@ crate::_geom_dim_impl_common![common_methods: Extent];
 crate::_geom_dim_impl_common![common_traits: Extent];
 
 /// Implement `Extent` methods for all primitives.
+#[cfg(feature = "measure")]
 macro_rules! impl_extent {
     () => {
         impl_extent![sint i8, i16, i32, i64, i128, isize];
@@ -185,6 +187,7 @@ macro_rules! impl_extent {
         }
     };
 }
+#[cfg(feature = "measure")]
 impl_extent![];
 
 #[rustfmt::skip]

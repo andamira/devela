@@ -2,6 +2,7 @@
 //! Defines [`AngleKind`].
 //
 
+#[cfg(feature = "angle")]
 use crate::{FloatConst, Interval};
 
 #[doc = crate::_tags!(geom dir)]
@@ -36,6 +37,7 @@ pub enum AngleKind {
     Reflex,
 }
 
+#[cfg(feature = "angle")]
 impl AngleKind {
     /// Returns an interval representing the angle range in degrees.
     pub fn interval_deg(self) -> Interval<u16> {

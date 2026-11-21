@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 191/300 (109 remaining), 163 visible, 28 hidden
+[features] # 194/300 (106 remaining), 166 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -227,11 +227,16 @@ error_all = [
 
 geom = [] # ----------------------------
 geom_all = [
-	"fig",
+	"angle", "fig", "measure", "turn",
 ]
-	# dir = []
+	# affine_all = []
+		turn = ["geom"] # Point orientation and segment relations
+	# dir_all = []
+		angle = ["geom"] # Specialized angle operations
 	fig = ["geom"]
-	# space
+	# metric_all = []
+		measure = ["geom"] # Extent measurement methods
+	# space_all = []
 
 lang = [] # ----------------------------
 lang_all = [
