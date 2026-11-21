@@ -10,8 +10,6 @@ crate::mods_in! {
 }
 #[cfg(feature = "std")]
 crate::mods_in! {
-    mod _reexport_std;
-
     mod ext; // ThreadExt
 
     // mod local; // ThreadLocal WIP
@@ -34,7 +32,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::work::exec_thread::*;
     }
 }

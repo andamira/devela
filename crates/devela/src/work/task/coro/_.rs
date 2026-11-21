@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     // #[cfg(test)]
     // #[cfg(feature = "alloc")]
     // mod tests;
@@ -19,8 +17,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::future::*;
     }
     _reexports {
-        pub use {
-            super::_reexport_core::*,
-        };
+        pub use crate::boot::rust::work::task_coro::*;
     }
 }

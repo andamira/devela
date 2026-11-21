@@ -7,8 +7,6 @@
 
 #[cfg(feature = "std")]
 crate::mods_in! {
-    mod _reexport_std;
-
     #[cfg(feature = "process")]
     mod cmd;
 
@@ -36,8 +34,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::work::exec_process::*;
     }
     _hidden {
         #[doc(hidden)]

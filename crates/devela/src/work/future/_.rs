@@ -12,8 +12,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(feature = "future")]
     mod ext; // FutureExt
 
@@ -29,7 +27,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::work::future::*;
 
         /* from either `alloc` or `portable-atomic-util` and `alloc` */
 

@@ -6,11 +6,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     #[cfg(all(
         feature = "sync",
         feature = "unsafe_sync",
@@ -44,9 +39,6 @@ crate::mods_out! { // _mods, _pub_mods
         pub use super::mpsc::_all::*;
     }
     _reexports {
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::work::sync::*;
     }
 }

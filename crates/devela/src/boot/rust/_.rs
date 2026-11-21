@@ -6,6 +6,7 @@ pub(crate) mod code;
 pub(crate) mod error;
 pub(crate) mod sys;
 pub(crate) mod text;
+pub(crate) mod work;
 
 pub(crate) mod _fallback {
     #[cfg(not(root_code))]
@@ -19,4 +20,7 @@ pub(crate) mod _fallback {
 
     #[cfg(not(root_text))]
     pub(crate) use super::text::*;
+
+    #[cfg(not(root_work))]
+    pub(crate) use super::work::*;
 }
