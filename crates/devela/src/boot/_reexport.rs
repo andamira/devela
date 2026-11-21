@@ -4,11 +4,11 @@
 
 #[doc = crate::_tags!(internal)]
 /// Macro helper for documentation of re-exported items.
-#[doc = crate::_doc_meta!{location("yard", macro _reexport)}]
-//
+#[doc = crate::_doc_meta!{
+    location("boot", macro _reexport),
+}]
 // Exact `location` forms are intended for single-item reexports.
 // Grouped reexports should use the module-only form.
-//
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]

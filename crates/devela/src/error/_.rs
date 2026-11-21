@@ -20,8 +20,6 @@ crate::CONST! { pub(crate) _DOC_ERROR_MODULES =
 }
 
 crate::mods_in! {
-        mod _reexport_core;
-
         // mod context; // ContextualError WIP
     pub mod kind; // reusable failure categories
         mod macros; // define_error!
@@ -51,7 +49,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::error::Error;
     }
     _crate_internals {
         pub(crate) use super::{

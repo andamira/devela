@@ -59,6 +59,8 @@ This release…
 
 ### structure
 - introduce a private `boot` module for essential crate-construction macros and doc fragments.
+- introduce `boot::rust` as the root-independent source of Rust-library re-exports,
+  moving `_reexport!` into bootstrap machinery and decoupling the internal Rust vocabulary.
 - move `mods_out!` into boot, retaining its public documentation through a rustdoc-only facade.
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`

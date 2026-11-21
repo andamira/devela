@@ -206,18 +206,26 @@ extern crate self as devela;
 mod boot; // Bootstrapping abstractions
 
 #[doc(hidden)]
+pub use boot::_reexport;
+
+#[allow(unused_imports)]
+pub(crate) use boot::rust::_fallback::*;
+
+#[cfg(not(root_yard))]
+pub(crate) use boot::{_doc_meta, _tags};
+
+#[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
 pub use boot::{CONST, compile, compile_attr, doclink, mods_in, mods_out, paste, unreachable};
-
-#[cfg(root_code)]
-#[path = "code/_.rs"]
-pub mod code; // Code structure, semantics, and foundational utilities
 
 boot::mods_in! {
     #[cfg(all(doc, not(doctest), root_yard))]
     #[cfg_attr(nightly_doc, doc(cfg(doc)))]
     pub mod_ _doc; // Extra documentation about the library
+
+    #[cfg(root_code)]
+    pub mod_ code; // Code structure, semantics, and foundational utilities
 
     #[cfg(root_data)]
     pub mod_ data; // Structural abstractions for organizing and manipulating data
@@ -328,7 +336,7 @@ pub mod all_ {
 }
 
 // public items, feature-gated, visible at their origin and in `all`:
-// WAIT: [doc(canonica)](https://github.com/rust-lang/rfcs/issues/3011)
+// WAIT: [doc(canonical)](https://github.com/rust-lang/rfcs/issues/3011)
 #[doc(hidden)]
 #[allow(unused_imports)]
 pub use all::*;

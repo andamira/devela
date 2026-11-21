@@ -37,3 +37,20 @@ macro_rules! _DOC_ALL_PLUS_· {
 
 #[doc(hidden)]
 pub use {_DOC_ALL_PLUS_· as _DOC_ALL_PLUS_, _DOC_ALL_· as _DOC_ALL_, _DOC_ALL· as _DOC_ALL};
+
+/* shims */
+
+#[cfg(not(root_yard))]
+macro_rules! _doc_meta {
+    ($($tt:tt)*) => {
+        ""
+    };
+}
+#[cfg(not(root_yard))]
+macro_rules! _tags {
+    ($($tt:tt)*) => {
+        ""
+    };
+}
+#[cfg(not(root_yard))]
+pub(crate) use {_doc_meta, _tags};
