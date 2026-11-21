@@ -206,18 +206,14 @@ extern crate self as devela;
 mod boot; // Bootstrapping abstractions
 
 #[doc(hidden)]
-pub use boot::_reexport;
-
-#[allow(unused_imports)]
-pub(crate) use boot::rust::_fallback::*;
-
-#[cfg(not(root_yard))]
-pub(crate) use boot::{_doc_meta, _tags};
-
-#[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
-pub use boot::{CONST, compile, compile_attr, doclink, mods_in, mods_out, paste, unreachable};
+pub use boot::_all::*;
+pub(crate) use boot::_crate_internals::*;
+#[doc(hidden)]
+pub use boot::dep as _dep;
+#[allow(unused_imports)]
+pub(crate) use boot::rust::_fallback::*;
 
 boot::mods_in! {
     #[cfg(all(doc, not(doctest), root_yard))]
@@ -267,9 +263,6 @@ boot::mods_in! {
     #[cfg(root_yard)]
     pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
 }
-#[doc(hidden)]
-#[cfg(root_yard)]
-pub use yard::dep as _dep;
 
 /* manual mods_out!: */
 

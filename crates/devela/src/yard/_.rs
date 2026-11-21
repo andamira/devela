@@ -4,7 +4,7 @@
 //
 #![doc = crate::_tags!(internal)]
 #![doc = "Scaffolding, taxonomy, and documentation support."] // internal
-#![doc = crate::_doc!(modules: crate; yard: dep)]
+#![doc = crate::_doc!(modules: crate; yard)]
 #![doc = crate::_doc!(hr)]
 //!
 //! > This space exist so the rest can be clean.
@@ -18,7 +18,6 @@ crate::mods_in! {
 
         #[cfg(root_code)]
         mod alias; // aliases for attributes and derives
-    pub mod dep; // dependencies; reexported hidden from /src/_.rs
         mod fragments; // doclines for root modules: _DOC_*!
         mod tags; // docs for tagging items: _ABBR_!*, _TAG_*!, _tags!
 }

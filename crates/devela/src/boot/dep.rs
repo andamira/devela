@@ -1,8 +1,5 @@
 //
-#![doc = crate::_tags!(internal)]
-#![doc = "Re-exported dependencies."] // internal
-#![doc = crate::_doc!(modules: crate::yard; dep)]
-#![doc = crate::_doc!(hr)]
+//! Re-exported dependencies.
 //
 // TOC
 // - standard libraries

@@ -62,6 +62,8 @@ This release…
   moving `_reexport!` into bootstrap machinery and decoupling the internal Rust vocabulary.
 - move `mods_out!` into boot, retaining its public documentation through a rustdoc-only facade.
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
+- move the internal dependency registry from `yard` into `boot` and group bootstrap
+  macro machinery under `boot::macros`.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`
   and `BitSized` implementations and separating buffered size diagnostics.
 - move `Version` and `VersionFull` buffered text encoding into `text::fmt`;
