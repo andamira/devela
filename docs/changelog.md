@@ -51,9 +51,8 @@ This release…
 - add text-related features: `arse`, `text_layout`.
 - add work-related features: `coro`, `future`.
 - rename features: `visual` to `visual_all`.
-- add `__select_modules` for opt-in root-module selection during development,
-  retaining `code` and `yard` as the bootstrap foundation.
 - generate `root_*` cfg aliases for selective root-module compilation.
+- add `__select_modules` for opt-in root-module selection during development.
 - hide internal root-selection conditions from public rustdoc availability annotations.
 - rename feature `rand` to `prng`.
 

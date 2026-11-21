@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod r#const;
 }
 crate::mods_out! { // _mods, _reexports, _crate_internals
@@ -15,7 +13,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         pub use super::r#const::ConstInit;
     }
     _reexports {
-        pub use super::_reexport_core::Default;
+        pub use crate::boot::rust::code::init::*;
     }
     _crate_internals {
         pub(crate) use super::r#const::_impl_init;

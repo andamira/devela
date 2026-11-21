@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod likely;
 }
 crate::mods_out! { // _reexports
@@ -17,6 +15,6 @@ crate::mods_out! { // _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::hint::*;
     }
 }

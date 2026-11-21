@@ -14,8 +14,7 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
+    mod alias;
     // mod_ enumatch; // enumatch! TODO
     mod mismatch; // Mismatch
     mod_ opt_res; // OptRes, sok, serr
@@ -27,6 +26,7 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
+            alias::InfallibleResult,
             // enumatch::*,
             mismatch::*,
             opt_res::_all::*,
@@ -35,7 +35,6 @@ crate::mods_out! { // _mods, _reexports
         // pub use super::menu::*;
     }
     _reexports {
-        #[doc(inline)]
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::result::*;
     }
 }

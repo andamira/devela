@@ -6,9 +6,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod cdbg;
     mod fn_name;
     mod warn;
@@ -23,7 +20,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::code::util_debug::*;
     }
 }

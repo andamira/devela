@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod ext;
 }
 crate::mods_out! { // _mods, _reexports
@@ -15,6 +13,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::ext::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::any::*;
     }
 }

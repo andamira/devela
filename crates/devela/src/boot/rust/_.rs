@@ -2,11 +2,15 @@
 
 #![allow(dead_code, reason = "Rust reexports may be unused by selectively compiled root modules")]
 
+pub(crate) mod code;
 pub(crate) mod error;
 pub(crate) mod sys;
 pub(crate) mod text;
 
 pub(crate) mod _fallback {
+    #[cfg(not(root_code))]
+    pub(crate) use super::code::*;
+
     #[cfg(not(root_error))]
     pub(crate) use super::error::*;
 

@@ -5,12 +5,9 @@
 #![doc = crate::_doc!(extends: ops)]
 //
 
-crate::mods_in! {
-    mod _reexport_core;
-}
+crate::mods_in! {}
 crate::mods_out! { // _reexports
     _reexports {
-        #[doc(inline)]
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::ops_overload::*;
     }
 }

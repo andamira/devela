@@ -166,8 +166,25 @@ pub(crate) use _impl_init;
 mod impl_core {
     use super::ConstInit;
     use crate::{
+        // code::marker
+        PhantomData, PhantomPinned,
+        // code::ops
+        ControlFlow,
+        // code::ops::range
+        Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+        // code::panic
+        PanicAssertUnwindSafe,
+        // sys::mem
         ManuallyDrop,
+        // sys::mem::cell
         OnceCell, Cell, RefCell, UnsafeCell,
+    };
+    use ::core::ops::{
+        // TEMP use ::core::range::legacy::{ // WAIT: target_arch = "mos"
+        Range as RangeLegacy,
+        RangeFrom as RangeFromLegacy,
+        RangeInclusive as RangeInclusiveLegacy,
+        RangeToInclusive as RangeToInclusiveLegacy,
     };
 
     /* tuples, arrays */
@@ -210,6 +227,32 @@ mod impl_core {
     // _impl_init![<T> Self::new(|| T::INIT) => SyncUnsafeCell<T>];
     // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
     // _impl_init![<T> Self::MIN => Alignment];
+
+    // code::marker
+    _impl_init![<T> Self => PhantomData<T>]; // no need for trait bound here
+    _impl_init![Self => PhantomPinned];
+
+    // code::ops
+    _impl_init![<B: ConstInit, C: ConstInit> Self::Continue(C::INIT) => ControlFlow<B, C> ];
+
+    // code::ops::range
+    _impl_init![<T> Self::Unbounded => Bound<T> ];
+    // new range api:
+    _impl_init![<T: ConstInit> Self { start: T::INIT, last: T::INIT } => RangeInclusive<T>];
+    _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => Range<T>];
+    _impl_init![<T: ConstInit> Self { last: T::INIT } => RangeToInclusive<T>];
+    _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFrom<T>];
+    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeTo<T>]; //
+    _impl_init![Self => RangeFull]; //
+    // legacy range api:
+    _impl_init![<T: ConstInit> Self::new(T::INIT, T::INIT) => RangeInclusiveLegacy<T>];
+    _impl_init![<T: ConstInit> Self { start: T::INIT, end: T::INIT } => RangeLegacy<T>];
+    _impl_init![<T: ConstInit> Self { end: T::INIT } => RangeToInclusiveLegacy<T>];
+    _impl_init![<T: ConstInit> Self { start: T::INIT } => RangeFromLegacy<T>];
+
+
+    // code::panic
+    _impl_init![<T: ConstInit> Self(T::INIT) => PanicAssertUnwindSafe<T>];
 
     // sys::mem
     _impl_init![<T: ConstInit> Self::new(T::INIT) => ManuallyDrop<T>];

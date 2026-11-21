@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod deprecate; // deprecate_feature!
 }
 crate::mods_out! { // _mods, _reexports,
@@ -18,7 +16,8 @@ crate::mods_out! { // _mods, _reexports,
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::util_cfg::*;
+
         #[doc = crate::_tags!(code procedural_macro)]
         pub use devela_macros::{
             cif, compile, compile_attr, // compile_doc,

@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(feature = "code")]
     mod semantics; // Call[Semantics|BindTime|Context|Dispatch|Openness|Storage]
 }
@@ -19,7 +17,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        #[doc(inline)]
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::ops_call::*;
     }
 }

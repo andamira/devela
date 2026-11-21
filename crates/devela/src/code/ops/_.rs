@@ -13,8 +13,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     pub mod_ call; // Callability and invocation semantics
     mod hook_morph; // Hook, Morph, hook!, morph!
     pub mod_ overload; // Overloadable operator traits
@@ -43,7 +41,6 @@ crate::mods_out! { // _mods, _pub_mods
         };
     }
     _reexports {
-        #[doc(inline)]
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::ops::*;
     }
 }

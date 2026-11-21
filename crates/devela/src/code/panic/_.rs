@@ -6,10 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod handler; // set_panic_handler!
 
     #[cfg(feature = "std")]
@@ -23,8 +19,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::namespace::Panic;
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::code::panic::*;
     }
 }

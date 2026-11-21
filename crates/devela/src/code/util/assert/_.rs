@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod dynamic; // assert_eq_all, assert_approx_eq_all
     mod_ r#static; // const_assert!
     mod_ test_size_of; // test_size_of! (__test_size_of_report)
@@ -22,7 +20,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::util_assert::*;
     }
     _hidden {
         pub use super::{

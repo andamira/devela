@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod prim; // Prim, PrimFitPtr
     mod repr; // ReprMode
     mod type_marker; // zero-cost generic type markers
@@ -21,6 +19,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::marker::*;
     }
 }

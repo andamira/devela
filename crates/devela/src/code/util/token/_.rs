@@ -10,8 +10,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod capture; // capture_[first|last|tail_tuple]!
     mod dollar; // macro_dollar!
     mod ident; // ident_const_index!
@@ -30,7 +28,8 @@ crate::mods_out! { // _mods, _reexports,
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::util_token::*;
+
         #[doc = crate::_tags!(code procedural_macro)]
         pub use devela_macros::{
             coalesce,

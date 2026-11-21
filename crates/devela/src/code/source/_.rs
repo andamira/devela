@@ -15,8 +15,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(feature = "code")]
     mod include; // include_from!, mod_from!, mod_path!
     #[cfg(feature = "code")]
@@ -38,6 +36,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::code::source::*;
     }
 }
