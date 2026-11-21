@@ -6,10 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod_ arg;
     mod namespace;
 
@@ -23,8 +19,6 @@ crate::mods_out! { // _mods, _reexports
 
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::env::*;
     }
 }

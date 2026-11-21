@@ -1,114 +1,138 @@
 use crate::{_reexport, _tags};
 
-use {fmt::*, parse::*, scalar::*, str::*};
+pub(crate) use {fmt::*, parse::*, scalar::*, str::*};
 
 pub(crate) mod fmt {
     use super::*;
 
     /* macros */
 
-    _reexport! { rust: alloc, location: "text/fmt", tag: _tags!(fmt construction),
+    _reexport! { rust: alloc,
+        location: "text/fmt" => macro format, tag: _tags!(fmt construction),
         doc: "Creates a String using interpolation of runtime expressions.",
         format
     }
-    _reexport! { rust: core, location: "text/fmt" => macro format_args, tag: _tags!(fmt),
+    _reexport! { rust: core,
+        location: "text/fmt" => macro format_args, tag: _tags!(fmt),
         doc: "Constructs parameters for the other string-formatting macros.",
         format_args
     }
-    _reexport! { rust: core, location: "text/fmt" => macro write, tag: _tags!(fmt),
+    _reexport! { rust: core,
+        location: "text/fmt" => macro write, tag: _tags!(fmt),
         doc: "Writes formatted data into a buffer.",
         write
     }
-    _reexport! { rust: core, location: "text/fmt" => macro writeln, tag: _tags!(fmt),
+    _reexport! { rust: core,
+        location: "text/fmt" => macro writeln, tag: _tags!(fmt),
         doc: "Writes formatted data into a buffer, with a newline appended.",
         writeln
     }
 
     /* traits */
 
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait Binary, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait Binary, tag: _tags!(fmt num),
         doc: "`b` formatting.",
         Binary
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait Debug, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait Debug, tag: _tags!(fmt debug),
         doc: "`?` formatting. (Derivable)",
         Debug
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait Display, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait Display, tag: _tags!(fmt),
         doc: "Format trait for an empty format, `{}`.",
         Display
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait LowerExp, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait LowerExp, tag: _tags!(fmt num),
         doc: "`e` formatting.",
         LowerExp
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait LowerHex, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait LowerHex, tag: _tags!(fmt num),
         doc: "`x` formatting.",
         LowerHex
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait Octal, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait Octal, tag: _tags!(fmt num),
         doc: "`o` formatting.",
         Octal
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait Pointer, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait Pointer, tag: _tags!(fmt),
         doc: "`p` formatting.",
         Pointer
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait UpperExp, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait UpperExp, tag: _tags!(fmt num),
         doc: "`E` formatting.",
         UpperExp
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait UpperHex, tag: _tags!(fmt num),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait UpperHex, tag: _tags!(fmt num),
         doc: "`X` formatting.",
         UpperHex
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait FmtWrite, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait FmtWrite, tag: _tags!(fmt),
         doc: "Writing or formatting into Unicode-accepting buffers or streams.",
         @Write as FmtWrite
     }
 
     /* enums */
 
-    _reexport! { rust: core::fmt, location: "text/fmt" => trait FmtAlignment, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => trait FmtAlignment, tag: _tags!(fmt),
         doc: "Possible alignments returned by `Formatter::align`.",
         @Alignment as FmtAlignment
     }
 
     /* structs */
 
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct FmtArguments, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct FmtArguments, tag: _tags!(fmt),
         doc: "Represents a safely precompiled version of a format string and its arguments.",
         @Arguments as FmtArguments
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct DebugList, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct DebugList, tag: _tags!(fmt debug),
         doc: "A struct to help with [`Debug`] implementations.",
         DebugList
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct DebugMap, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct DebugMap, tag: _tags!(fmt debug),
         doc: "A struct to help with [`Debug`] implementations.",
         DebugMap
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct DebugSet, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct DebugSet, tag: _tags!(fmt debug),
         doc: "A struct to help with [`Debug`] implementations.",
         DebugSet
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct DebugStruct, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct DebugStruct, tag: _tags!(fmt debug),
         doc: "A struct to help with [`Debug`] implementations.",
         DebugStruct
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct DebugTuple, tag: _tags!(fmt debug),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct DebugTuple, tag: _tags!(fmt debug),
         doc: "A struct to help with [`Debug`] implementations.",
         DebugTuple
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct FmtError, tag: _tags!(fmt error),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct FmtError, tag: _tags!(fmt error),
         doc: "The error type which is returned from formatting a message into a stream.",
         @Error as FmtError
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct FmtFromFn, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct FmtFromFn, tag: _tags!(fmt),
         doc: "Implements [`Debug`] and [`Display`] via the provided closure.",
         @FromFn as FmtFromFn
     }
-    _reexport! { rust: core::fmt, location: "text/fmt" => struct Formatter, tag: _tags!(fmt),
+    _reexport! { rust: core::fmt,
+        location: "text/fmt" => struct Formatter, tag: _tags!(fmt),
         doc: "Configuration for formatting.",
         Formatter
     }
@@ -117,24 +141,31 @@ pub(crate) mod fmt {
 pub(crate) mod parse {
     use super::*;
 
-    _reexport! { rust: core::num, location: "text/parse", tag: _tags!(text parser num error),
+    _reexport! { rust: core::num,
+        location: "text/parse" => struct ParseIntError, tag: _tags!(text parser num error),
         doc: "An error which can be returned when parsing an integer.",
         ParseIntError
     }
-    _reexport! { rust: core::num, location: "text/parse", tag: _tags!(text parser num error),
+    _reexport! { rust: core::num,
+        location: "text/parse" => struct ParseFloatError, tag: _tags!(text parser num error),
         doc: "An error which can be returned when parsing an float.",
         ParseFloatError
     }
-    _reexport! { rust: core::num, location: "text/parse", tag: _tags!(text parser num error),
-        doc: "Kinds of errors that can cause parsing an integer to fail.",
-        @IntErrorKind as ParseIntErrorKind
-    }
 
     // NOTE: Utf8Error not re-exported. See `InvalidUtf8` instead.
-    // _reexport! { rust: core::str, location: "text/parse", tag: _tags!(text parser error),
+    // _reexport! { rust: core::str,
+    //     location: "text/parse" => struct Utf8Error, tag: _tags!(text parser error),
     //     doc: "An error which can occur when interpreting a sequence of `u8` as a string.",
     //     Utf8Error
     // }
+
+    /* enums */
+
+    _reexport! { rust: core::num,
+        location: "text/parse" => enum ParseIntErrorKind, tag: _tags!(text parser num error),
+        doc: "Kinds of errors that can cause parsing an integer to fail.",
+        @IntErrorKind as ParseIntErrorKind
+    }
 }
 
 pub(crate) mod scalar {
@@ -172,36 +203,37 @@ pub(crate) mod scalar {
 pub(crate) mod str {
     use super::*;
 
-    /* core */
-
-    _reexport! { rust: core::str, location: "text/str", tag: _tags!(text lifetime),
-        doc: "Parse a value from a string.",
-        FromStr
-    }
-
-    /* alloc */
-
-    _reexport! { rust: alloc::string, location: "text/str", tag: _tags!(text error),
+    _reexport! { rust: alloc::string,
+        location: "text/str" => struct FromUtf8Error, tag: _tags!(text error),
         doc: "A possible error value when converting a String from a UTF-8 byte vector.",
         FromUtf8Error
     }
-    _reexport! { rust: alloc::string, location: "text/str", tag: _tags!(text),
-        doc: "A UTF-8–encoded, growable string.",
-        String
-    }
-    _reexport! { rust: alloc::string, location: "text/str", tag: _tags!(text value),
-        doc: "A trait for converting a value to a [`String`].",
-        ToString
-    }
-
-    /* std */
-
-    _reexport! { rust: std::ffi, location: "text/str", tag: _tags!(text lifetime platform),
+    _reexport! { rust: std::ffi,
+        location: "text/str" => struct OsStr, tag: _tags!(text lifetime platform),
         doc: "Borrowed reference to an OS string (See [`OsString`]).",
         OsStr
     }
-    _reexport! { rust: std::ffi, location: "text/str", tag: _tags!(text platform),
+    _reexport! { rust: std::ffi,
+        location: "text/str" => struct OsString, tag: _tags!(text platform),
         doc: "A type for owned, mutable native strings, interconvertible with Rust strings.",
         OsString
+    }
+    _reexport! { rust: alloc::string,
+        location: "text/str" => struct String, tag: _tags!(text),
+        doc: "A UTF-8–encoded, growable string.",
+        String
+    }
+
+    /* traits  */
+
+    _reexport! { rust: core::str,
+        location: "text/str" => trait FromStr, tag: _tags!(text lifetime),
+        doc: "Parse a value from a string.",
+        FromStr
+    }
+    _reexport! { rust: alloc::string,
+        location: "text/str" => trait ToString, tag: _tags!(text value),
+        doc: "A trait for converting a value to a [`String`].",
+        ToString
     }
 }

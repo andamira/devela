@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_ptr")))]
     mod pinned; // Pinned
@@ -18,6 +16,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::pinned::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::mem_bound_pin::*;
     }
 }

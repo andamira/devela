@@ -6,9 +6,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod raw; // FdRaw
 }
 crate::mods_out! { // _mods, _reexports
@@ -17,7 +14,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::raw::FdRaw;
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::os_fd::*;
     }
 }

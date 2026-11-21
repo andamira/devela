@@ -6,9 +6,6 @@
 //
 
 crate::mods_in! {
-        #[cfg(feature = "std")]
-        mod _reexport_std;
-
     pub mod_ app; // AppPaths and platform-specific resolvers
     pub mod_ path; // PathExt, Path*, sys::path::*
 
@@ -32,7 +29,6 @@ crate::mods_out! { // _mods, _pub_mods
         };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::fs::*;
     }
 }

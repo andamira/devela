@@ -6,9 +6,6 @@
 
 crate::mods_in! {
     #[cfg(feature = "std")]
-    mod _reexport_std;
-
-    #[cfg(feature = "std")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "std")))]
     mod ext; // PathExt
 
@@ -24,7 +21,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::fs_path::*;
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::fs_path::*;
     }
 }

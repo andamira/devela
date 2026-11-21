@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod namespace; // Ptr
 
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
@@ -22,6 +20,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::fat::FatPtr;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::mem_bound_ptr::*;
     }
 }

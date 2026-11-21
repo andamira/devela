@@ -5,15 +5,13 @@
 #![doc = crate::_doc!(extends: net)]
 //
 
-crate::mods_in! {
-        mod _reexport_core;
-}
+crate::mods_in! {}
 crate::mods_out! { // _mods, _reexports
     _mods {
         // pub use super::{
         // };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::net_inet_ip::*;
     }
 }

@@ -3,8 +3,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod namespace; // Wasm
 }
 crate::mods_out! { // _mods, reexports
@@ -12,6 +10,6 @@ crate::mods_out! { // _mods, reexports
         pub use super::namespace::Wasm;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::arch_wasm::*;
     }
 }

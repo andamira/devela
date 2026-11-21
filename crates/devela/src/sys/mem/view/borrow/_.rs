@@ -6,10 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-
     mod backing; // Backing
     mod maybe; // MaybeOwned
     mod ownership; // Ownership
@@ -23,8 +19,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::sys::mem_view_borrow::*;
     }
 }

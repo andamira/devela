@@ -19,9 +19,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
     mod _reexport_dep;
 
     mod _helper; // _ARCH!
@@ -40,9 +37,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         pub use super::wasm::_all::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::arch::*;
         pub use super::_reexport_dep::*;
     }
     _crate_internals {

@@ -6,9 +6,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     // mod_ quic; // Secure multiplexed transport over UDP
     // mod_ sctp; // Message-oriented transport with multistreaming and multihoming
     mod_ tcp; // Reliable ordered byte-stream transport
@@ -25,7 +22,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::net_transport::*;
     }
 }

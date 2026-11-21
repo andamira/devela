@@ -22,10 +22,6 @@ crate::mods_in! {
 
     #[cfg_attr(feature = "std", cfg(any()))] // == #[cfg(not(feature = "std"))]
     mod_ no_std_define;
-
-    // mod _reexport_core; // WAIT:io_error
-    #[cfg(feature = "std")]
-    mod _reexport_std;
 }
 crate::mods_out! { // _mods
     _mods {
@@ -39,8 +35,6 @@ crate::mods_out! { // _mods
         pub use super::no_std_define::_all::*;
     }
     _reexports {
-        // pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::io::*;
     }
 }

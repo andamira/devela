@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(all(target_has_atomic = "8", target_has_atomic = "ptr"))]
     mod_ hedge; // MemHedgeCtrl, MemHedgeError, MemHedgeRead, MemHedgeState
     mod option; // CellOptionExt
@@ -30,6 +28,6 @@ crate::mods_out! { // _mods, _reexports
         // pub use super::scell::_all::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::mem_cell::*;
     }
 }

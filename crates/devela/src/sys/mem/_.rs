@@ -8,10 +8,6 @@
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
 crate::mods_in! {
-        mod _reexport_core;
-        #[cfg(feature = "alloc")]
-        mod _reexport_alloc;
-
         mod ext; // MemExt
         #[cfg(feature = "std")]
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
@@ -47,9 +43,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::sys::mem::*;
 
         #[doc(inline)]
         pub use super::{

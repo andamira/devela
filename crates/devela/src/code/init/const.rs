@@ -165,6 +165,10 @@ pub(crate) use _impl_init;
 #[cfg(feature = "init")]
 mod impl_core {
     use super::ConstInit;
+    use crate::{
+        ManuallyDrop,
+        OnceCell, Cell, RefCell, UnsafeCell,
+    };
 
     /* tuples, arrays */
 
@@ -206,6 +210,13 @@ mod impl_core {
     // _impl_init![<T> Self::new(|| T::INIT) => SyncUnsafeCell<T>];
     // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
     // _impl_init![<T> Self::MIN => Alignment];
+
+    // sys::mem
+    _impl_init![<T: ConstInit> Self::new(T::INIT) => ManuallyDrop<T>];
+
+    // sys::mem::cell
+    _impl_init![<T: ConstInit> Self::new() => OnceCell<T>];
+    _impl_init![<T: ConstInit> Self::new(T::INIT) => Cell<T>, RefCell<T>, UnsafeCell<T>];
 }
 
 #[rustfmt::skip]

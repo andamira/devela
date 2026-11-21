@@ -5,11 +5,7 @@
 #![doc = crate::_doc!(extends: net)]
 //
 
-crate::mods_in! {
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
-}
+crate::mods_in! {}
 crate::mods_out! { // _mods, _reexports
     _mods {
         // pub use super::{
@@ -17,7 +13,6 @@ crate::mods_out! { // _mods, _reexports
         // };
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::net_transport_udp::*;
     }
 }

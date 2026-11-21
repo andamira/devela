@@ -5,12 +5,6 @@
 #![doc = crate::_doc!(extends: alloc)]
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod namespace;
 
     #[cfg(all(feature = "alloc", feature = "unsafe_layout"))]
@@ -49,10 +43,6 @@ crate::mods_out! { // _mods, _reexports
         pub use super::linux::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::sys::mem_alloc::*;
     }
 }

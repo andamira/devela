@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-        mod _reexport_core;
-
     pub mod_ inet;
         // mod_ link;
         // mod_ mesh;
@@ -27,6 +25,6 @@ crate::mods_out! { // _pub_mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::sys::net::*;
     }
 }
