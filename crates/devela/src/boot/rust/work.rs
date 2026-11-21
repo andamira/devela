@@ -346,8 +346,13 @@ pub(crate) mod sync {
         TryLockResult
     }
 }
+
+// Apart from the Rust library items, it also re-exports from `portable-atomic`,
+// and the [`Atomic`] type from the `atomic` crate.
 pub(crate) mod sync_atomic {
     use super::*;
+    #[cfg(feature = "dep_portable_atomic")]
+    use crate::_DOC_ATOMIC_CORE_PORTABLE;
 
     /* enums */
 
@@ -369,6 +374,136 @@ pub(crate) mod sync_atomic {
         doc: "A compiler memory fence.",
         @compiler_fence as atomic_compiler_fence
     }
+
+    /* from the `atomic` crate */
+
+    _reexport! { "dep_atomic", "atomic", atomic,
+        location: "work/sync/atomic" => struct Atomic,
+        tag: _tags!(concurrency atomic),
+        doc: "A generic atomic wrapper type.",
+        Atomic
+    }
+
+    /* from `portable-atomic` */
+
+    _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+        location: "work/sync/atomic" => struct AtomicF32,
+        tag: _tags!(concurrency atomic),
+        doc: "A thread-safe floating-point type.",
+        AtomicF32,
+    }
+    _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+        location: "work/sync/atomic" => struct AtomicF64,
+        tag: _tags!(concurrency atomic),
+        doc: "A thread-safe floating-point type.",
+        AtomicF64
+    }
+    _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+        location: "work/sync/atomic" => struct AtomicI128,
+        tag: _tags!(concurrency atomic),
+        doc: "A thread-safe signed integer type.",
+        AtomicI128
+    }
+    _reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+        location: "work/sync/atomic" => struct AtomicU128,
+        tag: _tags!(concurrency atomic),
+        doc: "A thread-safe unsigned integer type.",
+        AtomicU128
+    }
+
+    /* from either `portable-atomic` or `core` */
+
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A thread-safe signed integer type.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic"), // multiple imports
+    }]
+    #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
+    #[cfg(feature = "dep_portable_atomic")]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("dep_portable_atomic")))))]
+    pub use crate::_dep::portable_atomic::{
+        AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize,
+    };
+
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A thread-safe signed integer type.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic"), // multiple imports
+    }]
+    #[doc = _DOC_ATOMIC_CORE_PORTABLE!()]
+    #[cfg(feature = "dep_portable_atomic")]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("dep_portable_atomic")))))]
+    pub use crate::_dep::portable_atomic::{
+        AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicUsize,
+    };
+
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "8"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "8")))]
+    pub use core::sync::atomic::{AtomicI8, AtomicU8};
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "16"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "16")))]
+    pub use core::sync::atomic::{AtomicI16, AtomicU16};
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "32"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "32")))]
+    pub use core::sync::atomic::{AtomicI32, AtomicU32};
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "64"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "64")))]
+    pub use core::sync::atomic::{AtomicI64, AtomicU64};
+    //
+    // WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+    // #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    // #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "128"))]
+    // #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "128")))]
+    // pub use core::sync::atomic::{AtomicI128, AtomicU128};
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "ptr")))]
+    pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
+
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A raw pointer type which can be safely shared between threads.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic", struct AtomicPtr),
+    }]
+    #[cfg(feature = "dep_portable_atomic")]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("dep_portable_atomic")))))]
+    pub use crate::_dep::portable_atomic::AtomicPtr;
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A raw pointer type which can be safely shared between threads.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic", struct AtomicPtr),
+    }]
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
+    #[cfg_attr(nightly_doc, doc(cfg(target_has_atomic = "ptr")))]
+    pub use core::sync::atomic::AtomicPtr;
+
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A boolean type which can be safely shared between threads.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic", struct AtomicBool),
+    }]
+    #[cfg(feature = "dep_portable_atomic")]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("dep_portable_atomic")))))]
+    pub use crate::_dep::portable_atomic::AtomicBool;
+    //
+    #[doc = _tags!(concurrency atomic atomic_core_portable)]
+    /// A boolean type which can be safely shared between threads.
+    #[doc = crate::_doc_meta!{
+        location("work/sync/atomic", struct AtomicBool),
+    }]
+    // #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic_load_store = "8"))] // WAIT
+    #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "8"))]
+    #[cfg_attr(nightly_doc, doc(auto_cfg(hide(feature, values("dep_portable_atomic")))))]
+    pub use core::sync::atomic::AtomicBool;
 }
 pub(crate) mod sync_mpsc {
     use super::*;

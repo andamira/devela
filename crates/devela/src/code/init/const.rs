@@ -260,6 +260,86 @@ mod impl_core {
     // sys::mem::cell
     _impl_init![<T: ConstInit> Self::new() => OnceCell<T>];
     _impl_init![<T: ConstInit> Self::new(T::INIT) => Cell<T>, RefCell<T>, UnsafeCell<T>];
+
+    /* external atomics */
+
+    #[cfg(feature = "dep_atomic")]
+    mod impl_dep_atomic {
+        use super::*;
+        use crate::_dep::atomic::Atomic;
+
+        _impl_init![<T: ConstInit> Self::new(T::INIT) => Atomic<T>];
+    }
+    #[cfg(feature = "dep_portable_atomic")]
+    mod impl_dep_portable_atomic {
+        use super::*;
+        use crate::_dep::portable_atomic::{
+            AtomicBool,
+            AtomicF32, AtomicF64,
+            AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicI128, AtomicIsize,
+            AtomicPtr,
+            AtomicU8, AtomicU16, AtomicU32, AtomicU64, AtomicU128, AtomicUsize,
+        };
+
+        // without core alternatives:
+        _impl_init![Self::new(f32::INIT) => AtomicF32];
+        _impl_init![Self::new(f64::INIT) => AtomicF64];
+
+        // with core alternatives:
+        _impl_init![Self::new(i8::INIT) => AtomicI8];
+        _impl_init![Self::new(u8::INIT) => AtomicU8];
+        _impl_init![Self::new(i16::INIT) => AtomicI16];
+        _impl_init![Self::new(u16::INIT) => AtomicU16];
+        _impl_init![Self::new(i32::INIT) => AtomicI32];
+        _impl_init![Self::new(u32::INIT) => AtomicU32];
+        _impl_init![Self::new(i64::INIT) => AtomicI64];
+        _impl_init![Self::new(u64::INIT) => AtomicU64];
+        _impl_init![Self::new(i128::INIT) => AtomicI128];
+        _impl_init![Self::new(u128::INIT) => AtomicU128];
+        _impl_init![Self::new(isize::INIT) => AtomicIsize];
+        _impl_init![Self::new(usize::INIT) => AtomicUsize];
+        _impl_init![<T> Self::new(<*mut T>::INIT) => AtomicPtr<T>];
+    }
+    #[cfg(not(feature = "dep_portable_atomic"))]
+    mod impl_core_atomic {
+        use super::*;
+        use ::core::sync::atomic::*;
+
+        _impl_init![Self::new(false) => AtomicBool];
+
+        #[cfg(target_has_atomic = "8")]
+        _impl_init![Self::new(i8::INIT) => AtomicI8];
+        #[cfg(target_has_atomic = "8")]
+        _impl_init![Self::new(u8::INIT) => AtomicU8];
+        #[cfg(target_has_atomic = "16")]
+        _impl_init![Self::new(i16::INIT) => AtomicI16];
+        #[cfg(target_has_atomic = "16")]
+        _impl_init![Self::new(u16::INIT) => AtomicU16];
+        #[cfg(target_has_atomic = "32")]
+        _impl_init![Self::new(i32::INIT) => AtomicI32];
+        #[cfg(target_has_atomic = "32")]
+        _impl_init![Self::new(u32::INIT) => AtomicU32];
+        #[cfg(target_has_atomic = "64")]
+        _impl_init![Self::new(i64::INIT) => AtomicI64];
+        #[cfg(target_has_atomic = "64")]
+        _impl_init![Self::new(u64::INIT) => AtomicU64];
+
+        // WAIT: [AtomicU128/AtomicI128 not shown](https://github.com/rust-lang/rust/issues/130539)
+        // WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+        // #[cfg(target_has_atomic = "128")]
+        // #[cfg(feature = "nightly_atomics")]
+        // _impl_init![Self::new(i128::INIT) => AtomicI128];
+        // #[cfg(target_has_atomic = "128")]
+        // #[cfg(feature = "nightly_atomics")]
+        // _impl_init![Self::new(u128::INIT) => AtomicU128];
+
+        #[cfg(target_has_atomic = "ptr")]
+        _impl_init![Self::new(isize::INIT) => AtomicIsize];
+        #[cfg(target_has_atomic = "ptr")]
+        _impl_init![Self::new(usize::INIT) => AtomicUsize];
+        #[cfg(target_has_atomic = "ptr")]
+        _impl_init![<T> Self::new(<*mut T>::INIT) => AtomicPtr<T>];
+    }
 }
 
 #[rustfmt::skip]

@@ -5,12 +5,9 @@
 #![doc = crate::_doc!(extends: sync)]
 //
 
-crate::mods_in! {
-    mod _reexport_dep; // from dep_atomic, dep_portable_atomic (and impls ConstInit)
-}
+crate::mods_in! {}
 crate::mods_out! { // _reexports
     _reexports {
         pub use crate::boot::rust::work::sync_atomic::*;
-        pub use super::_reexport_dep::*;
     }
 }
