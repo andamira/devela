@@ -5,8 +5,6 @@
 #![doc = crate::_doc!(extends: str, string)]
 
 crate::mods_in! {
-    mod _reexport;
-
     mod_ array; // StringNonNul, StringU8, StringU16
     mod buf; // StrBuf
     mod_ ext; // StrExt, StringExt
@@ -24,7 +22,7 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport::*;
+        pub use crate::boot::rust::text::str::*;
 
         // from other modules
         pub use crate::CStr;

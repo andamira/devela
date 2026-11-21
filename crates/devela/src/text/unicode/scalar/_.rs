@@ -8,8 +8,6 @@ crate::mods_in! {
     #[cfg(test)]
     mod _test;
 
-    mod _reexport_core;
-
     mod_ iter; // CharIter
     mod_ namespace; // Char
     mod offset; // scalar_offset!
@@ -27,7 +25,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::text::scalar::*;
     }
     _hidden {
         pub use super::{

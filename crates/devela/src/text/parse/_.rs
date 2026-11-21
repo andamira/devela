@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod byte_search; // ByteSearch, dep_memchr fns alternatives
     mod error; // TextParseError[Kind]
 
@@ -24,6 +22,8 @@ crate::mods_out! { // _mods, _reexports
         pub use super::scanner::_all::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::text::parse::*;
     }
 }
+
+crate::_impl_init![ParseIntErrorKind::Empty => ParseIntErrorKind];

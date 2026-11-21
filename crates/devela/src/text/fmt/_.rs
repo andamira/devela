@@ -6,12 +6,6 @@
 //
 
 crate::mods_in! {
-    /* re-exports */
-
-    mod _reexport_core;
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-
     /* integrations */
 
     mod _test_size_of_report; // __test_size_of_report!
@@ -20,6 +14,7 @@ crate::mods_in! {
 
     /* definitions */
 
+    mod alias;
     mod buf; // FmtWriter, format_buf!
     mod cat; // fmtcat!
     // mod case; // WIP
@@ -33,6 +28,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         pub use super::namespace::*;
         #[doc(inline)]
         pub use super::{
+            alias::FmtResult,
             buf::{FmtWriter, format_buf},
             cat::fmtcat,
             // case::*,
@@ -42,9 +38,7 @@ crate::mods_out! { // _mods, _reexports, _hidden
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::text::fmt::*;
     }
     _hidden {
         #[doc(hidden)]
