@@ -11,10 +11,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-
     mod libc; // c_mode_t, c_off_t
 }
 crate::mods_out! { // _mods, _reexports
@@ -24,9 +20,7 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::lang::prog_ffi_c::*;
 
         #[cfg(all(feature = "unsafe_ffi", not(feature = "safe_sys")))]
         pub use crate::Libc;

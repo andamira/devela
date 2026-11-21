@@ -174,6 +174,8 @@ mod impl_core {
         Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
         // code::panic
         PanicAssertUnwindSafe,
+        // lang::prog::ffi::c
+        CStr,
         // sys::mem
         ManuallyDrop,
         // sys::mem::cell
@@ -253,6 +255,13 @@ mod impl_core {
 
     // code::panic
     _impl_init![<T: ConstInit> Self(T::INIT) => PanicAssertUnwindSafe<T>];
+
+    // lang::prog::ffi::c
+    impl ConstInit for &CStr {
+        const INIT: Self = {
+            if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; }
+        };
+    }
 
     // sys::mem
     _impl_init![<T: ConstInit> Self::new(T::INIT) => ManuallyDrop<T>];
