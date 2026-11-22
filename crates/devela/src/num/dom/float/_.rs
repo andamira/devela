@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     pub(crate) mod _consts; // PI, TAU, SQRT2, …
     pub(crate) mod _docs; // _FLOAT_[ALGORITHM|FORMULA|NOTATION|PIECEWISE]_*!()
     mod _internal; // _FloatInternals
@@ -29,7 +27,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::num::dom_float::*;
     }
     _crate_internals {
         pub(crate) use super::{

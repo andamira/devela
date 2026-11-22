@@ -95,8 +95,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(any(test, feature = "_docs_examples"))]
     mod _example_enumint; // EnumintI8Example
 
@@ -118,7 +116,8 @@ crate::mods_out! { // _mods, _reexports, _crate_internals, _hidden
         pub use super::_example_enumint::EnumintI8Example;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::num::grain_niche::*;
+
         #[doc = crate::_tags!(construction num niche procedural_macro)]
         pub use devela_macros::enumint;
     }

@@ -164,7 +164,7 @@ pub(crate) use _impl_init;
 #[rustfmt::skip]
 #[cfg(feature = "init")]
 mod impl_core {
-    use super::ConstInit;
+    use crate::{CONST, ConstInit};
     use crate::{
         // code::marker
         PhantomData, PhantomPinned,
@@ -176,6 +176,14 @@ mod impl_core {
         PanicAssertUnwindSafe,
         // lang::prog::ffi::c
         CStr,
+        // num::dom::float
+        FloatCategory,
+        // num::fin::ord
+        Ordering, Reverse,
+        // num::grain::niche
+        Saturating, Wrapping, NonZero,
+        NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize,
+        NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
         // phys::time
         Duration,
         // sys::mem
@@ -264,6 +272,23 @@ mod impl_core {
             if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; }
         };
     }
+
+    // num::dom::float
+    _impl_init![FloatCategory::Nan => FloatCategory];
+
+    // num::fin::ord
+    _impl_init![Ordering::Equal => Ordering];
+    _impl_init![<T: ConstInit> Self(T::INIT) => Reverse<T>];
+
+    // num::grain::niche
+    _impl_init![<T: ConstInit> Self(T::INIT) => Saturating<T>, Wrapping<T>];
+    crate::CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
+    _impl_init![Self::MIN =>
+        #[doc=_NZ!()]NonZeroU8,  #[doc=_NZ!()]NonZeroU16,  #[doc=_NZ!()]NonZeroU32,
+        #[doc=_NZ!()]NonZeroU64, #[doc=_NZ!()]NonZeroU128, #[doc=_NZ!()]NonZeroUsize,
+        #[doc=_NZ!()]NonZeroI8,  #[doc=_NZ!()]NonZeroI16,  #[doc=_NZ!()]NonZeroI32,
+        #[doc=_NZ!()]NonZeroI64, #[doc=_NZ!()]NonZeroI128, #[doc=_NZ!()]NonZeroIsize
+    ];
 
     // phys::time
     _impl_init![Duration::new(0, 0) => Duration];

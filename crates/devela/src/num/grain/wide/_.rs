@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     #[cfg(test)]
     mod _test;
 
@@ -27,7 +25,7 @@ crate::mods_out! { // _reexports, _hidden
         pub use super::_example::*;
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::num::grain_wide::*;
     }
     _hidden {
         #[doc(hidden)]

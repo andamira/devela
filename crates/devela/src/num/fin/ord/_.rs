@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod_ cmp; // Cmp, cmp!
     mod_ order; // Order
 }
@@ -19,7 +17,7 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::num::fin_ord::*;
     }
     _crate_internals {
     }
