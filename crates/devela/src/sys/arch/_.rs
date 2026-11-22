@@ -19,8 +19,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_dep;
-
     mod _helper; // _ARCH!
 
     mod_ namespace; // Arch
@@ -38,7 +36,6 @@ crate::mods_out! { // _mods, _reexports, _crate_internals
     }
     _reexports {
         pub use crate::boot::rust::sys::arch::*;
-        pub use super::_reexport_dep::*;
     }
     _crate_internals {
         pub(crate) use super::_helper::*;

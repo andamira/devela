@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {dom_float::*, fin_ord::*, grain_niche::*, grain_wide::*};
+pub(crate) use {dom_float::*, fin_ord::*, grain_niche::*, grain_wide::*, quant_cont::*};
 
 pub(crate) mod dom_float {
     use super::*;
@@ -198,4 +198,16 @@ pub(crate) mod grain_wide {
             SimdMutPtr
         }
     }
+}
+
+pub(crate) mod quant_cont {
+    use super::*;
+
+    /* macros */
+
+    // FLAG_DISABLED:nightly_autodiff
+    // _reexport! { rust: core::autodiff,
+    //     location: "code/util" => macro autodiff, extra_flags:(nightly_autodiff),
+    //     doc: "Automatic Differentiation macro.", autodiff
+    // }
 }
