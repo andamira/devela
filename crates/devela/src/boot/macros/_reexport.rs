@@ -7,8 +7,9 @@
 #[doc = crate::_doc_meta!{
     location("boot", macro _reexport),
 }]
-// Exact `location` forms are intended for single-item reexports.
-// Grouped reexports should use the module-only form.
+// Exact `location` forms usually describe single-item reexports.
+// Grouped reexports may use one when they intentionally point
+// to a canonical local item representing the group.
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]

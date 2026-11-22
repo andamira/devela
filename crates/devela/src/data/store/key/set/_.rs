@@ -12,10 +12,7 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-    mod _reexport_dep;
-
+    mod alias;
     mod sparse; // SparseSet[Array|Error]
     #[cfg(all(target_os = "linux", feature = "_linux_abi", feature = "unsafe_ffi"))]
     mod linux_sparse; // LinuxSparseSet
@@ -27,8 +24,6 @@ crate::mods_out! { // _mods
         pub use super::linux_sparse::*;
     }
     _reexports {
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
-        pub use super::_reexport_dep::*;
+        pub use crate::boot::rust::data::store_key_set::*;
     }
 }

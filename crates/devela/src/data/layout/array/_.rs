@@ -11,8 +11,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod adt; // DataArray
 
     mod define; // Array
@@ -42,6 +40,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::data::layout_array::*;
     }
 }

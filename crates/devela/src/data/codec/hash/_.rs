@@ -13,10 +13,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     mod fx; // HasherBuildFx, HasherFx
 
     #[cfg(feature = "hash")]
@@ -37,8 +33,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports{
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::data::codec_hash::*;
     }
 }

@@ -181,7 +181,7 @@ mod impl_core {
         // num::fin::ord
         Ordering, Reverse,
         // num::grain::niche
-        Saturating, Wrapping, NonZero,
+        Saturating, Wrapping,
         NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize,
         NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
         // phys::time
@@ -325,6 +325,7 @@ mod impl_core {
         _impl_init![Self::new(f64::INIT) => AtomicF64];
 
         // with core alternatives:
+        _impl_init![Self::new(false) => AtomicBool];
         _impl_init![Self::new(i8::INIT) => AtomicI8];
         _impl_init![Self::new(u8::INIT) => AtomicU8];
         _impl_init![Self::new(i16::INIT) => AtomicI16];

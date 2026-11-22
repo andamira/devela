@@ -11,9 +11,7 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-    mod _reexport_dep;
+    mod alias;
 
     mod_ fixed; // Fixed-capacity open-addressed hash maps with mutable entries
     // mod_ perfect; // Immutable perfect-hash maps over statically known key sets
@@ -21,14 +19,13 @@ crate::mods_in! {
 crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
+            alias::*,
             fixed::_all::*,
             // perfect::_all::*,
         };
     }
     _reexports {
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
-        pub use super::_reexport_dep::*;
+        pub use crate::boot::rust::data::store_key_map::*;
     }
     _hidden {
         pub use super::{

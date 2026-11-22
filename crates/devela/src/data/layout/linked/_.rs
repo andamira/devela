@@ -10,9 +10,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-
     mod r#const; // ConstList[Iterator]
 
     // #[cfg(_list1··)]
@@ -27,7 +24,6 @@ crate::mods_out! { // _mods, _reexports
         // pub use super::l2::*;
     }
     _reexports {
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::data::layout_linked::*;
     }
 }

@@ -22,8 +22,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_core;
-
     mod_ lending; // IteratorLending[DoubleEnded|ExactSize|Peek]
     mod namespace; // Iter
     mod_ strided; // StridedIter, StridedIterMut
@@ -37,7 +35,7 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
+        pub use crate::boot::rust::data::access_iter::*;
 
         pub use crate::sys::mem::{SliceIter, SliceIterMut};
     }

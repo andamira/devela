@@ -6,8 +6,6 @@
 //
 
 crate::mods_in! {
-    mod _reexport_alloc;
-
     mod ext; // VecExt
     // mod d2; // Vec2d WIP
     // mod hvec; // HVec ? WIP
@@ -21,6 +19,6 @@ crate::mods_out! { // _mods, _reexports
         // pub use super::hvec::_all::*;
     }
     _reexports {
-        pub use super::_reexport_alloc::{Vec, vec_};
+        pub use crate::boot::rust::data::layout_array_owned_vec::*;
     }
 }

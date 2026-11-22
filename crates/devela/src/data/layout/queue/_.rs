@@ -12,9 +12,6 @@
 //
 
 crate::mods_in! {
-    #[cfg(feature = "alloc")]
-    mod _reexport_alloc;
-
     mod adt;
     // mod destaque; // WIP destaque!
 }
@@ -27,7 +24,6 @@ crate::mods_out! { // _mods, _reexports
         };
     }
     _reexports {
-        #[cfg(feature = "alloc")]
-        pub use super::_reexport_alloc::*;
+        pub use crate::boot::rust::data::layout_queue::*;
     }
 }

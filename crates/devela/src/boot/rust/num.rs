@@ -139,13 +139,13 @@ pub(crate) mod grain_wide {
         /* structs */
 
         // _reexport! { rust: core::simd,
-        //     location: "num/grain" => struct Mask,
+        //     location: "num/grain/wide" => struct Mask,
         //     tag: _tags!(num),
         //     doc: "A SIMD vector mask for `N` elements of width specified by `Element`.",
         //     @Mask as SimdMask
         // }
         _reexport! { rust: core::simd,
-            location: "num/grain" => struct Simd, tag: _tags!(num),
+            location: "num/grain/wide" => struct Simd, tag: _tags!(num),
             doc: "A SIMD vector with the shape of `[T; N]` but the operations of `T`.",
             Simd
         }
@@ -154,46 +154,46 @@ pub(crate) mod grain_wide {
 
         // cmp
         _reexport! { rust: core::simd::cmp,
-            location: "num/grain" => trait SimdOrd, tag: _tags!(num ord),
+            location: "num/grain/wide" => trait SimdOrd, tag: _tags!(num ord),
             doc: "Parallel `Ord`.",
             SimdOrd
         }
         _reexport! { rust: core::simd::cmp,
-            location: "num/grain" => trait SimdPartialEq, tag: _tags!(num),
+            location: "num/grain/wide" => trait SimdPartialEq, tag: _tags!(num),
             doc: "Parallel `PartialEq`.",
             SimdPartialEq
         }
         _reexport! { rust: core::simd::cmp,
-            location: "num/grain" => trait SimdPartialOrd, tag: _tags!(num ord),
+            location: "num/grain/wide" => trait SimdPartialOrd, tag: _tags!(num ord),
             doc: "Parallel PartialOrd.",
             SimdPartialOrd
         }
 
         // num
         _reexport! { rust: core::simd::num,
-            location: "num/grain" => trait SimdFloat, tag: _tags!(num),
+            location: "num/grain/wide" => trait SimdFloat, tag: _tags!(num),
             doc: "Operations on SIMD vectors of floats.",
             SimdFloat
         }
         _reexport! { rust: core::simd::num,
-            location: "num/grain" => trait SimdInt, tag: _tags!(num),
+            location: "num/grain/wide" => trait SimdInt, tag: _tags!(num),
             doc: "Operations on SIMD vectors of signed integers.",
             SimdInt
         }
         _reexport! { rust: core::simd::num,
-            location: "num/grain" => trait SimdUint, tag: _tags!(num),
+            location: "num/grain/wide" => trait SimdUint, tag: _tags!(num),
             doc: "Operations on SIMD vectors of unsigned integers.",
             SimdUint
         }
 
         // ptr
         _reexport! { rust: core::simd::ptr,
-            location: "num/grain" => trait SimdConstPtr, tag: _tags!(num lifetime),
+            location: "num/grain/wide" => trait SimdConstPtr, tag: _tags!(num lifetime),
             doc: "Operations on SIMD vectors of constant pointers.",
             SimdConstPtr
         }
         _reexport! { rust: core::simd::ptr,
-            location: "num/grain" => trait SimdMutPtr, tag: _tags!(num lifetime),
+            location: "num/grain/wide" => trait SimdMutPtr, tag: _tags!(num lifetime),
             doc: "Operations on SIMD vectors of mutable pointers.",
             SimdMutPtr
         }
