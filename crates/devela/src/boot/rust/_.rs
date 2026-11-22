@@ -5,6 +5,7 @@
 pub(crate) mod code;
 pub(crate) mod error;
 pub(crate) mod lang;
+pub(crate) mod phys;
 pub(crate) mod sys;
 pub(crate) mod text;
 pub(crate) mod work;
@@ -18,6 +19,9 @@ pub(crate) mod _fallback {
 
     #[cfg(not(root_lang))]
     pub(crate) use super::lang::*;
+
+    #[cfg(not(root_phys))]
+    pub(crate) use super::phys::*;
 
     #[cfg(not(root_sys))]
     pub(crate) use super::sys::*;

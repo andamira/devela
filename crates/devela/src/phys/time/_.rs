@@ -8,10 +8,6 @@
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
 crate::mods_in! {
-    mod _reexport_core;
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     #[cfg(feature = "time")]
     #[cfg(feature = "std")]
     mod error_std; // TEMP, RETHINK
@@ -66,9 +62,7 @@ crate::mods_out! { // _mods, _pub_mods
         };
     }
     _reexports {
-        pub use super::_reexport_core::*;
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::phys::time::*;
 
         #[doc(inline)]
         #[cfg(feature = "time")]

@@ -176,6 +176,8 @@ mod impl_core {
         PanicAssertUnwindSafe,
         // lang::prog::ffi::c
         CStr,
+        // phys::time
+        Duration,
         // sys::mem
         ManuallyDrop,
         // sys::mem::cell
@@ -262,6 +264,9 @@ mod impl_core {
             if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; }
         };
     }
+
+    // phys::time
+    _impl_init![Duration::new(0, 0) => Duration];
 
     // sys::mem
     _impl_init![<T: ConstInit> Self::new(T::INIT) => ManuallyDrop<T>];

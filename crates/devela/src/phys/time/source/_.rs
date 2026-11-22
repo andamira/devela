@@ -79,9 +79,6 @@
 #![cfg_attr(not(all(feature = "js", not(windows))), doc = "[`JsInstant`]: #")]
 
 crate::mods_in! {
-    #[cfg(feature = "std")]
-    mod _reexport_std;
-
     #[cfg(feature = "time")]
     mod impl_source;
 
@@ -109,8 +106,7 @@ crate::mods_out! { // _mods, _reexports
         pub use super::fake::*;
     }
     _reexports {
-        #[cfg(feature = "std")]
-        pub use super::_reexport_std::*;
+        pub use crate::boot::rust::phys::time_source::*;
 
         /* intra-crate */
         #[cfg(feature = "time")]
