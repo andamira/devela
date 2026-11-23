@@ -22,6 +22,9 @@ This release…
 ## workspace
 - add crate maturity and coverage ratings, with rationale in `docs/assessment.md`.
 
+## build
+- show `CARGO_CFG_TARGET_FEATURE` in `__dbg` info.
+
 ## dependencies
 - bump `jiff` to `1.0`.
 - bump `safe_arch` to `1.2`.

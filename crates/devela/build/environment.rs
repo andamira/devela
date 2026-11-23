@@ -255,6 +255,7 @@ fn print_debug_environment() {
             "NUM_JOBS",
             "RUSTC",
             "CARGO_CFG_TARGET_ARCH",
+            "CARGO_CFG_TARGET_FEATURE",
             "CARGO_CFG_TARGET_OS",
             "CARGO_CFG_TARGET_VENDOR",
             "CARGO_CFG_TARGET_ENV",
