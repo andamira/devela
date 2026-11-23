@@ -8,6 +8,8 @@
 crate::mods_in! {
     mod_ borrow; // Borrowed data and ownership-relaxed views.
     mod byte; // MaybeByte
+
+    #[cfg(feature = "replica")]
     mod_ replica; // MemReplicaError, MemReplicaSlice
     mod_ slice; // Slice, SliceExt
 }
@@ -16,8 +18,9 @@ crate::mods_out! { // _mods
         pub use super::{
             borrow::_all::*,
             byte::MaybeByte,
-            replica::_all::*,
             slice::_all::*,
         };
+        #[cfg(feature = "replica")]
+        pub use super::replica::_all::*;
     }
 }

@@ -105,7 +105,7 @@ targets = [ ## +std:
 ]
 
 
-[features] # 194/300 (106 remaining), 166 visible, 28 hidden
+[features] # 195/300 (105 remaining), 167 visible, 28 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -326,7 +326,7 @@ run_all = [
 
 sys = [] # -----------------------------
 sys_all = [ # EXCLUDED: "device", "hw", "os"
-	"sys", "io", "net", "service",
+	"sys", "io", "net", "service", "replica",
 	]
 	# arch
 		# simd = ["fontdue?/simd"]
@@ -342,6 +342,8 @@ sys_all = [ # EXCLUDED: "device", "hw", "os"
 	# fs
 	hw = []
 	io = []
+	# mem_all = []
+		replica = ["sys"] # Replicated memory views and hedged reads
 	net = []
 	# os
 		android = ["unsafe_ffi"]
