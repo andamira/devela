@@ -573,7 +573,7 @@ _linux_abi = [] # constants, repr structs, syscall vocabulary
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with build/main/dep_all & src/boot/dep.rs
-dep_all = [ # enables all 13 optional external dependencies:
+dep_all = [ # enables all the optional external dependencies:
 	"dep_atomic",
 	"dep_hashbrown", "dep_jiff",
 	"dep_memchr",

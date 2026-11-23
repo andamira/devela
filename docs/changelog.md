@@ -24,6 +24,7 @@ This release…
 
 ## dependencies
 - bump `jiff` to `1.0`.
+- bump `safe_arch` to `1.2`.
 
 ## tooling
 - add compilation benchmarking and LLVM IR analysis tools under `tools/perf/`,

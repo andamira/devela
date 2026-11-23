@@ -102,7 +102,7 @@ version = "11.6" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
 default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
 [workspace.dependencies.safe_arch] # https://crates.io/crates/safe_arch (unsafe)
-version = "1.0" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
+version = "1.2" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [workspace.dependencies.simdutf8] # https://crates.io/crates/simdutf8 (unsafe)

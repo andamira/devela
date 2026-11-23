@@ -12,7 +12,7 @@ pub(crate) use {
 // - WAIT: [trusted_len](https://github.com/rust-lang/rust/issues/37572)
 // - WAIT: [trusted_step](https://github.com/rust-lang/rust/issues/85731)
 //
-// NOTE: interator implementation structs are not re-exported.
+// NOTE: iterator implementation structs are not re-exported.
 // NOTE: functions are re-exported as methods of the Iter namespace.
 pub(crate) mod access_iter {
     use super::*;
@@ -196,7 +196,7 @@ macro_rules! _hashbrown_or_std {
         title='re-exported from either `hashbrown` or `std`'>`≡std`</span>"
     };
     (end) => {
-        "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hashbrown) crate
+        "\n\n*Re-exported from either the [`hashbrown`](https://docs.rs/hashbrown) crate
         or from [`std::collections`](https://doc.rust-lang.org/std/collections)*.
         \n\n---"
     };

@@ -40,15 +40,6 @@ pub(crate) mod arch {
     mod dep_safe_arch {
         use super::*;
 
-        // FIX: this macro not found at the root. NOTE: re-implemented at the bottom
-        // #[doc(inline)] #[cfg(feature = "dep_safe_arch")] pub use _dep::safe_arch;
-        //
-        // /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
-        // #[cfg(all(feature = "dep_safe_arch", target_feature = "avx"))]
-        // #[cfg_attr(nightly_doc, doc(cfg(target_feature = "avx")))]
-        // #[cfg_attr(nightly_doc, doc(cfg(feature = "dep_safe_arch")))]
-        // pub use crate::_dep::safe_arch::cmp_op as arch_cmp;
-
         #[doc = _tags!(platform)]
         /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
         /// Turns a round operator token to the correct constant value.
@@ -85,7 +76,14 @@ pub(crate) mod arch {
             doc: "The data for a 256-bit AVX register of integer data.", m256i
         }
 
-        /* `safe_arch` re-implementations */
+        /* `safe_arch` adapters */
+
+        // `safe_arch::cmp_op` is itself cfg-elided unless `safe_arch` was compiled
+        // with AVX. The dependency and this crate can receive different target-feature
+        // flags (notably rustc vs rustdoc), so it cannot be reliably re-exported.
+        // Keep this small equivalent adapter local.
+        //
+        // `round_op` does not have this problem: safe_arch exports it unconditionally.
 
         #[doc = _tags!(platform)]
         /// <span class='stab portability' title='re-exported from `safe_arch`'>`safe_arch`</span>
