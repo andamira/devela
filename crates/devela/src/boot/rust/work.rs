@@ -208,6 +208,27 @@ pub(crate) mod future {
         doc: "Extracts the successful type of a [`AsyncPoll<T>`].",
         @ready as async_ready
     }
+
+    /* from either `alloc` or `portable-atomic-util` */
+
+    #[doc = _tags!(concurrency atomic runtime atomic_alloc_portable_util)]
+    #[cfg(all(feature = "alloc", feature = "dep_portable_atomic_util"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    /// The implementation of waking a task on an executor.
+    #[doc = crate::_doc_meta!{
+        location("work/future", trait AsyncWake),
+    }]
+    #[doc = "---\n\n---\n\n"]
+    pub use crate::_dep::portable_atomic_util::task::Wake as AsyncWake;
+    //
+    #[doc = _tags!(concurrency atomic runtime atomic_alloc_portable_util)]
+    #[doc = crate::_doc_meta!{
+        location("work/future", trait AsyncWake),
+    }]
+    #[doc = "---\n\n---\n\n"]
+    #[cfg(all(feature = "alloc", not(feature = "dep_portable_atomic_util")))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
+    pub use crate::_dep::_alloc::task::Wake as AsyncWake;
 }
 
 // WAIT: [unique_rc_arc](https://github.com/rust-lang/rust/issues/112566)

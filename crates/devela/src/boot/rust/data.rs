@@ -196,8 +196,8 @@ macro_rules! _hashbrown_or_std {
         title='re-exported from either `hashbrown` or `std`'>`≡std`</span>"
     };
     (end) => {
-        "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hasmap) crate
-        or from [`std::collections`](https::doc.rust-lang.org/std/collections)*.
+        "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hashbrown) crate
+        or from [`std::collections`](https://doc.rust-lang.org/std/collections)*.
         \n\n---"
     };
 }

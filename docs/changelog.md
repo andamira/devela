@@ -23,6 +23,7 @@ This release…
 - add crate maturity and coverage ratings, with rationale in `docs/assessment.md`.
 
 ## dependencies
+- bump `jiff` to `1.0`.
 
 ## tooling
 - add compilation benchmarking and LLVM IR analysis tools under `tools/perf/`,

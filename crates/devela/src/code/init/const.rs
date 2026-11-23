@@ -1,6 +1,9 @@
 //
 //! Defines the [`ConstInit`] trait and implements it for many types.
-// NOTE: most implementations are scattered around the codebase.
+//
+// NOTE: implementations for foreign types live here;
+// implementations for devela-owned types generally live with their types.
+//
 // IMPROVE: add +Default
 //
 // TOC

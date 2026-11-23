@@ -590,7 +590,7 @@ work_deps  = ["work", "dep_atomic", "dep_portable_atomic"]
 # individual dependencies features
 dep_atomic = ["dep:atomic"]                                                     # work::sync
 dep_hashbrown = ["dep:hashbrown", "alloc"]  									# data::key
-dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
+dep_jiff = ["dep:jiff"]                                                         # phys::time
 dep_memchr = ["dep:memchr"]                                                     # text:str
 dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
 dep_portable_atomic_util = ["dep:portable-atomic-util"]                         # work::sync
@@ -601,7 +601,7 @@ dep_simdutf8 = ["dep:simdutf8"]                                                 
 dep_wide = ["dep:wide"]                                                         # num::grain::wide
 
 
-[dependencies] # 13 (1 required, 12 optional)
+[dependencies] # 12 (1 required, 11 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #

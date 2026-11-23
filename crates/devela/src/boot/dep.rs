@@ -34,7 +34,7 @@ pub extern crate std as _std;
 
 pub use devela_macros as macros;
 
-/* 12 optional dependencies */
+/* 11 optional dependencies */
 // In sync with /Cargo.toml::dep_all & /build/main/dep_all
 
 _reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
@@ -45,8 +45,7 @@ _reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     features: "alloc"
 }
 _reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
-    doc: "A high level datetime library that is secure and performant.",
-    features: "alloc"
+    doc: "A high level datetime library that is secure and performant."
 }
 _reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."

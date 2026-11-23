@@ -20,7 +20,7 @@ pub(crate) mod time {
         @TryFromFloatSecsError as DurationErrorTryFromFloatSecs // MAYBE RENAME
     }
 
-    // NOTE: replicated in src/error/
+    // NOTE: replicated in phys/time/error_std.rs::SystemTimeError
     _reexport! { rust: std::time, location: "phys/time", tag: _tags!(time error),
         doc: "Error returned from [`SystemTime`] `duration_since` and `elapsed`.",
         @SystemTimeError as StdSystemTimeError
