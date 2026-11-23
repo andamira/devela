@@ -80,7 +80,10 @@
 // #![cfg_attr(all(nightly_stable_1_101, feature = "std"), feature())]
 //
 // `nightly_stable_1_102`: core, alloc, std:
-#![cfg_attr(nightly_stable_1_102, feature(alignment_type, int_from_ascii,))]
+#![cfg_attr(
+    nightly_stable_1_102,
+    feature(alignment_type, case_ignorable, titlecase, int_from_ascii,) // cased, WAIT
+)]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "std"), feature())]
 //
@@ -97,6 +100,7 @@
         bool_to_result,
         breakpoint,
         cfg_version,
+        // char_case,
         const_array_from_ref,
         const_char_classify,
         const_slice_from_ref,

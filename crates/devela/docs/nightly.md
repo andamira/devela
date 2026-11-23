@@ -60,8 +60,11 @@ See also
 <!-- > - <https://github.com/rust-lang/rust/releases/tag/1.102.0> -->
 
 - 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
+- 1.102: `c`[case_ignorable, cased, titlecase](https://github.com/rust-lang/rust/pull/165434)
 - 1.102: ` `[const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
 - 1.102: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
+- 1.102: `c`[nonzero_ops](https://github.com/rust-lang/rust/pull/164485)
+- 1.102: ` `[riscv +relax](https://github.com/rust-lang/rust/pull/164378)
 
 
 # 1.103 will be stable on [2027-02-04](https://releases.rs/docs/1.103.0/) `nightly_stable_1_103`
@@ -82,6 +85,7 @@ See also
 - 1.??: `a`[box_pin_in](https://github.com/rust-lang/rust/pull/166218) allocator_ext
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
+- 1.??: `c`[char_case](https://github.com/rust-lang/rust/pull/166360) WAIT
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
@@ -107,7 +111,6 @@ See also
 - 1.??: ` `[Mergeable rustdoc cross-crate info](https://github.com/rust-lang/rust/pull/152902)
 - 1.??: `c`[more_qualified_paths](https://github.com/rust-lang/rust/pull/141922)
 - 1.??: `a`[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-- 1.??: `c`[nonzero_ops](https://github.com/rust-lang/rust/issues/164485)
 - 1.??: `c`[offset_of_enum](https://github.com/rust-lang/rust/issues/143954)
 - 1.??: `c`[offset_of_slice](https://github.com/rust-lang/rust/pull/139673)
 - 1.??: `s`[once_wait](https://github.com/rust-lang/rust/pull/136360)
@@ -118,7 +121,6 @@ See also
 - 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: ` `[riscv-relax](https://github.com/rust-lang/rust/pull/163890)
 - 1.??: ` `[rustdoc:remap-path-scope](https://github.com/rust-lang/rust/pull/163895)
 - 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
