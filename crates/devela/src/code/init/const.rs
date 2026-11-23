@@ -4,13 +4,12 @@
 // NOTE: implementations for foreign types live here;
 // implementations for devela-owned types generally live with their types.
 //
-// IMPROVE: add +Default
-//
 // TOC
 // - definitions:
 //   - trait ConstInit
 //   - macro _impl_init!
 // - implementations:
+//   - mod impl_core_always
 //   - mod impl_core
 //   - mod impl_alloc
 //   - mod impl_std
@@ -162,7 +161,37 @@ macro_rules! _impl_init {
 #[doc(hidden)]
 pub(crate) use _impl_init;
 
-/* implementations */
+/* foundational implementations */
+
+#[rustfmt::skip]
+mod impl_core_always {
+    use crate::ConstInit;
+
+    // *primitives*
+    _impl_init![() => ()];
+    _impl_init![false => bool];
+    _impl_init!['\x00' => char];
+    _impl_init![0 =>
+        i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
+    _impl_init![0.0 => f32, f64];
+    _impl_init![<T> ::core::ptr::null() => *const T];
+    _impl_init![<T> ::core::ptr::null_mut() => *mut T];
+    _impl_init![<T> &[] => &[T]]; // not allowed for &mut [T]
+    _impl_init!["" => &str];
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
+    impl crate::ConstInit for &mut str {
+        // SAFETY: The empty string is valid UTF-8.
+        const INIT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) }; }
+
+    // option
+    _impl_init![<T> None => Option<T>];
+
+    // result
+    impl<T: ConstInit, E> ConstInit for Result<T, E> { const INIT: Self = { Ok(T::INIT) }; }
+}
+
+/* extended implementations */
 
 #[rustfmt::skip]
 #[cfg(feature = "init")]
@@ -209,32 +238,10 @@ mod impl_core {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
         13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
-    // *primitives*
-    _impl_init![() => ()];
-    _impl_init![false => bool];
-    _impl_init!['\x00' => char];
-    _impl_init![0 =>
-        i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
-    _impl_init![0.0 => f32, f64];
-    _impl_init![<T> core::ptr::null() => *const T];
-    _impl_init![<T> core::ptr::null_mut() => *mut T];
-    _impl_init![<T> &[] => &[T]]; // not allowed for &mut [T]
-    _impl_init!["" => &str];
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(nightly_doc, doc(cfg(feature = "unsafe_str")))]
-    impl crate::ConstInit for &mut str {
-        // SAFETY: The empty string is valid UTF-8.
-        const INIT: Self = unsafe { ::core::str::from_utf8_unchecked_mut(&mut []) }; }
 
     #[cfg(all(nightly_coro, feature = "coro"))]
     _impl_init![<Y: ConstInit, R: ConstInit>
         Self::Yielded(Y::INIT) => crate::CoroutineState<Y, R> ];
-
-    // option
-    _impl_init![<T: ConstInit> Some(T::INIT) => Option<T>];
-
-    // result
-    impl<T: ConstInit, E> ConstInit for Result<T, E> { const INIT: Self = { Ok(T::INIT) }; }
 
     // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
     // _impl_init![<T: ConstInit> Self::new(T::INIT) => Exclusive<T>];
@@ -285,7 +292,8 @@ mod impl_core {
 
     // num::grain::niche
     _impl_init![<T: ConstInit> Self(T::INIT) => Saturating<T>, Wrapping<T>];
-    crate::CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
+
+    CONST! { _NZ = "This implementation returns the same as [`Self::MIN`]."; }
     _impl_init![Self::MIN =>
         #[doc=_NZ!()]NonZeroU8,  #[doc=_NZ!()]NonZeroU16,  #[doc=_NZ!()]NonZeroU32,
         #[doc=_NZ!()]NonZeroU64, #[doc=_NZ!()]NonZeroU128, #[doc=_NZ!()]NonZeroUsize,
@@ -390,6 +398,7 @@ mod impl_core {
 #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
 mod impl_alloc {
     use super::ConstInit;
+    use crate::boot::rust::work::sync::ArcWeak;
     use ::alloc::{
         // data
         collections::{
@@ -399,14 +408,14 @@ mod impl_alloc {
         },
         vec::Vec,
         // sys
-        rc::{Weak as RcWeak},
+        rc::Weak as RcWeak,
         // text
         string::String,
     };
+
     // data
     _impl_init![<T> Self::new() => BTreeSet<T>, LinkedList<T>, Vec<T>, VecDeque<T>];
     impl<T: Ord> ConstInit for BinaryHeap<T> { const INIT: Self = Self::new(); }
-
     _impl_init![<K, V> Self::new() => BTreeMap<K, V>];
 
     // sys
@@ -414,6 +423,9 @@ mod impl_alloc {
 
     // text
     _impl_init![Self::new() => String];
+
+    // work
+    _impl_init![<T> Self::new() => ArcWeak<T>];
 
     // TODO: fxhash, fnv, ahash
     // #[cfg(feature = "dep_hashbrown")]
@@ -430,19 +442,16 @@ mod impl_std {
         // collections::hash_map::DefaultHasher
         // io::{Cursor, Empty, Sink},
         process::ExitCode,
-        sync::{Condvar, LazyLock, Mutex, Once, OnceLock, RwLock, Weak as ArcWeak},
+        sync::{Condvar, LazyLock, Mutex, Once, OnceLock, RwLock},
     };
     // Types that don't implement Default:
     // - OsString: OsString { inner: Buf::from_string(String::new()) }
 
     _impl_init![Self::SUCCESS => ExitCode];
     _impl_init![Self::new() => Condvar, Once];
-    _impl_init![<T: ConstInit>
-        Self::new() => ArcWeak<T>, OnceLock<T>];
-    _impl_init![<T: ConstInit>
-        Self::new(T::INIT) => Mutex<T>, RwLock<T>];
-    _impl_init![<T: ConstInit>
-        Self::new(|| T::INIT) => LazyCell<T>, LazyLock<T>];
+    _impl_init![<T: ConstInit> Self::new() => OnceLock<T>];
+    _impl_init![<T: ConstInit> Self::new(T::INIT) => Mutex<T>, RwLock<T>];
+    _impl_init![<T: ConstInit> Self::new(|| T::INIT) => LazyCell<T>, LazyLock<T>];
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
     // #[cfg(feature = "dep_hashbrown")]

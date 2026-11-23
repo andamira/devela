@@ -77,6 +77,11 @@ This release…
 #### code::any
 - remove `AnyExt::type_hash` while preserving the hasher-parametric `type_hash_with`.
 
+#### code::init
+- keep the elemental `ConstInit` implementation foundation always available;
+  reserve the `init` feature for the broader implementation set.
+- Change `Option`'s `ConstInit` impl to `None`.
+
 #### code::ops
 - remove vendored `ScopeGuard`.
 
