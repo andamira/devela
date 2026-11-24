@@ -62,6 +62,7 @@ See also
 - 1.102: `c`[alignment_type](https://github.com/rust-lang/rust/pull/153261)
 - 1.102: `c`[case_ignorable, cased, titlecase](https://github.com/rust-lang/rust/pull/165434)
 - 1.102: ` `[const generic transmute min support](https://github.com/rust-lang/rust/pull/166064)
+- 1.102: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/166421)
 - 1.102: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 - 1.102: `c`[nonzero_ops](https://github.com/rust-lang/rust/pull/164485)
 - 1.102: ` `[riscv +relax](https://github.com/rust-lang/rust/pull/164378)
@@ -85,7 +86,7 @@ See also
 - 1.??: `a`[box_pin_in](https://github.com/rust-lang/rust/pull/166218) allocator_ext
 - 1.??: `c`[breakpoint](https://github.com/rust-lang/rust/pull/142325)
 - 1.??: `c`[cfg_version](https://github.com/rust-lang/rust/pull/141766)
-- 1.??: `c`[char_case](https://github.com/rust-lang/rust/pull/166360) WAIT
+- 1.??: `c`[char_case](https://github.com/rust-lang/rust/pull/166360)
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
 - 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
@@ -96,7 +97,6 @@ See also
 - 1.??: `c`[duration_millis_float](https://github.com/rust-lang/rust/pull/165566)
 - 1.??: `s`[exitcode_exit_method](https://github.com/rust-lang/rust/issues/161908)
 - 1.??: ` `[flags for doctest cross compilation](https://github.com/rust-lang/rust/pull/137096)
-- 1.??: `c`[float_bits_const](https://github.com/rust-lang/rust/pull/154065)
 - 1.??: `c`[fn_align](https://github.com/rust-lang/rust/pull/140261)
 - 1.??: `c`[frontmatter](https://github.com/rust-lang/rust/pull/148051)
 - 1.??: `c`[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
@@ -134,6 +134,7 @@ See also
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
 - 1.??: `a`[vec_repeat](https://github.com/rust-lang/rust/pull/166120)
+- 1.??: `c`[word_to_titlecase](https://github.com/rust-lang/rust/pull/166361) WAIT
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: ` `[-Znext-solver=globally](https://github.com/rust-lang/rust/pull/164209)
 
