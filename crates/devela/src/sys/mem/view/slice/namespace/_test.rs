@@ -160,11 +160,14 @@ fn eq_slices() {
     assert![Slice::<u8>::eq(&[1, 2], &[1, 2])];
     assert![Slice::<&[u8]>::eq(&[&[1, 2], &[3, 4]], &[&[1, 2], &[3, 4]])];
 
-    assert![Slice::<char>::eq(&['a', 'b'], &['a', 'b'])];
-    assert![Slice::<&[char]>::eq(&[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['c', 'd']])];
-
     assert![Slice::<&str>::eq(&"ab", "ab")];
     assert![Slice::<&[&str]>::eq(&["ab", "cd"], &["ab", "cd"])];
+}
+#[test]
+#[cfg(feature = "slice_eq")]
+fn eq_slices_extended() {
+    assert![Slice::<char>::eq(&['a', 'b'], &['a', 'b'])];
+    assert![Slice::<&[char]>::eq(&[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['c', 'd']])];
 }
 
 /* byte slices */

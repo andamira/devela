@@ -53,7 +53,7 @@ This release…
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
   `pnm`, `pcm`, `wav`.
 - add run-related features: `cap`, `control`.
-- add sys-related features: `replica`.
+- add sys-related features: `replica`, `slice_eq`.
 - add text-related features: `arse`, `text_layout`.
 - add work-related features: `coro`, `future`.
 - rename features: `visual` to `visual_all`.

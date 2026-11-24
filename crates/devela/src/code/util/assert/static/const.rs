@@ -55,8 +55,8 @@ macro_rules! const_assert· {
         $crate::const_assert!(@build $x, $($y),+; >=);
     };
     (
-        /* comparisons of slices of primitives (as well as slices of slices)
-         * supports all integer primitives, bool, char and &str. */
+        /* Comparisons of slices of primitives (as well as slices of slices).
+         * Typed buffer comparisons beyond bytes require "slice_eq" */
 
         // Asserts that slice buffers of $p primitives are equal in value.
         eq_buf::<$p:ty> $buf:expr, $($other:expr),+ $(,)?) => {
@@ -131,28 +131,6 @@ mod _test {
     #[test]
     #[rustfmt::skip] // reason: rustfmt gets confused with the first `&` and splits it
     const fn const_assert_slices() {
-        /* primitive slices */
-
-        const_assert!(eq_buf::<i32> &[-1, 2], &[-1, 2]);
-        const_assert!(ne_buf::<i32> &[-1, 2], &[-3, 4]);
-
-        const_assert!(eq_buf::<bool> &[true, false, true], &[true, false, true]);
-        const_assert!(ne_buf::<bool> &[true, false, true], &[true, true, false]);
-
-        const_assert!(eq_buf::<char> &['a', 'b', 'c'], &['a', 'b', 'c']);
-        const_assert!(ne_buf::<char> &['a', 'b', 'c'], &['b', 'c', 'a']);
-
-        /* slices of slices of primitives */
-
-        const_assert!(eq_buf::<&[i32]> &[&[-1, 2], &[3, 4]], &[&[-1, 2], &[3, 4]]);
-        const_assert!(ne_buf::<&[i32]> &[&[-1, 2], &[3, 4]], &[&[-3, 4], &[1, 2]]);
-
-        const_assert!(eq_buf::<&[bool]> &[&[true], &[false]], &[&[true], &[false]]);
-        const_assert!(ne_buf::<&[bool]> &[&[true], &[false]], &[&[false], &[true]]);
-
-        const_assert!(eq_buf::<&[char]> &[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['c', 'd']]);
-        const_assert!(ne_buf::<&[char]> &[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['d', 'c']]);
-
         /* byte slices (default case) */
 
         const_assert!(eq_buf b"hello", b"hello");
@@ -182,5 +160,31 @@ mod _test {
 
         const_assert!(eq_buf::<&[&str]> &["hello", "world"], &["hello", "world"]);
         const_assert!(ne_buf::<&[&str]> &["hello", "world"], &["world", "hello"]);
+    }
+    #[test]
+    #[cfg(feature = "slice_eq")]
+    #[rustfmt::skip] // reason: rustfmt gets confused with the first `&` and splits it
+    const fn const_assert_slices_extended() {
+        /* primitive slices */
+
+        const_assert!(eq_buf::<i32> &[-1, 2], &[-1, 2]);
+        const_assert!(ne_buf::<i32> &[-1, 2], &[-3, 4]);
+
+        const_assert!(eq_buf::<bool> &[true, false, true], &[true, false, true]);
+        const_assert!(ne_buf::<bool> &[true, false, true], &[true, true, false]);
+
+        const_assert!(eq_buf::<char> &['a', 'b', 'c'], &['a', 'b', 'c']);
+        const_assert!(ne_buf::<char> &['a', 'b', 'c'], &['b', 'c', 'a']);
+
+        /* slices of slices of primitives */
+
+        const_assert!(eq_buf::<&[i32]> &[&[-1, 2], &[3, 4]], &[&[-1, 2], &[3, 4]]);
+        const_assert!(ne_buf::<&[i32]> &[&[-1, 2], &[3, 4]], &[&[-3, 4], &[1, 2]]);
+
+        const_assert!(eq_buf::<&[bool]> &[&[true], &[false]], &[&[true], &[false]]);
+        const_assert!(ne_buf::<&[bool]> &[&[true], &[false]], &[&[false], &[true]]);
+
+        const_assert!(eq_buf::<&[char]> &[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['c', 'd']]);
+        const_assert!(ne_buf::<&[char]> &[&['a', 'b'], &['c', 'd']], &[&['a', 'b'], &['d', 'c']]);
     }
 }
