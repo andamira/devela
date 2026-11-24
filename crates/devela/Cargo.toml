@@ -168,23 +168,47 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 #
 # In sync with tools/check.rs::SUB_MODULES
 
-all = [ # enables all the 13 modules (and their submodules)
+all = [ # Enables all root module features
+	"code", "data", "error", "geom", "lang",
+	"media", "num", "phys", "run",
+	"sys", "text", "ui", "work",
+]
+aller = [ # Adds curated capabilities, preserving safe and no-alloc compatibility
+	"all",
 	"code_all",
-	"data_all", "error_all", "geom_all", "lang_all",
+	"data_all",
+	"error_all",
+	"geom_all",
+	"lang_all",
+	"media_all",
+	"num_all",
+	"phys_all",
+	"run_all",
+	"device", "hw", "io", "mem_all", "http", "_linux_abi", "term",
+	"text_all",
+	"ui_all",
+	"work_all",
+]
+allest = [ # Enables the aggregate feature groups of all root modules
+	"code_all", "data_all", "error_all", "geom_all", "lang_all",
 	"media_all", "num_all", "phys_all", "run_all",
 	"sys_all", "text_all", "ui_all", "work_all",
 ]
 
 code = [] # ----------------------------
 code_all = [
-	"build", "init",
+	"build",
+	"init",
 ]
 	build = ["code"]
 	init = ["code"]
 
 data = [] # ----------------------------
 data_all = [
-	"byte", "codec_all", "uuid", "value_all",
+	"byte",
+	"codec_all",
+	"uuid",
+	"value_all",
 ]
 	# access_all = ["byte"]
 		byte = ["data"]
@@ -227,7 +251,10 @@ error_all = [
 
 geom = [] # ----------------------------
 geom_all = [
-	"angle", "fig", "measure", "turn",
+	"turn",
+	"angle",
+	"fig",
+	"measure",
 ]
 	# affine_all = []
 		turn = ["geom"] # Point orientation and segment relations
@@ -240,7 +267,8 @@ geom_all = [
 
 lang = [] # ----------------------------
 lang_all = [
-	"ffi_all", "script_all",
+	"ffi_all",
+	"script_all",
 ]
 	# hum = []
 		# i18n = []
@@ -261,7 +289,9 @@ lang_all = [
 
 media = [] # ---------------------------
 media_all = [
-	"audio_all", "font_all", "visual_all",
+	"audio_all",
+	"font_all",
+	"visual_all",
 ]
 	audio = ["media"]
 	audio_all = ["audio", "pcm", "wav"]
@@ -291,8 +321,12 @@ media_all = [
 
 num = [] # -----------------------------
 num_all = [
-	"alg", "int", "bitwise", "bitten", "cast", "niche",
-	"prob", "prng", "ratio", "scale"
+	"alg",
+	"int",
+	"bitwise",
+	"bitten", "cast", "niche",
+	"prob", "prng",
+	"ratio", "scale"
 ]
 	alg = ["num"]         # Linear algebra
 	# dom
@@ -311,7 +345,9 @@ num_all = [
 
 phys = [] # ----------------------------
 phys_all = [
-	"time", "unit", "wave",
+	"time",
+	"unit",
+	"wave",
 ]
 	time = ["phys"]
 	unit = ["phys"]
@@ -319,46 +355,54 @@ phys_all = [
 
 run = [] # -----------------------------
 run_all = [
-	"cap", "control",
+	"cap",
+	"control",
 ]
 	cap = ["run"]     # RunCap*, RunService*
 	control = ["run"] # AppControl, AppControlSet
 
 sys = [] # -----------------------------
-sys_all = [ # EXCLUDED: "device", "hw", "os"
-	"sys", "io", "net", "service", "replica", "slice_eq",
-	]
+sys_all = [
+	"device_all",
+	"hw",
+	"io",
+	"mem_all",
+	"os_all",
+	"http",
+]
 	# arch
-		# simd = ["fontdue?/simd"]
-		# wasm = [] # ["ring?/wasm32_unknown_unknown_js"]
-	# device
+	device = ["sys"]
+	device_all = ["alsa", "x11"]
 		# audio
-			alsa = ["pcm", "unsafe_ffi"]
+			alsa = ["device", "pcm", "unsafe_ffi"]
 		# display
 			# cocoa = []
 			# gdi = []
-			x11 = ["alloc", "event", "run", "unsafe_ffi"]
+			x11 = ["device", "alloc", "event", "run", "unsafe_ffi"]
 		# midi = []
 	# fs
-	hw = []
-	io = []
-	# mem_all = []
-		replica = ["sys"] # Replicated memory views and hedged reads
+	hw = ["sys"]
+	io = ["sys"]
+	mem_all = ["replica", "slice_eq"]
+		replica = ["sys"]  # Replicated memory views and hedged reads
 		slice_eq = ["sys"] # Extended const slice equality
-	net = []
-	# os
-		android = ["unsafe_ffi"]
+	# net = ["sys"]
+	os_all = ["android", "web", "linux", "term"]
+		android = ["sys", "unsafe_ffi"]
 		# browser
-			web = ["js", "unsafe_ffi", "parse"] # TEMP
-		linux = ["_linux_abi", "unsafe_syscall"]
-		term = ["parse"] # TEMP
-		windows = []
-	service = ["http"]
-		http = ["parse"]
+			web = ["sys", "js", "unsafe_ffi", "parse"] # TEMP:parse
+		linux = ["sys", "_linux_abi", "unsafe_syscall"]
+		term = ["sys", "parse"] # TEMP:parse
+		# windows = ["sys"]
+	# service_all = ["http"]
+		http = ["sys", "parse"]
 
 text = [] # ----------------------------
 text_all = [
-	"grapheme", "parse", "text_layout", "translit",
+	"grapheme",
+	"parse",
+	"text_layout",
+	"translit",
 ]
 	grapheme = ["text"]
 	parse = ["text"]
@@ -367,23 +411,27 @@ text_all = [
 
 ui = [] # ------------------------------
 ui_all = [
-	"event", "widget",
+	"event",
+	"widget",
 ]
 	event = []
 	widget = ["ui"]
 
 work = [] # ----------------------------
 work_all = [
-	"process", "thread", "future", "sync", "coro",
+	"process", "thread",
+	"future",
+	"sync",
+	"coro",
 ]
-	# exec
+	# exec_all = []
 		process = ["work"]
 		thread = ["work"]
 
 	future = ["work"]
 	sync = ["work"]
 
-	# task
+	# task_all = []
 		coro = ["work", "future"]
 
 
@@ -504,23 +552,7 @@ _maxest = ["_max", "_tuple_72", "_unroll_2048"]
 _docs_examples = [] # documents examples, generates example items, feature-gate in example scripts
 _docs_min = [ # the minimum scope to document every item independent of alloc/std/unsafe
 	"_docs_examples",
-	# modules:
-	"all",
-		# device
-			# audio
-				"alsa",
-			# display
-				"x11",
-		# sys
-			"hw",
-			"net",
-			# os
-				"android",
-				# browser
-					"web",
-				"linux",
-				"term",
-				# "windows"
+	"allest",
 	# data:
 	"_tuple", "_unroll",
 ]

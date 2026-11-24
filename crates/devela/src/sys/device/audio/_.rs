@@ -10,6 +10,7 @@
 //
 
 crate::mods_in! {
+    #[cfg(feature = "device")]
     mod common; // AudioDevice, AudioDeviceDir
 
     #[cfg(all(feature = "alsa", not(feature = "safe_sys")))]
@@ -18,6 +19,7 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods, _crate_internals
     _mods {
+        #[cfg(feature = "device")]
         pub use super::common::*;
         #[cfg(all(feature = "alsa", not(feature = "safe_sys")))]
         pub use super::alsa::_all::*;

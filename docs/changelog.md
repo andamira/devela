@@ -43,6 +43,7 @@ This release…
 
 ### features & flags
 - refactor module features for selective capabilities and recursive `_all` aggregations.
+- add features: `aller`, `allest`,
 - add code-related features: `build`, `init`.
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`,
   `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`,
@@ -53,9 +54,10 @@ This release…
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
   `pnm`, `pcm`, `wav`.
 - add run-related features: `cap`, `control`.
-- add sys-related features: `replica`, `slice_eq`.
+- add sys-related features: `mem_all`, `os_all`, `replica`, `slice_eq`.
 - add text-related features: `arse`, `text_layout`.
 - add work-related features: `coro`, `future`.
+- remove features: `net`, `service`, `windows`.
 - rename features: `visual` to `visual_all`.
 - generate `root_*` cfg aliases for selective root-module compilation.
 - add `__select_modules` for opt-in root-module selection during development.

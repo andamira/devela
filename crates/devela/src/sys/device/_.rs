@@ -29,6 +29,7 @@ crate::mods_out! { // _pub_mods, _reexports, _crate_internals
     }
     _reexports {
         #[doc(inline)]
+        #[cfg(feature = "device")]
         pub use super::audio::AudioDevice;
         #[cfg(all(unix, feature = "x11", not(feature = "safe_sys")))]
         pub use super::display::XFrontend;
