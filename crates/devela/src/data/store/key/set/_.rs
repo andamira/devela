@@ -19,7 +19,10 @@ crate::mods_in! {
 }
 crate::mods_out! { // _mods
     _mods {
-        pub use super::sparse::*;
+        pub use super::{
+            alias::*,
+            sparse::*,
+        };
         #[cfg(all(target_os = "linux", feature = "_linux_abi", feature = "unsafe_ffi"))]
         pub use super::linux_sparse::*;
     }

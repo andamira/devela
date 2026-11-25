@@ -30,6 +30,9 @@ This release…
 - bump `safe_arch` to `1.2`.
 
 ## tooling
+- update `check.rs` to derive module checks from the Cargo feature graph,
+  validate aggregate feature contracts, use selective root compilation
+  where supported, and provision architecture targets.
 - add compilation benchmarking and LLVM IR analysis tools under `tools/perf/`,
   with feature-matrix measurements, module-level attribution, and report comparison.
 - add nightly rustc self-profiling with phase and query timings, multi-run summaries,
@@ -46,7 +49,7 @@ This release…
 - add features: `aller`, `allest`,
 - add code-related features: `build`, `init`.
 - add data-related features: `codec_all`, `integrity_all`, `pack_all`, `radix_all`, `symbol_all`,
-  `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `tile`,
+  `value_all`, `adler`, `base32`, `base64`, `braille`, `byte`, `crc`, `ean`, `riff`, `unitile`,
   `uuid`, `value`, `yijing`.
 - add geom-related features: `angle`, `measure`, `turn`.
 - add lang-related features: `ffi_all`.
@@ -54,8 +57,8 @@ This release…
 - add media-related features: `audio_all`, `font_all`, `image_all`, `bdf`, `bitfont`, `dvbf`,
   `pnm`, `pcm`, `wav`.
 - add run-related features: `cap`, `control`.
-- add sys-related features: `mem_all`, `os_all`, `replica`, `slice_eq`.
-- add text-related features: `arse`, `text_layout`.
+- add sys-related features: `device`, `device_all`, `mem_all`, `os_all`, `replica`, `slice_eq`.
+- add text-related features: `parse`, `text_layout`.
 - add work-related features: `coro`, `future`.
 - remove features: `net`, `service`, `windows`.
 - rename features: `visual` to `visual_all`.

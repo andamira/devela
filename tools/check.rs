@@ -3,18 +3,16 @@
 [package]
 edition = "2024"
 [dependencies]
-devela = { version = "0.26.0", features = ["std"] }
+devela = { version = "0.30.0", features = ["std"] }
 itertools = "0.15"
 lexopt = "0.3"
 toml_edit = "0.25"
 ---
-// devela::tools::check
 //
 //!
 //
 // TOC
 // - config:
-//   - const root_modules
 //   - const dep_all
 //   - const dep_no_cross_compile_std
 //   - const dep_no_cross_compile_ever
@@ -34,8 +32,10 @@ toml_edit = "0.25"
 //   - struct Args
 //   - fn get_args
 //   - fn print_help
+//   - struct FeatureGraph
 //   - fn get_msrv
 //   - fn run_cargo
+//   - fn rust_install_arch_targets
 //   - fn rust_install_arches
 //   - fn rust_install_nightly
 //   - fn headline
@@ -44,9 +44,7 @@ toml_edit = "0.25"
 //
 // IMPROVE:
 // - filter-out cross-compiling only for no_std platforms.
-// - auto add:
-//   - rustup target add x86_64-unknown-linux-musl
-//   - rustup component add --toolchain nightly-2025-08-14-x86_64-unknown-linux-gnu miri
+// - auto-install nightly/miri prerequisites when needed.
 // - allow to associate a platform with features to be enabled.
 
 #![allow(clippy::useless_format)]
@@ -54,7 +52,7 @@ toml_edit = "0.25"
 use devela::all::{FsPath, is, sf};
 use itertools::Itertools;
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     env,
     fs::File,
     io::{BufRead, BufReader, Read},
@@ -66,50 +64,6 @@ use toml_edit::Document;
 /* config */
 
 const NIGHTLY: &str = "nightly"; // NOTE: specific version can be set like: nightly-2025-08-14
-
-#[rustfmt::skip]
-const ROOT_MODULES: [&str; 12 + 3] = [
-    "code", "data", "geom", "lang", "media", "num", "phys", "run", "sys", "text", "ui", "work",
-    // "org", "vita"
-
-    // sys::os submodules (platforms)
-    "linux", "term", "web", // "windows",
-];
-#[rustfmt::skip]
-const SUB_MODULES: &[&str] = &[
-    // code
-
-    // data
-        "hash", "oneof",
-    // geom
-        "fig",
-    // lang
-        "glsl", "js", "shell",
-    // media
-        "audio", "font", "color", "draw", "image",
-    // num
-        "alg", "bitten", "bitwise", "cast", "int", "niche", "prng", "prob", "ratio", "scale",
-    // org
-
-    // phys
-        "time", "unit", "wave",
-    // run
-
-    // sys
-        "io", "net", "service",
-            "hw",
-            // "device": "alsa", "x11",
-            // "os": "android", "linux", "web",
-            "term",
-    // text
-        "grapheme", "translit",
-    // ui
-        "event", "ui",
-    // vita
-
-    // work
-        "process", "thread", "sync",
-];
 
 //* dependencies *//
 
@@ -240,6 +194,11 @@ fn main() -> Result<()> {
     let msrv = is![args.no_msrv, "".into(), get_msrv().unwrap_or("".into())];
     println!("resolved MSRV from Cargo.toml: {msrv}");
 
+    let features = FeatureGraph::load()?;
+    let root_modules = features.root_modules()?;
+    features.validate(&root_modules)?;
+    let module_capabilities = features.module_capabilities(&root_modules)?;
+
     let cmd = "check";
 
     if args.install_arches {
@@ -316,6 +275,8 @@ fn main() -> Result<()> {
     if args.arches {
         let cmd = "clippy";
 
+        rust_install_arch_targets(&msrv)?;
+
         let atotal: usize = LINUX_ARCHES.len()
             + NO_STD_ARCHES.len()
             + STD_ARCHES.len() * 2
@@ -326,9 +287,9 @@ fn main() -> Result<()> {
 
         // linux
         for arch in LINUX_ARCHES {
-            sf! { headline(1, &format!("all,linux,unsafe_syscall: arch {a}/{atotal}")); }
+            sf! { headline(1, &format!("all,linux: arch {a}/{atotal}")); }
             sf! { run_cargo(&msrv, cmd,
-            &["--target", arch, "--workspace", "-F all,linux,unsafe_syscall"])?; }
+            &["--target", arch, "--workspace", "-F all,linux"])?; }
             a += 1;
         }
 
@@ -449,87 +410,89 @@ fn main() -> Result<()> {
 
     /* modules */
 
-    // check individual modules
+    // check individual root modules and public module capabilities
     if args.single_modules {
-        let mod_total: usize = (ROOT_MODULES.len() + SUB_MODULES.len()) * 2;
+        let mod_total: usize = root_modules.len() * 2 + module_capabilities.len();
         let mut mod_count = 1_usize;
 
         sf! { headline(0,
-        &format!["Checking the presence and absence of individual modules ({mod_total}):"]); }
+        &format!["Checking individual module features and root absence ({mod_total}):"]); }
 
-        for module in ROOT_MODULES {
+        for module in &root_modules {
             headline(1, &format!("root-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["--workspace", "-F", module])?;
+            let feature_flags = format!("__select_modules,{module}");
+            run_cargo(&msrv, cmd, &["--workspace", "-F", &feature_flags])?;
             mod_count += 1;
         }
 
-        for module in SUB_MODULES {
-            headline(1, &format!("sub-module `{module}` {mod_count}/{mod_total}"));
-            run_cargo(&msrv, cmd, &["--workspace", "-F", module])?;
+        for feature in &module_capabilities {
+            let closure = features.closure(feature)?;
+            let selective = root_modules.iter().any(|root| closure.contains(root));
+            let scope = if selective { "selective" } else { "default roots" };
+            headline(
+                1,
+                &format!("module capability `{feature}` [{scope}] {mod_count}/{mod_total}"),
+            );
+
+            let feature_flags =
+                if selective { format!("__select_modules,{feature}") } else { feature.clone() };
+            run_cargo(&msrv, cmd, &["--workspace", "-F", &feature_flags])?;
             mod_count += 1;
         }
 
-        for module_to_filter in ROOT_MODULES {
+        for module_to_filter in &root_modules {
             sf! { headline(1,
-            &format!("all modules except `{module_to_filter}` {mod_count}/{mod_total}")); }
+            &format!("all root modules except `{module_to_filter}` {mod_count}/{mod_total}")); }
 
-            let modules = ROOT_MODULES
+            let modules = root_modules
                 .iter()
-                .filter(|&m| m != &module_to_filter)
-                .copied()
+                .filter(|module| *module != module_to_filter)
+                .cloned()
                 .collect::<Vec<_>>()
                 .join(",");
-            run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
-            mod_count += 1;
-        }
-        for module_to_filter in SUB_MODULES {
-            sf! { headline(1,
-            &format!("all modules except `{module_to_filter}` {mod_count}/{mod_total}")); }
-
-            let modules = SUB_MODULES
-                .iter()
-                .filter(|&m| m != module_to_filter)
-                .copied()
-                .collect::<Vec<_>>()
-                .join(",");
-            run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
+            let feature_flags = format!("__select_modules,{modules}");
+            run_cargo(&msrv, cmd, &["--workspace", "-F", &feature_flags])?;
             mod_count += 1;
         }
     }
 
-    // check all modules except the given list of exceptions
-    if args.all_modules_except.is_some() {
-        let exceptions = args.all_modules_except.unwrap();
-
+    // check all root modules except the given list of exceptions
+    if let Some(exceptions) = args.all_modules_except {
         sf! { headline(0,
-        &format!["Checking all the modules except `{exceptions}`:"]); }
+        &format!["Checking all root modules except `{exceptions}`:"]); }
 
         let exceptions: HashSet<&str> = exceptions.split(',').collect();
+        for exception in &exceptions {
+            if !root_modules.iter().any(|module| module.as_str() == *exception) {
+                return Err(format!("unknown root module `{exception}`").into());
+            }
+        }
 
-        let modules = ROOT_MODULES
+        let modules = root_modules
             .iter()
-            .filter(|&m| !exceptions.contains(m))
-            .copied()
+            .filter(|module| !exceptions.contains(module.as_str()))
+            .cloned()
             .collect::<Vec<_>>()
             .join(",");
-        run_cargo(&msrv, cmd, &["--workspace", "-F", &modules])?;
+        let feature_flags = format!("__select_modules,{modules}");
+        run_cargo(&msrv, cmd, &["--workspace", "-F", &feature_flags])?;
     }
 
-    // check all the combinations of individual modules
+    // check all combinations of root modules
     if args.all_modules_combinations {
         // (exclude 0 modules from the count)
-        let mod_comb_total: usize = 2_usize.pow(ROOT_MODULES.len() as u32) - 1;
+        let mod_comb_total: usize = 2_usize.pow(root_modules.len() as u32) - 1;
         let mut comb_count = 1_usize;
 
-        sf! { headline(0, "Checking all the modules combinations ({mod_comb_total}):"); }
+        sf! { headline(0, "Checking all root-module combinations ({mod_comb_total}):"); }
 
-        for i in 1..=ROOT_MODULES.len() {
-            for combination in ROOT_MODULES.iter().combinations(i) {
+        for i in 1..=root_modules.len() {
+            for combination in root_modules.iter().combinations(i) {
                 sf! { headline(1,
                 &format!("modules combination {comb_count}/{mod_comb_total}")); }
-                let deref_combination: Vec<_> = combination.into_iter().copied().collect();
-                let combined = deref_combination.join(",");
-                run_cargo(&msrv, cmd, &["--workspace", "-F", &combined])?;
+                let combined = combination.into_iter().map(String::as_str).join(",");
+                let feature_flags = format!("__select_modules,{combined}");
+                run_cargo(&msrv, cmd, &["--workspace", "-F", &feature_flags])?;
                 comb_count += 1;
             }
         }
@@ -574,8 +537,11 @@ fn get_args() -> Result<Args> {
 
     let mut parser = lexopt::Parser::from_env();
 
-    // if there are no arguments, print help an exit
-    is![env::args_os().len() == 1, {print_help(&parser); exit(0); }];
+    // if there are no arguments, print help and exit
+    is![env::args_os().len() == 1, {
+        print_help(&parser);
+        exit(0);
+    }];
 
     sf! { while let Some(arg) = parser.next()? {
         match arg {
@@ -618,8 +584,6 @@ fn get_args() -> Result<Args> {
 /// Prints the help.
 fn print_help(parser: &lexopt::Parser) {
     let msrv = get_msrv().unwrap_or("".into());
-    let mods: usize = ROOT_MODULES.len();
-    let mods_combs: usize = 2_usize.pow(mods as u32) - 1;
     let arches: usize = STD_ARCHES.len()
         + NO_STD_ARCHES.len()
         + STD_ARCHES_NO_CROSS_COMPILE.len()
@@ -630,14 +594,15 @@ fn print_help(parser: &lexopt::Parser) {
 
   -t, --tests                      run the tests
   -d, --docs                       compile the documentation
-  -a, --arches                     check all of the {arches} architectures
+  -a, --arches                     check {arches} architectures; install missing MSRV targets
       --miri                       use `miri` to check each architecture
-  -m, --single-modules             check root modules both individually and
-                                   removed from the full module set ({mods} × 2).
-      --all-modules-combinations   check all the modules combinations ({mods_combs})
-      --all-modules-except m1,…    check all the modules together except the given list
+  -m, --single-modules             check roots/capabilities individually,
+                                   using selective roots where supported;
+                                   then omit each root once
+      --all-modules-combinations   check all root-module combinations
+      --all-modules-except m1,…    check all roots except the given list
       --no-msrv                    do not enforce using the configured MSRV ({msrv})
-  -A, --install-arches             install all of the {arches} architectures
+  -A, --install-arches             preinstall architecture targets/components for MSRV + nightly
   -N, --install-nightly            install the nightly toolchain
   -h, --help                       display this help and exit
 
@@ -649,6 +614,133 @@ Architectures:
 ",
         name = parser.bin_name().unwrap_or("check.rs")
     );
+}
+
+/// The local feature graph from `crates/devela/Cargo.toml`.
+#[derive(Debug)]
+struct FeatureGraph {
+    order: Vec<String>,
+    edges: HashMap<String, Vec<String>>,
+}
+
+impl FeatureGraph {
+    /// Loads the devela feature table, preserving manifest order.
+    fn load() -> Result<Self> {
+        let cargo = FsPath::from_crate_root("crates/devela/Cargo.toml")?.into_inner();
+        let mut contents = String::new();
+        File::open(cargo)?.read_to_string(&mut contents)?;
+
+        let cargo_toml: Document<_> = contents.parse()?;
+        let features = cargo_toml
+            .as_table()
+            .get("features")
+            .and_then(|item| item.as_table())
+            .ok_or("missing [features] in crates/devela/Cargo.toml")?;
+
+        let mut order = Vec::with_capacity(features.len());
+        let mut edges = HashMap::with_capacity(features.len());
+
+        for (name, item) in features.iter() {
+            let values =
+                item.as_array().ok_or_else(|| format!("feature `{name}` is not an array"))?;
+            let children =
+                values.iter().filter_map(|value| value.as_str()).map(str::to_owned).collect();
+
+            order.push(name.to_owned());
+            edges.insert(name.to_owned(), children);
+        }
+        Ok(Self { order, edges })
+    }
+
+    /// Returns the direct local feature dependencies of `feature`.
+    fn direct(&self, feature: &str) -> Result<Vec<String>> {
+        self.edges
+            .get(feature)
+            .cloned()
+            .ok_or_else(|| format!("missing feature `{feature}`").into())
+    }
+
+    /// Returns the recursive closure of local features reachable from `feature`.
+    fn closure(&self, feature: &str) -> Result<HashSet<String>> {
+        if !self.edges.contains_key(feature) {
+            return Err(format!("missing feature `{feature}`").into());
+        }
+
+        let mut seen = HashSet::new();
+        let mut pending = vec![feature.to_owned()];
+
+        while let Some(current) = pending.pop() {
+            if !seen.insert(current.clone()) {
+                continue;
+            }
+            if let Some(children) = self.edges.get(&current) {
+                pending.extend(
+                    children.iter().filter(|child| self.edges.contains_key(*child)).cloned(),
+                );
+            }
+        }
+        Ok(seen)
+    }
+
+    /// Root modules are defined canonically by the direct children of `all`.
+    fn root_modules(&self) -> Result<Vec<String>> {
+        let roots = self.direct("all")?;
+        if let Some(root) = roots.iter().find(|root| !self.edges.contains_key(*root)) {
+            return Err(format!("`all` references unknown root feature `{root}`").into());
+        }
+        Ok(roots)
+    }
+
+    /// Concrete public module capabilities reachable from `allest`.
+    fn module_capabilities(&self, roots: &[String]) -> Result<Vec<String>> {
+        let allest = self.closure("allest")?;
+        let roots: HashSet<&str> = roots.iter().map(String::as_str).collect();
+
+        Ok(self
+            .order
+            .iter()
+            .filter(|name| allest.contains(name.as_str()))
+            .filter(|name| !roots.contains(name.as_str()))
+            .filter(|name| !name.ends_with("_all"))
+            .filter(|name| !name.starts_with('_') && !name.starts_with("dep_"))
+            .filter(|name| !matches!(name.as_str(), "all" | "aller" | "allest"))
+            .filter(|name| !matches!(name.as_str(), "alloc" | "std" | "no_std"))
+            .filter(|name| !matches!(name.as_str(), "safe" | "safest" | "unsafe"))
+            .filter(|name| !name.starts_with("safe_") && !name.starts_with("unsafe_"))
+            .cloned()
+            .collect())
+    }
+
+    /// Checks the aggregate feature contracts introduced by the module feature hierarchy.
+    fn validate(&self, roots: &[String]) -> Result<()> {
+        let aller = self.closure("aller")?;
+        let allest = self.closure("allest")?;
+
+        for root in roots {
+            if !aller.contains(root) {
+                return Err(format!("`aller` does not reach root feature `{root}`").into());
+            }
+            if !allest.contains(root) {
+                return Err(format!("`allest` does not reach root feature `{root}`").into());
+            }
+        }
+
+        for feature in self.order.iter().filter(|name| {
+            name.ends_with("_all") && !name.starts_with('_') && !name.starts_with("dep_")
+        }) {
+            if !allest.contains(feature) {
+                return Err(format!("`allest` does not reach aggregate feature `{feature}`").into());
+            }
+        }
+
+        if let Some(feature) = aller.iter().find(|feature| {
+            matches!(feature.as_str(), "alloc" | "std" | "unsafe") || feature.starts_with("unsafe_")
+        }) {
+            return Err(format!("`aller` unexpectedly enables `{feature}`").into());
+        }
+
+        Ok(())
+    }
 }
 
 /// Returns the `rust-version` field from Cargo.toml
@@ -749,42 +841,60 @@ fn run_cargo_inner(
     if !status.success() { Err("ERROR".into()) } else { Ok(()) }
 }
 
-/// Makes sure to install all the architectures and components for the current MSRV and nightly.
+/// Ensures the architecture-check targets are installed for `toolchain`.
+/// An empty toolchain uses rustup's current default.
+fn rust_install_arch_targets(toolchain: &str) -> Result<()> {
+    let mut seen = HashSet::new();
+
+    for arch in STD_ARCHES
+        .iter()
+        .chain(STD_ARCHES_NO_CROSS_COMPILE)
+        .chain(NO_STD_ARCHES)
+        .chain(LINUX_ARCHES)
+    {
+        is! { !seen.insert(*arch), continue }
+
+        let mut command = Command::new("rustup");
+        command.args(["target", "add", arch]);
+        if toolchain.is_empty() {
+            println!("$ rustup target add {arch}");
+        } else {
+            println!("$ rustup target add {arch} --toolchain {toolchain}");
+            command.args(["--toolchain", toolchain]);
+        }
+
+        if !command.status()?.success() {
+            let toolchain = is![toolchain.is_empty(), "current", toolchain];
+            return Err(
+                format!("failed to install target `{arch}` for toolchain `{toolchain}`").into()
+            );
+        }
+    }
+    Ok(())
+}
+
+/// Installs the architecture targets for the current MSRV/default toolchain and nightly.
 fn rust_install_arches(msrv: &str) -> Result<()> {
     println!("> rust_install_arches() // for MSRV and nightly\n");
 
-    // Install components for the specific MSRV toolchain
     if !msrv.is_empty() {
-        println!("rustup component add clippy --toolchain {msrv}");
-        sf! { let _ = Command::new("rustup")
-        .args(["component", "add", "clippy", "--toolchain", msrv]).status()?; }
-        println!("rustup component add rustfmt --toolchain {msrv}");
-        sf! { let _ = Command::new("rustup")
-        .args(["component", "add", "rustfmt", "--toolchain", msrv]).status()?; }
-        println!("");
-    }
-
-    for ref arch in STD_ARCHES
-        .iter()
-        .chain(LINUX_ARCHES.iter())
-        .chain(NO_STD_ARCHES.iter())
-        .chain(STD_ARCHES_NO_CROSS_COMPILE.iter())
-    {
-        // Add target for the specific MSRV toolchain
-        if !msrv.is_empty() {
-            println!("rustup target add {arch} --toolchain {msrv}");
-            sf! { let _ = Command::new("rustup")
-            .args(["target", "add", arch, "--toolchain", msrv]).status()?; }
-        } else {
-            println!("rustup target add {arch}");
-            sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
+        for component in ["clippy", "rustfmt"] {
+            println!("$ rustup component add {component} --toolchain {msrv}");
+            let status = Command::new("rustup")
+                .args(["component", "add", component, "--toolchain", msrv])
+                .status()?;
+            if !status.success() {
+                return Err(format!(
+                    "failed to install component `{component}` for toolchain `{msrv}`"
+                )
+                .into());
+            }
         }
-
-        println!("rustup target add {arch} --toolchain {NIGHTLY}");
-        sf! { let _ = Command::new("rustup")
-        .args(["target", "add", arch, "--toolchain", NIGHTLY]).status()?; }
-        println!("");
+        println!();
     }
+
+    rust_install_arch_targets(msrv)?;
+    rust_install_arch_targets(NIGHTLY)?;
     Ok(())
 }
 
