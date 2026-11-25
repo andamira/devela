@@ -205,22 +205,21 @@ extern crate self as devela;
 /* root modules */
 
 // - `boot` provides root-independent construction machinery and elementary vocabulary.
+// - `code` provides semantic code utilities.
 // - `__select_modules` makes other root modules require their own root feature.
-// - `code` contains semantic code utilities, including public macro facades.
 // - `yard` provides shared internal infrastructure and documentation support.
 
 #[path = "boot/_.rs"]
-mod boot; // Root-independent foundation
+pub mod boot; // Bootstrap vocabulary.
 
 #[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
-pub use boot::_bootstrap::*;
-pub(crate) use boot::_crate_internals::*;
+pub use boot::_strap::*;
 #[doc(hidden)]
 pub use boot::dep as _dep;
 #[allow(unused_imports)]
-pub(crate) use boot::rust::_fallback::*;
+pub(crate) use boot::{_crate_internals::*, rust::_fallback::*};
 
 boot::mods_in! {
     #[cfg(all(doc, not(doctest), root_yard))]
@@ -268,7 +267,7 @@ boot::mods_in! {
 
     // internal
     #[cfg(root_yard)]
-    pub mod_ yard; // Scaffolding, taxonomy, and documentation support.
+    pub mod_ yard; // Scaffolding, taxonomy, and documentation support
 }
 
 /* manual mods_out!: */
@@ -280,6 +279,10 @@ boot::mods_in! {
 pub mod all_ {
     macro_rules! _COMMON_DOC { ($mod:literal) => { concat!(" ",
         crate::_doc!(root:$mod), "\n\nAll `", $mod,"` module's items flat re-exported.") }; }
+
+    #[doc = concat![crate::boot::_DOC_BOOT!(), crate::boot::_DOC_BOOT_MODULES!(),
+    " [▽](mod@crate::boot)", "\n\nAll `boot` module's items flat re-exported."]]
+    pub mod _boot { #[allow(unused)] pub use super::super::boot::_all::*; }
 
     #[cfg(root_code)]
     #[doc = concat![crate::_DOC_CODE!(), crate::_DOC_CODE_MODULES!(), _COMMON_DOC!("code")]]
@@ -348,7 +351,11 @@ pub mod all {
     // same expression macros directly from their root-independent foundation.
     #[doc(inline)]
     #[cfg(not(root_code))]
-    pub use super::boot::{is, lets, punroll, sf, whilst};
+    pub use super::boot::expr::{is, lets, punroll, sf, whilst};
+
+    #[doc(inline)]
+    #[cfg(not(root_data))]
+    pub use super::boot::expr::{read_at, write_at};
 
     #[doc(inline)]
     #[cfg(root_code)]
@@ -410,6 +417,8 @@ mod _crate_internals {
     //! Crate-internal, hidden items.
     #![allow(unused_imports)]
 
+    pub(crate) use super::boot::_crate_internals::*;
+
     #[cfg(root_code)]
     pub(crate) use super::code::_crate_internals::*;
 
@@ -460,6 +469,9 @@ pub use __hidden::*;
 pub mod __hidden {
     //! Workspace-public, hidden items.
     #![allow(unused_imports)]
+
+    #[doc(hidden)]
+    pub use super::boot::_hidden::*;
 
     #[doc(hidden)]
     #[cfg(root_code)]

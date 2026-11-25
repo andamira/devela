@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {dom_float::*, fin_ord::*, grain_niche::*, grain_wide::*, quant_cont::*};
+pub use {dom_float::*, fin_ord::*, grain_niche::*, grain_wide::*, quant_cont::*};
 
 pub(crate) mod dom_float {
     use super::*;

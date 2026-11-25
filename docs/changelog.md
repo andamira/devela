@@ -68,16 +68,16 @@ This release…
 - rename feature `rand` to `prng`.
 
 ### structure
-- introduce a private `boot` module for essential crate-construction macros and doc fragments.
-- introduce `boot::rust` as the root-independent source of Rust-library re-exports,
-  moving `_reexport!` into bootstrap machinery and decoupling the internal Rust vocabulary.
-- move `mods_out!` into boot, retaining its public documentation through a rustdoc-only facade.
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
-- move the internal dependency registry from `yard` into `boot` and group bootstrap
-  macro machinery under `boot::synth`.
-- introduce `boot::expr` with root-independent `is!`, `lets!`, `punroll!`,
-  `sf!`, and `whilst!`; preserve their semantic `code` paths and flat exports.
-- group `doclink!` with bootstrap documentation infrastructure.
+- introduce public `boot` as the always-available bootstrap vocabulary:
+  - `boot::expr`: `is!`, `lets!`, `punroll!`, `read_at!`, `sf!`, `whilst!`, `write_at!`.
+  - `boot::rust`: curated Rust library re-exports.
+  - `boot::synth`: structural synthesis macros and procedural macros.
+- preserve the semantic paths of boot abstractions in their respective domain modules.
+- provide a flat view of boot through `all_::_boot`.
+- consolidate bootstrap documentation and dependency infrastructure,
+  removing redundant synthesis macro documentation facades.
+- decouple the UTF-8 writing primitive from `Char`.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`
   and `BitSized` implementations and separating buffered size diagnostics.
 - move `Version` and `VersionFull` buffered text encoding into `text::fmt`;

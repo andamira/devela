@@ -4,8 +4,6 @@
 
 mod doclink;
 
-pub use doclink::{__DOCLINK_CUSTOM_CHANNEL, __DOCLINK_CUSTOM_DOMAIN, doclink};
-
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _DOC_ALL· {
@@ -38,9 +36,19 @@ macro_rules! _DOC_ALL_PLUS_· {
         )
     };
 }
-
 #[doc(hidden)]
 pub use {_DOC_ALL_PLUS_· as _DOC_ALL_PLUS_, _DOC_ALL_· as _DOC_ALL_, _DOC_ALL· as _DOC_ALL};
+
+crate::boot::synth::CONST! { hidden macro_export,
+    _DOC_BOOT = "Bootstrap vocabulary.";
+    _DOC_BOOT_MODULES = "\
+        <br/><i style='margin-left:0em;'></i>\
+        <span style='font-size:90%;word-spacing:0px'>\
+        [boot][mod@crate::boot]::{\
+        [expr](mod@crate::boot::expr), \
+        [rust](mod@crate::boot::rust), \
+        [synth](mod@crate::boot::synth)}</span>";
+}
 
 /* shims */
 
@@ -58,3 +66,13 @@ macro_rules! _tags {
 }
 #[cfg(not(root_yard))]
 pub(crate) use {_doc_meta, _tags};
+
+pub(crate) mod _all {
+    pub use super::doclink::{__DOCLINK_CUSTOM_CHANNEL, __DOCLINK_CUSTOM_DOMAIN, doclink};
+    #[doc(hidden)]
+    pub use super::{_DOC_ALL, _DOC_ALL_, _DOC_ALL_PLUS_, _DOC_BOOT, _DOC_BOOT_MODULES};
+}
+pub(crate) mod _crate_internals {
+    #[cfg(not(root_yard))]
+    pub(crate) use super::{_doc_meta, _tags};
+}

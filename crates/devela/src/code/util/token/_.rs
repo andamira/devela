@@ -25,7 +25,7 @@ crate::mods_out! { // _mods, _reexports,
             type_count::type_count,
         };
         #[doc(inline)]
-        pub use crate::boot::sf;
+        pub use crate::boot::expr::sf;
     }
     _reexports {
         pub use crate::boot::rust::code::util_token::*;

@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {fmt::*, parse::*, scalar::*, str::*};
+pub use {fmt::*, parse::*, scalar::*, str::*};
 
 pub(crate) mod fmt {
     use super::*;

@@ -1,5 +1,30 @@
+#[doc = crate::_tags!(code fmt)]
+/// Groups items together and expands them as if they were written directly.
+#[cfg_attr(root_code, doc = crate::_doc_meta!{
+    location("code/util/synth", macro items),
+})]
+#[cfg_attr(not(root_code), doc = crate::_doc_meta!{
+    location("boot/synth", macro items),
+})]
+/// It can be useful to apply an attribute to a group of items.
+///
+/// It can also preserve the formatting of the code provided as arguments, but the
+/// [`sf!`][crate::sf] macro is better for that, since it works with any arbitrary
+/// code sequences like statements, expressions… instead of with just Rust items.
+///
+/// # Examples
+/// ```
+/// use devela::items;
+///
+/// #[cfg(feature = "something")]
+/// items! {
+///     mod something {
+///         pub struct SomeThing;
+///     }
+///     pub use something::SomeThing;
+/// }
+/// ```
 #[macro_export]
-#[allow(missing_docs)]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! items· { ( $($item:item)* ) => { $($item)* }; }
 #[doc(inline)]

@@ -9,14 +9,9 @@
 //! input material belongs to [`token`][super::token].
 //
 
-// BOOTSTRAP: defines `mods_out!`.
-mod mods_out; // mods_out!
-
 mods_in! {
-    mod r#const; // CONST!
     mod_ derive; // macro_apply_alias!, macro_derive_alias!
     mod impl_trait; // impl_trait!
-    mod items; // items!
     mod maybe; // maybe!, maybe_slot!
     mod methods; // methods_as_fns!
     #[cfg(feature = "_unroll")]
@@ -26,14 +21,13 @@ mods_in! {
 crate::boot::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
+        pub use crate::boot::synth::{CONST, items, mods_out};
+        #[doc(inline)]
         pub use super::{
-            r#const::CONST,
             derive::{macro_apply_alias, macro_derive_alias},
             impl_trait::impl_trait,
-            items::items,
             maybe::{maybe, maybe_slot},
             methods::methods_as_fns,
-            mods_out::mods_out,
             use_as::use_as,
         };
         #[cfg(feature = "_unroll")]

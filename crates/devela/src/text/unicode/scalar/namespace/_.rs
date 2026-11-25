@@ -17,14 +17,10 @@ crate::mods_in! {
     mod byte; // Char<u8>
     mod slice; // Char<&[u8] | &[u8; N]>
 }
-crate::mods_out! { // _mods, _hidden
+crate::mods_out! { // _mods
     _mods {
         pub use super::{
             define::Char,
         };
-    }
-    _hidden {
-        #[doc(hidden)]
-        pub use super::u32::__unicode_scalar_write_utf8_at;
     }
 }

@@ -32,3 +32,55 @@ fn expression_macros() {
     assert_eq!(from_root(), 10);
     assert_eq!(from_all(), 6);
 }
+
+// All four UTF-8 widths, fixed and dynamic indexed operations, and the public
+// boot paths must work with no domain roots selected.
+const fn indexed() -> [u8; 12] {
+    use devela::boot::{read_at, write_at};
+    let mut bytes = [0u8; 12];
+    let mut pos = 0;
+    write_at!(bytes, +=pos, #'A', #'µ', #'€', #'𐀀', @2 *b"ok");
+    assert!(pos == bytes.len());
+    let mut dst = [0u8; 12];
+    let head = read_at!(bytes, 0, @4);
+    let mut off = 0;
+    devela::all::write_at!(dst, +=off, @4 head);
+    let mut tail = [0u8; 8];
+    assert!(devela::read_at!(bytes, 4, @tail) == 12);
+    devela::write_at!(dst, +=off, @tail);
+    assert!(off == 12);
+    dst
+}
+
+const _: () = {
+    use devela::boot::rust::NonZeroU8;
+    assert!(core::mem::size_of::<NonZeroU8>() == 1);
+    let bytes = indexed();
+    assert!(bytes[0] == b'A');
+    assert!(bytes[11] == b'k');
+};
+
+#[test]
+fn indexed_and_public_boot() {
+    assert_eq!(&indexed(), "Aµ€𐀀ok".as_bytes());
+    assert_eq!(devela::boot::is![true, 1, 2], 1);
+}
+
+#[test]
+fn grouped_boot() {
+    use devela::boot::{
+        expr::is,
+        synth::{CONST, items},
+    };
+    CONST! { VALUE = 7 }
+    items! { const N: u8 = VALUE!(); }
+    mod exports {
+        use devela::boot::synth::mods_out;
+        mod value {
+            pub const VALUE: u8 = 7;
+        }
+        mods_out! { _mods { pub use super::value::VALUE; } }
+    }
+    assert_eq!(is![true, N, 0], exports::VALUE);
+    assert_eq!(devela::boot::is![true, N, 0], N);
+}

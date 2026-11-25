@@ -31,7 +31,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::{Slice, Str, write_at};
+/// use devela::write_at;
 ///
 /// let mut bytes = [0u8; 8];
 /// let mut offset = 0;
@@ -75,7 +75,7 @@
 /// let ch = 'µ';
 /// write_at!(bytes, +=offset, #'µ', #ch, #0x00B5);
 /// assert_eq!(offset, 6);
-/// assert_eq!(Str::from_utf8(Slice::range_to(&bytes, offset)), Ok("µµµ"));
+/// assert_eq!(core::str::from_utf8(&bytes[..offset]), Ok("µµµ"));
 ///
 /// // Works with any element type.
 /// let mut chars = ['_'; 8];
@@ -92,11 +92,11 @@
 /// Together they are useful for small binary codecs, parsers, and emitters
 /// where fixed offsets are clearer than cursor movement.
 ///
-/// [`ByteCursor`] provides cursor-based access over ordered byte regions.
+/// With the `byte` feature, `ByteCursor` provides cursor-based access over ordered byte regions.
 /// Prefer it when several byte operations form a sequential traversal.
+#[cfg_attr(all(root_data, feature = "byte"), doc = "See [`ByteCursor`][crate::ByteCursor].")]
 ///
 /// [`read_at!`]: crate::read_at
-/// [`ByteCursor`]: crate::ByteCursor
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! write_at· {
@@ -194,12 +194,49 @@ macro_rules! write_at· {
     }};
     (% $buf:ident, $off:ident $(,)?) => {};
 }
+#[doc(inline)]
 pub use write_at· as write_at;
+
+#[doc(hidden)]
+/// Writes a Unicode scalar value as UTF-8 bytes at the given offset.
+///
+/// Returns the number of bytes written. Does not validate scalar range.
+#[macro_export]
+macro_rules! __unicode_scalar_write_utf8_at· {
+    ($buf:ident, $offset:expr, $value:expr) => {{
+        let off = $offset;
+        let val = $value as u32;
+        match val {
+            0x0000..=0x007F => {
+                $buf[off + 0] = val as u8;
+                1
+            }
+            0x0080..=0x07FF => {
+                $buf[off + 0] = 0b110_00000 | (val >> 6) as u8;
+                $buf[off + 1] = 0b10_000000 | ((0b0011_1111_u32 & val) as u8);
+                2
+            }
+            0x0800..=0xFFFF => {
+                $buf[off + 0] = 0b1110_0000 | (val >> 12) as u8;
+                $buf[off + 1] = 0b10_000000 | ((val >> 6) & 0b0011_1111_u32) as u8;
+                $buf[off + 2] = 0b10_000000 | ((0b0011_1111_u32 & val) as u8);
+                3
+            }
+            _ => {
+                $buf[off + 0] = 0b11110_000 | (val >> 18) as u8;
+                $buf[off + 1] = 0b10_000000 | ((val >> 12) & 0b0011_1111_u32) as u8;
+                $buf[off + 2] = 0b10_000000 | ((val >> 6) & 0b0011_1111_u32) as u8;
+                $buf[off + 3] = 0b10_000000 | ((0b0011_1111_u32 & val) as u8);
+                4
+            }
+        }
+    }};
+}
+pub use __unicode_scalar_write_utf8_at· as __unicode_scalar_write_utf8_at;
 
 #[cfg(any(doctest, test))]
 mod tests {
     use super::write_at;
-    use crate::{Slice, Str};
 
     #[test]
     fn write_at() {
@@ -223,10 +260,13 @@ mod tests {
         write_at!(buffer, +=offset, b'h', b'e', b'l', b'l', b'o');
         write_at!(buffer, +=offset, b' ', b'w', b'o', b'r', b'l', b'd');
 
-        let result = Slice::range(&buffer, 3, offset);
-
         assert![offset == start + 15];
-        assert![Slice::<u8>::eq(result, b"\x1bPq\"hello world")];
+        let expected = b"\x1bPq\"hello world";
+        let mut i = 0;
+        while i < expected.len() {
+            assert![buffer[start + i] == expected[i]];
+            i += 1;
+        }
     }
     #[test]
     fn sequence_spread() {
@@ -250,7 +290,7 @@ mod tests {
         write_at![buf, +=offset, 0xC2, 0xB5]; // manual
         write_at!(buf, +=offset, @"µ".as_bytes()); // byte loop
         write_at!(buf, +=offset, #'µ'); // UTF-8 scalar
-        assert_eq![Str::from_utf8(Slice::range_to(&buf, offset)), Ok("µµµ")];
+        assert_eq![core::str::from_utf8(&buf[..offset]), Ok("µµµ")];
     }
     #[test]
     fn fixed_unrolled_sequence_spread() {

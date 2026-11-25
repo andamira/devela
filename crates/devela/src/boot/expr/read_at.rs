@@ -77,11 +77,11 @@
 /// Together they are useful for small binary codecs, parsers, and emitters
 /// where fixed offsets are clearer than cursor movement.
 ///
-/// [`ByteCursor`] provides cursor-based access over ordered byte regions.
+/// With the `byte` feature, `ByteCursor` provides cursor-based access over ordered byte regions.
 /// Prefer it when several byte operations form a sequential traversal.
+#[cfg_attr(all(root_data, feature = "byte"), doc = "See [`ByteCursor`][crate::ByteCursor].")]
 ///
 /// [`write_at!`]: crate::write_at
-/// [`ByteCursor`]: crate::ByteCursor
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! read_at· {
@@ -145,6 +145,7 @@ macro_rules! read_at· {
         $off
     }};
 }
+#[doc(inline)]
 pub use read_at· as read_at;
 
 #[cfg(any(doctest, test))]

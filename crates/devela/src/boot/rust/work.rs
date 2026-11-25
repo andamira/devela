@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {
+pub use {
     exec_process::*, exec_thread::*, future::*, sync::*, sync_atomic::*, sync_mpsc::*, task_coro::*,
 };
 

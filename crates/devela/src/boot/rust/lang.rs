@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use prog_ffi_c::*;
+pub use prog_ffi_c::*;
 
 pub(crate) mod prog_ffi_c {
     use super::*;

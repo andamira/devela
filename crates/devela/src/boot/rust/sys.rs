@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {
+pub use {
     arch::*, arch_wasm::*, env::*, fs::*, fs_path::*, io::*, mem::*, mem_alloc::*,
     mem_bound_pin::*, mem_bound_ptr::*, mem_cell::*, mem_view_borrow::*, net::*, net_inet_ip::*,
     net_transport::*, net_transport_tcp::*, net_transport_udp::*, os_fd::*,
@@ -535,18 +535,11 @@ pub(crate) mod io {
 
 pub(crate) mod mem {
     use super::*;
-    #[cfg(all(doc, feature = "alloc"))]
-    use crate::Boxed;
-    #[cfg(doc)]
-    use crate::{Bare, BareBox, Storage};
 
     _reexport! { rust: alloc::boxed,
         location: "sys/mem" => struct Box, tag: _tags!(mem),
         doc: "A pointer type that uniquely owns a heap allocation of type `T`.",
-        +doc: "It is used as the underlying [`Storage`] for the [`Boxed`] marker struct,
-        just as a [`BareBox`] is used as the storage for [`Bare`].
-
-A special magic property of `Box` is that it allows moving with `*boxed`, unlike
+        +doc: "A special magic property of `Box` is that it allows moving with `*boxed`, unlike
 other `Deref` types. It is hoped that an eventual `DerefMove` trait will make it
 possible for other types to opt in to move-from-deref.
     ",
@@ -864,7 +857,7 @@ pub(crate) mod os_fd {
     use super::*;
 
     #[cfg(all(not(miri), any(unix, target_os = "wasi")))]
-    pub(crate) use unix_wasi::*;
+    pub use unix_wasi::*;
     #[cfg(all(not(miri), any(unix, target_os = "wasi")))]
     mod unix_wasi {
         use super::*;

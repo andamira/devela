@@ -1,6 +1,6 @@
 use crate::{_reexport, _tags};
 
-pub(crate) use {time::*, time_source::*};
+pub use {time::*, time_source::*};
 
 pub(crate) mod time {
     use super::*;

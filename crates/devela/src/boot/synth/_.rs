@@ -1,13 +1,20 @@
-//! Structural synthesis and crate construction.
+//
+//! Structural synthesis of Rust code.
+//
 
 mod _reexport;
 mod r#const;
 mod items;
 mod mods_out;
 
-pub(crate) mod _all {
-    pub use super::{r#const::CONST, items::items, mods_out::mods_out};
-}
-pub(crate) mod _crate_internals {
-    pub use super::_reexport::_reexport;
+mods_out::mods_out! {
+    _mods {
+        pub use super::{r#const::CONST, items::items, mods_out::mods_out};
+
+        #[doc = crate::_tags!(code procedural_macro)]
+        pub use devela_macros::{compile, compile_attr, mods_in, paste};
+    }
+    _crate_internals {
+        pub(crate) use super::_reexport::_reexport;
+    }
 }

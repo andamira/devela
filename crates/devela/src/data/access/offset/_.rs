@@ -2,16 +2,9 @@
 //!
 //
 
-crate::mods_in! {
-    mod read;
-    mod write;
-}
 crate::mods_out! { // _mods
     _mods {
         #[doc(inline)]
-        pub use super::{
-            read::read_at,
-            write::write_at,
-        };
+        pub use crate::boot::expr::{read_at, write_at};
     }
 }

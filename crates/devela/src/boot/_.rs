@@ -1,53 +1,56 @@
 //
-//! The root-independent foundation of devela.
+#![doc = crate::boot::_DOC_BOOT!()]
+#![doc = concat![crate::boot::_DOC_BOOT_MODULES!(), " [◉](mod@crate::all_::_boot)"]]
 //!
-//! Boot provides the minimum expressive baseline of the library: elementary
-//! vocabulary, construction mechanisms, and shared infrastructure that do not
-//! require any selectable domain module.
-//!
-//! Its responsibilities are:
-//! - `synth`: structural synthesis and crate construction;
-//! - `expr`: ergonomic expression, binding, and control flow;
-//! - `rust`: access to Rust's library vocabulary;
-//! - `dep` and `_doc`: dependency and documentation infrastructure.
-//!
-//! The baseline supports `no_std` without allocation or platform services.
-//! Domain modules build upon it and may provide the semantic homes and public
-//! documentation of abstractions implemented here.
-//!
-//! Admission to boot requires elemental or cross-domain constructive utility,
-//! a small dependency closure, and independence from selectable domain modules.
-//! Boot is not a general collection of shared utilities.
+//! Available independently of the other devela modules,
+//! including in `no_std` environments without allocation.
 //
 
 #![allow(unused_imports)]
 
+#[path = "_doc/_.rs"]
 mod _doc; // documentation
+#[doc(hidden)]
 pub mod dep; // dependencies
 #[path = "expr/_.rs"]
-mod expr; // elementary expression
+pub mod expr; // elementary expression
 #[path = "rust/_.rs"]
-pub(crate) mod rust; // re-exports from the Rust lib
+pub mod rust; // re-exports from the Rust lib
 #[path = "synth/_.rs"]
-mod synth; // structural synthesis
+pub mod synth; // structural synthesis
 
-pub use _bootstrap::*;
-pub use expr::*;
-
-// Early crate-construction exports; distinct from the expression vocabulary.
-pub(crate) mod _bootstrap {
-    pub use super::_doc::{
-        __DOCLINK_CUSTOM_CHANNEL, __DOCLINK_CUSTOM_DOMAIN, _DOC_ALL, _DOC_ALL_, _DOC_ALL_PLUS_,
-        doclink,
-    };
-    #[cfg(not(root_yard))]
-    pub(crate) use super::_doc::{_doc_meta, _tags};
-
-    pub use super::synth::_all::*;
-
-    pub use ::core::unreachable;
-    pub use devela_macros::{compile, compile_attr, mods_in, paste};
+pub(crate) mod _strap {
+    pub use super::{_doc::_all::*, synth::_all::*};
 }
-pub(crate) mod _crate_internals {
-    pub(crate) use super::synth::_crate_internals::*;
+
+synth::mods_out! {
+    _mods {
+        pub use super::{
+            _doc::_all::*,
+        };
+    }
+    _pub_mods {
+        #[doc(inline)]
+        pub use super::{
+            expr::_all::*,
+            rust::*,
+            synth::_all::*,
+        };
+    }
+    _reexports {
+        #[doc(inline)]
+        pub use super::{
+            expr::{is, whilst},
+            synth::CONST,
+        };
+    }
+    _crate_internals {
+        pub(crate) use super::{
+            _doc::_crate_internals::*,
+            synth::_crate_internals::*,
+        };
+    }
+    _hidden {
+        pub use super::expr::_hidden::*;
+    }
 }

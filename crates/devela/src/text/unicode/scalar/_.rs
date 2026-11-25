@@ -14,7 +14,7 @@ crate::mods_in! {
     mod_ scalar; // ch!, char7, char8, char16, charu, charu_niche
     mod unicode_scalar; // UnicodeScalar
 }
-crate::mods_out! { // _mods, _reexports, _hidden
+crate::mods_out! { // _mods, _reexports
     _mods {
         pub use super::{
             iter::_all::CharIter,
@@ -26,11 +26,6 @@ crate::mods_out! { // _mods, _reexports, _hidden
     }
     _reexports {
         pub use crate::boot::rust::text::scalar::*;
-    }
-    _hidden {
-        pub use super::{
-            namespace::_hidden::*,
-        };
     }
     // _self_internals {} // TODO
 }

@@ -58,7 +58,7 @@ crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _hidden
         #[doc(inline)]
         pub use super::doclink::doclink;
         #[doc(inline)]
-        pub use crate::boot::{is, lets, whilst};
+        pub use crate::boot::expr::{is, lets, whilst};
     }
     _pub_mods {
         pub use super::{

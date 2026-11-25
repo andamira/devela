@@ -1,4 +1,10 @@
-// boot/rust/_.rs
+//
+//! Curated Rust library re-exports.
+//!
+//! Names follow devela's conventions, with availability
+//! determined by the target, environment and enabled features.
+//! Some types have alternative dependency-backed implementations.
+//
 
 #![allow(dead_code, reason = "Rust reexports may be unused by selectively compiled root modules")]
 
@@ -11,6 +17,9 @@ pub(crate) mod phys;
 pub(crate) mod sys;
 pub(crate) mod text;
 pub(crate) mod work;
+
+#[doc(inline)]
+pub use {code::*, data::*, error::*, lang::*, num::*, phys::*, sys::*, text::*, work::*};
 
 pub(crate) mod _fallback {
     #[cfg(not(root_code))]

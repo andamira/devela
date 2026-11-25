@@ -71,7 +71,6 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     _hidden {
         pub use super::{
             fmt::_hidden::*,
-            unicode::_hidden::*,
         };
     }
 }

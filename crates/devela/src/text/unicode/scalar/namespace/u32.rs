@@ -1,4 +1,4 @@
-use crate::{Ascii, Char, Pcg32};
+use crate::{__unicode_scalar_write_utf8_at, Ascii, Char, Pcg32};
 
 /// # Methods over `u32`.
 #[rustfmt::skip]
@@ -7,7 +7,7 @@ impl Char<u32> {
 
     #[doc(hidden)]
     /// Bitmask for extracting the 6-bit payload from a UTF-8 continuation byte.
-    pub const CONT_MASK: u32 = 0b0011_1111; // NOTE: used by __unicode_scalar_write_utf8_at!
+    pub const CONT_MASK: u32 = 0b0011_1111;
 
     /* Unicode boundaries */
 
@@ -406,40 +406,3 @@ impl Char<u32> {
         Self::random_next(&mut Pcg32::new(seed, 0))
     }
 }
-
-#[doc(hidden)]
-/// Writes a Unicode scalar value as UTF-8 bytes at the given offset.
-///
-/// Returns the number of bytes written. Does not validate scalar range.
-#[macro_export]
-macro_rules! __unicode_scalar_write_utf8_at· {
-    ($buf:ident, $offset:expr, $value:expr) => {{
-        let off = $offset;
-        let val = $value as u32;
-        match val {
-            0x0000..=0x007F => {
-                $buf[off + 0] = val as u8;
-                1
-            }
-            0x0080..=0x07FF => {
-                $buf[off + 0] = 0b110_00000 | (val >> 6) as u8;
-                $buf[off + 1] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
-                2
-            }
-            0x0800..=0xFFFF => {
-                $buf[off + 0] = 0b1110_0000 | (val >> 12) as u8;
-                $buf[off + 1] = 0b10_000000 | ((val >> 6) & $crate::Char::<u32>::CONT_MASK) as u8;
-                $buf[off + 2] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
-                3
-            }
-            _ => {
-                $buf[off + 0] = 0b11110_000 | (val >> 18) as u8;
-                $buf[off + 1] = 0b10_000000 | ((val >> 12) & $crate::Char::<u32>::CONT_MASK) as u8;
-                $buf[off + 2] = 0b10_000000 | ((val >> 6) & $crate::Char::<u32>::CONT_MASK) as u8;
-                $buf[off + 3] = 0b10_000000 | (($crate::Char::<u32>::CONT_MASK & val) as u8);
-                4
-            }
-        }
-    }};
-}
-pub use __unicode_scalar_write_utf8_at· as __unicode_scalar_write_utf8_at;
