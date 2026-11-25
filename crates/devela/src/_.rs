@@ -106,7 +106,7 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
-        // core_io_fundamentals,
+        core_io, // NOTE: core_io_fundamentals
         cstr_display,
         derive_coerce_pointee,
         disjoint_bitor,
@@ -123,12 +123,11 @@
         nonzero_ops,
         offset_of_enum,
         offset_of_slice,
-        random, // random_source,
+        random, // NOTE: random_source,
         refcell_try_map,
         str_as_str,
         supertrait_item_shadowing,
         unsafe_cell_from_mut,
-        // word_to_titlecase,
     )
 )]
 #![cfg_attr(
@@ -141,13 +140,17 @@
         string_into_chars,
         vec_from_fn,
         vec_repeat,
+        word_to_titlecase,
     )
 )]
 #![cfg_attr(
     all(nightly_stable_later, feature = "std"),
-    feature(exitcode_exit_method, once_wait, path_is_empty,) // process_chroot(!miri)
+    feature(exitcode_exit_method, once_wait, path_is_empty)
 )]
-// #![cfg_attr(all(nightly_stable_later, not(miri)), feature())]
+#![cfg_attr(
+    all(nightly_stable_later, not(miri), feature = "std"),
+    feature(tcp_deferaccept, process_chroot)
+)]
 //
 // documentation
 //

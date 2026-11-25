@@ -89,7 +89,7 @@ See also
 - 1.??: `c`[char_case](https://github.com/rust-lang/rust/pull/166360)
 - 1.??: `c`[const_char_classify](https://github.com/rust-lang/rust/pull/138129)
         `c` `const_sockaddr_setters`
-- 1.??: `c`[core_io_fundamentals](https://github.com/rust-lang/rust/pull/160951) WAIT
+- 1.??: ` `[core_io](https://github.com/rust-lang/rust/pull/160951) NOTE core_io_fundamentals
 - 1.??: `c`[cstr_display](https://github.com/rust-lang/rust/pull/163711)
 - 1.??: `c`[derive_coerce_pointee](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ` `[diagnostic::on_unknown](https://github.com/rust-lang/rust/pull/163636)
@@ -117,8 +117,8 @@ See also
 - 1.??: `s`[path_is_empty](https://github.com/rust-lang/rust/pull/157065)
 - 1.??: `c`[proc_macro_diagnostics](https://github.com/rust-lang/rust/issues/54140) in `devela_macros`
 - 1.??: `c`[proc_macro_value](https://github.com/rust-lang/rust/pull/151973) in `devela_macros`
-- 1.??: `s`[process_chroot](https://github.com/rust-lang/rust/pull/163067)
-- 1.??: `c`[random_source](https://github.com/rust-lang/rust/pull/157168) WAIT
+- 1.??: `s`[process_chroot](https://github.com/rust-lang/rust/pull/163067) NOTE: not(miri)
+- 1.??: `c`[random](https://github.com/rust-lang/rust/pull/157168) (random_source)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
 - 1.??: ` `[rustdoc:remap-path-scope](https://github.com/rust-lang/rust/pull/163895)
@@ -129,12 +129,12 @@ See also
 - 1.??: `c`[str_as_str](https://github.com/rust-lang/rust/pull/152971)
 - 1.??: `c`[string_into_chars](https://github.com/rust-lang/rust/pull/163816)
 - 1.??: `c`[supertrait_item_shadowing](https://github.com/rust-lang/rust/pull/148605)
-- 1.??: ` `[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834)
-- 1.??: `c`[trim_prefix_suffix](https://github.com/rust-lang/rust/pull/160544)
+- 1.??: `s`[tcp_deferaccept](https://github.com/rust-lang/rust/pull/154834) NOTE: not(miri)
+- 1.??: `c`[unix_kill_process_group](https://github.com/rust-lang/rust/pull/166442)
 - 1.??: `c`[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 - 1.??: `a`[vec_from_fn](https://github.com/rust-lang/rust/pull/162685)
 - 1.??: `a`[vec_repeat](https://github.com/rust-lang/rust/pull/166120)
-- 1.??: `c`[word_to_titlecase](https://github.com/rust-lang/rust/pull/166361) WAIT
+- 1.??: `a`[word_to_titlecase](https://github.com/rust-lang/rust/pull/166361)
 - 1.??: ` `[-Zinstrument-mcount](https://github.com/rust-lang/rust/pull/152122)
 - 1.??: ` `[-Znext-solver=globally](https://github.com/rust-lang/rust/pull/164209)
 
