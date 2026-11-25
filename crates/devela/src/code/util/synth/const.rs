@@ -15,7 +15,7 @@ pub use crate::boot::CONST;
 #[doc = crate::_doc_meta!{
     location("code/util/synth", macro CONST),
 }]
-#[doc = include_str!("../../../boot/macros/const.md")]
+#[doc = include_str!("../../../boot/synth/const.md")]
 #[macro_export]
 macro_rules! __devela_CONST_docs {
     ($($tokens:tt)*) => { $crate::CONST·! { $($tokens)* } };

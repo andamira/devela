@@ -5,7 +5,7 @@ including the following modifications:
 - made all methods *const*.
 - make all unsafe optional.
 - remove all dependencies.
-- replace `u8char` with own type `char_utf8`.
+- replace `u8char` with own type `charu`.
 - add higher-level type `GraphemeScanner`.
 - rename types:
   - `ClusterAction` to `GraphemeBoundary`.

@@ -204,18 +204,18 @@ extern crate self as devela;
 
 /* root modules */
 
-// - `boot` contains the machinery that must exist before ordinary modules can be constructed.
+// - `boot` provides root-independent construction machinery and elementary vocabulary.
 // - `__select_modules` makes other root modules require their own root feature.
 // - `code` contains semantic code utilities, including public macro facades.
 // - `yard` provides shared internal infrastructure and documentation support.
 
 #[path = "boot/_.rs"]
-mod boot; // Bootstrapping abstractions
+mod boot; // Root-independent foundation
 
 #[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
-pub use boot::_all::*;
+pub use boot::_bootstrap::*;
 pub(crate) use boot::_crate_internals::*;
 #[doc(hidden)]
 pub use boot::dep as _dep;
@@ -343,6 +343,12 @@ pub use all::*;
 #[doc = crate::boot::_DOC_ALL!()]
 pub mod all {
     #![allow(unused_imports)]
+
+    // Prefer the semantic homes when code is present; otherwise expose the
+    // same expression macros directly from their root-independent foundation.
+    #[doc(inline)]
+    #[cfg(not(root_code))]
+    pub use super::boot::{is, lets, punroll, sf, whilst};
 
     #[doc(inline)]
     #[cfg(root_code)]

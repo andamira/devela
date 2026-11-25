@@ -1,6 +1,10 @@
 //
-//! Minimal documentation fragments for crate-root re-export views.
+//! Essential documentation machinery and root-independent fallbacks.
 //
+
+mod doclink;
+
+pub use doclink::{__DOCLINK_CUSTOM_CHANNEL, __DOCLINK_CUSTOM_DOMAIN, doclink};
 
 #[doc(hidden)]
 #[macro_export]

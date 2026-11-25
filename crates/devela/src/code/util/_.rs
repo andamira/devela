@@ -52,19 +52,13 @@ synth::mods_in! {
     pub mod_ debug; // Debugging and diagnostic helpers
     pub mod_ token; // Macro token, fragment, and identifier utilities
 
-    mod is; // is!
-    mod lets; // lets!
-    mod whilst; // whilst!
 }
 crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
-        pub use super::{
-            doclink::doclink,
-            is::is,
-            lets::lets,
-            whilst::whilst,
-        };
+        pub use super::doclink::doclink;
+        #[doc(inline)]
+        pub use crate::boot::{is, lets, whilst};
     }
     _pub_mods {
         pub use super::{

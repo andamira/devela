@@ -13,7 +13,6 @@ crate::mods_in! {
     mod capture; // capture_[first|last|tail_tuple]!
     mod dollar; // macro_dollar!
     mod ident; // ident_const_index!
-    mod sf; // sf!
     mod type_count; // type_count!
 }
 crate::mods_out! { // _mods, _reexports,
@@ -23,9 +22,10 @@ crate::mods_out! { // _mods, _reexports,
             capture::{capture_first, capture_last, capture_tail_tuple}, // uby: Oneof, const_assert!
             dollar::macro_dollar,
             ident::ident_const_index, // uby: enumset!
-            sf::sf,
             type_count::type_count,
         };
+        #[doc(inline)]
+        pub use crate::boot::sf;
     }
     _reexports {
         pub use crate::boot::rust::code::util_token::*;

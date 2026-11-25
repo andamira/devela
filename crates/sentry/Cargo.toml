@@ -4,6 +4,7 @@
 resolver = "3"
 members = [
     "probes/arch",
+    "probes/boot",
     "probes/log",
     "probes/num",
 ]

@@ -74,7 +74,10 @@ This release…
 - move `mods_out!` into boot, retaining its public documentation through a rustdoc-only facade.
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
 - move the internal dependency registry from `yard` into `boot` and group bootstrap
-  macro machinery under `boot::macros`.
+  macro machinery under `boot::synth`.
+- introduce `boot::expr` with root-independent `is!`, `lets!`, `punroll!`,
+  `sf!`, and `whilst!`; preserve their semantic `code` paths and flat exports.
+- group `doclink!` with bootstrap documentation infrastructure.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`
   and `BitSized` implementations and separating buffered size diagnostics.
 - move `Version` and `VersionFull` buffered text encoding into `text::fmt`;
