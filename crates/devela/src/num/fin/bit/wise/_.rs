@@ -11,19 +11,17 @@ crate::mods_in! {
     mod namespace; // Bitwise
     #[cfg(feature = "bitwise")]
     mod impls;
-
-    mod r#macro; // bitwise!
 }
-crate::mods_out! { // _mods, _internals
+crate::mods_out! { // _mods, _hidden
     _mods {
         #[cfg(feature = "bitwise")]
         pub use super::namespace::Bitwise;
         #[doc(inline)]
-        pub use super::r#macro::bitwise;
+        pub use crate::boot::expr::bitwise;
     }
     _hidden {
         #[doc(hidden)]
-        pub use super::r#macro::{
+        pub use crate::boot::expr::{
             __bitwise, __bitwise_backend, __bitwise_inline, __bitwise_methods,
         };
     }

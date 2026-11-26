@@ -8,15 +8,11 @@
 // - __bitwise_methods!
 // - _test/
 
-#[cfg(all(doc, feature = "bitwise"))]
-use crate::{BitOps, Bitwise};
-
 #[rustfmt::skip]
 #[doc = crate::_tags!(num bit)]
 /// A mnemonic vocabulary of bitwise operations, with selectable range backends.
-#[doc = crate::_doc_meta!{
-    location("num/fin", macro bitwise),
-}]
+#[cfg_attr(root_num, doc = crate::_doc_meta!{location("num/fin", macro bitwise)})]
+#[cfg_attr(not(root_num), doc = crate::_doc_meta!{location("boot/expr", macro bitwise)})]
 /// This macro requires no capability feature or `Bitwise` implementation.
 /// It operates on unsigned integer primitives; all bit indices are zero-based.
 /// Operations return values without mutating the inputs and evaluate each argument once.
@@ -31,6 +27,7 @@ use crate::{BitOps, Bitwise};
 /// take place within the macro; neither backend is required to validate ranges.
 ///
 /// The extended `Bitwise` namespace and `BitOps` trait require the `bitwise` feature.
+#[cfg_attr(feature = "bitwise", doc = "See [`Bitwise`][crate::Bitwise] and [`BitOps`][crate::BitOps].")]
 ///
 /// # Single bits
 /// - `test`, `set`, `clear`, `toggle` interpret the last argument as a bit *index*.
@@ -63,21 +60,21 @@ use crate::{BitOps, Bitwise};
 ///
 /// These are **semantic counterparts**. With the `bitwise` feature, the three range
 /// operations delegate to these methods by default, but `@inline` can override that.
-/// The links use the `u8` implementation; all six unsigned primitives are supported.
+/// All six unsigned primitives are supported.
 ///
 /// | `bitwise!` arm | `Bitwise` method |
 /// |---|---|
-/// | `test BITS; bit N` | [`is_set`](Bitwise::<u8>::is_set) |
-/// | `set BITS; bit N` | [`set`](Bitwise::<u8>::set) |
-/// | `clear BITS; bit N` | [`unset`](Bitwise::<u8>::unset) |
-/// | `toggle BITS; bit N` | [`flip`](Bitwise::<u8>::flip) |
-/// | `any BITS; mask M` | [`is_set_mask`](Bitwise::<u8>::is_set_mask) |
-/// | `mask T; START..=END` | [`mask_range`](Bitwise::<u8>::mask_range) |
-/// | `extract BITS; START..=END` | [`get_value_range`](Bitwise::<u8>::get_value_range) |
-/// | `insert BITS, VALUE; START..=END` | [`set_value_range`](Bitwise::<u8>::set_value_range) |
+/// | `test BITS; bit N` | `is_set` |
+/// | `set BITS; bit N` | `set` |
+/// | `clear BITS; bit N` | `unset` |
+/// | `toggle BITS; bit N` | `flip` |
+/// | `any BITS; mask M` | `is_set_mask` |
+/// | `mask T; START..=END` | `mask_range` |
+/// | `extract BITS; START..=END` | `get_value_range` |
+/// | `insert BITS, VALUE; START..=END` | `set_value_range` |
 ///
 /// `all` checks an arbitrary mask and has no direct `Bitwise` equivalent;
-/// [`is_set_range`](Bitwise::<u8>::is_set_range) instead checks a contiguous range.
+/// `is_set_range` instead checks a contiguous range.
 /// The three hacker idioms likewise have no direct counterparts.
 /// Unlike the unchecked `Bitwise` range methods, `bitwise!` range arms
 /// panic for invalid ranges in **all** build modes.

@@ -13,16 +13,13 @@
 //
 
 crate::mods_in! {
-    mod r#const;
+    #[cfg(feature = "init")]
+    mod impls;
 }
-crate::mods_out! { // _mods, _reexports, _crate_internals
-    _mods {
-        pub use super::r#const::ConstInit;
-    }
+crate::mods_out! { // _reexports
     _reexports {
+        #[doc(inline)]
+        pub use crate::boot::ConstInit;
         pub use crate::boot::rust::code::init::*;
-    }
-    _crate_internals {
-        pub(crate) use super::r#const::_impl_init;
     }
 }

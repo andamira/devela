@@ -358,6 +358,14 @@ pub mod all {
     pub use super::boot::expr::{read_at, write_at};
 
     #[doc(inline)]
+    #[cfg(not(root_code))]
+    pub use super::boot::ConstInit;
+
+    #[doc(inline)]
+    #[cfg(not(root_num))]
+    pub use super::boot::expr::bitwise;
+
+    #[doc(inline)]
     #[cfg(root_code)]
     pub use super::code::_all::*;
 
@@ -521,9 +529,9 @@ mod _reexports { // 39
     // code: 3
     #[doc(inline)]
     #[cfg(root_code)]
-    pub use super::code::{ConstInit, const_assert};
+    pub use super::code::const_assert;
     #[doc(inline)]
-    pub use super::boot::expr::unwrap;
+    pub use super::boot::{ConstInit, unwrap};
 
     // data: 5
     #[doc(inline)] #[cfg(root_data)]

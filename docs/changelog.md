@@ -70,9 +70,10 @@ This release…
 ### structure
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
 - introduce public `boot` as the always-available bootstrap vocabulary:
-  - `boot::expr`: `is!`, `lets!`, `punroll!`, `read_at!`, `sf!`, `unwrap!`, `whilst!`, `write_at!`.
+  - `boot::expr`: `bitwise!`, `is!`, `lets!`, `punroll!`, `read_at!`, `sf!`, `unwrap!`, `whilst!`, `write_at!`.
   - `boot::rust`: curated Rust library re-exports.
   - `boot::synth`: structural synthesis macros and procedural macros.
+  - `ConstInit` and its elemental implementations.
 - preserve the semantic paths of boot abstractions in their respective domain modules.
 - provide a flat view of boot through `all_::_boot`.
 - consolidate bootstrap documentation and dependency infrastructure,
@@ -93,8 +94,7 @@ This release…
 - remove `AnyExt::type_hash` while preserving the hasher-parametric `type_hash_with`.
 
 #### code::init
-- keep the elemental `ConstInit` implementation foundation always available;
-  reserve the `init` feature for the broader implementation set.
+- keep the extended `ConstInit` implementations behind the `init` feature.
 - Change `Option`'s `ConstInit` impl to `None`.
 
 #### code::ops

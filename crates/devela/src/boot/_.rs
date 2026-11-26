@@ -15,12 +15,14 @@ pub(crate) mod _policy; // workspace policy
 pub mod dep; // dependencies
 #[path = "expr/_.rs"]
 pub mod expr; // elementary expression
+mod init; // ConstInit
 #[path = "rust/_.rs"]
 pub mod rust; // re-exports from the Rust lib
 #[path = "synth/_.rs"]
 pub mod synth; // structural synthesis
 
 pub(crate) mod _strap {
+    #[doc(hidden, no_inline)]
     pub use super::{_doc::_all::*, synth::_all::*};
 }
 
@@ -28,6 +30,7 @@ synth::mods_out! {
     _mods {
         pub use super::{
             _doc::_all::*,
+            init::ConstInit,
         };
     }
     _pub_mods {
@@ -48,6 +51,7 @@ synth::mods_out! {
     _crate_internals {
         pub(crate) use super::{
             _doc::_crate_internals::*,
+            init::_impl_init,
             synth::_crate_internals::*,
         };
     }

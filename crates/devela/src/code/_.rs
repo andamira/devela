@@ -72,7 +72,6 @@ crate::boot::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals
     }
     _crate_internals {
         pub(crate) use super::_DOC_CODE_MODULES;
-        pub(crate) use super::init::_crate_internals::*;
     }
     _hidden {
         pub use super::util::_hidden::*;

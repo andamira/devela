@@ -109,3 +109,22 @@ fn flat_boot() {
     let n = unwrap![some NonZeroU8::new(VALUE!())];
     assert_eq!(n.get(), 7);
 }
+
+// Elemental initialization and bitwise operations are available without code or num.
+const _: () = {
+    use devela::boot::ConstInit;
+    assert!(u8::INIT == 0);
+    assert!(!bool::INIT);
+    assert!(<Option<u8>>::INIT.is_none());
+    assert!(matches!(<Result<u8, ()>>::INIT, Ok(0)));
+    assert!(<*const u8>::INIT.is_null());
+    assert!(<u8 as devela::ConstInit>::INIT == 0);
+    assert!(<u8 as devela::all::ConstInit>::INIT == 0);
+    assert!(<u8 as devela::all_::_boot::ConstInit>::INIT == 0);
+
+    assert!(devela::bitwise![mask u8; 2..=5] == 0b0011_1100);
+    assert!(devela::all::bitwise![mask u128; 0..=127] == u128::MAX);
+    assert!(devela::boot::bitwise![insert 0_u8, 3_u8; 2..=5] == 12);
+    assert!(devela::boot::expr::bitwise![@inline extract 12_u8; 2..=5] == 3);
+    assert!(devela::all_::_boot::bitwise![test 128_u8; bit 7]);
+};
