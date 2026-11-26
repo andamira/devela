@@ -13,7 +13,6 @@
 crate::mods_in! {
         mod_ _doc; // _doc[_<availability|location|meta|size_of|vendor|warn_miri>], _TAG*, tags!, …
         mod _env; // __dbg!, __std!, _std_core!
-        mod _policy; // _devela_policy!
         mod _use; // _use!
 
         #[cfg(root_code)]
@@ -30,10 +29,8 @@ crate::mods_out! { // _reexports, _crate_internals, _hidden
     // }
     _reexports {
         #[doc(inline)]
-        pub use super::{
-            _policy::_devela_policy,
-            _use::_use,
-        };
+        pub use crate::boot::_policy::_devela_policy;
+        pub use super::_use::_use;
     }
     _crate_internals {
         pub(crate) use super::{
@@ -46,9 +43,10 @@ crate::mods_out! { // _reexports, _crate_internals, _hidden
     }
     _hidden {
         #[doc(hidden)]
+        pub use crate::boot::_policy::{_devela_policy, __devela_unreachable_unchecked};
+        #[doc(hidden)]
         pub use super::{
             _doc::_hidden::*,
-            _policy::{_devela_policy, __devela_unreachable_unchecked},
             _use::_use_or_shim,
             //
             fragments::{_ABBR_PCG, _ABBR_PRNG},

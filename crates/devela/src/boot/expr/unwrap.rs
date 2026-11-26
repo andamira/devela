@@ -4,10 +4,10 @@
 
 #[doc = crate::_tags!(result)]
 /// An unwrapper macro that works in compile-time.
-#[doc = crate::_doc_meta!{
-    location("code/result", macro unwrap),
-}]
-/// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
+#[cfg_attr(root_code, doc = crate::_doc_meta!{location("code/result", macro unwrap)})]
+#[cfg_attr(not(root_code), doc = crate::_doc_meta!{location("boot/expr", macro unwrap)})]
+/// It supports unwrapping [`Option`], [`Result`] and `Option<Result<T, E>>`.
+#[cfg_attr(root_code, doc = "The latter is also available as [`OptRes`][crate::OptRes].")]
 ///
 /// ### Naming and syntax
 ///
@@ -59,9 +59,15 @@
 /// | `_map`              | Maps the value of the selected variant         | Safe          |
 /// | `_into`             | Unwraps the value explicitly                   | Safe          |
 /// | `_if`               | Unwrap depends on the given condition          | Safe          |
-/// | `_guaranteed_or_ub` | UB if failed (debug checks)                    | **Unsafe** *  |
+/// | `_guaranteed_or_ub` | Policy-controlled invariant violation          | **Unsafe** *  |
 ///
-/// `*` Requires `// SAFETY:` justification for impossible-failure invariants
+/// `*` The caller must establish that the selected variant is present,
+/// and document that invariant with a `// SAFETY:` justification.
+/// In devela workspace builds without `unsafe_hint`, a violation panics.
+/// With `unsafe_hint` (or the external policy), a violation panics in debug
+/// builds and is undefined behavior in release builds with debug assertions disabled.
+/// The policy is selected when the devela helper is compiled, not at the invocation site.
+/// The invariant is a caller obligation, not currently enforced by an `unsafe` boundary.
 ///
 /// ### Conversions and special forms
 /// - `some_ok_or` converts `Option<T>` to `Result<T, E>`.
@@ -303,7 +309,7 @@ macro_rules! unwrap· {
         match $T {
             Some(v) => v,
             None => {
-                $crate::cold_path();
+                ::core::hint::cold_path();
                 $crate::_devela_policy! {unreachable}
             }
         }
@@ -569,7 +575,7 @@ macro_rules! unwrap· {
         match $T {
             Ok(v) => v,
             Err(_) => {
-                $crate::cold_path();
+                ::core::hint::cold_path();
                 $crate::_devela_policy! {unreachable}
             }
         }
@@ -896,11 +902,11 @@ macro_rules! unwrap· {
         match $T {
             Some(Ok(v)) => v,
             Some(Err(_)) => {
-                $crate::cold_path();
+                ::core::hint::cold_path();
                 $crate::_devela_policy! {unreachable}
             }
             None => {
-                $crate::cold_path();
+                ::core::hint::cold_path();
                 $crate::_devela_policy! {unreachable}
             }
         }

@@ -84,3 +84,28 @@ fn grouped_boot() {
     assert_eq!(is![true, N, 0], exports::VALUE);
     assert_eq!(devela::boot::is![true, N, 0], N);
 }
+
+// External policy expansion remains available without yard or any domain root.
+devela::_devela_policy! {
+    item_gate unsafe:"unsafe_hint",
+    const POLICY_VALUE: u8 = 7;
+}
+
+const _: () = {
+    assert!(devela::unwrap![some Some(POLICY_VALUE)] == 7);
+    assert!(devela::all::unwrap![ok Ok::<_, ()>(7)] == 7);
+    assert!(devela::boot::unwrap![some_or None::<u8>, 7] == 7);
+    assert!(devela::boot::expr::unwrap![sok Some(Ok::<_, ()>(7))] == 7);
+    // SAFETY: the selected variants are present.
+    assert!(devela::all_::_boot::unwrap![some_guaranteed_or_ub Some(7)] == 7);
+    assert!(devela::boot::unwrap![ok_guaranteed_or_ub Ok::<_, ()>(7)] == 7);
+    assert!(devela::unwrap![sok_guaranteed_or_ub Some(Ok::<_, ()>(7))] == 7);
+};
+
+#[test]
+fn flat_boot() {
+    use devela::all_::_boot::*;
+    CONST! { VALUE = 7 }
+    let n = unwrap![some NonZeroU8::new(VALUE!())];
+    assert_eq!(n.get(), 7);
+}

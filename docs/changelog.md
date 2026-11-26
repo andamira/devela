@@ -70,7 +70,7 @@ This release…
 ### structure
 - move crate-root aggregation documentation out of yard, removing its dependency on `CONST!`.
 - introduce public `boot` as the always-available bootstrap vocabulary:
-  - `boot::expr`: `is!`, `lets!`, `punroll!`, `read_at!`, `sf!`, `whilst!`, `write_at!`.
+  - `boot::expr`: `is!`, `lets!`, `punroll!`, `read_at!`, `sf!`, `unwrap!`, `whilst!`, `write_at!`.
   - `boot::rust`: curated Rust library re-exports.
   - `boot::synth`: structural synthesis macros and procedural macros.
 - preserve the semantic paths of boot abstractions in their respective domain modules.
@@ -78,6 +78,8 @@ This release…
 - consolidate bootstrap documentation and dependency infrastructure,
   removing redundant synthesis macro documentation facades.
 - decouple the UTF-8 writing primitive from `Char`.
+- move workspace compilation and invariant policy into `boot`, preserving its behavior
+  and documenting the unchecked invariant contract.
 - untangle foundational `code` from higher-level modules by localizing `ConstInit`
   and `BitSized` implementations and separating buffered size diagnostics.
 - move `Version` and `VersionFull` buffered text encoding into `text::fmt`;

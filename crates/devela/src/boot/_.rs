@@ -10,6 +10,7 @@
 
 #[path = "_doc/_.rs"]
 mod _doc; // documentation
+pub(crate) mod _policy; // workspace policy
 #[doc(hidden)]
 pub mod dep; // dependencies
 #[path = "expr/_.rs"]
@@ -40,7 +41,7 @@ synth::mods_out! {
     _reexports {
         #[doc(inline)]
         pub use super::{
-            expr::{is, whilst},
+            expr::{is, unwrap, whilst},
             synth::CONST,
         };
     }
@@ -52,5 +53,7 @@ synth::mods_out! {
     }
     _hidden {
         pub use super::expr::_hidden::*;
+        #[doc(hidden)]
+        pub use super::_policy::{_devela_policy, __devela_unreachable_unchecked};
     }
 }

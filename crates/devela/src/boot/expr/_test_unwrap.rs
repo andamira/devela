@@ -1,0 +1,103 @@
+use super::unwrap;
+
+const OPTION_SOME: Option<bool> = Some(true);
+const OPTION_NONE: Option<bool> = None;
+
+const RESULT_OK: Result<bool, bool> = Ok(true);
+const RESULT_ERR: Result<bool, bool> = Err(true);
+
+const OPTRES_OK: Option<Result<bool, bool>> = Some(Ok(true));
+const OPTRES_ERR: Option<Result<bool, bool>> = Some(Err(true));
+const OPTRES_NONE: Option<Result<bool, bool>> = None;
+
+#[test]
+fn option() {
+    assert![unwrap![some OPTION_SOME]];
+    assert![unwrap![some_expect OPTION_SOME, "ERR"]];
+    assert_eq![unwrap![some_or OPTION_SOME, false], true];
+    assert_eq![unwrap![some_or OPTION_NONE, false], false];
+}
+#[test]
+fn result() {
+    assert![unwrap![ok RESULT_OK]];
+    assert![unwrap![ok_expect RESULT_OK, "ERR"]];
+    assert_eq![unwrap![ok_or RESULT_OK, false], true];
+    assert_eq![unwrap![ok_or RESULT_ERR, false], false];
+    assert![unwrap![err RESULT_ERR]];
+    assert![unwrap![err_expect RESULT_ERR, "ERR"]];
+    assert_eq![unwrap![err_or RESULT_ERR, false], true];
+    assert_eq![unwrap![err_or RESULT_OK, false], false];
+}
+#[test]
+fn optres() {
+    assert![unwrap![sok OPTRES_OK]];
+    assert![unwrap![sok_expect OPTRES_OK, "ERR"]];
+    assert_eq![unwrap![sok_or OPTRES_OK, false], true];
+    assert_eq![unwrap![sok_or OPTRES_ERR, false], false];
+    assert_eq![unwrap![sok_or OPTRES_NONE, false], false];
+    assert![unwrap![serr OPTRES_ERR]];
+    assert![unwrap![serr_expect OPTRES_ERR, "ERR"]];
+    assert_eq![unwrap![serr_or OPTRES_ERR, false], true];
+    assert_eq![unwrap![serr_or OPTRES_OK, false], false];
+    assert_eq![unwrap![serr_or OPTRES_NONE, false], false];
+}
+#[test]
+fn map_pattern() {
+    assert_eq!(unwrap![=some_map Some((2, 3)), |(a, b)| a + b], Some(5));
+
+    fn map_both(value: Result<(i32, i32), (i32, i32)>) -> Result<i32, i32> {
+        unwrap![ok_map_err_map? value,
+            |(a, b)| a + b,
+            |(a, b)| a - b,
+        ]
+    }
+    assert_eq!(map_both(Ok((2, 3))), Ok(5));
+    assert_eq!(map_both(Err((7, 2))), Err(5));
+}
+
+// SAFETY: all three inputs contain the selected variant.
+const _: () = {
+    assert!(unwrap![some_guaranteed_or_ub OPTION_SOME]);
+    assert!(unwrap![ok_guaranteed_or_ub RESULT_OK]);
+    assert!(unwrap![sok_guaranteed_or_ub OPTRES_OK]);
+};
+
+#[rustfmt::skip]
+#[cfg(feature = "std")]
+mod std {
+    use super::*;
+    use ::std::panic::catch_unwind;
+
+    #[cfg(any(debug_assertions, not(feature = "unsafe_hint")))]
+    #[test]
+    fn guaranteed_checked_policy_panics() {
+        assert![catch_unwind(|| unwrap![some_guaranteed_or_ub OPTION_NONE]).is_err()];
+        assert![catch_unwind(|| unwrap![ok_guaranteed_or_ub RESULT_ERR]).is_err()];
+        assert![catch_unwind(|| unwrap![sok_guaranteed_or_ub OPTRES_ERR]).is_err()];
+        assert![catch_unwind(|| unwrap![sok_guaranteed_or_ub OPTRES_NONE]).is_err()];
+    }
+
+    #[test]
+    fn option_panic() {
+        assert![catch_unwind(|| { assert![unwrap![some OPTION_NONE]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![some_expect OPTION_NONE, "ERR"]] }).is_err()];
+    }
+    #[test]
+    fn result_panic() {
+        assert![catch_unwind(|| { assert![unwrap![ok RESULT_ERR]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![ok_expect RESULT_ERR, "ERR"]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![err RESULT_OK]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![err_expect RESULT_OK, "ERR"]] }).is_err()];
+    }
+    #[test]
+    fn optres_panic() {
+        assert![catch_unwind(|| { assert![unwrap![sok OPTRES_ERR]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![sok OPTRES_NONE]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![sok_expect OPTRES_ERR, "ERR"]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![sok_expect OPTRES_NONE, "ERR"]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![serr OPTRES_OK]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![serr OPTRES_NONE]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![serr_expect OPTRES_OK, "ERR"]] }).is_err()];
+        assert![catch_unwind(|| { assert![unwrap![serr_expect OPTRES_NONE, "ERR"]] }).is_err()];
+    }
+}

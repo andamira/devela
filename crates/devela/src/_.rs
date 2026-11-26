@@ -351,7 +351,7 @@ pub mod all {
     // same expression macros directly from their root-independent foundation.
     #[doc(inline)]
     #[cfg(not(root_code))]
-    pub use super::boot::expr::{is, lets, punroll, sf, whilst};
+    pub use super::boot::expr::{is, lets, punroll, sf, unwrap, whilst};
 
     #[doc(inline)]
     #[cfg(not(root_data))]
@@ -521,7 +521,9 @@ mod _reexports { // 39
     // code: 3
     #[doc(inline)]
     #[cfg(root_code)]
-    pub use super::code::{ConstInit, const_assert, unwrap};
+    pub use super::code::{ConstInit, const_assert};
+    #[doc(inline)]
+    pub use super::boot::expr::unwrap;
 
     // data: 5
     #[doc(inline)] #[cfg(root_data)]

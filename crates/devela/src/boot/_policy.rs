@@ -1,5 +1,5 @@
 //
-//! Defines shared helpers related to workspace policies.
+//! Workspace compilation and invariant policies.
 //
 // TOC
 // - _devela_policy!
@@ -7,7 +7,7 @@
 
 #[doc = crate::_tags!(internal)]
 /// Applies devela-internal policy to expressions, items, and namespaces.
-#[doc = crate::_doc_meta!{location("yard", macro _devela_policy)}]
+#[cfg_attr(root_yard, doc = crate::_doc_meta!{location("yard", macro _devela_policy)})]
 ///
 /// Centralizes devela-specific rules (such as safety, documentation,
 /// or debug behavior) while keeping external expansions unrestricted.
@@ -21,9 +21,9 @@
 /// ```
 ///
 /// # Used in
-/// - [`buffer_linear!`][crate::buffer_linear] (item_gate)
-/// - [`rand_pcg!`][crate::rand_pcg] (mod extern)
-/// - [`unwrap!`][crate::unwrap] (unreachable)
+/// - `buffer_linear!` (item_gate)
+/// - `rand_pcg!` (mod extern)
+/// - [`unwrap!`][crate::boot::expr::unwrap] (unreachable)
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]
@@ -68,8 +68,8 @@ macro_rules! _devela_policy· {
 
     /* expression-level branching */
 
-    // Selects a policy-controlled implementation of an expression-level primitive,
-    // enforcing devela-specific safety or debug behavior.
+    // Selects the enforcement policy for a caller-established invariant.
+    // Does not establish the invariant itself.
     (unreachable) => { $crate::__devela_unreachable_unchecked() };
 
     /* item-level attribute policy */
@@ -102,23 +102,32 @@ macro_rules! _devela_policy· {
 #[doc(inline)]
 pub use _devela_policy· as _devela_policy;
 
-/// for devela safe
+// Invariant contract (shared by all three implementations):
+// The caller must have established that this branch is unreachable.
+// A violated invariant panics without unsafe_hint in workspace builds,
+// or with debug assertions enabled; otherwise it is undefined behavior.
+// The helper's policy is selected when its defining crate is compiled,
+// unlike the item/namespace policy arms which run in the consuming crate.
+// doc(hidden) is not a safety boundary. The contract is not compiler-enforced.
+// TODO: enforce the unchecked contract without requiring unsafe in safe builds.
+
+/// Panics when the invariant is violated (workspace, checked policy).
 #[crate::compile(env(__DEVELA_MEMBER))]
 #[cfg(not(feature = "unsafe_hint"))]
 #[rustfmt::skip] #[doc(hidden)]
-pub const fn __devela_unreachable_unchecked() -> ! { crate::unreachable!() }
-/// for devela unsafe
+pub const fn __devela_unreachable_unchecked() -> ! { ::core::unreachable!() }
+/// Panics with debug assertions; otherwise requires the branch to be unreachable.
 #[crate::compile(env(__DEVELA_MEMBER))]
 #[cfg(feature = "unsafe_hint")]
 #[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! {
-    if cfg!(debug_assertions) { crate::unreachable!(); }
-    else { unsafe { crate::unreachable_unchecked() } }
+    if cfg!(debug_assertions) { ::core::unreachable!(); }
+    else { unsafe { ::core::hint::unreachable_unchecked() } }
 }
-/// for external crates
+/// Same unchecked contract when the defining crate uses the external policy.
 #[crate::compile(not(env(__DEVELA_MEMBER)))]
 #[rustfmt::skip] #[doc(hidden)]
 pub const fn __devela_unreachable_unchecked() -> ! {
-    if cfg!(debug_assertions) { crate::unreachable!(); }
-    else { unsafe { crate::unreachable_unchecked() } }
+    if cfg!(debug_assertions) { ::core::unreachable!(); }
+    else { unsafe { ::core::hint::unreachable_unchecked() } }
 }
