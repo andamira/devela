@@ -157,11 +157,7 @@ pub(crate) mod layout_array_owned_vec {
     #[cfg(feature = "alloc")]
     #[cfg_attr(nightly_doc, doc(cfg(feature = "alloc")))]
     #[cfg_attr(cargo_primary_package, doc(hidden))]
-    macro_rules! _vec_ { ($($tt:tt)*) => { ::alloc::vec![$($tt)*] } }
-
-    #[cfg(feature = "alloc")]
-    #[doc(inline)]
-    pub use _vec_ as vec_;
+    macro_rules! vec_ { ($($tt:tt)*) => { ::alloc::vec![$($tt)*] } }
 }
 pub(crate) mod layout_linked {
     use super::*;

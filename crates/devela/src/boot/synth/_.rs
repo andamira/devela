@@ -12,7 +12,7 @@ mods_out::mods_out! {
         pub use super::{r#const::CONST, items::items, mods_out::mods_out};
 
         #[doc = crate::_tags!(code procedural_macro)]
-        pub use devela_macros::{compile, compile_attr, mods_in, paste};
+        pub use devela_macros::{cif, compile, compile_attr, mods_in, paste};
     }
     _crate_internals {
         pub(crate) use super::_reexport::_reexport;
