@@ -104,6 +104,9 @@ This release…
 - remove unused `Mismatch<Interval<…>, H>` convenience constructors.
 - remove `Infallible`, replace with `!`.
 
+#### data::access
+- add `search` with caller-buffered breadth-first search (`Search`, `SearchNode`).
+
 #### data::codec
 - update `Radix`: gate Base32 and Base64 codecs.
 

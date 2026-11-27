@@ -1,13 +1,14 @@
 //
 #![doc = crate::_DOC_DATA_ACCESS!()] // public
-#![doc = crate::_doc!(modules: crate::data; access: iter, route)]
+#![doc = crate::_doc!(modules: crate::data; access: iter, route, search)]
 #![doc = crate::_doc!(flat:"data")]
 #![doc = crate::_doc!(hr)]
 //!
-//! Access concerns how existing data is reached and traversed.
+//! Access concerns how data is reached, traversed, and explored.
 //!
 //! An access mechanism may retain a current position, expose successive values,
-//! describe a route, or transfer through caller-provided storage.
+//! describe a route, explore possible successors, or transfer through
+//! caller-provided storage.
 //!
 //! Identity, physical arrangement, and retention belong respectively to
 //! [`data::id`][crate::data::id], [`data::layout`][crate::data::layout],
@@ -20,6 +21,7 @@ crate::mods_in! {
     pub mod_ iter; // Composable external and lending traversal
     mod_ offset; // Explicit positional access: read_at!, write_at!
     pub mod_ route; // Segmented routes before domain-specific interpretation
+    pub mod_ search; // Exploration of explicit or implicit connectivity
     mod transfer; // Caller-buffered gather/scatter transfers
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports
@@ -35,6 +37,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
         pub use super::{
             iter::_all::*,
             route::_all::*,
+            search::_all::*,
         };
     }
     _reexports {
@@ -42,6 +45,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports
         pub use super::{
             iter::IteratorLending,
             route::Route,
+            search::Search,
         };
     }
 }

@@ -55,11 +55,12 @@ crate::CONST! { hidden macro_export,
 
     // 2. data (structure before interpretation)
     _DOC_DATA               = "Structural organization of data before domain-specific interpretation.";
-    _DOC_DATA_ACCESS         = "Reachability and traversal over externally supplied data.";
+    _DOC_DATA_ACCESS         = "Reachability, traversal, and exploration over externally supplied data.";
     _DOC_DATA_ACCESS_ADDRESS = "Addressability and directed reachability.";
     _DOC_DATA_ACCESS_CURSOR  = "Explicit traversal over ordered data.";
     _DOC_DATA_ACCESS_ITER    = "Iteration protocols for successive and lending traversal.";
     _DOC_DATA_ACCESS_ROUTE   = "Ordered reachability expressed as uninterpreted segments.";
+    _DOC_DATA_ACCESS_SEARCH  = "Exploration of explicit or implicit connectivity.";
     _DOC_DATA_CODEC         = "Transformations between and over data representations.";
     _DOC_DATA_CODEC_BIN     = "Binary representation primitives and compact structural encodings.";
     _DOC_DATA_CODEC_BIN_BIT = "Bit-level sets, fields, and compact structures.";
