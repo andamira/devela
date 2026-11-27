@@ -13,7 +13,7 @@ crate::mods_in! {
     pub mod_ logic; // ConstBool, False, True, const_bool!
     pub mod_ ord; // Cmp, cmp!, Order
     // mod rank;
-    // mod_ seq;
+    mod_ seq; // seq!, SeqExample
 }
 crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
     _mods {
@@ -24,7 +24,7 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
             // comb::_all::*,
             // graph::_all::*,
             // rank::*,
-            // seq::_all::*,
+            seq::_all::*,
         };
     }
     _pub_mods {
@@ -46,6 +46,6 @@ crate::mods_out! { // _mods, _pub_mods, _reexports, _crate_internals, _hidden
         };
     }
     _hidden {
-        pub use super::bit::_hidden::*;
+        pub use super::{bit::_hidden::*, seq::_hidden::*};
     }
 }

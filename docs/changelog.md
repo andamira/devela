@@ -139,6 +139,13 @@ This release…
 - feature gate `Bitwise` and `BitOps` behind `bitwise`.
 - migrate `set!`, `bitfield!`, `BitSpan`, and X11 bit-mask checks to `bitwise!`.
 
+##### num::fin::seq
+- add macro `seq!` for selective generation of const, indexed mathematical sequences over unsigned primitive carriers.
+  - support concrete, generic and deferred implementations, with individual or all operations.
+  - implement Thue-Morse, generalized Prouhet, Gray code, Fibonacci and Van der Corput sequences.
+  - represent radical inverses as exact, unreduced ratios with nonzero denominators.
+- add example type `SeqExample`.
+
 #### num::grain
 - feature gate `Cast` implementations.
 - feature gate `PrimCast`, `PrimJoin` and `PrimSplit` traits.
