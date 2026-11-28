@@ -93,7 +93,7 @@ pub struct TableCoordIter {
 }
 
 impl crate::Debug for TableCoordIter {
-    fn fmt(&self, f: &mut crate::Formatter<'_>) -> crate::FmtResult<()> {
+    fn fmt(&self, f: &mut crate::Formatter<'_>) -> crate::FmtResult {
         f.debug_struct("TableCoordIter")
             .field("shape", &self.shape())
             .field("next", &self.peek())

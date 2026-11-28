@@ -33,7 +33,7 @@ pub enum EventTimestampMode {
 }
 impl DebugExt for EventTimestamp {
     type Ctx = EventTimestampMode;
-    fn fmt_with(&self, f: &mut Formatter, ctx: &Self::Ctx) -> FmtResult<()> {
+    fn fmt_with(&self, f: &mut Formatter, ctx: &Self::Ctx) -> FmtResult {
         match ctx {
             Self::Ctx::Auto => self.fmt_auto_ms(f),
             Self::Ctx::Float => self.fmt_float_ms(f),
@@ -144,7 +144,7 @@ impl EventTimestamp {
     ///
     /// Chooses between integer, float, or dual representations based on the
     /// stored bit pattern. Intended for default `Debug` output.
-    pub fn fmt_auto_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+    pub fn fmt_auto_ms(&self, f: &mut Formatter) -> FmtResult {
         // valid finite float-ms live between 0.001 ms and ~11 days:
         let sure_float = |f:f32| f.is_finite() && (1e-3..=1e9).contains(&f);
         // NaNs, infinities, subnormal/tiny values, absurdly large magnitudes:
@@ -155,21 +155,21 @@ impl EventTimestamp {
         else { self.fmt_dual_ms(f) } // narrow ambiguous zone; show both representations
     }
     /// Formats the timestamp by interpreting the stored bits as integer milliseconds.
-    pub fn fmt_int_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+    pub fn fmt_int_ms(&self, f: &mut Formatter) -> FmtResult {
         write![f, "{} ms", self.ms.as_bits()]
     }
     /// Formats the timestamp by interpreting the stored bits as floating-point milliseconds.
-    pub fn fmt_float_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+    pub fn fmt_float_ms(&self, f: &mut Formatter) -> FmtResult {
         write![f, "{} ms", self.ms.as_float()]
     }
     /// Formats the timestamp by showing both integer and floating-point interpretations.
-    pub fn fmt_dual_ms(&self, f: &mut Formatter) -> FmtResult<()> {
+    pub fn fmt_dual_ms(&self, f: &mut Formatter) -> FmtResult {
         write![f, "{}|{:.6} ms", self.ms.as_bits(), self.ms.as_float()]
     }
 
     /// Formats the timestamp using a full `TimeSplit` from years down to nanoseconds.
     #[cfg(feature = "time")]
-    pub fn fmt_split_full(&self, f: &mut Formatter) -> FmtResult<()> {
+    pub fn fmt_split_full(&self, f: &mut Formatter) -> FmtResult {
         let split = TimeSplitNorm::from_duration(self.as_duration());
         write!(f, "{}mo {}d {:02}h:{:02}m:{:02}s {:03}ms {:03}us {:03}ns",
             split.mo, split.d, split.h, split.m, split.s, split.ms, split.us, split.ns

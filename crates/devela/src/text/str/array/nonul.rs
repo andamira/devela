@@ -737,23 +737,23 @@ mod impl_traits {
     }
 
     impl<const CAP: usize> Display for StringNonNul<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             write!(f, "{}", self.as_str())
         }
     }
     impl<const CAP: usize> Debug for StringNonNul<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             write!(f, "{:?}", self.as_str())
         }
     }
 
     /// Leverages [`try_push`](#method.try_push) and [`try_push_str`](#method.try_push_str).
     impl<const CAP: usize> FmtWrite for StringNonNul<CAP> {
-        fn write_str(&mut self, s: &str) -> FmtResult<()> {
+        fn write_str(&mut self, s: &str) -> FmtResult {
             self.try_push_str(s).map_err(|_| FmtError)?;
             Ok(())
         }
-        fn write_char(&mut self, c: char) -> FmtResult<()> {
+        fn write_char(&mut self, c: char) -> FmtResult {
             self.try_push(c).map_err(|_| FmtError)?;
             Ok(())
         }

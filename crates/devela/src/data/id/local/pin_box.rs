@@ -43,7 +43,7 @@ mod impl_traits {
         }
     }
     impl Debug for IdPinBox {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult {
             write!(f, "{}", self.as_usize())
         }
     }

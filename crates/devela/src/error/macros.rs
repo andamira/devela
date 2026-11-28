@@ -136,7 +136,7 @@ macro_rules! define_error· {
 
         impl $crate::Error for $struct_name {}
         impl $crate::Display for $struct_name {
-            fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&$self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 $display_expr
             }
         }
@@ -215,7 +215,7 @@ macro_rules! define_error· {
         // implements Error, & Display:
         impl $crate::Error for $composite_error_name {}
         impl $crate::Display for $composite_error_name  {
-            fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 match self { $(
                     $(#[$variant_attr])*
                     #[allow(unused_doc_comments, reason = "repeated here for feature-gating")]

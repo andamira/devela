@@ -119,7 +119,7 @@ impl<'a, const N: usize> AnsiOsc<'a, N> {
         _put!(dst, offset, needed, b"\x1b\\");
         Ok(offset)
     }
-    fn fmt_streamed(self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt_streamed(self, f: &mut Formatter<'_>) -> FmtResult {
         f.write_str("\x1b]")?;
         f.write_str(self.command)?;
         whilst! { i in 0..N; {
@@ -130,7 +130,7 @@ impl<'a, const N: usize> AnsiOsc<'a, N> {
     }
 }
 impl<const N: usize> Display for AnsiOsc<'_, N> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         self.fmt_streamed(f)
     }
 }
@@ -224,7 +224,7 @@ impl<'a> AnsiLink<'a> {
         _put!(dst, offset, needed, &Ansi::HYPERLINK_CLOSE_B);
         Ok(offset)
     }
-    fn fmt_streamed(self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt_streamed(self, f: &mut Formatter<'_>) -> FmtResult {
         f.write_str("\x1b]8;")?;
         if let Some(id) = self.id {
             f.write_str("id=")?;
@@ -239,7 +239,7 @@ impl<'a> AnsiLink<'a> {
 }
 #[rustfmt::skip]
 impl Display for AnsiLink<'_> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { self.fmt_streamed(f) }
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { self.fmt_streamed(f) }
 }
 
 /* helpers */

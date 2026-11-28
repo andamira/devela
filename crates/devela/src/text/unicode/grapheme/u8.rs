@@ -269,9 +269,9 @@ mod trait_impls {
     }
 
     impl<const CAP: usize> Display for GraphemeU8<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{}", self.0) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { write!(f, "{}", self.0) }
     }
     impl<const CAP: usize> Debug for GraphemeU8<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{:?}", self.0) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { write!(f, "{:?}", self.0) }
     }
 }

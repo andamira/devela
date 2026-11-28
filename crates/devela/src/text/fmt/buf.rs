@@ -232,7 +232,7 @@ impl<'a> FmtWriter<'a> {
 }
 
 impl FmtWrite for FmtWriter<'_> {
-    fn write_str(&mut self, s: &str) -> FmtResult<()> {
+    fn write_str(&mut self, s: &str) -> FmtResult {
         self.write_str_truncate(s);
         Ok(())
     }

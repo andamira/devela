@@ -65,7 +65,7 @@ mod impl_traits {
         const INIT: Self = Self::new(init_array![INIT in ConstInit [T; LEN]]);
     }
     impl<T: Debug, const R: usize, const C: usize, const LEN: usize> Debug for Matrix<T, R, C, LEN> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             f.debug_struct("Matrix")
                 .field("rows", &R)
                 .field("columns", &C)

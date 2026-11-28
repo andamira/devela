@@ -38,12 +38,12 @@ mod core_impls {
     }
     impl<T: Copy> Copy for Float<T> {}
     impl<T: Debug> Debug for Float<T> {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult {
             f.debug_tuple("Float").field(&self.0).finish()
         }
     }
     impl<T: Display> Display for Float<T> {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { Display::fmt(&self.0, f) }
+        fn fmt(&self, f: &mut Formatter) -> FmtResult { Display::fmt(&self.0, f) }
     }
 
     impl<T: PartialEq> PartialEq for Float<T> {

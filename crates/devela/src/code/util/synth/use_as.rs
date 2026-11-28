@@ -33,7 +33,7 @@
 /// struct Values([Abool; 3]);
 ///
 /// impl Dbg for Values {
-///     fn fmt(&self, f: &mut devela::Formatter<'_>) -> devela::FmtResult<()> {
+///     fn fmt(&self, f: &mut devela::Formatter<'_>) -> devela::FmtResult {
 ///         let mut list: ListFmt<'_, '_> = f.debug_list();
 ///         list.entries(self.0.iter());
 ///         list.finish()

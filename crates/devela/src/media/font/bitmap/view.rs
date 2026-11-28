@@ -50,7 +50,7 @@ pub struct FontBitmapView<'a> {
     pub(crate) default_character: Option<char>,
 }
 impl Debug for FontBitmapView<'_> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         f.debug_struct("FontBitmapView")
             .field("glyph_count", &self.glyph_count())
             .field("width", &self.width)

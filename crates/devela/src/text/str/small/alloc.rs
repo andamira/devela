@@ -356,7 +356,7 @@ mod impl_traits {
     }
 
     impl<const CAP: usize> FmtWrite for StringSmallAlloc<CAP> {
-        fn write_str(&mut self, s: &str) -> FmtResult<()> { self.push_str(s); Ok(()) }
+        fn write_str(&mut self, s: &str) -> FmtResult { self.push_str(s); Ok(()) }
     }
     impl<const CAP: usize> Deref for StringSmallAlloc<CAP> {
         type Target = str;
@@ -369,10 +369,10 @@ mod impl_traits {
         fn borrow(&self) -> &str { self.as_str() }
     }
     impl<const CAP: usize> Debug for StringSmallAlloc<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { Debug::fmt(self.as_str(), f) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { Debug::fmt(self.as_str(), f) }
     }
     impl<const CAP: usize> Display for StringSmallAlloc<CAP> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { Display::fmt(self.as_str(), f) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { Display::fmt(self.as_str(), f) }
     }
     impl<const CAP: usize> Hash for StringSmallAlloc<CAP> {
         fn hash<H: Hasher>(&self, state: &mut H) { Hash::hash(self.as_str(), state); } }

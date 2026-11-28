@@ -385,7 +385,7 @@ impl Month {
 }
 
 impl Display for Month {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         f.write_str(match self {
             January => "January",
             February => "February",

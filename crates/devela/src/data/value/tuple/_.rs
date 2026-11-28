@@ -34,20 +34,20 @@ mod codegen {
 
     /// Private trait for [`Tuple`]s with elements that implement `Debug`.
     trait TupleDebug: Tuple {
-        fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
+        fn fmt_debug(&self, f: &mut Formatter) -> FmtResult;
     }
     impl<T: TupleDebug> Debug for TupleFmt<'_, T> {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult {
             self.0.fmt_debug(f)
         }
     }
 
     /// Private trait for [`Tuple`]s with elements that implement `Display`.
     trait TupleDisplay: Tuple {
-        fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;
+        fn fmt_display(&self, f: &mut Formatter) -> FmtResult;
     }
     impl<T: TupleDisplay> Display for TupleFmt<'_, T> {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult {
             self.0.fmt_display(f)
         }
     }

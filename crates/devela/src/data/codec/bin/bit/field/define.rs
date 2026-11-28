@@ -216,7 +216,7 @@ macro_rules! bitfield· {
         /* impl formatting traits */
 
         impl $Bitfield {
-            fn _fmt_display(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_display(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 let mut first = true;
                 $crate::paste! { $(
                     let value = self.[<get_ $f:lower>]();
@@ -229,12 +229,12 @@ macro_rules! bitfield· {
                 if first { write!(f, "empty")?; }
                 Ok(())
             }
-            fn _fmt_debug_named_all(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_debug_named_all(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, concat!(stringify!($Bitfield), " {{ "))?;
                 self._fmt_debug_fields_all(f)?;
                 write!(f, " }}")
             }
-            fn _fmt_debug_fields_all(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_debug_fields_all(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 let mut first = true;
                 $crate::paste! { $(
                     if !first { write!(f, ", ")?; }
@@ -245,12 +245,12 @@ macro_rules! bitfield· {
                 if first { write!(f, "empty")?; }
                 Ok(())
             }
-            fn _fmt_debug_named_active(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_debug_named_active(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, concat!(stringify!($Bitfield), " {{ "))?;
                 self._fmt_debug_fields_active(f)?;
                 write!(f, " }}")
             }
-            fn _fmt_debug_fields_active(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_debug_fields_active(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 let mut first = true;
                 $crate::paste! { $(
                     let value = self.[<get_ $f:lower>]();
@@ -263,7 +263,7 @@ macro_rules! bitfield· {
                 if first { write!(f, "empty")?; }
                 Ok(())
             }
-            fn _fmt_raw_binary(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_raw_binary(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, concat!(stringify!($Bitfield), "(0b{:0w$b})"),
                     self.bits, w = Self::_BITFIELD_BIT_WIDTH)
             }
@@ -311,7 +311,7 @@ macro_rules! bitfield· {
         impl $crate::DebugExt for $Bitfield where $Bitfield: $crate::Debug {
             type Ctx = $crate::ReprMode;
             fn fmt_with(&self, f: &mut $crate::Formatter<'_>, ctx: &Self::Ctx)
-                -> $crate::FmtResult<()> {
+                -> $crate::FmtResult {
                 match ctx {
                     $crate::ReprMode::Raw => self._fmt_raw_binary(f),
                     $crate::ReprMode::Named => self._fmt_debug_named_active(f),

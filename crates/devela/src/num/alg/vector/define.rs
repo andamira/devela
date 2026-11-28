@@ -59,7 +59,7 @@ mod impl_traits {
     }
 
     impl<T: Debug, const D: usize> Debug for Vector<T, D> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             f.debug_struct("Vector").field("D", &D).field("coords", &self.coords).finish()
         }
     }

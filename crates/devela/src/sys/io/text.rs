@@ -70,7 +70,7 @@ pub trait TextOut {
             err: Option<T::Error>,
         }
         impl<T: ?Sized + TextOut> FmtWrite for Adapter<'_, T> {
-            fn write_str(&mut self, s: &str) -> FmtResult<()> {
+            fn write_str(&mut self, s: &str) -> FmtResult {
                 match self.out.write_text(s) {
                     Ok(()) => Ok(()),
                     Err(e) => {

@@ -93,7 +93,7 @@ macro_rules! impl_trait· {
             $(#[$impl_meta])*
             impl< $($($decl)*)? > $crate::Display for $type $(<$($args)*>)?
             $(where $($bounded: $crate::Display,)+ )? {
-                fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> { $expr }
+                fn fmt(&$self, $f: &mut $crate::Formatter<'_>) -> $crate::FmtResult { $expr }
             }
             impl< $($($decl)*)? > $crate::Error for $type $(<$($args)*>)? {}
         )+

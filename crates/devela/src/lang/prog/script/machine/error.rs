@@ -71,7 +71,7 @@ impl<E> ConstInit for ScriptError<E> {
 
 impl<E: Display + Debug> Error for ScriptError<E> {}
 impl<E: Display> Display for ScriptError<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         match self {
             Self::StackUnderflow { needed, available } => {
                 write!(f, "Script stack underflow: needed {needed} values, found {available}.")

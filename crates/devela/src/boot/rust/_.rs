@@ -1,5 +1,5 @@
 //
-//! Curated Rust library re-exports.
+//! Curated Rust library re-exports and foundational aliases.
 //!
 //! Names follow devela's conventions, with availability
 //! determined by the target, environment and enabled features.
@@ -23,29 +23,29 @@ pub use {code::*, data::*, error::*, lang::*, num::*, phys::*, sys::*, text::*, 
 
 pub(crate) mod _fallback {
     #[cfg(not(root_code))]
-    pub(crate) use super::code::*;
+    pub use super::code::*;
 
     #[cfg(not(root_data))]
-    pub(crate) use super::data::*;
+    pub use super::data::*;
 
     #[cfg(not(root_error))]
-    pub(crate) use super::error::*;
+    pub use super::error::*;
 
     #[cfg(not(root_lang))]
-    pub(crate) use super::lang::*;
+    pub use super::lang::*;
 
     #[cfg(not(root_num))]
-    pub(crate) use super::num::*;
+    pub use super::num::*;
 
     #[cfg(not(root_phys))]
-    pub(crate) use super::phys::*;
+    pub use super::phys::*;
 
     #[cfg(not(root_sys))]
-    pub(crate) use super::sys::*;
+    pub use super::sys::*;
 
     #[cfg(not(root_text))]
-    pub(crate) use super::text::*;
+    pub use super::text::*;
 
     #[cfg(not(root_work))]
-    pub(crate) use super::work::*;
+    pub use super::work::*;
 }

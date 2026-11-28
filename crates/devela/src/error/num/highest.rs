@@ -75,7 +75,7 @@ mod core_impls {
     impl crate::Error for NumError {}
 
     impl Display for NumError {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             use NumError as E;
             match self {
                 E::NotImplemented => write!(f, "Not implemented."),

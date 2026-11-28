@@ -54,7 +54,7 @@ pub enum LinuxError {
 
 impl Error for LinuxError {}
 impl Display for LinuxError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         match self {
             LinuxError::Sys(errno) => write!(f, "System error ERRNO:{errno}."),
             LinuxError::NoInput => f.write_str("No input available"),

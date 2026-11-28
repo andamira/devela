@@ -14,7 +14,6 @@ crate::mods_in! {
 
     /* definitions */
 
-    mod alias;
     mod buf; // FmtWriter, format_buf!
     mod cat; // fmtcat!
     // mod case; // WIP
@@ -28,7 +27,6 @@ crate::mods_out! { // _mods, _reexports, _hidden
         pub use super::namespace::*;
         #[doc(inline)]
         pub use super::{
-            alias::FmtResult,
             buf::{FmtWriter, format_buf},
             cat::fmtcat,
             // case::*,

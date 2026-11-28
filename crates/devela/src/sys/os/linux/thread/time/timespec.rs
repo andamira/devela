@@ -34,7 +34,7 @@ impl ConstInit for LinuxTimespec {
     const INIT: Self = Self::new(0, 0);
 }
 impl Display for LinuxTimespec {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         // write!(f, "{}s {}ns", self.tv_sec, self.tv_nsec)
         let mut buf = [0u8; 64];
         let s = format_buf![&mut buf, "{}s {}ns", self.tv_sec, self.tv_nsec].unwrap();

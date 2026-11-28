@@ -21,7 +21,7 @@ use crate::{Debug, FmtResult, Formatter};
 /// struct Value(u32);
 /// impl DebugExt for Value {
 ///     type Ctx = Mode;
-///     fn fmt_with(&self, f: &mut Formatter, mode: &Self::Ctx) -> FmtResult<()> {
+///     fn fmt_with(&self, f: &mut Formatter, mode: &Self::Ctx) -> FmtResult {
 ///         match mode {
 ///             Mode::Hex => write!(f, "0x{:X}", self.0),
 ///             Mode::Dec => write!(f, "{}", self.0),
@@ -38,7 +38,7 @@ pub trait DebugExt {
     /// The context used to guide formatting.
     type Ctx;
     /// Formats `self` under the given context.
-    fn fmt_with(&self, f: &mut Formatter, ctx: &Self::Ctx) -> FmtResult<()>;
+    fn fmt_with(&self, f: &mut Formatter, ctx: &Self::Ctx) -> FmtResult;
     /// Wraps `self` for contextual debug formatting.
     fn debug_with<'a>(&'a self, ctx: &'a Self::Ctx) -> DebugWith<'a, Self> where Self: Sized {
         DebugWith::new(self, ctx)
@@ -65,14 +65,14 @@ impl<'a, T: DebugExt + ?Sized> DebugWith<'a, T> {
     }
 }
 impl<T: DebugExt + ?Sized> Debug for DebugWith<'_, T> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         self.value.fmt_with(f, self.ctx)
     }
 }
 
 impl DebugExt for () {
     type Ctx = ();
-    fn fmt_with(&self, f: &mut Formatter, _ctx: &Self::Ctx) -> FmtResult<()> {
+    fn fmt_with(&self, f: &mut Formatter, _ctx: &Self::Ctx) -> FmtResult {
         f.write_str("()")
     }
 }

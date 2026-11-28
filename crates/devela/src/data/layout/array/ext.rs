@@ -44,16 +44,16 @@ macro_rules! _data_layout_array_ext_impl_fmt {
     ($fmt_trait:ident, $array_trait:ident, $array_method:ident) => {
         // Private trait for arrays with elements that implement the given fmt trait.
         trait $array_trait: ArrayExt {
-            fn $array_method(&self, f: &mut Formatter) -> FmtResult<()>;
+            fn $array_method(&self, f: &mut Formatter) -> FmtResult;
         }
         // Implement for
         impl<T: $array_trait> $fmt_trait for ArrayFmt<'_, T> {
-            fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+            fn fmt(&self, f: &mut Formatter) -> FmtResult {
                 self.0.$array_method(f)
             }
         }
         impl<T: $fmt_trait, const LEN: usize> $array_trait for [T; LEN] {
-            fn $array_method(&self, f: &mut Formatter) -> FmtResult<()> {
+            fn $array_method(&self, f: &mut Formatter) -> FmtResult {
                 write!(f, "[")?;
                 for (index, element) in self.iter().enumerate() {
                     is! { index > 0, write!(f, ", ")? }
@@ -76,15 +76,15 @@ _data_layout_array_ext_impl_fmt![UpperExp, ArrayUpperExp, fmt_upper_exp];
 /// Technically this trait is redundant since arrays of any size can impl `Debug`,
 /// nevertheless it's better if we can offer the same api in both cases.
 trait ArrayDebug: ArrayExt {
-    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
+    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult;
 }
 impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
-    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
         self.0.fmt_debug(f)
     }
 }
 impl<T: Debug, const LEN: usize> ArrayDebug for [T; LEN] {
-    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {
+    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult {
         f.debug_list().entries(self.iter()).finish()
     }
 }

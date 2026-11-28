@@ -93,11 +93,11 @@ mod core_impls {
     }
 
     impl Display for GraphemeString {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{}", self.0) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { write!(f, "{}", self.0) }
     }
 
     impl Debug for GraphemeString {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> { write!(f, "{:?}", self.0) }
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult { write!(f, "{:?}", self.0) }
     }
 
     /* conversions */

@@ -283,7 +283,7 @@ impl<'a> StrBuf<'a> {
 }
 
 impl FmtWrite for StrBuf<'_> {
-    fn write_str(&mut self, s: &str) -> FmtResult<()> {
+    fn write_str(&mut self, s: &str) -> FmtResult {
         self.try_push_str_complete(s).map(|_| ()).map_err(|_| FmtError)
     }
 }

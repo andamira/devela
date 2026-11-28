@@ -322,7 +322,7 @@ impl WebWindowState {
 }
 
 impl crate::Debug for WebWindowState {
-    fn fmt(&self, f: &mut crate::Formatter<'_>) -> crate::FmtResult<()> {
+    fn fmt(&self, f: &mut crate::Formatter<'_>) -> crate::FmtResult {
         let mut state = f.debug_struct("WebWindowState");
         /* fields */
         state

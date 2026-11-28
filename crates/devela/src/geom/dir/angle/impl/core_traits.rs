@@ -31,7 +31,7 @@ impl<T: ConstInit> ConstInit for Angle<T> {
 
 // T:Debug
 impl<T: Debug> Debug for Angle<T> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         write!(f, "Angle({:?})", self.turn)
     }
 }

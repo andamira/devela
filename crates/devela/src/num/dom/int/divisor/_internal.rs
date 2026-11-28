@@ -460,12 +460,12 @@ macro_rules! __divisor· {
         }
         impl Eq for $Type {}
         impl $crate::Debug for $Type {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, "{}", self.get())
             }
         }
         impl $crate::Display for $Type {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, "{}", self.get())
             }
         }

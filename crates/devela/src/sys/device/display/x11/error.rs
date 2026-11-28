@@ -33,7 +33,7 @@ pub enum XError {
 
 impl Error for XError {}
 impl Display for XError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         use XError as E;
         match self {
             E::ConnectionFailed => f.write_str("Cannot open display"),

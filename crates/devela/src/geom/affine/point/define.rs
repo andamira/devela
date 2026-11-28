@@ -115,12 +115,12 @@ mod impl_traits {
     }
 
     impl<T: Debug, const D: usize> Debug for Point<T, D> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             f.debug_tuple("Point").field(&self.coords).finish()
         }
     }
     impl<T: Display, const D: usize> Display for Point<T, D> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             write!(f, "Point {{ coords: {} }}", self.coords.fmt())
         }
     }

@@ -278,12 +278,12 @@ macro_rules! _geom_dim_impl_common {
         /* Debug, Display */
 
         impl<T: $crate::Debug, const D: usize> $crate::Debug for $Name<T, D> {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 f.debug_struct(stringify!($Name)).field("dim", &self.dim).finish()
             }
         }
         impl<T: $crate::Display, const D: usize> $crate::Display for $Name<T, D> {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 use $crate::ArrayExt;
                 write!(f, "{}", self.dim.fmt())
             }

@@ -375,7 +375,7 @@ impl Weekday {
 }
 
 impl Display for Weekday {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         f.write_str(match self {
             Monday => "Monday",
             Tuesday => "Tuesday",

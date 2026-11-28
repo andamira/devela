@@ -32,7 +32,7 @@ pub struct FontBitmapWord<'glyphs, T> {
     advance_y: u8,
 }
 impl<T> Debug for FontBitmapWord<'_, T> {
-    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
         let mut buf = [0u8; 128];
         let name = format_buf![&mut buf, "FontBitmapWord<{}>", stringify!(T)].unwrap();
         f.debug_struct(name)

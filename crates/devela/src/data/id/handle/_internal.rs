@@ -46,7 +46,7 @@ macro_rules! __handle· {
         }
 
         impl $crate::Debug for $Handle {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 f.debug_struct(stringify!($Handle))
                     $( .field(stringify!($field), &self.$field.get_prim()) )+
                     .finish()

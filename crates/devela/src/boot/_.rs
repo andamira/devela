@@ -17,7 +17,7 @@ pub mod dep; // dependencies
 pub mod expr; // elementary expression
 mod init; // ConstInit
 #[path = "rust/_.rs"]
-pub mod rust; // re-exports from the Rust lib
+pub mod rust; // re-exports from Rust lib
 #[path = "synth/_.rs"]
 pub mod synth; // structural synthesis
 

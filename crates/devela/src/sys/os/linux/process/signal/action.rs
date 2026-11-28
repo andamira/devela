@@ -44,7 +44,7 @@ pub struct LinuxSigaction {
 }
 #[rustfmt::skip]
 impl Debug for LinuxSigaction {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         write!(f, "LinuxSigaction {{ ")?;
         #[cfg(feature = "unsafe_syscall")]
         if self.sa_flags & LINUX_SIGACTION::SA_SIGINFO == 0 {

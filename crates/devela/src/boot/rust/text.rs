@@ -5,6 +5,17 @@ pub use {fmt::*, parse::*, scalar::*, str::*};
 pub(crate) mod fmt {
     use super::*;
 
+    /* aliases */
+
+    #[doc = crate::_tags!(fmt result)]
+    /// The result of a formatting operation.
+    #[doc = crate::_doc_meta!{
+        location("text/fmt", type FmtResult),
+    }]
+    /// Equivalent to [`core::fmt::Result`] when `T` is `()`,
+    /// while allowing other successful return types.
+    pub type FmtResult<T = ()> = Result<T, FmtError>;
+
     /* macros */
 
     _reexport! { rust: alloc,

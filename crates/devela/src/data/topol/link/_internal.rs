@@ -62,7 +62,7 @@ macro_rules! __link· {
         impl $crate::ConstInit for $Links { const INIT: Self = Self::new(); }
         impl $crate::Default for $Links { fn default() -> Self { Self::new() } }
         impl $crate::Debug for $Links {
-            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn fmt(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 f.debug_struct(stringify!($Links))
                     $(
                         .field(stringify!($field),

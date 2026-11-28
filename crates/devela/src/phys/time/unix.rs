@@ -265,25 +265,25 @@ impl TimeUnixU32 {
 }
 
 impl Display for TimeUnixI64 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
 impl Debug for TimeUnixI64 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "TimeUnixI64 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }
 impl Display for TimeUnixU32 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
 impl Debug for TimeUnixU32 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "TimeUnixU32 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }

@@ -50,7 +50,7 @@ unsafe impl<T> Sync for SpinLock<T> where T: Send {}
 impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> Debug
     for SpinLock<T, SPIN, YIELD, SLEEP>
 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let locked = self.lock.load(AtomicOrdering::Acquire);
         f.debug_struct("SpinLock")
             .field("type", &any_type_name::<T>())
@@ -175,7 +175,7 @@ pub struct SpinLockGuard<'a, T, const SPIN: usize, const YIELD: usize, const SLE
 impl<T, const SPIN: usize, const YIELD: usize, const SLEEP: u64> Debug
     for SpinLockGuard<'_, T, SPIN, YIELD, SLEEP>
 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         f.debug_tuple("SpinLockGuard").field(&any_type_name::<T>()).finish()
     }
 }

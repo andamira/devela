@@ -274,7 +274,7 @@ impl SixelChar {
 }
 
 impl Display for SixelChar {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let mut buf = [0u8; 16];
         let c = self.as_char();
         let m = self.as_bitmask();

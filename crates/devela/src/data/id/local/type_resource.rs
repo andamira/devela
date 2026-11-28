@@ -141,10 +141,10 @@ mod impls {
     impl<T> Copy for TypeResource<T> where T: TypeResourced, T::TypeData: Copy {}
 
     impl<T> Debug for TypeResource<T> where T: TypeResourced, T::TypeData: Debug {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { write!(f, "{:?}", self.data) }
+        fn fmt(&self, f: &mut Formatter) -> FmtResult { write!(f, "{:?}", self.data) }
     }
     impl<T> Display for TypeResource<T> where T: TypeResourced, T::TypeData: Display {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { write!(f, "{}", self.data) }
+        fn fmt(&self, f: &mut Formatter) -> FmtResult { write!(f, "{}", self.data) }
     }
 
     impl<T> PartialEq for TypeResource<T> where T: TypeResourced, T::TypeData: PartialEq {

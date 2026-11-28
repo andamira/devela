@@ -195,14 +195,14 @@ mod impls {
         fn deref_mut(&mut self) -> &mut T { &mut self.value }
     }
     impl<T: Debug> Debug for CacheAlign<T> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             f.debug_struct("CacheAlign")
                 .field("align", &Self::ALIGN)
                 .field("value", &self.value).finish()
         }
     }
     impl<T: Display> Display for CacheAlign<T> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             Display::fmt(&self.value, f)
         }
     }

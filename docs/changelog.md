@@ -199,6 +199,7 @@ This release…
 - update `fmtcat!`:
   - Use `Digits` for const decimal formatting of primitive integers.
   - Support explicit custom number formatters via `with Formatter`.
+- default `FmtResult`'s type parameter to `()` and simplify formatting signatures.
 
 ### yard
 - reduce compilation overhead by skipping documentation-only

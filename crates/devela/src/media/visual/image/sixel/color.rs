@@ -231,7 +231,7 @@ impl SixelColor {
 }
 
 impl Display for SixelColor {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         let mut buf = [0u8; 12];
         let (r, g, b) = self.components();
         f.write_str(format_buf!(&mut buf, "{r:02x}{g:02x}{b:02x}").unwrap())

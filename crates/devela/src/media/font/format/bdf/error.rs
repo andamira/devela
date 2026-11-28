@@ -36,7 +36,7 @@ pub enum BdfError {
 }
 impl Error for BdfError {}
 impl Display for BdfError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         match *self {
             Self::UnexpectedEof { line } => {
                 write!(f, "unexpected end of BDF data at line {line}")

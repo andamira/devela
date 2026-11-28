@@ -64,13 +64,13 @@ impl Fmt {
     /// See `core::fmt::`[`write`][fn@write].
     ///
     /// [`format_args!`]: crate::format_args
-    pub fn write(output: &mut dyn FmtWrite, args: FmtArguments<'_>) -> FmtResult<()> {
+    pub fn write(output: &mut dyn FmtWrite, args: FmtArguments<'_>) -> FmtResult {
         write(output, args)
     }
 
     /// Creates a type whose [`Debug`][crate::Debug] and [`Display`][crate::Display]
     /// impls are provided with the function `f`.
-    pub const fn from_fn<F: Fn(&mut Formatter<'_>) -> FmtResult<()>>(f: F) -> FmtFromFn<F> {
+    pub const fn from_fn<F: Fn(&mut Formatter<'_>) -> FmtResult>(f: F) -> FmtFromFn<F> {
         from_fn(f)
     }
 }

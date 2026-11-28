@@ -314,7 +314,7 @@ macro_rules! set· {
         impl $crate::DebugExt for $Set where $Set: $crate::Debug {
             type Ctx = $crate::ReprMode;
             fn fmt_with(&self, f: &mut $crate::Formatter<'_>, ctx: &Self::Ctx)
-                -> $crate::FmtResult<()> {
+                -> $crate::FmtResult {
                 match ctx {
                     $crate::ReprMode::Raw => $crate::Debug::fmt(self, f),
                     $crate::ReprMode::Named => { self._fmt_named(f) }
@@ -329,12 +329,12 @@ macro_rules! set· {
             }
         }
         impl $Set {
-            fn _fmt_named(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_named(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 write!(f, concat!(stringify!($Set), "("))?;
                 self._fmt_named_inner(f)?;
                 write!(f, ")")
             }
-            fn _fmt_named_inner(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+            fn _fmt_named_inner(&self, f: &mut $crate::Formatter<'_>) -> $crate::FmtResult {
                 let mut first = true;
                 $crate::paste! { $(
                     // for now, only show single-bit fields

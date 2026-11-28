@@ -66,7 +66,7 @@ mod core_impls {
     impl crate::Error for ImageError {}
 
     impl Display for ImageError {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
             use ImageError as E;
             match self {
                 E::InvalidImageSize(o) => write!(f, "InvalidImageSize: {o:?}"),

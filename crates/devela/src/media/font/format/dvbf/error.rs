@@ -61,7 +61,7 @@ pub enum DvbfError {
 
 impl Error for DvbfError {}
 impl Display for DvbfError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         use DvbfError as E;
         match *self {
             E::TooShort => f.write_str("the DVBF data is shorter than its header"),

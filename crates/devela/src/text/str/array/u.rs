@@ -809,12 +809,12 @@ macro_rules! impl_str_u {
         }
 
         impl<const CAP: usize> Display for $name<CAP> {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
                 f.write_str(self.as_str())
             }
         }
         impl<const CAP: usize> Debug for $name<CAP> {
-            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
                 write!(f, "{:?}", self.as_str())
             }
         }
@@ -824,11 +824,11 @@ macro_rules! impl_str_u {
         /// If the input does not fit completely,
         /// a prefix may have been written before returning [`FmtError`].
         impl<const CAP: usize> FmtWrite for $name<CAP> {
-            fn write_str(&mut self, s: &str) -> FmtResult<()> {
+            fn write_str(&mut self, s: &str) -> FmtResult {
                 self.try_push_str(s).map_err(|_| FmtError)?; // RETHINK using try_push_complete_str
                 Ok(())
             }
-            fn write_char(&mut self, c: char) -> FmtResult<()> {
+            fn write_char(&mut self, c: char) -> FmtResult {
                 self.try_push(c).map_err(|_| FmtError)?;
                 Ok(())
             }

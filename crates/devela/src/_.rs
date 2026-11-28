@@ -217,14 +217,14 @@ extern crate self as devela;
 #[path = "boot/_.rs"]
 pub mod boot; // Bootstrap vocabulary.
 
+#[allow(unused_imports)]
+pub(crate) use boot::_crate_internals::*;
 #[doc(hidden)]
 #[cfg(not(root_code))]
 #[allow(unused_imports)]
 pub use boot::_strap::*;
 #[doc(hidden)]
 pub use boot::dep as _dep;
-#[allow(unused_imports)]
-pub(crate) use boot::{_crate_internals::*, rust::_fallback::*};
 
 boot::mods_in! {
     #[cfg(all(doc, not(doctest), root_yard))]
@@ -351,6 +351,9 @@ pub use all::*;
 #[doc = crate::boot::_DOC_ALL!()]
 pub mod all {
     #![allow(unused_imports)]
+
+    #[doc(inline)]
+    pub use super::boot::rust::_fallback::*;
 
     // Prefer the semantic homes when code is present; otherwise expose the
     // same expression macros directly from their root-independent foundation.
