@@ -82,7 +82,7 @@
 // `nightly_stable_1_102`: core, alloc, std:
 #![cfg_attr(
     nightly_stable_1_102,
-    feature(alignment_type, case_ignorable, cased, float_bits_const, int_from_ascii, titlecase,)
+    feature(alignment_type, case_ignorable, float_bits_const, int_from_ascii, titlecase,)
 )]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_102, feature = "std"), feature())]
@@ -91,6 +91,11 @@
 // #![cfg_attr(nightly_stable_1_103, feature())]
 // #![cfg_attr(all(nightly_stable_1_103, feature = "alloc"), feature())]
 // #![cfg_attr(all(nightly_stable_1_103, feature = "std"), feature())]
+//
+// `nightly_stable_1_104`: core, alloc, std:
+// #![cfg_attr(nightly_stable_1_104, feature())]
+// #![cfg_attr(all(nightly_stable_1_104, feature = "alloc"), feature())]
+// #![cfg_attr(all(nightly_stable_1_104, feature = "std"), feature())]
 //
 // `nightly_stable_later`: 1.?? core, alloc, std, not(miri):
 #![cfg_attr(
@@ -106,7 +111,7 @@
         const_slice_from_ref,
         const_sockaddr_setters,
         const_str_split_at,
-        core_io, // NOTE: core_io_fundamentals
+        core_io, // core_io_fundamentals,
         cstr_display,
         derive_coerce_pointee,
         disjoint_bitor,
@@ -123,7 +128,7 @@
         nonzero_ops,
         offset_of_enum,
         offset_of_slice,
-        random, // NOTE: random_source,
+        random, // random_source,
         refcell_try_map,
         str_as_str,
         supertrait_item_shadowing,

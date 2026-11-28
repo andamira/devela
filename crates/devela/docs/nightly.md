@@ -66,6 +66,7 @@ See also
 - 1.102: `c`[int_from_ascii](https://github.com/rust-lang/rust/pull/163696)
 - 1.102: `c`[nonzero_ops](https://github.com/rust-lang/rust/pull/164485)
 - 1.102: ` `[riscv +relax](https://github.com/rust-lang/rust/pull/164378)
+- 1.102: ` `[rustdoc:remap-path-scope](https://github.com/rust-lang/rust/pull/163895)
 
 
 # 1.103 will be stable on [2027-02-04](https://releases.rs/docs/1.103.0/) `nightly_stable_1_103`
@@ -121,7 +122,6 @@ See also
 - 1.??: `c`[random](https://github.com/rust-lang/rust/pull/157168) (random_source)
 - 1.??: ` `[Return Type Notation](https://github.com/rust-lang/rust/pull/138424)
 - 1.??: `c`[refcell_try_map](https://github.com/rust-lang/rust/pull/152092)
-- 1.??: ` `[rustdoc:remap-path-scope](https://github.com/rust-lang/rust/pull/163895)
 - 1.??: `a`[smart_pointer_map](https://github.com/rust-lang/rust/pull/160534)
 - 1.??: ` `[stabilize inner tool attributes](https://github.com/rust-lang/rust/pull/154770)
   - related: [custom inner attributes](https://github.com/rust-lang/rust/issues/54726)
