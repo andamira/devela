@@ -19,7 +19,7 @@ crate::mods_in! {
 crate::mods_out! { // _reexports
     _reexports {
         #[doc(inline)]
-        pub use crate::boot::ConstInit;
+        pub use crate::boot::base::code::ConstInit;
         pub use crate::boot::rust::code::init::*;
     }
 }

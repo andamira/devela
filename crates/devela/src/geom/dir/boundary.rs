@@ -19,23 +19,11 @@
 use crate::Extent;
 use crate::{_impl_init, Sign};
 
+#[doc(inline)]
+pub use crate::boot::base::geom::Boundary1d;
+
 _impl_init![Self::Left => Boundary1d, Boundary2d, Boundary3d];
 
-#[doc = crate::_tags!(geom dir)]
-/// Orientation relative to a one-dimensional boundary.
-#[doc = crate::_doc_meta!{
-    location("geom/dir", enum Boundary1d),
-    test_size_of(Boundary1d = 1|8; niche Option),
-}]
-/// Identifies the lower or upper side of a bounded [`Extent<T, 1>`] or other one-dimensional
-/// bounded domains, corresponding to the extrema of a totally ordered domain.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Boundary1d {
-    /// The lower boundary side.
-    Lower,
-    /// The upper boundary side.
-    Upper,
-}
 #[allow(missing_docs, non_upper_case_globals)]
 impl Boundary1d {
     pub const Left: Self = Self::Lower;

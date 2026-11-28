@@ -209,7 +209,7 @@ extern crate self as devela;
 
 /* root modules */
 
-// - `boot` provides root-independent construction machinery and elementary vocabulary.
+// - `boot` provides the root-independent semantic and metaprogramming substrate.
 // - `code` provides semantic code utilities.
 // - `__select_modules` makes other root modules require their own root feature.
 // - `yard` provides shared internal infrastructure and documentation support.
@@ -224,7 +224,7 @@ pub(crate) use boot::_crate_internals::*;
 #[allow(unused_imports)]
 pub use boot::_strap::*;
 #[doc(hidden)]
-pub use boot::dep as _dep;
+pub use boot::deps as _dep;
 
 boot::mods_in! {
     #[cfg(all(doc, not(doctest), root_yard))]
@@ -355,23 +355,24 @@ pub mod all {
     #[doc(inline)]
     pub use super::boot::rust::_fallback::*;
 
-    // Prefer the semantic homes when code is present; otherwise expose the
-    // same expression macros directly from their root-independent foundation.
+    // Prefer semantic homes when their roots are present; otherwise expose
+    // the same identities and operations from their root-independent base.
     #[doc(inline)]
     #[cfg(not(root_code))]
-    pub use super::boot::expr::{is, lets, punroll, sf, unwrap, whilst};
-
+    pub use super::boot::base::code::{ConstInit, Mismatch, is, lets, punroll, sf, unwrap, whilst};
     #[doc(inline)]
     #[cfg(not(root_data))]
-    pub use super::boot::expr::{read_at, write_at};
+    pub use super::boot::base::data::{read_at, write_at};
 
     #[doc(inline)]
-    #[cfg(not(root_code))]
-    pub use super::boot::ConstInit;
+    #[cfg(not(root_geom))]
+    pub use super::boot::base::geom::Boundary1d;
 
     #[doc(inline)]
     #[cfg(not(root_num))]
-    pub use super::boot::expr::bitwise;
+    pub use super::boot::base::num::{Sign, bitwise};
+
+    // ---------------------------------------------------------
 
     #[doc(inline)]
     #[cfg(root_code)]

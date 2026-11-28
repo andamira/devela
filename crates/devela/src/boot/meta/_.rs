@@ -1,5 +1,5 @@
 //
-//! Structural synthesis of Rust code.
+//! Structural metaprogramming of Rust code.
 //
 
 mod _reexport;

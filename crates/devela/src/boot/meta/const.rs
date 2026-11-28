@@ -8,12 +8,9 @@
 // - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
 #[doc = crate::_tags!(code construction)]
 /// A helper for constructing macro constants.
-#[cfg_attr(root_code, doc = crate::_doc_meta!{
+#[doc = crate::_doc_meta!{
     location("code/util/synth", macro CONST),
-})]
-#[cfg_attr(not(root_code), doc = crate::_doc_meta!{
-    location("boot/synth", macro CONST),
-})]
+}]
 /// It accepts either a series of expressions or a series of functions.
 ///
 /// # Examples

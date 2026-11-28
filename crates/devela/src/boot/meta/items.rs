@@ -1,11 +1,8 @@
 #[doc = crate::_tags!(code fmt)]
 /// Groups items together and expands them as if they were written directly.
-#[cfg_attr(root_code, doc = crate::_doc_meta!{
+#[doc = crate::_doc_meta!{
     location("code/util/synth", macro items),
-})]
-#[cfg_attr(not(root_code), doc = crate::_doc_meta!{
-    location("boot/synth", macro items),
-})]
+}]
 /// It can be useful to apply an attribute to a group of items.
 ///
 /// It can also preserve the formatting of the code provided as arguments, but the

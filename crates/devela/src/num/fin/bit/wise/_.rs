@@ -17,11 +17,11 @@ crate::mods_out! { // _mods, _hidden
         #[cfg(feature = "bitwise")]
         pub use super::namespace::Bitwise;
         #[doc(inline)]
-        pub use crate::boot::expr::bitwise;
+        pub use crate::boot::base::num::bitwise;
     }
     _hidden {
         #[doc(hidden)]
-        pub use crate::boot::expr::{
+        pub use crate::boot::base::num::{
             __bitwise, __bitwise_backend, __bitwise_inline, __bitwise_methods,
         };
     }

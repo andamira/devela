@@ -4,8 +4,9 @@
 
 #[doc = crate::_tags!(result)]
 /// An unwrapper macro that works in compile-time.
-#[cfg_attr(root_code, doc = crate::_doc_meta!{location("code/result", macro unwrap)})]
-#[cfg_attr(not(root_code), doc = crate::_doc_meta!{location("boot/expr", macro unwrap)})]
+#[doc = crate::_doc_meta!{
+    location("code/result", macro unwrap),
+}]
 /// It supports unwrapping [`Option`], [`Result`] and `Option<Result<T, E>>`.
 #[cfg_attr(root_code, doc = "The latter is also available as [`OptRes`][crate::OptRes].")]
 ///

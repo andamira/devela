@@ -26,7 +26,7 @@ crate::mods_out! { // _mods, _pub_mods
     _mods {
         pub use super::hook_morph::{Hook, Morph, hook, morph};
         #[doc(inline)]
-        pub use crate::boot::expr::punroll;
+        pub use crate::boot::base::code::punroll;
         // #[cfg(feature = "std")]
         // pub use super::_wip_fns::*;
         // pub use super::_wip_closure::*;

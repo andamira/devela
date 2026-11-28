@@ -11,8 +11,9 @@
 #[rustfmt::skip]
 #[doc = crate::_tags!(num bit)]
 /// A mnemonic vocabulary of bitwise operations, with selectable range backends.
-#[cfg_attr(root_num, doc = crate::_doc_meta!{location("num/fin", macro bitwise)})]
-#[cfg_attr(not(root_num), doc = crate::_doc_meta!{location("boot/expr", macro bitwise)})]
+#[doc = crate::_doc_meta!{
+    location("num/fin", macro bitwise),
+}]
 /// This macro requires no capability feature or `Bitwise` implementation.
 /// It operates on unsigned integer primitives; all bit indices are zero-based.
 /// Operations return values without mutating the inputs and evaluate each argument once.

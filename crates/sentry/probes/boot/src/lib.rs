@@ -69,13 +69,13 @@ fn indexed_and_public_boot() {
 #[test]
 fn grouped_boot() {
     use devela::boot::{
-        expr::is,
-        synth::{CONST, items},
+        base::code::is,
+        meta::{CONST, items},
     };
     CONST! { VALUE = 7 }
     items! { const N: u8 = VALUE!(); }
     mod exports {
-        use devela::boot::synth::mods_out;
+        use devela::boot::meta::mods_out;
         mod value {
             pub const VALUE: u8 = 7;
         }
@@ -95,7 +95,7 @@ const _: () = {
     assert!(devela::unwrap![some Some(POLICY_VALUE)] == 7);
     assert!(devela::all::unwrap![ok Ok::<_, ()>(7)] == 7);
     assert!(devela::boot::unwrap![some_or None::<u8>, 7] == 7);
-    assert!(devela::boot::expr::unwrap![sok Some(Ok::<_, ()>(7))] == 7);
+    assert!(devela::boot::base::code::unwrap![sok Some(Ok::<_, ()>(7))] == 7);
     // SAFETY: the selected variants are present.
     assert!(devela::all_::_boot::unwrap![some_guaranteed_or_ub Some(7)] == 7);
     assert!(devela::boot::unwrap![ok_guaranteed_or_ub Ok::<_, ()>(7)] == 7);
@@ -109,6 +109,17 @@ fn flat_boot() {
     let n = unwrap![some NonZeroU8::new(VALUE!())];
     assert_eq!(n.get(), 7);
 }
+
+// Lowered identities remain available without their semantic roots.
+const _: () = {
+    use devela::boot::base::{code::Mismatch, geom::Boundary1d, num::Sign};
+
+    let mismatch = Mismatch { need: 2_u8, have: 1_u8, info: "" };
+    assert!(mismatch.need == 2 && mismatch.have == 1);
+    let _: devela::Mismatch<u8, u8> = mismatch;
+    assert!(matches!(Boundary1d::Lower, devela::Boundary1d::Lower));
+    assert!(matches!(Sign::Positive, devela::Sign::Positive));
+};
 
 // Elemental initialization and bitwise operations are available without code or num.
 const _: () = {
@@ -125,6 +136,6 @@ const _: () = {
     assert!(devela::bitwise![mask u8; 2..=5] == 0b0011_1100);
     assert!(devela::all::bitwise![mask u128; 0..=127] == u128::MAX);
     assert!(devela::boot::bitwise![insert 0_u8, 3_u8; 2..=5] == 12);
-    assert!(devela::boot::expr::bitwise![@inline extract 12_u8; 2..=5] == 3);
+    assert!(devela::boot::base::num::bitwise![@inline extract 12_u8; 2..=5] == 3);
     assert!(devela::all_::_boot::bitwise![test 128_u8; bit 7]);
 };

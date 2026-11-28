@@ -236,8 +236,8 @@ macro_rules! define_error· {
             $(#[$variant_attr])*
             $crate::define_error! { $(+const$($_c)?)?
                 from(_f): $individual_error_name, for: $composite_error_name => $variant_name
-                $(( $($e_name, $crate::field_of![_f, $e_numb] ),+ ))?             // tuple-struct↓
-                $({ $($f_name, $crate::field_of![_f, $f_name] ),+ })?             // field-struct↑
+                $(( $($e_name, ::devela_macros::field_of![_f, $e_numb] ),+ ))?    // tuple-struct↓
+                $({ $($f_name, ::devela_macros::field_of![_f, $f_name] ),+ })?    // field-struct↑
             }
         )+
     };

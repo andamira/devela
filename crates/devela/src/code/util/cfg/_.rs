@@ -19,6 +19,6 @@ crate::mods_out! { // _mods, _reexports,
         pub use crate::boot::rust::code::util_cfg::*;
 
         #[doc = crate::_tags!(code procedural_macro)]
-        pub use crate::boot::synth::{cif, compile, compile_attr};
+        pub use crate::boot::meta::{cif, compile, compile_attr};
     }
 }

@@ -23,7 +23,7 @@
 /// # Used in
 /// - `buffer_linear!` (item_gate)
 /// - `rand_pcg!` (mod extern)
-/// - [`unwrap!`][crate::boot::expr::unwrap] (unreachable)
+/// - [`unwrap!`][crate::unwrap] (unreachable)
 #[cfg_attr(not(feature = "__docs_internal"), doc(hidden))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 #[macro_export]

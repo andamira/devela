@@ -8,8 +8,9 @@
 
 #[doc = crate::_tags!(init)]
 /// A trait for giving a type a useful const-friendly initial value.
-#[cfg_attr(root_code, doc = crate::_doc_meta!{location("code/init", trait ConstInit)})]
-#[cfg_attr(not(root_code), doc = crate::_doc_meta!{location("boot", trait ConstInit)})]
+#[doc = crate::_doc_meta!{
+    location("code/init", trait ConstInit),
+}]
 /// # Comparison with `Default`
 ///
 /// `Default` represents the type's natural baseline, usually a neutral or zero-like state.

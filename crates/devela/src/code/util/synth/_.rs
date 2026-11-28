@@ -21,7 +21,7 @@ mods_in! {
 crate::boot::mods_out! { // _mods, _reexports, _hidden
     _mods {
         #[doc(inline)]
-        pub use crate::boot::synth::{CONST, items, mods_out};
+        pub use crate::boot::meta::{CONST, items, mods_out};
         #[doc(inline)]
         pub use super::{
             derive::{macro_apply_alias, macro_derive_alias},

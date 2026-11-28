@@ -17,6 +17,6 @@ crate::mods_out! { // _mods
             opt_res::*,
         };
         #[doc(inline)]
-        pub use crate::boot::expr::unwrap;
+        pub use crate::boot::base::code::unwrap;
     }
 }

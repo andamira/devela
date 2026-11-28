@@ -39,15 +39,15 @@ macro_rules! _DOC_ALL_PLUS_· {
 #[doc(hidden)]
 pub use {_DOC_ALL_PLUS_· as _DOC_ALL_PLUS_, _DOC_ALL_· as _DOC_ALL_, _DOC_ALL· as _DOC_ALL};
 
-crate::boot::synth::CONST! { hidden macro_export,
+crate::boot::meta::CONST! { hidden macro_export,
     _DOC_BOOT = "Bootstrap vocabulary.";
     _DOC_BOOT_MODULES = "\
         <br/><i style='margin-left:0em;'></i>\
         <span style='font-size:90%;word-spacing:0px'>\
         [boot][mod@crate::boot]::{\
-        [expr](mod@crate::boot::expr), \
-        [rust](mod@crate::boot::rust), \
-        [synth](mod@crate::boot::synth)}</span>";
+        [base](mod@crate::boot::base), \
+        [meta](mod@crate::boot::meta), \
+        [rust](mod@crate::boot::rust)}</span>";
 }
 
 /* shims */

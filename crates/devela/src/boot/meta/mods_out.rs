@@ -7,12 +7,9 @@
 // actually used, simply allowing us to detect the presence of the module during expansion.
 #[doc = crate::_tags!(code)]
 /// Defines a standardized module structure for organizing visibility and re-exports.
-#[cfg_attr(root_code, doc = crate::_doc_meta!{
+#[doc = crate::_doc_meta!{
     location("code/util/synth", macro mods_out),
-})]
-#[cfg_attr(not(root_code), doc = crate::_doc_meta!{
-    location("boot/synth", macro mods_out),
-})]
+}]
 /// This macro generates a set of structural helper modules that centralize export logic
 /// according to intended visibility and usage. It reduces boilerplate and enforces a
 /// consistent module layout across workspace crates.
